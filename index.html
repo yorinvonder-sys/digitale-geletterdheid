@@ -1,0 +1,638 @@
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mission: Impossible — Leswebsite</title>
+    <meta name="description" content="Digitale Geletterdheid — Mission: Impossible leswebsite" />
+    <!-- Tailwind via CDN (runtime) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      :root { color-scheme: dark; }
+      html, body, #root { height: 100%; }
+      /* Scrollbars voor de stappenlijsten */
+      .mi-scroll { scrollbar-width: thin; scrollbar-color: rgba(255,255,255,.85) rgba(255,255,255,.18); }
+      .mi-scroll::-webkit-scrollbar { width: 10px; }
+      .mi-scroll::-webkit-scrollbar-thumb { background-color: rgba(255,255,255,.9); border-radius: 9999px; }
+      .mi-scroll::-webkit-scrollbar-track { background: rgba(255,255,255,.18); border-radius: 9999px; }
+    </style>
+    <!-- React 18 UMD + Babel Standalone (so we can write JSX inline) -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body class="bg-slate-950 text-white">
+    <div id="root"></div>
+
+    <script type="text/babel">
+      const { useEffect, useMemo, useRef, useState } = React;
+
+      /** ============== Kleine helpers ============== */
+      function cn(...classes) { return classes.filter(Boolean).join(' '); }
+      function useLocalStorage(key, initialValue) {
+        const [value, setValue] = useState(() => {
+          try { const raw = localStorage.getItem(key); return raw ? JSON.parse(raw) : initialValue; }
+          catch { return initialValue; }
+        });
+        useEffect(() => { try { localStorage.setItem(key, JSON.stringify(value)); } catch {} }, [key, value]);
+        return [value, setValue];
+      }
+      function useStartAudio(src) {
+        const ref = useRef(null);
+        useEffect(() => {
+          const a = new Audio(src);
+          a.preload = "auto"; a.crossOrigin = "anonymous";
+          ref.current = a;
+          return () => { a.pause(); ref.current = null; };
+        }, [src]);
+        return async () => {
+          try { if (!ref.current) return; ref.current.currentTime = 0; await ref.current.play(); } catch {}
+        };
+      }
+      function useStartSfx() {
+        const ctxRef = useRef(null);
+        return () => {
+          try {
+            const AudioCtx = window.AudioContext || window.webkitAudioContext;
+            if (!AudioCtx) return;
+            if (!ctxRef.current) ctxRef.current = new AudioCtx();
+            const ctx = ctxRef.current;
+            const o = ctx.createOscillator();
+            const g = ctx.createGain();
+            o.type = "triangle";
+            o.frequency.setValueAtTime(220, ctx.currentTime);
+            o.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.35);
+            g.gain.setValueAtTime(0.0001, ctx.currentTime);
+            g.gain.exponentialRampToValueAtTime(0.3, ctx.currentTime + 0.05);
+            g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.4);
+            o.connect(g).connect(ctx.destination);
+            o.start(); o.stop(ctx.currentTime + 0.42);
+          } catch {}
+        };
+      }
+
+      /** ============== Icons (minimaal, inline SVG) ============== */
+      const IconPlay = (props) => (
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" {...props}>
+          <path d="M8 5v14l11-7z"></path>
+        </svg>
+      );
+      const IconCheck = (props) => (
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" {...props}>
+          <path d="M9 16.2l-3.5-3.5L4 14.2 9 19l12-12-1.5-1.5z"></path>
+        </svg>
+      );
+      const IconShield = (props) => (
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" {...props}>
+          <path d="M12 2l8 4v6c0 5-3.8 9.7-8 10-4.2-.3-8-5-8-10V6l8-4z"></path>
+        </svg>
+      );
+      const IconTarget = (props) => (
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" {...props}>
+          <path d="M12 2a10 10 0 1010 10A10.011 10.011 0 0012 2zm0 18a8 8 0 118-8 8.009 8.009 0 01-8 8zm0-14a6 6 0 106 6 6.006 6.006 0 00-6-6zm0 3a3 3 0 11-3 3 3.004 3.004 0 013-3z"></path>
+        </svg>
+      );
+
+      /** ============== Types / data ============== */
+      const MISSIONS = [
+        {
+          id: "m0",
+          title: "Startvaardigheden",
+          tag: "Copernicusweek 1",
+          levels: {
+            bronze: {
+              label: "Brons",
+              mission: "Maak je basis klaar: maak mappen, een Word‑document, deel met je docent (HQ) en stuur je eerste korte bericht.",
+              steps: [
+                { title: "1. Inloggen op OneDrive", items: ["Ga naar office.com", "Klik op OneDrive en meld je aan met je schoolaccount"] },
+                { title: "2. Mappen maken", items: [
+                  "Klik op ‘Nieuw’ → ‘Map’.",
+                  "Typ: MI_CW1 en klik op ‘Maken’.",
+                  "Dubbelklik op ‘MI_CW1’ om de map te openen.",
+                  "Klik opnieuw op ‘Nieuw’ → ‘Map’ en maak achter elkaar deze 5 mappen:",
+                  "‘01_Startvaardigheden’, ‘02_MagisterMail’, ‘03_PowerPoint’, ‘04_Printen’, ‘99_Evidence’.",
+                ]},
+                { title: "3. Word‑document maken", items: [
+                  "Dubbelklik op ‘01_Startvaardigheden’.",
+                  "Klik op ‘Nieuw’ → ‘Word‑document’ (Word Online opent).",
+                  "Klik bovenaan op de bestandsnaam en typ: CW1_Startvaardigheden_Voornaam_Achternaam_Klas.",
+                  "Druk op Enter. Wacht tot ‘Alle wijzigingen zijn opgeslagen’ staat.",
+                ]},
+                { title: "4. Delen met HQ (docent)", items: ["Klik ‘Delen’.","Typ het e‑mailadres van je docent.","Klik ‘Versturen’."]},
+                { title: "5. Tekst en opmaak", items: [
+                  "Bovenaan: titel, je naam, klas, datum.",
+                  "2 kopjes: ‘Mappen’ en ‘Eerste document’.",
+                  "Onder elk kopje 2 korte zinnen of 3 bullets.",
+                  "Spellingcontrole via ‘Controleren’ > ‘Spelling en grammatica’.",
+                ]},
+                { title: "6. Evidence + status", items: [
+                  "Screenshot van je mappen (Win+Shift+S / Shift+Cmd+4).",
+                  "Opslaan in ‘99_Evidence’.",
+                  "In Magister: kort bericht naar je docent met de deellink (Status #1).",
+                ]},
+              ],
+            },
+            silver: {
+              label: "Zilver",
+              mission: "Maak je document netjes: goede bestandsnaam, kop/voettekst, rechten goed zetten en een korte update naar HQ.",
+              steps: [
+                { title: "1. Bestandsnaam", items: [
+                  "Open OneDrive > ‘01_Startvaardigheden’.",
+                  "Hernoem naar: CW1_Startvaardigheden_VoornaamAchternaam_Klas.",
+                  "Geen rare tekens of dubbele spaties.",
+                ]},
+                { title: "2. Kop/voettekst", items: [
+                  "Open je document.",
+                  "‘Invoegen’ > ‘Koptekst’ > ‘Leeg’: typ Voornaam Achternaam — Klas.",
+                  "‘Invoegen’ > ‘Paginanummer’ (onderin).",
+                  "‘Invoegen’ > ‘Datum en tijd’ (dd‑mm‑jjjj).",
+                ]},
+                { title: "3. Rechten controleren", items: [
+                  "OneDrive: klik ‘Delen’ > ‘Linkinstellingen’.",
+                  "Kies ‘Specifieke personen’, zet ‘Bewerken’ uit (alleen bekijken).",
+                  "Nodig je docent uit, ‘Toepassen’, kopieer de link.",
+                ]},
+                { title: "4. Checklist onderaan", items: [
+                  "Zet onder je tekst 5 regels:",
+                  "□ Naamgeving ok  □ Kop/voettekst ok  □ Rechten ok  □ Spelling ok  □ Evidence geplaatst.",
+                  "Zet ‘X’ of ‘Klaar’ achter wat af is.",
+                ]},
+                { title: "5. Status #2 naar HQ", items: [
+                  "Magister > Mail: onderwerp ‘[MI/CW1] Update 2 — Startvaardigheden’.",
+                  "Schrijf 1–2 zinnen wat nieuw/verbeterd is en plak de juiste link.",
+                  "Screenshot van verzonden mail in ‘99_Evidence’.",
+                ]},
+              ],
+            },
+            gold: {
+              label: "Goud",
+              mission: "Lever supernetjes op: sla ook als PDF op, maak een mini‑uitleg (6 stappen) en stuur alles naar HQ met bewijs.",
+              steps: [
+                { title: "1. PDF export", items: ["Open het Word‑document.","‘Bestand’ > ‘Opslaan als’ of ‘Downloaden als’ > ‘PDF’.","Sla op in ‘01_Startvaardigheden’ met dezelfde naam."]},
+                { title: "2. Mini‑handleiding (6 stappen)", items: [
+                  "Onder je tekst: maak een genummerde lijst ‘Zo deel je veilig met HQ’.",
+                  "Zet erin: (1) Open OneDrive, (2) Klik Delen, (3) Linkinstellingen → Alleen weergeven, (4) Specifieke personen → docent, (5) Link kopiëren, (6) Link in Magister mailen.",
+                ]},
+                { title: "3. Eindoplevering + evidence", items: [
+                  "Mail naar HQ: onderwerp ‘[MI/CW1] Eindoplevering — Startvaardigheden’.",
+                  "Voeg toe: de OneDrive‑link, het Word‑bestand en de PDF.",
+                  "Screenshot van deel‑instellingen in ‘99_Evidence’.",
+                ]},
+              ],
+            },
+          },
+        },
+        {
+          id: "m1",
+          title: "Missie 1: Magister‑mail sturen met bijlage",
+          tag: "Communicatie",
+          levels: {
+            bronze: {
+              label: "Brons",
+              mission: "Stuur je bestand naar HQ met de juiste bijlage en een werkende link.",
+              steps: [
+                { title: "1. Nieuw bericht", items: ["Open Magister > Mail > Nieuw.", "Ontvanger: je docent (HQ)."] },
+                { title: "2. Onderwerp", items: ["[MI/CW1] Startvaardigheden — Voornaam Achternaam (Klas)."] },
+                { title: "3. Tekst", items: ["Schrijf: ‘Beste … hierbij mijn bestand Startvaardigheden. Groet, [jouw naam] [klas].’."] },
+                { title: "4. Bijlage + link", items: ["Paperclip → OneDrive → kies je Word‑bestand.", "Plak ook de deellink in de tekst."] },
+                { title: "5. Verzenden + bewijs", items: ["Klik ‘Verzenden’.", "Screenshot van ‘Verzonden’ in ‘99_Evidence’."] },
+              ],
+            },
+            silver: {
+              label: "Zilver",
+              mission: "Maak je mail professioneel: duidelijk onderwerp, juiste link‑rechten, jezelf in Bcc en netjes om ontvangst vragen.",
+              steps: [
+                { title: "1. Onderwerp kort", items: ["Gebruik: ‘[MI/CW1] Startvaardigheden — Voornaam (1A)’."] },
+                { title: "2. Link‑rechten goed", items: ["OneDrive > Delen > Linkinstellingen.", "‘Specifieke personen’, ‘Bewerken’ uit (alleen bekijken).", "Voeg docent toe > Toepassen > kopieer link."] },
+                { title: "3. Bcc + archiveren", items: ["Zet jezelf in Bcc.", "Na verzenden: verplaats mail naar map ‘CW1’."] },
+                { title: "4. Netjes vragen", items: ["Sluit af met: ‘Kunt u bevestigen of de link werkt? Dank u wel.’"] },
+              ],
+            },
+            gold: {
+              label: "Goud",
+              mission: "Maak je communicatie compleet: vaste handtekening, reminder en bevestiging na feedback.",
+              steps: [
+                { title: "1. Handtekening", items: ["Onder je mail: naam, klas en schoolmail.", "Bijv. ‘Met vriendelijke groet, Samir de Jong — 1A — s.dejong@school.nl’."] },
+                { title: "2. Herinnering", items: ["Zet in je agenda over 2 dagen: ‘Check reactie HQ op MI/CW1’."] },
+                { title: "3. Bevestiging", items: ["Na verwerken feedback: reply ‘Dank voor de feedback, verwerkt op dd‑mm’."] },
+              ],
+            },
+          },
+        },
+        {
+          id: "m2",
+          title: "Missie 2: PowerPoint‑verslag van je progressie",
+          tag: "Presenteren",
+          levels: {
+            bronze: {
+              label: "Brons",
+              mission: "Maak een kort dia‑verslag en deel dit met HQ.",
+              steps: [
+                { title: "1. Start", items: ["Open PowerPoint", "Kies ‘Lege presentatie’"] },
+                { title: "2. Dia 1 — Titel", items: ["Mission: Impossible — CW1", "Naam, klas, datum"] },
+                { title: "3. Dia 2 — Wat deed ik?", items: ["3 bullets: mappen gemaakt; document gedeeld; spelling gecheckt"] },
+                { title: "4. Dia 3 — Bewijs", items: ["Voeg 1 screenshot toe", "Zet er 1 korte zin onder"] },
+                { title: "5. Dia 4 — Naar HQ", items: ["2 bullets: wat al gedeeld is; wat nog komt"] },
+                { title: "6. Opslaan + delen", items: ["Bestandsnaam: CW1_PPT_Voornaam_Achternaam.pptx", "Link delen met docent", "PDF export in ‘99_Evidence’ opslaan"] },
+              ],
+            },
+            silver: {
+              label: "Zilver",
+              mission: "Maak je presentatie netjes en goed leesbaar voor iedereen en stuur status #3.",
+              steps: [
+                { title: "1. Opmaak consistent", items: ["Kies 1 thema bij ‘Ontwerpen’.", "Titels overal ±44 pt.", "6×6‑regel: max 6 bullets per dia, max 6 woorden per bullet."] },
+                { title: "2. Visual", items: ["Invoegen > SmartArt > Basisproces.", "Zet 3 stappen: ‘Mappen’, ‘Delen’, ‘Evidence’."] },
+                { title: "3. Toegankelijk", items: ["Alt‑tekst bij afbeeldingen.", "Goed contrast (licht/donker).", "Hoofdtekst ≥24 pt."] },
+                { title: "4. Status #3", items: ["Sla op in ‘03_PowerPoint’.", "Mail 1 zin wat nieuw is + deel‑link."] },
+              ],
+            },
+            gold: {
+              label: "Goud",
+              mission: "Oefen kort, maak het bestand kleiner en lever PPT + PDF in.",
+              steps: [
+                { title: "1. Oefenen (±2 min)", items: ["Zet een timer op 2 min", "Vraag 1 tip, verwerk die"] },
+                { title: "2. Optimaliseren", items: ["Bestand > Afbeeldingen comprimeren (als beschikbaar)", "Exporteer ook als PDF → ‘03_PowerPoint’"] },
+                { title: "3. Eindoplevering", items: ["Mail naar HQ: link naar PPT + PDF (bijlage of link).", "Screenshot van deel‑instellingen in ‘99_Evidence’."] },
+              ],
+            },
+          },
+        },
+        {
+          id: "m3",
+          title: "Missie 3: Printen vanuit Word",
+          tag: "Praktisch",
+          levels: {
+            bronze: {
+              label: "Brons",
+              mission: "Print je document netjes en lever het in.",
+              steps: [
+                { title: "1. Afdrukken", items: ["Open je Word‑document", "Bestand > Afdrukken (Ctrl+P/Cmd+P)"] },
+                { title: "2. Printer kiezen", items: ["Schoolprinter/Follow‑Me", "A4, staand"] },
+                { title: "3. Proef", items: ["Bekijk voorbeeld", "Print 1 proefpagina"] },
+                { title: "4. Printen", items: ["Is het goed? Print alles"] },
+                { title: "5. Inleveren", items: ["Lever je print in bij je docent (HQ)"] },
+              ],
+            },
+            silver: {
+              label: "Zilver",
+              mission: "Print slim (dubbelzijdig/juiste pagina’s) en bewaar ook een PDF.",
+              steps: [
+                { title: "1. Dubbelzijdig en juiste pagina's", items: ["Kies bij afdrukken: ‘Dubbelzijdig’ (duplex) indien beschikbaar.", "Print alleen de pagina's die nodig zijn (bijv. 1‑2 of 3,5)"] },
+                { title: "2. PDF bewaren", items: ["‘Bestand’ > ‘Opslaan als’ of ‘Exporteren’ > ‘PDF’.", "Sla op in ‘04_Printen’ met duidelijke naam (CW1_Print_VoornaamAchternaam.pdf)"] },
+                { title: "3. Wachtrij/saldo check", items: ["Controleer de printerwachtrij (op apparaat of portal).", "Annuleer foute jobs en check je printsaldo."] },
+              ],
+            },
+            gold: {
+              label: "Goud",
+              mission: "Print veilig en zuinig (Follow‑Me, zo min mogelijk kleur) en voeg bewijs toe.",
+              steps: [
+                { title: "1. Secure print (Follow‑Me)", items: ["Stuur naar ‘Follow‑Me’ en haal de print op met je pasje.", "Controleer op het apparaat of je de juiste versie vrijgeeft."] },
+                { title: "2. Zuinig", items: ["Zet op ‘Zwart‑wit’ of ‘Concept’ waar mogelijk.", "Print alleen wat nodig is; voorkom dubbel printen."] },
+                { title: "3. Evidence", items: ["Maak een foto van je ingeleverde print.", "Zet de foto in ‘99_Evidence’ met bestandsnaam ‘CW1_Print_Evidence_Voornaam’."] },
+              ],
+            },
+          },
+        },
+        {
+          id: "m4",
+          title: "Missie 4: Bewijsmateriaal vastleggen",
+          tag: "Bewijs",
+          levels: {
+            bronze: {
+              label: "Brons",
+              mission: "Leg je Digitale Rijbewijs vast met stempel van de docent en upload het correct in OneDrive.",
+              steps: [
+                { title: "1. Submap aanmaken", items: ["OneDrive → MI_CW1 → '99_Evidence'", "Maak een submap: 'Rijbewijs'."] },
+                { title: "2. Stempel halen", items: ["Laat je Digitale Rijbewijs afstempelen door de docent (naam/paraaf + datum).", "Check dat de stempel duidelijk binnen het kader staat."] },
+                { title: "3. Foto maken", items: ["Goede belichting; geen flits/reflectie.", "Houd telefoon stabiel; volledige kaart + stempel in beeld."] },
+                { title: "4. Bestandsnaam", items: ["DRB_VoornaamAchternaam_Klas_YYYYMMDD.jpg", "Voorbeeld: DRB_SamirDeJong_1A_20250117.jpg"] },
+                { title: "5. Uploaden", items: ["Upload naar '99_Evidence/Rijbewijs'."] },
+              ],
+            },
+            silver: {
+              label: "Zilver",
+              mission: "Maak het bewijs controleerbaar en deelbaar voor HQ, zonder teveel rechten te geven.",
+              steps: [
+                { title: "1. Bijsnijden & privacy", items: ["Snij de foto bij zodat alleen jouw rijbewijs zichtbaar is.", "Verberg/blur per ongeluk zichtbare persoonsgegevens van anderen."] },
+                { title: "2. Link‑rechten instellen", items: ["Open de foto → 'Delen' → 'Linkinstellingen'", "Kies 'Specifieke personen' en zet 'Bewerken' uit.", "Voeg je docent toe → 'Toepassen' → 'Kopiëren'."] },
+                { title: "3. Status #4 mail", items: ["Magister → Mail: '[MI/CW1] Update 4 — Bewijsmateriaal Rijbewijs'", "Plak de deellink + 1 zin: 'Foto geüpload in 99_Evidence/Rijbewijs'."] },
+              ],
+            },
+            gold: {
+              label: "Goud",
+              mission: "Lever compleet en toekomstvast op (ook als PDF) en voeg bewijs van je instellingen toe.",
+              steps: [
+                { title: "1. Scan als PDF", items: ["Gebruik 'Office/OneDrive Scan' of 'Lens' en maak een rechte scan.", "Bestandsnaam: DRB_VoornaamAchternaam_Klas_YYYYMMDD.pdf in dezelfde map."] },
+                { title: "2. Map delen (alleen HQ)", items: ["Deel de map '99_Evidence/Rijbewijs' met je docent (alleen weergeven).", "Maak een screenshot van de deelinstellingen en upload deze ook in de map."] },
+                { title: "3. Eindoplevering", items: ["Mail naar HQ: link naar de map + benoem dat PDF en JPG aanwezig zijn."] },
+              ],
+            },
+          },
+        },
+      ];
+
+      /** ============== voortgangslogica ============== */
+      const nextLevel = (lvl) => (lvl === "none" ? "bronze" : lvl === "bronze" ? "silver" : lvl === "silver" ? "gold" : "gold");
+      const levelWeight = (lvl) => (lvl === "gold" ? 3 : lvl === "silver" ? 2 : lvl === "bronze" ? 1 : 0);
+
+      /** ============== Kleine UI bouwstenen ============== */
+      function Button({ className, children, ...props }) {
+        return (
+          <button
+            className={cn("inline-flex items-center justify-center rounded-2xl text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40 disabled:pointer-events-none disabled:opacity-50 bg-white/10 hover:bg-white/20 px-3 py-2", className)}
+            {...props}
+          >{children}</button>
+        );
+      }
+      function Card({ className, ...props }) {
+        return <div className={cn("rounded-2xl border border-white/10 bg-white/5", className)} {...props} />;
+      }
+      const CardHeader = (p) => <div className={cn("p-4", p.className)} {...p} />;
+      const CardTitle  = (p) => <h3 className={cn("text-lg font-semibold", p.className)} {...p} />;
+      const CardContent= (p) => <div className={cn("p-4 pt-0", p.className)} {...p} />;
+
+      function Tabs({ defaultValue, children, className }) {
+        const [value, setValue] = useState(defaultValue);
+        return <div className={className} data-value={value}>
+          {React.Children.map(children, (child) => {
+            if (!React.isValidElement(child)) return child;
+            return React.cloneElement(child, { value, setValue });
+          })}
+        </div>;
+      }
+      function TabsList({ className, children }) {
+        return <div className={cn("inline-grid", className)}>{children}</div>;
+      }
+      function TabsTrigger({ tabValue, value, setValue, className, children }) {
+        const active = value === tabValue;
+        return (
+          <button
+            type="button"
+            onClick={() => setValue(tabValue)}
+            className={cn("px-3 py-2 rounded-xl text-sm font-medium border border-white/10", active && "ring-2 ring-white/50", className)}
+            data-state={active ? "active" : undefined}
+          >
+            {children}
+          </button>
+        );
+      }
+      function TabsContent({ tabValue, value, children, className }) {
+        if (value !== tabValue) return null;
+        return <div className={className}>{children}</div>;
+      }
+
+      function Dialog({ open, children }) {
+        return open ? <>{children}</> : null;
+      }
+      function DialogContent({ className, children }) {
+        return (
+          <div className="fixed inset-0 z-50">
+            <div className="absolute inset-0 bg-black/70"></div>
+            <div className={cn("relative mx-auto mt-16 w-[min(672px,92vw)] rounded-xl border border-white/15 bg-slate-900/95 p-4", className)}>
+              {children}
+            </div>
+          </div>
+        );
+      }
+      const DialogHeader = (p) => <div className={cn("mb-2", p.className)} {...p} />;
+      const DialogTitle  = (p) => <h2 className={cn("text-xl font-semibold", p.className)} {...p} />;
+
+      function LevelPill({ level }) {
+        const map = { none: "Basis", bronze: "Brons", silver: "Zilver", gold: "Goud" };
+        return <span className="inline-flex items-center rounded-full bg-white/10 px-2 py-0.5 text-xs">Niveau: {map[level]}</span>;
+      }
+
+      function SvgStart(){return (
+        <svg viewBox="0 0 200 120" preserveAspectRatio="xMidYMid meet" className="h-[62%] w-auto max-w-[62%]">
+          <defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#60a5fa"/><stop offset="1" stopColor="#2563eb"/></linearGradient></defs>
+          <rect x="14" y="36" rx="8" ry="8" width="172" height="70" fill="url(#g1)" />
+          <rect x="30" y="26" rx="6" ry="6" width="60" height="16" fill="#93c5fd" />
+          <rect x="36" y="52" rx="4" ry="4" width="120" height="8" fill="#bfdbfe" />
+          <rect x="36" y="66" rx="4" ry="4" width="100" height="8" fill="#dbeafe" />
+          <rect x="36" y="80" rx="4" ry="4" width="80" height="8" fill="#eff6ff" />
+        </svg>
+      );}
+      function SvgMail(){return (
+        <svg viewBox="0 0 200 120" preserveAspectRatio="xMidYMid meet" className="h-[62%] w-auto max-w-[62%]">
+          <rect x="20" y="28" width="160" height="64" rx="10" fill="#ef4444" />
+          <path d="M30 36 L100 76 L170 36" fill="none" stroke="#fee2e2" strokeWidth="8" strokeLinecap="round" />
+          <circle cx="160" cy="82" r="6" fill="#fecaca" />
+        </svg>
+      );}
+      function SvgPpt(){return (
+        <svg viewBox="0 0 200 120" preserveAspectRatio="xMidYMid meet" className="h-[62%] w-auto max-w-[62%]">
+          <rect x="26" y="26" width="148" height="84" rx="8" fill="#f97316" />
+          <rect x="36" y="40" width="80" height="12" rx="3" fill="#ffedd5" />
+          <rect x="36" y="58" width="110" height="10" rx="3" fill="#fed7aa" />
+          <rect x="36" y="74" width="92" height="10" rx="3" fill="#fed7aa" />
+          <circle cx="146" cy="48" r="8" fill="#ffedd5" />
+        </svg>
+      );}
+      function SvgPrint(){return (
+        <svg viewBox="0 0 200 120" preserveAspectRatio="xMidYMid meet" className="h-[62%] w-auto max-w-[62%]">
+          <rect x="50" y="30" width="100" height="24" rx="4" fill="#d1d5db" />
+          <rect x="30" y="54" width="140" height="36" rx="6" fill="#9ca3af" />
+          <rect x="68" y="70" width="64" height="28" rx="2" fill="#e5e7eb" />
+          <circle cx="156" cy="72" r="6" fill="#10b981" />
+        </svg>
+      );}
+      function SvgIdCard(){return (
+        <svg viewBox="0 0 200 120" preserveAspectRatio="xMidYMid meet" className="h-[62%] w-auto max-w-[62%]">
+          <rect x="30" y="36" width="140" height="72" rx="8" fill="#22c55e" />
+          <circle cx="66" cy="72" r="16" fill="#bbf7d0" />
+          <rect x="94" y="60" width="60" height="8" rx="3" fill="#dcfce7" />
+          <rect x="94" y="74" width="52" height="8" rx="3" fill="#dcfce7" />
+        </svg>
+      );}
+
+      function MissionBanner({ missionId, title }) {
+        return (
+          <div className="h-full w-full bg-gradient-to-br from-slate-800 to-zinc-800/90 relative flex items-center justify-center">
+            <div className="absolute inset-0 opacity-20 flex items-center justify-center pointer-events-none">
+              {missionId === 'm0' ? <SvgStart /> : missionId === 'm1' ? <SvgMail /> : missionId === 'm2' ? <SvgPpt /> : missionId === 'm3' ? <SvgPrint /> : missionId === 'm4' ? <SvgIdCard /> : null}
+            </div>
+            <span className="relative z-10 text-white/80 text-base sm:text-lg">{title}</span>
+          </div>
+        );
+      }
+
+      /** ============== App ============== */
+      const BACKGROUND_VIDEO = ""; // optioneel
+      const BACKGROUND_POSTER = "";
+      const START_AUDIO_SRC = "showtime-2.mp3"; // zet het mp3-bestand naast index.html (optioneel)
+
+      function App() {
+        const [started, setStarted] = useState(false);
+        const [openMissionId, setOpenMissionId] = useState(null);
+        const [progress, setProgress] = useLocalStorage("mi_progress_v3", { m0: "none", m1: "none", m2: "none", m3: "none", m4: "none" });
+        const [videoOk, setVideoOk] = useState(!!BACKGROUND_VIDEO);
+
+        const playStartAudio = useStartAudio(START_AUDIO_SRC);
+        const startSfx = useStartSfx();
+
+        const totalWeight = MISSIONS.length * 3;
+        const doneWeight = useMemo(() => MISSIONS.reduce((acc, m) => acc + levelWeight(progress[m.id] || "none"), 0), [progress]);
+        const pct = Math.round((doneWeight / totalWeight) * 100);
+
+        function handleStart() { playStartAudio(); startSfx(); setStarted(true); }
+        function openMission(id) { setOpenMissionId(id); }
+        function markNextLevel(id) { setProgress((p) => ({ ...p, [id]: nextLevel(p[id] || "none") })); }
+        function resetProgress() { setProgress({ m0: "none", m1: "none", m2: "none", m3: "none", m4: "none" }); setOpenMissionId(null); }
+
+        const activeMission = MISSIONS.find((m) => m.id === openMissionId) || null;
+        const baseMission = MISSIONS.find((m) => m.id === "m0");
+        const baseUnlocked = ["bronze","silver","gold"].includes(progress.m0);
+        const otherMissions = MISSIONS.filter((m) => m.id !== "m0");
+
+        return (
+          <div className="relative min-h-screen w-full text-white overflow-hidden bg-slate-950">
+            {/* Achtergrond */}
+            <div className="pointer-events-none absolute inset-0 -z-10">
+              {videoOk && BACKGROUND_VIDEO ? (
+                <video className="absolute inset-0 h-full w-full object-cover" autoPlay loop muted playsInline poster={BACKGROUND_POSTER || undefined} onError={() => setVideoOk(false)}>
+                  <source src={BACKGROUND_VIDEO} type="video/mp4" />
+                </video>
+              ) : (
+                <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-zinc-900" />
+              )}
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0.65)_0%,rgba(0,0,0,0.78)_48%,rgba(0,0,0,0.9)_75%,rgba(0,0,0,0.95)_100%)]" />
+            </div>
+
+            {/* Hero / Start */}
+            <div className="relative mx-auto flex min-h-screen max-w-6xl flex-col items-center justify-center px-6 pt-6 pb-24">
+              {!started && (
+                <div className="text-center animate-[fadein_.6s_ease]">
+                  <style>{`@keyframes fadein{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}`}</style>
+                  <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs uppercase tracking-widest text-white">
+                    <IconShield className="inline" /> Digitale Geletterdheid
+                  </div>
+                  <h1 className="mt-5 text-4xl sm:text-5xl md:text-6xl font-semibold leading-tight">
+                    Mission: <span className="text-white/90">Impossible*</span>
+                  </h1>
+                  <p className="mt-3 text-white/80 max-w-2xl mx-auto">
+                    *Nou ja, bijna onmogelijk. Je voltooit missies in <span className="font-medium">Brons · Zilver · Goud</span> om je digitale skills te levelen.
+                  </p>
+                  <div className="mt-8 flex items-center justify-center gap-3">
+                    <Button onClick={handleStart} className="rounded-2xl px-6 transition-transform active:scale-95 focus-visible:ring-2 focus-visible:ring-white/50">
+                      <IconPlay className="mr-2" /> Start Mission
+                    </Button>
+                  </div>
+                </div>
+              )}
+
+              {/* Mission grid */}
+              {started && (
+                <div className="mt-12 grid w-full grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 animate-[fadein_.6s_ease]">
+                  {/* Startvaardigheden bovenaan */}
+                  {baseMission && (
+                    <Card className="overflow-hidden bg-white/5 border-white/10 backdrop-blur-sm hover:bg-white/10 transition lg:col-span-3">
+                      <button onClick={() => openMission(baseMission.id)} className="group text-left w-full transition-transform active:scale-[.99] focus-visible:ring-2 focus-visible:ring-white/40 outline-none" aria-label={`Open ${baseMission.title}`}>
+                        <div className="relative h-48 sm:h-56 w-full overflow-hidden">
+                          <MissionBanner missionId={baseMission.id} title={baseMission.title} />
+                          <div className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-black/60 px-2 py-1 text-xs text-white">
+                            <IconTarget /> {baseMission.tag}
+                          </div>
+                        </div>
+                        <CardHeader className="pb-2"><CardTitle className="text-xl text-white">{baseMission.title}</CardTitle></CardHeader>
+                        <CardContent className="pt-0 pb-4">
+                          <div className="flex items-center gap-2 text-sm text-white/90">
+                            <LevelPill level={progress[baseMission.id] || "none"} />
+                            <span className="ml-auto inline-flex items-center gap-1 opacity-80 group-hover:opacity-100"><span>Openen</span><IconPlay /></span>
+                          </div>
+                        </CardContent>
+                      </button>
+                    </Card>
+                  )}
+
+                  {/* Overige missies — alleen zichtbaar na Startvaardigheden */}
+                  {baseUnlocked ? (
+                    otherMissions.map((m) => (
+                      <Card key={m.id} className="overflow-hidden bg-white/5 border-white/10 backdrop-blur-sm hover:bg-white/10 transition">
+                        <button onClick={() => openMission(m.id)} className="group text-left w-full transition-transform active:scale-[.99] focus-visible:ring-2 focus-visible:ring-white/40 outline-none" aria-label={`Open ${m.title}`}>
+                          <div className="relative h-40 w-full overflow-hidden">
+                            <MissionBanner missionId={m.id} title={m.title} />
+                            <div className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-black/60 px-2 py-1 text-xs text-white">
+                              <IconTarget /> {m.tag}
+                            </div>
+                          </div>
+                          <CardHeader className="pb-2"><CardTitle className="text-lg text-white">{m.title}</CardTitle></CardHeader>
+                          <CardContent className="pt-0 pb-4">
+                            <div className="flex items-center gap-2 text-sm text-white/90">
+                              <LevelPill level={progress[m.id] || "none"} />
+                              <span className="ml-auto inline-flex items-center gap-1 opacity-80 group-hover:opacity-100"><span>Openen</span><IconPlay /></span>
+                            </div>
+                          </CardContent>
+                        </button>
+                      </Card>
+                    ))
+                  ) : (
+                    <div className="col-span-full text-center text-white/80 bg-white/5 border border-white/10 rounded-2xl p-6">
+                      <p className="mb-2">🔒 Om verder te gaan: voltooi eerst <span className="font-semibold">Startvaardigheden</span>.</p>
+                      <Button onClick={() => openMission(baseMission.id)} className="mt-2 rounded-2xl transition-transform active:scale-95 focus-visible:ring-2 focus-visible:ring-white/50">Open Startvaardigheden</Button>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* Mission dialog */}
+            <Dialog open={!!openMissionId}>
+              <DialogContent className="max-w-2xl bg-slate-900/95 border-white/15 text-white">
+                {activeMission ? (
+                  <div>
+                    <DialogHeader><DialogTitle className="text-xl">{activeMission.title}</DialogTitle></DialogHeader>
+                    <Tabs defaultValue="bronze" className="mt-4">
+                      <TabsList className="grid grid-cols-3 gap-2 bg-transparent p-0">
+                        <TabsTrigger tabValue="bronze" className="text-white bg-gradient-to-r from-[#b87333] to-[#cd7f32] opacity-95 rounded-xl border-0">Brons</TabsTrigger>
+                        <TabsTrigger tabValue="silver" className="text-slate-900 bg-gradient-to-r from-[#c0c0c0] to-[#e5e4e2] opacity-95 rounded-xl border-0">Zilver</TabsTrigger>
+                        <TabsTrigger tabValue="gold" className="text-slate-900 bg-gradient-to-r from-[#ffd700] to-[#e6b800] opacity-95 rounded-xl border-0">Goud</TabsTrigger>
+                      </TabsList>
+                      {["bronze","silver","gold"].map((lvl) => (
+                        <TabsContent key={lvl} tabValue={lvl} className="mt-4">
+                          <div className="mb-3 rounded-lg bg-white/5 border border-white/10 p-3 text-sm">
+                            <span className="font-semibold">🎯 Missie:</span> {activeMission.levels[lvl].mission || "Voer de stappen uit zodat HQ je voortgang kan volgen."}
+                          </div>
+                          <div className="mi-scroll max-h-[60vh] overflow-y-auto pr-2">
+                            <ul className="space-y-3">
+                              {activeMission.levels[lvl].steps.map((s, i) => (
+                                <li key={i}>
+                                  <div className="flex items-start gap-2">
+                                    <IconCheck className="mt-0.5 text-emerald-400" />
+                                    <div>
+                                      <div className="font-semibold">{s.title}</div>
+                                      <ul className="mt-1 ml-7 list-disc text-white/90 space-y-1">
+                                        {s.items.map((it, j) => (<li key={j}>{it}</li>))}
+                                      </ul>
+                                    </div>
+                                  </div>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                          <div className="mt-6 flex items-center gap-3">
+                            <Button onClick={() => markNextLevel(activeMission.id)} className={cn("w-full sm:w-auto rounded-2xl px-4 py-2 text-slate-900 hover:brightness-110 active:scale-95 focus-visible:ring-2 focus-visible:ring-white/50 shadow-md shadow-black/30",
+                              lvl==="bronze"?"bg-gradient-to-r from-[#b87333] to-[#cd7f32]":lvl==="silver"?"bg-gradient-to-r from-[#c0c0c0] to-[#e5e4e2]":"bg-gradient-to-r from-[#ffd700] to-[#e6b800]")}>
+                              <IconCheck className="mr-2" /> Markeer als voltooid → volgende niveau
+                            </Button>
+                            <LevelPill level={lvl} />
+                          </div>
+                        </TabsContent>
+                      ))}
+                    </Tabs>
+                    <div className="mt-6 text-right">
+                      <Button onClick={() => setOpenMissionId(null)} className="px-4 py-2">Sluiten</Button>
+                    </div>
+                  </div>
+                ) : null}
+              </DialogContent>
+            </Dialog>
+          </div>
+        );
+      }
+
+      /** Mount */
+      const root = ReactDOM.createRoot(document.getElementById('root'));
+      root.render(<App />);
+    </script>
+  </body>
+</html>
