@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DPIA Support Document - DGSkills</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { margin: 0; padding: 0; background: #f8fafc; color: #0f172a; font-family: system-ui, -apple-system, sans-serif; }
+        .container { max-width: 56rem; margin: 3rem auto; padding: 3rem; background: #fff; box-shadow: 0 25px 50px -12px rgba(0,0,0,.25); border-radius: 0.5rem; border: 1px solid #e2e8f0; }
+        .flex-between { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 3rem; }
+        h1 { font-size: 1.875rem; font-weight: 900; color: #064e3b; margin: 0 0 0.5rem 0; }
+        .subtitle { color: #64748b; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; font-size: 0.75rem; }
+        .version { font-size: 0.75rem; color: #94a3b8; }
+        .intro-box { background: #ecfdf5; border: 1px solid #a7f3d0; padding: 1.5rem; border-radius: 0.75rem; margin-bottom: 3rem; }
+        .intro-box h3 { font-weight: 700; color: #064e3b; margin-bottom: 0.5rem; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em; }
+        .intro-box p { font-size: 0.875rem; color: #065f46; line-height: 1.6; }
+        .section { margin-bottom: 2.5rem; }
+        h2 { font-size: 1.25rem; font-weight: 700; border-bottom: 2px solid #f1f5f9; padding-bottom: 0.5rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem; }
+        .num-badge { background: #059669; color: #fff; width: 1.5rem; height: 1.5rem; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 0.75rem; }
+        h4 { font-weight: 700; font-size: 0.875rem; color: #334155; margin-bottom: 0.25rem; }
+        .text-muted { font-size: 0.875rem; color: #475569; font-style: italic; }
+        .text-body { font-size: 0.875rem; color: #475569; }
+        table { width: 100%; font-size: 0.875rem; border-collapse: collapse; border: 1px solid #e2e8f0; border-radius: 0.5rem; overflow: hidden; }
+        th, td { padding: 0.75rem; text-align: left; border-bottom: 1px solid #e2e8f0; }
+        thead { background: #f8fafc; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: #64748b; }
+        tbody tr:nth-child(odd) td:first-child { background: rgba(248,250,252,.5); }
+        td:first-child { font-weight: 500; }
+        td:last-child { color: #475569; }
+        code { background: #f1f5f9; padding: 0.125rem 0.25rem; border-radius: 0.25rem; font-size: 0.8em; }
+        .disclaimer { background: #f8fafc; padding: 1.5rem; border-radius: 0.5rem; border: 1px solid #e2e8f0; font-size: 0.75rem; color: #64748b; font-style: italic; }
+        .print-btn-wrap { display: flex; justify-content: center; margin-top: 3rem; }
+        .print-btn { background: #059669; color: #fff; padding: 0.75rem 2rem; border-radius: 9999px; font-weight: 900; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; }
+        .print-btn:hover { background: #047857; }
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white; }
+            .container { border: none; box-shadow: none; margin: 0; padding: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <div class="flex-between">
+            <div>
+                <h1>DPIA Support Document</h1>
+                <p class="subtitle">Voor ICT-Coördinatoren en Functionarissen Gegevensbescherming</p>
+            </div>
+            <div>
+                <p class="version">Versie: 1.0 (Feb 2026)</p>
+            </div>
+        </div>
+
+        <div class="intro-box">
+            <h3>Doel van dit document</h3>
+            <p>
+                Dit document ondersteunt de school bij het uitvoeren van een <strong>Data Protection Impact Assessment (DPIA)</strong>. 
+                Wij beantwoorden hierin de meest voorkomende vragen over privacyrisico's en de beheersing daarvan binnen DGSkills.
+            </p>
+        </div>
+
+        <div>
+            <section class="section">
+                <h2><span class="num-badge">1</span> Beschrijving van de Gegevensverwerking</h2>
+                <div>
+                    <div style="margin-bottom: 1.5rem;">
+                        <h4>Doel van de verwerking</h4>
+                        <p class="text-muted">Het aanbieden van een interactieve leeromgeving voor digitale geletterdheid, inclusief voortgangsregistratie en AI-ondersteunde feedback.</p>
+                    </div>
+                    <div>
+                        <h4>Rechtmatigheid</h4>
+                        <p class="text-body">De school verwerkt deze gegevens in het kader van haar wettelijke onderwijstaak. DGSkills treedt uitsluitend op als verwerker.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2><span class="num-badge">2</span> Risico-Analyse en Beheersmaatregelen</h2>
+                <div>
+                    <table>
+                            <thead>
+                                <tr>
+                                    <th>Risico</th>
+                                    <th>Beheersmaatregel</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Ongeautoriseerde toegang tot leerlingdata</td>
+                                    <td>Strikt Rolgebaseerd Toegangsbeheer (RBAC) via Supabase Row Level Security (RLS). Alleen docenten van de eigen klas kunnen data inzien.</td>
+                                </tr>
+                                <tr>
+                                    <td>Datalocatie buiten de EER</td>
+                                    <td>Alle data (database, authenticatie, AI-API) staat geforceerd op <code>eu-west-1</code> (Ierland, EER). Er is geen data-export naar de VS voor trainingsdoeleinden.</td>
+                                </tr>
+                                <tr>
+                                    <td>Ongepaste content via AI</td>
+                                    <td>Gebruik van enterprise-grade safety filters via Google Gemini API. Geen directe inzet van consumenten-chatbots.</td>
+                                </tr>
+                                <tr>
+                                    <td>Dataverlies bij storing</td>
+                                    <td>Dagelijkse back-ups binnen de EU, redundancy over meerdere zones binnen Supabase (AWS).</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2><span class="num-badge">3</span> Specifieke AI Waarborgen</h2>
+                <div class="text-body" style="line-height: 1.6;">
+                    <p>
+                        DGSkills maakt gebruik van <strong>Generatieve AI</strong> voor educatieve doeleinden. In de DPIA van de school moet dit als 'innovatieve technologie' worden meegenomen. Onze waarborgen zijn:
+                    </p>
+                    <ul style="margin: 0 0 0 1.5rem; padding: 0; list-style: disc;">
+                        <li><strong>Zero-training policy:</strong> Geen enkele student-input wordt gebruikt door Google om modellen te trainen.</li>
+                        <li><strong>Human-in-the-loop:</strong> AI adviseert leerlingen, maar docenten behouden volledig overzicht en controle over de resultaten.</li>
+                        <li><strong>Transparency:</strong> Volledige openheid over AI-gebruik via de in-app transparantieverklaring.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2><span class="num-badge">4</span> Conclusie voor FG</h2>
+                <p class="text-body" style="font-weight: 600; margin-bottom: 1rem;">
+                    DGSkills is met "Privacy by Design"-principes ontwikkeld. Gelet op de beschreven beheersmaatregelen kan het risicoprofiel <em>in veel gevallen</em> als beperkt worden beoordeeld, <em>indien</em> de school de standaard Verwerkersovereenkomst afsluit en de eigen DPIA-context geen aanvullende risico's oplevert. De FG dient dit per school te beoordelen.
+                </p>
+                <div class="disclaimer">
+                    Disclaimer: Dit document is bedoeld als ondersteuning en vervangt niet de verantwoordelijkheid van de school om een eigen DPIA uit te voeren conform de richtlijnen van de Autoriteit Persoonsgegevens.
+                </div>
+            </section>
+        </div>
+
+        <div class="print-btn-wrap no-print">
+            <button type="button" class="print-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                Gebruik browser print (Ctrl/Cmd+P)
+            </button>
+        </div>
+    </div>
+
+</body>
+</html>

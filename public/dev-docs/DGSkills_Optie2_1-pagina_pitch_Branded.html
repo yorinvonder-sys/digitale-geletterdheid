@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DGSkills - Klaar voor de klas (Pitch)</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+    
+    :root {
+      --primary: #4f46e5;
+      --primary-gradient: linear-gradient(135deg, #0f172a 0%, #4f46e5 100%);
+      --slate-900: #0f172a;
+      --slate-700: #334155;
+      --slate-100: #f1f5f9;
+      --success: #10b981;
+      --white: #ffffff;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      color: var(--slate-700);
+      background: #f8fafc;
+      line-height: 1.4;
+    }
+
+    .one-pager {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 0 40px rgba(0,0,0,0.05);
+    }
+
+    .header {
+      background: var(--primary-gradient);
+      color: white;
+      padding: 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header-content { flex: 1; }
+    .header h1 { font-size: 26pt; font-weight: 800; margin: 0; line-height: 1.1; }
+    .header p { font-size: 13pt; opacity: 0.9; margin-top: 8px; font-weight: 400; }
+    .logo { width: 80px; filter: brightness(0) invert(1); }
+
+    .main-content { padding: 40px; flex: 1; }
+
+    h2 { font-size: 16pt; font-weight: 800; color: var(--slate-900); margin-top: 30px; margin-bottom: 16px; border-bottom: 2px solid var(--slate-100); padding-bottom: 8px; }
+
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 16px; }
+    .feature-card { background: var(--slate-100); padding: 20px; border-radius: 12px; border: 1px solid var(--slate-200); }
+    .feature-card h3 { margin-top: 0; font-size: 12pt; color: var(--primary); font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; }
+    
+    .kpi-strip {
+      display: flex;
+      justify-content: space-around;
+      background: #eef2ff;
+      padding: 20px;
+      border-radius: 16px;
+      margin-top: 24px;
+      border: 1px solid #e0e7ff;
+    }
+    .kpi-box { text-align: center; }
+    .kpi-val { display: block; font-size: 20pt; font-weight: 800; color: var(--primary); }
+    .kpi-lab { font-size: 8.5pt; font-weight: 700; color: var(--slate-600); text-transform: uppercase; }
+
+    .cta-section {
+      background: #f0fdf4;
+      border: 2px dashed var(--success);
+      padding: 24px;
+      border-radius: 16px;
+      text-align: center;
+      margin-top: 32px;
+    }
+    .cta-section p { font-size: 12pt; font-weight: 700; color: #166534; margin: 0; }
+
+    .footer { padding: 20px 40px; border-top: 1px solid var(--slate-100); text-align: center; font-size: 9pt; color: var(--slate-400); }
+
+    ul { padding-left: 18px; margin: 8px 0 0 0; }
+    li { margin-bottom: 6px; font-size: 10.5pt; }
+
+    @media print {
+      .one-pager { box-shadow: none; width: 100%; max-width: 100%; margin: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="one-pager">
+    <div class="header">
+      <div class="header-content">
+        <h1>DGSkills: Klaar voor de klas</h1>
+        <p>Digitale geletterdheid & AI conform SLO 2025</p>
+      </div>
+      <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDUxMiA1MTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPCEtLSBSb2NrZXQgQm9keSAtLT4KICA8cGF0aCBkPSJNMjU2IDUwQzIwMCA1MCAxNjAgMTUwIDE2MCAyODBDMTYwIDM1MCAxODAgNDAwIDI1NiA0MjBDMzMyIDQwMCAzNTIgMzUwIDM1MiAyODBDMzMyIDQwMCAzNTIgMzUwIDM1MiAyODBDMzUyIDE1MCAzMTIgNTAgMjU2IDUwWiIgc3Ryb2tlPSIjMEYxNzJBIiBzdHJva2Utd2lkdGg9IjIwIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CiAgCiAgPCEtLSBDaXJjdWl0IEJyYWluIEljb24gLS0+CiAgPGNpcmNsZSBjeD0iMjU2IiBjeT0iMjIwIiByPSI3MCIgc3Ryb2tlPSIjMTBCOTgxIiBzdHJva2Utd2lkdGg9IjE1Ii8+CiAgPHBhdGggZD0iTTI1NiAxODBWMjYwTTIxNiAyMjBIMjk2IiBzdHJva2U9IiMxMEI5ODEiIHN0cm9rZS13aWR0aD0iOCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgPGNpcmNsZSBjeD0iMjU2IiBjeT0iMTgwIiByPSI4IiBmaWxsPSIjMTBCOTgxIi8+CiAgPGNpcmNsZSBjeD0iMjU2IiBjeT0iMjYwIiByPSI4IiBmaWxsPSIjMTBCOTgxIi8+CiAgPGNpcmNsZSBjeD0iMjE2IiBjeT0iMjIwIiByPSI4IiBmaWxsPSIjMTBCOTgxIi8+CiAgPGNpcmNsZSBjeD0iMjk2IiBjeT0iMjIwIiByPSI4IiBmaWxsPSIjMTBCOTgxIi8+CiAgCiAgPCEtLSBGaW5zIC0tPgogIDxwYXRoIGQ9Ik0xNjAgMzIwQzEyMCAzMjAgMTAwIDM4MCAxMjAgNDUwQzE0MCA0MzAgMTYwIDQyMCAxNjAgNDIwIiBzdHJva2U9IiMwRjE3MkEiIHN0cm9rZS13aWR0aD0iMjAiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgogIDxwYXRoIGQ9Ik0zNTIgMzIwQzM5MiAzMjAgNDEyIDM4MCAzOTIgNDUwQzM3MiA0MzAgMzUyIDQyMCAzNTIgNDIwIiBzdHJva2U9IiMwRjE3MkEiIHN0cm9rZS13aWR0aD0iMjAiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgogIAogIDwhLS0gRmxhbWUvRW5naW5lIC0tPgogIDxwYXRoIGQ9Ik0yMzAgNDIwQzIzMCA0NjAgMjU2IDUwMCAyNTYgNTAwQzI1NiA1MDAgMjgyIDQ2MCAyODIgNDIwIiBzdHJva2U9IiMwRjE3MkEiIHN0cm9rZS13aWR0aD0iMTUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8L3N2Zz4K" class="logo">
+    </div>
+
+    <div class="main-content">
+      <p>AI en digitale vaardigheden zijn essentieel. DGSkills biedt kant-en-klare missies voor leerlingen, zonder dat het de docent extra tijd kost.</p>
+
+      <h2>Waarom DGSkills?</h2>
+      <div class="grid">
+        <div class="feature-card">
+          <h3>Voor docenten</h3>
+          <ul>
+            <li>Volledige SLO Kerndoel-dekking.</li>
+            <li>Geen eigen lesvoorbereiding nodig.</li>
+            <li>Werkdrukverlaging (Wang et al., 2025).</li>
+          </ul>
+        </div>
+        <div class="feature-card">
+          <h3>Voor de schoolleiding</h3>
+          <ul>
+            <li>Duidelijke pilot (8-12 weken).</li>
+            <li>Volledig AVG-proof & inkoopklaar.</li>
+            <li>Meetbaar resultaat & impact.</li>
+          </ul>
+        </div>
+      </div>
+
+      <h2>Succes in Cijfers</h2>
+      <div class="kpi-strip">
+        <div class="kpi-box"><span class="kpi-val">> 70%</span><span class="kpi-lab">Docentactie</span></div>
+        <div class="kpi-box"><span class="kpi-val">> 60%</span><span class="kpi-lab">WAU Leerling</span></div>
+        <div class="kpi-box"><span class="kpi-val">> 55%</span><span class="kpi-lab">Opdrachten af</span></div>
+      </div>
+
+      <h2>De Pilot-route</h2>
+      <p style="font-size: 10pt; margin-top: 12px;"><strong>Kickoff</strong> (Week 0) → <strong>Onboarding</strong> (Week 1) → <strong>Check-ins</strong> (Week 4/8) → <strong>Impactrapport</strong> (Week 12).</p>
+
+      <div class="cta-section">
+        <p>Plan een demo van 45 minuten en ontvang direct een pilotvoorstel op maat.</p>
+      </div>
+    </div>
+
+    <div class="footer">
+      www.dgskills.app | De standaard voor digitale geletterdheid in het VO.
+    </div>
+  </div>
+</body>
+</html>

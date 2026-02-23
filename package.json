@@ -1,0 +1,49 @@
+{
+  "name": "ai-lab---future-architect",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && node scripts/prerender.mjs",
+    "build:prod": "vite build --mode production --sourcemap false && node scripts/prerender.mjs",
+    "lint": "echo 'Linting not configured'",
+    "preview": "vite preview",
+    "clean": "./scripts/cleanup_dev_env.sh",
+    "doctor": "echo '🩺 Checking Health...' && npx tsc --noEmit && echo '✅ TypeScript Check OK' || echo '⚠️ TypeScript Issues found'",
+    "deploy": "vercel --prod",
+    "lighthouse": "bash ./scripts/lighthouse-audit.sh",
+    "lighthouse:parse": "node scripts/parse-lighthouse.js",
+    "audit:security": "npm audit --audit-level=moderate"
+  },
+  "dependencies": {
+    "@google/genai": "^1.34.0",
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "^9.5.0",
+    "@supabase/supabase-js": "^2.95.3",
+    "@types/dompurify": "^3.0.5",
+    "@types/three": "^0.182.0",
+    "c2pa": "^0.30.17",
+    "dompurify": "^3.3.1",
+    "framer-motion": "^12.23.26",
+    "jspdf": "^3.0.4",
+    "lucide-react": "^0.562.0",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "react-markdown": "^10.1.0",
+    "three": "^0.182.0",
+    "web-vitals": "^5.1.0",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.0",
+    "@vitejs/plugin-react": "^5.0.0",
+    "autoprefixer": "^10.4.23",
+    "firebase-admin": "^13.6.1",
+    "postcss": "^8.5.6",
+    "sharp": "^0.34.5",
+    "tailwindcss": "^3.4.17",
+    "typescript": "~5.8.2",
+    "vite": "^6.2.0"
+  }
+}

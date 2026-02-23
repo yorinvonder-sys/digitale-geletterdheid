@@ -1,0 +1,328 @@
+[
+  {
+    "id": "REdTa2lsbHNfMzAtZGFnZW5fdWl0dm9lcmluZ3NwbGFuLmRvY3g",
+    "title": "DGSkills 30 Dagen Uitvoeringsplan",
+    "description": "Document uit de business/nl-vo/export map.",
+    "category": "execution",
+    "path": "/dev-docs/DGSkills_30-dagen_uitvoeringsplan.docx",
+    "updatedAt": "2026-02-14",
+    "tags": [
+      "Action Plan",
+      "Roadmap"
+    ],
+    "format": "DOCX"
+  },
+  {
+    "id": "REdTa2lsbHNfMzAtZGFnZW5fdWl0dm9lcmluZ3NwbGFuLmh0bWw",
+    "title": "DGSkills 30 Dagen Uitvoeringsplan",
+    "description": "Document uit de business/nl-vo/export map.",
+    "category": "execution",
+    "path": "/dev-docs/DGSkills_30-dagen_uitvoeringsplan.html",
+    "updatedAt": "2026-02-14",
+    "tags": [
+      "Action Plan",
+      "Roadmap"
+    ],
+    "format": "HTML"
+  },
+  {
+    "id": "REdTa2lsbHNfMzAtZGFnZW5fdWl0dm9lcmluZ3NwbGFuLm1k",
+    "title": "DGSkills 30 Dagen Uitvoeringsplan",
+    "description": "Document uit de business/nl-vo/export map.",
+    "category": "execution",
+    "path": "/dev-docs/DGSkills_30-dagen_uitvoeringsplan.md",
+    "updatedAt": "2026-02-14",
+    "tags": [
+      "Action Plan",
+      "Roadmap"
+    ],
+    "format": "MD"
+  },
+  {
+    "id": "REdTa2lsbHNfMzAtZGFnZW5fdWl0dm9lcmluZ3NwbGFuLnBkZg",
+    "title": "DGSkills 30 Dagen Uitvoeringsplan",
+    "description": "Document uit de business/nl-vo/export map.",
+    "category": "execution",
+    "path": "/dev-docs/DGSkills_30-dagen_uitvoeringsplan.pdf",
+    "updatedAt": "2026-02-14",
+    "tags": [
+      "Action Plan",
+      "Roadmap"
+    ],
+    "format": "PDF"
+  },
+  {
+    "id": "REdTa2lsbHNfT3B0aWUxX1VpdHZvZXJpbmdzcGxhbl9CcmFuZGVkLmRvY3g",
+    "title": "DGSkills Optie 1 Uitvoeringsplan Branded",
+    "description": "Document uit de business/nl-vo/export map.",
+    "category": "execution",
+    "path": "/dev-docs/DGSkills_Optie1_Uitvoeringsplan_Branded.docx",
+    "updatedAt": "2026-02-14",
+    "tags": [
+      "Action Plan",
+      "Roadmap",
+      "Branded"
+    ],
+    "format": "DOCX"
+  },
+  {
+    "id": "REdTa2lsbHNfT3B0aWUxX1VpdHZvZXJpbmdzcGxhbl9CcmFuZGVkLmh0bWw",
+    "title": "DGSkills Optie 1 Uitvoeringsplan Branded",
+    "description": "Document uit de business/nl-vo/export map.",
+    "category": "execution",
+    "path": "/dev-docs/DGSkills_Optie1_Uitvoeringsplan_Branded.html",
+    "updatedAt": "2026-02-14",
+    "tags": [
+      "Action Plan",
+      "Roadmap",
+      "Branded"
+    ],
+    "format": "HTML"
+  },
+  {
+    "id": "REdTa2lsbHNfT3B0aWUxX1VpdHZvZXJpbmdzcGxhbl9CcmFuZGVkLm1k",
+    "title": "DGSkills Optie 1 Uitvoeringsplan Branded",
+    "description": "Document uit de business/nl-vo/export map.",
+    "category": "execution",
+    "path": "/dev-docs/DGSkills_Optie1_Uitvoeringsplan_Branded.md",
+    "updatedAt": "2026-02-14",
+    "tags": [
+      "Action Plan",
+      "Roadmap",
+      "Branded"
+    ],
+    "format": "MD"
+  },
+  {
+    "id": "REdTa2lsbHNfT3B0aWUxX1VpdHZvZXJpbmdzcGxhbl9CcmFuZGVkLnBkZg",
+    "title": "DGSkills Optie 1 Uitvoeringsplan Branded",
+    "description": "Document uit de business/nl-vo/export map.",
+    "category": "execution",
+    "path": "/dev-docs/DGSkills_Optie1_Uitvoeringsplan_Branded.pdf",
+    "updatedAt": "2026-02-14",
+    "tags": [
+      "Action Plan",
+      "Roadmap",
+      "Branded"
+    ],
+    "format": "PDF"
+  },
+  {
+    "id": "REdTa2lsbHNfT3B0aWUyXzEtcGFnaW5hX3BpdGNoX0JyYW5kZWQuZG9jeA",
+    "title": "DGSkills Optie 2 1 Pagina Pitch Branded",
+    "description": "Document uit de business/nl-vo/export map.",
+    "category": "sales",
+    "path": "/dev-docs/DGSkills_Optie2_1-pagina_pitch_Branded.docx",
+    "updatedAt": "2026-02-14",
+    "tags": [
+      "Sales",
+      "Pitch",
+      "Branded"
+    ],
+    "format": "DOCX"
+  },
+  {
+    "id": "REdTa2lsbHNfT3B0aWUyXzEtcGFnaW5hX3BpdGNoX0JyYW5kZWQuaHRtbA",
+    "title": "DGSkills Optie 2 1 Pagina Pitch Branded",
+    "description": "Document uit de business/nl-vo/export map.",
+    "category": "sales",
+    "path": "/dev-docs/DGSkills_Optie2_1-pagina_pitch_Branded.html",
+    "updatedAt": "2026-02-14",
+    "tags": [
+      "Sales",
+      "Pitch",
+      "Branded"
+    ],
+    "format": "HTML"
+  },
+  {
+    "id": "REdTa2lsbHNfT3B0aWUyXzEtcGFnaW5hX3BpdGNoX0JyYW5kZWQubWQ",
+    "title": "DGSkills Optie 2 1 Pagina Pitch Branded",
+    "description": "Document uit de business/nl-vo/export map.",
+    "category": "sales",
+    "path": "/dev-docs/DGSkills_Optie2_1-pagina_pitch_Branded.md",
+    "updatedAt": "2026-02-14",
+    "tags": [
+      "Sales",
+      "Pitch",
+      "Branded"
+    ],
+    "format": "MD"
+  },
+  {
+    "id": "REdTa2lsbHNfT3B0aWUyXzEtcGFnaW5hX3BpdGNoX0JyYW5kZWQucGRm",
+    "title": "DGSkills Optie 2 1 Pagina Pitch Branded",
+    "description": "Document uit de business/nl-vo/export map.",
+    "category": "sales",
+    "path": "/dev-docs/DGSkills_Optie2_1-pagina_pitch_Branded.pdf",
+    "updatedAt": "2026-02-14",
+    "tags": [
+      "Sales",
+      "Pitch",
+      "Branded"
+    ],
+    "format": "PDF"
+  },
+  {
+    "id": "REdTa2lsbHNfVWl0Z2VicmVpZGVfQnJvY2h1cmVfQnJhbmRlZC5kb2N4",
+    "title": "DGSkills Uitgebreide Brochure Branded",
+    "description": "Document uit de business/nl-vo/export map.",
+    "category": "strategy",
+    "path": "/dev-docs/DGSkills_Uitgebreide_Brochure_Branded.docx",
+    "updatedAt": "2026-02-14",
+    "tags": [
+      "Strategy",
+      "Marketing",
+      "Branded"
+    ],
+    "format": "DOCX"
+  },
+  {
+    "id": "REdTa2lsbHNfVWl0Z2VicmVpZGVfQnJvY2h1cmVfQnJhbmRlZC5wZGY",
+    "title": "DGSkills Uitgebreide Brochure Branded",
+    "description": "Document uit de business/nl-vo/export map.",
+    "category": "strategy",
+    "path": "/dev-docs/DGSkills_Uitgebreide_Brochure_Branded.pdf",
+    "updatedAt": "2026-02-14",
+    "tags": [
+      "Strategy",
+      "Marketing",
+      "Branded"
+    ],
+    "format": "PDF"
+  },
+  {
+    "id": "ZGdza2lsbHNfdXNwX3N0cmF0ZWd5X2JyYW5kZWQuaHRtbA",
+    "title": "DGSkills USP Strategy Branded",
+    "description": "Document uit de business/nl-vo/export map.",
+    "category": "strategy",
+    "path": "/dev-docs/dgskills_usp_strategy_branded.html",
+    "updatedAt": "2026-02-14",
+    "tags": [
+      "Strategy",
+      "Marketing",
+      "Branded"
+    ],
+    "format": "HTML"
+  },
+  {
+    "id": "YXVkaXQtcmVwb3J0Lm1k",
+    "title": "Audit Report",
+    "description": "Document uit de business/nl-vo/compliance map.",
+    "category": "compliance",
+    "path": "/dev-docs/audit-report.md",
+    "updatedAt": "2026-02-14",
+    "tags": [
+      "Legal",
+      "GDPR"
+    ],
+    "format": "MD"
+  },
+  {
+    "id": "ZGF0YS1mbG93LW92ZXJ2aWV3LXRlbXBsYXRlLm1k",
+    "title": "Data Flow Overview Template",
+    "description": "Document uit de business/nl-vo/compliance map.",
+    "category": "compliance",
+    "path": "/dev-docs/data-flow-overview-template.md",
+    "updatedAt": "2026-02-14",
+    "tags": [
+      "Legal",
+      "GDPR"
+    ],
+    "format": "MD"
+  },
+  {
+    "id": "ZHBhLXRlbXBsYXRlLW91dGxpbmUubWQ",
+    "title": "DPA Template Outline",
+    "description": "Document uit de business/nl-vo/compliance map.",
+    "category": "compliance",
+    "path": "/dev-docs/dpa-template-outline.md",
+    "updatedAt": "2026-02-14",
+    "tags": [
+      "Legal",
+      "GDPR"
+    ],
+    "format": "MD"
+  },
+  {
+    "id": "ZHBpYS1zdXBwb3J0LXRlbXBsYXRlLm1k",
+    "title": "DPIA Support Template",
+    "description": "Document uit de business/nl-vo/compliance map.",
+    "category": "compliance",
+    "path": "/dev-docs/dpia-support-template.md",
+    "updatedAt": "2026-02-14",
+    "tags": [
+      "Legal",
+      "GDPR"
+    ],
+    "format": "MD"
+  },
+  {
+    "id": "bGVnYWwtbWF0cml4Lm1k",
+    "title": "Legal Matrix",
+    "description": "Document uit de business/nl-vo/compliance map.",
+    "category": "compliance",
+    "path": "/dev-docs/legal-matrix.md",
+    "updatedAt": "2026-02-23",
+    "tags": [
+      "Legal",
+      "GDPR"
+    ],
+    "format": "MD"
+  },
+  {
+    "id": "cHJpdmFjeS1leHBsYWluZXItZm9yLXNjaG9vbHMubWQ",
+    "title": "Privacy Explainer For Schools",
+    "description": "Document uit de business/nl-vo/compliance map.",
+    "category": "compliance",
+    "path": "/dev-docs/privacy-explainer-for-schools.md",
+    "updatedAt": "2026-02-14",
+    "tags": [
+      "Legal",
+      "GDPR",
+      "AI",
+      "School"
+    ],
+    "format": "MD"
+  },
+  {
+    "id": "c2Nob29sLWNvbXBsaWFuY2UtZ3VpZGUuaHRtbA",
+    "title": "School Compliance Guide",
+    "description": "Document uit de business/nl-vo/compliance map.",
+    "category": "compliance",
+    "path": "/dev-docs/school-compliance-guide.html",
+    "updatedAt": "2026-02-23",
+    "tags": [
+      "Legal",
+      "GDPR",
+      "School"
+    ],
+    "format": "HTML"
+  },
+  {
+    "id": "ZHBhLWRnc2tpbGxzLXY0Lmh0bWw",
+    "title": "DPA DGSkills V4.0",
+    "description": "Document uit de public/compliance map.",
+    "category": "compliance",
+    "path": "/dev-docs/dpa-dgskills-v4.html",
+    "updatedAt": "2026-02-14",
+    "tags": [
+      "Legal",
+      "GDPR"
+    ],
+    "format": "HTML"
+  },
+  {
+    "id": "ZHBpYS1zdXBwb3J0LWRnc2tpbGxzLXYxLmh0bWw",
+    "title": "DPIA Support DGSkills V1.0",
+    "description": "Document uit de public/compliance map.",
+    "category": "compliance",
+    "path": "/dev-docs/dpia-support-dgskills-v1.html",
+    "updatedAt": "2026-02-23",
+    "tags": [
+      "Legal",
+      "GDPR"
+    ],
+    "format": "HTML"
+  }
+]

@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DGSkills - Uitgebreid Uitvoeringsplan</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+    
+    :root {
+      --primary: #4f46e5;
+      --slate-900: #0f172a;
+      --slate-800: #1e293b;
+      --slate-700: #334155;
+      --slate-200: #e2e8f0;
+      --slate-100: #f1f5f9;
+      --slate-50: #f8fafc;
+      --white: #ffffff;
+    }
+
+    * { box-sizing: border-box; -webkit-print-color-adjust: exact; }
+    
+    body {
+      font-family: 'Inter', -apple-system, system-ui, sans-serif;
+      line-height: 1.6;
+      color: var(--slate-700);
+      margin: 0;
+      background: var(--white);
+      font-size: 11pt;
+    }
+
+    .page-break { page-break-after: always; }
+
+    /* Cover Styling */
+    .cover {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--slate-900) 0%, var(--primary) 100%);
+      color: var(--white);
+      padding: 80px;
+      text-align: center;
+    }
+
+    .cover-logo { width: 140px; margin-bottom: 40px; filter: brightness(0) invert(1); }
+    .cover-title { font-size: 38pt; font-weight: 800; line-height: 1.1; margin: 0; letter-spacing: -0.02em; }
+    .cover-subtitle { font-size: 18pt; font-weight: 400; margin-top: 24px; opacity: 0.8; }
+
+    /* Content Styling */
+    .content-wrapper { max-width: 850px; margin: 0 auto; padding: 60px; }
+    
+    h2 { 
+      font-size: 20pt; 
+      font-weight: 800; 
+      color: var(--slate-900); 
+      margin-top: 50px; 
+      margin-bottom: 20px;
+      border-left: 6px solid var(--primary);
+      padding-left: 20px;
+    }
+    
+    h3 { font-size: 15pt; font-weight: 700; color: var(--slate-800); margin-top: 35px; margin-bottom: 12px; }
+
+    .card {
+      background: var(--slate-50);
+      border: 1px solid var(--slate-200);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+
+    .kpi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px; }
+    .kpi-box { background: var(--white); padding: 16px; border-radius: 8px; border: 1px solid var(--slate-200); }
+    .kpi-label { font-weight: 700; color: var(--primary); display: block; font-size: 10pt; }
+    .kpi-value { font-size: 14pt; font-weight: 800; color: var(--slate-900); }
+
+    ul { padding-left: 20px; }
+    li { margin-bottom: 10px; }
+
+    .footer {
+      margin-top: 80px;
+      padding-top: 24px;
+      border-top: 1px solid var(--slate-200);
+      text-align: center;
+      font-size: 9pt;
+      color: var(--slate-400);
+    }
+
+    .references { margin-top: 60px; padding-top: 30px; border-top: 1px solid var(--slate-100); }
+    .ref-item { font-size: 9.5pt; color: var(--slate-600); margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+  <div class="cover">
+    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDUxMiA1MTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPCEtLSBSb2NrZXQgQm9keSAtLT4KICA8cGF0aCBkPSJNMjU2IDUwQzIwMCA1MCAxNjAgMTUwIDE2MCAyODBDMTYwIDM1MCAxODAgNDAwIDI1NiA0MjBDMzMyIDQwMCAzNTIgMzUwIDM1MiAyODBDMzMyIDQwMCAzNTIgMzUwIDM1MiAyODBDMzUyIDE1MCAzMTIgNTAgMjU2IDUwWiIgc3Ryb2tlPSIjMEYxNzJBIiBzdHJva2Utd2lkdGg9IjIwIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CiAgCiAgPCEtLSBDaXJjdWl0IEJyYWluIEljb24gLS0+CiAgPGNpcmNsZSBjeD0iMjU2IiBjeT0iMjIwIiByPSI3MCIgc3Ryb2tlPSIjMTBCOTgxIiBzdHJva2Utd2lkdGg9IjE1Ii8+CiAgPHBhdGggZD0iTTI1NiAxODBWMjYwTTIxNiAyMjBIMjk2IiBzdHJva2U9IiMxMEI5ODEiIHN0cm9rZS13aWR0aD0iOCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgPGNpcmNsZSBjeD0iMjU2IiBjeT0iMTgwIiByPSI4IiBmaWxsPSIjMTBCOTgxIi8+CiAgPGNpcmNsZSBjeD0iMjU2IiBjeT0iMjYwIiByPSI4IiBmaWxsPSIjMTBCOTgxIi8+CiAgPGNpcmNsZSBjeD0iMjE2IiBjeT0iMjIwIiByPSI4IiBmaWxsPSIjMTBCOTgxIi8+CiAgPGNpcmNsZSBjeD0iMjk2IiBjeT0iMjIwIiByPSI4IiBmaWxsPSIjMTBCOTgxIi8+CiAgCiAgPCEtLSBGaW5zIC0tPgogIDxwYXRoIGQ9Ik0xNjAgMzIwQzEyMCAzMjAgMTAwIDM4MCAxMjAgNDUwQzE0MCA0MzAgMTYwIDQyMCAxNjAgNDIwIiBzdHJva2U9IiMwRjE3MkEiIHN0cm9rZS13aWR0aD0iMjAiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgogIDxwYXRoIGQ9Ik0zNTIgMzIwQzM5MiAzMjAgNDEyIDM4MCAzOTIgNDUwQzM3MiA0MzAgMzUyIDQyMCAzNTIgNDIwIiBzdHJva2U9IiMwRjE3MkEiIHN0cm9rZS13aWR0aD0iMjAiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgogIAogIDwhLS0gRmxhbWUvRW5naW5lIC0tPgogIDxwYXRoIGQ9Ik0yMzAgNDIwQzIzMCA0NjAgMjU2IDUwMCAyNTYgNTAwQzI1NiA1MDAgMjgyIDQ2MCAyODIgNDIwIiBzdHJva2U9IiMwRjE3MkEiIHN0cm9rZS13aWR0aD0iMTUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8L3N2Zz4K" class="cover-logo" alt="DGSkills Logo">
+    <h1 class="cover-title">Actieplan: DGSkills op de kaart zetten</h1>
+    <p class="cover-subtitle">Handleiding voor marktintroductie en schaalvergroting in het Nederlandse Onderwijs.</p>
+  </div>
+
+  <div class="page-break"></div>
+
+  <div class="content-wrapper">
+    <section>
+      <h2>1. Waar ga jij je op focussen?</h2>
+      <div class="card">
+        <p><strong>Jouw doel:</strong> Bewijzen dat scholen voor DGSkills willen betalen omdat het hen echt helpt. We richten ons specifiek op de onderbouw (klas 1 en 2) van vmbo-t en havo, volledig afgestemd op de <strong>Functionele kerndoelen digitale geletterdheid (SLO, 2025)</strong>.</p>
+        <p><strong>Jouw verhaal:</strong> "Ik help docenten tijd besparen. DGSkills dekt direct Kerndoel 18C (AI-verkenning) en 19A (Digitale creatie). Dit verlaagt de werkdruk bij docenten aantoonbaar (Wang et al., 2025)."</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>2. Jouw 30-dagen roadmap</h2>
+      <div class="card">
+        <h3>Week 1 & 2: Pipeline & Validatie</h3>
+        <ul>
+          <li><strong>Voorbereiding:</strong> Brochure en demo optimaliseren voor schoolleiding.</li>
+          <li><strong>Sales:</strong> 3-5 gesprekken voeren en pilotvoorstellen sturen.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Week 3 & 4: Start & Resultaat</h3>
+        <ul>
+          <li><strong>Implementatie:</strong> Kickoff en docent-onboarding (start binnen 60 min).</li>
+          <li><strong>Monitoring:</strong> Wekelijkse data-check en voorbereiding jaarcontract.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>3. Hoe weet je of het goed gaat?</h2>
+      <div class="kpi-grid">
+        <div class="kpi-box"><span class="kpi-label">Docentactivatie</span><span class="kpi-value">> 70%</span></div>
+        <div class="kpi-box"><span class="kpi-label">Leerling WAU</span><span class="kpi-value">> 60%</span></div>
+        <div class="kpi-box"><span class="kpi-label">Opdrachtafmaak</span><span class="kpi-value">> 55%</span></div>
+        <div class="kpi-box"><span class="kpi-label">Tevredenheid</span><span class="kpi-value">> 7.5</span></div>
+      </div>
+    </section>
+
+    <section class="references">
+      <h3>Referenties</h3>
+      <p class="ref-item">SLO. (2025). <i>Functionele kerndoelen digitale geletterdheid</i>.</p>
+      <p class="ref-item">Wang et al. (2025). <i>Workload perception in AI-supported resource recommendation</i>.</p>
+    </section>
+
+    <div class="footer">
+      © 2026 DGSkills.app | Premium Strategiedocument
+    </div>
+  </div>
+</body>
+</html>

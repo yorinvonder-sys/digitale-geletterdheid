@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Rocket Body - Solid Fill -->
+  <path d="M16 4C13 4 8 10 8 18C8 22 9.5 25 16 26C22.5 25 24 22 24 18C24 10 19 4 16 4Z" fill="#0F172A"/>
+  
+  <!-- Circuit Symbol -->
+  <circle cx="16" cy="14" r="4" stroke="#10B981" stroke-width="1.5" fill="none"/>
+  <path d="M16 11V17M13 14H19" stroke="#10B981" stroke-width="1" stroke-linecap="round"/>
+  
+  <!-- Fins -->
+  <path d="M8 20C6 20 5 23 6 27C7 26 8 25.5 8 25.5" stroke="#0F172A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <path d="M24 20C26 20 27 23 26 27C25 26 24 25.5 24 25.5" stroke="#0F172A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+</svg>

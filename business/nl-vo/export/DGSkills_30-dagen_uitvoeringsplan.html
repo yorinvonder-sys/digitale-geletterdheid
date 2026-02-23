@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DGSkills - 30-dagen Actieplan</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+    
+    :root {
+      --primary: #4f46e5;
+      --primary-dark: #4338ca;
+      --primary-light: #6366f1;
+      --primary-50: #eef2ff;
+      --slate-900: #0f172a;
+      --slate-800: #1e293b;
+      --slate-700: #334155;
+      --slate-600: #475569;
+      --slate-400: #94a3b8;
+      --slate-200: #e2e8f0;
+      --slate-100: #f1f5f9;
+      --slate-50: #f8fafc;
+      --success: #10b981;
+      --white: #ffffff;
+    }
+
+    * { box-sizing: border-box; -webkit-print-color-adjust: exact; }
+    
+    body {
+      font-family: 'Inter', -apple-system, system-ui, sans-serif;
+      line-height: 1.6;
+      color: var(--slate-700);
+      margin: 0;
+      background: var(--white);
+      font-size: 11pt;
+    }
+
+    .page-break { page-break-after: always; }
+
+    /* Cover Styling */
+    .cover {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background: var(--slate-900);
+      color: var(--white);
+      padding: 80px 60px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cover::before {
+      content: "";
+      position: absolute;
+      top: -10%;
+      right: -10%;
+      width: 60%;
+      height: 60%;
+      background: radial-gradient(circle, rgba(79, 70, 229, 0.15) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .cover-top { z-index: 1; }
+    .cover-logo { width: 120px; margin-bottom: 40px; filter: brightness(0) invert(1); }
+    .cover-title { font-size: 42pt; font-weight: 800; line-height: 1.1; margin: 0; letter-spacing: -0.02em; }
+    .cover-subtitle { font-size: 20pt; font-weight: 400; margin-top: 24px; color: var(--slate-400); max-width: 600px; }
+
+    .cover-bottom { z-index: 1; display: flex; justify-content: space-between; align-items: flex-end; border-top: 1px solid rgba(255,255,255,0.1); pt: 40px; }
+    .cover-meta { font-size: 10pt; color: var(--slate-400); text-transform: uppercase; letter-spacing: 0.1em; }
+    .cover-meta span { display: block; color: var(--white); font-weight: 600; margin-top: 4px; font-size: 12pt; letter-spacing: normal; text-transform: none; }
+
+    /* Content Styling */
+    .content-wrapper { max-width: 850px; margin: 0 auto; padding: 60px; }
+    
+    h2 { 
+      font-size: 22pt; 
+      font-weight: 800; 
+      color: var(--slate-900); 
+      margin-top: 60px; 
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    
+    h2::before {
+      content: "";
+      width: 32px;
+      height: 4px;
+      background: var(--primary);
+      border-radius: 2px;
+    }
+
+    h3 { font-size: 16pt; font-weight: 700; color: var(--slate-800); margin-top: 40px; margin-bottom: 16px; }
+
+    p { margin-bottom: 20px; }
+
+    /* Premium Cards */
+    .card {
+      background: var(--slate-50);
+      border: 1px solid var(--slate-200);
+      border-radius: 16px;
+      padding: 32px;
+      margin-bottom: 32px;
+      position: relative;
+    }
+
+    .card-highlight {
+      border-left: 6px solid var(--primary);
+      background: var(--white);
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+    }
+
+    .card-title { font-weight: 800; color: var(--slate-900); font-size: 13pt; margin-bottom: 12px; display: block; }
+
+    /* TOC Styling */
+    .toc { margin-bottom: 80px; }
+    .toc-title { font-size: 14pt; font-weight: 800; color: var(--slate-900); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 32px; }
+    .toc-item { 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: baseline; 
+      margin-bottom: 16px; 
+      text-decoration: none; 
+      color: var(--slate-700); 
+      font-weight: 600;
+    }
+    .toc-item::after { content: ""; flex: 1; border-bottom: 1px dashed var(--slate-200); margin: 0 12px; }
+    .toc-item:hover { color: var(--primary); }
+
+    /* KPI Chips */
+    .kpi-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 32px 0; }
+    .kpi-card {
+      background: var(--primary-50);
+      border: 1px solid var(--primary-light);
+      padding: 24px;
+      border-radius: 12px;
+      text-align: center;
+    }
+    .kpi-value { display: block; font-size: 24pt; font-weight: 800; color: var(--primary); line-height: 1; margin-bottom: 8px; }
+    .kpi-label { font-size: 9pt; font-weight: 700; color: var(--slate-600); text-transform: uppercase; letter-spacing: 0.05em; }
+
+    /* List Styling */
+    ul { padding-left: 20px; margin-bottom: 24px; }
+    li { margin-bottom: 12px; position: relative; list-style: none; }
+    li::before {
+      content: "→";
+      position: absolute;
+      left: -24px;
+      color: var(--primary);
+      font-weight: 800;
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: 100px;
+      padding-top: 32px;
+      border-top: 1px solid var(--slate-200);
+      display: flex;
+      justify-content: space-between;
+      font-size: 9pt;
+      color: var(--slate-400);
+    }
+
+    /* References */
+    .references { margin-top: 80px; font-size: 10pt; color: var(--slate-600); border-top: 2px solid var(--slate-100); pt: 40px; }
+    .ref-item { margin-bottom: 12px; padding-left: 24px; text-indent: -24px; line-height: 1.4; }
+
+    @media print {
+      body { background: white; }
+      .content-wrapper { padding: 40px; max-width: 100%; }
+      .cover { height: 95vh; }
+    }
+  </style>
+</head>
+<body>
+  <!-- PAGE 1: COVER -->
+  <div class="cover">
+    <div class="cover-top">
+      <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDUxMiA1MTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPCEtLSBSb2NrZXQgQm9keSAtLT4KICA8cGF0aCBkPSJNMjU2IDUwQzIwMCA1MCAxNjAgMTUwIDE2MCAyODBDMTYwIDM1MCAxODAgNDAwIDI1NiA0MjBDMzMyIDQwMCAzNTIgMzUwIDM1MiAyODBDMzMyIDQwMCAzNTIgMzUwIDM1MiAyODBDMzUyIDE1MCAzMTIgNTAgMjU2IDUwWiIgc3Ryb2tlPSIjMEYxNzJBIiBzdHJva2Utd2lkdGg9IjIwIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CiAgCiAgPCEtLSBDaXJjdWl0IEJyYWluIEljb24gLS0+CiAgPGNpcmNsZSBjeD0iMjU2IiBjeT0iMjIwIiByPSI3MCIgc3Ryb2tlPSIjMTBCOTgxIiBzdHJva2Utd2lkdGg9IjE1Ii8+CiAgPHBhdGggZD0iTTI1NiAxODBWMjYwTTIxNiAyMjBIMjk2IiBzdHJva2U9IiMxMEI5ODEiIHN0cm9rZS13aWR0aD0iOCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgPGNpcmNsZSBjeD0iMjU2IiBjeT0iMTgwIiByPSI4IiBmaWxsPSIjMTBCOTgxIi8+CiAgPGNpcmNsZSBjeD0iMjU2IiBjeT0iMjYwIiByPSI4IiBmaWxsPSIjMTBCOTgxIi8+CiAgPGNpcmNsZSBjeD0iMjE2IiBjeT0iMjIwIiByPSI4IiBmaWxsPSIjMTBCOTgxIi8+CiAgPGNpcmNsZSBjeD0iMjk2IiBjeT0iMjIwIiByPSI4IiBmaWxsPSIjMTBCOTgxIi8+CiAgCiAgPCEtLSBGaW5zIC0tPgogIDxwYXRoIGQ9Ik0xNjAgMzIwQzEyMCAzMjAgMTAwIDM4MCAxMjAgNDUwQzE0MCA0MzAgMTYwIDQyMCAxNjAgNDIwIiBzdHJva2U9IiMwRjE3MkEiIHN0cm9rZS13aWR0aD0iMjAiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgogIDxwYXRoIGQ9Ik0zNTIgMzIwQzM5MiAzMjAgNDEyIDM4MCAzOTIgNDUwQzM3MiA0MzAgMzUyIDQyMCAzNTIgNDIwIiBzdHJva2U9IiMwRjE3MkEiIHN0cm9rZS13aWR0aD0iMjAiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgogIAogIDwhLS0gRmxhbWUvRW5naW5lIC0tPgogIDxwYXRoIGQ9Ik0yMzAgNDIwQzIzMCA0NjAgMjU2IDUwMCAyNTYgNTAwQzI1NiA1MDAgMjgyIDQ2MCAyODIgNDIwIiBzdHJva2U9IiMwRjE3MkEiIHN0cm9rZS13aWR0aD0iMTUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8L3N2Zz4K" class="cover-logo" alt="DGSkills Logo">
+      <h1 class="cover-title">Jouw Actieplan:<br/>DGSkills in 30 dagen</h1>
+      <p class="cover-subtitle">De strategische gids om DGSkills succesvol te implementeren in de onderbouw van het voortgezet onderwijs.</p>
+    </div>
+    <div class="cover-bottom">
+      <div class="cover-meta">Document Type <span>Business Strategy</span></div>
+      <div class="cover-meta">Versie <span>2.1 (Premium)</span></div>
+      <div class="cover-meta">Datum <span>Februari 2026</span></div>
+    </div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- PAGE 2: TOC & INTRODUCTION -->
+  <div class="content-wrapper">
+    <div class="toc">
+      <div class="toc-title">Inhoudsopgave</div>
+      <a href="#focus" class="toc-item">1. Focus en positionering <span>03</span></a>
+      <a href="#roadmap" class="toc-item">2. De 30-dagen roadmap <span>04</span></a>
+      <a href="#kpis" class="toc-item">3. KPI's en succesmeting <span>06</span></a>
+      <a href="#mitigation" class="toc-item">4. Risicobeheersing <span>07</span></a>
+      <a href="#routine" class="toc-item">5. Wekelijkse routine <span>08</span></a>
+    </div>
+
+    <section id="focus">
+      <h2>1. Waar ga jij je op focussen?</h2>
+      <div class="card card-highlight">
+        <span class="card-title">Strategisch Doel</span>
+        <p>Bewijzen dat docenten en leerlingen je programma echt willen gebruiken en dat scholen bereid zijn ervoor te betalen. We focussen op de onderbouw (klas 1 en 2) van vmbo-t en havo, conform de nieuwste <strong>SLO Kerndoelen (2025)</strong>.</p>
+      </div>
+      <p>Je aanpak is gebaseerd op een betaalde proefperiode (pilot) van 8 tot 12 weken. Dit verlaagt de drempel voor scholen terwijl het direct waarde toont rondom AI-verkenning (Kerndoel 18C) en technologische creatie (Kerndoel 19) [SLO, 2025]. Onderzoek toont aan dat dergelijke AI-ondersteunde tools de werkdruk bij docenten significant verlagen (Wang et al., 2025).</p>
+    </section>
+
+    <div class="page-break"></div>
+
+    <section id="roadmap">
+      <h2>2. Jouw 30-dagen roadmap</h2>
+      
+      <div class="card">
+        <span class="card-title">Week 1: De Voorbereiding</span>
+        <ul>
+          <li>Kies je eerste doelgroep klassen en vakgebieden.</li>
+          <li>Gereedmaken van de brochure (1-pager) en demo-omgeving.</li>
+          <li>Prijzen voor pilots definitief vastleggen (€1.500 - €3.000).</li>
+          <li>Compliance-pakket (DPA, Privacy) klaarleggen.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <span class="card-title">Week 2: Pipeline Bouwen</span>
+        <ul>
+          <li>Benaderen van 3 tot 5 scholen binnen je warme netwerk.</li>
+          <li>Uitvoeren van demonstraties met het vaste premium script.</li>
+          <li>Direct opvolgen met gepersonaliseerde pilotvoorstellen.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <span class="card-title">Week 3: De Start</span>
+        <ul>
+          <li>Kickoff-sessie op de eerste pilotschool.</li>
+          <li>Onboarding van docenten (klaar voor de les binnen 60 min).</li>
+          <li>Vaststellen van de nulmeting op basis van gekozen KPI's.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <span class="card-title">Week 4: Meten & Bijsturen</span>
+        <ul>
+          <li>Wekelijkse analyse van usage-data.</li>
+          <li>Tussentijdse feedbacksessie met de schoolowner.</li>
+          <li>Voorbereiden van de conversie naar een jaarcontract.</li>
+        </ul>
+      </div>
+    </section>
+
+    <div class="page-break"></div>
+
+    <section id="kpis">
+      <h2>3. KPI's en succesmeting</h2>
+      <p>De onderstaande streefwaarden zijn essentieel voor een succesvolle validatie en toekomstige verkoop aan bestuurlijk niveau.</p>
+      
+      <div class="kpi-container">
+        <div class="kpi-card">
+          <span class="kpi-value">70%</span>
+          <span class="kpi-label">Docentactivatie</span>
+        </div>
+        <div class="kpi-item kpi-card">
+          <span class="kpi-value">60%</span>
+          <span class="kpi-label">Leerling WAU</span>
+        </div>
+        <div class="kpi-item kpi-card">
+          <span class="kpi-value">55%</span>
+          <span class="kpi-label">Opdrachtafmaak</span>
+        </div>
+      </div>
+
+      <div class="card card-highlight">
+        <span class="card-title">Tevredenheidsnormen</span>
+        <p>Wij streven naar een gemiddelde score van <strong>7,5/10</strong> bij docenten en <strong>7,0/10</strong> bij leerlingen om een sterke business case voor jaarcontracten te garanderen.</p>
+      </div>
+    </section>
+
+    <section id="mitigation">
+      <h2>4. Risicobeheersing</h2>
+      <div class="card">
+        <span class="card-title">Adoptie & Inkoop</span>
+        <ul>
+          <li><strong>Docententijd:</strong> Garanderen dat de eerste les zonder voorbereiding gestart kan worden.</li>
+          <li><strong>Besluitvorming:</strong> Gebruik het betaalde pilotformat als laagdrempelige 'commitment'.</li>
+          <li><strong>Privacy:</strong> Meesturen van de complete compliance-set bij elk voorstel.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="routine">
+      <h2>5. Wekelijkse routine (10-20 uur)</h2>
+      <div class="card">
+        <ul>
+          <li><strong>Maandag (2u):</strong> Data-analyse en focusbepaling.</li>
+          <li><strong>Dinsdag/Woensdag (4-6u):</strong> Sales, demo's en opvolging.</li>
+          <li><strong>Donderdag (3-5u):</strong> Pilot-support en onboarding.</li>
+          <li><strong>Vrijdag (1-2u):</strong> Evaluatie en planning volgende week.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="references">
+      <h3>Referentielijst (APA)</h3>
+      <div class="ref-item">Ng, D. T. K., Leung, J. K. L., Chu, S. K. W., & Qiao, M. S. (2024). Exploring the effects of AI literacy in teacher learning: an empirical study. <i>Humanities and Social Sciences Communications, 11</i>(1), 1-15.</div>
+      <div class="ref-item">SLO. (2025). <i>Functionele kerndoelen digitale geletterdheid: Definitief concept</i>. Stichting Leerplan Ontwikkeling.</div>
+      <div class="ref-item">Wang, B., Zhang, Y., & Liu, Y. (2025). Workload perception in educational resource recommendation supported by artificial intelligence: A controlled experiment with teachers. <i>Smart Learning Environments, 12</i>(1).</div>
+    </section>
+
+    <div class="footer">
+      <span>DGSkills.app</span>
+      <span>Vertrouwelijk Actieplan 2026</span>
+      <span>Pagina 08</span>
+    </div>
+  </div>
+</body>
+</html>

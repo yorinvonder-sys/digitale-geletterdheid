@@ -1,0 +1,43 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Environment files (NEVER commit these!)
+.env
+.env.local
+.env.production
+functions/.env
+users.json
+uids_to_delete.txt
+serviceAccountKey.json
+**/serviceAccountKey.json
+firebase-service-account.json
+**/firebase-service-account.json
+migration-report.json
+supabase/.temp/
+.mcp.json
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.vercel
+
+# Large archives
+*.zip

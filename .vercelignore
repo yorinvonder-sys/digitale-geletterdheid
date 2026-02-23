@@ -1,0 +1,16 @@
+node_modules
+dist
+.firebase
+lighthouse-reports
+business
+Regelgeving
+guides
+.claude
+Printinstructies
+SLO-doelen
+*.zip
+*.log
+.env
+.env.local
+.env.production
+.mcp.json

@@ -1,304 +1,188 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="nl">
+
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Mission: Impossible — Leswebsite</title>
-<meta name="description" content="Digitale Geletterdheid — Mission: Impossible leswebsite" />
-<style>
-  :root{color-scheme:dark;--bg1:#0f172a;--bg2:#111827;--bg3:#18181b;--txt:#fff;--mut:#ffffffcc;--border:#ffffff1a;--pill:#ffffff1a}
-  *{box-sizing:border-box}html,body{height:100%}body{margin:0;background:radial-gradient(1200px 600px at 50% 40%,#000000a6 0%,#000000c7 45%,#000000e6 70%,#000000f2 100%),linear-gradient(135deg,var(--bg1),var(--bg2));color:var(--txt);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial}
-  .wrap{min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:24px}
-  .container{width:min(1120px,100%)}
-  .center{text-align:center}
-  .chip{display:inline-flex;gap:.5rem;align-items:center;border:1px solid var(--border);background:#ffffff0d;color:#fff;border-radius:999px;padding:.35rem .6rem;font-size:.75rem;letter-spacing:.18em;text-transform:uppercase}
-  h1{margin:.75rem 0 0;font-size:clamp(32px,6vw,60px);line-height:1.1}
-  .mut{color:var(--mut)}
-  .btn{appearance:none;border:0;border-radius:16px;background:#ffffff1a;color:#fff;padding:.6rem 1.1rem;font-weight:600;cursor:pointer}
-  .btn:hover{background:#ffffff2b}
-  .grid{display:grid;gap:16px}
-  @media(min-width:640px){.grid{grid-template-columns:repeat(2,1fr)}}
-  @media(min-width:1024px){.grid{grid-template-columns:repeat(3,1fr)}}
-  .card{border:1px solid var(--border);background:#ffffff0f;border-radius:16px;overflow:hidden;backdrop-filter:saturate(120%) blur(4px)}
-  .banner{position:relative;height:200px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#1f2937,#27272a)}
-  .tag{position:absolute;left:12px;top:12px;background:#0009;border-radius:999px;padding:4px 8px;font-size:12px}
-  .title{padding:12px 16px 4px;font-weight:700;font-size:18px}
-  .row{display:flex;align-items:center;gap:8px;padding:0 16px 16px;color:var(--mut);font-size:14px}
-  .pill{background:var(--pill);border-radius:999px;padding:3px 8px;color:#fff;font-size:12px}
-  .dialog-backdrop{position:fixed;inset:0;background:#0009;display:none}
-  .dialog{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:min(680px,92vw);border:1px solid var(--border);background:#0b1220cc;border-radius:14px;padding:24px 20px;display:none}
-  .dialog.open,.dialog-backdrop.open{display:block}
-  .tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:16px}
-  .tab{border:1px solid var(--border);border-radius:12px;padding:.6rem .9rem;background:#ffffff18;color:#fff;font-weight:600;cursor:pointer;text-align:center}
-  .tab.active{outline:2px solid #ffffff80}
-  .mission-block{margin-top:12px;margin-bottom:16px;padding:12px;border:1px solid var(--border);border-radius:10px;background:#ffffff0d}
-  .steps{max-height:60vh;overflow:auto;padding-right:6px;margin-top:12px}
-  .step{display:flex;gap:8px;margin-bottom:12px}
-  .step ul{margin:.35rem 0 0 .75rem}
-  .footer{display:flex;gap:10px;align-items:center;justify-content:space-between;margin-top:20px}
-  .hidden{display:none}
-  .notice{grid-column:1/-1;text-align:center;border:1px solid var(--border);background:#ffffff0f;border-radius:16px;padding:20px}
-</style>
+  <meta charset="UTF-8" />
+  <script defer src="/csp-bootstrap.js"></script>
+  <!-- PWA Meta Tags - mobile-web-app-capable is the standard, apple- prefix is legacy -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#4f46e5">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="DGSkills">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <title>DGSkills — Digitale Geletterdheid voor het Onderwijs | AI-missies & SLO 2025</title>
+  <meta name="description"
+    content="DGSkills is het interactieve platform voor digitale geletterdheid in het voortgezet onderwijs. AI-missies, gamification en SLO Kerndoelen 2025 — gratis pilot voor scholen. MAVO, HAVO & VWO." />
+  <meta name="keywords" content="digitale geletterdheid, voortgezet onderwijs, SLO kerndoelen 2025, AI-missies, gamification, lesmethode, MAVO, HAVO, VWO, digitale vaardigheden, mediawijsheid, computational thinking, informatievaardigheden, DGSkills" />
+  <meta name="author" content="DGSkills" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <link rel="canonical" href="https://dgskills.app/" />
+  <link rel="alternate" hreflang="nl" href="https://dgskills.app/" />
+  <link rel="alternate" hreflang="x-default" href="https://dgskills.app/" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="DGSkills — Digitale Geletterdheid voor het Onderwijs" />
+  <meta property="og:description"
+    content="Interactief platform met AI-missies, gamification en SLO Kerndoelen 2025 voor het voortgezet onderwijs. Gratis pilot voor scholen." />
+  <meta property="og:url" content="https://dgskills.app/" />
+  <meta property="og:site_name" content="DGSkills" />
+  <meta property="og:locale" content="nl_NL" />
+  <meta property="og:image" content="https://dgskills.app/og-image.png" />
+  <meta property="og:image:alt" content="DGSkills - Digitale Geletterdheid platform voor het voortgezet onderwijs" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="DGSkills — Digitale Geletterdheid voor het Onderwijs" />
+  <meta name="twitter:description"
+    content="AI-missies, gamification en SLO Kerndoelen 2025 in één platform voor het voortgezet onderwijs. Gratis pilot." />
+  <meta name="twitter:image" content="https://dgskills.app/og-image.png" />
+  <meta name="twitter:image:alt" content="DGSkills - Digitale Geletterdheid platform" />
+
+  <link rel="icon" type="image/png" href="/apple-touch-icon.png" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+  <link rel="preload" href="/logo.svg" as="image" />
+  <!-- Route-specific font: Outfit self-hosted for CSP/SRI compliance.
+       Loaded after first paint on landing routes only (/, /scholen) via csp-bootstrap.js.
+       Critical text renders with system font first → no FOIT, minimal LCP impact. -->
+  <noscript>
+    <link rel="stylesheet" href="/fonts/outfit.css" />
+  </noscript>
+  <!-- Critical CSS extracted to external file for CSP compliance (removes unsafe-inline dependency) -->
+  <link rel="stylesheet" href="/critical.css" />
+
 </head>
+
 <body>
-<div class="wrap"><div class="container" id="app"></div></div>
+  <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
 
-<!-- Dialog structure -->
-<div class="dialog-backdrop" id="dlgBackdrop"></div>
-<div class="dialog" id="dlg">
-  <h2 id="dlgTitle" style="margin:4px 0 16px;font-size:22px"></h2>
-  <div class="tabs" id="tabs"></div>
-  <div class="mission-block hidden" id="missionText"></div>
-  <div class="steps" id="steps"></div>
-  <div class="footer">
-    <button class="btn" id="markBtn">Markeer als voltooid → volgende niveau</button>
-    <span class="pill" id="lvlPill">Niveau: Basis</span>
-    <div style="margin-left:auto"></div>
-    <button class="btn" id="closeBtn">Sluiten</button>
-  </div>
-</div>
-
-<script>
-// --------- DATA ---------
-const MISSIONS = [
-  {id:'m0', title:'Startvaardigheden', tag:'Copernicusweek 1',
-   levels:{
-     bronze:{mission:'Maak je basis klaar: mappen, Word, delen met HQ en eerste bericht.', steps:[
-       {title:'1. Inloggen op OneDrive', items:['Ga naar office.com','Klik op OneDrive en meld je aan met je schoolaccount']},
-       {title:'2. Mappen maken', items:['Nieuw → Map: MI_CW1','Open MI_CW1 en maak: 01_Startvaardigheden, 02_MagisterMail, 03_PowerPoint, 04_Printen, 99_Evidence']},
-       {title:'3. Word‑document', items:['Open 01_Startvaardigheden','Nieuw → Word‑document','Bestandsnaam: CW1_Startvaardigheden_Voornaam_Achternaam_Klas']},
-       {title:'4. Delen met HQ', items:['Klik Delen','Typ e‑mail docent','Versturen']},
-       {title:'5. Tekst & opmaak', items:['Titel + naam + klas + datum','2 kopjes en korte bullets','Spellingcontrole uitvoeren']},
-       {title:'6. Evidence + status', items:['Screenshot mappen in 99_Evidence','Mail in Magister met deellink (Status #1)']}
-     ]},
-     silver:{mission:'Netjes maken: bestandsnaam, kop/voettekst, rechten en update naar HQ.', steps:[
-       {title:'1. Bestandsnaam', items:['Hernoem naar CW1_Startvaardigheden_VoornaamAchternaam_Klas']},
-       {title:'2. Kop/voettekst', items:['Invoegen → Koptekst: naam — klas','Paginanummer onderin','Datum en tijd (dd‑mm‑jjjj)']},
-       {title:'3. Rechten', items:['OneDrive → Delen → Linkinstellingen','Specifieke personen; bewerken UIT','Docent toevoegen → Toepassen → link kopiëren']},
-       {title:'4. Checklist', items:['□ Naam ok  □ Kop/voettekst ok  □ Rechten ok  □ Spelling ok  □ Evidence']},
-       {title:'5. Status #2', items:['Mail onderwerp: [MI/CW1] Update 2 — Startvaardigheden','1–2 zinnen wat nieuw is + link','Screenshot in 99_Evidence']}
-     ]},
-     gold:{mission:'Compleet opleveren: ook als PDF, mini‑uitleg en mail naar HQ.', steps:[
-       {title:'1. PDF export', items:['Bestand → Downloaden/opslaan als PDF','Opslaan naast doc']},
-       {title:'2. Mini‑handleiding', items:['Zet 6 stappen hoe je veilig deelt met HQ']},
-       {title:'3. Eindoplevering', items:['Mail: link naar OneDrive + Word + PDF','Screenshot deel‑instellingen in 99_Evidence']}
-     ]}
-   }
-  },
-  {id:'m1', title:'Missie 1: Magister‑mail sturen met bijlage', tag:'Communicatie',
-   levels:{
-     bronze:{mission:'Stuur je bestand naar HQ met juiste bijlage en werkende link.', steps:[
-       {title:'1. Nieuw bericht', items:['Magister → Mail → Nieuw','Ontvanger: docent (HQ)']},
-       {title:'2. Onderwerp', items:['[MI/CW1] Startvaardigheden — Voornaam Achternaam (Klas)']},
-       {title:'3. Tekst', items:['Korte nette tekst; afsluiten met naam/klas']},
-       {title:'4. Bijlage + link', items:['Paperclip → OneDrive → Word‑bestand','Deellink in de tekst plakken']},
-       {title:'5. Evidence', items:['Screenshot van “Verzonden” in 99_Evidence']}
-     ]},
-     silver:{mission:'Professioneel maken: onderwerp, rechten, Bcc en netjes vragen.', steps:[
-       {title:'1. Onderwerp kort', items:['Gebruik: [MI/CW1] Startvaardigheden — Voornaam (1A)']},
-       {title:'2. Rechten goed', items:['Delen → Specifieke personen','Bewerken UIT; docent toevoegen → Toepassen → link kopiëren']},
-       {title:'3. Bcc + archiveren', items:['Zet jezelf in Bcc','Verplaats naar map “CW1”']},
-       {title:'4. Netjes vragen', items:['“Kunt u bevestigen of de link werkt? Dank u wel.”']}
-     ]},
-     gold:{mission:'Compleet: handtekening, reminder, bevestiging na feedback.', steps:[
-       {title:'1. Handtekening', items:['Naam, klas, schoolmail onder je mail']},
-       {title:'2. Herinnering', items:['Agenda‑taak over 2 dagen: check reactie HQ']},
-       {title:'3. Bevestiging', items:['Na feedback kort reply: verwerkt op dd‑mm']}
-     ]}
-   }
-  },
-  {id:'m2', title:'Missie 2: PowerPoint‑verslag van je progressie', tag:'Presenteren',
-   levels:{
-     bronze:{mission:'Maak een kort dia‑verslag en deel met HQ.', steps:[
-       {title:'1. Start', items:['Open PowerPoint → Lege presentatie']},
-       {title:'2. Dia 1 — Titel', items:['Mission: Impossible — CW1','Naam, klas, datum']},
-       {title:'3. Dia 2 — Wat deed ik?', items:['3 bullets: mappen; delen; spelling']},
-       {title:'4. Dia 3 — Bewijs', items:['1 screenshot + 1 zin']},
-       {title:'5. Dia 4 — Naar HQ', items:['Wat al gedeeld is; wat nog komt']},
-       {title:'6. Opslaan + delen', items:['CW1_PPT_Voornaam_Achternaam.pptx','Link delen met docent','PDF in 99_Evidence']}
-     ]},
-     silver:{mission:'Netjes en toegankelijk; stuur status #3.', steps:[
-       {title:'1. Opmaak', items:['Kies 1 thema','Titels ±44 pt; 6×6‑regel']},
-       {title:'2. Visual', items:['SmartArt Basisproces: Mappen → Delen → Evidence']},
-       {title:'3. Toegankelijk', items:['Alt‑tekst; goed contrast; ≥24 pt tekst']},
-       {title:'4. Status #3', items:['Opslaan in 03_PowerPoint','Mail 1 zin + link']}
-     ]},
-     gold:{mission:'Oefenen, optimaliseren, opleveren.', steps:[
-       {title:'1. Oefenen', items:['Korte oefenpresentatie (±2 min); 1 tip verwerken']},
-       {title:'2. Optimaliseren', items:['Afbeeldingen comprimeren; exporteer PDF']},
-       {title:'3. Opleveren', items:['Mail link naar PPT + PDF; screenshot deel‑instellingen in 99_Evidence']}
-     ]}
-   }
-  },
-  {id:'m3', title:'Missie 3: Printen vanuit Word', tag:'Praktisch',
-   levels:{
-     bronze:{mission:'Print netjes en lever in.', steps:[
-       {title:'1. Afdrukken', items:['Bestand → Afdrukken (Ctrl+P/Cmd+P)']},
-       {title:'2. Printer', items:['Schoolprinter/Follow‑Me — A4 staand']},
-       {title:'3. Proef', items:['Voorbeeld checken; 1 proefpagina']},
-       {title:'4. Alles printen', items:['Tevreden? Print alles']},
-       {title:'5. Inleveren', items:['Lever bij docent (HQ) in']}
-     ]},
-     silver:{mission:'Slim printen en PDF bewaren.', steps:[
-       {title:'1. Dubbelzijdig/pagina’s', items:['Duplex waar kan; alleen benodigde pagina’s']},
-       {title:'2. PDF bewaren', items:['Opslaan/exporteren als PDF in 04_Printen']},
-       {title:'3. Wachtrij/saldo', items:['Printerwachtrij en printsaldo checken']}
-     ]},
-     gold:{mission:'Veilig en zuinig + bewijs.', steps:[
-       {title:'1. Follow‑Me', items:['Stuur naar Follow‑Me; vrijgeven met pasje']},
-       {title:'2. Zuinig', items:['Zwart‑wit of Concept; print alleen wat nodig is']},
-       {title:'3. Evidence', items:['Foto van inlevering in 99_Evidence']}
-     ]}
-   }
-  },
-  {id:'m4', title:'Missie 4: Bewijsmateriaal vastleggen', tag:'Bewijs',
-   levels:{
-     bronze:{mission:'Leg je Digitale Rijbewijs vast en upload correct.', steps:[
-       {title:'1. Submap', items:['MI_CW1/99_Evidence/Rijbewijs']},
-       {title:'2. Stempel', items:['Afstempelen door docent; duidelijk in kader']},
-       {title:'3. Foto', items:['Goede belichting; stabiel; hele kaart in beeld']},
-       {title:'4. Bestandsnaam', items:['DRB_VoornaamAchternaam_Klas_YYYYMMDD.jpg']},
-       {title:'5. Uploaden', items:['Upload in submap Rijbewijs']}
-     ]},
-     silver:{mission:'Controleerbaar delen zonder te ruime rechten.', steps:[
-       {title:'1. Privacy', items:['Foto bijsnijden; blur gegevens anderen']},
-       {title:'2. Rechten', items:['Delen → Specifieke personen; bewerken UIT; docent toevoegen → link kopiëren']},
-       {title:'3. Status #4', items:['Mail met deellink + 1 zin']}
-     ]},
-     gold:{mission:'Compleet en toekomstvast (ook PDF) + bewijs instellingen.', steps:[
-       {title:'1. Scan als PDF', items:['Office/OneDrive Scan of Lens; rechte scan']},
-       {title:'2. Map delen', items:['Deel map “Rijbewijs” alleen-weergeven met docent; screenshot instellingen uploaden']},
-       {title:'3. Eindoplevering', items:['Mail link naar map; noem dat PDF en JPG aanwezig zijn']}
-     ]}
-   }
+  <!-- Static JSON-LD structured data — visible to all crawlers without JS execution -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "name": "DGSkills",
+        "url": "https://dgskills.app",
+        "logo": "https://dgskills.app/logo.svg",
+        "description": "Interactief platform voor digitale geletterdheid in het voortgezet onderwijs."
+      },
+      {
+        "@type": "WebSite",
+        "name": "DGSkills",
+        "url": "https://dgskills.app",
+        "inLanguage": "nl",
+        "description": "Digitale Geletterdheid voor het Onderwijs — AI-missies, gamification en SLO Kerndoelen 2025"
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "DGSkills",
+        "applicationCategory": "EducationalApplication",
+        "applicationSubCategory": "Digitale Geletterdheid",
+        "operatingSystem": "Web",
+        "description": "Interactief platform voor digitale geletterdheid in het voortgezet onderwijs met AI-missies, gamification en SLO Kerndoelen 2025.",
+        "url": "https://dgskills.app",
+        "inLanguage": "nl",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "EUR",
+          "description": "Gratis pilot van 3 maanden voor scholen",
+          "availability": "https://schema.org/InStock"
+        },
+        "audience": {
+          "@type": "EducationalAudience",
+          "educationalRole": "student",
+          "audienceType": "Voortgezet onderwijs (MAVO, HAVO, VWO)"
+        },
+        "featureList": "AI-missies, Gamification, SLO Kerndoelen 2025, Docenten Dashboard, AVG-compliant, PWA"
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Wat is digitale geletterdheid en waarom wordt het verplicht?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Kennis en vaardigheden om veilig en effectief te functioneren in een digitale samenleving. SLO-kerndoelen worden per 2027 wettelijk verplicht; scholen kunnen al vanaf 2025/2026 starten."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Hoe verschilt DGSkills van DIGIT-vo of Basicly?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "DGSkills combineert AI-missies, gamification (XP, badges, leaderboards) en volledige SLO-koppeling. Leerlingen leren door te doen — geen werkbladen."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Welke SLO Kerndoelen dekt DGSkills af?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Alle vier domeinen: Digitale vaardigheden, Informatievaardigheden, Mediawijsheid en Computational Thinking. Elke missie is gekoppeld aan specifieke kerndoelen."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is DGSkills AVG-compliant en veilig?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Ja. Data binnen de EU (Google Cloud). Verwerkersovereenkomst en DPIA beschikbaar. Voldoet aan AVG en onderwijseisen."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Op welke apparaten werkt DGSkills?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Elk apparaat met browser: iPad, Chromebook, laptop, telefoon. Geen installatie, geen IT-configuratie."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Wat kost DGSkills en is er een gratis proefperiode?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Gratis pilot van 3 maanden met volledige toegang. Daarna schoollicentie vanaf 2.000 euro per jaar."
+            }
+          }
+        ]
+      }
+    ]
   }
-];
+  </script>
 
-// --------- STATE ---------
-const storageKey = 'mi_progress_v5';
-const defaultProgress = {m0:'none',m1:'none',m2:'none',m3:'none',m4:'none'};
-let progress = {...defaultProgress, ...(JSON.parse(localStorage.getItem(storageKey) || 'null')||{})};
-
-// --------- RENDER ---------
-const app = document.getElementById('app');
-let started = false;
-let openMissionId = null;
-
-function el(tag, cls, text){const e=document.createElement(tag);if(cls)e.className=cls;if(text)e.textContent=text;return e}
-
-function renderStart(){
-  app.innerHTML='';
-  const ctr = el('div','center');
-  ctr.append(el('div','chip','Digitale Geletterdheid'));
-  const h = el('h1',null,'Mission: '); const span = el('span',null,'Impossible*'); span.style.color='#ffffffe6'; h.append(span); ctr.append(h);
-  const p = el('p','mut','*Nou ja, bijna onmogelijk. Je voltooit missies in Brons · Zilver · Goud om je digitale skills te levelen.'); p.style.maxWidth='640px'; p.style.margin='12px auto 0'; ctr.append(p);
-  const btnRow = el('div'); btnRow.style.marginTop='18px';
-  const btn = el('button','btn','Start missie'); btn.onclick=()=>{started=true; renderApp();}; btnRow.append(btn);
-  ctr.append(btnRow);
-  app.append(ctr);
-}
-
-function levelText(lvl){return {none:'Basis',bronze:'Brons',silver:'Zilver',gold:'Goud'}[lvl]||lvl}
-
-function renderCard(m){
-  const card = el('div','card');
-  const btn = el('button'); btn.style.all='unset'; btn.style.cursor='pointer'; btn.style.display='block'; btn.style.width='100%';
-  const banner = el('div','banner'); banner.append(el('span',null,m.title));
-  const tag = el('div','tag',m.tag); banner.append(tag);
-  btn.append(banner);
-  const t = el('div','title',m.title); btn.append(t);
-  const row = el('div','row');
-  const pill = el('span','pill','Niveau: '+levelText(progress[m.id]||'none')); row.append(pill);
-  const open = el('span',null,'Openen →'); open.style.marginLeft='auto'; open.style.opacity='.85'; row.append(open);
-  btn.onclick=()=>{openMissionId=m.id; openDialog();};
-  card.append(btn);
-  return card;
-}
-
-function renderGrid(){
-  app.innerHTML='';
-  const g = el('div','grid');
-  const base = MISSIONS.find(m=>m.id==='m0');
-  if(base){
-    const c = renderCard(base); c.style.gridColumn='1/-1'; g.append(c);
-  }
-  const baseUnlocked = ['bronze','silver','gold'].includes(progress.m0);
-  if(baseUnlocked){
-    MISSIONS.filter(m=>m.id!=='m0').forEach(m=>g.append(renderCard(m)));
-  }else{
-    const n = el('div','notice');
-    n.innerHTML='🔒 Om verder te gaan: voltooi eerst <b>Startvaardigheden</b>.';
-    const b = el('button','btn','Open Startvaardigheden'); b.style.marginTop='8px'; b.onclick=()=>{openMissionId='m0'; openDialog();};
-    n.append(el('div')); n.append(b);
-    g.append(n);
-  }
-  app.append(g);
-}
-
-function renderApp(){ started ? renderGrid() : renderStart(); }
-
-// --------- DIALOG ---------
-const dlg = document.getElementById('dlg');
-const dlgBackdrop = document.getElementById('dlgBackdrop');
-const dlgTitle = document.getElementById('dlgTitle');
-const tabsEl = document.getElementById('tabs');
-const stepsEl = document.getElementById('steps');
-const missionTextEl = document.getElementById('missionText');
-const markBtn = document.getElementById('markBtn');
-const lvlPill = document.getElementById('lvlPill');
-
-document.getElementById('closeBtn').onclick = closeDialog;
-
-tabsEl.addEventListener('click', (e)=>{
-  const btn = e.target.closest('.tab'); if(!btn) return;
-  const lvl = btn.dataset.lvl; selectLevelTab(lvl);
-});
-
-markBtn.onclick = ()=>{
-  const order=['none','bronze','silver','gold'];
-  const cur = progress[openMissionId]||'none';
-  const next = order[Math.min(order.indexOf(cur)+1,3)];
-  progress[openMissionId]=next;
-  localStorage.setItem(storageKey, JSON.stringify(progress));
-  lvlPill.textContent = 'Niveau: '+levelText(next);
-  renderApp();
-};
-
-function openDialog(){
-  const m = MISSIONS.find(x=>x.id===openMissionId); if(!m) return;
-  dlgTitle.textContent = m.title;
-  dlg.classList.add('open'); dlgBackdrop.classList.add('open');
-  // tabs
-  tabsEl.innerHTML='';
-  const labels={bronze:'Brons',silver:'Zilver',gold:'Goud'};['bronze','silver','gold'].forEach((lvl,i)=>{ const b=el('button','tab'+(i===0?' active':''), labels[lvl]); b.dataset.lvl=lvl; tabsEl.append(b); });
-  // start at bronze
-  selectLevelTab('bronze');
-  // pill state
-  lvlPill.textContent = 'Niveau: '+levelText(progress[m.id]||'none');
-}
-
-function closeDialog(){ dlg.classList.remove('open'); dlgBackdrop.classList.remove('open'); openMissionId=null; }
-
-function selectLevelTab(lvl){
-  const m = MISSIONS.find(x=>x.id===openMissionId); if(!m) return;
-  [...tabsEl.children].forEach(ch=>ch.classList.toggle('active', ch.dataset.lvl===lvl));
-  // mission text
-  missionTextEl.classList.remove('hidden');
-  missionTextEl.textContent = '🎯 Missie: '+(m.levels[lvl].mission||'Voer de stappen uit zodat HQ je voortgang kan volgen.');
-  // steps
-  stepsEl.innerHTML='';
-  m.levels[lvl].steps.forEach(s=>{
-    const li = el('div','step');
-    const icon = el('div',null,'✔'); icon.style.color='#34d399'; icon.style.marginTop='2px';
-    const block = el('div');
-    const st = el('div',null,s.title); st.style.fontWeight='700'; block.append(st);
-    const ul = el('ul'); s.items.forEach(it=>{ const li2 = el('li',null,it); ul.append(li2); }); block.append(ul);
-    li.append(icon, block); stepsEl.append(li);
-  });
-}
-
-// Initial render
-renderApp();
-</script>
+  <!-- Noscript fallback for crawlers and users without JavaScript -->
+  <noscript>
+    <div style="max-width:800px;margin:40px auto;padding:20px;font-family:system-ui,sans-serif;color:#0f172a">
+      <h1>DGSkills — Digitale Geletterdheid voor het Onderwijs</h1>
+      <p>DGSkills is het interactieve platform voor digitale geletterdheid in het voortgezet onderwijs. Met AI-missies, gamification en de SLO Kerndoelen 2025 bieden we een complete lesmethode voor MAVO, HAVO en VWO.</p>
+      <h2>Waarom DGSkills?</h2>
+      <ul>
+        <li>20+ AI-gestuurde missies voor digitale geletterdheid</li>
+        <li>Gamification met XP, badges, leaderboards en 3D-avatars</li>
+        <li>Volledige afstemming op SLO Kerndoelen 2025 (14 kerndoelen, 4 domeinen)</li>
+        <li>Real-time docenten dashboard met voortgangsinzicht</li>
+        <li>AVG-compliant — data binnen de EU</li>
+        <li>Werkt op elk apparaat: iPad, Chromebook, laptop, telefoon</li>
+      </ul>
+      <h2>SLO Kerndoelen 2025</h2>
+      <p>DGSkills dekt alle vier domeinen af: Digitale vaardigheden, Informatievaardigheden, Mediawijsheid en Computational Thinking.</p>
+      <h2>Gratis Pilot</h2>
+      <p>Start een gratis pilot van 3 maanden met volledige toegang. Geen verplichtingen. Implementatie meestal binnen 1 week.</p>
+      <p><a href="https://dgskills.app/scholen">Meer informatie voor scholen</a> | <a href="https://dgskills.app/login">Inloggen</a></p>
+    </div>
+  </noscript>
 </body>
+
 </html>

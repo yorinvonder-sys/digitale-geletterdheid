@@ -1,0 +1,65 @@
+{
+  "name": "DGSkills — Digitale Geletterdheid voor het Onderwijs",
+  "short_name": "DGSkills",
+  "description": "Interactief platform voor digitale geletterdheid met AI-missies, gamification en SLO Kerndoelen 2025 voor het voortgezet onderwijs.",
+  "start_url": "/",
+  "id": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0f172a",
+  "theme_color": "#4f46e5",
+  "lang": "nl-NL",
+  "dir": "ltr",
+  "categories": [
+    "education",
+    "productivity",
+    "finance"
+  ],
+  "shortcuts": [
+    {
+      "name": "Bonnetje scannen",
+      "short_name": "Bonnetje",
+      "description": "Direct een bonnetje scannen met AI",
+      "url": "/bonnetje",
+      "icons": [
+        {
+          "src": "/icon-192x192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    }
+  ],
+  "icons": [
+    {
+      "src": "/logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

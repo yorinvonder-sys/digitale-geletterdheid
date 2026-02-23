@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy & Compliance Dossier - DGSkills</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #3730a3;
+            --secondary: #10b981;
+            --text-main: #1e293b;
+            --text-light: #64748b;
+            --bg-slate: #f8fafc;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            background: white;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        header {
+            border-bottom: 2px solid var(--primary);
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo-text {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: -0.5px;
+        }
+        h1 { color: var(--primary-dark); font-size: 32px; margin-top: 0; }
+        h2 { color: var(--primary); border-left: 4px solid var(--primary); padding-left: 15px; margin-top: 40px; }
+        h3 { color: var(--text-main); font-size: 18px; }
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: var(--bg-slate);
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        .info-box {
+            background: var(--bg-slate);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px solid #e2e8f0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        th { background: var(--bg-slate); font-weight: 700; }
+        .checklist {
+            list-style: none;
+            padding: 0;
+        }
+        .checklist li {
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+        .checklist li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--secondary);
+            font-weight: bold;
+            font-size: 20px;
+        }
+        footer {
+            margin-top: 60px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+            font-size: 12px;
+            color: var(--text-light);
+            text-align: center;
+        }
+        a { color: var(--primary); text-decoration: none; font-weight: 600; }
+        a:hover { text-decoration: underline; }
+        @media print {
+            .no-print { display: none; }
+            body { background: white; }
+            .container { padding: 0; max-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo-text">DGSkills.app</div>
+            <div class="no-print">
+                <button style="padding: 8px 16px; background: var(--primary); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">Gebruik browser print (Ctrl/Cmd+P)</button>
+            </div>
+        </header>
+
+        <span class="badge">Privacy & Compliance Dossier v1.3</span>
+        <h1>Digitale Geletterdheid & Wetgeving</h1>
+        <p><strong>Status:</strong> Ontworpen voor AVG & EU AI Act Compliance</p>
+
+        <div class="info-box">
+            <p>Dit dossier is opgesteld voor directies, Functionarissen Gegevensbescherming (FG) en ICT-managers in het onderwijs. Het biedt een gedetailleerd overzicht van de privacy-waarborgen binnen DGSkills en ondersteunt de school bij de verplichte documentatie (DPA/DPIA).</p>
+        </div>
+
+        <h2>1. AVG: Privacy in het Onderwijs</h2>
+        <p>DGSkills (een product van Future Architect) hanteert <em>Privacy-by-Design</em> als kernwaarde. Wij minimaliseren de gegevensverwerking tot het strikt noodzakelijke voor het bereiken van de SLO-kerndoelen.</p>
+        
+        <h3>Rolverdeling & Grondslag</h3>
+        <p>Conform de AVG treedt het schoolbestuur op als <strong>Verwerkingsverantwoordelijke</strong>. DGSkills fungeert als <strong>Verwerker</strong>. De school hanteert doorgaans de grondslag 'Publiekrechtelijke taak' voor de verwerking van leerlinggegevens.</p>
+
+        <h3>Belangrijkste Maatregelen:</h3>
+        <ul class="checklist">
+            <li><strong>Data-minimalisatie:</strong> Wij vragen geen BSN, woonadressen of medische gegevens. Alleen functionele accountdata en voortgangsresultaten.</li>
+            <li><strong>Datalocatie:</strong> Alle gegevens (database, authenticatie, AI-API) worden opgeslagen in de EU (Supabase/AWS regio <code>eu-west-1</code>, Ierland).</li>
+            <li><strong>Beveiliging:</strong> Enterprise-grade encryptie (AES-256) en strikt gescheiden data-omgevingen per school/klas via Supabase Row Level Security (RLS).</li>
+            <li><strong>Audit Logs & Retentie:</strong> Beveiligingslogs worden 90 dagen bewaard. Accountdata wordt na beëindiging van de overeenkomst binnen 30 dagen definitief gewist.</li>
+            <li><strong>Minderjarigen:</strong> In privacydocumentatie is expliciet vastgelegd hoe de AVG/UAVG-context voor leerlingen onder 16 wordt toegepast binnen de schoolverantwoordelijkheid.</li>
+            <li><strong>Rechten betrokkenen:</strong> In-app ondersteuning voor inzage/export, verwijdering en verwerkingsbeperking (AVG art. 18).</li>
+        </ul>
+
+        <h2>2. EU AI Act: Veilig & Transparant</h2>
+        <p>DGSkills maakt gebruik van 'ondersteunende AI' (Large Language Models via Google Gemini API). Wij vallen onder de categorie <strong>'Limited Risk'</strong> (Art. 50 AI Act), waarvoor strenge transparantie-eisen gelden.</p>
+
+        <h3>Garanties conform de AI Act:</h3>
+        <ul class="checklist">
+            <li><strong>Zero-Training Guarantee:</strong> Invoer van leerlingen wordt <u>niet</u> gebruikt om de modellen van derden (Google) te trainen. De data blijft binnen de beveiligde API-context van DGSkills.</li>
+            <li><strong>Herkenbaarheid:</strong> Elke AI-interactie is duidelijk gemarkeerd met de "AI Mentor" badge.</li>
+            <li><strong>Human-in-the-loop:</strong> De AI heeft een adviserende rol. De docent behoudt altijd de regie over de beoordeling en heeft volledig inzicht in de AI-leerling interacties.</li>
+            <li><strong>Safety Filtering:</strong> Actieve filtering op schadelijke content via enterprise-grade safety settings.</li>
+            <li><strong>Dataminimalisatie in AI-flow:</strong> Alleen noodzakelijke context wordt meegestuurd; geen marketingprofilering.</li>
+        </ul>
+
+        <h2>3. ePrivacy & Security Hardening</h2>
+        <ul class="checklist">
+            <li><strong>Consent Enforcement:</strong> Niet-essentiële analytics wordt technisch pas uitgevoerd na expliciete toestemming.</li>
+            <li><strong>First-party analytics:</strong> Geen Google Analytics; alleen interne geaggregeerde klikstatistieken.</li>
+            <li><strong>CSP-hardening:</strong> Inline scripts verwijderd uit de hoofdpagina; `script-src` zonder `unsafe-inline`.</li>
+            <li><strong>Password reset hardening:</strong> API retourneert geen plaintext wachtwoorden meer.</li>
+        </ul>
+
+        <h2>4. Documentatie voor Inkoop & Toezicht</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Document</th>
+                    <th>Status</th>
+                    <th>Locatie</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Verwerkersovereenkomst (DPA)</td>
+                    <td>Model 4.0 beschikbaar</td>
+                    <td><a href="/compliance/dpa-dgskills-v4.html">Bekijk Template</a></td>
+                </tr>
+                <tr>
+                    <td>DPIA Support Document</td>
+                    <td>Versie 1.0 beschikbaar</td>
+                    <td><a href="/compliance/dpia-support-dgskills-v1.html">Bekijk Document</a></td>
+                </tr>
+                <tr>
+                    <td>Subverwerker Overzicht</td>
+                    <td>Actueel (Supabase, Google AI)</td>
+                    <td>Zie Privacyverklaring</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>5. Stappenplan voor de School</h2>
+        <p>Om de implementatie juridisch correct af te ronden, adviseren wij de school de volgende stappen:</p>
+        <ul class="checklist">
+            <li><strong>FG Check:</strong> Leg dit dossier voor aan uw Functionaris Gegevensbescherming.</li>
+            <li><strong>DPA Tekenen:</strong> Vul het Model Verwerkersovereenkomst aan met de gegevens van uw bestuur en stuur dit naar compliance@dgskills.app.</li>
+            <li><strong>Register:</strong> Neem DGSkills op in het verwerkingsregister van de school.</li>
+            <li><strong>DPIA:</strong> Gebruik ons support-document om de interne DPIA ('light') in te vullen.</li>
+        </ul>
+
+        <div class="info-box" style="border-left: 4px solid var(--secondary);">
+            <p><strong>Eindoordeel:</strong> DGSkills biedt aantoonbaar versterkte technische en organisatorische maatregelen voor AVG, ePrivacy en AI-transparantie in een onderwijssetting. Het implementatierisico voor de school is daardoor laag en goed beheersbaar.</p>
+        </div>
+
+        <footer>
+            © 2026 DGSkills — Digitale geletterdheid voor het voortgezet onderwijs<br>
+            Vragen? Contacteer ons via privacy@dgskills.app
+        </footer>
+    </div>
+</body>
+</html>

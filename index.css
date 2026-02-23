@@ -1,0 +1,769 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================
+   PREFERS-REDUCED-MOTION - Accessibility
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ============================================
+   DESIGN SYSTEM - Variables & Tokens
+   ============================================ */
+:root {
+  /* Colors - Primary Palette */
+  --color-primary: #4f46e5;
+  --color-primary-light: #6366f1;
+  --color-primary-dark: #4338ca;
+  --color-primary-50: #eef2ff;
+  --color-primary-100: #e0e7ff;
+
+  /* Colors - Semantic */
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+  --color-info: #3b82f6;
+
+  /* Colors - Neutral */
+  --color-slate-50: #f8fafc;
+  --color-slate-100: #f1f5f9;
+  --color-slate-200: #e2e8f0;
+  --color-slate-300: #cbd5e1;
+  --color-slate-400: #94a3b8;
+  --color-slate-500: #64748b;
+  --color-slate-600: #475569;
+  --color-slate-700: #334155;
+  --color-slate-800: #1e293b;
+  --color-slate-900: #0f172a;
+
+  /* Spacing Scale (based on 4px grid) */
+  --space-1: 0.25rem;
+  /* 4px */
+  --space-2: 0.5rem;
+  /* 8px */
+  --space-3: 0.75rem;
+  /* 12px */
+  --space-4: 1rem;
+  /* 16px */
+  --space-5: 1.25rem;
+  /* 20px */
+  --space-6: 1.5rem;
+  /* 24px */
+  --space-8: 2rem;
+  /* 32px */
+  --space-10: 2.5rem;
+  /* 40px */
+  --space-12: 3rem;
+  /* 48px */
+  --space-16: 4rem;
+  /* 64px */
+
+  /* Border Radius */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+  --radius-3xl: 2rem;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-normal: 200ms ease;
+  --transition-slow: 300ms ease;
+
+  /* Focus Ring */
+  --focus-ring: 0 0 0 3px rgba(99, 102, 241, 0.4);
+  --focus-ring-offset: 0 0 0 2px white, 0 0 0 4px var(--color-primary);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Utilities */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1;
+  border-radius: 20px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #94a3b8;
+}
+
+/* 3D Book Animations */
+.perspective-2000 {
+  perspective: 2000px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+@keyframes pageFlip {
+  from {
+    transform: rotateY(0deg);
+  }
+
+  to {
+    transform: rotateY(-180deg);
+  }
+}
+
+@keyframes pageFlipBack {
+  from {
+    transform: rotateY(0deg);
+  }
+
+  to {
+    transform: rotateY(180deg);
+  }
+}
+
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+
+.animate-page-flip {
+  animation: pageFlip 0.8s cubic-bezier(0.645, 0.045, 0.355, 1) forwards;
+}
+
+.animate-page-flip-reverse {
+  animation: pageFlipBack 0.8s cubic-bezier(0.645, 0.045, 0.355, 1) forwards;
+}
+
+/* Ambient Glow for Lab */
+.ambient-glow {
+  background: radial-gradient(circle at 50% 50%, rgba(255, 251, 235, 1) 0%, rgba(254, 252, 232, 0.4) 100%);
+}
+
+.glass-panel {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Smooth spinner animation - GPU accelerated to prevent stuttering */
+@keyframes smooth-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.smooth-spinner {
+  animation: smooth-spin 1s linear infinite;
+  will-change: transform;
+  transform-origin: center center;
+}
+
+/* ============================================
+   TABLET / IPAD OPTIMIZATIONS
+   ============================================ */
+
+/* Detect touch devices for enhanced touch targets */
+@media (pointer: coarse) {
+  .touch-friendly-btn {
+    min-height: 48px;
+    min-width: 48px;
+  }
+
+  /* Make suggestion chips larger */
+  .suggestion-chip {
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+  }
+
+  /* Larger chat input on tablets */
+  .chat-input {
+    min-height: 52px;
+    font-size: 1rem;
+  }
+
+  /* Larger game buttons and UI elements */
+  .game-btn {
+    min-height: 56px;
+    min-width: 56px;
+    font-size: 1.125rem;
+  }
+
+  /* Better touch areas for game controls */
+  .game-control-area {
+    min-height: 80px;
+  }
+}
+
+/* iPad Pro / Large Tablets (1024px - 1366px) */
+@media screen and (min-width: 1024px) and (max-width: 1366px) {
+  .tablet-optimized {
+    --spacing-base: 1.5rem;
+  }
+
+  /* Larger game canvas on tablets */
+  .game-canvas-container {
+    max-height: calc(100dvh - 120px);
+  }
+}
+
+/* iPad landscape layout fix */
+@media screen and (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+  .chat-column {
+    flex: 0.4;
+  }
+
+  .preview-column {
+    flex: 0.6;
+  }
+
+  /* Ensure game fills available space */
+  .game-fullscreen {
+    height: calc(100dvh - 80px) !important;
+  }
+}
+
+/* iPad portrait - stack chat on top of preview */
+@media screen and (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+  .ipad-stack {
+    flex-direction: column !important;
+  }
+
+  .ipad-stack>section {
+    flex: 1 1 auto !important;
+    min-height: 45dvh !important;
+  }
+
+  /* Game takes more space in portrait */
+  .game-fullscreen {
+    height: calc(100dvh - 100px) !important;
+  }
+}
+
+/* Tablet-specific game optimizations */
+@media screen and (min-width: 768px) and (max-width: 1366px) {
+
+  /* Enhanced game UI visibility */
+  .game-hud {
+    font-size: 1.25rem;
+    padding: 1rem 1.5rem;
+  }
+
+  .game-hud-icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  /* Larger quiz buttons for touch */
+  .quiz-option-btn {
+    min-height: 60px;
+    font-size: 1.125rem;
+    padding: 1rem 1.5rem;
+  }
+
+  /* Better spaced game overlays */
+  .game-overlay {
+    padding: 2rem;
+  }
+
+  .game-overlay-title {
+    font-size: 2.5rem;
+  }
+
+  .game-overlay-subtitle {
+    font-size: 1.25rem;
+  }
+
+  /* Bigger start button */
+  .game-start-btn {
+    min-height: 70px;
+    font-size: 1.5rem;
+    padding: 1.25rem 3rem;
+  }
+}
+
+/* Fix for iOS keyboard pushing content */
+@supports (-webkit-touch-callout: none) {
+  .keyboard-safe {
+    padding-bottom: env(safe-area-inset-bottom, 20px);
+  }
+
+  /* Prevent viewport resize when keyboard opens */
+  html {
+    height: 100%;
+    min-height: 100%;
+  }
+
+  /* Safe area insets for notched devices */
+  .safe-area-inset {
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    padding-left: env(safe-area-inset-left, 0px);
+    padding-right: env(safe-area-inset-right, 0px);
+  }
+}
+
+/* Safe area utility classes */
+.pt-safe {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.pl-safe {
+  padding-left: env(safe-area-inset-left, 0px);
+}
+
+.pr-safe {
+  padding-right: env(safe-area-inset-right, 0px);
+}
+
+/* Touch action optimizations for games */
+.game-touch-area {
+  touch-action: manipulation;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Prevent accidental text selection during gameplay */
+.game-container {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Fullscreen game mode for tablets */
+.fullscreen-game {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 50;
+  background: #0f172a;
+}
+
+/* Improved touch feedback */
+@media (pointer: coarse) {
+  .touch-feedback:active {
+    transform: scale(0.97);
+    opacity: 0.9;
+  }
+}
+
+/* Tablet orientation lock hint */
+.orientation-hint {
+  display: none;
+}
+
+@media screen and (max-height: 500px) and (orientation: landscape) {
+  .orientation-hint {
+    display: flex;
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.95);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.25rem;
+    text-align: center;
+    padding: 2rem;
+  }
+}
+
+/* ============================================
+   SKELETON LOADERS
+   ============================================ */
+@keyframes skeleton-pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.4;
+  }
+}
+
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton {
+  background: linear-gradient(90deg,
+      var(--color-slate-200) 0%,
+      var(--color-slate-100) 50%,
+      var(--color-slate-200) 100%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
+  border-radius: var(--radius-md);
+}
+
+.skeleton-pulse {
+  background-color: var(--color-slate-200);
+  animation: skeleton-pulse 2s ease-in-out infinite;
+  border-radius: var(--radius-md);
+}
+
+/* Skeleton variants */
+.skeleton-text {
+  height: 1rem;
+  width: 100%;
+}
+
+.skeleton-text-sm {
+  height: 0.75rem;
+  width: 80%;
+}
+
+.skeleton-title {
+  height: 1.5rem;
+  width: 60%;
+}
+
+.skeleton-avatar {
+  width: 3rem;
+  height: 3rem;
+  border-radius: var(--radius-full);
+}
+
+.skeleton-card {
+  width: 100%;
+  height: 200px;
+  border-radius: var(--radius-2xl);
+}
+
+.skeleton-image {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-lg);
+}
+
+/* ============================================
+   FOCUS-VISIBLE ACCESSIBILITY
+   ============================================ */
+/* Remove default outline, use custom focus ring */
+*:focus {
+  outline: none;
+}
+
+/* Keyboard focus ring - only shows on keyboard navigation */
+*:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+/* Button specific focus */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[role="button"]:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  box-shadow: none;
+}
+
+/* Card focus for keyboard navigation */
+.card:focus-visible,
+[role="listitem"]:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* ============================================
+   REUSABLE COMPONENT CLASSES
+   ============================================ */
+
+/* Button Base */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-6);
+  font-weight: 700;
+  border-radius: var(--radius-xl);
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+}
+
+.btn:active {
+  transform: scale(0.95);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Button Variants */
+.btn-primary {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--color-primary-dark);
+  box-shadow: var(--shadow-lg);
+}
+
+.btn-secondary {
+  background-color: var(--color-slate-100);
+  color: var(--color-slate-700);
+  border: 1px solid var(--color-slate-200);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: var(--color-slate-200);
+}
+
+.btn-ghost {
+  background-color: transparent;
+  color: var(--color-slate-600);
+}
+
+.btn-ghost:hover:not(:disabled) {
+  background-color: var(--color-slate-100);
+}
+
+/* Card Component */
+.card {
+  background-color: white;
+  border-radius: var(--radius-2xl);
+  border: 1px solid var(--color-slate-100);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-normal);
+}
+
+.card-interactive {
+  cursor: pointer;
+}
+
+.card-interactive:hover {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+
+/* Badge Component */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-3);
+  font-size: 0.625rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: var(--radius-full);
+}
+
+.badge-success {
+  background-color: #ecfdf5;
+  color: var(--color-success);
+  border: 1px solid #d1fae5;
+}
+
+.badge-warning {
+  background-color: #fffbeb;
+  color: var(--color-warning);
+  border: 1px solid #fef3c7;
+}
+
+.badge-error {
+  background-color: #fef2f2;
+  color: var(--color-error);
+  border: 1px solid #fecaca;
+}
+
+.badge-info {
+  background-color: var(--color-primary-50);
+  color: var(--color-primary);
+  border: 1px solid var(--color-primary-100);
+}
+
+/* Input Component */
+.input {
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  font-size: 1rem;
+  border: 1px solid var(--color-slate-200);
+  border-radius: var(--radius-xl);
+  background-color: white;
+  transition: all var(--transition-fast);
+}
+
+.input:hover:not(:disabled) {
+  border-color: var(--color-slate-300);
+}
+
+.input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-100);
+}
+
+/* Screen Reader Only */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Skip Link - off-screen until focused, for keyboard users */
+.skip-link {
+  position: absolute;
+  top: 0;
+  left: 1rem;
+  z-index: 9999;
+  padding: 0.75rem 1rem;
+  background: var(--color-primary);
+  color: white;
+  font-weight: 700;
+  border-radius: var(--radius-xl);
+  border: 2px solid white;
+  transform: translateY(-150%);
+  transition: transform var(--transition-fast);
+}
+
+.skip-link:focus {
+  transform: translateY(0.5rem);
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 12mm;
+  }
+
+  /* Hide EVERYTHING by default */
+  body>*:not(.print-section) {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
+  /* Ensure the app container doesn't interfere */
+  #root,
+  .app-container,
+  .hidden {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
+  /* Show ONLY the print section - HIGH SPECIFICITY to override Tailwind's hidden class */
+  body>div.print-section,
+  div.print-section,
+  .print-section {
+    display: block !important;
+    visibility: visible !important;
+    position: relative !important;
+    width: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
+    background: white !important;
+  }
+
+  .print-section>* {
+    visibility: visible !important;
+    display: block !important;
+  }
+
+  .print-section * {
+    visibility: visible !important;
+  }
+
+  /* Force page breaks - CRITICAL for multi-page print */
+  .page-break-after-always {
+    page-break-after: always !important;
+    break-after: page !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    min-height: 100vh;
+  }
+
+  /* Prevent orphaned content */
+  .page-break-avoid {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* Backgrounds are often hidden by browsers, force them */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  /* Ensure images print correctly */
+  img {
+    max-width: 100% !important;
+    page-break-inside: avoid !important;
+  }
+}

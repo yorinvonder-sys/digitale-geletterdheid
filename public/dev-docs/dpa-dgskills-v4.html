@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Model Verwerkersovereenkomst V4.0 - DGSkills</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { margin: 0; padding: 0; background: #f8fafc; color: #0f172a; font-family: system-ui, -apple-system, sans-serif; line-height: 1.6; }
+        .container { max-width: 56rem; margin: 3rem auto; padding: 3rem; background: #fff; box-shadow: 0 25px 50px -12px rgba(0,0,0,.25); border-radius: 0.5rem; border: 1px solid #e2e8f0; }
+        .flex-between { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 3rem; }
+        h1 { font-size: 1.875rem; font-weight: 900; color: #312e81; margin: 0 0 0.5rem 0; }
+        .subtitle { color: #64748b; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; font-size: 0.75rem; }
+        .text-right { text-align: right; }
+        .badge { background: #4f46e5; color: #fff; padding: 0.5rem 1rem; border-radius: 0.5rem; font-weight: 700; font-size: 0.875rem; display: inline-block; margin-bottom: 1rem; }
+        .version { font-size: 0.75rem; color: #94a3b8; }
+        .section { margin-bottom: 2rem; }
+        h2 { font-size: 1.25rem; font-weight: 700; border-bottom: 2px solid #f1f5f9; padding-bottom: 0.5rem; margin-bottom: 1rem; }
+        ol { margin: 0 0 0 1.5rem; padding: 0; }
+        ol li { margin-bottom: 1rem; }
+        .italic-sm { margin-top: 1rem; font-style: italic; font-size: 0.875rem; color: #475569; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+        @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } }
+        .card { padding: 1rem; background: #f8fafc; border-radius: 0.25rem; border: 1px solid #e2e8f0; }
+        .card h4 { font-weight: 700; font-size: 0.875rem; margin-bottom: 0.5rem; color: #3730a3; }
+        .card ul { margin: 0; padding-left: 1rem; font-size: 0.75rem; list-style: disc; }
+        .card li { margin-bottom: 0.25rem; }
+        table { width: 100%; font-size: 0.875rem; border-collapse: collapse; border: 1px solid #e2e8f0; margin-top: 1rem; }
+        th, td { border: 1px solid #e2e8f0; padding: 0.5rem; text-align: left; }
+        thead { background: #f8fafc; }
+        .signatures { margin-top: 4rem; padding-top: 3rem; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; gap: 2rem; flex-wrap: wrap; }
+        .sign-block { flex: 1; min-width: 200px; }
+        .sign-label { font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: #94a3b8; margin-bottom: 2rem; }
+        .sign-line { height: 4rem; border-bottom: 1px solid #cbd5e1; margin-bottom: 0.5rem; font-style: italic; color: #cbd5e1; display: flex; align-items: flex-end; }
+        .sign-name { font-size: 0.875rem; font-weight: 700; }
+        .sign-date { font-size: 0.75rem; color: #64748b; }
+        .instruction { margin-top: 3rem; background: #eef2ff; padding: 1.5rem; border-radius: 0.75rem; border: 1px solid #c7d2fe; }
+        .instruction h4 { font-weight: 700; color: #312e81; margin-bottom: 0.5rem; }
+        .instruction p { font-size: 0.875rem; color: #3730a3; }
+        .print-btn-wrap { max-width: 56rem; margin: 0 auto 3rem; display: flex; justify-content: center; }
+        .print-btn { background: #4f46e5; color: #fff; padding: 0.75rem 2rem; border-radius: 9999px; font-weight: 900; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,.1); }
+        .print-btn:hover { background: #4338ca; }
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white; }
+            .container { border: none; box-shadow: none; margin: 0; padding: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <div class="flex-between">
+            <div>
+                <h1>Verwerkersovereenkomst</h1>
+                <p class="subtitle">Model Privacyconvenant Onderwijs v4.0</p>
+            </div>
+            <div class="text-right">
+                <div class="badge no-print">PRE-FILLED TEMPLATE</div>
+                <p class="version">Versie: 14 februari 2026</p>
+            </div>
+        </div>
+
+        <div>
+            <section class="section">
+                <h2>De Ondergetekenden</h2>
+                <ol>
+                    <li>
+                        <strong>[NAAM SCHOOLBESTUUR]</strong>, gevestigd te [ADRES], rechtsgeldig vertegenwoordigd door [NAAM], hierna te noemen: <strong>Verwerkingsverantwoordelijke</strong>.
+                    </li>
+                    <li>
+                        <strong>Future Architect</strong>, gevestigd te [ADRES], ingeschreven bij de Kamer van Koophandel onder nummer [NUMMER], rechtsgeldig vertegenwoordigd door [NAAM], hierna te noemen: <strong>Verwerker</strong>.
+                    </li>
+                </ol>
+                <p class="italic-sm">Gezamenlijk te noemen "Partijen".</p>
+            </section>
+
+            <section class="section">
+                <h2>Artikel 1. Onderwerp van de Overeenkomst</h2>
+                <p>
+                    Deze Overeenkomst is een aanvulling op de Hoofdovereenkomst voor de levering van het platform <strong>DGSkills</strong>. 
+                    Verwerker verbindt zich onder de voorwaarden van deze Verwerkersovereenkomst in opdracht van Verwerkingsverantwoordelijke persoonsgegevens te verwerken.
+                </p>
+            </section>
+
+            <section class="section">
+                <h2>Artikel 2. De Verwerking</h2>
+                <p>De verwerking ziet op de volgende categorieën:</p>
+                <div class="grid-2">
+                    <div class="card">
+                        <h4>Soorten persoonsgegevens</h4>
+                        <ul>
+                            <li>Naam/weergavenaam</li>
+                            <li>E-mailadres (inlog)</li>
+                            <li>Rol (leerling/docent)</li>
+                            <li>Voortgangsgegevens (scores, badges, antwoorden)</li>
+                            <li>Interactiegegevens (logs voor support)</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h4>Categorieën betrokkenen</h4>
+                        <ul>
+                            <li>Leerlingen</li>
+                            <li>Onderwijzend personeel (docenten)</li>
+                            <li>Onderwijs-ondersteunend personeel (beheerders)</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>Artikel 3. Beveiliging</h2>
+                <p>Verwerker treft passende technische en organisatorische maatregelen, waaronder:</p>
+                <ul style="margin: 0 0 0 1.5rem; padding: 0; list-style: disc; font-size: 0.875rem;">
+                    <li>Encryptie van data (AES-256) en verbindingen (TLS 1.2+).</li>
+                    <li>Opslag uitsluitend binnen de EU (Google Cloud, regio europe-west1).</li>
+                    <li>Jaarlijkse interne security audits.</li>
+                    <li>Data-minimalisatie (geen overbodige gegevensuitvraag).</li>
+                </ul>
+            </section>
+
+            <section class="section">
+                <h2>Artikel 4. Subverwerkers</h2>
+                <p>Verwerkingsverantwoordelijke geeft toestemming voor het gebruik van de volgende subverwerkers:</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Subverwerker</th>
+                            <th>Dienst</th>
+                            <th>Locatie</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><em>Google Ireland Ltd.</em></td>
+                            <td>Infrastructuur (Vertex AI, Cloud Functions, Firestore)</td>
+                            <td><strong>EER (België/Nederland)</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p class="italic-sm" style="margin-top: 1rem;"><strong>Wijziging subverwerkers:</strong> Verwerker informeert Verwerkingsverantwoordelijke schriftelijk of per e-mail over voorgenomen wijzigingen in subverwerkers. Verwerkingsverantwoordelijke heeft redelijke termijn (minimaal 14 dagen) om bezwaar te maken. Bij gegrond bezwaar stopt Verwerker de inzet van de nieuwe subverwerker of biedt passende alternatieven.</p>
+            </section>
+
+            <section class="section">
+                <h2>Artikel 5. Datalekken</h2>
+                <p>
+                    Verwerker informeert Verwerkingsverantwoordelijke onverwijld, doch uiterlijk binnen 24 uur na ontdekking, over een incident dat mogelijk de privacy van betrokkenen in gevaar brengt.
+                </p>
+            </section>
+
+            <section class="section">
+                <h2>Artikel 6. Ondersteuning Rechten Betrokkenen</h2>
+                <p>Verwerker ondersteunt Verwerkingsverantwoordelijke bij het voldoen aan verzoeken van betrokkenen (inzage, rectificatie, wissing, beperking, overdraagbaarheid, bezwaar). Verwerker levert binnen redelijke termijn de benodigde informatie en voert technisch uitvoerbare handelingen uit. Verwerkingsverantwoordelijke blijft eindverantwoordelijk voor de beantwoording.</p>
+            </section>
+
+            <section class="section">
+                <h2>Artikel 7. Verwijdering en Teruggave na Beëindiging</h2>
+                <p>Na beëindiging van de Overeenkomst verwijdert of anonimiseert Verwerker alle persoonsgegevens binnen redelijke termijn (uiterlijk 30 dagen), tenzij Verwerkingsverantwoordelijke uitdrukkelijk teruggave verzoekt. Teruggave geschiedt in een gangbaar, machineleesbaar formaat. Bewaartermijnen uit de wet blijven van toepassing.</p>
+            </section>
+
+            <section class="section">
+                <h2>Artikel 8. Audit en Medewerking</h2>
+                <p>Verwerker verleent Verwerkingsverantwoordelijke of een door haar aangewezen auditor medewerking bij het controleren van de naleving van deze Overeenkomst. Dit omvat inzage in relevante documentatie en, na afspraak, een bezoek aan de verwerkingslocatie. Verwerker kan redelijke vertrouwelijkheidsverplichtingen opleggen. Auditkosten zijn voor rekening van Verwerkingsverantwoordelijke, tenzij anders overeengekomen.</p>
+            </section>
+
+            <section class="section">
+                <h2>Artikel 9. Internationale Doorgifte</h2>
+                <p>Verwerking vindt plaats binnen de EER. Indien in de toekomst doorgifte naar een derde land noodzakelijk wordt, treft Verwerker passende waarborgen (bijv. standaardcontractbepalingen, bindende bedrijfsvoorschriften of andere door de toezichthouder erkende mechanismen) en informeert Verwerkingsverantwoordelijke daarover.</p>
+            </section>
+
+            <div class="signatures">
+                <div class="sign-block">
+                    <p class="sign-label">Namens Schoolbestuur</p>
+                    <div class="sign-line">Handtekening</div>
+                    <p class="sign-name">[Naam Vertegenwoordiger]</p>
+                    <p class="sign-date">Datum:</p>
+                </div>
+                <div class="sign-block">
+                    <p class="sign-label">Namens Future Architect</p>
+                    <div class="sign-line">Handtekening</div>
+                    <p class="sign-name">[Naam Vertegenwoordiger]</p>
+                    <p class="sign-date">Datum:</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="instruction no-print">
+            <h4>Instructie voor ICT-afdeling:</h4>
+            <p>
+                Dit document is gebaseerd op het breed geaccepteerde <strong>Model Verwerkersovereenkomst v4.0</strong> van de sectororganisaties. 
+                U kunt dit document printen (Ctrl+P) naar PDF, de ontbrekende gegevens van het schoolbestuur invullen en getekend sturen naar <strong style="text-decoration: underline">compliance@dgskills.app</strong>.
+            </p>
+        </div>
+    </div>
+
+    <div class="print-btn-wrap no-print">
+        <button type="button" class="print-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+            Printen naar PDF
+        </button>
+    </div>
+
+</body>
+</html>

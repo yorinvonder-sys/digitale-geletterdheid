@@ -1,0 +1,262 @@
+import React, { useState, useEffect } from 'react';
+const ScholenLanding = React.lazy(() => import('./components/ScholenLanding').then(m => ({ default: m.ScholenLanding })));
+const IctLandingPage = React.lazy(() => import('./components/scholen/IctLandingPage').then(m => ({ default: m.IctLandingPage })));
+const IctIntegraties = React.lazy(() => import('./components/scholen/ict/IctIntegraties').then(m => ({ default: m.IctIntegraties })));
+const IctPrivacy = React.lazy(() => import('./components/scholen/ict/IctPrivacy').then(m => ({ default: m.IctPrivacy })));
+const PrivacyPolicy = React.lazy(() => import('./components/scholen/ict/PrivacyPolicy').then(m => ({ default: m.PrivacyPolicy })));
+const CookiePolicy = React.lazy(() => import('./components/scholen/ict/CookiePolicy').then(m => ({ default: m.CookiePolicy })));
+const AiTransparency = React.lazy(() => import('./components/scholen/ict/AiTransparency').then(m => ({ default: m.AiTransparency })));
+const IctTechnisch = React.lazy(() => import('./components/scholen/ict/IctTechnisch').then(m => ({ default: m.IctTechnisch })));
+const IctSupport = React.lazy(() => import('./components/scholen/ict/IctSupport').then(m => ({ default: m.IctSupport })));
+const Login = React.lazy(() => import('./components/Login').then(m => ({ default: m.Login })));
+
+// SEO Landing Pages
+const DigitaleGeletterdheidVo = React.lazy(() => import('./components/seo/DigitaleGeletterdheidVo').then(m => ({ default: m.DigitaleGeletterdheidVo })));
+const SloKerndoelen = React.lazy(() => import('./components/seo/SloKerndoelen').then(m => ({ default: m.SloKerndoelen })));
+const AiGeletterdheid = React.lazy(() => import('./components/seo/AiGeletterdheid').then(m => ({ default: m.AiGeletterdheid })));
+const ComplianceHub = React.lazy(() => import('./components/seo/ComplianceHub').then(m => ({ default: m.ComplianceHub })));
+const GuidePage = React.lazy(() => import('./components/seo/GuidePage').then(m => ({ default: m.GuidePage })));
+const ComplianceChecklist = React.lazy(() => import('./components/seo/ComplianceChecklist').then(m => ({ default: m.ComplianceChecklist })));
+const SloRapport = React.lazy(() => import('./components/seo/SloRapport').then(m => ({ default: m.SloRapport })));
+const ComparisonPage = React.lazy(() => import('./components/seo/ComparisonPage').then(m => ({ default: m.ComparisonPage })));
+const NotFound = React.lazy(() => import('./components/NotFound').then(m => ({ default: m.NotFound })));
+const MobileReceiptPage = React.lazy(() => import('./components/MobileReceiptPage').then(m => ({ default: m.MobileReceiptPage })));
+
+import { ParentUser } from './types';
+import { CookieConsent } from './components/CookieConsent';
+
+const AuthenticatedApp = React.lazy(() => import('./AuthenticatedApp').then(m => ({ default: m.AuthenticatedApp })));
+
+/** Minimal spinner — no lucide to avoid blocking LCP */
+const LoadingFallback = () => (
+    <div className="min-h-screen bg-[#f8fafc] flex flex-col items-center justify-center gap-4">
+        <div className="w-12 h-12 border-2 border-indigo-200 border-t-indigo-600 rounded-full animate-spin" aria-hidden="true" />
+        <p className="text-slate-500 font-medium">Laden...</p>
+    </div>
+);
+
+/** Sync path with history; re-render on popstate or programmatic navigation */
+function usePath() {
+    const [path, setPath] = useState(() => window.location.pathname);
+
+    useEffect(() => {
+        const handleChange = () => setPath(window.location.pathname);
+        window.addEventListener('popstate', handleChange);
+        window.addEventListener('pathchange', handleChange);
+        return () => {
+            window.removeEventListener('popstate', handleChange);
+            window.removeEventListener('pathchange', handleChange);
+        };
+    }, []);
+
+    return path;
+}
+
+/** Auth hook - immediate for reliability during login/session transitions */
+function useAuthUser() {
+    const [user, setUser] = useState<ParentUser | null>(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        let unsubscribe: (() => void) | undefined;
+        
+        import('./services/authService').then(({ subscribeToAuthChanges }) => {
+            unsubscribe = subscribeToAuthChanges((u) => {
+                setUser(u);
+                setLoading(false);
+            });
+        });
+
+        return () => unsubscribe?.();
+    }, []);
+
+    return { user, loading };
+}
+
+/** Public routes: / and /scholen. Render shell immediately; defer auth to avoid blocking LCP. */
+function PublicPageShell({ children }: { children: React.ReactNode }) {
+    return (
+        <div className="w-full min-h-screen relative">
+            <a href="#main-content" className="skip-link">Naar hoofdinhoud</a>
+            <div id="main-content" tabIndex={-1}>
+                {children}
+            </div>
+            <CookieConsent />
+        </div>
+    );
+}
+
+/** Public routes: / and /scholen. Render shell immediately; defer auth to avoid blocking LCP. */
+function PublicRoute() {
+    const { user, loading } = useAuthUser();
+
+    if (loading) return <LoadingFallback />;
+    
+    // Forced landing page for screenshots
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('force_landing')) {
+        return (
+            <PublicPageShell>
+                <ScholenLanding />
+            </PublicPageShell>
+        );
+    }
+
+    if (!user) {
+        return (
+            <PublicPageShell>
+                <ScholenLanding />
+            </PublicPageShell>
+        );
+    }
+
+    return (
+        <React.Suspense fallback={<LoadingFallback />}>
+            <AuthenticatedApp />
+        </React.Suspense>
+    );
+}
+
+/** Login route: /login. Render shell immediately; defer auth to avoid blocking LCP. */
+function LoginRoute() {
+    const { user, loading } = useAuthUser();
+
+    const handleSuccess = () => {
+        window.history.replaceState({}, '', '/');
+        window.dispatchEvent(new Event('pathchange'));
+    };
+
+    if (loading) return <LoadingFallback />;
+    if (!user) {
+        return (
+            <PublicPageShell>
+                <Login onLoginSuccess={handleSuccess} />
+            </PublicPageShell>
+        );
+    }
+
+    // Logged-in user on /login: redirect to / and show app (same as before)
+    handleSuccess();
+
+    return (
+        <React.Suspense fallback={<LoadingFallback />}>
+            <AuthenticatedApp />
+        </React.Suspense>
+    );
+}
+
+/** /bonnetje route: standalone mobiele scanner — vereist login */
+function BonnetjeRoute() {
+    const { user, loading } = useAuthUser();
+
+    if (loading) return <LoadingFallback />;
+
+    if (!user) {
+        // Sla de redirect-URL op en stuur naar login
+        window.history.replaceState({}, '', '/login?redirect=/bonnetje');
+        window.dispatchEvent(new Event('pathchange'));
+        return <LoadingFallback />;
+    }
+
+    function goHome() {
+        window.history.replaceState({}, '', '/');
+        window.dispatchEvent(new Event('pathchange'));
+    }
+
+    return (
+        <React.Suspense fallback={<LoadingFallback />}>
+            <MobileReceiptPage userId={user.uid} onNavigateHome={goHome} />
+        </React.Suspense>
+    );
+}
+
+export function AppRouter() {
+    const path = usePath();
+    const normalizedPath = path !== '/' ? path.replace(/\/+$/, '') : path;
+
+    if (normalizedPath === '/' || normalizedPath === '/scholen') {
+        return <PublicRoute />;
+    }
+
+    if (normalizedPath === '/ict') {
+        return (
+            <PublicPageShell>
+                <React.Suspense fallback={<LoadingFallback />}>
+                    <IctLandingPage />
+                </React.Suspense>
+            </PublicPageShell>
+        );
+    }
+
+    if (normalizedPath === '/ict/integraties' || normalizedPath === '/ict/privacy' || normalizedPath === '/ict/technisch' || normalizedPath === '/ict/support' || normalizedPath === '/ict/privacy/policy' || normalizedPath === '/ict/privacy/cookies' || normalizedPath === '/ict/privacy/ai') {
+        return (
+            <PublicPageShell>
+                <React.Suspense fallback={<LoadingFallback />}>
+                    {normalizedPath === '/ict/integraties' && <IctIntegraties />}
+                    {normalizedPath === '/ict/privacy' && <IctPrivacy />}
+                    {normalizedPath === '/ict/privacy/policy' && <PrivacyPolicy />}
+                    {normalizedPath === '/ict/privacy/cookies' && <CookiePolicy />}
+                    {normalizedPath === '/ict/privacy/ai' && <AiTransparency />}
+                    {normalizedPath === '/ict/technisch' && <IctTechnisch />}
+                    {normalizedPath === '/ict/support' && <IctSupport />}
+                </React.Suspense>
+            </PublicPageShell>
+        );
+    }
+
+    if (normalizedPath === '/login') {
+        return <LoginRoute />;
+    }
+
+    if (normalizedPath === '/bonnetje') {
+        return <BonnetjeRoute />;
+    }
+
+    if (normalizedPath === '/digitale-geletterdheid-vo' || normalizedPath === '/slo-kerndoelen-digitale-geletterdheid' || normalizedPath === '/ai-geletterdheid-onderwijs-ai-act' || normalizedPath === '/compliance-hub' || normalizedPath === '/compliance/checklist' || normalizedPath === '/compliance/slo-rapport' || normalizedPath.startsWith('/vergelijking/')) {
+        return (
+            <PublicPageShell>
+                <React.Suspense fallback={<LoadingFallback />}>
+                    {normalizedPath === '/digitale-geletterdheid-vo' && <DigitaleGeletterdheidVo />}
+                    {normalizedPath === '/slo-kerndoelen-digitale-geletterdheid' && <SloKerndoelen />}
+                    {normalizedPath === '/ai-geletterdheid-onderwijs-ai-act' && <AiGeletterdheid />}
+                    {normalizedPath === '/compliance-hub' && <ComplianceHub />}
+                    {normalizedPath === '/compliance/checklist' && <ComplianceChecklist />}
+                    {normalizedPath === '/compliance/slo-rapport' && <SloRapport />}
+                    {normalizedPath === '/vergelijking/dgskills-vs-digit-vo' && <ComparisonPage competitor="digit-vo" />}
+                    {normalizedPath === '/vergelijking/dgskills-vs-basicly' && <ComparisonPage competitor="basicly" />}
+                </React.Suspense>
+            </PublicPageShell>
+        );
+    }
+
+    if (normalizedPath.startsWith('/gids/')) {
+        const guideId = normalizedPath.split('/')[2];
+        return (
+            <PublicPageShell>
+                <React.Suspense fallback={<LoadingFallback />}>
+                    <GuidePage guideId={guideId} />
+                </React.Suspense>
+            </PublicPageShell>
+        );
+    }
+
+    // 404 handler for public routes
+    const isPublicRoute = normalizedPath === '' || normalizedPath === '/' || normalizedPath === '/scholen' || normalizedPath === '/ict' || normalizedPath.startsWith('/ict/') || normalizedPath === '/login' || normalizedPath === '/digitale-geletterdheid-vo' || normalizedPath === '/slo-kerndoelen-digitale-geletterdheid' || normalizedPath === '/ai-geletterdheid-onderwijs-ai-act' || normalizedPath === '/compliance-hub' || normalizedPath.startsWith('/compliance/') || normalizedPath.startsWith('/vergelijking/') || normalizedPath.startsWith('/gids/');
+
+    if (isPublicRoute) {
+        return (
+            <PublicPageShell>
+                <React.Suspense fallback={<LoadingFallback />}>
+                    <NotFound />
+                </React.Suspense>
+            </PublicPageShell>
+        );
+    }
+
+    // Protected routes: load full app (handles auth redirect internally)
+    return (
+        <React.Suspense fallback={<LoadingFallback />}>
+            <AuthenticatedApp />
+        </React.Suspense>
+    );
+}

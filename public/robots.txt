@@ -1,0 +1,20 @@
+# DGSkills — robots.txt
+# https://dgskills.app
+
+User-agent: *
+Allow: /
+Allow: /scholen
+Allow: /login
+
+# Specific crawlers
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# Sitemap
+Sitemap: https://dgskills.app/sitemap.xml
+
+# Host
+Host: https://dgskills.app
