@@ -3,6 +3,7 @@ import { ProjectZeroDashboard } from './components/ProjectZeroDashboard';
 import { MissionIntro } from './components/MissionIntro';
 import { Footer } from './components/Footer';
 import { ParentUser, UserStats, RoleId, AvatarConfig } from './types';
+import { ROLES } from './config/agents';
 import { subscribeToAuthChanges, logout } from './services/authService';
 import { supabase } from './services/supabase';
 import { Feather, Gamepad2, BrainCircuit, Database, ShieldCheck, Pencil, Play, Stars, Map as MapIcon, Lightbulb, Rocket, Loader2, ArrowLeft, Lock, Scale } from 'lucide-react';
@@ -65,6 +66,7 @@ export function AuthenticatedApp() {
     const [showGames, setShowGames] = useState(false);
     const [initialGameId, setInitialGameId] = useState<string | null>(null);
     const [gamesEnabled, setGamesEnabled] = useState(true);
+    const [activeYearGroup, setActiveYearGroup] = useState<number>(1);
     const [focusMode, setFocusMode] = useState(false);
     const [focusMissionId, setFocusMissionId] = useState<string | null>(null);
     const [focusMissionTitle, setFocusMissionTitle] = useState<string | null>(null);
@@ -514,35 +516,9 @@ export function AuthenticatedApp() {
     []); // setIsProfileOpen en setInitialProfileTab zijn stabiele setState setters
 
     const renderContent = () => {
-        const missionToRoleMap: Record<string, RoleId> = {
-            'magister-master': 'magister-master',
-            'cloud-commander': 'cloud-commander',
-            'word-wizard': 'word-wizard',
-            'slide-specialist': 'slide-specialist',
-            'print-pro': 'print-pro',
-            'review-week-1': 'week1-review',
-            'verhalen-ontwerper': 'verhalen-ontwerper',
-            'nepnieuws-speurder': 'nepnieuws-speurder',
-            'game-programmeur': 'game-programmeur',
-            'ai-trainer': 'ai-trainer',
-            'chatbot-trainer': 'chatbot-trainer',
-            'ai-tekengame': 'ai-tekengame',
-            'review-week-2': 'review-week-2',
-            'data-detective': 'data-detective',
-            'deepfake-detector': 'deepfake-detector',
-            'ai-spiegel': 'ai-spiegel',
-            'social-safeguard': 'social-safeguard',
-            'cookie-crusher': 'cookie-crusher',
-            'data-handelaar': 'data-handelaar',
-            'privacy-profiel-spiegel': 'privacy-profiel-spiegel',
-            'social-media-psychologist': 'social-media-psychologist',
-            'review-week-3': 'review-week-3',
-            'mission-blueprint': 'mission-blueprint',
-            'mission-vision': 'mission-vision',
-            'mission-launch': 'mission-launch',
-            'startup-pitch': 'startup-pitch',
-            'ai-beleid-brainstorm': 'ai-beleid-brainstorm'
-        };
+        // Build mission-to-role map dynamically from ROLES config (covers Y1, Y2, Y3)
+        const missionToRoleMap: Record<string, RoleId> = {};
+        ROLES.forEach(role => { missionToRoleMap[role.id] = role.id; });
 
         const role = activeModule ? missionToRoleMap[activeModule] : undefined;
 
@@ -882,6 +858,8 @@ export function AuthenticatedApp() {
                 stats={user?.stats}
                 focusMode={focusMode && !hasCompletedFocusMission}
                 userRole={user?.role}
+                activeYearGroup={activeYearGroup}
+                setActiveYearGroup={setActiveYearGroup}
             />
         );
     };

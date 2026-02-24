@@ -23,8 +23,7 @@ import { awardXP } from '../services/XPService';
 import { logger } from '../utils/logger';
 // KnowledgeRunner removed - using AssessmentEngine for all review missions
 import { AssessmentEngine } from './assessment/AssessmentEngine';
-import { WEEK_1_ASSESSMENT, WEEK_1_CONFIG } from './assessment/data/week1Assessment';
-import { WEEK_3_ASSESSMENT, WEEK_3_CONFIG } from './assessment/data/week3Assessment';
+import { getAssessment, hasAssessment } from './assessment/data/assessmentRegistry';
 import { RotateDevicePrompt } from './RotateDevicePrompt';
 import { logActivity, saveHybridAssessmentRecord } from '../services/teacherService';
 
@@ -835,7 +834,7 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
         )}
 
         {selectedRole && missionStarted && (
-          (selectedRole.id === 'review-week-1' || selectedRole.id === 'review-week-2' || selectedRole.id === 'ai-tekengame' || selectedRole.id === 'chatbot-trainer' || selectedRole.id === 'ai-beleid-brainstorm') ? (
+          (hasAssessment(selectedRole.id) || selectedRole.id === 'ai-tekengame' || selectedRole.id === 'chatbot-trainer' || selectedRole.id === 'ai-beleid-brainstorm') ? (
             // Full Screen Game Mode fo Review Missions & Tekengame & Chatbot Trainer
             <div className="flex-1 w-full h-full min-h-0 relative animate-in zoom-in-95 duration-500 rounded-3xl overflow-hidden shadow-2xl border-4 border-slate-900 bg-slate-900">
               {selectedRole.id === 'chatbot-trainer' ? (
@@ -874,93 +873,45 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
                     handleBackToOverview();
                   }}
                 />
-              ) : selectedRole.id === 'review-week-1' ? (
-                // NEW: Practical Assessment for Week 1
-                <AssessmentEngine
-                  config={WEEK_1_CONFIG}
-                  tasks={WEEK_1_ASSESSMENT}
-                  onSubmitResult={async (result) => {
-                    if (!user?.uid) return;
-                    await saveHybridAssessmentRecord({
-                      uid: user.uid,
-                      schoolId: user.schoolId,
-                      studentName: user.displayName || 'Naamloos',
-                      studentClass: user.studentClass,
-                      missionId: selectedRole.id,
-                      autoScore: result.autoScore,
-                      teacherScore: result.teacherScore,
-                      finalScore: result.finalScore,
-                      passed: result.passed,
-                      teacherChecks: result.teacherChecks,
-                      weights: result.weights || { autoWeight: 0.6, teacherWeight: 0.4 }
-                    });
-                  }}
-                  onComplete={(passed, score) => {
-                    if (passed) {
-                      setStats(prev => ({
-                        ...prev,
-                        missionsCompleted: [...new Set([...(prev.missionsCompleted || []), selectedRole.id])]
-                      }));
-                      handleAwardXP(150, "Week 1 Praktijk Review");
-                    }
-                  }}
-                  onExit={handleBackToOverview}
-                  initialState={stats.missionProgress?.['review-week-1']?.data}
-                  onSave={handleMissionDataSave}
-                />
-              ) : selectedRole.id === 'review-week-2' ? (
-                // Week 3 review - using Week 3 assessment data
-                <AssessmentEngine
-                  config={WEEK_3_CONFIG}
-                  tasks={WEEK_3_ASSESSMENT}
-                  onSubmitResult={async (result) => {
-                    if (!user?.uid) return;
-                    await saveHybridAssessmentRecord({
-                      uid: user.uid,
-                      schoolId: user.schoolId,
-                      studentName: user.displayName || 'Naamloos',
-                      studentClass: user.studentClass,
-                      missionId: selectedRole.id,
-                      autoScore: result.autoScore,
-                      teacherScore: result.teacherScore,
-                      finalScore: result.finalScore,
-                      passed: result.passed,
-                      teacherChecks: result.teacherChecks,
-                      weights: result.weights || { autoWeight: 0.6, teacherWeight: 0.4 }
-                    });
-                  }}
-                  onComplete={(passed, score) => {
-                    if (passed) {
-                      setStats(prev => ({
-                        ...prev,
-                        missionsCompleted: [...new Set([...(prev.missionsCompleted || []), selectedRole.id])]
-                      }));
-                      handleAwardXP(150, "Week 3 Praktijk Review");
-                    }
-                  }}
-                  onExit={handleBackToOverview}
-                  initialState={stats.missionProgress?.['review-week-2']?.data}
-                  onSave={handleMissionDataSave}
-                />
-              ) : (
-                // Week 4+ reviews - fallback
-                <AssessmentEngine
-                  config={WEEK_1_CONFIG}
-                  tasks={WEEK_1_ASSESSMENT}
-                  onComplete={(passed, score) => {
-                    if (passed) {
-                      setStats(prev => ({
-                        ...prev,
-                        missionsCompleted: [...new Set([...(prev.missionsCompleted || []), selectedRole.id])]
-                      }));
-                      handleAwardXP(150, "Praktijk Review");
-                    }
-                  }}
-                  onExit={handleBackToOverview}
-                  initialState={stats.missionProgress?.[selectedRole.id]?.data}
-                  onSave={handleMissionDataSave}
-                />
-              )}
+              ) : (() => {
+                // Dynamic assessment lookup via registry
+                const assessmentData = getAssessment(selectedRole.id);
+                if (!assessmentData) return null;
+                return (
+                  <AssessmentEngine
+                    config={assessmentData.config}
+                    tasks={assessmentData.tasks}
+                    onSubmitResult={async (result) => {
+                      if (!user?.uid) return;
+                      await saveHybridAssessmentRecord({
+                        uid: user.uid,
+                        schoolId: user.schoolId,
+                        studentName: user.displayName || 'Naamloos',
+                        studentClass: user.studentClass,
+                        missionId: selectedRole.id,
+                        autoScore: result.autoScore,
+                        teacherScore: result.teacherScore,
+                        finalScore: result.finalScore,
+                        passed: result.passed,
+                        teacherChecks: result.teacherChecks,
+                        weights: result.weights || { autoWeight: 0.6, teacherWeight: 0.4 }
+                      });
+                    }}
+                    onComplete={(passed, score) => {
+                      if (passed) {
+                        setStats(prev => ({
+                          ...prev,
+                          missionsCompleted: [...new Set([...(prev.missionsCompleted || []), selectedRole.id])]
+                        }));
+                        handleAwardXP(150, `${assessmentData.config.title || 'Praktijk'} Review`);
+                      }
+                    }}
+                    onExit={handleBackToOverview}
+                    initialState={stats.missionProgress?.[selectedRole.id]?.data}
+                    onSave={handleMissionDataSave}
+                  />
+                );
+              })()}
             </div>
           ) : (
             // Standard Split View for other missions
@@ -1287,35 +1238,39 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
       )}
 
       {/* Week 1 Review (Assessment) */}
-      {view === 'week1-review' && (
-        <div className="absolute inset-0 z-50 bg-slate-900">
-          <AssessmentEngine
-            tasks={WEEK_1_ASSESSMENT}
-            config={WEEK_1_CONFIG}
-            onSubmitResult={async (result) => {
-              if (!user?.uid) return;
-              await saveHybridAssessmentRecord({
-                uid: user.uid,
-                schoolId: user.schoolId,
-                studentName: user.displayName || 'Naamloos',
-                studentClass: user.studentClass,
-                missionId: 'week1-review',
-                autoScore: result.autoScore,
-                teacherScore: result.teacherScore,
-                finalScore: result.finalScore,
-                passed: result.passed,
-                teacherChecks: result.teacherChecks,
-                weights: result.weights || { autoWeight: 0.6, teacherWeight: 0.4 }
-              });
-            }}
-            onComplete={(passed, score) => {
-              if (passed) handleAwardXP(score, 'Week 1 Review');
-              setView('lab');
-            }}
-            onExit={() => setView('lab')}
-          />
-        </div>
-      )}
+      {view === 'week1-review' && (() => {
+        const assessmentData = getAssessment('review-week-1');
+        if (!assessmentData) return null;
+        return (
+          <div className="absolute inset-0 z-50 bg-slate-900">
+            <AssessmentEngine
+              tasks={assessmentData.tasks}
+              config={assessmentData.config}
+              onSubmitResult={async (result) => {
+                if (!user?.uid) return;
+                await saveHybridAssessmentRecord({
+                  uid: user.uid,
+                  schoolId: user.schoolId,
+                  studentName: user.displayName || 'Naamloos',
+                  studentClass: user.studentClass,
+                  missionId: 'week1-review',
+                  autoScore: result.autoScore,
+                  teacherScore: result.teacherScore,
+                  finalScore: result.finalScore,
+                  passed: result.passed,
+                  teacherChecks: result.teacherChecks,
+                  weights: result.weights || { autoWeight: 0.6, teacherWeight: 0.4 }
+                });
+              }}
+              onComplete={(passed, score) => {
+                if (passed) handleAwardXP(score, 'Week 1 Review');
+                setView('lab');
+              }}
+              onExit={() => setView('lab')}
+            />
+          </div>
+        );
+      })()}
 
     </div>
   );

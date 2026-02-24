@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Users, Zap, Target, Activity, AlertTriangle, Flame, Sparkles, GraduationCap, ChevronRight, Filter, X, Search, ChevronDown, Shield, Cpu, Database, Palette, Bot, Code, Globe, User, MonitorSmartphone, BarChart3 } from 'lucide-react';
 import { StudentData, GamificationEvent } from '../../types';
-import { ALL_MISSIONS } from '../../config/missions';
+import { getMissionsForYear } from '../../config/missions';
 import { SLO_GOALS, SLO_DOMAINS } from '../../config/slo-goals';
 import { calculateStudentSLOStats } from '../../config/slo-mapping';
 import { StatCardSkeleton, Skeleton } from './Skeleton';
@@ -18,9 +18,12 @@ interface MetricsOverviewProps {
     onSelectStudent?: (student: StudentData) => void;
     selectedStudentId?: string | null;
     onSelectStudentFilter?: (studentId: string | null) => void;
+    yearGroup?: number;
 }
 
-export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, activeEvents, onNavigate, loading, onFilterConcept, onResetFilters, conceptFilter, onSelectStudent, selectedStudentId, onSelectStudentFilter }) => {
+export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, activeEvents, onNavigate, loading, onFilterConcept, onResetFilters, conceptFilter, onSelectStudent, selectedStudentId, onSelectStudentFilter, yearGroup = 1 }) => {
+    const yearMissions = useMemo(() => getMissionsForYear(yearGroup), [yearGroup]);
+
     // Student filter dropdown state
     const [showStudentDropdown, setShowStudentDropdown] = useState(false);
     const [studentSearch, setStudentSearch] = useState('');
@@ -65,9 +68,18 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
     }, [displayedStudents]);
 
     // Class stats for comparison (only show when not filtering individual student)
-    const classGroups = ['MH1A', 'MH1B', 'HV1A', 'HV1B', 'HV1C'];
+    const classGroups = useMemo(() => {
+        const groups = new Set<string>();
+        students.forEach(s => {
+            const cls = (s as any).studentClass || s.stats?.studentClass || s.identifier?.replace(/\d{3,}$/, '');
+            if (cls) groups.add(cls);
+        });
+        return Array.from(groups).sort();
+    }, [students]);
     const classStats = classGroups.map(g => {
-        const classStudents = students.filter(s => s.identifier?.startsWith(g));
+        const classStudents = students.filter(s =>
+            (s as any).studentClass === g || s.stats?.studentClass === g || s.identifier?.startsWith(g)
+        );
         return {
             name: g,
             count: classStudents.length,
@@ -297,7 +309,7 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
                                 <div className="text-[9px] font-bold text-slate-400 uppercase">Populair</div>
                             </div>
                             <div className="text-lg font-black text-slate-900 truncate">
-                                {popularMission ? ALL_MISSIONS.find(m => m.id === popularMission[0])?.short || '?' : '-'}
+                                {popularMission ? yearMissions.find(m => m.id === popularMission[0])?.short || '?' : '-'}
                             </div>
                             <div className="text-[10px] text-slate-400 font-medium truncate">
                                 {popularMission ? `${popularMission[1]}x voltooid` : 'Geen data'}

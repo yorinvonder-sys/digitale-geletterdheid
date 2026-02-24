@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Shield, Target, Lock, Crown, Zap, Users } from 'lucide-react';
-import { ALL_MISSIONS } from '../../config/missions';
+import { getMissionsForYear } from '../../config/missions';
 import { TeacherGameToggle } from '../games/TeacherGameToggle';
 import { ClassroomConfig } from '../../types';
 
@@ -11,11 +11,13 @@ interface SettingsPanelProps {
     enabledMissions: string[];
     onToggleMission: (missionId: string) => void;
     onTestGame?: (gameId: string) => void;
+    yearGroup?: number;
     classroomConfig: ClassroomConfig | null;
     onUpdateConfig: (update: Partial<ClassroomConfig>) => void;
 }
 
-export const SettingsPanel: React.FC<SettingsPanelProps> = ({ classFilter, onClassFilterChange, availableClasses, enabledMissions, onToggleMission, onTestGame, classroomConfig, onUpdateConfig }) => {
+export const SettingsPanel: React.FC<SettingsPanelProps> = ({ classFilter, onClassFilterChange, availableClasses, enabledMissions, onToggleMission, onTestGame, yearGroup = 1, classroomConfig, onUpdateConfig }) => {
+    const yearMissions = useMemo(() => getMissionsForYear(yearGroup), [yearGroup]);
     return (
         <div className="space-y-6">
             <div className="bg-white rounded-[2rem] shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden p-6">
@@ -47,7 +49,7 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({ classFilter, onCla
                     </div>
                 ) : (
                     <div className="grid gap-3">
-                        {ALL_MISSIONS.map(mission => (
+                        {yearMissions.map(mission => (
                             <div key={mission.id} className="flex items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-100">
                                 <div>
                                     <div className="font-bold text-slate-900">{mission.name}</div>
@@ -95,7 +97,7 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({ classFilter, onCla
                             onChange={(e) => onUpdateConfig({ pinnedMissionId: e.target.value || undefined })}
                         >
                             <option value="">-- Geen gepinde missie --</option>
-                            {ALL_MISSIONS.map(m => (
+                            {yearMissions.map(m => (
                                 <option key={m.id} value={m.id}>{m.name}</option>
                             ))}
                         </select>
@@ -128,7 +130,7 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({ classFilter, onCla
             </div>
 
             <div className="mt-8">
-                <TeacherGameToggle onTestGame={onTestGame} />
+                <TeacherGameToggle onTestGame={onTestGame} yearGroup={yearGroup} />
             </div>
         </div>
     );

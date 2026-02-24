@@ -99,9 +99,9 @@ export const PrivacyPolicy: React.FC = () => {
                                         <td className="px-4 py-2 font-medium">EER (Ierland)</td>
                                     </tr>
                                     <tr className="border-t">
-                                        <td className="px-4 py-2 italic text-slate-800 font-medium">Google AI (Gemini)</td>
-                                        <td className="px-4 py-2">AI-ondersteuning (API-basis, geen training)</td>
-                                        <td className="px-4 py-2 font-medium">EER (via EU-endpoints)</td>
+                                        <td className="px-4 py-2 italic text-slate-800 font-medium">Google Vertex AI (Gemini)</td>
+                                        <td className="px-4 py-2">AI-ondersteuning (Vertex AI, geen training)</td>
+                                        <td className="px-4 py-2 font-medium">EER (Nederland, europe-west4)</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -117,11 +117,12 @@ export const PrivacyPolicy: React.FC = () => {
                             <li>Strikt rolgebaseerd toegangsbeheer (RBAC) via Supabase Row Level Security (RLS).</li>
                             <li>Continue logging van beveiligingsgerelateerde events (audit logs).</li>
                         </ul>
-                        <h3 className="text-lg font-bold mt-6 mb-3">AI-verwerking (Gemini)</h3>
+                        <h3 className="text-lg font-bold mt-6 mb-3">AI-verwerking (Vertex AI)</h3>
                         <p>
-                            Voor AI-ondersteuning gebruiken wij Google Gemini via server-side API-koppelingen. Hierbij worden alleen noodzakelijke
-                            prompts en context doorgegeven voor de gevraagde functie. We gebruiken deze gegevens niet voor marketingprofilering.
-                            Gegevensdeling en retentie volgen de contractuele afspraken met subverwerkers en de instructies van de school.
+                            Voor AI-ondersteuning gebruiken wij Google Gemini via Vertex AI met een EU-regionaal endpoint (europe-west4, Nederland).
+                            Google garandeert dat data at rest en ML-verwerking binnen deze regio plaatsvinden. Prompts en responses worden niet
+                            door Google bewaard (zero data retention). Wij gebruiken deze gegevens niet voor marketingprofilering.
+                            Gegevensdeling en retentie volgen de Google Cloud DPA (met SCCs) en de instructies van de school.
                         </p>
 
                         <h2 className="text-xl font-bold mt-8 mb-4">6. Bewaartermijnen</h2>

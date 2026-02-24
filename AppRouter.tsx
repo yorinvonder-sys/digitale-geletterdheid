@@ -7,6 +7,7 @@ const PrivacyPolicy = React.lazy(() => import('./components/scholen/ict/PrivacyP
 const CookiePolicy = React.lazy(() => import('./components/scholen/ict/CookiePolicy').then(m => ({ default: m.CookiePolicy })));
 const AiTransparency = React.lazy(() => import('./components/scholen/ict/AiTransparency').then(m => ({ default: m.AiTransparency })));
 const IctTechnisch = React.lazy(() => import('./components/scholen/ict/IctTechnisch').then(m => ({ default: m.IctTechnisch })));
+const IctImplementatieGids = React.lazy(() => import('./components/scholen/ict/IctImplementatieGids').then(m => ({ default: m.IctImplementatieGids })));
 const IctSupport = React.lazy(() => import('./components/scholen/ict/IctSupport').then(m => ({ default: m.IctSupport })));
 const Login = React.lazy(() => import('./components/Login').then(m => ({ default: m.Login })));
 
@@ -188,7 +189,7 @@ export function AppRouter() {
         );
     }
 
-    if (normalizedPath === '/ict/integraties' || normalizedPath === '/ict/privacy' || normalizedPath === '/ict/technisch' || normalizedPath === '/ict/support' || normalizedPath === '/ict/privacy/policy' || normalizedPath === '/ict/privacy/cookies' || normalizedPath === '/ict/privacy/ai') {
+    if (normalizedPath === '/ict/integraties' || normalizedPath === '/ict/privacy' || normalizedPath === '/ict/technisch' || normalizedPath === '/ict/implementatiegids' || normalizedPath === '/ict/support' || normalizedPath === '/ict/privacy/policy' || normalizedPath === '/ict/privacy/cookies' || normalizedPath === '/ict/privacy/ai') {
         return (
             <PublicPageShell>
                 <React.Suspense fallback={<LoadingFallback />}>
@@ -198,6 +199,7 @@ export function AppRouter() {
                     {normalizedPath === '/ict/privacy/cookies' && <CookiePolicy />}
                     {normalizedPath === '/ict/privacy/ai' && <AiTransparency />}
                     {normalizedPath === '/ict/technisch' && <IctTechnisch />}
+                    {normalizedPath === '/ict/implementatiegids' && <IctImplementatieGids />}
                     {normalizedPath === '/ict/support' && <IctSupport />}
                 </React.Suspense>
             </PublicPageShell>

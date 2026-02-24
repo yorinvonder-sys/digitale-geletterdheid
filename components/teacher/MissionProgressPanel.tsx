@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Target, Users, ChevronRight, CheckCircle2, Clock, AlertTriangle, BarChart3, X } from 'lucide-react';
 import { StudentData } from '../../types';
-import { ALL_MISSIONS } from '../../config/missions';
+import { getMissionsForYear, MissionInfo } from '../../config/missions';
 
 interface MissionProgressPanelProps {
     students: StudentData[];
@@ -10,6 +10,7 @@ interface MissionProgressPanelProps {
     availableClasses: string[];
     onClassFilterChange: (cls: string) => void;
     onSelectStudent?: (student: StudentData) => void;
+    yearGroup?: number;
 }
 
 interface MissionStats {
@@ -31,8 +32,10 @@ export const MissionProgressPanel: React.FC<MissionProgressPanelProps> = ({
     classFilter,
     availableClasses,
     onClassFilterChange,
-    onSelectStudent
+    onSelectStudent,
+    yearGroup = 1
 }) => {
+    const yearMissions = useMemo(() => getMissionsForYear(yearGroup), [yearGroup]);
     const [expandedMission, setExpandedMission] = useState<string | null>(null);
     const [showStudentList, setShowStudentList] = useState<{ mission: string; type: 'completed' | 'inProgress' | 'notStarted' } | null>(null);
 
@@ -48,7 +51,7 @@ export const MissionProgressPanel: React.FC<MissionProgressPanelProps> = ({
 
     // Calculate mission stats
     const missionStats: MissionStats[] = useMemo(() => {
-        return ALL_MISSIONS.map(mission => {
+        return yearMissions.map(mission => {
             const completed = filteredStudents.filter(s =>
                 s.stats?.missionsCompleted?.includes(mission.id)
             );
@@ -80,16 +83,17 @@ export const MissionProgressPanel: React.FC<MissionProgressPanelProps> = ({
                 studentsNotStarted: notStarted
             };
         });
-    }, [filteredStudents]);
+    }, [filteredStudents, yearMissions]);
 
-    // Overall class progress
+    // Overall class progress (only count missions belonging to the selected year)
     const overallProgress = useMemo(() => {
-        const totalMissions = ALL_MISSIONS.length * filteredStudents.length;
+        const yearMissionIds = new Set(yearMissions.map(m => m.id));
+        const totalMissions = yearMissions.length * filteredStudents.length;
         const completedMissions = filteredStudents.reduce((sum, s) =>
-            sum + (s.stats?.missionsCompleted?.length || 0), 0
+            sum + (s.stats?.missionsCompleted?.filter(id => yearMissionIds.has(id)).length || 0), 0
         );
         return totalMissions > 0 ? Math.round((completedMissions / totalMissions) * 100) : 0;
-    }, [filteredStudents]);
+    }, [filteredStudents, yearMissions]);
 
     const getProgressColor = (percentage: number) => {
         if (percentage >= 70) return 'bg-emerald-500';

@@ -1,11 +1,11 @@
 import { Search, Filter, GraduationCap, ChevronRight, KeyRound, RotateCcw } from 'lucide-react';
 import { StudentData } from '../../types';
-import { ALL_MISSIONS } from '../../config/missions';
+import { getMissionsForYear } from '../../config/missions';
 import { AVAILABLE_BADGES } from '../../config/badges';
 import { TableRowSkeleton } from './Skeleton';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ResetPasswordModal } from './ResetPasswordModal';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 
 interface StudentListProps {
     students: StudentData[];
@@ -15,6 +15,7 @@ interface StudentListProps {
     classFilter: string;
     onClassFilterChange: (cls: string) => void;
     onSelectStudent: (student: StudentData) => void;
+    yearGroup?: number;
 }
 
 export const StudentList: React.FC<StudentListProps> = ({
@@ -24,9 +25,18 @@ export const StudentList: React.FC<StudentListProps> = ({
     onSearchChange,
     classFilter,
     onClassFilterChange,
-    onSelectStudent
+    onSelectStudent,
+    yearGroup = 1
 }) => {
-    const classGroups = ['MH1A', 'MH1B', 'HV1A', 'HV1B', 'HV1C'];
+    const classGroups = useMemo(() => {
+        const groups = new Set<string>();
+        students.forEach(s => {
+            const cls = s.studentClass || s.stats?.studentClass;
+            if (cls) groups.add(cls);
+        });
+        return Array.from(groups).sort();
+    }, [students]);
+    const yearMissions = useMemo(() => getMissionsForYear(yearGroup), [yearGroup]);
     const [now, setNow] = useState(new Date().getTime());
     const fiveMinutes = 5 * 60 * 1000;
     const [passwordResetStudent, setPasswordResetStudent] = useState<StudentData | null>(null);
@@ -161,7 +171,7 @@ export const StudentList: React.FC<StudentListProps> = ({
                                     </td>
                                     <td className="px-4 py-3 hidden md:table-cell">
                                         <div className="flex gap-0.5">
-                                            {ALL_MISSIONS.map(m => (
+                                            {yearMissions.map(m => (
                                                 <div
                                                     key={m.id}
                                                     title={m.name}

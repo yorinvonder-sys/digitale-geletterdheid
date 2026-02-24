@@ -186,8 +186,9 @@ export const setGamePermission = async (
     enabled: boolean,
     _teacherId?: string,
     schoolId?: string,
+    yearGroup?: number,
 ): Promise<boolean> => {
-    const current = await getGamePermissions(schoolId);
+    const current = await getGamePermissions(schoolId, yearGroup);
     let enabledGames = [...(current.enabled_games || [])];
 
     if (enabled && !enabledGames.includes(gameId)) {
@@ -196,7 +197,7 @@ export const setGamePermission = async (
         enabledGames = enabledGames.filter(g => g !== gameId);
     }
 
-    return updateGamePermissions({ enabled_games: enabledGames }, schoolId);
+    return updateGamePermissions({ enabled_games: enabledGames }, schoolId, yearGroup);
 };
 
 

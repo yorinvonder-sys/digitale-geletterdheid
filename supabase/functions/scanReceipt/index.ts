@@ -5,17 +5,18 @@
  * 1. JWT auth verificatie (Supabase)
  * 2. Bestandsgrootte-limiet (max 10 MB base64)
  * 3. MIME-type validatie
- * 4. Gemini API key server-side only
+ * 4. Vertex AI (europe-west4) — enterprise ToS, no age restriction
+ * 5. Service account auth (no API key in URL)
  *
  * Input:  { imageBase64: string, mimeType: string }
  * Output: { supplier, date, amount, vatAmount, vatRate, description, category }
  */
 
-const GEMINI_API_KEY = Deno.env.get("GEMINI_API_KEY")!;
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { getAccessToken, getVertexUrl } from "../_shared/vertexAuth.ts";
+
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
-
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const ALLOWED_ORIGINS = new Set([
     "https://dgskills.app",
@@ -100,8 +101,9 @@ Deno.serve(async (req: Request) => {
         );
     }
 
-    // 3. Gemini Vision aanroepen
-    const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
+    // 3. Gemini Vision aanroepen via Vertex AI (EU endpoint)
+    const geminiUrl = getVertexUrl("gemini-2.0-flash");
+    const accessToken = await getAccessToken();
 
     const prompt = `Je bent een Nederlandse boekhoudings-AI. Analyseer dit bonnetje of factuur en extraheer de volgende gegevens.
 
@@ -128,7 +130,10 @@ Antwoord ALLEEN met de JSON, geen uitleg of extra tekst.`;
 
     const geminiResponse = await fetch(geminiUrl, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${accessToken}`,
+        },
         body: JSON.stringify({
             contents: [{
                 parts: [

@@ -49,20 +49,20 @@ export const TeacherGameToggle: React.FC<TeacherGameToggleProps> = ({ onTestGame
 
     useEffect(() => {
         // Initial load
-        getGamePermissions().then(setPermissions);
+        getGamePermissions(undefined, yearGroup).then(setPermissions);
 
         // Subscribe for real-time updates
         const unsubscribe = subscribeToPermissions(undefined, (perms) => {
             setPermissions(perms);
-        });
+        }, yearGroup);
 
         return () => unsubscribe();
-    }, []);
+    }, [yearGroup]);
 
     const handleToggle = async (gameId: string, enabled: boolean) => {
         setSaving(gameId);
         try {
-            await setGamePermission(gameId, enabled);
+            await setGamePermission(gameId, enabled, undefined, undefined, yearGroup);
             // Permissions will be updated via subscription
         } catch (error) {
             console.error('Error toggling game permission:', error);

@@ -84,7 +84,7 @@ export const AiGeletterdheid: React.FC = () => {
                             <ComplianceCard 
                                 badge="Wetgeving"
                                 title="AI Act Artikel 50"
-                                description="DGSkills valt onder 'Limited Risk' AI. Wij voldoen aan alle transparantie-eisen en borgen de verplichte AI-geletterdheid voor docenten en leerlingen."
+                                description="DGSkills is geclassificeerd als hoog-risico AI-systeem (Annex III). Wij voldoen aan alle transparantie-eisen en werken actief aan volledige EU AI Act conformiteit."
                             />
                             <ComplianceCard 
                                 badge="Privacy"

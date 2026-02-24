@@ -206,12 +206,77 @@
     "format": "HTML"
   },
   {
+    "id": "QS1tb2RlbC12ZXJ3ZXJrZXJzb3ZlcmVlbmtvbXN0LWRnc2tpbGxzLm1k",
+    "title": "A Model Verwerkersovereenkomst DGSkills",
+    "description": "Document uit de business/nl-vo/compliance map.",
+    "category": "compliance",
+    "path": "/dev-docs/A-model-verwerkersovereenkomst-dgskills.md",
+    "updatedAt": "2026-02-23",
+    "tags": [
+      "Legal",
+      "GDPR"
+    ],
+    "format": "MD"
+  },
+  {
+    "id": "Qi1iZXZlaWxpZ2luZ3NiaWpsYWdlLWRnc2tpbGxzLm1k",
+    "title": "B Beveiligingsbijlage DGSkills",
+    "description": "Document uit de business/nl-vo/compliance map.",
+    "category": "compliance",
+    "path": "/dev-docs/B-beveiligingsbijlage-dgskills.md",
+    "updatedAt": "2026-02-23",
+    "tags": [
+      "Legal",
+      "GDPR"
+    ],
+    "format": "MD"
+  },
+  {
+    "id": "Qy1zdWItdmVyd2Vya2Vyc2xpanN0LWRnc2tpbGxzLm1k",
+    "title": "C Sub Verwerkerslijst DGSkills",
+    "description": "Document uit de business/nl-vo/compliance map.",
+    "category": "compliance",
+    "path": "/dev-docs/C-sub-verwerkerslijst-dgskills.md",
+    "updatedAt": "2026-02-23",
+    "tags": [
+      "Legal",
+      "GDPR"
+    ],
+    "format": "MD"
+  },
+  {
+    "id": "RC1oYW5kbGVpZGluZy12ZXJ3ZXJrZXJzb3ZlcmVlbmtvbXN0LXNjaG9sZW4ubWQ",
+    "title": "D Handleiding Verwerkersovereenkomst Scholen",
+    "description": "Document uit de business/nl-vo/compliance map.",
+    "category": "compliance",
+    "path": "/dev-docs/D-handleiding-verwerkersovereenkomst-scholen.md",
+    "updatedAt": "2026-02-23",
+    "tags": [
+      "Legal",
+      "GDPR"
+    ],
+    "format": "MD"
+  },
+  {
+    "id": "RS1wcml2YWN5Ymlqc2x1aXRlci1kZ3NraWxscy5tZA",
+    "title": "E Privacybijsluiter DGSkills",
+    "description": "Document uit de business/nl-vo/compliance map.",
+    "category": "compliance",
+    "path": "/dev-docs/E-privacybijsluiter-dgskills.md",
+    "updatedAt": "2026-02-23",
+    "tags": [
+      "Legal",
+      "GDPR"
+    ],
+    "format": "MD"
+  },
+  {
     "id": "YXVkaXQtcmVwb3J0Lm1k",
     "title": "Audit Report",
     "description": "Document uit de business/nl-vo/compliance map.",
     "category": "compliance",
     "path": "/dev-docs/audit-report.md",
-    "updatedAt": "2026-02-14",
+    "updatedAt": "2026-02-23",
     "tags": [
       "Legal",
       "GDPR"
@@ -245,12 +310,52 @@
     "format": "MD"
   },
   {
+    "id": "ZHBpYS1kZ3NraWxscy1jb21wbGVldC5tZA",
+    "title": "DPIA DGSkills Compleet",
+    "description": "Document uit de business/nl-vo/compliance map.",
+    "category": "compliance",
+    "path": "/dev-docs/dpia-dgskills-compleet.md",
+    "updatedAt": "2026-02-23",
+    "tags": [
+      "Legal",
+      "GDPR"
+    ],
+    "format": "MD"
+  },
+  {
     "id": "ZHBpYS1zdXBwb3J0LXRlbXBsYXRlLm1k",
     "title": "DPIA Support Template",
     "description": "Document uit de business/nl-vo/compliance map.",
     "category": "compliance",
     "path": "/dev-docs/dpia-support-template.md",
     "updatedAt": "2026-02-14",
+    "tags": [
+      "Legal",
+      "GDPR"
+    ],
+    "format": "MD"
+  },
+  {
+    "id": "ZXUtYWktYWN0LWNvbmZvcm1pdGVpdHNwbGFuLm1k",
+    "title": "Eu AI Act Conformiteitsplan",
+    "description": "Document uit de business/nl-vo/compliance map.",
+    "category": "compliance",
+    "path": "/dev-docs/eu-ai-act-conformiteitsplan.md",
+    "updatedAt": "2026-02-23",
+    "tags": [
+      "Legal",
+      "GDPR",
+      "AI"
+    ],
+    "format": "MD"
+  },
+  {
+    "id": "ZmctZHBvLWFkdmllc3JhcHBvcnQubWQ",
+    "title": "FG Dpo Adviesrapport",
+    "description": "Document uit de business/nl-vo/compliance map.",
+    "category": "compliance",
+    "path": "/dev-docs/fg-dpo-adviesrapport.md",
+    "updatedAt": "2026-02-23",
     "tags": [
       "Legal",
       "GDPR"
@@ -286,6 +391,19 @@
     "format": "MD"
   },
   {
+    "id": "cHJpdmFjeXZlcmtsYXJpbmctZGdza2lsbHMubWQ",
+    "title": "Privacyverklaring DGSkills",
+    "description": "Document uit de business/nl-vo/compliance map.",
+    "category": "compliance",
+    "path": "/dev-docs/privacyverklaring-dgskills.md",
+    "updatedAt": "2026-02-23",
+    "tags": [
+      "Legal",
+      "GDPR"
+    ],
+    "format": "MD"
+  },
+  {
     "id": "c2Nob29sLWNvbXBsaWFuY2UtZ3VpZGUuaHRtbA",
     "title": "School Compliance Guide",
     "description": "Document uit de business/nl-vo/compliance map.",
@@ -298,6 +416,32 @@
       "School"
     ],
     "format": "HTML"
+  },
+  {
+    "id": "dmVyd2Vya2Vyc292ZXJlZW5rb21zdGVuLXJhcHBvcnQubWQ",
+    "title": "Verwerkersovereenkomsten Rapport",
+    "description": "Document uit de business/nl-vo/compliance map.",
+    "category": "compliance",
+    "path": "/dev-docs/verwerkersovereenkomsten-rapport.md",
+    "updatedAt": "2026-02-23",
+    "tags": [
+      "Legal",
+      "GDPR"
+    ],
+    "format": "MD"
+  },
+  {
+    "id": "dmVyd2Vya2luZ3NyZWdpc3Rlci5tZA",
+    "title": "Verwerkingsregister",
+    "description": "Document uit de business/nl-vo/compliance map.",
+    "category": "compliance",
+    "path": "/dev-docs/verwerkingsregister.md",
+    "updatedAt": "2026-02-23",
+    "tags": [
+      "Legal",
+      "GDPR"
+    ],
+    "format": "MD"
   },
   {
     "id": "ZHBhLWRnc2tpbGxzLXY0Lmh0bWw",

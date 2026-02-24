@@ -3,6 +3,7 @@ import { supabase } from './supabase';
 import type { ParentUser, UserRole } from '../types';
 import { logAccountCreated } from './auditService';
 import { enforcePasswordPolicy } from '../utils/passwordValidator';
+import { validateEmail } from '../utils/emailValidator';
 import type { AuthChangeEvent, Session, User as SupabaseUser } from '@supabase/supabase-js';
 
 // --- Helpers ---
@@ -70,6 +71,16 @@ export const registerWithEmail = async (
     studentClass?: string
 ) => {
     try {
+        // Validate email format before hitting Supabase (prevents bounced emails)
+        const emailCheck = validateEmail(email);
+        if (!emailCheck.valid) {
+            throw new Error(
+                emailCheck.suggestion
+                    ? `${emailCheck.error} ${emailCheck.suggestion}`
+                    : emailCheck.error ?? 'Ongeldig e-mailadres.'
+            );
+        }
+
         const [localPart = '', domain = ''] = email.toLowerCase().split('@');
         if (domain === 'almerecollege.nl' && /^[a-z]{3}$/.test(localPart)) {
             throw new Error(
@@ -166,6 +177,16 @@ export const signInWithEmail = async (email: string, password: string) => {
 
 export const resetPassword = async (email: string) => {
     try {
+        // Validate email before sending reset (prevents bounced emails)
+        const emailCheck = validateEmail(email);
+        if (!emailCheck.valid) {
+            throw new Error(
+                emailCheck.suggestion
+                    ? `${emailCheck.error} ${emailCheck.suggestion}`
+                    : emailCheck.error ?? 'Ongeldig e-mailadres.'
+            );
+        }
+
         const { error } = await supabase.auth.resetPasswordForEmail(email, {
             redirectTo: `${window.location.origin}/reset-password`,
         });

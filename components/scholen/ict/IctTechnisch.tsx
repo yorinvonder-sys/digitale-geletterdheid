@@ -122,10 +122,10 @@ export const IctTechnisch: React.FC = () => {
                     </div>
                     <div className="mt-12 text-center">
                         <a
-                            href="/#gratis-pilot"
+                            href="/ict/implementatiegids"
                             className="inline-block px-8 py-4 bg-indigo-500 hover:bg-indigo-400 text-white font-bold rounded-2xl transition-colors"
                         >
-                            Vraag ICT Implementatie-gids aan
+                            Bekijk ICT Implementatiegids
                         </a>
                     </div>
                 </div>

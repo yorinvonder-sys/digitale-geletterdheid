@@ -170,16 +170,21 @@ export interface KerndoelProgress {
   totalMissions: string[];
 }
 
-export function calculateStudentKerndoelStats(student: StudentData): Record<SloKerndoelCode, KerndoelProgress> {
+export function calculateStudentKerndoelStats(student: StudentData, yearGroup?: number): Record<SloKerndoelCode, KerndoelProgress> {
   const studentClass = student.studentClass || student.stats?.studentClass;
   const vsoProfile = student.stats?.vsoProfile;
   const completedMissions = new Set(student.stats?.missionsCompleted || []);
+
+  // When a yearGroup is provided, only consider missions from that year
+  const missions = yearGroup != null
+    ? KERNDOEL_MISSIONS.filter(m => m.yearGroup === yearGroup)
+    : KERNDOEL_MISSIONS;
 
   const out = Object.fromEntries(
     KERNDOEL_CODES.map((code) => [code, { completed: 0, total: 0, percentage: 0, completedMissions: [], totalMissions: [] }])
   ) as Record<SloKerndoelCode, KerndoelProgress>;
 
-  for (const mission of KERNDOEL_MISSIONS) {
+  for (const mission of missions) {
     if (!isMissionApplicableToStudent(mission, studentClass)) continue;
 
     // Select codes based on profile

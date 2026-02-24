@@ -4,7 +4,7 @@
 
 export type SloKerndoelCode =
     // Regulier PO/VO
-    | '21A' | '21B' | '21C' | '21D' | '22A' | '22B' | '22C' | '23A' | '23B' | '23C'
+    | '21A' | '21B' | '21C' | '21D' | '22A' | '22B' | '23A' | '23B' | '23C'
     // VSO Functioneel
     | '18A' | '18B' | '18C' | '19A' | '20A' | '20B';
 
@@ -91,7 +91,7 @@ export const SLO_KERNDOELEN: Record<SloKerndoelCode, SloKerndoel> = {
         domein: 'Praktische kennis & vaardigheden',
         domeinNummer: 21,
         label: 'Media & Informatie',
-        omschrijving: 'De leerling navigeert doelgericht in het digitale media- en informatienatuurlandschap.',
+        omschrijving: 'De leerling navigeert doelgericht in het digitale media- en informatielandschap.',
         kleur: 'blue',
     },
     '21C': {
@@ -124,14 +124,6 @@ export const SLO_KERNDOELEN: Record<SloKerndoelCode, SloKerndoel> = {
         domeinNummer: 22,
         label: 'Programmeren',
         omschrijving: 'De leerling programmeert een computerprogramma met behulp van computationele denkstrategieën.',
-        kleur: 'purple',
-    },
-    '22C': {
-        code: '22C',
-        domein: 'Ontwerpen & maken',
-        domeinNummer: 22,
-        label: 'Computational Thinking',
-        omschrijving: 'De leerling analyseert problemen systematisch en past computationele denkstrategieën toe zoals decompositie, patroonherkenning en abstractie.',
         kleur: 'purple',
     },
     '23A': {

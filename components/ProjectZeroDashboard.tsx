@@ -49,7 +49,7 @@ interface Mission {
     isHighlighted?: boolean; // Show with orange glow effect
     isBonus?: boolean; // Optional bonus/extension mission for fast finishers
     isExternal?: boolean; // Execute mission in external app (Microsoft/Magister)
-    sloKerndoelen?: SloKerndoelCode[]; // SLO kerndoel codes (e.g. ['21A', '22C'])
+    sloKerndoelen?: SloKerndoelCode[]; // SLO kerndoel codes (e.g. ['21A', '22B'])
     sloVsoKerndoelen?: SloKerndoelCode[]; // NEW: SLO VSO kerndoel codes (e.g. ['18A', '20B'])
 }
 
@@ -255,11 +255,11 @@ const WEEK_MISSIONS: Record<number, Mission[]> = {
         { id: 'pitch-police', title: 'Pitch Politie', description: 'Geef deze saaie slide een makeover zodat het publiek niet in slaap valt.', icon: <Monitor size={40} />, number: 'Review', status: 'available', info: 'Slide-design principes herhalen. Maak slides visueel aantrekkelijk en duidelijk.', isReview: true, sloKerndoelen: ['21A', '22B'] },
 
         { id: 'prompt-master', title: 'Prompt Perfectionist', description: 'Leer het verschil tussen goede en slechte prompts.', icon: <Sparkles size={40} />, number: '01', status: 'available', info: 'Hoe vraag je AI om precies te doen wat je wilt? Leer het verschil tussen vage, onduidelijke prompts en krachtige, duidelijke prompts die perfecte resultaten opleveren!', sloKerndoelen: ['21B', '22A'], sloVsoKerndoelen: ['18C', '19A', '20B'] },
-        { id: 'game-programmeur', title: 'Game Programmeur', description: 'Repareer games met code. Bepaal zelf de regels van het spel.', icon: <Gamepad2 size={40} />, number: '02', status: 'available', info: 'Duik in de code van een kapotte game! Je leert de basis van programmeren door bugs op te lossen en de spelregels aan te passen.', sloKerndoelen: ['22A', '22C'], sloVsoKerndoelen: ['19A'] },
-        { id: 'ai-trainer', title: 'AI Trainer', description: 'Leer een robot het verschil tussen materialen met supervised learning.', icon: <Database size={40} />, number: '04', status: 'available', info: 'Hoe leert een computer? Jij gaat een AI-model trainen om verschillende materialen te herkennen door het goede voorbeelden te geven.', sloKerndoelen: ['21B', '22C'], sloVsoKerndoelen: ['18C'] },
-        { id: 'chatbot-trainer', title: 'Chatbot Trainer', description: 'Bouw je eigen chatbot en leer hoe AI gesprekken voert.', icon: <BrainCircuit size={40} />, number: '05', status: 'available', info: 'Hoe weet een chatbot wat hij moet antwoorden? Maak regels en test je eigen chatbot!', sloKerndoelen: ['21B', '22A', '22C'], sloVsoKerndoelen: ['18C', '19A'] },
+        { id: 'game-programmeur', title: 'Game Programmeur', description: 'Repareer games met code. Bepaal zelf de regels van het spel.', icon: <Gamepad2 size={40} />, number: '02', status: 'available', info: 'Duik in de code van een kapotte game! Je leert de basis van programmeren door bugs op te lossen en de spelregels aan te passen.', sloKerndoelen: ['22A', '22B'], sloVsoKerndoelen: ['19A'] },
+        { id: 'ai-trainer', title: 'AI Trainer', description: 'Leer een robot het verschil tussen materialen met supervised learning.', icon: <Database size={40} />, number: '04', status: 'available', info: 'Hoe leert een computer? Jij gaat een AI-model trainen om verschillende materialen te herkennen door het goede voorbeelden te geven.', sloKerndoelen: ['21D'], sloVsoKerndoelen: ['18C'] },
+        { id: 'chatbot-trainer', title: 'Chatbot Trainer', description: 'Bouw je eigen chatbot en leer hoe AI gesprekken voert.', icon: <BrainCircuit size={40} />, number: '05', status: 'available', info: 'Hoe weet een chatbot wat hij moet antwoorden? Maak regels en test je eigen chatbot!', sloKerndoelen: ['21D', '22A'], sloVsoKerndoelen: ['18C', '19A'] },
         { id: 'ai-tekengame', title: 'AI Tekengame', description: 'Teken en laat de AI raden wat het is!', icon: <Pencil size={40} />, number: '06', status: 'available', info: 'Test hoe goed AI patronen herkent. Teken een object en kijk of de AI het kan raden!', sloKerndoelen: ['21B'], sloVsoKerndoelen: ['18C'] },
-        { id: 'game-director', title: 'De Game Director', description: 'Word de architect. Herschrijf de natuurwetten en ontwerp je eigen game-regelset.', icon: <Settings2 size={40} />, number: 'Vrije Keuze', status: 'available', info: 'Ben jij creatief en technisch? In deze Vrije Keuze missie krijg je de volledige controle. Pas zwaartekracht, snelheid en uiterlijk aan om jouw perfecte game te maken. Geschikt voor leerlingen die graag experimenteren!', sloKerndoelen: ['22A', '22C'], sloVsoKerndoelen: ['19A'] },
+        { id: 'game-director', title: 'De Game Director', description: 'Word de architect. Herschrijf de natuurwetten en ontwerp je eigen game-regelset.', icon: <Settings2 size={40} />, number: 'Vrije Keuze', status: 'available', info: 'Ben jij creatief en technisch? In deze Vrije Keuze missie krijg je de volledige controle. Pas zwaartekracht, snelheid en uiterlijk aan om jouw perfecte game te maken. Geschikt voor leerlingen die graag experimenteren!', sloKerndoelen: ['22A', '22B'], sloVsoKerndoelen: ['19A'] },
         { id: 'verhalen-ontwerper', title: 'Verhalen Ontwerper', description: 'Visualiseer verhalen met AI. Leer prompts schrijven en beelden maken.', icon: <Feather size={40} />, number: '07', status: 'available', info: 'In deze missie leer je hoe je met Artificial Intelligence verhalen tot leven brengt. Je gaat werken met image-generation tools om scenes uit je verhaal te visualiseren.', sloKerndoelen: ['21B', '22A'], sloVsoKerndoelen: ['18C', '19A'] },
         { id: 'ai-beleid-brainstorm', title: 'AI Beleid Brainstorm', description: 'Denk mee over AI-regels op school.', icon: <Scale size={40} />, number: '08', status: 'available', info: 'Jouw mening telt! Help de school met het vormgeven van AI-beleid door ideeën te delen en te stemmen op de beste voorstellen.', sloKerndoelen: ['23B', '23C'], sloVsoKerndoelen: ['20B'] },
     ],
@@ -483,7 +483,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
         const isRightSwipe = distance < -minSwipeDistance;
 
         // Find next available week
-        const availableWeeks = [2]; // Currently only week 2 is unlocked
+        const availableWeeks = [1, 2, 3, 4];
 
         if (isLeftSwipe && activeWeek < 4) {
             // Swipe left = next week
@@ -1140,7 +1140,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                                             onInfoClick={handleInfoClick}
                                                             isCompleted={isCompleted}
                                                             isCompact={true}
-                                                            customHeader={`Herhaling ${periodNaming} ${activeWeek - 1}`}
+                                                            customHeader={activeWeek <= 1 ? 'Herhaling Basis' : `Herhaling ${periodNaming} ${activeWeek - 1}`}
                                                             vsoProfile={stats?.vsoProfile}
                                                         />
                                                     );

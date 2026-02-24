@@ -12,7 +12,7 @@
 
 #### Wat al goed is geregeld (GROEN)
 
-- API key (Gemini) staat server-side in de Edge Function, niet in de frontend
+- ~~API key (Gemini) staat server-side in de Edge Function, niet in de frontend~~ **UPDATE (23 feb 2026):** Gemini API key is vervangen door Vertex AI service account authenticatie. Geen API key meer nodig. Endpoint: europe-west4 (Nederland).
 - JWT authenticatie op alle Edge Functions (chat, deleteMyAccount, exportMyData, restrictProcessing)
 - Prompt injection filtering (OWASP LLM01:2025) met defense-in-depth (client + server)
 - RLS policies op de `users` tabel met `is_teacher()` helper
@@ -50,7 +50,9 @@
 
 #### Over de EU AI Act
 
-Jullie vallen onder "beperkt risico" (Art. 50). Dit betekent transparantieplicht: gebruikers moeten weten dat ze met AI praten. Dit is al geregeld in het product. Je bent NIET high-risk zolang de AI geen beslissingen neemt over leerlingen (beoordeling/selectie). De docent blijft eindverantwoordelijk - dat is goed.
+> **CORRECTIE (23 feb 2026):** De onderstaande oorspronkelijke classificatie als "beperkt risico" is **onjuist**. DGSkills is geclassificeerd als **HIGH RISK -- Annex III punt 3(b)** van de EU AI Act, omdat de AI STEP_COMPLETE markers genereert die leerresultaten evalueren en het leerproces sturen. Zie het conformiteitsbeoordelingsplan en het juridisch rapport (09-juridisch-rapport-compleet.md) voor de volledige analyse. De deadline voor hoog-risico verplichtingen is **2 augustus 2026**.
+
+~~Jullie vallen onder "beperkt risico" (Art. 50). Dit betekent transparantieplicht: gebruikers moeten weten dat ze met AI praten. Dit is al geregeld in het product. Je bent NIET high-risk zolang de AI geen beslissingen neemt over leerlingen (beoordeling/selectie).~~ De docent blijft eindverantwoordelijk - dat is goed.
 
 #### Over minderjarigen (<16 jaar)
 
@@ -165,7 +167,7 @@ Pricing is competitief en goed doordacht.
 
 - **Supabase**: Free tier of Pro ($25/maand)
 - **Vercel**: Free tier of Pro ($20/maand)
-- **Gemini API**: Pay-per-use, gemini-2.0-flash (~$0.075/1M input tokens)
+- **Vertex AI (Gemini)**: Pay-per-use, gemini-2.0-flash via Vertex AI europe-west4 (~$0.075/1M input tokens). Migratie van Gemini Developer API naar Vertex AI afgerond op 23 feb 2026.
 - **Totaal bij 10 scholen**: ~$50-100/maand infra
 - **Totaal bij 100 scholen**: ~$200-500/maand infra
 - **Brutomarge**: 95%+ bij schaal

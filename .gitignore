@@ -39,5 +39,12 @@ dist-ssr
 *.sw?
 .vercel
 
+# Lighthouse reports (contain captured API keys in network traces)
+lighthouse-reports/
+lighthouse-report.json
+
+# Firebase (legacy - migrated to Supabase)
+.firebase/
+
 # Large archives
 *.zip

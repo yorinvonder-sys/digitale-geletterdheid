@@ -4,7 +4,7 @@
 - React 19 + TypeScript + Vite
 - Supabase (auth, database, edge functions, RLS)
 - Tailwind CSS + Framer Motion
-- Google Gemini API (@google/genai)
+- Google Gemini via Vertex AI (europe-west4, service account auth)
 - Vercel (deployment)
 
 ## Agent Preferences
@@ -25,15 +25,34 @@
 - Supabase project with active migrations and RLS policies
 
 ## Key Reference Documents
-- **Lanceringsrapport (compleet):** `business/nl-vo/08-lanceringsrapport-compleet.md` — Bevat security audit, didactische analyse, docentvriendelijkheid review, business model analyse en 90-dagen lanceringsplan. Raadpleeg dit document bij elke sessie over lancering, compliance, didactiek of business.
+- **Lanceringsrapport (compleet):** `business/nl-vo/08-lanceringsrapport-compleet.md` — Security audit, didactische analyse, docentvriendelijkheid, business model, 90-dagen plan.
+- **Juridisch rapport (compleet):** `business/nl-vo/09-juridisch-rapport-compleet.md` — AVG/GDPR artikelsgewijs, EU AI Act (hoog-risico classificatie), ondernemingsrecht, onderwijsrecht, minderjarigenbescherming, alle actie-items met kosten.
 - **Pricing & pakketten:** `business/nl-vo/01-offer-packages-and-sla.md` + `business/nl-vo/02-pricing-matrix.md`
 - **Compliance & inkoop:** `business/nl-vo/04-compliance-and-procurement-pack.md`
 - **Legal matrix:** `business/nl-vo/compliance/legal-matrix.md`
 - **Pilot playbook:** `business/nl-vo/03-pilot-cohort-playbook.md`
 - **USP strategie:** `business/nl-vo/07-usp-strategy-and-messaging.md`
 
+## AI Act Classification
+- DGSkills is classified as **HIGH RISK** under EU AI Act Annex III point 3(b) — AI systems for evaluation of learning outcomes in education.
+- The earlier assessment in `08-lanceringsrapport-compleet.md` stating "beperkt risico" is INCORRECT. Follow the classification in `09-juridisch-rapport-compleet.md`.
+- Key deadline: **2 August 2026** — high-risk obligations become enforceable.
+
 ## Known Issues (Pre-Launch Blockers)
-1. CORS `Access-Control-Allow-Origin: *` op alle Edge Functions — moet beperkt worden tot `https://dgskills.app`
+1. ~~CORS `Access-Control-Allow-Origin: *` op alle Edge Functions~~ — **OPGELOST** (whitelist op dgskills.app)
 2. `systemInstruction` wordt ongevalideerd vanuit client naar chat Edge Function gestuurd
-3. Privacy-docs bevatten `[invullen]` placeholders die ingevuld moeten worden
-4. Verwerkersovereenkomst (DPA) is nog een template, geen ondertekend document
+3. Privacy-docs bevatten `[invullen]` placeholders die ingevuld moeten worden (wacht op KvK)
+4. ~~Verwerkersovereenkomst (DPA) is template~~ — **OPGELOST** (Model 4.0 Privacyconvenant opgesteld, A-E bijlagen)
+5. ~~Gemini API zonder safetySettings~~ — **OPGELOST** (BLOCK_LOW_AND_ABOVE op alle 4 categorieën)
+6. ~~Geen welzijnsprotocol~~ — **OPGELOST** (toegevoegd aan SYSTEM_INSTRUCTION_SUFFIX)
+7. ~~DPIA niet uitgevoerd~~ — **OPGELOST** (dpia-dgskills-compleet.md)
+8. Geen Algemene Voorwaarden
+9. Geen KvK-inschrijving / juridische entiteit
+10. Geen beroepsaansprakelijkheidsverzekering
+11. ~~Gemini Developer API ToS verbiedt gebruik voor <18~~ — **OPGELOST** (gemigreerd naar Vertex AI europe-west4)
+
+## Resolved Technical Changes (23 feb 2026)
+- **Vertex AI migratie**: `supabase/functions/chat/index.ts` en `scanReceipt/index.ts` gebruiken nu Vertex AI (`europe-west4-aiplatform.googleapis.com`) i.p.v. Gemini Developer API
+- **Auth**: Service account via `_shared/vertexAuth.ts` (JWT signing + token caching), secret: `GOOGLE_SERVICE_ACCOUNT_KEY`
+- **Data residency**: Google garandeert data at rest + ML processing in europe-west4 (Nederland)
+- **17 compliance-documenten**: Opgeslagen in `business/nl-vo/compliance/`

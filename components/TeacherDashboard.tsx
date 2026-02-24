@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { PageTransition } from './ui/PageTransition';
 import { supabase } from '../services/supabase';
@@ -14,7 +14,8 @@ import {
     getClassSettings, updateClassSettings, createEvent, getActiveEvents, endEvent,
     getClassroomConfig, updateClassroomConfig, highlightWork, deleteStudent
 } from '../services/teacherService';
-import { ALL_MISSIONS } from '../config/missions';
+import { getMissionsForYear } from '../config/missions';
+import { CURRICULUM } from '../config/curriculum';
 import { MetricsOverview } from './teacher/MetricsOverview';
 import { StudentList } from './teacher/StudentList';
 import { EventsPanel } from './teacher/EventsPanel';
@@ -59,6 +60,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
     const [gamificationSubTab, setGamificationSubTab] = useState<GamificationTab>('leaderboard');
     const [selectedStudent, setSelectedStudent] = useState<StudentData | null>(null);
     const [classFilter, setClassFilter] = useState<string>('all');
+    const [yearGroupFilter, setYearGroupFilter] = useState<number>(1);
 
     // Modals
     const [showMessageModal, setShowMessageModal] = useState(false);
@@ -102,8 +104,17 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
     // Active data
     const [activeEvents, setActiveEvents] = useState<GamificationEvent[]>([]);
     const [hybridAssessments, setHybridAssessments] = useState<HybridAssessmentRecord[]>([]);
-    const [enabledMissions, setEnabledMissions] = useState<string[]>(ALL_MISSIONS.map(m => m.id));
-    const classGroups = ['MH1A', 'MH1B', 'HV1A', 'HV1B', 'HV1C'];
+    const [enabledMissions, setEnabledMissions] = useState<string[]>([]);
+    const classGroups = useMemo(() => {
+        const groups = new Set<string>();
+        students.forEach(s => {
+            const cls = s.studentClass || s.stats?.studentClass;
+            if (cls) groups.add(cls);
+        });
+        return Array.from(groups).sort();
+    }, [students]);
+
+    const yearMissions = useMemo(() => getMissionsForYear(yearGroupFilter), [yearGroupFilter]);
     const selectedClassId = classFilter === 'all' ? 'MH1A' : classFilter;
 
     const [retryCount, setRetryCount] = useState(0);
@@ -183,7 +194,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
     useEffect(() => {
         // Load per-class settings when a class is selected.
         if (classFilter === 'all') {
-            setEnabledMissions(ALL_MISSIONS.map(m => m.id));
+            setEnabledMissions(yearMissions.map(m => m.id));
             return;
         }
 
@@ -191,17 +202,17 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
         getClassSettings(classFilter)
             .then((settings) => {
                 if (!active) return;
-                setEnabledMissions(settings?.enabled_missions?.length ? settings.enabled_missions : ALL_MISSIONS.map(m => m.id));
+                setEnabledMissions(settings?.enabled_missions?.length ? settings.enabled_missions : yearMissions.map(m => m.id));
             })
             .catch((err) => {
                 console.error(err);
-                if (active) setEnabledMissions(ALL_MISSIONS.map(m => m.id));
+                if (active) setEnabledMissions(yearMissions.map(m => m.id));
             });
 
         return () => {
             active = false;
         };
-    }, [classFilter]);
+    }, [classFilter, yearMissions]);
 
     useEffect(() => {
         // Keep dashboard config aligned with the selected class (used by SettingsPanel).
@@ -441,6 +452,26 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                 <main className="max-w-7xl mx-auto p-4 md:p-6 space-y-6">
                     <TeacherNavigation activeTab={activeTab} setActiveTab={setActiveTab} />
 
+                    {/* Year Group Selector */}
+                    <div className="flex items-center gap-3 bg-white rounded-xl border border-slate-200 shadow-sm p-2">
+                        <span className="text-xs font-bold text-slate-400 uppercase tracking-wider pl-2">Leerjaar</span>
+                        <div className="flex gap-1">
+                            {Object.entries(CURRICULUM.yearGroups).map(([year, config]) => (
+                                <button
+                                    key={year}
+                                    onClick={() => setYearGroupFilter(Number(year))}
+                                    className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${
+                                        yearGroupFilter === Number(year)
+                                            ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-200'
+                                            : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50'
+                                    }`}
+                                >
+                                    {year} — {config.title}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
                     <AnimatePresence mode="wait">
                         {activeTab === 'overview' && (
                             <PageTransition key="overview" className="space-y-6">
@@ -462,6 +493,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                                     onSelectStudent={setSelectedStudent}
                                     selectedStudentId={selectedStudentIdFilter}
                                     onSelectStudentFilter={setSelectedStudentIdFilter}
+                                    yearGroup={yearGroupFilter}
                                 />
                                 {students.some(s => (s.stats?.xp || 0) < 50) && <AlertsPanel students={students} onSelectStudent={setSelectedStudent} />}
                             </PageTransition>
@@ -488,6 +520,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                                     classFilter={classFilter}
                                     onClassFilterChange={setClassFilter}
                                     onSelectStudent={setSelectedStudent}
+                                    yearGroup={yearGroupFilter}
                                 />
                             </PageTransition>
                         )}
@@ -512,11 +545,11 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                             </PageTransition>
                         )}
 
-                        {activeTab === 'settings' && <PageTransition key="settings" className="space-y-6"><SettingsPanel classFilter={classFilter} onClassFilterChange={setClassFilter} availableClasses={classGroups} enabledMissions={enabledMissions} onToggleMission={handleToggleMission} onTestGame={onOpenGames} classroomConfig={classRoomConfig} onUpdateConfig={async u => { await updateClassroomConfig(selectedClassId, { ...u, schoolId: user?.schoolId }); setClassRoomConfig(p => p ? { ...p, ...u } : null); }} />{onLogout && <button onClick={onLogout} className="w-full py-4 border-2 border-red-100 text-red-600 rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-red-50"><RotateCcw size={18} /> Uitloggen</button>}</PageTransition>}
+                        {activeTab === 'settings' && <PageTransition key="settings" className="space-y-6"><SettingsPanel classFilter={classFilter} onClassFilterChange={setClassFilter} availableClasses={classGroups} enabledMissions={enabledMissions} onToggleMission={handleToggleMission} onTestGame={onOpenGames} yearGroup={yearGroupFilter} classroomConfig={classRoomConfig} onUpdateConfig={async u => { await updateClassroomConfig(selectedClassId, { ...u, schoolId: user?.schoolId }); setClassRoomConfig(p => p ? { ...p, ...u } : null); }} />{onLogout && <button onClick={onLogout} className="w-full py-4 border-2 border-red-100 text-red-600 rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-red-50"><RotateCcw size={18} /> Uitloggen</button>}</PageTransition>}
                         {activeTab === 'games' && <PageTransition key="games"><GamesPanel onOpenGame={onOpenGames || (() => { })} /></PageTransition>}
                         {activeTab === 'ai-beleid' && <PageTransition key="ai-beleid"><div className="bg-white rounded-[2rem] border border-slate-100 p-6"><AiBeleidFeedbackPanel classFilter={classFilter !== 'all' ? classFilter : undefined} schoolId={user?.schoolId} /></div></PageTransition>}
                         {activeTab === 'feedback' && <PageTransition key="feedback"><FeedbackPanel schoolId={user?.schoolId} /></PageTransition>}
-                        {activeTab === 'progress' && <PageTransition key="progress" className="space-y-6"><MissionProgressPanel students={students} classFilter={classFilter} availableClasses={classGroups} onClassFilterChange={setClassFilter} onSelectStudent={setSelectedStudent} /><HybridAssessmentPanel records={hybridAssessments} classFilter={classFilter} /></PageTransition>}
+                        {activeTab === 'progress' && <PageTransition key="progress" className="space-y-6"><MissionProgressPanel students={students} classFilter={classFilter} availableClasses={classGroups} onClassFilterChange={setClassFilter} onSelectStudent={setSelectedStudent} yearGroup={yearGroupFilter} /><HybridAssessmentPanel records={hybridAssessments} classFilter={classFilter} /></PageTransition>}
                         {activeTab === 'slo' && <PageTransition key="slo"><SLOClassOverview students={students} schoolId={user?.schoolId} /></PageTransition>}
                         {activeTab === 'documenten' && <PageTransition key="documenten"><TeacherDocumentsPanel /></PageTransition>}
                     </AnimatePresence>

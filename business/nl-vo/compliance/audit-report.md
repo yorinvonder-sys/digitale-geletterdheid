@@ -27,15 +27,24 @@ Statusoverzicht van de compliance-audit op basis van de actuele implementatie.
 | C-03 | Transparantie | **Voldaan** | Cookiebeleid geactualiseerd naar first-party analytics (geen GA). |
 | C-04 | Intrekken | **Voldaan** | Consentstatus kan worden gereset via UI. |
 
-## 3. EU AI Act Audit (Limited Risk - Art. 50)
+## 3. EU AI Act Audit (HIGH RISK — Annex III punt 3(b))
+
+> **Classificatiecorrectie (23 feb 2026):** DGSkills is een **hoog-risico AI-systeem** onder Annex III punt 3(b): "AI-systemen bedoeld voor evaluatie van leerresultaten, ook wanneer die worden gebruikt om het leerproces te sturen." De eerdere classificatie als "Limited Risk" was onjuist. Zie `eu-ai-act-conformiteitsplan.md` voor het volledige conformiteitsplan.
 
 | ID | Onderwerp | Status | Bevindingen / Bewijs |
 |:---|:---|:---|:---|
-| AI-01 | Transparantie | **Voldaan** | AI-gebruik en doeleinden expliciet beschreven in privacy-informatie. |
-| AI-02 | Labeling | **Voldaan** | AI-functionaliteit herkenbaar gepresenteerd in product. |
-| AI-03 | Risico-uitleg | **Voldaan** | Beperkingen en zorgvuldig gebruik van AI zijn toegelicht voor gebruikers. |
-| AI-04 | Datagebruik | **Voldaan** | Dataminimalisatie toegepast; geen marketingprofilering. |
-| AI-05 | Menselijk Toezicht | **Voldaan** | Docent blijft eindverantwoordelijk; geen geautomatiseerde besluitvorming met rechtsgevolg. |
+| AI-01 | Transparantie (Art. 13 + 50) | **Voldaan** | AI-gebruik en doeleinden expliciet beschreven; AI-content gelabeld met provenance metadata. |
+| AI-02 | Labeling (Art. 50) | **Voldaan** | AI-functionaliteit herkenbaar gepresenteerd; disclaimer "AI-gegenereerd — kan fouten bevatten". |
+| AI-03 | Risicobeheersysteem (Art. 9) | **Niet voldaan** | Individuele maatregelen aanwezig maar geen formeel, gedocumenteerd risicobeheersysteem. |
+| AI-04 | Technische documentatie (Art. 11) | **Niet voldaan** | Geen formeel Annex IV technisch documentatiedossier. |
+| AI-05 | Logging (Art. 12) | **Voldaan** | Audit logging via `auditService.ts` met AI-interactie metadata (zonder PII). |
+| AI-06 | Menselijk toezicht (Art. 14) | **Gedeeltelijk** | Docent is eindverantwoordelijk, maar STEP_COMPLETE kan nog niet door docent worden overruled. |
+| AI-07 | Nauwkeurigheid/Robuustheid (Art. 15) | **Gedeeltelijk** | Safety settings, prompt sanitizer en welzijnsprotocol aanwezig; geen formele nauwkeurigheidsmetrieken. |
+| AI-08 | QMS (Art. 17) | **Niet voldaan** | Geen formeel kwaliteitsmanagementsysteem. |
+| AI-09 | Conformiteitsverklaring (Art. 47) | **Niet voldaan** | Nog niet opgesteld. Deadline: 2 augustus 2026. |
+| AI-10 | CE-markering (Art. 48) | **Niet voldaan** | Nog niet aangebracht. |
+| AI-11 | EU-databank registratie (Art. 49) | **Niet voldaan** | EU-databank nog in ontwikkeling. |
+| AI-12 | Vertex AI migratie | **Voldaan** | Gemigreerd van Gemini Developer API (ToS verboden voor <18) naar Vertex AI (europe-west4, enterprise ToS). |
 
 ## 4. Security Hardening
 
@@ -48,4 +57,4 @@ Statusoverzicht van de compliance-audit op basis van de actuele implementatie.
 ---
 
 ## Eindoordeel
-DGSkills beschikt nu over een aantoonbaar versterkt compliance-profiel met verbeterde consent-enforcement, strengere securitymaatregelen en heldere documentatie voor minderjarigen en AI-verwerking.
+DGSkills is geclassificeerd als **hoog-risico AI-systeem** onder de EU AI Act (Annex III punt 3(b)). Het AVG-compliance profiel is sterk (alle AVG-checks voldaan). De EU AI Act compliance vereist nog substantieel werk: 5 van 12 checks zijn niet voldaan, 2 gedeeltelijk. De kritieke Vertex AI-migratie is uitgevoerd. Zie `eu-ai-act-conformiteitsplan.md` voor het volledige actieplan richting de deadline van 2 augustus 2026.

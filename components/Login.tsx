@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { validateEmail } from '../utils/emailValidator';
 
 /** Inline SVGs for critical path — avoids loading lucide (65kb) for LCP */
 const IconMail = (props: { size?: number; className?: string }) => (
@@ -67,6 +68,37 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+    const [emailHint, setEmailHint] = useState<string | null>(null);
+    const [emailSuggestion, setEmailSuggestion] = useState<string | null>(null);
+
+    // Validate email on blur (when user leaves the field)
+    const handleEmailBlur = useCallback(() => {
+        if (!email.trim()) {
+            setEmailHint(null);
+            setEmailSuggestion(null);
+            return;
+        }
+        const result = validateEmail(email);
+        if (!result.valid) {
+            setEmailHint(result.error ?? null);
+            setEmailSuggestion(result.suggestion ?? null);
+        } else {
+            setEmailHint(null);
+            setEmailSuggestion(null);
+        }
+    }, [email]);
+
+    // Accept email suggestion
+    const acceptEmailSuggestion = useCallback(() => {
+        if (!emailSuggestion) return;
+        // Extract email from suggestion text like "Bedoelde je user@gmail.com?"
+        const match = emailSuggestion.match(/(\S+@\S+)\?/);
+        if (match) {
+            setEmail(match[1]);
+            setEmailHint(null);
+            setEmailSuggestion(null);
+        }
+    }, [emailSuggestion]);
 
     // Rate limiting state
     const [failedAttempts, setFailedAttempts] = useState(() => {
@@ -304,12 +336,27 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                                         type="email"
                                         placeholder="E-mailadres"
                                         value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
-                                        aria-invalid={!!error && !error.includes('verstuurd')}
-                                        aria-describedby={error ? 'login-forgot-error' : undefined}
-                                        className="w-full pl-12 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all font-medium text-sm text-slate-700 placeholder:text-slate-400"
+                                        onChange={(e) => { setEmail(e.target.value); setEmailHint(null); setEmailSuggestion(null); }}
+                                        onBlur={handleEmailBlur}
+                                        aria-invalid={!!emailHint || (!!error && !error.includes('verstuurd'))}
+                                        aria-describedby={emailHint ? 'login-forgot-email-hint' : error ? 'login-forgot-error' : undefined}
+                                        className={`w-full pl-12 pr-4 py-3.5 bg-slate-50 border rounded-xl outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all font-medium text-sm text-slate-700 placeholder:text-slate-400 ${emailHint ? 'border-amber-400' : 'border-slate-200'}`}
                                         required
                                     />
+                                    {emailHint && (
+                                        <div id="login-forgot-email-hint" className="mt-1.5 text-xs font-semibold text-amber-600 bg-amber-50 px-3 py-2 rounded-lg border border-amber-100">
+                                            {emailHint}
+                                            {emailSuggestion && (
+                                                <button
+                                                    type="button"
+                                                    onClick={acceptEmailSuggestion}
+                                                    className="ml-1 text-indigo-600 hover:text-indigo-800 underline"
+                                                >
+                                                    {emailSuggestion}
+                                                </button>
+                                            )}
+                                        </div>
+                                    )}
                                 </div>
 
                                 {successMessage && (
@@ -376,12 +423,27 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                                         type="email"
                                         placeholder={mode === 'register' ? "Je e-mailadres" : "E-mailadres"}
                                         value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
-                                        aria-invalid={!!error}
-                                        aria-describedby={error ? 'login-auth-error' : undefined}
-                                        className="w-full pl-12 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all font-medium text-sm text-slate-700 placeholder:text-slate-400"
+                                        onChange={(e) => { setEmail(e.target.value); setEmailHint(null); setEmailSuggestion(null); }}
+                                        onBlur={handleEmailBlur}
+                                        aria-invalid={!!error || !!emailHint}
+                                        aria-describedby={emailHint ? 'login-email-hint' : error ? 'login-auth-error' : undefined}
+                                        className={`w-full pl-12 pr-4 py-3.5 bg-slate-50 border rounded-xl outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all font-medium text-sm text-slate-700 placeholder:text-slate-400 ${emailHint ? 'border-amber-400' : 'border-slate-200'}`}
                                         required
                                     />
+                                    {emailHint && (
+                                        <div id="login-email-hint" className="mt-1.5 text-xs font-semibold text-amber-600 bg-amber-50 px-3 py-2 rounded-lg border border-amber-100">
+                                            {emailHint}
+                                            {emailSuggestion && (
+                                                <button
+                                                    type="button"
+                                                    onClick={acceptEmailSuggestion}
+                                                    className="ml-1 text-indigo-600 hover:text-indigo-800 underline"
+                                                >
+                                                    {emailSuggestion}
+                                                </button>
+                                            )}
+                                        </div>
+                                    )}
                                 </div>
 
                                 {/* Class Selection - Only for registration */}

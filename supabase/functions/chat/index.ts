@@ -5,22 +5,35 @@
  * 1. JWT auth verification (Supabase)
  * 2. Server-side prompt injection filtering (mirrors client-side)
  * 3. Rate limiting via Supabase auth (429 propagation)
- * 4. Gemini API key kept server-side only
+ * 4. Vertex AI (europe-west4) — enterprise ToS, no age restriction
+ * 5. Service account auth (no API key in URL)
  */
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { sanitizePrompt } from "../_shared/promptSanitizer.ts";
+import { getAccessToken, getVertexUrl } from "../_shared/vertexAuth.ts";
 
-const GEMINI_API_KEY = Deno.env.get("GEMINI_API_KEY")!;
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
 
-const corsHeaders = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "POST, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type, Authorization",
-};
+const ALLOWED_ORIGINS = new Set([
+    "https://dgskills.app",
+    "https://www.dgskills.app",
+    "http://localhost:5173",
+    "http://localhost:3000",
+]);
+
+function getCorsHeaders(req: Request) {
+    const origin = req.headers.get("Origin") || "";
+    return {
+        "Access-Control-Allow-Origin": ALLOWED_ORIGINS.has(origin) ? origin : "https://dgskills.app",
+        "Access-Control-Allow-Methods": "POST, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+    };
+}
 
 Deno.serve(async (req: Request) => {
+    const corsHeaders = getCorsHeaders(req);
+
     if (req.method === "OPTIONS") {
         return new Response(null, { headers: corsHeaders });
     }
@@ -79,19 +92,32 @@ Deno.serve(async (req: Request) => {
         );
     }
 
-    // 4. Forward sanitized message to Gemini
-    const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
+    // 4. Forward sanitized message to Gemini via Vertex AI (EU endpoint)
+    const geminiUrl = getVertexUrl("gemini-2.0-flash");
+    const accessToken = await getAccessToken();
 
     const contents = [
         ...(Array.isArray(body.history) ? body.history : []),
         { role: "user", parts: [{ text: validation.sanitized }] },
     ];
 
+    // 5. Safety settings for minors (12-18 year olds) — EU AI Act + child protection
+    const safetySettings = [
+        { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_LOW_AND_ABOVE" },
+        { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_LOW_AND_ABOVE" },
+        { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_LOW_AND_ABOVE" },
+        { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_LOW_AND_ABOVE" },
+    ];
+
     const geminiResponse = await fetch(geminiUrl, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${accessToken}`,
+        },
         body: JSON.stringify({
             contents,
+            safetySettings,
             ...(body.systemInstruction
                 ? { systemInstruction: { parts: [{ text: body.systemInstruction }] } }
                 : {}),
