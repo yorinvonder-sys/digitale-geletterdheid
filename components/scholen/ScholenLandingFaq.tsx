@@ -16,11 +16,12 @@ const IconChevronDown = ({ className = '' }: { className?: string }) => (
 );
 
 const FAQ_ITEMS: { category?: string; q: string; a: string }[] = [
-    { category: 'Over het platform', q: 'Wat is digitale geletterdheid en waarom wordt het verplicht?', a: 'Kennis en vaardigheden om veilig en effectief te functioneren in een digitale samenleving. SLO-kerndoelen worden per 2027 wettelijk verplicht; scholen kunnen al vanaf 2025/2026 starten.' },
-    { category: 'Over het platform', q: 'Hoe verschilt DGSkills van DIGIT-vo of Basicly?', a: 'DGSkills combineert AI-missies, gamification (XP, badges, leaderboards) én volledige SLO-koppeling. Leerlingen leren door te doen — geen werkbladen.' },
-    { category: 'Over het platform', q: 'Welke SLO Kerndoelen dekt DGSkills af?', a: 'Alle vier domeinen: Digitale vaardigheden, Informatievaardigheden, Mediawijsheid en Computational Thinking. Elke missie is gekoppeld aan specifieke kerndoelen.' },
+    { category: 'Over het platform', q: 'Wat is digitale geletterdheid en waarom wordt het verplicht?', a: 'Kennis en vaardigheden om veilig en effectief te functioneren in een digitale samenleving. SLO-kerndoelen worden per 1 augustus 2027 wettelijk verplicht voor alle VO-scholen, met een implementatieperiode tot 2031. Scholen kunnen al vanaf schooljaar 2025/2026 vrijwillig starten.' },
+    { category: 'Over het platform', q: 'Hoe verschilt DGSkills van DIGIT-vo of Basicly?', a: 'DGSkills combineert AI-missies, gamification (XP, badges, leaderboards) én volledige SLO-koppeling. SSO is beschikbaar via Microsoft 365; Google Workspace en SURFconext staan op de roadmap. Leerlingen leren door te doen — geen werkbladen.' },
+    { category: 'Over het platform', q: 'Welke SLO Kerndoelen dekt DGSkills af?', a: 'Alle drie domeinen van de nieuwe conceptkerndoelen: Digitale systemen, media, data en AI (21A–D); Digitale producten en programmeren (22A–B); Veiligheid, welzijn en maatschappij (23A–C). Elke missie is gekoppeld aan specifieke kerndoelen.' },
     { category: 'Technisch & privacy', q: 'Is DGSkills AVG-compliant en veilig?', a: 'Ja. Data wordt opgeslagen in een beveiligde Europese database. Verwerkersovereenkomst en DPIA beschikbaar. Voldoet aan AVG en onderwijseisen.' },
     { category: 'Technisch & privacy', q: 'Op welke apparaten werkt DGSkills?', a: 'Elk apparaat met browser: iPad, Chromebook, laptop, telefoon. Geen installatie, geen IT-configuratie.' },
+    { category: 'Technisch & privacy', q: 'Hoe gaat DGSkills om met de EU AI Act?', a: 'DGSkills is geclassificeerd als hoog-risico AI-systeem onder de EU AI Act (Annex III, punt 3b). Wij werken actief aan volledige conformiteit v\u00f3\u00f3r de deadline van augustus 2026. Op dit moment voldoen wij aan de transparantie- en logging-eisen. Voor het volledige conformiteitsoverzicht, zie onze Compliance Hub.' },
     { category: 'Kosten & licentie', q: 'Wat kost DGSkills en is er een gratis proefperiode?', a: 'Gratis pilot van 3 maanden met volledige toegang. Daarna schoollicentie vanaf €2.000 per jaar.' }
 ];
 

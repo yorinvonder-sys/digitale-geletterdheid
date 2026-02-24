@@ -341,7 +341,7 @@
     "description": "Document uit de business/nl-vo/compliance map.",
     "category": "compliance",
     "path": "/dev-docs/eu-ai-act-conformiteitsplan.md",
-    "updatedAt": "2026-02-23",
+    "updatedAt": "2026-02-24",
     "tags": [
       "Legal",
       "GDPR",
@@ -368,7 +368,7 @@
     "description": "Document uit de business/nl-vo/compliance map.",
     "category": "compliance",
     "path": "/dev-docs/legal-matrix.md",
-    "updatedAt": "2026-02-23",
+    "updatedAt": "2026-02-24",
     "tags": [
       "Legal",
       "GDPR"

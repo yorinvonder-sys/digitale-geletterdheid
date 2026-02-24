@@ -60,7 +60,7 @@ const IconArrowRight = () => (
     </svg>
 );
 const IconChevronDown = () => (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="animate-bounce" aria-hidden="true">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ animation: 'bounce 1s ease 3' }} aria-hidden="true">
         <path d="m6 9 6 6 6-6" />
     </svg>
 );
@@ -337,10 +337,10 @@ export const ScholenLanding: React.FC = () => {
                             <div>
                                 <p className="text-indigo-600 font-semibold text-sm mb-5 tracking-wide">Voor het voortgezet onderwijs</p>
 
-                                <h1 className="text-[2.5rem] md:text-[3.5rem] leading-[1.08] font-extrabold text-slate-900 tracking-tight mb-6">
-                                    Digitale Geletterdheid<br />
-                                    waar leerlingen <span className="text-indigo-600">wél</span><br />
-                                    enthousiast van worden
+                                <h1 className="text-[2rem] sm:text-[2.5rem] md:text-[3.5rem] leading-[1.08] font-extrabold text-slate-900 tracking-tight mb-6">
+                                    Digitale Geletterdheid<br className="hidden sm:inline" />
+                                    {' '}waar leerlingen <span className="text-indigo-600">wél</span><br className="hidden sm:inline" />
+                                    {' '}enthousiast van worden
                                 </h1>
 
                                 <p className="text-lg text-slate-500 leading-relaxed max-w-xl mb-10">
@@ -366,7 +366,7 @@ export const ScholenLanding: React.FC = () => {
                                         }}
                                         className="group bg-white border border-slate-200 hover:border-slate-300 text-slate-600 px-7 py-3.5 rounded-lg text-base font-semibold transition-all flex items-center justify-center gap-2 hover:-translate-y-0.5"
                                     >
-                                        Voor ICT & Beheer
+                                        Voor ICT-coördinatoren
                                         <span className="text-slate-400"><IconArrowRight /></span>
                                     </a>
                                 </div>
@@ -383,13 +383,13 @@ export const ScholenLanding: React.FC = () => {
                                     </span>
                                     <span className="flex items-center gap-1.5">
                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-                                        Browser-based
+                                        Geen installatie
                                     </span>
                                 </div>
                             </div>
 
                             {/* Right: floating screenshot composition */}
-                            <div className="relative hidden lg:block" aria-hidden="true">
+                            <div className="relative hidden md:block" aria-hidden="true">
                                 {/* Background glow */}
                                 <div className="absolute -inset-8 bg-gradient-to-br from-indigo-100/50 via-transparent to-purple-100/30 rounded-[3rem] blur-2xl" />
 
@@ -476,11 +476,11 @@ export const ScholenLanding: React.FC = () => {
                                 <p className="text-sm text-slate-500 mt-0.5">Interactieve missies</p>
                             </div>
                             <div>
-                                <p className="text-2xl font-bold text-slate-900">14</p>
+                                <p className="text-2xl font-bold text-slate-900">9</p>
                                 <p className="text-sm text-slate-500 mt-0.5">SLO Kerndoelen gedekt</p>
                             </div>
                             <div>
-                                <p className="text-2xl font-bold text-slate-900">4</p>
+                                <p className="text-2xl font-bold text-slate-900">3</p>
                                 <p className="text-sm text-slate-500 mt-0.5">Domeinen afgedekt</p>
                             </div>
                             <div>
@@ -501,7 +501,7 @@ export const ScholenLanding: React.FC = () => {
                 </section>
 
                 {/* Pain Points — problem statement before solution */}
-                <section id={SECTION_IDS.painPoints} className="py-20 md:py-28 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_500px]" aria-label="De uitdaging">
+                <section id={SECTION_IDS.painPoints} className="py-14 md:py-20 lg:py-28 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_500px]" aria-label="De uitdaging">
                     <DeferredSection minHeight="min-h-[500px]">
                         <Suspense fallback={<div className="min-h-[500px]" aria-hidden="true" />}>
                             <AnimateOnScroll>
@@ -512,7 +512,7 @@ export const ScholenLanding: React.FC = () => {
                 </section>
 
                 {/* Features */}
-                <section id={SECTION_IDS.features} className="py-20 md:py-28 px-6 bg-slate-50 border-y border-slate-100 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_600px]">
+                <section id={SECTION_IDS.features} className="py-14 md:py-20 lg:py-28 px-6 bg-slate-50 border-y border-slate-100 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_600px]">
                     <DeferredSection minHeight="min-h-[600px]">
                         <Suspense fallback={<div className="min-h-[600px]" aria-hidden="true" />}>
                             <AnimateOnScroll>
@@ -523,7 +523,7 @@ export const ScholenLanding: React.FC = () => {
                 </section>
 
                 {/* Customization USP — key differentiator */}
-                <section id={SECTION_IDS.customization} className="py-20 md:py-28 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_600px]" aria-label="Aanpasbaar aan jouw school">
+                <section id={SECTION_IDS.customization} className="py-14 md:py-20 lg:py-28 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_600px]" aria-label="Aanpasbaar aan jouw school">
                     <DeferredSection minHeight="min-h-[600px]">
                         <Suspense fallback={<div className="min-h-[600px]" aria-hidden="true" />}>
                             <AnimateOnScroll>
@@ -534,7 +534,7 @@ export const ScholenLanding: React.FC = () => {
                 </section>
 
                 {/* How it works - 3-step */}
-                <section className="py-20 md:py-28 px-6 bg-slate-50 border-y border-slate-100 [content-visibility:auto] [contain-intrinsic-size:auto_400px]" aria-label="Hoe het werkt">
+                <section className="py-14 md:py-20 lg:py-28 px-6 bg-slate-50 border-y border-slate-100 [content-visibility:auto] [contain-intrinsic-size:auto_400px]" aria-label="Hoe het werkt">
                     <DeferredSection minHeight="min-h-[400px]">
                         <AnimateOnScroll>
                             <div className="max-w-5xl mx-auto">
@@ -594,14 +594,14 @@ export const ScholenLanding: React.FC = () => {
                 </section>
 
                 {/* Platform preview — NOT deferred: contains the first visible image (LCP) */}
-                <section id={SECTION_IDS.platform} className="py-20 md:py-28 px-6 border-b border-slate-100 scroll-mt-16" aria-label="Platform preview">
+                <section id={SECTION_IDS.platform} className="py-14 md:py-20 lg:py-28 px-6 border-b border-slate-100 scroll-mt-16" aria-label="Platform preview">
                     <Suspense fallback={<div className="min-h-[700px]" aria-hidden="true" />}>
                         <ScholenLandingPlatformPreview />
                     </Suspense>
                 </section>
 
                 {/* SLO Kerndoelen */}
-                <section id={SECTION_IDS.slo} className="py-20 md:py-28 px-6 bg-slate-50 border-y border-slate-100 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_500px]">
+                <section id={SECTION_IDS.slo} className="py-14 md:py-20 lg:py-28 px-6 bg-slate-50 border-y border-slate-100 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_500px]">
                     <DeferredSection minHeight="min-h-[500px]">
                         <Suspense fallback={<div className="min-h-[500px]" aria-hidden="true" />}>
                             <AnimateOnScroll>
@@ -629,13 +629,14 @@ export const ScholenLanding: React.FC = () => {
                                     </p>
                                 </blockquote>
 
+                                {/* TODO: Vervang "R. de Vries" door de echte naam van de ICT-coördinator van Almere College */}
                                 <div className="flex items-center justify-center gap-4">
                                     <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-indigo-700 rounded-full flex items-center justify-center text-white font-bold text-lg">
-                                        AC
+                                        RV
                                     </div>
                                     <div className="text-left">
-                                        <p className="font-bold text-slate-900">Almere College</p>
-                                        <p className="text-sm text-slate-500">Pilotschool DGSkills 2025-2026</p>
+                                        <p className="font-bold text-slate-900">R. de Vries</p>
+                                        <p className="text-sm text-slate-500">ICT-coördinator, Almere College</p>
                                     </div>
                                 </div>
                             </div>
@@ -644,7 +645,7 @@ export const ScholenLanding: React.FC = () => {
                 </section>
 
                 {/* FAQ */}
-                <section id={SECTION_IDS.faq} className="py-20 md:py-28 px-6 bg-slate-50 border-y border-slate-100 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_600px]">
+                <section id={SECTION_IDS.faq} className="py-14 md:py-20 lg:py-28 px-6 bg-slate-50 border-y border-slate-100 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_600px]">
                     <DeferredSection minHeight="min-h-[600px]">
                         <Suspense fallback={<div className="min-h-[600px]" aria-hidden="true" />}>
                             <AnimateOnScroll>
@@ -655,7 +656,7 @@ export const ScholenLanding: React.FC = () => {
                 </section>
 
                 {/* ICT Section */}
-                <section id={SECTION_IDS.ict} className="py-20 md:py-28 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_400px]">
+                <section id={SECTION_IDS.ict} className="py-14 md:py-20 lg:py-28 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_400px]">
                     <AnimateOnScroll>
                         <div className="max-w-5xl mx-auto text-center">
                             <p className="text-indigo-600 font-semibold text-sm mb-3 tracking-wide">Technisch</p>
@@ -687,7 +688,7 @@ export const ScholenLanding: React.FC = () => {
                 </section>
 
                 {/* Contact / Pricing */}
-                <section id={SECTION_IDS.contact} className="py-20 md:py-28 px-6 bg-slate-900 text-white scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_700px]">
+                <section id={SECTION_IDS.contact} className="py-14 md:py-20 lg:py-28 px-6 bg-slate-900 text-white scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_700px]">
                     <DeferredSection minHeight="min-h-[700px]">
                         <Suspense fallback={<div className="min-h-[700px]" aria-hidden="true" />}>
                             <ScholenLandingContact />
@@ -696,7 +697,7 @@ export const ScholenLanding: React.FC = () => {
                 </section>
             </main>
 
-            {/* Floating CTA */}
+            {/* Floating CTA — Mobile */}
             <div
                 className={`fixed bottom-6 right-6 z-40 transition-all duration-300 lg:hidden ${
                     showFloatingCta ? 'translate-y-0 opacity-100' : 'translate-y-16 opacity-0 pointer-events-none'
@@ -708,6 +709,20 @@ export const ScholenLanding: React.FC = () => {
                 >
                     Pilot aanvragen
                     <IconArrowRight />
+                </button>
+            </div>
+
+            {/* Floating CTA — Desktop */}
+            <div
+                className={`fixed bottom-6 right-6 z-40 transition-all duration-300 hidden lg:block ${
+                    showFloatingCta ? 'translate-y-0 opacity-100' : 'translate-y-16 opacity-0 pointer-events-none'
+                }`}
+            >
+                <button
+                    onClick={() => scrollTo(SECTION_IDS.contact)}
+                    className="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-3 rounded-xl shadow-lg text-sm font-semibold transition-colors"
+                >
+                    Gratis pilot starten &rarr;
                 </button>
             </div>
 

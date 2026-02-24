@@ -9,8 +9,8 @@ const IconArrowLeft = () => (
 export const IctIntegraties: React.FC = () => {
     const integrations = [
         { category: 'Identity / SSO', platform: 'Microsoft 365 (Azure AD)', status: 'Ondersteund', method: 'SAML / OAuth2' },
-        { category: 'Identity / SSO', platform: 'Google Workspace', status: 'Ondersteund', method: 'OAuth2' },
-        { category: 'Identity / SSO', platform: 'SURFconext', status: 'Ondersteund', method: 'SAML' },
+        { category: 'Identity / SSO', platform: 'Google Workspace', status: 'Gepland', method: 'OAuth2' },
+        { category: 'Identity / SSO', platform: 'SURFconext', status: 'Gepland', method: 'SAML' },
         { category: 'LMS / ELO', platform: 'Magister', status: 'Export/Import', method: 'CSV / ELO-koppeling' },
         { category: 'LMS / ELO', platform: 'SOMtoday', status: 'Export/Import', method: 'CSV' },
         { category: 'LMS / ELO', platform: 'Itslearning', status: 'Gepland', method: 'LTI 1.3' },

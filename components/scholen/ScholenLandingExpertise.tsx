@@ -13,8 +13,8 @@ export const ScholenLandingExpertise: React.FC = () => {
                 <p className="text-indigo-600 font-semibold text-sm mb-3 tracking-wide">Over de oprichter</p>
                 <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4">Gebouwd door een docent, voor docenten</h2>
                 <p className="text-slate-500 max-w-2xl mx-auto leading-relaxed">
-                    DGSkills is ontwikkeld vanuit de dagelijkse lespraktijk — door iemand die zelf
-                    voor de klas staat en weet wat werkt.
+                    DGSkills is ontwikkeld vanuit de lespraktijk — door iemand die zelf
+                    voor de klas staat en weet wat er speelt.
                 </p>
             </div>
 

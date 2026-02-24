@@ -51,6 +51,12 @@
 10. Geen beroepsaansprakelijkheidsverzekering
 11. ~~Gemini Developer API ToS verbiedt gebruik voor <18~~ — **OPGELOST** (gemigreerd naar Vertex AI europe-west4)
 
+## Launch Plan (ACTIEF)
+- **Plan:** `LAUNCH-PLAN.md` — het actieve stappenplan voor marktlancering
+- **Protocol:** Begin ELKE chat door `LAUNCH-PLAN.md` te lezen en rapporteer: huidige sprint, doel, volgende stap
+- **Regel:** Eén taak tegelijk. Stuur Yorin terug naar het plan als hij afdwaalt.
+- **Updates:** Werk de status in `LAUNCH-PLAN.md` bij na elke afgeronde taak (⬜ → ✅)
+
 ## Resolved Technical Changes (23 feb 2026)
 - **Vertex AI migratie**: `supabase/functions/chat/index.ts` en `scanReceipt/index.ts` gebruiken nu Vertex AI (`europe-west4-aiplatform.googleapis.com`) i.p.v. Gemini Developer API
 - **Auth**: Service account via `_shared/vertexAuth.ts` (JWT signing + token caching), secret: `GOOGLE_SERVICE_ACCOUNT_KEY`

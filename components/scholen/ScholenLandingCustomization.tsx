@@ -9,38 +9,38 @@ import React, { useState } from 'react';
 
 /* ── Inline SVG icons ── */
 
-const IconSliders = () => (
+/** Schakelaar met sterretje — missies aan/uit zetten */
+const IconToggleStar = () => (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        <line x1="4" y1="21" x2="4" y2="14" /><line x1="4" y1="10" x2="4" y2="3" />
-        <line x1="12" y1="21" x2="12" y2="12" /><line x1="12" y1="8" x2="12" y2="3" />
-        <line x1="20" y1="21" x2="20" y2="16" /><line x1="20" y1="12" x2="20" y2="3" />
-        <line x1="1" y1="14" x2="7" y2="14" /><line x1="9" y1="8" x2="15" y2="8" />
-        <line x1="17" y1="16" x2="23" y2="16" />
+        <rect x="1" y="8" width="16" height="8" rx="4"/><circle cx="13" cy="12" r="2.5"/><path d="M20 5l.7 1.5L22.2 7l-1.5.7L20 9.2l-.7-1.5L17.8 7l1.5-.7z"/>
     </svg>
 );
 
-const IconLayers = () => (
+/** Trappetje met 3 niveaus — MAVO/HAVO/VWO differentiatie */
+const IconSteps = () => (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        <polygon points="12 2 2 7 12 12 22 7 12 2" /><polyline points="2 17 12 22 22 17" /><polyline points="2 12 12 17 22 12" />
+        <path d="M2 18h6v-4h6v-4h6v-4"/><line x1="2" y1="18" x2="2" y2="22"/><line x1="8" y1="14" x2="8" y2="22"/><line x1="14" y1="10" x2="14" y2="22"/><line x1="20" y1="6" x2="20" y2="22"/><line x1="2" y1="22" x2="20" y2="22"/>
     </svg>
 );
 
-const IconUsers = () => (
+/** Verrekijker — focus/regie over leerlingen */
+const IconBinoculars = () => (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" />
-        <path d="M22 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" />
+        <circle cx="6" cy="17" r="4"/><circle cx="18" cy="17" r="4"/><path d="M6 13V6a2 2 0 0 1 2-2h1"/><path d="M18 13V6a2 2 0 0 0-2-2h-1"/><line x1="10" y1="17" x2="14" y2="17"/><line x1="9" y1="5" x2="15" y2="5"/>
     </svg>
 );
 
-const IconPuzzle = () => (
+/** Bouwblokken — modulaire opbouw stap voor stap */
+const IconBuildingBlocks = () => (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        <path d="M19.439 7.85c-.049.322.059.648.289.878l1.568 1.568c.47.47.706 1.087.706 1.704s-.235 1.233-.706 1.704l-1.611 1.611a.98.98 0 0 1-.837.276c-.47-.07-.802-.48-.968-.925a2.501 2.501 0 1 0-3.214 3.214c.446.166.855.497.925.968a.979.979 0 0 1-.276.837l-1.61 1.61a2.404 2.404 0 0 1-1.705.707 2.402 2.402 0 0 1-1.704-.706l-1.568-1.568a1.026 1.026 0 0 0-.877-.29c-.493.074-.84.504-1.02.968a2.5 2.5 0 1 1-3.237-3.237c.464-.18.894-.527.967-1.02a1.026 1.026 0 0 0-.289-.877l-1.568-1.568A2.402 2.402 0 0 1 1.998 12c0-.617.236-1.234.706-1.704L4.315 8.685a.98.98 0 0 1 .837-.276c.47.07.802.48.968.925a2.501 2.501 0 1 0 3.214-3.214c-.446-.166-.855-.497-.925-.968a.979.979 0 0 1 .276-.837l1.61-1.61a2.404 2.404 0 0 1 1.705-.707c.618 0 1.234.236 1.704.706l1.568 1.568c.23.23.556.338.877.29.493-.074.84-.504 1.02-.968a2.5 2.5 0 1 1 3.237 3.237c-.464.18-.894.527-.967 1.02Z" />
+        <rect x="2" y="14" width="8" height="8" rx="1"/><rect x="14" y="14" width="8" height="8" rx="1"/><rect x="8" y="6" width="8" height="8" rx="1"/><rect x="10" y="2" width="4" height="4" rx="0.5"/>
     </svg>
 );
 
-const IconMessageCircle = () => (
+/** Handdruk — persoonlijke relatie met scholen */
+const IconHandshake = () => (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
+        <path d="M11 17l-1.5 1.5a2.12 2.12 0 0 1-3 0L4 16a2.12 2.12 0 0 1 0-3L7 10"/><path d="M13 7l1.5-1.5a2.12 2.12 0 0 1 3 0L20 8a2.12 2.12 0 0 1 0 3l-3 3"/><path d="M7 10l5 5"/><path d="M12 15l5-5"/><line x1="2" y1="20" x2="5" y2="17"/><line x1="19" y1="7" x2="22" y2="4"/>
     </svg>
 );
 
@@ -52,7 +52,7 @@ const IconCheck = () => (
 
 const customizationPillars = [
     {
-        icon: <IconSliders />,
+        icon: <IconToggleStar />,
         title: 'Missies op maat',
         description: 'Kies zelf welke missies je aanbiedt. Zet specifieke modules aan of uit op basis van jullie jaarplanning en schoolvisie.',
         highlights: ['Eigen missie-selectie', 'Per vak of periode inplanbaar'],
@@ -63,7 +63,7 @@ const customizationPillars = [
         dotClass: 'bg-violet-500',
     },
     {
-        icon: <IconLayers />,
+        icon: <IconSteps />,
         title: 'Niveaudifferentiatie',
         description: 'Stel per klas het niveau in: MAVO, HAVO of VWO. DGSkills past de moeilijkheidsgraad automatisch aan per leerling.',
         highlights: ['Per klas instelbaar', 'Adaptief per leerling'],
@@ -74,7 +74,7 @@ const customizationPillars = [
         dotClass: 'bg-fuchsia-500',
     },
     {
-        icon: <IconUsers />,
+        icon: <IconBinoculars />,
         title: 'Focus Mode voor docenten',
         description: 'Bepaal precies wanneer leerlingen aan welke missie werken. Ideaal voor gestructureerde lessen of open keuzemomenten.',
         highlights: ['Lesuurplanning', 'Klassikaal of individueel'],
@@ -85,7 +85,7 @@ const customizationPillars = [
         dotClass: 'bg-purple-500',
     },
     {
-        icon: <IconPuzzle />,
+        icon: <IconBuildingBlocks />,
         title: 'Modulaire opbouw',
         description: 'Start met de domeinen die bij jullie school prioriteit hebben. Breid later uit wanneer jullie er klaar voor zijn.',
         highlights: ['Stap voor stap implementeren', 'Geen alles-of-niets'],
@@ -96,7 +96,7 @@ const customizationPillars = [
         dotClass: 'bg-indigo-500',
     },
     {
-        icon: <IconMessageCircle />,
+        icon: <IconHandshake />,
         title: 'Persoonlijk contact',
         description: 'Geen standaard helpdesk. Wij denken actief mee over hoe DGSkills het beste past bij jouw school, curriculum en planning.',
         highlights: ['Onboarding op maat', 'Korte lijnen met de maker'],
@@ -130,9 +130,9 @@ export const ScholenLandingCustomization: React.FC = () => {
             </div>
 
             {/* Interactive showcase — desktop: tabs left + detail right, mobile: accordion */}
-            <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-10">
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-8 lg:gap-10">
                 {/* Left: pillar tabs */}
-                <div className="lg:col-span-2 space-y-3">
+                <div className="md:col-span-1 lg:col-span-2 space-y-3">
                     {customizationPillars.map((pillar, i) => (
                         <button
                             key={pillar.title}
@@ -168,7 +168,7 @@ export const ScholenLandingCustomization: React.FC = () => {
                 </div>
 
                 {/* Right: detail panel */}
-                <div className="lg:col-span-3">
+                <div className="md:col-span-2 lg:col-span-3">
                     <div className={`bg-gradient-to-br ${active.bgClass} rounded-3xl border ${active.borderClass} p-8 md:p-10 h-full flex flex-col justify-center transition-all duration-300`}>
                         <div className={`w-16 h-16 ${active.iconBg} rounded-2xl flex items-center justify-center mb-6`}>
                             {active.icon}

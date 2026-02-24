@@ -150,14 +150,14 @@ export const ScholenLandingPlatformPreview: React.FC = () => {
                     {/* Navigation arrows */}
                     <button
                         onClick={() => goTo((activeIndex - 1 + journeySteps.length) % journeySteps.length)}
-                        className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center text-slate-700 opacity-0 group-hover:opacity-100 transition-all duration-200 hover:bg-white hover:scale-105 shadow-lg"
+                        className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center text-slate-700 opacity-0 group-hover:opacity-100 md:opacity-70 md:hover:opacity-100 transition-all duration-200 hover:bg-white hover:scale-105 shadow-lg"
                         aria-label="Vorige stap"
                     >
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6" /></svg>
                     </button>
                     <button
                         onClick={goToNext}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center text-slate-700 opacity-0 group-hover:opacity-100 transition-all duration-200 hover:bg-white hover:scale-105 shadow-lg"
+                        className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center text-slate-700 opacity-0 group-hover:opacity-100 md:opacity-70 md:hover:opacity-100 transition-all duration-200 hover:bg-white hover:scale-105 shadow-lg"
                         aria-label="Volgende stap"
                     >
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg>
@@ -174,6 +174,8 @@ export const ScholenLandingPlatformPreview: React.FC = () => {
                                 objectFit: active.objectFit || 'cover',
                                 objectPosition: active.objectPosition || 'top',
                             }}
+                            width={1280}
+                            height={720}
                             loading={activeIndex === 0 ? 'eager' : 'lazy'}
                             fetchPriority={activeIndex === 0 ? 'high' : 'auto'}
                             decoding={activeIndex === 0 ? 'sync' : 'async'}
@@ -204,7 +206,7 @@ export const ScholenLandingPlatformPreview: React.FC = () => {
                 </div>
 
                 {/* Step navigation */}
-                <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+                <div className="mt-8 grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
                     {journeySteps.map((step, i) => {
                         const isActive = i === activeIndex;
                         const isPast = i < activeIndex;

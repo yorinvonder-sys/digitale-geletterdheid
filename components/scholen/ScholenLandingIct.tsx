@@ -28,7 +28,7 @@ export const ScholenLandingIct: React.FC = () => {
                     <FeatureMarker label="Identiteit" colorClass="text-indigo-600" barClass="bg-indigo-500" />
                     <h3 className="text-xl font-bold text-slate-900 mb-2">SSO & Identiteit</h3>
                     <p className="text-slate-600 text-[15px] leading-relaxed mb-4">
-                        Geen gedoe met losse accounts. Volledige ondersteuning voor Microsoft 365, Google Workspace en SURFconext. 
+                        Geen gedoe met losse accounts. SSO via Microsoft 365. Google Workspace en SURFconext op de roadmap. 
                         Veilige authenticatie via bestaande schoolaccounts.
                     </p>
                     <div className="flex flex-wrap gap-2">
@@ -57,7 +57,7 @@ export const ScholenLandingIct: React.FC = () => {
                     <h3 className="text-xl font-bold text-slate-900 mb-2">Integraties & Export</h3>
                     <p className="text-slate-600 text-[15px] leading-relaxed mb-4">
                         Koppel voortgang aan je LVS of ELO. Ondersteuning voor CSV-exports naar Magister en SOMtoday. 
-                        LTI-koppelingen op aanvraag voor naadloze integratie.
+                        LTI-koppelingen gepland voor naadloze integratie.
                     </p>
                     <div className="flex flex-wrap gap-2">
                         <span className="px-2 py-1 bg-white border border-slate-200 rounded text-[10px] font-bold text-slate-400 uppercase tracking-tight">Magister</span>
@@ -71,11 +71,11 @@ export const ScholenLandingIct: React.FC = () => {
                     <h3 className="text-xl font-bold text-slate-900 mb-2">Service & Support</h3>
                     <p className="text-slate-600 text-[15px] leading-relaxed mb-4">
                         Gegarandeerde responstijden via onze SLA. Persoonlijke support voor ICT-beheerders bij uitrol en configuratie. 
-                        Uptime-garantie van 99,5%.
+                        Streefdoel: 99,5% beschikbaarheid.
                     </p>
                     <div className="flex flex-wrap gap-2">
                         <span className="px-2 py-1 bg-white border border-slate-200 rounded text-[10px] font-bold text-slate-400 uppercase tracking-tight">SLA Inbegrepen</span>
-                        <span className="px-2 py-1 bg-white border border-slate-200 rounded text-[10px] font-bold text-slate-400 uppercase tracking-tight">99.5% Uptime</span>
+                        <span className="px-2 py-1 bg-white border border-slate-200 rounded text-[10px] font-bold text-slate-400 uppercase tracking-tight">99,5% Streefdoel</span>
                         <span className="px-2 py-1 bg-white border border-slate-200 rounded text-[10px] font-bold text-slate-400 uppercase tracking-tight">NL Support</span>
                     </div>
                 </div>
@@ -140,7 +140,7 @@ export const ScholenLandingIct: React.FC = () => {
                             className="group"
                         >
                             <p className="text-xs font-bold text-indigo-400 uppercase tracking-widest mb-2 group-hover:text-indigo-300 transition-colors">Support & SLA</p>
-                            <p className="text-sm text-slate-300">99,5% Uptime garantie. NL support desk.</p>
+                            <p className="text-sm text-slate-300">Streefdoel: 99,5% beschikbaarheid. NL support desk.</p>
                         </a>
                     </div>
                 </div>

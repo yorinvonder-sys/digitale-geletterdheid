@@ -9,29 +9,31 @@ import React from 'react';
 
 /* ── Inline SVG icons (avoid lucide chunk) ── */
 
-const IconAlertTriangle = () => (
+/** Gebroken meetlat — leerlingen scoren onvoldoende */
+const IconBrokenRuler = () => (
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
-        <line x1="12" y1="9" x2="12" y2="13" /><line x1="12" y1="17" x2="12.01" y2="17" />
+        <path d="M2 20 L9 13 L11 15 L13 11 L22 4"/><line x1="3" y1="4" x2="3" y2="7"/><line x1="7" y1="4" x2="7" y2="6"/><line x1="11" y1="4" x2="11" y2="7"/><line x1="15" y1="4" x2="15" y2="6"/><line x1="19" y1="4" x2="19" y2="7"/><line x1="2" y1="4" x2="21" y2="4"/>
     </svg>
 );
 
-const IconClock = () => (
+/** Zandloper — deadline raakt op */
+const IconHourglass = () => (
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
+        <path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/>
     </svg>
 );
 
-const IconUsers = () => (
+/** Leeg katheder — docent ontbreekt */
+const IconEmptyDesk = () => (
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" />
-        <path d="M22 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" />
+        <rect x="3" y="10" width="18" height="2" rx="1"/><line x1="6" y1="12" x2="6" y2="20"/><line x1="18" y1="12" x2="18" y2="20"/><circle cx="12" cy="5" r="2.5" strokeDasharray="3 2"/><line x1="10" y1="4" x2="14" y2="6" />
     </svg>
 );
 
-const IconTrendingDown = () => (
+/** Ontbrekend puzzelstuk — geen AI-platform beschikbaar */
+const IconMissingPiece = () => (
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        <polyline points="22 17 13.5 8.5 8.5 13.5 2 7" /><polyline points="16 17 22 17 22 11" />
+        <path d="M4 4h6v2.5a2 2 0 1 0 4 0V4h6v6h-2.5a2 2 0 1 0 0 4H20v6H4V4z"/><path d="M15 15l4 4M15 19l4-4" strokeWidth="2"/>
     </svg>
 );
 
@@ -40,9 +42,9 @@ const painPoints = [
         stat: '4,7',
         statLabel: 'Rapportcijfer',
         title: 'Leerlingen scoren onvoldoende op digitale geletterdheid',
-        description: 'ICILS 2023 toont aan: 1 op de 3 Nederlandse leerlingen kan niet goed een computer bedienen. De scores voor computational thinking liggen significant onder het internationale gemiddelde.',
-        source: 'ICILS 2023, Kohnstamm Instituut',
-        icon: <IconTrendingDown />,
+        description: 'Nederlandse docenten gaven hun leerlingen gemiddeld een 4,7 voor digitale geletterdheid. ICILS 2023 bevestigt: 1 op de 3 leerlingen scoort onder basisniveau op computergebruik; CT-scores liggen significant onder het internationaal gemiddelde.',
+        source: 'Monitor Digitale Geletterdheid 2023, DUO/ECP; ICILS 2023, Kohnstamm Instituut',
+        icon: <IconBrokenRuler />,
         accentBg: 'bg-red-50',
         accentBorder: 'border-red-100',
         accentIcon: 'bg-red-100 text-red-600',
@@ -50,11 +52,11 @@ const painPoints = [
     },
     {
         stat: '2027',
-        statLabel: 'Deadline',
+        statLabel: 'Verplicht',
         title: 'SLO Kerndoelen worden wettelijk verplicht',
-        description: 'Alle VO-scholen moeten digitale geletterdheid implementeren. 50% van de docenten kent de kerndoelen nog niet en slechts 25% werkt er regelmatig mee.',
-        source: 'SLO / PO-Raad, 2025',
-        icon: <IconClock />,
+        description: 'Per 1 augustus 2027 zijn de kerndoelen digitale geletterdheid wettelijk verplicht voor alle VO-scholen, met implementatieperiode tot 2031. 52% van de VO-docenten werkt nu zonder leerlijn én zonder leerdoelen. Slechts 11% hanteert een formele leerlijn.',
+        source: 'ECP Monitor Digitale Geletterdheid VO, 2021; Kamerbrief OCW, september 2025',
+        icon: <IconHourglass />,
         accentBg: 'bg-amber-50',
         accentBorder: 'border-amber-100',
         accentIcon: 'bg-amber-100 text-amber-600',
@@ -64,21 +66,21 @@ const painPoints = [
         stat: '3.800',
         statLabel: 'FTE tekort',
         title: 'Geen vakdocent beschikbaar voor digitale geletterdheid',
-        description: 'Het lerarentekort in het VO groeit. Informatica kent een tekort van 117 FTE — precies de docenten die DG zouden moeten geven. 59% van de docenten heeft geen leerlijn.',
-        source: 'VO-raad Sectorrapportage, 2025',
-        icon: <IconUsers />,
+        description: 'Het lerarentekort in het VO bedraagt 3.800 FTE. Informatica heeft het hoogste relatieve tekort: 10% van de werkgelegenheid is onvervuld (prognose: 117 FTE in 2029). 52% van de VO-docenten heeft geen leerlijn voor digitale geletterdheid.',
+        source: 'Trendrapportage Arbeidsmarkt Leraren 2024, Centerdata/OCW; ECP Monitor VO, 2021',
+        icon: <IconEmptyDesk />,
         accentBg: 'bg-orange-50',
         accentBorder: 'border-orange-100',
         accentIcon: 'bg-orange-100 text-orange-600',
         accentStat: 'text-orange-600',
     },
     {
-        stat: '0',
-        statLabel: 'AI-platforms',
-        title: 'Geen enkel platform biedt hands-on AI-geletterdheid',
-        description: 'Kerndoel 21D vereist dat leerlingen AI leren trainen, herkennen en kritisch evalueren. Bestaande methodes leren over AI met theorie — niet met AI.',
-        source: 'Monitor Digitalisering Onderwijs, 2025',
-        icon: <IconAlertTriangle />,
+        stat: '1e',
+        statLabel: 'In Nederland',
+        title: 'Bestaande platforms bieden geen hands-on AI-omgeving voor leerlingen',
+        description: 'Kerndoel 21D vereist dat leerlingen mogelijkheden en beperkingen van AI verkennen. Bestaande methodes (DIGIT-vo, Basicly) behandelen AI theoretisch. DGSkills is het eerste platform met een eigen hands-on AI-omgeving geïntegreerd in het curriculum.',
+        source: 'SLO Conceptkerndoelen Digitale Geletterdheid, juli 2025; eigen marktonderzoek',
+        icon: <IconMissingPiece />,
         accentBg: 'bg-violet-50',
         accentBorder: 'border-violet-100',
         accentIcon: 'bg-violet-100 text-violet-600',
@@ -95,7 +97,7 @@ export const ScholenLandingPainPoints: React.FC = () => (
                 Digitale geletterdheid staat onder druk
             </h2>
             <p className="text-base text-slate-500 leading-relaxed max-w-2xl mx-auto">
-                De kerndoelen worden verplicht, maar scholen missen de middelen, de mensen en het materiaal.
+                De kerndoelen worden naar verwachting per 2027 verplicht, maar scholen missen de middelen, de mensen en het materiaal.
                 Dit zijn de feiten.
             </p>
         </div>

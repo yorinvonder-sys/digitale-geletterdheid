@@ -60,7 +60,7 @@ export const AiGeletterdheid: React.FC = () => {
                             AI-geletterdheid op school: verplicht én verantwoord
                         </h1>
                         <p className="text-xl text-slate-600 mb-10 leading-relaxed">
-                            Sinds 2 februari 2025 stelt de Europese AI Act eisen aan AI-geletterdheid binnen organisaties, inclusief scholen. DGSkills biedt de veiligste route om aan deze verplichting te voldoen.
+                            Sinds 2 februari 2025 stelt de Europese AI Act eisen aan AI-geletterdheid binnen organisaties, inclusief scholen. DGSkills biedt een verantwoorde route om aan deze verplichting te voldoen.
                         </p>
                         <div className="flex flex-wrap gap-4">
                             <a href="#compliance" className="bg-indigo-600 text-white px-8 py-4 rounded-xl font-bold hover:bg-indigo-700 transition-all flex items-center gap-2">
@@ -84,7 +84,7 @@ export const AiGeletterdheid: React.FC = () => {
                             <ComplianceCard 
                                 badge="Wetgeving"
                                 title="AI Act Artikel 50"
-                                description="DGSkills is geclassificeerd als hoog-risico AI-systeem (Annex III). Wij voldoen aan alle transparantie-eisen en werken actief aan volledige EU AI Act conformiteit."
+                                description="DGSkills is geclassificeerd als hoog-risico AI-systeem (Annex III). Wij voldoen aan de transparantie- en logging-eisen (Art. 13, 50) en werken actief aan volledige EU AI Act conformiteit vóór de deadline van augustus 2026."
                             />
                             <ComplianceCard 
                                 badge="Privacy"

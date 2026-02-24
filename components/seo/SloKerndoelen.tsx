@@ -49,10 +49,10 @@ export const SloKerndoelen: React.FC = () => {
                 <section className="px-6 mb-20">
                     <div className="max-w-3xl mx-auto">
                         <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 leading-tight mb-6">
-                            Voldoe aan de SLO Kerndoelen Digitale Geletterdheid 2025
+                            Voldoe aan de SLO-conceptkerndoelen (september 2025) Digitale Geletterdheid
                         </h1>
                         <p className="text-xl text-slate-600 mb-10 leading-relaxed">
-                            De nieuwe concept-kerndoelen van SLO zijn er. DGSkills heeft ze direct vertaald naar meetbare missies. Zo heb je altijd inzicht in welke doelen jouw leerlingen al hebben behaald.
+                            De nieuwe SLO-conceptkerndoelen (september 2025) omvatten 9 kerndoelen (21A t/m 23C) verdeeld over 3 domeinen. DGSkills heeft ze direct vertaald naar meetbare missies. Zo heb je altijd inzicht in welke doelen jouw leerlingen al hebben behaald.
                         </p>
                         <div className="flex flex-wrap gap-4">
                             <a href="#matrix" className="bg-indigo-600 text-white px-8 py-4 rounded-xl font-bold hover:bg-indigo-700 transition-all flex items-center gap-2">
@@ -68,7 +68,7 @@ export const SloKerndoelen: React.FC = () => {
 
                 <section id="matrix" className="py-20 bg-slate-50 border-y border-slate-100 px-6">
                     <div className="max-w-5xl mx-auto">
-                        <h2 className="text-3xl font-bold text-center mb-16">Volledige dekking van alle 4 de domeinen</h2>
+                        <h2 className="text-3xl font-bold text-center mb-16">Volledige dekking van alle 3 de domeinen</h2>
                         <ScholenLandingSlo />
                     </div>
                 </section>
@@ -86,7 +86,7 @@ export const SloKerndoelen: React.FC = () => {
                             </li>
                             <li className="flex items-start gap-3">
                                 <span className="text-emerald-500 mt-1">✓</span>
-                                <span>Automatische koppeling aan de 14 functionele kerndoelen.</span>
+                                <span>Automatische koppeling aan de 9 SLO-conceptkerndoelen (september 2025).</span>
                             </li>
                             <li className="flex items-start gap-3">
                                 <span className="text-emerald-500 mt-1">✓</span>

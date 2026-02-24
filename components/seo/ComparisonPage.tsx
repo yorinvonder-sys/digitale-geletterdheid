@@ -27,11 +27,12 @@ export const ComparisonPage: React.FC<{ competitor: 'digit-vo' | 'basicly' }> = 
                 <div className="text-center mb-16">
                     <h1 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">DGSkills vs {competitorName}</h1>
                     <p className="text-slate-600 max-w-2xl mx-auto">
-                        Een objectieve vergelijking tussen de twee meest gebruikte methodes voor digitale geletterdheid in het voortgezet onderwijs.
+                        Een vergelijking tussen twee methodes voor digitale geletterdheid in het voortgezet onderwijs.
                     </p>
                 </div>
 
                 <div className="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden mb-16">
+                    <p className="text-xs text-slate-400 mb-4 px-6 pt-4">Vergelijking op basis van publiek beschikbare informatie per februari 2026. Kenmerken van andere platforms kunnen gewijzigd zijn.</p>
                     <table className="w-full">
                         <thead className="bg-slate-50">
                             <tr className="text-left text-[10px] font-bold text-slate-400 uppercase tracking-widest">
@@ -48,7 +49,7 @@ export const ComparisonPage: React.FC<{ competitor: 'digit-vo' | 'basicly' }> = 
                             <FeatureRow feature="AVG-compliant & EU Data Opslag" dgskills={true} other={true} />
                             <FeatureRow feature="Geen Installatie Nodig (Web-only)" dgskills={true} other={true} />
                             <FeatureRow feature="Focus op Praktijkonderwijs & VSO" dgskills={true} other={false} />
-                            <FeatureRow feature="Geautomatiseerde Inspectie-Rapporten" dgskills={true} other={false} />
+                            <FeatureRow feature="Geautomatiseerde Inspectie-Rapporten (in ontwikkeling)" dgskills={true} other={false} />
                         </tbody>
                     </table>
                 </div>
@@ -57,13 +58,13 @@ export const ComparisonPage: React.FC<{ competitor: 'digit-vo' | 'basicly' }> = 
                     <div className="p-8 rounded-2xl bg-indigo-50 border border-indigo-100">
                         <h3 className="font-bold text-indigo-900 mb-4">Wanneer kiezen voor DGSkills?</h3>
                         <p className="text-indigo-800 text-sm leading-relaxed">
-                            DGSkills is de beste keuze als je een methode zoekt die leerlingen écht boeit door gamification en AI. Het is specifiek ontworpen om de werkdruk van docenten te verlagen door automatisering.
+                            DGSkills is een sterke keuze als je een methode zoekt die leerlingen écht boeit door gamification en AI. Het is specifiek ontworpen om de werkdruk van docenten te verlagen door automatisering.
                         </p>
                     </div>
                     <div className="p-8 rounded-2xl bg-slate-50 border border-slate-100">
                         <h3 className="font-bold text-slate-900 mb-4">Wanneer kiezen voor {competitorName}?</h3>
                         <p className="text-slate-600 text-sm leading-relaxed">
-                            {competitorName} is een gevestigde naam met een brede basis. Als je school al jarenlang gebruikmaakt van hun ecosysteem en geen behoefte heeft aan nieuwe AI-gedreven didactiek, kan het een veilige keuze blijven.
+                            {competitorName} is een gevestigde naam met een brede basis. Als je school al jarenlang gebruikmaakt van hun ecosysteem en geen behoefte heeft aan nieuwe AI-gedreven didactiek, kan het een geschikte keuze zijn.
                         </p>
                     </div>
                 </div>

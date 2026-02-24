@@ -12,43 +12,45 @@ const FeatureMarker: React.FC<{ label: string; colorClass: string; barClass: str
     </div>
 );
 
-const IconBrain = () => (
+/** Raket — AI-gestuurde missies */
+const IconRocket = () => (
     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2z"/>
-        <path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2z"/>
+        <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>
     </svg>
 );
 
-const IconTarget = () => (
+/** Vlaggetje op route — SLO Kerndoelen bereiken */
+const IconFlag = () => (
     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>
+        <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/>
     </svg>
 );
 
-const IconTrophy = () => (
+/** Game controller — gamification */
+const IconGamepad = () => (
     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/>
-        <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/>
-        <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/>
-        <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>
+        <line x1="6" y1="11" x2="10" y2="11"/><line x1="8" y1="9" x2="8" y2="13"/><line x1="15" y1="12" x2="15.01" y2="12"/><line x1="18" y1="10" x2="18.01" y2="10"/><path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"/>
     </svg>
 );
 
-const IconBarChart = () => (
+/** Scherm met pulse — live dashboard monitoring */
+const IconDashboardPulse = () => (
     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
+        <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/><polyline points="6 10 9 10 10.5 7 13.5 13 15 10 18 10"/>
     </svg>
 );
 
-const IconLock = () => (
+/** Schild met slot — AVG privacy-bescherming */
+const IconShieldLock = () => (
     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><rect x="9" y="11" width="6" height="5" rx="1"/><path d="M10 11V9a2 2 0 1 1 4 0v2"/>
     </svg>
 );
 
-const IconGlobe = () => (
+/** Laptop + telefoon — werkt op elk apparaat */
+const IconMultiDevice = () => (
     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+        <rect x="1" y="4" width="15" height="10" rx="1.5"/><line x1="5" y1="17" x2="12" y2="17"/><line x1="8.5" y1="14" x2="8.5" y2="17"/><rect x="17" y="7" width="6" height="11" rx="1"/><line x1="17" y1="15" x2="23" y2="15"/>
     </svg>
 );
 
@@ -61,7 +63,7 @@ export const ScholenLandingFeatures: React.FC = () => (
                     Waarom scholen kiezen voor DGSkills
                 </h2>
                 <p className="text-base text-slate-500 leading-relaxed">
-                    Digitale geletterdheid wordt verplicht per 2027, maar bestaand lesmateriaal
+                    Digitale geletterdheid wordt wettelijk verplicht per 1 augustus 2027 (implementatieperiode tot 2031), maar bestaand lesmateriaal
                     is vaak statisch en weet leerlingen niet te boeien. DGSkills pakt dat anders aan
                     met AI-missies, gamification en real-time voortgangsinzicht.
                 </p>
@@ -72,7 +74,7 @@ export const ScholenLandingFeatures: React.FC = () => (
                     <div className="md:col-span-2 bg-gradient-to-br from-indigo-50 to-white rounded-2xl p-8 hover:shadow-lg transition-all border border-indigo-100/50 group">
                         <div className="flex items-start gap-4">
                             <div className="w-14 h-14 bg-indigo-100 rounded-2xl flex items-center justify-center text-indigo-600 flex-shrink-0 group-hover:scale-110 transition-transform">
-                                <IconBrain />
+                                <IconRocket />
                             </div>
                             <div>
                                 <FeatureMarker
@@ -91,7 +93,7 @@ export const ScholenLandingFeatures: React.FC = () => (
                     </div>
                     <div className="bg-gradient-to-br from-emerald-50 to-white rounded-2xl p-8 hover:shadow-lg transition-all border border-emerald-100/50 group">
                         <div className="w-14 h-14 bg-emerald-100 rounded-2xl flex items-center justify-center text-emerald-600 mb-4 group-hover:scale-110 transition-transform">
-                            <IconTarget />
+                            <IconFlag />
                         </div>
                         <FeatureMarker
                             label="Curriculum"
@@ -109,7 +111,7 @@ export const ScholenLandingFeatures: React.FC = () => (
                 <div className="grid md:grid-cols-3 gap-6">
                     <div className="bg-gradient-to-br from-amber-50 to-white rounded-2xl p-8 hover:shadow-lg transition-all border border-amber-100/50 group">
                         <div className="w-14 h-14 bg-amber-100 rounded-2xl flex items-center justify-center text-amber-600 mb-4 group-hover:scale-110 transition-transform">
-                            <IconTrophy />
+                            <IconGamepad />
                         </div>
                         <FeatureMarker
                             label="Motivatie"
@@ -125,7 +127,7 @@ export const ScholenLandingFeatures: React.FC = () => (
                     <div className="md:col-span-2 bg-gradient-to-br from-blue-50 to-white rounded-2xl p-8 hover:shadow-lg transition-all border border-blue-100/50 group">
                         <div className="flex items-start gap-4">
                             <div className="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center text-blue-600 flex-shrink-0 group-hover:scale-110 transition-transform">
-                                <IconBarChart />
+                                <IconDashboardPulse />
                             </div>
                             <div>
                                 <FeatureMarker
@@ -148,7 +150,7 @@ export const ScholenLandingFeatures: React.FC = () => (
                     <div className="bg-gradient-to-br from-slate-50 to-white rounded-2xl p-8 hover:shadow-lg transition-all border border-slate-100 group">
                         <div className="flex items-start gap-4">
                             <div className="w-14 h-14 bg-slate-100 rounded-2xl flex items-center justify-center text-slate-600 flex-shrink-0 group-hover:scale-110 transition-transform">
-                                <IconLock />
+                                <IconShieldLock />
                             </div>
                             <div>
                                 <FeatureMarker
@@ -156,7 +158,7 @@ export const ScholenLandingFeatures: React.FC = () => (
                                     colorClass="text-slate-600"
                                     barClass="bg-slate-400"
                                 />
-                                <h3 className="text-xl font-bold text-slate-900 mb-3">AVG-compliant en privacy-proof</h3>
+                                <h3 className="text-xl font-bold text-slate-900 mb-3">AVG-compliant, Privacy by Design</h3>
                                 <p className="text-slate-500 text-[15px] leading-relaxed">
                                     Data blijft binnen de EU in een beveiligde Europese database.
                                     Verwerkersovereenkomst en DPIA beschikbaar voor scholen.
@@ -167,7 +169,7 @@ export const ScholenLandingFeatures: React.FC = () => (
                     <div className="bg-gradient-to-br from-rose-50 to-white rounded-2xl p-8 hover:shadow-lg transition-all border border-rose-100/50 group">
                         <div className="flex items-start gap-4">
                             <div className="w-14 h-14 bg-rose-100 rounded-2xl flex items-center justify-center text-rose-600 flex-shrink-0 group-hover:scale-110 transition-transform">
-                                <IconGlobe />
+                                <IconMultiDevice />
                             </div>
                             <div>
                                 <FeatureMarker

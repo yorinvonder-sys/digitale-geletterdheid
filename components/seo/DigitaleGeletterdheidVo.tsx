@@ -49,10 +49,10 @@ export const DigitaleGeletterdheidVo: React.FC = () => {
                 <section className="px-6 mb-20">
                     <div className="max-w-3xl mx-auto">
                         <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 leading-tight mb-6">
-                            De meest complete lesmethode voor digitale geletterdheid in het VO
+                            Een complete lesmethode voor digitale geletterdheid in het VO
                         </h1>
                         <p className="text-xl text-slate-600 mb-10 leading-relaxed">
-                            Vanaf 2027 zijn de kerndoelen digitale geletterdheid verplicht. Met DGSkills bereid je jouw school nu al voor met een platform waar leerlingen wél enthousiast van worden.
+                            Naar verwachting worden de kerndoelen digitale geletterdheid in 2027 verplicht. Met DGSkills bereid je jouw school nu al voor met een platform waar leerlingen wél enthousiast van worden.
                         </p>
                         <div className="flex flex-wrap gap-4">
                             <a href="#pilot" className="bg-indigo-600 text-white px-8 py-4 rounded-xl font-bold hover:bg-indigo-700 transition-all flex items-center gap-2">

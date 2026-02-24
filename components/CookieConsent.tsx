@@ -41,35 +41,35 @@ export const CookieConsent: React.FC<CookieConsentProps> = ({ onAccept, onDeclin
 
     return (
         <div className="fixed bottom-0 left-0 right-0 md:bottom-6 md:right-6 md:left-auto md:max-w-sm z-50 p-4 animate-in slide-in-from-bottom duration-500">
-            <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden">
+            <div className="bg-white rounded-2xl shadow-xl border border-slate-200/80 overflow-hidden">
                 {/* Main Banner */}
                 <div className="p-5">
                     <div className="flex items-start gap-4">
-                        <div className="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center shrink-0">
-                            <Cookie className="text-amber-600" size={24} />
+                        <div className="w-11 h-11 bg-slate-100 rounded-xl flex items-center justify-center shrink-0">
+                            <Cookie className="text-slate-500" size={22} />
                         </div>
                         <div className="flex-1 min-w-0">
-                            <h3 className="text-lg font-bold text-slate-900 mb-1">🍪 Cookies & Privacy</h3>
-                            <p className="text-sm text-slate-600 leading-relaxed">
+                            <h3 className="text-base font-bold text-slate-900 mb-1">Cookies & Privacy</h3>
+                            <p className="text-sm text-slate-500 leading-relaxed">
                                 Wij gebruiken cookies om je ervaring te verbeteren en anonieme statistieken bij te houden.
-                                <a href="/ict/privacy/cookies" className="text-indigo-600 underline ml-1">Lees ons cookiebeleid</a>.
+                                <a href="/ict/privacy/cookies" className="text-indigo-600 hover:text-indigo-700 underline ml-1">Lees ons cookiebeleid</a>.
                             </p>
 
                             {/* Expandable Details */}
                             {showDetails && (
-                                <div className="mt-4 p-4 bg-slate-50 rounded-xl text-sm space-y-2">
-                                    <p className="font-medium text-slate-800">Welke cookies gebruiken wij?</p>
-                                    <ul className="space-y-1 text-slate-600">
+                                <div className="mt-4 p-4 bg-slate-50 rounded-xl text-sm space-y-2 border border-slate-100">
+                                    <p className="font-medium text-slate-700">Welke cookies gebruiken wij?</p>
+                                    <ul className="space-y-1.5 text-slate-600">
                                         <li className="flex items-center gap-2">
                                             <Check size={14} className="text-emerald-500" />
                                             <span><strong>Essentieel</strong> – Nodig voor inloggen en authenticatie</span>
                                         </li>
                                         <li className="flex items-center gap-2">
-                                            <Settings size={14} className="text-blue-500" />
+                                            <Settings size={14} className="text-slate-400" />
                                             <span><strong>Analytics</strong> – Interne klik-analyse voor productverbetering</span>
                                         </li>
                                     </ul>
-                                    <p className="text-xs text-slate-500 mt-2">
+                                    <p className="text-xs text-slate-400 mt-2">
                                         Essentiële cookies zijn altijd actief en nodig voor de werking van de app.
                                     </p>
                                 </div>
@@ -81,7 +81,7 @@ export const CookieConsent: React.FC<CookieConsentProps> = ({ onAccept, onDeclin
                     <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mt-5">
                         <button
                             onClick={() => setShowDetails(!showDetails)}
-                            className="text-sm text-slate-500 hover:text-slate-700 underline underline-offset-2 order-3 sm:order-1"
+                            className="text-sm text-slate-400 hover:text-slate-600 underline underline-offset-2 order-3 sm:order-1 transition-colors"
                         >
                             {showDetails ? 'Minder info' : 'Meer informatie'}
                         </button>
@@ -94,7 +94,7 @@ export const CookieConsent: React.FC<CookieConsentProps> = ({ onAccept, onDeclin
                         </button>
                         <button
                             onClick={handleAccept}
-                            className="px-5 py-2.5 text-sm font-bold text-white bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 rounded-xl transition-all shadow-lg shadow-indigo-500/25 order-1 sm:order-4"
+                            className="px-5 py-2.5 text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl transition-colors order-1 sm:order-4"
                         >
                             Alles accepteren
                         </button>

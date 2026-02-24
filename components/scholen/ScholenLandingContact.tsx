@@ -90,9 +90,9 @@ export const ScholenLandingContact: React.FC = () => {
                     </p>
                 </div>
 
-                <div className="md:flex md:items-stretch md:gap-6">
+                <div className="lg:flex lg:items-stretch lg:gap-6">
                     {/* Pilot card */}
-                    <div className="bg-white/5 border border-white/10 rounded-2xl p-6 md:p-7 flex-1 mb-4 md:mb-0 ring-2 ring-indigo-500/30 relative overflow-hidden">
+                    <div className="bg-white/5 border border-white/10 rounded-2xl p-6 lg:p-7 flex-1 mb-4 lg:mb-0 ring-2 ring-indigo-500/30 relative overflow-hidden">
                         <div className="absolute top-3 right-3 bg-indigo-500 text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full">Aanbevolen</div>
                         <p className="text-xs font-semibold text-indigo-400 uppercase tracking-wider mb-1">Pilot</p>
                         <p className="text-3xl font-bold text-white mb-1">Gratis</p>
@@ -118,10 +118,11 @@ export const ScholenLandingContact: React.FC = () => {
                     </div>
 
                     {/* Post-pilot card */}
-                    <div className="bg-white/5 border border-white/10 rounded-2xl p-6 md:p-7 flex-1 mb-4 md:mb-0">
+                    <div className="bg-white/5 border border-white/10 rounded-2xl p-6 lg:p-7 flex-1 mb-4 lg:mb-0">
                         <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Na de pilot</p>
                         <p className="text-3xl font-bold text-white mb-1">Vanaf €2.000</p>
-                        <p className="text-sm text-slate-400 mb-5">per schoollocatie / jaar</p>
+                        <p className="text-sm text-slate-400 mb-1">per schoollocatie / jaar</p>
+                        <p className="text-xs text-slate-400 mt-1 mb-5">Minder dan €7 per leerling per jaar</p>
                         <ul className="space-y-2.5 mb-6">
                             {['Onbeperkt leerlingen', 'Volledige SLO-koppeling', 'Support-SLA (ma-vr)', 'Geen verborgen kosten'].map((item, i) => (
                                 <li key={i} className="flex items-center gap-2 text-sm text-slate-300">
@@ -139,7 +140,8 @@ export const ScholenLandingContact: React.FC = () => {
                     </div>
 
                     {/* Form */}
-                    <div id="pilot-form" className="flex-[1.3] max-w-lg scroll-mt-24 md:min-w-[340px]">
+                    <div id="pilot-form" className="flex-[1.3] max-w-lg scroll-mt-24 lg:min-w-[340px]">
+                        <p className="text-sm text-indigo-600 font-medium mb-6">Schooljaar 2025-2026 is het laatste volledige pilotjaar vóór de verwachte verplichting in 2027.</p>
                         <div className="bg-white rounded-2xl p-7 shadow-2xl shadow-black/10">
                             {isSubmitted ? (
                                 <div className="text-center py-8">
@@ -205,7 +207,7 @@ export const ScholenLandingContact: React.FC = () => {
                                         />
                                     </div>
 
-                                    <div className="grid grid-cols-2 gap-3">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                         <div>
                                             <label htmlFor="rol" className="block text-xs font-medium text-slate-500 mb-1.5">Rol</label>
                                             <select
@@ -273,7 +275,7 @@ export const ScholenLandingContact: React.FC = () => {
                                         Reactie binnen 2 werkdagen. Livegang binnen 10 werkdagen na akkoord.
                                     </p>
                                     <p className="text-[11px] text-slate-500 leading-relaxed">
-                                        Uw gegevens worden verwerkt op grond van precontractueel contact (aanvraag). Verwerking vindt plaats via subverwerkers (o.a. hosting) met passende AVG-overeenkomsten. Zie onze <a href="/ict/privacy/policy" className="text-indigo-400 hover:text-indigo-300 underline">privacyverklaring</a>.
+                                        Je gegevens worden verwerkt op grond van precontractueel contact (aanvraag). Verwerking vindt plaats via subverwerkers (o.a. hosting) met passende AVG-overeenkomsten. Zie onze <a href="/ict/privacy/policy" className="text-indigo-400 hover:text-indigo-300 underline">privacyverklaring</a>.
                                     </p>
                                 </form>
                             )}

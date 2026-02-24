@@ -315,6 +315,16 @@ function prerenderRoutes() {
       `<meta property="og:url" content="${meta.ogUrl}" />`
     );
 
+    // Replace Twitter Card tags
+    html = html.replace(
+      /<meta name="twitter:title" content="[^"]*"\s*\/?>/,
+      `<meta name="twitter:title" content="${meta.ogTitle}" />`
+    );
+    html = html.replace(
+      /<meta name="twitter:description"\s+content="[^"]*"\s*\/?>/,
+      `<meta name="twitter:description" content="${meta.ogDescription}" />`
+    );
+
     // Write route-specific HTML
     if (route === '/') {
       // Already index.html — just update it in place
