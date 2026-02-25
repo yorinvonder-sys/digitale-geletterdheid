@@ -1,5 +1,31 @@
-import React, { useState, useEffect, Suspense, useRef, useCallback } from 'react';
+import React, { useState, useEffect, Suspense, useRef, useCallback, Component } from 'react';
 import { trackEvent } from '../services/analyticsService';
+
+/** Prevents a single lazy section crash from killing the whole page */
+class SectionErrorBoundary extends Component<{ children: React.ReactNode }, { hasError: boolean }> {
+    constructor(props: { children: React.ReactNode }) {
+        super(props);
+        this.state = { hasError: false };
+    }
+    static getDerivedStateFromError() { return { hasError: true }; }
+    componentDidCatch(error: Error) { console.error('[ScholenLanding] Section error:', error.message); }
+    render() {
+        if (this.state.hasError) {
+            return (
+                <div className="py-12 text-center">
+                    <p className="text-slate-400 text-sm">Dit onderdeel kon niet worden geladen.</p>
+                    <button
+                        onClick={() => this.setState({ hasError: false })}
+                        className="mt-3 text-indigo-500 text-sm font-medium hover:underline"
+                    >
+                        Opnieuw proberen
+                    </button>
+                </div>
+            );
+        }
+        return this.props.children;
+    }
+}
 
 /** Renders children only when section enters viewport — defers chunk load until scroll */
 function DeferredSection({ children, minHeight }: { children: React.ReactNode; minHeight: string }) {
@@ -502,35 +528,41 @@ export const ScholenLanding: React.FC = () => {
 
                 {/* Pain Points — problem statement before solution */}
                 <section id={SECTION_IDS.painPoints} className="py-14 md:py-20 lg:py-28 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_500px]" aria-label="De uitdaging">
-                    <DeferredSection minHeight="min-h-[500px]">
-                        <Suspense fallback={<div className="min-h-[500px]" aria-hidden="true" />}>
-                            <AnimateOnScroll>
-                                <ScholenLandingPainPoints />
-                            </AnimateOnScroll>
-                        </Suspense>
-                    </DeferredSection>
+                    <SectionErrorBoundary>
+                        <DeferredSection minHeight="min-h-[500px]">
+                            <Suspense fallback={<div className="min-h-[500px]" aria-hidden="true" />}>
+                                <AnimateOnScroll>
+                                    <ScholenLandingPainPoints />
+                                </AnimateOnScroll>
+                            </Suspense>
+                        </DeferredSection>
+                    </SectionErrorBoundary>
                 </section>
 
                 {/* Features */}
                 <section id={SECTION_IDS.features} className="py-14 md:py-20 lg:py-28 px-6 bg-slate-50 border-y border-slate-100 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_600px]">
-                    <DeferredSection minHeight="min-h-[600px]">
-                        <Suspense fallback={<div className="min-h-[600px]" aria-hidden="true" />}>
-                            <AnimateOnScroll>
-                                <ScholenLandingFeatures />
-                            </AnimateOnScroll>
-                        </Suspense>
-                    </DeferredSection>
+                    <SectionErrorBoundary>
+                        <DeferredSection minHeight="min-h-[600px]">
+                            <Suspense fallback={<div className="min-h-[600px]" aria-hidden="true" />}>
+                                <AnimateOnScroll>
+                                    <ScholenLandingFeatures />
+                                </AnimateOnScroll>
+                            </Suspense>
+                        </DeferredSection>
+                    </SectionErrorBoundary>
                 </section>
 
                 {/* Customization USP — key differentiator */}
                 <section id={SECTION_IDS.customization} className="py-14 md:py-20 lg:py-28 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_600px]" aria-label="Aanpasbaar aan jouw school">
-                    <DeferredSection minHeight="min-h-[600px]">
-                        <Suspense fallback={<div className="min-h-[600px]" aria-hidden="true" />}>
-                            <AnimateOnScroll>
-                                <ScholenLandingCustomization />
-                            </AnimateOnScroll>
-                        </Suspense>
-                    </DeferredSection>
+                    <SectionErrorBoundary>
+                        <DeferredSection minHeight="min-h-[600px]">
+                            <Suspense fallback={<div className="min-h-[600px]" aria-hidden="true" />}>
+                                <AnimateOnScroll>
+                                    <ScholenLandingCustomization />
+                                </AnimateOnScroll>
+                            </Suspense>
+                        </DeferredSection>
+                    </SectionErrorBoundary>
                 </section>
 
                 {/* How it works - 3-step */}
@@ -595,20 +627,24 @@ export const ScholenLanding: React.FC = () => {
 
                 {/* Platform preview — NOT deferred: contains the first visible image (LCP) */}
                 <section id={SECTION_IDS.platform} className="py-14 md:py-20 lg:py-28 px-6 border-b border-slate-100 scroll-mt-16" aria-label="Platform preview">
-                    <Suspense fallback={<div className="min-h-[700px]" aria-hidden="true" />}>
-                        <ScholenLandingPlatformPreview />
-                    </Suspense>
+                    <SectionErrorBoundary>
+                        <Suspense fallback={<div className="min-h-[700px]" aria-hidden="true" />}>
+                            <ScholenLandingPlatformPreview />
+                        </Suspense>
+                    </SectionErrorBoundary>
                 </section>
 
                 {/* SLO Kerndoelen */}
                 <section id={SECTION_IDS.slo} className="py-14 md:py-20 lg:py-28 px-6 bg-slate-50 border-y border-slate-100 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_500px]">
-                    <DeferredSection minHeight="min-h-[500px]">
-                        <Suspense fallback={<div className="min-h-[500px]" aria-hidden="true" />}>
-                            <AnimateOnScroll>
-                                <ScholenLandingSlo />
-                            </AnimateOnScroll>
-                        </Suspense>
-                    </DeferredSection>
+                    <SectionErrorBoundary>
+                        <DeferredSection minHeight="min-h-[500px]">
+                            <Suspense fallback={<div className="min-h-[500px]" aria-hidden="true" />}>
+                                <AnimateOnScroll>
+                                    <ScholenLandingSlo />
+                                </AnimateOnScroll>
+                            </Suspense>
+                        </DeferredSection>
+                    </SectionErrorBoundary>
                 </section>
 
                 {/* Testimonial — Almere College */}
@@ -646,13 +682,15 @@ export const ScholenLanding: React.FC = () => {
 
                 {/* FAQ */}
                 <section id={SECTION_IDS.faq} className="py-14 md:py-20 lg:py-28 px-6 bg-slate-50 border-y border-slate-100 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_600px]">
-                    <DeferredSection minHeight="min-h-[600px]">
-                        <Suspense fallback={<div className="min-h-[600px]" aria-hidden="true" />}>
-                            <AnimateOnScroll>
-                                <ScholenLandingFaq scrollToContact={() => scrollTo(SECTION_IDS.contact)} />
-                            </AnimateOnScroll>
-                        </Suspense>
-                    </DeferredSection>
+                    <SectionErrorBoundary>
+                        <DeferredSection minHeight="min-h-[600px]">
+                            <Suspense fallback={<div className="min-h-[600px]" aria-hidden="true" />}>
+                                <AnimateOnScroll>
+                                    <ScholenLandingFaq scrollToContact={() => scrollTo(SECTION_IDS.contact)} />
+                                </AnimateOnScroll>
+                            </Suspense>
+                        </DeferredSection>
+                    </SectionErrorBoundary>
                 </section>
 
                 {/* ICT Section */}
@@ -678,22 +716,26 @@ export const ScholenLanding: React.FC = () => {
 
                 {/* Expertise */}
                 <section className="py-20 md:py-24 px-6 [content-visibility:auto] [contain-intrinsic-size:auto_200px]" aria-label="Expertise">
-                    <DeferredSection minHeight="min-h-[400px]">
-                        <Suspense fallback={<div className="min-h-[400px]" aria-hidden="true" />}>
-                            <AnimateOnScroll>
-                                <ScholenLandingExpertise />
-                            </AnimateOnScroll>
-                        </Suspense>
-                    </DeferredSection>
+                    <SectionErrorBoundary>
+                        <DeferredSection minHeight="min-h-[400px]">
+                            <Suspense fallback={<div className="min-h-[400px]" aria-hidden="true" />}>
+                                <AnimateOnScroll>
+                                    <ScholenLandingExpertise />
+                                </AnimateOnScroll>
+                            </Suspense>
+                        </DeferredSection>
+                    </SectionErrorBoundary>
                 </section>
 
                 {/* Contact / Pricing */}
                 <section id={SECTION_IDS.contact} className="py-14 md:py-20 lg:py-28 px-6 bg-slate-900 text-white scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_700px]">
-                    <DeferredSection minHeight="min-h-[700px]">
-                        <Suspense fallback={<div className="min-h-[700px]" aria-hidden="true" />}>
-                            <ScholenLandingContact />
-                        </Suspense>
-                    </DeferredSection>
+                    <SectionErrorBoundary>
+                        <DeferredSection minHeight="min-h-[700px]">
+                            <Suspense fallback={<div className="min-h-[700px]" aria-hidden="true" />}>
+                                <ScholenLandingContact />
+                            </Suspense>
+                        </DeferredSection>
+                    </SectionErrorBoundary>
                 </section>
             </main>
 
