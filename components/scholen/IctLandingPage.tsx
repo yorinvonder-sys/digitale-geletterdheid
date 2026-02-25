@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { trackEvent } from '../../services/analyticsService';
 import { ScholenLandingIct } from './ScholenLandingIct';
 
 const IconMenu = () => (

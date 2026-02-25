@@ -31,7 +31,7 @@ const PILOT_ENDPOINT =
     typeof window !== 'undefined' &&
     (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
         ? 'http://127.0.0.1:54321/functions/v1/submitPilotRequest'
-        : `${(import.meta as any).env.VITE_SUPABASE_URL}/functions/v1/submitPilotRequest`;
+        : `${(import.meta as any).env.VITE_SUPABASE_URL ?? ''}/functions/v1/submitPilotRequest`;
 
 export const ScholenLandingContact: React.FC = () => {
     const [formData, setFormData] = useState<PilotFormData>({
