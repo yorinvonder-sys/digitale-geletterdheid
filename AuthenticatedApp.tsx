@@ -233,6 +233,24 @@ export function AuthenticatedApp() {
         return () => unsubscribe();
     }, []);
 
+    // IMPORTANT: useMemo MUST be called before any early returns to satisfy Rules of Hooks.
+    // (Moving this after early returns caused React error #310 — "Rendered more hooks than
+    // during the previous render" — because the hook count changed between loading/loaded states.)
+    const studentTutorialSteps = useMemo((): TutorialStep[] =>
+        STUDENT_TUTORIAL_STEPS.map(step => {
+            if (step.id === 'feedback-btn') {
+                return {
+                    ...step,
+                    onEnter: () => {
+                        setIsProfileOpen(false);
+                        setInitialProfileTab('profile');
+                    }
+                };
+            }
+            return step;
+        }),
+    []); // setIsProfileOpen en setInitialProfileTab zijn stabiele setState setters
+
     const handleExitModule = () => {
         setActiveModule(null);
         setPendingLibraryItem(null);
@@ -497,23 +515,6 @@ export function AuthenticatedApp() {
         setShowIntro(false);
         setActiveModule(null);
     };
-
-    // Student tutorial steps met onEnter callback om UserProfile te sluiten
-    // wanneer de feedback-btn stap bereikt wordt (na avatar aanpassen)
-    const studentTutorialSteps = useMemo((): TutorialStep[] =>
-        STUDENT_TUTORIAL_STEPS.map(step => {
-            if (step.id === 'feedback-btn') {
-                return {
-                    ...step,
-                    onEnter: () => {
-                        setIsProfileOpen(false);
-                        setInitialProfileTab('profile');
-                    }
-                };
-            }
-            return step;
-        }),
-    []); // setIsProfileOpen en setInitialProfileTab zijn stabiele setState setters
 
     const renderContent = () => {
         // Build mission-to-role map dynamically from ROLES config (covers Y1, Y2, Y3)
