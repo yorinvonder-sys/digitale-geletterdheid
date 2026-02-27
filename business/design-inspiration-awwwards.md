@@ -147,33 +147,69 @@
 
 ---
 
+### Tier 1b: Awwwards 2025 Winnaars & EdTech-specifiek
+
+#### 6. Lando Norris (Awwwards Site of the Year 2025)
+- **Waarom:** GSAP-driven scroll choreografie — tekst, stats en 3D bewegen in perfecte sync
+- **Wow-factor:** Twee-kleurenpalet (#D2FF00 + #111112) — bold, onverwacht, direct herkenbaar. WebGL + Rive animaties + scroll-driven cinematics
+- **Toepasbaar:** De "elke scroll triggert iets betekenisvols" aanpak werkt perfect voor stap-voor-stap AI uitleg. Performance-first ondanks visuele dichtheid
+- **URL:** https://landonorris.com
+- **Score:** 8.18/10, Creativity 8.71/10
+
+#### 7. Skillex Online Education (Awwwards Honorable Mention)
+- **Waarom:** Educatie-platform met ronde vormen, zachte pastels, rustige uitstraling — "productief en vredig"
+- **Wow-factor:** Parallax single-page design, A/B geteste registratieflows
+- **Toepasbaar:** De "kalm en productief" esthetiek is exact juist voor een schooltool — niet flashy, niet saai. Ronde vormen signaleren veiligheid voor jongere doelgroepen
+- **URL:** https://skillex.webflow.io
+- **Awards:** Awwwards, CSS Design Awards, CSS Nectar, CSS Winner
+
+#### 8. Signs AI (Awwwards Honorable Mention — AI + Educatie)
+- **Waarom:** AI + Educatie + Toegankelijkheid combinatie met Three.js
+- **Wow-factor:** Gesture-based navigatie, deep purple (#322476) + light lavender palette. Score: 8.70-9.10
+- **Toepasbaar:** Laat zien hoe AI als tool voor educatieve inclusie kan worden gepresenteerd. Purple palette past bij DGSkills branding
+- **URL:** https://www.awwwards.com/sites/signs-ai
+
+#### 9. Clever (EdTech Simpliciteit)
+- **Waarom:** Minimalistisch blauw-wit design, audience-specifieke navigatie ("Schools", "Partners", "Students")
+- **Wow-factor:** Echte klaslokaalfoto's (geen stock), strategische kleuraccenten
+- **Toepasbaar:** Aparte ingangen voor "Docenten", "ICT-coördinatoren" en "Schoolleiders" — de koper is niet de gebruiker
+- **URL:** https://clever.com
+
+#### 10. Obys AIM — AI Modernism (Awwwards Site of the Month 2024)
+- **Waarom:** Variable typografie als centerpiece, scroll-storytelling per "hoofdstuk"
+- **Wow-factor:** LCP ~1.3s desktop ondanks zware animatie. Kinetische tekst onthult content progressief
+- **Toepasbaar:** "Hoofdstuk-gebaseerde" scroll-storytelling is perfect voor de 5 pijlers van digitale geletterdheid. Accessibility-first: `prefers-reduced-motion` swaps animaties naar fades
+- **URL:** https://obys.agency/aim
+
+---
+
 ### Tier 2: Visuele & animatie-inspiratie
 
-#### 6. Igloo Inc (Awwwards Site of the Year 2024)
+#### 11. Igloo Inc (Awwwards Site of the Year 2024)
 - **Waarom:** Combinatie van immersieve 3D + eenvoudige scroll-navigatie
 - **Wow-factor:** Procedurele ijsblokgeneratie, particle effects, WebGL UI, geluid
 - **Toepasbaar:** De filosofie: "weinig secties, veel interactieve elementen per sectie"
 - **URL:** https://igloo.inc
 - **Tech:** Three.js, GSAP, Svelte, Vite
 
-#### 7. Design Education Series® (Awwwards SOTD)
+#### 12. Design Education Series® (Awwwards SOTD)
 - **Waarom:** Educatief + award-winnend design in één — directe referentie
 - **Wow-factor:** Designprincipes visueel uitgelegd via interactie
 - **Toepasbaar:** Laat "digitale geletterdheid" zelf voelen via het design
 - **URL:** https://www.awwwards.com/sites/design-education-series-r
 
-#### 8. Don't Board Me (Awwwards Users' Choice 2024)
+#### 13. Don't Board Me (Awwwards Users' Choice 2024)
 - **Waarom:** "Verrassende mix van art direction, engaging copywriting en praktische website"
 - **Wow-factor:** Persoonlijkheid + functionaliteit in balans
 - **Toepasbaar:** Copywriting-stijl — warm, direct, met karakter
 
-#### 9. Notion.so (Product-led SaaS)
+#### 14. Notion.so (Product-led SaaS)
 - **Waarom:** Complexe tool, eenvoudig gepresenteerd
 - **Wow-factor:** Template-galerij als selling point, interactieve demo's
 - **Toepasbaar:** "Probeer het zelf" aanpak — interactieve missie-preview
 - **URL:** https://notion.so
 
-#### 10. Padlet (EdTech Interactief)
+#### 15. Padlet (EdTech Interactief)
 - **Waarom:** Onderwijs-tool met speelse, kleurrijke design
 - **Wow-factor:** Interactieve canvassen die direct laten zien wat het doet
 - **Toepasbaar:** De "show don't tell" benadering met interactieve elementen
@@ -183,17 +219,32 @@
 
 ### Tier 3: Animatie-technieken & bibliotheken
 
-#### 11. Mana Yerba Maté (3D Scroll Storytelling)
+#### 16. Mana Yerba Maté (3D Scroll Storytelling)
 - **Techniek:** 3D-render van product die roteert/beweegt bij scrollen
 - **Toepasbaar:** DGSkills mascotte of device-mockup die transformeert bij scroll
 
-#### 12. C2MTL (Text Reveal Animations)
+#### 17. C2MTL (Text Reveal Animations)
 - **Techniek:** Naadloze scroll-triggered tekst en afbeelding onthullingen
 - **Toepasbaar:** Kerndoelen en features die "verschijnen" bij scrollen
 
-#### 13. Toyfight (Easing Mastery)
+#### 18. Toyfight (Easing Mastery)
 - **Techniek:** Unieke easing per element — tekst, illustraties, knoppen
 - **Toepasbaar:** Variatie in animatie-timing voor visuele rijkdom
+
+#### 19. Immersive Garden (Awwwards Agency of the Year 2025)
+- **Techniek:** Bas-relief 3D, "Backstage" sectie die het technische proces toont, easter eggs
+- **Toepasbaar:** Een "Backstage" concept dat laat zien hoe de AI werkt — dit IS de educatieve waarde. Perfect voor een AI-geletterdheidplatform
+- **URL:** https://immersive-g.com
+
+#### 20. Huly.io (Motion Storytelling SaaS)
+- **Techniek:** Vloeiende secties met dynamische kleurinteracties, vibrant palette dat verschuift bij scroll
+- **Toepasbaar:** Complexe all-in-one tool die simpel gepresenteerd wordt per feature-sectie. Elke feature krijgt eigen kleur + animatie
+- **URL:** https://huly.io
+
+### Scrollytelling — Kernstatistiek
+
+> **Goed gemaakte scroll-driven stories bereiken 400% hogere engagement dan statische content.**
+> — Bron: Maglr/Shorthand scrollytelling research
 
 ---
 
@@ -418,6 +469,7 @@ De kernfilosofie: verander de landingspagina van een **informatiebrochure** naar
 ## 6. Bronnen
 
 ### Awwwards & Awards
+- [Awwwards Annual Awards 2025](https://www.awwwards.com/annual-awards/) — Lando Norris als Site of the Year
 - [Awwwards Annual Awards 2024](https://www.awwwards.com/annual-awards-2024/) — Igloo Inc als Site of the Year
 - [Awwwards Site of the Year 2024](https://www.awwwards.com/annual-awards-2024/site-of-the-year) — Igloo Inc details
 - [Awwwards Minimal Websites](https://www.awwwards.com/websites/minimal/) — Minimale design-galerij
@@ -425,6 +477,11 @@ De kernfilosofie: verander de landingspagina van een **informatiebrochure** naar
 - [Awwwards Education Websites](https://www.awwwards.com/websites/culture-education/) — Educatie-categorie
 - [Awwwards Storytelling Category](https://www.awwwards.com/websites/storytelling/) — Storytelling designs
 - [Design Education Series® (SOTD)](https://www.awwwards.com/sites/design-education-series-r) — Educatief design
+- [Signs AI (Honorable Mention)](https://www.awwwards.com/sites/signs-ai) — AI + Educatie + Toegankelijkheid
+- [Skillex Online Education](https://www.awwwards.com/sites/skillex-online-education) — EdTech parallax design
+- [Lando Norris Case Study — OFF+BRAND](https://www.itsoffbrand.com/our-work/lando-norris) — GSAP scroll choreografie
+- [Immersive Garden Case Study](https://www.awwwards.com/case-study-immersive-gardens-new-website.html) — Agency of the Year 2025
+- [Made With GSAP](https://madewithgsap.com/) — 50 web motion technieken showcase
 
 ### Design Trends & Analyse
 - [The Linear Look — Frontend Horse](https://frontend.horse/articles/the-linear-look/) — Analyse van de Linear-trend
