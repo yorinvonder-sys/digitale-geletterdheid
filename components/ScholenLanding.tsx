@@ -75,6 +75,7 @@ const ScholenLandingContact = React.lazy(() => import('./scholen/ScholenLandingC
 const ScholenLandingExpertise = React.lazy(() => import('./scholen/ScholenLandingExpertise').then(m => ({ default: m.ScholenLandingExpertise })));
 const ScholenLandingPlatformPreview = React.lazy(() => import('./scholen/ScholenLandingPlatformPreview').then(m => ({ default: m.ScholenLandingPlatformPreview })));
 const ScholenLandingCustomization = React.lazy(() => import('./scholen/ScholenLandingCustomization').then(m => ({ default: m.ScholenLandingCustomization })));
+const ScholenLandingGameDemo = React.lazy(() => import('./scholen/ScholenLandingGameDemo').then(m => ({ default: m.ScholenLandingGameDemo })));
 
 // JSON-LD structured data for Google rich results
 const structuredData = {
@@ -593,6 +594,17 @@ export const ScholenLanding: React.FC = () => {
                     </DeferredSection>
                 </section>
 
+                {/* Game Demo — interactive mission preview */}
+                <section className="py-14 md:py-20 lg:py-28 px-6 bg-slate-50 border-y border-slate-100 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_700px]" aria-label="Game Programmeur demo">
+                    <DeferredSection minHeight="min-h-[700px]">
+                        <Suspense fallback={<div className="min-h-[700px]" aria-hidden="true" />}>
+                            <AnimateOnScroll>
+                                <ScholenLandingGameDemo />
+                            </AnimateOnScroll>
+                        </Suspense>
+                    </DeferredSection>
+                </section>
+
                 {/* Platform preview — NOT deferred: contains the first visible image (LCP) */}
                 <section id={SECTION_IDS.platform} className="py-14 md:py-20 lg:py-28 px-6 border-b border-slate-100 scroll-mt-16" aria-label="Platform preview">
                     <Suspense fallback={<div className="min-h-[700px]" aria-hidden="true" />}>
@@ -608,39 +620,6 @@ export const ScholenLanding: React.FC = () => {
                                 <ScholenLandingSlo />
                             </AnimateOnScroll>
                         </Suspense>
-                    </DeferredSection>
-                </section>
-
-                {/* Testimonial — Almere College */}
-                <section className="py-20 md:py-24 px-6 [content-visibility:auto] [contain-intrinsic-size:auto_300px]" aria-label="Testimonial">
-                    <DeferredSection minHeight="min-h-[300px]">
-                        <AnimateOnScroll>
-                            <div className="max-w-4xl mx-auto text-center">
-                                <div className="inline-flex items-center gap-2 bg-indigo-50 text-indigo-600 text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full mb-8">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-                                    Pilotschool
-                                </div>
-
-                                <blockquote className="mb-8">
-                                    <p className="text-2xl md:text-3xl font-bold text-slate-900 leading-snug mb-6">
-                                        "DGSkills maakt digitale geletterdheid concreet en toegankelijk.
-                                        De AI-missies sluiten aan bij de belevingswereld van onze leerlingen
-                                        en de SLO-koppeling geeft ons de verantwoording die we nodig hebben."
-                                    </p>
-                                </blockquote>
-
-                                {/* TODO: Vervang "R. de Vries" door de echte naam van de ICT-coördinator van Almere College */}
-                                <div className="flex items-center justify-center gap-4">
-                                    <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-indigo-700 rounded-full flex items-center justify-center text-white font-bold text-lg">
-                                        RV
-                                    </div>
-                                    <div className="text-left">
-                                        <p className="font-bold text-slate-900">R. de Vries</p>
-                                        <p className="text-sm text-slate-500">ICT-coördinator, Almere College</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </AnimateOnScroll>
                     </DeferredSection>
                 </section>
 
