@@ -604,6 +604,7 @@ export function ScholenLandingGameDemo() {
     const switchGame = (idx: number) => {
         if (idx === activeGameIdx) return;
         clearTimers();
+        setIsPaused(false);
         setActiveGameIdx(idx);
         setActiveStep(0);
         setPhase('student-typing');
@@ -621,6 +622,7 @@ export function ScholenLandingGameDemo() {
 
     const goToStep = (idx: number) => {
         clearTimers();
+        setIsPaused(false);
         setActiveStep(idx);
         setPhase('student-typing');
     };
