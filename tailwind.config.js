@@ -50,6 +50,8 @@ export default {
                 'shimmer': 'shimmer 2.5s ease-in-out infinite',
                 'slide-in-right': 'slideInRight 0.8s ease-out forwards',
                 'carousel-progress': 'carouselProgress 6s linear forwards',
+                'typing-bounce': 'typingBounce 1.4s ease-in-out infinite',
+                'sound-pulse': 'soundPulse 1.2s ease-out infinite',
             },
             keyframes: {
                 float: {
@@ -79,6 +81,14 @@ export default {
                 carouselProgress: {
                     '0%': { width: '0%' },
                     '100%': { width: '100%' },
+                },
+                typingBounce: {
+                    '0%, 60%, 100%': { transform: 'translateY(0)' },
+                    '30%': { transform: 'translateY(-4px)' },
+                },
+                soundPulse: {
+                    '0%': { transform: 'scale(0.8)', opacity: '0.8' },
+                    '100%': { transform: 'scale(2)', opacity: '0' },
                 },
             }
         },
