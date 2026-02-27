@@ -74,9 +74,11 @@ interface ChatMessage {
 export class Chat {
   private history: ChatMessage[] = [];
   private systemInstruction: string;
+  private missionId?: string;
 
-  constructor(systemInstruction: string) {
+  constructor(systemInstruction: string, missionId?: string) {
     this.systemInstruction = systemInstruction;
+    this.missionId = missionId;
   }
 
   getHistory(): ChatMessage[] {
@@ -120,6 +122,7 @@ export class Chat {
         },
         body: JSON.stringify({
           message: cleanMessage,
+          ...(this.missionId ? { missionId: this.missionId } : {}),
           systemInstruction: this.systemInstruction,
           history: this.history.slice(0, -1)
         })
@@ -198,6 +201,7 @@ export class Chat {
         },
         body: JSON.stringify({
           message: cleanMessage,
+          ...(this.missionId ? { missionId: this.missionId } : {}),
           systemInstruction: this.systemInstruction,
           history: this.history.slice(0, -1)
         })
@@ -439,8 +443,8 @@ Dan kan ik je het beste helpen! 💪`;
 
 // --- Public API ---
 
-export const createChatSession = (systemInstruction: string): Chat => {
-  return new Chat(systemInstruction);
+export const createChatSession = (systemInstruction: string, missionId?: string): Chat => {
+  return new Chat(systemInstruction, missionId);
 };
 
 export const sendMessageToGemini = async (chat: Chat, message: string): Promise<string> => {
