@@ -865,6 +865,8 @@ export function AuthenticatedApp() {
         );
     };
 
+    const showFooter = !activeModule && !isProfileOpen && !showIntro && !showGames && viewMode !== 'monitoring';
+
     const appShell = (
         <div className="w-full min-h-screen bg-[#f8fafc] pb-safe flex flex-col relative">
             <a href="#main-content" className="skip-link">Naar hoofdinhoud</a>
@@ -876,7 +878,7 @@ export function AuthenticatedApp() {
                 </div>
             )}
 
-            <main id="main-content" className="flex-1 flex flex-col min-h-0" tabIndex={-1}>
+            <main id="main-content" className={`flex-1 flex flex-col${showFooter ? '' : ' min-h-0'}`} tabIndex={-1}>
                 {user.role === 'student' && (
                     <>
                         <TutorialSpotlight />
@@ -907,7 +909,7 @@ export function AuthenticatedApp() {
                     )}
                 </div>
             )}
-            {!activeModule && !isProfileOpen && !showIntro && !showGames && viewMode !== 'monitoring' && (
+            {showFooter && (
                 <Footer
                     onAccountDeleted={handleLogout}
                     schoolId={user.schoolId}
