@@ -321,12 +321,7 @@ export function AuthenticatedApp() {
             };
             const cleanStats = sanitizeForDb(stats);
             const { error } = await supabase
-                .from('users')
-                .update({
-                    stats: cleanStats,
-                    last_active: new Date().toISOString()
-                } as any)
-                .eq('uid', user.uid);
+                .rpc('update_student_stats', { p_stats: cleanStats });
             if (error) throw error;
         } catch (error) {
             console.error("Error saving progress to Supabase:", error);
