@@ -747,7 +747,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                     </div>
                 )}
                 {/* HEADER */}
-                <header className="bg-white/80 backdrop-blur-md border-b border-slate-200 px-8 py-6 flex justify-between items-center sticky top-0 z-50">
+                <header className="bg-white/80 backdrop-blur-md border-b border-slate-200 px-4 py-3 sm:px-8 sm:py-6 flex justify-between items-center sticky top-0 z-50">
                     <button
                         onClick={onGoHome}
                         aria-label="Ga naar de startpagina"
@@ -825,7 +825,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                         className="fixed inset-0 z-40"
                                         onClick={() => setShowProfileMenu(false)}
                                     />
-                                    <div className="absolute right-0 top-14 z-50 bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden min-w-[200px] animate-in fade-in slide-in-from-top-2 duration-200">
+                                    <div className="absolute right-0 sm:right-0 top-14 z-50 bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden min-w-[200px] max-w-[calc(100vw-2rem)] animate-in fade-in slide-in-from-top-2 duration-200">
                                         <div className="p-3 border-b border-slate-100 bg-slate-50">
                                             <div className="font-bold text-slate-900 text-sm">{userDisplayName || 'Gast'}</div>
                                             <div className="text-[10px] text-slate-400 font-medium">Leerling Account</div>
@@ -1023,58 +1023,91 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                     {/* Dynamisch leerdoelenblok — op basis van curriculum config */}
                     {currentPeriodConfig && (
                         <div className={`mb-8 bg-white rounded-3xl border ${periodTheme.border} shadow-sm p-6 md:p-7`}>
-                            <div className="flex items-start gap-3">
+                            {/* Header */}
+                            <div className="flex items-center gap-3 mb-4">
                                 <div className={`w-10 h-10 rounded-xl ${periodTheme.bg} ${periodTheme.text} flex items-center justify-center shrink-0`}>
                                     <CheckCircle2 size={20} />
                                 </div>
-                                <div>
-                                    <h3 className={`text-sm font-black uppercase tracking-widest ${periodTheme.text} mb-2`}>
-                                        Leerdoelen {periodNaming} {activeWeek} (SLO)
-                                    </h3>
-                                    {periodLeerdoel && (
-                                        <p className="text-slate-700 text-sm font-medium leading-relaxed">
-                                            {stats?.vsoProfile && periodLeerdoel.descriptionVso
-                                                ? periodLeerdoel.descriptionVso
-                                                : periodLeerdoel.description}
-                                        </p>
-                                    )}
-                                    {!periodLeerdoel && (
-                                        <p className="text-slate-700 text-sm font-medium leading-relaxed">
-                                            {currentPeriodConfig.subtitle}
-                                        </p>
-                                    )}
-                                    {periodLeerdoel?.lesduur && (
-                                        <p className="text-slate-500 text-xs font-semibold mt-2">
-                                            {periodLeerdoel.lesduur}
-                                        </p>
-                                    )}
-                                    <div className="mt-3 flex flex-wrap gap-2">
-                                        {(stats?.vsoProfile && currentPeriodConfig.sloFocusVso
-                                            ? currentPeriodConfig.sloFocusVso
-                                            : currentPeriodConfig.sloFocus
-                                        ).map(code => {
-                                            const kerndoel = SLO_KERNDOELEN[code];
-                                            if (!kerndoel) return null;
-                                            return (
-                                                <span
-                                                    key={code}
-                                                    className={`px-2 py-1 rounded-lg text-[10px] font-bold border ${getKerndoelBadgeClasses(code)}`}
-                                                >
-                                                    {code} {kerndoel.label}
-                                                </span>
-                                            );
-                                        })}
-                                    </div>
-                                    {periodLeerdoel?.succescriterium && (
-                                        <p className="text-slate-500 text-xs font-semibold mt-2">
-                                            Succescriterium:{' '}
-                                            {(stats?.vsoProfile === 'dagbesteding' && periodLeerdoel.succescriDagbesteding)
-                                                ? periodLeerdoel.succescriDagbesteding
-                                                : periodLeerdoel.succescriterium}
-                                        </p>
-                                    )}
-                                </div>
+                                <h3 className={`text-sm font-black uppercase tracking-widest ${periodTheme.text}`}>
+                                    Leerdoelen {periodNaming} {activeWeek} (SLO)
+                                </h3>
                             </div>
+
+                            {/* Leerdoel beschrijving */}
+                            <p className="text-slate-700 text-sm font-medium leading-relaxed">
+                                {periodLeerdoel
+                                    ? (stats?.vsoProfile && periodLeerdoel.descriptionVso
+                                        ? periodLeerdoel.descriptionVso
+                                        : periodLeerdoel.description)
+                                    : currentPeriodConfig.subtitle}
+                            </p>
+
+                            {/* Lesflow — stappen visueel weergeven */}
+                            {periodLeerdoel?.lesduur && (() => {
+                                const raw = periodLeerdoel.lesduur!;
+                                const duurMatch = raw.match(/Lesduur:\s*([^.]+)\./);
+                                const duur = duurMatch ? duurMatch[1].trim() : null;
+                                const flowPart = raw.replace(/^[^.]+\.\s*/, '').replace(/^[^:]+:\s*/, '');
+                                const steps = flowPart.split('→').map(s => s.trim()).filter(Boolean);
+                                return (
+                                    <div className="mt-4 rounded-2xl bg-slate-50 border border-slate-100 p-4">
+                                        {duur && (
+                                            <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">
+                                                Lesduur: {duur}
+                                            </p>
+                                        )}
+                                        <div className="flex flex-wrap items-center gap-1.5">
+                                            {steps.map((step, i) => (
+                                                <div key={i} className="flex items-center gap-1.5">
+                                                    <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold ${periodTheme.bg} ${periodTheme.text} border ${periodTheme.border}`}>
+                                                        <span className={`w-5 h-5 rounded-full bg-white/80 flex items-center justify-center text-[10px] font-bold ${periodTheme.text}`}>
+                                                            {i + 1}
+                                                        </span>
+                                                        {step}
+                                                    </span>
+                                                    {i < steps.length - 1 && (
+                                                        <span className="text-slate-300 text-xs">→</span>
+                                                    )}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                );
+                            })()}
+
+                            {/* SLO kerndoelen badges */}
+                            <div className="mt-4 flex flex-wrap gap-2">
+                                {(stats?.vsoProfile && currentPeriodConfig.sloFocusVso
+                                    ? currentPeriodConfig.sloFocusVso
+                                    : currentPeriodConfig.sloFocus
+                                ).map(code => {
+                                    const kerndoel = SLO_KERNDOELEN[code];
+                                    if (!kerndoel) return null;
+                                    return (
+                                        <span
+                                            key={code}
+                                            className={`px-2 py-1 rounded-lg text-[10px] font-bold border ${getKerndoelBadgeClasses(code)}`}
+                                        >
+                                            {code} {kerndoel.label}
+                                        </span>
+                                    );
+                                })}
+                            </div>
+
+                            {/* Succescriterium */}
+                            {periodLeerdoel?.succescriterium && (
+                                <div className="mt-4 rounded-xl bg-emerald-50 border border-emerald-100 px-4 py-3 flex items-start gap-2">
+                                    <span className="text-emerald-500 mt-0.5 shrink-0">
+                                        <CheckCircle2 size={14} />
+                                    </span>
+                                    <p className="text-emerald-700 text-xs font-semibold leading-relaxed">
+                                        <span className="font-black uppercase tracking-wider">Succescriterium: </span>
+                                        {(stats?.vsoProfile === 'dagbesteding' && periodLeerdoel.succescriDagbesteding)
+                                            ? periodLeerdoel.succescriDagbesteding
+                                            : periodLeerdoel.succescriterium}
+                                    </p>
+                                </div>
+                            )}
                         </div>
                     )}
 
@@ -1150,7 +1183,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                     )}
 
                                     {/* Main Mission Grid */}
-                                    <div id="mission-grid-container" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 pb-24 sm:pb-12" data-tutorial="student-main-missions">
+                                    <div id="mission-grid-container" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 pb-28 sm:pb-12" data-tutorial="student-main-missions">
                                         {(currentMissions.filter(m => !m.isReview) || []).length > 0 ? (
                                             currentMissions.filter(m => !m.isReview).map((mission, index) => {
                                                 const isCompleted = stats?.missionsCompleted?.includes(mission.id);
@@ -1382,7 +1415,7 @@ const MissionCard = React.memo(({ mission, onSelectModule, onInfoClick, isComple
                 )}
 
                 <h3 className={`
-                font-black mb-2 transition-colors tracking-tight line-clamp-2
+                font-black mb-2 transition-colors tracking-tight line-clamp-2 break-words
                 ${isCompact ? 'text-lg' : 'text-2xl mb-3'}
                 ${mission.status === 'locked' ? 'text-slate-400' : 'text-slate-900 group-hover:text-indigo-600'}
             `}>
