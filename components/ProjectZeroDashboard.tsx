@@ -423,7 +423,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
 
         // 1. Check if the period is locked via teacher permissions
         const weekPermissionId = `week-${activeWeek}`;
-        const isWeekEnabled = permissions?.[weekPermissionId]?.enabled ?? false;
+        const isWeekEnabled = permissions?.enabled_games?.includes(weekPermissionId) ?? false;
 
         if (!isWeekEnabled) {
             return missions.map(mission => ({
@@ -996,7 +996,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                     <div className="flex items-center gap-2 mb-8 bg-slate-100 p-1.5 rounded-2xl w-full md:w-fit border border-slate-200 shadow-inner overflow-x-auto no-scrollbar">
                         {Object.keys(yearConfig?.periods || {}).map(Number).sort((a, b) => a - b).map((period) => {
                             const pConf = yearConfig?.periods[period];
-                            const isLocked = !isTeacher && !permissions?.[`week-${period}`]?.enabled;
+                            const isLocked = !isTeacher && !permissions?.enabled_games?.includes(`week-${period}`);
 
                             return (
                                 <button

@@ -68,19 +68,18 @@ export const getGamePermissions = async (schoolId?: string, yearGroup?: number):
             q = q.is('school_id', null);
         }
 
-        if (yearGroup) {
-            q = q.eq('year_group', yearGroup);
-        }
-
-        const { data, error } = await q.maybeSingle();
+        const { data: row, error } = await q.maybeSingle();
 
         if (error) throw error;
 
-        const permissions: GamePermissions = data ? {
-            enabled_games: (data.enabled_games as string[]) || [],
-            blocked_games: (data.blocked_games as string[]) || [],
-            custom_settings: (data.custom_settings as Record<string, any>) || {},
-            updated_at: data.updated_at,
+        // The table stores permissions inside a `data` jsonb column.
+        const d = (row?.data as Record<string, any>) || {};
+
+        const permissions: GamePermissions = row ? {
+            enabled_games: Array.isArray(d.enabled_games) ? d.enabled_games : [],
+            blocked_games: Array.isArray(d.blocked_games) ? d.blocked_games : [],
+            custom_settings: (d.custom_settings as Record<string, any>) || {},
+            updated_at: row.updated_at,
         } : {
             enabled_games: [],
             blocked_games: [],
@@ -103,21 +102,31 @@ export const getGamePermissions = async (schoolId?: string, yearGroup?: number):
 export const updateGamePermissions = async (
     permissions: Partial<GamePermissions>,
     schoolId?: string,
-    yearGroup?: number
+    _yearGroup?: number
 ): Promise<boolean> => {
     try {
+        // Read current data first to merge
+        const current = await getGamePermissions(schoolId);
+        const mergedData = {
+            enabled_games: permissions.enabled_games ?? current.enabled_games,
+            blocked_games: permissions.blocked_games ?? current.blocked_games,
+            custom_settings: permissions.custom_settings ?? current.custom_settings,
+        };
+
+        const id = schoolId || 'global';
+
         const { error } = await supabase
             .from('game_permissions')
             .upsert({
+                id,
                 school_id: schoolId || null,
-                year_group: yearGroup || null,
-                ...permissions,
+                data: mergedData,
                 updated_at: new Date().toISOString(),
-            }, { onConflict: 'school_id' });
+            }, { onConflict: 'id' });
 
         if (error) throw error;
 
-        invalidateCache(yearGroup);
+        invalidateCache(_yearGroup);
 
         return true;
     } catch (error) {
