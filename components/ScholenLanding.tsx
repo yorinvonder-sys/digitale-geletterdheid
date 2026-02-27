@@ -242,11 +242,13 @@ export const ScholenLanding: React.FC = () => {
             } else if (canonical && window.location.pathname === '/') {
                 canonical.href = 'https://dgskills.app/';
             }
-            const script = document.createElement('script');
-            script.type = 'application/ld+json';
-            script.textContent = JSON.stringify(structuredData);
-            document.head.appendChild(script);
-            scriptRef.current = script;
+            try {
+                const script = document.createElement('script');
+                script.type = 'application/ld+json';
+                script.textContent = JSON.stringify(structuredData);
+                document.head.appendChild(script);
+                scriptRef.current = script;
+            } catch { /* CSP Trusted Types may block textContent on <script> */ }
         };
         const useIdle = typeof requestIdleCallback !== 'undefined';
         const idleId = useIdle ? requestIdleCallback(idleCb, { timeout: 2000 }) : setTimeout(idleCb, 0);
