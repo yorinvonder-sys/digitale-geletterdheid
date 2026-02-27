@@ -1,10 +1,11 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { AgentRole, ChatMessage, BookData, DetectiveCase, TrainerData, CodeChange, BonusChallenge } from '../types';
+import { AgentRole, ChatMessage, BookData, DetectiveCase, TrainerData, CodeChange, BonusChallenge, EducationLevel } from '../types';
 import { createChatSession, sendMessageToGemini, generateImage, Chat } from '../services/geminiService';
 import { enhancePrompt, shouldShowEnhancementDiff } from '../services/promptEnhancer';
 import { computeCodeChanges } from '../components/CodeChangeCard';
 import { saveMissionProgress, loadMissionProgress, resetMissionProgress } from '../services/missionService';
+import { buildDifferentiatedInstruction } from '../config/differentiation';
 import DOMPurify from 'dompurify';
 
 // ============================================================================
@@ -86,9 +87,12 @@ interface UseAgentLogicProps {
     schoolId?: string;
     initialProgress?: MissionProgress;
     skipLoading?: boolean;
+    educationLevel?: EducationLevel;
+    yearGroup?: number;
+    vsoProfile?: string;
 }
 
-export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialProgress, skipLoading = false }: UseAgentLogicProps) => {
+export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialProgress, skipLoading = false, educationLevel, yearGroup, vsoProfile }: UseAgentLogicProps) => {
     // Initialize state with stored progress if available
     const [messages, setMessages] = useState<ChatMessage[]>([]);
     const [input, setInput] = useState('');
@@ -96,6 +100,11 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
     const [error, setError] = useState<string | null>(null);
     const [thinkingStep, setThinkingStep] = useState<string>("Analyseren...");
     const [suggestions, setSuggestions] = useState<string[]>([]);
+
+    // --- TEMPO-DETECTIE (in-memory, AVG-conform) ---
+    // Tijdstempels worden NIET opgeslagen, alleen in-memory bijgehouden
+    const messageTimestampsRef = useRef<number[]>([]);
+    const currentPaceRef = useRef<'fast' | 'normal' | 'slow'>('normal');
 
     // Specific Role State - Restore from initialProgress if available
     const [activeGameCode, setActiveGameCode] = useState<string | null>(initialProgress?.data?.activeGameCode || null);
@@ -112,14 +121,29 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
     const previousGameCodeRef = useRef<string | null>(null); // Track previous code for diff
     const messageCountRef = useRef<number>(0); // Track exchanges for session refresh
 
+    // Helper: Build the differentiated system instruction for this student
+    const getDifferentiatedInstruction = useCallback(() => {
+        if (!selectedRole) return '';
+        if (educationLevel && yearGroup) {
+            return buildDifferentiatedInstruction(
+                selectedRole.systemInstruction,
+                educationLevel,
+                yearGroup,
+                currentPaceRef.current,
+                vsoProfile,
+            );
+        }
+        return selectedRole.systemInstruction;
+    }, [selectedRole, educationLevel, yearGroup, vsoProfile]);
+
     // Helper: Refresh chat session with recent context (prevents memory buildup in Gemini SDK)
     const refreshChatSession = useCallback((recentMessages: ChatMessage[]) => {
         if (!selectedRole) return;
 
         console.log('[Memory] Refreshing chat session to prevent memory buildup');
 
-        // Create fresh session
-        const newSession = createChatSession(selectedRole.systemInstruction);
+        // Create fresh session with differentiated instruction + missionId for server-side validation
+        const newSession = createChatSession(getDifferentiatedInstruction(), selectedRole.id);
 
         // Re-inject essential context (last N messages)
         const contextMessages = recentMessages.slice(-MAX_CONTEXT_MESSAGES);
@@ -134,7 +158,7 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
 
         chatSessionRef.current = newSession;
         messageCountRef.current = 0;
-    }, [selectedRole]);
+    }, [selectedRole, getDifferentiatedInstruction]);
 
     // Initialize Chat
     useEffect(() => {
@@ -168,7 +192,7 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
             setSuggestions(starterTips);
 
             try {
-                const session = createChatSession(selectedRole.systemInstruction);
+                const session = createChatSession(getDifferentiatedInstruction(), selectedRole.id);
                 chatSessionRef.current = session;
 
                 // If it's a game programmer, we provide initial code as context
@@ -365,6 +389,35 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
             text: textInput,
             timestamp: new Date()
         };
+
+        // --- TEMPO-DETECTIE (in-memory, AVG-conform) ---
+        const now = Date.now();
+        messageTimestampsRef.current.push(now);
+        // Houd max 10 timestamps bij voor de berekening
+        if (messageTimestampsRef.current.length > 10) {
+            messageTimestampsRef.current = messageTimestampsRef.current.slice(-10);
+        }
+        // Bereken pace op basis van gemiddelde tijd tussen berichten
+        if (messageTimestampsRef.current.length >= 3) {
+            const timestamps = messageTimestampsRef.current;
+            let totalGap = 0;
+            for (let i = 1; i < timestamps.length; i++) {
+                totalGap += timestamps[i] - timestamps[i - 1];
+            }
+            const avgGapSeconds = (totalGap / (timestamps.length - 1)) / 1000;
+            const oldPace = currentPaceRef.current;
+            if (avgGapSeconds < 30) {
+                currentPaceRef.current = 'fast';
+            } else if (avgGapSeconds > 120) {
+                currentPaceRef.current = 'slow';
+            } else {
+                currentPaceRef.current = 'normal';
+            }
+            // Bij pace-wijziging: refresh de session met nieuwe instructie
+            if (oldPace !== currentPaceRef.current && educationLevel && yearGroup) {
+                console.log(`[Pace] Tempo gewijzigd: ${oldPace} → ${currentPaceRef.current}`);
+            }
+        }
 
         // MEMORY MANAGEMENT: Track message count and check if session refresh needed
         messageCountRef.current++;

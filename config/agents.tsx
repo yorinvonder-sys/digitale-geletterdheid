@@ -2,6 +2,11 @@
 import React from 'react';
 import { AgentRole, EducationLevel } from '../types';
 import { ShieldAlert, Database, Rocket, Pencil, Image as ImageIcon, Play, Sparkles, Feather, Gamepad2, BrainCircuit, Code2, Search, Cpu, ShieldCheck, AlertCircle, Map, Lightbulb, RotateCcw, Scale, BarChart2, Table2, Globe, LayoutDashboard, Bug, Zap, FileCode, Smartphone, Eye, Mic, BookOpen, Palette, Video, Shield, Telescope, Leaf, Trophy, Hammer, Network, FileSearch } from 'lucide-react';
+import DataPreview from '../components/previews/DataPreview';
+import CodePreview from '../components/previews/CodePreview';
+import MediaPreview from '../components/previews/MediaPreview';
+import EthicsPreview from '../components/previews/EthicsPreview';
+import SecurityPreview from '../components/previews/SecurityPreview';
 
 /* 
   ---------------------------------------------------------------------------
@@ -96,6 +101,13 @@ Reageer dan ALTIJD met:
 Jouw welzijn is het allerbelangrijkste."
 
 Geef in dit geval GEEN reguliere missie-antwoorden. Stop de missie-interactie.
+
+---
+### ADAPTIEF PROTOCOL
+Na je eerste 2 interacties met de leerling, schat in of de leerling beginner of gevorderd is op dit onderwerp.
+- BEGINNER: Kent de basisbegrippen nog niet → leg extra uit met concrete voorbeelden
+- GEVORDERD: Kent de basis al → sla introductie-uitleg over, bied direct verdieping
+Vermeld je inschatting NIET expliciet aan de leerling. Pas je aanpak stilzwijgend aan.
 `;
 
 
@@ -106,13 +118,44 @@ Geef in dit geval GEEN reguliere missie-antwoorden. Stop de missie-interactie.
   ---------------------------------------------------------------------------
 */
 export const ROLES: AgentRole[] = [
-    // --- STANDALONE MISSIES (geen AI-chat, alleen metadata) ---
+    // --- STANDALONE MISSIES (geen AI-chat, custom React-componenten) ---
     {
         id: 'cloud-cleaner',
         yearGroup: 1,
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Cloud Schoonmaker',
         icon: <RotateCcw size={28} />,
+        color: '#06B6D4',
+        description: 'Ruim je digitale rommel op en organiseer je bestanden als een pro.',
+        problemScenario: 'Je OneDrive zit vol met bestanden die overal en nergens staan. Documenten zonder naam, dubbele bestanden en mappen zonder structuur. Tijd om op te ruimen!',
+        missionObjective: 'Sleep bestanden naar de juiste mappen en maak je cloud overzichtelijk.',
+        briefingImage: '/assets/agents/cloud-cleaner.webp',
+        difficulty: 'Easy',
+        examplePrompt: 'Waar hoort dit bestand?',
+        visualPreview: (
+            <div className="w-full h-full bg-cyan-50 flex flex-col items-center justify-center relative overflow-hidden p-4">
+                <div className="absolute top-6 w-32 h-16 bg-cyan-200/40 rounded-full blur-2xl"></div>
+                <div className="relative z-10 flex gap-3">
+                    <div className="w-14 h-16 bg-white rounded-lg shadow-lg border border-cyan-200 flex flex-col items-center justify-center p-1">
+                        <div className="w-8 h-1.5 bg-cyan-300 rounded-full mb-1"></div>
+                        <div className="w-6 h-1 bg-cyan-200 rounded-full"></div>
+                    </div>
+                    <div className="flex flex-col gap-2">
+                        <div className="w-12 h-12 bg-cyan-500 rounded-xl flex items-center justify-center text-white shadow-md">
+                            <RotateCcw size={20} />
+                        </div>
+                        <div className="w-12 h-1 bg-cyan-300 rounded-full"></div>
+                    </div>
+                    <div className="w-14 h-16 bg-white rounded-lg shadow-lg border border-cyan-200 flex flex-col items-center justify-center p-1">
+                        <div className="w-8 h-1.5 bg-cyan-300 rounded-full mb-1"></div>
+                        <div className="w-6 h-1 bg-cyan-200 rounded-full"></div>
+                    </div>
+                </div>
+                <div className="mt-3 bg-white/80 backdrop-blur px-3 py-1 rounded-full text-cyan-700 font-bold text-[10px] shadow-sm border border-cyan-100">
+                    DRAG & DROP
+                </div>
+            </div>
+        ),
         systemInstruction: '',
         steps: [],
     },
@@ -122,6 +165,33 @@ export const ROLES: AgentRole[] = [
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Layout Doctor',
         icon: <Pencil size={28} />,
+        color: '#2563EB',
+        description: 'Herstel kapotte Word-documenten en maak ze weer professioneel.',
+        problemScenario: 'Een klasgenoot heeft een verslag ingeleverd dat er verschrikkelijk uitziet: verkeerde lettertypes, geen koppen, alles door elkaar. Jij bent de Layout Doctor die het document redt!',
+        missionObjective: 'Pas opmaak, koppen en structuur toe om het document te herstellen.',
+        briefingImage: '/assets/agents/layout-doctor.webp',
+        difficulty: 'Easy',
+        examplePrompt: 'Wat is er mis met dit document?',
+        visualPreview: (
+            <div className="w-full h-full bg-blue-50 flex items-center justify-center p-4">
+                <div className="w-36 h-48 bg-white shadow-2xl rounded-sm relative overflow-hidden border border-blue-100">
+                    <div className="absolute top-0 left-0 w-full h-1 bg-red-500"></div>
+                    <div className="p-3 flex flex-col gap-2">
+                        <div className="w-full h-3 bg-red-200 rounded-full"></div>
+                        <div className="w-2/3 h-2 bg-slate-200 rounded-full"></div>
+                        <div className="w-full h-2 bg-slate-100 rounded-full"></div>
+                        <div className="w-full h-2 bg-slate-100 rounded-full"></div>
+                        <div className="w-1/2 h-2 bg-red-200 rounded-full"></div>
+                        <div className="mt-2 w-full h-12 bg-blue-50 rounded border border-dashed border-blue-200 flex items-center justify-center">
+                            <Pencil size={16} className="text-blue-400" />
+                        </div>
+                    </div>
+                    <div className="absolute bottom-2 right-2 bg-green-500 rounded-full w-6 h-6 flex items-center justify-center shadow-lg">
+                        <span className="text-white text-[10px] font-bold">+</span>
+                    </div>
+                </div>
+            </div>
+        ),
         systemInstruction: '',
         steps: [],
     },
@@ -131,6 +201,34 @@ export const ROLES: AgentRole[] = [
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Pitch Politie',
         icon: <Play size={28} />,
+        color: '#DC2626',
+        description: 'Beoordeel presentaties en geef feedback als een echte jury.',
+        problemScenario: 'Er zijn drie presentaties binnengekomen voor de schoolcompetitie. Maar welke is goed genoeg? Jij bent de Pitch Politie en bepaalt wat er beter moet.',
+        missionObjective: 'Beoordeel slides op ontwerp, tekst en structuur en geef een score.',
+        briefingImage: '/assets/agents/pitch-police.webp',
+        difficulty: 'Medium',
+        examplePrompt: 'Wat kan beter aan deze slide?',
+        visualPreview: (
+            <div className="w-full h-full bg-red-50 flex items-center justify-center p-4 relative overflow-hidden">
+                <div className="flex gap-2 items-end">
+                    {[1, 2, 3].map((i) => (
+                        <div key={i} className="flex flex-col items-center">
+                            <div className={`w-16 h-20 bg-white rounded-lg shadow-lg border-2 ${i === 2 ? 'border-green-400 -translate-y-2' : 'border-red-200'} flex flex-col p-1.5 transition-transform`}>
+                                <div className={`w-full h-2 ${i === 2 ? 'bg-green-400' : 'bg-red-300'} rounded-full mb-1`}></div>
+                                <div className="w-2/3 h-1 bg-slate-200 rounded-full mb-1"></div>
+                                <div className="flex-1 bg-slate-50 rounded"></div>
+                            </div>
+                            <div className={`mt-1 text-[8px] font-bold ${i === 2 ? 'text-green-600' : 'text-red-400'}`}>
+                                {i === 2 ? '8/10' : i === 1 ? '4/10' : '5/10'}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+                <div className="absolute top-3 bg-red-500 text-white px-3 py-1 rounded-full text-[9px] font-bold shadow-md">
+                    JURY MODUS
+                </div>
+            </div>
+        ),
         systemInstruction: '',
         steps: [],
     },
@@ -140,6 +238,37 @@ export const ROLES: AgentRole[] = [
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Prompt Perfectionist',
         icon: <Sparkles size={28} />,
+        color: '#8B5CF6',
+        description: 'Leer hoe je AI de beste resultaten laat geven met slimme prompts.',
+        problemScenario: 'AI kan alles... als je de juiste vraag stelt. Een vage prompt geeft een vaag antwoord. Jij leert het geheim van de perfecte prompt!',
+        missionObjective: 'Verbeter slechte prompts en ontdek de regels van effectief prompten.',
+        briefingImage: '/assets/agents/prompt-master.webp',
+        difficulty: 'Easy',
+        examplePrompt: 'Hoe maak ik deze prompt beter?',
+        visualPreview: (
+            <div className="w-full h-full bg-violet-50 flex flex-col items-center justify-center relative overflow-hidden p-4">
+                <div className="absolute inset-0 bg-[radial-gradient(#ddd6fe_1px,transparent_1px)] [background-size:12px_12px] opacity-40"></div>
+                <div className="relative z-10 w-full max-w-[10rem]">
+                    <div className="bg-white rounded-xl shadow-lg border border-violet-200 p-3 mb-2">
+                        <div className="flex items-center gap-1 mb-2">
+                            <div className="w-2 h-2 bg-red-400 rounded-full"></div>
+                            <div className="w-full h-1.5 bg-red-200 rounded-full"></div>
+                        </div>
+                        <div className="text-[8px] text-slate-400 line-through">maak een plaatje</div>
+                    </div>
+                    <div className="bg-white rounded-xl shadow-lg border-2 border-violet-400 p-3">
+                        <div className="flex items-center gap-1 mb-2">
+                            <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                            <div className="w-full h-1.5 bg-green-200 rounded-full"></div>
+                        </div>
+                        <div className="text-[8px] text-violet-600 font-medium">Maak een realistisch olieverfschilderij van...</div>
+                    </div>
+                    <div className="flex justify-center mt-2">
+                        <Sparkles size={16} className="text-violet-400 animate-pulse" />
+                    </div>
+                </div>
+            </div>
+        ),
         systemInstruction: '',
         steps: [],
     },
@@ -149,6 +278,37 @@ export const ROLES: AgentRole[] = [
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Game Director',
         icon: <Gamepad2 size={28} />,
+        color: '#059669',
+        description: 'Ontwerp je eigen game met visuele blokjes-code.',
+        problemScenario: 'Je hebt een geweldig idee voor een game, maar je kunt nog niet programmeren. Met block-coding bouw je je game door blokjes aan elkaar te klikken, net als LEGO!',
+        missionObjective: 'Bouw een werkend spel met drag-and-drop blokken.',
+        briefingImage: '/assets/agents/game-director.webp',
+        difficulty: 'Medium',
+        examplePrompt: 'Hoe laat ik mijn karakter bewegen?',
+        visualPreview: (
+            <div className="w-full h-full bg-emerald-900 flex flex-col items-center justify-center relative overflow-hidden p-4">
+                <div className="absolute inset-0 grid grid-cols-8 grid-rows-6 opacity-10">
+                    {[...Array(48)].map((_, i) => <div key={i} className="border border-emerald-400/50"></div>)}
+                </div>
+                <div className="relative z-10 flex flex-col gap-1.5">
+                    <div className="flex gap-1">
+                        <div className="w-24 h-7 bg-amber-500 rounded-md flex items-center px-2 text-[8px] text-white font-bold shadow-md">Als gestart</div>
+                    </div>
+                    <div className="flex gap-1 ml-3">
+                        <div className="w-28 h-7 bg-blue-500 rounded-md flex items-center px-2 text-[8px] text-white font-bold shadow-md">Beweeg 10 stappen</div>
+                    </div>
+                    <div className="flex gap-1 ml-3">
+                        <div className="w-24 h-7 bg-purple-500 rounded-md flex items-center px-2 text-[8px] text-white font-bold shadow-md">Draai 90 graden</div>
+                    </div>
+                    <div className="flex gap-1 ml-3">
+                        <div className="w-20 h-7 bg-green-500 rounded-md flex items-center px-2 text-[8px] text-white font-bold shadow-md">Herhaal 4x</div>
+                    </div>
+                </div>
+                <div className="absolute bottom-3 bg-emerald-500/80 backdrop-blur px-3 py-1 rounded-full text-white font-bold text-[9px] shadow-sm">
+                    BLOCK CODE
+                </div>
+            </div>
+        ),
         systemInstruction: '',
         steps: [],
     },
@@ -2790,6 +2950,8 @@ Typ 'ZITTING GESLOTEN' om door te gaan naar de lancering."
             { title: "Actie", description: "Zorg dat mensen komen.", example: "Typ: 'Kom langs en krijg gratis pizza!'" }
         ]
     },
+    // DEPRECATED: startup-pitch staat niet in curriculum.ts en wordt nergens gerouteerd.
+    // Bewaard voor eventueel toekomstig gebruik. Verwijder als het na periode 4 niet nodig blijkt.
     {
         id: 'startup-pitch',
         yearGroup: 1,
@@ -3209,11 +3371,7 @@ Dit is geen quiz of opdracht met goed/fout antwoorden. Alle bijdragen zijn waard
         difficulty: 'Medium',
         examplePrompt: 'Ik heb een tabel met cijfers over waterverbruik per maand. Hoe vind ik trends?',
         visualPreview: (
-            <div className="w-full h-full bg-gradient-to-br from-emerald-50 to-emerald-100 flex items-center justify-center">
-                <div className="w-20 h-20 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-2xl flex items-center justify-center shadow-xl">
-                    <BarChart2 size={40} className="text-white" />
-                </div>
-            </div>
+            <DataPreview colorScheme="emerald" icon={<BarChart2 size={28} className="text-white" />} />
         ),
         systemInstruction: `Je bent een ervaren Data Journalist die leerlingen (13-14 jaar) coacht bij het analyseren van datasets en het maken van infographics.
 
@@ -3278,11 +3436,7 @@ BELANGRIJK:
         difficulty: 'Medium',
         examplePrompt: 'Hoe maak ik een SOM-formule om alle uitgaven bij elkaar op te tellen?',
         visualPreview: (
-            <div className="w-full h-full bg-gradient-to-br from-cyan-50 to-cyan-100 flex items-center justify-center">
-                <div className="w-20 h-20 bg-gradient-to-br from-cyan-500 to-cyan-700 rounded-2xl flex items-center justify-center shadow-xl">
-                    <Table2 size={40} className="text-white" />
-                </div>
-            </div>
+            <DataPreview colorScheme="emerald" icon={<Table2 size={28} className="text-white" />} />
         ),
         systemInstruction: `Je bent een Spreadsheet Specialist die leerlingen (13-14 jaar) leert werken met Excel of Google Sheets.
 
@@ -3347,11 +3501,7 @@ BELANGRIJK:
         difficulty: 'Easy',
         examplePrompt: 'Ik zag een bericht dat je van kauwgom slimmer wordt. Hoe check ik of dat klopt?',
         visualPreview: (
-            <div className="w-full h-full bg-gradient-to-br from-amber-50 to-amber-100 flex items-center justify-center">
-                <div className="w-20 h-20 bg-gradient-to-br from-amber-500 to-amber-700 rounded-2xl flex items-center justify-center shadow-xl">
-                    <FileSearch size={40} className="text-white" />
-                </div>
-            </div>
+            <MediaPreview colorScheme="emerald" icon={<FileSearch size={28} className="text-white" />} />
         ),
         systemInstruction: `Je bent een Factchecker, een onderzoeksjournalist die leerlingen (13-14 jaar) leert hoe ze online desinformatie herkennen en beweringen verifiëren.
 
@@ -3416,11 +3566,7 @@ BELANGRIJK:
         difficulty: 'Hard',
         examplePrompt: 'Wat is een API eigenlijk en waar wordt het voor gebruikt?',
         visualPreview: (
-            <div className="w-full h-full bg-gradient-to-br from-violet-50 to-violet-100 flex items-center justify-center">
-                <div className="w-20 h-20 bg-gradient-to-br from-violet-500 to-violet-700 rounded-2xl flex items-center justify-center shadow-xl">
-                    <Globe size={40} className="text-white" />
-                </div>
-            </div>
+            <CodePreview colorScheme="emerald" icon={<Globe size={28} className="text-white" />} />
         ),
         systemInstruction: `Je bent een API Verkenner, een coach die leerlingen (13-14 jaar) uitlegt hoe API's werken en hoe je er data mee ophaalt.
 
@@ -3486,11 +3632,7 @@ BELANGRIJK:
         difficulty: 'Hard',
         examplePrompt: 'Welke grafiek past het beste bij aanwezigheidspercentages per klas?',
         visualPreview: (
-            <div className="w-full h-full bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center">
-                <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-700 rounded-2xl flex items-center justify-center shadow-xl">
-                    <LayoutDashboard size={40} className="text-white" />
-                </div>
-            </div>
+            <DataPreview colorScheme="emerald" icon={<LayoutDashboard size={28} className="text-white" />} />
         ),
         systemInstruction: `Je bent een Dashboard Designer, een data-architect die leerlingen (13-14 jaar) helpt bij het ontwerpen van een overzichtelijk data-dashboard.
 
@@ -3556,11 +3698,7 @@ BELANGRIJK:
         difficulty: 'Medium',
         examplePrompt: 'Waarom geeft een AI soms oneerlijke resultaten voor bepaalde groepen?',
         visualPreview: (
-            <div className="w-full h-full bg-gradient-to-br from-red-50 to-red-100 flex items-center justify-center">
-                <div className="w-20 h-20 bg-gradient-to-br from-red-500 to-red-700 rounded-2xl flex items-center justify-center shadow-xl">
-                    <Search size={40} className="text-white" />
-                </div>
-            </div>
+            <EthicsPreview colorScheme="emerald" icon={<Search size={28} className="text-white" />} />
         ),
         systemInstruction: `Je bent een AI Bias Detective, een onderzoeker die leerlingen (13-14 jaar) helpt om vooroordelen (bias) in AI-systemen te ontdekken en te begrijpen.
 
@@ -3626,11 +3764,7 @@ BELANGRIJK:
         difficulty: 'Easy',
         examplePrompt: 'Wat is het verschil tussen data en informatie?',
         visualPreview: (
-            <div className="w-full h-full bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
-                <div className="w-20 h-20 bg-gradient-to-br from-gray-500 to-gray-700 rounded-2xl flex items-center justify-center shadow-xl">
-                    <RotateCcw size={40} className="text-white" />
-                </div>
-            </div>
+            <DataPreview colorScheme="emerald" icon={<RotateCcw size={28} className="text-white" />} />
         ),
         systemInstruction: `Je bent een Review Coach die leerlingen (13-14 jaar) helpt om alle concepten uit de periode "Data & Informatie" te herhalen en te toetsen.
 
@@ -3703,11 +3837,7 @@ BELANGRIJK:
         difficulty: 'Hard',
         examplePrompt: 'Hoe sorteer ik een lijst van 100 namen op alfabetische volgorde?',
         visualPreview: (
-            <div className="w-full h-full bg-gradient-to-br from-violet-50 to-violet-100 flex items-center justify-center">
-                <div className="w-20 h-20 bg-gradient-to-br from-violet-500 to-violet-700 rounded-2xl flex items-center justify-center shadow-xl">
-                    <Code2 size={40} className="text-white" />
-                </div>
-            </div>
+            <CodePreview colorScheme="emerald" icon={<Code2 size={28} className="text-white" />} />
         ),
         systemInstruction: `Je bent een Computational Thinking Coach en algoritme-expert. Je helpt leerlingen (13-14 jaar) om problemen op te splitsen en stap voor stap op te lossen met algoritmes.
 
@@ -3770,11 +3900,7 @@ BELANGRIJK:
         difficulty: 'Medium',
         examplePrompt: 'Help me een website te bouwen met een navigatiemenu en een fotogalerij.',
         visualPreview: (
-            <div className="w-full h-full bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center">
-                <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-700 rounded-2xl flex items-center justify-center shadow-xl">
-                    <Globe size={40} className="text-white" />
-                </div>
-            </div>
+            <CodePreview colorScheme="emerald" icon={<Globe size={28} className="text-white" />} />
         ),
         systemInstruction: `Je bent een Web Development Mentor. Je leert leerlingen (13-14 jaar) stap voor stap hoe ze een interactieve webpagina bouwen met HTML, CSS en JavaScript.
 
@@ -3836,11 +3962,7 @@ BELANGRIJK:
         difficulty: 'Medium',
         examplePrompt: 'Ik wil een app ontwerpen waarmee leerlingen kunnen zien hoe druk de kantine is.',
         visualPreview: (
-            <div className="w-full h-full bg-gradient-to-br from-pink-50 to-pink-100 flex items-center justify-center">
-                <div className="w-20 h-20 bg-gradient-to-br from-pink-500 to-pink-700 rounded-2xl flex items-center justify-center shadow-xl">
-                    <Smartphone size={40} className="text-white" />
-                </div>
-            </div>
+            <CodePreview colorScheme="emerald" icon={<Smartphone size={28} className="text-white" />} />
         ),
         systemInstruction: `Je bent een UX/App Design Coach. Je begeleidt leerlingen (13-14 jaar) bij het ontwerpen van een app-prototype, van idee tot klikbaar ontwerp.
 
@@ -3903,11 +4025,7 @@ BELANGRIJK:
         difficulty: 'Hard',
         examplePrompt: 'Deze code geeft een foutmelding. Kun je me helpen de bug te vinden?',
         visualPreview: (
-            <div className="w-full h-full bg-gradient-to-br from-red-50 to-red-100 flex items-center justify-center">
-                <div className="w-20 h-20 bg-gradient-to-br from-red-500 to-red-700 rounded-2xl flex items-center justify-center shadow-xl">
-                    <Bug size={40} className="text-white" />
-                </div>
-            </div>
+            <CodePreview colorScheme="emerald" icon={<Bug size={28} className="text-white" />} />
         ),
         systemInstruction: `Je bent een Debug Expert en Bug Hunter Mentor. Je leert leerlingen (13-14 jaar) hoe ze systematisch fouten in code vinden en oplossen.
 
@@ -3972,11 +4090,7 @@ BELANGRIJK:
         difficulty: 'Medium',
         examplePrompt: 'Hoe automatiseer ik het hernoemen van 50 bestanden in een map?',
         visualPreview: (
-            <div className="w-full h-full bg-gradient-to-br from-amber-50 to-amber-100 flex items-center justify-center">
-                <div className="w-20 h-20 bg-gradient-to-br from-amber-500 to-amber-700 rounded-2xl flex items-center justify-center shadow-xl">
-                    <Zap size={40} className="text-white" />
-                </div>
-            </div>
+            <CodePreview colorScheme="emerald" icon={<Zap size={28} className="text-white" />} />
         ),
         systemInstruction: `Je bent een Automatiserings-Expert. Je leert leerlingen (13-14 jaar) hoe ze repetitieve taken kunnen automatiseren met scripts en programmeren.
 
@@ -4040,11 +4154,7 @@ BELANGRIJK:
         difficulty: 'Medium',
         examplePrompt: 'Kun je deze code reviewen en vertellen wat er beter kan?',
         visualPreview: (
-            <div className="w-full h-full bg-gradient-to-br from-emerald-50 to-emerald-100 flex items-center justify-center">
-                <div className="w-20 h-20 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-2xl flex items-center justify-center shadow-xl">
-                    <FileCode size={40} className="text-white" />
-                </div>
-            </div>
+            <CodePreview colorScheme="emerald" icon={<FileCode size={28} className="text-white" />} />
         ),
         systemInstruction: `Je bent een Senior Developer die leerlingen (13-14 jaar) leert hoe ze code van anderen kunnen lezen, beoordelen en verbeteren. Je leert ze professionele code review skills.
 
@@ -4108,11 +4218,7 @@ BELANGRIJK:
         difficulty: 'Medium',
         examplePrompt: 'START',
         visualPreview: (
-            <div className="w-full h-full bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
-                <div className="w-20 h-20 bg-gradient-to-br from-gray-500 to-gray-700 rounded-2xl flex items-center justify-center shadow-xl">
-                    <RotateCcw size={40} className="text-white" />
-                </div>
-            </div>
+            <CodePreview colorScheme="emerald" icon={<RotateCcw size={28} className="text-white" />} />
         ),
         systemInstruction: `Je bent de REVIEW-BOT voor Periode 2: Programmeren & Computational Thinking. Je test of leerlingen (13-14 jaar) de belangrijkste concepten beheersen.
 
@@ -4203,22 +4309,7 @@ AFRONDING:
         difficulty: 'Medium',
         examplePrompt: 'Ik wil de UX van de Spotify-app analyseren.',
         visualPreview: (
-            <div className="w-full h-full bg-gradient-to-br from-violet-500 to-purple-700 flex items-center justify-center p-4 relative overflow-hidden">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_40%,rgba(255,255,255,0.1),transparent)]"></div>
-                <div className="relative z-10 w-36 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 p-3 space-y-2">
-                    <div className="flex items-center gap-2">
-                        <div className="w-6 h-6 rounded-full bg-violet-300/50"></div>
-                        <div className="flex-1 h-2 bg-white/20 rounded-full"></div>
-                    </div>
-                    <div className="w-full h-16 bg-white/10 rounded-lg border border-dashed border-white/30 flex items-center justify-center">
-                        <Eye size={20} className="text-white/50" />
-                    </div>
-                    <div className="space-y-1">
-                        <div className="w-full h-1.5 bg-white/15 rounded-full"></div>
-                        <div className="w-2/3 h-1.5 bg-white/15 rounded-full"></div>
-                    </div>
-                </div>
-            </div>
+            <MediaPreview colorScheme="emerald" icon={<Eye size={28} className="text-white" />} />
         ),
         systemInstruction: `Je bent een UX Researcher die leerlingen leert hoe je de gebruikservaring (UX) van een app of website analyseert.
 
@@ -4278,22 +4369,7 @@ BELANGRIJK:
         difficulty: 'Medium',
         examplePrompt: 'Ik wil een podcast maken over hoe AI muziek kan componeren.',
         visualPreview: (
-            <div className="w-full h-full bg-gradient-to-br from-emerald-500 to-green-700 flex items-center justify-center p-4 relative overflow-hidden">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_60%_30%,rgba(255,255,255,0.1),transparent)]"></div>
-                <div className="relative z-10 flex flex-col items-center gap-3">
-                    <div className="w-16 h-16 bg-white/15 backdrop-blur-md rounded-full border border-white/30 flex items-center justify-center">
-                        <Mic size={28} className="text-white" />
-                    </div>
-                    <div className="flex items-end gap-1">
-                        {[3, 5, 2, 6, 4, 7, 3, 5, 2, 4, 6, 3].map((h, i) => (
-                            <div key={i} className="w-1.5 bg-white/40 rounded-full" style={{ height: `${h * 4}px` }}></div>
-                        ))}
-                    </div>
-                    <div className="w-24 h-1 bg-white/20 rounded-full">
-                        <div className="w-1/3 h-full bg-white/60 rounded-full"></div>
-                    </div>
-                </div>
-            </div>
+            <MediaPreview colorScheme="emerald" icon={<Mic size={28} className="text-white" />} />
         ),
         systemInstruction: `Je bent een Podcast Mentor die leerlingen begeleidt bij het produceren van een korte podcast over een tech-onderwerp.
 
@@ -4353,23 +4429,7 @@ BELANGRIJK:
         difficulty: 'Easy',
         examplePrompt: 'Waarom ging de "distracted boyfriend" meme zo hard viral?',
         visualPreview: (
-            <div className="w-full h-full bg-gradient-to-br from-orange-400 to-amber-600 flex items-center justify-center p-4 relative overflow-hidden">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_40%_60%,rgba(255,255,255,0.12),transparent)]"></div>
-                <div className="relative z-10 w-32 bg-white rounded-xl shadow-xl overflow-hidden">
-                    <div className="w-full h-20 bg-orange-200 flex items-center justify-center">
-                        <ImageIcon size={24} className="text-orange-400" />
-                    </div>
-                    <div className="p-2 space-y-1">
-                        <div className="w-full h-2 bg-slate-800 rounded-sm"></div>
-                        <div className="w-2/3 h-2 bg-slate-800 rounded-sm"></div>
-                    </div>
-                    <div className="px-2 pb-2 flex gap-1">
-                        <div className="w-4 h-4 bg-red-400 rounded-full"></div>
-                        <div className="w-4 h-4 bg-blue-400 rounded-full"></div>
-                        <div className="flex-1 h-4 bg-slate-100 rounded-full"></div>
-                    </div>
-                </div>
-            </div>
+            <MediaPreview colorScheme="emerald" icon={<ImageIcon size={28} className="text-white" />} />
         ),
         systemInstruction: `Je bent een Mediaexpert die leerlingen leert over viraliteit, meme-cultuur en het maken van eigen virale content.
 
@@ -4429,23 +4489,7 @@ BELANGRIJK:
         difficulty: 'Medium',
         examplePrompt: 'Ik wil een interactief sci-fi verhaal maken over een ruimtereis.',
         visualPreview: (
-            <div className="w-full h-full bg-gradient-to-br from-blue-500 to-indigo-700 flex items-center justify-center p-4 relative overflow-hidden">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,rgba(255,255,255,0.08),transparent)]"></div>
-                <div className="relative z-10 flex flex-col items-center gap-2">
-                    <div className="w-28 h-36 bg-white/10 backdrop-blur-md rounded-lg border border-white/20 p-2 flex flex-col justify-between">
-                        <div className="space-y-1">
-                            <div className="w-full h-1 bg-white/30 rounded-full"></div>
-                            <div className="w-3/4 h-1 bg-white/20 rounded-full"></div>
-                            <div className="w-full h-1 bg-white/30 rounded-full"></div>
-                        </div>
-                        <div className="flex gap-1">
-                            <div className="flex-1 h-5 bg-blue-400/40 rounded border border-blue-300/30 flex items-center justify-center text-[8px] text-white/70">A</div>
-                            <div className="flex-1 h-5 bg-indigo-400/40 rounded border border-indigo-300/30 flex items-center justify-center text-[8px] text-white/70">B</div>
-                        </div>
-                    </div>
-                    <BookOpen size={16} className="text-white/40" />
-                </div>
-            </div>
+            <MediaPreview colorScheme="emerald" icon={<BookOpen size={28} className="text-white" />} />
         ),
         systemInstruction: `Je bent een Verhalenverteller die leerlingen helpt interactieve digitale verhalen te maken met keuzemomenten.
 
@@ -4505,20 +4549,7 @@ BELANGRIJK:
         difficulty: 'Hard',
         examplePrompt: 'Ik wil een merk ontwerpen voor een duurzame sneaker-startup.',
         visualPreview: (
-            <div className="w-full h-full bg-gradient-to-br from-pink-400 to-rose-600 flex items-center justify-center p-4 relative overflow-hidden">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(255,255,255,0.12),transparent)]"></div>
-                <div className="relative z-10 flex flex-col items-center gap-3">
-                    <div className="w-20 h-20 bg-white/15 backdrop-blur-md rounded-2xl border border-white/25 flex items-center justify-center">
-                        <Palette size={32} className="text-white" />
-                    </div>
-                    <div className="flex gap-2">
-                        {['#EC4899', '#8B5CF6', '#3B82F6', '#10B981'].map((c, i) => (
-                            <div key={i} className="w-6 h-6 rounded-full border-2 border-white/30" style={{ backgroundColor: c }}></div>
-                        ))}
-                    </div>
-                    <div className="w-24 h-2 bg-white/25 rounded-full"></div>
-                </div>
-            </div>
+            <MediaPreview colorScheme="emerald" icon={<Palette size={28} className="text-white" />} />
         ),
         systemInstruction: `Je bent een Brand Designer die leerlingen leert hoe je een complete visuele identiteit ontwerpt voor een merk.
 
@@ -4578,24 +4609,7 @@ BELANGRIJK:
         difficulty: 'Medium',
         examplePrompt: 'Ik wil een 60 seconden promotievideo maken voor onze school.',
         visualPreview: (
-            <div className="w-full h-full bg-gradient-to-br from-red-500 to-red-800 flex items-center justify-center p-4 relative overflow-hidden">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.08),transparent)]"></div>
-                <div className="relative z-10 w-40 space-y-2">
-                    <div className="w-full h-20 bg-black/30 rounded-lg border border-white/20 flex items-center justify-center">
-                        <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
-                            <Video size={16} className="text-white" />
-                        </div>
-                    </div>
-                    <div className="flex gap-0.5">
-                        {[...Array(8)].map((_, i) => (
-                            <div key={i} className="flex-1 h-4 rounded-sm" style={{ backgroundColor: `rgba(255,255,255,${0.1 + i * 0.05})` }}></div>
-                        ))}
-                    </div>
-                    <div className="w-full h-1 bg-white/20 rounded-full">
-                        <div className="w-2/5 h-full bg-red-400 rounded-full"></div>
-                    </div>
-                </div>
-            </div>
+            <MediaPreview colorScheme="emerald" icon={<Video size={28} className="text-white" />} />
         ),
         systemInstruction: `Je bent een Video-editor Mentor die leerlingen leert hoe je een korte video monteert en publiceert.
 
@@ -4654,7 +4668,9 @@ BELANGRIJK:
         briefingImage: '/assets/agents/media-review.webp',
         difficulty: 'Medium',
         examplePrompt: 'Start de review!',
-        visualPreview: null,
+        visualPreview: (
+            <MediaPreview colorScheme="emerald" icon={<RotateCcw size={28} className="text-white" />} />
+        ),
         systemInstruction: `Je bent DE MEDIA MIXER 🎬, expert in alle mediaconcepten van Periode 3.
 
 JOUW DOEL:
@@ -4763,14 +4779,7 @@ SLO-KERNDOELEN: 21B (ontwerpen en maken), 22A (digitale media analyseren)
         difficulty: 'Hard',
         examplePrompt: 'Welke vormen van bias kunnen er in een AI-aanbevelingssysteem zitten?',
         visualPreview: (
-            <div className="w-full h-full bg-gradient-to-br from-violet-700 to-purple-900 flex items-center justify-center relative overflow-hidden">
-                <div className="absolute inset-0 opacity-10">
-                    {[...Array(5)].map((_, i) => (
-                        <div key={i} className="absolute border border-white/20 rounded-full" style={{ width: `${(i + 1) * 60}px`, height: `${(i + 1) * 60}px`, top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}></div>
-                    ))}
-                </div>
-                <Scale size={64} className="text-white/80 drop-shadow-lg" />
-            </div>
+            <EthicsPreview colorScheme="emerald" icon={<Scale size={28} className="text-white" />} />
         ),
         systemInstruction: `Je bent een AI-ethiekexpert en onderzoeker. Je helpt leerlingen begrijpen hoe bias en vooroordelen in AI-systemen terechtkomen en wat de maatschappelijke gevolgen daarvan zijn.
 
@@ -4823,13 +4832,7 @@ Geef ALTIJD concrete voorbeelden die aansluiten bij de leefwereld van 13-14 jari
         difficulty: 'Medium',
         examplePrompt: 'Welke digitale rechten heb ik als leerling op school?',
         visualPreview: (
-            <div className="w-full h-full bg-gradient-to-br from-emerald-600 to-green-800 flex items-center justify-center relative overflow-hidden">
-                <div className="absolute top-4 left-4 w-16 h-16 border-2 border-white/20 rounded-lg flex items-center justify-center">
-                    <div className="w-8 h-8 bg-white/10 rounded"></div>
-                </div>
-                <div className="absolute bottom-4 right-4 w-12 h-12 border border-white/15 rounded-full"></div>
-                <Shield size={64} className="text-white/80 drop-shadow-lg" />
-            </div>
+            <EthicsPreview colorScheme="emerald" icon={<Shield size={28} className="text-white" />} />
         ),
         systemInstruction: `Je bent een privacy-advocaat en expert op het gebied van digitale rechten. Je helpt leerlingen begrijpen welke rechten zij hebben als het gaat om hun persoonlijke gegevens online en op school.
 
@@ -4883,17 +4886,7 @@ Gebruik herkenbare voorbeelden: denk aan schoolapps, sociale media, camera's op 
         difficulty: 'Hard',
         examplePrompt: 'Ik wil de aanklager zijn. Wat zijn mijn sterkste argumenten?',
         visualPreview: (
-            <div className="w-full h-full bg-gradient-to-br from-red-600 to-red-900 flex items-center justify-center relative overflow-hidden">
-                <div className="absolute top-3 left-3 right-3 h-8 bg-white/10 rounded-lg flex items-center px-2">
-                    <div className="w-2 h-2 bg-red-300 rounded-full mr-1"></div>
-                    <div className="w-16 h-1.5 bg-white/20 rounded-full"></div>
-                </div>
-                <div className="absolute bottom-4 left-4 right-4 flex justify-between">
-                    <div className="w-10 h-10 bg-white/10 rounded-lg"></div>
-                    <div className="w-10 h-10 bg-white/10 rounded-lg"></div>
-                </div>
-                <Hammer size={64} className="text-white/80 drop-shadow-lg" />
-            </div>
+            <EthicsPreview colorScheme="emerald" />
         ),
         systemInstruction: `Je bent een rechter die een technologie-rechtszaak begeleidt als roleplay. Je creëert een meeslepende rechtszaakervaring waarin de leerling een rol speelt in een debat over een actueel tech-dilemma.
 
@@ -4950,14 +4943,7 @@ ROLEPLAY REGELS:
         difficulty: 'Medium',
         examplePrompt: 'Welke technologietrends van nu zullen het grootst zijn in 2040?',
         visualPreview: (
-            <div className="w-full h-full bg-gradient-to-br from-blue-600 to-indigo-900 flex items-center justify-center relative overflow-hidden">
-                <div className="absolute inset-0">
-                    {[...Array(8)].map((_, i) => (
-                        <div key={i} className="absolute w-1 h-1 bg-white/40 rounded-full animate-pulse" style={{ top: `${Math.random() * 100}%`, left: `${Math.random() * 100}%`, animationDelay: `${i * 0.3}s` }}></div>
-                    ))}
-                </div>
-                <Telescope size={64} className="text-white/80 drop-shadow-lg" />
-            </div>
+            <EthicsPreview colorScheme="emerald" icon={<Telescope size={28} className="text-white" />} />
         ),
         systemInstruction: `Je bent een futuroloog en trendanalist. Je helpt leerlingen nadenken over hoe technologie de toekomst gaat veranderen, gebaseerd op echte trends van vandaag.
 
@@ -5011,11 +4997,7 @@ Maak het concreet: niet "de wereld is anders" maar "in 2040 heb je geen schoolta
         difficulty: 'Medium',
         examplePrompt: 'Hoeveel CO2 kost het om een uur Netflix te kijken?',
         visualPreview: (
-            <div className="w-full h-full bg-gradient-to-br from-green-500 to-emerald-800 flex items-center justify-center relative overflow-hidden">
-                <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-green-900/30"></div>
-                <div className="absolute top-6 right-6 w-8 h-8 bg-yellow-400/30 rounded-full blur-sm"></div>
-                <Leaf size={64} className="text-white/80 drop-shadow-lg" />
-            </div>
+            <EthicsPreview colorScheme="emerald" icon={<Leaf size={28} className="text-white" />} />
         ),
         systemInstruction: `Je bent een duurzaamheidsexpert die gespecialiseerd is in de milieu-impact van digitale technologie. Je helpt leerlingen begrijpen hoeveel energie en grondstoffen technologie kost.
 
@@ -5069,14 +5051,7 @@ BELANGRIJK: Gebruik realistische maar vereenvoudigde getallen. Het doel is bewus
         difficulty: 'Hard',
         examplePrompt: 'Ik wil een app ontwerpen die leerlingen helpt met huiswerk plannen.',
         visualPreview: (
-            <div className="w-full h-full bg-gradient-to-br from-amber-400 to-yellow-600 flex items-center justify-center relative overflow-hidden">
-                <div className="absolute inset-0 opacity-20">
-                    {[...Array(6)].map((_, i) => (
-                        <div key={i} className="absolute w-3 h-3 bg-white rounded-full" style={{ top: `${20 + Math.random() * 60}%`, left: `${10 + Math.random() * 80}%`, opacity: 0.3 + Math.random() * 0.4 }}></div>
-                    ))}
-                </div>
-                <Trophy size={64} className="text-white/90 drop-shadow-lg" />
-            </div>
+            <DataPreview colorScheme="emerald" icon={<Trophy size={28} className="text-white" />} />
         ),
         systemInstruction: `Je bent een eindproject-coach die leerlingen begeleidt bij het plannen, uitvoeren en presenteren van hun digitaal eindproject voor leerjaar 2.
 
@@ -5138,14 +5113,7 @@ BELANGRIJK:
         difficulty: 'Hard',
         examplePrompt: 'Hoe splits ik mijn dataset in training- en testdata?',
         visualPreview: (
-            <div className="w-full h-full bg-gradient-to-br from-violet-700 to-purple-900 flex items-center justify-center relative overflow-hidden">
-                <div className="absolute inset-0 opacity-10">
-                    {[...Array(6)].map((_, i) => (
-                        <div key={i} className="absolute bg-white/5 rounded-full" style={{ width: `${(i + 1) * 40}px`, height: `${(i + 1) * 40}px`, top: `${10 + i * 12}%`, left: `${5 + i * 15}%` }}></div>
-                    ))}
-                </div>
-                <BrainCircuit size={64} className="text-white/80 drop-shadow-lg" />
-            </div>
+            <CodePreview colorScheme="violet" icon={<BrainCircuit size={28} className="text-white" />} />
         ),
         systemInstruction: `Je bent een Machine Learning Coach die leerlingen (15-16 jaar, havo/vwo) begeleidt bij het trainen van een simpel ML-model. Je legt supervised learning stap voor stap uit op een begrijpelijke en enthousiasmerende manier.
 
@@ -5202,14 +5170,7 @@ Geef ALTIJD concrete voorbeelden die aansluiten bij de leefwereld van 15-16 jari
         difficulty: 'Hard',
         examplePrompt: 'Welke endpoints heb ik nodig voor een huiswerk-planner API?',
         visualPreview: (
-            <div className="w-full h-full bg-gradient-to-br from-blue-600 to-blue-900 flex items-center justify-center relative overflow-hidden">
-                <div className="absolute inset-0 opacity-10">
-                    {[...Array(4)].map((_, i) => (
-                        <div key={i} className="absolute border border-white/20 rounded-lg" style={{ width: '60%', height: '20px', top: `${20 + i * 18}%`, left: '20%' }}></div>
-                    ))}
-                </div>
-                <Globe size={64} className="text-white/80 drop-shadow-lg" />
-            </div>
+            <CodePreview colorScheme="violet" icon={<Network size={28} className="text-white" />} />
         ),
         systemInstruction: `Je bent een ervaren Backend Developer die leerlingen (15-16 jaar, havo/vwo) begeleidt bij het ontwerpen van een REST API. Je legt RESTful principes helder uit en helpt bij het maken van professionele API-documentatie.
 
@@ -5266,17 +5227,7 @@ Geef ALTIJD concrete voorbeelden die aansluiten bij de leefwereld van 15-16 jari
         difficulty: 'Hard',
         examplePrompt: 'Wat doet een neuron precies in een neuraal netwerk?',
         visualPreview: (
-            <div className="w-full h-full bg-gradient-to-br from-pink-600 to-fuchsia-900 flex items-center justify-center relative overflow-hidden">
-                <div className="absolute inset-0 opacity-15">
-                    {[...Array(8)].map((_, i) => (
-                        <div key={i} className="absolute w-3 h-3 bg-white/30 rounded-full" style={{ top: `${Math.random() * 80 + 10}%`, left: `${Math.random() * 80 + 10}%` }}></div>
-                    ))}
-                    {[...Array(5)].map((_, i) => (
-                        <div key={`line-${i}`} className="absolute h-px bg-white/20" style={{ width: '40%', top: `${20 + i * 15}%`, left: '30%', transform: `rotate(${i * 15 - 30}deg)` }}></div>
-                    ))}
-                </div>
-                <Network size={64} className="text-white/80 drop-shadow-lg" />
-            </div>
+            <CodePreview colorScheme="violet" icon={<Cpu size={28} className="text-white" />} />
         ),
         systemInstruction: `Je bent een AI-wetenschapper die leerlingen (15-16 jaar, havo/vwo) meeneemt op een interactieve reis door een neuraal netwerk. Je maakt abstracte concepten visueel en begrijpelijk.
 
@@ -5333,17 +5284,7 @@ Geef ALTIJD concrete voorbeelden die aansluiten bij de leefwereld van 15-16 jari
         difficulty: 'Hard',
         examplePrompt: 'Hoe ga ik om met missende waarden in mijn dataset?',
         visualPreview: (
-            <div className="w-full h-full bg-gradient-to-br from-emerald-600 to-green-900 flex items-center justify-center relative overflow-hidden">
-                <div className="absolute inset-0 opacity-10">
-                    <div className="absolute top-1/4 left-[10%] w-[80%] h-px bg-white/30"></div>
-                    <div className="absolute top-1/2 left-[10%] w-[80%] h-px bg-white/30"></div>
-                    <div className="absolute top-3/4 left-[10%] w-[80%] h-px bg-white/30"></div>
-                    {[...Array(3)].map((_, i) => (
-                        <div key={i} className="absolute w-4 h-4 border-2 border-white/30 rounded-sm" style={{ top: `${25 + i * 25}%`, left: `${20 + i * 25}%`, transform: 'translate(-50%, -50%)' }}></div>
-                    ))}
-                </div>
-                <Database size={64} className="text-white/80 drop-shadow-lg" />
-            </div>
+            <DataPreview colorScheme="violet" icon={<Database size={28} className="text-white" />} />
         ),
         systemInstruction: `Je bent een Data Engineer die leerlingen (15-16 jaar, havo/vwo) begeleidt bij het ontwerpen van een ETL-proces (Extract-Transform-Load). Je maakt dataverwerking begrijpelijk en praktisch.
 
@@ -5400,16 +5341,7 @@ Geef ALTIJD concrete voorbeelden die aansluiten bij de leefwereld van 15-16 jari
         difficulty: 'Hard',
         examplePrompt: 'Hoe fork ik een repository en maak ik een nieuwe branch aan?',
         visualPreview: (
-            <div className="w-full h-full bg-gradient-to-br from-amber-500 to-orange-700 flex items-center justify-center relative overflow-hidden">
-                <div className="absolute inset-0 opacity-10">
-                    <div className="absolute top-[20%] left-[15%] w-8 h-8 border-2 border-white/30 rounded-full"></div>
-                    <div className="absolute top-[20%] left-[15%] w-px h-[30%] bg-white/20 translate-x-4"></div>
-                    <div className="absolute top-[50%] left-[15%] w-8 h-8 border-2 border-white/30 rounded-full"></div>
-                    <div className="absolute top-[50%] left-[35%] w-px h-[30%] bg-white/20 translate-x-4 -rotate-45"></div>
-                    <div className="absolute top-[70%] left-[40%] w-8 h-8 border-2 border-white/30 rounded-full"></div>
-                </div>
-                <Code2 size={64} className="text-white/80 drop-shadow-lg" />
-            </div>
+            <CodePreview colorScheme="violet" icon={<Code2 size={28} className="text-white" />} />
         ),
         systemInstruction: `Je bent een Open Source Mentor die leerlingen (15-16 jaar, havo/vwo) begeleidt bij het bijdragen aan een gesimuleerd open source project. Je leert ze de professionele Git-workflow die echte developers gebruiken.
 
@@ -5466,7 +5398,9 @@ Geef ALTIJD concrete voorbeelden die aansluiten bij de leefwereld van 15-16 jari
         briefingImage: '/assets/agents/advanced-code-review.webp',
         difficulty: 'Medium',
         examplePrompt: 'START',
-        visualPreview: null,
+        visualPreview: (
+            <CodePreview colorScheme="violet" icon={<FileCode size={28} className="text-white" />} />
+        ),
         systemInstruction: `Je bent de REVIEW TERMINAL, een strenge maar eerlijke examinator die de kennis van leerlingen (15-16 jaar, havo/vwo) test over geavanceerd programmeren en AI.
 
 JOUW DOEL:
@@ -5551,14 +5485,7 @@ SLO KERNDOELEN: 22B (Programmeren: ontwerpen, schrijven en testen van programma'
         difficulty: 'Hard',
         examplePrompt: 'Ik heb verdachte loginpogingen gevonden in de serverlogboeken. Hoe analyseer ik deze?',
         visualPreview: (
-            <div className="w-full h-full bg-gradient-to-br from-red-600 to-red-900 flex items-center justify-center relative overflow-hidden">
-                <div className="absolute inset-0 opacity-10">
-                    {[...Array(6)].map((_, i) => (
-                        <div key={i} className="absolute bg-white/5 rounded" style={{ width: `${Math.random() * 80 + 20}px`, height: '2px', top: `${i * 18 + 10}%`, left: `${Math.random() * 60}%` }}></div>
-                    ))}
-                </div>
-                <Search size={64} className="text-white/80 drop-shadow-lg" />
-            </div>
+            <SecurityPreview colorScheme="violet" icon={<Search size={28} className="text-white" />} />
         ),
         systemInstruction: `Je bent een ervaren Cyber Detective die leerlingen (15-16 jaar, havo/vwo) begeleidt bij het onderzoeken van een gesimuleerd cybermisdrijf.
 
@@ -5622,14 +5549,7 @@ BELANGRIJK:
         difficulty: 'Medium',
         examplePrompt: 'Hoe werkt het Caesarcijfer en hoe kan ik een versleuteld bericht ontcijferen?',
         visualPreview: (
-            <div className="w-full h-full bg-gradient-to-br from-violet-600 to-purple-900 flex items-center justify-center relative overflow-hidden">
-                <div className="absolute inset-0 opacity-10">
-                    {[...Array(4)].map((_, i) => (
-                        <div key={i} className="absolute border border-white/20 rounded-full" style={{ width: `${(i + 1) * 50}px`, height: `${(i + 1) * 50}px`, top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}></div>
-                    ))}
-                </div>
-                <ShieldCheck size={64} className="text-white/80 drop-shadow-lg" />
-            </div>
+            <SecurityPreview colorScheme="violet" icon={<ShieldCheck size={28} className="text-white" />} />
         ),
         systemInstruction: `Je bent een Encryption Expert die leerlingen (15-16 jaar, havo/vwo) begeleidt bij het begrijpen en toepassen van encryptie.
 
@@ -5693,11 +5613,7 @@ BELANGRIJK:
         difficulty: 'Medium',
         examplePrompt: 'Ik heb een verdachte e-mail ontvangen van "support@sch00l.nl". Hoe herken ik of dit phishing is?',
         visualPreview: (
-            <div className="w-full h-full bg-gradient-to-br from-amber-400 to-orange-600 flex items-center justify-center relative overflow-hidden">
-                <div className="absolute top-4 right-4 w-16 h-10 bg-white/10 rounded-lg border border-white/20"></div>
-                <div className="absolute bottom-6 left-4 w-20 h-3 bg-white/10 rounded-full"></div>
-                <AlertCircle size={64} className="text-white/80 drop-shadow-lg" />
-            </div>
+            <SecurityPreview colorScheme="violet" icon={<AlertCircle size={28} className="text-white" />} />
         ),
         systemInstruction: `Je bent een Phishing Fighter die leerlingen (15-16 jaar, havo/vwo) traint in het herkennen en bestrijden van phishing-aanvallen.
 
@@ -5762,15 +5678,7 @@ BELANGRIJK:
         difficulty: 'Hard',
         examplePrompt: 'Ik wil een website controleren op beveiliging. Waar begin ik?',
         visualPreview: (
-            <div className="w-full h-full bg-gradient-to-br from-emerald-500 to-green-800 flex items-center justify-center relative overflow-hidden">
-                <div className="absolute inset-0 opacity-10">
-                    <div className="absolute w-full h-px bg-white/30 top-1/3"></div>
-                    <div className="absolute w-full h-px bg-white/30 top-2/3"></div>
-                    <div className="absolute w-px h-full bg-white/30 left-1/3"></div>
-                    <div className="absolute w-px h-full bg-white/30 left-2/3"></div>
-                </div>
-                <ShieldAlert size={64} className="text-white/80 drop-shadow-lg" />
-            </div>
+            <SecurityPreview colorScheme="violet" icon={<Shield size={28} className="text-white" />} />
         ),
         systemInstruction: `Je bent een Security Auditor die leerlingen (15-16 jaar, havo/vwo) begeleidt bij het uitvoeren van een beveiligingsaudit op een (gesimuleerde) website.
 
@@ -5836,14 +5744,7 @@ BELANGRIJK:
         difficulty: 'Hard',
         examplePrompt: 'Ik heb een logbestand met 200 regels. Hoe begin ik met het vinden van verdachte activiteiten?',
         visualPreview: (
-            <div className="w-full h-full bg-gradient-to-br from-blue-500 to-blue-900 flex items-center justify-center relative overflow-hidden">
-                <div className="absolute inset-0 opacity-10">
-                    {[...Array(8)].map((_, i) => (
-                        <div key={i} className="absolute w-full h-px bg-white/20" style={{ top: `${(i + 1) * 11}%` }}></div>
-                    ))}
-                </div>
-                <FileSearch size={64} className="text-white/80 drop-shadow-lg" />
-            </div>
+            <SecurityPreview colorScheme="violet" icon={<Search size={28} className="text-white" />} />
         ),
         systemInstruction: `Je bent een Digital Forensics expert die leerlingen (15-16 jaar, havo/vwo) begeleidt bij het analyseren van digitale sporen.
 
@@ -5910,14 +5811,7 @@ BELANGRIJK:
         difficulty: 'Medium',
         examplePrompt: 'Wat is het verschil tussen symmetrische en asymmetrische encryptie?',
         visualPreview: (
-            <div className="w-full h-full bg-gradient-to-br from-gray-400 to-gray-700 flex items-center justify-center relative overflow-hidden">
-                <div className="absolute inset-0 opacity-10">
-                    {[...Array(3)].map((_, i) => (
-                        <div key={i} className="absolute border border-white/20 rounded-lg" style={{ width: `${(i + 1) * 40 + 20}px`, height: `${(i + 1) * 30 + 15}px`, top: `${20 + i * 20}%`, left: `${15 + i * 15}%` }}></div>
-                    ))}
-                </div>
-                <RotateCcw size={64} className="text-white/80 drop-shadow-lg" />
-            </div>
+            <SecurityPreview colorScheme="violet" icon={<RotateCcw size={28} className="text-white" />} />
         ),
         systemInstruction: `Je bent een Security Review Coach die leerlingen (15-16 jaar, havo/vwo) helpt hun kennis van cybersecurity en privacy te toetsen en te versterken.
 
@@ -5990,12 +5884,8 @@ BELANGRIJK:
     difficulty: 'Hard',
     examplePrompt: 'Ik wil een app maken die voedselverspilling bij supermarkten tegengaat. Hoe begin ik?',
     visualPreview: (
-        <div className="w-full h-full bg-gradient-to-br from-pink-50 to-pink-100 flex items-center justify-center">
-            <div className="w-20 h-20 bg-gradient-to-br from-pink-500 to-pink-700 rounded-2xl flex items-center justify-center shadow-xl">
-                <Rocket size={40} className="text-white" />
-            </div>
-        </div>
-    ),
+            <EthicsPreview colorScheme="violet" icon={<Rocket size={28} className="text-white" />} />
+        ),
     systemInstruction: `Je bent een ervaren Startup Coach die leerlingen (15-16 jaar, havo/vwo) begeleidt bij het ontwikkelen van een tech-startup idee.
 
 JOUW ROL:
@@ -6058,12 +5948,8 @@ BELANGRIJK:
     difficulty: 'Hard',
     examplePrompt: 'De school wil AI gebruiken om spiekgedrag te detecteren bij toetsen. Welke regels moeten er komen?',
     visualPreview: (
-        <div className="w-full h-full bg-gradient-to-br from-violet-50 to-violet-100 flex items-center justify-center">
-            <div className="w-20 h-20 bg-gradient-to-br from-violet-500 to-violet-700 rounded-2xl flex items-center justify-center shadow-xl">
-                <Scale size={40} className="text-white" />
-            </div>
-        </div>
-    ),
+            <EthicsPreview colorScheme="violet" icon={<Scale size={28} className="text-white" />} />
+        ),
     systemInstruction: `Je bent een Beleidsadviseur Digitale Zaken die leerlingen (15-16 jaar, havo/vwo) begeleidt bij het schrijven van tech-beleid.
 
 JOUW ROL:
@@ -6127,12 +6013,8 @@ BELANGRIJK:
     difficulty: 'Hard',
     examplePrompt: 'Hoe kan technologie helpen om eenzaamheid onder ouderen te verminderen?',
     visualPreview: (
-        <div className="w-full h-full bg-gradient-to-br from-amber-50 to-amber-100 flex items-center justify-center">
-            <div className="w-20 h-20 bg-gradient-to-br from-amber-500 to-amber-700 rounded-2xl flex items-center justify-center shadow-xl">
-                <Lightbulb size={40} className="text-white" />
-            </div>
-        </div>
-    ),
+            <EthicsPreview colorScheme="violet" icon={<Lightbulb size={28} className="text-white" />} />
+        ),
     systemInstruction: `Je bent de Directeur van een Innovation Lab die leerlingen (15-16 jaar, havo/vwo) coacht bij het bedenken van tech-oplossingen voor maatschappelijke problemen.
 
 JOUW ROL:
@@ -6196,12 +6078,8 @@ BELANGRIJK:
     difficulty: 'Hard',
     examplePrompt: 'Welke groepen in Nederland hebben de minste toegang tot internet en waarom?',
     visualPreview: (
-        <div className="w-full h-full bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center">
-            <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-700 rounded-2xl flex items-center justify-center shadow-xl">
-                <Globe size={40} className="text-white" />
-            </div>
-        </div>
-    ),
+            <EthicsPreview colorScheme="violet" icon={<Globe size={28} className="text-white" />} />
+        ),
     systemInstruction: `Je bent een Senior Onderzoeker Digitale Inclusie die leerlingen (15-16 jaar, havo/vwo) begeleidt bij het onderzoeken van digitale ongelijkheid.
 
 JOUW ROL:
@@ -6265,12 +6143,8 @@ BELANGRIJK:
     difficulty: 'Hard',
     examplePrompt: 'Wat is de impact van gezichtsherkenning op de privacy van burgers?',
     visualPreview: (
-        <div className="w-full h-full bg-gradient-to-br from-emerald-50 to-emerald-100 flex items-center justify-center">
-            <div className="w-20 h-20 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-2xl flex items-center justify-center shadow-xl">
-                <Search size={40} className="text-white" />
-            </div>
-        </div>
-    ),
+            <EthicsPreview colorScheme="violet" icon={<BarChart2 size={28} className="text-white" />} />
+        ),
     systemInstruction: `Je bent een Tech Impact Analyst die leerlingen (15-16 jaar, havo/vwo) begeleidt bij het maken van een maatschappelijke impact-analyse van een technologie.
 
 JOUW ROL:
@@ -6335,12 +6209,8 @@ BELANGRIJK:
     examplePrompt: 'Wat is de digitale kloof en waarom is het een probleem?',
     isReview: true,
     visualPreview: (
-        <div className="w-full h-full bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
-            <div className="w-20 h-20 bg-gradient-to-br from-gray-500 to-gray-700 rounded-2xl flex items-center justify-center shadow-xl">
-                <RotateCcw size={40} className="text-white" />
-            </div>
-        </div>
-    ),
+            <EthicsPreview colorScheme="violet" icon={<RotateCcw size={28} className="text-white" />} />
+        ),
     systemInstruction: `Je bent REVIEW-BOT, de bewaker van het Impact Archief. Je test of leerlingen (15-16 jaar, havo/vwo) de kernconcepten van Periode 3 (Maatschappelijke Impact & Innovatie) beheersen.
 
 JOUW ROL:
@@ -6434,19 +6304,8 @@ BELANGRIJK:
     difficulty: 'Hard',
     examplePrompt: 'Ik wil een portfolio maken maar weet niet welke projecten ik moet kiezen. Hoe selecteer ik mijn beste werk?',
     visualPreview: (
-        <div className="w-full h-full bg-gradient-to-br from-violet-600 to-purple-800 flex flex-col items-center justify-center relative overflow-hidden p-4">
-            <div className="absolute top-6 right-6 w-20 h-20 bg-white/10 rounded-full blur-2xl"></div>
-            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-5 border border-white/20 w-full max-w-[180px]">
-                <Sparkles size={32} className="text-white mb-3" />
-                <div className="w-full h-2 bg-white/30 rounded-full mb-2"></div>
-                <div className="w-2/3 h-2 bg-white/20 rounded-full mb-3"></div>
-                <div className="grid grid-cols-2 gap-2">
-                    <div className="h-12 bg-white/15 rounded-lg"></div>
-                    <div className="h-12 bg-white/15 rounded-lg"></div>
-                </div>
-            </div>
-        </div>
-    ),
+            <DataPreview colorScheme="violet" icon={<Hammer size={28} className="text-white" />} />
+        ),
     systemInstruction: `Je bent een Portfolio Coach. Je begeleidt havo/vwo-leerlingen (15-16 jaar) bij het samenstellen van een professioneel digitaal portfolio.
 
 SLO-KERNDOELEN: 22A (Digitale vaardigheden – creëren), 21A (Digitale geletterdheid – communiceren).
@@ -6500,20 +6359,8 @@ Verifieer elke stap door de leerling te vragen wat ze hebben gedaan en bewijs te
     difficulty: 'Hard',
     examplePrompt: 'Ik wil onderzoeken hoeveel tijd jongeren per dag op social media zitten. Hoe begin ik?',
     visualPreview: (
-        <div className="w-full h-full bg-gradient-to-br from-blue-600 to-blue-900 flex flex-col items-center justify-center relative overflow-hidden p-4">
-            <div className="absolute bottom-4 left-4 w-24 h-24 bg-blue-400/20 rounded-full blur-xl"></div>
-            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-5 border border-white/20 w-full max-w-[180px]">
-                <Search size={32} className="text-white mb-3" />
-                <div className="w-full h-2 bg-white/30 rounded-full mb-2"></div>
-                <div className="w-3/4 h-2 bg-white/20 rounded-full mb-3"></div>
-                <div className="space-y-2">
-                    <div className="h-3 bg-white/15 rounded-full w-full"></div>
-                    <div className="h-3 bg-white/10 rounded-full w-5/6"></div>
-                    <div className="h-3 bg-white/15 rounded-full w-4/6"></div>
-                </div>
-            </div>
-        </div>
-    ),
+            <DataPreview colorScheme="violet" icon={<FileSearch size={28} className="text-white" />} />
+        ),
     systemInstruction: `Je bent een Onderzoekscoach. Je begeleidt havo/vwo-leerlingen (15-16 jaar) bij het uitvoeren van een klein wetenschappelijk onderzoek over een digitaal onderwerp.
 
 SLO-KERNDOELEN: 21B (Digitale geletterdheid – informatieverwerking), 21C (Digitale geletterdheid – kritisch denken), 23C (Digitale burgerschap – maatschappelijke verantwoordelijkheid).
@@ -6567,24 +6414,8 @@ Verifieer elke stap door de leerling te vragen hun werk te delen (onderzoeksvraa
     difficulty: 'Hard',
     examplePrompt: 'Ik wil een app maken die leerlingen helpt met huiswerk plannen. Waar begin ik met het prototype?',
     visualPreview: (
-        <div className="w-full h-full bg-gradient-to-br from-emerald-600 to-green-900 flex flex-col items-center justify-center relative overflow-hidden p-4">
-            <div className="absolute top-4 left-4 w-16 h-16 bg-emerald-400/20 rounded-full blur-xl"></div>
-            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-5 border border-white/20 w-full max-w-[180px]">
-                <Code2 size={32} className="text-white mb-3" />
-                <div className="space-y-2 mb-3">
-                    <div className="flex gap-1">
-                        <div className="w-3 h-3 rounded-full bg-red-400/60"></div>
-                        <div className="w-3 h-3 rounded-full bg-yellow-400/60"></div>
-                        <div className="w-3 h-3 rounded-full bg-green-400/60"></div>
-                    </div>
-                    <div className="h-2 bg-white/20 rounded-full w-full"></div>
-                    <div className="h-2 bg-white/15 rounded-full w-4/5"></div>
-                    <div className="h-2 bg-white/20 rounded-full w-3/5"></div>
-                </div>
-                <div className="h-8 bg-emerald-400/30 rounded-lg border border-emerald-400/40"></div>
-            </div>
-        </div>
-    ),
+            <CodePreview colorScheme="violet" icon={<Code2 size={28} className="text-white" />} />
+        ),
     systemInstruction: `Je bent een Prototype Coach. Je begeleidt havo/vwo-leerlingen (15-16 jaar) bij het ontwerpen, bouwen en testen van een werkend digitaal prototype.
 
 SLO-KERNDOELEN: 22A (Digitale vaardigheden – creëren), 22B (Digitale vaardigheden – technisch ontwerpen).
@@ -6638,21 +6469,8 @@ Verifieer elke stap door de leerling te vragen hun werk te laten zien (ontwerp, 
     difficulty: 'Medium',
     examplePrompt: 'Hoe begin ik mijn pitch zodat de jury meteen geïnteresseerd is?',
     visualPreview: (
-        <div className="w-full h-full bg-gradient-to-br from-pink-500 to-rose-700 flex flex-col items-center justify-center relative overflow-hidden p-4">
-            <div className="absolute top-8 right-8 w-20 h-20 bg-pink-300/20 rounded-full blur-2xl"></div>
-            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-5 border border-white/20 w-full max-w-[180px]">
-                <Rocket size={32} className="text-white mb-3" />
-                <div className="w-full h-10 bg-white/15 rounded-lg mb-3 flex items-center justify-center">
-                    <div className="w-0 h-0 border-l-[12px] border-l-white/60 border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent ml-1"></div>
-                </div>
-                <div className="flex gap-1 justify-center">
-                    {[...Array(5)].map((_, i) => (
-                        <div key={i} className="w-2 h-2 rounded-full bg-white/40"></div>
-                    ))}
-                </div>
-            </div>
-        </div>
-    ),
+            <MediaPreview colorScheme="violet" icon={<Mic size={28} className="text-white" />} />
+        ),
     systemInstruction: `Je bent een Pitch Coach. Je begeleidt havo/vwo-leerlingen (15-16 jaar) bij het voorbereiden en geven van een overtuigende presentatie over hun meesterproef-project.
 
 SLO-KERNDOEL: 21B (Digitale geletterdheid – informatieverwerking en presenteren).
@@ -6706,20 +6524,8 @@ Verifieer elke stap door de leerling te vragen hun werk te delen (pitch-structuu
     difficulty: 'Medium',
     examplePrompt: 'Ik vind het lastig om over mezelf te schrijven. Hoe begin ik met mijn reflectieverslag?',
     visualPreview: (
-        <div className="w-full h-full bg-gradient-to-br from-amber-500 to-orange-700 flex flex-col items-center justify-center relative overflow-hidden p-4">
-            <div className="absolute bottom-6 right-6 w-24 h-24 bg-amber-300/20 rounded-full blur-2xl"></div>
-            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-5 border border-white/20 w-full max-w-[180px]">
-                <BookOpen size={32} className="text-white mb-3" />
-                <div className="space-y-2">
-                    <div className="h-2 bg-white/30 rounded-full w-full"></div>
-                    <div className="h-2 bg-white/20 rounded-full w-5/6"></div>
-                    <div className="h-2 bg-white/25 rounded-full w-full"></div>
-                    <div className="h-2 bg-white/15 rounded-full w-4/6"></div>
-                    <div className="h-2 bg-white/20 rounded-full w-5/6"></div>
-                </div>
-            </div>
-        </div>
-    ),
+            <EthicsPreview colorScheme="violet" icon={<Scale size={28} className="text-white" />} />
+        ),
     systemInstruction: `Je bent een Reflectie Coach. Je begeleidt havo/vwo-leerlingen (15-16 jaar) bij het schrijven van een reflectieverslag over hun leerproces gedurende drie jaar informatica.
 
 SLO-KERNDOEL: 23B (Digitale burgerschap – zelfreflectie en persoonlijke ontwikkeling).
@@ -6773,28 +6579,8 @@ Verifieer elke stap door de leerling te vragen hun tekst te delen. Geef specifie
     difficulty: 'Hard',
     examplePrompt: 'Ik wil mijn meesterproef doen over het bouwen van een app die voedselverspilling tegengaat. Hoe schrijf ik een goed projectvoorstel?',
     visualPreview: (
-        <div className="w-full h-full bg-gradient-to-br from-red-600 to-red-900 flex flex-col items-center justify-center relative overflow-hidden p-4">
-            <div className="absolute top-4 left-1/2 -translate-x-1/2 w-32 h-32 bg-yellow-400/10 rounded-full blur-3xl"></div>
-            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-5 border border-white/20 w-full max-w-[180px] relative">
-                <div className="absolute -top-3 -right-3 w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center">
-                    <Trophy size={16} className="text-red-900" />
-                </div>
-                <Trophy size={32} className="text-white mb-3" />
-                <div className="w-full h-2 bg-white/30 rounded-full mb-2"></div>
-                <div className="w-2/3 h-2 bg-white/20 rounded-full mb-3"></div>
-                <div className="flex gap-2">
-                    <div className="flex-1 h-16 bg-white/10 rounded-lg border border-white/20 p-2">
-                        <div className="w-full h-1.5 bg-white/20 rounded-full mb-1"></div>
-                        <div className="w-2/3 h-1.5 bg-white/15 rounded-full"></div>
-                    </div>
-                    <div className="flex-1 h-16 bg-white/10 rounded-lg border border-white/20 p-2">
-                        <div className="w-full h-1.5 bg-white/20 rounded-full mb-1"></div>
-                        <div className="w-2/3 h-1.5 bg-white/15 rounded-full"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    ),
+            <CodePreview colorScheme="violet" icon={<Trophy size={28} className="text-white" />} />
+        ),
     systemInstruction: `Je bent een Eindproject Coach die het volledige meesterproefproces begeleidt. Je coacht havo/vwo-leerlingen (15-16 jaar) door hun geïntegreerde eindproject dat alle kennis en vaardigheden uit drie jaar informatica samenbrengt.
 
 SLO-KERNDOELEN: Alle kerndoelen (21A, 21B, 21C, 22A, 22B, 23A, 23B, 23C) — dit eindproject integreert digitale geletterdheid, digitale vaardigheden en digitale burgerschap.

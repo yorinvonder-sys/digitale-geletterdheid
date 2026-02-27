@@ -11,9 +11,10 @@ import { ChatbotTrainerPreview } from './ChatbotTrainerPreview';
 import { DrawingGamePreview } from './DrawingGamePreview';
 import { AiBeleidBrainstormPreview } from './AiBeleidBrainstormPreview';
 import { MissionBriefing } from './MissionBriefing';
-import { AgentRole, UserStats, AiLabProps } from '../types';
+import { AgentRole, UserStats, AiLabProps, EducationLevel } from '../types';
 import { ROLES } from '../config/agents';
 import { useAgentLogic } from '../hooks/useAgentLogic';
+import { classifyStudent } from '../config/slo-mapping';
 import { Loader2, ChevronRight, Trophy, ArrowLeft, Target, Lightbulb, Sparkles, RotateCcw, Send, AlertCircle, Gamepad2, Download, CheckCircle2, PenTool, Palette, BrainCircuit } from 'lucide-react';
 import { WebPreviewModal } from './WebPreviewModal';
 import { GamesSection } from './GamesSection';
@@ -41,7 +42,7 @@ const WordSimulator = lazy(() => import('./WordSimulator/WordSimulator').then(mo
 const PitchPoliceMission = lazy(() => import('./missions/review/PitchPoliceMission').then(module => ({ default: module.PitchPoliceMission })));
 
 
-export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initialRole, libraryData }) => {
+export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initialRole, libraryData, vsoProfile }) => {
   const [showXPPopup, setShowXPPopup] = useState(false);
   const [selectedRole, setSelectedRole] = useState<AgentRole | null>(null);
   const [showLevelUp, setShowLevelUp] = useState(false);
@@ -100,6 +101,23 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
     return selectedRole && stats.missionProgress ? stats.missionProgress[selectedRole.id] : undefined;
   }, [selectedRole?.id, sharedData, libraryData]); // Intentionally omitting stats
 
+  // --- DIFFERENTIATIE: Leid educationLevel en yearGroup af ---
+  const { studentEducationLevel, studentYearGroup } = useMemo(() => {
+    // Prioriteit: directe user-properties > afleiding uit studentClass
+    if (user?.educationLevel && user?.yearGroup) {
+      return { studentEducationLevel: user.educationLevel, studentYearGroup: user.yearGroup };
+    }
+    // Fallback: afleiden uit studentClass via classifyStudent
+    const classified = classifyStudent(user?.studentClass);
+    const levelMap: Record<string, EducationLevel | undefined> = {
+      'mavo': 'mavo', 'vmbo': 'mavo', 'havo': 'havo', 'vwo': 'vwo',
+    };
+    return {
+      studentEducationLevel: user?.educationLevel || levelMap[classified.level] || 'mavo' as EducationLevel,
+      studentYearGroup: user?.yearGroup || classified.year,
+    };
+  }, [user?.educationLevel, user?.yearGroup, user?.studentClass]);
+
   // --- USE MODULAR LOGIC HOOK ---
   const {
     messages,
@@ -126,7 +144,10 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
     userIdentifier: user?.uid || '', // IMPORTANT: Must use Supabase UID, not identifier (student number)
     schoolId: user?.schoolId,
     initialProgress,
-    skipLoading: !!sharedData || !!libraryData
+    skipLoading: !!sharedData || !!libraryData,
+    educationLevel: studentEducationLevel,
+    yearGroup: studentYearGroup,
+    vsoProfile: vsoProfile || user?.stats?.vsoProfile,
   });
 
   const messagesEndRef = useRef<HTMLDivElement>(null);

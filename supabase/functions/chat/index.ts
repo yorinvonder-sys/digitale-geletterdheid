@@ -11,6 +11,7 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { sanitizePrompt } from "../_shared/promptSanitizer.ts";
 import { getAccessToken, getVertexUrl } from "../_shared/vertexAuth.ts";
+import { validateMissionInstruction } from "../_shared/missionRegistry.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
@@ -60,7 +61,7 @@ Deno.serve(async (req: Request) => {
     }
 
     // 2. Parse request
-    let body: { message?: string; systemInstruction?: string; history?: unknown[] };
+    let body: { message?: string; missionId?: string; systemInstruction?: string; history?: unknown[] };
     try {
         body = await req.json();
     } catch {
@@ -77,7 +78,61 @@ Deno.serve(async (req: Request) => {
         );
     }
 
-    // 3. Server-side prompt injection check (defense-in-depth)
+    // 3. systemInstruction validation (Art. 15 AI Act — robuustheid)
+    let validatedSystemInstruction: string | undefined = undefined;
+
+    if (body.missionId) {
+        // 3a. New path: missionId-based validation (preferred)
+        if (typeof body.missionId !== "string" || body.missionId.length > 100) {
+            return new Response(
+                JSON.stringify({ error: "Ongeldig missionId." }),
+                { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+            );
+        }
+
+        const missionValidation = validateMissionInstruction(body.missionId, body.systemInstruction);
+        if (!missionValidation.valid) {
+            console.warn(`[MISSION_BLOCKED] user=${user.id} missionId=${body.missionId} reason=${missionValidation.reason}`);
+            return new Response(
+                JSON.stringify({ error: "blocked", reason: missionValidation.reason || "Ongeldige missie-configuratie." }),
+                { status: 422, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+            );
+        }
+        validatedSystemInstruction = missionValidation.systemInstruction;
+    } else if (body.systemInstruction !== undefined) {
+        // 3b. Legacy path: validate systemInstruction without missionId
+        if (typeof body.systemInstruction !== "string" || body.systemInstruction.length > 8000) {
+            return new Response(
+                JSON.stringify({ error: "Ongeldige systemInstruction." }),
+                { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+            );
+        }
+        // Fingerprint check: legacy path MUST also contain the known suffix markers
+        if (!body.systemInstruction.includes('ALGEMENE REGELS:') || !body.systemInstruction.includes('WELZIJNSPROTOCOL')) {
+            console.warn(`[SYSINST_NO_FINGERPRINT] user=${user.id}`);
+            return new Response(
+                JSON.stringify({ error: "blocked", reason: "Ongeldige systeeminstruction." }),
+                { status: 422, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+            );
+        }
+        // Block obvious injection attempts
+        const injectionPatterns = [
+            /ignore (all |previous |above )?instructions/i,
+            /you are now/i,
+            /<\/?system/i,
+            /\[INST\]/i,
+        ];
+        if (injectionPatterns.some(p => p.test(body.systemInstruction!))) {
+            console.warn(`[SYSINST_BLOCKED] user=${user.id}`);
+            return new Response(
+                JSON.stringify({ error: "blocked", reason: "Ongeldige systeeminstruction." }),
+                { status: 422, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+            );
+        }
+        validatedSystemInstruction = body.systemInstruction;
+    }
+
+    // 4. Server-side prompt injection check (defense-in-depth)
     const validation = sanitizePrompt(body.message);
     if (validation.wasBlocked) {
         console.warn(
@@ -92,7 +147,7 @@ Deno.serve(async (req: Request) => {
         );
     }
 
-    // 4. Forward sanitized message to Gemini via Vertex AI (EU endpoint)
+    // 5. Forward sanitized message to Gemini via Vertex AI (EU endpoint)
     const geminiUrl = getVertexUrl("gemini-2.0-flash");
     const accessToken = await getAccessToken();
 
@@ -101,7 +156,7 @@ Deno.serve(async (req: Request) => {
         { role: "user", parts: [{ text: validation.sanitized }] },
     ];
 
-    // 5. Safety settings for minors (12-18 year olds) — EU AI Act + child protection
+    // 6. Safety settings for minors (12-18 year olds) — EU AI Act + child protection
     const safetySettings = [
         { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_LOW_AND_ABOVE" },
         { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_LOW_AND_ABOVE" },
@@ -118,8 +173,8 @@ Deno.serve(async (req: Request) => {
         body: JSON.stringify({
             contents,
             safetySettings,
-            ...(body.systemInstruction
-                ? { systemInstruction: { parts: [{ text: body.systemInstruction }] } }
+            ...(validatedSystemInstruction
+                ? { systemInstruction: { parts: [{ text: validatedSystemInstruction }] } }
                 : {}),
         }),
     });
