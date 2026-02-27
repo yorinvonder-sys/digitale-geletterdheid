@@ -29,7 +29,8 @@ export const MissionConclusion: React.FC<MissionConclusionProps> = ({
     }, []);
 
     return (
-        <div className="absolute inset-0 z-50 bg-slate-900/95 backdrop-blur flex items-center justify-center p-6 animate-in fade-in duration-500">
+        <div className="absolute inset-0 z-50 bg-slate-900/95 backdrop-blur overflow-y-auto animate-in fade-in duration-500">
+        <div className="min-h-full flex items-center justify-center p-6">
             <div className="max-w-2xl w-full bg-white rounded-[2.5rem] shadow-2xl overflow-hidden relative">
                 {/* Header Pattern */}
                 <div className="h-32 bg-indigo-600 relative overflow-hidden flex items-center justify-center">
@@ -112,6 +113,7 @@ export const MissionConclusion: React.FC<MissionConclusionProps> = ({
                     </div>
                 </div>
             </div>
+        </div>
         </div>
     );
 };

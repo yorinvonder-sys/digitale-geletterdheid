@@ -427,7 +427,7 @@ export const DeepfakeDetectorMission: React.FC<Props> = ({ onBack, onComplete, v
     const isCorrect = answer !== null && (answer === 'ai') === currentChallenge.isAIGenerated;
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-slate-900 via-purple-950 to-slate-900">
+        <div className="min-h-screen overflow-y-auto bg-gradient-to-b from-slate-900 via-purple-950 to-slate-900">
             {/* Header */}
             <div className="sticky top-0 z-20 bg-slate-900/90 backdrop-blur-md border-b border-slate-800">
                 <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">

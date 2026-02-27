@@ -1,12 +1,11 @@
 import React, { useState, useEffect, Suspense, useMemo } from 'react';
 import { ProjectZeroDashboard } from './components/ProjectZeroDashboard';
-import { MissionIntro } from './components/MissionIntro';
 import { Footer } from './components/Footer';
 import { ParentUser, UserStats, RoleId, AvatarConfig } from './types';
 import { ROLES } from './config/agents';
 import { subscribeToAuthChanges, logout } from './services/authService';
 import { supabase } from './services/supabase';
-import { Feather, Gamepad2, BrainCircuit, Database, ShieldCheck, Pencil, Play, Stars, Map as MapIcon, Lightbulb, Rocket, Loader2, ArrowLeft, Lock, Scale } from 'lucide-react';
+import { Rocket, Loader2, ArrowLeft, Lock } from 'lucide-react';
 import { logger } from './utils/logger';
 import { ClassroomConfig } from './types';
 import { logActivity, updateClassroomConfig } from './services/teacherService';
@@ -712,70 +711,6 @@ export function AuthenticatedApp() {
             );
         }
 
-        if (showIntro) {
-            const getIntroProjects = (week: number) => {
-                if (week === 1) {
-                    return [
-                        { title: 'Magister Meester', description: 'Beheer je rooster en huiswerk.', icon: <ShieldCheck size={48} className="text-blue-500" />, color: '#3B82F6' },
-                        { title: 'Cloud Commander', description: 'Veilig bestanden opslaan in OneDrive.', icon: <Database size={48} className="text-sky-500" />, color: '#0EA5E9' },
-                        { title: 'Word Wizard', description: 'Maak professionele verslagen.', icon: <Pencil size={48} className="text-blue-600" />, color: '#2563EB' },
-                        { title: 'Slide Specialist', description: 'Ontwerp interactieve presentaties.', icon: <Play size={48} className="text-orange-500" />, color: '#EA580C' },
-                        { title: 'Print Pro', description: 'Leer printen met de RICOH app.', icon: <Stars size={48} className="text-slate-500" />, color: '#475569' },
-                    ];
-                }
-                if (week === 2) {
-                    return [
-                        { title: 'Cloud Schoonmaker', description: 'Sleep bestanden naar de juiste mappen.', icon: <Database size={48} className="text-sky-500" />, color: '#0EA5E9', image: '/assets/agents/cloud_commander.webp' },
-                        { title: 'Word Match', description: 'Match Word-problemen aan oplossingen!', icon: <Pencil size={48} className="text-blue-500" />, color: '#3B82F6', image: '/assets/agents/word_wizard.webp' },
-                        { title: 'Pitch Politie', description: 'Geef saaie slides een makeover.', icon: <Play size={48} className="text-orange-500" />, color: '#F97316', image: '/assets/agents/slide_specialist.webp' },
-                        { title: 'Verhalen Ontwerper', description: 'Visualiseer verhalen met AI.', icon: <Feather size={48} className="text-pink-500" />, color: '#EC4899', image: '/assets/agents/verhalen_ontwerper_new.webp' },
-                        { title: 'Game Programmeur', description: 'Repareer games met code.', icon: <Gamepad2 size={48} className="text-emerald-500" />, color: '#10B981', image: '/assets/agents/game_programmeur_new.webp' },
-                        { title: 'AI Beleid Brainstorm', description: 'Denk mee over AI-regels op school.', icon: <Scale size={48} className="text-amber-500" />, color: '#F59E0B', image: '/assets/agents/ai_beleid_brainstorm.webp' },
-                        { title: 'AI Trainer', description: 'Train de AI met data.', icon: <Database size={48} className="text-purple-500" />, color: '#8B5CF6', image: '/assets/agents/ai_trainer_recycling.png' },
-                        { title: 'Chatbot Trainer', description: 'Bouw je eigen chatbot.', icon: <BrainCircuit size={48} className="text-indigo-500" />, color: '#6366F1', image: '/assets/agents/chatbot_trainer.png' },
-                        { title: 'AI Tekengame', description: 'Teken en laat AI raden!', icon: <Pencil size={48} className="text-rose-500" />, color: '#F43F5E', image: '/assets/agents/ai_tekengame.png' },
-                        { title: 'Prompt Perfectionist', description: 'Leer perfecte prompts schrijven.', icon: <Stars size={48} className="text-violet-500" />, color: '#8B5CF6', image: '/assets/agents/prompt_master.png' },
-                    ];
-                }
-                if (week === 3) {
-                    return [
-                        { title: 'De AI Spiegel', description: 'Reflecteer op je AI-ervaringen.', icon: <BrainCircuit size={48} className="text-indigo-500" />, color: '#6366F1', image: '/assets/agents/ai_spiegel.webp' },
-                        { title: 'Social Safeguard', description: 'Word een expert in online empathie.', icon: <ShieldCheck size={48} className="text-emerald-500" />, color: '#10B981', image: '/assets/agents/social_safeguard.webp' },
-                        { title: 'Cookie Crusher', description: 'Herken dark patterns in cookie-popups.', icon: <ShieldCheck size={48} className="text-amber-500" />, color: '#F59E0B', image: '/assets/agents/social_safeguard.webp' },
-                        { title: 'De Data Handelaar', description: 'Ontmasker AVG-overtredingen.', icon: <Database size={48} className="text-red-500" />, color: '#DC2626', image: '/assets/agents/ai_spiegel.webp' },
-                        { title: 'Privacy Profiel Spiegel', description: 'Check je eigen app-instellingen.', icon: <ShieldCheck size={48} className="text-cyan-500" />, color: '#06B6D4', image: '/assets/agents/social_safeguard.webp' },
-                        { title: 'Filter Bubble Breaker', description: 'Vergelijk twee social media feeds.', icon: <BrainCircuit size={48} className="text-purple-500" />, color: '#8B5CF6', image: '/assets/agents/ai_spiegel.webp' },
-                        { title: 'Datalekken Rampenplan', description: 'Los een school datalek-crisis op.', icon: <ShieldCheck size={48} className="text-red-500" />, color: '#EF4444', image: '/assets/agents/social_safeguard.webp' },
-                        { title: 'Data voor Data', description: 'Hoeveel data geef jij weg?', icon: <Stars size={48} className="text-amber-500" />, color: '#F59E0B', image: '/assets/agents/social_safeguard.webp' },
-                    ];
-                }
-                if (week === 4) {
-                    return [
-                        { title: 'De Blauwdruk', description: 'Organiseer je masterplan.', icon: <MapIcon size={48} className="text-slate-800" />, color: '#0F172A', image: '/assets/agents/de_blauwdruk.webp' },
-                        { title: 'De Visie', description: 'Ontwerp je droom.', icon: <Lightbulb size={48} className="text-amber-500" />, color: '#F59E0B', image: '/assets/agents/de_visie.webp' },
-                        { title: 'De Lancering', description: 'Lanceer je idee.', icon: <Rocket size={48} className="text-green-600" />, color: '#16A34A', image: '/assets/agents/de_lancering.webp' },
-                        { title: 'Startup Pitch', description: 'Bedenk je eigen AI-startup!', icon: <Rocket size={48} className="text-indigo-500" />, color: '#6366F1', image: '/assets/agents/de_lancering.webp' }
-                    ];
-                }
-                return [];
-            };
-            const introProjects = getIntroProjects(activeWeek);
-            return (
-                <MissionIntro
-                    weekNumber={activeWeek}
-                    projects={introProjects}
-                    onFinish={async () => {
-                        if (user) {
-                            const newCompletedWeeks = [...completedIntroWeeks, activeWeek];
-                            const newStats = { ...user.stats, completedIntroWeeks: newCompletedWeeks };
-                            await handleSaveProgress(newStats);
-                            setUser({ ...user, stats: newStats });
-                        }
-                        setShowIntro(false);
-                    }}
-                />
-            );
-        }
 
         if (isProfileOpen) {
             return (
@@ -849,7 +784,14 @@ export function AuthenticatedApp() {
                 activeWeek={activeWeek}
                 setActiveWeek={setActiveWeek}
                 hasSeenIntro={completedIntroWeeks.includes(activeWeek)}
-                onStartIntro={() => setShowIntro(true)}
+                onStartIntro={async () => {
+                    if (user) {
+                        const newCompletedWeeks = [...completedIntroWeeks, activeWeek];
+                        const newStats = { ...user.stats, completedIntroWeeks: newCompletedWeeks };
+                        await handleSaveProgress(newStats);
+                        setUser({ ...user, stats: newStats });
+                    }
+                }}
                 onGoHome={handleGoHome}
                 stats={user?.stats}
                 focusMode={focusMode && !hasCompletedFocusMission}

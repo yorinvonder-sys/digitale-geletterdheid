@@ -1,6 +1,6 @@
 import React, { Suspense, useEffect, useMemo, useRef, memo, useState, useCallback } from 'react';
 import { Canvas, ThreeEvent, useFrame } from '@react-three/fiber';
-import { OrbitControls, RoundedBox, ContactShadows, Float, Environment } from '@react-three/drei';
+import { OrbitControls, ContactShadows, Float, Environment, Sparkles } from '@react-three/drei';
 import * as THREE from 'three';
 import { AvatarConfig } from '../types';
 
@@ -13,48 +13,6 @@ interface AvatarViewerProps {
     variant?: 'full' | 'head';
 }
 
-interface BlockProps {
-    args: [number, number, number];
-    position: [number, number, number];
-    rotation?: [number, number, number];
-    color: string;
-    onClick?: (e: ThreeEvent<MouseEvent>) => void;
-    onPointerEnter?: (e: ThreeEvent<PointerEvent>) => void;
-    onPointerLeave?: (e: ThreeEvent<PointerEvent>) => void;
-    radius?: number;
-    metalness?: number;
-    roughness?: number;
-    emissive?: string;
-    emissiveIntensity?: number;
-    children?: React.ReactNode;
-}
-
-// Static geometry args defined outside components for referential stability
-const SHOE_ARGS: [number, number, number] = [0.45, 0.2, 0.6];
-const EYE_GEOM_ARGS: [number, number, number] = [0.15, 0.15, 0.02];
-const MOUTH_HAPPY_ARGS: [number, number, number] = [0.4, 0.1, 0.02];
-const MOUTH_SURPRISED_ARGS: [number, number, number] = [0.15, 0.15, 0.02];
-const MOUTH_NEUTRAL_ARGS: [number, number, number] = [0.3, 0.05, 0.02];
-const GLASSES_ARGS: [number, number, number] = [0.8, 0.2, 0.02];
-
-// --- Helpers ---
-
-const getBodyDimensions = (baseModel: AvatarConfig['baseModel'], gender?: AvatarConfig['gender']) => {
-    const isSlim = baseModel === 'slim';
-    const isRobot = baseModel === 'robot';
-    const isFemale = gender === 'female';
-    return {
-        headSize: [1, 1, 1] as [number, number, number],
-        torsoSize: isFemale ? [0.8, 1.2, 0.48] as [number, number, number] : [1, 1.2, 0.5] as [number, number, number],
-        armSize: isFemale
-            ? [0.25, 1.2, 0.28] as [number, number, number]
-            : [isSlim ? 0.25 : 0.35, 1.2, 0.35] as [number, number, number],
-        legSize: [0.4, 1.2, 0.4] as [number, number, number],
-        armSpacing: isFemale ? 0.55 : 0.7,
-        isRobot,
-    };
-};
-
 // --- Error Boundary for Three.js children ---
 class ThreeErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean }> {
     state = { hasError: false };
@@ -62,139 +20,281 @@ class ThreeErrorBoundary extends React.Component<{ children: React.ReactNode }, 
     render() { return this.state.hasError ? null : this.props.children; }
 }
 
-// --- Sub-components ---
+// --- Shared geometry helpers (module-level for GC optimization) ---
 
-const BodyBlock = memo<BlockProps>(({
-    args, position, rotation = [0, 0, 0], color, onClick, onPointerEnter, onPointerLeave,
-    radius = 0.05, metalness = 0, roughness = 0.65,
-    emissive = '#000000', emissiveIntensity = 0, children,
-}) => (
-    <group
-        position={position}
-        rotation={rotation}
-        onClick={onClick}
-        onPointerEnter={onPointerEnter}
-        onPointerLeave={onPointerLeave}
-    >
-        <RoundedBox args={args} radius={radius} smoothness={4}>
-            <meshStandardMaterial
-                color={color}
-                metalness={metalness}
-                roughness={roughness}
-                envMapIntensity={0.6}
-                emissive={emissive}
-                emissiveIntensity={emissiveIntensity}
-            />
-        </RoundedBox>
-        {children}
-    </group>
-));
+const getBodyDimensions = (baseModel: AvatarConfig['baseModel'], gender?: AvatarConfig['gender']) => {
+    const isRobot = baseModel === 'robot';
+    const isFemale = gender === 'female';
+    return {
+        torsoRadius: isFemale ? 0.3 : 0.35,
+        torsoLength: 0.5,
+        armRadius: isFemale ? 0.11 : 0.13,
+        armLength: 0.6,
+        armSpacing: isFemale ? 0.48 : 0.55,
+        legRadius: 0.15,
+        legLength: 0.5,
+        isRobot,
+        isFemale,
+    };
+};
 
-// Eye group ref passed in so AvatarModel can animate blinking without prop drilling state
+// Darken a hex color slightly for subtle shading
+const darkenColor = (hex: string, factor: number): string => {
+    const c = new THREE.Color(hex);
+    c.multiplyScalar(factor);
+    return '#' + c.getHexString();
+};
+
+// --- Face Layer ---
+
 const FaceLayer = memo<{
     config: AvatarConfig;
     skinColor: string;
     isRobot: boolean;
     eyeGroupRef: React.RefObject<THREE.Group>;
-}>(({ config, eyeGroupRef }) => {
+}>(({ config, skinColor, eyeGroupRef }) => {
     const expression = config.expression ?? 'happy';
     const eyeColor = config.eyeColor ?? '#111111';
-    const eyeY = 0.1;
-    const eyeZ = 0.51;
+    const eyeY = 0.08;
+    const eyeZ = 0.58;
+    const noseColor = darkenColor(skinColor, 0.9);
 
     return (
         <group>
+            {/* Ears */}
+            <mesh position={[-0.6, 0, 0]}>
+                <sphereGeometry args={[0.1, 12, 12]} />
+                <meshPhysicalMaterial color={skinColor} roughness={0.65} clearcoat={0.15} clearcoatRoughness={0.6} />
+            </mesh>
+            <mesh position={[0.6, 0, 0]}>
+                <sphereGeometry args={[0.1, 12, 12]} />
+                <meshPhysicalMaterial color={skinColor} roughness={0.65} clearcoat={0.15} clearcoatRoughness={0.6} />
+            </mesh>
+
+            {/* Nose */}
+            <mesh position={[0, -0.05, 0.62]}>
+                <sphereGeometry args={[0.06, 12, 12]} />
+                <meshPhysicalMaterial color={noseColor} roughness={0.7} clearcoat={0.1} />
+            </mesh>
+
             {/* Eye group – scale.y animated for blinking via eyeGroupRef */}
             <group ref={eyeGroupRef}>
-                <mesh position={[-0.25, eyeY, eyeZ]}>
-                    <boxGeometry args={EYE_GEOM_ARGS} />
-                    {/* clearcoat simulates moist cornea highlight */}
+                {/* Left eye */}
+                <mesh position={[-0.22, eyeY, eyeZ]} scale={[1, 1.15, 0.35]}>
+                    <sphereGeometry args={[0.1, 16, 16]} />
                     <meshPhysicalMaterial color={eyeColor} roughness={0.05} metalness={0.1}
                         clearcoat={1} clearcoatRoughness={0.05} envMapIntensity={1} />
                 </mesh>
-                <mesh position={[0.25, eyeY, eyeZ]}>
-                    <boxGeometry args={EYE_GEOM_ARGS} />
+                {/* Left eye highlight */}
+                <mesh position={[-0.19, eyeY + 0.04, eyeZ + 0.04]}>
+                    <sphereGeometry args={[0.025, 8, 8]} />
+                    <meshBasicMaterial color="#ffffff" />
+                </mesh>
+                {/* Right eye */}
+                <mesh position={[0.22, eyeY, eyeZ]} scale={[1, 1.15, 0.35]}>
+                    <sphereGeometry args={[0.1, 16, 16]} />
                     <meshPhysicalMaterial color={eyeColor} roughness={0.05} metalness={0.1}
                         clearcoat={1} clearcoatRoughness={0.05} envMapIntensity={1} />
+                </mesh>
+                {/* Right eye highlight */}
+                <mesh position={[0.25, eyeY + 0.04, eyeZ + 0.04]}>
+                    <sphereGeometry args={[0.025, 8, 8]} />
+                    <meshBasicMaterial color="#ffffff" />
                 </mesh>
             </group>
 
-            {/* Sunglasses overlay for cool expression */}
+            {/* Sunglasses for cool expression */}
             {expression === 'cool' && (
-                <mesh position={[0, eyeY, eyeZ + 0.01]}>
-                    <boxGeometry args={GLASSES_ARGS} />
-                    <meshPhysicalMaterial color="#111" metalness={0.95} roughness={0.05}
-                        reflectivity={1} clearcoat={0.8} clearcoatRoughness={0.05} envMapIntensity={1.5} />
-                </mesh>
+                <group position={[0, eyeY, eyeZ + 0.02]}>
+                    {/* Left lens */}
+                    <mesh position={[-0.22, 0, 0]} rotation={[Math.PI / 2, 0, 0]}>
+                        <torusGeometry args={[0.12, 0.02, 8, 16]} />
+                        <meshPhysicalMaterial color="#111" metalness={0.95} roughness={0.05}
+                            clearcoat={0.8} clearcoatRoughness={0.05} envMapIntensity={1.5} />
+                    </mesh>
+                    {/* Right lens */}
+                    <mesh position={[0.22, 0, 0]} rotation={[Math.PI / 2, 0, 0]}>
+                        <torusGeometry args={[0.12, 0.02, 8, 16]} />
+                        <meshPhysicalMaterial color="#111" metalness={0.95} roughness={0.05}
+                            clearcoat={0.8} clearcoatRoughness={0.05} envMapIntensity={1.5} />
+                    </mesh>
+                    {/* Bridge */}
+                    <mesh position={[0, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
+                        <capsuleGeometry args={[0.015, 0.12, 4, 8]} />
+                        <meshPhysicalMaterial color="#111" metalness={0.9} roughness={0.1} />
+                    </mesh>
+                </group>
             )}
+
+            {/* Mouths */}
             {expression === 'happy' && (
-                <mesh position={[0, -0.2, eyeZ]}>
-                    <boxGeometry args={MOUTH_HAPPY_ARGS} />
+                <mesh position={[0, -0.2, eyeZ - 0.02]} rotation={[0, 0, 0]}>
+                    <torusGeometry args={[0.1, 0.025, 8, 16, Math.PI]} />
                     <meshStandardMaterial color="#7c3b2a" roughness={0.9} />
                 </mesh>
             )}
             {expression === 'surprised' && (
-                <mesh position={[0, -0.2, eyeZ]}>
-                    <boxGeometry args={MOUTH_SURPRISED_ARGS} />
+                <mesh position={[0, -0.2, eyeZ]} scale={[1, 1.2, 0.4]}>
+                    <sphereGeometry args={[0.06, 12, 12]} />
                     <meshStandardMaterial color="#7c3b2a" roughness={0.9} />
                 </mesh>
             )}
             {expression === 'neutral' && (
-                <mesh position={[0, -0.2, eyeZ]}>
-                    <boxGeometry args={MOUTH_NEUTRAL_ARGS} />
+                <mesh position={[0, -0.18, eyeZ]} rotation={[0, 0, Math.PI / 2]}>
+                    <capsuleGeometry args={[0.018, 0.15, 4, 8]} />
                     <meshStandardMaterial color="#7c3b2a" roughness={0.9} />
                 </mesh>
             )}
+
+            {/* Cheek blush */}
+            <mesh position={[-0.35, -0.08, 0.52]} rotation={[0, -0.3, 0]}>
+                <circleGeometry args={[0.08, 16]} />
+                <meshBasicMaterial color="#ff9999" transparent opacity={0.25} side={THREE.DoubleSide} />
+            </mesh>
+            <mesh position={[0.35, -0.08, 0.52]} rotation={[0, 0.3, 0]}>
+                <circleGeometry args={[0.08, 16]} />
+                <meshBasicMaterial color="#ff9999" transparent opacity={0.25} side={THREE.DoubleSide} />
+            </mesh>
         </group>
     );
 });
 
+// --- Hair Layer (smooth sphere/capsule based) ---
+
 const HairLayer = memo<{ style: string; color: string }>(({ style, color }) => {
     const mat = (
-        <meshStandardMaterial color={color} roughness={0.88} metalness={0.03} envMapIntensity={0.3} />
+        <meshPhysicalMaterial color={color} roughness={0.7} metalness={0.05}
+            clearcoat={0.3} clearcoatRoughness={0.4} envMapIntensity={0.4} />
     );
+
     switch (style) {
         case 'short':
             return (
-                <group position={[0, 0.4, 0]}>
-                    <mesh position={[0, 0.1, 0]}><boxGeometry args={[1.05, 0.2, 1.05]} />{mat}</mesh>
+                <group position={[0, 0.2, -0.05]}>
+                    <mesh scale={[1.08, 0.4, 1.02]}>
+                        <sphereGeometry args={[0.65, 16, 16]} />
+                        {mat}
+                    </mesh>
                 </group>
             );
+
         case 'spiky':
             return (
-                <group position={[0, 0.4, 0]}>
-                    <mesh position={[0, 0.1, 0]}><boxGeometry args={[1.05, 0.2, 1.05]} />{mat}</mesh>
-                    <mesh position={[-0.3, 0.25, 0.3]}><boxGeometry args={[0.2, 0.2, 0.2]} />{mat}</mesh>
-                    <mesh position={[0.3, 0.25, -0.3]}><boxGeometry args={[0.2, 0.2, 0.2]} />{mat}</mesh>
-                    <mesh position={[0, 0.3, 0]}><boxGeometry args={[0.2, 0.2, 0.2]} />{mat}</mesh>
+                <group position={[0, 0.15, -0.02]}>
+                    {/* Base cap */}
+                    <mesh scale={[1.08, 0.35, 1.02]}>
+                        <sphereGeometry args={[0.65, 16, 16]} />
+                        {mat}
+                    </mesh>
+                    {/* Spikes */}
+                    <mesh position={[-0.2, 0.35, 0.2]} rotation={[0.3, 0, -0.2]} scale={[0.25, 0.45, 0.25]}>
+                        <sphereGeometry args={[0.3, 8, 8]} />
+                        {mat}
+                    </mesh>
+                    <mesh position={[0.2, 0.4, -0.15]} rotation={[-0.2, 0, 0.2]} scale={[0.25, 0.5, 0.25]}>
+                        <sphereGeometry args={[0.3, 8, 8]} />
+                        {mat}
+                    </mesh>
+                    <mesh position={[0, 0.42, 0.05]} rotation={[0.1, 0, 0]} scale={[0.2, 0.5, 0.2]}>
+                        <sphereGeometry args={[0.3, 8, 8]} />
+                        {mat}
+                    </mesh>
+                    <mesh position={[-0.05, 0.38, -0.2]} rotation={[-0.3, 0.1, 0.1]} scale={[0.22, 0.4, 0.22]}>
+                        <sphereGeometry args={[0.3, 8, 8]} />
+                        {mat}
+                    </mesh>
                 </group>
             );
+
         case 'long':
             return (
-                <group position={[0, 0.1, 0]}>
-                    <mesh position={[0, 0.4, 0]}><boxGeometry args={[1.05, 0.2, 1.05]} />{mat}</mesh>
-                    <mesh position={[0, 0, -0.45]}><boxGeometry args={[1.05, 1, 0.2]} />{mat}</mesh>
-                    <mesh position={[-0.45, 0, 0]}><boxGeometry args={[0.2, 1, 1.05]} />{mat}</mesh>
-                    <mesh position={[0.45, 0, 0]}><boxGeometry args={[0.2, 1, 1.05]} />{mat}</mesh>
+                <group position={[0, 0.05, 0]}>
+                    {/* Top cap */}
+                    <mesh position={[0, 0.3, -0.05]} scale={[1.1, 0.38, 1.05]}>
+                        <sphereGeometry args={[0.65, 16, 16]} />
+                        {mat}
+                    </mesh>
+                    {/* Left curtain */}
+                    <mesh position={[-0.48, -0.15, 0]} scale={[0.28, 0.9, 0.35]}>
+                        <capsuleGeometry args={[0.3, 0.4, 6, 12]} />
+                        {mat}
+                    </mesh>
+                    {/* Right curtain */}
+                    <mesh position={[0.48, -0.15, 0]} scale={[0.28, 0.9, 0.35]}>
+                        <capsuleGeometry args={[0.3, 0.4, 6, 12]} />
+                        {mat}
+                    </mesh>
+                    {/* Back panel */}
+                    <mesh position={[0, -0.1, -0.4]} scale={[0.9, 0.85, 0.25]}>
+                        <capsuleGeometry args={[0.35, 0.3, 6, 12]} />
+                        {mat}
+                    </mesh>
                 </group>
             );
+
         case 'ponytail':
             return (
-                <group position={[0, 0.1, 0]}>
-                    {/* Hair cap */}
-                    <mesh position={[0, 0.4, 0]}><boxGeometry args={[1.05, 0.2, 1.05]} />{mat}</mesh>
+                <group position={[0, 0.05, 0]}>
+                    {/* Top cap */}
+                    <mesh position={[0, 0.3, -0.05]} scale={[1.08, 0.38, 1.02]}>
+                        <sphereGeometry args={[0.65, 16, 16]} />
+                        {mat}
+                    </mesh>
                     {/* Ponytail band */}
-                    <mesh position={[0, 0.18, -0.52]}><boxGeometry args={[0.42, 0.14, 0.12]} />{mat}</mesh>
+                    <mesh position={[0, 0.12, -0.55]}>
+                        <sphereGeometry args={[0.12, 8, 8]} />
+                        {mat}
+                    </mesh>
                     {/* Tail upper */}
-                    <mesh position={[0, 0.0, -0.58]}><boxGeometry args={[0.32, 0.4, 0.18]} />{mat}</mesh>
+                    <mesh position={[0, -0.05, -0.6]} scale={[0.7, 1, 0.7]}>
+                        <sphereGeometry args={[0.15, 12, 12]} />
+                        {mat}
+                    </mesh>
                     {/* Tail lower */}
-                    <mesh position={[0, -0.3, -0.54]}><boxGeometry args={[0.25, 0.28, 0.2]} />{mat}</mesh>
+                    <mesh position={[0, -0.25, -0.55]} scale={[0.6, 0.8, 0.6]}>
+                        <sphereGeometry args={[0.15, 12, 12]} />
+                        {mat}
+                    </mesh>
                 </group>
             );
-        default:
+
+        case 'pigtails':
             return (
-                <group position={[0, 0.4, 0]}>
-                    <mesh position={[0, 0.1, 0]}><boxGeometry args={[1.05, 0.2, 1.05]} />{mat}</mesh>
+                <group position={[0, 0.15, -0.02]}>
+                    {/* Top cap */}
+                    <mesh scale={[1.08, 0.35, 1.02]}>
+                        <sphereGeometry args={[0.65, 16, 16]} />
+                        {mat}
+                    </mesh>
+                    {/* Left pigtail */}
+                    <mesh position={[-0.55, 0.05, 0]}>
+                        <sphereGeometry args={[0.2, 12, 12]} />
+                        {mat}
+                    </mesh>
+                    <mesh position={[-0.55, -0.2, 0]} scale={[0.85, 0.85, 0.85]}>
+                        <sphereGeometry args={[0.18, 12, 12]} />
+                        {mat}
+                    </mesh>
+                    {/* Right pigtail */}
+                    <mesh position={[0.55, 0.05, 0]}>
+                        <sphereGeometry args={[0.2, 12, 12]} />
+                        {mat}
+                    </mesh>
+                    <mesh position={[0.55, -0.2, 0]} scale={[0.85, 0.85, 0.85]}>
+                        <sphereGeometry args={[0.18, 12, 12]} />
+                        {mat}
+                    </mesh>
+                </group>
+            );
+
+        default:
+            // Fallback: same as short
+            return (
+                <group position={[0, 0.2, -0.05]}>
+                    <mesh scale={[1.08, 0.4, 1.02]}>
+                        <sphereGeometry args={[0.65, 16, 16]} />
+                        {mat}
+                    </mesh>
                 </group>
             );
     }
@@ -208,12 +308,12 @@ const AvatarModel = memo<{
     onPartClick?: (part: string) => void;
     interactive: boolean;
 }>(({ config, variant, onPartClick, interactive }) => {
-    const { headSize, torsoSize, armSize, legSize, armSpacing, isRobot } = useMemo(
+    const dims = useMemo(
         () => getBodyDimensions(config.baseModel, config.gender),
         [config.baseModel, config.gender]
     );
 
-    const skinColor = isRobot ? '#C0C0C0' : config.skinColor;
+    const skinColor = dims.isRobot ? '#C0C0C0' : config.skinColor;
     const hairColor = config.hairColor ?? '#5D4037';
     const shirtColor = config.shirtColor ?? '#3b82f6';
     const pantsColor = config.pantsColor ?? '#1e293b';
@@ -261,13 +361,13 @@ const AvatarModel = memo<{
         if (headRef.current && bounceProgressRef.current > 0) {
             bounceProgressRef.current = Math.max(0, bounceProgressRef.current - delta * 4);
             const p = bounceProgressRef.current;
-            headRef.current.position.y = 2.2 + Math.sin((1 - p) * Math.PI * 3) * p * 0.1;
+            headRef.current.position.y = 2.0 + Math.sin((1 - p) * Math.PI * 3) * p * 0.1;
         }
 
         // 2. Mouse look – head gently rotates toward screen cursor
         if (headRef.current) {
-            const targetRotX = -state.pointer.y * 0.25; // tilt up/down
-            const targetRotY = state.pointer.x * 0.35;  // turn left/right
+            const targetRotX = -state.pointer.y * 0.25;
+            const targetRotY = state.pointer.x * 0.35;
             headRef.current.rotation.x = THREE.MathUtils.lerp(
                 headRef.current.rotation.x, targetRotX, delta * 3
             );
@@ -276,7 +376,7 @@ const AvatarModel = memo<{
             );
         }
 
-        // 3. Breathing – subtle torso scale on X and Z axes (chest expansion)
+        // 3. Breathing – subtle torso scale on X and Z axes
         if (torsoRef.current) {
             const breath = 1 + Math.sin(t * 0.9) * 0.012;
             torsoRef.current.scale.x = breath;
@@ -286,13 +386,12 @@ const AvatarModel = memo<{
         // 4. Blinking – periodic eye close/open using sine curve
         blinkTimerRef.current -= delta;
         if (blinkTimerRef.current <= 0) {
-            blinkTimerRef.current = 2.5 + Math.random() * 4; // next blink in 2.5–6.5 s
+            blinkTimerRef.current = 2.5 + Math.random() * 4;
             blinkProgressRef.current = 1;
         }
         if (eyeGroupRef.current && blinkProgressRef.current > 0) {
             blinkProgressRef.current = Math.max(0, blinkProgressRef.current - delta * 12);
             const p = blinkProgressRef.current;
-            // sin curve: scale=1 at p=1 and p=0, scale=0 at p=0.5
             eyeGroupRef.current.scale.y = Math.max(0.05, 1 - Math.sin((1 - p) * Math.PI));
         }
 
@@ -301,7 +400,6 @@ const AvatarModel = memo<{
             const pose = config.pose ?? 'idle';
 
             if (pose === 'wave') {
-                // Right arm raises and oscillates – left arm hangs
                 const waveZ = -1.1 + Math.sin(t * 4) * 0.35;
                 rightArmRef.current.rotation.z = THREE.MathUtils.lerp(
                     rightArmRef.current.rotation.z, waveZ, delta * 8
@@ -316,7 +414,6 @@ const AvatarModel = memo<{
                     leftArmRef.current.rotation.x, 0, delta * 5
                 );
             } else if (pose === 'dab') {
-                // Right arm diagonal up, left arm sweeps across body
                 rightArmRef.current.rotation.z = THREE.MathUtils.lerp(
                     rightArmRef.current.rotation.z, -0.7, delta * 5
                 );
@@ -330,7 +427,6 @@ const AvatarModel = memo<{
                     leftArmRef.current.rotation.x, 0.4, delta * 5
                 );
             } else if (pose === 'peace') {
-                // Both arms slightly raised outward
                 rightArmRef.current.rotation.z = THREE.MathUtils.lerp(
                     rightArmRef.current.rotation.z, -0.5, delta * 5
                 );
@@ -344,7 +440,6 @@ const AvatarModel = memo<{
                     rightArmRef.current.rotation.x, 0, delta * 5
                 );
             } else {
-                // Idle – very gentle arm sway
                 const sway = Math.sin(t * 0.6) * 0.04;
                 leftArmRef.current.rotation.z = THREE.MathUtils.lerp(
                     leftArmRef.current.rotation.z, sway, delta * 2
@@ -392,132 +487,192 @@ const AvatarModel = memo<{
     const emissiveInt = (part: string) =>
         hoveredPart === part && interactive ? 0.12 : 0;
 
+    // Skin material props (reused for head, hands, neck, arms for female)
+    const skinMatProps = {
+        color: skinColor,
+        roughness: dims.isRobot ? 0.15 : 0.65,
+        metalness: dims.isRobot ? 0.85 : 0,
+        clearcoat: dims.isRobot ? 0 : 0.15,
+        clearcoatRoughness: 0.6,
+        envMapIntensity: 0.4,
+    };
+
     return (
         <group position={[0, variant === 'head' ? -1.5 : -0.85, 0]}>
 
-            {/* ── Head – mouse-look rotation + bounce ── */}
-            <group ref={headRef} position={[0, 2.2, 0]}>
-                <BodyBlock
-                    args={headSize}
-                    position={[0, 0, 0]}
-                    color={skinColor}
-                    metalness={isRobot ? 0.85 : 0}
-                    roughness={isRobot ? 0.15 : 0.75}
-                    emissive={emissive('skin')}
-                    emissiveIntensity={emissiveInt('skin')}
+            {/* ── Head – sphere, mouse-look rotation + bounce ── */}
+            <group ref={headRef} position={[0, 2.0, 0]}>
+                <group
                     onClick={(e) => handleClick(e, 'skin')}
                     onPointerEnter={(e) => handlePointerEnter(e, 'skin')}
                     onPointerLeave={handlePointerLeave}
                 >
+                    <mesh scale={[1, 0.95, 0.9]}>
+                        <sphereGeometry args={[0.65, 32, 32]} />
+                        <meshPhysicalMaterial
+                            {...skinMatProps}
+                            emissive={emissive('skin')}
+                            emissiveIntensity={emissiveInt('skin')}
+                        />
+                    </mesh>
+
                     <FaceLayer
                         config={config}
                         skinColor={skinColor}
-                        isRobot={isRobot}
+                        isRobot={dims.isRobot}
                         eyeGroupRef={eyeGroupRef as React.RefObject<THREE.Group>}
                     />
-                    <group
-                        onClick={(e) => handleClick(e, 'hair')}
-                        onPointerEnter={(e) => handlePointerEnter(e, 'hair')}
-                        onPointerLeave={handlePointerLeave}
-                    >
-                        <HairLayer style={config.hairStyle} color={hairColor} />
-                    </group>
-                </BodyBlock>
+                </group>
+
+                <group
+                    onClick={(e) => handleClick(e, 'hair')}
+                    onPointerEnter={(e) => handlePointerEnter(e, 'hair')}
+                    onPointerLeave={handlePointerLeave}
+                >
+                    <HairLayer style={config.hairStyle} color={hairColor} />
+                </group>
             </group>
 
             {variant === 'full' && (
                 <group>
+                    {/* ── Neck ── */}
+                    <mesh position={[0, 1.42, 0]}>
+                        <cylinderGeometry args={[0.12, 0.15, 0.15, 12]} />
+                        <meshPhysicalMaterial {...skinMatProps} />
+                    </mesh>
+
                     {/* ── Torso – breathing scale on X/Z ── */}
                     <group ref={torsoRef}>
-                        <BodyBlock
-                            args={torsoSize}
-                            position={[0, 1.1, 0]}
-                            color={shirtColor}
-                            roughness={0.72}
-                            emissive={emissive('shirt')}
-                            emissiveIntensity={emissiveInt('shirt')}
+                        <group
+                            position={[0, 1.05, 0]}
                             onClick={(e) => handleClick(e, 'shirt')}
                             onPointerEnter={(e) => handlePointerEnter(e, 'shirt')}
                             onPointerLeave={handlePointerLeave}
-                        />
+                        >
+                            <mesh>
+                                <capsuleGeometry args={[dims.torsoRadius, dims.torsoLength, 8, 16]} />
+                                <meshStandardMaterial
+                                    color={shirtColor}
+                                    roughness={0.75}
+                                    metalness={0}
+                                    envMapIntensity={0.3}
+                                    emissive={emissive('shirt')}
+                                    emissiveIntensity={emissiveInt('shirt')}
+                                />
+                            </mesh>
+                        </group>
                     </group>
 
-                    {/* ── Left arm – pivot at shoulder so rotation is anatomically correct ── */}
-                    <group ref={leftArmRef} position={[-armSpacing, 1.7, 0]}>
-                        <BodyBlock
-                            args={armSize}
-                            position={[0, -0.6, 0]}
-                            color={config.gender === 'female' ? skinColor : shirtColor}
-                            roughness={config.gender === 'female' ? 0.75 : 0.72}
-                            emissive={emissive('shirt')}
-                            emissiveIntensity={emissiveInt('shirt')}
+                    {/* ── Left arm – pivot at shoulder ── */}
+                    <group ref={leftArmRef} position={[-dims.armSpacing, 1.3, 0]}>
+                        <group
+                            position={[0, -0.4, 0]}
                             onClick={(e) => handleClick(e, 'shirt')}
                             onPointerEnter={(e) => handlePointerEnter(e, 'shirt')}
                             onPointerLeave={handlePointerLeave}
-                        />
+                        >
+                            <mesh>
+                                <capsuleGeometry args={[dims.armRadius, dims.armLength, 6, 12]} />
+                                <meshStandardMaterial
+                                    color={dims.isFemale ? skinColor : shirtColor}
+                                    roughness={dims.isFemale ? 0.65 : 0.75}
+                                    envMapIntensity={0.3}
+                                    emissive={emissive('shirt')}
+                                    emissiveIntensity={emissiveInt('shirt')}
+                                />
+                            </mesh>
+                            {/* Hand */}
+                            <mesh position={[0, -0.45, 0]}>
+                                <sphereGeometry args={[0.1, 16, 16]} />
+                                <meshPhysicalMaterial {...skinMatProps} />
+                            </mesh>
+                        </group>
                     </group>
 
                     {/* ── Right arm – pivot at shoulder ── */}
-                    <group ref={rightArmRef} position={[armSpacing, 1.7, 0]}>
-                        <BodyBlock
-                            args={armSize}
-                            position={[0, -0.6, 0]}
-                            color={config.gender === 'female' ? skinColor : shirtColor}
-                            roughness={config.gender === 'female' ? 0.75 : 0.72}
-                            emissive={emissive('shirt')}
-                            emissiveIntensity={emissiveInt('shirt')}
+                    <group ref={rightArmRef} position={[dims.armSpacing, 1.3, 0]}>
+                        <group
+                            position={[0, -0.4, 0]}
                             onClick={(e) => handleClick(e, 'shirt')}
                             onPointerEnter={(e) => handlePointerEnter(e, 'shirt')}
                             onPointerLeave={handlePointerLeave}
-                        />
+                        >
+                            <mesh>
+                                <capsuleGeometry args={[dims.armRadius, dims.armLength, 6, 12]} />
+                                <meshStandardMaterial
+                                    color={dims.isFemale ? skinColor : shirtColor}
+                                    roughness={dims.isFemale ? 0.65 : 0.75}
+                                    envMapIntensity={0.3}
+                                    emissive={emissive('shirt')}
+                                    emissiveIntensity={emissiveInt('shirt')}
+                                />
+                            </mesh>
+                            {/* Hand */}
+                            <mesh position={[0, -0.45, 0]}>
+                                <sphereGeometry args={[0.1, 16, 16]} />
+                                <meshPhysicalMaterial {...skinMatProps} />
+                            </mesh>
+                        </group>
                     </group>
 
                     {/* ── Left leg + shoe ── */}
                     <group
-                        position={[-0.3, -0.1, 0]}
+                        position={[-0.22, 0.25, 0]}
                         onClick={(e) => handleClick(e, 'pants')}
                         onPointerEnter={(e) => handlePointerEnter(e, 'pants')}
                         onPointerLeave={handlePointerLeave}
                     >
-                        <BodyBlock
-                            args={legSize}
-                            position={[0, 0.6, 0]}
-                            color={pantsColor}
-                            roughness={0.75}
-                            emissive={emissive('pants')}
-                            emissiveIntensity={emissiveInt('pants')}
-                        />
-                        <BodyBlock
-                            args={SHOE_ARGS}
-                            position={[0, -0.1, 0.1]}
-                            color={shoeColor}
-                            roughness={0.45}
-                            metalness={0.1}
-                        />
+                        <mesh position={[0, 0, 0]}>
+                            <capsuleGeometry args={[dims.legRadius, dims.legLength, 6, 12]} />
+                            <meshStandardMaterial
+                                color={pantsColor}
+                                roughness={0.75}
+                                envMapIntensity={0.3}
+                                emissive={emissive('pants')}
+                                emissiveIntensity={emissiveInt('pants')}
+                            />
+                        </mesh>
+                        {/* Shoe */}
+                        <mesh position={[0, -0.42, 0.06]} scale={[1.1, 0.55, 1.3]}>
+                            <sphereGeometry args={[0.18, 16, 16]} />
+                            <meshPhysicalMaterial
+                                color={shoeColor}
+                                roughness={0.35}
+                                metalness={0.05}
+                                clearcoat={0.5}
+                                clearcoatRoughness={0.2}
+                            />
+                        </mesh>
                     </group>
 
                     {/* ── Right leg + shoe ── */}
                     <group
-                        position={[0.3, -0.1, 0]}
+                        position={[0.22, 0.25, 0]}
                         onClick={(e) => handleClick(e, 'pants')}
                         onPointerEnter={(e) => handlePointerEnter(e, 'pants')}
                         onPointerLeave={handlePointerLeave}
                     >
-                        <BodyBlock
-                            args={legSize}
-                            position={[0, 0.6, 0]}
-                            color={pantsColor}
-                            roughness={0.75}
-                            emissive={emissive('pants')}
-                            emissiveIntensity={emissiveInt('pants')}
-                        />
-                        <BodyBlock
-                            args={SHOE_ARGS}
-                            position={[0, -0.1, 0.1]}
-                            color={shoeColor}
-                            roughness={0.45}
-                            metalness={0.1}
-                        />
+                        <mesh position={[0, 0, 0]}>
+                            <capsuleGeometry args={[dims.legRadius, dims.legLength, 6, 12]} />
+                            <meshStandardMaterial
+                                color={pantsColor}
+                                roughness={0.75}
+                                envMapIntensity={0.3}
+                                emissive={emissive('pants')}
+                                emissiveIntensity={emissiveInt('pants')}
+                            />
+                        </mesh>
+                        {/* Shoe */}
+                        <mesh position={[0, -0.42, 0.06]} scale={[1.1, 0.55, 1.3]}>
+                            <sphereGeometry args={[0.18, 16, 16]} />
+                            <meshPhysicalMaterial
+                                color={shoeColor}
+                                roughness={0.35}
+                                metalness={0.05}
+                                clearcoat={0.5}
+                                clearcoatRoughness={0.2}
+                            />
+                        </mesh>
                     </group>
                 </group>
             )}
@@ -525,13 +680,25 @@ const AvatarModel = memo<{
     );
 });
 
+// --- Background gradient sphere ---
+
+const BackgroundSphere = memo(() => (
+    <mesh scale={[-20, 20, 20]}>
+        <sphereGeometry args={[1, 16, 16]} />
+        <meshBasicMaterial side={THREE.BackSide} color="#1a1a2e">
+            {/* Gradient via vertex colors would be ideal but a solid dark color
+                blending with hemisphereLight gives a clean result */}
+        </meshBasicMaterial>
+    </mesh>
+));
+
 // --- Main Component ---
 
 export const AvatarViewer: React.FC<AvatarViewerProps> = ({
     config, interactive = true, onPartClick, variant = 'full',
 }) => {
     const cameraPos = useMemo<[number, number, number]>(
-        () => (variant === 'head' ? [0, 0.7, 1.9] : [0, 0.5, 7.5]),
+        () => (variant === 'head' ? [0, 0.5, 1.9] : [0, 0.5, 5.5]),
         [variant]
     );
 
@@ -545,11 +712,11 @@ export const AvatarViewer: React.FC<AvatarViewerProps> = ({
                     toneMappingExposure: 1.1,
                     outputColorSpace: THREE.SRGBColorSpace,
                 }}
-                dpr={[1, 2]}
+                dpr={[1, 1.5]}
                 camera={{ position: cameraPos, fov: 45 }}
             >
                 {/* Soft fill – prevents pitch-black shadows */}
-                <ambientLight intensity={0.25} />
+                <ambientLight intensity={0.3} />
                 {/* Sky-to-ground gradient */}
                 <hemisphereLight color="#b1e1ff" groundColor="#232136" intensity={0.55} />
                 {/* Key light with tight frustum for clean avatar shadows */}
@@ -569,12 +736,17 @@ export const AvatarViewer: React.FC<AvatarViewerProps> = ({
                 />
                 {/* Cool blue rim light for depth separation */}
                 <directionalLight position={[-3, 2, -4]} intensity={0.4} color="#6080ff" />
+                {/* Warm fill from below for stage lighting feel */}
+                <pointLight position={[0, -1, 2]} intensity={0.15} color="#ffd4a0" />
 
                 <Suspense fallback={null}>
                     <ThreeErrorBoundary>
                         {/* IBL: city RGBE panorama drives PBR reflections */}
                         <Environment preset="city" />
                     </ThreeErrorBoundary>
+
+                    {/* Background gradient (only full variant) */}
+                    {variant === 'full' && <BackgroundSphere />}
 
                     {/* Float gives overall gentle body bob and micro-rotation */}
                     <Float speed={1.5} rotationIntensity={0.08} floatIntensity={0.15}>
@@ -586,14 +758,34 @@ export const AvatarViewer: React.FC<AvatarViewerProps> = ({
                         />
                     </Float>
 
+                    {/* Platform disc */}
+                    {variant === 'full' && (
+                        <mesh position={[0, -1.18, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+                            <circleGeometry args={[1.2, 32]} />
+                            <meshStandardMaterial color="#2d2b55" transparent opacity={0.5} />
+                        </mesh>
+                    )}
+
                     <ContactShadows
                         position={[0, -1.17, 0]}
-                        opacity={0.5}
-                        scale={8}
+                        opacity={0.45}
+                        scale={6}
                         blur={2.5}
                         far={5}
                         color="#000020"
                     />
+
+                    {/* Subtle sparkles (only full variant) */}
+                    {variant === 'full' && (
+                        <Sparkles
+                            count={15}
+                            scale={[4, 5, 4]}
+                            size={2}
+                            speed={0.3}
+                            opacity={0.3}
+                            color="#6366f1"
+                        />
+                    )}
                 </Suspense>
 
                 <OrbitControls
@@ -601,7 +793,7 @@ export const AvatarViewer: React.FC<AvatarViewerProps> = ({
                     enableZoom={variant === 'full'}
                     minPolarAngle={Math.PI / 3}
                     maxPolarAngle={Math.PI / 1.5}
-                    target={variant === 'head' ? [0, 0.7, 0] : [0, 0.1, 0]}
+                    target={variant === 'head' ? [0, 0.5, 0] : [0, 0.1, 0]}
                 />
             </Canvas>
         </div>

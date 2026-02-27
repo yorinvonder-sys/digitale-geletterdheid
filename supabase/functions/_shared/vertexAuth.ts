@@ -63,6 +63,14 @@ export function getVertexUrl(model: string): string {
 }
 
 /**
+ * Build the Vertex AI streamGenerateContent URL for a given model.
+ */
+export function getVertexStreamUrl(model: string): string {
+    const sa = getServiceAccountKey();
+    return `https://${VERTEX_LOCATION}-aiplatform.googleapis.com/v1/projects/${sa.project_id}/locations/${VERTEX_LOCATION}/publishers/google/models/${model}:streamGenerateContent?alt=sse`;
+}
+
+/**
  * Get a valid OAuth2 access token for Vertex AI.
  * Caches the token and refreshes 5 minutes before expiry.
  */

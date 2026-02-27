@@ -160,7 +160,8 @@ export const AssessmentEngine: React.FC<Props> = ({ tasks, config, onComplete, o
 
     if (view === 'intro') {
         return (
-            <div className="w-full h-full bg-slate-900 flex items-center justify-center p-6 text-white text-center">
+            <div className="w-full h-full bg-slate-900 overflow-y-auto text-white text-center">
+            <div className="min-h-full flex items-center justify-center p-6">
                 <div className="max-w-md w-full bg-slate-800 rounded-3xl p-8 shadow-2xl border-4 border-slate-700 animate-in zoom-in-95">
                     <div className={`w-20 h-20 rounded-2xl mx-auto mb-6 flex items-center justify-center text-4xl shadow-lg transform rotate-3 ${config?.themeColor ? `bg-${config.themeColor}-500 text-white` : 'bg-lab-primary text-white'}`}>
                         {config?.introIcon || '🛠️'}
@@ -207,6 +208,7 @@ export const AssessmentEngine: React.FC<Props> = ({ tasks, config, onComplete, o
                     </button>
                 </div>
             </div>
+            </div>
         );
     }
 
@@ -226,7 +228,8 @@ export const AssessmentEngine: React.FC<Props> = ({ tasks, config, onComplete, o
             : false;
 
         return (
-            <div className="w-full h-full bg-slate-900 flex items-center justify-center p-6 text-white text-center">
+            <div className="w-full h-full bg-slate-900 overflow-y-auto text-white text-center">
+            <div className="min-h-full flex items-center justify-center p-6">
                 <div className="max-w-md w-full bg-slate-800 rounded-3xl p-8 shadow-2xl border-4 border-slate-700 animate-in zoom-in-95">
                     <div className={`w-24 h-24 rounded-full mx-auto mb-6 flex items-center justify-center border-4 ${passed ? 'bg-emerald-500/20 border-emerald-500 text-emerald-400' : 'bg-red-500/20 border-red-500 text-red-400'}`}>
                         {passed ? <Trophy size={48} /> : <XCircle size={48} />}
@@ -326,6 +329,7 @@ export const AssessmentEngine: React.FC<Props> = ({ tasks, config, onComplete, o
                         )}
                     </div>
                 </div>
+            </div>
             </div>
         );
     }

@@ -540,7 +540,7 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
     // INTRO SCREEN
     if (phase === 'intro') {
         return (
-            <div className="min-h-screen bg-slate-900 text-white flex flex-col">
+            <div className="min-h-screen overflow-y-auto bg-slate-900 text-white flex flex-col">
                 {/* Header - matches other missions */}
                 <header className="bg-slate-800 border-b border-slate-700 px-6 py-4 flex items-center justify-between">
                     <button
@@ -616,7 +616,7 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
         const passed = aiResponse && aiResponse.score >= effectiveMinScore;
 
         return (
-            <div className="min-h-screen bg-slate-900 text-white flex flex-col">
+            <div className="min-h-screen overflow-y-auto bg-slate-900 text-white flex flex-col">
                 {/* Header - consistent with other missions */}
                 <header className="bg-slate-800 border-b border-slate-700 px-6 py-4 sticky top-0 z-10">
                     <div className="max-w-4xl mx-auto flex items-center justify-between">
@@ -927,7 +927,7 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
         const passed = percentage >= 60;
 
         return (
-            <div className="min-h-screen bg-slate-900 text-white p-4 md:p-8 flex items-center justify-center">
+            <div className="min-h-screen overflow-y-auto bg-slate-900 text-white p-4 md:p-8 flex items-center justify-center">
                 <div className="max-w-lg w-full text-center">
                     <div className={`w-28 h-28 rounded-full flex items-center justify-center mx-auto mb-8 ${passed
                         ? 'bg-emerald-500 shadow-2xl shadow-emerald-500/30'

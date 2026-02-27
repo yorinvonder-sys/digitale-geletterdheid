@@ -98,7 +98,7 @@ export const DatalekkenRampenplanMission: React.FC<Props> = ({ onBack, onComplet
 
     if (phase === 'intro') {
         return (
-            <div className="min-h-screen bg-gradient-to-b from-red-950 via-slate-950 to-slate-950 text-white p-4 pb-safe">
+            <div className="min-h-screen bg-gradient-to-b from-red-950 via-slate-950 to-slate-950 text-white overflow-y-auto p-4 pb-safe">
                 <button onClick={onBack} className="flex items-center gap-2 text-white/60 hover:text-white mb-6"><ArrowLeft size={18} /> <span className="text-sm font-bold">Terug</span></button>
                 <div className="max-w-lg mx-auto text-center space-y-6">
                     <div className="w-20 h-20 bg-red-500/20 backdrop-blur-md rounded-3xl flex items-center justify-center mx-auto border border-red-500/30 animate-pulse"><span className="text-4xl">🚨</span></div>
@@ -123,7 +123,7 @@ export const DatalekkenRampenplanMission: React.FC<Props> = ({ onBack, onComplet
     if (phase === 'scenarios') {
         const scenario = SCENARIOS[currentScenario];
         return (
-            <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-950 text-white p-4 pb-safe">
+            <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-950 text-white overflow-y-auto p-4 pb-safe">
                 <div className="max-w-lg mx-auto">
                     <div className="flex items-center justify-between mb-6">
                         <button onClick={() => currentScenario === 0 ? setPhase('intro') : setCurrentScenario(c => c - 1)} className="text-white/40 hover:text-white"><ArrowLeft size={18} /></button>
@@ -179,7 +179,8 @@ export const DatalekkenRampenplanMission: React.FC<Props> = ({ onBack, onComplet
 
     const badge = getBadge();
     return (
-        <div className="min-h-screen bg-gradient-to-b from-slate-950 to-emerald-950 text-white p-4 pb-safe flex items-center justify-center">
+        <div className="min-h-screen bg-gradient-to-b from-slate-950 to-emerald-950 text-white overflow-y-auto">
+            <div className="min-h-full flex items-center justify-center p-4 pb-safe">
             <div className="max-w-sm w-full text-center space-y-6">
                 <div className={`w-24 h-24 mx-auto bg-gradient-to-br ${badge.color} rounded-3xl flex items-center justify-center shadow-2xl`}><span className="text-5xl">{badge.emoji}</span></div>
                 <h1 className="text-2xl font-black">{badge.title}</h1>
@@ -196,6 +197,7 @@ export const DatalekkenRampenplanMission: React.FC<Props> = ({ onBack, onComplet
                     <p className="text-xs text-white/60">4. VOORKOM met 2FA, training en een vast aanspreekpunt</p>
                 </div>
                 <button onClick={() => onComplete(true)} className="w-full py-4 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-2xl font-black text-lg hover:scale-105 transition-transform active:scale-95 shadow-xl flex items-center justify-center gap-2"><Trophy size={20} /> Missie Voltooid!</button>
+            </div>
             </div>
         </div>
     );

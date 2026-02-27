@@ -611,7 +611,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
 
 
     return (
-        <div className="bg-slate-900 h-screen flex flex-col text-white font-sans relative overflow-hidden">
+        <div className="bg-slate-900 h-dvh flex flex-col text-white font-sans relative overflow-hidden">
 
             {showConclusion && (
                 <MissionConclusion

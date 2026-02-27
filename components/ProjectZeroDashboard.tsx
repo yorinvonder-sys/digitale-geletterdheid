@@ -1022,25 +1022,25 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
 
                     {/* Dynamisch leerdoelenblok — op basis van curriculum config */}
                     {currentPeriodConfig && (
-                        <div className={`mb-8 bg-white rounded-3xl border ${periodTheme.border} shadow-sm p-6 md:p-7`}>
-                            {/* Header */}
-                            <div className="flex items-center gap-3 mb-4">
-                                <div className={`w-10 h-10 rounded-xl ${periodTheme.bg} ${periodTheme.text} flex items-center justify-center shrink-0`}>
-                                    <CheckCircle2 size={20} />
+                        <div className={`mb-6 bg-white rounded-3xl border ${periodTheme.border} shadow-sm p-4 md:p-5`}>
+                            {/* Header + beschrijving inline */}
+                            <div className="flex items-start gap-3 mb-3">
+                                <div className={`w-8 h-8 rounded-xl ${periodTheme.bg} ${periodTheme.text} flex items-center justify-center shrink-0 mt-0.5`}>
+                                    <CheckCircle2 size={16} />
                                 </div>
-                                <h3 className={`text-sm font-black uppercase tracking-widest ${periodTheme.text}`}>
-                                    Leerdoelen {periodNaming} {activeWeek} (SLO)
-                                </h3>
+                                <div className="min-w-0">
+                                    <h3 className={`text-xs font-black uppercase tracking-widest ${periodTheme.text} mb-1`}>
+                                        Leerdoelen {periodNaming} {activeWeek} (SLO)
+                                    </h3>
+                                    <p className="text-slate-500 text-xs leading-snug line-clamp-2">
+                                        {periodLeerdoel
+                                            ? (stats?.vsoProfile && periodLeerdoel.descriptionVso
+                                                ? periodLeerdoel.descriptionVso
+                                                : periodLeerdoel.description)
+                                            : currentPeriodConfig.subtitle}
+                                    </p>
+                                </div>
                             </div>
-
-                            {/* Leerdoel beschrijving */}
-                            <p className="text-slate-700 text-sm font-medium leading-relaxed">
-                                {periodLeerdoel
-                                    ? (stats?.vsoProfile && periodLeerdoel.descriptionVso
-                                        ? periodLeerdoel.descriptionVso
-                                        : periodLeerdoel.description)
-                                    : currentPeriodConfig.subtitle}
-                            </p>
 
                             {/* Lesflow — stappen visueel weergeven */}
                             {periodLeerdoel?.lesduur && (() => {
@@ -1050,17 +1050,17 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                 const flowPart = raw.replace(/^[^.]+\.\s*/, '').replace(/^[^:]+:\s*/, '');
                                 const steps = flowPart.split('→').map(s => s.trim()).filter(Boolean);
                                 return (
-                                    <div className="mt-4 rounded-2xl bg-slate-50 border border-slate-100 p-4">
+                                    <div className="rounded-2xl bg-slate-50 border border-slate-100 p-3">
                                         {duur && (
-                                            <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">
-                                                Lesduur: {duur}
+                                            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">
+                                                {duur}
                                             </p>
                                         )}
                                         <div className="flex flex-wrap items-center gap-1.5">
                                             {steps.map((step, i) => (
                                                 <div key={i} className="flex items-center gap-1.5">
-                                                    <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold ${periodTheme.bg} ${periodTheme.text} border ${periodTheme.border}`}>
-                                                        <span className={`w-5 h-5 rounded-full bg-white/80 flex items-center justify-center text-[10px] font-bold ${periodTheme.text}`}>
+                                                    <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${periodTheme.bg} ${periodTheme.text} border ${periodTheme.border}`}>
+                                                        <span className={`w-4 h-4 rounded-full bg-white/80 flex items-center justify-center text-[9px] font-bold ${periodTheme.text}`}>
                                                             {i + 1}
                                                         </span>
                                                         {step}
@@ -1075,39 +1075,36 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                 );
                             })()}
 
-                            {/* SLO kerndoelen badges */}
-                            <div className="mt-4 flex flex-wrap gap-2">
-                                {(stats?.vsoProfile && currentPeriodConfig.sloFocusVso
-                                    ? currentPeriodConfig.sloFocusVso
-                                    : currentPeriodConfig.sloFocus
-                                ).map(code => {
-                                    const kerndoel = SLO_KERNDOELEN[code];
-                                    if (!kerndoel) return null;
-                                    return (
-                                        <span
-                                            key={code}
-                                            className={`px-2 py-1 rounded-lg text-[10px] font-bold border ${getKerndoelBadgeClasses(code)}`}
-                                        >
-                                            {code} {kerndoel.label}
-                                        </span>
-                                    );
-                                })}
-                            </div>
-
-                            {/* Succescriterium */}
-                            {periodLeerdoel?.succescriterium && (
-                                <div className="mt-4 rounded-xl bg-emerald-50 border border-emerald-100 px-4 py-3 flex items-start gap-2">
-                                    <span className="text-emerald-500 mt-0.5 shrink-0">
-                                        <CheckCircle2 size={14} />
-                                    </span>
-                                    <p className="text-emerald-700 text-xs font-semibold leading-relaxed">
-                                        <span className="font-black uppercase tracking-wider">Succescriterium: </span>
-                                        {(stats?.vsoProfile === 'dagbesteding' && periodLeerdoel.succescriDagbesteding)
-                                            ? periodLeerdoel.succescriDagbesteding
-                                            : periodLeerdoel.succescriterium}
-                                    </p>
+                            {/* SLO badges + Succescriterium — één compacte rij */}
+                            <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2">
+                                <div className="flex flex-wrap gap-1.5">
+                                    {(stats?.vsoProfile && currentPeriodConfig.sloFocusVso
+                                        ? currentPeriodConfig.sloFocusVso
+                                        : currentPeriodConfig.sloFocus
+                                    ).map(code => {
+                                        const kerndoel = SLO_KERNDOELEN[code];
+                                        if (!kerndoel) return null;
+                                        return (
+                                            <span
+                                                key={code}
+                                                className={`px-1.5 py-0.5 rounded-md text-[9px] font-bold border ${getKerndoelBadgeClasses(code)}`}
+                                            >
+                                                {code}
+                                            </span>
+                                        );
+                                    })}
                                 </div>
-                            )}
+                                {periodLeerdoel?.succescriterium && (
+                                    <div className="flex items-start gap-1.5 min-w-0">
+                                        <CheckCircle2 size={11} className="text-emerald-500 shrink-0 mt-0.5" />
+                                        <p className="text-emerald-700 text-[10px] font-semibold leading-snug line-clamp-2">
+                                            {(stats?.vsoProfile === 'dagbesteding' && periodLeerdoel.succescriDagbesteding)
+                                                ? periodLeerdoel.succescriDagbesteding
+                                                : periodLeerdoel.succescriterium}
+                                        </p>
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     )}
 
@@ -1423,7 +1420,7 @@ const MissionCard = React.memo(({ mission, onSelectModule, onInfoClick, isComple
                 </h3>
 
                 {/* Show description based on size */}
-                <p className={`text-slate-500 font-medium leading-relaxed ${isCompact ? 'text-xs line-clamp-2 mb-2' : 'text-sm mb-3'}`}>
+                <p className={`text-slate-500 font-medium leading-relaxed ${isCompact ? 'text-xs line-clamp-2 mb-2' : 'text-sm mb-3 line-clamp-2'}`}>
                     {mission.description}
                 </p>
 

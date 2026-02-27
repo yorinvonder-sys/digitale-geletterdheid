@@ -365,7 +365,8 @@ export const DataDetectiveMission: React.FC<Props> = ({ onBack, onComplete, vsoP
     // Intro screen
     if (showIntro) {
         return (
-            <div className="min-h-screen bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-900 flex items-center justify-center p-4">
+            <div className="min-h-screen bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-900 overflow-y-auto">
+            <div className="min-h-full flex items-center justify-center p-4">
                 <div className="max-w-lg w-full text-center space-y-8">
                     <div className="relative inline-block">
                         <div className="absolute inset-0 bg-cyan-500/30 blur-3xl rounded-full animate-pulse" />
@@ -408,13 +409,15 @@ export const DataDetectiveMission: React.FC<Props> = ({ onBack, onComplete, vsoP
                     </button>
                 </div>
             </div>
+            </div>
         );
     }
 
     // Level complete screen
     if (showLevelComplete) {
         return (
-            <div className="min-h-screen bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-900 flex items-center justify-center p-4">
+            <div className="min-h-screen bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-900 overflow-y-auto">
+            <div className="min-h-full flex items-center justify-center p-4">
                 <div className="max-w-lg w-full text-center space-y-8">
                     <div className="relative inline-block">
                         <div className="absolute inset-0 bg-emerald-500/30 blur-3xl rounded-full animate-pulse" />
@@ -455,13 +458,15 @@ export const DataDetectiveMission: React.FC<Props> = ({ onBack, onComplete, vsoP
                     </button>
                 </div>
             </div>
+            </div>
         );
     }
 
     // Mission complete screen
     if (showMissionComplete) {
         return (
-            <div className="min-h-screen bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-900 flex items-center justify-center p-4">
+            <div className="min-h-screen bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-900 overflow-y-auto">
+            <div className="min-h-full flex items-center justify-center p-4">
                 <div className="max-w-lg w-full text-center space-y-8">
                     <div className="relative inline-block">
                         <div className="absolute inset-0 bg-yellow-500/30 blur-3xl rounded-full animate-pulse" />
@@ -520,6 +525,7 @@ export const DataDetectiveMission: React.FC<Props> = ({ onBack, onComplete, vsoP
                         Terug naar Mission Control 🚀
                     </button>
                 </div>
+            </div>
             </div>
         );
     }
