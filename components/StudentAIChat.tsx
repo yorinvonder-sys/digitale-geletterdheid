@@ -157,7 +157,7 @@ export const StudentAIChat: React.FC<StudentAIChatProps> = ({ userIdentifier, co
             {!isVisible && (
                 <button
                     onClick={handleOpen}
-                    className="fixed bottom-6 right-6 p-4 min-w-[56px] min-h-[56px] bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-full shadow-lg hover:scale-105 transition-transform z-50 flex items-center justify-center gap-2"
+                    className="fixed bottom-20 sm:bottom-6 right-4 sm:right-6 p-4 min-w-[56px] min-h-[56px] bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-full shadow-lg hover:scale-105 transition-transform z-[70] flex items-center justify-center gap-2"
                     title="Vraag de AI-buddy om hulp"
                 >
                     <Bot size={28} />
@@ -170,7 +170,7 @@ export const StudentAIChat: React.FC<StudentAIChatProps> = ({ userIdentifier, co
 
             {/* Chat Window */}
             {isVisible && (
-                <div className="fixed bottom-6 right-6 w-[90vw] max-w-[384px] h-[70vh] max-h-[500px] bg-white rounded-2xl shadow-2xl flex flex-col z-50 border border-slate-200 overflow-hidden animate-in fade-in slide-in-from-bottom-10 duration-300">
+                <div className="fixed bottom-20 sm:bottom-6 right-2 sm:right-6 w-[94vw] sm:w-[90vw] max-w-[384px] h-[60vh] sm:h-[70vh] max-h-[500px] bg-white rounded-2xl shadow-2xl flex flex-col z-[70] border border-slate-200 overflow-hidden animate-in fade-in slide-in-from-bottom-10 duration-300">
                     {/* Header */}
                     <div className={`p-4 ${isLocked ? 'bg-red-50' : 'bg-gradient-to-r from-emerald-500 to-teal-500'} flex items-center justify-between`}>
                         <div className="flex items-center gap-2">

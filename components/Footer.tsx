@@ -29,10 +29,10 @@ export const Footer: React.FC<FooterProps> = ({ onAccountDeleted, schoolId }) =>
                     </div>
 
                     <div className="flex items-center gap-4">
-                        <a href="/ict/privacy/policy" className="hidden md:inline text-slate-400 hover:text-slate-600 text-[10px] uppercase tracking-wider transition-colors">Privacy</a>
-                        <a href="/ict/privacy/cookies" className="hidden md:inline text-slate-400 hover:text-slate-600 text-[10px] uppercase tracking-wider transition-colors">Cookies</a>
-                        <a href="/ict/privacy/ai" className="hidden md:inline text-slate-400 hover:text-slate-600 text-[10px] uppercase tracking-wider transition-colors">AI Act</a>
-                        <div className="hidden md:block w-px h-3 bg-slate-200" />
+                        <a href="/ict/privacy/policy" className="hidden sm:inline text-slate-400 hover:text-slate-600 text-[10px] uppercase tracking-wider transition-colors">Privacy</a>
+                        <a href="/ict/privacy/cookies" className="hidden sm:inline text-slate-400 hover:text-slate-600 text-[10px] uppercase tracking-wider transition-colors">Cookies</a>
+                        <a href="/ict/privacy/ai" className="hidden sm:inline text-slate-400 hover:text-slate-600 text-[10px] uppercase tracking-wider transition-colors">AI Act</a>
+                        <div className="hidden sm:block w-px h-3 bg-slate-200" />
                         <button
                             onClick={() => {
                                 if (window.confirm('Wil je de app volledig verversen? Dit lost vaak problemen op met updates.')) {

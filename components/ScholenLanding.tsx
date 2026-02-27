@@ -36,7 +36,7 @@ function DeferredSection({ children, minHeight }: { children: React.ReactNode; m
         if (!el) return;
         const io = new IntersectionObserver(
             ([e]) => { if (e.isIntersecting) setVisible(true); },
-            { rootMargin: '200px', threshold: 0 }
+            { rootMargin: '600px', threshold: 0 }
         );
         io.observe(el);
         return () => io.disconnect();
@@ -530,10 +530,10 @@ export const ScholenLanding: React.FC = () => {
                 </section>
 
                 {/* Pain Points — problem statement before solution */}
-                <section id={SECTION_IDS.painPoints} className="py-14 md:py-20 lg:py-28 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_500px]" aria-label="De uitdaging">
+                <section id={SECTION_IDS.painPoints} className="py-14 md:py-20 lg:py-20 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_400px]" aria-label="De uitdaging">
                     <SectionErrorBoundary>
-                        <DeferredSection minHeight="min-h-[500px]">
-                            <Suspense fallback={<div className="min-h-[500px]" aria-hidden="true" />}>
+                        <DeferredSection minHeight="min-h-[300px]">
+                            <Suspense fallback={<div className="min-h-[300px]" aria-hidden="true" />}>
                                 <AnimateOnScroll>
                                     <ScholenLandingPainPoints />
                                 </AnimateOnScroll>
@@ -543,10 +543,10 @@ export const ScholenLanding: React.FC = () => {
                 </section>
 
                 {/* Features */}
-                <section id={SECTION_IDS.features} className="py-14 md:py-20 lg:py-28 px-6 bg-slate-50 border-y border-slate-100 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_600px]">
+                <section id={SECTION_IDS.features} className="py-14 md:py-20 lg:py-20 px-6 bg-slate-50 border-y border-slate-100 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_500px]">
                     <SectionErrorBoundary>
-                        <DeferredSection minHeight="min-h-[600px]">
-                            <Suspense fallback={<div className="min-h-[600px]" aria-hidden="true" />}>
+                        <DeferredSection minHeight="min-h-[400px]">
+                            <Suspense fallback={<div className="min-h-[400px]" aria-hidden="true" />}>
                                 <AnimateOnScroll>
                                     <ScholenLandingFeatures />
                                 </AnimateOnScroll>
@@ -556,10 +556,10 @@ export const ScholenLanding: React.FC = () => {
                 </section>
 
                 {/* Customization USP — key differentiator */}
-                <section id={SECTION_IDS.customization} className="py-14 md:py-20 lg:py-28 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_600px]" aria-label="Aanpasbaar aan jouw school">
+                <section id={SECTION_IDS.customization} className="py-14 md:py-20 lg:py-20 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_500px]" aria-label="Aanpasbaar aan jouw school">
                     <SectionErrorBoundary>
-                        <DeferredSection minHeight="min-h-[600px]">
-                            <Suspense fallback={<div className="min-h-[600px]" aria-hidden="true" />}>
+                        <DeferredSection minHeight="min-h-[400px]">
+                            <Suspense fallback={<div className="min-h-[400px]" aria-hidden="true" />}>
                                 <AnimateOnScroll>
                                     <ScholenLandingCustomization />
                                 </AnimateOnScroll>
@@ -569,7 +569,7 @@ export const ScholenLanding: React.FC = () => {
                 </section>
 
                 {/* How it works - 3-step */}
-                <section className="py-14 md:py-20 lg:py-28 px-6 bg-slate-50 border-y border-slate-100 [content-visibility:auto] [contain-intrinsic-size:auto_400px]" aria-label="Hoe het werkt">
+                <section className="py-14 md:py-20 lg:py-20 px-6 bg-slate-50 border-y border-slate-100 [content-visibility:auto] [contain-intrinsic-size:auto_400px]" aria-label="Hoe het werkt">
                     <DeferredSection minHeight="min-h-[400px]">
                         <AnimateOnScroll>
                             <div className="max-w-5xl mx-auto">
@@ -629,9 +629,9 @@ export const ScholenLanding: React.FC = () => {
                 </section>
 
                 {/* Game Demo — interactive mission preview */}
-                <section className="py-14 md:py-20 lg:py-28 px-6 bg-slate-50 border-y border-slate-100 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_700px]" aria-label="Game Programmeur demo">
-                    <DeferredSection minHeight="min-h-[700px]">
-                        <Suspense fallback={<div className="min-h-[700px]" aria-hidden="true" />}>
+                <section className="py-14 md:py-20 lg:py-20 px-6 bg-slate-50 border-y border-slate-100 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_500px]" aria-label="Game Programmeur demo">
+                    <DeferredSection minHeight="min-h-[400px]">
+                        <Suspense fallback={<div className="min-h-[400px]" aria-hidden="true" />}>
                             <AnimateOnScroll>
                                 <ScholenLandingGameDemo />
                             </AnimateOnScroll>
@@ -640,7 +640,7 @@ export const ScholenLanding: React.FC = () => {
                 </section>
 
                 {/* Platform preview — NOT deferred: contains the first visible image (LCP) */}
-                <section id={SECTION_IDS.platform} className="py-14 md:py-20 lg:py-28 px-6 border-b border-slate-100 scroll-mt-16" aria-label="Platform preview">
+                <section id={SECTION_IDS.platform} className="py-14 md:py-20 lg:py-20 px-6 border-b border-slate-100 scroll-mt-16" aria-label="Platform preview">
                     <SectionErrorBoundary>
                         <Suspense fallback={<div className="min-h-[700px]" aria-hidden="true" />}>
                             <ScholenLandingPlatformPreview />
@@ -649,10 +649,10 @@ export const ScholenLanding: React.FC = () => {
                 </section>
 
                 {/* SLO Kerndoelen */}
-                <section id={SECTION_IDS.slo} className="py-14 md:py-20 lg:py-28 px-6 bg-slate-50 border-y border-slate-100 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_500px]">
+                <section id={SECTION_IDS.slo} className="py-14 md:py-20 lg:py-20 px-6 bg-slate-50 border-y border-slate-100 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_400px]">
                     <SectionErrorBoundary>
-                        <DeferredSection minHeight="min-h-[500px]">
-                            <Suspense fallback={<div className="min-h-[500px]" aria-hidden="true" />}>
+                        <DeferredSection minHeight="min-h-[300px]">
+                            <Suspense fallback={<div className="min-h-[300px]" aria-hidden="true" />}>
                                 <AnimateOnScroll>
                                     <ScholenLandingSlo />
                                 </AnimateOnScroll>
@@ -662,10 +662,10 @@ export const ScholenLanding: React.FC = () => {
                 </section>
 
                 {/* FAQ */}
-                <section id={SECTION_IDS.faq} className="py-14 md:py-20 lg:py-28 px-6 bg-slate-50 border-y border-slate-100 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_600px]">
+                <section id={SECTION_IDS.faq} className="py-14 md:py-20 lg:py-20 px-6 bg-slate-50 border-y border-slate-100 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_400px]">
                     <SectionErrorBoundary>
-                        <DeferredSection minHeight="min-h-[600px]">
-                            <Suspense fallback={<div className="min-h-[600px]" aria-hidden="true" />}>
+                        <DeferredSection minHeight="min-h-[300px]">
+                            <Suspense fallback={<div className="min-h-[300px]" aria-hidden="true" />}>
                                 <AnimateOnScroll>
                                     <ScholenLandingFaq scrollToContact={() => scrollTo(SECTION_IDS.contact)} />
                                 </AnimateOnScroll>
@@ -675,7 +675,7 @@ export const ScholenLanding: React.FC = () => {
                 </section>
 
                 {/* ICT Section */}
-                <section id={SECTION_IDS.ict} className="py-14 md:py-20 lg:py-28 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_400px]">
+                <section id={SECTION_IDS.ict} className="py-14 md:py-20 lg:py-20 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_300px]">
                     <AnimateOnScroll>
                         <div className="max-w-5xl mx-auto text-center">
                             <p className="text-indigo-600 font-semibold text-sm mb-3 tracking-wide">Technisch</p>
@@ -696,10 +696,10 @@ export const ScholenLanding: React.FC = () => {
                 </section>
 
                 {/* Expertise */}
-                <section className="py-20 md:py-24 px-6 [content-visibility:auto] [contain-intrinsic-size:auto_200px]" aria-label="Expertise">
+                <section className="py-14 md:py-20 px-6 [content-visibility:auto] [contain-intrinsic-size:auto_200px]" aria-label="Expertise">
                     <SectionErrorBoundary>
-                        <DeferredSection minHeight="min-h-[400px]">
-                            <Suspense fallback={<div className="min-h-[400px]" aria-hidden="true" />}>
+                        <DeferredSection minHeight="min-h-[200px]">
+                            <Suspense fallback={<div className="min-h-[200px]" aria-hidden="true" />}>
                                 <AnimateOnScroll>
                                     <ScholenLandingExpertise />
                                 </AnimateOnScroll>
@@ -709,10 +709,10 @@ export const ScholenLanding: React.FC = () => {
                 </section>
 
                 {/* Contact / Pricing */}
-                <section id={SECTION_IDS.contact} className="py-14 md:py-20 lg:py-28 px-6 bg-slate-900 text-white scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_700px]">
+                <section id={SECTION_IDS.contact} className="py-14 md:py-20 lg:py-20 px-6 bg-slate-900 text-white scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_500px]">
                     <SectionErrorBoundary>
-                        <DeferredSection minHeight="min-h-[700px]">
-                            <Suspense fallback={<div className="min-h-[700px]" aria-hidden="true" />}>
+                        <DeferredSection minHeight="min-h-[400px]">
+                            <Suspense fallback={<div className="min-h-[400px]" aria-hidden="true" />}>
                                 <ScholenLandingContact />
                             </Suspense>
                         </DeferredSection>
