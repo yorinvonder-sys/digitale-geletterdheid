@@ -31,8 +31,8 @@ BEGIN
 
   UPDATE public.users
   SET
-    stats       = v_merged,
-    last_active = now()
+    stats      = v_merged,
+    last_login = now()
   WHERE id = auth.uid();
 END;
 $$;
