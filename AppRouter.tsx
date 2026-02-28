@@ -131,14 +131,14 @@ function useAuthUser(options?: { enabled?: boolean; deferUntilIdle?: boolean }) 
                     setUser(u);
                     setLoading(false);
                 });
-                // Failsafe: als de auth-callback na 8s nog niet heeft gevuurd
+                // Failsafe: als de auth-callback na 4s nog niet heeft gevuurd
                 // (bijv. door een corrupt token in localStorage), stop met laden
                 // en val door naar de login-pagina.
                 authTimeoutId = setTimeout(() => {
                     if (isCancelled) return;
                     setUser(null);
                     setLoading(false);
-                }, 8_000);
+                }, 4_000);
             } catch {
                 if (!isCancelled) setLoading(false);
             }

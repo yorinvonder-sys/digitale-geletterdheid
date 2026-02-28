@@ -335,11 +335,21 @@ export const subscribeToAuthChanges = (callback: (user: ParentUser | null) => vo
 
     supabase.auth.getSession().then(async ({ data: { session } }) => {
         if (session?.user) {
-            const parentUser = await buildParentUser(session.user);
-            callback(parentUser);
+            try {
+                const parentUser = await buildParentUser(session.user);
+                callback(parentUser);
+            } catch (err) {
+                console.error('buildParentUser failed, falling back to null:', err);
+                callback(null);
+            }
         } else {
             callback(null);
         }
+    }).catch((err) => {
+        // Zonder deze catch blijft loading=true VOOR ALTIJD als getSession reject
+        // (bijv. AbortError, corrupt token, netwerk-timeout).
+        console.error('getSession() failed, treating as signed out:', err);
+        callback(null);
     });
 
 

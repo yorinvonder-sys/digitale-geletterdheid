@@ -229,12 +229,12 @@ export function AuthenticatedApp() {
                 });
             }
         });
-        // Failsafe: als de auth-callback na 8s niet heeft gevuurd
+        // Failsafe: als de auth-callback na 4s niet heeft gevuurd
         // (corrupt token), stop met laden zodat AppRouter kan ingrijpen.
         authTimeoutId = setTimeout(() => {
             setUser(null);
             setLoading(false);
-        }, 8_000);
+        }, 4_000);
         return () => {
             clearTimeout(authTimeoutId);
             unsubscribe();

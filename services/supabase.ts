@@ -11,6 +11,17 @@ if (!supabaseUrl || !supabaseAnonKey) {
     );
 }
 
+// Verwijder auth-tokens van ANDERE Supabase-projecten uit localStorage.
+// Gebruikers kunnen tokens van oude/ongebruikte projecten hebben die
+// conflicteren met de huidige auth-flow (AbortError, race conditions).
+try {
+    const projectId = new URL(supabaseUrl).hostname.split('.')[0];
+    const activeKey = `sb-${projectId}-auth-token`;
+    Object.keys(localStorage)
+        .filter((k) => /^sb-[a-z0-9_-]+-auth-token$/i.test(k) && k !== activeKey)
+        .forEach((k) => localStorage.removeItem(k));
+} catch { /* negeer als URL-parsing of localStorage faalt */ }
+
 export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
     auth: {
         persistSession: true,
