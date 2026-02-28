@@ -17,7 +17,9 @@ export type AnalyticsEvent =
     | 'offline_detected'
     | 'web_vital'
     | 'mission_start'
-    | 'mission_complete';
+    | 'mission_complete'
+    | 'hero_cta_click'
+    | 'cta_email_submit';
 
 const hasAnalyticsConsent = (): boolean => {
     if (typeof window === 'undefined') return false;

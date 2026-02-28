@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 const ScholenLanding = React.lazy(() => import('./components/ScholenLanding').then(m => ({ default: m.ScholenLanding })));
+const ScholenLandingV2 = React.lazy(() => import('./components/ScholenLandingV2').then(m => ({ default: m.ScholenLandingV2 })));
 const IctLandingPage = React.lazy(() => import('./components/scholen/IctLandingPage').then(m => ({ default: m.IctLandingPage })));
 const IctIntegraties = React.lazy(() => import('./components/scholen/ict/IctIntegraties').then(m => ({ default: m.IctIntegraties })));
 const IctPrivacy = React.lazy(() => import('./components/scholen/ict/IctPrivacy').then(m => ({ default: m.IctPrivacy })));
@@ -99,6 +100,15 @@ function PublicRoute() {
         return (
             <PublicPageShell>
                 <ScholenLanding />
+            </PublicPageShell>
+        );
+    }
+
+    // V2 landing page preview — ?v2 query param
+    if (urlParams.has('v2')) {
+        return (
+            <PublicPageShell>
+                <ScholenLandingV2 />
             </PublicPageShell>
         );
     }
