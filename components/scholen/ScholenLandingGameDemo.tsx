@@ -300,26 +300,60 @@ function RacingIllustration({ state }: { state: GameVisualState }) {
                 {state.effect1 ? '280' : '180'} km/h
             </text>
 
-            {/* Rain */}
+            {/* Weather overlay */}
             {state.effect2 && (
-                <g opacity="0.35">
-                    {Array.from({ length: 30 }, (_, i) => (
+                <g>
+                    {/* Dark overcast sky */}
+                    <rect width="480" height="320" fill="#1e293b" opacity="0.45" />
+
+                    {/* Storm clouds */}
+                    <ellipse cx="100" cy="30" rx="80" ry="28" fill="#334155" opacity="0.9" />
+                    <ellipse cx="150" cy="20" rx="60" ry="22" fill="#475569" opacity="0.8" />
+                    <ellipse cx="300" cy="35" rx="90" ry="30" fill="#334155" opacity="0.9" />
+                    <ellipse cx="360" cy="22" rx="70" ry="24" fill="#475569" opacity="0.8" />
+                    <ellipse cx="220" cy="28" rx="50" ry="18" fill="#3f5068" opacity="0.7" />
+
+                    {/* Rain drops — heavy, angled */}
+                    {Array.from({ length: 50 }, (_, i) => (
                         <line
                             key={`rain-${i}`}
-                            x1={20 + (i * 16) % 460}
+                            x1={0}
                             y1={0}
-                            x2={14 + (i * 16) % 460}
-                            y2={12}
-                            stroke="#93c5fd"
-                            strokeWidth="1.5"
+                            x2={-6}
+                            y2={14}
+                            stroke="#bfdbfe"
+                            strokeWidth={i % 4 === 0 ? 2 : 1.2}
                             strokeLinecap="round"
+                            opacity={0.55 + (i % 3) * 0.15}
+                            style={{ transform: `translate(${(i * 9.5) % 490}px, 0px)` }}
                         >
-                            <animate attributeName="y1" values={`${-10 - (i * 7) % 40};320`} dur={`${0.6 + (i % 5) * 0.1}s`} repeatCount="indefinite" />
-                            <animate attributeName="y2" values={`${2 - (i * 7) % 40};332`} dur={`${0.6 + (i % 5) * 0.1}s`} repeatCount="indefinite" />
+                            <animate
+                                attributeName="y1"
+                                values={`${-20 - (i * 6) % 60};320`}
+                                dur={`${0.45 + (i % 6) * 0.07}s`}
+                                repeatCount="indefinite"
+                            />
+                            <animate
+                                attributeName="y2"
+                                values={`${-6 - (i * 6) % 60};334`}
+                                dur={`${0.45 + (i % 6) * 0.07}s`}
+                                repeatCount="indefinite"
+                            />
                         </line>
                     ))}
-                    <ellipse cx="200" cy="200" rx="25" ry="6" fill="white" opacity="0.08" />
-                    <ellipse cx="300" cy="140" rx="20" ry="5" fill="white" opacity="0.06" />
+
+                    {/* Puddle splashes on road */}
+                    {[160, 220, 270, 310].map((x, i) => (
+                        <ellipse key={`splash-${i}`} cx={x} cy={260 + (i * 17) % 50} rx="6" ry="2" fill="#93c5fd" opacity="0.3">
+                            <animate attributeName="rx" values="2;8;2" dur={`${0.8 + i * 0.2}s`} repeatCount="indefinite" />
+                            <animate attributeName="opacity" values="0.5;0;0.5" dur={`${0.8 + i * 0.2}s`} repeatCount="indefinite" />
+                        </ellipse>
+                    ))}
+
+                    {/* Lightning flash (occasional) */}
+                    <rect width="480" height="320" fill="white" opacity="0">
+                        <animate attributeName="opacity" values="0;0;0;0;0;0;0;0.15;0;0.1;0;0;0;0;0;0;0;0;0;0" dur="4s" repeatCount="indefinite" />
+                    </rect>
                 </g>
             )}
 
