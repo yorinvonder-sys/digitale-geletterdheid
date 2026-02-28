@@ -348,6 +348,9 @@ export const subscribeToAuthChanges = (callback: (user: ParentUser | null) => vo
     }).catch((err) => {
         // Zonder deze catch blijft loading=true VOOR ALTIJD als getSession reject
         // (bijv. AbortError, corrupt token, netwerk-timeout).
+        // Forceer uitloggen zodat Supabase stopt met het auto-refreshen van het
+        // stale token (anders blijft de AbortError-loop doorgaan).
+        supabase.auth.signOut().catch(() => {});
         console.error('getSession() failed, treating as signed out:', err);
         callback(null);
     });
