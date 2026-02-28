@@ -5,7 +5,6 @@ import { supabase } from '../../services/supabase';
 import { StudentData } from '../../types';
 import { SLO_KERNDOELEN } from '../../config/sloKerndoelen';
 import { calculateStudentKerndoelStats, getMissionMeta, KERNDOEL_CODES } from '../../config/slo-kerndoelen-mapping';
-import { downloadCsv, sectionsToCsv } from '../../utils/csvExport';
 
 interface SLOClassOverviewProps {
     students: StudentData[];
@@ -66,12 +65,15 @@ export const SLOClassOverview: React.FC<SLOClassOverviewProps> = ({ students, sc
         return classStats;
     };
 
-    const exportToCsv = async () => {
+    const exportToExcel = async () => {
         setExportError(null);
         setExporting(true);
 
         try {
-            // Section: Kerndoelen definitions
+            const XLSX = await import('xlsx');
+            const workbook = XLSX.utils.book_new();
+
+            // Sheet: Kerndoelen definitions
             const kerndoelenData: any[] = [
                 ['Code', 'Domein', 'Label', 'Omschrijving']
             ];
@@ -79,8 +81,9 @@ export const SLOClassOverview: React.FC<SLOClassOverviewProps> = ({ students, sc
                 const kd = SLO_KERNDOELEN[code];
                 kerndoelenData.push([kd.code, kd.domein, kd.label, kd.omschrijving]);
             });
+            XLSX.utils.book_append_sheet(workbook, XLSX.utils.aoa_to_sheet(kerndoelenData), 'Kerndoelen');
 
-            // Section 1: Overview per class
+            // Sheet 1: Overview per class
             const overviewHeader = ['Klas', 'Aantal Leerlingen', ...KERNDOEL_CODES.map(code => `${code} ${SLO_KERNDOELEN[code].label}`)];
             const overviewData: any[] = [overviewHeader];
 
@@ -93,7 +96,9 @@ export const SLOClassOverview: React.FC<SLOClassOverviewProps> = ({ students, sc
                 ]);
             });
 
-            // Section 2: Detail per student
+            XLSX.utils.book_append_sheet(workbook, XLSX.utils.aoa_to_sheet(overviewData), 'Overzicht per Klas');
+
+            // Sheet 2: Detail per student
             const detailHeader = [
                 'Klas',
                 'Leerling',
@@ -121,7 +126,9 @@ export const SLOClassOverview: React.FC<SLOClassOverviewProps> = ({ students, sc
                 });
             });
 
-            // Section 3: Activities/events for growth analysis (last 90 days)
+            XLSX.utils.book_append_sheet(workbook, XLSX.utils.aoa_to_sheet(detailData), 'Detail per Leerling');
+
+            // Sheet 3: Activities/events for growth analysis (last 90 days)
             const cutoff = new Date();
             cutoff.setDate(cutoff.getDate() - 90);
             const cutoffISO = cutoff.toISOString();
@@ -156,7 +163,7 @@ export const SLOClassOverview: React.FC<SLOClassOverviewProps> = ({ students, sc
             ];
             const activitiesData: any[] = [activitiesHeader];
 
-            // Precompute totals per student for denominators in CSV export.
+            // Precompute totals per student for denominators in Excel.
             const totalsByUid = new Map<string, Record<string, number>>();
             const getTotalsForUid = (uid: string): Record<string, number> => {
                 const existing = totalsByUid.get(uid);
@@ -254,15 +261,11 @@ export const SLOClassOverview: React.FC<SLOClassOverviewProps> = ({ students, sc
                 ]);
             });
 
-            const csv = sectionsToCsv([
-                { title: 'Kerndoelen', rows: kerndoelenData },
-                { title: 'Overzicht per Klas', rows: overviewData },
-                { title: 'Detail per Leerling', rows: detailData },
-                { title: 'Activiteiten (90d)', rows: activitiesData },
-            ]);
+            XLSX.utils.book_append_sheet(workbook, XLSX.utils.aoa_to_sheet(activitiesData), 'Activiteiten (90d)');
 
+            // Download
             const date = new Date().toISOString().split('T')[0];
-            downloadCsv(csv, `SLO_Kerndoelen_${date}.csv`);
+            XLSX.writeFile(workbook, `SLO_Kerndoelen_${date}.xlsx`);
         } catch (e: any) {
             console.error('[SLO Export] Failed:', e);
             setExportError('Export mislukt. Controleer je verbinding en probeer opnieuw.');
@@ -289,19 +292,19 @@ export const SLOClassOverview: React.FC<SLOClassOverviewProps> = ({ students, sc
                         SLO Kerndoelen per Klas
                     </h2>
                     <p className="text-sm text-slate-500 mt-1">
-                        Inclusief CSV-export voor data-analyse (activiteiten: laatste 90 dagen).
+                        Inclusief export voor data-analyse (activiteiten: laatste 90 dagen).
                     </p>
                     {exportError && (
                         <p className="text-sm text-red-600 mt-2">{exportError}</p>
                     )}
                 </div>
                 <button
-                    onClick={exportToCsv}
+                    onClick={exportToExcel}
                     disabled={exporting}
                     className={`flex items-center gap-2 px-4 py-2 rounded-xl font-bold text-sm transition-colors shadow-lg ${exporting ? 'bg-emerald-400 text-white cursor-not-allowed' : 'bg-emerald-600 text-white hover:bg-emerald-700 shadow-emerald-500/20'}`}
                 >
                     {exporting ? <Loader2 size={16} className="animate-spin" /> : <Download size={16} />}
-                    {exporting ? 'Exporteren...' : 'Exporteer CSV'}
+                    {exporting ? 'Exporteren...' : 'Exporteer naar Excel'}
                 </button>
             </div>
 

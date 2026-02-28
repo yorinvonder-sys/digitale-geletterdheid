@@ -62,8 +62,8 @@ Drie modellen, elk voor een ander type taak. Gebruik de router hieronder als geh
 
 | # | Taak | Tijd | Status | Model + taak |
 |---|------|------|--------|-------------|
-| 1.1 | Security fix: systemInstruction server-side valideren | 2u | ✅ | **Claude** — code schrijven + deployen |
-| 1.2 | Missie-review starten: jaar 1, periode 1+2 (prioriteit) | 3u | ✅ | **Claude** — review-rapport per missie |
+| 1.1 | Security fix: systemInstruction server-side valideren | 2u | ⬜ | **Claude** — code schrijven + deployen |
+| 1.2 | Missie-review starten: jaar 1, periode 1+2 (prioriteit) | 3u | ⬜ | **Claude** — review-rapport per missie |
 
 **Done wanneer:** Security fix live, eerste batch missies gereviewed.
 

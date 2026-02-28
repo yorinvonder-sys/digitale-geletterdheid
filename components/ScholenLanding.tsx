@@ -1,5 +1,14 @@
 import React, { useState, useEffect, Suspense, useRef, useCallback, Component } from 'react';
-import { trackEvent } from '../services/analyticsService';
+
+type LandingAnalyticsEvent = 'dual_cta_click' | 'contact_click';
+
+function trackLandingEvent(event: LandingAnalyticsEvent, data?: Record<string, unknown>) {
+    void import('../services/analyticsService')
+        .then(({ trackEvent }) => trackEvent(event, data))
+        .catch(() => {
+            // Analytics should never block interaction.
+        });
+}
 
 /** Prevents a single lazy section crash from killing the whole page */
 class SectionErrorBoundary extends Component<{ children: React.ReactNode }, { hasError: boolean }> {
@@ -36,7 +45,7 @@ function DeferredSection({ children, minHeight }: { children: React.ReactNode; m
         if (!el) return;
         const io = new IntersectionObserver(
             ([e]) => { if (e.isIntersecting) setVisible(true); },
-            { rootMargin: '280px', threshold: 0 }
+            { rootMargin: '80px', threshold: 0 }
         );
         io.observe(el);
         return () => io.disconnect();
@@ -442,7 +451,7 @@ export const ScholenLanding: React.FC = () => {
                                     <button
                                         onClick={() => {
                                             scrollTo(SECTION_IDS.contact);
-                                            trackEvent('dual_cta_click', { type: 'pilot' });
+                                            trackLandingEvent('dual_cta_click', { type: 'pilot' });
                                         }}
                                         className="group bg-indigo-600 hover:bg-indigo-700 text-white px-7 py-3.5 rounded-lg text-base font-semibold transition-all flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/25 hover:shadow-xl hover:shadow-indigo-600/30 hover:-translate-y-0.5"
                                     >
@@ -452,7 +461,7 @@ export const ScholenLanding: React.FC = () => {
                                     <a
                                         href="/ict"
                                         onClick={() => {
-                                            trackEvent('dual_cta_click', { type: 'ict' });
+                                            trackLandingEvent('dual_cta_click', { type: 'ict' });
                                         }}
                                         className="group bg-white border border-slate-200 hover:border-slate-300 text-slate-600 px-7 py-3.5 rounded-lg text-base font-semibold transition-all flex items-center justify-center gap-2 hover:-translate-y-0.5"
                                     >

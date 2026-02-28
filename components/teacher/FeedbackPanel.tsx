@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { MessageSquare, Trash2, Loader2, RefreshCw, User, Clock, Filter, Download, CheckSquare, Square } from 'lucide-react';
 import { getAllFeedback, deleteFeedback, Feedback } from '../../services/feedbackService';
-import { downloadCsv, rowsToCsv } from '../../utils/csvExport';
 
 interface FeedbackPanelProps {
     schoolId?: string;
@@ -66,20 +65,19 @@ export const FeedbackPanel: React.FC<FeedbackPanelProps> = ({ schoolId }) => {
         }).format(date);
     };
 
-    const handleExport = () => {
-        const rows: unknown[][] = [
-            ['Datum', 'Klas', 'Leerling', 'Bericht'],
-            ...filteredFeedback.map((f) => [
-                formatDate(f.created_at),
-                f.user_class || 'Onbekend',
-                f.user_name || 'Anoniem',
-                f.message
-            ])
-        ];
+    const handleExport = async () => {
+        const XLSX = await import('xlsx');
+        const data = filteredFeedback.map(f => ({
+            Datum: formatDate(f.created_at),
+            Klas: f.user_class || 'Onbekend',
+            Leerling: f.user_name || 'Anoniem',
+            Bericht: f.message
+        }));
 
-        const csv = rowsToCsv(rows);
-        const date = new Date().toISOString().split('T')[0];
-        downloadCsv(csv, `Feedback_Export_${date}.csv`);
+        const wb = XLSX.utils.book_new();
+        const ws = XLSX.utils.json_to_sheet(data);
+        XLSX.utils.book_append_sheet(wb, ws, "Feedback");
+        XLSX.writeFile(wb, `Feedback_Export_${new Date().toISOString().split('T')[0]}.xlsx`);
     };
 
     const toggleSelect = (id: string) => {
@@ -136,11 +134,10 @@ export const FeedbackPanel: React.FC<FeedbackPanelProps> = ({ schoolId }) => {
                         <button
                             onClick={handleExport}
                             className="p-3 bg-white/20 hover:bg-white/30 rounded-xl transition-colors flex items-center gap-2 font-bold text-sm"
-                            title="Exporteer naar CSV"
-                            aria-label="Exporteer feedback naar CSV"
+                            title="Exporteer naar Excel"
                         >
                             <Download size={20} />
-                            <span className="hidden sm:inline">Export CSV</span>
+                            <span className="hidden sm:inline">Export</span>
                         </button>
                         <button
                             onClick={loadFeedback}
