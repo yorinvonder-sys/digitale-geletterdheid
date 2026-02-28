@@ -24,7 +24,7 @@ const NotFound = React.lazy(() => import('./components/NotFound').then(m => ({ d
 const MobileReceiptPage = React.lazy(() => import('./components/MobileReceiptPage').then(m => ({ default: m.MobileReceiptPage })));
 
 import { ParentUser } from './types';
-import { CookieConsent } from './components/CookieConsent';
+const CookieConsent = React.lazy(() => import('./components/CookieConsent').then(m => ({ default: m.CookieConsent })));
 
 const AuthenticatedApp = React.lazy(() => import('./AuthenticatedApp').then(m => ({ default: m.AuthenticatedApp })));
 
@@ -53,43 +53,141 @@ function usePath() {
     return path;
 }
 
-/** Auth hook - immediate for reliability during login/session transitions */
-function useAuthUser() {
-    const [user, setUser] = useState<ParentUser | null>(null);
-    const [loading, setLoading] = useState(true);
+/** Delay non-critical UI until idle, to keep public route render light. */
+function useIdleMount(delayMs = 0) {
+    const [ready, setReady] = useState(false);
 
     useEffect(() => {
-        let unsubscribe: (() => void) | undefined;
-        
-        import('./services/authService').then(({ subscribeToAuthChanges }) => {
-            unsubscribe = subscribeToAuthChanges((u) => {
-                setUser(u);
-                setLoading(false);
-            });
-        });
+        let timeoutId: ReturnType<typeof setTimeout> | undefined;
+        let idleId: number | undefined;
 
-        return () => unsubscribe?.();
-    }, []);
+        const trigger = () => {
+            timeoutId = setTimeout(() => setReady(true), delayMs);
+        };
+
+        if (typeof requestIdleCallback !== 'undefined') {
+            idleId = requestIdleCallback(trigger, { timeout: 2500 });
+        } else {
+            trigger();
+        }
+
+        return () => {
+            if (idleId !== undefined && typeof cancelIdleCallback !== 'undefined') {
+                cancelIdleCallback(idleId);
+            }
+            if (timeoutId !== undefined) {
+                clearTimeout(timeoutId);
+            }
+        };
+    }, [delayMs]);
+
+    return ready;
+}
+
+/** Fast heuristic: only hydrate auth listener on public route when a session likely exists. */
+function hasLikelySupabaseSession(): boolean {
+    if (typeof window === 'undefined') return false;
+    try {
+        for (let i = 0; i < localStorage.length; i += 1) {
+            const key = localStorage.key(i);
+            if (key && /^sb-[a-z0-9_-]+-auth-token$/i.test(key)) {
+                return true;
+            }
+        }
+    } catch {
+        return false;
+    }
+    return false;
+}
+
+/** Auth hook - immediate for reliability during login/session transitions */
+function useAuthUser(options?: { enabled?: boolean; deferUntilIdle?: boolean }) {
+    const enabled = options?.enabled ?? true;
+    const deferUntilIdle = options?.deferUntilIdle ?? false;
+    const [user, setUser] = useState<ParentUser | null>(null);
+    const [loading, setLoading] = useState(enabled);
+
+    useEffect(() => {
+        if (!enabled) {
+            setUser(null);
+            setLoading(false);
+            return;
+        }
+
+        setLoading(true);
+        let unsubscribe: (() => void) | undefined;
+        let timeoutId: ReturnType<typeof setTimeout> | undefined;
+        let idleId: number | undefined;
+        let isCancelled = false;
+
+        const startAuthSubscription = async () => {
+            try {
+                const { subscribeToAuthChanges } = await import('./services/authService');
+                if (isCancelled) return;
+                unsubscribe = subscribeToAuthChanges((u) => {
+                    if (isCancelled) return;
+                    setUser(u);
+                    setLoading(false);
+                });
+            } catch {
+                if (!isCancelled) setLoading(false);
+            }
+        };
+
+        if (deferUntilIdle) {
+            const schedule = () => {
+                timeoutId = setTimeout(() => { void startAuthSubscription(); }, 250);
+            };
+            if (typeof requestIdleCallback !== 'undefined') {
+                idleId = requestIdleCallback(schedule, { timeout: 2200 });
+            } else {
+                schedule();
+            }
+        } else {
+            void startAuthSubscription();
+        }
+
+        return () => {
+            isCancelled = true;
+            if (idleId !== undefined && typeof cancelIdleCallback !== 'undefined') {
+                cancelIdleCallback(idleId);
+            }
+            if (timeoutId !== undefined) {
+                clearTimeout(timeoutId);
+            }
+            unsubscribe?.();
+        };
+    }, [enabled, deferUntilIdle]);
 
     return { user, loading };
 }
 
 /** Public routes: / and /scholen. Render shell immediately; defer auth to avoid blocking LCP. */
 function PublicPageShell({ children }: { children: React.ReactNode }) {
+    const showCookieBanner = useIdleMount(2600);
+
     return (
         <div className="w-full min-h-screen relative">
             <a href="#main-content" className="skip-link">Naar hoofdinhoud</a>
             <div id="main-content" tabIndex={-1}>
                 {children}
             </div>
-            <CookieConsent />
+            {showCookieBanner && (
+                <React.Suspense fallback={null}>
+                    <CookieConsent />
+                </React.Suspense>
+            )}
         </div>
     );
 }
 
 /** Public routes: / and /scholen. Render shell immediately; defer auth to avoid blocking LCP. */
 function PublicRoute() {
-    const { user, loading } = useAuthUser();
+    const shouldProbeAuth = React.useMemo(() => hasLikelySupabaseSession(), []);
+    const { user, loading } = useAuthUser({
+        enabled: shouldProbeAuth,
+        deferUntilIdle: false
+    });
     
     // Forced landing page for screenshots
     const urlParams = new URLSearchParams(window.location.search);
@@ -101,12 +199,17 @@ function PublicRoute() {
         );
     }
 
-    if (!loading && user) {
-        return (
-            <React.Suspense fallback={<LoadingFallback />}>
-                <AuthenticatedApp />
-            </React.Suspense>
-        );
+    if (shouldProbeAuth) {
+        if (loading) {
+            return <LoadingFallback />;
+        }
+        if (user) {
+            return (
+                <React.Suspense fallback={<LoadingFallback />}>
+                    <AuthenticatedApp />
+                </React.Suspense>
+            );
+        }
     }
 
     return (
