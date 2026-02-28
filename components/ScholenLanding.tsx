@@ -69,6 +69,45 @@ function AnimateOnScroll({ children, className = '', delay = '' }: { children: R
     );
 }
 
+/** Animated counter that counts up from 0 when in view */
+function AnimatedCounter({ value, suffix = '', prefix = '' }: { value: string; suffix?: string; prefix?: string }) {
+    const [displayValue, setDisplayValue] = useState('0');
+    const [hasAnimated, setHasAnimated] = useState(false);
+    const ref = useRef<HTMLSpanElement>(null);
+
+    useEffect(() => {
+        const el = ref.current;
+        if (!el || hasAnimated) return;
+        const io = new IntersectionObserver(
+            ([e]) => {
+                if (e.isIntersecting) {
+                    setHasAnimated(true);
+                    io.disconnect();
+                    const numericValue = parseInt(value.replace(/\D/g, ''), 10);
+                    if (isNaN(numericValue)) { setDisplayValue(value); return; }
+                    const duration = 1200;
+                    const start = performance.now();
+                    const animate = (now: number) => {
+                        const elapsed = now - start;
+                        const progress = Math.min(elapsed / duration, 1);
+                        const eased = 1 - Math.pow(1 - progress, 3);
+                        const current = Math.round(numericValue * eased);
+                        setDisplayValue(value.includes('.') ? current.toLocaleString('nl-NL') : String(current));
+                        if (progress < 1) requestAnimationFrame(animate);
+                        else setDisplayValue(value);
+                    };
+                    requestAnimationFrame(animate);
+                }
+            },
+            { threshold: 0.5 }
+        );
+        io.observe(el);
+        return () => io.disconnect();
+    }, [value, hasAnimated]);
+
+    return <span ref={ref}>{prefix}{displayValue}{suffix}</span>;
+}
+
 /** Inline SVGs for critical path — avoids loading lucide (65kb) for LCP */
 const IconMenu = () => (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -102,6 +141,8 @@ const ScholenLandingExpertise = React.lazy(() => import('./scholen/ScholenLandin
 const ScholenLandingPlatformPreview = React.lazy(() => import('./scholen/ScholenLandingPlatformPreview').then(m => ({ default: m.ScholenLandingPlatformPreview })));
 const ScholenLandingCustomization = React.lazy(() => import('./scholen/ScholenLandingCustomization').then(m => ({ default: m.ScholenLandingCustomization })));
 const ScholenLandingGameDemo = React.lazy(() => import('./scholen/ScholenLandingGameDemo').then(m => ({ default: m.ScholenLandingGameDemo })));
+const ScholenLandingAIChatDemo = React.lazy(() => import('./scholen/ScholenLandingAIChatDemo').then(m => ({ default: m.ScholenLandingAIChatDemo })));
+const ScholenLandingDashboardDemo = React.lazy(() => import('./scholen/ScholenLandingDashboardDemo').then(m => ({ default: m.ScholenLandingDashboardDemo })));
 
 // JSON-LD structured data for Google rich results
 const structuredData = {
@@ -302,7 +343,7 @@ export const ScholenLanding: React.FC = () => {
                 : 'bg-transparent'
                 }`}>
                 <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
-                    <a href="/" className="flex items-center gap-2.5" aria-label="DGSkills homepage">
+                    <a href="/" className="flex items-center gap-2.5">
                         <img src="/logo.svg" alt="DGSkills logo" className="w-8 h-8" width={32} height={32} fetchPriority="high" decoding="async" />
                         <span className="font-bold text-[15px] text-slate-900 tracking-tight">DGSkills</span>
                     </a>
@@ -401,7 +442,7 @@ export const ScholenLanding: React.FC = () => {
                                 </div>
 
                                 {/* Trust badges */}
-                                <div className="flex flex-wrap items-center gap-4 mt-8 text-[11px] text-slate-400 font-medium">
+                                <div className="flex flex-wrap items-center gap-4 mt-8 text-xs text-slate-500 font-medium">
                                     <span className="flex items-center gap-1.5">
                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                                         AVG-compliant
@@ -429,7 +470,7 @@ export const ScholenLanding: React.FC = () => {
                                             <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
                                             <div className="w-2.5 h-2.5 rounded-full bg-amber-400" />
                                             <div className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
-                                            <span className="ml-3 text-[10px] text-slate-400 font-medium">dgskills.app</span>
+                                            <span className="ml-3 text-[10px] text-slate-500 font-medium">dgskills.app</span>
                                         </div>
                                         <img
                                             src="/screenshots/student-mission-overview.png"
@@ -450,7 +491,7 @@ export const ScholenLanding: React.FC = () => {
                                         </div>
                                         <div>
                                             <p className="text-xs font-bold text-slate-900">+250 XP verdiend!</p>
-                                            <p className="text-[10px] text-slate-400">Level 5 bereikt</p>
+                                            <p className="text-xs text-slate-500">Level 5 bereikt</p>
                                         </div>
                                     </div>
                                 </div>
@@ -487,7 +528,7 @@ export const ScholenLanding: React.FC = () => {
                         <div className="flex justify-center mt-12 md:mt-16">
                             <button
                                 onClick={() => scrollTo(SECTION_IDS.painPoints)}
-                                className="text-slate-300 hover:text-indigo-500 transition-colors p-2"
+                                className="text-slate-500 hover:text-indigo-600 transition-colors p-2"
                                 aria-label="Scroll naar beneden"
                             >
                                 <IconChevronDown />
@@ -501,15 +542,15 @@ export const ScholenLanding: React.FC = () => {
                     <div className="max-w-5xl mx-auto">
                         <div className="grid grid-cols-2 md:grid-cols-5 gap-8 md:gap-6 items-center">
                             <div>
-                                <p className="text-2xl font-bold text-slate-900">20+</p>
+                                <p className="text-2xl font-bold text-slate-900"><AnimatedCounter value="20" suffix="+" /></p>
                                 <p className="text-sm text-slate-500 mt-0.5">Interactieve missies</p>
                             </div>
                             <div>
-                                <p className="text-2xl font-bold text-slate-900">9</p>
+                                <p className="text-2xl font-bold text-slate-900"><AnimatedCounter value="9" /></p>
                                 <p className="text-sm text-slate-500 mt-0.5">SLO Kerndoelen gedekt</p>
                             </div>
                             <div>
-                                <p className="text-2xl font-bold text-slate-900">3</p>
+                                <p className="text-2xl font-bold text-slate-900"><AnimatedCounter value="3" /></p>
                                 <p className="text-sm text-slate-500 mt-0.5">Domeinen afgedekt</p>
                             </div>
                             <div>
@@ -522,7 +563,7 @@ export const ScholenLanding: React.FC = () => {
                                 </div>
                                 <div>
                                     <p className="text-xs font-bold text-slate-700">Almere College</p>
-                                    <p className="text-[10px] text-slate-400">Pilotschool 2025-2026</p>
+                                    <p className="text-xs text-slate-500">Pilotschool 2025-2026</p>
                                 </div>
                             </div>
                         </div>
@@ -616,7 +657,7 @@ export const ScholenLanding: React.FC = () => {
                                                 <div className={`w-14 h-14 ${item.color} rounded-2xl flex items-center justify-center mx-auto mb-5 group-hover:scale-110 transition-transform`}>
                                                     {item.icon}
                                                 </div>
-                                                <p className="text-[10px] font-black text-indigo-600 uppercase tracking-widest mb-2">Stap {item.step}</p>
+                                                <p className="text-[11px] font-black text-indigo-700 uppercase tracking-widest mb-2">Stap {item.step}</p>
                                                 <h3 className="text-lg font-bold text-slate-900 mb-3">{item.title}</h3>
                                                 <p className="text-sm text-slate-500 leading-relaxed">{item.description}</p>
                                             </div>
@@ -634,6 +675,28 @@ export const ScholenLanding: React.FC = () => {
                         <Suspense fallback={<div className="min-h-[400px]" aria-hidden="true" />}>
                             <AnimateOnScroll>
                                 <ScholenLandingGameDemo />
+                            </AnimateOnScroll>
+                        </Suspense>
+                    </DeferredSection>
+                </section>
+
+                {/* AI Chat Demo — privacy/data mission interactive preview */}
+                <section className="py-14 md:py-20 lg:py-20 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_500px]" aria-label="AI Privacy Coach demo">
+                    <DeferredSection minHeight="min-h-[400px]">
+                        <Suspense fallback={<div className="min-h-[400px]" aria-hidden="true" />}>
+                            <AnimateOnScroll>
+                                <ScholenLandingAIChatDemo />
+                            </AnimateOnScroll>
+                        </Suspense>
+                    </DeferredSection>
+                </section>
+
+                {/* Dashboard Demo — teacher dashboard interactive preview */}
+                <section className="py-14 md:py-20 lg:py-20 px-6 bg-slate-50 border-y border-slate-100 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_500px]" aria-label="Docenten dashboard demo">
+                    <DeferredSection minHeight="min-h-[400px]">
+                        <Suspense fallback={<div className="min-h-[400px]" aria-hidden="true" />}>
+                            <AnimateOnScroll>
+                                <ScholenLandingDashboardDemo />
                             </AnimateOnScroll>
                         </Suspense>
                     </DeferredSection>
@@ -757,21 +820,21 @@ export const ScholenLanding: React.FC = () => {
                             <img src="/logo.svg" alt="" className="w-6 h-6 opacity-60 invert" width={24} height={24} loading="lazy" decoding="async" />
                             <span className="text-sm font-bold text-slate-300">DGSkills</span>
                         </div>
-                        <div className="flex flex-wrap items-center gap-5 text-xs text-slate-500">
-                            <a href="/ict/privacy/policy" className="hover:text-slate-300 transition-colors">Privacy</a>
-                            <a href="/ict/privacy/cookies" className="hover:text-slate-300 transition-colors">Cookies</a>
-                            <a href="/ict/privacy/ai" className="hover:text-slate-300 transition-colors">AI Act</a>
-                            <a href="/compliance-hub" className="hover:text-slate-300 transition-colors">Compliance Hub</a>
+                        <div className="flex flex-wrap items-center gap-5 text-xs text-slate-300">
+                            <a href="/ict/privacy/policy" className="hover:text-white transition-colors">Privacy</a>
+                            <a href="/ict/privacy/cookies" className="hover:text-white transition-colors">Cookies</a>
+                            <a href="/ict/privacy/ai" className="hover:text-white transition-colors">AI Act</a>
+                            <a href="/compliance-hub" className="hover:text-white transition-colors">Compliance Hub</a>
                             <span className="text-slate-800">·</span>
-                            <a href="/login" className="hover:text-slate-300 transition-colors">Inloggen</a>
+                            <a href="/login" className="hover:text-white transition-colors">Inloggen</a>
                         </div>
                     </div>
                     <div className="border-t border-slate-800 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-                        <p className="text-xs text-slate-600">
+                        <p className="text-xs text-slate-400">
                             © {new Date().getFullYear()} DGSkills — Digitale geletterdheid voor het voortgezet onderwijs
                         </p>
                         <div className="flex items-center gap-4">
-                            <a href="mailto:info@dgskills.app" className="text-xs text-slate-400 hover:text-white transition-colors font-medium flex items-center gap-1.5">
+                            <a href="mailto:info@dgskills.app" className="text-xs text-slate-300 hover:text-white transition-colors font-medium flex items-center gap-1.5">
                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                                     <rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
                                 </svg>

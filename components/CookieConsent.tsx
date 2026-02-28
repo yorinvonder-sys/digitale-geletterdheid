@@ -49,10 +49,10 @@ export const CookieConsent: React.FC<CookieConsentProps> = ({ onAccept, onDeclin
                             <Cookie className="text-slate-500" size={22} />
                         </div>
                         <div className="flex-1 min-w-0">
-                            <h3 className="text-base font-bold text-slate-900 mb-1">Cookies & Privacy</h3>
+                            <h2 className="text-base font-bold text-slate-900 mb-1">Cookies & Privacy</h2>
                             <p className="text-sm text-slate-500 leading-relaxed">
                                 Wij gebruiken cookies om je ervaring te verbeteren en anonieme statistieken bij te houden.
-                                <a href="/ict/privacy/cookies" className="text-indigo-600 hover:text-indigo-700 underline ml-1">Lees ons cookiebeleid</a>.
+                                <a href="/ict/privacy/cookies" className="text-indigo-700 hover:text-indigo-800 underline ml-1">Lees ons cookiebeleid</a>.
                             </p>
 
                             {/* Expandable Details */}
@@ -65,11 +65,11 @@ export const CookieConsent: React.FC<CookieConsentProps> = ({ onAccept, onDeclin
                                             <span><strong>Essentieel</strong> – Nodig voor inloggen en authenticatie</span>
                                         </li>
                                         <li className="flex items-center gap-2">
-                                            <Settings size={14} className="text-slate-400" />
+                                            <Settings size={14} className="text-slate-500" />
                                             <span><strong>Analytics</strong> – Interne klik-analyse voor productverbetering</span>
                                         </li>
                                     </ul>
-                                    <p className="text-xs text-slate-400 mt-2">
+                                    <p className="text-xs text-slate-500 mt-2">
                                         Essentiële cookies zijn altijd actief en nodig voor de werking van de app.
                                     </p>
                                 </div>
@@ -81,7 +81,7 @@ export const CookieConsent: React.FC<CookieConsentProps> = ({ onAccept, onDeclin
                     <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mt-5">
                         <button
                             onClick={() => setShowDetails(!showDetails)}
-                            className="text-sm text-slate-400 hover:text-slate-600 underline underline-offset-2 order-3 sm:order-1 transition-colors"
+                            className="text-sm text-slate-600 hover:text-slate-800 underline underline-offset-2 order-3 sm:order-1 transition-colors"
                         >
                             {showDetails ? 'Minder info' : 'Meer informatie'}
                         </button>

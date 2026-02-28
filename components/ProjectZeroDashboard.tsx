@@ -52,13 +52,14 @@ interface Mission {
 }
 
 // Periode-kleurthema's per periode-nummer (Tailwind-safe volledige klassen)
-const PERIOD_THEME: Record<number, { border: string; bg: string; text: string }> = {
-    1: { border: 'border-indigo-100', bg: 'bg-indigo-50', text: 'text-indigo-600' },
-    2: { border: 'border-pink-100', bg: 'bg-pink-50', text: 'text-pink-600' },
-    3: { border: 'border-cyan-100', bg: 'bg-cyan-50', text: 'text-cyan-600' },
-    4: { border: 'border-violet-100', bg: 'bg-violet-50', text: 'text-violet-600' },
+// Iconen naast kleuren voor kleurenblind-toegankelijkheid
+const PERIOD_THEME: Record<number, { border: string; bg: string; text: string; icon: React.ReactNode; label: string }> = {
+    1: { border: 'border-indigo-100', bg: 'bg-indigo-50', text: 'text-indigo-600', icon: <Monitor size={14} />, label: 'Digitale Basis' },
+    2: { border: 'border-pink-100', bg: 'bg-pink-50', text: 'text-pink-600', icon: <BrainCircuit size={14} />, label: 'AI & Creatie' },
+    3: { border: 'border-cyan-100', bg: 'bg-cyan-50', text: 'text-cyan-600', icon: <ShieldCheck size={14} />, label: 'Data & Veiligheid' },
+    4: { border: 'border-violet-100', bg: 'bg-violet-50', text: 'text-violet-600', icon: <Rocket size={14} />, label: 'Eindproject' },
 };
-const DEFAULT_PERIOD_THEME = { border: 'border-slate-100', bg: 'bg-slate-50', text: 'text-slate-600' };
+const DEFAULT_PERIOD_THEME = { border: 'border-slate-100', bg: 'bg-slate-50', text: 'text-slate-600', icon: <Puzzle size={14} />, label: '' };
 
 // Periode-specifieke leerdoel-beschrijvingen (tekst die niet in curriculum.ts hoort)
 interface PeriodLeerdoel {
@@ -381,6 +382,16 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
 
         return () => unsubscribe();
     }, []);
+
+    // Daily streak calculation
+    const dailyStreak = React.useMemo(() => {
+        const today = new Date().toISOString().split('T')[0];
+        const lastLogin = stats?.lastLoginDate;
+        if (!lastLogin) return 1;
+        if (lastLogin === today) return stats?.dailyStreak || 1;
+        const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+        return lastLogin === yesterday ? (stats?.dailyStreak || 0) + 1 : 1;
+    }, [stats?.lastLoginDate, stats?.dailyStreak]);
 
     // Import shared XP utilities
     const xp = stats?.xp || 0;
@@ -773,6 +784,16 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                     </button>
 
                     <div className="flex items-center gap-4">
+                        {/* DAILY STREAK BADGE */}
+                        {dailyStreak > 0 && (
+                            <div className={`flex items-center gap-1 px-3 py-1 rounded-full text-sm font-bold
+                                ${dailyStreak >= 7 ? 'bg-orange-500 text-white animate-pulse shadow-lg shadow-orange-500/30' :
+                                  dailyStreak >= 3 ? 'bg-orange-100 text-orange-600' :
+                                  'bg-slate-100 text-slate-500'}`}>
+                                <span role="img" aria-label="streak">&#x1F525;</span> {dailyStreak} {dailyStreak === 1 ? 'dag' : 'dagen'}
+                            </div>
+                        )}
+
                         {/* COMPACT PROGRESS BAR IN HEADER */}
                         {stats && (
                             <button
@@ -970,17 +991,17 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                     onClick={() => !isLocked && setActiveWeek(period)}
                                     disabled={isLocked}
                                     title={isLocked ? `${periodNaming} ${period} wordt later vrijgegeven` : pConf?.title}
-                                    className={`flex-shrink-0 px-4 md:px-6 py-4 min-h-[44px] rounded-xl text-xs font-black uppercase tracking-widest transition-all
+                                    className={`flex-shrink-0 px-4 md:px-6 py-4 min-h-[44px] rounded-xl text-xs font-black uppercase tracking-widest transition-all flex items-center gap-1.5
                                 ${activeWeek === period
                                             ? 'bg-white text-indigo-600 shadow-md border border-slate-100 translate-y-[-1px]'
                                             : isLocked
-                                                ? 'bg-transparent text-slate-300 cursor-not-allowed flex items-center gap-2'
+                                                ? 'bg-transparent text-slate-300 cursor-not-allowed'
                                                 : 'text-slate-400 hover:text-slate-600'
                                         }`}
                                 >
-                                    {isLocked && <Lock size={12} />}
+                                    {isLocked ? <Lock size={12} /> : (PERIOD_THEME[period]?.icon || null)}
                                     <span className="hidden sm:inline">{periodNaming}</span>
-                                    <span className="sm:hidden">P</span> {period}
+                                    <span className="sm:hidden">P</span>{period}
                                 </button>
                             )
                         })}
@@ -1001,7 +1022,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                         Leerdoelen {periodNaming} {activeWeek}
                                     </span>
                                     {!leerdoelenOpen && (
-                                        <div className="flex gap-1 opacity-60">
+                                        <div className="flex items-center gap-2 opacity-60">
                                             {(stats?.vsoProfile && currentPeriodConfig.sloFocusVso
                                                 ? currentPeriodConfig.sloFocusVso
                                                 : currentPeriodConfig.sloFocus
@@ -1018,6 +1039,19 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                 </div>
                                 <ChevronRight size={16} className={`text-slate-300 transition-transform duration-200 shrink-0 ${leerdoelenOpen ? 'rotate-90' : ''}`} />
                             </button>
+
+                            {/* Success criteria preview — altijd zichtbaar als accordion dicht is */}
+                            {!leerdoelenOpen && periodLeerdoel?.succescriterium && (
+                                <div className="px-4 pb-3 flex items-start gap-2 -mt-1">
+                                    <CheckCircle2 size={12} className="text-emerald-500 shrink-0 mt-0.5" />
+                                    <p className="text-emerald-700 text-[11px] font-medium leading-snug">
+                                        <span className="font-bold">Klaar als: </span>
+                                        {(stats?.vsoProfile === 'dagbesteding' && periodLeerdoel.succescriDagbesteding)
+                                            ? periodLeerdoel.succescriDagbesteding
+                                            : periodLeerdoel.succescriterium}
+                                    </p>
+                                </div>
+                            )}
 
                             {/* Expandable content */}
                             {leerdoelenOpen && (

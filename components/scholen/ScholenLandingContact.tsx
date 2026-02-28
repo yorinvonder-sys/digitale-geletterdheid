@@ -25,6 +25,7 @@ interface PilotFormData {
     rol: string;
     bericht: string;
     aantalLeerlingen: string;
+    website: string;
 }
 
 const PILOT_ENDPOINT =
@@ -40,8 +41,10 @@ export const ScholenLandingContact: React.FC = () => {
         email: '',
         rol: '',
         bericht: '',
-        aantalLeerlingen: ''
+        aantalLeerlingen: '',
+        website: '',
     });
+    const [formStartedAt] = useState(() => Date.now());
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [submitError, setSubmitError] = useState<string | null>(null);
@@ -51,14 +54,15 @@ export const ScholenLandingContact: React.FC = () => {
         setIsSubmitting(true);
         setSubmitError(null);
         try {
+            trackEvent('pilot_request_start', { rol: formData.rol || 'onbekend' });
             const response = await fetch(PILOT_ENDPOINT, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                ...formData,
-                    website: ''
+                    ...formData,
+                    submittedAt: formStartedAt,
                 })
             });
 
@@ -163,6 +167,16 @@ export const ScholenLandingContact: React.FC = () => {
                                 </div>
                             ) : (
                                 <form onSubmit={handleSubmit} className="space-y-3.5" aria-label="Pilot aanvraagformulier">
+                                    <input
+                                        type="text"
+                                        name="website"
+                                        value={formData.website}
+                                        onChange={(e) => setFormData({ ...formData, website: e.target.value })}
+                                        className="absolute -left-[10000px] top-auto w-px h-px overflow-hidden"
+                                        tabIndex={-1}
+                                        autoComplete="off"
+                                        aria-hidden="true"
+                                    />
                                     <div className="text-center mb-2">
                                         <p className="text-sm font-bold text-slate-900">Direct aanvragen</p>
                                         <p className="text-xs text-slate-400">Reactie binnen 2 werkdagen</p>

@@ -329,11 +329,35 @@ export function AuthenticatedApp() {
     const handleUpdateProfile = async (data: Partial<ParentUser>) => {
         if (!user) return;
         try {
-            const { error } = await supabase
-                .from('users')
-                .update(data as any)
-                .eq('uid', user.uid);
-            if (error) throw error;
+            // Stats updates must go through the RPC to bypass protect_stats_column trigger
+            if (data.stats) {
+                const sanitizeForDb = (obj: any): any => {
+                    if (obj === undefined) return null;
+                    if (obj === null || typeof obj !== 'object') return obj;
+                    if (Array.isArray(obj)) return obj.map(sanitizeForDb);
+                    const result: any = {};
+                    for (const [key, value] of Object.entries(obj)) {
+                        if (value !== undefined) result[key] = sanitizeForDb(value);
+                    }
+                    return result;
+                };
+                const cleanStats = sanitizeForDb(data.stats);
+                const { error: rpcError } = await supabase
+                    .rpc('update_student_stats', { p_stats: cleanStats });
+                if (rpcError) throw rpcError;
+            }
+
+            // Non-stats fields can be updated directly
+            const nonStatsData = { ...data };
+            delete nonStatsData.stats;
+            if (Object.keys(nonStatsData).length > 0) {
+                const { error } = await supabase
+                    .from('users')
+                    .update(nonStatsData as any)
+                    .eq('uid', user.uid);
+                if (error) throw error;
+            }
+
             setUser({ ...user, ...data });
         } catch (error) {
             console.error("Error updating profile:", error);

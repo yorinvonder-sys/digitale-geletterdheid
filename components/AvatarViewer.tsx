@@ -26,13 +26,16 @@ const getBodyDimensions = (baseModel: AvatarConfig['baseModel'], gender?: Avatar
     const isRobot = baseModel === 'robot';
     const isFemale = gender === 'female';
     return {
-        torsoRadius: isFemale ? 0.3 : 0.35,
-        torsoLength: 0.5,
-        armRadius: isFemale ? 0.11 : 0.13,
-        armLength: 0.6,
-        armSpacing: isFemale ? 0.48 : 0.55,
-        legRadius: 0.15,
-        legLength: 0.5,
+        torsoRadius: isFemale ? 0.26 : 0.35,
+        torsoLength: isFemale ? 0.45 : 0.5,
+        armRadius: isFemale ? 0.09 : 0.13,
+        armLength: isFemale ? 0.55 : 0.6,
+        armSpacing: isFemale ? 0.42 : 0.55,
+        legRadius: isFemale ? 0.12 : 0.15,
+        legLength: isFemale ? 0.48 : 0.5,
+        headScale: isFemale ? [0.92, 0.88, 0.84] as const : [1, 0.95, 0.9] as const,
+        shoulderWidth: isFemale ? 0.36 : 0.55,
+        hipWidth: isFemale ? 0.38 : 0.28,
         isRobot,
         isFemale,
     };
@@ -224,25 +227,30 @@ const HairLayer = memo<{ style: string; color: string }>(({ style, color }) => {
     switch (style) {
         case 'short':
             return (
-                <group position={[0, 0.05, -0.03]}>
-                    {/* Top cap – hemisphere sitting on top of head */}
-                    <mesh scale={[1.1, 0.7, 1.05]}>
-                        <sphereGeometry args={[0.67, 24, 16, 0, PI * 2, 0, PI * 0.52]} />
+                <group position={[0, 0.05, 0]}>
+                    {/* Full coverage cap – wraps over the top and sides of the head */}
+                    <mesh position={[0, 0, -0.02]} scale={[1.12, 0.75, 1.1]}>
+                        <sphereGeometry args={[0.67, 24, 16, 0, PI * 2, 0, PI * 0.58]} />
                         {mat}
                     </mesh>
-                    {/* Side coverage left */}
-                    <mesh position={[-0.45, -0.1, 0]} scale={[0.25, 0.35, 0.6]}>
-                        <sphereGeometry args={[0.35, 12, 10, 0, PI * 2, 0, PI * 0.6]} />
+                    {/* Front fringe – subtle volume over forehead */}
+                    <mesh position={[0, 0.12, 0.35]} scale={[0.8, 0.18, 0.2]}>
+                        <sphereGeometry args={[0.4, 12, 10]} />
+                        {mat}
+                    </mesh>
+                    {/* Side coverage left – extends down to ear level */}
+                    <mesh position={[-0.48, -0.12, 0]} scale={[0.22, 0.4, 0.65]}>
+                        <sphereGeometry args={[0.38, 12, 10, 0, PI * 2, 0, PI * 0.65]} />
                         {mat}
                     </mesh>
                     {/* Side coverage right */}
-                    <mesh position={[0.45, -0.1, 0]} scale={[0.25, 0.35, 0.6]}>
-                        <sphereGeometry args={[0.35, 12, 10, 0, PI * 2, 0, PI * 0.6]} />
+                    <mesh position={[0.48, -0.12, 0]} scale={[0.22, 0.4, 0.65]}>
+                        <sphereGeometry args={[0.38, 12, 10, 0, PI * 2, 0, PI * 0.65]} />
                         {mat}
                     </mesh>
-                    {/* Back coverage */}
-                    <mesh position={[0, -0.05, -0.35]} scale={[0.75, 0.35, 0.2]}>
-                        <sphereGeometry args={[0.4, 12, 10, 0, PI * 2, 0, PI * 0.6]} />
+                    {/* Back coverage – extends down the back of the head */}
+                    <mesh position={[0, -0.08, -0.38]} scale={[0.8, 0.42, 0.22]}>
+                        <sphereGeometry args={[0.42, 12, 10, 0, PI * 2, 0, PI * 0.65]} />
                         {mat}
                     </mesh>
                 </group>
@@ -251,29 +259,42 @@ const HairLayer = memo<{ style: string; color: string }>(({ style, color }) => {
         case 'spiky':
             return (
                 <group position={[0, 0.05, -0.02]}>
-                    {/* Base cap – hemisphere */}
-                    <mesh scale={[1.1, 0.65, 1.05]}>
-                        <sphereGeometry args={[0.67, 24, 16, 0, PI * 2, 0, PI * 0.5]} />
+                    {/* Base cap – hemisphere covering top of head */}
+                    <mesh scale={[1.12, 0.68, 1.08]}>
+                        <sphereGeometry args={[0.67, 24, 16, 0, PI * 2, 0, PI * 0.55]} />
                         {mat}
                     </mesh>
-                    {/* Spikes – tall elongated shapes pointing up */}
-                    <mesh position={[-0.15, 0.38, 0.15]} rotation={[0.2, 0, -0.15]} scale={[0.12, 0.28, 0.12]}>
+                    {/* Side coverage */}
+                    <mesh position={[-0.48, -0.1, 0]} scale={[0.2, 0.35, 0.6]}>
+                        <sphereGeometry args={[0.35, 12, 10, 0, PI * 2, 0, PI * 0.6]} />
+                        {mat}
+                    </mesh>
+                    <mesh position={[0.48, -0.1, 0]} scale={[0.2, 0.35, 0.6]}>
+                        <sphereGeometry args={[0.35, 12, 10, 0, PI * 2, 0, PI * 0.6]} />
+                        {mat}
+                    </mesh>
+                    {/* Spikes – pointing upward and slightly outward */}
+                    <mesh position={[-0.15, 0.38, 0.18]} rotation={[0.25, 0, -0.2]} scale={[0.13, 0.3, 0.13]}>
                         <coneGeometry args={[0.3, 0.8, 6]} />
                         {mat}
                     </mesh>
-                    <mesh position={[0.18, 0.42, -0.1]} rotation={[-0.15, 0, 0.1]} scale={[0.12, 0.32, 0.12]}>
+                    <mesh position={[0.18, 0.42, -0.08]} rotation={[-0.15, 0, 0.15]} scale={[0.13, 0.34, 0.13]}>
                         <coneGeometry args={[0.3, 0.8, 6]} />
                         {mat}
                     </mesh>
-                    <mesh position={[0, 0.45, 0.02]} rotation={[0.05, 0, 0]} scale={[0.13, 0.35, 0.13]}>
+                    <mesh position={[0, 0.46, 0.05]} rotation={[0.08, 0, 0]} scale={[0.14, 0.38, 0.14]}>
                         <coneGeometry args={[0.3, 0.8, 6]} />
                         {mat}
                     </mesh>
-                    <mesh position={[-0.25, 0.35, -0.15]} rotation={[-0.2, 0.1, -0.2]} scale={[0.1, 0.25, 0.1]}>
+                    <mesh position={[-0.28, 0.36, -0.12]} rotation={[-0.2, 0.15, -0.25]} scale={[0.11, 0.26, 0.11]}>
                         <coneGeometry args={[0.3, 0.8, 6]} />
                         {mat}
                     </mesh>
-                    <mesh position={[0.1, 0.4, -0.2]} rotation={[-0.25, 0, 0.15]} scale={[0.1, 0.22, 0.1]}>
+                    <mesh position={[0.12, 0.4, -0.22]} rotation={[-0.3, 0, 0.1]} scale={[0.11, 0.24, 0.11]}>
+                        <coneGeometry args={[0.3, 0.8, 6]} />
+                        {mat}
+                    </mesh>
+                    <mesh position={[0.3, 0.34, 0.1]} rotation={[0.1, 0, 0.3]} scale={[0.1, 0.22, 0.1]}>
                         <coneGeometry args={[0.3, 0.8, 6]} />
                         {mat}
                     </mesh>
@@ -364,9 +385,18 @@ const HairLayer = memo<{ style: string; color: string }>(({ style, color }) => {
         case 'messy':
             return (
                 <group position={[0, 0.05, -0.02]}>
-                    {/* Base cap – hemisphere */}
-                    <mesh scale={[1.12, 0.68, 1.06]}>
-                        <sphereGeometry args={[0.67, 24, 16, 0, PI * 2, 0, PI * 0.52]} />
+                    {/* Base cap – hemisphere with full coverage */}
+                    <mesh scale={[1.14, 0.72, 1.1]}>
+                        <sphereGeometry args={[0.67, 24, 16, 0, PI * 2, 0, PI * 0.56]} />
+                        {mat}
+                    </mesh>
+                    {/* Side coverage */}
+                    <mesh position={[-0.48, -0.1, 0]} scale={[0.22, 0.38, 0.6]}>
+                        <sphereGeometry args={[0.35, 12, 10, 0, PI * 2, 0, PI * 0.6]} />
+                        {mat}
+                    </mesh>
+                    <mesh position={[0.48, -0.1, 0]} scale={[0.22, 0.38, 0.6]}>
+                        <sphereGeometry args={[0.35, 12, 10, 0, PI * 2, 0, PI * 0.6]} />
                         {mat}
                     </mesh>
                     {/* Messy chunks sticking out in various directions */}
@@ -389,6 +419,11 @@ const HairLayer = memo<{ style: string; color: string }>(({ style, color }) => {
                     {/* Strand falling over forehead */}
                     <mesh position={[0.12, 0.15, 0.52]} rotation={[0.7, 0, 0.15]} scale={[0.1, 0.25, 0.08]}>
                         <capsuleGeometry args={[0.12, 0.25, 4, 8]} />
+                        {mat}
+                    </mesh>
+                    {/* Back coverage */}
+                    <mesh position={[0, -0.05, -0.36]} scale={[0.75, 0.35, 0.2]}>
+                        <sphereGeometry args={[0.4, 12, 10, 0, PI * 2, 0, PI * 0.6]} />
                         {mat}
                     </mesh>
                 </group>
@@ -465,23 +500,29 @@ const HairLayer = memo<{ style: string; color: string }>(({ style, color }) => {
 
         case 'buzzcut':
             return (
-                <group position={[0, 0.05, -0.03]}>
-                    {/* Single tight hemisphere – very close to head surface */}
-                    <mesh scale={[1.05, 0.55, 1.0]}>
-                        <sphereGeometry args={[0.67, 24, 16, 0, PI * 2, 0, PI * 0.48]} />
+                <group position={[0, 0.05, -0.02]}>
+                    {/* Full coverage – tight to head, visible as a uniform layer */}
+                    <mesh scale={[1.08, 0.62, 1.04]}>
+                        <sphereGeometry args={[0.67, 24, 16, 0, PI * 2, 0, PI * 0.56]} />
                         <meshPhysicalMaterial color={color} roughness={0.85} metalness={0.05}
                             clearcoat={0.1} clearcoatRoughness={0.6} envMapIntensity={0.3} />
                     </mesh>
-                    {/* Side coverage – very thin stubble */}
-                    <mesh position={[-0.42, -0.08, 0]} scale={[0.2, 0.28, 0.5]}>
-                        <sphereGeometry args={[0.3, 10, 8, 0, PI * 2, 0, PI * 0.55]} />
+                    {/* Side coverage – thin stubble extending to ears */}
+                    <mesh position={[-0.45, -0.1, 0]} scale={[0.2, 0.32, 0.55]}>
+                        <sphereGeometry args={[0.33, 10, 8, 0, PI * 2, 0, PI * 0.6]} />
                         <meshPhysicalMaterial color={color} roughness={0.9} metalness={0.03}
-                            clearcoat={0.05} envMapIntensity={0.2} transparent opacity={0.8} />
+                            clearcoat={0.05} envMapIntensity={0.2} />
                     </mesh>
-                    <mesh position={[0.42, -0.08, 0]} scale={[0.2, 0.28, 0.5]}>
-                        <sphereGeometry args={[0.3, 10, 8, 0, PI * 2, 0, PI * 0.55]} />
+                    <mesh position={[0.45, -0.1, 0]} scale={[0.2, 0.32, 0.55]}>
+                        <sphereGeometry args={[0.33, 10, 8, 0, PI * 2, 0, PI * 0.6]} />
                         <meshPhysicalMaterial color={color} roughness={0.9} metalness={0.03}
-                            clearcoat={0.05} envMapIntensity={0.2} transparent opacity={0.8} />
+                            clearcoat={0.05} envMapIntensity={0.2} />
+                    </mesh>
+                    {/* Back coverage */}
+                    <mesh position={[0, -0.05, -0.36]} scale={[0.7, 0.3, 0.18]}>
+                        <sphereGeometry args={[0.38, 10, 8, 0, PI * 2, 0, PI * 0.6]} />
+                        <meshPhysicalMaterial color={color} roughness={0.9} metalness={0.03}
+                            clearcoat={0.05} envMapIntensity={0.2} />
                     </mesh>
                 </group>
             );
@@ -659,9 +700,25 @@ const HairLayer = memo<{ style: string; color: string }>(({ style, color }) => {
         default:
             // Fallback: same as short
             return (
-                <group position={[0, 0.05, -0.03]}>
-                    <mesh scale={[1.1, 0.7, 1.05]}>
-                        <sphereGeometry args={[0.67, 24, 16, 0, PI * 2, 0, PI * 0.52]} />
+                <group position={[0, 0.05, 0]}>
+                    <mesh position={[0, 0, -0.02]} scale={[1.12, 0.75, 1.1]}>
+                        <sphereGeometry args={[0.67, 24, 16, 0, PI * 2, 0, PI * 0.58]} />
+                        {mat}
+                    </mesh>
+                    <mesh position={[0, 0.12, 0.35]} scale={[0.8, 0.18, 0.2]}>
+                        <sphereGeometry args={[0.4, 12, 10]} />
+                        {mat}
+                    </mesh>
+                    <mesh position={[-0.48, -0.12, 0]} scale={[0.22, 0.4, 0.65]}>
+                        <sphereGeometry args={[0.38, 12, 10, 0, PI * 2, 0, PI * 0.65]} />
+                        {mat}
+                    </mesh>
+                    <mesh position={[0.48, -0.12, 0]} scale={[0.22, 0.4, 0.65]}>
+                        <sphereGeometry args={[0.38, 12, 10, 0, PI * 2, 0, PI * 0.65]} />
+                        {mat}
+                    </mesh>
+                    <mesh position={[0, -0.08, -0.38]} scale={[0.8, 0.42, 0.22]}>
+                        <sphereGeometry args={[0.42, 12, 10, 0, PI * 2, 0, PI * 0.65]} />
                         {mat}
                     </mesh>
                 </group>
@@ -2215,7 +2272,7 @@ const AvatarModel = memo<{
                     onPointerEnter={(e) => handlePointerEnter(e, 'skin')}
                     onPointerLeave={handlePointerLeave}
                 >
-                    <mesh scale={dims.isFemale ? [0.96, 0.92, 0.88] : [1, 0.95, 0.9]}>
+                    <mesh scale={dims.headScale}>
                         <sphereGeometry args={[0.65, 32, 32]} />
                         <meshPhysicalMaterial
                             {...skinMatProps}
@@ -2243,9 +2300,9 @@ const AvatarModel = memo<{
 
             {variant === 'full' && (
                 <group>
-                    {/* ── Neck ── */}
+                    {/* ── Neck – thinner for female ── */}
                     <mesh position={[0, 1.42, 0]}>
-                        <cylinderGeometry args={[0.12, 0.15, 0.15, 12]} />
+                        <cylinderGeometry args={[dims.isFemale ? 0.09 : 0.12, dims.isFemale ? 0.12 : 0.15, dims.isFemale ? 0.18 : 0.15, 12]} />
                         <meshPhysicalMaterial {...skinMatProps} />
                     </mesh>
 
@@ -2302,7 +2359,7 @@ const AvatarModel = memo<{
                             />
                             {/* Hand */}
                             <mesh position={[0, -0.45, 0]}>
-                                <sphereGeometry args={[0.1, 16, 16]} />
+                                <sphereGeometry args={[dims.isFemale ? 0.08 : 0.1, 16, 16]} />
                                 <meshPhysicalMaterial {...skinMatProps} />
                             </mesh>
                         </group>
@@ -2334,17 +2391,17 @@ const AvatarModel = memo<{
                             />
                             {/* Hand */}
                             <mesh position={[0, -0.45, 0]}>
-                                <sphereGeometry args={[0.1, 16, 16]} />
+                                <sphereGeometry args={[dims.isFemale ? 0.08 : 0.1, 16, 16]} />
                                 <meshPhysicalMaterial {...skinMatProps} />
                             </mesh>
                         </group>
                     </group>
 
-                    {/* ── Female hips ── */}
+                    {/* ── Female hips – wider than torso for feminine silhouette ── */}
                     {dims.isFemale && (
                         <group position={[0, 0.72, 0]}>
-                            <mesh scale={[1.15, 0.55, 0.95]}>
-                                <sphereGeometry args={[0.32, 16, 16]} />
+                            <mesh scale={[1.35, 0.55, 1.0]}>
+                                <sphereGeometry args={[0.3, 16, 16]} />
                                 <meshStandardMaterial
                                     color={pantsColor}
                                     roughness={0.75}
@@ -2355,6 +2412,18 @@ const AvatarModel = memo<{
                                 />
                             </mesh>
                         </group>
+                    )}
+
+                    {/* ── Female waist pinch – narrower midsection ── */}
+                    {dims.isFemale && (
+                        <mesh position={[0, 0.85, 0]} scale={[0.9, 0.3, 0.85]}>
+                            <cylinderGeometry args={[0.22, 0.26, 0.15, 12]} />
+                            <meshStandardMaterial
+                                color={shirtColor}
+                                roughness={0.75}
+                                envMapIntensity={0.3}
+                            />
+                        </mesh>
                     )}
 
                     {/* ── Legs + shoes (style-aware) ── */}
@@ -2462,19 +2531,19 @@ export const AvatarViewer: React.FC<AvatarViewerProps> = ({
                         />
                     </Float>
 
-                    {/* Platform disc */}
+                    {/* Platform disc – outside Float to stay stable */}
                     {variant === 'full' && (
-                        <mesh position={[0, -1.28, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+                        <mesh position={[0, -1.35, 0]} rotation={[-Math.PI / 2, 0, 0]} renderOrder={-1}>
                             <circleGeometry args={[1.2, 32]} />
-                            <meshStandardMaterial color="#e0e0e0" transparent opacity={0.5} depthWrite={false} />
+                            <meshStandardMaterial color="#e0e0e0" transparent opacity={0.4} depthWrite={false} />
                         </mesh>
                     )}
 
                     <ContactShadows
-                        position={[0, -1.18, 0]}
-                        opacity={0.4}
+                        position={[0, -1.2, 0]}
+                        opacity={0.35}
                         scale={6}
-                        blur={2.8}
+                        blur={3}
                         far={5}
                         color="#000020"
                     />

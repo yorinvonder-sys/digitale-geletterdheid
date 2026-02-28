@@ -302,7 +302,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                         <div className="flex bg-slate-100 p-1 rounded-xl mb-6">
                             <button
                                 onClick={() => { setMode('login'); setError(null); setSuccessMessage(null); }}
-                                className={`flex-1 py-3 min-h-[44px] text-xs font-bold uppercase tracking-wide rounded-lg transition-all ${mode === 'login' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                                className={`flex-1 py-3 min-h-[44px] text-xs font-bold uppercase tracking-wide rounded-lg transition-all ${mode === 'login' ? 'bg-white text-indigo-700 shadow-sm' : 'text-slate-700 hover:text-slate-900'}`}
                             >
                                 Inloggen
                             </button>
@@ -312,7 +312,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                                     setError(null); 
                                     setSuccessMessage(null);
                                 }}
-                                className={`flex-1 py-3 min-h-[44px] text-xs font-bold uppercase tracking-wide rounded-lg transition-all ${mode === 'register' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                                className={`flex-1 py-3 min-h-[44px] text-xs font-bold uppercase tracking-wide rounded-lg transition-all ${mode === 'register' ? 'bg-white text-indigo-700 shadow-sm' : 'text-slate-700 hover:text-slate-900'}`}
                             >
                                 Account aanmaken
                             </button>
@@ -322,7 +322,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                         {mode === 'forgot-password' ? (
                             <form onSubmit={handlePasswordReset} className="space-y-4">
                                 <div className="text-center mb-6">
-                                    <h3 className="text-sm font-bold text-slate-900">Wachtwoord vergeten?</h3>
+                                    <h2 className="text-sm font-bold text-slate-900">Wachtwoord vergeten?</h2>
                                     <p className="text-xs text-slate-500 mt-1">
                                         Vul het e-mailadres van je account in. We sturen je een link om je wachtwoord opnieuw in te stellen.
                                     </p>
@@ -514,7 +514,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                                                 <div className="w-full border-t border-slate-200"></div>
                                             </div>
                                             <div className="relative flex justify-center">
-                                                <span className="bg-white px-2 text-[10px] font-semibold uppercase tracking-widest text-slate-400">of</span>
+                                                <span className="bg-white px-2 text-[10px] font-semibold uppercase tracking-widest text-slate-500">of</span>
                                             </div>
                                         </div>
                                     </>
@@ -558,10 +558,10 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                                     )}
                                 </button>
 
-                                <p className="text-[10px] text-slate-400 text-center">
-                                    <a href="/ict/privacy/policy" className="text-indigo-500 hover:text-indigo-600 underline">Privacy</a>
+                                <p className="text-xs text-slate-500 text-center">
+                                    <a href="/ict/privacy/policy" className="text-indigo-700 hover:text-indigo-800 underline">Privacy</a>
                                     {' · '}
-                                    <a href="/ict/privacy/cookies" className="text-indigo-500 hover:text-indigo-600 underline">Cookies</a>
+                                    <a href="/ict/privacy/cookies" className="text-indigo-700 hover:text-indigo-800 underline">Cookies</a>
                                 </p>
                             </form>
                         )}

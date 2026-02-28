@@ -90,8 +90,6 @@ function PublicPageShell({ children }: { children: React.ReactNode }) {
 /** Public routes: / and /scholen. Render shell immediately; defer auth to avoid blocking LCP. */
 function PublicRoute() {
     const { user, loading } = useAuthUser();
-
-    if (loading) return <LoadingFallback />;
     
     // Forced landing page for screenshots
     const urlParams = new URLSearchParams(window.location.search);
@@ -103,18 +101,18 @@ function PublicRoute() {
         );
     }
 
-    if (!user) {
+    if (!loading && user) {
         return (
-            <PublicPageShell>
-                <ScholenLanding />
-            </PublicPageShell>
+            <React.Suspense fallback={<LoadingFallback />}>
+                <AuthenticatedApp />
+            </React.Suspense>
         );
     }
 
     return (
-        <React.Suspense fallback={<LoadingFallback />}>
-            <AuthenticatedApp />
-        </React.Suspense>
+        <PublicPageShell>
+            <ScholenLanding />
+        </PublicPageShell>
     );
 }
 
@@ -127,22 +125,20 @@ function LoginRoute() {
         window.dispatchEvent(new Event('pathchange'));
     };
 
-    if (loading) return <LoadingFallback />;
-    if (!user) {
+    if (!loading && user) {
+        // Logged-in user on /login: redirect to / and show app
+        handleSuccess();
         return (
-            <PublicPageShell>
-                <Login onLoginSuccess={handleSuccess} />
-            </PublicPageShell>
+            <React.Suspense fallback={<LoadingFallback />}>
+                <AuthenticatedApp />
+            </React.Suspense>
         );
     }
 
-    // Logged-in user on /login: redirect to / and show app (same as before)
-    handleSuccess();
-
     return (
-        <React.Suspense fallback={<LoadingFallback />}>
-            <AuthenticatedApp />
-        </React.Suspense>
+        <PublicPageShell>
+            <Login onLoginSuccess={handleSuccess} />
+        </PublicPageShell>
     );
 }
 

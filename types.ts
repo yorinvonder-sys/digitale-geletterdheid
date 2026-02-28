@@ -197,6 +197,8 @@ export interface UserStats {
   vsoProfile?: VsoProfile; // VSO profile for differentiation
   yearGroup?: number;
   educationLevel?: EducationLevel;
+  dailyStreak?: number;
+  lastLoginDate?: string;
 }
 
 export interface ChatState {

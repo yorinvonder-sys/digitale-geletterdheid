@@ -1,148 +1,150 @@
-# DGSkills Launch Plan — Stappenplan voor Marktlancering
+# DGSkills Launch Plan — Deadline: Mei 2026
 
 **Eigenaar:** Yorin (solo-founder, fulltime docent)
 **Beschikbare tijd:** ~8-10 uur per week (avonden/weekenden)
 **Startdatum:** 24 februari 2026
-**Doel:** Eerste betalende pilotschool(en) voor schooljaar 2026-2027
-**Kritiek venster:** Scholen beslissen feb-mei over nieuwe tools voor volgend schooljaar
+**Harde deadline:** Mei 2026 — scholen beslissen NU over tools voor 2026-2027
+**Co-developer:** Claude
+
+---
+
+## PRIORITEITEN (in volgorde van belang)
+
+| # | Prioriteit | Waarom |
+|---|-----------|--------|
+| P1 | Opdrachten: volledig, didactisch, veilig, onderbouwd | Dit IS het product. Zonder goede opdrachten is de rest zinloos. |
+| P2 | UI/UX + branding + visie/missie | Eerste indruk telt. Alles moet professioneel en samenhangend aanvoelen. |
+| P3 | Bug-vrij platform | Bugs bij leerlingen = vertrouwen kwijt bij docenten. |
+| P4 | Zakelijk: KvK, bank, belasting, verzekering | Moet geregeld zijn zodat je eind 2026 geen belastingstress hebt. |
+| P5 | Homepage: visueel + beleving van platform weergeven | De etalage. Moet ICT-coordinatoren en docenten overtuigen. |
+| P6 | Docentendashboard: controle + eenvoud | Docenten moeten het in 5 minuten snappen. |
 
 ---
 
 ## STATUS: WAT IS AL GEDAAN
 
-Deze zaken uit het juridisch rapport (09) zijn **al opgelost**:
-
 - [x] CORS beperken op Edge Functions (whitelist dgskills.app)
 - [x] Gemini Safety Settings (BLOCK_LOW_AND_ABOVE op alle categorieën)
 - [x] Welzijnsprotocol in SYSTEM_INSTRUCTION_SUFFIX
-- [x] DPIA volledig uitgevoerd (dpia-dgskills-compleet.md, 48.8 KB)
+- [x] DPIA volledig uitgevoerd
 - [x] DPA Model 4.0 Privacyconvenant (A-E bijlagen compleet)
-- [x] Verwerkingsregister opgesteld (verwerkingsregister.md)
+- [x] Verwerkingsregister opgesteld
 - [x] Vertex AI migratie — data in EU (europe-west4, Nederland)
-- [x] Privacyverklaring opgesteld (privacyverklaring-dgskills.md)
+- [x] Privacyverklaring opgesteld
 - [x] AI-transparantieverklaring op website (hoog-risico classificatie)
-- [x] FG/DPO adviesrapport (fg-dpo-adviesrapport.md)
-- [x] 40+ missies ontwikkeld met SLO Kerndoelen mapping
+- [x] FG/DPO adviesrapport
+- [x] 94 missies ontwikkeld met SLO Kerndoelen mapping
+- [x] Docentendashboard met 11 tabs (monitoring, gamificatie, SLO, etc.)
+- [x] Homepage met lazy-loaded secties, SEO, JSON-LD
+- [x] Avatar-systeem, XP/leveling, badges
+- [x] Mobile-first responsive design
 
 ---
 
-## SPRINT 0 — "Fundament" (Week 1-2: 24 feb - 9 mrt)
+## SPRINT 1 — "Opdrachten Perfectioneren" (1-14 mrt)
 
-**Thema:** Juridische en zakelijke basis leggen
-**Uren:** ~6-8 uur
+**Focus:** P1 — Het product kloppend maken
+**Uren:** ~10 uur
 
-| # | Taak | Tijd | Status |
-|---|------|------|--------|
-| 0.1 | KvK-inschrijving als eenmanszaak (online, SBI-code kiezen) | 2 uur | ⬜ |
-| 0.2 | Zakelijke bankrekening openen | 1 uur | ⬜ |
-| 0.3 | `[invullen]` placeholders in privacy-docs invullen (zodra KvK-nr bekend) | 1 uur | ⬜ |
-| 0.4 | Beroepsaansprakelijkheidsverzekering (BAV) afsluiten | 2 uur | ⬜ |
-| 0.5 | BTW-nummer activeren / kleine ondernemersregeling beoordelen | 1 uur | ⬜ |
+| # | Taak | Tijd | Status | Claude doet |
+|---|------|------|--------|-------------|
+| 1.1 | Alle 94 missies systematisch reviewen op kwaliteit | 4u | ⬜ | Review-rapport per missie |
+| 1.2 | Didactische onderbouwing schrijven (visie, leerlijnen) | 2u | ⬜ | Concept + SLO-mapping check |
+| 1.3 | Security fix: systemInstruction server-side valideren | 2u | ⬜ | Code schrijven + deployen |
+| 1.4 | Gap-analyse: welke SLO kerndoelen missen een missie? | 1u | ⬜ | Analyse + aanbeveling |
+| 1.5 | Top-3 ontbrekende missies schrijven | 3u | ⬜ | Missies schrijven |
 
-**Claude helpt met:** SBI-code kiezen, banken vergelijken, BAV-opties, KOR-berekening
-
-**Definition of Done:** KvK-nummer, bankrekening, BAV-polis, alle `[invullen]` in docs vervangen
+**Done wanneer:** Elke missie heeft een kwaliteitsstempel, security fix live, gaps gevuld.
 
 ---
 
-## SPRINT 1 — "Contracten" (Week 3-4: 10-23 mrt)
+## SPRINT 2 — "UI/UX + Branding" (15-28 mrt)
 
-**Thema:** Juridische documenten afronden
-**Uren:** ~10-12 uur
+**Focus:** P2 + P3 — Professionele uitstraling + bugs wegwerken
+**Uren:** ~10 uur
 
-| # | Taak | Tijd | Status |
-|---|------|------|--------|
-| 1.1 | Algemene Voorwaarden opstellen (NLdigital 2025 als basis) | 4 uur | ⬜ |
-| 1.2 | Pilotovereenkomst juridisch formuleren | 3 uur | ⬜ |
-| 1.3 | SLA aanvullen met uptime-garantie en credits | 2 uur | ⬜ |
-| 1.4 | Datalekregister en -procedure operationeel maken | 1 uur | ⬜ |
-| 1.5 | Alle juridische docs publiceren op compliance-hub pagina | 2 uur | ⬜ |
+| # | Taak | Tijd | Status | Claude doet |
+|---|------|------|--------|-------------|
+| 2.1 | Branding document: visie, missie, tone-of-voice, kleurenpalet | 2u | ⬜ | Concept schrijven |
+| 2.2 | UI consistency check: alles lab-* tokens, typografie, spacing | 2u | ⬜ | Audit + fixes |
+| 2.3 | Bug hunt: volledige flow doorlopen (login → missie → afronden) | 3u | ⬜ | Testen + fixen |
+| 2.4 | Lighthouse audit + top-5 performance issues fixen | 2u | ⬜ | Audit + code fixes |
+| 2.5 | Responsive check: mobiel, tablet, desktop | 1u | ⬜ | Testen + fixen |
 
-**Claude helpt met:** AV opstellen, pilotcontract formuleren, SLA-tekst, compliance-hub update
-
-**Definition of Done:** Getekende AV, pilotovereenkomst template, werkend datalekregister
+**Done wanneer:** Consistent design, Lighthouse >90, geen bekende bugs in core flow.
 
 ---
 
-## SPRINT 2 — "Curriculum" (Week 5-6: 24 mrt - 6 apr)
+## SPRINT 3 — "Zakelijk Fundament" (29 mrt - 11 apr)
 
-**Thema:** Inhoud controleren en completeren
-**Uren:** ~10-12 uur
+**Focus:** P4 — Belasting en juridisch op orde
+**Uren:** ~8 uur
 
-| # | Taak | Tijd | Status |
-|---|------|------|--------|
-| 2.1 | Alle 40+ missies systematisch doorlopen op kwaliteit | 4 uur | ⬜ |
-| 2.2 | Gap-analyse: welke SLO kerndoelen missen nog een missie? | 2 uur | ⬜ |
-| 2.3 | Ontbrekende missies schrijven (max 3-5 prioriteit) | 4 uur | ⬜ |
-| 2.4 | systemInstruction server-side valideren (security issue) | 2 uur | ⬜ |
-| 2.5 | 2-3 leerlingen informeel laten testen + feedback noteren | 2 uur | ⬜ |
+| # | Taak | Tijd | Status | Claude doet |
+|---|------|------|--------|-------------|
+| 3.1 | KvK-inschrijving als eenmanszaak | 2u | ⬜ | SBI-code advies, checklist |
+| 3.2 | Zakelijke bankrekening openen | 1u | ⬜ | Banken vergelijken |
+| 3.3 | BTW-nummer + kleine ondernemersregeling beoordelen | 1u | ⬜ | KOR-berekening |
+| 3.4 | Beroepsaansprakelijkheidsverzekering (BAV) | 1u | ⬜ | Opties vergelijken |
+| 3.5 | `[invullen]` placeholders in privacy-docs invullen | 1u | ⬜ | Docs updaten |
+| 3.6 | Algemene Voorwaarden opstellen | 2u | ⬜ | AV schrijven (NLdigital basis) |
 
-**Claude helpt met:** Missie-review, SLO gap-analyse, nieuwe missies schrijven, security fix
-
-**Definition of Done:** Alle missies gereviewed, kritieke gaps gevuld, security fix live
-
----
-
-## SPRINT 3 — "Technische Polish" (Week 7-8: 7-20 apr)
-
-**Thema:** Website optimaliseren voor conversie en performance
-**Uren:** ~10-12 uur
-
-| # | Taak | Tijd | Status |
-|---|------|------|--------|
-| 3.1 | Lighthouse audit draaien + top-5 issues fixen | 3 uur | ⬜ |
-| 3.2 | Homepage conversie-optimalisatie (CTA, social proof, flow) | 3 uur | ⬜ |
-| 3.3 | SEO: meta tags, alt texts, interne links, schema markup checken | 2 uur | ⬜ |
-| 3.4 | Frontend check: responsive, accessibility, broken links | 2 uur | ⬜ |
-| 3.5 | Backend check: RLS policies, edge function error handling, logs | 2 uur | ⬜ |
-
-**Claude helpt met:** Lighthouse analyse, code fixes, SEO audit, RLS check via Supabase MCP
-
-**Definition of Done:** Lighthouse score >90, geen broken links, SEO basics compleet
+**Done wanneer:** KvK-nr, bankrekening, BAV-polis, BTW-keuze gemaakt, AV klaar.
 
 ---
 
-## SPRINT 4 — "Go-to-Market" (Week 9-10: 21 apr - 4 mei)
+## SPRINT 4 — "Homepage + Dashboard" (12-25 apr)
 
-**Thema:** Klanten werven
-**Uren:** ~8-10 uur
+**Focus:** P5 + P6 — Etalage + docentervaring
+**Uren:** ~10 uur
 
-| # | Taak | Tijd | Status |
-|---|------|------|--------|
-| 4.1 | Pricing finaliseren (pakketten, BTW-berekening voor scholen) | 2 uur | ⬜ |
-| 4.2 | One-pager / pitch deck voor ICT-coördinatoren | 3 uur | ⬜ |
-| 4.3 | Eigen school als eerste pilot voorstellen | 1 uur | ⬜ |
-| 4.4 | 3-5 scholen in netwerk benaderen met concrete propositie | 2 uur | ⬜ |
-| 4.5 | Aanmelden bij Kennisgroep ICT (Kennisnet) | 1 uur | ⬜ |
+| # | Taak | Tijd | Status | Claude doet |
+|---|------|------|--------|-------------|
+| 4.1 | Homepage: AI Chat Demo + Dashboard Demo secties afmaken | 2u | ⬜ | Componenten bouwen |
+| 4.2 | Homepage: conversie-optimalisatie (CTA, social proof) | 2u | ⬜ | Copy + design |
+| 4.3 | Homepage: SEO meta tags, alt texts, schema markup | 1u | ⬜ | SEO audit + fixes |
+| 4.4 | Docentendashboard: UX vereenvoudigen (5-min onboarding) | 3u | ⬜ | Redesign waar nodig |
+| 4.5 | Docentendashboard: focus mode + groepen testen | 1u | ⬜ | Testen + fixen |
+| 4.6 | Pilotovereenkomst + pricing finaliseren | 2u | ⬜ | Documenten schrijven |
 
-**Claude helpt met:** Pricing model, pitch deck content, outreach templates, positionering
-
-**Definition of Done:** Pricing live, pitch deck klaar, minimaal 3 scholen benaderd
+**Done wanneer:** Homepage verkoopt, dashboard is intuïtief, pricing staat.
 
 ---
 
-## SPRINT 5 — "Pilot Draaien" (Week 11-14: mei - juni)
+## SPRINT 5 — "Go-to-Market" (26 apr - 9 mei)
 
-**Thema:** Eerste pilot(s) uitvoeren en leren
+**Focus:** Eerste klant(en) binnenhalen
+**Uren:** ~8 uur
+
+| # | Taak | Tijd | Status | Claude doet |
+|---|------|------|--------|-------------|
+| 5.1 | One-pager / pitch deck voor ICT-coördinatoren | 3u | ⬜ | Content + design |
+| 5.2 | Eigen school als eerste pilot voorstellen | 1u | ⬜ | Pitch voorbereiden |
+| 5.3 | 3-5 scholen in netwerk benaderen | 2u | ⬜ | Outreach templates |
+| 5.4 | Compliance-hub pagina publiceren met alle docs | 1u | ⬜ | Pagina updaten |
+| 5.5 | Aanmelden bij Kennisgroep ICT (Kennisnet) | 1u | ⬜ | Aanmelding voorbereiden |
+
+**Done wanneer:** Minimaal 1 pilot getekend, 3+ scholen benaderd.
+
+---
+
+## SPRINT 6 — "Pilot Draaien" (mei - juni)
+
+**Focus:** Uitvoeren en leren
 **Uren:** ~6-8 uur/week
 
-| # | Taak | Tijd | Status |
-|---|------|------|--------|
-| 5.1 | Pilotovereenkomst tekenen met 1-3 scholen | 2 uur | ⬜ |
-| 5.2 | Onboarding flow voor docenten bouwen/testen | 4 uur | ⬜ |
-| 5.3 | Wekelijks feedback verzamelen (korte survey) | 1 uur/week | ⬜ |
-| 5.4 | Top-3 feedbackpunten per week verwerken | 3 uur/week | ⬜ |
-| 5.5 | KPI dashboard bijhouden (gebruik, retentie, NPS) | 1 uur/week | ⬜ |
+| # | Taak | Tijd | Status | Claude doet |
+|---|------|------|--------|-------------|
+| 6.1 | Onboarding flow voor docenten bouwen/testen | 4u | ⬜ | UX bouwen |
+| 6.2 | Wekelijks feedback verzamelen | 1u/week | ⬜ | Survey opstellen |
+| 6.3 | Top-3 feedbackpunten per week verwerken | 3u/week | ⬜ | Code fixes |
+| 6.4 | KPI's bijhouden (gebruik, retentie, NPS) | 1u/week | ⬜ | Dashboard inrichten |
 
-**Claude helpt met:** Onboarding UX, survey opstellen, data-analyse, iteraties
-
-**Definition of Done:** Minimaal 1 actieve pilot met meetbare resultaten
+**Done wanneer:** Actieve pilot met meetbare resultaten.
 
 ---
 
-## ACHTERGROND — Parallel (niet-urgent, geen deadline-druk)
-
-Deze taken kun je tussendoor oppakken of in rustige weken:
+## ACHTERGROND — Na mei (geen deadline-druk)
 
 | # | Taak | Deadline | Prioriteit |
 |---|------|----------|------------|
@@ -159,11 +161,30 @@ Deze taken kun je tussendoor oppakken of in rustige weken:
 
 ---
 
+## TIJDLIJN VISUEEL
+
+```
+Mrt 1 ──── Mrt 14    Mrt 15 ──── Mrt 28    Mrt 29 ──── Apr 11
+ SPRINT 1              SPRINT 2               SPRINT 3
+ Opdrachten            UI/UX + Bugs           Zakelijk
+ Review, security      Branding, polish       KvK, bank, AV
+
+Apr 12 ──── Apr 25    Apr 26 ──── Mei 9      Mei ──── Juni
+ SPRINT 4              SPRINT 5               SPRINT 6
+ Homepage + Dashboard  Go-to-Market           Pilot Draaien
+ Etalage, docent-UX    Pitch, eerste klant    Feedback, iteratie
+
+                                               Aug 2 ────
+                                               AI ACT DEADLINE
+```
+
+---
+
 ## CLAUDE TUTOR PROTOCOL
 
 **Bij het begin van ELKE chat doet Claude het volgende:**
 
-1. Check dit bestand (`LAUNCH-PLAN.md`) voor de huidige sprint en status
+1. Check dit bestand voor de huidige sprint en status
 2. Rapporteer in 3 zinnen:
    - **Waar we zijn:** "We zitten in Sprint X — [thema]"
    - **Wat het doel is:** "Het doel van deze sessie is [concreet]"
@@ -172,7 +193,7 @@ Deze taken kun je tussendoor oppakken of in rustige weken:
 4. Aan het eind van de sessie:
    - Update de status in dit bestand (⬜ → ✅)
    - Vat samen wat er gedaan is
-   - Benoem de volgende stap voor de volgende sessie
+   - Benoem de volgende stap
 
 **Regels voor Claude als tutor:**
 - Eén taak tegelijk. Niet springen.
@@ -183,34 +204,14 @@ Deze taken kun je tussendoor oppakken of in rustige weken:
 
 ---
 
-## TIJDLIJN VISUEEL
-
-```
-Feb 24 ──── Mrt 9    Mrt 10 ──── Mrt 23    Mrt 24 ──── Apr 6
- SPRINT 0              SPRINT 1               SPRINT 2
- Fundament             Contracten             Curriculum
- KvK, bank, BAV        AV, pilot, SLA         Missies, QA
-
-Apr 7 ──── Apr 20    Apr 21 ──── Mei 4      Mei ──── Juni
- SPRINT 3              SPRINT 4               SPRINT 5
- Tech Polish           Go-to-Market           Pilot Draaien
- Perf, SEO, check      Pricing, pitch         Eerste klant(en)
-
-                                               Aug 2 ────
-                                               AI ACT DEADLINE
-                                               Art. 9, 11, 49
-```
-
----
-
 ## BELANGRIJKE CONTEXT
 
 **Inkoopvenster scholen:** Feb-Mei. Scholen beslissen NU over tools voor 2026-2027.
 **Je oneerlijk voordeel:** Je bent zelf docent. Je kent de pijnpunten. Gebruik dat.
-**Route naar klanten:** Direct aan scholen verkopen, niet via SIVON (dat is voor grote partijen).
+**Route naar klanten:** Direct aan scholen verkopen, niet via SIVON.
 **Eerste klant:** Je eigen school. Gebruik concrete resultaten als bewijs voor school #2 en #3.
-**Netwerk:** Kennisgroep ICT (Kennisnet) = waar de ICT-coördinatoren zitten die over tooling beslissen.
+**Netwerk:** Kennisgroep ICT (Kennisnet) = waar de ICT-coördinatoren zitten.
 
 ---
 
-*Dit plan is opgesteld op 24 februari 2026 en wordt door Claude bijgehouden als levend document.*
+*Plan herschreven op 28 februari 2026 op basis van Yorin's prioriteiten. Wordt door Claude bijgehouden als levend document.*

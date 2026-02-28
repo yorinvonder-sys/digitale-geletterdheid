@@ -38,7 +38,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({ activeTab, onNavigate, gam
                                 flex flex-col items-center justify-center gap-0.5 py-2 px-3 min-w-[60px] min-h-[48px]
                                 rounded-xl transition-all duration-200
                                 ${isActive
-                                    ? 'text-indigo-600 bg-indigo-50'
+                                    ? 'text-indigo-600 bg-indigo-100 ring-2 ring-indigo-400/40 shadow-sm shadow-indigo-500/20'
                                     : 'text-slate-400 hover:text-slate-600 active:bg-slate-50'
                                 }
                             `}

@@ -65,9 +65,14 @@ export default defineConfig(({ mode }) => {
       }
     },
     build: {
+      // Keep lazy routes lazy: avoid eager modulepreload chains on public landing routes.
+      modulePreload: false,
       rollupOptions: {
         output: {
           manualChunks(id) {
+            // Keep Vite's preload runtime in its own tiny chunk so it never drags
+            // large vendor chunks (e.g. three.js) onto public entry routes.
+            if (id.includes('vite/preload-helper')) return 'vendor-preload-runtime';
             if (!id.includes('node_modules')) return;
 
             const isViteDeps = id.includes('.vite/deps');

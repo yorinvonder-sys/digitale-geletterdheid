@@ -210,13 +210,13 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
                                                 <button
                                                     key={expression.value}
                                                     onClick={() => setConfig({ ...config, expression: expression.value })}
-                                                    className={`p-2.5 rounded-xl border-2 transition-all flex flex-col items-center gap-1 ${config.expression === expression.value
-                                                        ? 'border-indigo-500 bg-indigo-500/20 text-white'
+                                                    className={`p-3 rounded-xl border-2 transition-all flex flex-col items-center gap-1 active:scale-95 ${config.expression === expression.value
+                                                        ? 'border-indigo-500 bg-indigo-500/20 text-white shadow-lg shadow-indigo-500/20'
                                                         : 'border-white/10 text-slate-300 hover:border-white/30'
                                                         }`}
                                                 >
-                                                    <span className="text-lg">{expression.emoji}</span>
-                                                    <span className="font-bold text-[10px]">{expression.label}</span>
+                                                    <span className="text-xl">{expression.emoji}</span>
+                                                    <span className="font-bold text-[11px]">{expression.label}</span>
                                                 </button>
                                             ))}
                                         </div>
@@ -231,16 +231,16 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
                                                     key={hair.value}
                                                     onClick={() => !hair.locked && setConfig({ ...config, hairStyle: hair.value as any })}
                                                     disabled={hair.locked}
-                                                    className={`p-2.5 rounded-xl border-2 transition-all text-center relative ${hair.locked
-                                                        ? 'border-white/5 bg-white/5 text-slate-500 cursor-not-allowed'
+                                                    className={`p-3 rounded-xl border-2 transition-all text-center relative ${hair.locked
+                                                        ? 'border-white/5 bg-white/5 text-slate-600 cursor-not-allowed opacity-50'
                                                         : config.hairStyle === hair.value
-                                                            ? 'border-indigo-500 bg-indigo-500/20 text-white'
-                                                            : 'border-white/10 text-slate-300 hover:border-white/30'
+                                                            ? 'border-indigo-500 bg-indigo-500/20 text-white shadow-lg shadow-indigo-500/20'
+                                                            : 'border-white/10 text-slate-300 hover:border-white/30 active:scale-95'
                                                         }`}
                                                 >
-                                                    <div className="font-bold text-[11px] flex items-center justify-center gap-1">
+                                                    <div className="font-bold text-xs flex items-center justify-center gap-1">
                                                         {hair.label}
-                                                        {hair.locked && <Lock size={10} className="text-amber-500" />}
+                                                        {hair.locked && <Lock size={11} className="text-amber-500/70" />}
                                                     </div>
                                                 </button>
                                             ))}
@@ -250,14 +250,14 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
                                     {/* Hair Color */}
                                     <div>
                                         <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Haar kleur</p>
-                                        <div className="flex flex-wrap gap-2 justify-center">
+                                        <div className="flex flex-wrap gap-2.5 justify-center">
                                             {HAIR_COLORS.map(color => (
                                                 <button
                                                     key={color}
                                                     onClick={() => setConfig({ ...config, hairColor: color })}
-                                                    className={`w-7 h-7 rounded-full transition-all ${config.hairColor === color
-                                                        ? 'ring-3 ring-white scale-125'
-                                                        : 'hover:scale-110'
+                                                    className={`w-9 h-9 rounded-full transition-all border-2 ${config.hairColor === color
+                                                        ? 'ring-3 ring-white ring-offset-2 ring-offset-slate-900 scale-110 border-white'
+                                                        : 'border-transparent hover:scale-110 hover:border-white/30'
                                                         }`}
                                                     style={{ backgroundColor: color }}
                                                 />
@@ -268,14 +268,14 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
                                     {/* Shirt Color */}
                                     <div>
                                         <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Shirt kleur</p>
-                                        <div className="flex flex-wrap gap-2 justify-center">
+                                        <div className="flex flex-wrap gap-2.5 justify-center">
                                             {SHIRT_COLORS.map(color => (
                                                 <button
                                                     key={color}
                                                     onClick={() => setConfig({ ...config, shirtColor: color })}
-                                                    className={`w-7 h-7 rounded-full transition-all ${config.shirtColor === color
-                                                        ? 'ring-3 ring-white scale-125'
-                                                        : 'hover:scale-110'
+                                                    className={`w-9 h-9 rounded-full transition-all border-2 ${config.shirtColor === color
+                                                        ? 'ring-3 ring-white ring-offset-2 ring-offset-slate-900 scale-110 border-white'
+                                                        : 'border-transparent hover:scale-110 hover:border-white/30'
                                                         }`}
                                                     style={{ backgroundColor: color }}
                                                 />
@@ -286,14 +286,14 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
                                     {/* Pants Color */}
                                     <div>
                                         <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Broek kleur</p>
-                                        <div className="flex flex-wrap gap-2 justify-center">
+                                        <div className="flex flex-wrap gap-2.5 justify-center">
                                             {SHIRT_COLORS.map(color => (
                                                 <button
                                                     key={color}
                                                     onClick={() => setConfig({ ...config, pantsColor: color })}
-                                                    className={`w-7 h-7 rounded-full transition-all ${config.pantsColor === color
-                                                        ? 'ring-3 ring-white scale-125'
-                                                        : 'hover:scale-110'
+                                                    className={`w-9 h-9 rounded-full transition-all border-2 ${config.pantsColor === color
+                                                        ? 'ring-3 ring-white ring-offset-2 ring-offset-slate-900 scale-110 border-white'
+                                                        : 'border-transparent hover:scale-110 hover:border-white/30'
                                                         }`}
                                                     style={{ backgroundColor: color }}
                                                 />
@@ -304,14 +304,14 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
                                     {/* Shoe Color */}
                                     <div>
                                         <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Schoenen kleur</p>
-                                        <div className="flex flex-wrap gap-2 justify-center">
+                                        <div className="flex flex-wrap gap-2.5 justify-center">
                                             {SHOE_COLORS.map(color => (
                                                 <button
                                                     key={color}
                                                     onClick={() => setConfig({ ...config, shoeColor: color })}
-                                                    className={`w-7 h-7 rounded-full transition-all ${config.shoeColor === color
-                                                        ? 'ring-3 ring-white scale-125'
-                                                        : 'hover:scale-110'
+                                                    className={`w-9 h-9 rounded-full transition-all border-2 ${config.shoeColor === color
+                                                        ? 'ring-3 ring-white ring-offset-2 ring-offset-slate-900 scale-110 border-white'
+                                                        : 'border-transparent hover:scale-110 hover:border-white/30'
                                                         }`}
                                                     style={{ backgroundColor: color }}
                                                 />

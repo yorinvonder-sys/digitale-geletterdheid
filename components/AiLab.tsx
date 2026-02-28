@@ -46,10 +46,56 @@ const WordSimulator = lazy(() => import('./WordSimulator/WordSimulator').then(mo
 const PitchPoliceMission = lazy(() => import('./missions/review/PitchPoliceMission').then(module => ({ default: module.PitchPoliceMission })));
 
 
+const ConfettiExplosion = () => {
+  const colors = ['#6366f1', '#f59e0b', '#10b981', '#ef4444', '#8b5cf6', '#ec4899'];
+  const pieces = Array.from({ length: 30 }, (_, i) => ({
+    id: i,
+    color: colors[i % colors.length],
+    left: Math.random() * 100,
+    delay: Math.random() * 0.5,
+    rotation: Math.random() * 360,
+    isCircle: Math.random() > 0.5,
+  }));
+
+  return (
+    <div className="fixed inset-0 pointer-events-none z-[200]">
+      {pieces.map(p => (
+        <div key={p.id} style={{
+          position: 'absolute',
+          left: `${p.left}%`,
+          top: '-10px',
+          width: '10px',
+          height: '10px',
+          backgroundColor: p.color,
+          borderRadius: p.isCircle ? '50%' : '2px',
+          animation: `confetti-fall 2s ease-in ${p.delay}s forwards`,
+          transform: `rotate(${p.rotation}deg)`,
+        }} />
+      ))}
+      <style>{`
+        @keyframes confetti-fall {
+          0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+          100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+      `}</style>
+    </div>
+  );
+};
+
+const getXPReward = (difficulty: string): number => {
+  switch (difficulty) {
+    case 'Easy': return 50;
+    case 'Medium': return 100;
+    case 'Hard': return 150;
+    default: return 75;
+  }
+};
+
 export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initialRole, libraryData, vsoProfile }) => {
   const [showXPPopup, setShowXPPopup] = useState(false);
   const [selectedRole, setSelectedRole] = useState<AgentRole | null>(null);
   const [showLevelUp, setShowLevelUp] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
   const [xpNotification, setXpNotification] = useState<{ amount: number, label: string } | null>(null);
   const [view, setView] = useState<'intro' | 'home' | 'tutorial' | 'lab' | 'games' | 'week1-review'>('intro');
   const [tutorialStep, setTutorialStep] = useState(0);
@@ -212,8 +258,14 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
     const missionAlreadyComplete = (stats.missionsCompleted || []).includes(selectedRole.id);
 
     if (allStepsComplete && !missionAlreadyComplete) {
-      // Award XP and mark mission complete
-      handleAwardXP(100, `${selectedRole.title} Voltooid!`);
+      // Award XP based on mission difficulty and mark mission complete
+      const xpReward = getXPReward(selectedRole.difficulty);
+      handleAwardXP(xpReward, `${selectedRole.title} Voltooid!`);
+
+      // Trigger confetti celebration
+      setShowConfetti(true);
+      setTimeout(() => setShowConfetti(false), 2500);
+
       setStats(prev => ({
         ...prev,
         missionsCompleted: [...new Set([...(prev.missionsCompleted || []), selectedRole.id])]
@@ -227,7 +279,7 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
           schoolId: user.schoolId,
           studentName: user.displayName || 'Naamloos',
           type: 'mission_complete',
-          data: `Missie voltooid: ${selectedRole.id} (+100 XP)`,
+          data: `Missie voltooid: ${selectedRole.id} (+${xpReward} XP)`,
           missionId: selectedRole.id
         });
       }
@@ -709,6 +761,8 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
 
       {/* Rotate Device Prompt - Show when mission started on tablet in portrait */}
       {missionStarted && <RotateDevicePrompt />}
+
+      {showConfetti && <ConfettiExplosion />}
 
       {showLevelUp && (
         <div className="fixed top-6 left-1/2 -translate-x-1/2 z-[100] animate-bounce">

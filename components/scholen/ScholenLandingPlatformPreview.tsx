@@ -162,17 +162,21 @@ export const ScholenLandingPlatformPreview: React.FC = () => {
                                     <button
                                         key={i}
                                         onClick={() => goTo(i)}
-                                        className={`h-2 rounded-full transition-all duration-300 ${
-                                            i === activeIndex
-                                                ? 'w-8 bg-indigo-500'
-                                                : 'w-2 bg-slate-200 hover:bg-slate-300'
-                                        }`}
+                                        className="w-11 h-11 min-w-[44px] min-h-[44px] rounded-full flex items-center justify-center hover:bg-slate-100 transition-colors"
                                         aria-label={`Ga naar stap ${i + 1}`}
-                                    />
+                                        aria-current={i === activeIndex ? 'true' : undefined}
+                                    >
+                                        <span
+                                            className={`h-2 rounded-full transition-all duration-300 ${
+                                                i === activeIndex ? 'w-8 bg-indigo-600' : 'w-2 bg-slate-400'
+                                            }`}
+                                            aria-hidden="true"
+                                        />
+                                    </button>
                                 ))}
                                 <button
                                     onClick={() => setIsPaused(p => !p)}
-                                    className="ml-3 text-slate-300 hover:text-slate-500 transition-colors"
+                                    className="ml-1 w-11 h-11 min-w-[44px] min-h-[44px] rounded-full flex items-center justify-center text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition-colors"
                                     aria-label={isPaused ? 'Afspelen' : 'Pauzeren'}
                                 >
                                     {isPaused ? (
@@ -239,7 +243,6 @@ export const ScholenLandingPlatformPreview: React.FC = () => {
                                         ? 'border-indigo-200 bg-white shadow-lg shadow-indigo-100/50'
                                         : 'border-slate-200 bg-white hover:border-slate-300 hover:shadow-md'
                                 }`}
-                                aria-label={`${step.stepLabel}: ${step.title}`}
                                 aria-current={isActive ? 'step' : undefined}
                             >
                                 <div className="flex items-center gap-3">
@@ -250,7 +253,7 @@ export const ScholenLandingPlatformPreview: React.FC = () => {
                                     </div>
                                     <div className="min-w-0">
                                         <span className={`text-[10px] font-bold uppercase tracking-wider block ${
-                                            isActive ? step.accentColor : 'text-slate-400'
+                                            isActive ? step.accentColor : 'text-slate-500'
                                         }`}>
                                             {step.stepLabel}
                                         </span>
