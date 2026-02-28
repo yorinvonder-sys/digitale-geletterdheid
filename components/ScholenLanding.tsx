@@ -36,7 +36,7 @@ function DeferredSection({ children, minHeight }: { children: React.ReactNode; m
         if (!el) return;
         const io = new IntersectionObserver(
             ([e]) => { if (e.isIntersecting) setVisible(true); },
-            { rootMargin: '600px', threshold: 0 }
+            { rootMargin: '280px', threshold: 0 }
         );
         io.observe(el);
         return () => io.disconnect();
@@ -245,17 +245,37 @@ export const ScholenLanding: React.FC = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const [showFloatingCta, setShowFloatingCta] = useState(false);
+    const [isDesktopHero, setIsDesktopHero] = useState(() => {
+        if (typeof window === 'undefined') return true;
+        return window.matchMedia('(min-width: 768px)').matches;
+    });
 
-    // Preload the first platform screenshot — LCP candidate
     useEffect(() => {
+        if (typeof window === 'undefined') return;
+        const mediaQuery = window.matchMedia('(min-width: 768px)');
+        const update = () => setIsDesktopHero(mediaQuery.matches);
+        update();
+
+        if (typeof mediaQuery.addEventListener === 'function') {
+            mediaQuery.addEventListener('change', update);
+            return () => mediaQuery.removeEventListener('change', update);
+        }
+
+        mediaQuery.addListener(update);
+        return () => mediaQuery.removeListener(update);
+    }, []);
+
+    // Preload optimized hero screenshot — primary LCP candidate
+    useEffect(() => {
+        if (!isDesktopHero) return;
         const preloadLink = document.createElement('link');
         preloadLink.rel = 'preload';
         preloadLink.as = 'image';
-        preloadLink.href = '/screenshots/student-mission-overview.png';
+        preloadLink.href = '/screenshots/student-mission-overview-1200.jpg';
         preloadLink.fetchPriority = 'high';
         document.head.appendChild(preloadLink);
         return () => { preloadLink.remove(); };
-    }, []);
+    }, [isDesktopHero]);
 
     useEffect(() => {
         const originalTitle = document.title;
@@ -459,7 +479,8 @@ export const ScholenLanding: React.FC = () => {
                             </div>
 
                             {/* Right: floating screenshot composition */}
-                            <div className="relative hidden md:block" aria-hidden="true">
+                            {isDesktopHero && (
+                                <div className="relative hidden md:block" aria-hidden="true">
                                 {/* Background glow */}
                                 <div className="absolute -inset-8 bg-gradient-to-br from-indigo-100/50 via-transparent to-purple-100/30 rounded-[3rem] blur-2xl" />
 
@@ -473,9 +494,11 @@ export const ScholenLanding: React.FC = () => {
                                             <span className="ml-3 text-[10px] text-slate-500 font-medium">dgskills.app</span>
                                         </div>
                                         <img
-                                            src="/screenshots/student-mission-overview.png"
+                                            src="/screenshots/student-mission-overview-1200.jpg"
                                             alt="DGSkills missie overzicht"
                                             className="w-full"
+                                            width={1200}
+                                            height={750}
                                             loading="eager"
                                             fetchPriority="high"
                                             decoding="async"
@@ -513,15 +536,18 @@ export const ScholenLanding: React.FC = () => {
                                 <div className="absolute -left-2 top-8 animate-hero-float-delayed z-10" style={{ animationDelay: '3s' }}>
                                     <div className="bg-white rounded-xl shadow-lg shadow-purple-900/10 border border-slate-200/50 p-2.5">
                                         <img
-                                            src="/screenshots/avatar-customization.png"
+                                            src="/screenshots/avatar-customization-192.jpg"
                                             alt=""
                                             className="w-16 h-16 rounded-lg object-cover"
+                                            width={192}
+                                            height={120}
                                             loading="lazy"
                                             decoding="async"
                                         />
                                     </div>
                                 </div>
-                            </div>
+                                </div>
+                            )}
                         </div>
 
                         {/* Scroll indicator */}

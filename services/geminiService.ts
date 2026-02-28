@@ -120,7 +120,6 @@ export class Chat {
         },
         body: JSON.stringify({
           message: cleanMessage,
-          systemInstruction: this.systemInstruction,
           history: this.history.slice(0, -1)
         })
       });
@@ -198,7 +197,6 @@ export class Chat {
         },
         body: JSON.stringify({
           message: cleanMessage,
-          systemInstruction: this.systemInstruction,
           history: this.history.slice(0, -1)
         })
       });

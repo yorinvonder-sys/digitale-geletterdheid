@@ -64,13 +64,73 @@ const EXPRESSIONS = [
     { value: 'surprised', label: 'Verrast', emoji: '😮' },
 ] as const;
 
+const SHIRT_STYLES = [
+    { value: 't-shirt', label: 'T-Shirt', locked: false },
+    { value: 'hoodie', label: 'Hoodie', locked: false },
+    { value: 'varsity', label: 'Varsity', locked: false },
+    { value: 'polo', label: 'Polo', locked: false },
+    { value: 'tank', label: 'Tanktop', locked: false },
+    { value: 'sweater', label: 'Trui', locked: false },
+    { value: 'denim', label: 'Denim', locked: true },
+    { value: 'jersey', label: 'Jersey', locked: true },
+    { value: 'trackjacket', label: 'Trainingsjack', locked: true },
+    { value: 'leather', label: 'Leer', locked: true },
+    { value: 'bomber', label: 'Bomber', locked: true },
+    { value: 'blazer', label: 'Blazer', locked: true },
+    { value: 'puffer', label: 'Puffer', locked: true },
+    { value: 'kimono', label: 'Kimono', locked: true },
+    { value: 'suit_diamond', label: 'Pak', locked: true },
+];
+
+const PANTS_STYLES = [
+    { value: 'standard', label: 'Standaard', locked: false },
+    { value: 'chinos', label: 'Chino', locked: false },
+    { value: 'shorts', label: 'Korte broek', locked: false },
+    { value: 'joggers', label: 'Joggers', locked: false },
+    { value: 'skirt', label: 'Rok', locked: false },
+    { value: 'cargo', label: 'Cargo', locked: true },
+    { value: 'skinny', label: 'Skinny', locked: true },
+    { value: 'ripped', label: 'Gescheurd', locked: true },
+    { value: 'baggy', label: 'Baggy', locked: true },
+    { value: 'sweatpants', label: 'Joggingbroek', locked: true },
+    { value: 'formal', label: 'Formeel', locked: true },
+    { value: 'pleated', label: 'Plooirok', locked: true },
+];
+
+const ACCESSORIES = [
+    { value: 'none', label: 'Geen', locked: false },
+    { value: 'cap', label: 'Pet', locked: false },
+    { value: 'beanie', label: 'Muts', locked: false },
+    { value: 'glasses', label: 'Bril', locked: false },
+    { value: 'headphones', label: 'Koptelefoon', locked: false },
+    { value: 'backpack', label: 'Rugzak', locked: false },
+    { value: 'watch', label: 'Horloge', locked: true },
+    { value: 'chain', label: 'Ketting', locked: true },
+    { value: 'scarf', label: 'Sjaal', locked: true },
+    { value: 'skateboard', label: 'Skateboard', locked: true },
+    { value: 'cape', label: 'Cape', locked: true },
+    { value: 'wings', label: 'Vleugels', locked: true },
+    { value: 'crown', label: 'Kroon', locked: true },
+    { value: 'pet_cat', label: 'Kat', locked: true },
+    { value: 'pet_dog', label: 'Hond', locked: true },
+    { value: 'sword', label: 'Zwaard', locked: true },
+];
+
+const POSES = [
+    { value: 'idle', label: 'Relaxed', emoji: '🧍' },
+    { value: 'wave', label: 'Zwaaien', emoji: '👋' },
+    { value: 'peace', label: 'Peace', emoji: '✌️' },
+    { value: 'dab', label: 'Dab', emoji: '💃' },
+] as const;
+
 export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, initialConfig }) => {
     const [currentStep, setCurrentStep] = useState(0);
     const [config, setConfig] = useState<AvatarConfig>(initialConfig || DEFAULT_AVATAR_CONFIG);
 
     const STEPS = [
         { id: 'welcome', title: 'Kies je karakter', subtitle: 'Welkom!' },
-        { id: 'style', title: 'Style je avatar', subtitle: 'Maak het uniek' },
+        { id: 'face', title: 'Gezicht & Haar', subtitle: 'Maak het uniek' },
+        { id: 'clothing', title: 'Kleding & Extras', subtitle: 'Personaliseer verder' },
         { id: 'done', title: 'Klaar!', subtitle: 'Je avatar is af' },
     ];
 
@@ -150,7 +210,6 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
                                                 pantsColor: '#1e293b',
                                                 shoeColor: '#0f172a',
                                                 hairColor: '#3d2314',
-                                                pantsStyle: 'standard',
                                                 expression: 'cool',
                                             })}
                                             className={`p-5 rounded-2xl border-4 transition-all ${config.gender === 'male' ? 'border-indigo-500 bg-indigo-500/20' : 'border-white/10 hover:border-white/30'}`}
@@ -168,7 +227,6 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
                                                 pantsColor: '#8b5cf6',
                                                 shoeColor: '#1f2937',
                                                 hairColor: '#5D4037',
-                                                pantsStyle: 'skirt',
                                                 expression: 'happy',
                                             })}
                                             className={`p-5 rounded-2xl border-4 transition-all ${config.gender === 'female' ? 'border-indigo-500 bg-indigo-500/20' : 'border-white/10 hover:border-white/30'}`}
@@ -199,7 +257,7 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
                                 </div>
                             )}
 
-                            {/* Step 1: Full Style Customization */}
+                            {/* Step 1: Gezicht & Haar */}
                             {currentStep === 1 && (
                                 <div className="space-y-4 animate-in fade-in">
                                     {/* Expression */}
@@ -264,6 +322,36 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
                                             ))}
                                         </div>
                                     </div>
+                                </div>
+                            )}
+
+                            {/* Step 2: Kleding & Extras */}
+                            {currentStep === 2 && (
+                                <div className="space-y-4 animate-in fade-in">
+                                    {/* Shirt Style */}
+                                    <div>
+                                        <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Shirt stijl</p>
+                                        <div className="grid grid-cols-4 gap-2">
+                                            {SHIRT_STYLES.map(shirt => (
+                                                <button
+                                                    key={shirt.value}
+                                                    onClick={() => !shirt.locked && setConfig({ ...config, shirtStyle: shirt.value as any })}
+                                                    disabled={shirt.locked}
+                                                    className={`p-3 rounded-xl border-2 transition-all text-center relative ${shirt.locked
+                                                        ? 'border-white/5 bg-white/5 text-slate-600 cursor-not-allowed opacity-50'
+                                                        : config.shirtStyle === shirt.value
+                                                            ? 'border-indigo-500 bg-indigo-500/20 text-white shadow-lg shadow-indigo-500/20'
+                                                            : 'border-white/10 text-slate-300 hover:border-white/30 active:scale-95'
+                                                        }`}
+                                                >
+                                                    <div className="font-bold text-xs flex items-center justify-center gap-1">
+                                                        {shirt.label}
+                                                        {shirt.locked && <Lock size={11} className="text-amber-500/70" />}
+                                                    </div>
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
 
                                     {/* Shirt Color */}
                                     <div>
@@ -279,6 +367,31 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
                                                         }`}
                                                     style={{ backgroundColor: color }}
                                                 />
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    {/* Pants Style */}
+                                    <div>
+                                        <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Broek stijl</p>
+                                        <div className="grid grid-cols-4 gap-2">
+                                            {PANTS_STYLES.map(pants => (
+                                                <button
+                                                    key={pants.value}
+                                                    onClick={() => !pants.locked && setConfig({ ...config, pantsStyle: pants.value as any })}
+                                                    disabled={pants.locked}
+                                                    className={`p-3 rounded-xl border-2 transition-all text-center relative ${pants.locked
+                                                        ? 'border-white/5 bg-white/5 text-slate-600 cursor-not-allowed opacity-50'
+                                                        : config.pantsStyle === pants.value
+                                                            ? 'border-indigo-500 bg-indigo-500/20 text-white shadow-lg shadow-indigo-500/20'
+                                                            : 'border-white/10 text-slate-300 hover:border-white/30 active:scale-95'
+                                                        }`}
+                                                >
+                                                    <div className="font-bold text-xs flex items-center justify-center gap-1">
+                                                        {pants.label}
+                                                        {pants.locked && <Lock size={11} className="text-amber-500/70" />}
+                                                    </div>
+                                                </button>
                                             ))}
                                         </div>
                                     </div>
@@ -318,11 +431,56 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
                                             ))}
                                         </div>
                                     </div>
+
+                                    {/* Accessory */}
+                                    <div>
+                                        <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Accessoire</p>
+                                        <div className="grid grid-cols-4 gap-2">
+                                            {ACCESSORIES.map(acc => (
+                                                <button
+                                                    key={acc.value}
+                                                    onClick={() => !acc.locked && setConfig({ ...config, accessory: acc.value as any })}
+                                                    disabled={acc.locked}
+                                                    className={`p-3 rounded-xl border-2 transition-all text-center relative ${acc.locked
+                                                        ? 'border-white/5 bg-white/5 text-slate-600 cursor-not-allowed opacity-50'
+                                                        : config.accessory === acc.value
+                                                            ? 'border-indigo-500 bg-indigo-500/20 text-white shadow-lg shadow-indigo-500/20'
+                                                            : 'border-white/10 text-slate-300 hover:border-white/30 active:scale-95'
+                                                        }`}
+                                                >
+                                                    <div className="font-bold text-xs flex items-center justify-center gap-1">
+                                                        {acc.label}
+                                                        {acc.locked && <Lock size={11} className="text-amber-500/70" />}
+                                                    </div>
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    {/* Pose */}
+                                    <div>
+                                        <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Pose</p>
+                                        <div className="grid grid-cols-4 gap-2">
+                                            {POSES.map(pose => (
+                                                <button
+                                                    key={pose.value}
+                                                    onClick={() => setConfig({ ...config, pose: pose.value })}
+                                                    className={`p-3 rounded-xl border-2 transition-all flex flex-col items-center gap-1 active:scale-95 ${config.pose === pose.value
+                                                        ? 'border-indigo-500 bg-indigo-500/20 text-white shadow-lg shadow-indigo-500/20'
+                                                        : 'border-white/10 text-slate-300 hover:border-white/30'
+                                                        }`}
+                                                >
+                                                    <span className="text-xl">{pose.emoji}</span>
+                                                    <span className="font-bold text-[11px]">{pose.label}</span>
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
                                 </div>
                             )}
 
-                            {/* Step 2: Done */}
-                            {currentStep === 2 && (
+                            {/* Step 3: Done */}
+                            {currentStep === 3 && (
                                 <div className="text-center space-y-4 animate-in fade-in">
                                     <div className="w-20 h-20 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-full flex items-center justify-center text-white mx-auto shadow-2xl">
                                         <Crown size={40} fill="currentColor" />

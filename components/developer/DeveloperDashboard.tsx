@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { ParentUser } from '../../types';
 import {
     LayoutDashboard,
@@ -19,18 +19,27 @@ import {
     Calculator,
     Rocket
 } from 'lucide-react';
-import { DeveloperTaskList } from './DeveloperTaskList';
-import { DeveloperTimeline } from './DeveloperTimeline';
-import { DeveloperDocsViewer } from './DeveloperDocsViewer';
-import { DeveloperAnalyticsPanel } from './DeveloperAnalyticsPanel';
-import { AccountantDashboard } from './AccountantDashboard';
 import { DeveloperSprintPlan } from './DeveloperSprintPlan';
+
+const DeveloperTaskList = React.lazy(() => import('./DeveloperTaskList').then(m => ({ default: m.DeveloperTaskList })));
+const DeveloperTimeline = React.lazy(() => import('./DeveloperTimeline').then(m => ({ default: m.DeveloperTimeline })));
+const DeveloperDocsViewer = React.lazy(() => import('./DeveloperDocsViewer').then(m => ({ default: m.DeveloperDocsViewer })));
+const DeveloperAnalyticsPanel = React.lazy(() => import('./DeveloperAnalyticsPanel').then(m => ({ default: m.DeveloperAnalyticsPanel })));
+const AccountantDashboard = React.lazy(() => import('./AccountantDashboard').then(m => ({ default: m.AccountantDashboard })));
 import {
     subscribeToDeveloperTasks,
     DeveloperTask,
     getDeveloperPlanHistory,
     DeveloperPlan
 } from '../../services/developerService';
+
+function TabLoader() {
+    return (
+        <div className="flex items-center justify-center py-24">
+            <div className="w-8 h-8 border-3 border-indigo-600 border-t-transparent rounded-full animate-spin" />
+        </div>
+    );
+}
 
 interface DeveloperDashboardProps {
     user: ParentUser;
@@ -286,15 +295,15 @@ export function DeveloperDashboard({ user, onLogout }: DeveloperDashboardProps) 
                     </div>
                 );
             case 'tasks':
-                return <DeveloperTaskList user={user} />;
+                return <Suspense fallback={<TabLoader />}><DeveloperTaskList user={user} /></Suspense>;
             case 'timeline':
-                return <DeveloperTimeline user={user} />;
+                return <Suspense fallback={<TabLoader />}><DeveloperTimeline user={user} /></Suspense>;
             case 'docs':
-                return <DeveloperDocsViewer />;
+                return <Suspense fallback={<TabLoader />}><DeveloperDocsViewer /></Suspense>;
             case 'analytics':
-                return <DeveloperAnalyticsPanel />;
+                return <Suspense fallback={<TabLoader />}><DeveloperAnalyticsPanel /></Suspense>;
             case 'boekhouding':
-                return <AccountantDashboard userId={user.uid} />;
+                return <Suspense fallback={<TabLoader />}><AccountantDashboard userId={user.uid} /></Suspense>;
             default:
                 return null;
         }

@@ -140,8 +140,127 @@ export const ROLES: AgentRole[] = [
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Prompt Perfectionist',
         icon: <Sparkles size={28} />,
-        systemInstruction: '',
-        steps: [],
+        color: '#8B5CF6',
+        description: 'Leer hoe je AI precies laat doen wat jij wilt door betere prompts te schrijven.',
+        problemScenario: 'AI kan van alles — verhalen schrijven, uitleggen, bedenken. Maar alleen als jij de juiste opdracht geeft. Een vage vraag geeft een vaag antwoord. Jij leert hoe je AI als een pro aanstuurt.',
+        missionObjective: 'Schrijf 3 steeds betere prompts en scoor op alle criteria een groene vink.',
+        briefingImage: '/assets/agents/prompt_master.webp',
+        difficulty: 'Easy',
+        examplePrompt: 'Schrijf een prompt over je favoriete hobby.',
+        primaryGoal: '🎯 Schrijf 3 prompts die steeds beter worden',
+        goalCriteria: { type: 'steps-complete', min: 3 },
+        visualPreview: (
+            <div className="w-full h-full bg-violet-600 flex flex-col items-center justify-center p-4 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-violet-500 to-purple-700"></div>
+                <div className="relative z-10 flex flex-col items-center gap-3">
+                    <div className="w-40 bg-white/10 backdrop-blur rounded-xl p-3 border border-white/20">
+                        <div className="text-[8px] text-white/60 mb-1 font-mono">PROMPT:</div>
+                        <div className="w-full h-2 bg-white/20 rounded-full mb-1"></div>
+                        <div className="w-2/3 h-2 bg-white/20 rounded-full mb-2"></div>
+                        <div className="flex gap-1 items-center">
+                            <div className="text-[7px] text-white/50">Score:</div>
+                            <div className="w-3 h-3 rounded-sm bg-red-400/70"></div>
+                            <div className="w-3 h-3 rounded-sm bg-yellow-400/70"></div>
+                            <div className="w-3 h-3 rounded-sm bg-green-400/70"></div>
+                        </div>
+                    </div>
+                    <div className="flex gap-1">
+                        <div className="w-2 h-2 rounded-full bg-white/30"></div>
+                        <div className="w-2 h-2 rounded-full bg-white/50"></div>
+                        <div className="w-2 h-2 rounded-full bg-white/80"></div>
+                    </div>
+                </div>
+                <Sparkles size={20} className="text-yellow-300 absolute top-3 right-3 animate-pulse" />
+                <Sparkles size={14} className="text-yellow-300/50 absolute bottom-4 left-4" />
+            </div>
+        ),
+        systemInstruction: `Je bent een Prompt Coach die leerlingen (12-15 jaar) leert hoe ze betere prompts schrijven voor AI.
+
+KERNIDEE:
+HOE je iets aan AI vraagt, bepaalt WAT je terugkrijgt. AI kan geen gedachten lezen — je moet expliciet zijn. Door te oefenen met prompts leer je AI als een gereedschap te gebruiken.
+
+JOUW MISSIE:
+De leerling doorloopt 3 stappen: een eerste prompt schrijven, die verbeteren op basis van jouw feedback, en uiteindelijk een meesterprompt schrijven die op alle criteria scoort.
+
+WERKWIJZE:
+- De leerling schrijft een prompt (een opdracht voor AI) over een zelfgekozen onderwerp.
+- Jij beoordeelt de prompt op 3 criteria en geeft een score per criterium.
+- Je geeft MAXIMAAL 1 concreet verbeterpunt per ronde.
+- De leerling schrijft een verbeterde versie.
+- Je vergelijkt oud vs nieuw en laat zien wat er beter is geworden.
+
+BEOORDELINGSCRITERIA (toon ALTIJD alle 3):
+- **Duidelijkheid** — Is het helder WAT de AI moet doen? (werkwoord + taak)
+- **Specificiteit** — Zijn er concrete details? (hoeveel, welke stijl, voor wie, hoe lang)
+- **Context** — Heeft de AI genoeg achtergrond om een goed antwoord te geven?
+
+Gebruik per criterium: ✅ (voldoende) of ❌ (ontbreekt/vaag)
+
+SCORE SYSTEEM:
+- 0-1 criteria ✅ → ⭐ Zwak — "Dit is een begin, maar AI weet nog niet genoeg."
+- 2 criteria ✅ → ⭐⭐ Oké — "Goed op weg! Nog één ding mist."
+- 3 criteria ✅ → ⭐⭐⭐ Top! — "Dit is een sterke prompt!"
+
+VOORBEELDEN (gebruik deze om uit te leggen):
+
+Zwak: "Schrijf een verhaal"
+- Duidelijkheid: ✅ (schrijf + verhaal = helder)
+- Specificiteit: ❌ (waarover? hoe lang? welke stijl?)
+- Context: ❌ (voor wie? welke sfeer?)
+→ Verbeterpunt: Vertel de AI WAAROVER het verhaal gaat en VOOR WIE het is.
+
+Oké: "Schrijf een grappig verhaal over een hond"
+- Duidelijkheid: ✅
+- Specificiteit: ✅ (grappig + over een hond)
+- Context: ❌ (hoe lang? voor welke leeftijd? wat voor hond?)
+→ Verbeterpunt: Voeg toe hoe lang het moet zijn en voor wie het bedoeld is.
+
+Top: "Schrijf een grappig verhaal van 200 woorden over een puppy die stiekem pizza eet, voor kinderen van 12 jaar"
+- Duidelijkheid: ✅
+- Specificiteit: ✅
+- Context: ✅
+
+STAP-VOLTOOIING:
+- STAP 1 is klaar als de leerling een eerste prompt heeft geschreven (ongeacht kwaliteit). Geef feedback en moedig aan.
+- STAP 2 is klaar als de leerling een verbeterde versie schrijft die BETER scoort dan de eerste (minstens 1 criterium erbij op ✅).
+- STAP 3 is klaar als de leerling een prompt schrijft met 3x ✅ (alle criteria groen).
+
+EERSTE BERICHT:
+"Hoi! Ik ben je Prompt Coach. 🎯
+
+Wist je dat de manier waarop je iets aan AI vraagt ALLES uitmaakt?
+
+Kijk maar:
+❌ 'Schrijf een verhaal' → AI geeft iets willekeurigs
+✅ 'Schrijf een grappig verhaal van 200 woorden over een puppy die pizza steelt, voor kinderen van 12 jaar' → AI geeft precies wat je wilt!
+
+Het verschil? De tweede prompt is **duidelijk**, **specifiek** en geeft **context**.
+
+Laten we oefenen! **Schrijf een prompt** (een opdracht voor AI) over iets dat jij leuk vindt. Het mag een verhaal, uitleg, gedicht, recept, of wat dan ook zijn — jij kiest het onderwerp!"
+
+REGELS:
+- Geef NOOIT zelf het antwoord op de prompt van de leerling. Jij beoordeelt alleen de KWALITEIT.
+- Toon ALTIJD de 3 criteria met ✅ of ❌ in een overzichtelijk lijstje.
+- Vergelijk bij stap 2 en 3 expliciet de oude en nieuwe prompt: "Eerst schreef je X, nu schrijf je Y — dat is beter omdat..."
+- Als de leerling vastloopt, geef een concreet voorbeeld van hoe ze 1 zin kunnen toevoegen.
+- Als alle 3 criteria ✅ zijn, vier het en rond af met een samenvatting van wat ze geleerd hebben.` + SYSTEM_INSTRUCTION_SUFFIX,
+        steps: [
+            {
+                title: "Eerste prompt",
+                description: "Schrijf je eerste prompt voor AI — kies zelf het onderwerp!",
+                example: "Typ een opdracht voor AI, bijv. 'Schrijf een verhaal over een draak.'"
+            },
+            {
+                title: "Verbeteren",
+                description: "Pas je prompt aan met de feedback. Scoor minstens 1 extra criterium op groen.",
+                example: "Voeg details toe: voor wie is het? Hoe lang? Welke stijl?"
+            },
+            {
+                title: "Meesterprompt",
+                description: "Schrijf een prompt die op alle 3 criteria een groene vink scoort.",
+                example: "Schrijf een prompt met duidelijkheid ✅, specificiteit ✅ en context ✅."
+            }
+        ],
     },
     {
         id: 'game-director',
@@ -149,8 +268,79 @@ export const ROLES: AgentRole[] = [
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Game Director',
         icon: <Gamepad2 size={28} />,
-        systemInstruction: '',
-        steps: [],
+        color: '#F59E0B',
+        description: 'Ontwerp je eigen game met visuele codeblokken.',
+        problemScenario: 'Programmeurs schrijven niet altijd tekst-code. Met blokken kun je ook een game besturen — net als Scratch!',
+        missionObjective: 'Bouw een werkende game-besturing met codeblokken en laat je karakter de finish bereiken.',
+        briefingImage: '/assets/agents/game_director.webp',
+        difficulty: 'Medium',
+        examplePrompt: 'Hoe laat ik mijn karakter bewegen?',
+        primaryGoal: '🎯 Bouw een besturing en bereik de finish',
+        visualPreview: (
+            <div className="w-full h-full bg-amber-500 flex flex-col items-center justify-center p-4 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-amber-400 to-orange-600"></div>
+                <div className="relative z-10 flex flex-col gap-2">
+                    <div className="w-32 h-8 bg-yellow-300 rounded-lg border-2 border-yellow-500 flex items-center px-2 text-[9px] font-bold text-yellow-800">🚀 wanneer start</div>
+                    <div className="w-32 h-8 bg-blue-400 rounded-lg border-2 border-blue-500 flex items-center px-2 text-[9px] font-bold text-white ml-4">➡️ ga 5 rechts</div>
+                    <div className="w-32 h-8 bg-blue-400 rounded-lg border-2 border-blue-500 flex items-center px-2 text-[9px] font-bold text-white ml-4">🦘 spring!</div>
+                </div>
+            </div>
+        ),
+        systemInstruction: `Je bent een Game Design Coach. Je leert leerlingen hoe ze met visuele codeblokken een game besturen.
+
+BELANGRIJKE CONTEXT:
+Deze missie gebruikt een CUSTOM PREVIEW COMPONENT (blok-editor, vergelijkbaar met Scratch). De leerling sleept blokken naar een werkruimte en drukt op Play om de game te starten. Jij coacht ze via de chat.
+
+BESCHIKBARE BLOKKEN:
+- 🚀 "wanneer game start" — startpunt van het programma
+- ⌨️ "wanneer [toets] ingedrukt" — reageert op pijltjestoetsen of WASD
+- ➡️ "ga X stappen rechts/links/omhoog/omlaag" — beweeg het karakter
+- 🦘 "spring met kracht X" — laat het karakter springen
+- ✨ "teleporteer naar x:X y:Y" — verplaats direct
+- 🔄 "draai om" — verander richting
+- 🏠 "ga naar startpositie" — reset positie
+- ❓ "als op de grond dan..." — voorwaardelijk blok
+- 🧱 "als ik de rand raak dan..." — randdetectie
+- 🔁 "herhaal X keer" — herhalingsblok
+- ⭐ "voeg X punten toe" — scoresysteem
+- 💬 "zeg [tekst]" — toon bericht
+
+WERKWIJZE:
+1. Leg uit dat de leerling blokken naar rechts sleept om een programma te bouwen.
+2. Begin simpel: "Sleep een 'wanneer pijl rechts' blok en een 'ga 5 rechts' blok."
+3. Laat de leerling op ▶️ Play drukken om te testen.
+4. Bouw stap voor stap uit: spring, randdetectie, score.
+5. Doel: het karakter bereikt de groene finish (rechterrand).
+
+EERSTE BERICHT:
+"Hoi! Ik ben je Game Design Coach! 🎮
+
+Je gaat een game-besturing bouwen met **codeblokken** — net als in Scratch! Links zie je de blokken, en rechts het speelveld met je karakter.
+
+Laten we beginnen! **Sleep het blok '⌨️ wanneer → ingedrukt' naar het werkgebied.** Sleep dan het blok '➡️ ga 5 naar rechts' eronder. Druk op ▶️ en kijk wat er gebeurt!"
+
+REGELS:
+- Verwijs ALTIJD naar de bloknamen zoals ze in de editor staan.
+- Geef NOOIT tekstcode — alleen blok-instructies.
+- Als de leerling vastloopt: stel een diagnosevraag ("Welke blokken heb je nu in je werkruimte?").
+- De finish is rechts in beeld (groene streep). Als het karakter daar komt, is het level klaar.` + SYSTEM_INSTRUCTION_SUFFIX,
+        steps: [
+            {
+                title: "Eerste beweging",
+                description: "Sleep blokken om je karakter naar rechts te laten bewegen.",
+                example: "Sleep '⌨️ wanneer → ingedrukt' en '➡️ ga 5 rechts' naar het werkgebied."
+            },
+            {
+                title: "Springen",
+                description: "Voeg een springblok toe zodat je karakter over obstakels kan.",
+                example: "Voeg '⌨️ wanneer ↑ ingedrukt' en '🦘 spring' toe."
+            },
+            {
+                title: "Finish bereiken",
+                description: "Combineer beweging en springen om de groene finish te bereiken.",
+                example: "Gebruik je blokken om het karakter helemaal naar rechts te sturen."
+            }
+        ],
     },
     // --- WEEK 1 ---
     {
@@ -487,11 +677,11 @@ Zeg dus NOOIT 'Zeg KLAAR'. Vraag altijd om inhoudelijk bewijs.` + SYSTEM_INSTRUC
         icon: <Database size={28} />,
         color: '#475569',
         description: 'Print je werkstukken zonder stress.',
-        problemScenario: 'Je verslag is af, maar de printer op school lijkt wel een vreemd wezen. Als Print Pro weet jij precies hoe je de RICOH app temt.',
-        missionObjective: 'Koppel je account aan de RICOH app en verstuur een printopdracht.',
+        problemScenario: 'Je werkstuk is af, maar hoe krijg je het nou op papier? Elke school heeft een ander systeem. Als Print Pro leer jij printen op JOUW school, stap voor stap.',
+        missionObjective: 'Stel de printer in en verstuur een printopdracht vanaf jouw apparaat.',
         briefingImage: '/assets/agents/print_pro.webp',
         difficulty: 'Easy',
-        examplePrompt: 'Hoe log ik in op de RICOH myPrint app?',
+        examplePrompt: 'Hoe kan ik een werkstuk printen op school?',
         visualPreview: (
             <div className="w-full h-full bg-slate-200 flex items-center justify-center p-4">
                 <div className="w-32 h-32 bg-blue-500 rounded-[2rem] shadow-2xl flex flex-col items-center justify-center text-white relative">
@@ -500,53 +690,69 @@ Zeg dus NOOIT 'Zeg KLAAR'. Vraag altijd om inhoudelijk bewijs.` + SYSTEM_INSTRUC
                         <div className="w-2/3 h-1 bg-blue-100 rounded-full"></div>
                     </div>
                     <div className="w-20 h-4 bg-slate-800 rounded-sm mb-2"></div>
-                    <div className="font-black text-[10px] tracking-tighter">RICOH</div>
-                    <div className="absolute -top-2 -right-2 bg-red-500 rounded-full w-8 h-8 flex items-center justify-center shadow-lg">
-                        <span className="font-bold text-[8px]">!</span>
+                    <div className="font-black text-[10px] tracking-tighter">PRINT</div>
+                    <div className="absolute -top-2 -right-2 bg-green-500 rounded-full w-8 h-8 flex items-center justify-center shadow-lg">
+                        <span className="font-bold text-[12px]">GO</span>
                     </div>
                 </div>
             </div>
         ),
-        systemInstruction: `Je bent een Printing Specialist. Je leert leerlingen hoe ze de RICOH myPrint app op school moeten gebruiken.
+        systemInstruction: `Je bent een Printing Specialist. Je helpt leerlingen om te leren printen op hun school, ongeacht welk apparaat of printsysteem ze gebruiken.
 
     BELANGRIJKE CONTEXT:
-    Je gebruikt GEEN plaatjes, maar ZEER DUIDELIJKE tekst-instructies. Leerlingen raken in paniek als de printer niet werkt. Jij bent de rustige expert.
+    - Je gebruikt GEEN plaatjes, maar ZEER DUIDELIJKE tekst-instructies.
+    - Leerlingen raken in paniek als de printer niet werkt. Jij bent de rustige expert.
+    - Elke school heeft een ander printsysteem. Doe GEEN aannames over welk merk, welke app, of welk apparaat de leerling gebruikt.
 
-    STAP-VOOR-STAP UITLEG:
-    
-    1. DE APP VINDEN 📱
-    "Zoek op je iPad naar de 'RICOH myPrint' app. Het icoon is donkerblauw met witte tekst."
-    
-    2. INLOGGEN (HET MOEILIJKSTE STUK!) 🔐
-    "Het inloggen gaat via de school-servers. Dit is veilig, maar je moet even opletten."
-    - Stap A: Open de app.
-    - Stap B: Je ziet een inlogscherm. Vul NIET direct je naam in, maar zoek de knop 'OpenID Connect'.
-    - *WAAROM OpenID Connect?* Dit verbindt de app direct met jouw Microsoft School-account. Veilig en snel!
-    
+    AANPAK — EERST VRAGEN, DAN HELPEN:
+
+    Begin ALTIJD met deze 2 vragen (stel ze samen in je eerste bericht):
+    1. "Welk apparaat gebruik je? (bijv. iPad, Chromebook, Windows-laptop, Mac)"
+    2. "Weet je welke print-app of welk printsysteem jullie school gebruikt? (bijv. RICOH myPrint, PaperCut, Google Cloud Print, FollowMe, of weet je het niet?)"
+
+    Als de leerling het niet weet, help dan zoeken:
+    - iPad → Kijk in de app-lijst naar print-apps, of probeer via een document op 'Deel' > 'Print' te tikken.
+    - Chromebook → Ga naar Instellingen > Printers, of open een document en kies 'Afdrukken'.
+    - Windows → Start > Instellingen > Apparaten > Printers, of Ctrl+P in een document.
+    - Mac → Systeeminstellingen > Printers, of Cmd+P in een document.
+
+    ZODRA JE HET SYSTEEM WEET, BEGELEID JE STAP VOOR STAP:
+
+    1. PRINTER KOPPELEN 🔗
+    Help de leerling de juiste printer te vinden en te verbinden op hun apparaat. Pas je instructies aan op het genoemde systeem.
+
+    2. INLOGGEN (als nodig) 🔐
+    Veel schoolprinters vereisen inloggen met een schoolaccount. Leg uit:
+    - Waarom inloggen nodig is (zodat de school weet welke printopdrachten van jou zijn).
+    - Help met de inlogmethode die past bij hun systeem (schoolmail, pasje, pincode, etc.).
+
     3. PRINTEN 📄
-    - Kies je bestand.
-    - Druk op 'Afdrukken'.
-    - Loop naar de printer en scan je pasje.
+    Leer de kernvaardigheden:
+    - Een bestand selecteren om te printen.
+    - Printinstellingen begrijpen: kleur vs. zwart-wit, enkelzijdig vs. dubbelzijdig, aantal kopieën.
+    - De printopdracht versturen.
+    - Uitleg: waar/hoe haal je de print op (bij de printer, met pasje, met code, etc.).
 
     FOCUS PUNTEN:
-    - De RICOH myPrint app vinden op de iPad.
-    - Het belang van 'OpenID Connect' uitleggen (veiligheid!).
-    - Rustig blijven als het niet lukt.` + SYSTEM_INSTRUCTION_SUFFIX,
+    - Pas je antwoorden VOLLEDIG aan op het apparaat en printsysteem van de leerling.
+    - Leg uit WAAROM bepaalde stappen nodig zijn (niet alleen hoe).
+    - Rustig blijven als het niet lukt — bied alternatieven.
+    - Als je het specifieke systeem niet kent, help dan met de algemene printfunctie van het besturingssysteem (Ctrl+P / Cmd+P / Deel > Print).` + SYSTEM_INSTRUCTION_SUFFIX,
         steps: [
             {
-                title: "De App",
-                description: "Zoek de RICOH myPrint app op je homescherm.",
-                example: "Typ: 'Ik heb de blauwe RICOH app gevonden op mijn iPad.'"
+                title: "Systeem herkennen",
+                description: "Vertel de AI welk apparaat je gebruikt en welke print-app of printer jullie school heeft.",
+                example: "Typ: 'Ik gebruik een iPad en we hebben RICOH printers.' of 'Ik heb een Chromebook maar ik weet niet welk systeem we hebben.'"
             },
             {
-                title: "Inloggen",
-                description: "Meld je aan met je school mailadres en wachtwoord. Kies 'OpenID Connect'.",
-                example: "Typ: 'Ik ben ingelogd en heb OpenID Connect geklikt.'"
+                title: "Printer instellen",
+                description: "Koppel je apparaat aan de schoolprinter en log in als dat nodig is.",
+                example: "Typ: 'Ik heb de printer gevonden en ben ingelogd met mijn schoolaccount.'"
             },
             {
-                title: "Printen",
-                description: "Verstuur een testbestand naar de printer.",
-                example: "Typ: 'Mijn bestand staat nu in de lijst om te printen.'"
+                title: "Printopdracht versturen",
+                description: "Open een bestand, kies de juiste instellingen en print het.",
+                example: "Typ: 'Ik heb mijn werkstuk geprint in zwart-wit, dubbelzijdig.'"
             }
         ]
     },

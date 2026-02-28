@@ -143,7 +143,7 @@ const FaceLayer = memo<{
             </group>
 
             {/* Sunglasses for cool expression */}
-            {expression === 'cool' && (
+            {expression === 'cool' && config.accessory !== 'sunglasses' && config.accessory !== 'glasses' && (
                 <group position={[0, eyeY, eyeZ + 0.02]}>
                     {/* Left lens */}
                     <mesh position={[-0.22, 0, 0]} rotation={[Math.PI / 2, 0, 0]}>
@@ -734,8 +734,10 @@ const getArmColor = (
     skinColor: string,
     isFemale: boolean
 ): string => {
-    if (shirtStyle === 'tank') return skinColor;
-    if (isFemale) return skinColor;
+    const shortSleeveStyles = ['tank', 't-shirt', 'polo'];
+    if (shortSleeveStyles.includes(shirtStyle ?? 't-shirt')) {
+        return skinColor;
+    }
     return shirtColor;
 };
 
@@ -2165,7 +2167,7 @@ const AvatarModel = memo<{
             const pose = config.pose ?? 'idle';
 
             if (pose === 'wave') {
-                const waveZ = -1.1 + Math.sin(t * 4) * 0.35;
+                const waveZ = -1.1 + Math.sin(t * 2) * 0.35;
                 rightArmRef.current.rotation.z = THREE.MathUtils.lerp(
                     rightArmRef.current.rotation.z, waveZ, delta * 8
                 );

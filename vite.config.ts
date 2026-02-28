@@ -1,10 +1,16 @@
 import path from 'path';
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
-import { execSync } from 'child_process';
+import { exec, execSync } from 'child_process';
 
 function docSyncPlugin() {
-  const syncDocs = () => {
+  const syncDocsAsync = () => {
+    exec('node scripts/sync-dev-docs.mjs', (err) => {
+      if (err) console.error('[Vite] Document sync failed:', err);
+    });
+  };
+
+  const syncDocsSync = () => {
     try {
       console.log('[Vite] Running document sync...');
       execSync('node scripts/sync-dev-docs.mjs', { stdio: 'inherit' });
@@ -16,10 +22,10 @@ function docSyncPlugin() {
   return {
     name: 'doc-sync-plugin',
     buildStart() {
-      syncDocs();
+      syncDocsSync();
     },
     configureServer(server) {
-      syncDocs();
+      syncDocsAsync();
 
       // Watch source folders
       const foldersToWatch = [
@@ -36,7 +42,7 @@ function docSyncPlugin() {
         const isDoc = ['.pdf', '.docx', '.html', '.md'].some(ext => filePath.endsWith(ext));
         if (isDoc && (event === 'add' || event === 'change' || event === 'unlink')) {
           console.log(`[Vite] Document ${event}: ${path.basename(filePath)}`);
-          syncDocs();
+          syncDocsAsync();
           server.ws.send({ type: 'full-reload' });
         }
       });
@@ -50,14 +56,28 @@ export default defineConfig(({ mode }) => {
     server: {
       port: 3000,
       strictPort: true,
-      host: '0.0.0.0',
+      host: 'localhost',
       watch: {
-        usePolling: false, // Use native fsevents on Mac (M1 friendly)
-        interval: 100, // Debounce delay
+        usePolling: false,
+        interval: 100,
         ignored: ['**/node_modules/**', '**/.git/**', '**/.agent/**']
       }
     },
     plugins: [react(), docSyncPlugin()],
+    optimizeDeps: {
+      include: [
+        'react',
+        'react-dom',
+        'three',
+        '@react-three/fiber',
+        '@react-three/drei',
+        'framer-motion',
+        'lucide-react',
+        'react-markdown',
+        '@supabase/supabase-js',
+        'dompurify'
+      ]
+    },
     // SECURITY: API keys removed from client bundle - all AI calls go through Supabase Edge Functions proxy
     resolve: {
       alias: {
@@ -88,7 +108,6 @@ export default defineConfig(({ mode }) => {
             if (pkg === 'framer-motion') return 'vendor-framer';
             if (pkg === 'lucide-react') return 'vendor-lucide';
             if (pkg.startsWith('@google/')) return 'vendor-genai';
-            if (pkg === 'xlsx') return 'vendor-xlsx';
             if (pkg === 'dompurify') return 'vendor-dompurify';
             // jspdf: NOT in manualChunks — stays with PDF export flow (BookPreview), avoids preload on landing
             if (pkg.startsWith('html2canvas')) return 'vendor-html2canvas';

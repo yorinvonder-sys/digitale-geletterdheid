@@ -15,7 +15,7 @@ interface JourneyStep {
 
 const journeySteps: JourneyStep[] = [
     {
-        src: '/screenshots/student-mission-overview.png',
+        src: '/screenshots/student-mission-overview-1200.jpg',
         alt: 'Missie Overzicht — kies een missie en begin je reis',
         title: 'Kies je missie',
         subtitle: 'START JE REIS',
@@ -30,7 +30,7 @@ const journeySteps: JourneyStep[] = [
         accentBg: 'bg-indigo-100',
     },
     {
-        src: '/screenshots/avatar-customization.png',
+        src: '/screenshots/avatar-customization-1200.jpg',
         alt: 'Avatar aanpassen — maak je eigen 3D-karakter',
         title: 'Maak je avatar',
         subtitle: 'JOUW DIGITALE IK',
@@ -64,7 +64,7 @@ const journeySteps: JourneyStep[] = [
         objectPosition: 'center',
     },
     {
-        src: '/screenshots/student-progress-xp.png',
+        src: '/screenshots/student-progress-xp-1200.jpg',
         alt: 'Level up — verdien XP en stijg in level',
         title: 'Level up!',
         subtitle: 'VERDIEN BELONINGEN',
@@ -219,9 +219,9 @@ export const ScholenLandingPlatformPreview: React.FC = () => {
                                         style={{ objectPosition: active.objectPosition || 'top' }}
                                         width={960}
                                         height={600}
-                                        loading={activeIndex === 0 ? 'eager' : 'lazy'}
-                                        fetchPriority={activeIndex === 0 ? 'high' : 'auto'}
-                                        decoding={activeIndex === 0 ? 'sync' : 'async'}
+                                        loading="lazy"
+                                        fetchPriority="auto"
+                                        decoding="async"
                                         onLoad={() => setIsImageLoaded(true)}
                                     />
                                 </div>

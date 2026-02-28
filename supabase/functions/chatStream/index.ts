@@ -14,6 +14,7 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { sanitizePrompt } from "../_shared/promptSanitizer.ts";
 import { getAccessToken, getVertexStreamUrl } from "../_shared/vertexAuth.ts";
+import { STUDENT_ASSISTANT_PROMPT } from "../_shared/systemPrompts.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
@@ -63,7 +64,7 @@ Deno.serve(async (req: Request) => {
     }
 
     // 2. Parse request
-    let body: { message?: string; systemInstruction?: string; history?: unknown[] };
+    let body: { message?: string; history?: unknown[] };
     try {
         body = await req.json();
     } catch {
@@ -121,9 +122,7 @@ Deno.serve(async (req: Request) => {
         body: JSON.stringify({
             contents,
             safetySettings,
-            ...(body.systemInstruction
-                ? { systemInstruction: { parts: [{ text: body.systemInstruction }] } }
-                : {}),
+            systemInstruction: { parts: [{ text: STUDENT_ASSISTANT_PROMPT }] },
         }),
     });
 

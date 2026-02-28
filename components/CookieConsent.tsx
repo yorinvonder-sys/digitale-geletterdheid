@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Cookie, Check, Settings } from 'lucide-react';
-import { logConsentGiven, logConsentWithdrawn } from '../services/auditService';
 
 interface CookieConsentProps {
     onAccept?: () => void;
@@ -9,6 +7,75 @@ interface CookieConsentProps {
 }
 
 const CONSENT_KEY = 'cookie-consent-status';
+
+/** Inline SVG icons keep cookie banner out of the lucide critical path. */
+const IconCookie = (props: { className?: string; size?: number }) => (
+    <svg
+        width={props.size ?? 22}
+        height={props.size ?? 22}
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className={props.className}
+        aria-hidden="true"
+    >
+        <path d="M12 2a2 2 0 0 0 2 2 2 2 0 0 1 2 2 2 2 0 0 0 2 2 2 2 0 0 1 2 2 8 8 0 1 1-8-8Z" />
+        <circle cx="8.5" cy="8.5" r="1" />
+        <circle cx="7" cy="13" r="1" />
+        <circle cx="13" cy="13.5" r="1" />
+    </svg>
+);
+
+const IconCheck = (props: { className?: string; size?: number }) => (
+    <svg
+        width={props.size ?? 14}
+        height={props.size ?? 14}
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className={props.className}
+        aria-hidden="true"
+    >
+        <path d="m20 6-11 11-5-5" />
+    </svg>
+);
+
+const IconSettings = (props: { className?: string; size?: number }) => (
+    <svg
+        width={props.size ?? 14}
+        height={props.size ?? 14}
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className={props.className}
+        aria-hidden="true"
+    >
+        <circle cx="12" cy="12" r="3" />
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.65 1.65 0 0 0 15 19.4a1.65 1.65 0 0 0-1 .6 1.65 1.65 0 0 1-2 0 1.65 1.65 0 0 0-1-.6 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-.6-1 1.65 1.65 0 0 1 0-2 1.65 1.65 0 0 0 .6-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-.6 1.65 1.65 0 0 1 2 0 1.65 1.65 0 0 0 1 .6 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 .6 1 1.65 1.65 0 0 1 0 2 1.65 1.65 0 0 0-.6 1Z" />
+    </svg>
+);
+
+async function logConsentAudit(action: 'accept' | 'decline', schoolId?: string): Promise<void> {
+    try {
+        const { logConsentGiven, logConsentWithdrawn } = await import('../services/auditService');
+        if (action === 'accept') {
+            await logConsentGiven('analytics', schoolId);
+            return;
+        }
+        await logConsentWithdrawn('analytics', schoolId);
+    } catch {
+        // Audit logging failures should never block UX.
+    }
+}
 
 export const CookieConsent: React.FC<CookieConsentProps> = ({ onAccept, onDecline, schoolId }) => {
     const [isVisible, setIsVisible] = useState(false);
@@ -27,14 +94,14 @@ export const CookieConsent: React.FC<CookieConsentProps> = ({ onAccept, onDeclin
         localStorage.setItem(CONSENT_KEY, JSON.stringify({ status: 'accepted', timestamp: new Date().toISOString(), version: '2.0' }));
         setIsVisible(false);
         onAccept?.();
-        logConsentGiven('analytics', schoolId).catch(() => { /* audit resilient when unauthenticated */ });
+        void logConsentAudit('accept', schoolId);
     };
 
     const handleDecline = () => {
         localStorage.setItem(CONSENT_KEY, JSON.stringify({ status: 'declined', timestamp: new Date().toISOString(), version: '2.0' }));
         setIsVisible(false);
         onDecline?.();
-        logConsentWithdrawn('analytics', schoolId).catch(() => { /* audit resilient when unauthenticated */ });
+        void logConsentAudit('decline', schoolId);
     };
 
     if (!isVisible) return null;
@@ -46,7 +113,7 @@ export const CookieConsent: React.FC<CookieConsentProps> = ({ onAccept, onDeclin
                 <div className="p-5">
                     <div className="flex items-start gap-4">
                         <div className="w-11 h-11 bg-slate-100 rounded-xl flex items-center justify-center shrink-0">
-                            <Cookie className="text-slate-500" size={22} />
+                            <IconCookie className="text-slate-500" size={22} />
                         </div>
                         <div className="flex-1 min-w-0">
                             <h2 className="text-base font-bold text-slate-900 mb-1">Cookies & Privacy</h2>
@@ -61,11 +128,11 @@ export const CookieConsent: React.FC<CookieConsentProps> = ({ onAccept, onDeclin
                                     <p className="font-medium text-slate-700">Welke cookies gebruiken wij?</p>
                                     <ul className="space-y-1.5 text-slate-600">
                                         <li className="flex items-center gap-2">
-                                            <Check size={14} className="text-emerald-500" />
+                                            <IconCheck size={14} className="text-emerald-500" />
                                             <span><strong>Essentieel</strong> – Nodig voor inloggen en authenticatie</span>
                                         </li>
                                         <li className="flex items-center gap-2">
-                                            <Settings size={14} className="text-slate-500" />
+                                            <IconSettings size={14} className="text-slate-500" />
                                             <span><strong>Analytics</strong> – Interne klik-analyse voor productverbetering</span>
                                         </li>
                                     </ul>

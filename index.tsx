@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import { ErrorBoundary } from './components/ErrorBoundary';
-import { initWebVitals } from './utils/webVitals';
 import './index.css';
 
 const rootElement = document.getElementById('root');
@@ -23,7 +22,13 @@ root.render(
 const scheduleVitals = typeof requestIdleCallback !== 'undefined'
   ? requestIdleCallback
   : (cb: () => void) => setTimeout(cb, 0);
-scheduleVitals(() => initWebVitals());
+scheduleVitals(async () => {
+  // Delay vitals bootstrap slightly to keep the critical route quiet during first paint.
+  setTimeout(async () => {
+    const { initWebVitals } = await import('./utils/webVitals');
+    initWebVitals();
+  }, 2500);
+});
 
 if (typeof window !== 'undefined' && window.location.pathname.startsWith('/login') && 'serviceWorker' in navigator) {
   (async () => {

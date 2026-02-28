@@ -504,7 +504,14 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                                 <div className="bg-white rounded-xl border border-slate-200 p-3 flex items-center justify-between gap-3">
                                     <div className="flex items-center gap-2">
                                         <button onClick={() => setRetryCount(prev => prev + 1)} className="p-2 text-slate-400 hover:bg-slate-50 rounded-lg"><RotateCcw size={16} /></button>
-                                        <button onClick={exportCSV} className="p-2 text-slate-400 hover:bg-slate-50 rounded-lg"><Download size={16} /></button>
+                                        <button
+                                            onClick={exportCSV}
+                                            title="Exporteer leerlingenlijst naar CSV"
+                                            aria-label="Exporteer leerlingenlijst naar CSV"
+                                            className="p-2 text-slate-400 hover:bg-slate-50 rounded-lg"
+                                        >
+                                            <Download size={16} />
+                                        </button>
                                     </div>
                                     <button data-tutorial="students-message-btn" onClick={() => setShowMessageModal(true)} className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-bold flex items-center gap-2"><Send size={14} /> Bericht</button>
                                 </div>
