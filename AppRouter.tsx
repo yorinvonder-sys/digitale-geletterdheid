@@ -117,6 +117,7 @@ function useAuthUser(options?: { enabled?: boolean; deferUntilIdle?: boolean }) 
         setLoading(true);
         let unsubscribe: (() => void) | undefined;
         let timeoutId: ReturnType<typeof setTimeout> | undefined;
+        let authTimeoutId: ReturnType<typeof setTimeout> | undefined;
         let idleId: number | undefined;
         let isCancelled = false;
 
@@ -126,9 +127,18 @@ function useAuthUser(options?: { enabled?: boolean; deferUntilIdle?: boolean }) 
                 if (isCancelled) return;
                 unsubscribe = subscribeToAuthChanges((u) => {
                     if (isCancelled) return;
+                    clearTimeout(authTimeoutId);
                     setUser(u);
                     setLoading(false);
                 });
+                // Failsafe: als de auth-callback na 8s nog niet heeft gevuurd
+                // (bijv. door een corrupt token in localStorage), stop met laden
+                // en val door naar de login-pagina.
+                authTimeoutId = setTimeout(() => {
+                    if (isCancelled) return;
+                    setUser(null);
+                    setLoading(false);
+                }, 8_000);
             } catch {
                 if (!isCancelled) setLoading(false);
             }
@@ -155,6 +165,7 @@ function useAuthUser(options?: { enabled?: boolean; deferUntilIdle?: boolean }) 
             if (timeoutId !== undefined) {
                 clearTimeout(timeoutId);
             }
+            clearTimeout(authTimeoutId);
             unsubscribe?.();
         };
     }, [enabled, deferUntilIdle]);

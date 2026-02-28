@@ -128,6 +128,8 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                     onLoginSuccess(user);
                 }
             } catch (err: any) {
+                // AbortError is een race condition met onAuthStateChange, geen echte fout.
+                if (err?.name === 'AbortError') return;
                 console.error("Redirect auth error:", err);
                 setError(err.message || 'Er is een fout opgetreden bij het inloggen met Microsoft.');
             }

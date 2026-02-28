@@ -207,7 +207,9 @@ export function AuthenticatedApp() {
     }, [user, focusMode, focusMissionId, activeModule]);
 
     useEffect(() => {
+        let authTimeoutId: ReturnType<typeof setTimeout> | undefined;
         const unsubscribe = subscribeToAuthChanges((u) => {
+            clearTimeout(authTimeoutId);
             setUser(u);
             setLoading(false);
             if (u?.role === 'teacher') {
@@ -227,7 +229,16 @@ export function AuthenticatedApp() {
                 });
             }
         });
-        return () => unsubscribe();
+        // Failsafe: als de auth-callback na 8s niet heeft gevuurd
+        // (corrupt token), stop met laden zodat AppRouter kan ingrijpen.
+        authTimeoutId = setTimeout(() => {
+            setUser(null);
+            setLoading(false);
+        }, 8_000);
+        return () => {
+            clearTimeout(authTimeoutId);
+            unsubscribe();
+        };
     }, []);
 
     // IMPORTANT: useMemo MUST be called before any early returns to satisfy Rules of Hooks.
