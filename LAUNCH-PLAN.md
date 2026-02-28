@@ -4,7 +4,7 @@
 **Beschikbare tijd:** ~8-10 uur per week (avonden/weekenden)
 **Startdatum:** 24 februari 2026
 **Harde deadline:** Mei 2026 — scholen beslissen NU over tools voor 2026-2027
-**Co-developer:** Claude
+**Co-developers:** Claude (code + schrijven) · ChatGPT/Codex 5.3 (architectuur + autonoom) · Gemini (grote context + analyse)
 
 ---
 
@@ -18,6 +18,20 @@
 | P4 | Zakelijk: KvK, bank, belasting, verzekering | Moet geregeld zijn zodat je eind 2026 geen belastingstress hebt. |
 | P5 | Homepage: visueel + beleving van platform weergeven | De etalage. Moet ICT-coordinatoren en docenten overtuigen. |
 | P6 | Docentendashboard: controle + eenvoud | Docenten moeten het in 5 minuten snappen. |
+
+---
+
+## AI TOOLING STRATEGIE
+
+Drie modellen, elk voor een ander type taak. Gebruik de router hieronder als geheugensteuntje.
+
+| Model | Gebruik voor | Niet voor |
+|-------|-------------|-----------|
+| **Claude** (jij leest dit) | Frontend/React code, opdrachten schrijven, documenten reviewen, instructies opvolgen, privacy/security | Grote autonome refactors, abstracte architectuurkeuzes |
+| **ChatGPT 5.3 Codex** | Autonome backend-taken (meerdere PRs tegelijk), architectuurkeuzes, brainstorm met geheugen over sessies, zakelijke documenten (pitch, AV, pricing) | UI-code (Claude beter), hoge-volume analyse (Gemini goedkoper) |
+| **Gemini 2.5 Pro** | Hele codebase in één keer analyseren (1M token), marktonderzoek, video/audio verwerking, hoge-volume taken (goedkoopst) | Coding (significant zwakker), nuanced writing |
+
+**Vuistregel:** Claude = standaard. Wissel alleen als de taak in de tabel hierboven duidelijk voor een ander model past.
 
 ---
 
@@ -41,55 +55,57 @@
 
 ---
 
-## SPRINT 1 — "Opdrachten Perfectioneren" (1-14 mrt)
+## SPRINT 1 — "Opdrachten Perfectioneren (deel 1)" (1-8 mrt)
 
 **Focus:** P1 — Het product kloppend maken
-**Uren:** ~10 uur
+**Uren:** ~4-5 uur (1 werkweek, schoolreis 9-14 mrt)
 
-| # | Taak | Tijd | Status | Claude doet |
+| # | Taak | Tijd | Status | Model + taak |
 |---|------|------|--------|-------------|
-| 1.1 | Alle 94 missies systematisch reviewen op kwaliteit | 4u | ⬜ | Review-rapport per missie |
-| 1.2 | Didactische onderbouwing schrijven (visie, leerlijnen) | 2u | ⬜ | Concept + SLO-mapping check |
-| 1.3 | Security fix: systemInstruction server-side valideren | 2u | ⬜ | Code schrijven + deployen |
-| 1.4 | Gap-analyse: welke SLO kerndoelen missen een missie? | 1u | ⬜ | Analyse + aanbeveling |
-| 1.5 | Top-3 ontbrekende missies schrijven | 3u | ⬜ | Missies schrijven |
+| 1.1 | Security fix: systemInstruction server-side valideren | 2u | ⬜ | **Claude** — code schrijven + deployen |
+| 1.2 | Missie-review starten: jaar 1, periode 1+2 (prioriteit) | 3u | ⬜ | **Claude** — review-rapport per missie |
 
-**Done wanneer:** Elke missie heeft een kwaliteitsstempel, security fix live, gaps gevuld.
+**Done wanneer:** Security fix live, eerste batch missies gereviewed.
 
 ---
 
-## SPRINT 2 — "UI/UX + Branding" (15-28 mrt)
+## PAUZE — Schoolreis (9-14 mrt)
+
+*Geen werk. Geniet van de reis.*
+
+---
+
+## SPRINT 2 — "Opdrachten Perfectioneren (deel 2)" (15-28 mrt)
+
+**Focus:** P1 + begin P2 — Missies afronden + branding starten
+**Uren:** ~10 uur
+
+| # | Taak | Tijd | Status | Model + taak |
+|---|------|------|--------|-------------|
+| 2.1 | Missie-review afronden: jaar 1 periode 3+4, jaar 2+3 | 3u | ⬜ | **Claude** — review-rapport |
+| 2.2 | Gap-analyse: welke SLO kerndoelen missen een missie? | 1u | ⬜ | **ChatGPT** — abstracte redenering + aanbeveling |
+| 2.3 | Top-3 ontbrekende missies schrijven | 3u | ⬜ | **Claude** — missies schrijven (pakt schrijfstijl beter op) |
+| 2.4 | Didactische onderbouwing schrijven (visie, leerlijnen) | 2u | ⬜ | **Claude** — concept + SLO-mapping check |
+| 2.5 | Branding document: visie, missie, tone-of-voice | 1u | ⬜ | **Claude** — concept schrijven |
+
+**Done wanneer:** Alle missies gereviewed, gaps gevuld, branding op papier.
+
+---
+
+## SPRINT 3 — "UI/UX + Bugs" (29 mrt - 11 apr)
 
 **Focus:** P2 + P3 — Professionele uitstraling + bugs wegwerken
 **Uren:** ~10 uur
 
-| # | Taak | Tijd | Status | Claude doet |
+| # | Taak | Tijd | Status | Model + taak |
 |---|------|------|--------|-------------|
-| 2.1 | Branding document: visie, missie, tone-of-voice, kleurenpalet | 2u | ⬜ | Concept schrijven |
-| 2.2 | UI consistency check: alles lab-* tokens, typografie, spacing | 2u | ⬜ | Audit + fixes |
-| 2.3 | Bug hunt: volledige flow doorlopen (login → missie → afronden) | 3u | ⬜ | Testen + fixen |
-| 2.4 | Lighthouse audit + top-5 performance issues fixen | 2u | ⬜ | Audit + code fixes |
-| 2.5 | Responsive check: mobiel, tablet, desktop | 1u | ⬜ | Testen + fixen |
+| 3.1 | UI consistency check: lab-* tokens, typografie, spacing | 2u | ⬜ | **Claude** — audit + fixes |
+| 3.2 | Bug hunt: volledige flow doorlopen (login → missie → afronden) | 3u | ⬜ | **Claude** — testen + fixen |
+| 3.3 | Lighthouse audit + top-5 performance issues fixen | 2u | ⬜ | **Claude** — audit + code fixes |
+| 3.4 | Responsive check: mobiel, tablet, desktop | 1u | ⬜ | **Claude** — testen + fixen |
+| 3.5 | Zakelijk: KvK, bank, BTW, verzekering, AV | 2u | ⬜ | **ChatGPT** — checklist + advies (geheugen over sessies) |
 
 **Done wanneer:** Consistent design, Lighthouse >90, geen bekende bugs in core flow.
-
----
-
-## SPRINT 3 — "Zakelijk Fundament" (29 mrt - 11 apr)
-
-**Focus:** P4 — Belasting en juridisch op orde
-**Uren:** ~8 uur
-
-| # | Taak | Tijd | Status | Claude doet |
-|---|------|------|--------|-------------|
-| 3.1 | KvK-inschrijving als eenmanszaak | 2u | ⬜ | SBI-code advies, checklist |
-| 3.2 | Zakelijke bankrekening openen | 1u | ⬜ | Banken vergelijken |
-| 3.3 | BTW-nummer + kleine ondernemersregeling beoordelen | 1u | ⬜ | KOR-berekening |
-| 3.4 | Beroepsaansprakelijkheidsverzekering (BAV) | 1u | ⬜ | Opties vergelijken |
-| 3.5 | `[invullen]` placeholders in privacy-docs invullen | 1u | ⬜ | Docs updaten |
-| 3.6 | Algemene Voorwaarden opstellen | 2u | ⬜ | AV schrijven (NLdigital basis) |
-
-**Done wanneer:** KvK-nr, bankrekening, BAV-polis, BTW-keuze gemaakt, AV klaar.
 
 ---
 
@@ -98,14 +114,14 @@
 **Focus:** P5 + P6 — Etalage + docentervaring
 **Uren:** ~10 uur
 
-| # | Taak | Tijd | Status | Claude doet |
+| # | Taak | Tijd | Status | Model + taak |
 |---|------|------|--------|-------------|
-| 4.1 | Homepage: AI Chat Demo + Dashboard Demo secties afmaken | 2u | ⬜ | Componenten bouwen |
-| 4.2 | Homepage: conversie-optimalisatie (CTA, social proof) | 2u | ⬜ | Copy + design |
-| 4.3 | Homepage: SEO meta tags, alt texts, schema markup | 1u | ⬜ | SEO audit + fixes |
-| 4.4 | Docentendashboard: UX vereenvoudigen (5-min onboarding) | 3u | ⬜ | Redesign waar nodig |
-| 4.5 | Docentendashboard: focus mode + groepen testen | 1u | ⬜ | Testen + fixen |
-| 4.6 | Pilotovereenkomst + pricing finaliseren | 2u | ⬜ | Documenten schrijven |
+| 4.1 | Homepage: AI Chat Demo + Dashboard Demo secties afmaken | 2u | ⬜ | **Claude** — componenten bouwen |
+| 4.2 | Homepage: conversie-optimalisatie (CTA, social proof) | 2u | ⬜ | **Claude** — copy + design |
+| 4.3 | Homepage: SEO meta tags, alt texts, schema markup | 1u | ⬜ | **Claude** — SEO audit + fixes |
+| 4.4 | Docentendashboard: UX vereenvoudigen (5-min onboarding) | 3u | ⬜ | **Claude** — redesign waar nodig |
+| 4.5 | Docentendashboard: focus mode + groepen testen | 1u | ⬜ | **Claude** — testen + fixen |
+| 4.6 | Pilotovereenkomst + pricing finaliseren | 2u | ⬜ | **ChatGPT** — juridische documenten + onderhandelingsadvies |
 
 **Done wanneer:** Homepage verkoopt, dashboard is intuïtief, pricing staat.
 
@@ -116,13 +132,13 @@
 **Focus:** Eerste klant(en) binnenhalen
 **Uren:** ~8 uur
 
-| # | Taak | Tijd | Status | Claude doet |
+| # | Taak | Tijd | Status | Model + taak |
 |---|------|------|--------|-------------|
-| 5.1 | One-pager / pitch deck voor ICT-coördinatoren | 3u | ⬜ | Content + design |
-| 5.2 | Eigen school als eerste pilot voorstellen | 1u | ⬜ | Pitch voorbereiden |
-| 5.3 | 3-5 scholen in netwerk benaderen | 2u | ⬜ | Outreach templates |
-| 5.4 | Compliance-hub pagina publiceren met alle docs | 1u | ⬜ | Pagina updaten |
-| 5.5 | Aanmelden bij Kennisgroep ICT (Kennisnet) | 1u | ⬜ | Aanmelding voorbereiden |
+| 5.1 | One-pager / pitch deck voor ICT-coördinatoren | 3u | ⬜ | **ChatGPT** — structuur + argumentatie; **Claude** — schrijfstijl + opmaak |
+| 5.2 | Eigen school als eerste pilot voorstellen | 1u | ⬜ | **ChatGPT** — pitch strategie voorbereiden |
+| 5.3 | 3-5 scholen in netwerk benaderen | 2u | ⬜ | **Claude** — outreach templates (schrijfstijl) |
+| 5.4 | Compliance-hub pagina publiceren met alle docs | 1u | ⬜ | **Claude** — pagina updaten |
+| 5.5 | Aanmelden bij Kennisgroep ICT (Kennisnet) | 1u | ⬜ | **Claude** — aanmelding voorbereiden |
 
 **Done wanneer:** Minimaal 1 pilot getekend, 3+ scholen benaderd.
 
@@ -133,12 +149,12 @@
 **Focus:** Uitvoeren en leren
 **Uren:** ~6-8 uur/week
 
-| # | Taak | Tijd | Status | Claude doet |
+| # | Taak | Tijd | Status | Model + taak |
 |---|------|------|--------|-------------|
-| 6.1 | Onboarding flow voor docenten bouwen/testen | 4u | ⬜ | UX bouwen |
-| 6.2 | Wekelijks feedback verzamelen | 1u/week | ⬜ | Survey opstellen |
-| 6.3 | Top-3 feedbackpunten per week verwerken | 3u/week | ⬜ | Code fixes |
-| 6.4 | KPI's bijhouden (gebruik, retentie, NPS) | 1u/week | ⬜ | Dashboard inrichten |
+| 6.1 | Onboarding flow voor docenten bouwen/testen | 4u | ⬜ | **Claude** — UX bouwen |
+| 6.2 | Wekelijks feedback verzamelen | 1u/week | ⬜ | **Claude** — survey opstellen |
+| 6.3 | Top-3 feedbackpunten per week verwerken | 3u/week | ⬜ | **Claude** (kleine fixes) · **ChatGPT Codex** (grote refactors) |
+| 6.4 | KPI's bijhouden (gebruik, retentie, NPS) | 1u/week | ⬜ | **Gemini** — grote dataset-analyse; **Claude** — dashboard code |
 
 **Done wanneer:** Actieve pilot met meetbare resultaten.
 
@@ -164,18 +180,19 @@
 ## TIJDLIJN VISUEEL
 
 ```
-Mrt 1 ──── Mrt 14    Mrt 15 ──── Mrt 28    Mrt 29 ──── Apr 11
- SPRINT 1              SPRINT 2               SPRINT 3
- Opdrachten            UI/UX + Bugs           Zakelijk
- Review, security      Branding, polish       KvK, bank, AV
+Mrt 1 ─── Mrt 8    [9-14 SCHOOLREIS]    Mrt 15 ──── Mrt 28
+ SPRINT 1                                 SPRINT 2
+ Security + start                         Missies afronden
+ missie-review                            + branding
 
-Apr 12 ──── Apr 25    Apr 26 ──── Mei 9      Mei ──── Juni
- SPRINT 4              SPRINT 5               SPRINT 6
- Homepage + Dashboard  Go-to-Market           Pilot Draaien
- Etalage, docent-UX    Pitch, eerste klant    Feedback, iteratie
+Mrt 29 ──── Apr 11    Apr 12 ──── Apr 25    Apr 26 ──── Mei 9
+ SPRINT 3               SPRINT 4              SPRINT 5
+ UI/UX + Bugs           Homepage + Dashboard  Go-to-Market
+ KvK/bank tussendoor    Etalage, docent-UX    Pitch, eerste klant
 
-                                               Aug 2 ────
-                                               AI ACT DEADLINE
+Mei ──── Juni                              Aug 2 ────
+ SPRINT 6                                  AI ACT DEADLINE
+ Pilot Draaien
 ```
 
 ---

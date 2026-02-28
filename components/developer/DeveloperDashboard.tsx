@@ -16,13 +16,15 @@ import {
     Zap,
     ChevronRight,
     BarChart3,
-    Calculator
+    Calculator,
+    Rocket
 } from 'lucide-react';
 import { DeveloperTaskList } from './DeveloperTaskList';
 import { DeveloperTimeline } from './DeveloperTimeline';
 import { DeveloperDocsViewer } from './DeveloperDocsViewer';
 import { DeveloperAnalyticsPanel } from './DeveloperAnalyticsPanel';
 import { AccountantDashboard } from './AccountantDashboard';
+import { DeveloperSprintPlan } from './DeveloperSprintPlan';
 import {
     subscribeToDeveloperTasks,
     DeveloperTask,
@@ -35,10 +37,10 @@ interface DeveloperDashboardProps {
     onLogout: () => void;
 }
 
-type TabId = 'overview' | 'tasks' | 'timeline' | 'docs' | 'analytics' | 'boekhouding';
+type TabId = 'overview' | 'tasks' | 'timeline' | 'docs' | 'analytics' | 'boekhouding' | 'sprintplan';
 
 export function DeveloperDashboard({ user, onLogout }: DeveloperDashboardProps) {
-    const [activeTab, setActiveTab] = useState<TabId>('overview');
+    const [activeTab, setActiveTab] = useState<TabId>('sprintplan');
     const [tasks, setTasks] = useState<DeveloperTask[]>([]);
     const [planHistory, setPlanHistory] = useState<DeveloperPlan[]>([]);
 
@@ -71,6 +73,7 @@ export function DeveloperDashboard({ user, onLogout }: DeveloperDashboardProps) 
         : 0;
 
     const tabs = [
+        { id: 'sprintplan',   label: 'Sprint Plan',   icon: Rocket },
         { id: 'overview',     label: 'Overzicht',     icon: LayoutDashboard },
         { id: 'tasks',        label: 'Takenlijst',    icon: CheckSquare },
         { id: 'timeline',     label: 'Tijdpaden',     icon: Calendar },
@@ -81,6 +84,8 @@ export function DeveloperDashboard({ user, onLogout }: DeveloperDashboardProps) 
 
     const renderTabContent = () => {
         switch (activeTab) {
+            case 'sprintplan':
+                return <DeveloperSprintPlan />;
             case 'overview':
                 return (
                     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
