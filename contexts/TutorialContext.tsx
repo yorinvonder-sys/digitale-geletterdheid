@@ -38,44 +38,49 @@ const clickTutorialTarget = (selector: string, delayMs = 0) => {
     run();
 };
 
+/** Close any open modals/overlays by clicking their backdrop or close button */
+const dismissOpenOverlays = () => {
+    // Close feedback modal backdrop (z-[100] overlay)
+    const feedbackBackdrop = document.querySelector('.fixed.inset-0.z-\\[100\\] .bg-slate-900\\/60') as HTMLElement | null;
+    feedbackBackdrop?.click();
+    // Close profile dropdown by clicking outside
+    const profileMenu = document.querySelector('[aria-haspopup="true"][aria-expanded="true"]') as HTMLElement | null;
+    if (profileMenu) {
+        document.body.click();
+    }
+};
+
 // Tutorial steps definition
 export const TEACHER_TUTORIAL_STEPS: TutorialStep[] = [
     {
-        id: 'welcome',
-        target: null,
-        title: 'Welkom in je docentendashboard',
-        content: 'Dit is een korte producttour. Je klikt zelf op de belangrijkste knoppen, net als in games, zodat je direct ziet wat elke actie doet.',
-        requireClick: false,
-    },
-    {
         id: 'start-lesson',
         target: '[data-tutorial="presentation-btn"]',
-        title: 'Start je les in 1 klik',
-        content: 'Klik nu op Presentatie. Je ziet daarna direct het presentatiescherm met de QR-code voor leerlingen.',
+        title: 'Start je les',
+        content: 'Klik op Presentatie voor het lespresentatiescherm met QR-code.',
         requireClick: true,
         position: 'bottom',
     },
     {
         id: 'focus-task',
         target: '[data-tutorial="focus-toggle"]',
-        title: 'Stuur de klas met Focus',
-        content: 'Klik op de Focus-schakelaar. Je ziet meteen dat je een opdracht kunt kiezen om alle leerlingen naar dezelfde taak te sturen.',
+        title: 'Focus-modus',
+        content: 'Stuur alle leerlingen naar dezelfde opdracht.',
         requireClick: true,
         position: 'bottom',
     },
     {
         id: 'students-tab',
         target: '[data-tutorial="students-tab"]',
-        title: 'Open het leerlingenoverzicht',
-        content: 'Klik op de tab Leerlingen. Daar beheer je individuele leerlingen en klassencommunicatie.',
+        title: 'Leerlingen',
+        content: 'Beheer individuele leerlingen en stuur berichten.',
         requireClick: true,
         position: 'bottom',
     },
     {
         id: 'student-message',
         target: '[data-tutorial="students-message-btn"]',
-        title: 'Stuur snel een klasbericht',
-        content: 'Klik op Bericht. Zo zie je direct waar je berichten stuurt naar alle leerlingen, een klas of een individuele leerling.',
+        title: 'Klasbericht',
+        content: 'Stuur berichten naar de hele klas of individuele leerlingen.',
         requireClick: true,
         position: 'bottom',
         onEnter: () => {
@@ -85,16 +90,16 @@ export const TEACHER_TUTORIAL_STEPS: TutorialStep[] = [
     {
         id: 'activities-tab',
         target: '[data-tutorial="activities-tab"]',
-        title: 'Ga naar activiteiten en beloningen',
-        content: 'Klik op Activiteiten. Dit is je route naar games en gamification-motivatie voor de klas.',
+        title: 'Activiteiten',
+        content: 'Games en gamification voor de klas.',
         requireClick: true,
         position: 'bottom',
     },
     {
         id: 'xp-boost',
         target: '[data-tutorial="xp-boost-btn"]',
-        title: 'Activeer een XP-moment',
-        content: 'Klik op XP Boost om te zien waar je motivatie-events start voor extra betrokkenheid tijdens de les.',
+        title: 'XP Boost',
+        content: 'Start motivatie-events voor extra betrokkenheid.',
         requireClick: true,
         position: 'bottom',
         onEnter: () => {
@@ -105,97 +110,56 @@ export const TEACHER_TUTORIAL_STEPS: TutorialStep[] = [
     {
         id: 'slo-overview',
         target: '[data-tutorial="dashboard-tab"]',
-        title: 'Terug naar overzicht en voortgang',
-        content: 'Klik op Dashboard. Hier vind je de klasstatus, signalering en voortgang richting SLO-doelen.',
+        title: 'Dashboard',
+        content: 'Klasstatus, signalering en voortgang richting SLO-doelen.',
         requireClick: true,
         position: 'bottom',
-    },
-    {
-        id: 'complete',
-        target: null,
-        title: 'Klaar voor je eerste les',
-        content: 'Top. Je hebt de belangrijkste docentacties doorlopen. Gebruik het vraagteken rechtsonder om deze tour later opnieuw te starten.',
-        requireClick: false,
     },
 ];
 
 // Student tutorial steps
+// Kept simple: only point-and-explain, no dropdown/modal interactions.
+// One requireClick at the end to start the first mission.
 export const STUDENT_TUTORIAL_STEPS: TutorialStep[] = [
-    {
-        id: 'welcome',
-        target: null,
-        title: '🚀 Welkom Future Architect!',
-        content: 'Dit is jouw dashboard voor alle digitale vaardigheden. Laten we even rondkijken zodat je weet waar alles zit!',
-        requireClick: false,
-    },
     {
         id: 'profile-btn',
         target: '[data-tutorial="student-profile-btn"]',
-        title: '👤 Jouw Profiel',
-        content: 'Hier vind je jouw profiel met avatar, trofeeën en opgeslagen werk. Klik op je profielfoto!',
-        requireClick: true,
-        position: 'bottom',
-    },
-    {
-        id: 'avatar-btn',
-        target: '[data-tutorial="student-avatar-btn"]',
-        title: '🎨 Avatar Aanpassen',
-        content: 'Maak je eigen unieke avatar! Klik hier om je uiterlijk aan te passen.',
-        requireClick: true,
-        position: 'left',
-    },
-    {
-        id: 'avatar-shop',
-        target: null,
-        title: '🛒 De Winkel',
-        content: 'In de avatar editor vind je ook de WINKEL. Daar kun je met verdiende XP nieuwe items kopen zoals hoeden, brillen en achtergronden! Sluit dit scherm om verder te gaan.',
+        title: 'Jouw Profiel',
+        content: 'Hier vind je je avatar, trofeeën en de winkel.',
         requireClick: false,
+        position: 'bottom',
     },
     {
         id: 'feedback-btn',
         target: '[data-tutorial="student-feedback-btn"]',
-        title: '💬 Feedback Geven',
-        content: 'Heb je een idee of bug gevonden? Klik hier om feedback te sturen naar de ontwikkelaar!',
-        requireClick: true,
-        position: 'bottom',
-    },
-    {
-        id: 'feedback-close',
-        target: null,
-        title: '✅ Feedback Verstuurd',
-        content: 'Super! Je feedback helpt ons de website beter te maken. Sluit dit scherm om verder te gaan.',
+        title: 'Feedback',
+        content: 'Idee of bug? Stuur hier direct feedback.',
         requireClick: false,
+        position: 'bottom',
     },
     {
         id: 'review-missions',
         target: '[data-tutorial="student-review-missions"]',
-        title: '🔄 Herhalingsopdrachten',
-        content: 'De ORANJE opdrachten zijn herhalingen van vorige lessen. Deze moet je eerst afronden voordat je nieuwe opdrachten kunt doen!',
+        title: 'Herhalingsopdrachten',
+        content: 'De oranje opdrachten zijn herhalingen. Rond deze eerst af voor nieuwe missies.',
         requireClick: false,
         position: 'bottom',
     },
     {
         id: 'main-missions',
         target: '[data-tutorial="student-main-missions"]',
-        title: '🎯 Nieuwe Opdrachten',
-        content: 'Dit zijn de nieuwe missies waar je XP en badges mee kunt verdienen. Elke opdracht leert je iets nieuws over digitale vaardigheden en AI!',
+        title: 'Nieuwe Opdrachten',
+        content: 'Dit zijn je nieuwe missies. Hier verdien je XP en badges.',
         requireClick: false,
         position: 'top',
     },
     {
         id: 'first-mission',
         target: '[data-tutorial="student-first-mission"]',
-        title: '▶️ Start een Opdracht',
-        content: 'Klik op een opdracht om te beginnen! Je kunt altijd terugkeren naar dit overzicht.',
+        title: 'Begin hier!',
+        content: 'Klik op een opdracht om te starten.',
         requireClick: true,
         position: 'bottom',
-    },
-    {
-        id: 'complete',
-        target: null,
-        title: '🎉 Je bent klaar!',
-        content: 'Je weet nu hoe alles werkt! Veel succes met je digitale avontuur. Je kunt deze tutorial altijd opnieuw starten via het vraagteken rechtsonder.',
-        requireClick: false,
     },
 ];
 

@@ -1,14 +1,17 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronRight, X, SkipForward, ChevronLeft, Sparkles, HelpCircle } from 'lucide-react';
-import { useTutorial, TutorialStep } from '../../contexts/TutorialContext';
+import { ChevronRight, ChevronLeft, X } from 'lucide-react';
+import { useTutorial } from '../../contexts/TutorialContext';
 
-interface SpotlightPosition {
+interface SpotlightRect {
     top: number;
     left: number;
     width: number;
     height: number;
 }
+
+const PADDING = 10;
+const TOOLTIP_GAP = 12;
 
 const TutorialSpotlight: React.FC = () => {
     const {
@@ -19,129 +22,120 @@ const TutorialSpotlight: React.FC = () => {
         nextStep,
         prevStep,
         skipTutorial,
-        completeStep
+        completeStep,
     } = useTutorial();
 
-    const [spotlightPos, setSpotlightPos] = useState<SpotlightPosition | null>(null);
-    const [tooltipPos, setTooltipPos] = useState<{ top: number; left: number }>({ top: 0, left: 0 });
-    const [isTargetResolved, setIsTargetResolved] = useState(true);
-    const tooltipRef = useRef<HTMLDivElement>(null);
+    const [rect, setRect] = useState<SpotlightRect | null>(null);
 
-    // Find and position spotlight on target element
+    const isFirstStep = currentStepIndex === 0;
+    const isLastStep = currentStepIndex === steps.length - 1;
+    const hasTarget = currentStep?.target != null;
+
+    // Track target element position
     useEffect(() => {
-        if (!isActive || !currentStep?.target) {
-            setSpotlightPos(null);
-            setIsTargetResolved(true);
+        if (!isActive || !currentStep) return;
+
+        if (!currentStep.target) {
+            setRect(null);
             return;
         }
 
         let clickCleanup: (() => void) | null = null;
         let retryTimer: number | null = null;
-        let mutationObserver: MutationObserver | null = null;
-        let retries = 0;
-        const maxRetries = 40;
+        let hasScrolled = false;
+        let rafId: number | null = null;
 
-        const attachRequiredClickListener = (element: Element) => {
+        const attachClick = (el: Element) => {
             if (!currentStep.requireClick || clickCleanup) return;
-            const handleClick = () => {
-                completeStep();
-            };
-            element.addEventListener('click', handleClick, { once: true });
-            clickCleanup = () => {
-                element.removeEventListener('click', handleClick);
-            };
+            const handler = () => completeStep();
+            el.addEventListener('click', handler, { once: true });
+            clickCleanup = () => el.removeEventListener('click', handler);
         };
 
-        const updatePosition = () => {
-            const element = document.querySelector(currentStep.target!);
-            if (element) {
-                setIsTargetResolved(true);
-                const rect = element.getBoundingClientRect();
-                const padding = 8;
-                setSpotlightPos({
-                    top: rect.top - padding,
-                    left: rect.left - padding,
-                    width: rect.width + padding * 2,
-                    height: rect.height + padding * 2,
-                });
-
-                // Position tooltip based on step preference
-                const tooltipWidth = 340;
-                const tooltipHeight = 180;
-                const preferredPosition = currentStep.position || 'bottom';
-                let top = rect.bottom + 16;
-                let left = rect.left + rect.width / 2 - tooltipWidth / 2;
-
-                if (preferredPosition === 'top') {
-                    top = rect.top - tooltipHeight - 16;
-                }
-                if (preferredPosition === 'left') {
-                    top = rect.top + rect.height / 2 - tooltipHeight / 2;
-                    left = rect.left - tooltipWidth - 16;
-                }
-                if (preferredPosition === 'right') {
-                    top = rect.top + rect.height / 2 - tooltipHeight / 2;
-                    left = rect.right + 16;
-                }
-
-                // Adjust if would go off screen
-                if (left < 16) left = 16;
-                if (left + tooltipWidth > window.innerWidth - 16) {
-                    left = window.innerWidth - tooltipWidth - 16;
-                }
-                if (top < 16) top = 16;
-                if (top + tooltipHeight > window.innerHeight - 16) {
-                    top = rect.top - tooltipHeight - 16;
-                }
-                if (top < 16) {
-                    top = 16;
-                }
-
-                setTooltipPos({ top, left });
-                attachRequiredClickListener(element);
-                return true;
+        const measure = () => {
+            const el = document.querySelector(currentStep.target!);
+            if (!el) {
+                setRect(null);
+                return false;
             }
-            setIsTargetResolved(false);
-            setSpotlightPos(null);
-            return false;
-        };
-
-        const initialResolved = updatePosition();
-        window.addEventListener('resize', updatePosition);
-        window.addEventListener('scroll', updatePosition);
-
-        const retryResolve = () => {
-            if (updatePosition()) return;
-            if (retries >= maxRetries) return;
-            retries += 1;
-            retryTimer = window.setTimeout(retryResolve, 120);
-        };
-
-        if (!initialResolved) {
-            retryResolve();
-            mutationObserver = new MutationObserver(() => {
-                updatePosition();
+            if (!hasScrolled) {
+                hasScrolled = true;
+                el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            const r = el.getBoundingClientRect();
+            setRect({
+                top: r.top - PADDING,
+                left: r.left - PADDING,
+                width: r.width + PADDING * 2,
+                height: r.height + PADDING * 2,
             });
-            mutationObserver.observe(document.body, { childList: true, subtree: true });
+            attachClick(el);
+            return true;
+        };
+
+        // Initial attempt + retries
+        if (!measure()) {
+            let retries = 0;
+            const retry = () => {
+                if (measure() || retries > 30) return;
+                retries++;
+                retryTimer = window.setTimeout(retry, 150);
+            };
+            retry();
         }
 
+        // Keep position in sync on scroll/resize
+        const onLayout = () => {
+            rafId = requestAnimationFrame(() => measure());
+        };
+        window.addEventListener('scroll', onLayout, true);
+        window.addEventListener('resize', onLayout);
+
         return () => {
-            if (retryTimer) {
-                window.clearTimeout(retryTimer);
-            }
-            mutationObserver?.disconnect();
+            if (retryTimer) clearTimeout(retryTimer);
+            if (rafId) cancelAnimationFrame(rafId);
             clickCleanup?.();
-            window.removeEventListener('resize', updatePosition);
-            window.removeEventListener('scroll', updatePosition);
+            window.removeEventListener('scroll', onLayout, true);
+            window.removeEventListener('resize', onLayout);
         };
     }, [isActive, currentStep, completeStep]);
 
-    if (!isActive || !currentStep) return null;
+    // Compute tooltip position relative to spotlight rect
+    const getTooltipStyle = useCallback((): React.CSSProperties => {
+        if (!rect) {
+            // Centered for non-target steps
+            return {
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+            };
+        }
 
-    const isFullscreen = !currentStep.target;
-    const isLastStep = currentStepIndex === steps.length - 1;
-    const isFirstStep = currentStepIndex === 0;
-    const canSkipTutorial = isLastStep;
+        const pos = currentStep?.position || 'bottom';
+        const style: React.CSSProperties = { position: 'absolute', maxWidth: 320 };
+
+        if (pos === 'bottom') {
+            style.top = rect.top + rect.height + TOOLTIP_GAP;
+            style.left = rect.left + rect.width / 2;
+            style.transform = 'translateX(-50%)';
+        } else if (pos === 'top') {
+            style.bottom = window.innerHeight - rect.top + TOOLTIP_GAP;
+            style.left = rect.left + rect.width / 2;
+            style.transform = 'translateX(-50%)';
+        } else if (pos === 'left') {
+            style.top = rect.top + rect.height / 2;
+            style.right = window.innerWidth - rect.left + TOOLTIP_GAP;
+            style.transform = 'translateY(-50%)';
+        } else {
+            style.top = rect.top + rect.height / 2;
+            style.left = rect.left + rect.width + TOOLTIP_GAP;
+            style.transform = 'translateY(-50%)';
+        }
+
+        return style;
+    }, [rect, currentStep?.position]);
+
+    if (!isActive || !currentStep) return null;
 
     return (
         <AnimatePresence>
@@ -150,147 +144,122 @@ const TutorialSpotlight: React.FC = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="fixed inset-0 z-[9999] pointer-events-none"
+                className="fixed inset-0 z-[9999]"
+                style={{ pointerEvents: 'none' }}
             >
-                {/* Dark overlay with spotlight cutout */}
-                {isFullscreen ? (
-                    // Fullscreen overlay for intro/outro slides
-                    <div className="absolute inset-0 bg-slate-900/80 backdrop-blur-sm" />
-                ) : spotlightPos && (
-                    // Overlay with spotlight hole
-                    <svg className="absolute inset-0 w-full h-full">
-                        <defs>
-                            <mask id="spotlight-mask">
-                                <rect x="0" y="0" width="100%" height="100%" fill="white" />
+                {/* Semi-transparent backdrop with spotlight cutout */}
+                <svg className="absolute inset-0 w-full h-full" style={{ pointerEvents: 'auto' }} onClick={(e) => { e.stopPropagation(); }}>
+                    <defs>
+                        <mask id="tut-mask">
+                            <rect x="0" y="0" width="100%" height="100%" fill="white" />
+                            {rect && (
                                 <rect
-                                    x={spotlightPos.left}
-                                    y={spotlightPos.top}
-                                    width={spotlightPos.width}
-                                    height={spotlightPos.height}
-                                    rx="12"
+                                    x={rect.left}
+                                    y={rect.top}
+                                    width={rect.width}
+                                    height={rect.height}
+                                    rx="10"
                                     fill="black"
                                 />
-                            </mask>
-                        </defs>
-                        <rect
-                            x="0"
-                            y="0"
-                            width="100%"
-                            height="100%"
-                            fill="rgba(15, 23, 42, 0.85)"
-                            mask="url(#spotlight-mask)"
-                        />
-                    </svg>
-                )}
+                            )}
+                        </mask>
+                    </defs>
+                    <rect
+                        x="0" y="0" width="100%" height="100%"
+                        fill="rgba(15, 23, 42, 0.6)"
+                        mask="url(#tut-mask)"
+                    />
+                </svg>
 
-                {/* Spotlight ring animation around target */}
-                {spotlightPos && !isFullscreen && (
-                    <motion.div
-                        initial={{ scale: 0.95, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        className="absolute pointer-events-none"
+                {/* Make the spotlight hole clickable (pass-through) */}
+                {rect && (
+                    <div
+                        className="absolute"
                         style={{
-                            top: spotlightPos.top - 4,
-                            left: spotlightPos.left - 4,
-                            width: spotlightPos.width + 8,
-                            height: spotlightPos.height + 8,
+                            top: rect.top,
+                            left: rect.left,
+                            width: rect.width,
+                            height: rect.height,
+                            pointerEvents: 'auto',
+                            borderRadius: 10,
+                            boxShadow: '0 0 0 3px rgba(99,102,241,0.5), 0 0 20px 4px rgba(99,102,241,0.15)',
                         }}
-                    >
-                        <div className="absolute inset-0 rounded-2xl border-2 border-indigo-400 animate-pulse" />
-                        <div className="absolute inset-0 rounded-2xl border-4 border-indigo-500/30 animate-ping" />
-                    </motion.div>
+                        onClick={() => {
+                            // Let clicks pass through to the actual element
+                            const el = document.querySelector(currentStep.target!) as HTMLElement;
+                            el?.click();
+                        }}
+                    />
                 )}
 
-                {/* Tooltip / Content Card */}
+                {/* Tooltip */}
                 <motion.div
-                    ref={tooltipRef}
-                    initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                    transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-                    className={`absolute bg-white rounded-3xl shadow-2xl border border-slate-100 overflow-hidden pointer-events-auto ${isFullscreen ? 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md' : 'w-[340px]'}`}
-                    style={!isFullscreen ? { top: tooltipPos.top, left: tooltipPos.left } : undefined}
+                    key={currentStep.id}
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.2 }}
+                    style={{ ...getTooltipStyle(), pointerEvents: 'auto' }}
+                    className="bg-white rounded-xl shadow-xl border border-slate-200 overflow-hidden"
                 >
-                    {/* Progress bar */}
-                    <div className="h-1.5 bg-slate-100 flex">
+                    {/* Step counter bar */}
+                    <div className="flex h-1">
                         {steps.map((_, i) => (
                             <div
                                 key={i}
-                                className={`flex-1 transition-all duration-300 ${i <= currentStepIndex ? 'bg-indigo-500' : 'bg-transparent'}`}
+                                className={`flex-1 ${i <= currentStepIndex ? 'bg-indigo-500' : 'bg-slate-100'}`}
                             />
                         ))}
                     </div>
 
-                    <div className="p-6">
-                        {/* Header */}
-                        <div className="flex items-start justify-between mb-4">
-                            <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-indigo-200">
-                                    <Sparkles size={20} />
-                                </div>
-                                <div>
-                                    <h3 className="text-lg font-black text-slate-900">{currentStep.title}</h3>
-                                    <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">
-                                        Stap {currentStepIndex + 1} van {steps.length}
-                                    </p>
-                                </div>
-                            </div>
-                            {canSkipTutorial && (
-                                <button
-                                    onClick={skipTutorial}
-                                    className="p-2 text-slate-300 hover:text-slate-500 hover:bg-slate-50 rounded-lg transition-colors"
-                                >
-                                    <X size={18} />
-                                </button>
-                            )}
+                    <div className="px-4 py-3">
+                        {/* Title + skip */}
+                        <div className="flex items-center justify-between gap-2 mb-1">
+                            <h3 className="text-sm font-bold text-slate-900 leading-tight">{currentStep.title}</h3>
+                            <button
+                                onClick={skipTutorial}
+                                className="shrink-0 p-1 text-slate-300 hover:text-slate-500 rounded transition-colors"
+                                title="Tutorial overslaan"
+                            >
+                                <X size={14} />
+                            </button>
                         </div>
 
-                        {/* Content */}
-                        <p className="text-slate-600 font-medium leading-relaxed mb-6 min-h-[3rem]">
-                            {currentStep.content}
-                        </p>
+                        {/* Description */}
+                        <p className="text-xs text-slate-500 leading-relaxed mb-3">{currentStep.content}</p>
 
-                        {/* Required click indicator */}
+                        {/* Required click hint */}
                         {currentStep.requireClick && (
-                            <div className="mb-4 px-3 py-2 bg-amber-50 border border-amber-200 rounded-xl flex items-center gap-2">
-                                <div className="w-2 h-2 bg-amber-500 rounded-full animate-pulse" />
-                                <span className="text-xs font-bold text-amber-700">
-                                    {isTargetResolved
-                                        ? 'Klik op het gemarkeerde element om verder te gaan'
-                                        : 'Even wachten: we laden dit onderdeel...'}
-                                </span>
-                            </div>
+                            <p className="text-[11px] text-indigo-600 font-semibold mb-3 flex items-center gap-1.5">
+                                <span className="w-1.5 h-1.5 bg-indigo-500 rounded-full animate-pulse" />
+                                Klik op het uitgelichte element
+                            </p>
                         )}
 
                         {/* Navigation */}
-                        <div className="flex items-center justify-between gap-3">
-                            <button
-                                onClick={prevStep}
-                                disabled={isFirstStep}
-                                className={`p-3 rounded-xl text-slate-400 hover:bg-slate-50 transition-all ${isFirstStep ? 'opacity-0 pointer-events-none' : ''}`}
-                            >
-                                <ChevronLeft size={20} />
-                            </button>
-
-                            {!currentStep.requireClick && (
-                                <button
-                                    onClick={nextStep}
-                                    className="flex-1 py-3 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2 shadow-lg shadow-indigo-200 hover:shadow-xl hover:scale-[1.02] transition-all active:scale-95"
-                                >
-                                    {isLastStep ? 'Afronden' : 'Volgende'}
-                                    <ChevronRight size={18} />
-                                </button>
-                            )}
-
-                            {currentStep.requireClick && canSkipTutorial && (
-                                <button
-                                    onClick={skipTutorial}
-                                    className="flex-1 py-3 bg-slate-100 text-slate-600 rounded-xl font-bold text-sm flex items-center justify-center gap-2 hover:bg-slate-200 transition-all"
-                                >
-                                    <SkipForward size={16} />
-                                    Tutorial Overslaan
-                                </button>
-                            )}
+                        <div className="flex items-center justify-between">
+                            <span className="text-[10px] text-slate-400 font-medium">
+                                {currentStepIndex + 1}/{steps.length}
+                            </span>
+                            <div className="flex items-center gap-1">
+                                {!isFirstStep && (
+                                    <button
+                                        onClick={prevStep}
+                                        className="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-50 rounded-lg transition-colors"
+                                    >
+                                        <ChevronLeft size={16} />
+                                    </button>
+                                )}
+                                {!currentStep.requireClick && (
+                                    <button
+                                        onClick={isLastStep ? skipTutorial : nextStep}
+                                        className="flex items-center gap-1 px-3 py-1.5 bg-indigo-500 hover:bg-indigo-600 text-white text-xs font-semibold rounded-lg transition-colors"
+                                    >
+                                        {isLastStep ? 'Klaar' : 'Volgende'}
+                                        <ChevronRight size={14} />
+                                    </button>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </motion.div>
@@ -299,23 +268,18 @@ const TutorialSpotlight: React.FC = () => {
     );
 };
 
-// Small button to restart tutorial
+// Small button to restart tutorial (unchanged)
 export const TutorialRestartButton: React.FC = () => {
     const { startTutorial, hasCompleted } = useTutorial();
-
-    // Only show if user has completed tutorial before
     if (!hasCompleted) return null;
 
     return (
         <button
             onClick={startTutorial}
-            className="fixed bottom-6 right-6 w-12 h-12 bg-white border border-slate-200 text-slate-400 hover:text-indigo-600 hover:border-indigo-200 rounded-full flex items-center justify-center shadow-lg transition-all hover:scale-110 z-40 group"
-            title="Tutorial Opnieuw Starten"
+            className="fixed bottom-6 right-6 w-10 h-10 bg-white border border-slate-200 text-slate-400 hover:text-indigo-600 hover:border-indigo-200 rounded-full flex items-center justify-center shadow-md transition-all hover:scale-110 z-40"
+            title="Tutorial Herhalen"
         >
-            <HelpCircle size={20} />
-            <span className="absolute right-full mr-3 bg-slate-800 text-white text-xs font-bold px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
-                Tutorial Herhalen
-            </span>
+            <span className="text-sm">?</span>
         </button>
     );
 };
