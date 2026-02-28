@@ -117,47 +117,44 @@ export const TEACHER_TUTORIAL_STEPS: TutorialStep[] = [
     },
 ];
 
-// Student tutorial steps
-// Kept simple: only point-and-explain, no dropdown/modal interactions.
-// One requireClick at the end to start the first mission.
+// Student tutorial steps — logische volgorde: welkom → missies → profiel → start
 export const STUDENT_TUTORIAL_STEPS: TutorialStep[] = [
     {
-        id: 'profile-btn',
-        target: '[data-tutorial="student-profile-btn"]',
-        title: 'Jouw Profiel',
-        content: 'Hier vind je je avatar, trofeeën en de winkel.',
+        id: 'welcome',
+        target: null, // fullscreen
+        title: 'Welkom bij Project DG!',
+        content: 'Dit is jouw dashboard. Hier vind je al je missies, XP en trofeeën. We laten je even zien hoe alles werkt.',
         requireClick: false,
-        position: 'bottom',
     },
     {
-        id: 'feedback-btn',
-        target: '[data-tutorial="student-feedback-btn"]',
-        title: 'Feedback',
-        content: 'Idee of bug? Stuur hier direct feedback.',
+        id: 'main-missions',
+        target: '[data-tutorial="student-main-missions"]',
+        title: 'Jouw Missies',
+        content: 'Dit zijn je opdrachten. Elke missie levert XP op en brengt je dichter bij een nieuw level.',
         requireClick: false,
-        position: 'bottom',
+        position: 'top',
     },
     {
         id: 'review-missions',
         target: '[data-tutorial="student-review-missions"]',
         title: 'Herhalingsopdrachten',
-        content: 'De oranje opdrachten zijn herhalingen. Rond deze eerst af voor nieuwe missies.',
+        content: 'Oranje opdrachten zijn herhalingen van de vorige periode. Rond deze eerst af om nieuwe missies vrij te spelen.',
         requireClick: false,
         position: 'bottom',
     },
     {
-        id: 'main-missions',
-        target: '[data-tutorial="student-main-missions"]',
-        title: 'Nieuwe Opdrachten',
-        content: 'Dit zijn je nieuwe missies. Hier verdien je XP en badges.',
+        id: 'profile-btn',
+        target: '[data-tutorial="student-profile-btn"]',
+        title: 'Jouw Profiel',
+        content: 'Bekijk je avatar, trofeeën en de winkel. Verdien XP om nieuwe items vrij te spelen!',
         requireClick: false,
-        position: 'top',
+        position: 'bottom',
     },
     {
         id: 'first-mission',
         target: '[data-tutorial="student-first-mission"]',
-        title: 'Begin hier!',
-        content: 'Klik op een opdracht om te starten.',
+        title: 'Klaar? Begin hier!',
+        content: 'Klik op een opdracht om je eerste missie te starten. Succes!',
         requireClick: true,
         position: 'bottom',
     },
@@ -224,18 +221,18 @@ export const TutorialProvider: React.FC<TutorialProviderProps> = ({
     }, [storageKey, onComplete]);
 
     const nextStep = useCallback(() => {
+        dismissOpenOverlays();
         if (currentStepIndex < steps.length - 1) {
             const newIndex = currentStepIndex + 1;
             setCurrentStepIndex(newIndex);
-            // Call onEnter callback if defined
             steps[newIndex]?.onEnter?.();
-            console.log(`[Tutorial] Step ${newIndex} reached: ${steps[newIndex].id}`);
         } else {
             endTutorial();
         }
     }, [currentStepIndex, steps, endTutorial]);
 
     const prevStep = useCallback(() => {
+        dismissOpenOverlays();
         if (currentStepIndex > 0) {
             setCurrentStepIndex(currentStepIndex - 1);
         }

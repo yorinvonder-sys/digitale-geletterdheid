@@ -26,10 +26,15 @@ const TutorialSpotlight: React.FC = () => {
     } = useTutorial();
 
     const [rect, setRect] = useState<SpotlightRect | null>(null);
+    const [targetNotFound, setTargetNotFound] = useState(false);
 
     const isFirstStep = currentStepIndex === 0;
     const isLastStep = currentStepIndex === steps.length - 1;
-    const hasTarget = currentStep?.target != null;
+
+    // Reset targetNotFound when step changes
+    useEffect(() => {
+        setTargetNotFound(false);
+    }, [currentStepIndex]);
 
     // Track target element position
     useEffect(() => {
@@ -73,11 +78,15 @@ const TutorialSpotlight: React.FC = () => {
             return true;
         };
 
-        // Initial attempt + retries
+        // Initial attempt + retries with targetNotFound fallback
         if (!measure()) {
             let retries = 0;
             const retry = () => {
-                if (measure() || retries > 30) return;
+                if (measure()) return;
+                if (retries > 20) {
+                    setTargetNotFound(true);
+                    return;
+                }
                 retries++;
                 retryTimer = window.setTimeout(retry, 150);
             };
@@ -228,15 +237,15 @@ const TutorialSpotlight: React.FC = () => {
                         {/* Description */}
                         <p className="text-xs text-slate-500 leading-relaxed mb-3">{currentStep.content}</p>
 
-                        {/* Required click hint */}
-                        {currentStep.requireClick && (
+                        {/* Required click hint — only show when element is actually found */}
+                        {currentStep.requireClick && rect && !targetNotFound && (
                             <p className="text-[11px] text-indigo-600 font-semibold mb-3 flex items-center gap-1.5">
                                 <span className="w-1.5 h-1.5 bg-indigo-500 rounded-full animate-pulse" />
                                 Klik op het uitgelichte element
                             </p>
                         )}
 
-                        {/* Navigation */}
+                        {/* Navigation — always show a way forward */}
                         <div className="flex items-center justify-between">
                             <span className="text-[10px] text-slate-400 font-medium">
                                 {currentStepIndex + 1}/{steps.length}
@@ -250,7 +259,8 @@ const TutorialSpotlight: React.FC = () => {
                                         <ChevronLeft size={16} />
                                     </button>
                                 )}
-                                {!currentStep.requireClick && (
+                                {/* Show Next button when: not requireClick, OR element was not found (fallback) */}
+                                {(!currentStep.requireClick || targetNotFound) && (
                                     <button
                                         onClick={isLastStep ? skipTutorial : nextStep}
                                         className="flex items-center gap-1 px-3 py-1.5 bg-indigo-500 hover:bg-indigo-600 text-white text-xs font-semibold rounded-lg transition-colors"

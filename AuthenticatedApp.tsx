@@ -234,19 +234,8 @@ export function AuthenticatedApp() {
     // (Moving this after early returns caused React error #310 — "Rendered more hooks than
     // during the previous render" — because the hook count changed between loading/loaded states.)
     const studentTutorialSteps = useMemo((): TutorialStep[] =>
-        STUDENT_TUTORIAL_STEPS.map(step => {
-            if (step.id === 'feedback-btn') {
-                return {
-                    ...step,
-                    onEnter: () => {
-                        setIsProfileOpen(false);
-                        setInitialProfileTab('profile');
-                    }
-                };
-            }
-            return step;
-        }),
-    []); // setIsProfileOpen en setInitialProfileTab zijn stabiele setState setters
+        STUDENT_TUTORIAL_STEPS,
+    []);
 
     const handleExitModule = () => {
         setActiveModule(null);
