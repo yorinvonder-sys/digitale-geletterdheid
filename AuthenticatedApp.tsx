@@ -60,8 +60,6 @@ export function AuthenticatedApp() {
     const [loading, setLoading] = useState(true);
     const [viewMode, setViewMode] = useState<'assignments' | 'monitoring'>('monitoring');
     const [activeWeek, setActiveWeek] = useState(2);
-    const completedIntroWeeks = user?.stats?.completedIntroWeeks || [];
-    const [showIntro, setShowIntro] = useState(false);
     const [showGames, setShowGames] = useState(false);
     const [initialGameId, setInitialGameId] = useState<string | null>(null);
     const [gamesEnabled, setGamesEnabled] = useState(true);
@@ -506,7 +504,6 @@ export function AuthenticatedApp() {
 
     const handleGoHome = () => {
         setIsProfileOpen(false);
-        setShowIntro(false);
         setActiveModule(null);
     };
 
@@ -783,15 +780,6 @@ export function AuthenticatedApp() {
                 gamesEnabled={gamesEnabled}
                 activeWeek={activeWeek}
                 setActiveWeek={setActiveWeek}
-                hasSeenIntro={completedIntroWeeks.includes(activeWeek)}
-                onStartIntro={async () => {
-                    if (user) {
-                        const newCompletedWeeks = [...completedIntroWeeks, activeWeek];
-                        const newStats = { ...user.stats, completedIntroWeeks: newCompletedWeeks };
-                        await handleSaveProgress(newStats);
-                        setUser({ ...user, stats: newStats });
-                    }
-                }}
                 onGoHome={handleGoHome}
                 stats={user?.stats}
                 focusMode={focusMode && !hasCompletedFocusMission}
@@ -802,7 +790,7 @@ export function AuthenticatedApp() {
         );
     };
 
-    const showFooter = !activeModule && !isProfileOpen && !showIntro && !showGames && viewMode !== 'monitoring';
+    const showFooter = !activeModule && !isProfileOpen && !showGames && viewMode !== 'monitoring';
 
     const appShell = (
         <div className="w-full min-h-screen bg-[#f8fafc] pb-safe flex flex-col relative">

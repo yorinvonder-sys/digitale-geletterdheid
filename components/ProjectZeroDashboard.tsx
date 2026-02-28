@@ -28,8 +28,6 @@ interface DashboardProps {
     activeYearGroup?: number;
     setActiveYearGroup?: (year: number) => void;
     schoolConfig?: { periodNaming?: string };
-    hasSeenIntro: boolean;
-    onStartIntro: () => void;
     onGoHome?: () => void;
     stats?: UserStats;
     focusMode?: boolean;
@@ -298,8 +296,6 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
     activeYearGroup,
     setActiveYearGroup,
     schoolConfig,
-    hasSeenIntro,
-    onStartIntro,
     onGoHome,
     stats,
     focusMode = false,
@@ -1109,25 +1105,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                     )}
 
                     {/* MISSION CONTENT */}
-                    {
-                        !hasSeenIntro ? (
-                            <div className="flex flex-col items-center justify-center py-20 bg-white rounded-[3rem] border-2 border-dashed border-indigo-200 shadow-xl shadow-indigo-50/50 animate-in fade-in zoom-in duration-500">
-                                <div className="w-24 h-24 bg-white border-2 border-slate-100 rounded-[2rem] flex items-center justify-center text-white mb-8 transform rotate-3 overflow-hidden">
-                                    <img src="/logo.svg" alt="Logo" className="w-full h-full object-contain p-4" decoding="async" />
-                                </div>
-                                <h3 className="text-3xl font-black text-slate-900 mb-4 tracking-tight">Klaar voor {periodNaming} {activeWeek}?</h3>
-                                <p className="text-slate-500 font-medium mb-10 text-center max-w-md">
-                                    Klik op de knop hieronder om de introductie van deze week te starten en je nieuwe opdrachten te ontdekken.
-                                </p>
-                                <button
-                                    onClick={onStartIntro}
-                                    className="bg-indigo-600 text-white px-12 py-5 rounded-2xl font-black uppercase tracking-widest flex items-center gap-3 hover:bg-indigo-700 hover:scale-105 transition-all shadow-xl shadow-indigo-200 active:scale-95"
-                                >
-                                    Start Missie {activeWeek} <Play size={20} fill="currentColor" />
-                                </button>
-                            </div>
-                        ) : (
-                            <div className="relative group">
+                    <div className="relative group">
                                 <div className="flex flex-col gap-8">
                                     {/* REVIEW GATE BANNER — shown when period has review missions that aren't all done */}
                                     {reviewMissions.length > 0 && !allReviewsDone && !isTeacher && (
@@ -1215,8 +1193,6 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                     </div>
                                 </div>
                             </div>
-                        )
-                    }
 
                     {/* INFO MODAL */}
                     {selectedMissionInfo && (
