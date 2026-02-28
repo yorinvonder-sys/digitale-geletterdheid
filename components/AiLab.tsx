@@ -27,7 +27,12 @@ import { getAssessment, hasAssessment } from './assessment/data/assessmentRegist
 import { RotateDevicePrompt } from './RotateDevicePrompt';
 import { logActivity, saveHybridAssessmentRecord } from '../services/teacherService';
 
-// Imports cleaned up
+// Periode 3 interactive mission components
+import { DataDetectiveMission } from './missions/DataDetectiveMission';
+import { DeepfakeDetectorMission } from './missions/DeepfakeDetectorMission';
+import { FilterBubbleBreakerMission } from './missions/FilterBubbleBreakerMission';
+import { DatalekkenRampenplanMission } from './missions/DatalekkenRampenplanMission';
+import { DataVoorDataMission } from './missions/DataVoorDataMission';
 
 
 // Filter lijst voor ongepast taalgebruik (Silent Blocking)
@@ -41,7 +46,7 @@ const WordSimulator = lazy(() => import('./WordSimulator/WordSimulator').then(mo
 const PitchPoliceMission = lazy(() => import('./missions/review/PitchPoliceMission').then(module => ({ default: module.PitchPoliceMission })));
 
 
-export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initialRole, libraryData }) => {
+export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initialRole, libraryData, vsoProfile }) => {
   const [showXPPopup, setShowXPPopup] = useState(false);
   const [selectedRole, setSelectedRole] = useState<AgentRole | null>(null);
   const [showLevelUp, setShowLevelUp] = useState(false);
@@ -834,7 +839,7 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
         )}
 
         {selectedRole && missionStarted && (
-          (hasAssessment(selectedRole.id) || selectedRole.id === 'ai-tekengame' || selectedRole.id === 'chatbot-trainer' || selectedRole.id === 'ai-beleid-brainstorm') ? (
+          (hasAssessment(selectedRole.id) || selectedRole.id === 'ai-tekengame' || selectedRole.id === 'chatbot-trainer' || selectedRole.id === 'ai-beleid-brainstorm' || selectedRole.id === 'data-detective' || selectedRole.id === 'deepfake-detector' || selectedRole.id === 'filter-bubble-breaker' || selectedRole.id === 'datalekken-rampenplan' || selectedRole.id === 'data-voor-data') ? (
             // Full Screen Game Mode fo Review Missions & Tekengame & Chatbot Trainer
             <div className="flex-1 w-full h-full min-h-0 relative animate-in zoom-in-95 duration-500 rounded-3xl overflow-hidden shadow-2xl border-4 border-slate-900 bg-slate-900">
               {selectedRole.id === 'chatbot-trainer' ? (
@@ -872,6 +877,83 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
                     }));
                     handleBackToOverview();
                   }}
+                />
+              ) : selectedRole.id === 'data-detective' ? (
+                <DataDetectiveMission
+                  onBack={handleBackToOverview}
+                  onComplete={(passed) => {
+                    if (passed) {
+                      handleAwardXP(100, 'Data Detective Voltooid!');
+                      setStats(prev => ({
+                        ...prev,
+                        missionsCompleted: [...new Set([...(prev.missionsCompleted || []), 'data-detective'])]
+                      }));
+                    }
+                    handleBackToOverview();
+                  }}
+                  stats={stats}
+                  vsoProfile={vsoProfile}
+                />
+              ) : selectedRole.id === 'deepfake-detector' ? (
+                <DeepfakeDetectorMission
+                  onBack={handleBackToOverview}
+                  onComplete={(passed) => {
+                    if (passed) {
+                      handleAwardXP(100, 'Deepfake Detector Voltooid!');
+                      setStats(prev => ({
+                        ...prev,
+                        missionsCompleted: [...new Set([...(prev.missionsCompleted || []), 'deepfake-detector'])]
+                      }));
+                    }
+                    handleBackToOverview();
+                  }}
+                  stats={stats}
+                  vsoProfile={vsoProfile}
+                />
+              ) : selectedRole.id === 'filter-bubble-breaker' ? (
+                <FilterBubbleBreakerMission
+                  onBack={handleBackToOverview}
+                  onComplete={(passed) => {
+                    if (passed) {
+                      handleAwardXP(100, 'Filter Bubble Breaker Voltooid!');
+                      setStats(prev => ({
+                        ...prev,
+                        missionsCompleted: [...new Set([...(prev.missionsCompleted || []), 'filter-bubble-breaker'])]
+                      }));
+                    }
+                    handleBackToOverview();
+                  }}
+                  stats={stats}
+                />
+              ) : selectedRole.id === 'datalekken-rampenplan' ? (
+                <DatalekkenRampenplanMission
+                  onBack={handleBackToOverview}
+                  onComplete={(passed) => {
+                    if (passed) {
+                      handleAwardXP(100, 'Datalekken Rampenplan Voltooid!');
+                      setStats(prev => ({
+                        ...prev,
+                        missionsCompleted: [...new Set([...(prev.missionsCompleted || []), 'datalekken-rampenplan'])]
+                      }));
+                    }
+                    handleBackToOverview();
+                  }}
+                  stats={stats}
+                />
+              ) : selectedRole.id === 'data-voor-data' ? (
+                <DataVoorDataMission
+                  onBack={handleBackToOverview}
+                  onComplete={(passed) => {
+                    if (passed) {
+                      handleAwardXP(100, 'Data voor Data Voltooid!');
+                      setStats(prev => ({
+                        ...prev,
+                        missionsCompleted: [...new Set([...(prev.missionsCompleted || []), 'data-voor-data'])]
+                      }));
+                    }
+                    handleBackToOverview();
+                  }}
+                  stats={stats}
                 />
               ) : (() => {
                 // Dynamic assessment lookup via registry

@@ -398,6 +398,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
 
     // Filter relevant missions and apply locking logic
     const isTeacher = userRole === 'teacher' || userRole === 'admin';
+    const [leerdoelenOpen, setLeerdoelenOpen] = useState(isTeacher);
 
     const currentMissions = useMemo(() => {
         let missions = buildMissionsForPeriod(currentYearGroup, activeWeek);
@@ -905,91 +906,60 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
 
                 {/* BODY */}
                 <main
-                    className="flex-1 max-w-7xl mx-auto w-full px-6 py-8 md:py-12 lg:py-14"
+                    className="flex-1 max-w-7xl mx-auto w-full px-6 py-4 md:py-6"
                     onTouchStart={handleTouchStart}
                     onTouchMove={handleTouchMove}
                     onTouchEnd={handleTouchEnd}
                 >
-                    <div className="mb-10 max-w-3xl">
-                        <div className="inline-flex items-center gap-2 px-3 py-1 bg-indigo-50 text-indigo-600 rounded-full text-[10px] font-extrabold uppercase tracking-widest mb-4 border border-indigo-100">
-                            <Stars size={12} /> Ontdek je Digitale Toekomst
+                    <div className="flex items-center justify-between gap-4 mb-4">
+                        <div className="min-w-0">
+                            <h2 className="text-xl md:text-2xl font-black text-slate-900 tracking-tight truncate">
+                                {currentPeriodConfig?.title || `${periodNaming} ${activeWeek}`}
+                            </h2>
+                            {currentPeriodConfig?.subtitle && (
+                                <p className="text-xs text-slate-400 font-medium truncate mt-0.5">{currentPeriodConfig.subtitle}</p>
+                            )}
                         </div>
-                        <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-4 tracking-tight leading-tight">
-                            Missie Overzicht
-                        </h2>
-                        <p className="text-slate-500 text-lg md:text-xl font-medium leading-relaxed">
-                            Kies een missie en begin je reis. Elke voltooide opdracht brengt je dichter bij het certificaat <span className="text-indigo-600 font-bold underline decoration-indigo-200 decoration-2 underline-offset-4">Digitale Expert</span>.
-                        </p>
-
-                        {/* PROGRESS COUNTER */}
                         {totalMissions > 0 && (
-                            <div className="mt-5 flex items-center gap-4 p-4 bg-white rounded-2xl border border-slate-100 shadow-sm">
-                                <div className="relative w-12 h-12 flex-shrink-0">
-                                    <svg className="w-12 h-12 -rotate-90" viewBox="0 0 36 36">
-                                        <path
-                                            className="text-slate-100"
-                                            d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                                            fill="none" stroke="currentColor" strokeWidth="3"
-                                        />
-                                        <path
-                                            className="text-indigo-600"
-                                            d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                                            fill="none" stroke="currentColor" strokeWidth="3"
-                                            strokeDasharray={`${totalMissions > 0 ? (completedCount / totalMissions) * 100 : 0}, 100`}
-                                            strokeLinecap="round"
-                                        />
+                            <div className="flex items-center gap-2.5 flex-shrink-0 px-3 py-2 bg-white rounded-xl border border-slate-100 shadow-sm">
+                                <div className="relative w-9 h-9">
+                                    <svg className="w-9 h-9 -rotate-90" viewBox="0 0 36 36">
+                                        <path className="text-slate-100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeWidth="3.5" />
+                                        <path className="text-indigo-600" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeWidth="3.5"
+                                            strokeDasharray={`${(completedCount / totalMissions) * 100}, 100`} strokeLinecap="round" />
                                     </svg>
-                                    <span className="absolute inset-0 flex items-center justify-center text-xs font-extrabold text-slate-700">
+                                    <span className="absolute inset-0 flex items-center justify-center text-[9px] font-extrabold text-slate-700">
                                         {completedCount}/{totalMissions}
                                     </span>
                                 </div>
-                                <div>
-                                    <p className="text-sm font-bold text-slate-700">
-                                        {completedCount} van {totalMissions} missies voltooid
-                                    </p>
-                                    <p className="text-xs text-slate-400 font-medium">
-                                        {completedCount === totalMissions ? '🎉 Alle missies voltooid!' : `Nog ${totalMissions - completedCount} te gaan`}
-                                    </p>
+                                <div className="hidden sm:block">
+                                    <p className="text-xs font-bold text-slate-700 leading-tight">{completedCount}/{totalMissions}</p>
+                                    <p className="text-[9px] text-slate-400 font-medium">voltooid</p>
                                 </div>
                             </div>
                         )}
                     </div>
 
-                    {/* LEERJAAR SELECTOR */}
-                    {Object.keys(CURRICULUM.yearGroups).length > 1 && (
-                        <div className="flex items-center gap-2 mb-4">
-                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mr-2">Leerjaar</span>
-                            {Object.entries(CURRICULUM.yearGroups)
-                                .filter(([_, config]) => {
-                                    const userLevel = (stats?.educationLevel as EducationLevel) || 'havo';
-                                    return config.availableLevels.includes(userLevel);
-                                })
-                                .map(([yearStr, config]) => {
-                                    const year = Number(yearStr);
-                                    const isActive = currentYearGroup === year;
-                                    return (
-                                        <button
-                                            key={year}
-                                            onClick={() => {
-                                                setActiveYearGroup?.(year);
-                                                setActiveWeek(1);
-                                            }}
-                                            className={`px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all min-h-[44px]
-                                                ${isActive
-                                                    ? 'bg-slate-900 text-white shadow-lg'
-                                                    : 'text-slate-400 hover:text-slate-600 hover:bg-slate-100'
-                                                }`}
-                                        >
-                                            {config.title}
-                                        </button>
-                                    );
-                                })
-                            }
-                        </div>
-                    )}
-
-                    {/* PERIODE SELECTION - Scrollable on smaller screens */}
-                    <div className="flex items-center gap-2 mb-8 bg-slate-100 p-1.5 rounded-2xl w-full md:w-fit border border-slate-200 shadow-inner overflow-x-auto no-scrollbar">
+                    {/* LEERJAAR + PERIODE SELECTION */}
+                    <div className="flex items-center gap-2 mb-4">
+                        {Object.keys(CURRICULUM.yearGroups).length > 1 && (
+                            <select
+                                value={currentYearGroup}
+                                onChange={(e) => { setActiveYearGroup?.(Number(e.target.value)); setActiveWeek(1); }}
+                                className="px-3 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest bg-slate-900 text-white border-none min-h-[44px] cursor-pointer appearance-none pr-8 bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22white%22%20stroke-width%3D%223%22%3E%3Cpath%20d%3D%22M6%209l6%206%206-6%22%2F%3E%3C%2Fsvg%3E')] bg-no-repeat bg-[right_0.5rem_center]"
+                            >
+                                {Object.entries(CURRICULUM.yearGroups)
+                                    .filter(([_, config]) => {
+                                        const userLevel = (stats?.educationLevel as EducationLevel) || 'havo';
+                                        return config.availableLevels.includes(userLevel);
+                                    })
+                                    .map(([yearStr, config]) => (
+                                        <option key={yearStr} value={yearStr}>{config.title}</option>
+                                    ))
+                                }
+                            </select>
+                        )}
+                        <div className="flex items-center gap-2 bg-slate-100 p-1.5 rounded-2xl flex-1 md:flex-initial border border-slate-200 shadow-inner overflow-x-auto no-scrollbar">
                         {Object.keys(yearConfig?.periods || {}).map(Number).sort((a, b) => a - b).map((period) => {
                             const pConf = yearConfig?.periods[period];
                             const isLocked = !isTeacher && !permissions?.enabled_games?.includes(`week-${period}`);
@@ -1014,93 +984,117 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                 </button>
                             )
                         })}
+                        </div>
                     </div>
 
-                    {/* Dynamisch leerdoelenblok — op basis van curriculum config */}
+                    {/* Dynamisch leerdoelenblok — collapsible accordion */}
                     {currentPeriodConfig && (
-                        <div className={`mb-6 bg-white rounded-3xl border ${periodTheme.border} shadow-sm p-4 md:p-5`}>
-                            {/* Header + beschrijving inline */}
-                            <div className="flex items-start gap-3 mb-3">
-                                <div className={`w-8 h-8 rounded-xl ${periodTheme.bg} ${periodTheme.text} flex items-center justify-center shrink-0 mt-0.5`}>
-                                    <CheckCircle2 size={16} />
+                        <div className={`mb-4 bg-white rounded-2xl border ${periodTheme.border} shadow-sm overflow-hidden`}>
+                            {/* Collapsed header — altijd zichtbaar */}
+                            <button
+                                onClick={() => setLeerdoelenOpen(!leerdoelenOpen)}
+                                className="w-full flex items-center justify-between gap-3 px-4 py-3 hover:bg-slate-50/50 transition-colors min-h-[44px]"
+                            >
+                                <div className="flex items-center gap-2 min-w-0">
+                                    <CheckCircle2 size={14} className={periodTheme.text} />
+                                    <span className={`text-[10px] font-black uppercase tracking-widest ${periodTheme.text}`}>
+                                        Leerdoelen {periodNaming} {activeWeek}
+                                    </span>
+                                    {!leerdoelenOpen && (
+                                        <div className="flex gap-1 opacity-60">
+                                            {(stats?.vsoProfile && currentPeriodConfig.sloFocusVso
+                                                ? currentPeriodConfig.sloFocusVso
+                                                : currentPeriodConfig.sloFocus
+                                            ).slice(0, 3).map(code => (
+                                                <span key={code} className={`px-1 py-0.5 rounded text-[8px] font-bold border ${getKerndoelBadgeClasses(code)}`}>
+                                                    {code}
+                                                </span>
+                                            ))}
+                                            {currentPeriodConfig.sloFocus.length > 3 && (
+                                                <span className="text-[8px] text-slate-400 font-bold">+{currentPeriodConfig.sloFocus.length - 3}</span>
+                                            )}
+                                        </div>
+                                    )}
                                 </div>
-                                <div className="min-w-0">
-                                    <h3 className={`text-xs font-black uppercase tracking-widest ${periodTheme.text} mb-1`}>
-                                        Leerdoelen {periodNaming} {activeWeek} (SLO)
-                                    </h3>
-                                    <p className="text-slate-500 text-xs leading-snug line-clamp-2">
+                                <ChevronRight size={16} className={`text-slate-300 transition-transform duration-200 shrink-0 ${leerdoelenOpen ? 'rotate-90' : ''}`} />
+                            </button>
+
+                            {/* Expandable content */}
+                            {leerdoelenOpen && (
+                                <div className="px-4 pb-4 pt-0 border-t border-slate-50 space-y-3">
+                                    <p className="text-slate-500 text-xs leading-snug line-clamp-2 pt-3">
                                         {periodLeerdoel
                                             ? (stats?.vsoProfile && periodLeerdoel.descriptionVso
                                                 ? periodLeerdoel.descriptionVso
                                                 : periodLeerdoel.description)
                                             : currentPeriodConfig.subtitle}
                                     </p>
-                                </div>
-                            </div>
 
-                            {/* Lesflow — stappen visueel weergeven */}
-                            {periodLeerdoel?.lesduur && (() => {
-                                const raw = periodLeerdoel.lesduur!;
-                                const duurMatch = raw.match(/Lesduur:\s*([^.]+)\./);
-                                const duur = duurMatch ? duurMatch[1].trim() : null;
-                                const flowPart = raw.replace(/^[^.]+\.\s*/, '').replace(/^[^:]+:\s*/, '');
-                                const steps = flowPart.split('→').map(s => s.trim()).filter(Boolean);
-                                return (
-                                    <div className="rounded-2xl bg-slate-50 border border-slate-100 p-3">
-                                        {duur && (
-                                            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">
-                                                {duur}
-                                            </p>
-                                        )}
-                                        <div className="flex flex-wrap items-center gap-1.5">
-                                            {steps.map((step, i) => (
-                                                <div key={i} className="flex items-center gap-1.5">
-                                                    <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${periodTheme.bg} ${periodTheme.text} border ${periodTheme.border}`}>
-                                                        <span className={`w-4 h-4 rounded-full bg-white/80 flex items-center justify-center text-[9px] font-bold ${periodTheme.text}`}>
-                                                            {i + 1}
-                                                        </span>
-                                                        {step}
-                                                    </span>
-                                                    {i < steps.length - 1 && (
-                                                        <span className="text-slate-300 text-xs">→</span>
-                                                    )}
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-                                );
-                            })()}
-
-                            {/* SLO badges + Succescriterium — één compacte rij */}
-                            <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2">
-                                <div className="flex flex-wrap gap-1.5">
-                                    {(stats?.vsoProfile && currentPeriodConfig.sloFocusVso
-                                        ? currentPeriodConfig.sloFocusVso
-                                        : currentPeriodConfig.sloFocus
-                                    ).map(code => {
-                                        const kerndoel = SLO_KERNDOELEN[code];
-                                        if (!kerndoel) return null;
+                                    {/* Lesflow — stappen visueel weergeven */}
+                                    {periodLeerdoel?.lesduur && (() => {
+                                        const raw = periodLeerdoel.lesduur!;
+                                        const duurMatch = raw.match(/Lesduur:\s*([^.]+)\./);
+                                        const duur = duurMatch ? duurMatch[1].trim() : null;
+                                        const flowPart = raw.replace(/^[^.]+\.\s*/, '').replace(/^[^:]+:\s*/, '');
+                                        const steps = flowPart.split('→').map(s => s.trim()).filter(Boolean);
                                         return (
-                                            <span
-                                                key={code}
-                                                className={`px-1.5 py-0.5 rounded-md text-[9px] font-bold border ${getKerndoelBadgeClasses(code)}`}
-                                            >
-                                                {code}
-                                            </span>
+                                            <div className="rounded-2xl bg-slate-50 border border-slate-100 p-3">
+                                                {duur && (
+                                                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">
+                                                        {duur}
+                                                    </p>
+                                                )}
+                                                <div className="flex flex-wrap items-center gap-1.5">
+                                                    {steps.map((step, i) => (
+                                                        <div key={i} className="flex items-center gap-1.5">
+                                                            <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${periodTheme.bg} ${periodTheme.text} border ${periodTheme.border}`}>
+                                                                <span className={`w-4 h-4 rounded-full bg-white/80 flex items-center justify-center text-[9px] font-bold ${periodTheme.text}`}>
+                                                                    {i + 1}
+                                                                </span>
+                                                                {step}
+                                                            </span>
+                                                            {i < steps.length - 1 && (
+                                                                <span className="text-slate-300 text-xs">→</span>
+                                                            )}
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
                                         );
-                                    })}
-                                </div>
-                                {periodLeerdoel?.succescriterium && (
-                                    <div className="flex items-start gap-1.5 min-w-0">
-                                        <CheckCircle2 size={11} className="text-emerald-500 shrink-0 mt-0.5" />
-                                        <p className="text-emerald-700 text-[10px] font-semibold leading-snug line-clamp-2">
-                                            {(stats?.vsoProfile === 'dagbesteding' && periodLeerdoel.succescriDagbesteding)
-                                                ? periodLeerdoel.succescriDagbesteding
-                                                : periodLeerdoel.succescriterium}
-                                        </p>
+                                    })()}
+
+                                    {/* SLO badges + Succescriterium */}
+                                    <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+                                        <div className="flex flex-wrap gap-1.5">
+                                            {(stats?.vsoProfile && currentPeriodConfig.sloFocusVso
+                                                ? currentPeriodConfig.sloFocusVso
+                                                : currentPeriodConfig.sloFocus
+                                            ).map(code => {
+                                                const kerndoel = SLO_KERNDOELEN[code];
+                                                if (!kerndoel) return null;
+                                                return (
+                                                    <span
+                                                        key={code}
+                                                        className={`px-1.5 py-0.5 rounded-md text-[9px] font-bold border ${getKerndoelBadgeClasses(code)}`}
+                                                    >
+                                                        {code}
+                                                    </span>
+                                                );
+                                            })}
+                                        </div>
+                                        {periodLeerdoel?.succescriterium && (
+                                            <div className="flex items-start gap-1.5 min-w-0">
+                                                <CheckCircle2 size={11} className="text-emerald-500 shrink-0 mt-0.5" />
+                                                <p className="text-emerald-700 text-[10px] font-semibold leading-snug line-clamp-2">
+                                                    {(stats?.vsoProfile === 'dagbesteding' && periodLeerdoel.succescriDagbesteding)
+                                                        ? periodLeerdoel.succescriDagbesteding
+                                                        : periodLeerdoel.succescriterium}
+                                                </p>
+                                            </div>
+                                        )}
                                     </div>
-                                )}
-                            </div>
+                                </div>
+                            )}
                         </div>
                     )}
 
@@ -1158,7 +1152,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                     )}
 
                                     {/* Main Mission Grid */}
-                                    <div id="mission-grid-container" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 pb-28 sm:pb-12" data-tutorial="student-main-missions">
+                                    <div id="mission-grid-container" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6 pb-28 sm:pb-12" data-tutorial="student-main-missions">
                                         {(currentMissions.filter(m => !m.isReview) || []).length > 0 ? (
                                             currentMissions.filter(m => !m.isReview).map((mission, index) => {
                                                 const isCompleted = stats?.missionsCompleted?.includes(mission.id);
@@ -1277,7 +1271,7 @@ const MissionCard = React.memo(({ mission, onSelectModule, onInfoClick, isComple
             className={`
             group relative bg-white rounded-3xl shadow-sm border
             transition-all duration-300 overflow-hidden flex flex-col justify-between
-            ${isCompact ? 'p-5 min-h-[220px]' : 'p-8 md:p-10 min-h-[340px] md:min-h-[380px]'}
+            ${isCompact ? 'p-4 min-h-[200px]' : 'p-6 md:p-7 min-h-[280px] md:min-h-[300px]'}
             ${mission.status === 'locked'
                     ? 'opacity-80 border-slate-100 cursor-not-allowed grayscale-[0.8] hover:grayscale-0'
                     : 'border-slate-100 hover:border-indigo-500 hover:shadow-xl hover:shadow-indigo-500/10 hover:-translate-y-1 cursor-pointer'}
@@ -1337,7 +1331,7 @@ const MissionCard = React.memo(({ mission, onSelectModule, onInfoClick, isComple
                 <div className="flex justify-between items-start">
                     <div className={`
                     rounded-2xl flex items-center justify-center mb-4 transition-all duration-300 shadow-sm overflow-hidden
-                    ${isCompact ? 'w-10 h-10' : 'w-16 h-16 mb-6'}
+                    ${isCompact ? 'w-10 h-10' : 'w-12 h-12 mb-4'}
                     ${mission.status === 'locked'
                             ? 'bg-slate-100 text-slate-400'
                             : 'bg-indigo-50 text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white'}
@@ -1389,7 +1383,7 @@ const MissionCard = React.memo(({ mission, onSelectModule, onInfoClick, isComple
 
                 <h3 className={`
                 font-black mb-2 transition-colors tracking-tight line-clamp-2 break-words
-                ${isCompact ? 'text-lg' : 'text-2xl mb-3'}
+                ${isCompact ? 'text-base' : 'text-xl mb-2'}
                 ${mission.status === 'locked' ? 'text-slate-400' : 'text-slate-900 group-hover:text-indigo-600'}
             `}>
                     {mission.title}
