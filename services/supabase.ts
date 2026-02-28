@@ -11,15 +11,35 @@ if (!supabaseUrl || !supabaseAnonKey) {
     );
 }
 
-// Verwijder auth-tokens van ANDERE Supabase-projecten uit localStorage.
-// Gebruikers kunnen tokens van oude/ongebruikte projecten hebben die
-// conflicteren met de huidige auth-flow (AbortError, race conditions).
+// Opschoning VOOR client-init: verwijder stale/verlopen auth-tokens.
+// Dit moet VOOR createClient() gebeuren, anders start Supabase een
+// auto-refresh loop op een ongeldig token (→ eindeloze AbortErrors).
 try {
     const projectId = new URL(supabaseUrl).hostname.split('.')[0];
     const activeKey = `sb-${projectId}-auth-token`;
+
+    // 1) Verwijder tokens van ANDERE Supabase-projecten
     Object.keys(localStorage)
         .filter((k) => /^sb-[a-z0-9_-]+-auth-token$/i.test(k) && k !== activeKey)
         .forEach((k) => localStorage.removeItem(k));
+
+    // 2) Verwijder het EIGEN project-token als het JWT verlopen is
+    const raw = localStorage.getItem(activeKey);
+    if (raw) {
+        try {
+            const parsed = JSON.parse(raw);
+            const token = parsed?.access_token || parsed?.currentSession?.access_token;
+            if (token) {
+                const payload = JSON.parse(atob(token.split('.')[1]));
+                // exp is in seconden, Date.now() in ms
+                if (payload.exp * 1000 < Date.now()) {
+                    localStorage.removeItem(activeKey);
+                }
+            }
+        } catch { /* JWT parse mislukt → token is corrupt → verwijderen */
+            localStorage.removeItem(activeKey);
+        }
+    }
 } catch { /* negeer als URL-parsing of localStorage faalt */ }
 
 export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
