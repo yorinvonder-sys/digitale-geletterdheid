@@ -58,8 +58,9 @@ export const ScholenLandingExpertise: React.FC = () => {
                         </p>
                     </div>
                 </div>
-                <a href="/ict/privacy" className="relative text-sm font-bold text-white bg-white/10 hover:bg-white/20 border border-white/20 px-6 py-3 rounded-xl transition-colors flex-shrink-0">
-                    Compliance-belofte →
+                <a href="/ict/privacy" className="relative text-sm font-bold text-white bg-white/10 hover:bg-white/20 border border-white/20 px-6 py-3 rounded-xl transition-colors flex-shrink-0 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-indigo-700 inline-flex items-center gap-2">
+                    Compliance-belofte
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                 </a>
             </div>
         </div>

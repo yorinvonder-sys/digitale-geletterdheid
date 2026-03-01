@@ -1,5 +1,6 @@
 import path from 'path';
 import { defineConfig, loadEnv } from 'vite';
+import type { Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
 import { execSync } from 'child_process';
 
@@ -44,6 +45,26 @@ function docSyncPlugin() {
   };
 }
 
+/**
+ * Make Vite's injected CSS non-render-blocking.
+ * Converts <link rel="stylesheet" href="/assets/index-*.css"> to media="print"
+ * and adds data-async-css so csp-bootstrap.js can activate it once loaded.
+ * critical.css still loads synchronously for the loading spinner.
+ */
+function asyncCssPlugin(): Plugin {
+  return {
+    name: 'async-css',
+    enforce: 'post',
+    transformIndexHtml(html) {
+      // Only transform the Vite-generated CSS link (in /assets/), not critical.css
+      return html.replace(
+        /<link rel="stylesheet" crossorigin href="(\/assets\/[^"]+\.css)">/g,
+        '<link rel="stylesheet" crossorigin href="$1" media="print" data-async-css>'
+      );
+    }
+  };
+}
+
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, '.', '');
   const buildId = (env.VITE_APP_BUILD_ID || process.env.VERCEL_GIT_COMMIT_SHA || process.env.npm_package_version || 'dev').slice(0, 64);
@@ -58,7 +79,7 @@ export default defineConfig(({ mode }) => {
         ignored: ['**/node_modules/**', '**/.git/**', '**/.agent/**']
       }
     },
-    plugins: [react(), docSyncPlugin()],
+    plugins: [react(), docSyncPlugin(), asyncCssPlugin()],
     // SECURITY: API keys removed from client bundle - all AI calls go through Supabase Edge Functions proxy
     resolve: {
       alias: {

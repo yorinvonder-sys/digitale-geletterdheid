@@ -239,7 +239,9 @@ function PublicRoute() {
 
     return (
         <PublicPageShell>
-            <ScholenLanding />
+            <React.Suspense fallback={<LoadingFallback />}>
+                <ScholenLanding />
+            </React.Suspense>
         </PublicPageShell>
     );
 }

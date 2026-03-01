@@ -85,6 +85,25 @@
     );
   }
 
+  // Activate async CSS — the Vite-generated CSS is built with media="print"
+  // to avoid render-blocking. Once loaded, switch to media="all" so styles apply.
+  // critical.css (2.5KB) provides basic layout until this activates.
+  function activateAsyncCSS() {
+    var links = document.querySelectorAll('link[data-async-css]');
+    for (var i = 0; i < links.length; i++) {
+      var link = links[i];
+      if (link.sheet) {
+        // Already loaded (e.g. from cache)
+        link.media = 'all';
+      } else {
+        // Wait for load event
+        (function (el) {
+          el.addEventListener('load', function () { el.media = 'all'; });
+        })(link);
+      }
+    }
+  }
+
   // Route-specific font loading (after first paint)
   // Self-hosted Outfit font — no external Google Fonts dependency (SRI/CSP compliant)
   function setupRouteFontLoading() {
@@ -114,6 +133,10 @@
       requestAnimationFrame(schedule);
     });
   }
+
+  // Activate async CSS immediately — don't wait for DOMContentLoaded.
+  // The link[data-async-css] elements are in <head> and available when this script runs.
+  activateAsyncCSS();
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function () {

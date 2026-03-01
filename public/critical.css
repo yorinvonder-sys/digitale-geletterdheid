@@ -111,3 +111,36 @@ textarea {
 .backface-hidden {
     backface-visibility: hidden;
 }
+
+/* ============================================
+   LOADING SPINNER — shown before main CSS loads
+   These classes match the LoadingFallback component
+   in AppRouter.tsx. Without them, the spinner is
+   invisible until the async Tailwind CSS activates.
+   ============================================ */
+.min-h-screen { min-height: 100vh; }
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.justify-center { justify-content: center; }
+.gap-4 { gap: 1rem; }
+.w-12 { width: 3rem; }
+.h-12 { height: 3rem; }
+.border-2 { border-width: 2px; }
+.border-indigo-200 { border-color: #c7d2fe; }
+.border-t-indigo-600 { border-top-color: #4f46e5; }
+.rounded-full { border-radius: 9999px; }
+.text-slate-500 { color: #64748b; }
+.font-medium { font-weight: 500; }
+.font-sans { font-family: 'Outfit', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+.antialiased { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+.bg-white { background-color: #fff; }
+.w-full { width: 100%; }
+.min-h-screen { min-height: 100vh; }
+.relative { position: relative; }
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+.animate-spin { animation: spin 1s linear infinite; }

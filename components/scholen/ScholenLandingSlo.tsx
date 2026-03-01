@@ -135,8 +135,9 @@ export const ScholenLandingSlo: React.FC = () => {
                             >
                                 <button
                                     onClick={() => setExpandedDomain(isExpanded ? null : idx)}
-                                    className="w-full p-6 flex items-start gap-4 text-left"
+                                    className="w-full p-6 flex items-start gap-4 text-left focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-indigo-500 focus-visible:rounded-2xl"
                                     aria-expanded={isExpanded}
+                                    aria-controls={`domain-panel-${idx}`}
                                 >
                                     <div className={`w-12 h-12 rounded-xl ${domain.accentLight} ${domain.color} flex items-center justify-center flex-shrink-0`}>
                                         {domain.icon}

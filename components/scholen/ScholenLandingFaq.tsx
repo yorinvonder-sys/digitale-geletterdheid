@@ -58,8 +58,9 @@ export const ScholenLandingFaq: React.FC<ScholenLandingFaqProps> = ({ scrollToCo
                                             <div key={i} className="bg-white rounded-xl border border-slate-200/80 overflow-hidden shadow-sm">
                                                 <button
                                                     onClick={() => setOpenFaq(isOpen ? null : i)}
-                                                    className="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-slate-50/50 transition-colors"
+                                                    className="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-slate-50/50 transition-colors focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-indigo-500 focus-visible:rounded-xl"
                                                     aria-expanded={isOpen}
+                                                    aria-controls={`faq-answer-${i}`}
                                                 >
                                                     <span className="text-[15px] font-medium text-slate-900 pr-4 leading-snug">{item.q}</span>
                                                     <IconChevronDown className={`text-slate-400 flex-shrink-0 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
