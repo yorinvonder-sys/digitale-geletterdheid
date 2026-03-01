@@ -151,9 +151,16 @@ function useAuthUser(options?: { enabled?: boolean; deferUntilIdle?: boolean }) 
                     setLoading(false);
                 });
                 // Failsafe: als de auth-callback na 4s nog niet heeft gevuurd
-                // (bijv. door een corrupt token in localStorage), stop met laden
-                // en val door naar de login-pagina.
-                authTimeoutId = setTimeout(() => {
+                // (bijv. door een corrupt token in localStorage), stop met laden,
+                // ruim de stale sessie op, en val door naar de login-pagina.
+                authTimeoutId = setTimeout(async () => {
+                    if (isCancelled) return;
+                    // Actief opruimen: signOut stopt Supabase's interne refresh-loop
+                    // en verwijdert het stale token uit localStorage.
+                    try {
+                        const { supabase } = await import('./services/supabase');
+                        await supabase.auth.signOut({ scope: 'local' });
+                    } catch { /* negeer — we forceren sowieso unauthenticated state */ }
                     if (isCancelled) return;
                     setUser(null);
                     setLoading(false);

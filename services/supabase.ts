@@ -23,7 +23,10 @@ try {
         .filter((k) => /^sb-[a-z0-9_-]+-auth-token$/i.test(k) && k !== activeKey)
         .forEach((k) => localStorage.removeItem(k));
 
-    // 2) Verwijder het EIGEN project-token als het JWT verlopen is
+    // 2) Verwijder het EIGEN project-token als het JWT verlopen is of bijna verloopt.
+    //    Buffer van 5 minuten voorkomt dat een token verloopt terwijl Supabase
+    //    het probeert te refreshen (→ eindeloze AbortError-loop).
+    const EXPIRY_BUFFER_MS = 5 * 60 * 1000; // 5 minuten
     const raw = localStorage.getItem(activeKey);
     if (raw) {
         try {
@@ -32,9 +35,12 @@ try {
             if (token) {
                 const payload = JSON.parse(atob(token.split('.')[1]));
                 // exp is in seconden, Date.now() in ms
-                if (payload.exp * 1000 < Date.now()) {
+                if (payload.exp * 1000 < Date.now() + EXPIRY_BUFFER_MS) {
                     localStorage.removeItem(activeKey);
                 }
+            } else {
+                // Geen access_token gevonden in de opgeslagen data → verwijderen
+                localStorage.removeItem(activeKey);
             }
         } catch { /* JWT parse mislukt → token is corrupt → verwijderen */
             localStorage.removeItem(activeKey);
