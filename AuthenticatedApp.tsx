@@ -371,14 +371,9 @@ export function AuthenticatedApp() {
         }
     };
 
-    const handleLogout = async () => {
-        try {
-            await logout();
-            setActiveModule(null);
-            setIsProfileOpen(false);
-        } catch (error) {
-            console.error("Logout failed:", error);
-        }
+    const handleLogout = () => {
+        // logout() garandeert altijd navigatie via finally-blok, ook bij errors.
+        void logout();
     };
 
     if (loading) {

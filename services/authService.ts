@@ -209,9 +209,15 @@ export const resetPassword = async (email: string) => {
 // --- Logout ---
 
 export const logout = async () => {
-    await supabase.auth.signOut();
-
-    window.location.href = '/login';
+    try {
+        await supabase.auth.signOut();
+    } catch {
+        // signOut faalde (bijv. netwerk of AbortError) — ruim lokaal op
+        try { await supabase.auth.signOut({ scope: 'local' }); } catch { /* negeer */ }
+    } finally {
+        // Navigeer altijd naar /login, ook bij een fout
+        window.location.href = '/login';
+    }
 };
 
 // --- Redirect handling ---
