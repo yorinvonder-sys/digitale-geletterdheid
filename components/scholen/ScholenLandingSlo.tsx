@@ -102,7 +102,7 @@ export const ScholenLandingSlo: React.FC = () => {
                         </div>
                         {/* Progress indicator */}
                         <div className="bg-white rounded-xl border border-slate-200 px-5 py-3 flex items-center gap-4 shadow-sm">
-                            <div className="relative w-12 h-12">
+                            <div className="relative w-12 h-12" role="img" aria-label="100% van alle kerndoelen gedekt">
                                 <svg className="w-12 h-12 -rotate-90" viewBox="0 0 48 48">
                                     <circle cx="24" cy="24" r="20" fill="none" stroke="#e2e8f0" strokeWidth="4" />
                                     <circle cx="24" cy="24" r="20" fill="none" stroke="#4f46e5" strokeWidth="4"
@@ -128,7 +128,7 @@ export const ScholenLandingSlo: React.FC = () => {
                         return (
                             <div
                                 key={domain.name}
-                                className={`rounded-2xl border transition-all duration-300 overflow-hidden ${isExpanded
+                                className={`rounded-2xl border transition-[background-color,box-shadow,border-color] duration-300 overflow-hidden ${isExpanded
                                     ? `${domain.accentBg} border-slate-200 shadow-lg`
                                     : 'bg-white border-slate-200/80 hover:shadow-md hover:border-slate-300'
                                     }`}
@@ -154,7 +154,7 @@ export const ScholenLandingSlo: React.FC = () => {
                                 </button>
 
                                 {isExpanded && (
-                                    <div className="px-6 pb-6 pt-0">
+                                    <div id={`domain-panel-${idx}`} className="px-6 pb-6 pt-0">
                                         <div className="border-t border-slate-200/60 pt-4 space-y-2.5">
                                             {domain.kerndoelen.map(kd => (
                                                 <div key={kd.id} className="flex items-start gap-3 bg-white/80 rounded-xl px-4 py-3 border border-slate-100">

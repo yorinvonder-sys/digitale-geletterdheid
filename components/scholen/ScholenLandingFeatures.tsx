@@ -71,7 +71,7 @@ export const ScholenLandingFeatures: React.FC = () => (
 
             <div className="space-y-8">
                 <div className="grid md:grid-cols-3 gap-6">
-                    <div className="md:col-span-2 bg-gradient-to-br from-indigo-50 to-white rounded-2xl p-8 hover:shadow-lg transition-all border border-indigo-100/50 group">
+                    <div className="md:col-span-2 bg-gradient-to-br from-indigo-50 to-white rounded-2xl p-8 hover:shadow-lg transition-[box-shadow,transform] border border-indigo-100/50 group">
                         <div className="flex items-start gap-4">
                             <div className="w-14 h-14 bg-indigo-100 rounded-2xl flex items-center justify-center text-indigo-600 flex-shrink-0 group-hover:scale-110 transition-transform">
                                 <IconRocket />
@@ -91,7 +91,7 @@ export const ScholenLandingFeatures: React.FC = () => (
                             </div>
                         </div>
                     </div>
-                    <div className="bg-gradient-to-br from-emerald-50 to-white rounded-2xl p-8 hover:shadow-lg transition-all border border-emerald-100/50 group">
+                    <div className="bg-gradient-to-br from-emerald-50 to-white rounded-2xl p-8 hover:shadow-lg transition-[box-shadow,transform] border border-emerald-100/50 group">
                         <div className="w-14 h-14 bg-emerald-100 rounded-2xl flex items-center justify-center text-emerald-600 mb-4 group-hover:scale-110 transition-transform">
                             <IconFlag />
                         </div>
@@ -109,7 +109,7 @@ export const ScholenLandingFeatures: React.FC = () => (
                 </div>
 
                 <div className="grid md:grid-cols-3 gap-6">
-                    <div className="bg-gradient-to-br from-amber-50 to-white rounded-2xl p-8 hover:shadow-lg transition-all border border-amber-100/50 group">
+                    <div className="bg-gradient-to-br from-amber-50 to-white rounded-2xl p-8 hover:shadow-lg transition-[box-shadow,transform] border border-amber-100/50 group">
                         <div className="w-14 h-14 bg-amber-100 rounded-2xl flex items-center justify-center text-amber-600 mb-4 group-hover:scale-110 transition-transform">
                             <IconGamepad />
                         </div>
@@ -124,7 +124,7 @@ export const ScholenLandingFeatures: React.FC = () => (
                             Leerlingen willen verder — niet omdat het moet, maar omdat het leuk is.
                         </p>
                     </div>
-                    <div className="md:col-span-2 bg-gradient-to-br from-blue-50 to-white rounded-2xl p-8 hover:shadow-lg transition-all border border-blue-100/50 group">
+                    <div className="md:col-span-2 bg-gradient-to-br from-blue-50 to-white rounded-2xl p-8 hover:shadow-lg transition-[box-shadow,transform] border border-blue-100/50 group">
                         <div className="flex items-start gap-4">
                             <div className="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center text-blue-600 flex-shrink-0 group-hover:scale-110 transition-transform">
                                 <IconDashboardPulse />
@@ -147,7 +147,7 @@ export const ScholenLandingFeatures: React.FC = () => (
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-6">
-                    <div className="bg-gradient-to-br from-slate-50 to-white rounded-2xl p-8 hover:shadow-lg transition-all border border-slate-100 group">
+                    <div className="bg-gradient-to-br from-slate-50 to-white rounded-2xl p-8 hover:shadow-lg transition-[box-shadow,transform] border border-slate-100 group">
                         <div className="flex items-start gap-4">
                             <div className="w-14 h-14 bg-slate-100 rounded-2xl flex items-center justify-center text-slate-600 flex-shrink-0 group-hover:scale-110 transition-transform">
                                 <IconShieldLock />
@@ -166,7 +166,7 @@ export const ScholenLandingFeatures: React.FC = () => (
                             </div>
                         </div>
                     </div>
-                    <div className="bg-gradient-to-br from-rose-50 to-white rounded-2xl p-8 hover:shadow-lg transition-all border border-rose-100/50 group">
+                    <div className="bg-gradient-to-br from-rose-50 to-white rounded-2xl p-8 hover:shadow-lg transition-[box-shadow,transform] border border-rose-100/50 group">
                         <div className="flex items-start gap-4">
                             <div className="w-14 h-14 bg-rose-100 rounded-2xl flex items-center justify-center text-rose-600 flex-shrink-0 group-hover:scale-110 transition-transform">
                                 <IconMultiDevice />

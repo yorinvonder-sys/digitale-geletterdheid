@@ -107,7 +107,7 @@ export const ScholenLandingPainPoints: React.FC = () => (
             {painPoints.map((point) => (
                 <div
                     key={point.title}
-                    className={`${point.accentBg} ${point.accentBorder} border rounded-2xl p-7 transition-all hover:shadow-lg group`}
+                    className={`${point.accentBg} ${point.accentBorder} border rounded-2xl p-7 transition-[box-shadow] hover:shadow-lg group`}
                 >
                     <div className="flex items-start gap-5">
                         {/* Stat block */}
@@ -145,7 +145,7 @@ export const ScholenLandingPainPoints: React.FC = () => (
         {/* Transition statement — bridges to the solution */}
         <div className="mt-12 text-center">
             <div className="inline-flex items-center gap-3 bg-indigo-50 border border-indigo-100 rounded-full px-6 py-3">
-                <div className="w-2 h-2 bg-indigo-500 rounded-full animate-pulse" />
+                <div className="w-2 h-2 bg-indigo-500 rounded-full motion-safe:animate-pulse" />
                 <p className="text-sm font-semibold text-indigo-700">
                     DGSkills is ontworpen om precies deze problemen op te lossen
                 </p>

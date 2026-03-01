@@ -24,19 +24,21 @@ class ThreeErrorBoundary extends React.Component<{ children: React.ReactNode }, 
 
 const getBodyDimensions = (baseModel: AvatarConfig['baseModel'], gender?: AvatarConfig['gender']) => {
     const isRobot = baseModel === 'robot';
+    const isSlim = baseModel === 'slim';
     const isFemale = gender === 'female';
     return {
-        torsoRadius: isFemale ? 0.22 : 0.35,
-        torsoLength: isFemale ? 0.45 : 0.5,
-        armRadius: isFemale ? 0.09 : 0.13,
-        armLength: isFemale ? 0.55 : 0.6,
-        armSpacing: isFemale ? 0.42 : 0.55,
-        legRadius: isFemale ? 0.12 : 0.15,
-        legLength: isFemale ? 0.48 : 0.5,
-        headScale: isFemale ? [0.88, 0.84, 0.8] as const : [1, 0.95, 0.9] as const,
-        shoulderWidth: isFemale ? 0.36 : 0.55,
-        hipWidth: isFemale ? 0.42 : 0.28,
+        torsoRadius: isFemale ? (isSlim ? 0.22 : 0.26) : (isSlim ? 0.28 : 0.35),
+        torsoLength: isFemale ? (isSlim ? 0.48 : 0.45) : (isSlim ? 0.52 : 0.5),
+        armRadius: isFemale ? (isSlim ? 0.07 : 0.09) : (isSlim ? 0.1 : 0.13),
+        armLength: isFemale ? (isSlim ? 0.58 : 0.55) : (isSlim ? 0.62 : 0.6),
+        armSpacing: isFemale ? (isSlim ? 0.36 : 0.42) : (isSlim ? 0.45 : 0.55),
+        legRadius: isFemale ? (isSlim ? 0.1 : 0.12) : (isSlim ? 0.12 : 0.15),
+        legLength: isFemale ? (isSlim ? 0.52 : 0.48) : (isSlim ? 0.54 : 0.5),
+        headScale: isFemale ? [0.92, 0.88, 0.84] as const : [1, 0.95, 0.9] as const,
+        shoulderWidth: isFemale ? (isSlim ? 0.3 : 0.36) : (isSlim ? 0.42 : 0.55),
+        hipWidth: isFemale ? (isSlim ? 0.32 : 0.38) : (isSlim ? 0.24 : 0.28),
         isRobot,
+        isSlim,
         isFemale,
     };
 };
@@ -244,27 +246,27 @@ const HairLayer = memo<{ style: string; color: string }>(({ style, color }) => {
                 <group position={[0, 0.05, 0]}>
                     {/* Full coverage cap – wraps over the top and sides of the head */}
                     <mesh position={[0, 0, -0.02]} scale={[1.12, 0.75, 1.1]}>
-                        <sphereGeometry args={[0.67, 24, 16, 0, PI * 2, 0, PI * 0.58]} />
+                        <sphereGeometry args={[0.67, 24, 16, 0, PI * 2, 0, PI * 0.47]} />
                         {mat}
                     </mesh>
                     {/* Front fringe – subtle volume over forehead */}
-                    <mesh position={[0, 0.12, 0.35]} scale={[0.8, 0.18, 0.2]}>
+                    <mesh position={[0, 0.22, 0.32]} scale={[0.8, 0.14, 0.2]}>
                         <sphereGeometry args={[0.4, 12, 10]} />
                         {mat}
                     </mesh>
                     {/* Side coverage left – extends down to ear level */}
-                    <mesh position={[-0.48, -0.12, 0]} scale={[0.22, 0.4, 0.65]}>
-                        <sphereGeometry args={[0.38, 12, 10, 0, PI * 2, 0, PI * 0.65]} />
+                    <mesh position={[-0.48, -0.05, 0]} scale={[0.22, 0.4, 0.65]}>
+                        <sphereGeometry args={[0.38, 12, 10, 0, PI * 2, 0, PI * 0.5]} />
                         {mat}
                     </mesh>
                     {/* Side coverage right */}
-                    <mesh position={[0.48, -0.12, 0]} scale={[0.22, 0.4, 0.65]}>
-                        <sphereGeometry args={[0.38, 12, 10, 0, PI * 2, 0, PI * 0.65]} />
+                    <mesh position={[0.48, -0.05, 0]} scale={[0.22, 0.4, 0.65]}>
+                        <sphereGeometry args={[0.38, 12, 10, 0, PI * 2, 0, PI * 0.5]} />
                         {mat}
                     </mesh>
                     {/* Back coverage – extends down the back of the head */}
                     <mesh position={[0, -0.08, -0.38]} scale={[0.8, 0.42, 0.22]}>
-                        <sphereGeometry args={[0.42, 12, 10, 0, PI * 2, 0, PI * 0.65]} />
+                        <sphereGeometry args={[0.42, 12, 10, 0, PI * 2, 0, PI * 0.48]} />
                         {mat}
                     </mesh>
                 </group>
@@ -275,40 +277,40 @@ const HairLayer = memo<{ style: string; color: string }>(({ style, color }) => {
                 <group position={[0, 0.05, -0.02]}>
                     {/* Base cap – hemisphere covering top of head */}
                     <mesh scale={[1.12, 0.68, 1.08]}>
-                        <sphereGeometry args={[0.67, 24, 16, 0, PI * 2, 0, PI * 0.55]} />
+                        <sphereGeometry args={[0.67, 24, 16, 0, PI * 2, 0, PI * 0.45]} />
                         {mat}
                     </mesh>
                     {/* Side coverage */}
-                    <mesh position={[-0.48, -0.1, 0]} scale={[0.2, 0.35, 0.6]}>
-                        <sphereGeometry args={[0.35, 12, 10, 0, PI * 2, 0, PI * 0.6]} />
+                    <mesh position={[-0.48, -0.02, 0]} scale={[0.2, 0.35, 0.6]}>
+                        <sphereGeometry args={[0.35, 12, 10, 0, PI * 2, 0, PI * 0.48]} />
                         {mat}
                     </mesh>
-                    <mesh position={[0.48, -0.1, 0]} scale={[0.2, 0.35, 0.6]}>
-                        <sphereGeometry args={[0.35, 12, 10, 0, PI * 2, 0, PI * 0.6]} />
+                    <mesh position={[0.48, -0.02, 0]} scale={[0.2, 0.35, 0.6]}>
+                        <sphereGeometry args={[0.35, 12, 10, 0, PI * 2, 0, PI * 0.48]} />
                         {mat}
                     </mesh>
                     {/* Spikes – pointing upward and slightly outward */}
-                    <mesh position={[-0.15, 0.38, 0.18]} rotation={[0.25, 0, -0.2]} scale={[0.13, 0.3, 0.13]}>
+                    <mesh position={[-0.15, 0.43, 0.18]} rotation={[0.25, 0, -0.2]} scale={[0.18, 0.42, 0.18]}>
                         <coneGeometry args={[0.3, 0.8, 6]} />
                         {mat}
                     </mesh>
-                    <mesh position={[0.18, 0.42, -0.08]} rotation={[-0.15, 0, 0.15]} scale={[0.13, 0.34, 0.13]}>
+                    <mesh position={[0.18, 0.47, -0.08]} rotation={[-0.15, 0, 0.15]} scale={[0.18, 0.48, 0.18]}>
                         <coneGeometry args={[0.3, 0.8, 6]} />
                         {mat}
                     </mesh>
-                    <mesh position={[0, 0.46, 0.05]} rotation={[0.08, 0, 0]} scale={[0.14, 0.38, 0.14]}>
+                    <mesh position={[0, 0.51, 0.05]} rotation={[0.08, 0, 0]} scale={[0.2, 0.53, 0.2]}>
                         <coneGeometry args={[0.3, 0.8, 6]} />
                         {mat}
                     </mesh>
-                    <mesh position={[-0.28, 0.36, -0.12]} rotation={[-0.2, 0.15, -0.25]} scale={[0.11, 0.26, 0.11]}>
+                    <mesh position={[-0.28, 0.41, -0.12]} rotation={[-0.2, 0.15, -0.25]} scale={[0.15, 0.36, 0.15]}>
                         <coneGeometry args={[0.3, 0.8, 6]} />
                         {mat}
                     </mesh>
-                    <mesh position={[0.12, 0.4, -0.22]} rotation={[-0.3, 0, 0.1]} scale={[0.11, 0.24, 0.11]}>
+                    <mesh position={[0.12, 0.45, -0.22]} rotation={[-0.3, 0, 0.1]} scale={[0.15, 0.34, 0.15]}>
                         <coneGeometry args={[0.3, 0.8, 6]} />
                         {mat}
                     </mesh>
-                    <mesh position={[0.3, 0.34, 0.1]} rotation={[0.1, 0, 0.3]} scale={[0.1, 0.22, 0.1]}>
+                    <mesh position={[0.3, 0.39, 0.1]} rotation={[0.1, 0, 0.3]} scale={[0.14, 0.31, 0.14]}>
                         <coneGeometry args={[0.3, 0.8, 6]} />
                         {mat}
                     </mesh>
@@ -320,7 +322,7 @@ const HairLayer = memo<{ style: string; color: string }>(({ style, color }) => {
                 <group position={[0, 0.05, 0]}>
                     {/* Top cap – hemisphere */}
                     <mesh position={[0, 0, -0.03]} scale={[1.12, 0.7, 1.08]}>
-                        <sphereGeometry args={[0.67, 24, 16, 0, PI * 2, 0, PI * 0.52]} />
+                        <sphereGeometry args={[0.67, 24, 16, 0, PI * 2, 0, PI * 0.48]} />
                         {mat}
                     </mesh>
                     {/* Left curtain – flows down past shoulders */}
@@ -401,16 +403,16 @@ const HairLayer = memo<{ style: string; color: string }>(({ style, color }) => {
                 <group position={[0, 0.05, -0.02]}>
                     {/* Base cap – hemisphere with full coverage */}
                     <mesh scale={[1.14, 0.72, 1.1]}>
-                        <sphereGeometry args={[0.67, 24, 16, 0, PI * 2, 0, PI * 0.56]} />
+                        <sphereGeometry args={[0.67, 24, 16, 0, PI * 2, 0, PI * 0.47]} />
                         {mat}
                     </mesh>
                     {/* Side coverage */}
                     <mesh position={[-0.48, -0.1, 0]} scale={[0.22, 0.38, 0.6]}>
-                        <sphereGeometry args={[0.35, 12, 10, 0, PI * 2, 0, PI * 0.6]} />
+                        <sphereGeometry args={[0.35, 12, 10, 0, PI * 2, 0, PI * 0.48]} />
                         {mat}
                     </mesh>
                     <mesh position={[0.48, -0.1, 0]} scale={[0.22, 0.38, 0.6]}>
-                        <sphereGeometry args={[0.35, 12, 10, 0, PI * 2, 0, PI * 0.6]} />
+                        <sphereGeometry args={[0.35, 12, 10, 0, PI * 2, 0, PI * 0.48]} />
                         {mat}
                     </mesh>
                     {/* Messy chunks sticking out in various directions */}
@@ -437,7 +439,7 @@ const HairLayer = memo<{ style: string; color: string }>(({ style, color }) => {
                     </mesh>
                     {/* Back coverage */}
                     <mesh position={[0, -0.05, -0.36]} scale={[0.75, 0.35, 0.2]}>
-                        <sphereGeometry args={[0.4, 12, 10, 0, PI * 2, 0, PI * 0.6]} />
+                        <sphereGeometry args={[0.4, 12, 10, 0, PI * 2, 0, PI * 0.48]} />
                         {mat}
                     </mesh>
                 </group>
@@ -453,18 +455,18 @@ const HairLayer = memo<{ style: string; color: string }>(({ style, color }) => {
                     </mesh>
                     {/* Very short sides – thin layers hugging the head (faded) */}
                     <mesh position={[-0.5, -0.08, 0]} scale={[0.15, 0.25, 0.55]}>
-                        <sphereGeometry args={[0.35, 12, 10, 0, PI * 2, 0, PI * 0.55]} />
+                        <sphereGeometry args={[0.35, 12, 10, 0, PI * 2, 0, PI * 0.48]} />
                         <meshPhysicalMaterial color={color} roughness={0.85} metalness={0.05}
                             clearcoat={0.1} clearcoatRoughness={0.6} envMapIntensity={0.3} transparent opacity={0.7} />
                     </mesh>
                     <mesh position={[0.5, -0.08, 0]} scale={[0.15, 0.25, 0.55]}>
-                        <sphereGeometry args={[0.35, 12, 10, 0, PI * 2, 0, PI * 0.55]} />
+                        <sphereGeometry args={[0.35, 12, 10, 0, PI * 2, 0, PI * 0.48]} />
                         <meshPhysicalMaterial color={color} roughness={0.85} metalness={0.05}
                             clearcoat={0.1} clearcoatRoughness={0.6} envMapIntensity={0.3} transparent opacity={0.7} />
                     </mesh>
                     {/* Short back */}
                     <mesh position={[0, -0.02, -0.42]} scale={[0.6, 0.22, 0.15]}>
-                        <sphereGeometry args={[0.4, 12, 10, 0, PI * 2, 0, PI * 0.55]} />
+                        <sphereGeometry args={[0.4, 12, 10, 0, PI * 2, 0, PI * 0.48]} />
                         <meshPhysicalMaterial color={color} roughness={0.85} metalness={0.05}
                             clearcoat={0.1} clearcoatRoughness={0.6} envMapIntensity={0.3} transparent opacity={0.7} />
                     </mesh>
@@ -476,7 +478,7 @@ const HairLayer = memo<{ style: string; color: string }>(({ style, color }) => {
                 <group position={[0, 0.05, -0.02]}>
                     {/* Base volume – hemisphere */}
                     <mesh scale={[1.15, 0.72, 1.1]}>
-                        <sphereGeometry args={[0.67, 24, 16, 0, PI * 2, 0, PI * 0.52]} />
+                        <sphereGeometry args={[0.67, 24, 16, 0, PI * 2, 0, PI * 0.45]} />
                         {mat}
                     </mesh>
                     {/* Curl clusters – small spheres for texture on top */}
@@ -517,24 +519,24 @@ const HairLayer = memo<{ style: string; color: string }>(({ style, color }) => {
                 <group position={[0, 0.05, -0.02]}>
                     {/* Full coverage – tight to head, visible as a uniform layer */}
                     <mesh scale={[1.08, 0.62, 1.04]}>
-                        <sphereGeometry args={[0.67, 24, 16, 0, PI * 2, 0, PI * 0.56]} />
+                        <sphereGeometry args={[0.67, 24, 16, 0, PI * 2, 0, PI * 0.47]} />
                         <meshPhysicalMaterial color={color} roughness={0.85} metalness={0.05}
                             clearcoat={0.1} clearcoatRoughness={0.6} envMapIntensity={0.3} />
                     </mesh>
                     {/* Side coverage – thin stubble extending to ears */}
                     <mesh position={[-0.45, -0.1, 0]} scale={[0.2, 0.32, 0.55]}>
-                        <sphereGeometry args={[0.33, 10, 8, 0, PI * 2, 0, PI * 0.6]} />
+                        <sphereGeometry args={[0.33, 10, 8, 0, PI * 2, 0, PI * 0.48]} />
                         <meshPhysicalMaterial color={color} roughness={0.9} metalness={0.03}
                             clearcoat={0.05} envMapIntensity={0.2} />
                     </mesh>
                     <mesh position={[0.45, -0.1, 0]} scale={[0.2, 0.32, 0.55]}>
-                        <sphereGeometry args={[0.33, 10, 8, 0, PI * 2, 0, PI * 0.6]} />
+                        <sphereGeometry args={[0.33, 10, 8, 0, PI * 2, 0, PI * 0.48]} />
                         <meshPhysicalMaterial color={color} roughness={0.9} metalness={0.03}
                             clearcoat={0.05} envMapIntensity={0.2} />
                     </mesh>
                     {/* Back coverage */}
                     <mesh position={[0, -0.05, -0.36]} scale={[0.7, 0.3, 0.18]}>
-                        <sphereGeometry args={[0.38, 10, 8, 0, PI * 2, 0, PI * 0.6]} />
+                        <sphereGeometry args={[0.38, 10, 8, 0, PI * 2, 0, PI * 0.48]} />
                         <meshPhysicalMaterial color={color} roughness={0.9} metalness={0.03}
                             clearcoat={0.05} envMapIntensity={0.2} />
                     </mesh>
@@ -571,7 +573,7 @@ const HairLayer = memo<{ style: string; color: string }>(({ style, color }) => {
                 <group position={[0, 0.05, 0]}>
                     {/* Large volume hemisphere */}
                     <mesh position={[0, 0.05, -0.02]} scale={[1.4, 1.1, 1.3]}>
-                        <sphereGeometry args={[0.67, 32, 20, 0, PI * 2, 0, PI * 0.55]} />
+                        <sphereGeometry args={[0.67, 32, 20, 0, PI * 2, 0, PI * 0.48]} />
                         {mat}
                     </mesh>
                     {/* Extra top volume for roundness */}
@@ -597,7 +599,7 @@ const HairLayer = memo<{ style: string; color: string }>(({ style, color }) => {
                 <group position={[0, 0.05, 0]}>
                     {/* Top cap – hemisphere */}
                     <mesh position={[0, 0, -0.03]} scale={[1.12, 0.68, 1.08]}>
-                        <sphereGeometry args={[0.67, 24, 16, 0, PI * 2, 0, PI * 0.52]} />
+                        <sphereGeometry args={[0.67, 24, 16, 0, PI * 2, 0, PI * 0.44]} />
                         {mat}
                     </mesh>
                     {/* Left side – chin length */}
@@ -690,7 +692,7 @@ const HairLayer = memo<{ style: string; color: string }>(({ style, color }) => {
                 <group position={[0, 0.05, -0.03]}>
                     {/* Main cap – hemisphere, slightly shifted for parting effect */}
                     <mesh position={[0.03, 0, 0]} scale={[1.1, 0.7, 1.05]}>
-                        <sphereGeometry args={[0.67, 24, 16, 0, PI * 2, 0, PI * 0.52]} />
+                        <sphereGeometry args={[0.67, 24, 16, 0, PI * 2, 0, PI * 0.48]} />
                         {mat}
                     </mesh>
                     {/* Thicker left section (swept over) */}
@@ -700,7 +702,7 @@ const HairLayer = memo<{ style: string; color: string }>(({ style, color }) => {
                     </mesh>
                     {/* Side coverage left */}
                     <mesh position={[-0.45, -0.08, 0]} scale={[0.22, 0.3, 0.5]}>
-                        <sphereGeometry args={[0.3, 12, 10, 0, PI * 2, 0, PI * 0.6]} />
+                        <sphereGeometry args={[0.3, 12, 10, 0, PI * 2, 0, PI * 0.48]} />
                         {mat}
                     </mesh>
                     {/* Thinner right section */}
@@ -716,23 +718,23 @@ const HairLayer = memo<{ style: string; color: string }>(({ style, color }) => {
             return (
                 <group position={[0, 0.05, 0]}>
                     <mesh position={[0, 0, -0.02]} scale={[1.12, 0.75, 1.1]}>
-                        <sphereGeometry args={[0.67, 24, 16, 0, PI * 2, 0, PI * 0.58]} />
+                        <sphereGeometry args={[0.67, 24, 16, 0, PI * 2, 0, PI * 0.47]} />
                         {mat}
                     </mesh>
-                    <mesh position={[0, 0.12, 0.35]} scale={[0.8, 0.18, 0.2]}>
+                    <mesh position={[0, 0.22, 0.32]} scale={[0.8, 0.14, 0.2]}>
                         <sphereGeometry args={[0.4, 12, 10]} />
                         {mat}
                     </mesh>
-                    <mesh position={[-0.48, -0.12, 0]} scale={[0.22, 0.4, 0.65]}>
-                        <sphereGeometry args={[0.38, 12, 10, 0, PI * 2, 0, PI * 0.65]} />
+                    <mesh position={[-0.48, -0.05, 0]} scale={[0.22, 0.4, 0.65]}>
+                        <sphereGeometry args={[0.38, 12, 10, 0, PI * 2, 0, PI * 0.5]} />
                         {mat}
                     </mesh>
-                    <mesh position={[0.48, -0.12, 0]} scale={[0.22, 0.4, 0.65]}>
-                        <sphereGeometry args={[0.38, 12, 10, 0, PI * 2, 0, PI * 0.65]} />
+                    <mesh position={[0.48, -0.05, 0]} scale={[0.22, 0.4, 0.65]}>
+                        <sphereGeometry args={[0.38, 12, 10, 0, PI * 2, 0, PI * 0.5]} />
                         {mat}
                     </mesh>
                     <mesh position={[0, -0.08, -0.38]} scale={[0.8, 0.42, 0.22]}>
-                        <sphereGeometry args={[0.42, 12, 10, 0, PI * 2, 0, PI * 0.65]} />
+                        <sphereGeometry args={[0.42, 12, 10, 0, PI * 2, 0, PI * 0.48]} />
                         {mat}
                     </mesh>
                 </group>

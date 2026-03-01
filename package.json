@@ -31,7 +31,7 @@
     "dompurify": "^3.3.1",
     "framer-motion": "^12.23.26",
     "jspdf": "^3.0.4",
-    "lucide-react": "^0.562.0",
+    "lucide-react": "^0.575.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "react-markdown": "^10.1.0",

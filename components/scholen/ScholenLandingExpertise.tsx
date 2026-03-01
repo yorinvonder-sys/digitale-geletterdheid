@@ -19,7 +19,7 @@ export const ScholenLandingExpertise: React.FC = () => {
             </div>
 
             <div className="max-w-lg mx-auto">
-                <div className="relative bg-white rounded-2xl border border-slate-200 p-8 hover:shadow-lg transition-all group overflow-hidden">
+                <div className="relative bg-white rounded-2xl border border-slate-200 p-8 hover:shadow-lg transition-[box-shadow] group overflow-hidden">
                     <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-50 rounded-full -mr-16 -mt-16 group-hover:scale-110 transition-transform" />
                     <div className="relative">
                         <div className="w-14 h-14 bg-indigo-100 rounded-2xl flex items-center justify-center text-indigo-600 mb-5">
@@ -47,7 +47,7 @@ export const ScholenLandingExpertise: React.FC = () => {
             <div className="mt-10 bg-gradient-to-r from-indigo-600 to-indigo-700 rounded-2xl p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl shadow-indigo-600/15 overflow-hidden relative">
                 <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-32 -mt-32" />
                 <div className="flex items-center gap-5 relative">
-                    <div className="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center text-2xl border border-white/10 flex-shrink-0">
+                    <div className="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center text-2xl border border-white/10 flex-shrink-0" aria-hidden="true">
                         🎓
                     </div>
                     <div>

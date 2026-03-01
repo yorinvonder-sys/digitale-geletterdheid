@@ -1322,24 +1322,31 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                                 <RotateCcw size={16} /> Herhaling &amp; Basics
                                             </h3>
                                             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                                                {currentMissions.filter(m => m.isReview).map(mission => {
-                                                    const isNormallyCompleted = stats?.missionsCompleted?.includes(mission.id);
-                                                    const isAutoCompleted = mission.id === 'ipad-print-instructies' && stats?.studentClass !== 'MH1A';
-                                                    const isCompleted = isNormallyCompleted || isAutoCompleted;
+                                                {(() => {
+                                                    let firstOpenReviewFound = false;
+                                                    return currentMissions.filter(m => m.isReview).map(mission => {
+                                                        const isNormallyCompleted = stats?.missionsCompleted?.includes(mission.id);
+                                                        const isAutoCompleted = mission.id === 'ipad-print-instructies' && stats?.studentClass !== 'MH1A';
+                                                        const isCompleted = isNormallyCompleted || isAutoCompleted;
 
-                                                    return (
-                                                        <MissionCard
-                                                            key={mission.id}
-                                                            mission={mission}
-                                                            onSelectModule={onSelectModule}
-                                                            onInfoClick={handleInfoClick}
-                                                            isCompleted={isCompleted}
-                                                            isCompact={true}
-                                                            customHeader={activeWeek <= 1 ? 'Herhaling Basis' : `Herhaling ${periodNaming} ${activeWeek - 1}`}
-                                                            vsoProfile={stats?.vsoProfile}
-                                                        />
-                                                    );
-                                                })}
+                                                        const isTutorialTarget = !allReviewsDone && !isCompleted && !firstOpenReviewFound;
+                                                        if (isTutorialTarget) firstOpenReviewFound = true;
+
+                                                        return (
+                                                            <div key={mission.id} {...(isTutorialTarget ? { 'data-tutorial': 'student-first-mission' } : {})}>
+                                                                <MissionCard
+                                                                    mission={mission}
+                                                                    onSelectModule={onSelectModule}
+                                                                    onInfoClick={handleInfoClick}
+                                                                    isCompleted={isCompleted}
+                                                                    isCompact={true}
+                                                                    customHeader={activeWeek <= 1 ? 'Herhaling Basis' : `Herhaling ${periodNaming} ${activeWeek - 1}`}
+                                                                    vsoProfile={stats?.vsoProfile}
+                                                                />
+                                                            </div>
+                                                        );
+                                                    });
+                                                })()}
                                             </div>
                                         </div>
                                     )}
@@ -1354,7 +1361,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                                     <div
                                                         key={mission.id}
                                                         className="w-full"
-                                                        {...(index === 0 ? { 'data-tutorial': 'student-first-mission' } : {})}
+                                                        {...(index === 0 && allReviewsDone ? { 'data-tutorial': 'student-first-mission' } : {})}
                                                     >
                                                         <MissionCard
                                                             mission={mission}

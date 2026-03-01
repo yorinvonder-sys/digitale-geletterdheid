@@ -166,7 +166,7 @@ export const ScholenLandingContact: React.FC = () => {
                                     </div>
                                 </div>
                             ) : (
-                                <form onSubmit={handleSubmit} className="space-y-3.5" aria-label="Pilot aanvraagformulier">
+                                <form onSubmit={handleSubmit} className="space-y-3.5" aria-label="Pilot aanvraagformulier" aria-busy={isSubmitting}>
                                     <input
                                         type="text"
                                         name="website"
@@ -190,7 +190,7 @@ export const ScholenLandingContact: React.FC = () => {
                                             required
                                             value={formData.schoolNaam}
                                             onChange={(e) => setFormData({ ...formData, schoolNaam: e.target.value })}
-                                            placeholder="Naam van je school"
+                                            placeholder="Naam van je school…"
                                             className="w-full px-3.5 min-h-[44px] bg-slate-50 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400 transition-all text-sm text-slate-800 placeholder:text-slate-400"
                                         />
                                     </div>
@@ -203,7 +203,7 @@ export const ScholenLandingContact: React.FC = () => {
                                             required
                                             value={formData.contactPersoon}
                                             onChange={(e) => setFormData({ ...formData, contactPersoon: e.target.value })}
-                                            placeholder="Je volledige naam"
+                                            placeholder="Je volledige naam…"
                                             className="w-full px-3.5 min-h-[44px] bg-slate-50 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400 transition-all text-sm text-slate-800 placeholder:text-slate-400"
                                         />
                                     </div>
@@ -263,7 +263,7 @@ export const ScholenLandingContact: React.FC = () => {
                                             id="bericht"
                                             value={formData.bericht}
                                             onChange={(e) => setFormData({ ...formData, bericht: e.target.value })}
-                                            placeholder="Specifieke wensen of vragen?"
+                                            placeholder="Specifieke wensen of vragen…"
                                             rows={2}
                                             className="w-full px-3.5 py-3 bg-slate-50 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400 transition-all text-sm text-slate-800 placeholder:text-slate-400 resize-none min-h-[80px]"
                                         />

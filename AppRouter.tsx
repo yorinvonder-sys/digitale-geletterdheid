@@ -223,30 +223,18 @@ function PublicRoute() {
     const shouldProbeAuth = React.useMemo(() => hasLikelySupabaseSession(), []);
     const { user, loading } = useAuthUser({
         enabled: shouldProbeAuth,
-        deferUntilIdle: false
+        deferUntilIdle: true
     });
-    
-    // Forced landing page for screenshots
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.has('force_landing')) {
-        return (
-            <PublicPageShell>
-                <ScholenLanding />
-            </PublicPageShell>
-        );
-    }
 
-    if (shouldProbeAuth) {
-        if (loading) {
-            return <LoadingFallback />;
-        }
-        if (user) {
-            return (
-                <React.Suspense fallback={<LoadingFallback />}>
-                    <AuthenticatedApp />
-                </React.Suspense>
-            );
-        }
+    // Toon de landing page ALTIJD direct — ook voor terugkerende bezoekers
+    // met een (mogelijk stale) token. Auth check loopt op de achtergrond;
+    // pas als die slaagt, redirect naar dashboard.
+    if (shouldProbeAuth && !loading && user) {
+        return (
+            <React.Suspense fallback={<LoadingFallback />}>
+                <AuthenticatedApp />
+            </React.Suspense>
+        );
     }
 
     return (
@@ -289,10 +277,8 @@ function LoginRoute() {
         window.dispatchEvent(new Event('pathchange'));
     };
 
-    if (shouldProbeAuth && loading) {
-        return <LoadingFallback />;
-    }
-
+    // Toon het login formulier ALTIJD direct — ook als auth check nog loopt.
+    // Alleen als auth check klaar is EN user geldig is, redirect naar dashboard.
     if (shouldProbeAuth && !loading && user) {
         // Logged-in user on /login: redirect naar aangevraagde private route of dashboard.
         handleSuccess();

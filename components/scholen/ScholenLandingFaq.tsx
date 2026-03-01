@@ -65,7 +65,7 @@ export const ScholenLandingFaq: React.FC<ScholenLandingFaqProps> = ({ scrollToCo
                                                     <IconChevronDown className={`text-slate-400 flex-shrink-0 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
                                                 </button>
                                                 {isOpen && (
-                                                    <div className="px-5 pb-5 pt-0">
+                                                    <div id={`faq-answer-${i}`} className="px-5 pb-5 pt-0">
                                                         <p className="text-[15px] text-slate-600 leading-relaxed">{item.a}</p>
                                                         {showCta && (
                                                             <button
@@ -92,7 +92,7 @@ export const ScholenLandingFaq: React.FC<ScholenLandingFaqProps> = ({ scrollToCo
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                         <button
                             onClick={scrollToContact}
-                            className="text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 px-5 py-2.5 rounded-lg inline-flex items-center gap-1.5 transition-colors"
+                            className="text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 px-5 py-2.5 rounded-lg inline-flex items-center gap-1.5 transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-500"
                         >
                             Pilot aanvragen
                             <IconArrowRight />
