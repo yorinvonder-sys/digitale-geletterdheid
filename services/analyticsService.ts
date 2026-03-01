@@ -18,6 +18,25 @@ export type AnalyticsEvent =
     | 'mission_start'
     | 'mission_complete';
 
+type AnalyticsRole = 'anonymous' | 'student' | 'teacher' | 'developer';
+
+interface AnalyticsPayload extends Record<string, unknown> {
+    route?: string;
+    page?: string;
+    cta?: string;
+    type?: string;
+    metric_name?: string;
+    metric_value?: number;
+    metric_rating?: 'good' | 'needs-improvement' | 'poor';
+    name?: string;
+    value?: number;
+    rating?: string;
+    device_class?: 'mobile' | 'tablet' | 'desktop' | 'unknown';
+    nav_type?: 'navigate' | 'reload' | 'back_forward' | 'prerender' | 'unknown';
+    build_id?: string;
+    id?: string;
+}
+
 const hasAnalyticsConsent = (): boolean => {
     if (typeof window === 'undefined') return false;
     try {
@@ -32,8 +51,6 @@ const hasAnalyticsConsent = (): boolean => {
     }
 };
 
-type AnalyticsRole = 'anonymous' | 'student' | 'teacher' | 'developer';
-
 const mapRole = (roleValue: unknown): AnalyticsRole => {
     if (typeof roleValue !== 'string') return 'student';
     const normalized = roleValue.toLowerCase();
@@ -42,7 +59,54 @@ const mapRole = (roleValue: unknown): AnalyticsRole => {
     return 'student';
 };
 
-const sendAnalyticsEvent = async (event: AnalyticsEvent, data?: Record<string, any>) => {
+const sanitizeToken = (value: unknown, maxLen: number): string => {
+    if (typeof value !== 'string') return '';
+    return value.replace(/[^a-zA-Z0-9/_-]/g, '').slice(0, maxLen);
+};
+
+const hasLikelySupabaseSession = (): boolean => {
+    if (typeof window === 'undefined') return false;
+    try {
+        for (let i = 0; i < localStorage.length; i += 1) {
+            const key = localStorage.key(i);
+            if (key && /^sb-[a-z0-9_-]+-auth-token$/i.test(key)) {
+                return true;
+            }
+        }
+    } catch {
+        return false;
+    }
+    return false;
+};
+
+const normalizeMetricName = (raw: unknown): string | null => {
+    if (typeof raw !== 'string') return null;
+    const upper = raw.trim().toUpperCase();
+    return ['LCP', 'INP', 'CLS', 'FCP', 'TTFB'].includes(upper) ? upper : null;
+};
+
+const normalizeMetricRating = (raw: unknown): 'good' | 'needs-improvement' | 'poor' | null => {
+    if (typeof raw !== 'string') return null;
+    if (raw === 'good' || raw === 'needs-improvement' || raw === 'poor') return raw;
+    return null;
+};
+
+const normalizeMetricValue = (raw: unknown): number | null => {
+    if (typeof raw !== 'number' || !Number.isFinite(raw) || raw < 0) return null;
+    return raw;
+};
+
+const normalizeDeviceClass = (raw: unknown): 'mobile' | 'tablet' | 'desktop' | 'unknown' => {
+    return raw === 'mobile' || raw === 'tablet' || raw === 'desktop' ? raw : 'unknown';
+};
+
+const normalizeNavType = (raw: unknown): 'navigate' | 'reload' | 'back_forward' | 'prerender' | 'unknown' => {
+    return raw === 'navigate' || raw === 'reload' || raw === 'back_forward' || raw === 'prerender'
+        ? raw
+        : 'unknown';
+};
+
+const sendAnalyticsEvent = async (event: AnalyticsEvent, data?: AnalyticsPayload) => {
     const isDev = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
 
     if (!hasAnalyticsConsent()) {
@@ -54,9 +118,18 @@ const sendAnalyticsEvent = async (event: AnalyticsEvent, data?: Record<string, a
 
     try {
         const rawPath = typeof window !== 'undefined' ? window.location.pathname : '/';
-        const pageKey = rawPath.replace(/[^a-zA-Z0-9/_-]/g, '').slice(0, 80) || 'unknown';
+        const route = sanitizeToken(data?.route ?? rawPath, 120) || '/';
+        const pageKey = sanitizeToken(data?.page ?? rawPath, 80) || 'unknown';
         const ctaSource = data?.type || data?.page || data?.cta || 'none';
-        const ctaKey = String(ctaSource).replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 50) || 'none';
+        const ctaKey = sanitizeToken(String(ctaSource), 50) || 'none';
+        const metricName = normalizeMetricName(data?.metric_name ?? data?.name);
+        const metricValue = normalizeMetricValue(data?.metric_value ?? data?.value);
+        const metricRating = normalizeMetricRating(data?.metric_rating ?? data?.rating);
+        const deviceClass = normalizeDeviceClass(data?.device_class);
+        const navType = normalizeNavType(data?.nav_type);
+        const buildId = sanitizeToken(data?.build_id, 64) || 'unknown';
+        const metricId = sanitizeToken(data?.id, 80) || null;
+
         const supabaseUrl = (import.meta as any).env?.VITE_SUPABASE_URL as string | undefined;
         const supabaseAnonKey = (import.meta as any).env?.VITE_SUPABASE_ANON_KEY as string | undefined;
         if (!supabaseUrl || !supabaseAnonKey) {
@@ -67,18 +140,20 @@ const sendAnalyticsEvent = async (event: AnalyticsEvent, data?: Record<string, a
         // Determine role + token before sending to avoid role race conditions.
         let role: AnalyticsRole = 'anonymous';
         let accessToken: string | null = null;
-        try {
-            const { supabase } = await import('./supabase');
-            const [{ data: { user } }, { data: { session } }] = await Promise.all([
-                supabase.auth.getUser(),
-                supabase.auth.getSession(),
-            ]);
-            if (user) {
-                role = mapRole(user.user_metadata?.role ?? user.app_metadata?.role);
+        if (hasLikelySupabaseSession()) {
+            try {
+                const { supabase } = await import('./supabase');
+                const [{ data: { user } }, { data: { session } }] = await Promise.all([
+                    supabase.auth.getUser(),
+                    supabase.auth.getSession(),
+                ]);
+                if (user) {
+                    role = mapRole(user.user_metadata?.role ?? user.app_metadata?.role);
+                }
+                accessToken = session?.access_token ?? null;
+            } catch (authErr) {
+                if (isDev) console.warn('[Analytics] Could not resolve auth context:', authErr);
             }
-            accessToken = session?.access_token ?? null;
-        } catch (authErr) {
-            if (isDev) console.warn('[Analytics] Could not resolve auth context:', authErr);
         }
 
         const headers: Record<string, string> = {
@@ -97,6 +172,14 @@ const sendAnalyticsEvent = async (event: AnalyticsEvent, data?: Record<string, a
                 pageKey,
                 ctaKey,
                 role,
+                route,
+                metric_name: metricName,
+                metric_value: metricValue,
+                metric_rating: metricRating,
+                device_class: deviceClass,
+                nav_type: navType,
+                build_id: buildId,
+                metric_id: metricId,
             }),
             keepalive: true,
         });
@@ -109,7 +192,7 @@ const sendAnalyticsEvent = async (event: AnalyticsEvent, data?: Record<string, a
     }
 };
 
-export const trackEvent = (event: AnalyticsEvent, data?: Record<string, any>) => {
+export const trackEvent = (event: AnalyticsEvent, data?: AnalyticsPayload) => {
     const isDev = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
     if (isDev) {
         console.log(`[Analytics] Event: ${event}`, data || '');

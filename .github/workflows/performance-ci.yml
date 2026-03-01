@@ -1,0 +1,37 @@
+name: Performance CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  performance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Lighthouse + network + bundle budgets
+        env:
+          LIGHTHOUSE_RUNS: 3
+          LH_SCORE_MIN: 95
+          LH_ROOT_LCP_MAX: 2600
+          LH_LOGIN_LCP_MAX: 3000
+          LH_SCHOLEN_LCP_MAX: 2600
+        run: npm run performance:ci

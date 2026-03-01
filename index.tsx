@@ -30,8 +30,34 @@ scheduleVitals(async () => {
   }, 2500);
 });
 
-if (typeof window !== 'undefined' && window.location.pathname.startsWith('/login') && 'serviceWorker' in navigator) {
-  (async () => {
+function scheduleLoginServiceWorkerCleanup() {
+  if (typeof window === 'undefined') return;
+  if (!window.location.pathname.startsWith('/login')) return;
+  if (!('serviceWorker' in navigator)) return;
+
+  let hasRun = false;
+  let idleId: number | ReturnType<typeof setTimeout> | undefined;
+  let idleKind: 'ric' | 'timeout' | null = null;
+  const interactionEvents: Array<keyof WindowEventMap> = ['pointerdown', 'keydown', 'touchstart'];
+
+  const cleanupListeners = () => {
+    interactionEvents.forEach((eventName) => {
+      window.removeEventListener(eventName, onInteraction);
+    });
+    if (typeof idleId !== 'undefined') {
+      if (idleKind === 'ric' && typeof cancelIdleCallback !== 'undefined') {
+        cancelIdleCallback(idleId as number);
+      } else {
+        clearTimeout(idleId as ReturnType<typeof setTimeout>);
+      }
+    }
+  };
+
+  const runCleanup = async () => {
+    if (hasRun) return;
+    hasRun = true;
+    cleanupListeners();
+
     try {
       const regs = await navigator.serviceWorker.getRegistrations();
       if (regs.length === 0) return;
@@ -40,22 +66,23 @@ if (typeof window !== 'undefined' && window.location.pathname.startsWith('/login
         const keys = await caches.keys();
         await Promise.all(keys.filter((k) => k.startsWith('ai-lab-shell-')).map((k) => caches.delete(k)));
       }
-      const reloadKey = 'login_sw_reset_done';
-      if (!sessionStorage.getItem(reloadKey)) {
-        sessionStorage.setItem(reloadKey, 'true');
-        window.location.reload();
-      }
     } catch {
       // Ignore SW cleanup failures; app continues normally.
     }
-  })();
+  };
+
+  const onInteraction = () => { void runCleanup(); };
+  interactionEvents.forEach((eventName) => {
+    window.addEventListener(eventName, onInteraction, { once: true, passive: true });
+  });
+
+  if (typeof requestIdleCallback !== 'undefined') {
+    idleId = requestIdleCallback(() => { void runCleanup(); }, { timeout: 5000 });
+    idleKind = 'ric';
+  } else {
+    idleId = setTimeout(() => { void runCleanup(); }, 5000);
+    idleKind = 'timeout';
+  }
 }
 
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    // Temporarily disable SW caching to prevent stale app shells on login routes.
-    navigator.serviceWorker.getRegistrations()
-      .then((regs) => Promise.all(regs.map((reg) => reg.unregister())))
-      .catch(() => { });
-  });
-}
+scheduleLoginServiceWorkerCleanup();

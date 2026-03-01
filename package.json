@@ -14,6 +14,10 @@
     "deploy": "vercel --prod",
     "lighthouse": "bash ./scripts/lighthouse-audit.sh",
     "lighthouse:parse": "node scripts/parse-lighthouse.js",
+    "lighthouse:median": "node scripts/lighthouse-median-check.mjs",
+    "perf:assert:network": "node scripts/assert-critical-route-network.mjs",
+    "perf:bundle:check": "node scripts/check-bundle-budgets.mjs",
+    "performance:ci": "npm run lighthouse:median && npm run perf:assert:network && npm run perf:bundle:check",
     "audit:security": "npm audit --audit-level=moderate"
   },
   "dependencies": {

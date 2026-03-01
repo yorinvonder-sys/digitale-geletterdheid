@@ -27,6 +27,19 @@ function shouldLog(): boolean {
 
 function logMetric(metric: Metric): void {
   const value = metric.name === 'CLS' ? metric.value.toFixed(3) : Math.round(metric.value);
+  const route = typeof window !== 'undefined' ? window.location.pathname : '/';
+  const width = typeof window !== 'undefined' ? window.innerWidth : 0;
+  const deviceClass = width <= 640 ? 'mobile' : width <= 1024 ? 'tablet' : 'desktop';
+  const navEntry = typeof performance !== 'undefined'
+    ? performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined
+    : undefined;
+  const navType = navEntry?.type === 'navigate'
+    || navEntry?.type === 'reload'
+    || navEntry?.type === 'back_forward'
+    || navEntry?.type === 'prerender'
+    ? navEntry.type
+    : 'unknown';
+  const buildId = typeof __APP_BUILD_ID__ === 'string' ? __APP_BUILD_ID__ : 'unknown';
   
   if (shouldLog()) {
     console.log(`[Web Vitals] ${metric.name}: ${value} (${metric.rating})`);
@@ -37,7 +50,14 @@ function logMetric(metric: Metric): void {
     name: metric.name,
     value: metric.value,
     rating: metric.rating,
-    id: metric.id
+    id: metric.id,
+    route,
+    metric_name: metric.name,
+    metric_value: metric.value,
+    metric_rating: metric.rating,
+    device_class: deviceClass,
+    nav_type: navType,
+    build_id: buildId
   });
 }
 

@@ -18,6 +18,7 @@ import { TeacherMessagePopup } from './components/TeacherMessagePopup';
 import { ExitConfirmDialog } from './components/ExitConfirmDialog';
 import { Toast } from './components/Toast';
 import { MfaGate } from './components/MfaGate';
+import './styles/authenticated.css';
 
 // Code splitting: Lazy load heavy components with automatic retry on failure
 const AiLab = lazyWithRetry(() => import('./components/AiLab').then(m => ({ default: m.AiLab })));

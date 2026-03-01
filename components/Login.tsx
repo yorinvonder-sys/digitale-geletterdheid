@@ -119,6 +119,22 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
             setMode('register');
         }
 
+        const hasOAuthParams = (searchParams: URLSearchParams) =>
+            searchParams.has('code')
+            || searchParams.has('access_token')
+            || searchParams.has('refresh_token')
+            || searchParams.has('error')
+            || searchParams.has('error_description');
+
+        const hash = window.location.hash.startsWith('#')
+            ? window.location.hash.slice(1)
+            : window.location.hash;
+        const hashParams = new URLSearchParams(hash);
+
+        if (!hasOAuthParams(params) && !hasOAuthParams(hashParams)) {
+            return;
+        }
+
         // Handle redirect result if returning from Microsoft SSO
         const processRedirect = async () => {
             try {

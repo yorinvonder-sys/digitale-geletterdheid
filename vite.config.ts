@@ -46,6 +46,7 @@ function docSyncPlugin() {
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, '.', '');
+  const buildId = (env.VITE_APP_BUILD_ID || process.env.VERCEL_GIT_COMMIT_SHA || process.env.npm_package_version || 'dev').slice(0, 64);
   return {
     server: {
       port: 3000,
@@ -97,6 +98,9 @@ export default defineConfig(({ mode }) => {
         }
       },
       chunkSizeWarningLimit: 600
+    },
+    define: {
+      __APP_BUILD_ID__: JSON.stringify(buildId)
     }
   };
 });

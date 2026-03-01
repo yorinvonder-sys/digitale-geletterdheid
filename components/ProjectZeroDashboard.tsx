@@ -61,6 +61,71 @@ const PERIOD_THEME: Record<number, { border: string; bg: string; text: string; i
 };
 const DEFAULT_PERIOD_THEME = { border: 'border-slate-100', bg: 'bg-slate-50', text: 'text-slate-600', icon: <Puzzle size={14} />, label: '' };
 
+interface YearGroupTheme {
+    label: string;
+    Icon: React.ComponentType<any>;
+    badgeBg: string;
+    badgeText: string;
+    accentDot: string;
+    activeBorder: string;
+    activeText: string;
+    focusRing: string;
+    gradient: string;
+}
+
+const getYearGroupTheme = (year: number): YearGroupTheme => {
+    switch (year) {
+        case 1:
+            return {
+                label: 'Digitale Basis',
+                Icon: MonitorSmartphone,
+                badgeBg: 'bg-indigo-100',
+                badgeText: 'text-indigo-700',
+                accentDot: 'bg-indigo-500',
+                activeBorder: 'border-indigo-200',
+                activeText: 'text-indigo-700',
+                focusRing: 'ring-indigo-100',
+                gradient: 'from-indigo-500 to-blue-500',
+            };
+        case 2:
+            return {
+                label: 'Digitale Verdieping',
+                Icon: BrainCircuit,
+                badgeBg: 'bg-pink-100',
+                badgeText: 'text-pink-700',
+                accentDot: 'bg-pink-500',
+                activeBorder: 'border-pink-200',
+                activeText: 'text-pink-700',
+                focusRing: 'ring-pink-100',
+                gradient: 'from-pink-500 to-rose-500',
+            };
+        case 3:
+            return {
+                label: 'Digitale Meesterschap',
+                Icon: Rocket,
+                badgeBg: 'bg-violet-100',
+                badgeText: 'text-violet-700',
+                accentDot: 'bg-violet-500',
+                activeBorder: 'border-violet-200',
+                activeText: 'text-violet-700',
+                focusRing: 'ring-violet-100',
+                gradient: 'from-violet-500 to-indigo-500',
+            };
+        default:
+            return {
+                label: 'Digitale Leerlijn',
+                Icon: MonitorSmartphone,
+                badgeBg: 'bg-slate-100',
+                badgeText: 'text-slate-700',
+                accentDot: 'bg-slate-500',
+                activeBorder: 'border-slate-200',
+                activeText: 'text-slate-700',
+                focusRing: 'ring-slate-100',
+                gradient: 'from-slate-500 to-slate-600',
+            };
+    }
+};
+
 // Periode-specifieke leerdoel-beschrijvingen (tekst die niet in curriculum.ts hoort)
 interface PeriodLeerdoel {
     description: string;
@@ -311,8 +376,10 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
     const periodLeerdoel = PERIOD_LEERDOELEN[`${currentYearGroup}-${activeWeek}`];
     const [showXPPopup, setShowXPPopup] = useState(false);
     const [showProfileMenu, setShowProfileMenu] = React.useState(false);
+    const [showYearGroupMenu, setShowYearGroupMenu] = useState(false);
     const [selectedMissionInfo, setSelectedMissionInfo] = useState<string | { info: string; kerndoelen: SloKerndoelCode[] } | null>(null);
     const [permissions, setPermissions] = useState<GamePermissions | null>(null);
+    const yearGroupMenuRef = React.useRef<HTMLDivElement | null>(null);
 
     // Feedback modal state
     const [showFeedbackModal, setShowFeedbackModal] = useState(false);
@@ -383,6 +450,30 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
         return () => unsubscribe();
     }, []);
 
+    useEffect(() => {
+        if (!showYearGroupMenu) return;
+
+        const handlePointerDown = (event: PointerEvent) => {
+            if (!yearGroupMenuRef.current) return;
+            if (!yearGroupMenuRef.current.contains(event.target as Node)) {
+                setShowYearGroupMenu(false);
+            }
+        };
+
+        const handleEscapeKey = (event: KeyboardEvent) => {
+            if (event.key === 'Escape') {
+                setShowYearGroupMenu(false);
+            }
+        };
+
+        document.addEventListener('pointerdown', handlePointerDown);
+        document.addEventListener('keydown', handleEscapeKey);
+        return () => {
+            document.removeEventListener('pointerdown', handlePointerDown);
+            document.removeEventListener('keydown', handleEscapeKey);
+        };
+    }, [showYearGroupMenu]);
+
     // Daily streak calculation
     const dailyStreak = React.useMemo(() => {
         const today = new Date().toISOString().split('T')[0];
@@ -396,6 +487,15 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
     // Import shared XP utilities
     const xp = stats?.xp || 0;
     const level = stats?.level || 1;
+    const availableYearGroups = useMemo(() => {
+        const userLevel = (stats?.educationLevel as EducationLevel) || 'havo';
+        return Object.entries(CURRICULUM.yearGroups)
+            .filter(([_, config]) => config.availableLevels.includes(userLevel))
+            .map(([yearStr, config]) => ({ year: Number(yearStr), config }))
+            .sort((a, b) => a.year - b.year);
+    }, [stats?.educationLevel]);
+    const selectedYearGroupTitle = availableYearGroups.find(({ year }) => year === currentYearGroup)?.config.title || `Leerjaar ${currentYearGroup}`;
+    const activeYearTheme = useMemo(() => getYearGroupTheme(currentYearGroup), [currentYearGroup]);
 
     // Memoize expensive calculations
     const progressPercentage = React.useMemo(
@@ -963,22 +1063,81 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
 
                     {/* LEERJAAR + PERIODE SELECTION */}
                     <div className="flex items-center gap-2 mb-4">
-                        {Object.keys(CURRICULUM.yearGroups).length > 1 && (
-                            <select
-                                value={currentYearGroup}
-                                onChange={(e) => { setActiveYearGroup?.(Number(e.target.value)); setActiveWeek(1); }}
-                                className="px-3 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest bg-slate-900 text-white border-none min-h-[44px] cursor-pointer appearance-none pr-8 bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22white%22%20stroke-width%3D%223%22%3E%3Cpath%20d%3D%22M6%209l6%206%206-6%22%2F%3E%3C%2Fsvg%3E')] bg-no-repeat bg-[right_0.5rem_center]"
-                            >
-                                {Object.entries(CURRICULUM.yearGroups)
-                                    .filter(([_, config]) => {
-                                        const userLevel = (stats?.educationLevel as EducationLevel) || 'havo';
-                                        return config.availableLevels.includes(userLevel);
-                                    })
-                                    .map(([yearStr, config]) => (
-                                        <option key={yearStr} value={yearStr}>{config.title}</option>
-                                    ))
-                                }
-                            </select>
+                        {availableYearGroups.length > 1 && (
+                            <div ref={yearGroupMenuRef} className="relative flex-shrink-0">
+                                <button
+                                    type="button"
+                                    aria-haspopup="listbox"
+                                    aria-expanded={showYearGroupMenu}
+                                    aria-label="Kies digitale leerlijn"
+                                    onClick={() => setShowYearGroupMenu(prev => !prev)}
+                                    className={`min-h-[44px] rounded-2xl border border-slate-200 bg-slate-100 p-1.5 shadow-inner transition-all duration-200 ${showYearGroupMenu
+                                        ? `ring-2 ${activeYearTheme.focusRing}`
+                                        : 'hover:border-slate-300 hover:-translate-y-[1px]'
+                                        }`}
+                                >
+                                    <span className={`min-w-[210px] max-w-[72vw] flex items-center gap-2.5 rounded-xl border bg-white px-3 py-2 transition-all ${showYearGroupMenu ? `${activeYearTheme.activeBorder} shadow-sm` : 'border-slate-200'}`}>
+                                        <span className={`w-7 h-7 rounded-lg ${activeYearTheme.badgeBg} ${activeYearTheme.badgeText} flex items-center justify-center shrink-0`}>
+                                            <activeYearTheme.Icon size={13} />
+                                        </span>
+                                        <span className="flex flex-col items-start leading-tight min-w-0 flex-1">
+                                            <span className="text-[9px] font-black uppercase tracking-[0.18em] text-slate-400">Leerlijn</span>
+                                            <span className="text-xs font-black uppercase tracking-widest text-slate-800 truncate">{selectedYearGroupTitle}</span>
+                                        </span>
+                                        <span className={`w-2 h-2 rounded-full ${activeYearTheme.accentDot} shrink-0`} />
+                                        <ChevronRight
+                                            size={14}
+                                            className={`text-slate-400 shrink-0 transition-transform duration-200 ${showYearGroupMenu ? '-rotate-90' : 'rotate-90'}`}
+                                        />
+                                    </span>
+                                </button>
+
+                                {showYearGroupMenu && (
+                                    <div
+                                        role="listbox"
+                                        aria-label="Digitale leerlijnen"
+                                        className="absolute left-0 top-[calc(100%+0.5rem)] z-40 w-[min(92vw,320px)] rounded-2xl border border-slate-200 bg-slate-100 p-1.5 shadow-[0_20px_40px_-24px_rgba(15,23,42,0.65)] animate-in fade-in-0 zoom-in-95 duration-150"
+                                    >
+                                        <div className={`h-1 rounded-full mb-2 bg-gradient-to-r ${activeYearTheme.gradient}`} />
+                                        <p className="px-2.5 pt-1 pb-1.5 text-[9px] font-black uppercase tracking-[0.18em] text-slate-400">
+                                            Kies je route
+                                        </p>
+                                        <div className="space-y-1">
+                                            {availableYearGroups.map(({ year, config }) => {
+                                                const isActive = year === currentYearGroup;
+                                                const optionTheme = getYearGroupTheme(year);
+                                                return (
+                                                    <button
+                                                        key={year}
+                                                        type="button"
+                                                        role="option"
+                                                        aria-selected={isActive}
+                                                        onClick={() => {
+                                                            setActiveYearGroup?.(year);
+                                                            setActiveWeek(1);
+                                                            setShowYearGroupMenu(false);
+                                                        }}
+                                                        className={`w-full min-h-[44px] rounded-xl border px-2.5 py-2 text-left transition-all duration-150 flex items-center gap-2.5 ${isActive
+                                                            ? `bg-white ${optionTheme.activeBorder} ${optionTheme.activeText} shadow-sm -translate-y-[1px]`
+                                                            : 'bg-white/80 border-transparent text-slate-600 hover:bg-white hover:border-slate-200 hover:-translate-y-[1px]'
+                                                            }`}
+                                                    >
+                                                        <span className={`w-1.5 h-8 rounded-full shrink-0 ${optionTheme.accentDot}`} />
+                                                        <span className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${isActive ? `${optionTheme.badgeBg} ${optionTheme.badgeText}` : 'bg-slate-100 text-slate-500'}`}>
+                                                            <optionTheme.Icon size={12} />
+                                                        </span>
+                                                        <span className="flex-1 min-w-0">
+                                                            <span className="block text-xs font-black uppercase tracking-widest truncate">{config.title}</span>
+                                                            <span className="block text-[9px] font-bold tracking-wide text-slate-400 mt-0.5">Leerjaar {year} · {optionTheme.label}</span>
+                                                        </span>
+                                                        {isActive && <CheckCircle2 size={14} className="text-emerald-500 shrink-0" />}
+                                                    </button>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
                         )}
                         <div className="flex items-center gap-2 bg-slate-100 p-1.5 rounded-2xl flex-1 md:flex-initial border border-slate-200 shadow-inner overflow-x-auto no-scrollbar">
                         {Object.keys(yearConfig?.periods || {}).map(Number).sort((a, b) => a - b).map((period) => {

@@ -100,6 +100,25 @@ function hasLikelySupabaseSession(): boolean {
     return false;
 }
 
+function hasOAuthCallbackParams(): boolean {
+    if (typeof window === 'undefined') return false;
+    const hasParams = (params: URLSearchParams) =>
+        params.has('code')
+        || params.has('access_token')
+        || params.has('refresh_token')
+        || params.has('error')
+        || params.has('error_description');
+
+    const queryParams = new URLSearchParams(window.location.search);
+    if (hasParams(queryParams)) return true;
+
+    const hash = window.location.hash.startsWith('#')
+        ? window.location.hash.slice(1)
+        : window.location.hash;
+    const hashParams = new URLSearchParams(hash);
+    return hasParams(hashParams);
+}
+
 /** Auth hook - immediate for reliability during login/session transitions */
 function useAuthUser(options?: { enabled?: boolean; deferUntilIdle?: boolean }) {
     const enabled = options?.enabled ?? true;
@@ -232,15 +251,43 @@ function PublicRoute() {
 
 /** Login route: /login. Render shell immediately; defer auth to avoid blocking LCP. */
 function LoginRoute() {
-    const { user, loading } = useAuthUser();
+    const shouldProbeAuth = React.useMemo(
+        () => hasLikelySupabaseSession() || hasOAuthCallbackParams(),
+        []
+    );
+    const postLoginPath = React.useMemo(() => {
+        const params = new URLSearchParams(window.location.search);
+        const redirectPath = params.get('redirect');
+
+        // Alleen interne paden toestaan; voorkom open redirects en login-loop.
+        if (
+            redirectPath
+            && redirectPath.startsWith('/')
+            && !redirectPath.startsWith('//')
+            && !redirectPath.startsWith('/login')
+        ) {
+            return redirectPath;
+        }
+
+        // Standaard naar private app-shell zodat studenten direct in hun dashboard komen.
+        return '/dashboard';
+    }, []);
+    const { user, loading } = useAuthUser({
+        enabled: shouldProbeAuth,
+        deferUntilIdle: false
+    });
 
     const handleSuccess = () => {
-        window.history.replaceState({}, '', '/');
+        window.history.replaceState({}, '', postLoginPath);
         window.dispatchEvent(new Event('pathchange'));
     };
 
-    if (!loading && user) {
-        // Logged-in user on /login: redirect to / and show app
+    if (shouldProbeAuth && loading) {
+        return <LoadingFallback />;
+    }
+
+    if (shouldProbeAuth && !loading && user) {
+        // Logged-in user on /login: redirect naar aangevraagde private route of dashboard.
         handleSuccess();
         return (
             <React.Suspense fallback={<LoadingFallback />}>
