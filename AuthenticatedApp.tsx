@@ -890,7 +890,19 @@ export function AuthenticatedApp() {
     );
 
     return user.role === 'student' ? (
-        <TutorialProvider steps={studentTutorialSteps} storageKey={STUDENT_STORAGE_KEY} autoStart={true}>
+        <TutorialProvider
+            steps={studentTutorialSteps}
+            storageKey={STUDENT_STORAGE_KEY}
+            autoStart={true}
+            isCompleted={user?.stats?.hasCompletedStudentTutorial}
+            onComplete={async () => {
+                if (user) {
+                    const newStats = { ...user.stats, hasCompletedStudentTutorial: true };
+                    setUser({ ...user, stats: newStats });
+                    await handleSaveProgress(newStats);
+                }
+            }}
+        >
             {appShell}
         </TutorialProvider>
     ) : appShell;

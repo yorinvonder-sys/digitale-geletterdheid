@@ -189,6 +189,7 @@ export interface UserStats {
   hasCompletedAvatarSetup?: boolean;
   hasCompletedTeacherOnboarding?: boolean;
   hasCompletedTeacherTutorial?: boolean;
+  hasCompletedStudentTutorial?: boolean;
   studentClass?: string; // Student's class, synced from profile
   badges?: string[];
   completedIntroWeeks?: number[]; // Tracks which week intros have been seen
