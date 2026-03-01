@@ -297,6 +297,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
     const [itemToPurchase, setItemToPurchase] = useState<typeof SHOP_ITEMS[0] | null>(null);
     const [showResetConfirm, setShowResetConfirm] = useState(false);
     const [xpLockInfo, setXpLockInfo] = useState<{ item: typeof SHOP_ITEMS[0]; needed: number } | null>(null);
+    const equippedConfigRef = React.useRef<AvatarConfig>(stats.avatarConfig || DEFAULT_AVATAR_CONFIG);
 
     const handlePartClick = (part: string) => {
         // Map clicked parts to customizable categories
@@ -362,6 +363,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
 
         onUpdateProfile({ stats: newStats });
         setPreviewConfig(newConfig);
+        equippedConfigRef.current = newConfig;
         setItemToPurchase(null);
     };
 
@@ -398,6 +400,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
         const newStats = { ...stats, avatarConfig: newConfig };
         onUpdateProfile({ stats: newStats });
         setPreviewConfig(newConfig);
+        equippedConfigRef.current = newConfig;
     };
 
     // Outfit Save/Load
@@ -777,19 +780,19 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
                                     {/* Shop Content Area */}
                                     <div className="flex-1 overflow-y-auto custom-scrollbar pr-2 space-y-12">
                                         {(shopCategory === 'all' || shopCategory === 'gender') && (
-                                            <CategorySection title="Geslacht" items={SHOP_ITEMS.filter(i => i.type === 'gender')} stats={stats} handlePurchase={initiatePurchase} handleEquip={handleEquip} previewConfig={previewConfig} setPreviewConfig={setPreviewConfig} />
+                                            <CategorySection title="Geslacht" items={SHOP_ITEMS.filter(i => i.type === 'gender')} stats={stats} handlePurchase={initiatePurchase} handleEquip={handleEquip} previewConfig={previewConfig} setPreviewConfig={setPreviewConfig} equippedConfigRef={equippedConfigRef} />
                                         )}
 
                                         {(shopCategory === 'all' || shopCategory === 'body') && (
-                                            <CategorySection title="Lichaam & Basis" items={SHOP_ITEMS.filter(i => i.type === 'baseModel' || i.type === 'skinColor')} stats={stats} handlePurchase={initiatePurchase} handleEquip={handleEquip} previewConfig={previewConfig} setPreviewConfig={setPreviewConfig} />
+                                            <CategorySection title="Lichaam & Basis" items={SHOP_ITEMS.filter(i => i.type === 'baseModel' || i.type === 'skinColor')} stats={stats} handlePurchase={initiatePurchase} handleEquip={handleEquip} previewConfig={previewConfig} setPreviewConfig={setPreviewConfig} equippedConfigRef={equippedConfigRef} />
                                         )}
 
                                         {(shopCategory === 'all' || shopCategory === 'hair') && (
-                                            <CategorySection title="Kapsels" items={SHOP_ITEMS.filter(i => i.type === 'hairStyle' && (!i.gender || i.gender === previewConfig.gender))} stats={stats} handlePurchase={initiatePurchase} handleEquip={handleEquip} previewConfig={previewConfig} setPreviewConfig={setPreviewConfig} />
+                                            <CategorySection title="Kapsels" items={SHOP_ITEMS.filter(i => i.type === 'hairStyle' && (!i.gender || i.gender === previewConfig.gender))} stats={stats} handlePurchase={initiatePurchase} handleEquip={handleEquip} previewConfig={previewConfig} setPreviewConfig={setPreviewConfig} equippedConfigRef={equippedConfigRef} />
                                         )}
 
                                         {(shopCategory === 'all' || shopCategory === 'clothes') && (
-                                            <CategorySection title="Broeken" items={SHOP_ITEMS.filter(i => i.type === 'pantsStyle')} stats={stats} handlePurchase={initiatePurchase} handleEquip={handleEquip} previewConfig={previewConfig} setPreviewConfig={setPreviewConfig} />
+                                            <CategorySection title="Broeken" items={SHOP_ITEMS.filter(i => i.type === 'pantsStyle')} stats={stats} handlePurchase={initiatePurchase} handleEquip={handleEquip} previewConfig={previewConfig} setPreviewConfig={setPreviewConfig} equippedConfigRef={equippedConfigRef} />
                                         )}
 
                                         {(shopCategory === 'all' || shopCategory === 'colors') && (
@@ -875,6 +878,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
                                                 handleEquip={handleEquip}
                                                 previewConfig={previewConfig}
                                                 setPreviewConfig={setPreviewConfig}
+                                                equippedConfigRef={equippedConfigRef}
                                                 onEditColor={handlePartClick}
                                             />
                                         )}
@@ -888,6 +892,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
                                                 handleEquip={handleEquip}
                                                 previewConfig={previewConfig}
                                                 setPreviewConfig={setPreviewConfig}
+                                                equippedConfigRef={equippedConfigRef}
                                                 onEditColor={handlePartClick}
                                             />
                                         )}
@@ -978,7 +983,7 @@ const BadgeDisplay = ({ icon, label, unlocked, color }: { icon: string, label: s
     </div>
 );
 
-const CategorySection = ({ title, items, stats, handlePurchase, handleEquip, previewConfig, setPreviewConfig, ...props }: any) => (
+const CategorySection = ({ title, items, stats, handlePurchase, handleEquip, previewConfig, setPreviewConfig, equippedConfigRef, ...props }: any) => (
     <div>
         <h4 className="font-bold text-slate-900 mb-4 px-1">{title}</h4>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
@@ -1013,7 +1018,7 @@ const CategorySection = ({ title, items, stats, handlePurchase, handleEquip, pre
                             if (item.type === 'gender') newConfig.gender = item.value;
                             setPreviewConfig(newConfig);
                         }}
-                        onMouseLeave={() => setPreviewConfig(stats.avatarConfig || DEFAULT_AVATAR_CONFIG)}
+                        onMouseLeave={() => setPreviewConfig(equippedConfigRef?.current || stats.avatarConfig || DEFAULT_AVATAR_CONFIG)}
                         disabled={notEnoughMoney}
                         className={`
                             relative text-left p-4 rounded-3xl border-2 transition-all flex flex-col items-center text-center gap-4 group

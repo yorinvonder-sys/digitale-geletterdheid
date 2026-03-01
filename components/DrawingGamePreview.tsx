@@ -30,10 +30,14 @@ interface DrawingGamePreviewProps {
     };
     initialState?: DrawingGamePersistState;
     onSave?: (data: DrawingGamePersistState) => void;
+    // R7: Peer Feedback
+    enablePeerFeedback?: boolean;
+    peerFeedbackProps?: any;
 }
 
 // Drawing prompts with pattern keywords, difficulty, and categories for variety
-const PROMPTS = [
+// Exported for use by DuelGame
+export const PROMPTS = [
     // 🟢 EASY - Simple shapes
     { word: 'zon', icon: '☀️', patterns: ['cirkel', 'stralen', 'rond'], difficulty: 'easy', category: 'natuur' },
     { word: 'hart', icon: '❤️', patterns: ['punts onderaan', 'twee boogjes'], difficulty: 'easy', category: 'symbolen' },
@@ -341,7 +345,7 @@ const countPixelsInCircle = (pixels: Uint8ClampedArray, width: number, height: n
 };
 
 
-export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelComplete, onStart, onXPEarned, user, initialState, onSave }) => {
+export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelComplete, onStart, onXPEarned, user, initialState, onSave, enablePeerFeedback, peerFeedbackProps }) => {
     const [hasStarted, setHasStarted] = useState(false);
     const [countdown] = useState(0); // Initial countdown set to 0, no setter needed as it's not modified
     const [currentRound, setCurrentRound] = useState(0);
@@ -784,6 +788,14 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
                         text: "Net als jouw hersenen bestaat AI uit lagen. De eerste laag ziet pixels, de volgende ziet lijnen, dan vormen, en ten slotte herkent het 'een kat'. Soms raakt de AI in de war als de pixels lijken op iets anders!"
                     }}
                     onExit={() => setShowConclusion(false)}
+                    enablePeerFeedback={enablePeerFeedback}
+                    {...(peerFeedbackProps && {
+                        currentUserId: peerFeedbackProps.currentUserId,
+                        currentUserName: peerFeedbackProps.currentUserName,
+                        targetUserId: peerFeedbackProps.targetUserId,
+                        missionId: peerFeedbackProps.missionId,
+                        schoolId: peerFeedbackProps.schoolId,
+                    })}
                 />
             )}
 

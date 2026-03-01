@@ -86,6 +86,80 @@ export const InspectorTask: React.FC<Props> = ({ task, onComplete }) => {
                             <div className="absolute bottom-4 right-4 text-6xl rotate-12 z-10">🐱</div>
                             <div className="absolute top-4 right-4 text-6xl -rotate-12 z-0 opacity-50">🍕</div>
                         </div>
+
+                    ) : task.image === 'SPECIAL:PROMPT_COMPARISON' ? (
+                        <div className="absolute inset-0 bg-slate-50 pointer-events-none select-none overflow-hidden flex flex-col">
+                            <div className="bg-purple-600 text-white px-4 py-2 flex items-center gap-2 shrink-0">
+                                <div className="w-6 h-6 rounded-full bg-purple-400 flex items-center justify-center text-xs font-bold">AI</div>
+                                <span className="font-semibold text-sm">AI Verhalenmaker</span>
+                                <span className="ml-auto text-purple-200 text-xs">online</span>
+                            </div>
+                            <div className="flex-1 flex flex-col px-4 py-3 gap-2 overflow-hidden">
+                                <p className="text-[10px] text-slate-400 text-center">Twee leerlingen proberen een verhaal te maken met AI</p>
+                                <div className="flex flex-col items-end mt-1">
+                                    <span className="text-[9px] text-slate-400 mb-0.5">Leerling 1</span>
+                                    <div className="bg-blue-500 text-white px-3 py-2 rounded-2xl rounded-tr-sm max-w-[44%] ml-auto">
+                                        <p className="text-xs font-medium">Schrijf iets</p>
+                                    </div>
+                                </div>
+                                <div className="flex flex-col items-start">
+                                    <div className="bg-white border border-slate-200 px-3 py-2 rounded-2xl rounded-tl-sm max-w-[50%] shadow-sm">
+                                        <p className="text-[10px] text-slate-600 italic">Eh... oké. Hier is iets: &quot;Er was eens iemand die iets deed.&quot; Ik weet niet precies wat je wilt...</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-center gap-2 my-1">
+                                    <div className="flex-1 border-t border-slate-200"></div>
+                                    <span className="text-[9px] text-slate-300">vs</span>
+                                    <div className="flex-1 border-t border-slate-200"></div>
+                                </div>
+                                <div className="flex flex-col items-end">
+                                    <span className="text-[9px] text-slate-400 mb-0.5">Leerling 2</span>
+                                    <div className="bg-blue-500 text-white px-3 py-2 rounded-2xl rounded-tr-sm max-w-[44%] ml-auto">
+                                        <p className="text-xs font-medium">Schrijf een spannend verhaal over een robot die verdwaalt in een grote stad. Het verhaal is voor kinderen van 12 jaar. Maak het 200 woorden.</p>
+                                    </div>
+                                </div>
+                                <div className="flex flex-col items-start">
+                                    <div className="bg-white border border-slate-200 px-3 py-2 rounded-2xl rounded-tl-sm max-w-[50%] shadow-sm">
+                                        <p className="text-[10px] text-slate-600 italic">ROBO-7 knipperde met zijn blauwe ogen. De hoge gebouwen leken op reusachtige vingers die naar de hemel wezen. &quot;Waar ben ik?&quot; piepte hij...</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    ) : task.image === 'SPECIAL:CHATBOT_ERROR_DETECTION' ? (
+                        <div className="absolute inset-0 bg-slate-50 pointer-events-none select-none overflow-hidden flex flex-col">
+                            <div className="bg-green-600 text-white px-4 py-2 flex items-center gap-2 shrink-0">
+                                <div className="w-6 h-6 rounded-full bg-green-400 flex items-center justify-center text-xs font-bold">🤖</div>
+                                <span className="font-semibold text-sm">SlimmeBot</span>
+                                <span className="ml-auto text-green-200 text-xs">online</span>
+                            </div>
+                            <div className="flex-1 flex flex-col px-4 py-3 gap-2 overflow-hidden">
+                                <div className="flex flex-col items-end mt-1">
+                                    <span className="text-[9px] text-slate-400 mb-0.5">Leerling</span>
+                                    <div className="bg-blue-500 text-white px-3 py-2 rounded-2xl rounded-tr-sm max-w-[55%] ml-auto">
+                                        <p className="text-xs font-medium">Hoeveel planeten heeft ons zonnestelsel?</p>
+                                    </div>
+                                </div>
+                                <div className="flex flex-col items-start mt-2">
+                                    <span className="text-[9px] text-slate-400 mb-0.5">SlimmeBot — Antwoord 1</span>
+                                    <div className="bg-white border border-slate-200 px-3 py-2 rounded-2xl rounded-tl-sm max-w-[44%] shadow-sm">
+                                        <p className="text-xs text-slate-700">Ons zonnestelsel heeft <strong>9 planeten</strong>! De negen planeten zijn: Mercurius, Venus, Aarde, Mars, Jupiter, Saturnus, Uranus, Neptunus en Pluto. 🪐</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-center gap-2 my-1">
+                                    <div className="flex-1 border-t border-slate-200"></div>
+                                    <span className="text-[9px] text-slate-300">twee antwoorden</span>
+                                    <div className="flex-1 border-t border-slate-200"></div>
+                                </div>
+                                <div className="flex flex-col items-start">
+                                    <span className="text-[9px] text-slate-400 mb-0.5">SlimmeBot — Antwoord 2</span>
+                                    <div className="bg-white border border-slate-200 px-3 py-2 rounded-2xl rounded-tl-sm max-w-[44%] shadow-sm">
+                                        <p className="text-xs text-slate-700">Ons zonnestelsel heeft <strong>8 planeten</strong>: Mercurius, Venus, Aarde, Mars, Jupiter, Saturnus, Uranus en Neptunus. Pluto werd in 2006 herclassificeerd als dwergplaneet. 🌍</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     ) : !task.image.includes('http') && !task.image.startsWith('/') ? (
                         <div className="absolute inset-0 p-8 flex flex-col items-center justify-center text-slate-900 bg-slate-100">
                             <h1 className="text-2xl font-bold mb-2 text-slate-400">AFBEELDING NIET GEVONDEN</h1>

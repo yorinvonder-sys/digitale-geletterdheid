@@ -2,10 +2,10 @@
   {
     "id": "REdTa2lsbHNfMzAtZGFnZW5fdWl0dm9lcmluZ3NwbGFuLmRvY3g",
     "title": "DGSkills 30 Dagen Uitvoeringsplan",
-    "description": "Document uit de business/nl-vo/export map.",
+    "description": "Document uit de business\\nl-vo\\export map.",
     "category": "execution",
     "path": "/dev-docs/DGSkills_30-dagen_uitvoeringsplan.docx",
-    "updatedAt": "2026-02-14",
+    "updatedAt": "2026-03-01",
     "tags": [
       "Action Plan",
       "Roadmap"
@@ -15,10 +15,10 @@
   {
     "id": "REdTa2lsbHNfMzAtZGFnZW5fdWl0dm9lcmluZ3NwbGFuLmh0bWw",
     "title": "DGSkills 30 Dagen Uitvoeringsplan",
-    "description": "Document uit de business/nl-vo/export map.",
+    "description": "Document uit de business\\nl-vo\\export map.",
     "category": "execution",
     "path": "/dev-docs/DGSkills_30-dagen_uitvoeringsplan.html",
-    "updatedAt": "2026-02-14",
+    "updatedAt": "2026-03-01",
     "tags": [
       "Action Plan",
       "Roadmap"
@@ -28,10 +28,10 @@
   {
     "id": "REdTa2lsbHNfMzAtZGFnZW5fdWl0dm9lcmluZ3NwbGFuLm1k",
     "title": "DGSkills 30 Dagen Uitvoeringsplan",
-    "description": "Document uit de business/nl-vo/export map.",
+    "description": "Document uit de business\\nl-vo\\export map.",
     "category": "execution",
     "path": "/dev-docs/DGSkills_30-dagen_uitvoeringsplan.md",
-    "updatedAt": "2026-02-14",
+    "updatedAt": "2026-03-01",
     "tags": [
       "Action Plan",
       "Roadmap"
@@ -41,10 +41,10 @@
   {
     "id": "REdTa2lsbHNfMzAtZGFnZW5fdWl0dm9lcmluZ3NwbGFuLnBkZg",
     "title": "DGSkills 30 Dagen Uitvoeringsplan",
-    "description": "Document uit de business/nl-vo/export map.",
+    "description": "Document uit de business\\nl-vo\\export map.",
     "category": "execution",
     "path": "/dev-docs/DGSkills_30-dagen_uitvoeringsplan.pdf",
-    "updatedAt": "2026-02-14",
+    "updatedAt": "2026-03-01",
     "tags": [
       "Action Plan",
       "Roadmap"
@@ -54,10 +54,10 @@
   {
     "id": "REdTa2lsbHNfT3B0aWUxX1VpdHZvZXJpbmdzcGxhbl9CcmFuZGVkLmRvY3g",
     "title": "DGSkills Optie 1 Uitvoeringsplan Branded",
-    "description": "Document uit de business/nl-vo/export map.",
+    "description": "Document uit de business\\nl-vo\\export map.",
     "category": "execution",
     "path": "/dev-docs/DGSkills_Optie1_Uitvoeringsplan_Branded.docx",
-    "updatedAt": "2026-02-14",
+    "updatedAt": "2026-03-01",
     "tags": [
       "Action Plan",
       "Roadmap",
@@ -68,10 +68,10 @@
   {
     "id": "REdTa2lsbHNfT3B0aWUxX1VpdHZvZXJpbmdzcGxhbl9CcmFuZGVkLmh0bWw",
     "title": "DGSkills Optie 1 Uitvoeringsplan Branded",
-    "description": "Document uit de business/nl-vo/export map.",
+    "description": "Document uit de business\\nl-vo\\export map.",
     "category": "execution",
     "path": "/dev-docs/DGSkills_Optie1_Uitvoeringsplan_Branded.html",
-    "updatedAt": "2026-02-14",
+    "updatedAt": "2026-03-01",
     "tags": [
       "Action Plan",
       "Roadmap",
@@ -82,10 +82,10 @@
   {
     "id": "REdTa2lsbHNfT3B0aWUxX1VpdHZvZXJpbmdzcGxhbl9CcmFuZGVkLm1k",
     "title": "DGSkills Optie 1 Uitvoeringsplan Branded",
-    "description": "Document uit de business/nl-vo/export map.",
+    "description": "Document uit de business\\nl-vo\\export map.",
     "category": "execution",
     "path": "/dev-docs/DGSkills_Optie1_Uitvoeringsplan_Branded.md",
-    "updatedAt": "2026-02-14",
+    "updatedAt": "2026-03-01",
     "tags": [
       "Action Plan",
       "Roadmap",
@@ -96,10 +96,10 @@
   {
     "id": "REdTa2lsbHNfT3B0aWUxX1VpdHZvZXJpbmdzcGxhbl9CcmFuZGVkLnBkZg",
     "title": "DGSkills Optie 1 Uitvoeringsplan Branded",
-    "description": "Document uit de business/nl-vo/export map.",
+    "description": "Document uit de business\\nl-vo\\export map.",
     "category": "execution",
     "path": "/dev-docs/DGSkills_Optie1_Uitvoeringsplan_Branded.pdf",
-    "updatedAt": "2026-02-14",
+    "updatedAt": "2026-03-01",
     "tags": [
       "Action Plan",
       "Roadmap",
@@ -110,10 +110,10 @@
   {
     "id": "REdTa2lsbHNfT3B0aWUyXzEtcGFnaW5hX3BpdGNoX0JyYW5kZWQuZG9jeA",
     "title": "DGSkills Optie 2 1 Pagina Pitch Branded",
-    "description": "Document uit de business/nl-vo/export map.",
+    "description": "Document uit de business\\nl-vo\\export map.",
     "category": "sales",
     "path": "/dev-docs/DGSkills_Optie2_1-pagina_pitch_Branded.docx",
-    "updatedAt": "2026-02-14",
+    "updatedAt": "2026-03-01",
     "tags": [
       "Sales",
       "Pitch",
@@ -124,10 +124,10 @@
   {
     "id": "REdTa2lsbHNfT3B0aWUyXzEtcGFnaW5hX3BpdGNoX0JyYW5kZWQuaHRtbA",
     "title": "DGSkills Optie 2 1 Pagina Pitch Branded",
-    "description": "Document uit de business/nl-vo/export map.",
+    "description": "Document uit de business\\nl-vo\\export map.",
     "category": "sales",
     "path": "/dev-docs/DGSkills_Optie2_1-pagina_pitch_Branded.html",
-    "updatedAt": "2026-02-14",
+    "updatedAt": "2026-03-01",
     "tags": [
       "Sales",
       "Pitch",
@@ -138,10 +138,10 @@
   {
     "id": "REdTa2lsbHNfT3B0aWUyXzEtcGFnaW5hX3BpdGNoX0JyYW5kZWQubWQ",
     "title": "DGSkills Optie 2 1 Pagina Pitch Branded",
-    "description": "Document uit de business/nl-vo/export map.",
+    "description": "Document uit de business\\nl-vo\\export map.",
     "category": "sales",
     "path": "/dev-docs/DGSkills_Optie2_1-pagina_pitch_Branded.md",
-    "updatedAt": "2026-02-14",
+    "updatedAt": "2026-03-01",
     "tags": [
       "Sales",
       "Pitch",
@@ -152,10 +152,10 @@
   {
     "id": "REdTa2lsbHNfT3B0aWUyXzEtcGFnaW5hX3BpdGNoX0JyYW5kZWQucGRm",
     "title": "DGSkills Optie 2 1 Pagina Pitch Branded",
-    "description": "Document uit de business/nl-vo/export map.",
+    "description": "Document uit de business\\nl-vo\\export map.",
     "category": "sales",
     "path": "/dev-docs/DGSkills_Optie2_1-pagina_pitch_Branded.pdf",
-    "updatedAt": "2026-02-14",
+    "updatedAt": "2026-03-01",
     "tags": [
       "Sales",
       "Pitch",
@@ -166,10 +166,10 @@
   {
     "id": "REdTa2lsbHNfVWl0Z2VicmVpZGVfQnJvY2h1cmVfQnJhbmRlZC5kb2N4",
     "title": "DGSkills Uitgebreide Brochure Branded",
-    "description": "Document uit de business/nl-vo/export map.",
+    "description": "Document uit de business\\nl-vo\\export map.",
     "category": "strategy",
     "path": "/dev-docs/DGSkills_Uitgebreide_Brochure_Branded.docx",
-    "updatedAt": "2026-02-14",
+    "updatedAt": "2026-03-01",
     "tags": [
       "Strategy",
       "Marketing",
@@ -180,10 +180,10 @@
   {
     "id": "REdTa2lsbHNfVWl0Z2VicmVpZGVfQnJvY2h1cmVfQnJhbmRlZC5wZGY",
     "title": "DGSkills Uitgebreide Brochure Branded",
-    "description": "Document uit de business/nl-vo/export map.",
+    "description": "Document uit de business\\nl-vo\\export map.",
     "category": "strategy",
     "path": "/dev-docs/DGSkills_Uitgebreide_Brochure_Branded.pdf",
-    "updatedAt": "2026-02-14",
+    "updatedAt": "2026-03-01",
     "tags": [
       "Strategy",
       "Marketing",
@@ -194,10 +194,10 @@
   {
     "id": "ZGdza2lsbHNfdXNwX3N0cmF0ZWd5X2JyYW5kZWQuaHRtbA",
     "title": "DGSkills USP Strategy Branded",
-    "description": "Document uit de business/nl-vo/export map.",
+    "description": "Document uit de business\\nl-vo\\export map.",
     "category": "strategy",
     "path": "/dev-docs/dgskills_usp_strategy_branded.html",
-    "updatedAt": "2026-02-14",
+    "updatedAt": "2026-03-01",
     "tags": [
       "Strategy",
       "Marketing",
@@ -208,62 +208,10 @@
   {
     "id": "QS1tb2RlbC12ZXJ3ZXJrZXJzb3ZlcmVlbmtvbXN0LWRnc2tpbGxzLm1k",
     "title": "A Model Verwerkersovereenkomst DGSkills",
-    "description": "Document uit de business/nl-vo/compliance map.",
+    "description": "Document uit de business\\nl-vo\\compliance map.",
     "category": "compliance",
     "path": "/dev-docs/A-model-verwerkersovereenkomst-dgskills.md",
-    "updatedAt": "2026-02-27",
-    "tags": [
-      "Legal",
-      "GDPR"
-    ],
-    "format": "MD"
-  },
-  {
-    "id": "Qi1iZXZlaWxpZ2luZ3NiaWpsYWdlLWRnc2tpbGxzLm1k",
-    "title": "B Beveiligingsbijlage DGSkills",
-    "description": "Document uit de business/nl-vo/compliance map.",
-    "category": "compliance",
-    "path": "/dev-docs/B-beveiligingsbijlage-dgskills.md",
-    "updatedAt": "2026-02-27",
-    "tags": [
-      "Legal",
-      "GDPR"
-    ],
-    "format": "MD"
-  },
-  {
-    "id": "Qy1zdWItdmVyd2Vya2Vyc2xpanN0LWRnc2tpbGxzLm1k",
-    "title": "C Sub Verwerkerslijst DGSkills",
-    "description": "Document uit de business/nl-vo/compliance map.",
-    "category": "compliance",
-    "path": "/dev-docs/C-sub-verwerkerslijst-dgskills.md",
-    "updatedAt": "2026-02-23",
-    "tags": [
-      "Legal",
-      "GDPR"
-    ],
-    "format": "MD"
-  },
-  {
-    "id": "RC1oYW5kbGVpZGluZy12ZXJ3ZXJrZXJzb3ZlcmVlbmtvbXN0LXNjaG9sZW4ubWQ",
-    "title": "D Handleiding Verwerkersovereenkomst Scholen",
-    "description": "Document uit de business/nl-vo/compliance map.",
-    "category": "compliance",
-    "path": "/dev-docs/D-handleiding-verwerkersovereenkomst-scholen.md",
-    "updatedAt": "2026-02-27",
-    "tags": [
-      "Legal",
-      "GDPR"
-    ],
-    "format": "MD"
-  },
-  {
-    "id": "RS1wcml2YWN5Ymlqc2x1aXRlci1kZ3NraWxscy5tZA",
-    "title": "E Privacybijsluiter DGSkills",
-    "description": "Document uit de business/nl-vo/compliance map.",
-    "category": "compliance",
-    "path": "/dev-docs/E-privacybijsluiter-dgskills.md",
-    "updatedAt": "2026-02-23",
+    "updatedAt": "2026-03-01",
     "tags": [
       "Legal",
       "GDPR"
@@ -273,10 +221,49 @@
   {
     "id": "YXVkaXQtcmVwb3J0Lm1k",
     "title": "Audit Report",
-    "description": "Document uit de business/nl-vo/compliance map.",
+    "description": "Document uit de business\\nl-vo\\compliance map.",
     "category": "compliance",
     "path": "/dev-docs/audit-report.md",
-    "updatedAt": "2026-02-23",
+    "updatedAt": "2026-03-01",
+    "tags": [
+      "Legal",
+      "GDPR"
+    ],
+    "format": "MD"
+  },
+  {
+    "id": "Qi1iZXZlaWxpZ2luZ3NiaWpsYWdlLWRnc2tpbGxzLm1k",
+    "title": "B Beveiligingsbijlage DGSkills",
+    "description": "Document uit de business\\nl-vo\\compliance map.",
+    "category": "compliance",
+    "path": "/dev-docs/B-beveiligingsbijlage-dgskills.md",
+    "updatedAt": "2026-03-01",
+    "tags": [
+      "Legal",
+      "GDPR"
+    ],
+    "format": "MD"
+  },
+  {
+    "id": "Qy1zdWItdmVyd2Vya2Vyc2xpanN0LWRnc2tpbGxzLm1k",
+    "title": "C Sub Verwerkerslijst DGSkills",
+    "description": "Document uit de business\\nl-vo\\compliance map.",
+    "category": "compliance",
+    "path": "/dev-docs/C-sub-verwerkerslijst-dgskills.md",
+    "updatedAt": "2026-03-01",
+    "tags": [
+      "Legal",
+      "GDPR"
+    ],
+    "format": "MD"
+  },
+  {
+    "id": "RC1oYW5kbGVpZGluZy12ZXJ3ZXJrZXJzb3ZlcmVlbmtvbXN0LXNjaG9sZW4ubWQ",
+    "title": "D Handleiding Verwerkersovereenkomst Scholen",
+    "description": "Document uit de business\\nl-vo\\compliance map.",
+    "category": "compliance",
+    "path": "/dev-docs/D-handleiding-verwerkersovereenkomst-scholen.md",
+    "updatedAt": "2026-03-01",
     "tags": [
       "Legal",
       "GDPR"
@@ -286,10 +273,10 @@
   {
     "id": "ZGF0YS1mbG93LW92ZXJ2aWV3LXRlbXBsYXRlLm1k",
     "title": "Data Flow Overview Template",
-    "description": "Document uit de business/nl-vo/compliance map.",
+    "description": "Document uit de business\\nl-vo\\compliance map.",
     "category": "compliance",
     "path": "/dev-docs/data-flow-overview-template.md",
-    "updatedAt": "2026-02-14",
+    "updatedAt": "2026-03-01",
     "tags": [
       "Legal",
       "GDPR"
@@ -299,10 +286,10 @@
   {
     "id": "ZHBhLXRlbXBsYXRlLW91dGxpbmUubWQ",
     "title": "DPA Template Outline",
-    "description": "Document uit de business/nl-vo/compliance map.",
+    "description": "Document uit de business\\nl-vo\\compliance map.",
     "category": "compliance",
     "path": "/dev-docs/dpa-template-outline.md",
-    "updatedAt": "2026-02-14",
+    "updatedAt": "2026-03-01",
     "tags": [
       "Legal",
       "GDPR"
@@ -312,10 +299,10 @@
   {
     "id": "ZHBpYS1kZ3NraWxscy1jb21wbGVldC5tZA",
     "title": "DPIA DGSkills Compleet",
-    "description": "Document uit de business/nl-vo/compliance map.",
+    "description": "Document uit de business\\nl-vo\\compliance map.",
     "category": "compliance",
     "path": "/dev-docs/dpia-dgskills-compleet.md",
-    "updatedAt": "2026-02-23",
+    "updatedAt": "2026-03-01",
     "tags": [
       "Legal",
       "GDPR"
@@ -325,10 +312,23 @@
   {
     "id": "ZHBpYS1zdXBwb3J0LXRlbXBsYXRlLm1k",
     "title": "DPIA Support Template",
-    "description": "Document uit de business/nl-vo/compliance map.",
+    "description": "Document uit de business\\nl-vo\\compliance map.",
     "category": "compliance",
     "path": "/dev-docs/dpia-support-template.md",
-    "updatedAt": "2026-02-14",
+    "updatedAt": "2026-03-01",
+    "tags": [
+      "Legal",
+      "GDPR"
+    ],
+    "format": "MD"
+  },
+  {
+    "id": "RS1wcml2YWN5Ymlqc2x1aXRlci1kZ3NraWxscy5tZA",
+    "title": "E Privacybijsluiter DGSkills",
+    "description": "Document uit de business\\nl-vo\\compliance map.",
+    "category": "compliance",
+    "path": "/dev-docs/E-privacybijsluiter-dgskills.md",
+    "updatedAt": "2026-03-01",
     "tags": [
       "Legal",
       "GDPR"
@@ -338,10 +338,10 @@
   {
     "id": "ZXUtYWktYWN0LWNvbmZvcm1pdGVpdHNwbGFuLm1k",
     "title": "Eu AI Act Conformiteitsplan",
-    "description": "Document uit de business/nl-vo/compliance map.",
+    "description": "Document uit de business\\nl-vo\\compliance map.",
     "category": "compliance",
     "path": "/dev-docs/eu-ai-act-conformiteitsplan.md",
-    "updatedAt": "2026-02-24",
+    "updatedAt": "2026-03-01",
     "tags": [
       "Legal",
       "GDPR",
@@ -352,10 +352,10 @@
   {
     "id": "ZmctZHBvLWFkdmllc3JhcHBvcnQubWQ",
     "title": "FG Dpo Adviesrapport",
-    "description": "Document uit de business/nl-vo/compliance map.",
+    "description": "Document uit de business\\nl-vo\\compliance map.",
     "category": "compliance",
     "path": "/dev-docs/fg-dpo-adviesrapport.md",
-    "updatedAt": "2026-02-23",
+    "updatedAt": "2026-03-01",
     "tags": [
       "Legal",
       "GDPR"
@@ -365,10 +365,10 @@
   {
     "id": "bGVnYWwtbWF0cml4Lm1k",
     "title": "Legal Matrix",
-    "description": "Document uit de business/nl-vo/compliance map.",
+    "description": "Document uit de business\\nl-vo\\compliance map.",
     "category": "compliance",
     "path": "/dev-docs/legal-matrix.md",
-    "updatedAt": "2026-02-24",
+    "updatedAt": "2026-03-01",
     "tags": [
       "Legal",
       "GDPR"
@@ -378,10 +378,10 @@
   {
     "id": "cHJpdmFjeS1leHBsYWluZXItZm9yLXNjaG9vbHMubWQ",
     "title": "Privacy Explainer For Schools",
-    "description": "Document uit de business/nl-vo/compliance map.",
+    "description": "Document uit de business\\nl-vo\\compliance map.",
     "category": "compliance",
     "path": "/dev-docs/privacy-explainer-for-schools.md",
-    "updatedAt": "2026-02-27",
+    "updatedAt": "2026-03-01",
     "tags": [
       "Legal",
       "GDPR",
@@ -393,10 +393,10 @@
   {
     "id": "cHJpdmFjeXZlcmtsYXJpbmctZGdza2lsbHMubWQ",
     "title": "Privacyverklaring DGSkills",
-    "description": "Document uit de business/nl-vo/compliance map.",
+    "description": "Document uit de business\\nl-vo\\compliance map.",
     "category": "compliance",
     "path": "/dev-docs/privacyverklaring-dgskills.md",
-    "updatedAt": "2026-02-27",
+    "updatedAt": "2026-03-01",
     "tags": [
       "Legal",
       "GDPR"
@@ -406,10 +406,10 @@
   {
     "id": "c2Nob29sLWNvbXBsaWFuY2UtZ3VpZGUuaHRtbA",
     "title": "School Compliance Guide",
-    "description": "Document uit de business/nl-vo/compliance map.",
+    "description": "Document uit de business\\nl-vo\\compliance map.",
     "category": "compliance",
     "path": "/dev-docs/school-compliance-guide.html",
-    "updatedAt": "2026-02-23",
+    "updatedAt": "2026-03-01",
     "tags": [
       "Legal",
       "GDPR",
@@ -420,10 +420,10 @@
   {
     "id": "dmVyd2Vya2Vyc292ZXJlZW5rb21zdGVuLXJhcHBvcnQubWQ",
     "title": "Verwerkersovereenkomsten Rapport",
-    "description": "Document uit de business/nl-vo/compliance map.",
+    "description": "Document uit de business\\nl-vo\\compliance map.",
     "category": "compliance",
     "path": "/dev-docs/verwerkersovereenkomsten-rapport.md",
-    "updatedAt": "2026-02-23",
+    "updatedAt": "2026-03-01",
     "tags": [
       "Legal",
       "GDPR"
@@ -433,10 +433,10 @@
   {
     "id": "dmVyd2Vya2luZ3NyZWdpc3Rlci5tZA",
     "title": "Verwerkingsregister",
-    "description": "Document uit de business/nl-vo/compliance map.",
+    "description": "Document uit de business\\nl-vo\\compliance map.",
     "category": "compliance",
     "path": "/dev-docs/verwerkingsregister.md",
-    "updatedAt": "2026-02-23",
+    "updatedAt": "2026-03-01",
     "tags": [
       "Legal",
       "GDPR"
@@ -446,10 +446,10 @@
   {
     "id": "ZHBhLWRnc2tpbGxzLXY0Lmh0bWw",
     "title": "DPA DGSkills V4.0",
-    "description": "Document uit de public/compliance map.",
+    "description": "Document uit de public\\compliance map.",
     "category": "compliance",
     "path": "/dev-docs/dpa-dgskills-v4.html",
-    "updatedAt": "2026-02-14",
+    "updatedAt": "2026-03-01",
     "tags": [
       "Legal",
       "GDPR"
@@ -459,10 +459,10 @@
   {
     "id": "ZHBpYS1zdXBwb3J0LWRnc2tpbGxzLXYxLmh0bWw",
     "title": "DPIA Support DGSkills V1.0",
-    "description": "Document uit de public/compliance map.",
+    "description": "Document uit de public\\compliance map.",
     "category": "compliance",
     "path": "/dev-docs/dpia-support-dgskills-v1.html",
-    "updatedAt": "2026-02-23",
+    "updatedAt": "2026-03-01",
     "tags": [
       "Legal",
       "GDPR"

@@ -26,16 +26,16 @@ const getBodyDimensions = (baseModel: AvatarConfig['baseModel'], gender?: Avatar
     const isRobot = baseModel === 'robot';
     const isFemale = gender === 'female';
     return {
-        torsoRadius: isFemale ? 0.26 : 0.35,
+        torsoRadius: isFemale ? 0.22 : 0.35,
         torsoLength: isFemale ? 0.45 : 0.5,
         armRadius: isFemale ? 0.09 : 0.13,
         armLength: isFemale ? 0.55 : 0.6,
         armSpacing: isFemale ? 0.42 : 0.55,
         legRadius: isFemale ? 0.12 : 0.15,
         legLength: isFemale ? 0.48 : 0.5,
-        headScale: isFemale ? [0.92, 0.88, 0.84] as const : [1, 0.95, 0.9] as const,
+        headScale: isFemale ? [0.88, 0.84, 0.8] as const : [1, 0.95, 0.9] as const,
         shoulderWidth: isFemale ? 0.36 : 0.55,
-        hipWidth: isFemale ? 0.38 : 0.28,
+        hipWidth: isFemale ? 0.42 : 0.28,
         isRobot,
         isFemale,
     };
@@ -109,32 +109,32 @@ const FaceLayer = memo<{
                 {config.gender === 'female' && (
                     <group>
                         {/* Left eye lashes */}
-                        <group position={[-0.22, eyeY + 0.12, eyeZ + 0.01]}>
-                            <mesh position={[-0.05, 0, 0]} rotation={[0.2, 0, 0.25]}>
-                                <boxGeometry args={[0.015, 0.06, 0.01]} />
+                        <group position={[-0.24, eyeY + 0.12, eyeZ + 0.01]}>
+                            <mesh position={[-0.06, 0, 0]} rotation={[0.2, 0, 0.25]}>
+                                <boxGeometry args={[0.02, 0.08, 0.01]} />
                                 <meshBasicMaterial color="#1a1a1a" />
                             </mesh>
                             <mesh position={[0, 0.01, 0]} rotation={[0.2, 0, 0]}>
-                                <boxGeometry args={[0.015, 0.07, 0.01]} />
+                                <boxGeometry args={[0.02, 0.09, 0.01]} />
                                 <meshBasicMaterial color="#1a1a1a" />
                             </mesh>
-                            <mesh position={[0.05, 0, 0]} rotation={[0.2, 0, -0.25]}>
-                                <boxGeometry args={[0.015, 0.06, 0.01]} />
+                            <mesh position={[0.06, 0, 0]} rotation={[0.2, 0, -0.25]}>
+                                <boxGeometry args={[0.02, 0.08, 0.01]} />
                                 <meshBasicMaterial color="#1a1a1a" />
                             </mesh>
                         </group>
                         {/* Right eye lashes */}
-                        <group position={[0.22, eyeY + 0.12, eyeZ + 0.01]}>
-                            <mesh position={[-0.05, 0, 0]} rotation={[0.2, 0, 0.25]}>
-                                <boxGeometry args={[0.015, 0.06, 0.01]} />
+                        <group position={[0.24, eyeY + 0.12, eyeZ + 0.01]}>
+                            <mesh position={[-0.06, 0, 0]} rotation={[0.2, 0, 0.25]}>
+                                <boxGeometry args={[0.02, 0.08, 0.01]} />
                                 <meshBasicMaterial color="#1a1a1a" />
                             </mesh>
                             <mesh position={[0, 0.01, 0]} rotation={[0.2, 0, 0]}>
-                                <boxGeometry args={[0.015, 0.07, 0.01]} />
+                                <boxGeometry args={[0.02, 0.09, 0.01]} />
                                 <meshBasicMaterial color="#1a1a1a" />
                             </mesh>
-                            <mesh position={[0.05, 0, 0]} rotation={[0.2, 0, -0.25]}>
-                                <boxGeometry args={[0.015, 0.06, 0.01]} />
+                            <mesh position={[0.06, 0, 0]} rotation={[0.2, 0, -0.25]}>
+                                <boxGeometry args={[0.02, 0.08, 0.01]} />
                                 <meshBasicMaterial color="#1a1a1a" />
                             </mesh>
                         </group>
@@ -195,6 +195,20 @@ const FaceLayer = memo<{
                     <mesh position={[0, -0.02, 0]} scale={[0.9, 0.7, 0.5]}>
                         <torusGeometry args={[0.065, 0.02, 8, 16, Math.PI]} />
                         <meshStandardMaterial color="#c9746e" roughness={0.6} />
+                    </mesh>
+                </group>
+            )}
+
+            {/* Female blush */}
+            {config.gender === 'female' && (
+                <group>
+                    <mesh position={[-0.32, -0.08, 0.48]}>
+                        <sphereGeometry args={[0.08, 12, 12]} />
+                        <meshStandardMaterial color="#ffb4b4" transparent opacity={0.25} roughness={0.9} />
+                    </mesh>
+                    <mesh position={[0.32, -0.08, 0.48]}>
+                        <sphereGeometry args={[0.08, 12, 12]} />
+                        <meshStandardMaterial color="#ffb4b4" transparent opacity={0.25} roughness={0.9} />
                     </mesh>
                 </group>
             )}
@@ -2332,6 +2346,19 @@ const AvatarModel = memo<{
                                 color={shirtColor}
                                 torsoRadius={dims.torsoRadius}
                             />
+                            {/* Female hip curves */}
+                            {dims.isFemale && (
+                                <group position={[0, -0.15, 0]}>
+                                    <mesh position={[-0.18, 0, 0.02]} scale={[0.6, 0.35, 0.55]}>
+                                        <sphereGeometry args={[0.25, 12, 12]} />
+                                        <meshStandardMaterial color={shirtColor} roughness={0.75} />
+                                    </mesh>
+                                    <mesh position={[0.18, 0, 0.02]} scale={[0.6, 0.35, 0.55]}>
+                                        <sphereGeometry args={[0.25, 12, 12]} />
+                                        <meshStandardMaterial color={shirtColor} roughness={0.75} />
+                                    </mesh>
+                                </group>
+                            )}
                         </group>
                     </group>
 
