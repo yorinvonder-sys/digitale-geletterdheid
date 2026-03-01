@@ -4,6 +4,14 @@ import App from './App';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import './index.css';
 
+// Activate async CSS (fallback if csp-bootstrap.js is cached without this logic)
+document.querySelectorAll<HTMLLinkElement>('link[data-async-css]').forEach(link => {
+  if (link.media !== 'all') {
+    if (link.sheet) { link.media = 'all'; }
+    else { link.addEventListener('load', () => { link.media = 'all'; }); }
+  }
+});
+
 const rootElement = document.getElementById('root');
 if (!rootElement) {
   throw new Error("Could not find root element to mount to");
