@@ -197,13 +197,10 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
         setLoading(true);
 
         try {
-            // Ruim eventuele stale sessie op VOORDAT we inloggen.
-            // Dit stopt Supabase's interne auto-refresh loop die anders
-            // signInWithPassword() kan laten hangen.
-            try {
-                const { supabase } = await import('../services/supabase');
-                await supabase.auth.signOut({ scope: 'local' });
-            } catch { /* negeer — we loggen sowieso opnieuw in */ }
+            // Stale tokens worden al opgeruimd in supabase.ts bij client-init.
+            // Geen signOut() meer hier — dat veroorzaakte een race condition
+            // (SIGNED_OUT → SIGNED_IN in snelle successie) waardoor
+            // AuthenticatedApp de sessie niet op tijd oppakte.
 
             const { registerWithEmail, signInWithEmail } = await import('../services/authService');
             let user;

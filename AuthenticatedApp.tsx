@@ -230,12 +230,17 @@ export function AuthenticatedApp() {
                 });
             }
         });
-        // Failsafe: als de auth-callback na 4s niet heeft gevuurd
-        // (corrupt token), stop met laden zodat AppRouter kan ingrijpen.
-        authTimeoutId = setTimeout(() => {
+        // Failsafe: als de auth-callback na 10s niet heeft gevuurd
+        // (corrupt token of trage DB), stop met laden en redirect naar login.
+        authTimeoutId = setTimeout(async () => {
+            // Actief opruimen: signOut stopt Supabase's interne refresh-loop.
+            try {
+                const { supabase: sb } = await import('./services/supabase');
+                await sb.auth.signOut({ scope: 'local' });
+            } catch { /* negeer */ }
             setUser(null);
             setLoading(false);
-        }, 4_000);
+        }, 10_000);
         return () => {
             clearTimeout(authTimeoutId);
             unsubscribe();
@@ -387,8 +392,10 @@ export function AuthenticatedApp() {
     }
 
     if (!user) {
-        // Gebruik geen harde reload/replace hier, laat de AppRouter de staat afhandelen.
-        // Als we hier komen zonder user, tonen we even de loader tot de AppRouter ingrijpt.
+        // Geen user na auth-check: redirect naar login zodat de gebruiker niet
+        // in een eindeloze spinner blijft hangen.
+        window.history.replaceState({}, '', '/login');
+        window.dispatchEvent(new Event('pathchange'));
         return <LoadingFallback />;
     }
 

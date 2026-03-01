@@ -345,10 +345,22 @@ export const subscribeToAuthChanges = (callback: (user: ParentUser | null) => vo
         } else {
             callback(null);
         }
-    }).catch((err) => {
-        // AbortError = concurrent auth-operatie bezig (normaal tijdens login).
-        // Negeer het — de onAuthStateChange listener handelt het af.
-        if (err?.name === 'AbortError') return;
+    }).catch(async (err) => {
+        if (err?.name === 'AbortError') {
+            // AbortError = concurrent auth-operatie. Retry eenmaal na korte pauze,
+            // anders blijft de callback NOOIT vuren en hangt het component in loading.
+            try {
+                await new Promise(r => setTimeout(r, 500));
+                const { data: { session } } = await supabase.auth.getSession();
+                if (session?.user) {
+                    const parentUser = await buildParentUser(session.user);
+                    callback(parentUser);
+                    return;
+                }
+            } catch { /* retry ook mislukt */ }
+            callback(null);
+            return;
+        }
         // Andere fouten (netwerk, corrupt token): behandel als uitgelogd.
         console.error('getSession() failed, treating as signed out:', err);
         callback(null);
