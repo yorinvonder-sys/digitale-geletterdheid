@@ -333,36 +333,48 @@ export const subscribeToAuthChanges = (callback: (user: ParentUser | null) => vo
     };
 
 
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
-        if (session?.user) {
+    // CRITICAL FIX: Gebruik getUser() i.p.v. getSession() voor de initiële check.
+    // getSession() leest alleen uit localStorage en valideert NIET tegen de server.
+    // Een server-side gerevoked token (bijv. na wachtwoord-reset of admin-actie)
+    // passeert getSession() maar faalt bij getUser(). Zonder deze server-validatie
+    // ontstaat een login-loop: LoginRoute denkt dat de user is ingelogd,
+    // redirect naar /dashboard, maar alle API-calls falen → terug naar /login → loop.
+    supabase.auth.getUser().then(async ({ data: { user: verifiedUser }, error }) => {
+        if (error || !verifiedUser) {
+            // Token is ongeldig server-side — opruimen en behandelen als uitgelogd.
             try {
-                const parentUser = await buildParentUser(session.user);
-                callback(parentUser);
-            } catch (err) {
-                console.error('buildParentUser failed, falling back to null:', err);
-                callback(null);
-            }
-        } else {
+                await supabase.auth.signOut({ scope: 'local' });
+            } catch { /* negeer — we forceren sowieso unauthenticated state */ }
+            callback(null);
+            return;
+        }
+        try {
+            const parentUser = await buildParentUser(verifiedUser);
+            callback(parentUser);
+        } catch (err) {
+            console.error('buildParentUser failed, falling back to null:', err);
             callback(null);
         }
     }).catch(async (err) => {
         if (err?.name === 'AbortError') {
-            // AbortError = concurrent auth-operatie. Retry eenmaal na korte pauze,
-            // anders blijft de callback NOOIT vuren en hangt het component in loading.
+            // AbortError = concurrent auth-operatie. Retry eenmaal na korte pauze.
             try {
                 await new Promise(r => setTimeout(r, 500));
-                const { data: { session } } = await supabase.auth.getSession();
-                if (session?.user) {
-                    const parentUser = await buildParentUser(session.user);
+                const { data: { user: retryUser }, error: retryErr } = await supabase.auth.getUser();
+                if (!retryErr && retryUser) {
+                    const parentUser = await buildParentUser(retryUser);
                     callback(parentUser);
                     return;
                 }
             } catch { /* retry ook mislukt */ }
+            // Opruimen bij falen
+            try { await supabase.auth.signOut({ scope: 'local' }); } catch { /* negeer */ }
             callback(null);
             return;
         }
         // Andere fouten (netwerk, corrupt token): behandel als uitgelogd.
-        console.error('getSession() failed, treating as signed out:', err);
+        console.error('getUser() failed, treating as signed out:', err);
+        try { await supabase.auth.signOut({ scope: 'local' }); } catch { /* negeer */ }
         callback(null);
     });
 
