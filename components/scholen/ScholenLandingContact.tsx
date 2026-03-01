@@ -191,6 +191,7 @@ export const ScholenLandingContact: React.FC = () => {
                                             value={formData.schoolNaam}
                                             onChange={(e) => setFormData({ ...formData, schoolNaam: e.target.value })}
                                             placeholder="Naam van je school…"
+                                            autoComplete="organization"
                                             className="w-full px-3.5 min-h-[44px] bg-slate-50 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400 transition-all text-sm text-slate-800 placeholder:text-slate-400"
                                         />
                                     </div>
@@ -204,6 +205,7 @@ export const ScholenLandingContact: React.FC = () => {
                                             value={formData.contactPersoon}
                                             onChange={(e) => setFormData({ ...formData, contactPersoon: e.target.value })}
                                             placeholder="Je volledige naam…"
+                                            autoComplete="name"
                                             className="w-full px-3.5 min-h-[44px] bg-slate-50 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400 transition-all text-sm text-slate-800 placeholder:text-slate-400"
                                         />
                                     </div>
@@ -217,6 +219,8 @@ export const ScholenLandingContact: React.FC = () => {
                                             value={formData.email}
                                             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                                             placeholder="naam@school.nl"
+                                            autoComplete="email"
+                                            spellCheck={false}
                                             className="w-full px-3.5 min-h-[44px] bg-slate-50 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400 transition-all text-sm text-slate-800 placeholder:text-slate-400"
                                         />
                                     </div>
@@ -279,7 +283,10 @@ export const ScholenLandingContact: React.FC = () => {
                                         className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold min-h-[48px] rounded-lg flex items-center justify-center gap-2 transition-colors text-sm disabled:opacity-60"
                                     >
                                         {isSubmitting ? (
-                                            <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" aria-hidden="true"></div>
+                                            <>
+                                                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" aria-hidden="true"></div>
+                                                <span className="sr-only">Aanvraag wordt verzonden…</span>
+                                            </>
                                         ) : (
                                             'Pilot aanvragen'
                                         )}

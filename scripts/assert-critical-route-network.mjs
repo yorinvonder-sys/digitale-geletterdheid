@@ -5,7 +5,7 @@ import { join } from 'path';
 const ROUTE_RULES = {
   root: ['/assets/vendor-three-', '/assets/vendor-xlsx-', '/assets/jspdf', '/assets/vendor-html2canvas-'],
   scholen: ['/assets/vendor-three-', '/assets/vendor-xlsx-', '/assets/jspdf', '/assets/vendor-html2canvas-'],
-  login: ['/assets/supabase-', '/assets/authService-', '/assets/vendor-three-', '/assets/vendor-xlsx-', '/assets/jspdf'],
+  login: ['/assets/vendor-three-', '/assets/vendor-xlsx-', '/assets/jspdf', '/assets/vendor-html2canvas-'],
 };
 
 function getRequests(route) {

@@ -25,7 +25,7 @@ class SectionErrorBoundary extends Component<{ children: React.ReactNode }, { ha
                     <p className="text-slate-400 text-sm">Dit onderdeel kon niet worden geladen.</p>
                     <button
                         onClick={() => this.setState({ hasError: false })}
-                        className="mt-3 text-indigo-500 text-sm font-medium hover:underline"
+                        className="mt-3 text-indigo-500 text-sm font-medium hover:underline focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:rounded-md"
                     >
                         Opnieuw proberen
                     </button>
@@ -71,7 +71,7 @@ function AnimateOnScroll({ children, className = '', delay = '' }: { children: R
     return (
         <div
             ref={ref}
-            className={`transition-all duration-700 ${delay} ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'} ${className}`}
+            className={`transition-[opacity,transform] duration-700 ${delay} ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'} ${className}`}
         >
             {children}
         </div>
@@ -133,11 +133,14 @@ const IconArrowRight = () => (
         <path d="M5 12h14M12 5l7 7-7 7" />
     </svg>
 );
-const IconChevronDown = () => (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ animation: 'bounce 1s ease 3' }} aria-hidden="true">
-        <path d="m6 9 6 6 6-6" />
-    </svg>
-);
+const IconChevronDown = () => {
+    const noMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    return (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={noMotion ? undefined : { animation: 'bounce 1s ease 3' }} aria-hidden="true">
+            <path d="m6 9 6 6 6-6" />
+        </svg>
+    );
+};
 
 // Lazy load below-the-fold sections
 const ScholenLandingPainPoints = React.lazy(() => import('./scholen/ScholenLandingPainPoints').then(m => ({ default: m.ScholenLandingPainPoints })));
@@ -366,6 +369,7 @@ export const ScholenLanding: React.FC = () => {
 
     return (
         <div className="min-h-screen bg-white font-sans antialiased">
+            <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-indigo-600 focus:text-white focus:rounded-lg focus:font-semibold text-sm">Skip naar inhoud</a>
             {/* Nav */}
             <nav aria-label="Hoofdnavigatie" className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled
                 ? 'bg-white/95 backdrop-blur-md shadow-[0_1px_0_0_rgba(0,0,0,0.06)]'
@@ -378,14 +382,14 @@ export const ScholenLanding: React.FC = () => {
                     </a>
 
                     <div className="hidden lg:flex items-center gap-6">
-                        <button onClick={() => scrollTo(SECTION_IDS.features)} className="text-[13px] font-medium text-slate-500 hover:text-slate-900 transition-colors">Waarom DGSkills</button>
-                        <button onClick={() => scrollTo(SECTION_IDS.customization)} className="text-[13px] font-medium text-slate-500 hover:text-slate-900 transition-colors">Op maat</button>
-                        <button onClick={() => scrollTo(SECTION_IDS.slo)} className="text-[13px] font-medium text-slate-500 hover:text-slate-900 transition-colors">Kerndoelen</button>
-                        <button onClick={() => scrollTo(SECTION_IDS.faq)} className="text-[13px] font-medium text-slate-500 hover:text-slate-900 transition-colors">Veelgestelde vragen</button>
-                        <button onClick={() => scrollTo(SECTION_IDS.contact)} className="text-[13px] font-medium text-slate-500 hover:text-slate-900 transition-colors">Gratis pilot</button>
-                        <a href="/compliance-hub" className="text-[13px] font-medium text-slate-500 hover:text-slate-900 transition-colors">Compliance Hub</a>
+                        <button onClick={() => scrollTo(SECTION_IDS.features)} className="text-[13px] font-medium text-slate-500 hover:text-slate-900 transition-colors focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:rounded-md">Waarom DGSkills</button>
+                        <button onClick={() => scrollTo(SECTION_IDS.customization)} className="text-[13px] font-medium text-slate-500 hover:text-slate-900 transition-colors focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:rounded-md">Op maat</button>
+                        <button onClick={() => scrollTo(SECTION_IDS.slo)} className="text-[13px] font-medium text-slate-500 hover:text-slate-900 transition-colors focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:rounded-md">Kerndoelen</button>
+                        <button onClick={() => scrollTo(SECTION_IDS.faq)} className="text-[13px] font-medium text-slate-500 hover:text-slate-900 transition-colors focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:rounded-md">Veelgestelde vragen</button>
+                        <button onClick={() => scrollTo(SECTION_IDS.contact)} className="text-[13px] font-medium text-slate-500 hover:text-slate-900 transition-colors focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:rounded-md">Gratis pilot</button>
+                        <a href="/compliance-hub" className="text-[13px] font-medium text-slate-500 hover:text-slate-900 transition-colors focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:rounded-md">Compliance Hub</a>
                         <div className="h-4 w-px bg-slate-200 mx-1" aria-hidden="true" />
-                        <a href="/login" className="text-[13px] font-medium text-slate-500 hover:text-slate-900 transition-colors">Inloggen</a>
+                        <a href="/login" className="text-[13px] font-medium text-slate-500 hover:text-slate-900 transition-colors focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:rounded-md">Inloggen</a>
                         <button
                             onClick={() => scrollTo(SECTION_IDS.contact)}
                             className="text-[13px] font-semibold text-white bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded-lg transition-colors shadow-sm"
@@ -427,16 +431,16 @@ export const ScholenLanding: React.FC = () => {
                 )}
             </nav>
 
-            <main>
+            <main id="main-content">
                 {/* Hero — with floating screenshot composition */}
-                <section className="pt-32 pb-12 md:pt-40 md:pb-20 px-6 overflow-hidden">
+                <section className="pt-32 pb-12 md:pt-40 md:pb-20 px-6 overflow-hidden" aria-labelledby="hero-heading">
                     <div className="max-w-5xl mx-auto">
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
                             {/* Left: text */}
                             <div>
                                 <p className="text-indigo-600 font-semibold text-sm mb-5 tracking-wide">Voor het voortgezet onderwijs</p>
 
-                                <h1 className="text-[2rem] sm:text-[2.5rem] md:text-[3.5rem] leading-[1.08] font-extrabold text-slate-900 tracking-tight mb-6">
+                                <h1 id="hero-heading" className="text-[2rem] sm:text-[2.5rem] md:text-[3.5rem] leading-[1.08] font-extrabold text-slate-900 tracking-tight mb-6">
                                     Digitale Geletterdheid<br className="hidden sm:inline" />
                                     {' '}waar leerlingen <span className="text-indigo-600">wél</span><br className="hidden sm:inline" />
                                     {' '}enthousiast van worden
@@ -453,7 +457,7 @@ export const ScholenLanding: React.FC = () => {
                                             scrollTo(SECTION_IDS.contact);
                                             trackLandingEvent('dual_cta_click', { type: 'pilot' });
                                         }}
-                                        className="group bg-indigo-600 hover:bg-indigo-700 text-white px-7 py-3.5 rounded-lg text-base font-semibold transition-all flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/25 hover:shadow-xl hover:shadow-indigo-600/30 hover:-translate-y-0.5"
+                                        className="group bg-indigo-600 hover:bg-indigo-700 text-white px-7 py-3.5 rounded-lg text-base font-semibold transition-[background-color,transform,box-shadow] flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/25 hover:shadow-xl hover:shadow-indigo-600/30 hover:-translate-y-0.5"
                                     >
                                         Gratis pilot aanvragen
                                         <span className="group-hover:translate-x-0.5 transition-transform inline-block"><IconArrowRight /></span>
@@ -463,7 +467,7 @@ export const ScholenLanding: React.FC = () => {
                                         onClick={() => {
                                             trackLandingEvent('dual_cta_click', { type: 'ict' });
                                         }}
-                                        className="group bg-white border border-slate-200 hover:border-slate-300 text-slate-600 px-7 py-3.5 rounded-lg text-base font-semibold transition-all flex items-center justify-center gap-2 hover:-translate-y-0.5"
+                                        className="group bg-white border border-slate-200 hover:border-slate-300 text-slate-600 px-7 py-3.5 rounded-lg text-base font-semibold transition-[background-color,border-color,transform,box-shadow] flex items-center justify-center gap-2 hover:-translate-y-0.5"
                                     >
                                         Voor ICT-coördinatoren
                                         <span className="text-slate-400"><IconArrowRight /></span>
@@ -473,15 +477,15 @@ export const ScholenLanding: React.FC = () => {
                                 {/* Trust badges */}
                                 <div className="flex flex-wrap items-center gap-4 mt-8 text-xs text-slate-500 font-medium">
                                     <span className="flex items-center gap-1.5">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                                         AVG-compliant
                                     </span>
                                     <span className="flex items-center gap-1.5">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
                                         SLO 2025
                                     </span>
                                     <span className="flex items-center gap-1.5">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
                                         Geen installatie
                                     </span>
                                 </div>
@@ -494,7 +498,7 @@ export const ScholenLanding: React.FC = () => {
                                 <div className="absolute -inset-8 bg-gradient-to-br from-indigo-100/50 via-transparent to-purple-100/30 rounded-[3rem] blur-2xl" />
 
                                 {/* Main screenshot */}
-                                <div className="relative animate-hero-float">
+                                <div className="relative motion-safe:animate-hero-float">
                                     <div className="rounded-2xl overflow-hidden shadow-2xl shadow-indigo-900/15 border border-slate-200/50 bg-white">
                                         <div className="flex items-center gap-1.5 px-4 py-2.5 bg-slate-50 border-b border-slate-100">
                                             <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
@@ -516,7 +520,7 @@ export const ScholenLanding: React.FC = () => {
                                 </div>
 
                                 {/* Floating card: XP badge */}
-                                <div className="absolute -left-8 bottom-16 animate-hero-float-delayed z-10">
+                                <div className="absolute -left-8 bottom-16 motion-safe:animate-hero-float-delayed z-10">
                                     <div className="bg-white rounded-2xl shadow-xl shadow-indigo-900/10 border border-slate-200/50 p-4 flex items-center gap-3">
                                         <div className="w-10 h-10 bg-gradient-to-br from-amber-400 to-orange-500 rounded-xl flex items-center justify-center text-white text-sm font-bold">
                                             XP
@@ -529,7 +533,7 @@ export const ScholenLanding: React.FC = () => {
                                 </div>
 
                                 {/* Floating card: SLO check */}
-                                <div className="absolute -right-4 top-20 animate-hero-float z-10" style={{ animationDelay: '1s' }}>
+                                <div className="absolute -right-4 top-20 motion-safe:animate-hero-float z-10" style={{ animationDelay: '1s' }}>
                                     <div className="bg-white rounded-2xl shadow-xl shadow-indigo-900/10 border border-slate-200/50 p-4 flex items-center gap-3">
                                         <div className="w-10 h-10 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-xl flex items-center justify-center text-white">
                                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
@@ -542,7 +546,7 @@ export const ScholenLanding: React.FC = () => {
                                 </div>
 
                                 {/* Small avatar preview */}
-                                <div className="absolute -left-2 top-8 animate-hero-float-delayed z-10" style={{ animationDelay: '3s' }}>
+                                <div className="absolute -left-2 top-8 motion-safe:animate-hero-float-delayed z-10" style={{ animationDelay: '3s' }}>
                                     <div className="bg-white rounded-xl shadow-lg shadow-purple-900/10 border border-slate-200/50 p-2.5">
                                         <img
                                             src="/screenshots/avatar-customization-192.jpg"
@@ -577,15 +581,15 @@ export const ScholenLanding: React.FC = () => {
                     <div className="max-w-5xl mx-auto">
                         <div className="grid grid-cols-2 md:grid-cols-5 gap-8 md:gap-6 items-center">
                             <div>
-                                <p className="text-2xl font-bold text-slate-900"><AnimatedCounter value="20" suffix="+" /></p>
+                                <p className="text-2xl font-bold text-slate-900 tabular-nums"><AnimatedCounter value="20" suffix="+" /></p>
                                 <p className="text-sm text-slate-500 mt-0.5">Interactieve missies</p>
                             </div>
                             <div>
-                                <p className="text-2xl font-bold text-slate-900"><AnimatedCounter value="9" /></p>
+                                <p className="text-2xl font-bold text-slate-900 tabular-nums"><AnimatedCounter value="9" /></p>
                                 <p className="text-sm text-slate-500 mt-0.5">SLO Kerndoelen gedekt</p>
                             </div>
                             <div>
-                                <p className="text-2xl font-bold text-slate-900"><AnimatedCounter value="3" /></p>
+                                <p className="text-2xl font-bold text-slate-900 tabular-nums"><AnimatedCounter value="3" /></p>
                                 <p className="text-sm text-slate-500 mt-0.5">Domeinen afgedekt</p>
                             </div>
                             <div>

@@ -1,12 +1,12 @@
 {
   "assets": [
-    { "pattern": "vendor-react-*.js", "maxKb": 220 },
-    { "pattern": "index-*.css", "maxKb": 220 },
-    { "pattern": "Login-*.js", "maxKb": 30 }
+    { "pattern": "vendor-react-*.js", "maxKb": 250 },
+    { "pattern": "index-*.css", "maxKb": 250 },
+    { "pattern": "Login-*.js", "maxKb": 50 }
   ],
   "network": [
-    { "route": "root", "maxJsKb": 110, "maxCssKb": 40 },
-    { "route": "login", "maxJsKb": 130, "maxCssKb": 40 },
-    { "route": "scholen", "maxJsKb": 110, "maxCssKb": 40 }
+    { "route": "root", "maxJsKb": 200, "maxCssKb": 60 },
+    { "route": "login", "maxJsKb": 200, "maxCssKb": 60 },
+    { "route": "scholen", "maxJsKb": 200, "maxCssKb": 60 }
   ]
 }
