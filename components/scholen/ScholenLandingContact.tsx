@@ -280,7 +280,8 @@ export const ScholenLandingContact: React.FC = () => {
                                     <button
                                         type="submit"
                                         disabled={isSubmitting}
-                                        className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold min-h-[48px] rounded-lg flex items-center justify-center gap-2 transition-colors text-sm disabled:opacity-60"
+                                        aria-busy={isSubmitting}
+                                        className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold min-h-[48px] rounded-lg flex items-center justify-center gap-2 transition-colors text-sm disabled:opacity-60 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-500"
                                     >
                                         {isSubmitting ? (
                                             <>
