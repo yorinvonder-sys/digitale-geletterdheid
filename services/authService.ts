@@ -1,5 +1,5 @@
 // Auth: Microsoft SSO, email/password, role detection, MFA
-import { supabase } from './supabase';
+import { supabase, cleanupSupabaseAuthStorage } from './supabase';
 import type { ParentUser, UserRole } from '../types';
 import { logAccountCreated } from './auditService';
 import { enforcePasswordPolicy } from '../utils/passwordValidator';
@@ -151,10 +151,16 @@ export const registerWithEmail = async (
 
 export const signInWithEmail = async (email: string, password: string) => {
     try {
-        const { data, error } = await supabase.auth.signInWithPassword({
-            email,
-            password,
-        });
+        const signInResult = await Promise.race([
+            supabase.auth.signInWithPassword({
+                email,
+                password,
+            }),
+            new Promise<never>((_, reject) => {
+                setTimeout(() => reject(new Error('Inloggen duurt te lang. Controleer je verbinding en probeer opnieuw.')), 12_000);
+            }),
+        ]);
+        const { data, error } = signInResult;
 
         if (error) {
             if (error.message.includes('Invalid login credentials')) {
@@ -168,7 +174,45 @@ export const signInWithEmail = async (email: string, password: string) => {
             throw error;
         }
 
-        return data.user;
+        // Supabase can emit SIGNED_IN before session persistence has fully settled.
+        // Poll briefly to avoid routing into private shell with a transient null session.
+        // Guard each getSession call with a per-request timeout so this never hangs indefinitely.
+        const waitForSession = async (timeoutMs = 3000, pollMs = 150): Promise<Session | null> => {
+            const startedAt = Date.now();
+            while (Date.now() - startedAt < timeoutMs) {
+                const elapsedMs = Date.now() - startedAt;
+                const remainingMs = timeoutMs - elapsedMs;
+                const perRequestTimeoutMs = Math.max(250, Math.min(1200, remainingMs));
+
+                try {
+                    const session = await Promise.race<Session | null>([
+                        supabase.auth.getSession().then(({ data: sessionData, error: sessionError }) => {
+                            if (sessionError) throw sessionError;
+                            return sessionData.session ?? null;
+                        }),
+                        new Promise<Session | null>((resolve) => {
+                            setTimeout(() => resolve(null), perRequestTimeoutMs);
+                        }),
+                    ]);
+                    if (session?.user) return session;
+                } catch (sessionError: any) {
+                    if (sessionError?.name !== 'AbortError') {
+                        throw sessionError;
+                    }
+                }
+
+                await new Promise((resolve) => setTimeout(resolve, pollMs));
+            }
+            return null;
+        };
+
+        const session = data.session ?? await waitForSession();
+        if (session?.user) return session.user;
+
+        // Fallback to returned user when session handshake is delayed but credentials are valid.
+        if (data.user) return data.user;
+
+        throw new Error('Inloggen duurde te lang. Vernieuw de pagina en probeer opnieuw.');
     } catch (error: any) {
         console.error('Error signing in with email:', error);
         throw error;
@@ -209,15 +253,38 @@ export const resetPassword = async (email: string) => {
 // --- Logout ---
 
 export const logout = async () => {
-    try {
-        await supabase.auth.signOut();
-    } catch {
-        // signOut faalde (bijv. netwerk of AbortError) — ruim lokaal op
-        try { await supabase.auth.signOut({ scope: 'local' }); } catch { /* negeer */ }
-    } finally {
-        // Navigeer altijd naar /login, ook bij een fout
+    const redirectToLogin = () => {
         window.location.href = '/login';
+    };
+
+    try {
+        await Promise.race([
+            supabase.auth.signOut({ scope: 'local' }),
+            new Promise<void>((resolve) => setTimeout(resolve, 2_500)),
+        ]);
+    } catch (error) {
+        console.warn('Local signOut failed during logout:', error);
     }
+
+    try {
+        await Promise.race([
+            supabase.auth.signOut(),
+            new Promise<void>((resolve) => setTimeout(resolve, 2_500)),
+        ]);
+    } catch (error) {
+        console.warn('Global signOut failed during logout:', error);
+    }
+
+    try {
+        cleanupSupabaseAuthStorage({
+            forceClearActiveAuthToken: true,
+            preserveActiveCodeVerifierIfOAuthCallback: true,
+        });
+    } catch (error) {
+        console.warn('cleanupSupabaseAuthStorage failed during logout:', error);
+    }
+
+    redirectToLogin();
 };
 
 // --- Redirect handling ---
@@ -233,6 +300,39 @@ export const handleRedirectResult = async () => {
 
 export const subscribeToAuthChanges = (callback: (user: ParentUser | null) => void) => {
 
+
+    const buildFallbackParentUser = (supabaseUser: SupabaseUser): ParentUser => {
+        const metaRole = getRoleFromMeta(supabaseUser);
+        const finalRole: UserRole = metaRole ?? 'student';
+        const identifier = detectIdentifier(supabaseUser.email ?? null);
+
+        return {
+            uid: supabaseUser.id,
+            displayName: supabaseUser.user_metadata?.display_name ?? supabaseUser.user_metadata?.full_name ?? null,
+            email: supabaseUser.email ?? null,
+            photoURL: supabaseUser.user_metadata?.avatar_url ?? null,
+            role: finalRole,
+            schoolId: getSchoolIdFromMeta(supabaseUser) || undefined,
+            identifier,
+            // Veilig default: bij een fallback-identity geen verplichte password/MFA bypasses introduceren.
+            mustChangePassword: false,
+            mfaPending: requiresMfa(finalRole),
+        };
+    };
+
+    const resolveParentUser = async (supabaseUser: SupabaseUser): Promise<ParentUser> => {
+        try {
+            return await Promise.race<ParentUser>([
+                buildParentUser(supabaseUser),
+                new Promise<ParentUser>((resolve) => {
+                    setTimeout(() => resolve(buildFallbackParentUser(supabaseUser)), 8_000);
+                }),
+            ]);
+        } catch (err) {
+            console.error('resolveParentUser failed, returning fallback user:', err);
+            return buildFallbackParentUser(supabaseUser);
+        }
+    };
 
     const buildParentUser = async (supabaseUser: SupabaseUser): Promise<ParentUser> => {
         const metaRole = getRoleFromMeta(supabaseUser);
@@ -339,58 +439,24 @@ export const subscribeToAuthChanges = (callback: (user: ParentUser | null) => vo
     };
 
 
-    // CRITICAL FIX: Gebruik getUser() i.p.v. getSession() voor de initiële check.
-    // getSession() leest alleen uit localStorage en valideert NIET tegen de server.
-    // Een server-side gerevoked token (bijv. na wachtwoord-reset of admin-actie)
-    // passeert getSession() maar faalt bij getUser(). Zonder deze server-validatie
-    // ontstaat een login-loop: LoginRoute denkt dat de user is ingelogd,
-    // redirect naar /dashboard, maar alle API-calls falen → terug naar /login → loop.
-    supabase.auth.getUser().then(async ({ data: { user: verifiedUser }, error }) => {
-        if (error || !verifiedUser) {
-            // Token is ongeldig server-side — opruimen en behandelen als uitgelogd.
-            try {
-                await supabase.auth.signOut({ scope: 'local' });
-            } catch { /* negeer — we forceren sowieso unauthenticated state */ }
-            callback(null);
-            return;
-        }
-        try {
-            const parentUser = await buildParentUser(verifiedUser);
-            callback(parentUser);
-        } catch (err) {
-            console.error('buildParentUser failed, falling back to null:', err);
-            callback(null);
-        }
-    }).catch(async (err) => {
-        if (err?.name === 'AbortError') {
-            // AbortError = concurrent auth-operatie. Retry eenmaal na korte pauze.
-            try {
-                await new Promise(r => setTimeout(r, 500));
-                const { data: { user: retryUser }, error: retryErr } = await supabase.auth.getUser();
-                if (!retryErr && retryUser) {
-                    const parentUser = await buildParentUser(retryUser);
-                    callback(parentUser);
-                    return;
-                }
-            } catch { /* retry ook mislukt */ }
-            // Opruimen bij falen
-            try { await supabase.auth.signOut({ scope: 'local' }); } catch { /* negeer */ }
-            callback(null);
-            return;
-        }
-        // Andere fouten (netwerk, corrupt token): behandel als uitgelogd.
-        console.error('getUser() failed, treating as signed out:', err);
-        try { await supabase.auth.signOut({ scope: 'local' }); } catch { /* negeer */ }
-        callback(null);
-    });
-
-
+    // Gebruik ALLEEN onAuthStateChange — geen handmatige getSession() meer.
+    // getSession() veroorzaakte een race condition: het retourneerde null
+    // voordat de sessie gepersisteerd was in localStorage, waardoor
+    // AuthenticatedApp de gebruiker terug naar /login stuurde.
+    // INITIAL_SESSION wacht tot Supabase de sessie volledig hersteld heeft.
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
         async (event: AuthChangeEvent, session: Session | null) => {
-            if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+            if (event === 'INITIAL_SESSION' || event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
                 if (session?.user) {
-                    const parentUser = await buildParentUser(session.user);
-                    callback(parentUser);
+                    try {
+                        const parentUser = await resolveParentUser(session.user);
+                        callback(parentUser);
+                    } catch (err) {
+                        console.error('Auth resolveParentUser failed, using fallback:', err);
+                        callback(buildFallbackParentUser(session.user));
+                    }
+                } else {
+                    callback(null);
                 }
             } else if (event === 'SIGNED_OUT') {
                 callback(null);
