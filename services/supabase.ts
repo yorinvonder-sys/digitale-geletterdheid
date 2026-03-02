@@ -168,4 +168,30 @@ export async function callStreamingEdgeFunction(
     }
 }
 
+export function cleanupSupabaseAuthStorage(options?: {
+    forceClearActiveAuthToken?: boolean;
+    preserveActiveCodeVerifierIfOAuthCallback?: boolean;
+}) {
+    try {
+        const projectId = new URL(supabaseUrl).hostname.split('.')[0];
+        const activeKey = `sb-${projectId}-auth-token`;
+        const codeVerifierKey = `sb-${projectId}-auth-token-code-verifier`;
+
+        // Verwijder tokens van andere projecten
+        Object.keys(localStorage)
+            .filter((k) => /^sb-[a-z0-9_-]+-auth-token$/i.test(k) && k !== activeKey)
+            .forEach((k) => localStorage.removeItem(k));
+
+        // Verwijder actieve auth token indien gewenst
+        if (options?.forceClearActiveAuthToken) {
+            localStorage.removeItem(activeKey);
+        }
+
+        // Bewaar code verifier als we midden in een OAuth callback zitten
+        if (!options?.preserveActiveCodeVerifierIfOAuthCallback || !window.location.search.includes('code=')) {
+            localStorage.removeItem(codeVerifierKey);
+        }
+    } catch { /* negeer */ }
+}
+
 export default supabase;
