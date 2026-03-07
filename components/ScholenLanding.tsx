@@ -10,6 +10,24 @@ function trackLandingEvent(event: LandingAnalyticsEvent, data?: Record<string, u
         });
 }
 
+// Warm earth-tone palette (Anthropic-inspired)
+const C = {
+    bg: '#FAF9F0',
+    bgAlt: '#F5F3EC',
+    text: '#1A1A19',
+    textMuted: '#6B6B66',
+    textLight: '#9C9C95',
+    accent: '#D97757',
+    accentHover: '#C46849',
+    border: '#E8E6DF',
+    borderLight: '#F0EEE8',
+    dark: '#1A1A19',
+    darkDeep: '#141413',
+} as const;
+
+const SERIF = "'Newsreader', Georgia, serif";
+const SANS = "'Inter', system-ui, -apple-system, sans-serif";
+
 /** Prevents a single lazy section crash from killing the whole page */
 class SectionErrorBoundary extends Component<{ children: React.ReactNode }, { hasError: boolean }> {
     constructor(props: { children: React.ReactNode }) {
@@ -22,10 +40,11 @@ class SectionErrorBoundary extends Component<{ children: React.ReactNode }, { ha
         if (this.state.hasError) {
             return (
                 <div className="py-12 text-center">
-                    <p className="text-slate-400 text-sm">Dit onderdeel kon niet worden geladen.</p>
+                    <p className="text-sm" style={{ color: C.textLight }}>Dit onderdeel kon niet worden geladen.</p>
                     <button
                         onClick={() => this.setState({ hasError: false })}
-                        className="mt-3 text-indigo-500 text-sm font-medium hover:underline focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:rounded-md"
+                        className="mt-3 text-sm font-medium hover:underline focus-visible:ring-2 focus-visible:rounded-md"
+                        style={{ color: C.accent }}
                     >
                         Opnieuw proberen
                     </button>
@@ -71,7 +90,7 @@ function AnimateOnScroll({ children, className = '', delay = '' }: { children: R
     return (
         <div
             ref={ref}
-            className={`transition-[opacity,transform] duration-700 ${delay} ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'} ${className}`}
+            className={`transition-[opacity,transform] duration-700 ${delay} ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'} ${className}`}
         >
             {children}
         </div>
@@ -156,6 +175,9 @@ const ScholenLandingGameDemo = React.lazy(() => import('./scholen/ScholenLanding
 const ScholenLandingAIChatDemo = React.lazy(() => import('./scholen/ScholenLandingAIChatDemo').then(m => ({ default: m.ScholenLandingAIChatDemo })));
 const ScholenLandingDashboardDemo = React.lazy(() => import('./scholen/ScholenLandingDashboardDemo').then(m => ({ default: m.ScholenLandingDashboardDemo })));
 
+// Pip the Robin — static guide in section margins
+import { PipGuide } from './scholen/FlyingPip';
+
 // JSON-LD structured data for Google rich results
 const structuredData = {
     "@context": "https://schema.org",
@@ -195,7 +217,7 @@ const structuredData = {
                     "name": "Hoe verschilt DGSkills van DIGIT-vo of Basicly?",
                     "acceptedAnswer": {
                         "@type": "Answer",
-                        "text": "DGSkills combineert AI-missies, gamification (XP, badges, leaderboards) én volledige SLO-koppeling. Leerlingen leren door te doen — geen werkbladen."
+                        "text": "DGSkills combineert AI-missies, gamification (XP, badges, leaderboards) en volledige SLO-koppeling. Leerlingen leren door te doen — geen werkbladen."
                     }
                 },
                 {
@@ -227,14 +249,14 @@ const structuredData = {
                     "name": "Wat kost DGSkills en is er een gratis proefperiode?",
                     "acceptedAnswer": {
                         "@type": "Answer",
-                        "text": "Gratis pilot van 3 maanden met volledige toegang. Daarna schoollicentie vanaf €2.000 per jaar."
+                        "text": "Gratis pilot van 3 maanden met volledige toegang. Daarna schoollicentie vanaf \u20ac2.000 per jaar."
                     }
                 }
             ]
         },
         {
             "@type": "WebPage",
-            "name": "Digitale Geletterdheid voor Scholen — DGSkills",
+            "name": "Digitale Geletterdheid voor Scholen \u2014 DGSkills",
             "url": "https://dgskills.app/scholen",
             "description": "DGSkills: interactief platform met AI-missies en gamification voor digitale geletterdheid in het voortgezet onderwijs. Gratis pilot voor scholen.",
             "inLanguage": "nl"
@@ -277,6 +299,15 @@ export const ScholenLanding: React.FC = () => {
         return () => mediaQuery.removeListener(update);
     }, []);
 
+    // Load design fonts
+    useEffect(() => {
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap';
+        document.head.appendChild(link);
+        return () => { link.remove(); };
+    }, []);
+
     // Preload optimized hero screenshot — primary LCP candidate
     useEffect(() => {
         if (!isDesktopHero) return;
@@ -291,7 +322,7 @@ export const ScholenLanding: React.FC = () => {
 
     useEffect(() => {
         const originalTitle = document.title;
-        document.title = 'Digitale Geletterdheid voor Scholen — Gratis Pilot | DGSkills';
+        document.title = 'Digitale Geletterdheid voor Scholen \u2014 Gratis Pilot | DGSkills';
 
         const setMeta = (attr: string, key: string, content: string) => {
             let el = document.querySelector(`meta[${attr}="${key}"]`) as HTMLMetaElement;
@@ -304,8 +335,8 @@ export const ScholenLanding: React.FC = () => {
         };
 
         setMeta('name', 'description', 'DGSkills is het interactieve platform voor digitale geletterdheid in het voortgezet onderwijs. AI-missies, gamification en SLO Kerndoelen 2025. Start een gratis pilot voor jouw school.');
-        setMeta('property', 'og:title', 'Digitale Geletterdheid voor Scholen — Gratis Pilot | DGSkills');
-        setMeta('property', 'og:description', 'AI-missies, gamification en SLO Kerndoelen 2025 in één platform. Start een gratis pilot van 3 maanden.');
+        setMeta('property', 'og:title', 'Digitale Geletterdheid voor Scholen \u2014 Gratis Pilot | DGSkills');
+        setMeta('property', 'og:description', 'AI-missies, gamification en SLO Kerndoelen 2025 in \u00e9\u00e9n platform. Start een gratis pilot van 3 maanden.');
 
         const scriptRef = { current: null as HTMLScriptElement | null };
         const idleCb = () => {
@@ -368,31 +399,39 @@ export const ScholenLanding: React.FC = () => {
     };
 
     return (
-        <div className="min-h-screen bg-white font-sans antialiased">
-            <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-indigo-600 focus:text-white focus:rounded-lg focus:font-semibold text-sm">Skip naar inhoud</a>
+        <div className="min-h-screen antialiased" style={{ backgroundColor: C.bg, fontFamily: SANS, color: C.text }}>
+            <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:text-white focus:rounded-lg focus:font-semibold text-sm" style={{ backgroundColor: C.accent }}>Skip naar inhoud</a>
+
             {/* Nav */}
             <nav aria-label="Hoofdnavigatie" className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled
-                ? 'bg-white/95 backdrop-blur-md shadow-[0_1px_0_0_rgba(0,0,0,0.06)]'
+                ? 'backdrop-blur-md shadow-[0_1px_0_0_rgba(0,0,0,0.04)]'
                 : 'bg-transparent'
-                }`}>
+                }`} style={scrolled ? { backgroundColor: `${C.bg}ee` } : undefined}>
                 <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
                     <a href="/" className="flex items-center gap-2.5">
-                        <img src="/logo.svg" alt="DGSkills logo" className="w-8 h-8" width={32} height={32} fetchPriority="high" decoding="async" />
-                        <span className="font-bold text-[15px] text-slate-900 tracking-tight">DGSkills</span>
+                        <img src="/mascot-pip.png" alt="Pip — DGSkills mascotte" className="w-9 h-9 object-contain" width={36} height={36} fetchPriority="high" decoding="async" />
+                        <span className="font-semibold text-[15px] tracking-tight" style={{ color: C.text }}>DGSkills</span>
                     </a>
 
-                    <div className="hidden lg:flex items-center gap-6">
-                        <button onClick={() => scrollTo(SECTION_IDS.features)} className="text-[13px] font-medium text-slate-500 hover:text-slate-900 transition-colors focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:rounded-md">Waarom DGSkills</button>
-                        <button onClick={() => scrollTo(SECTION_IDS.customization)} className="text-[13px] font-medium text-slate-500 hover:text-slate-900 transition-colors focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:rounded-md">Op maat</button>
-                        <button onClick={() => scrollTo(SECTION_IDS.slo)} className="text-[13px] font-medium text-slate-500 hover:text-slate-900 transition-colors focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:rounded-md">Kerndoelen</button>
-                        <button onClick={() => scrollTo(SECTION_IDS.faq)} className="text-[13px] font-medium text-slate-500 hover:text-slate-900 transition-colors focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:rounded-md">Veelgestelde vragen</button>
-                        <button onClick={() => scrollTo(SECTION_IDS.contact)} className="text-[13px] font-medium text-slate-500 hover:text-slate-900 transition-colors focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:rounded-md">Gratis pilot</button>
-                        <a href="/compliance-hub" className="text-[13px] font-medium text-slate-500 hover:text-slate-900 transition-colors focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:rounded-md">Compliance Hub</a>
-                        <div className="h-4 w-px bg-slate-200 mx-1" aria-hidden="true" />
-                        <a href="/login" className="text-[13px] font-medium text-slate-500 hover:text-slate-900 transition-colors focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:rounded-md">Inloggen</a>
+                    <div className="hidden lg:flex items-center gap-7">
+                        {[
+                            { label: 'Waarom DGSkills', section: SECTION_IDS.features },
+                            { label: 'Op maat', section: SECTION_IDS.customization },
+                            { label: 'Kerndoelen', section: SECTION_IDS.slo },
+                            { label: 'Veelgestelde vragen', section: SECTION_IDS.faq },
+                            { label: 'Gratis pilot', section: SECTION_IDS.contact },
+                        ].map(item => (
+                            <button key={item.label} onClick={() => scrollTo(item.section)} className="text-[13px] font-medium transition-colors focus-visible:ring-2 focus-visible:rounded-md" style={{ color: C.textMuted }} onMouseEnter={e => (e.currentTarget.style.color = C.text)} onMouseLeave={e => (e.currentTarget.style.color = C.textMuted)}>{item.label}</button>
+                        ))}
+                        <a href="/compliance-hub" className="text-[13px] font-medium transition-colors" style={{ color: C.textMuted }} onMouseEnter={e => (e.currentTarget.style.color = C.text)} onMouseLeave={e => (e.currentTarget.style.color = C.textMuted)}>Compliance Hub</a>
+                        <div className="h-4 w-px mx-1" style={{ backgroundColor: C.border }} aria-hidden="true" />
+                        <a href="/login" className="text-[13px] font-medium transition-colors" style={{ color: C.textMuted }} onMouseEnter={e => (e.currentTarget.style.color = C.text)} onMouseLeave={e => (e.currentTarget.style.color = C.textMuted)}>Inloggen</a>
                         <button
                             onClick={() => scrollTo(SECTION_IDS.contact)}
-                            className="text-[13px] font-semibold text-white bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded-lg transition-colors shadow-sm"
+                            className="text-[12px] font-semibold text-white px-3.5 py-1.5 rounded-full transition-colors whitespace-nowrap"
+                            style={{ backgroundColor: C.accent }}
+                            onMouseEnter={e => (e.currentTarget.style.backgroundColor = C.accentHover)}
+                            onMouseLeave={e => (e.currentTarget.style.backgroundColor = C.accent)}
                         >
                             Pilot aanvragen
                         </button>
@@ -404,51 +443,63 @@ export const ScholenLanding: React.FC = () => {
                 </div>
 
                 {mobileMenuOpen && (
-                    <div className="lg:hidden bg-white/95 backdrop-blur-md border-t border-slate-100 animate-fade-in-up">
+                    <div className="lg:hidden backdrop-blur-md animate-fade-in-up" style={{ backgroundColor: `${C.bg}f5`, borderTop: `1px solid ${C.borderLight}` }}>
                         <div className="px-6 py-4 space-y-1">
-                            <button onClick={() => scrollTo(SECTION_IDS.features)} className="block w-full text-left px-3 py-3 text-sm text-slate-700 hover:bg-slate-50 rounded-lg">Waarom DGSkills</button>
-                            <button onClick={() => scrollTo(SECTION_IDS.customization)} className="block w-full text-left px-3 py-3 text-sm text-slate-700 hover:bg-slate-50 rounded-lg">Op maat</button>
-                            <button onClick={() => scrollTo(SECTION_IDS.slo)} className="block w-full text-left px-3 py-3 text-sm text-slate-700 hover:bg-slate-50 rounded-lg">Kerndoelen</button>
-                            <button onClick={() => scrollTo(SECTION_IDS.faq)} className="block w-full text-left px-3 py-3 text-sm text-slate-700 hover:bg-slate-50 rounded-lg">Veelgestelde vragen</button>
-                            <button onClick={() => scrollTo(SECTION_IDS.contact)} className="block w-full text-left px-3 py-3 text-sm text-slate-700 hover:bg-slate-50 rounded-lg">Gratis pilot</button>
-                            <a href="/compliance-hub" className="block w-full text-left px-3 py-3 text-sm text-slate-700 hover:bg-slate-50 rounded-lg">Compliance Hub</a>
+                            {[
+                                { label: 'Waarom DGSkills', section: SECTION_IDS.features },
+                                { label: 'Op maat', section: SECTION_IDS.customization },
+                                { label: 'Kerndoelen', section: SECTION_IDS.slo },
+                                { label: 'Veelgestelde vragen', section: SECTION_IDS.faq },
+                                { label: 'Gratis pilot', section: SECTION_IDS.contact },
+                            ].map(item => (
+                                <button key={item.label} onClick={() => scrollTo(item.section)} className="block w-full text-left px-3 py-3 text-sm rounded-lg transition-colors" style={{ color: C.text }} onMouseEnter={e => (e.currentTarget.style.backgroundColor = C.bgAlt)} onMouseLeave={e => (e.currentTarget.style.backgroundColor = 'transparent')}>{item.label}</button>
+                            ))}
+                            <a href="/compliance-hub" className="block w-full text-left px-3 py-3 text-sm rounded-lg" style={{ color: C.text }}>Compliance Hub</a>
                             <div className="pt-4 space-y-2">
-                                <a
-                                    href="/login"
-                                    className="block w-full text-center py-3 text-sm font-semibold text-slate-600 bg-white border border-slate-200 rounded-lg shadow-sm"
-                                >
-                                    Inloggen
-                                </a>
-                                <button
-                                    onClick={() => scrollTo(SECTION_IDS.contact)}
-                                    className="block w-full text-center py-3 text-sm font-semibold text-white bg-indigo-600 rounded-lg shadow-sm"
-                                >
-                                    Pilot aanvragen
-                                </button>
+                                <a href="/login" className="block w-full text-center py-3 text-sm font-semibold rounded-full" style={{ color: C.text, border: `1.5px solid ${C.border}` }}>Inloggen</a>
+                                <button onClick={() => scrollTo(SECTION_IDS.contact)} className="block w-full text-center py-3 text-sm font-semibold text-white rounded-full" style={{ backgroundColor: C.accent }}>Pilot aanvragen</button>
                             </div>
                         </div>
                     </div>
                 )}
             </nav>
 
+
             <main id="main-content">
-                {/* Hero — with floating screenshot composition */}
+                {/* Hero */}
                 <section className="pt-32 pb-12 md:pt-40 md:pb-20 px-6 overflow-hidden" aria-labelledby="hero-heading">
                     <div className="max-w-5xl mx-auto">
+                        {/* Heading — full width above grid so it never wraps */}
+                        <p className="text-sm font-medium mb-4 tracking-wide" style={{ color: C.accent }}>
+                            Voor het voortgezet onderwijs
+                        </p>
+
+                        <h1 id="hero-heading" className="text-lg sm:text-xl md:text-2xl leading-snug font-medium tracking-tight mb-8" style={{ fontFamily: SERIF }}>
+                            Digitale geletterdheid waar leerlingen <em className="not-italic" style={{ color: C.accent }}>wel</em> enthousiast van worden
+                        </h1>
+
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
                             {/* Left: text */}
-                            <div>
-                                <p className="text-indigo-600 font-semibold text-sm mb-5 tracking-wide">Voor het voortgezet onderwijs</p>
+                            <div className="relative">
+                                {/* Decorative pencil sketch — subtle background element */}
+                                <svg className="absolute -top-8 -left-10 w-[320px] h-[320px] opacity-[0.06] pointer-events-none select-none hidden md:block" viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                    {/* Compass rose */}
+                                    <circle cx="150" cy="150" r="120" stroke={C.text} strokeWidth="1.5"/>
+                                    <circle cx="150" cy="150" r="105" stroke={C.text} strokeWidth="0.8"/>
+                                    <polygon points="150,35 145,150 150,160 155,150" fill={C.text}/>
+                                    <polygon points="150,265 145,150 150,140 155,150" fill={C.text} opacity="0.3"/>
+                                    <polygon points="35,150 150,145 160,150 150,155" fill={C.text} opacity="0.3"/>
+                                    <polygon points="265,150 150,145 140,150 150,155" fill={C.text} opacity="0.3"/>
+                                    {/* Degree marks */}
+                                    {[0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330].map(deg => (
+                                        <line key={deg} x1="150" y1="32" x2="150" y2="40" stroke={C.text} strokeWidth="1" transform={`rotate(${deg} 150 150)`}/>
+                                    ))}
+                                    <circle cx="150" cy="150" r="6" fill={C.text}/>
+                                </svg>
 
-                                <h1 id="hero-heading" className="text-[2rem] sm:text-[2.5rem] md:text-[3.5rem] leading-[1.08] font-extrabold text-slate-900 tracking-tight mb-6">
-                                    Digitale Geletterdheid<br className="hidden sm:inline" />
-                                    {' '}waar leerlingen <span className="text-indigo-600">wél</span><br className="hidden sm:inline" />
-                                    {' '}enthousiast van worden
-                                </h1>
-
-                                <p className="text-lg text-slate-500 leading-relaxed max-w-xl mb-10">
-                                    DGSkills is een interactief platform dat AI-missies, gamification en de
-                                    SLO Kerndoelen 2025 combineert tot een complete lesmethode voor digitale geletterdheid.
+                                <p className="text-base leading-relaxed max-w-xl mb-8" style={{ color: C.textMuted }}>
+                                    DGSkills combineert AI-missies, gamification en de
+                                    SLO Kerndoelen 2025 tot een complete lesmethode voor digitale geletterdheid.
                                 </p>
 
                                 <div className="flex flex-col sm:flex-row sm:items-center gap-4">
@@ -457,7 +508,10 @@ export const ScholenLanding: React.FC = () => {
                                             scrollTo(SECTION_IDS.contact);
                                             trackLandingEvent('dual_cta_click', { type: 'pilot' });
                                         }}
-                                        className="group bg-indigo-600 hover:bg-indigo-700 text-white px-7 py-3.5 rounded-lg text-base font-semibold transition-[background-color,transform,box-shadow] flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/25 hover:shadow-xl hover:shadow-indigo-600/30 hover:-translate-y-0.5"
+                                        className="group text-white px-4 py-2 rounded-full text-xs font-medium transition-all flex items-center justify-center gap-2 hover:-translate-y-0.5"
+                                        style={{ backgroundColor: C.accent, boxShadow: `0 8px 24px ${C.accent}33` }}
+                                        onMouseEnter={e => (e.currentTarget.style.backgroundColor = C.accentHover)}
+                                        onMouseLeave={e => (e.currentTarget.style.backgroundColor = C.accent)}
                                     >
                                         Gratis pilot aanvragen
                                         <span className="group-hover:translate-x-0.5 transition-transform inline-block"><IconArrowRight /></span>
@@ -467,15 +521,16 @@ export const ScholenLanding: React.FC = () => {
                                         onClick={() => {
                                             trackLandingEvent('dual_cta_click', { type: 'ict' });
                                         }}
-                                        className="group bg-white border border-slate-200 hover:border-slate-300 text-slate-600 px-7 py-3.5 rounded-lg text-base font-semibold transition-[background-color,border-color,transform,box-shadow] flex items-center justify-center gap-2 hover:-translate-y-0.5"
+                                        className="group px-4 py-2 rounded-full text-xs font-medium transition-all flex items-center justify-center gap-2 hover:-translate-y-0.5"
+                                        style={{ border: `1.5px solid ${C.border}`, color: C.text }}
                                     >
-                                        Voor ICT-coördinatoren
-                                        <span className="text-slate-400"><IconArrowRight /></span>
+                                        Voor ICT-coordinatoren
+                                        <span style={{ color: C.textLight }}><IconArrowRight /></span>
                                     </a>
                                 </div>
 
                                 {/* Trust badges */}
-                                <div className="flex flex-wrap items-center gap-4 mt-8 text-xs text-slate-500 font-medium">
+                                <div className="flex flex-wrap items-center gap-4 mt-8 text-xs font-medium" style={{ color: C.textMuted }}>
                                     <span className="flex items-center gap-1.5">
                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                                         AVG-compliant
@@ -494,17 +549,17 @@ export const ScholenLanding: React.FC = () => {
                             {/* Right: floating screenshot composition */}
                             {isDesktopHero && (
                                 <div className="relative hidden md:block" aria-hidden="true">
-                                {/* Background glow */}
-                                <div className="absolute -inset-8 bg-gradient-to-br from-indigo-100/50 via-transparent to-purple-100/30 rounded-[3rem] blur-2xl" />
+                                {/* Background glow — warm */}
+                                <div className="absolute -inset-8 rounded-[3rem] blur-2xl" style={{ background: `linear-gradient(135deg, ${C.accent}15, transparent, ${C.bgAlt}60)` }} />
 
                                 {/* Main screenshot */}
                                 <div className="relative motion-safe:animate-hero-float">
-                                    <div className="rounded-2xl overflow-hidden shadow-2xl shadow-indigo-900/15 border border-slate-200/50 bg-white">
-                                        <div className="flex items-center gap-1.5 px-4 py-2.5 bg-slate-50 border-b border-slate-100">
+                                    <div className="rounded-2xl overflow-hidden bg-white" style={{ boxShadow: `0 25px 50px ${C.text}12`, border: `1px solid ${C.border}` }}>
+                                        <div className="flex items-center gap-1.5 px-4 py-2.5" style={{ backgroundColor: C.bgAlt, borderBottom: `1px solid ${C.borderLight}` }}>
                                             <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
                                             <div className="w-2.5 h-2.5 rounded-full bg-amber-400" />
                                             <div className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
-                                            <span className="ml-3 text-[10px] text-slate-500 font-medium">dgskills.app</span>
+                                            <span className="ml-3 text-[10px] font-medium" style={{ color: C.textLight }}>dgskills.app</span>
                                         </div>
                                         <img
                                             src="/screenshots/student-mission-overview-1200.jpg"
@@ -521,33 +576,33 @@ export const ScholenLanding: React.FC = () => {
 
                                 {/* Floating card: XP badge */}
                                 <div className="absolute -left-8 bottom-16 motion-safe:animate-hero-float-delayed z-10">
-                                    <div className="bg-white rounded-2xl shadow-xl shadow-indigo-900/10 border border-slate-200/50 p-4 flex items-center gap-3">
-                                        <div className="w-10 h-10 bg-gradient-to-br from-amber-400 to-orange-500 rounded-xl flex items-center justify-center text-white text-sm font-bold">
+                                    <div className="bg-white rounded-2xl p-4 flex items-center gap-3" style={{ boxShadow: `0 8px 24px ${C.text}10`, border: `1px solid ${C.border}` }}>
+                                        <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white text-sm font-bold" style={{ backgroundColor: C.accent }}>
                                             XP
                                         </div>
                                         <div>
-                                            <p className="text-xs font-bold text-slate-900">+250 XP verdiend!</p>
-                                            <p className="text-xs text-slate-500">Level 5 bereikt</p>
+                                            <p className="text-xs font-bold" style={{ color: C.text }}>+250 XP verdiend!</p>
+                                            <p className="text-xs" style={{ color: C.textMuted }}>Level 5 bereikt</p>
                                         </div>
                                     </div>
                                 </div>
 
                                 {/* Floating card: SLO check */}
                                 <div className="absolute -right-4 top-20 motion-safe:animate-hero-float z-10" style={{ animationDelay: '1s' }}>
-                                    <div className="bg-white rounded-2xl shadow-xl shadow-indigo-900/10 border border-slate-200/50 p-4 flex items-center gap-3">
-                                        <div className="w-10 h-10 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-xl flex items-center justify-center text-white">
+                                    <div className="bg-white rounded-2xl p-4 flex items-center gap-3" style={{ boxShadow: `0 8px 24px ${C.text}10`, border: `1px solid ${C.border}` }}>
+                                        <div className="w-10 h-10 bg-emerald-500 rounded-xl flex items-center justify-center text-white">
                                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
                                         </div>
                                         <div>
-                                            <p className="text-xs font-bold text-slate-900">Kerndoel behaald</p>
-                                            <p className="text-[10px] text-emerald-600 font-medium">DV-2: Cloud beheer</p>
+                                            <p className="text-xs font-bold" style={{ color: C.text }}>Kerndoel behaald</p>
+                                            <p className="text-[10px] font-medium text-emerald-600">DV-2: Cloud beheer</p>
                                         </div>
                                     </div>
                                 </div>
 
                                 {/* Small avatar preview */}
                                 <div className="absolute -left-2 top-8 motion-safe:animate-hero-float-delayed z-10" style={{ animationDelay: '3s' }}>
-                                    <div className="bg-white rounded-xl shadow-lg shadow-purple-900/10 border border-slate-200/50 p-2.5">
+                                    <div className="bg-white rounded-xl p-2.5" style={{ boxShadow: `0 4px 16px ${C.text}08`, border: `1px solid ${C.border}` }}>
                                         <img
                                             src="/screenshots/avatar-customization-192.jpg"
                                             alt=""
@@ -567,7 +622,8 @@ export const ScholenLanding: React.FC = () => {
                         <div className="flex justify-center mt-12 md:mt-16">
                             <button
                                 onClick={() => scrollTo(SECTION_IDS.painPoints)}
-                                className="text-slate-500 hover:text-indigo-600 transition-colors p-2"
+                                className="transition-colors p-2"
+                                style={{ color: C.textLight }}
                                 aria-label="Scroll naar beneden"
                             >
                                 <IconChevronDown />
@@ -576,41 +632,42 @@ export const ScholenLanding: React.FC = () => {
                     </div>
                 </section>
 
-                {/* Social proof strip with Almere College */}
-                <section className="border-y border-slate-100 py-10 px-6 bg-slate-50/50 [content-visibility:auto] [contain-intrinsic-size:auto_120px]" aria-label="Feiten en cijfers">
+                {/* Social proof strip */}
+                <section className="py-10 px-6 [content-visibility:auto] [contain-intrinsic-size:auto_120px]" style={{ borderTop: `1px solid ${C.border}`, borderBottom: `1px solid ${C.border}`, backgroundColor: `${C.bgAlt}80` }} aria-label="Feiten en cijfers">
                     <div className="max-w-5xl mx-auto">
                         <div className="grid grid-cols-2 md:grid-cols-5 gap-8 md:gap-6 items-center">
                             <div>
-                                <p className="text-2xl font-bold text-slate-900 tabular-nums"><AnimatedCounter value="20" suffix="+" /></p>
-                                <p className="text-sm text-slate-500 mt-0.5">Interactieve missies</p>
+                                <p className="text-2xl font-semibold tabular-nums" style={{ color: C.text, fontFamily: SERIF }}><AnimatedCounter value="20" suffix="+" /></p>
+                                <p className="text-sm mt-0.5" style={{ color: C.textMuted }}>Interactieve missies</p>
                             </div>
                             <div>
-                                <p className="text-2xl font-bold text-slate-900 tabular-nums"><AnimatedCounter value="9" /></p>
-                                <p className="text-sm text-slate-500 mt-0.5">SLO Kerndoelen gedekt</p>
+                                <p className="text-2xl font-semibold tabular-nums" style={{ color: C.text, fontFamily: SERIF }}><AnimatedCounter value="9" /></p>
+                                <p className="text-sm mt-0.5" style={{ color: C.textMuted }}>SLO Kerndoelen gedekt</p>
                             </div>
                             <div>
-                                <p className="text-2xl font-bold text-slate-900 tabular-nums"><AnimatedCounter value="3" /></p>
-                                <p className="text-sm text-slate-500 mt-0.5">Domeinen afgedekt</p>
+                                <p className="text-2xl font-semibold tabular-nums" style={{ color: C.text, fontFamily: SERIF }}><AnimatedCounter value="3" /></p>
+                                <p className="text-sm mt-0.5" style={{ color: C.textMuted }}>Domeinen afgedekt</p>
                             </div>
                             <div>
-                                <p className="text-2xl font-bold text-slate-900">Pilot</p>
-                                <p className="text-sm text-slate-500 mt-0.5">Actief in VO-scholen</p>
+                                <p className="text-2xl font-semibold" style={{ color: C.text, fontFamily: SERIF }}>Pilot</p>
+                                <p className="text-sm mt-0.5" style={{ color: C.textMuted }}>Actief in VO-scholen</p>
                             </div>
                             <div className="col-span-2 md:col-span-1 flex items-center gap-3 md:justify-end">
-                                <div className="w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center text-indigo-600 flex-shrink-0">
+                                <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${C.accent}18`, color: C.accent }}>
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
                                 </div>
                                 <div>
-                                    <p className="text-xs font-bold text-slate-700">Almere College</p>
-                                    <p className="text-xs text-slate-500">Pilotschool 2025-2026</p>
+                                    <p className="text-xs font-bold" style={{ color: C.text }}>Almere College</p>
+                                    <p className="text-xs" style={{ color: C.textMuted }}>Pilotschool 2025-2026</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                {/* Pain Points — problem statement before solution */}
-                <section id={SECTION_IDS.painPoints} className="py-14 md:py-20 lg:py-20 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_400px]" aria-label="De uitdaging">
+                {/* Pain Points */}
+                <PipGuide pose="concerned" tooltip="Leerlingen scoren een 4,7 voor digitale geletterdheid..." side="left">
+                <section id={SECTION_IDS.painPoints} className="py-14 md:py-20 lg:py-24 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_400px]" aria-label="De uitdaging">
                     <SectionErrorBoundary>
                         <DeferredSection minHeight="min-h-[300px]">
                             <Suspense fallback={<div className="min-h-[300px]" aria-hidden="true" />}>
@@ -621,9 +678,11 @@ export const ScholenLanding: React.FC = () => {
                         </DeferredSection>
                     </SectionErrorBoundary>
                 </section>
+                </PipGuide>
 
                 {/* Features */}
-                <section id={SECTION_IDS.features} className="py-14 md:py-20 lg:py-20 px-6 bg-slate-50 border-y border-slate-100 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_500px]">
+                <PipGuide pose="excited" tooltip="AI-missies die echt werken!" side="right">
+                <section id={SECTION_IDS.features} className="py-14 md:py-20 lg:py-24 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_500px]" style={{ backgroundColor: C.bgAlt, borderTop: `1px solid ${C.border}`, borderBottom: `1px solid ${C.border}` }}>
                     <SectionErrorBoundary>
                         <DeferredSection minHeight="min-h-[400px]">
                             <Suspense fallback={<div className="min-h-[400px]" aria-hidden="true" />}>
@@ -634,9 +693,11 @@ export const ScholenLanding: React.FC = () => {
                         </DeferredSection>
                     </SectionErrorBoundary>
                 </section>
+                </PipGuide>
 
-                {/* Customization USP — key differentiator */}
-                <section id={SECTION_IDS.customization} className="py-14 md:py-20 lg:py-20 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_500px]" aria-label="Aanpasbaar aan jouw school">
+                {/* Customization USP */}
+                <PipGuide pose="waving" tooltip="Volledig afgestemd op jouw school" side="left">
+                <section id={SECTION_IDS.customization} className="py-14 md:py-20 lg:py-24 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_500px]" aria-label="Aanpasbaar aan jouw school">
                     <SectionErrorBoundary>
                         <DeferredSection minHeight="min-h-[400px]">
                             <Suspense fallback={<div className="min-h-[400px]" aria-hidden="true" />}>
@@ -647,18 +708,20 @@ export const ScholenLanding: React.FC = () => {
                         </DeferredSection>
                     </SectionErrorBoundary>
                 </section>
+                </PipGuide>
 
                 {/* How it works - 3-step */}
-                <section className="py-14 md:py-20 lg:py-20 px-6 bg-slate-50 border-y border-slate-100 [content-visibility:auto] [contain-intrinsic-size:auto_400px]" aria-label="Hoe het werkt">
+                <PipGuide pose="thinking" tooltip="In 3 stappen aan de slag" side="left">
+                <section className="py-14 md:py-20 lg:py-24 px-6 [content-visibility:auto] [contain-intrinsic-size:auto_400px]" style={{ backgroundColor: C.bgAlt, borderTop: `1px solid ${C.border}`, borderBottom: `1px solid ${C.border}` }} aria-label="Hoe het werkt">
                     <DeferredSection minHeight="min-h-[400px]">
                         <AnimateOnScroll>
                             <div className="max-w-5xl mx-auto">
                                 <div className="text-center mb-16">
-                                    <p className="text-indigo-600 font-semibold text-sm mb-3 tracking-wide">Eenvoudig starten</p>
-                                    <h2 className="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight mb-4">
+                                    <p className="text-sm font-medium mb-3 tracking-wide" style={{ color: C.accent }}>Eenvoudig starten</p>
+                                    <h2 className="text-2xl md:text-3xl font-medium tracking-tight mb-4" style={{ fontFamily: SERIF, color: C.text }}>
                                         In 3 stappen aan de slag
                                     </h2>
-                                    <p className="text-base text-slate-500 leading-relaxed max-w-xl mx-auto">
+                                    <p className="text-base leading-relaxed max-w-xl mx-auto" style={{ color: C.textMuted }}>
                                         Van aanvraag tot actieve leerlingen in minder dan 10 werkdagen.
                                         Geen technische installatie, geen gedoe.
                                     </p>
@@ -666,39 +729,46 @@ export const ScholenLanding: React.FC = () => {
 
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
                                     {/* Connector line */}
-                                    <div className="hidden md:block absolute top-16 left-[20%] right-[20%] h-px bg-gradient-to-r from-indigo-200 via-indigo-300 to-indigo-200" aria-hidden="true" />
+                                    <div className="hidden md:block absolute top-[180px] left-[20%] right-[20%] h-px" style={{ background: `linear-gradient(to right, ${C.border}, ${C.accent}40, ${C.border})` }} aria-hidden="true" />
 
                                     {[
                                         {
                                             step: '01',
                                             title: 'Pilot aanvragen',
                                             description: 'Vul het formulier in. Wij nemen binnen 2 werkdagen contact op voor een korte kennismaking.',
-                                            icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>,
-                                            color: 'bg-indigo-100 text-indigo-600',
+                                            illustration: '/illustrations/how-it-works-pilot.png',
+                                            bgColor: '#F0D5D0',
                                         },
                                         {
                                             step: '02',
                                             title: 'Onboarding (30 min)',
                                             description: 'Een korte sessie met docenten: account aanmaken, dashboard uitleg en eerste missies klaarzetten.',
-                                            icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
-                                            color: 'bg-emerald-100 text-emerald-600',
+                                            illustration: '/illustrations/how-it-works-onboarding.png',
+                                            bgColor: '#EDE0C8',
                                         },
                                         {
                                             step: '03',
                                             title: 'Leerlingen starten',
                                             description: 'Leerlingen loggen in en beginnen direct met hun eerste AI-missie. Jij volgt de voortgang live.',
-                                            icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
-                                            color: 'bg-amber-100 text-amber-600',
+                                            illustration: '/illustrations/how-it-works-students.png',
+                                            bgColor: '#D0E0D4',
                                         },
                                     ].map((item, i) => (
                                         <AnimateOnScroll key={item.step} delay={`delay-${(i + 1) * 100}`}>
-                                            <div className="relative bg-white rounded-2xl border border-slate-200 p-8 text-center hover:shadow-lg transition-all group">
-                                                <div className={`w-14 h-14 ${item.color} rounded-2xl flex items-center justify-center mx-auto mb-5 group-hover:scale-110 transition-transform`}>
-                                                    {item.icon}
+                                            <div className="relative bg-white rounded-2xl overflow-hidden hover:shadow-lg transition-all group" style={{ border: `1px solid ${C.border}` }}>
+                                                <div className="flex items-center justify-center py-8 px-6" style={{ backgroundColor: item.bgColor }}>
+                                                    <img
+                                                        src={item.illustration}
+                                                        alt={item.title}
+                                                        className="w-24 h-24 md:w-28 md:h-28 object-contain transition-transform duration-300 group-hover:scale-[1.05]"
+                                                        loading="lazy"
+                                                    />
                                                 </div>
-                                                <p className="text-[11px] font-black text-indigo-700 uppercase tracking-widest mb-2">Stap {item.step}</p>
-                                                <h3 className="text-lg font-bold text-slate-900 mb-3">{item.title}</h3>
-                                                <p className="text-sm text-slate-500 leading-relaxed">{item.description}</p>
+                                                <div className="p-6 text-center">
+                                                    <p className="text-[11px] font-black uppercase tracking-widest mb-2" style={{ color: C.accent }}>Stap {item.step}</p>
+                                                    <h3 className="text-lg font-medium mb-3" style={{ color: C.text, fontFamily: SERIF }}>{item.title}</h3>
+                                                    <p className="text-sm leading-relaxed" style={{ color: C.textMuted }}>{item.description}</p>
+                                                </div>
                                             </div>
                                         </AnimateOnScroll>
                                     ))}
@@ -707,9 +777,10 @@ export const ScholenLanding: React.FC = () => {
                         </AnimateOnScroll>
                     </DeferredSection>
                 </section>
+                </PipGuide>
 
-                {/* Game Demo — interactive mission preview */}
-                <section className="py-14 md:py-20 lg:py-20 px-6 bg-slate-50 border-y border-slate-100 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_500px]" aria-label="Game Programmeur demo">
+                {/* Game Demo */}
+                <section className="py-14 md:py-20 lg:py-24 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_500px]" style={{ backgroundColor: C.bgAlt, borderTop: `1px solid ${C.border}`, borderBottom: `1px solid ${C.border}` }} aria-label="Game Programmeur demo">
                     <DeferredSection minHeight="min-h-[400px]">
                         <Suspense fallback={<div className="min-h-[400px]" aria-hidden="true" />}>
                             <AnimateOnScroll>
@@ -719,8 +790,8 @@ export const ScholenLanding: React.FC = () => {
                     </DeferredSection>
                 </section>
 
-                {/* AI Chat Demo — privacy/data mission interactive preview */}
-                <section className="py-14 md:py-20 lg:py-20 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_500px]" aria-label="AI Privacy Coach demo">
+                {/* AI Chat Demo */}
+                <section className="py-14 md:py-20 lg:py-24 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_500px]" aria-label="AI Privacy Coach demo">
                     <DeferredSection minHeight="min-h-[400px]">
                         <Suspense fallback={<div className="min-h-[400px]" aria-hidden="true" />}>
                             <AnimateOnScroll>
@@ -730,8 +801,8 @@ export const ScholenLanding: React.FC = () => {
                     </DeferredSection>
                 </section>
 
-                {/* Dashboard Demo — teacher dashboard interactive preview */}
-                <section className="py-14 md:py-20 lg:py-20 px-6 bg-slate-50 border-y border-slate-100 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_500px]" aria-label="Docenten dashboard demo">
+                {/* Dashboard Demo */}
+                <section className="py-14 md:py-20 lg:py-24 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_500px]" style={{ backgroundColor: C.bgAlt, borderTop: `1px solid ${C.border}`, borderBottom: `1px solid ${C.border}` }} aria-label="Docenten dashboard demo">
                     <DeferredSection minHeight="min-h-[400px]">
                         <Suspense fallback={<div className="min-h-[400px]" aria-hidden="true" />}>
                             <AnimateOnScroll>
@@ -741,17 +812,22 @@ export const ScholenLanding: React.FC = () => {
                     </DeferredSection>
                 </section>
 
-                {/* Platform preview — NOT deferred: contains the first visible image (LCP) */}
-                <section id={SECTION_IDS.platform} className="py-14 md:py-20 lg:py-20 px-6 border-b border-slate-100 scroll-mt-16" aria-label="Platform preview">
+                {/* Platform preview */}
+                <section id={SECTION_IDS.platform} className="py-14 md:py-20 lg:py-24 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_500px]" style={{ borderBottom: `1px solid ${C.border}` }} aria-label="Platform preview">
                     <SectionErrorBoundary>
-                        <Suspense fallback={<div className="min-h-[700px]" aria-hidden="true" />}>
-                            <ScholenLandingPlatformPreview />
-                        </Suspense>
+                        <DeferredSection minHeight="min-h-[400px]">
+                            <Suspense fallback={<div className="min-h-[400px]" aria-hidden="true" />}>
+                                <AnimateOnScroll>
+                                    <ScholenLandingPlatformPreview />
+                                </AnimateOnScroll>
+                            </Suspense>
+                        </DeferredSection>
                     </SectionErrorBoundary>
                 </section>
 
                 {/* SLO Kerndoelen */}
-                <section id={SECTION_IDS.slo} className="py-14 md:py-20 lg:py-20 px-6 bg-slate-50 border-y border-slate-100 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_400px]">
+                <PipGuide pose="celebrating" tooltip="Alle 9 SLO-kerndoelen gedekt" side="right">
+                <section id={SECTION_IDS.slo} className="py-14 md:py-20 lg:py-24 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_400px]" style={{ backgroundColor: C.bgAlt, borderTop: `1px solid ${C.border}`, borderBottom: `1px solid ${C.border}` }}>
                     <SectionErrorBoundary>
                         <DeferredSection minHeight="min-h-[300px]">
                             <Suspense fallback={<div className="min-h-[300px]" aria-hidden="true" />}>
@@ -762,9 +838,10 @@ export const ScholenLanding: React.FC = () => {
                         </DeferredSection>
                     </SectionErrorBoundary>
                 </section>
+                </PipGuide>
 
                 {/* FAQ */}
-                <section id={SECTION_IDS.faq} className="py-14 md:py-20 lg:py-20 px-6 bg-slate-50 border-y border-slate-100 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_400px]">
+                <section id={SECTION_IDS.faq} className="py-14 md:py-20 lg:py-24 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_400px]" style={{ backgroundColor: C.bgAlt, borderTop: `1px solid ${C.border}`, borderBottom: `1px solid ${C.border}` }}>
                     <SectionErrorBoundary>
                         <DeferredSection minHeight="min-h-[300px]">
                             <Suspense fallback={<div className="min-h-[300px]" aria-hidden="true" />}>
@@ -777,18 +854,19 @@ export const ScholenLanding: React.FC = () => {
                 </section>
 
                 {/* ICT Section */}
-                <section id={SECTION_IDS.ict} className="py-14 md:py-20 lg:py-20 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_300px]">
+                <section id={SECTION_IDS.ict} className="py-14 md:py-20 lg:py-24 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_300px]">
                     <AnimateOnScroll>
                         <div className="max-w-5xl mx-auto text-center">
-                            <p className="text-indigo-600 font-semibold text-sm mb-3 tracking-wide">Technisch</p>
-                            <h2 className="text-3xl font-bold text-slate-900 mb-6">Voor ICT & Informatiemanagers</h2>
-                            <p className="text-lg text-slate-500 max-w-2xl mx-auto mb-10 leading-relaxed">
+                            <p className="text-sm font-medium mb-3 tracking-wide" style={{ color: C.accent }}>Technisch</p>
+                            <h2 className="text-3xl font-medium mb-6" style={{ fontFamily: SERIF, color: C.text }}>Voor ICT & Informatiemanagers</h2>
+                            <p className="text-lg max-w-2xl mx-auto mb-10 leading-relaxed" style={{ color: C.textMuted }}>
                                 DGSkills is ontworpen voor beheersbaarheid, veiligheid en snelle adoptie.
                                 Ontdek alles over onze SSO-integraties, AVG-compliance en technische architectuur.
                             </p>
                             <a
                                 href="/ict"
-                                className="inline-flex items-center gap-2 bg-slate-900 text-white px-8 py-4 rounded-xl font-bold hover:bg-slate-800 transition-all hover:-translate-y-0.5 shadow-lg shadow-slate-900/10"
+                                className="inline-flex items-center gap-2 text-white px-8 py-4 rounded-full font-medium hover:-translate-y-0.5 transition-all"
+                                style={{ backgroundColor: C.dark, boxShadow: `0 8px 24px ${C.text}15` }}
                             >
                                 Bekijk technische details
                                 <IconArrowRight />
@@ -811,7 +889,8 @@ export const ScholenLanding: React.FC = () => {
                 </section>
 
                 {/* Contact / Pricing */}
-                <section id={SECTION_IDS.contact} className="py-14 md:py-20 lg:py-20 px-6 bg-slate-900 text-white scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_500px]">
+                <PipGuide pose="waving" tooltip="Neem contact op!" side="left">
+                <section id={SECTION_IDS.contact} className="py-14 md:py-20 lg:py-24 px-6 text-white scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_500px]" style={{ backgroundColor: C.dark }}>
                     <SectionErrorBoundary>
                         <DeferredSection minHeight="min-h-[400px]">
                             <Suspense fallback={<div className="min-h-[400px]" aria-hidden="true" />}>
@@ -820,6 +899,7 @@ export const ScholenLanding: React.FC = () => {
                         </DeferredSection>
                     </SectionErrorBoundary>
                 </section>
+                </PipGuide>
             </main>
 
             {/* Floating CTA — Mobile */}
@@ -830,7 +910,8 @@ export const ScholenLanding: React.FC = () => {
             >
                 <button
                     onClick={() => scrollTo(SECTION_IDS.contact)}
-                    className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3.5 rounded-full font-semibold shadow-xl shadow-indigo-600/30 flex items-center gap-2 text-sm"
+                    className="text-white px-6 py-3.5 rounded-full font-medium flex items-center gap-2 text-sm"
+                    style={{ backgroundColor: C.accent, boxShadow: `0 8px 24px ${C.accent}40` }}
                 >
                     Pilot aanvragen
                     <IconArrowRight />
@@ -845,35 +926,38 @@ export const ScholenLanding: React.FC = () => {
             >
                 <button
                     onClick={() => scrollTo(SECTION_IDS.contact)}
-                    className="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-3 rounded-xl shadow-lg text-sm font-semibold transition-colors"
+                    className="text-white px-5 py-3 rounded-full text-sm font-medium transition-colors"
+                    style={{ backgroundColor: C.accent, boxShadow: `0 4px 16px ${C.accent}30` }}
+                    onMouseEnter={e => (e.currentTarget.style.backgroundColor = C.accentHover)}
+                    onMouseLeave={e => (e.currentTarget.style.backgroundColor = C.accent)}
                 >
                     Gratis pilot starten &rarr;
                 </button>
             </div>
 
             {/* Footer */}
-            <footer className="py-10 px-6 bg-slate-950">
-                <div className="max-w-5xl mx-auto">
+            <footer style={{ backgroundColor: C.darkDeep }}>
+                <div className="max-w-5xl mx-auto px-6 py-12">
                     <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-8">
                         <div className="flex items-center gap-2.5">
-                            <img src="/logo.svg" alt="" className="w-6 h-6 opacity-60 invert" width={24} height={24} loading="lazy" decoding="async" />
-                            <span className="text-sm font-bold text-slate-300">DGSkills</span>
+                            <img src="/mascot-pip.png" alt="" className="w-7 h-7 object-contain opacity-60 brightness-200" width={28} height={28} loading="lazy" decoding="async" />
+                            <span className="text-sm font-semibold" style={{ color: `${C.bg}cc` }}>DGSkills</span>
                         </div>
-                        <div className="flex flex-wrap items-center gap-5 text-xs text-slate-300">
+                        <div className="flex flex-wrap items-center gap-5 text-xs" style={{ color: `${C.bg}88` }}>
                             <a href="/ict/privacy/policy" className="hover:text-white transition-colors">Privacy</a>
                             <a href="/ict/privacy/cookies" className="hover:text-white transition-colors">Cookies</a>
                             <a href="/ict/privacy/ai" className="hover:text-white transition-colors">AI Act</a>
                             <a href="/compliance-hub" className="hover:text-white transition-colors">Compliance Hub</a>
-                            <span className="text-slate-800">·</span>
+                            <span style={{ color: `${C.bg}22` }}>&middot;</span>
                             <a href="/login" className="hover:text-white transition-colors">Inloggen</a>
                         </div>
                     </div>
-                    <div className="border-t border-slate-800 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-                        <p className="text-xs text-slate-400">
-                            © {new Date().getFullYear()} DGSkills — Digitale geletterdheid voor het voortgezet onderwijs
+                    <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4" style={{ borderTop: `1px solid ${C.bg}11` }}>
+                        <p className="text-xs" style={{ color: `${C.bg}55` }}>
+                            &copy; {new Date().getFullYear()} DGSkills &mdash; Digitale geletterdheid voor het voortgezet onderwijs
                         </p>
                         <div className="flex items-center gap-4">
-                            <a href="mailto:info@dgskills.app" className="text-xs text-slate-300 hover:text-white transition-colors font-medium flex items-center gap-1.5">
+                            <a href="mailto:info@dgskills.app" className="text-xs font-medium flex items-center gap-1.5 hover:text-white transition-colors" style={{ color: `${C.bg}88` }}>
                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                                     <rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
                                 </svg>

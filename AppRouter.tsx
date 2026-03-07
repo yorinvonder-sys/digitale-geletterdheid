@@ -28,9 +28,13 @@ const CookieConsent = React.lazy(() => import('./components/CookieConsent').then
 
 const AuthenticatedApp = React.lazy(() => import('./AuthenticatedApp').then(m => ({ default: m.AuthenticatedApp })));
 
+// DEV ONLY: Avatar preview (verwijder voor productie)
+const DevAvatarPreview = React.lazy(() => import('./components/DevAvatarPreview'));
+const DesignPreview = React.lazy(() => import('./components/DesignPreview'));
+
 /** Minimal spinner — no lucide to avoid blocking LCP */
 const LoadingFallback = () => (
-    <div className="min-h-screen bg-[#f8fafc] flex flex-col items-center justify-center gap-4">
+    <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center gap-4">
         <div className="w-12 h-12 border-2 border-indigo-200 border-t-indigo-600 rounded-full animate-spin" aria-hidden="true" />
         <p className="text-slate-500 font-medium">Laden...</p>
     </div>
@@ -360,6 +364,24 @@ export function AppRouter() {
 
     if (normalizedPath === '/login') {
         return <LoginRoute />;
+    }
+
+    // DEV ONLY: Avatar preview route
+    if (normalizedPath === '/dev/avatar') {
+        return (
+            <React.Suspense fallback={<LoadingFallback />}>
+                <DevAvatarPreview />
+            </React.Suspense>
+        );
+    }
+
+    // DEV ONLY: Design preview (Anthropic-inspired redesign)
+    if (normalizedPath === '/dev/design') {
+        return (
+            <React.Suspense fallback={<LoadingFallback />}>
+                <DesignPreview />
+            </React.Suspense>
+        );
     }
 
     if (normalizedPath === '/bonnetje') {

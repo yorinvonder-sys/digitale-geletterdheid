@@ -35,10 +35,10 @@ export const ScholenLandingFaq: React.FC<ScholenLandingFaqProps> = ({ scrollToCo
     return (
         <div>
             <div className="max-w-3xl mx-auto">
-                <h2 className="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight mb-3">
+                <h2 className="text-2xl md:text-3xl font-medium tracking-tight mb-3" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#1A1A19' }}>
                     Veelgestelde vragen
                 </h2>
-                <p className="text-base text-slate-500 leading-relaxed mb-10">
+                <p className="text-base leading-relaxed mb-10" style={{ color: '#6B6B66' }}>
                     Over DGSkills, SLO-kerndoelen en de gratis pilot.
                 </p>
 
@@ -48,30 +48,33 @@ export const ScholenLandingFaq: React.FC<ScholenLandingFaqProps> = ({ scrollToCo
                         if (items.length === 0) return null;
                         return (
                             <div key={cat}>
-                                <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-4">{cat}</h3>
+                                <h3 className="text-sm font-medium uppercase tracking-wide mb-4" style={{ color: '#D97757' }}>{cat}</h3>
                                 <div className="space-y-3">
                                     {items.map((item) => {
                                         const i = FAQ_ITEMS.indexOf(item);
                                         const isOpen = openFaq === i;
                                         const showCta = item.category === 'Kosten & licentie';
                                         return (
-                                            <div key={i} className="bg-white rounded-xl border border-slate-200/80 overflow-hidden shadow-sm">
+                                            <div key={i} className="bg-white rounded-xl overflow-hidden shadow-sm" style={{ borderWidth: '1px', borderStyle: 'solid', borderColor: '#E8E6DF' }}>
                                                 <button
                                                     onClick={() => setOpenFaq(isOpen ? null : i)}
-                                                    className="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-slate-50/50 transition-colors focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-indigo-500 focus-visible:rounded-xl"
+                                                    className="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-[#F5F3EC]/50 transition-colors focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#D97757] focus-visible:rounded-xl"
                                                     aria-expanded={isOpen}
                                                     aria-controls={`faq-answer-${i}`}
                                                 >
-                                                    <span className="text-[15px] font-medium text-slate-900 pr-4 leading-snug">{item.q}</span>
-                                                    <IconChevronDown className={`text-slate-400 flex-shrink-0 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+                                                    <span className="text-[15px] font-medium pr-4 leading-snug" style={{ color: '#1A1A19' }}>{item.q}</span>
+                                                    <IconChevronDown className={`flex-shrink-0 transition-transform ${isOpen ? 'rotate-180' : ''}`} style={{ color: '#9C9C95' }} />
                                                 </button>
                                                 {isOpen && (
                                                     <div id={`faq-answer-${i}`} className="px-5 pb-5 pt-0">
-                                                        <p className="text-[15px] text-slate-600 leading-relaxed">{item.a}</p>
+                                                        <p className="text-[15px] leading-relaxed" style={{ color: '#6B6B66' }}>{item.a}</p>
                                                         {showCta && (
                                                             <button
                                                                 onClick={scrollToContact}
-                                                                className="mt-4 text-sm font-semibold text-indigo-600 hover:text-indigo-700 flex items-center gap-1.5"
+                                                                className="mt-4 text-sm font-semibold flex items-center gap-1.5 transition-colors"
+                                                                style={{ color: '#D97757' }}
+                                                                onMouseEnter={(e) => (e.currentTarget.style.color = '#C46849')}
+                                                                onMouseLeave={(e) => (e.currentTarget.style.color = '#D97757')}
                                                             >
                                                                 Pilot aanvragen
                                                                 <IconArrowRight />
@@ -88,19 +91,25 @@ export const ScholenLandingFaq: React.FC<ScholenLandingFaqProps> = ({ scrollToCo
                     })}
                 </div>
 
-                <div className="mt-12 pt-8 border-t border-slate-200/80 text-center">
-                    <p className="text-sm text-slate-500 mb-4">Nog vragen? We staan voor je klaar.</p>
+                <div className="mt-12 pt-8 text-center" style={{ borderTopWidth: '1px', borderTopStyle: 'solid', borderTopColor: '#E8E6DF' }}>
+                    <p className="text-sm mb-4" style={{ color: '#6B6B66' }}>Nog vragen? We staan voor je klaar.</p>
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                         <button
                             onClick={scrollToContact}
-                            className="text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 px-5 py-2.5 rounded-lg inline-flex items-center gap-1.5 transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-500"
+                            className="text-sm font-semibold text-white px-5 py-2.5 rounded-full inline-flex items-center gap-1.5 transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#D97757]"
+                            style={{ backgroundColor: '#D97757' }}
+                            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#C46849')}
+                            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#D97757')}
                         >
                             Pilot aanvragen
                             <IconArrowRight />
                         </button>
                         <a
                             href="mailto:info@dgskills.app"
-                            className="text-sm font-semibold text-slate-600 hover:text-indigo-600 inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-slate-200 hover:border-indigo-300 transition-colors"
+                            className="text-sm font-semibold inline-flex items-center gap-2 px-5 py-2.5 rounded-full transition-colors"
+                            style={{ color: '#6B6B66', borderWidth: '1px', borderStyle: 'solid', borderColor: '#E8E6DF' }}
+                            onMouseEnter={(e) => { e.currentTarget.style.color = '#D97757'; e.currentTarget.style.borderColor = '#D97757'; }}
+                            onMouseLeave={(e) => { e.currentTarget.style.color = '#6B6B66'; e.currentTarget.style.borderColor = '#E8E6DF'; }}
                         >
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                                 <rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>

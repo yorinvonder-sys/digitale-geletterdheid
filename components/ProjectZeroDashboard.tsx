@@ -1324,7 +1324,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                                                 {(() => {
                                                     let firstOpenReviewFound = false;
-                                                    return currentMissions.filter(m => m.isReview).map(mission => {
+                                                    return currentMissions.filter(m => m.isReview).map((mission, rIdx) => {
                                                         const isNormallyCompleted = stats?.missionsCompleted?.includes(mission.id);
                                                         const isAutoCompleted = mission.id === 'ipad-print-instructies' && stats?.studentClass !== 'MH1A';
                                                         const isCompleted = isNormallyCompleted || isAutoCompleted;
@@ -1342,6 +1342,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                                                     isCompact={true}
                                                                     customHeader={activeWeek <= 1 ? 'Herhaling Basis' : `Herhaling ${periodNaming} ${activeWeek - 1}`}
                                                                     vsoProfile={stats?.vsoProfile}
+                                                                    cardIndex={rIdx}
                                                                 />
                                                             </div>
                                                         );
@@ -1371,6 +1372,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                                             customHeader={mission.id === 'prompt-master' ? "Aanbevolen" : undefined}
                                                             headerColor={mission.id === 'prompt-master' ? "green" : undefined}
                                                             vsoProfile={stats?.vsoProfile}
+                                                            cardIndex={index}
                                                         />
                                                     </div>
                                                 );
@@ -1452,13 +1454,28 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
     );
 };
 
-const MissionCard = React.memo(({ mission, onSelectModule, onInfoClick, isCompleted, isCompact, customHeader, headerColor = 'orange', vsoProfile }: { mission: Mission, onSelectModule: (id: string) => void, onInfoClick?: (info: string, kerndoelen?: SloKerndoelCode[]) => void, isCompleted?: boolean, isCompact?: boolean, customHeader?: string, headerColor?: 'orange' | 'green', vsoProfile?: string }) => {
+// Sticky note paper tones — warm, analog feel
+const STICKY_COLORS = [
+    { bg: '#FFF9EC', border: '#F0E4C8' },  // warm cream
+    { bg: '#FFF3E6', border: '#EDCFB0' },  // soft peach
+    { bg: '#F5F0E8', border: '#DED5C4' },  // parchment
+    { bg: '#FFF8F0', border: '#EDDDCC' },  // vanilla
+    { bg: '#F0EDE6', border: '#D9D3C6' },  // aged paper
+    { bg: '#FFFBF2', border: '#E8DFC8' },  // ivory
+] as const;
+const STICKY_ROTATIONS = [-1.2, 0.6, -0.4, 1, -0.8, 0.3] as const;
+const SERIF_FONT = "'Newsreader', Georgia, serif";
+
+const MissionCard = React.memo(({ mission, onSelectModule, onInfoClick, isCompleted, isCompact, customHeader, headerColor = 'orange', vsoProfile, cardIndex = 0 }: { mission: Mission, onSelectModule: (id: string) => void, onInfoClick?: (info: string, kerndoelen?: SloKerndoelCode[]) => void, isCompleted?: boolean, isCompact?: boolean, customHeader?: string, headerColor?: 'orange' | 'green', vsoProfile?: string, cardIndex?: number }) => {
     const handleClick = () => mission.status === 'available' && onSelectModule(mission.id);
 
     // Choose which kerndoelen to show based on profile
     const displayKerndoelen = vsoProfile && mission.sloVsoKerndoelen
         ? mission.sloVsoKerndoelen
         : mission.sloKerndoelen;
+
+    const stickyColor = STICKY_COLORS[cardIndex % STICKY_COLORS.length];
+    const rotation = STICKY_ROTATIONS[cardIndex % STICKY_ROTATIONS.length];
 
     return (
         <div
@@ -1469,75 +1486,103 @@ const MissionCard = React.memo(({ mission, onSelectModule, onInfoClick, isComple
             aria-disabled={mission.status === 'locked'}
             onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleClick(); } }}
             className={`
-            group relative bg-white rounded-3xl shadow-sm border
-            transition-all duration-300 overflow-hidden flex flex-col justify-between
-            ${isCompact ? 'p-4 min-h-[200px]' : 'p-6 md:p-7 min-h-[280px] md:min-h-[300px]'}
+            group relative rounded-lg
+            transition-all duration-300 flex flex-col justify-between
+            ${isCompact ? 'p-4 min-h-[200px]' : 'p-6 md:p-7 min-h-[260px] md:min-h-[280px]'}
             ${mission.status === 'locked'
-                    ? 'opacity-80 border-slate-100 cursor-not-allowed grayscale-[0.8] hover:grayscale-0'
-                    : 'border-slate-100 hover:border-indigo-500 hover:shadow-xl hover:shadow-indigo-500/10 hover:-translate-y-1 cursor-pointer'}
+                    ? 'opacity-70 cursor-not-allowed grayscale-[0.6] hover:grayscale-0'
+                    : 'hover:shadow-lg hover:-translate-y-1.5 cursor-pointer'}
         `}
+            style={{
+                backgroundColor: stickyColor.bg,
+                border: `1px solid ${stickyColor.border}`,
+                transform: `rotate(${rotation}deg)`,
+                boxShadow: '2px 3px 8px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04)',
+                transition: 'all 0.3s ease',
+            }}
+            onMouseEnter={(e) => {
+                if (mission.status !== 'locked') {
+                    e.currentTarget.style.transform = 'rotate(0deg) translateY(-6px)';
+                    e.currentTarget.style.boxShadow = '4px 8px 20px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.06)';
+                }
+            }}
+            onMouseLeave={(e) => {
+                e.currentTarget.style.transform = `rotate(${rotation}deg)`;
+                e.currentTarget.style.boxShadow = '2px 3px 8px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04)';
+            }}
         >
+            {/* Tape decoration at top — hide when a header banner is present */}
+            {!isCompact && !customHeader && !mission.isBonus && !mission.isExternal && (
+                <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-12 h-5 rounded-sm opacity-60 z-20"
+                    style={{
+                        background: 'linear-gradient(180deg, rgba(200,190,170,0.5) 0%, rgba(200,190,170,0.3) 100%)',
+                        backdropFilter: 'blur(1px)',
+                        border: '1px solid rgba(180,170,150,0.2)',
+                    }}
+                />
+            )}
+
             {/* Custom Header Tag (e.g. Herhaling Periode 1) */}
             {customHeader && (
-                <div className={`absolute top-0 left-0 right-0 py-1 text-center border-b ${headerColor === 'green' ? 'bg-emerald-500 border-emerald-600' : 'bg-orange-500 border-orange-600'}`}>
+                <div className={`absolute top-0 left-0 right-0 py-1 text-center rounded-t-lg ${headerColor === 'green' ? 'bg-amber-700/90' : 'bg-orange-500/90'}`}>
                     <span className="text-[9px] font-extrabold text-white uppercase tracking-widest leading-none block">
                         {customHeader}
                     </span>
                 </div>
             )}
 
-            {/* Highlight for Highlighted Missions (orange glow) */}
+            {/* Highlight for Highlighted Missions */}
             {mission.isHighlighted && !customHeader && (
-                <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-orange-400 via-amber-500 to-orange-400 animate-pulse" />
+                <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-orange-400 via-amber-500 to-orange-400 rounded-t-lg animate-pulse" />
             )}
 
-            {/* Highlight for Review Missions (if not highlighted and no header overlap) */}
+            {/* Review Mission indicator */}
             {mission.isReview && !mission.isHighlighted && !customHeader && (
-                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-400 to-orange-500 opacity-80" />
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-400 to-orange-500 rounded-t-lg opacity-80" />
             )}
 
-            {/* Bonus Mission Highlight (purple gradient) */}
+            {/* Bonus Mission */}
             {mission.isBonus && !customHeader && (
-                <div className="absolute top-0 left-0 right-0 py-1 text-center border-b bg-gradient-to-r from-violet-500 to-fuchsia-500 border-violet-600">
+                <div className="absolute top-0 left-0 right-0 py-1 text-center rounded-t-lg bg-gradient-to-r from-violet-500 to-fuchsia-500">
                     <span className="text-[9px] font-extrabold text-white uppercase tracking-widest leading-none block flex items-center justify-center gap-1">
                         <Stars size={10} /> Bonus Challenge <Stars size={10} />
                     </span>
                 </div>
             )}
 
-            {/* External Mission Highlight (blue gradient) */}
+            {/* External Mission */}
             {mission.isExternal && !customHeader && !mission.isBonus && (
-                <div className="absolute top-0 left-0 right-0 py-1 text-center border-b bg-gradient-to-r from-blue-500 to-cyan-500 border-blue-600">
+                <div className="absolute top-0 left-0 right-0 py-1 text-center rounded-t-lg bg-gradient-to-r from-blue-500 to-cyan-500">
                     <span className="text-[9px] font-extrabold text-white uppercase tracking-widest leading-none block flex items-center justify-center gap-1">
                         <MonitorSmartphone size={10} /> Uitvoering in App <MonitorSmartphone size={10} />
                     </span>
                 </div>
             )}
 
-            {/* Completed Checkmark Overlay */}
+            {/* Completed Checkmark */}
             {isCompleted && (
-                <div className={`absolute ${isCompact ? 'top-8 right-4' : 'top-6 right-6'} bg-green-500 text-white rounded-full p-1 shadow-lg z-20`}>
+                <div className={`absolute ${isCompact ? 'top-8 right-4' : 'top-6 right-6'} bg-emerald-600 text-white rounded-full p-1 shadow-lg z-20`}>
                     <ShieldCheck size={isCompact ? 14 : 16} />
                 </div>
             )}
 
             {/* Background Decorative Icon */}
-            <div className={`absolute -top-6 -right-6 opacity-[0.03] text-indigo-900 group-hover:scale-110 transition-transform duration-700 rotate-12 ${isCompact ? 'scale-75' : ''}`}>
+            <div className={`absolute -top-6 -right-6 opacity-[0.04] group-hover:scale-110 transition-transform duration-700 rotate-12 ${isCompact ? 'scale-75' : ''}`} style={{ color: '#8B7355' }}>
                 {mission.icon}
             </div>
 
-            {/* Padding adjustment for header */}
+            {/* Card content */}
             <div className={`relative z-10 h-full flex flex-col ${customHeader || mission.isBonus || mission.isExternal ? 'pt-4' : ''}`}>
                 <div className="flex justify-between items-start">
                     <div className={`
-                    rounded-2xl flex items-center justify-center mb-4 transition-all duration-300 shadow-sm overflow-hidden
-                    ${isCompact ? 'w-10 h-10' : 'w-12 h-12 mb-4'}
+                    rounded-xl flex items-center justify-center mb-4 transition-all duration-300 overflow-hidden
+                    ${isCompact ? 'w-10 h-10' : 'w-11 h-11 mb-4'}
                     ${mission.status === 'locked'
-                            ? 'bg-slate-100 text-slate-400'
-                            : 'bg-indigo-50 text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white'}
+                            ? 'bg-stone-200/60 text-stone-400'
+                            : 'bg-amber-800/10 text-amber-800 group-hover:bg-amber-800 group-hover:text-white'}
                 `}>
                         {mission.status === 'locked' ? (
-                            <Lock size={isCompact ? 16 : 32} />
+                            <Lock size={isCompact ? 16 : 28} />
                         ) : (
                             <div className={`transform transition-transform ${isCompact ? 'scale-50' : ''}`}>
                                 {mission.icon}
@@ -1550,31 +1595,31 @@ const MissionCard = React.memo(({ mission, onSelectModule, onInfoClick, isComple
                                 e.stopPropagation();
                                 onInfoClick(mission.info!, displayKerndoelen);
                             }}
-                            className="p-3 min-w-[44px] min-h-[44px] text-slate-300 hover:text-indigo-500 hover:bg-indigo-50 rounded-xl transition-colors flex items-center justify-center"
+                            className="p-3 min-w-[44px] min-h-[44px] text-stone-400 hover:text-amber-700 hover:bg-amber-800/10 rounded-lg transition-colors flex items-center justify-center"
                             title="Meer informatie"
                         >
-                            <Info size={20} />
+                            <Info size={18} />
                         </button>
                     )}
                 </div>
 
                 {!isCompact && (
-                    <div className="flex items-center gap-2 mb-3">
-                        <span className="px-2.5 py-0.5 bg-slate-100 text-slate-500 text-[9px] font-bold rounded-full uppercase tracking-widest border border-slate-200">
+                    <div className="flex items-center gap-2 mb-2">
+                        <span className="px-2 py-0.5 text-[9px] font-bold rounded uppercase tracking-widest" style={{ backgroundColor: 'rgba(139,115,85,0.1)', color: '#8B7355', border: '1px solid rgba(139,115,85,0.15)' }}>
                             Missie {mission.number}
                         </span>
 
                         {/* Status Tags */}
                         {mission.status === 'locked' ? (
-                            <span className="px-2.5 py-0.5 bg-slate-100 text-slate-500 text-[9px] font-bold rounded-full uppercase tracking-widest border border-slate-200 flex items-center gap-1">
+                            <span className="px-2 py-0.5 text-[9px] font-bold rounded uppercase tracking-widest flex items-center gap-1" style={{ backgroundColor: 'rgba(120,113,108,0.1)', color: '#78716C', border: '1px solid rgba(120,113,108,0.15)' }}>
                                 <Lock size={8} /> Vergrendeld
                             </span>
                         ) : mission.status === 'available' ? (
-                            <span className="px-2.5 py-0.5 bg-emerald-50 text-emerald-600 text-[9px] font-bold rounded-full uppercase tracking-widest border border-emerald-100 flex items-center gap-1">
+                            <span className="px-2 py-0.5 bg-emerald-50 text-emerald-700 text-[9px] font-bold rounded uppercase tracking-widest border border-emerald-200/60 flex items-center gap-1">
                                 <span className="w-1 h-1 bg-emerald-500 rounded-full"></span> Beschikbaar
                             </span>
                         ) : (
-                            <span className="px-2.5 py-0.5 bg-amber-50 text-amber-600 text-[9px] font-bold rounded-full uppercase tracking-widest border border-amber-100">
+                            <span className="px-2 py-0.5 bg-amber-50 text-amber-700 text-[9px] font-bold rounded uppercase tracking-widest border border-amber-200/60">
                                 Wordt verwacht
                             </span>
                         )}
@@ -1582,15 +1627,15 @@ const MissionCard = React.memo(({ mission, onSelectModule, onInfoClick, isComple
                 )}
 
                 <h3 className={`
-                font-black mb-2 transition-colors tracking-tight line-clamp-2 break-words
-                ${isCompact ? 'text-base' : 'text-xl mb-2'}
-                ${mission.status === 'locked' ? 'text-slate-400' : 'text-slate-900 group-hover:text-indigo-600'}
-            `}>
+                font-semibold mb-2 transition-colors leading-snug line-clamp-2 break-words
+                ${isCompact ? 'text-base' : 'text-lg mb-2'}
+                ${mission.status === 'locked' ? 'text-stone-400' : 'text-stone-800 group-hover:text-amber-800'}
+            `} style={{ fontFamily: SERIF_FONT }}>
                     {mission.title}
                 </h3>
 
-                {/* Show description based on size */}
-                <p className={`text-slate-500 font-medium leading-relaxed ${isCompact ? 'text-xs line-clamp-2 mb-2' : 'text-sm mb-3 line-clamp-2'}`}>
+                {/* Description */}
+                <p className={`text-stone-500 font-medium leading-relaxed ${isCompact ? 'text-xs line-clamp-2 mb-2' : 'text-sm mb-3 line-clamp-2'}`}>
                     {mission.description}
                 </p>
 
@@ -1611,7 +1656,7 @@ const MissionCard = React.memo(({ mission, onSelectModule, onInfoClick, isComple
                             );
                         })}
                         {isCompact && displayKerndoelen.length > 2 && (
-                            <span className="inline-flex items-center px-1.5 py-0.5 rounded-md border border-slate-200 bg-slate-50 text-slate-400 text-[8px] font-bold">
+                            <span className="inline-flex items-center px-1.5 py-0.5 rounded-md border border-stone-200 bg-stone-50 text-stone-400 text-[8px] font-bold">
                                 +{displayKerndoelen.length - 2}
                             </span>
                         )}
@@ -1620,7 +1665,7 @@ const MissionCard = React.memo(({ mission, onSelectModule, onInfoClick, isComple
 
                 {/* Locked Reason */}
                 {mission.status === 'locked' ? (
-                    <div className={`mt-auto flex items-center gap-2 font-bold text-amber-600 bg-amber-50 rounded-xl border border-amber-100 ${isCompact ? 'text-[10px] p-2' : 'text-xs p-3'}`}>
+                    <div className={`mt-auto flex items-center gap-2 font-bold text-amber-700 bg-amber-50/80 rounded-lg border border-amber-200/50 ${isCompact ? 'text-[10px] p-2' : 'text-xs p-3'}`}>
                         <AlertTriangle size={isCompact ? 12 : 14} />
                         {!isCompact && "Voltooi eerst de review missies"}
                     </div>
@@ -1629,11 +1674,11 @@ const MissionCard = React.memo(({ mission, onSelectModule, onInfoClick, isComple
                         {!isCompact && (
                             <div className="flex gap-1 opacity-20">
                                 {[...Array(3)].map((_, i) => (
-                                    <div key={i} className="w-1.5 h-1.5 bg-indigo-600 rounded-full"></div>
+                                    <div key={i} className="w-1.5 h-1.5 bg-amber-800 rounded-full"></div>
                                 ))}
                             </div>
                         )}
-                        <div className={`text-indigo-600 font-extrabold uppercase tracking-widest flex items-center gap-2 group-hover:translate-x-1 transition-transform ${isCompact ? 'text-[10px]' : 'text-xs'}`}>
+                        <div className={`text-amber-800 font-extrabold uppercase tracking-widest flex items-center gap-2 group-hover:translate-x-1 transition-transform ${isCompact ? 'text-[10px]' : 'text-xs'}`}>
                             Start <Play size={isCompact ? 10 : 12} fill="currentColor" />
                         </div>
                     </div>

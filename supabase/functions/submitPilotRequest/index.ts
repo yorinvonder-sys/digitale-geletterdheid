@@ -244,24 +244,24 @@ serve(async (req: Request) => {
             + `IP: ${sanitized.ip_address}\n`,
           html: `
             <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 600px;">
-              <div style="background: linear-gradient(135deg, #4F46E5, #7C3AED); padding: 24px 32px; border-radius: 12px 12px 0 0;">
+              <div style="background: linear-gradient(135deg, #D97757, #C46849); padding: 24px 32px; border-radius: 12px 12px 0 0;">
                 <h1 style="color: white; margin: 0; font-size: 20px;">Nieuwe pilot aanvraag</h1>
                 <p style="color: rgba(255,255,255,0.8); margin: 4px 0 0; font-size: 14px;">${escaped.school_naam}</p>
               </div>
-              <div style="background: #f8fafc; padding: 24px 32px; border: 1px solid #e2e8f0; border-top: none; border-radius: 0 0 12px 12px;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 14px; color: #334155;">
-                  <tr><td style="padding: 8px 0; color: #94a3b8; width: 120px;">School</td><td style="padding: 8px 0; font-weight: 600;">${escaped.school_naam}</td></tr>
-                  <tr><td style="padding: 8px 0; color: #94a3b8;">Contact</td><td style="padding: 8px 0; font-weight: 600;">${escaped.contact_persoon}</td></tr>
-                  <tr><td style="padding: 8px 0; color: #94a3b8;">E-mail</td><td style="padding: 8px 0;"><a href="mailto:${encodeURIComponent(sanitized.email)}" style="color: #4F46E5;">${escaped.email}</a></td></tr>
-                  <tr><td style="padding: 8px 0; color: #94a3b8;">Rol</td><td style="padding: 8px 0;">${escaped.rol}</td></tr>
-                  <tr><td style="padding: 8px 0; color: #94a3b8;">Leerlingen</td><td style="padding: 8px 0;">${escaped.aantal_leerlingen}</td></tr>
+              <div style="background: #FAF9F0; padding: 24px 32px; border: 1px solid #E8E6DF; border-top: none; border-radius: 0 0 12px 12px;">
+                <table style="width: 100%; border-collapse: collapse; font-size: 14px; color: #3D3D38;">
+                  <tr><td style="padding: 8px 0; color: #9C9C95; width: 120px;">School</td><td style="padding: 8px 0; font-weight: 600;">${escaped.school_naam}</td></tr>
+                  <tr><td style="padding: 8px 0; color: #9C9C95;">Contact</td><td style="padding: 8px 0; font-weight: 600;">${escaped.contact_persoon}</td></tr>
+                  <tr><td style="padding: 8px 0; color: #9C9C95;">E-mail</td><td style="padding: 8px 0;"><a href="mailto:${encodeURIComponent(sanitized.email)}" style="color: #D97757;">${escaped.email}</a></td></tr>
+                  <tr><td style="padding: 8px 0; color: #9C9C95;">Rol</td><td style="padding: 8px 0;">${escaped.rol}</td></tr>
+                  <tr><td style="padding: 8px 0; color: #9C9C95;">Leerlingen</td><td style="padding: 8px 0;">${escaped.aantal_leerlingen}</td></tr>
                 </table>
                 ${escaped.bericht ? `
-                <div style="margin-top: 16px; padding: 16px; background: white; border-radius: 8px; border: 1px solid #e2e8f0;">
-                  <p style="margin: 0 0 4px; font-size: 12px; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em;">Bericht</p>
-                  <p style="margin: 0; font-size: 14px; color: #334155; white-space: pre-wrap;">${escaped.bericht}</p>
+                <div style="margin-top: 16px; padding: 16px; background: white; border-radius: 8px; border: 1px solid #E8E6DF;">
+                  <p style="margin: 0 0 4px; font-size: 12px; color: #9C9C95; text-transform: uppercase; letter-spacing: 0.05em;">Bericht</p>
+                  <p style="margin: 0; font-size: 14px; color: #3D3D38; white-space: pre-wrap;">${escaped.bericht}</p>
                 </div>` : ''}
-                <p style="margin-top: 20px; font-size: 12px; color: #94a3b8;">
+                <p style="margin-top: 20px; font-size: 12px; color: #9C9C95;">
                   ${escapeHtml(formattedDate)}<br/>
                   IP: ${escaped.ip_address}
                 </p>
@@ -276,28 +276,28 @@ serve(async (req: Request) => {
           subject: 'Bedankt voor je pilot aanvraag — DGSkills',
           html: `
             <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 600px;">
-              <div style="background: linear-gradient(135deg, #4F46E5, #7C3AED); padding: 24px 32px; border-radius: 12px 12px 0 0;">
+              <div style="background: linear-gradient(135deg, #D97757, #C46849); padding: 24px 32px; border-radius: 12px 12px 0 0;">
                 <h1 style="color: white; margin: 0; font-size: 20px;">Bedankt, ${escaped.contact_persoon}!</h1>
               </div>
-              <div style="background: white; padding: 24px 32px; border: 1px solid #e2e8f0; border-top: none; border-radius: 0 0 12px 12px;">
-                <p style="font-size: 15px; color: #334155; line-height: 1.6;">
+              <div style="background: white; padding: 24px 32px; border: 1px solid #E8E6DF; border-top: none; border-radius: 0 0 12px 12px;">
+                <p style="font-size: 15px; color: #3D3D38; line-height: 1.6;">
                   We hebben je pilot aanvraag voor <strong>${escaped.school_naam}</strong> ontvangen.
                 </p>
-                <p style="font-size: 15px; color: #334155; line-height: 1.6;">
+                <p style="font-size: 15px; color: #3D3D38; line-height: 1.6;">
                   Dit zijn de volgende stappen:
                 </p>
-                <ol style="font-size: 14px; color: #475569; line-height: 1.8; padding-left: 20px;">
+                <ol style="font-size: 14px; color: #52524D; line-height: 1.8; padding-left: 20px;">
                   <li>Kennismakingsgesprek (15 min) — binnen 2 werkdagen</li>
                   <li>Onboarding voor docenten (30 min)</li>
                   <li>Leerlingen starten binnen 10 werkdagen na akkoord</li>
                 </ol>
-                <p style="font-size: 14px; color: #64748b; margin-top: 20px;">
-                  Vragen? Mail ons op <a href="mailto:info@dgskills.app" style="color: #4F46E5;">info@dgskills.app</a>
+                <p style="font-size: 14px; color: #6B6B66; margin-top: 20px;">
+                  Vragen? Mail ons op <a href="mailto:info@dgskills.app" style="color: #D97757;">info@dgskills.app</a>
                 </p>
-                <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 20px 0;" />
-                <p style="font-size: 12px; color: #94a3b8;">
+                <hr style="border: none; border-top: 1px solid #E8E6DF; margin: 20px 0;" />
+                <p style="font-size: 12px; color: #9C9C95;">
                   DGSkills — Digitale Geletterdheid voor het Voortgezet Onderwijs<br />
-                  <a href="https://dgskills.app" style="color: #4F46E5;">dgskills.app</a>
+                  <a href="https://dgskills.app" style="color: #D97757;">dgskills.app</a>
                 </p>
               </div>
             </div>

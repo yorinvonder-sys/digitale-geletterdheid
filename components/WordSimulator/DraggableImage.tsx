@@ -72,7 +72,7 @@ export const DraggableImage: React.FC<DraggableImageProps> = ({ item, isSelected
             width: item.width,
             height: item.height,
             cursor: isDraggingState ? 'grabbing' : 'grab',
-            border: isSelected ? '2px solid #2b579a' : '1px solid transparent',
+            border: isSelected ? '2px solid #C46849' : '1px solid transparent',
             userSelect: 'none',
             touchAction: 'none',
             position: 'absolute',

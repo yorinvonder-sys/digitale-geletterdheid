@@ -54,7 +54,7 @@ const CHALLENGES: DataChallenge[] = [
         data: {
             labels: ['Kijkgedrag', 'Zoekopdrachten', 'Locatie', 'Contacten', 'Microfoon'],
             values: [92, 81, 57, 21, 13],
-            colors: ['#10B981', '#3B82F6', '#06B6D4', '#F59E0B', '#EF4444']
+            colors: ['#10B981', '#D97757', '#06B6D4', '#F59E0B', '#EF4444']
         },
         question: 'Welke conclusie is het meest logisch op basis van deze data?',
         options: [
@@ -96,7 +96,7 @@ const CHALLENGES: DataChallenge[] = [
         data: {
             labels: ['Productverbetering', 'Fraudedetectie', 'Advertenties', 'Verkoop aan partners'],
             values: [38, 24, 26, 12],
-            colors: ['#10B981', '#3B82F6', '#F59E0B', '#EF4444']
+            colors: ['#10B981', '#D97757', '#F59E0B', '#EF4444']
         },
         question: 'Welke toepassing vraagt de meeste kritische controle van gebruikers?',
         options: [
@@ -192,7 +192,7 @@ const BarChart: React.FC<{ data: DataChallenge['data'], isMisleading?: boolean }
                                 className="w-full rounded-t-lg transition-all duration-500"
                                 style={{
                                     height: `${height}%`,
-                                    backgroundColor: data.colors?.[i] || '#3B82F6',
+                                    backgroundColor: data.colors?.[i] || '#D97757',
                                     minHeight: '20px'
                                 }}
                             />
@@ -228,7 +228,7 @@ const LineChart: React.FC<{ data: DataChallenge['data'] }> = ({ data }) => {
             <svg viewBox="0 0 100 100" className="w-full h-48">
                 {/* Grid lines */}
                 {[0, 25, 50, 75, 100].map(y => (
-                    <line key={y} x1="0" y1={y} x2="100" y2={y} stroke="#334155" strokeWidth="0.5" />
+                    <line key={y} x1="0" y1={y} x2="100" y2={y} stroke="#4a4a44" strokeWidth="0.5" />
                 ))}
 
                 {/* Line */}
@@ -272,7 +272,7 @@ const PieChart: React.FC<{ data: DataChallenge['data'] }> = ({ data }) => {
 
         return {
             path: `M 50 50 L ${x1} ${y1} A 40 40 0 ${largeArc} 1 ${x2} ${y2} Z`,
-            color: data.colors?.[i] || '#3B82F6',
+            color: data.colors?.[i] || '#D97757',
             label: data.labels[i],
             value: value,
             percentage: ((value / total) * 100).toFixed(0)

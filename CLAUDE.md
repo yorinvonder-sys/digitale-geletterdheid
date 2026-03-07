@@ -24,29 +24,41 @@
 - Background agents for long-running tasks (builds, audits, large searches).
 - Default language: Dutch (Nederlands), unless context is English code/docs.
 
-## Prompt Guidance — VERPLICHT
+## Prompt Coaching — VERPLICHT
 
-**Bij ELKE gebruikersprompt checkt Claude eerst of deze voldoende informatie bevat:**
+**Bij ELKE gebruikersprompt checkt Claude eerst of deze voldoende informatie bevat.**
 
-Een complete prompt heeft:
+### Criteria voor een complete prompt
+
+Een goede prompt heeft:
 1. **WAT** — Wat moet er gebeuren? (actie/doel)
 2. **WAAR** — Welk bestand, component, of deel van het systeem?
 3. **WAAROM** — Welk probleem lost dit op? (context)
 
-**Als 1 of meer van deze ontbreken, stel Claude EEN verhelderingsvraag** voordat er code wordt geschreven. Gebruik het `AskUserQuestion` tool hiervoor.
+Voor audits, analyses en onderzoeksvragen ook:
+4. **KADER** — Aan welke criteria/standaard toetsen? (bijv. SLO-kerndoelen, Bloom, WCAG)
+5. **OUTPUT** — Wat verwacht je terug? (tabel, lijst, advies, code)
 
-Voorbeelden van wanneer te vragen:
-- "Fix de chat" → WAAR en WAAROM ontbreken → Vraag: "Welk specifiek probleem ervaar je met de chat? Bijv. foutmelding, trage response, of iets anders?"
-- "Voeg een knop toe" → WAAR en WAAROM ontbreken → Vraag: "Op welke pagina/component moet de knop komen, en wat moet hij doen?"
-- "Het werkt niet" → ALLES ontbreekt → Vraag: "Wat probeer je te doen, en wat zie je in plaats van het verwachte resultaat?"
+### Wat Claude doet als de prompt onvolledig is
 
-**Uitzonderingen** (direct handelen, niet vragen):
-- De prompt bevat WAT + WAAR + WAAROM
+1. **Benoem wat er wél goed is** — erken het doel van de gebruiker.
+2. **Benoem wat er ontbreekt** — wees specifiek: "WAAR ontbreekt" is beter dan "je prompt is vaag".
+3. **Geef een verbeterde versie** — herschrijf de prompt zodat Yorin ziet hoe het beter kan. Gebruik het format van `.claude/prompt-templates.md` als basis.
+4. **Vraag bevestiging** — "Wil je dat ik deze verbeterde prompt uitvoer, of wil je hem nog aanpassen?"
+
+Voorbeeld:
+- Yorin: "Doe een audit van de opdrachten"
+- Claude: "Goed doel! Maar ik mis WAAR (welke bestanden), KADER (waarop beoordelen) en OUTPUT (hoe teruggeven). Hier is een sterkere versie: [verbeterde prompt]. Klopt dit, of wil je het kader aanpassen?"
+
+### Uitzonderingen (direct handelen, niet coachen)
+- De prompt bevat WAT + WAAR + WAAROM (en KADER/OUTPUT bij analyses)
 - De gebruiker heeft code geselecteerd in VSCode (dat is de "WAAR")
 - Het is een follow-up op een lopend gesprek waar de context al duidelijk is
 - Het is een simpele vraag ("Wat doet deze functie?")
+- De gebruiker zegt expliciet "voer uit" of "gewoon doen"
 
-**Prompt templates** beschikbaar in `.claude/prompt-templates.md` — verwijs hiernaar als de gebruiker moeite heeft met het formuleren van prompts.
+### Prompt templates
+Beschikbaar in `.claude/prompt-templates.md` — verwijs hiernaar als Yorin een nieuw type taak start.
 
 ## ADHD Werkprotocol
 - Eén taak tegelijk. Niet springen.

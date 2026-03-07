@@ -298,7 +298,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
     };
 
     return (
-        <div className="fixed inset-0 bg-[#f8fafc] font-sans overflow-hidden">
+        <div className="fixed inset-0 bg-slate-50 font-sans overflow-hidden">
             {/* Background decoration */}
             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-50 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl opacity-50 pointer-events-none"></div>
             <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-indigo-50 rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl opacity-50 pointer-events-none"></div>
@@ -310,11 +310,11 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
 
                         {/* Header */}
                         <div className="text-center mb-8">
-                            <div className="w-16 h-16 bg-white border border-slate-200 rounded-2xl flex items-center justify-center text-white mx-auto mb-4 transform -rotate-3 overflow-hidden">
-                                <img src="/logo.svg" alt="Logo" className="w-full h-full object-contain p-2" width={64} height={64} fetchPriority="high" decoding="async" />
+                            <div className="w-20 h-20 mx-auto mb-4">
+                                <img src="/mascot-pip.png" alt="Pip — DGSkills mascotte" className="w-full h-full object-contain" width={80} height={80} fetchPriority="high" decoding="async" />
                             </div>
                             <h1 className="text-2xl font-black text-slate-900 mb-1 tracking-tight">
-                                Mission <span className="text-indigo-600">Control</span>
+                                Mission <span style={{ color: '#D97757' }}>Control</span>
                             </h1>
                             <p className="text-slate-500 font-bold text-[10px] uppercase tracking-widest">
                                 DGSkills • Voortgezet Onderwijs

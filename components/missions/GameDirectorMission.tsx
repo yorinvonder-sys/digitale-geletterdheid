@@ -264,11 +264,11 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
         const height = canvasRef.current.height;
 
         // Clear
-        ctx.fillStyle = '#0f172a'; // Dark slate background
+        ctx.fillStyle = '#1A1A19'; // Dark warm background
         ctx.fillRect(0, 0, width, height);
 
         // Grid pattern
-        ctx.strokeStyle = '#1e293b';
+        ctx.strokeStyle = '#3D3D38';
         ctx.lineWidth = 1;
         for (let x = 0; x < width; x += 40) {
             ctx.beginPath();
@@ -443,7 +443,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
         ctx.fillRect(px + 4, height - 38, 24, 6);
 
         // Body
-        ctx.fillStyle = '#4F46E5';
+        ctx.fillStyle = '#D97757';
         ctx.fillRect(px + 4, py + 16, 24, 24);
 
         // Head
@@ -451,7 +451,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
         ctx.fillRect(px + 6, py, 20, 20);
 
         // Eyes
-        ctx.fillStyle = '#1e293b';
+        ctx.fillStyle = '#3D3D38';
         if (p.facingRight) {
             ctx.fillRect(px + 18, py + 6, 4, 4);
             ctx.fillRect(px + 24, py + 6, 4, 4);
@@ -461,7 +461,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
         }
 
         // Legs
-        ctx.fillStyle = '#1e293b';
+        ctx.fillStyle = '#3D3D38';
         ctx.fillRect(px + 6, py + 40, 8, 8);
         ctx.fillRect(px + 18, py + 40, 8, 8);
 
@@ -743,7 +743,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
 
                 {/* Middle Panel: Workspace */}
                 <div className="flex-1 bg-slate-950 relative flex flex-col min-w-[300px] p-2">
-                    <div className="absolute inset-0 bg-[linear-gradient(#1e293b_1px,transparent_1px),linear-gradient(90deg,#1e293b_1px,transparent_1px)] bg-[size:20px_20px] opacity-20 pointer-events-none"></div>
+                    <div className="absolute inset-0 bg-[linear-gradient(#3D3D38_1px,transparent_1px),linear-gradient(90deg,#3D3D38_1px,transparent_1px)] bg-[size:20px_20px] opacity-20 pointer-events-none"></div>
                     <CodeWorkspace
                         blocks={blocks}
                         onBlocksChange={setBlocks}
@@ -769,7 +769,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                         {/* Game Screen Container - Maintains Aspect Ratio but fills space */}
                         <div className="flex-1 relative bg-slate-900 rounded-xl overflow-hidden shadow-2xl border-4 border-slate-800 ring-1 ring-white/10 group">
                             {/* Canvas needs to respond to size */}
-                            <div className="absolute inset-0 flex items-center justify-center bg-[radial-gradient(circle_at_center,#1e293b_0%,#0f172a_100%)]">
+                            <div className="absolute inset-0 flex items-center justify-center bg-[radial-gradient(circle_at_center,#3D3D38_0%,#1A1A19_100%)]">
                                 <canvas
                                     ref={canvasRef}
                                     width={800}

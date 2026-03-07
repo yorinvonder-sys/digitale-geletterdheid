@@ -107,8 +107,8 @@ function AnimatedXpBar({ value, max, animate }: { value: number; max: number; an
     return (
         <div className="w-full h-2 rounded-full bg-slate-100 overflow-hidden">
             <div
-                className="h-full rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 transition-all duration-1000 ease-out"
-                style={{ width: animate ? `${pct}%` : '0%' }}
+                className="h-full rounded-full transition-all duration-1000 ease-out"
+                style={{ background: 'linear-gradient(to right, #D97757, #C46849)', width: animate ? `${pct}%` : '0%' }}
             />
         </div>
     );
@@ -120,9 +120,8 @@ function MissionDots({ completed, total }: { completed: number; total: number })
             {Array.from({ length: total }, (_, i) => (
                 <div
                     key={i}
-                    className={`w-2 h-2 rounded-full transition-colors duration-300 ${
-                        i < completed ? 'bg-indigo-500' : 'bg-slate-200'
-                    }`}
+                    className="w-2 h-2 rounded-full transition-colors duration-300"
+                    style={{ backgroundColor: i < completed ? '#D97757' : '#E8E6DF' }}
                 />
             ))}
         </div>
@@ -149,11 +148,15 @@ function StudentCard({
     return (
         <button
             onClick={onClick}
-            className={`relative w-full text-left p-3 rounded-xl border-2 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 ${
+            className={`relative w-full text-left p-3 rounded-xl border-2 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-offset-2 ${
                 isSelected
-                    ? 'border-indigo-400 bg-indigo-50 shadow-md scale-[1.02]'
-                    : 'border-slate-200 bg-white hover:border-slate-300 hover:shadow-sm'
+                    ? 'shadow-md scale-[1.02]'
+                    : 'bg-white hover:shadow-sm'
             } ${isFocusMode ? 'ring-2 ring-orange-300 ring-offset-1' : ''}`}
+            style={{
+                borderColor: isSelected ? '#D97757' : '#E8E6DF',
+                backgroundColor: isSelected ? 'rgba(217,119,87,0.06)' : undefined,
+            }}
         >
             {/* Avatar + name */}
             <div className="flex items-center gap-2.5 mb-2">
@@ -221,9 +224,9 @@ function DetailPanel({ student, visible }: { student: Student | null; visible: b
             </div>
 
             {/* Current mission */}
-            <div className="p-3 rounded-lg bg-indigo-50 border border-indigo-100">
-                <p className="text-[10px] uppercase tracking-wider text-indigo-400 font-semibold mb-1">Huidige missie</p>
-                <p className="text-sm text-indigo-700 font-medium">{student.currentMission}</p>
+            <div className="p-3 rounded-lg" style={{ backgroundColor: 'rgba(217,119,87,0.06)', border: '1px solid rgba(217,119,87,0.15)' }}>
+                <p className="text-[10px] uppercase tracking-wider font-semibold mb-1" style={{ color: '#D97757' }}>Huidige missie</p>
+                <p className="text-sm font-medium" style={{ color: '#1A1A19' }}>{student.currentMission}</p>
             </div>
 
             {/* Missions progress */}
@@ -231,8 +234,8 @@ function DetailPanel({ student, visible }: { student: Student | null; visible: b
                 <p className="text-[10px] uppercase tracking-wider text-slate-400 font-semibold mb-2">Missie-voortgang</p>
                 <div className="w-full h-3 rounded-full bg-slate-100 overflow-hidden">
                     <div
-                        className="h-full rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 transition-all duration-700"
-                        style={{ width: `${Math.round((student.missionsCompleted / student.totalMissions) * 100)}%` }}
+                        className="h-full rounded-full transition-all duration-700"
+                        style={{ width: `${Math.round((student.missionsCompleted / student.totalMissions) * 100)}%`, background: 'linear-gradient(to right, #D97757, #C46849)' }}
                     />
                 </div>
                 <p className="text-xs text-slate-500 mt-1">{student.missionsCompleted} van {student.totalMissions} missies voltooid</p>
@@ -372,18 +375,18 @@ export const ScholenLandingDashboardDemo: React.FC = () => {
         <div ref={containerRef} className="max-w-6xl mx-auto">
             {/* Header */}
             <div className="text-center mb-10">
-                <p className="text-indigo-600 font-semibold text-sm mb-3 tracking-wide">Volledige controle</p>
-                <h2 className="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight mb-4">
+                <p className="font-semibold text-sm mb-3 tracking-wide" style={{ color: '#D97757' }}>Volledige controle</p>
+                <h2 className="text-2xl md:text-3xl font-medium tracking-tight mb-4" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#1A1A19' }}>
                     Docenten Dashboard
                 </h2>
-                <p className="text-base text-slate-500 leading-relaxed max-w-xl mx-auto">
+                <p className="text-base leading-relaxed max-w-xl mx-auto" style={{ color: '#6B6B66' }}>
                     Volg de voortgang van elke leerling in real-time.
                     Stuur de klas aan met Focus Mode.
                 </p>
             </div>
 
             {/* Dashboard container */}
-            <div className="rounded-3xl overflow-hidden shadow-xl border border-slate-200 bg-white">
+            <div className="rounded-3xl overflow-hidden shadow-xl bg-white" style={{ borderWidth: '1px', borderStyle: 'solid', borderColor: '#E8E6DF' }}>
                 {/* Top bar */}
                 <div className="flex items-center justify-between px-4 sm:px-6 py-3 border-b border-slate-100 bg-slate-50/50">
                     <div className="flex items-center gap-3">
@@ -457,9 +460,9 @@ export const ScholenLandingDashboardDemo: React.FC = () => {
 
                         {/* Class stats */}
                         <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3">
-                            <div className="p-3 rounded-xl bg-indigo-50 border border-indigo-100">
-                                <p className="text-xl font-bold text-indigo-700">3.590</p>
-                                <p className="text-[10px] text-indigo-400 font-medium">Totaal XP klas</p>
+                            <div className="p-3 rounded-xl" style={{ backgroundColor: 'rgba(217,119,87,0.06)', border: '1px solid rgba(217,119,87,0.15)' }}>
+                                <p className="text-xl font-bold" style={{ color: '#D97757' }}>3.590</p>
+                                <p className="text-[10px] font-medium" style={{ color: '#6B6B66' }}>Totaal XP klas</p>
                             </div>
                             <div className="p-3 rounded-xl bg-purple-50 border border-purple-100">
                                 <p className="text-xl font-bold text-purple-700">62%</p>

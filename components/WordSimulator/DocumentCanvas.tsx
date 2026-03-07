@@ -122,7 +122,7 @@ export const DocumentCanvas: React.FC<DocumentCanvasProps> = ({
                             position: 'absolute',
                             top: i * 1123,
                             left: 0,
-                            borderBottom: i < pageCount - 1 ? '20px solid #e2e8f0' : 'none', // Thick gray border acts as "gap"
+                            borderBottom: i < pageCount - 1 ? '20px solid #E8E6DF' : 'none', // Thick gray border acts as "gap"
                             boxSizing: 'border-box'
                         }}
                     >
@@ -145,9 +145,9 @@ export const DocumentCanvas: React.FC<DocumentCanvasProps> = ({
                                 left: 0,
                                 width: '100%',
                                 height: '20px',
-                                background: '#e2e8f0', // Slate-200 gap color matches app bg
-                                borderTop: '1px solid #cbd5e1',
-                                borderBottom: '1px solid #cbd5e1',
+                                background: '#E8E6DF', // Slate-200 gap color matches app bg
+                                borderTop: '1px solid #d4d2cb',
+                                borderBottom: '1px solid #d4d2cb',
                                 zIndex: 10
                             }} />
                         )}

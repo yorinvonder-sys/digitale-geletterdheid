@@ -290,7 +290,7 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
             </AnimatePresence>
 
             {/* OneDrive Header */}
-            <header className="bg-[#0078D4] text-white flex items-center justify-between px-4 py-3 shadow-md">
+            <header className="bg-[#D97757] text-white flex items-center justify-between px-4 py-3 shadow-md">
                 <div className="flex items-center gap-4">
                     <button onClick={onBack} className="p-2 hover:bg-white/10 rounded-full transition-colors" title="Terug naar opdrachten">
                         <ArrowLeft size={20} />

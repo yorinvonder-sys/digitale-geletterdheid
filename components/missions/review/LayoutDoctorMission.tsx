@@ -93,7 +93,7 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
         switch (activeTab) {
             case 'Bestand':
                 return (
-                    <div className="px-4 py-2 flex items-center gap-4 overflow-x-auto h-24 bg-[#2B579A] text-white w-full absolute top-[88px] left-0 z-50">
+                    <div className="px-4 py-2 flex items-center gap-4 overflow-x-auto h-24 bg-[#C46849] text-white w-full absolute top-[88px] left-0 z-50">
                         <button onClick={() => alert("Nieuw document wordt gesimuleerd")} className="flex flex-col items-center gap-2 p-2 hover:bg-white/10 rounded-lg min-w-[60px]">
                             <FilePlus size={24} /> <span className="text-xs">Nieuw</span>
                         </button>
@@ -172,7 +172,7 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
                         <button onClick={() => setShowWatermark(!showWatermark)} className={`flex flex-col items-center hover:bg-slate-100 p-2 rounded ${showWatermark ? 'bg-slate-200' : ''}`}>
                             <Type size={20} /> <span className="text-[10px]">Watermerk</span>
                         </button>
-                        <button onClick={() => setPageColor(pageColor === 'white' ? '#f0f9ff' : 'white')} className="flex flex-col items-center hover:bg-slate-100 p-2 rounded">
+                        <button onClick={() => setPageColor(pageColor === 'white' ? '#FDF5F0' : 'white')} className="flex flex-col items-center hover:bg-slate-100 p-2 rounded">
                             <Droplet size={20} /> <span className="text-[10px]">Paginakleur</span>
                         </button>
                     </div>
@@ -204,9 +204,9 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
     };
 
     return (
-        <div className="min-h-screen bg-[#F3F4F6] flex flex-col font-sans text-slate-900" onClick={() => setSelection('none')}>
+        <div className="min-h-screen bg-[#F5F3EC] flex flex-col font-sans text-slate-900" onClick={() => setSelection('none')}>
             {/* Header */}
-            <header className="bg-[#2B579A] text-white px-4 py-2 flex items-center justify-between shadow-md relative z-20">
+            <header className="bg-[#C46849] text-white px-4 py-2 flex items-center justify-between shadow-md relative z-20">
                 <div className="flex items-center gap-4">
                     <button onClick={onBack} className="p-1.5 hover:bg-white/10 rounded-lg"><ArrowLeft size={20} /></button>
                     <div className="flex flex-col">
@@ -232,7 +232,7 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
             </div>
 
             {/* Workspace */}
-            <div className="flex-1 overflow-y-auto p-8 flex justify-center bg-[#F3F4F6] perspective-[1000px]">
+            <div className="flex-1 overflow-y-auto p-8 flex justify-center bg-[#F5F3EC] perspective-[1000px]">
                 <div
                     className={`bg-white shadow-xl relative transition-all duration-500 ease-in-out`}
                     style={{

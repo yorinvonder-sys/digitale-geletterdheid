@@ -46,7 +46,7 @@ export const MissionIntro: React.FC<MissionIntroProps> = ({ weekNumber, projects
 
                     {/* Preview Area (Mocking Image 3) */}
                     <div className="w-full aspect-square max-w-[400px] bg-slate-50 rounded-[2.5rem] mb-10 relative flex items-center justify-center border border-slate-100 shadow-inner group overflow-hidden">
-                        <div className="absolute inset-0 bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] [background-size:20px_20px] opacity-40"></div>
+                        <div className="absolute inset-0 bg-[radial-gradient(#E8E6DF_1px,transparent_1px)] [background-size:20px_20px] opacity-40"></div>
 
                         {/* Center Visual */}
                         <div className="relative z-10 w-full h-full transition-transform duration-500 group-hover:scale-105 flex items-center justify-center">

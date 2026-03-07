@@ -1,90 +1,66 @@
 /**
- * Pain Points section — data-driven urgency cards that set up the problem
- * before the features section presents the solution.
- *
- * Design: empathetic, factual, backed by research data.
- * Tone: "we begrijpen de uitdaging" — not fear-mongering.
+ * Pain Points section — illustration-driven urgency cards.
+ * Each card has a Gemini-generated pencil-drawn illustration showing the problem visually.
  */
 import React from 'react';
 
-/* ── Inline SVG icons (avoid lucide chunk) ── */
+const SERIF = "'Newsreader', Georgia, serif";
+const C = {
+    text: '#1A1A19',
+    textMuted: '#6B6B66',
+    textLight: '#9C9C95',
+    accent: '#D97757',
+    border: '#E8E6DF',
+};
 
-/** Gebroken meetlat — leerlingen scoren onvoldoende */
-const IconBrokenRuler = () => (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        <path d="M2 20 L9 13 L11 15 L13 11 L22 4"/><line x1="3" y1="4" x2="3" y2="7"/><line x1="7" y1="4" x2="7" y2="6"/><line x1="11" y1="4" x2="11" y2="7"/><line x1="15" y1="4" x2="15" y2="6"/><line x1="19" y1="4" x2="19" y2="7"/><line x1="2" y1="4" x2="21" y2="4"/>
-    </svg>
-);
-
-/** Zandloper — deadline raakt op */
-const IconHourglass = () => (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        <path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/>
-    </svg>
-);
-
-/** Leeg katheder — docent ontbreekt */
-const IconEmptyDesk = () => (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        <rect x="3" y="10" width="18" height="2" rx="1"/><line x1="6" y1="12" x2="6" y2="20"/><line x1="18" y1="12" x2="18" y2="20"/><circle cx="12" cy="5" r="2.5" strokeDasharray="3 2"/><line x1="10" y1="4" x2="14" y2="6" />
-    </svg>
-);
-
-/** Ontbrekend puzzelstuk — geen AI-platform beschikbaar */
-const IconMissingPiece = () => (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        <path d="M4 4h6v2.5a2 2 0 1 0 4 0V4h6v6h-2.5a2 2 0 1 0 0 4H20v6H4V4z"/><path d="M15 15l4 4M15 19l4-4" strokeWidth="2"/>
-    </svg>
-);
+// Warm background colors for illustration containers
+const BG = {
+    rose: '#F0D5D0',
+    amber: '#EDE0C8',
+    slate: '#D8DDE4',
+    mint: '#D0E0D4',
+};
 
 const painPoints = [
     {
+        illustration: '/illustrations/pain-point-low-scores.png',
+        alt: 'Docent houdt rapport vast met cijfer 4,7 omcirkeld in rood, met dalende grafiek en een rood kruisteken',
+        bgColor: BG.rose,
         stat: '4,7',
         statLabel: 'Rapportcijfer',
         title: 'Leerlingen scoren onvoldoende op digitale geletterdheid',
-        description: 'Nederlandse docenten gaven hun leerlingen gemiddeld een 4,7 voor digitale geletterdheid. ICILS 2023 bevestigt: 1 op de 3 leerlingen scoort onder basisniveau op computergebruik; CT-scores liggen significant onder het internationaal gemiddelde.',
-        source: 'Monitor Digitale Geletterdheid 2023, DUO/ECP; ICILS 2023, Kohnstamm Instituut',
-        icon: <IconBrokenRuler />,
-        accentBg: 'bg-red-50',
-        accentBorder: 'border-red-100',
-        accentIcon: 'bg-red-100 text-red-600',
-        accentStat: 'text-red-600',
+        description: 'Nederlandse docenten gaven hun leerlingen gemiddeld een 4,7 voor digitale geletterdheid. ICILS 2023 bevestigt: 1 op de 3 leerlingen scoort onder basisniveau.',
+        source: 'Monitor Digitale Geletterdheid 2023, DUO/ECP; ICILS 2023',
     },
     {
+        illustration: '/illustrations/pain-point-deadline.png',
+        alt: 'Wandkalender met 2027, wekker op bijna middernacht, en een map Digitale Geletterdheid op een rommelig bureau',
+        bgColor: BG.amber,
         stat: '2027',
         statLabel: 'Verplicht',
         title: 'SLO Kerndoelen worden wettelijk verplicht',
-        description: 'Per 1 augustus 2027 zijn de kerndoelen digitale geletterdheid wettelijk verplicht voor alle VO-scholen, met implementatieperiode tot 2031. 52% van de VO-docenten werkt nu zonder leerlijn én zonder leerdoelen. Slechts 11% hanteert een formele leerlijn.',
-        source: 'ECP Monitor Digitale Geletterdheid VO, 2021; Kamerbrief OCW, september 2025',
-        icon: <IconHourglass />,
-        accentBg: 'bg-amber-50',
-        accentBorder: 'border-amber-100',
-        accentIcon: 'bg-amber-100 text-amber-600',
-        accentStat: 'text-amber-600',
+        description: 'Per 1 augustus 2027 zijn de kerndoelen wettelijk verplicht. 52% van de VO-docenten werkt nu zonder leerlijn en zonder leerdoelen.',
+        source: 'ECP Monitor Digitale Geletterdheid VO; Kamerbrief OCW 2025',
     },
     {
+        illustration: '/illustrations/pain-point-teacher-shortage.png',
+        alt: 'Leeg docentenbureau met VACATURE op het whiteboard, verwarde leerlingen kijken om zich heen',
+        bgColor: BG.slate,
         stat: '3.800',
         statLabel: 'FTE tekort',
-        title: 'Geen vakdocent beschikbaar voor digitale geletterdheid',
-        description: 'Het lerarentekort in het VO bedraagt 3.800 FTE. Informatica heeft het hoogste relatieve tekort: 10% van de werkgelegenheid is onvervuld (prognose: 117 FTE in 2029). 52% van de VO-docenten heeft geen leerlijn voor digitale geletterdheid.',
-        source: 'Trendrapportage Arbeidsmarkt Leraren 2024, Centerdata/OCW; ECP Monitor VO, 2021',
-        icon: <IconEmptyDesk />,
-        accentBg: 'bg-orange-50',
-        accentBorder: 'border-orange-100',
-        accentIcon: 'bg-orange-100 text-orange-600',
-        accentStat: 'text-orange-600',
+        title: 'Geen vakdocent beschikbaar',
+        description: 'Het lerarentekort bedraagt 3.800 FTE. Informatica heeft het hoogste relatieve tekort: 10% onvervuld.',
+        source: 'Trendrapportage Arbeidsmarkt Leraren 2024, OCW',
     },
     {
+        illustration: '/illustrations/pain-point-no-platform.png',
+        alt: 'Verveelde leerling leest saai AI-theorieboek, met een gedachtewolk van een interactief scherm met hands-on activiteiten',
+        bgColor: BG.mint,
         stat: '1e',
         statLabel: 'In Nederland',
-        title: 'Bestaande platforms bieden geen hands-on AI-omgeving voor leerlingen',
-        description: 'Kerndoel 21D vereist dat leerlingen mogelijkheden en beperkingen van AI verkennen. Bestaande methodes (DIGIT-vo, Basicly) behandelen AI theoretisch. DGSkills is het eerste platform met een eigen hands-on AI-omgeving geïntegreerd in het curriculum.',
-        source: 'SLO Conceptkerndoelen Digitale Geletterdheid, juli 2025; eigen marktonderzoek',
-        icon: <IconMissingPiece />,
-        accentBg: 'bg-violet-50',
-        accentBorder: 'border-violet-100',
-        accentIcon: 'bg-violet-100 text-violet-600',
-        accentStat: 'text-violet-600',
+        title: 'Er is nog geen hands-on AI-platform voor leerlingen',
+        description: 'Kerndoel 21D vereist dat leerlingen AI verkennen. Bestaande methodes behandelen AI alleen theoretisch. DGSkills is het eerste hands-on platform.',
+        source: 'SLO Conceptkerndoelen Digitale Geletterdheid 2025',
     },
 ];
 
@@ -92,48 +68,53 @@ export const ScholenLandingPainPoints: React.FC = () => (
     <div className="max-w-5xl mx-auto">
         {/* Header */}
         <div className="text-center mb-14">
-            <p className="text-red-500 font-semibold text-sm mb-3 tracking-wide">De uitdaging</p>
-            <h2 className="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight mb-4">
+            <p className="text-sm font-medium tracking-wide mb-3" style={{ color: C.accent }}>De uitdaging</p>
+            <h2 className="text-2xl md:text-3xl font-medium tracking-tight mb-4" style={{ fontFamily: SERIF, color: C.text }}>
                 Digitale geletterdheid staat onder druk
             </h2>
-            <p className="text-base text-slate-500 leading-relaxed max-w-2xl mx-auto">
-                De kerndoelen worden naar verwachting per 2027 verplicht, maar scholen missen de middelen, de mensen en het materiaal.
-                Dit zijn de feiten.
+            <p className="text-base leading-relaxed max-w-2xl mx-auto" style={{ color: C.textMuted }}>
+                De kerndoelen worden per 2027 verplicht, maar scholen missen de middelen, de mensen en het materiaal.
             </p>
         </div>
 
-        {/* Pain point cards — 2x2 grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        {/* Pain point cards — 2x2 grid with illustrations */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {painPoints.map((point) => (
                 <div
                     key={point.title}
-                    className={`${point.accentBg} ${point.accentBorder} border rounded-2xl p-7 transition-[box-shadow] hover:shadow-lg group`}
+                    className="group rounded-2xl border p-6 transition-all hover:shadow-md"
+                    style={{ borderColor: C.border, backgroundColor: '#FFFFFF' }}
                 >
                     <div className="flex items-start gap-5">
-                        {/* Stat block */}
-                        <div className="flex-shrink-0 text-center min-w-[72px]">
-                            <div className={`text-3xl font-black ${point.accentStat} leading-none`}>
-                                {point.stat}
-                            </div>
-                            <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">
-                                {point.statLabel}
-                            </div>
+                        {/* Illustration — small, contained */}
+                        <div
+                            className="w-16 h-16 md:w-20 md:h-20 rounded-xl flex-shrink-0 flex items-center justify-center overflow-hidden"
+                            style={{ backgroundColor: point.bgColor }}
+                        >
+                            <img
+                                src={point.illustration}
+                                alt={point.alt}
+                                className="w-12 h-12 md:w-14 md:h-14 object-contain"
+                                loading="lazy"
+                            />
                         </div>
-
-                        {/* Content */}
+                        {/* Stat badge */}
                         <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-2.5 mb-2">
-                                <div className={`w-9 h-9 ${point.accentIcon} rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform`}>
-                                    {point.icon}
-                                </div>
-                                <h3 className="text-[15px] font-bold text-slate-900 leading-snug">
-                                    {point.title}
-                                </h3>
+                            <div className="flex items-center gap-2 mb-2">
+                                <span className="text-lg font-black leading-none" style={{ color: C.accent, fontFamily: SERIF }}>
+                                    {point.stat}
+                                </span>
+                                <span className="text-[10px] font-bold uppercase tracking-widest" style={{ color: C.textLight }}>
+                                    {point.statLabel}
+                                </span>
                             </div>
-                            <p className="text-sm text-slate-500 leading-relaxed mb-2.5">
+                            <h3 className="text-[15px] font-medium leading-snug mb-1.5" style={{ fontFamily: SERIF, color: C.text }}>
+                                {point.title}
+                            </h3>
+                            <p className="text-sm leading-relaxed mb-1.5" style={{ color: C.textMuted }}>
                                 {point.description}
                             </p>
-                            <p className="text-[11px] text-slate-400 font-medium italic">
+                            <p className="text-[11px] font-medium italic" style={{ color: C.textLight }}>
                                 Bron: {point.source}
                             </p>
                         </div>
@@ -142,11 +123,11 @@ export const ScholenLandingPainPoints: React.FC = () => (
             ))}
         </div>
 
-        {/* Transition statement — bridges to the solution */}
+        {/* Transition statement */}
         <div className="mt-12 text-center">
-            <div className="inline-flex items-center gap-3 bg-indigo-50 border border-indigo-100 rounded-full px-6 py-3">
-                <div className="w-2 h-2 bg-indigo-500 rounded-full motion-safe:animate-pulse" />
-                <p className="text-sm font-semibold text-indigo-700">
+            <div className="inline-flex items-center gap-3 rounded-full px-6 py-3" style={{ backgroundColor: `${C.accent}08`, border: `1px solid ${C.accent}18` }}>
+                <div className="w-2 h-2 rounded-full motion-safe:animate-pulse" style={{ backgroundColor: C.accent }} />
+                <p className="text-sm font-medium" style={{ color: C.accent }}>
                     DGSkills is ontworpen om precies deze problemen op te lossen
                 </p>
             </div>

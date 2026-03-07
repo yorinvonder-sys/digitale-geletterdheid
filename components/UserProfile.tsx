@@ -14,7 +14,7 @@ interface UserProfileProps {
 
 const PALETTE_COLORS = [
     '#ef4444', '#f97316', '#f59e0b', '#eab308', '#84cc16', '#22c55e', '#10b981', '#14b8a6',
-    '#06b6d4', '#0ea5e9', '#3b82f6', '#6366f1', '#8b5cf6', '#a855f7', '#d946ef', '#ec4899',
+    '#06b6d4', '#0ea5e9', '#3b82f6', '#D97757', '#E8956F', '#a855f7', '#d946ef', '#ec4899',
     '#f43f5e', '#1e293b', '#64748b', '#94a3b8', '#ffffff'
 ];
 
@@ -384,7 +384,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
         if (item.type === 'pose') newConfig.pose = item.value as any;
         if (item.type === 'accessory') {
             newConfig.accessory = item.value as any;
-            if (!newConfig.accessoryColor) newConfig.accessoryColor = '#6366f1';
+            if (!newConfig.accessoryColor) newConfig.accessoryColor = '#D97757';
         }
         if (item.type === 'gender') {
             newConfig.gender = item.value as any;
@@ -435,7 +435,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
     };
 
     return (
-        <div className="min-h-screen bg-[#f8fafc] font-sans overflow-y-auto pt-safe pl-safe pr-safe pb-20">
+        <div className="min-h-screen bg-[#FAF9F0] font-sans overflow-y-auto pt-safe pl-safe pr-safe pb-20">
 
             <div className="w-full max-w-[95%] lg:max-w-[1920px] mx-auto p-4 lg:p-8">
 
@@ -846,7 +846,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
                                                     {previewConfig.accessory !== 'none' && (
                                                         <CircularColorPicker
                                                             size="sm"
-                                                            selectedColor={activeTab === 'shop' ? (previewConfig.accessoryColor || '#6366f1') : (stats.avatarConfig?.accessoryColor || '#6366f1')}
+                                                            selectedColor={activeTab === 'shop' ? (previewConfig.accessoryColor || '#D97757') : (stats.avatarConfig?.accessoryColor || '#D97757')}
                                                             onSelect={(c) => {
                                                                 const newConfig = { ...(stats.avatarConfig || DEFAULT_AVATAR_CONFIG), accessoryColor: c };
                                                                 onUpdateProfile({ stats: { ...stats, avatarConfig: newConfig } });

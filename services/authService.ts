@@ -455,6 +455,27 @@ export const subscribeToAuthChanges = (callback: (user: ParentUser | null) => vo
                         console.error('Auth resolveParentUser failed, using fallback:', err);
                         callback(buildFallbackParentUser(session.user));
                     }
+                } else if (event === 'INITIAL_SESSION') {
+                    // Fallback: INITIAL_SESSION kan null retourneren door een race
+                    // condition na login + navigatie (StrictMode dubbele mount, of
+                    // sessie nog niet in Supabase intern state). Check getSession()
+                    // eenmalig als vangnet voordat we opgeven.
+                    try {
+                        const { data: { session: fallbackSession } } = await supabase.auth.getSession();
+                        if (fallbackSession?.user) {
+                            try {
+                                const parentUser = await resolveParentUser(fallbackSession.user);
+                                callback(parentUser);
+                            } catch (err) {
+                                console.error('Auth resolveParentUser failed (fallback), using minimal user:', err);
+                                callback(buildFallbackParentUser(fallbackSession.user));
+                            }
+                            return;
+                        }
+                    } catch {
+                        // getSession() mislukt → val door naar null
+                    }
+                    callback(null);
                 } else {
                     callback(null);
                 }

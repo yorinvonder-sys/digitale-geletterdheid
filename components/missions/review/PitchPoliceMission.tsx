@@ -288,7 +288,7 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
                 <div className="max-w-2xl w-full text-center relative z-10">
                     {/* Icon */}
                     <div className="relative inline-block mb-8">
-                        <div className="w-28 h-28 bg-gradient-to-br from-[#C43E1C] to-orange-600 rounded-[2rem] flex items-center justify-center shadow-2xl shadow-orange-500/30 transform rotate-3">
+                        <div className="w-28 h-28 bg-gradient-to-br from-[#D97757] to-orange-600 rounded-[2rem] flex items-center justify-center shadow-2xl shadow-orange-500/30 transform rotate-3">
                             <Monitor size={56} className="text-white" />
                         </div>
                         <div className="absolute -bottom-2 -right-2 w-12 h-12 bg-yellow-400 rounded-xl flex items-center justify-center text-2xl shadow-lg transform -rotate-6">
@@ -349,7 +349,7 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
                     {/* Start Button */}
                     <button
                         onClick={() => setShowIntro(false)}
-                        className="px-12 py-5 bg-gradient-to-r from-[#C43E1C] to-orange-600 text-white rounded-2xl font-black text-xl shadow-2xl shadow-orange-500/30 hover:scale-105 hover:shadow-orange-500/50 transition-all flex items-center gap-3 mx-auto group"
+                        className="px-12 py-5 bg-gradient-to-r from-[#D97757] to-orange-600 text-white rounded-2xl font-black text-xl shadow-2xl shadow-orange-500/30 hover:scale-105 hover:shadow-orange-500/50 transition-all flex items-center gap-3 mx-auto group"
                     >
                         <Play size={24} fill="currentColor" />
                         Start de Inspectie
@@ -372,7 +372,7 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
     return (
         <div className="min-h-screen bg-slate-900 flex flex-col font-sans text-white">
             {/* PowerPoint-like Header */}
-            <header className="bg-[#C43E1C] px-4 py-2 flex items-center justify-between shadow-md">
+            <header className="bg-[#D97757] px-4 py-2 flex items-center justify-between shadow-md">
                 <div className="flex items-center gap-4">
                     <button onClick={onBack} className="p-1.5 hover:bg-white/10 rounded-lg transition-colors">
                         <ArrowLeft size={20} />
@@ -394,22 +394,22 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
             </header>
 
             {/* Progress Bar */}
-            <div className="w-full bg-[#1a1a1a] h-1">
+            <div className="w-full bg-[#1A1A19] h-1">
                 <div
-                    className="h-full bg-[#C43E1C] transition-all duration-500 ease-out"
+                    className="h-full bg-[#D97757] transition-all duration-500 ease-out"
                     style={{ width: `${((currentSlideIndex + (isFixed ? 1 : 0)) / SLIDES.length) * 100}%` }}
                 />
             </div>
 
             <div className="flex-1 flex overflow-hidden">
                 {/* Thumbnails Sidebar */}
-                <aside className="w-48 bg-[#2d2d2d] border-r border-[#3d3d3d] p-4 flex flex-col gap-4 overflow-y-auto hidden md:flex">
+                <aside className="w-48 bg-[#2d2d2a] border-r border-[#3D3D38] p-4 flex flex-col gap-4 overflow-y-auto hidden md:flex">
                     {SLIDES.map((slide, idx) => (
                         <div
                             key={slide.id}
                             className={`
                                 aspect-video bg-white rounded flex items-center justify-center text-slate-900 text-[10px] p-2 relative transition-all
-                                ${idx === currentSlideIndex ? 'ring-2 ring-[#C43E1C] scale-105 opacity-100' : 'opacity-40 hover:opacity-100'}
+                                ${idx === currentSlideIndex ? 'ring-2 ring-[#D97757] scale-105 opacity-100' : 'opacity-40 hover:opacity-100'}
                             `}
                         >
                             <span className="font-bold text-slate-400">Dia {idx + 1}</span>
@@ -423,7 +423,7 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
                 </aside>
 
                 {/* Main Slide Editor */}
-                <main className="flex-1 bg-[#1a1a1a] p-8 flex items-center justify-center relative flex-col gap-6">
+                <main className="flex-1 bg-[#1A1A19] p-8 flex items-center justify-center relative flex-col gap-6">
                     {/* The Slide Container */}
                     <div className="relative w-full max-w-4xl aspect-video group">
                         <div className={`
@@ -489,13 +489,13 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
                 </main>
 
                 {/* Inspector Panel - Only visible when NOT fixed */}
-                <aside className={`w-80 bg-[#2d2d2d] border-l border-[#3d3d3d] flex flex-col transition-all duration-500 ${isFixed ? 'opacity-30 pointer-events-none grayscale' : 'opacity-100'}`}>
+                <aside className={`w-80 bg-[#2d2d2a] border-l border-[#3D3D38] flex flex-col transition-all duration-500 ${isFixed ? 'opacity-30 pointer-events-none grayscale' : 'opacity-100'}`}>
                     <div className="p-6">
                         <div className="mb-6">
                             <h3 className="text-lg font-black text-white mb-2 flex items-center gap-2">
                                 🕵️‍♂️ Politie Rapport
                             </h3>
-                            <div className="bg-[#1a1a1a] p-4 rounded-xl border border-[#3d3d3d]">
+                            <div className="bg-[#1A1A19] p-4 rounded-xl border border-[#3D3D38]">
                                 <p className="text-red-400 font-bold text-xs uppercase mb-1 flex items-center gap-1">
                                     <AlertTriangle size={12} /> Overtreding:
                                 </p>
@@ -511,10 +511,10 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
                                 <button
                                     key={opt.id}
                                     onClick={() => handleOptionSelect(opt.correct)}
-                                    className="w-full text-left p-4 rounded-xl bg-[#3d3d3d] hover:bg-[#4d4d4d] border border-transparent hover:border-[#C43E1C] transition-all group relative overflow-hidden"
+                                    className="w-full text-left p-4 rounded-xl bg-[#3D3D38] hover:bg-[#4a4a44] border border-transparent hover:border-[#D97757] transition-all group relative overflow-hidden"
                                 >
                                     <div className="flex items-start gap-3 relative z-10">
-                                        <div className="w-6 h-6 rounded-full bg-slate-700 flex items-center justify-center text-xs font-bold group-hover:bg-[#C43E1C] transition-colors shrink-0">
+                                        <div className="w-6 h-6 rounded-full bg-slate-700 flex items-center justify-center text-xs font-bold group-hover:bg-[#D97757] transition-colors shrink-0">
                                             {opt.id.toUpperCase()}
                                         </div>
                                         <span className="text-sm font-medium text-slate-200 group-hover:text-white">

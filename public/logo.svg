@@ -1,19 +1,33 @@
 <svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- Rocket Body -->
-  <path d="M256 50C200 50 160 150 160 280C160 350 180 400 256 420C332 400 352 350 352 280C352 150 312 50 256 50Z" stroke="#0F172A" stroke-width="20" stroke-linejoin="round"/>
-  
-  <!-- Circuit Brain Icon -->
-  <circle cx="256" cy="220" r="70" stroke="#10B981" stroke-width="15"/>
-  <path d="M256 180V260M216 220H296" stroke="#10B981" stroke-width="8" stroke-linecap="round"/>
-  <circle cx="256" cy="180" r="8" fill="#10B981"/>
-  <circle cx="256" cy="260" r="8" fill="#10B981"/>
-  <circle cx="216" cy="220" r="8" fill="#10B981"/>
-  <circle cx="296" cy="220" r="8" fill="#10B981"/>
-  
-  <!-- Fins -->
-  <path d="M160 320C120 320 100 380 120 450C140 430 160 420 160 420" stroke="#0F172A" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M352 320C392 320 412 380 392 450C372 430 352 420 352 420" stroke="#0F172A" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
-  
-  <!-- Flame/Engine -->
-  <path d="M230 420C230 460 256 500 256 500C256 500 282 460 282 420" stroke="#0F172A" stroke-width="15" stroke-linecap="round"/>
+  <!-- Pip the Robin - full logo -->
+  <!-- Body -->
+  <ellipse cx="280" cy="300" rx="150" ry="160" fill="white" stroke="#1A1A19" stroke-width="12" stroke-linejoin="round"/>
+  <!-- Terracotta breast -->
+  <path d="M230 220c30-15 90-15 120 15 15 30 15 75-15 105-30 15-75 15-90-15-15-30-30-75-15-105z" fill="#D97757"/>
+  <!-- Head -->
+  <circle cx="340" cy="180" r="90" fill="white" stroke="#1A1A19" stroke-width="12"/>
+  <!-- Eye -->
+  <circle cx="370" cy="165" r="18" fill="#1A1A19"/>
+  <circle cx="375" cy="160" r="5" fill="white"/>
+  <!-- Beak -->
+  <path d="M430 178l40-5-40 20z" fill="#D97757" stroke="#1A1A19" stroke-width="6" stroke-linejoin="round"/>
+  <!-- Wing detail -->
+  <path d="M160 270c30-30 75-15 90 15s0 60-30 75-75-15-60-90z" fill="none" stroke="#1A1A19" stroke-width="8"/>
+  <path d="M180 290c15-10 35-5 40 10" fill="none" stroke="#1A1A19" stroke-width="5"/>
+  <!-- Tail feathers -->
+  <path d="M120 320l-40 30h50z" fill="#D97757" stroke="#1A1A19" stroke-width="8" stroke-linejoin="round"/>
+  <path d="M110 340l-30 20h40z" fill="none" stroke="#1A1A19" stroke-width="6" stroke-linejoin="round"/>
+  <!-- Pixel dissolve from tail -->
+  <rect x="50" y="260" width="28" height="28" rx="2" fill="#D97757" opacity="0.9"/>
+  <rect x="85" y="235" width="22" height="22" rx="2" fill="#1A1A19" opacity="0.85"/>
+  <rect x="40" y="220" width="22" height="22" rx="2" fill="#D97757" opacity="0.7"/>
+  <rect x="70" y="200" width="16" height="16" rx="1" fill="#1A1A19" opacity="0.6"/>
+  <rect x="35" y="185" width="16" height="16" rx="1" fill="#D97757" opacity="0.5"/>
+  <rect x="60" y="170" width="12" height="12" rx="1" fill="#1A1A19" opacity="0.35"/>
+  <rect x="30" y="155" width="10" height="10" rx="1" fill="#D97757" opacity="0.25"/>
+  <!-- Legs -->
+  <path d="M260 450l-10 40-15-5 10-5-15-5" stroke="#1A1A19" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <path d="M310 445l5 42-15-3 8-7-15-3" stroke="#1A1A19" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- Branch -->
+  <path d="M200 485c40-5 120-8 180-2" stroke="#1A1A19" stroke-width="6" stroke-linecap="round" fill="none"/>
 </svg>

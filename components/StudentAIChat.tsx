@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { MessageCircle, X, Send, Lock, Bot } from 'lucide-react';
+import { MessageCircle, X, Send, Lock } from 'lucide-react';
 import { useStudentAssistant } from '../hooks/useStudentAssistant';
 import { MarkdownRenderer } from './MarkdownRenderer';
 import { AiDisclosureBadge } from './AiDisclosureBadge';
@@ -153,17 +153,25 @@ export const StudentAIChat: React.FC<StudentAIChatProps> = ({ userIdentifier, co
 
     return (
         <>
-            {/* Floating Action Button */}
+            {/* Floating Pip Button */}
             {!isVisible && (
                 <button
                     onClick={handleOpen}
-                    className="fixed bottom-20 sm:bottom-6 right-4 sm:right-6 p-4 min-w-[56px] min-h-[56px] bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-full shadow-lg hover:scale-105 transition-transform z-[70] flex items-center justify-center gap-2"
-                    title="Vraag de AI-buddy om hulp"
+                    className="fixed bottom-20 sm:bottom-6 right-4 sm:right-6 group z-[70] flex items-center gap-0"
+                    title="Vraag Pip om hulp"
                 >
-                    <Bot size={28} />
-                    <span className="font-bold text-sm hidden sm:inline">AI Hulp</span>
+                    {/* Speech bubble — appears on hover */}
+                    <span className="hidden sm:flex opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-2 group-hover:translate-x-0 bg-white text-slate-700 text-xs font-semibold px-3 py-1.5 rounded-full shadow-md border border-slate-100 whitespace-nowrap mr-2">
+                        Hulp nodig? Vraag het mij!
+                    </span>
+                    {/* Pip avatar */}
+                    <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white shadow-lg border-2 border-amber-200 hover:border-amber-400 hover:shadow-xl hover:scale-110 transition-all duration-300 overflow-hidden flex items-center justify-center">
+                        <img src="/mascot-pip-chat.png" alt="Pip — je AI-hulpje" className="w-11 h-11 sm:w-12 sm:h-12 object-contain" draggable={false} />
+                        {/* Pulse ring */}
+                        <span className="absolute inset-0 rounded-full border-2 border-amber-300 animate-ping opacity-20 pointer-events-none" />
+                    </div>
                     {isLocked && (
-                        <div className="absolute top-0 right-0 w-3 h-3 bg-red-500 rounded-full border-2 border-white" />
+                        <div className="absolute top-0 right-0 w-3.5 h-3.5 bg-red-500 rounded-full border-2 border-white z-10" />
                     )}
                 </button>
             )}
@@ -174,14 +182,14 @@ export const StudentAIChat: React.FC<StudentAIChatProps> = ({ userIdentifier, co
                     {/* Header */}
                     <div className={`p-4 ${isLocked ? 'bg-red-50' : 'bg-gradient-to-r from-emerald-500 to-teal-500'} flex items-center justify-between`}>
                         <div className="flex items-center gap-2">
-                            <div className="p-2 bg-white/20 rounded-lg backdrop-blur-sm text-white">
-                                {isLocked ? <Lock size={20} className="text-red-500" /> : <Bot size={20} />}
+                            <div className="p-1 bg-white/20 rounded-lg backdrop-blur-sm overflow-hidden">
+                                {isLocked ? <Lock size={20} className="text-red-500" /> : <img src="/mascot-pip-chat.png" alt="Pip" className="w-8 h-8 object-contain" />}
                             </div>
                             <div>
                                 <h3 className={`font-bold ${isLocked ? 'text-red-600' : 'text-white'}`}>
-                                    {isLocked ? 'Geblokkeerd' : 'AI Buddy'}
+                                    {isLocked ? 'Geblokkeerd' : 'Pip'}
                                 </h3>
-                                {!isLocked && <p className="text-xs text-white/90">Altijd klaar om te helpen!</p>}
+                                {!isLocked && <p className="text-xs text-white/90">Je persoonlijke AI-hulpje</p>}
                             </div>
                         </div>
                         <button

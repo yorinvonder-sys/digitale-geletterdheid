@@ -378,7 +378,7 @@ export function AuthenticatedApp() {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-[#f8fafc] flex flex-col items-center justify-center gap-4">
+            <div className="min-h-screen bg-[#FAF9F0] flex flex-col items-center justify-center gap-4">
                 <Loader2 size={48} className="animate-spin text-indigo-600" aria-hidden="true" />
                 <span className="sr-only">Laden...</span>
                 <p className="text-slate-500 font-medium">Laden...</p>
@@ -820,7 +820,7 @@ export function AuthenticatedApp() {
     const showFooter = !activeModule && !isProfileOpen && !showGames && viewMode !== 'monitoring';
 
     const appShell = (
-        <div className="w-full min-h-screen bg-[#f8fafc] pb-safe flex flex-col relative">
+        <div className="w-full min-h-screen bg-[#FAF9F0] pb-safe flex flex-col relative">
             <a href="#main-content" className="skip-link">Naar hoofdinhoud</a>
 
             {/* Offline indicator */}

@@ -47,7 +47,7 @@ const PitchPoliceMission = lazy(() => import('./missions/review/PitchPoliceMissi
 
 
 const ConfettiExplosion = () => {
-  const colors = ['#6366f1', '#f59e0b', '#10b981', '#ef4444', '#8b5cf6', '#ec4899'];
+  const colors = ['#D97757', '#f59e0b', '#10b981', '#ef4444', '#E8956F', '#ec4899'];
   const pieces = Array.from({ length: 30 }, (_, i) => ({
     id: i,
     color: colors[i % colors.length],
@@ -602,7 +602,7 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
   if (view === 'home') {
     return (
       <div className="flex-1 w-full flex flex-col justify-center items-center p-6 relative overflow-hidden pt-safe pb-safe pl-safe pr-safe bg-slate-50/50">
-        <div className="absolute inset-0 bg-[radial-gradient(#cbd5e1_1px,transparent_1px)] [background-size:20px_20px] opacity-40 pointer-events-none"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(#E8E6DF_1px,transparent_1px)] [background-size:20px_20px] opacity-40 pointer-events-none"></div>
 
         <div className="glass-panel p-8 md:p-16 rounded-[3rem] shadow-2xl max-w-4xl w-full text-center relative z-10 border border-white mx-auto">
           <h1 className="text-4xl md:text-7xl font-extrabold text-slate-900 mb-6 tracking-tight">
@@ -633,7 +633,7 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
 
     return (
       <div className="fixed inset-0 flex flex-col justify-center items-center p-6 relative overflow-hidden pt-safe pb-safe pl-safe pr-safe">
-        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] [background-size:20px_20px] opacity-40"></div>
+        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(#E8E6DF_1px,transparent_1px)] [background-size:20px_20px] opacity-40"></div>
         <div className="max-w-xl w-full animate-in fade-in zoom-in-95 duration-500 z-10">
           <div className="bg-white rounded-[2.5rem] shadow-2xl border border-slate-100 p-8 md:p-12 text-center overflow-hidden relative">
             <h2 className="text-3xl font-black text-slate-900 mb-1 tracking-tight">Dit ga jij bouwen!</h2>

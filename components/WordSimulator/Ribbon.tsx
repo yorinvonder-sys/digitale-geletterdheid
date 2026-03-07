@@ -51,11 +51,11 @@ export const Ribbon: React.FC<RibbonProps> = ({ state, onAction, onTabChange, ha
                             onClick={() => onTabChange(id)}
                             className={`
                                     px-4 py-2 text-sm font-medium rounded-t-lg transition-colors relative
-                                    ${isActive ? 'text-[#2b579a] bg-slate-100' : 'text-slate-600 hover:bg-slate-50'}
+                                    ${isActive ? 'text-[#C46849] bg-slate-100' : 'text-slate-600 hover:bg-slate-50'}
                                 `}
                         >
                             {tab}
-                            {isActive && <div className="absolute bottom-0 left-0 w-full h-[3px] bg-[#2b579a] rounded-t-md"></div>}
+                            {isActive && <div className="absolute bottom-0 left-0 w-full h-[3px] bg-[#C46849] rounded-t-md"></div>}
                         </button>
                     );
                 })}

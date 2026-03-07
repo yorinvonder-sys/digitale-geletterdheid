@@ -123,7 +123,7 @@ export const DuelGame: React.FC<DuelGameProps> = ({
             if (ctx) {
                 ctx.fillStyle = 'white';
                 ctx.fillRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-                ctx.strokeStyle = '#1e293b';
+                ctx.strokeStyle = '#3D3D38';
                 ctx.lineWidth = 4;
                 ctx.lineCap = 'round';
                 ctx.lineJoin = 'round';

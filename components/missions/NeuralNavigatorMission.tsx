@@ -135,7 +135,7 @@ const NetworkVisualization: React.FC<NetworkVizProps> = ({
             <text x={node.x} y={node.y + 1} textAnchor="middle" dominantBaseline="middle"
               fill="white" fontSize={compact ? 9 : 11} fontWeight="bold">{inputs[i].toFixed(1)}</text>
             <text x={node.x} y={node.y - 26} textAnchor="middle"
-              fill="#94a3b8" fontSize={9} fontWeight="bold">Input {i + 1}</text>
+              fill="#6B6B66" fontSize={9} fontWeight="bold">Input {i + 1}</text>
           </g>
         ))}
 
@@ -156,7 +156,7 @@ const NetworkVisualization: React.FC<NetworkVizProps> = ({
           <text x={outputNode.x} y={outputNode.y + 1} textAnchor="middle" dominantBaseline="middle"
             fill="white" fontSize={13} fontWeight="bold">{output.toFixed(2)}</text>
           <text x={outputNode.x} y={outputNode.y - 30} textAnchor="middle"
-            fill="#94a3b8" fontSize={9} fontWeight="bold">Output</text>
+            fill="#6B6B66" fontSize={9} fontWeight="bold">Output</text>
         </g>
       </svg>
 

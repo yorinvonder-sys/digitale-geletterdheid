@@ -1062,7 +1062,7 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                     <div
                         ref={chatRef}
                         className="flex-1 p-4 overflow-y-auto space-y-4"
-                        style={{ backgroundImage: 'radial-gradient(circle at center, #1e293b 1px, transparent 1px)', backgroundSize: '20px 20px' }}
+                        style={{ backgroundImage: 'radial-gradient(circle at center, #E8E6DF 1px, transparent 1px)', backgroundSize: '20px 20px' }}
                     >
                         {!isTesting && testMessages.length === 0 && (
                             <div className="text-center text-slate-600 mt-10">

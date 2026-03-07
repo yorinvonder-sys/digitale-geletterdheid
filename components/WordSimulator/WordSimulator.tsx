@@ -143,7 +143,7 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
                                 if (['p', 'div', 'h2', 'h3'].includes(tagName)) {
                                     const h1 = document.createElement('h1');
                                     h1.innerHTML = DOMPurify.sanitize(block.innerHTML);
-                                    h1.style.cssText = 'color: #2b579a; font-size: 24px; font-weight: bold; margin-bottom: 0.5em;';
+                                    h1.style.cssText = 'color: #C46849; font-size: 24px; font-weight: bold; margin-bottom: 0.5em;';
                                     editor.replaceChild(h1, block);
                                     modified = true;
                                 }
@@ -178,7 +178,7 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
                                 // Replace this element with an H1
                                 const h1 = document.createElement('h1');
                                 h1.innerHTML = DOMPurify.sanitize(el.innerHTML);
-                                h1.style.cssText = 'color: #2b579a; font-size: 24px; font-weight: bold; margin-bottom: 0.5em;';
+                                h1.style.cssText = 'color: #C46849; font-size: 24px; font-weight: bold; margin-bottom: 0.5em;';
                                 el.parentNode?.replaceChild(h1, el);
 
                                 // Restore selection inside the new H1
@@ -243,7 +243,7 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
                                 const p = document.createElement('p');
                                 p.innerHTML = DOMPurify.sanitize(block.innerHTML);
                                 // Title style: Bigger, centered (optional but common for titles), distinctive color
-                                p.style.cssText = 'font-size: 36px; font-weight: bold; color: #2c3e50; margin-bottom: 0.5em; line-height: 1.2;';
+                                p.style.cssText = 'font-size: 36px; font-weight: bold; color: #3D3D38; margin-bottom: 0.5em; line-height: 1.2;';
                                 // Since we can't easily make a custom tag, we use P with styles, or H1 with distinct styles. 
                                 // But heading1 uses H1. Let's use P with massive styling to differentiate from "Kop 1" (H1) as requested.
                                 // Or use DIV. P is safer for text.
@@ -266,7 +266,7 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
                             // Convert anything to Title
                             const p = document.createElement('p');
                             p.innerHTML = DOMPurify.sanitize(el.innerHTML);
-                            p.style.cssText = 'font-size: 36px; font-weight: bold; color: #2c3e50; margin-bottom: 0.5em; line-height: 1.2;';
+                            p.style.cssText = 'font-size: 36px; font-weight: bold; color: #3D3D38; margin-bottom: 0.5em; line-height: 1.2;';
                             el.parentNode?.replaceChild(p, el);
 
                             const newRange = document.createRange();
@@ -403,16 +403,16 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
 
             let tocHtml = `
                 <div style="margin: 0 0 30px 0; padding: 0; font-family: 'Calibri', sans-serif;">
-                    <p style="color: #2b579a; font-size: 24px; font-weight: bold; margin-bottom: 16px; border-bottom: 2px solid #2b579a; padding-bottom: 8px;">Inhoudsopgave</p>
+                    <p style="color: #C46849; font-size: 24px; font-weight: bold; margin-bottom: 16px; border-bottom: 2px solid #C46849; padding-bottom: 8px;">Inhoudsopgave</p>
             `;
 
             h1s.forEach((h1, index) => {
                 const pageNum = index + 1;
                 tocHtml += `
                     <div style="display: flex; align-items: baseline; margin: 8px 0; font-size: 14px;">
-                        <span style="color: #2b579a; font-weight: 500;">${h1.innerText}</span>
-                        <span style="flex: 1; border-bottom: 1px dotted #999; margin: 0 8px; min-width: 20px;"></span>
-                        <span style="color: #333; font-weight: 500;">${pageNum}</span>
+                        <span style="color: #C46849; font-weight: 500;">${h1.innerText}</span>
+                        <span style="flex: 1; border-bottom: 1px dotted #6B6B66; margin: 0 8px; min-width: 20px;"></span>
+                        <span style="color: #3D3D38; font-weight: 500;">${pageNum}</span>
                     </div>
                 `;
             });
@@ -552,7 +552,7 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
     return (
         <div className="fixed inset-0 z-[100] bg-slate-100 flex flex-col font-sans text-slate-900 overflow-hidden">
             {/* APP HEADER */}
-            <div className="bg-[#2b579a] text-white px-4 py-2 flex items-center justify-between shadow-sm shrink-0">
+            <div className="bg-[#C46849] text-white px-4 py-2 flex items-center justify-between shadow-sm shrink-0">
                 <div className="flex items-center gap-4">
                     {onExit && (
                         <button
@@ -827,7 +827,7 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
             </div>
 
             {/* STATUS BAR */}
-            <div className="bg-[#2b579a] text-white/80 text-[10px] px-2 py-0.5 flex justify-between shrink-0">
+            <div className="bg-[#C46849] text-white/80 text-[10px] px-2 py-0.5 flex justify-between shrink-0">
                 <div className="flex gap-4">
                     <span>Pagina 1 van 1</span>
                     <span>{editorContent.split(' ').length} woorden</span>
@@ -875,7 +875,7 @@ const levels: LevelConfig[] = [
         hint: "Selecteer het plaatje en kijk bij 'Indeling' naar 'Tekstomloop'.",
         instruction: "Zet de tekstomloop op 'Vierkant' en sleep het plaatje naar rechts.",
         initialContent: `
-                <h1 style="color: #2b579a; font-size: 24px; font-weight: bold; margin-bottom: 1em;">De Romeinse Tijd</h1>
+                <h1 style="color: #C46849; font-size: 24px; font-weight: bold; margin-bottom: 1em;">De Romeinse Tijd</h1>
                 <p>De Romeinen waren een volk dat oorspronkelijk in de stad Rome leefde. Ze veroverden een enorm rijk dat zich uitstrekte van Engeland tot Egypte.</p>
                 <p>Hun leger was super goed georganiseerd en ze bouwden overal wegen.</p>
                 <p>In Nederland kwamen de Romeinen tot aan de Rijn. Ze bouwden forten, badhuizen en tempels.</p>

@@ -53,58 +53,43 @@ const IconCheck = () => (
 const customizationPillars = [
     {
         icon: <IconToggleStar />,
+        illustration: '/illustrations/custom-toggle.png',
+        illustrationAlt: 'Hand die toggle-schakelaars bedient op een dashboard met missie-iconen',
         title: 'Missies op maat',
         description: 'Kies zelf welke missies je aanbiedt. Zet specifieke modules aan of uit op basis van jullie jaarplanning en schoolvisie.',
         highlights: ['Eigen missie-selectie', 'Per vak of periode inplanbaar'],
-        color: 'violet',
-        bgClass: 'from-violet-50 to-white',
-        borderClass: 'border-violet-100/50',
-        iconBg: 'bg-violet-100 text-violet-600',
-        dotClass: 'bg-violet-500',
     },
     {
         icon: <IconSteps />,
+        illustration: '/illustrations/custom-levels.png',
+        illustrationAlt: 'Drie trappen met MAVO, HAVO en VWO labels, elk met een blije leerling bovenaan',
         title: 'Niveaudifferentiatie',
         description: 'Stel per klas het niveau in: MAVO, HAVO of VWO. DGSkills past de moeilijkheidsgraad automatisch aan per leerling.',
         highlights: ['Per klas instelbaar', 'Adaptief per leerling'],
-        color: 'fuchsia',
-        bgClass: 'from-fuchsia-50 to-white',
-        borderClass: 'border-fuchsia-100/50',
-        iconBg: 'bg-fuchsia-100 text-fuchsia-600',
-        dotClass: 'bg-fuchsia-500',
     },
     {
         icon: <IconBinoculars />,
+        illustration: '/illustrations/custom-focus.png',
+        illustrationAlt: 'Docent plaatst leermissie-blokken in een weekrooster op een smartboard',
         title: 'Focus Mode voor docenten',
         description: 'Bepaal precies wanneer leerlingen aan welke missie werken. Ideaal voor gestructureerde lessen of open keuzemomenten.',
         highlights: ['Lesuurplanning', 'Klassikaal of individueel'],
-        color: 'purple',
-        bgClass: 'from-purple-50 to-white',
-        borderClass: 'border-purple-100/50',
-        iconBg: 'bg-purple-100 text-purple-600',
-        dotClass: 'bg-purple-500',
     },
     {
         icon: <IconBuildingBlocks />,
+        illustration: '/illustrations/custom-modular.png',
+        illustrationAlt: 'Handen stapelen bouwblokken met AI, data en code iconen, plantje groeit uit de top',
         title: 'Modulaire opbouw',
         description: 'Start met de domeinen die bij jullie school prioriteit hebben. Breid later uit wanneer jullie er klaar voor zijn.',
         highlights: ['Stap voor stap implementeren', 'Geen alles-of-niets'],
-        color: 'indigo',
-        bgClass: 'from-indigo-50 to-white',
-        borderClass: 'border-indigo-100/50',
-        iconBg: 'bg-indigo-100 text-indigo-600',
-        dotClass: 'bg-indigo-500',
     },
     {
         icon: <IconHandshake />,
+        illustration: '/illustrations/custom-contact.png',
+        illustrationAlt: 'Docent en platformmaker in gesprek aan een cafétafel met koffie en een roodborstje',
         title: 'Persoonlijk contact',
         description: 'Geen standaard helpdesk. Wij denken actief mee over hoe DGSkills het beste past bij jouw school, curriculum en planning.',
         highlights: ['Onboarding op maat', 'Korte lijnen met de maker'],
-        color: 'sky',
-        bgClass: 'from-sky-50 to-white',
-        borderClass: 'border-sky-100/50',
-        iconBg: 'bg-sky-100 text-sky-600',
-        dotClass: 'bg-sky-500',
     },
 ];
 
@@ -116,14 +101,14 @@ export const ScholenLandingCustomization: React.FC = () => {
         <div className="max-w-5xl mx-auto">
             {/* Header */}
             <div className="text-center mb-16">
-                <div className="inline-flex items-center gap-2 bg-violet-50 text-violet-600 text-[10px] font-black uppercase tracking-widest px-4 py-2 rounded-full mb-5 border border-violet-100">
-                    <div className="w-1.5 h-1.5 bg-violet-500 rounded-full animate-pulse" />
+                <div className="inline-flex items-center gap-2 text-sm font-medium tracking-wide px-4 py-2 rounded-full mb-5 border" style={{ color: '#D97757', backgroundColor: '#FAF9F0', borderColor: '#E8E6DF' }}>
+                    <div className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: '#D97757' }} />
                     Ons verschil
                 </div>
-                <h2 className="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight mb-4">
-                    Volledig afgestemd op <span className="text-violet-600">jouw school</span>
+                <h2 className="text-2xl md:text-3xl font-medium tracking-tight mb-4" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#1A1A19' }}>
+                    Volledig afgestemd op <span style={{ color: '#D97757' }}>jouw school</span>
                 </h2>
-                <p className="text-base text-slate-500 leading-relaxed max-w-2xl mx-auto">
+                <p className="text-base leading-relaxed max-w-2xl mx-auto" style={{ color: '#6B6B66' }}>
                     Geen twee scholen zijn hetzelfde. Daarom past DGSkills zich aan op jullie visie,
                     planning en curriculum — niet andersom. Jullie bepalen hoe het platform werkt.
                 </p>
@@ -139,29 +124,39 @@ export const ScholenLandingCustomization: React.FC = () => {
                             onClick={() => setActiveIndex(i)}
                             className={`w-full text-left rounded-2xl p-5 transition-all duration-300 border group ${
                                 activeIndex === i
-                                    ? `bg-gradient-to-br ${pillar.bgClass} ${pillar.borderClass} shadow-lg`
-                                    : 'bg-white border-slate-100 hover:border-slate-200 hover:shadow-md'
+                                    ? 'shadow-lg'
+                                    : 'hover:shadow-md'
                             }`}
+                            style={{
+                                backgroundColor: activeIndex === i ? '#FAF9F0' : '#FFFFFF',
+                                borderColor: activeIndex === i ? '#E8E6DF' : '#F0EEE8',
+                            }}
                         >
                             <div className="flex items-center gap-3.5">
-                                <div className={`w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110 ${
-                                    activeIndex === i ? pillar.iconBg : 'bg-slate-100 text-slate-400'
-                                }`}>
+                                <div
+                                    className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110"
+                                    style={{
+                                        backgroundColor: activeIndex === i ? '#F5F3EC' : '#F5F3EC',
+                                        color: activeIndex === i ? '#D97757' : '#9C9C95',
+                                    }}
+                                >
                                     {pillar.icon}
                                 </div>
                                 <div className="flex-1 min-w-0">
-                                    <h3 className={`text-[15px] font-bold transition-colors ${
-                                        activeIndex === i ? 'text-slate-900' : 'text-slate-600'
-                                    }`}>
+                                    <h3
+                                        className="text-[15px] font-medium transition-colors"
+                                        style={{ color: activeIndex === i ? '#1A1A19' : '#6B6B66' }}
+                                    >
                                         {pillar.title}
                                     </h3>
                                     {activeIndex !== i && (
-                                        <p className="text-xs text-slate-400 mt-0.5 truncate">{pillar.description}</p>
+                                        <p className="text-xs mt-0.5 truncate" style={{ color: '#9C9C95' }}>{pillar.description}</p>
                                     )}
                                 </div>
-                                <div className={`w-2 h-2 rounded-full transition-all flex-shrink-0 ${
-                                    activeIndex === i ? pillar.dotClass : 'bg-slate-200'
-                                }`} />
+                                <div
+                                    className="w-2 h-2 rounded-full transition-all flex-shrink-0"
+                                    style={{ backgroundColor: activeIndex === i ? '#D97757' : '#E8E6DF' }}
+                                />
                             </div>
                         </button>
                     ))}
@@ -169,40 +164,38 @@ export const ScholenLandingCustomization: React.FC = () => {
 
                 {/* Right: detail panel */}
                 <div className="md:col-span-2 lg:col-span-3">
-                    <div className={`bg-gradient-to-br ${active.bgClass} rounded-3xl border ${active.borderClass} p-8 md:p-10 h-full flex flex-col justify-center transition-all duration-300`}>
-                        <div className={`w-16 h-16 ${active.iconBg} rounded-2xl flex items-center justify-center mb-6`}>
-                            {active.icon}
+                    <div className="rounded-3xl border overflow-hidden h-full flex flex-col justify-center p-8 md:p-10 transition-all duration-300" style={{ backgroundColor: '#FAF9F0', borderColor: '#E8E6DF' }}>
+                        {/* Title row with illustration */}
+                        <div className="flex items-center gap-4 mb-4">
+                            <div className="w-16 h-16 rounded-xl flex-shrink-0 flex items-center justify-center" style={{ backgroundColor: '#F0EEE8' }}>
+                                <img
+                                    src={active.illustration}
+                                    alt={active.illustrationAlt}
+                                    className="w-[3.25rem] h-[3.25rem] object-contain"
+                                    loading="lazy"
+                                />
+                            </div>
+                            <h3 className="text-2xl font-medium" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#1A1A19' }}>
+                                {active.title}
+                            </h3>
                         </div>
 
-                        <h3 className="text-2xl font-bold text-slate-900 mb-4">
-                            {active.title}
-                        </h3>
-
-                        <p className="text-base text-slate-500 leading-relaxed mb-8">
+                        <p className="text-base leading-relaxed mb-6" style={{ color: '#6B6B66' }}>
                             {active.description}
                         </p>
 
                         <div className="space-y-3">
                             {active.highlights.map((h) => (
                                 <div key={h} className="flex items-center gap-3">
-                                    <div className={`w-6 h-6 rounded-lg ${active.iconBg} flex items-center justify-center flex-shrink-0`}>
+                                    <div
+                                        className="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0"
+                                        style={{ backgroundColor: '#F0EEE8', color: '#D97757' }}
+                                    >
                                         <IconCheck />
                                     </div>
-                                    <span className="text-sm font-medium text-slate-700">{h}</span>
+                                    <span className="text-sm font-medium" style={{ color: '#1A1A19' }}>{h}</span>
                                 </div>
                             ))}
-                        </div>
-
-                        {/* Visual accent — mini mockup of customization */}
-                        <div className="mt-8 pt-8 border-t border-slate-200/50">
-                            <div className="flex items-center gap-3 text-xs text-slate-400">
-                                <div className="flex -space-x-2">
-                                    <div className="w-7 h-7 rounded-full bg-violet-200 border-2 border-white flex items-center justify-center text-violet-600 text-[9px] font-bold">MA</div>
-                                    <div className="w-7 h-7 rounded-full bg-fuchsia-200 border-2 border-white flex items-center justify-center text-fuchsia-600 text-[9px] font-bold">HA</div>
-                                    <div className="w-7 h-7 rounded-full bg-indigo-200 border-2 border-white flex items-center justify-center text-indigo-600 text-[9px] font-bold">VW</div>
-                                </div>
-                                <span className="font-medium">Elk niveau, elke school, elk tempo</span>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -210,8 +203,8 @@ export const ScholenLandingCustomization: React.FC = () => {
 
             {/* Bottom CTA strip */}
             <div className="mt-14 text-center">
-                <div className="inline-flex flex-col sm:flex-row items-center gap-4 bg-gradient-to-r from-violet-50 via-fuchsia-50 to-purple-50 border border-violet-100 rounded-2xl px-8 py-6">
-                    <p className="text-sm font-semibold text-slate-700">
+                <div className="inline-flex flex-col sm:flex-row items-center gap-4 rounded-2xl px-8 py-6 border" style={{ backgroundColor: '#FAF9F0', borderColor: '#E8E6DF' }}>
+                    <p className="text-sm font-medium" style={{ color: '#1A1A19' }}>
                         Benieuwd hoe DGSkills past bij jullie school?
                     </p>
                     <a
@@ -220,7 +213,10 @@ export const ScholenLandingCustomization: React.FC = () => {
                             e.preventDefault();
                             document.getElementById('gratis-pilot')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
                         }}
-                        className="bg-violet-600 hover:bg-violet-700 text-white px-6 py-2.5 rounded-lg text-sm font-semibold transition-all shadow-lg shadow-violet-600/25 hover:shadow-xl hover:shadow-violet-600/30 hover:-translate-y-0.5 flex items-center gap-2"
+                        className="text-white px-6 py-2.5 rounded-full text-sm font-medium transition-all hover:-translate-y-0.5 flex items-center gap-2"
+                        style={{ backgroundColor: '#D97757' }}
+                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#C46849')}
+                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#D97757')}
                     >
                         Plan een gesprek
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7" /></svg>

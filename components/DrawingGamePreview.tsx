@@ -480,7 +480,7 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
             if (ctx) {
                 ctx.fillStyle = 'white';
                 ctx.fillRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-                ctx.strokeStyle = '#1e293b';
+                ctx.strokeStyle = '#1A1A19';
                 ctx.lineWidth = 4;
                 ctx.lineCap = 'round';
                 ctx.lineJoin = 'round';

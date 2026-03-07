@@ -110,13 +110,16 @@ const TutorialSpotlight: React.FC = () => {
     }, [isActive, currentStep, completeStep]);
 
     // Compute tooltip position relative to spotlight rect
+    const isFullscreen = !currentStep?.target;
+
     const getTooltipStyle = useCallback((): React.CSSProperties => {
         if (!rect) {
-            // Centered for non-target steps
             return {
+                position: 'absolute',
                 top: '50%',
                 left: '50%',
                 transform: 'translate(-50%, -50%)',
+                maxWidth: 360,
             };
         }
 
@@ -175,7 +178,7 @@ const TutorialSpotlight: React.FC = () => {
                     </defs>
                     <rect
                         x="0" y="0" width="100%" height="100%"
-                        fill="rgba(15, 23, 42, 0.6)"
+                        fill="rgba(26, 26, 25, 0.6)"
                         mask="url(#tut-mask)"
                     />
                 </svg>
@@ -191,7 +194,7 @@ const TutorialSpotlight: React.FC = () => {
                             height: rect.height,
                             pointerEvents: 'auto',
                             borderRadius: 10,
-                            boxShadow: '0 0 0 3px rgba(99,102,241,0.5), 0 0 20px 4px rgba(99,102,241,0.15)',
+                            boxShadow: '0 0 0 3px rgba(217,119,87,0.5), 0 0 20px 4px rgba(217,119,87,0.15)',
                         }}
                         onClick={() => {
                             // Let clicks pass through to the actual element
@@ -207,68 +210,101 @@ const TutorialSpotlight: React.FC = () => {
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -8 }}
-                    transition={{ duration: 0.2 }}
+                    transition={{ duration: 0.25 }}
                     style={{ ...getTooltipStyle(), pointerEvents: 'auto' }}
-                    className="bg-white rounded-xl shadow-xl border border-slate-200 overflow-hidden"
+                    className="bg-white rounded-2xl shadow-2xl border border-slate-200/80 overflow-hidden"
                 >
                     {/* Step counter bar */}
                     <div className="flex h-1">
                         {steps.map((_, i) => (
                             <div
                                 key={i}
-                                className={`flex-1 ${i <= currentStepIndex ? 'bg-indigo-500' : 'bg-slate-100'}`}
+                                className={`flex-1 transition-colors duration-300 ${i <= currentStepIndex ? 'bg-indigo-500' : 'bg-slate-100'}`}
                             />
                         ))}
                     </div>
 
-                    <div className="px-4 py-3">
-                        {/* Title + skip */}
-                        <div className="flex items-center justify-between gap-2 mb-1">
-                            <h3 className="text-sm font-bold text-slate-900 leading-tight">{currentStep.title}</h3>
-                            <button
-                                onClick={skipTutorial}
-                                className="shrink-0 p-1 text-slate-300 hover:text-slate-500 rounded transition-colors"
-                                title="Tutorial overslaan"
-                            >
-                                <X size={14} />
-                            </button>
+                    {/* Fullscreen intro: Pip centered above content */}
+                    {isFullscreen && (
+                        <div className="flex justify-center pt-4 pb-1">
+                            <div className="w-16 h-16 rounded-full bg-indigo-50 flex items-center justify-center">
+                                <motion.img
+                                    src="/mascot/pip-excited.png"
+                                    alt=""
+                                    className="w-12 h-12 object-contain"
+                                    aria-hidden="true"
+                                    animate={{ y: [0, -3, 0], rotate: [0, 2, -2, 0] }}
+                                    transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
+                                />
+                            </div>
                         </div>
+                    )}
 
-                        {/* Description */}
-                        <p className="text-xs text-slate-500 leading-relaxed mb-3">{currentStep.content}</p>
-
-                        {/* Required click hint — only show when element is actually found */}
-                        {currentStep.requireClick && rect && !targetNotFound && (
-                            <p className="text-[11px] text-indigo-600 font-semibold mb-3 flex items-center gap-1.5">
-                                <span className="w-1.5 h-1.5 bg-indigo-500 rounded-full animate-pulse" />
-                                Klik op het uitgelichte element
-                            </p>
+                    <div className={`px-4 py-3 ${isFullscreen ? 'pt-1' : ''} flex items-start gap-3`}>
+                        {/* Pip mascot — inline guide for targeted steps */}
+                        {!isFullscreen && (
+                            <div className="shrink-0 mt-0.5">
+                                <div className="w-10 h-10 rounded-full bg-indigo-50 flex items-center justify-center">
+                                    <motion.img
+                                        src="/mascot/pip-waving.png"
+                                        alt=""
+                                        className="w-8 h-8 object-contain"
+                                        aria-hidden="true"
+                                        animate={{ y: [0, -2, 0] }}
+                                        transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+                                    />
+                                </div>
+                            </div>
                         )}
 
-                        {/* Navigation — always show a way forward */}
-                        <div className="flex items-center justify-between">
-                            <span className="text-[10px] text-slate-400 font-medium">
-                                {currentStepIndex + 1}/{steps.length}
-                            </span>
-                            <div className="flex items-center gap-1">
-                                {!isFirstStep && (
-                                    <button
-                                        onClick={prevStep}
-                                        className="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-50 rounded-lg transition-colors"
-                                    >
-                                        <ChevronLeft size={16} />
-                                    </button>
-                                )}
-                                {/* Show Next button when: not requireClick, OR element was not found (fallback) */}
-                                {(!currentStep.requireClick || targetNotFound) && (
-                                    <button
-                                        onClick={isLastStep ? skipTutorial : nextStep}
-                                        className="flex items-center gap-1 px-3 py-1.5 bg-indigo-500 hover:bg-indigo-600 text-white text-xs font-semibold rounded-lg transition-colors"
-                                    >
-                                        {isLastStep ? 'Klaar' : 'Volgende'}
-                                        <ChevronRight size={14} />
-                                    </button>
-                                )}
+                        <div className={`flex-1 min-w-0 ${isFullscreen ? 'text-center' : ''}`}>
+                            {/* Title + skip */}
+                            <div className="flex items-center justify-between gap-2 mb-1">
+                                <h3 className="text-sm font-bold text-slate-900 leading-tight">{currentStep.title}</h3>
+                                <button
+                                    onClick={skipTutorial}
+                                    className="shrink-0 p-1 text-slate-300 hover:text-slate-500 rounded transition-colors"
+                                    title="Tutorial overslaan"
+                                >
+                                    <X size={14} />
+                                </button>
+                            </div>
+
+                            {/* Description */}
+                            <p className="text-xs text-slate-500 leading-relaxed mb-3">{currentStep.content}</p>
+
+                            {/* Required click hint */}
+                            {currentStep.requireClick && rect && !targetNotFound && (
+                                <p className="text-[11px] text-indigo-600 font-semibold mb-3 flex items-center gap-1.5">
+                                    <span className="w-1.5 h-1.5 bg-indigo-500 rounded-full animate-pulse" />
+                                    Klik op het uitgelichte element
+                                </p>
+                            )}
+
+                            {/* Navigation */}
+                            <div className={`flex items-center ${isFullscreen ? 'justify-center gap-3' : 'justify-between'}`}>
+                                <span className="text-[10px] text-slate-400 font-medium">
+                                    {currentStepIndex + 1}/{steps.length}
+                                </span>
+                                <div className="flex items-center gap-1">
+                                    {!isFirstStep && (
+                                        <button
+                                            onClick={prevStep}
+                                            className="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-50 rounded-lg transition-colors"
+                                        >
+                                            <ChevronLeft size={16} />
+                                        </button>
+                                    )}
+                                    {(!currentStep.requireClick || targetNotFound) && (
+                                        <button
+                                            onClick={isLastStep ? skipTutorial : nextStep}
+                                            className="flex items-center gap-1 px-3 py-1.5 bg-indigo-500 hover:bg-indigo-600 text-white text-xs font-semibold rounded-lg transition-colors"
+                                        >
+                                            {isLastStep ? 'Klaar' : 'Volgende'}
+                                            <ChevronRight size={14} />
+                                        </button>
+                                    )}
+                                </div>
                             </div>
                         </div>
                     </div>

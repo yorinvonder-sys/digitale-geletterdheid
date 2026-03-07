@@ -107,7 +107,7 @@ export const CookieConsent: React.FC<CookieConsentProps> = ({ onAccept, onDeclin
     if (!isVisible) return null;
 
     return (
-        <div className="fixed bottom-0 left-0 right-0 md:bottom-6 md:right-6 md:left-auto md:max-w-sm z-50 p-4 animate-in slide-in-from-bottom duration-500">
+        <div className="fixed bottom-0 left-0 right-0 md:bottom-6 md:right-6 md:left-auto md:max-w-sm z-[60] p-4 animate-fade-in-up">
             <div className="bg-white rounded-2xl shadow-xl border border-slate-200/80 overflow-hidden">
                 {/* Main Banner */}
                 <div className="p-5">

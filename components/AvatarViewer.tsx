@@ -1,6 +1,6 @@
 import React, { Suspense, useEffect, useMemo, useRef, memo, useState, useCallback } from 'react';
 import { Canvas, ThreeEvent, useFrame, useThree } from '@react-three/fiber';
-import { OrbitControls, ContactShadows, Float, Environment, Sparkles } from '@react-three/drei';
+import { OrbitControls, ContactShadows, Environment, Sparkles } from '@react-three/drei';
 import * as THREE from 'three';
 import { AvatarConfig } from '../types';
 
@@ -1827,8 +1827,8 @@ const AvatarModel = memo<{
                         </group>
                     </group>
 
-                    {/* Left arm */}
-                    <group ref={leftArmRef} position={[-(dims.bodyWidth / 2 + dims.armWidth / 2), 1.35, 0]}>
+                    {/* Left arm — overlap torso by 0.01 to prevent z-fighting at joint */}
+                    <group ref={leftArmRef} position={[-(dims.bodyWidth / 2 + dims.armWidth / 2 - 0.01), 1.35, 0]}>
                         <group
                             position={[0, -0.3, 0]}
                             onClick={(e) => handleClick(e, 'shirt')}
@@ -1852,8 +1852,8 @@ const AvatarModel = memo<{
                         </group>
                     </group>
 
-                    {/* Right arm */}
-                    <group ref={rightArmRef} position={[(dims.bodyWidth / 2 + dims.armWidth / 2), 1.35, 0]}>
+                    {/* Right arm — overlap torso by 0.01 to prevent z-fighting at joint */}
+                    <group ref={rightArmRef} position={[(dims.bodyWidth / 2 + dims.armWidth / 2 - 0.01), 1.35, 0]}>
                         <group
                             position={[0, -0.3, 0]}
                             onClick={(e) => handleClick(e, 'shirt')}
@@ -1991,28 +1991,26 @@ export const AvatarViewer: React.FC<AvatarViewerProps> = ({
                     </Suspense>
                 </ThreeErrorBoundary>
 
-                <Float speed={1.5} rotationIntensity={0.08} floatIntensity={0.15}>
-                    <AvatarModel
-                        config={config}
-                        variant={variant}
-                        onPartClick={onPartClick}
-                        interactive={interactive}
-                    />
-                </Float>
+                <AvatarModel
+                    config={config}
+                    variant={variant}
+                    onPartClick={onPartClick}
+                    interactive={interactive}
+                />
 
                 {variant === 'full' && (
-                    <mesh position={[0, -1.35, 0]} rotation={[-Math.PI / 2, 0, 0]} renderOrder={-1}>
+                    <mesh position={[0, -0.10, 0]} rotation={[-Math.PI / 2, 0, 0]} renderOrder={-1}>
                         <boxGeometry args={[2.2, 2.2, 0.02]} />
                         <meshStandardMaterial color="#E8E6DF" transparent opacity={0.45} depthWrite={false} />
                     </mesh>
                 )}
 
                 <ContactShadows
-                    position={[0, -1.2, 0]}
-                    opacity={0.3}
+                    position={[0, -0.08, 0]}
+                    opacity={0.35}
                     scale={6}
-                    blur={3}
-                    far={5}
+                    blur={2.5}
+                    far={4}
                     color="#4A2518"
                 />
 
@@ -2032,7 +2030,7 @@ export const AvatarViewer: React.FC<AvatarViewerProps> = ({
                     enableZoom={variant === 'full'}
                     minPolarAngle={Math.PI / 3}
                     maxPolarAngle={Math.PI / 1.5}
-                    target={variant === 'head' ? [0, 0.5, 0] : [0, 0.1, 0]}
+                    target={variant === 'head' ? [0, 0.5, 0] : [0, 1.0, 0]}
                 />
             </Canvas>
         </div>
