@@ -96,39 +96,51 @@ Deno.serve(async (req: Request) => {
     }
 
     // 4. Forward sanitized message to Gemini via Vertex AI streaming endpoint
-    const geminiUrl = getVertexStreamUrl("gemini-2.0-flash");
-    const accessToken = await getAccessToken();
+    let geminiResponse: Response;
+    try {
+        const geminiUrl = getVertexStreamUrl("gemini-2.0-flash");
+        const accessToken = await getAccessToken();
 
-    const contents = [
-        ...(Array.isArray(body.history) ? body.history : []),
-        { role: "user", parts: [{ text: validation.sanitized }] },
-    ];
+        const contents = [
+            ...(Array.isArray(body.history) ? body.history : []),
+            { role: "user", parts: [{ text: validation.sanitized }] },
+        ];
 
-    // 5. Safety settings for minors (12-18 year olds) — EU AI Act + child protection
-    const safetySettings = [
-        { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_LOW_AND_ABOVE" },
-        { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_LOW_AND_ABOVE" },
-        { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_LOW_AND_ABOVE" },
-        { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_LOW_AND_ABOVE" },
-    ];
+        // 5. Safety settings for minors (12-18 year olds) — EU AI Act + child protection
+        const safetySettings = [
+            { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_LOW_AND_ABOVE" },
+            { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_LOW_AND_ABOVE" },
+            { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_LOW_AND_ABOVE" },
+            { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_LOW_AND_ABOVE" },
+        ];
 
-    const geminiResponse = await fetch(geminiUrl, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify({
-            contents,
-            safetySettings,
-            ...(body.systemInstruction
-                ? { systemInstruction: { parts: [{ text: body.systemInstruction }] } }
-                : {}),
-        }),
-    });
+        geminiResponse = await fetch(geminiUrl, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${accessToken}`,
+            },
+            body: JSON.stringify({
+                contents,
+                safetySettings,
+                ...(body.systemInstruction
+                    ? { systemInstruction: { parts: [{ text: body.systemInstruction }] } }
+                    : {}),
+            }),
+        });
+    } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : String(err);
+        console.error("[chatStream] Vertex AI setup error:", message);
+        return new Response(
+            JSON.stringify({ error: "AI-service tijdelijk niet beschikbaar." }),
+            { status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+    }
 
     if (!geminiResponse.ok) {
         const status = geminiResponse.status;
+        const errBody = await geminiResponse.text().catch(() => "");
+        console.error(`[chatStream] Vertex AI error (${status}):`, errBody);
         if (status === 429) {
             return new Response(
                 JSON.stringify({ error: "rate_limit", reason: "Te veel verzoeken. Wacht even." }),

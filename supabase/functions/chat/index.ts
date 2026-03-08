@@ -93,53 +93,68 @@ Deno.serve(async (req: Request) => {
     }
 
     // 4. Forward sanitized message to Gemini via Vertex AI (EU endpoint)
-    const geminiUrl = getVertexUrl("gemini-2.0-flash");
-    const accessToken = await getAccessToken();
+    try {
+        const geminiUrl = getVertexUrl("gemini-2.0-flash");
+        const accessToken = await getAccessToken();
 
-    const contents = [
-        ...(Array.isArray(body.history) ? body.history : []),
-        { role: "user", parts: [{ text: validation.sanitized }] },
-    ];
+        const contents = [
+            ...(Array.isArray(body.history) ? body.history : []),
+            { role: "user", parts: [{ text: validation.sanitized }] },
+        ];
 
-    // 5. Safety settings for minors (12-18 year olds) — EU AI Act + child protection
-    const safetySettings = [
-        { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_LOW_AND_ABOVE" },
-        { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_LOW_AND_ABOVE" },
-        { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_LOW_AND_ABOVE" },
-        { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_LOW_AND_ABOVE" },
-    ];
+        // 5. Safety settings for minors (12-18 year olds) — EU AI Act + child protection
+        const safetySettings = [
+            { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_LOW_AND_ABOVE" },
+            { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_LOW_AND_ABOVE" },
+            { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_LOW_AND_ABOVE" },
+            { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_LOW_AND_ABOVE" },
+        ];
 
-    const geminiResponse = await fetch(geminiUrl, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify({
-            contents,
-            safetySettings,
-            ...(body.systemInstruction
-                ? { systemInstruction: { parts: [{ text: body.systemInstruction }] } }
-                : {}),
-        }),
-    });
+        const geminiResponse = await fetch(geminiUrl, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${accessToken}`,
+            },
+            body: JSON.stringify({
+                contents,
+                safetySettings,
+                ...(body.systemInstruction
+                    ? { systemInstruction: { parts: [{ text: body.systemInstruction }] } }
+                    : {}),
+            }),
+        });
 
-    if (!geminiResponse.ok) {
-        const status = geminiResponse.status;
-        if (status === 429) {
+        if (!geminiResponse.ok) {
+            const status = geminiResponse.status;
+            const errBody = await geminiResponse.text().catch(() => "");
+            console.error(`[chat] Vertex AI error (${status}):`, errBody);
+            if (status === 429) {
+                return new Response(
+                    JSON.stringify({ error: "rate_limit", reason: "Te veel verzoeken. Wacht even." }),
+                    { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+                );
+            }
             return new Response(
-                JSON.stringify({ error: "rate_limit", reason: "Te veel verzoeken. Wacht even." }),
-                { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+                JSON.stringify({ error: "AI-service tijdelijk niet beschikbaar." }),
+                { status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" } }
             );
         }
+
+        const geminiData = await geminiResponse.json();
+
+        // Extract text from Vertex AI response format
+        const text = geminiData?.candidates?.[0]?.content?.parts?.[0]?.text || "";
+
+        return new Response(JSON.stringify({ text }), {
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+    } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : String(err);
+        console.error("[chat] Unhandled error:", message);
         return new Response(
             JSON.stringify({ error: "AI-service tijdelijk niet beschikbaar." }),
             { status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" } }
         );
     }
-
-    const geminiData = await geminiResponse.json();
-    return new Response(JSON.stringify(geminiData), {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
 });
