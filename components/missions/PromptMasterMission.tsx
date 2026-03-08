@@ -14,6 +14,14 @@ import React, { useState } from 'react';
 import { ArrowLeft, Sparkles, ArrowRight, Trophy, RotateCcw, Lightbulb, Zap, Target, Send, Bot, ThumbsUp, ThumbsDown, Star, Image, FileText, HelpCircle, Code, ChevronRight, Loader2, Brain, Eye, Palette } from 'lucide-react';
 import { UserStats, VsoProfile } from '../../types';
 import { createChatSession, sendMessageToGemini } from '../../services/geminiService';
+import { useMissionAutoSave } from '@/hooks/useMissionAutoSave';
+
+interface PromptMasterProgress {
+    currentLevel: 'beginner' | 'gevorderd' | 'expert';
+    challengeIndex: number;
+    totalScore: number;
+    completedChallenges: string[];
+}
 
 interface Props {
     onBack: () => void;
@@ -328,14 +336,14 @@ const ResultVisual: React.FC<{
 }> = ({ type, content, isIdeal, isSuccess, exampleImage, generatedImage }) => {
     // Icons & Colors based on type
     const getBgColor = () => {
-        if (isIdeal) return 'bg-emerald-900/20 border-emerald-500/30'; // Ideal is always green-ish
-        if (isSuccess) return 'bg-emerald-900/20 border-emerald-500/30'; // Success user result
-        return 'bg-amber-900/20 border-amber-500/30'; // Failed user result
+        if (isIdeal) return 'bg-[#10B981]/10 border-[#10B981]/30';
+        if (isSuccess) return 'bg-[#10B981]/10 border-[#10B981]/30';
+        return 'bg-[#D97757]/10 border-[#D97757]/30';
     };
 
     const getHeader = () => {
-        if (isIdeal) return <div className="flex items-center gap-2 text-emerald-400 mb-2 font-bold"><Target size={16} /> Ideaal Resultaat</div>;
-        return <div className="flex items-center gap-2 text-slate-300 mb-2 font-bold"><Bot size={16} /> Jouw Resultaat</div>;
+        if (isIdeal) return <div className="flex items-center gap-2 text-[#10B981] mb-2" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}><Target size={16} /> <span className="font-bold">Ideaal Resultaat</span></div>;
+        return <div className="flex items-center gap-2 text-[#3D3D38] mb-2" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}><Bot size={16} /> <span className="font-bold">Jouw Resultaat</span></div>;
     };
 
     // IMAGE CHALLENGE VISUALIZATION
@@ -344,9 +352,9 @@ const ResultVisual: React.FC<{
         const imageToShow = generatedImage || (isIdeal ? exampleImage : null);
 
         return (
-            <div className={`p-4 rounded-2xl border-2 border-dashed ${getBgColor()} h-full flex flex-col`}>
+            <div className={`p-4 rounded-2xl border ${getBgColor()} h-full flex flex-col`}>
                 {getHeader()}
-                <div className="flex-1 min-h-[200px] bg-slate-900/50 rounded-xl flex flex-col items-center justify-center p-4 text-center relative overflow-hidden group">
+                <div className="flex-1 min-h-[200px] bg-[#F0EEE8] rounded-xl flex flex-col items-center justify-center p-4 text-center relative overflow-hidden group">
                     {/* Show actual image if available */}
                     {imageToShow ? (
                         <>
@@ -355,28 +363,28 @@ const ResultVisual: React.FC<{
                                 alt={isIdeal ? "Voorbeeld resultaat" : "Jouw gegenereerde afbeelding"}
                                 className="absolute inset-0 w-full h-full object-cover rounded-xl opacity-90"
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-[#1A1A19]/70 via-transparent to-transparent" />
                             <div className="absolute bottom-4 left-4 right-4 text-left z-10">
-                                <p className="text-emerald-100 text-sm font-medium drop-shadow-lg">
+                                <p className="text-white text-sm font-medium drop-shadow-lg" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                     {content.replace(/^De AI.*?:\s*/i, '')}
                                 </p>
                             </div>
-                            <div className={`absolute top-2 right-2 text-white text-[10px] uppercase font-bold px-2 py-0.5 rounded-full z-10 ${isIdeal ? 'bg-emerald-500' : isSuccess ? 'bg-emerald-500' : 'bg-amber-500'}`}>
+                            <div className={`absolute top-2 right-2 text-white text-[10px] uppercase font-bold px-2 py-0.5 rounded-full z-10`} style={{ backgroundColor: isIdeal || isSuccess ? '#10B981' : '#D97757' }}>
                                 {isIdeal ? 'Perfect' : isSuccess ? 'Goed gedaan!' : 'Jouw resultaat'}
                             </div>
                         </>
                     ) : (
                         <>
-                            <div className="absolute inset-0 bg-gradient-to-br from-slate-800 to-slate-900 opacity-50" />
+                            <div className="absolute inset-0 bg-gradient-to-br from-[#F0EEE8] to-[#E8E6DF] opacity-50" />
                             {/* Abstract shapes to simulate image */}
-                            <div className="absolute top-1/4 left-1/4 w-16 h-16 bg-white/5 rounded-full blur-xl" />
-                            <div className="absolute bottom-1/3 right-1/4 w-24 h-24 bg-purple-500/10 rounded-full blur-2xl" />
+                            <div className="absolute top-1/4 left-1/4 w-16 h-16 bg-[#D97757]/10 rounded-full blur-xl" />
+                            <div className="absolute bottom-1/3 right-1/4 w-24 h-24 bg-[#8B6F9E]/10 rounded-full blur-2xl" />
 
-                            <Image size={32} className={`mb-3 relative z-10 ${isIdeal || isSuccess ? 'text-emerald-400' : 'text-amber-400'}`} />
-                            <p className={`text-sm relative z-10 font-medium ${isIdeal || isSuccess ? 'text-emerald-100' : 'text-amber-100'}`}>
+                            <Image size={32} className={`mb-3 relative z-10`} style={{ color: isIdeal || isSuccess ? '#10B981' : '#D97757' }} />
+                            <p className={`text-sm relative z-10 font-medium`} style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: isIdeal || isSuccess ? '#10B981' : '#D97757' }}>
                                 {content.replace(/^De AI.*?:\s*/i, '')}
                             </p>
-                            {isSuccess && <div className="absolute top-2 right-2 bg-emerald-500 text-white text-[10px] uppercase font-bold px-2 py-0.5 rounded-full">Goed gedaan!</div>}
+                            {isSuccess && <div className="absolute top-2 right-2 text-white text-[10px] uppercase font-bold px-2 py-0.5 rounded-full" style={{ backgroundColor: '#10B981' }}>Goed gedaan!</div>}
                         </>
                     )}
                 </div>
@@ -389,18 +397,18 @@ const ResultVisual: React.FC<{
         return (
             <div className={`p-4 rounded-2xl border ${getBgColor()} h-full flex flex-col font-mono text-sm`}>
                 {getHeader()}
-                <div className="flex-1 bg-slate-950 rounded-xl p-4 overflow-x-auto relative">
+                <div className="flex-1 bg-[#1A1A19] rounded-xl p-4 overflow-x-auto relative">
                     <div className="flex gap-1.5 mb-3 opacity-50">
                         <div className="w-2.5 h-2.5 rounded-full bg-red-500" />
                         <div className="w-2.5 h-2.5 rounded-full bg-yellow-500" />
                         <div className="w-2.5 h-2.5 rounded-full bg-green-500" />
                     </div>
-                    <code className="text-slate-300 block leading-relaxed">
-                        <span className="text-purple-400">def</span> <span className="text-yellow-400">calculator</span>():<br />
-                        &nbsp;&nbsp;<span className="text-slate-500"># {content.substring(0, 50)}...</span><br />
-                        &nbsp;&nbsp;<span className="text-purple-400">return</span> result
+                    <code className="text-[#E8E6DF] block leading-relaxed">
+                        <span className="text-[#8B6F9E]">def</span> <span className="text-[#D97757]">calculator</span>():<br />
+                        &nbsp;&nbsp;<span className="text-[#6B6B66]"># {content.substring(0, 50)}...</span><br />
+                        &nbsp;&nbsp;<span className="text-[#8B6F9E]">return</span> result
                     </code>
-                    <div className="mt-4 pt-4 border-t border-slate-800 text-xs text-slate-500">
+                    <div className="mt-4 pt-4 border-t border-[#3D3D38] text-xs text-[#6B6B66]">
                         // Output: {content}
                     </div>
                 </div>
@@ -412,16 +420,16 @@ const ResultVisual: React.FC<{
     return (
         <div className={`p-4 rounded-2xl border ${getBgColor()} h-full flex flex-col`}>
             {getHeader()}
-            <div className="flex-1 bg-white rounded-xl p-4 text-slate-800 shadow-sm relative overflow-hidden">
-                <div className="absolute top-0 left-0 w-full h-1 bg-slate-200" />
+            <div className="flex-1 bg-white rounded-xl p-4 text-[#3D3D38] shadow-sm relative overflow-y-auto max-h-[300px]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                <div className="absolute top-0 left-0 w-full h-1 bg-[#E8E6DF]" />
                 {/* Simulate paper lines */}
                 <div className="space-y-3">
-                    <div className="h-4 bg-slate-100 rounded w-3/4" />
-                    <div className="h-4 bg-slate-100 rounded w-full" />
-                    <div className="h-4 bg-slate-100 rounded w-5/6" />
+                    <div className="h-4 bg-[#F0EEE8] rounded w-3/4" />
+                    <div className="h-4 bg-[#F0EEE8] rounded w-full" />
+                    <div className="h-4 bg-[#F0EEE8] rounded w-5/6" />
                 </div>
 
-                <div className="mt-4 p-3 bg-slate-50 rounded-lg text-sm font-medium border-l-4 border-slate-300">
+                <div className="mt-4 p-3 bg-[#FAF9F0] rounded-lg text-sm font-medium border-l-4 border-[#D97757]">
                     "{content}"
                 </div>
             </div>
@@ -430,15 +438,17 @@ const ResultVisual: React.FC<{
 };
 
 export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoProfile }) => {
-    // State
+    // Persistent progress state (auto-saved to localStorage)
+    const { state: progress, setState: setProgress, clearSave } = useMissionAutoSave<PromptMasterProgress>(
+        'prompt-master',
+        { currentLevel: 'beginner', challengeIndex: 0, totalScore: 0, completedChallenges: [] }
+    );
+
+    // Transient UI state
     const [phase, setPhase] = useState<'intro' | 'challenge' | 'result'>('intro');
-    const [currentLevel, setCurrentLevel] = useState<'beginner' | 'gevorderd' | 'expert'>('beginner');
-    const [challengeIndex, setChallengeIndex] = useState(0);
     const [userPrompt, setUserPrompt] = useState('');
     const [aiResponse, setAiResponse] = useState<{ output: string; score: number; feedback: { label: string; found: boolean; hint: string; explanation?: string }[]; generatedImageUrl?: string } | null>(null);
     const [showFeedback, setShowFeedback] = useState(false);
-    const [totalScore, setTotalScore] = useState(0);
-    const [completedChallenges, setCompletedChallenges] = useState<string[]>([]);
     const [attempts, setAttempts] = useState(0);
 
     // NEW: Loading and thinking states
@@ -446,15 +456,19 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
     const [thinkingStep, setThinkingStep] = useState('');
 
     // Get current challenges for level
-    const levelChallenges = CHALLENGES.filter(c => c.level === currentLevel);
-    const currentChallenge = levelChallenges[challengeIndex];
+    const levelChallenges = CHALLENGES.filter(c => c.level === progress.currentLevel);
+    const currentChallenge = levelChallenges[progress.challengeIndex];
+
+    // Global progress across all challenges
+    const globalIndex = CHALLENGES.findIndex(c => c.id === currentChallenge?.id);
+    const totalChallenges = CHALLENGES.length;
     
     // Adjusted minScore based on VSO profile
     const effectiveMinScore = vsoProfile === 'dagbesteding' 
         ? Math.max(1, currentChallenge.minScore - 1) 
         : currentChallenge.minScore;
 
-    const allLevelsDone = currentLevel === 'expert' && challengeIndex >= levelChallenges.length - 1 && completedChallenges.includes(currentChallenge?.id);
+    const allLevelsDone = progress.currentLevel === 'expert' && progress.challengeIndex >= levelChallenges.length - 1 && progress.completedChallenges.includes(currentChallenge?.id);
 
     // Handlers
     const handleSubmitPrompt = async () => {
@@ -475,9 +489,12 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
             setAiResponse(result);
             setShowFeedback(true);
 
-            if (result.score >= effectiveMinScore && !completedChallenges.includes(currentChallenge.id)) {
-                setTotalScore(s => s + result.score * 10);
-                setCompletedChallenges([...completedChallenges, currentChallenge.id]);
+            if (result.score >= effectiveMinScore && !progress.completedChallenges.includes(currentChallenge.id)) {
+                setProgress(prev => ({
+                    ...prev,
+                    totalScore: prev.totalScore + result.score * 10,
+                    completedChallenges: [...prev.completedChallenges, currentChallenge.id],
+                }));
             }
         } catch (error) {
             console.error('AI analysis error:', error);
@@ -505,14 +522,12 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
         setShowFeedback(false);
         setAttempts(0);
 
-        if (challengeIndex < levelChallenges.length - 1) {
-            setChallengeIndex(i => i + 1);
-        } else if (currentLevel === 'beginner') {
-            setCurrentLevel('gevorderd');
-            setChallengeIndex(0);
-        } else if (currentLevel === 'gevorderd') {
-            setCurrentLevel('expert');
-            setChallengeIndex(0);
+        if (progress.challengeIndex < levelChallenges.length - 1) {
+            setProgress(prev => ({ ...prev, challengeIndex: prev.challengeIndex + 1 }));
+        } else if (progress.currentLevel === 'beginner') {
+            setProgress(prev => ({ ...prev, currentLevel: 'gevorderd', challengeIndex: 0 }));
+        } else if (progress.currentLevel === 'gevorderd') {
+            setProgress(prev => ({ ...prev, currentLevel: 'expert', challengeIndex: 0 }));
         } else {
             setPhase('result');
         }
@@ -530,34 +545,34 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
 
     const getLevelColor = (level: string) => {
         switch (level) {
-            case 'beginner': return 'from-emerald-500 to-green-500';
-            case 'gevorderd': return 'from-amber-500 to-orange-500';
-            case 'expert': return 'from-purple-500 to-pink-500';
-            default: return 'from-blue-500 to-indigo-500';
+            case 'beginner': return 'from-[#2A9D8F] to-[#10B981]';
+            case 'gevorderd': return 'from-[#D97757] to-[#C46849]';
+            case 'expert': return 'from-[#8B6F9E] to-[#D97757]';
+            default: return 'from-[#2A9D8F] to-[#D97757]';
         }
     };
 
     // INTRO SCREEN
     if (phase === 'intro') {
         return (
-            <div className="min-h-screen overflow-y-auto bg-slate-900 text-white flex flex-col">
-                {/* Header - matches other missions */}
-                <header className="bg-slate-800 border-b border-slate-700 px-6 py-4 flex items-center justify-between">
+            <div className="min-h-screen overflow-y-auto bg-[#FAF9F0] text-[#1A1A19] flex flex-col" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                {/* Header */}
+                <header className="bg-white border-b border-[#E8E6DF] px-6 py-4 flex items-center justify-between">
                     <button
                         onClick={onBack}
-                        className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors font-bold text-sm uppercase tracking-widest"
+                        className="flex items-center gap-2 text-[#6B6B66] hover:text-[#1A1A19] transition-all duration-300 font-bold text-sm uppercase tracking-widest"
                     >
                         <ArrowLeft size={16} /> Terug
                     </button>
                     <div className="flex items-center gap-3">
-                        <div className="p-2 bg-purple-500/20 text-purple-400 rounded-xl">
+                        <div className="p-2 bg-[#D97757]/10 text-[#D97757] rounded-xl">
                             <Sparkles size={24} />
                         </div>
                         <div>
-                            <h1 className="text-lg font-black uppercase tracking-tight flex items-center gap-2">
-                                Prompt Lab <Zap size={16} className="text-amber-400" />
+                            <h1 className="text-lg font-black uppercase tracking-tight flex items-center gap-2" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
+                                Prompt Lab <Zap size={16} className="text-[#D97757]" />
                             </h1>
-                            <p className="text-[10px] text-slate-500 uppercase tracking-widest font-bold">
+                            <p className="text-[10px] text-[#6B6B66] uppercase tracking-widest font-bold">
                                 Prompt Engineering
                             </p>
                         </div>
@@ -568,40 +583,43 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                 {/* Content */}
                 <div className="flex-1 flex items-center justify-center p-6 md:p-12">
                     <div className="max-w-2xl mx-auto text-center">
-                        <div className="w-24 h-24 bg-gradient-to-br from-purple-500 to-pink-500 rounded-[2rem] flex items-center justify-center mx-auto mb-8 shadow-2xl shadow-purple-500/30">
+                        <div className="w-24 h-24 rounded-[2rem] flex items-center justify-center mx-auto mb-8 shadow-2xl text-white" style={{ background: 'linear-gradient(135deg, #D97757, #C46849)', boxShadow: '0 25px 50px -12px rgba(217,119,87,0.3)' }}>
                             <Sparkles size={48} />
                         </div>
 
-                        <h2 className="text-3xl md:text-4xl font-black mb-6 text-white">
-                            Leer Prompt Engineering door te <span className="text-purple-400">DOEN</span>
+                        <h2 className="text-3xl md:text-4xl font-black mb-6 text-[#1A1A19]" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
+                            Leer Prompt Engineering door te <span className="text-[#D97757]">DOEN</span>
                         </h2>
 
-                        <p className="text-lg text-slate-400 mb-10 leading-relaxed">
+                        <p className="text-lg text-[#6B6B66] mb-10 leading-relaxed">
                             Typ je eigen prompts, zie wat de AI maakt, en ontdek wat er beter kan!
                         </p>
 
                         {/* Levels Preview */}
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
-                            <div className="bg-slate-800 rounded-2xl p-5 border border-slate-700">
+                            <div className="bg-white rounded-2xl p-5 border border-[#E8E6DF]">
                                 <div className="text-3xl mb-2">🌱</div>
-                                <h3 className="font-bold mb-1 text-emerald-400">Beginner</h3>
-                                <p className="text-xs text-slate-500">Specifiek zijn, context geven</p>
+                                <h3 className="font-bold mb-1 text-[#2A9D8F]">Beginner</h3>
+                                <p className="text-xs text-[#6B6B66]">Specifiek zijn, context geven</p>
                             </div>
-                            <div className="bg-slate-800 rounded-2xl p-5 border border-slate-700">
+                            <div className="bg-white rounded-2xl p-5 border border-[#E8E6DF]">
                                 <div className="text-3xl mb-2">⚡</div>
-                                <h3 className="font-bold mb-1 text-amber-400">Gevorderd</h3>
-                                <p className="text-xs text-slate-500">Structuur, format, toon</p>
+                                <h3 className="font-bold mb-1 text-[#D97757]">Gevorderd</h3>
+                                <p className="text-xs text-[#6B6B66]">Structuur, format, toon</p>
                             </div>
-                            <div className="bg-slate-800 rounded-2xl p-5 border border-slate-700">
+                            <div className="bg-white rounded-2xl p-5 border border-[#E8E6DF]">
                                 <div className="text-3xl mb-2">🎯</div>
-                                <h3 className="font-bold mb-1 text-purple-400">Expert</h3>
-                                <p className="text-xs text-slate-500">Persona's, beperkingen</p>
+                                <h3 className="font-bold mb-1 text-[#8B6F9E]">Expert</h3>
+                                <p className="text-xs text-[#6B6B66]">Persona's, beperkingen</p>
                             </div>
                         </div>
 
                         <button
                             onClick={() => setPhase('challenge')}
-                            className="bg-purple-600 hover:bg-purple-700 text-white px-12 py-4 rounded-xl font-bold text-lg transition-colors shadow-lg"
+                            className="text-white px-12 py-4 rounded-full font-bold text-lg transition-all duration-300 shadow-lg hover:shadow-xl"
+                            style={{ backgroundColor: '#D97757' }}
+                            onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#C46849')}
+                            onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#D97757')}
                         >
                             Start het Lab! 🧪
                         </button>
@@ -616,76 +634,100 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
         const passed = aiResponse && aiResponse.score >= effectiveMinScore;
 
         return (
-            <div className="min-h-screen overflow-y-auto bg-slate-900 text-white flex flex-col">
-                {/* Header - consistent with other missions */}
-                <header className="bg-slate-800 border-b border-slate-700 px-6 py-4 sticky top-0 z-10">
+            <div className="min-h-screen overflow-y-auto bg-[#FAF9F0] text-[#1A1A19] flex flex-col" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                {/* Header */}
+                <header className="bg-white border-b border-[#E8E6DF] px-6 py-4 sticky top-0 z-10">
                     <div className="max-w-4xl mx-auto flex items-center justify-between">
-                        <button onClick={onBack} className="flex items-center gap-2 text-slate-400 hover:text-white text-sm font-bold uppercase tracking-widest transition-colors">
+                        <button onClick={onBack} className="flex items-center gap-2 text-[#6B6B66] hover:text-[#1A1A19] text-sm font-bold uppercase tracking-widest transition-all duration-300">
                             <ArrowLeft size={16} /> Stoppen
                         </button>
                         <div className="flex items-center gap-3">
                             {/* Level Badge with Progress */}
                             <div className="flex items-center gap-2">
-                                <span className={`text-xs font-bold px-3 py-1.5 rounded-lg ${currentLevel === 'beginner' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' :
-                                    currentLevel === 'gevorderd' ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' :
-                                        'bg-purple-500/20 text-purple-400 border border-purple-500/30'
-                                    }`}>
-                                    {currentLevel === 'beginner' ? '🌱 Beginner' :
-                                        currentLevel === 'gevorderd' ? '⚡ Gevorderd' : '🎯 Expert'}
+                                <span className={`text-xs font-bold px-3 py-1.5 rounded-full border inline-flex items-center`}
+                                    style={{
+                                        backgroundColor: progress.currentLevel === 'beginner' ? 'rgba(42,157,143,0.1)' : progress.currentLevel === 'gevorderd' ? 'rgba(217,119,87,0.1)' : 'rgba(139,111,158,0.1)',
+                                        color: progress.currentLevel === 'beginner' ? '#2A9D8F' : progress.currentLevel === 'gevorderd' ? '#D97757' : '#8B6F9E',
+                                        borderColor: progress.currentLevel === 'beginner' ? 'rgba(42,157,143,0.3)' : progress.currentLevel === 'gevorderd' ? 'rgba(217,119,87,0.3)' : 'rgba(139,111,158,0.3)'
+                                    }}>
+                                    {progress.currentLevel === 'beginner' ? '🌱 Beginner' :
+                                        progress.currentLevel === 'gevorderd' ? '⚡ Gevorderd' : '🎯 Expert'}
                                 </span>
-                                <span className="text-[10px] text-slate-500 font-bold uppercase">
-                                    Niveau {currentLevel === 'beginner' ? 1 : currentLevel === 'gevorderd' ? 2 : 3}/3
+                                <span className="text-[10px] text-[#6B6B66] font-bold uppercase">
+                                    Niveau {progress.currentLevel === 'beginner' ? 1 : progress.currentLevel === 'gevorderd' ? 2 : 3}/3
                                 </span>
                                 {vsoProfile && (
-                                    <span className="text-[10px] bg-indigo-500/20 text-indigo-400 px-2 py-1 rounded border border-indigo-500/30 font-bold uppercase tracking-tight">
+                                    <span className="text-[10px] px-2 py-1 rounded-full border font-bold uppercase tracking-tight" style={{ backgroundColor: 'rgba(139,111,158,0.1)', color: '#8B6F9E', borderColor: 'rgba(139,111,158,0.3)' }}>
                                         {vsoProfile === 'dagbesteding' ? 'Focus: Ervaren' : 'Focus: Beheersen'}
                                     </span>
                                 )}
                             </div>
-                            <div className="h-4 w-px bg-slate-700" />
-                            <span className="text-sm text-slate-400">
-                                Uitdaging {challengeIndex + 1}/{levelChallenges.length}
-                            </span>
+                            <div className="h-4 w-px bg-[#E8E6DF]" />
+                            <div className="flex items-center gap-2">
+                                <div className="flex gap-0.5">
+                                    {CHALLENGES.map((_, i) => (
+                                        <div
+                                            key={i}
+                                            className="w-2 h-2 rounded-full transition-all duration-300"
+                                            style={{
+                                                backgroundColor: progress.completedChallenges.includes(CHALLENGES[i].id)
+                                                    ? '#10B981'
+                                                    : i === globalIndex
+                                                        ? '#D97757'
+                                                        : '#E8E6DF'
+                                            }}
+                                        />
+                                    ))}
+                                </div>
+                                <span className="text-xs text-[#6B6B66] font-bold">
+                                    {globalIndex + 1}/{totalChallenges}
+                                </span>
+                            </div>
                         </div>
-                        <div className="flex items-center gap-2 text-amber-400">
+                        <div className="flex items-center gap-2 text-[#D97757]">
                             <Star size={16} fill="currentColor" />
-                            <span className="font-bold">{totalScore}</span>
+                            <span className="font-bold">{progress.totalScore}</span>
                         </div>
                     </div>
                 </header>
 
                 <div className="max-w-4xl mx-auto p-4 md:p-8">
                     {/* Goal Card */}
-                    <div className="bg-slate-800 rounded-2xl p-6 border border-slate-700 mb-6">
+                    <div className="bg-white rounded-2xl p-6 border border-[#E8E6DF] mb-6">
                         {/* Level Progress Bar */}
                         <div className="flex items-center gap-2 mb-4">
                             <div className="flex-1 flex items-center gap-1">
                                 {['beginner', 'gevorderd', 'expert'].map((level, i) => (
                                     <div key={level} className="flex-1 flex items-center">
-                                        <div className={`h-1.5 flex-1 rounded-full transition-all ${level === currentLevel ? 'bg-gradient-to-r from-purple-500 to-pink-500 animate-pulse' :
-                                            (level === 'beginner' || (level === 'gevorderd' && currentLevel === 'expert'))
-                                                ? 'bg-emerald-500' : 'bg-slate-700'
-                                            }`} />
-                                        {i < 2 && <div className="w-2 h-2 rounded-full mx-1 bg-slate-700" />}
+                                        <div className={`h-1.5 flex-1 rounded-full transition-all`}
+                                            style={{
+                                                background: level === progress.currentLevel
+                                                    ? 'linear-gradient(to right, #D97757, #C46849)'
+                                                    : (level === 'beginner' || (level === 'gevorderd' && progress.currentLevel === 'expert'))
+                                                        ? '#10B981'
+                                                        : '#E8E6DF'
+                                            }} />
+                                        {i < 2 && <div className="w-2 h-2 rounded-full mx-1 bg-[#E8E6DF]" />}
                                     </div>
                                 ))}
                             </div>
-                            <span className="text-[10px] text-slate-500 font-bold">
-                                {currentLevel === 'beginner' ? '2 niveaus te gaan' :
-                                    currentLevel === 'gevorderd' ? '1 niveau te gaan' : 'Laatste niveau!'}
+                            <span className="text-[10px] text-[#6B6B66] font-bold">
+                                {progress.currentLevel === 'beginner' ? '2 niveaus te gaan' :
+                                    progress.currentLevel === 'gevorderd' ? '1 niveau te gaan' : 'Laatste niveau!'}
                             </span>
                         </div>
 
                         <div className="flex items-center gap-3 mb-3">
-                            <div className={`p-2 rounded-xl ${currentLevel === 'beginner' ? 'bg-emerald-500/20 text-emerald-400' :
-                                currentLevel === 'gevorderd' ? 'bg-amber-500/20 text-amber-400' :
-                                    'bg-purple-500/20 text-purple-400'
-                                }`}>
+                            <div className="p-2 rounded-xl"
+                                style={{
+                                    backgroundColor: progress.currentLevel === 'beginner' ? 'rgba(42,157,143,0.1)' : progress.currentLevel === 'gevorderd' ? 'rgba(217,119,87,0.1)' : 'rgba(139,111,158,0.1)',
+                                    color: progress.currentLevel === 'beginner' ? '#2A9D8F' : progress.currentLevel === 'gevorderd' ? '#D97757' : '#8B6F9E'
+                                }}>
                                 {getTypeIcon(currentChallenge.type)}
                             </div>
-                            <span className="font-bold text-lg">{currentChallenge.goal}</span>
+                            <span className="font-bold text-lg text-[#1A1A19]" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>{currentChallenge.goal}</span>
                         </div>
-                        <p className="text-slate-400">{currentChallenge.scenario}</p>
+                        <p className="text-[#6B6B66]">{currentChallenge.scenario}</p>
                     </div>
 
                     {/* Input Area */}
@@ -693,39 +735,42 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                         <div className="mb-6 relative">
                             {/* Thinking Overlay */}
                             {isAnalyzing && (
-                                <div className="absolute inset-0 z-20 bg-slate-900/90 backdrop-blur-sm rounded-2xl flex flex-col items-center justify-center gap-4 animate-in fade-in">
+                                <div className="absolute inset-0 z-20 bg-white/90 backdrop-blur-sm rounded-2xl flex flex-col items-center justify-center gap-4 animate-in fade-in">
                                     <div className="relative">
-                                        <div className="absolute inset-0 bg-purple-500/30 blur-xl rounded-full animate-pulse"></div>
-                                        <div className="relative z-10 p-4 bg-slate-800 rounded-full border-2 border-purple-500/50">
-                                            <Brain size={32} className="text-purple-400 animate-pulse" />
+                                        <div className="absolute inset-0 bg-[#D97757]/20 blur-xl rounded-full animate-pulse"></div>
+                                        <div className="relative z-10 p-4 bg-white rounded-full border-2 border-[#D97757]/50 shadow-lg">
+                                            <Brain size={32} className="text-[#D97757] animate-pulse" />
                                         </div>
                                     </div>
                                     <div className="text-center">
-                                        <p className="text-lg font-bold text-white animate-pulse">{thinkingStep}</p>
-                                        <p className="text-sm text-slate-400 mt-1">De AI denkt na over je prompt...</p>
+                                        <p className="text-lg font-bold text-[#1A1A19] animate-pulse">{thinkingStep}</p>
+                                        <p className="text-sm text-[#6B6B66] mt-1">De AI denkt na over je prompt...</p>
                                     </div>
                                     <div className="flex gap-1.5">
-                                        <div className="w-2 h-2 bg-purple-400 rounded-full animate-bounce [animation-delay:0ms]"></div>
-                                        <div className="w-2 h-2 bg-purple-400 rounded-full animate-bounce [animation-delay:150ms]"></div>
-                                        <div className="w-2 h-2 bg-purple-400 rounded-full animate-bounce [animation-delay:300ms]"></div>
+                                        <div className="w-2 h-2 bg-[#D97757] rounded-full animate-bounce [animation-delay:0ms]"></div>
+                                        <div className="w-2 h-2 bg-[#D97757] rounded-full animate-bounce [animation-delay:150ms]"></div>
+                                        <div className="w-2 h-2 bg-[#D97757] rounded-full animate-bounce [animation-delay:300ms]"></div>
                                     </div>
                                 </div>
                             )}
 
-                            <label className="block text-sm font-bold text-slate-300 mb-3">
+                            <label className="block text-sm font-bold text-[#3D3D38] mb-3">
                                 {attempts > 0 ? 'Verbeter je prompt:' : 'Typ je prompt aan de AI:'}
                             </label>
                             <textarea
                                 value={userPrompt}
                                 onChange={e => setUserPrompt(e.target.value)}
                                 placeholder="Typ hier je opdracht voor de AI..."
-                                className="w-full bg-slate-800 border-2 border-slate-700 rounded-2xl p-4 text-white placeholder-slate-500 min-h-[120px] focus:outline-none focus:border-purple-500 transition-colors resize-none"
+                                className="w-full bg-white border-2 border-[#E8E6DF] rounded-2xl p-4 text-[#1A1A19] placeholder-[#6B6B66] min-h-[120px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D97757] transition-all duration-300 resize-none"
                                 disabled={isAnalyzing}
                             />
                             <button
                                 onClick={handleSubmitPrompt}
                                 disabled={userPrompt.trim().length < 5 || isAnalyzing}
-                                className="mt-4 w-full bg-purple-600 hover:bg-purple-700 py-4 rounded-xl font-bold flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-lg"
+                                className="mt-4 w-full py-4 rounded-full font-bold flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-lg text-white"
+                                style={{ backgroundColor: '#D97757' }}
+                                onMouseEnter={e => { if (!e.currentTarget.disabled) e.currentTarget.style.backgroundColor = '#C46849'; }}
+                                onMouseLeave={e => { if (!e.currentTarget.disabled) e.currentTarget.style.backgroundColor = '#D97757'; }}
                             >
                                 {isAnalyzing ? (
                                     <>
@@ -741,48 +786,50 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                             {/* Show what's missing while editing after first attempt */}
                             {attempts > 0 && aiResponse && (
                                 <div className="mt-8 space-y-4 animate-in fade-in slide-in-from-top-4">
-                                    <h4 className="font-bold flex items-center gap-2 text-slate-300">
-                                        <Target size={18} className="text-purple-400" />
+                                    <h4 className="font-bold flex items-center gap-2 text-[#3D3D38]">
+                                        <Target size={18} className="text-[#D97757]" />
                                         Wat moet je nog toevoegen?
                                     </h4>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                         {aiResponse.feedback.map((item, i) => (
                                             <div
                                                 key={i}
-                                                className={`p-3 rounded-xl flex items-center gap-3 border transition-all ${item.found
-                                                    ? 'bg-emerald-500/10 border-emerald-500/20 opacity-50'
-                                                    : 'bg-red-500/10 border-red-500/20 shadow-lg shadow-red-500/5'
-                                                    }`}
+                                                className={`p-3 rounded-xl flex items-center gap-3 border transition-all duration-300`}
+                                                style={{
+                                                    backgroundColor: item.found ? 'rgba(16,185,129,0.05)' : 'rgba(217,119,87,0.05)',
+                                                    borderColor: item.found ? 'rgba(16,185,129,0.2)' : 'rgba(217,119,87,0.2)',
+                                                    opacity: item.found ? 0.5 : 1
+                                                }}
                                             >
                                                 {item.found ? (
-                                                    <div className="w-6 h-6 bg-emerald-500/50 rounded-full flex items-center justify-center text-emerald-100">
+                                                    <div className="w-6 h-6 rounded-full flex items-center justify-center text-white" style={{ backgroundColor: '#10B981' }}>
                                                         ✓
                                                     </div>
                                                 ) : (
-                                                    <div className="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center text-white text-[10px] font-bold">
+                                                    <div className="w-6 h-6 rounded-full flex items-center justify-center text-white text-[10px] font-bold" style={{ backgroundColor: '#D97757' }}>
                                                         !
                                                     </div>
                                                 )}
                                                 <div>
-                                                    <span className={`font-bold text-sm ${item.found ? 'text-emerald-300/60' : 'text-white'}`}>
+                                                    <span className="font-bold text-sm" style={{ color: item.found ? '#10B981' : '#1A1A19' }}>
                                                         {item.label}
                                                     </span>
                                                     {!item.found && (
-                                                        <p className="text-xs text-red-100/60">{item.hint}</p>
+                                                        <p className="text-xs text-[#6B6B66]">{item.hint}</p>
                                                     )}
                                                 </div>
                                             </div>
                                         ))}
                                     </div>
 
-                                    <div className="mt-6 bg-amber-500/10 rounded-2xl p-5 border border-amber-500/20">
-                                        <h4 className="font-bold mb-3 flex items-center gap-2 text-amber-300 text-sm">
+                                    <div className="mt-6 bg-[#D97757]/5 rounded-2xl p-5 border border-[#D97757]/20">
+                                        <h4 className="font-bold mb-3 flex items-center gap-2 text-[#D97757] text-sm">
                                             <Lightbulb size={16} /> Tips voor dit niveau:
                                         </h4>
                                         <ul className="space-y-2">
                                             {currentChallenge.tips.map((tip, i) => (
-                                                <li key={i} className="flex items-start gap-2 text-[13px] text-slate-400">
-                                                    <div className="w-1 h-1 rounded-full bg-amber-500 mt-1.5 flex-shrink-0" />
+                                                <li key={i} className="flex items-start gap-2 text-[13px] text-[#6B6B66]">
+                                                    <div className="w-1 h-1 rounded-full bg-[#D97757] mt-1.5 flex-shrink-0" />
                                                     {tip}
                                                 </li>
                                             ))}
@@ -822,16 +869,20 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                             </div>
 
                             {/* Result Summary - Moved below visuals */}
-                            <div className={`rounded-xl p-4 flex items-center justify-between ${passed ? 'bg-emerald-500/10 border border-emerald-500/20' : 'bg-amber-500/10 border border-amber-500/20'}`}>
+                            <div className="rounded-2xl p-4 flex items-center justify-between border"
+                                style={{
+                                    backgroundColor: passed ? 'rgba(16,185,129,0.05)' : 'rgba(217,119,87,0.05)',
+                                    borderColor: passed ? 'rgba(16,185,129,0.2)' : 'rgba(217,119,87,0.2)'
+                                }}>
                                 <div className="flex items-center gap-3">
-                                    <div className={`w-10 h-10 rounded-full flex items-center justify-center ${passed ? 'bg-emerald-500 text-white' : 'bg-amber-500 text-white'}`}>
+                                    <div className="w-10 h-10 rounded-full flex items-center justify-center text-white" style={{ backgroundColor: passed ? '#10B981' : '#D97757' }}>
                                         {passed ? <ThumbsUp size={20} /> : <ThumbsDown size={20} />}
                                     </div>
                                     <div>
-                                        <h4 className={`font-bold ${passed ? 'text-emerald-400' : 'text-amber-400'}`}>
+                                        <h4 className="font-bold" style={{ color: passed ? '#10B981' : '#D97757' }}>
                                             {passed ? 'Missie Geslaagd!' : 'Nog niet helemaal...'}
                                         </h4>
-                                        <p className="text-sm text-slate-400">
+                                        <p className="text-sm text-[#6B6B66]">
                                             {passed ? 'Je prompt gaf een geweldig resultaat.' : 'Kijk naar het verschil tussen jouw resultaat en het doel.'}
                                         </p>
                                     </div>
@@ -839,35 +890,36 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                             </div>
 
                             {/* Feedback Checklist */}
-                            <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
-                                <h4 className="font-bold mb-4 flex items-center gap-2">
-                                    <Target size={18} className="text-purple-400" />
+                            <div className="bg-white rounded-2xl p-6 border border-[#E8E6DF]">
+                                <h4 className="font-bold mb-4 flex items-center gap-2 text-[#1A1A19]">
+                                    <Target size={18} className="text-[#D97757]" />
                                     Wat zat er in je prompt?
                                 </h4>
                                 <div className="grid grid-cols-2 gap-3">
                                     {aiResponse.feedback.map((item, i) => (
                                         <div
                                             key={i}
-                                            className={`p-3 rounded-xl flex items-center gap-3 ${item.found
-                                                ? 'bg-emerald-500/20 border border-emerald-500/30'
-                                                : 'bg-red-500/10 border border-red-500/20'
-                                                }`}
+                                            className="p-3 rounded-xl flex items-center gap-3 border"
+                                            style={{
+                                                backgroundColor: item.found ? 'rgba(16,185,129,0.05)' : 'rgba(217,119,87,0.05)',
+                                                borderColor: item.found ? 'rgba(16,185,129,0.3)' : 'rgba(217,119,87,0.2)'
+                                            }}
                                         >
                                             {item.found ? (
-                                                <div className="w-6 h-6 bg-emerald-500 rounded-full flex items-center justify-center">
+                                                <div className="w-6 h-6 rounded-full flex items-center justify-center text-white" style={{ backgroundColor: '#10B981' }}>
                                                     <Sparkles size={12} />
                                                 </div>
                                             ) : (
-                                                <div className="w-6 h-6 bg-red-500/50 rounded-full flex items-center justify-center text-xs">
+                                                <div className="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs" style={{ backgroundColor: 'rgba(217,119,87,0.5)' }}>
                                                     ✗
                                                 </div>
                                             )}
                                             <div>
-                                                <span className={`font-bold text-sm ${item.found ? 'text-emerald-300' : 'text-red-300'}`}>
+                                                <span className="font-bold text-sm" style={{ color: item.found ? '#10B981' : '#D97757' }}>
                                                     {item.label}
                                                 </span>
                                                 {!item.found && (
-                                                    <p className="text-xs text-white/50">{item.hint}</p>
+                                                    <p className="text-xs text-[#6B6B66]">{item.hint}</p>
                                                 )}
                                             </div>
                                         </div>
@@ -877,14 +929,14 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
 
                             {/* Tips (if not passed) */}
                             {!passed && (
-                                <div className="bg-amber-500/10 rounded-2xl p-6 border border-amber-500/30">
-                                    <h4 className="font-bold mb-3 flex items-center gap-2 text-amber-300">
+                                <div className="bg-[#D97757]/5 rounded-2xl p-6 border border-[#D97757]/20">
+                                    <h4 className="font-bold mb-3 flex items-center gap-2 text-[#D97757]">
                                         <Lightbulb size={18} /> Tips om te verbeteren:
                                     </h4>
                                     <ul className="space-y-2">
                                         {currentChallenge.tips.map((tip, i) => (
-                                            <li key={i} className="flex items-start gap-2 text-sm text-purple-200">
-                                                <ChevronRight size={14} className="mt-1 text-amber-400 flex-shrink-0" />
+                                            <li key={i} className="flex items-start gap-2 text-sm text-[#3D3D38]">
+                                                <ChevronRight size={14} className="mt-1 text-[#D97757] flex-shrink-0" />
                                                 {tip}
                                             </li>
                                         ))}
@@ -897,7 +949,7 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                                 {!passed && (
                                     <button
                                         onClick={handleTryAgain}
-                                        className="flex-1 bg-white/10 border border-white/20 py-4 rounded-xl font-bold hover:bg-white/20 transition-all flex items-center justify-center gap-2 active:scale-95 shadow-lg shadow-black/20"
+                                        className="flex-1 bg-white border border-[#E8E6DF] text-[#3D3D38] py-4 rounded-full font-bold hover:bg-[#F0EEE8] transition-all duration-300 flex items-center justify-center gap-2 active:scale-95 shadow-sm"
                                     >
                                         <RotateCcw size={18} /> Verbeteren
                                     </button>
@@ -905,10 +957,8 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                                 <button
                                     onClick={handleNext}
                                     disabled={aiResponse.score < 2}
-                                    className={`flex-1 py-4 rounded-xl font-bold flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed ${passed
-                                        ? 'bg-gradient-to-r from-emerald-500 to-green-500'
-                                        : 'bg-gradient-to-r from-purple-500 to-pink-500'
-                                        }`}
+                                    className="flex-1 py-4 rounded-full font-bold flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed text-white transition-all duration-300 shadow-lg"
+                                    style={{ background: passed ? 'linear-gradient(to right, #10B981, #2A9D8F)' : 'linear-gradient(to right, #D97757, #C46849)' }}
                                 >
                                     {allLevelsDone ? 'Bekijk resultaat' : 'Volgende uitdaging'} <ArrowRight size={18} />
                                 </button>
@@ -923,78 +973,79 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
     // RESULT SCREEN
     if (phase === 'result') {
         const maxScore = CHALLENGES.length * 50;
-        const percentage = Math.round((totalScore / maxScore) * 100);
+        const percentage = Math.round((progress.totalScore / maxScore) * 100);
         const passed = percentage >= 60;
 
         return (
-            <div className="min-h-screen overflow-y-auto bg-slate-900 text-white p-4 md:p-8 flex items-center justify-center">
+            <div className="min-h-screen overflow-y-auto bg-[#FAF9F0] text-[#1A1A19] p-4 md:p-8 flex items-center justify-center" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                 <div className="max-w-lg w-full text-center">
-                    <div className={`w-28 h-28 rounded-full flex items-center justify-center mx-auto mb-8 ${passed
-                        ? 'bg-emerald-500 shadow-2xl shadow-emerald-500/30'
-                        : 'bg-amber-500 shadow-2xl shadow-amber-500/30'
-                        }`}>
+                    <div className="w-28 h-28 rounded-full flex items-center justify-center mx-auto mb-8 text-white"
+                        style={{ backgroundColor: passed ? '#10B981' : '#D97757', boxShadow: passed ? '0 25px 50px -12px rgba(16,185,129,0.3)' : '0 25px 50px -12px rgba(217,119,87,0.3)' }}>
                         <Trophy size={56} />
                     </div>
 
-                    <h1 className="text-4xl font-black mb-4">
-                        {passed ? 'Prompt Master! 🎉' : 'Goed bezig!'}
+                    <h1 className="text-4xl font-black mb-4" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
+                        {passed ? 'Prompt Master!' : 'Goed bezig!'}
                     </h1>
 
-                    <p className="text-xl text-slate-400 mb-8">
+                    <p className="text-xl text-[#6B6B66] mb-8">
                         {passed
                             ? 'Je beheerst nu de kunst van prompt engineering!'
                             : 'Je hebt veel geleerd over hoe je effectieve prompts schrijft.'
                         }
                     </p>
 
-                    <div className="bg-slate-800 rounded-2xl p-8 mb-8 border border-slate-700">
-                        <div className="text-6xl font-black mb-2 text-purple-400">
-                            {totalScore} pts
+                    <div className="bg-white rounded-2xl p-8 mb-8 border border-[#E8E6DF]">
+                        <div className="text-6xl font-black mb-2 text-[#D97757]">
+                            {progress.totalScore} pts
                         </div>
-                        <p className="text-slate-400 font-bold mb-4">{completedChallenges.length}/{CHALLENGES.length} uitdagingen voltooid</p>
+                        <p className="text-[#6B6B66] font-bold mb-4">{progress.completedChallenges.length}/{CHALLENGES.length} uitdagingen voltooid</p>
 
                         <div className="mt-6 grid grid-cols-3 gap-3 text-sm">
-                            <div className="bg-emerald-500/20 rounded-xl p-3">
-                                <div className="font-bold text-emerald-300">Beginner</div>
-                                <div className="text-white">{completedChallenges.filter(id => CHALLENGES.find(c => c.id === id)?.level === 'beginner').length}/2</div>
+                            <div className="rounded-xl p-3 border" style={{ backgroundColor: 'rgba(42,157,143,0.05)', borderColor: 'rgba(42,157,143,0.2)' }}>
+                                <div className="font-bold text-[#2A9D8F]">Beginner</div>
+                                <div className="text-[#1A1A19]">{progress.completedChallenges.filter(id => CHALLENGES.find(c => c.id === id)?.level === 'beginner').length}/2</div>
                             </div>
-                            <div className="bg-amber-500/20 rounded-xl p-3">
-                                <div className="font-bold text-amber-300">Gevorderd</div>
-                                <div className="text-white">{completedChallenges.filter(id => CHALLENGES.find(c => c.id === id)?.level === 'gevorderd').length}/2</div>
+                            <div className="rounded-xl p-3 border" style={{ backgroundColor: 'rgba(217,119,87,0.05)', borderColor: 'rgba(217,119,87,0.2)' }}>
+                                <div className="font-bold text-[#D97757]">Gevorderd</div>
+                                <div className="text-[#1A1A19]">{progress.completedChallenges.filter(id => CHALLENGES.find(c => c.id === id)?.level === 'gevorderd').length}/2</div>
                             </div>
-                            <div className="bg-purple-500/20 rounded-xl p-3">
-                                <div className="font-bold text-purple-300">Expert</div>
-                                <div className="text-white">{completedChallenges.filter(id => CHALLENGES.find(c => c.id === id)?.level === 'expert').length}/2</div>
+                            <div className="rounded-xl p-3 border" style={{ backgroundColor: 'rgba(139,111,158,0.05)', borderColor: 'rgba(139,111,158,0.2)' }}>
+                                <div className="font-bold text-[#8B6F9E]">Expert</div>
+                                <div className="text-[#1A1A19]">{progress.completedChallenges.filter(id => CHALLENGES.find(c => c.id === id)?.level === 'expert').length}/2</div>
                             </div>
                         </div>
                     </div>
 
                     {/* Key Learnings */}
-                    <div className="bg-slate-800 rounded-2xl p-6 mb-8 text-left border border-slate-700">
-                        <h4 className="font-bold mb-3 flex items-center gap-2">
-                            <Lightbulb size={18} className="text-yellow-400" /> Wat je geleerd hebt:
+                    <div className="bg-white rounded-2xl p-6 mb-8 text-left border border-[#E8E6DF]">
+                        <h4 className="font-bold mb-3 flex items-center gap-2 text-[#1A1A19]">
+                            <Lightbulb size={18} className="text-[#D97757]" /> Wat je geleerd hebt:
                         </h4>
-                        <ul className="space-y-2 text-sm text-slate-300">
+                        <ul className="space-y-2 text-sm text-[#3D3D38]">
                             <li className="flex items-start gap-2">
-                                <span className="text-emerald-400">✓</span> Specifieke details geven betere resultaten
+                                <span className="text-[#10B981]">✓</span> Specifieke details geven betere resultaten
                             </li>
                             <li className="flex items-start gap-2">
-                                <span className="text-emerald-400">✓</span> Context en doel helpen de AI begrijpen
+                                <span className="text-[#10B981]">✓</span> Context en doel helpen de AI begrijpen
                             </li>
                             <li className="flex items-start gap-2">
-                                <span className="text-emerald-400">✓</span> Format en structuur vragen geeft overzicht
+                                <span className="text-[#10B981]">✓</span> Format en structuur vragen geeft overzicht
                             </li>
                             <li className="flex items-start gap-2">
-                                <span className="text-emerald-400">✓</span> Persona's en beperkingen geven controle
+                                <span className="text-[#10B981]">✓</span> Persona's en beperkingen geven controle
                             </li>
                         </ul>
                     </div>
 
                     <button
-                        onClick={() => onComplete(passed)}
-                        className="w-full bg-purple-600 hover:bg-purple-700 py-5 rounded-xl font-bold transition-colors"
+                        onClick={() => { clearSave(); onComplete(passed); }}
+                        className="w-full py-5 rounded-full font-bold transition-all duration-300 text-white shadow-lg hover:shadow-xl"
+                        style={{ backgroundColor: '#D97757' }}
+                        onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#C46849')}
+                        onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#D97757')}
                     >
-                        Terug naar Dashboard 🏠
+                        Terug naar Dashboard
                     </button>
                 </div>
             </div>

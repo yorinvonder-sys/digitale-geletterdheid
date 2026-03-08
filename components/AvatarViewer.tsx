@@ -893,11 +893,11 @@ const LegsSection = memo<{
                 )}
                 {[-legSpacing, legSpacing].map((x, i) => (
                     <group key={i}>
-                        <mesh position={[x, -0.3, 0]}>
+                        <mesh position={[x, -0.245, 0]}>
                             <boxGeometry args={[legWidth * 0.8, 0.15, legWidth * 0.8]} />
                             {mcMat(skinColor)}
                         </mesh>
-                        <mesh position={[x, -0.42, 0.02]}>
+                        <mesh position={[x, -0.365, 0.02]}>
                             <boxGeometry args={[legWidth + 0.04, 0.1, legWidth + 0.06]} />
                             {shoeMat}
                         </mesh>
@@ -926,7 +926,7 @@ const LegsSection = memo<{
                             <boxGeometry args={[legWidth * 0.9, 0.28, legWidth * 0.9]} />
                             {mcMat(skinColor)}
                         </mesh>
-                        <mesh position={[0, -0.35, 0.02]}>
+                        <mesh position={[0, -0.365, 0.02]}>
                             <boxGeometry args={[legWidth + 0.04, 0.1, legWidth + 0.06]} />
                             {shoeMat}
                         </mesh>
@@ -1741,7 +1741,7 @@ const AvatarModel = memo<{
     const armColor = getArmColor(config.shirtStyle, shirtColor, skinColor);
 
     return (
-        <group position={[0, variant === 'head' ? -1.5 : -0.85, 0]}>
+        <group position={[0, variant === 'head' ? -1.5 : -0.105, 0]}>
 
             {/* Head – cube with mouse-look */}
             <group ref={headRef} position={[0, 2.0, 0]}>
@@ -1923,17 +1923,31 @@ const AvatarModel = memo<{
 const SceneSurface = memo<{ variant: 'full' | 'head' }>(({ variant }) => {
     const { gl, scene } = useThree();
 
+    // Set background immediately on mount and when variant changes
+    const bgColor = useMemo(() => new THREE.Color('#FAF9F0'), []);
+
+    // Use a ref to track if we've already set the background
+    const initialized = useRef(false);
+    if (!initialized.current) {
+        if (variant === 'full') {
+            gl.setClearColor(bgColor, 1);
+            scene.background = bgColor;
+        } else {
+            gl.setClearColor('#000000', 0);
+            scene.background = null;
+        }
+        initialized.current = true;
+    }
+
     useEffect(() => {
         if (variant === 'head') {
             gl.setClearColor('#000000', 0);
             scene.background = null;
-            return;
+        } else {
+            gl.setClearColor(bgColor, 1);
+            scene.background = bgColor;
         }
-
-        const backgroundColor = new THREE.Color('#FAF9F0');
-        gl.setClearColor(backgroundColor, 1);
-        scene.background = backgroundColor;
-    }, [gl, scene, variant]);
+    }, [gl, scene, variant, bgColor]);
 
     return null;
 });
@@ -1944,7 +1958,7 @@ export const AvatarViewer: React.FC<AvatarViewerProps> = ({
     config, interactive = true, onPartClick, variant = 'full',
 }) => {
     const cameraPos = useMemo<[number, number, number]>(
-        () => (variant === 'head' ? [0, 0.5, 2.1] : [0, 0.5, 5.8]),
+        () => (variant === 'head' ? [0, 0.5, 2.1] : [0, 0.85, 5.8]),
         [variant]
     );
 
@@ -1999,14 +2013,14 @@ export const AvatarViewer: React.FC<AvatarViewerProps> = ({
                 />
 
                 {variant === 'full' && (
-                    <mesh position={[0, -0.10, 0]} rotation={[-Math.PI / 2, 0, 0]} renderOrder={-1}>
-                        <boxGeometry args={[2.2, 2.2, 0.02]} />
-                        <meshStandardMaterial color="#E8E6DF" transparent opacity={0.45} depthWrite={false} />
+                    <mesh position={[0, -0.05, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+                        <boxGeometry args={[2.4, 2.4, 0.06]} />
+                        <meshStandardMaterial color="#E8E6DF" roughness={0.9} metalness={0} />
                     </mesh>
                 )}
 
                 <ContactShadows
-                    position={[0, -0.08, 0]}
+                    position={[0, -0.01, 0]}
                     opacity={0.35}
                     scale={6}
                     blur={2.5}

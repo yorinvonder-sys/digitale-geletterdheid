@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowLeft, Trophy, ChevronRight, Check, X, Brain, Sparkles, ArrowLeftRight } from 'lucide-react';
+import { useMissionAutoSave } from '@/hooks/useMissionAutoSave';
 
 interface Props {
     onBack: () => void;
@@ -38,13 +39,37 @@ const CHALLENGES: Challenge[] = [
     { question: 'Is een filterbubbel ALTIJD slecht?', options: ['Ja, het is altijd gevaarlijk', 'Nee, het kan handig zijn maar wordt een probleem als je geen ander perspectief meer ziet', 'Nee, want je ziet wat je leuk vindt', 'Ja, want het is illegaal'], correctIndex: 1, explanation: 'Een filterbubbel heeft voordelen én nadelen. Het probleem ontstaat als je niet WEET dat je in een bubbel zit.' }
 ];
 
+interface FilterBubbleState {
+    phase: 'intro' | 'compare' | 'challenge' | 'results';
+    currentChallenge: number;
+    score: number;
+    answers: boolean[];
+}
+
 export const FilterBubbleBreakerMission: React.FC<Props> = ({ onBack, onComplete }) => {
-    const [phase, setPhase] = useState<'intro' | 'compare' | 'challenge' | 'results'>('intro');
-    const [currentChallenge, setCurrentChallenge] = useState(0);
-    const [score, setScore] = useState(0);
+    const { state: saved, setState: setSaved, clearSave } = useMissionAutoSave<FilterBubbleState>(
+        'filter-bubble-breaker',
+        { phase: 'intro', currentChallenge: 0, score: 0, answers: [] }
+    );
+    const phase = saved.phase;
+    const currentChallenge = saved.currentChallenge;
+    const score = saved.score;
+    const answers = saved.answers;
+    const setPhase = (p: FilterBubbleState['phase']) => setSaved(prev => ({ ...prev, phase: p }));
+    const setCurrentChallenge = (updater: React.SetStateAction<number>) => setSaved(prev => ({
+        ...prev,
+        currentChallenge: typeof updater === 'function' ? updater(prev.currentChallenge) : updater,
+    }));
+    const setScore = (updater: React.SetStateAction<number>) => setSaved(prev => ({
+        ...prev,
+        score: typeof updater === 'function' ? updater(prev.score) : updater,
+    }));
+    const setAnswers = (updater: React.SetStateAction<boolean[]>) => setSaved(prev => ({
+        ...prev,
+        answers: typeof updater === 'function' ? updater(prev.answers) : updater,
+    }));
     const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
     const [showExplanation, setShowExplanation] = useState(false);
-    const [answers, setAnswers] = useState<boolean[]>([]);
     const [activeFeed, setActiveFeed] = useState<'A' | 'B' | 'both'>('both');
 
     const handleAnswer = (index: number) => {
@@ -64,22 +89,22 @@ export const FilterBubbleBreakerMission: React.FC<Props> = ({ onBack, onComplete
     };
 
     const getBadge = () => {
-        if (score >= 80) return { emoji: '🫧', title: 'Bubble Breaker', color: 'from-purple-500 to-indigo-600' };
-        if (score >= 60) return { emoji: '👀', title: 'Bewuste Scroller', color: 'from-blue-500 to-cyan-500' };
-        return { emoji: '🌱', title: 'Bubbel Ontdekker', color: 'from-green-500 to-emerald-500' };
+        if (score >= 80) return { emoji: '🫧', title: 'Bubble Breaker', color: 'from-[#8B6F9E] to-[#D97757]' };
+        if (score >= 60) return { emoji: '👀', title: 'Bewuste Scroller', color: 'from-[#2A9D8F] to-[#D97757]' };
+        return { emoji: '🌱', title: 'Bubbel Ontdekker', color: 'from-[#10B981] to-[#2A9D8F]' };
     };
 
     const renderFeedCard = (item: FeedItem, isB: boolean) => (
-        <div key={item.title} className={`p-3 rounded-xl border ${isB ? 'bg-purple-50 border-purple-200' : 'bg-blue-50 border-blue-200'} transition-all hover:shadow-md`}>
+        <div key={item.title} className={`p-3 rounded-2xl border transition-all duration-300 hover:shadow-md ${isB ? 'bg-[#8B6F9E]/5 border-[#8B6F9E]/20' : 'bg-[#2A9D8F]/5 border-[#2A9D8F]/20'}`}>
             <div className="flex items-start gap-2">
                 <span className="text-xl">{item.emoji}</span>
                 <div className="flex-1 min-w-0">
-                    <p className="text-xs font-bold text-slate-800 leading-tight">{item.title}</p>
+                    <p className="text-xs font-bold text-[#1A1A19] leading-tight" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{item.title}</p>
                     <div className="flex items-center gap-2 mt-1">
-                        <span className="text-[10px] text-slate-500">{item.source}</span>
-                        <span className={`text-[9px] px-1.5 py-0.5 rounded-full font-bold ${item.engagement === 'Ad' || item.engagement === 'Gesponsord' ? 'bg-amber-100 text-amber-700' : 'bg-slate-100 text-slate-500'}`}>{item.engagement}</span>
+                        <span className="text-[10px] text-[#6B6B66]">{item.source}</span>
+                        <span className={`text-[9px] px-1.5 py-0.5 rounded-full font-bold ${item.engagement === 'Ad' || item.engagement === 'Gesponsord' ? 'bg-[#D97757]/10 text-[#D97757]' : 'bg-[#F0EEE8] text-[#6B6B66]'}`}>{item.engagement}</span>
                     </div>
-                    <span className={`inline-block mt-1 text-[8px] px-2 py-0.5 rounded-full font-bold ${isB ? 'bg-purple-200 text-purple-700' : 'bg-blue-200 text-blue-700'}`}>{item.category}</span>
+                    <span className={`inline-flex mt-1 text-[8px] px-2 py-0.5 rounded-full font-bold border ${isB ? 'bg-[#8B6F9E]/10 text-[#8B6F9E] border-[#8B6F9E]/20' : 'bg-[#2A9D8F]/10 text-[#2A9D8F] border-[#2A9D8F]/20'}`}>{item.category}</span>
                 </div>
             </div>
         </div>
@@ -87,28 +112,28 @@ export const FilterBubbleBreakerMission: React.FC<Props> = ({ onBack, onComplete
 
     if (phase === 'intro') {
         return (
-            <div className="min-h-screen bg-gradient-to-b from-indigo-950 via-purple-950 to-slate-950 text-white overflow-y-auto p-4 pb-safe">
-                <button onClick={onBack} className="flex items-center gap-2 text-white/60 hover:text-white mb-6"><ArrowLeft size={18} /> <span className="text-sm font-bold">Terug</span></button>
+            <div className="min-h-screen bg-[#FAF9F0] text-[#1A1A19] overflow-y-auto p-4 pb-safe">
+                <button onClick={onBack} className="flex items-center gap-2 text-[#6B6B66] hover:text-[#1A1A19] transition-all duration-300 mb-6"><ArrowLeft size={18} /> <span className="text-sm font-bold" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Terug</span></button>
                 <div className="max-w-lg mx-auto text-center space-y-6">
-                    <div className="w-20 h-20 bg-white/10 backdrop-blur-md rounded-3xl flex items-center justify-center mx-auto border border-white/20 animate-bounce"><span className="text-4xl">🫧</span></div>
-                    <h1 className="text-3xl font-black">Filter Bubble Breaker</h1>
-                    <p className="text-white/70 text-sm leading-relaxed max-w-sm mx-auto">Twee mensen openen dezelfde app — maar zien <span className="text-purple-400 font-bold">totaal andere content</span>. Hoe kan dat?</p>
+                    <div className="w-20 h-20 bg-[#8B6F9E]/10 rounded-3xl flex items-center justify-center mx-auto border border-[#8B6F9E]/20 animate-bounce"><span className="text-4xl">🫧</span></div>
+                    <h1 className="text-3xl font-black" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Filter Bubble Breaker</h1>
+                    <p className="text-[#3D3D38] text-sm leading-relaxed max-w-sm mx-auto" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Twee mensen openen dezelfde app — maar zien <span className="text-[#D97757] font-bold">totaal andere content</span>. Hoe kan dat?</p>
                     <div className="flex gap-4 justify-center">
-                        <div className="bg-blue-500/20 border border-blue-500/30 rounded-2xl p-4 text-center w-36">
+                        <div className="bg-[#2A9D8F]/10 border border-[#2A9D8F]/20 rounded-2xl p-4 text-center w-36">
                             <span className="text-2xl">{PROFILE_A.emoji}</span>
-                            <p className="text-sm font-black mt-1">{PROFILE_A.name}</p>
-                            <p className="text-[10px] text-blue-300">{PROFILE_A.age} jaar, {PROFILE_A.country}</p>
-                            <div className="flex flex-wrap gap-1 justify-center mt-2">{PROFILE_A.interests.map(i => <span key={i} className="text-[8px] bg-blue-500/30 px-1.5 py-0.5 rounded-full">{i}</span>)}</div>
+                            <p className="text-sm font-black mt-1" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{PROFILE_A.name}</p>
+                            <p className="text-[10px] text-[#2A9D8F]">{PROFILE_A.age} jaar, {PROFILE_A.country}</p>
+                            <div className="flex flex-wrap gap-1 justify-center mt-2">{PROFILE_A.interests.map(i => <span key={i} className="text-[8px] bg-[#2A9D8F]/15 text-[#2A9D8F] px-1.5 py-0.5 rounded-full border border-[#2A9D8F]/20">{i}</span>)}</div>
                         </div>
-                        <div className="flex items-center"><ArrowLeftRight size={24} className="text-white/30" /></div>
-                        <div className="bg-purple-500/20 border border-purple-500/30 rounded-2xl p-4 text-center w-36">
+                        <div className="flex items-center"><ArrowLeftRight size={24} className="text-[#E8E6DF]" /></div>
+                        <div className="bg-[#8B6F9E]/10 border border-[#8B6F9E]/20 rounded-2xl p-4 text-center w-36">
                             <span className="text-2xl">{PROFILE_B.emoji}</span>
-                            <p className="text-sm font-black mt-1">{PROFILE_B.name}</p>
-                            <p className="text-[10px] text-purple-300">{PROFILE_B.age} jaar, {PROFILE_B.country}</p>
-                            <div className="flex flex-wrap gap-1 justify-center mt-2">{PROFILE_B.interests.map(i => <span key={i} className="text-[8px] bg-purple-500/30 px-1.5 py-0.5 rounded-full">{i}</span>)}</div>
+                            <p className="text-sm font-black mt-1" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{PROFILE_B.name}</p>
+                            <p className="text-[10px] text-[#8B6F9E]">{PROFILE_B.age} jaar, {PROFILE_B.country}</p>
+                            <div className="flex flex-wrap gap-1 justify-center mt-2">{PROFILE_B.interests.map(i => <span key={i} className="text-[8px] bg-[#8B6F9E]/15 text-[#8B6F9E] px-1.5 py-0.5 rounded-full border border-[#8B6F9E]/20">{i}</span>)}</div>
                         </div>
                     </div>
-                    <button onClick={() => setPhase('compare')} className="px-8 py-4 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-2xl font-black text-lg hover:scale-105 transition-transform active:scale-95 shadow-xl shadow-purple-500/30">Bekijk hun feeds →</button>
+                    <button onClick={() => setPhase('compare')} className="px-8 py-4 bg-[#D97757] hover:bg-[#C46849] text-white rounded-full font-black text-lg transition-all duration-300 active:scale-95 shadow-xl shadow-[#D97757]/30 focus-visible:ring-2 focus-visible:ring-[#D97757]">Bekijk hun feeds →</button>
                 </div>
             </div>
         );
@@ -116,16 +141,16 @@ export const FilterBubbleBreakerMission: React.FC<Props> = ({ onBack, onComplete
 
     if (phase === 'compare') {
         return (
-            <div className="min-h-screen bg-slate-50 overflow-y-auto p-4 pb-safe">
+            <div className="min-h-screen bg-[#FAF9F0] overflow-y-auto p-4 pb-safe">
                 <div className="max-w-3xl mx-auto">
-                    <button onClick={() => setPhase('intro')} className="flex items-center gap-2 text-slate-400 hover:text-slate-700 mb-4"><ArrowLeft size={18} /> <span className="text-sm font-bold">Terug</span></button>
+                    <button onClick={() => setPhase('intro')} className="flex items-center gap-2 text-[#6B6B66] hover:text-[#1A1A19] transition-all duration-300 mb-4"><ArrowLeft size={18} /> <span className="text-sm font-bold" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Terug</span></button>
                     <div className="text-center mb-6">
-                        <h2 className="text-xl font-black text-slate-900">Vergelijk de feeds</h2>
-                        <p className="text-sm text-slate-500">Dezelfde app, totaal andere content. Spot de verschillen!</p>
+                        <h2 className="text-xl font-black text-[#1A1A19]" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Vergelijk de feeds</h2>
+                        <p className="text-sm text-[#6B6B66]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Dezelfde app, totaal andere content. Spot de verschillen!</p>
                     </div>
-                    <div className="flex bg-slate-200 p-1 rounded-2xl mb-6 max-w-sm mx-auto">
+                    <div className="flex bg-[#F0EEE8] p-1 rounded-full mb-6 max-w-sm mx-auto">
                         {(['both', 'A', 'B'] as const).map(f => (
-                            <button key={f} onClick={() => setActiveFeed(f)} className={`flex-1 py-2 rounded-xl text-xs font-black transition-all ${activeFeed === f ? 'bg-white shadow-md text-slate-900' : 'text-slate-500'}`}>
+                            <button key={f} onClick={() => setActiveFeed(f)} className={`flex-1 py-2 rounded-full text-xs font-black transition-all duration-300 ${activeFeed === f ? 'bg-white shadow-md text-[#1A1A19]' : 'text-[#6B6B66]'}`} style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                 {f === 'both' ? '🔀 Beide' : f === 'A' ? `${PROFILE_A.emoji} ${PROFILE_A.name}` : `${PROFILE_B.emoji} ${PROFILE_B.name}`}
                             </button>
                         ))}
@@ -133,19 +158,19 @@ export const FilterBubbleBreakerMission: React.FC<Props> = ({ onBack, onComplete
                     <div className={`grid ${activeFeed === 'both' ? 'grid-cols-2' : 'grid-cols-1 max-w-sm mx-auto'} gap-4`}>
                         {(activeFeed === 'both' || activeFeed === 'A') && (
                             <div>
-                                <div className="flex items-center gap-2 mb-3 bg-blue-100 px-3 py-2 rounded-xl"><span>{PROFILE_A.emoji}</span><span className="text-xs font-black text-blue-800">Feed van {PROFILE_A.name}</span></div>
+                                <div className="flex items-center gap-2 mb-3 bg-[#2A9D8F]/10 border border-[#2A9D8F]/20 px-3 py-2 rounded-full"><span>{PROFILE_A.emoji}</span><span className="text-xs font-black text-[#2A9D8F]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Feed van {PROFILE_A.name}</span></div>
                                 <div className="space-y-2">{FEED_A.map(item => renderFeedCard(item, false))}</div>
                             </div>
                         )}
                         {(activeFeed === 'both' || activeFeed === 'B') && (
                             <div>
-                                <div className="flex items-center gap-2 mb-3 bg-purple-100 px-3 py-2 rounded-xl"><span>{PROFILE_B.emoji}</span><span className="text-xs font-black text-purple-800">Feed van {PROFILE_B.name}</span></div>
+                                <div className="flex items-center gap-2 mb-3 bg-[#8B6F9E]/10 border border-[#8B6F9E]/20 px-3 py-2 rounded-full"><span>{PROFILE_B.emoji}</span><span className="text-xs font-black text-[#8B6F9E]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Feed van {PROFILE_B.name}</span></div>
                                 <div className="space-y-2">{FEED_B.map(item => renderFeedCard(item, true))}</div>
                             </div>
                         )}
                     </div>
                     <div className="text-center mt-8">
-                        <button onClick={() => setPhase('challenge')} className="px-8 py-4 bg-gradient-to-r from-purple-500 to-indigo-500 text-white rounded-2xl font-black hover:scale-105 transition-transform active:scale-95 shadow-xl">Start de vragen →</button>
+                        <button onClick={() => setPhase('challenge')} className="px-8 py-4 bg-[#D97757] hover:bg-[#C46849] text-white rounded-full font-black transition-all duration-300 active:scale-95 shadow-xl focus-visible:ring-2 focus-visible:ring-[#D97757]">Start de vragen →</button>
                     </div>
                 </div>
             </div>
@@ -155,38 +180,38 @@ export const FilterBubbleBreakerMission: React.FC<Props> = ({ onBack, onComplete
     if (phase === 'challenge') {
         const ch = CHALLENGES[currentChallenge];
         return (
-            <div className="min-h-screen bg-gradient-to-b from-indigo-50 to-white overflow-y-auto p-4 pb-safe">
+            <div className="min-h-screen bg-[#FAF9F0] overflow-y-auto p-4 pb-safe">
                 <div className="max-w-lg mx-auto">
                     <div className="flex items-center justify-between mb-6">
-                        <button onClick={() => setPhase('compare')} className="text-slate-400 hover:text-slate-700"><ArrowLeft size={18} /></button>
-                        <div className="flex gap-1.5">{CHALLENGES.map((_, i) => (<div key={i} className={`w-8 h-1.5 rounded-full ${i < currentChallenge ? 'bg-emerald-500' : i === currentChallenge ? 'bg-indigo-500' : 'bg-slate-200'}`} />))}</div>
-                        <div className="bg-indigo-100 px-3 py-1 rounded-full"><span className="text-xs font-black text-indigo-700">{score} pts</span></div>
+                        <button onClick={() => setPhase('compare')} className="text-[#6B6B66] hover:text-[#1A1A19] transition-all duration-300"><ArrowLeft size={18} /></button>
+                        <div className="flex gap-1.5">{CHALLENGES.map((_, i) => (<div key={i} className={`w-8 h-1.5 rounded-full transition-all duration-300 ${i < currentChallenge ? 'bg-[#10B981]' : i === currentChallenge ? 'bg-gradient-to-r from-[#D97757] to-[#C46849]' : 'bg-[#E8E6DF]'}`} />))}</div>
+                        <div className="bg-[#D97757]/10 px-3 py-1 rounded-full border border-[#D97757]/20"><span className="text-xs font-black text-[#D97757]">{score} pts</span></div>
                     </div>
-                    <div className="bg-white rounded-3xl shadow-xl border border-slate-100 p-6 mb-6">
-                        <div className="flex items-center gap-2 mb-4"><div className="w-8 h-8 bg-indigo-500 rounded-xl flex items-center justify-center"><Brain size={16} className="text-white" /></div><span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Vraag {currentChallenge + 1}/{CHALLENGES.length}</span></div>
-                        <h3 className="text-lg font-black text-slate-900 leading-snug">{ch.question}</h3>
+                    <div className="bg-white rounded-2xl shadow-xl border border-[#E8E6DF] p-6 mb-6">
+                        <div className="flex items-center gap-2 mb-4"><div className="w-8 h-8 bg-[#D97757] rounded-xl flex items-center justify-center"><Brain size={16} className="text-white" /></div><span className="text-[10px] font-black text-[#6B6B66] uppercase tracking-widest" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Vraag {currentChallenge + 1}/{CHALLENGES.length}</span></div>
+                        <h3 className="text-lg font-black text-[#1A1A19] leading-snug" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>{ch.question}</h3>
                     </div>
                     <div className="space-y-3">
                         {ch.options.map((opt, i) => {
                             const isSelected = selectedAnswer === i;
                             const isCorrect = i === ch.correctIndex;
                             const done = selectedAnswer !== null;
-                            let bg = 'bg-white border-slate-200 hover:border-indigo-300';
-                            if (done && isCorrect) bg = 'bg-emerald-50 border-emerald-400';
+                            let bg = 'bg-white border-[#E8E6DF] hover:border-[#D97757]/40';
+                            if (done && isCorrect) bg = 'bg-[#10B981]/5 border-[#10B981]';
                             else if (done && isSelected) bg = 'bg-red-50 border-red-400';
-                            else if (done) bg = 'bg-slate-50 border-slate-100 opacity-50';
-                            return (<button key={i} onClick={() => handleAnswer(i)} disabled={done} className={`w-full p-4 rounded-2xl border-2 text-left transition-all ${bg}`}>
+                            else if (done) bg = 'bg-[#F0EEE8] border-[#F0EEE8] opacity-50';
+                            return (<button key={i} onClick={() => handleAnswer(i)} disabled={done} className={`w-full p-4 rounded-2xl border-2 text-left transition-all duration-300 ${bg}`}>
                                 <div className="flex items-start gap-3">
-                                    <div className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 text-xs font-black ${done && isCorrect ? 'bg-emerald-500 text-white' : done && isSelected ? 'bg-red-500 text-white' : 'bg-slate-100 text-slate-500'}`}>{done && isCorrect ? <Check size={14} /> : done && isSelected ? <X size={14} /> : String.fromCharCode(65 + i)}</div>
-                                    <span className="text-sm font-medium text-slate-700">{opt}</span>
+                                    <div className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 text-xs font-black ${done && isCorrect ? 'bg-[#10B981] text-white' : done && isSelected ? 'bg-red-500 text-white' : 'bg-[#F0EEE8] text-[#6B6B66]'}`}>{done && isCorrect ? <Check size={14} /> : done && isSelected ? <X size={14} /> : String.fromCharCode(65 + i)}</div>
+                                    <span className="text-sm font-medium text-[#3D3D38]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{opt}</span>
                                 </div>
                             </button>);
                         })}
                     </div>
                     {showExplanation && (
-                        <div className="mt-6 bg-indigo-50 border border-indigo-200 rounded-2xl p-4">
-                            <div className="flex items-start gap-2"><Sparkles size={16} className="text-indigo-500 mt-0.5 flex-shrink-0" /><p className="text-sm text-indigo-800">{ch.explanation}</p></div>
-                            <button onClick={nextChallenge} className="w-full mt-4 py-3 bg-indigo-500 text-white rounded-xl font-black text-sm flex items-center justify-center gap-2">{currentChallenge < CHALLENGES.length - 1 ? <>Volgende <ChevronRight size={16} /></> : <>Resultaat <Trophy size={16} /></>}</button>
+                        <div className="mt-6 bg-[#D97757]/5 border border-[#D97757]/20 rounded-2xl p-4">
+                            <div className="flex items-start gap-2"><Sparkles size={16} className="text-[#D97757] mt-0.5 flex-shrink-0" /><p className="text-sm text-[#3D3D38]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{ch.explanation}</p></div>
+                            <button onClick={nextChallenge} className="w-full mt-4 py-3 bg-[#D97757] hover:bg-[#C46849] text-white rounded-full font-black text-sm flex items-center justify-center gap-2 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#D97757]">{currentChallenge < CHALLENGES.length - 1 ? <>Volgende <ChevronRight size={16} /></> : <>Resultaat <Trophy size={16} /></>}</button>
                         </div>
                     )}
                 </div>
@@ -196,23 +221,23 @@ export const FilterBubbleBreakerMission: React.FC<Props> = ({ onBack, onComplete
 
     const badge = getBadge();
     return (
-        <div className="min-h-screen bg-gradient-to-b from-indigo-950 via-purple-950 to-slate-950 text-white overflow-y-auto">
+        <div className="min-h-screen bg-[#FAF9F0] text-[#1A1A19] overflow-y-auto">
             <div className="min-h-full flex items-center justify-center p-4 pb-safe">
             <div className="max-w-sm w-full text-center space-y-6">
                 <div className={`w-24 h-24 mx-auto bg-gradient-to-br ${badge.color} rounded-3xl flex items-center justify-center shadow-2xl`}><span className="text-5xl">{badge.emoji}</span></div>
-                <h1 className="text-2xl font-black">{badge.title}</h1>
-                <p className="text-white/60 text-sm">{answers.filter(a => a).length}/{CHALLENGES.length} vragen goed</p>
-                <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/10">
-                    <div className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-400">{score}/100</div>
-                    <p className="text-white/50 text-xs mt-1">Bubble Score</p>
+                <h1 className="text-2xl font-black" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>{badge.title}</h1>
+                <p className="text-[#6B6B66] text-sm" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{answers.filter(a => a).length}/{CHALLENGES.length} vragen goed</p>
+                <div className="bg-white rounded-2xl p-4 border border-[#E8E6DF]">
+                    <div className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#D97757] to-[#C46849]">{score}/100</div>
+                    <p className="text-[#6B6B66] text-xs mt-1" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Bubble Score</p>
                 </div>
-                <div className="bg-white/5 rounded-2xl p-4 text-left space-y-2 border border-white/10">
-                    <p className="text-xs font-bold text-white/80 mb-2">💡 3 tips om je bubbel te breken:</p>
-                    <p className="text-xs text-white/60">1. Volg bewust accounts met andere meningen</p>
-                    <p className="text-xs text-white/60">2. Zoek actief naar andere onderwerpen</p>
-                    <p className="text-xs text-white/60">3. Gebruik "Niet geïnteresseerd" bij eenzijdige content</p>
+                <div className="bg-white rounded-2xl p-4 text-left space-y-2 border border-[#E8E6DF]">
+                    <p className="text-xs font-bold text-[#3D3D38] mb-2" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>3 tips om je bubbel te breken:</p>
+                    <p className="text-xs text-[#6B6B66]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>1. Volg bewust accounts met andere meningen</p>
+                    <p className="text-xs text-[#6B6B66]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>2. Zoek actief naar andere onderwerpen</p>
+                    <p className="text-xs text-[#6B6B66]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>3. Gebruik "Niet geïnteresseerd" bij eenzijdige content</p>
                 </div>
-                <button onClick={() => onComplete(true)} className="w-full py-4 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-2xl font-black text-lg hover:scale-105 transition-transform active:scale-95 shadow-xl flex items-center justify-center gap-2"><Trophy size={20} /> Missie Voltooid!</button>
+                <button onClick={() => { clearSave(); onComplete(true); }} className="w-full py-4 bg-[#10B981] hover:bg-[#059669] text-white rounded-full font-black text-lg transition-all duration-300 active:scale-95 shadow-xl flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-[#10B981]"><Trophy size={20} /> Missie Voltooid!</button>
             </div>
             </div>
         </div>

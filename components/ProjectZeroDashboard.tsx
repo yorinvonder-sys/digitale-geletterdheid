@@ -137,29 +137,29 @@ interface PeriodLeerdoel {
 
 const PERIOD_LEERDOELEN: Record<string, PeriodLeerdoel> = {
     '1-1': {
-        description: 'Aan het eind van deze periode kun je zelfstandig werken met Word en PowerPoint, correct printen op school en opdrachten digitaal inleveren.',
-        descriptionVso: 'Aan het eind van deze periode kun je verschillende digitale apparaten bedienen en software inzetten voor wonen, werken of vrije tijd.',
+        description: 'Na deze periode maak je zelf een Word-document en PowerPoint, print je het op school en lever je het in via OneDrive — zonder hulp.',
+        descriptionVso: 'Na deze periode kun je zelf een document typen, opslaan en printen op een tablet of computer.',
         lesduur: 'Lesduur: 1 uur 45 minuten. Werk in deze volgorde: LVS (15) → OneDrive (15) → Word (35) → PowerPoint (25) → Printen + Inleveren (15).',
-        succescriterium: 'je bent klaar als je 1 geprinte Word-pagina hebt en beide bestanden digitaal ingeleverd zijn.',
-        succescriDagbesteding: 'je hebt samengewerkt om een document te printen en op te slaan.',
+        succescriterium: 'je hebt 1 pagina geprint en je Word- en PowerPoint-bestand staan in OneDrive.',
+        succescriDagbesteding: 'je hebt samen een document geprint en opgeslagen.',
     },
     '1-2': {
-        description: 'Aan het eind van deze periode kun je uitleggen wat AI is, hoe je effectieve prompts schrijft, en hoe je creatief kunt samenwerken met AI-tools.',
-        descriptionVso: 'Aan het eind van deze periode herken je AI in je omgeving en kun je eenvoudige digitale producten maken met behulp van technologie.',
+        description: 'Na deze periode weet je hoe AI werkt, schrijf je prompts die echt goed werken en heb je zelf een game aangepast met code.',
+        descriptionVso: 'Na deze periode herken je AI om je heen (denk aan Siri, filters, aanbevelingen) en heb je zelf iets gemaakt met een AI-tool.',
         lesduur: 'Lesduur: 1 uur 45 minuten. Start met de herhalingsopdrachten (15 min) → Prompt Perfectionist (15 min) → Game Programmeur (25 min) → AI Trainer (15 min) → Chatbot Trainer (15 min) → Vrije keuze (20 min).',
-        succescriterium: 'je hebt minimaal 3 hoofdmissies afgerond en kunt uitleggen hoe AI leert van data.',
-        succescriDagbesteding: 'je hebt geëxperimenteerd met AI-tools en een creatief product gemaakt.',
+        succescriterium: 'je hebt minimaal 3 missies afgerond en kunt aan een klasgenoot uitleggen hoe AI leert van voorbeelden.',
+        succescriDagbesteding: 'je hebt met een AI-tool gewerkt en er iets creatiefs mee gemaakt.',
     },
     '1-3': {
-        description: 'Aan het eind van deze periode kun je uitleggen hoe bedrijven data gebruiken, welke kansen dat biedt en welke online risico\u2019s daarbij horen.',
-        descriptionVso: 'Aan het eind van deze periode herken je AI in je omgeving en kun je veilig omgaan met digitale media en privacy.',
+        description: 'Na deze periode weet je wat bedrijven met jouw data doen, herken je deepfakes en nepaccounts, en heb je 3 eigen regels voor veilig online gedrag.',
+        descriptionVso: 'Na deze periode weet je hoe je veilig omgaat met je gegevens online en herken je nep-content.',
         lesduur: 'Lesduur: 1 uur 45 minuten. Werk in deze volgorde: Code-Criticus review (10 min) → Data Detective (25 min) → Deepfake Detector (15 min) → AI Spiegel (20 min) → Social Safeguard (15 min) → Reflectie + 3 persoonlijke dataregels (10 min).',
-        succescriterium: 'je maakt een persoonlijke "Mijn 3 Dataregels"-kaart met minimaal 2 kansen, 2 gevaren en 3 concrete online keuzes die je vanaf vandaag toepast.',
-        succescriDagbesteding: 'je hebt geëxperimenteerd met AI en online veiligheidskeuzes.',
+        succescriterium: 'je hebt je eigen "Mijn 3 Dataregels"-kaart gemaakt met: 2 dingen die handig zijn aan data, 2 gevaren waar je op let, en 3 keuzes voor veiliger internetten.',
+        succescriDagbesteding: 'je hebt geoefend met online veiligheid en je eigen regels opgeschreven.',
     },
     '1-4': {
-        description: 'In deze periode laat je in een eindproject zien wat je het hele jaar geleerd hebt over digitale vaardigheden, AI en online veiligheid.',
-        descriptionVso: 'In deze periode werk je aan een eindproject waarin je laat zien wat je hebt geleerd over technologie.',
+        description: 'Je maakt een eindproject waarin je laat zien wat je dit jaar hebt geleerd — van Word tot AI tot online veiligheid.',
+        descriptionVso: 'Je maakt een eindproject waarin je laat zien wat je dit jaar hebt geleerd over technologie.',
     },
 };
 
@@ -728,36 +728,38 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                 {showGameNotification && (
                     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
                         <div
-                            className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity"
+                            className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity"
                             onClick={() => setShowGameNotification(false)}
                         />
-                        <div className="bg-white rounded-[2.5rem] p-8 shadow-2xl border border-emerald-200 w-full max-w-sm relative z-10 animate-in zoom-in duration-300">
+                        <div className="rounded-2xl p-8 shadow-2xl w-full max-w-sm relative z-10 animate-in zoom-in duration-300" style={{ backgroundColor: '#FAF9F0', border: '1px solid #E8E6DF' }}>
                             <div className="flex flex-col items-center text-center">
-                                <div className="bg-gradient-to-br from-emerald-500 to-teal-600 w-24 h-24 rounded-3xl flex items-center justify-center text-white shadow-xl mb-6 transform -rotate-3 animate-bounce">
-                                    <Gamepad2 size={48} />
+                                <div className="w-20 h-20 rounded-2xl flex items-center justify-center text-white shadow-lg mb-5" style={{ backgroundColor: '#D97757' }}>
+                                    <Gamepad2 size={40} />
                                 </div>
-                                <h3 className="text-2xl font-black text-slate-900 mb-2 uppercase tracking-tight">🎮 Games Actief!</h3>
-                                <p className="text-slate-500 font-bold text-sm mb-2">
+                                <h3 className="text-xl font-bold mb-2" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#1A1A19' }}>Game geactiveerd!</h3>
+                                <p className="text-sm font-medium mb-1" style={{ color: '#6B6B66' }}>
                                     De docent heeft {activatedGameName || 'een game'} geactiveerd!
                                 </p>
-                                <p className="text-slate-400 text-xs mb-6">
+                                <p className="text-xs mb-6" style={{ color: '#9C9C95' }}>
                                     Je kunt nu meedoen aan de game-sessie met je klasgenoten.
                                 </p>
 
-                                <div className="flex flex-col gap-3 w-full">
+                                <div className="flex flex-col gap-2.5 w-full">
                                     <button
                                         onClick={() => {
                                             setShowGameNotification(false);
                                             if (onOpenGames) onOpenGames();
                                         }}
-                                        className="w-full py-4 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-2xl font-black uppercase tracking-widest hover:shadow-lg hover:scale-[1.02] transition-all active:scale-95 flex items-center justify-center gap-2"
+                                        className="w-full py-3.5 text-white rounded-full font-semibold text-sm hover:shadow-lg hover:scale-[1.02] transition-all active:scale-95 flex items-center justify-center gap-2"
+                                        style={{ backgroundColor: '#D97757' }}
                                     >
-                                        <Play size={18} fill="currentColor" />
-                                        Naar Games!
+                                        <Play size={16} fill="currentColor" />
+                                        Naar Games
                                     </button>
                                     <button
                                         onClick={() => setShowGameNotification(false)}
-                                        className="w-full py-3 text-slate-400 font-bold text-sm hover:text-slate-600 transition-colors"
+                                        className="w-full py-2.5 font-medium text-sm transition-colors"
+                                        style={{ color: '#9C9C95' }}
                                     >
                                         Later, ik ben nog bezig
                                     </button>
@@ -861,15 +863,8 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                         aria-label="Ga naar de startpagina"
                         className="flex items-center gap-3 hover:opacity-80 transition-opacity text-left bg-transparent border-none p-0 cursor-pointer focus:outline-none"
                     >
-                        <div className="w-10 h-10 bg-white border border-slate-100 rounded-xl flex items-center justify-center text-white transform rotate-3 overflow-hidden">
-                            <img src="/logo.svg" alt="Logo" className="w-full h-full object-contain p-1" decoding="async" />
-                        </div>
-                        <div>
-                            <h1 className="text-lg font-black tracking-tight text-slate-900 uppercase leading-none">
-                                Project 0 <span className="text-indigo-600">DG</span>
-                            </h1>
-                            <p className="text-[9px] text-slate-400 font-medium tracking-widest uppercase mt-1">Project DG • Mission Control</p>
-                        </div>
+                        <img src="/mascot/pip-logo.png" alt="DGSkills" className="w-9 h-9 object-contain" width={36} height={36} decoding="async" />
+                        <span className="text-[15px] font-semibold tracking-tight text-slate-900">DGSkills</span>
                     </button>
 
                     {/* FEEDBACK BUTTON */}
@@ -1635,7 +1630,7 @@ const MissionCard = React.memo(({ mission, onSelectModule, onInfoClick, isComple
                 </h3>
 
                 {/* Description */}
-                <p className={`text-stone-500 font-medium leading-relaxed ${isCompact ? 'text-xs line-clamp-2 mb-2' : 'text-sm mb-3 line-clamp-2'}`}>
+                <p className={`text-stone-500 font-medium leading-relaxed ${isCompact ? 'text-xs line-clamp-3 mb-2' : 'text-sm mb-3 line-clamp-3'}`}>
                     {mission.description}
                 </p>
 
@@ -1667,7 +1662,7 @@ const MissionCard = React.memo(({ mission, onSelectModule, onInfoClick, isComple
                 {mission.status === 'locked' ? (
                     <div className={`mt-auto flex items-center gap-2 font-bold text-amber-700 bg-amber-50/80 rounded-lg border border-amber-200/50 ${isCompact ? 'text-[10px] p-2' : 'text-xs p-3'}`}>
                         <AlertTriangle size={isCompact ? 12 : 14} />
-                        {!isCompact && "Voltooi eerst de review missies"}
+                        <span className={isCompact ? 'text-[9px]' : ''}>Voltooi eerst de review missies</span>
                     </div>
                 ) : (
                     <div className="mt-auto flex items-center justify-between">
