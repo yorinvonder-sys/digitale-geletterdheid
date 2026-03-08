@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import { ErrorBoundary } from './components/ErrorBoundary';
-import './index.css';
+import './styles/public.css';
 
 // Activate async CSS (fallback if csp-bootstrap.js is cached without this logic)
 document.querySelectorAll<HTMLLinkElement>('link[data-async-css]').forEach(link => {

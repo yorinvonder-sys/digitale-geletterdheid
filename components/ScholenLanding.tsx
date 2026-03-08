@@ -25,8 +25,8 @@ const C = {
     darkDeep: '#141413',
 } as const;
 
-const SERIF = "'Newsreader', Georgia, serif";
-const SANS = "'Inter', system-ui, -apple-system, sans-serif";
+const SERIF = "Georgia, 'Times New Roman', serif";
+const SANS = "'Outfit', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
 
 /** Prevents a single lazy section crash from killing the whole page */
 class SectionErrorBoundary extends Component<{ children: React.ReactNode }, { hasError: boolean }> {
@@ -299,27 +299,6 @@ export const ScholenLanding: React.FC = () => {
         return () => mediaQuery.removeListener(update);
     }, []);
 
-    // Load design fonts
-    useEffect(() => {
-        const link = document.createElement('link');
-        link.rel = 'stylesheet';
-        link.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap';
-        document.head.appendChild(link);
-        return () => { link.remove(); };
-    }, []);
-
-    // Preload optimized hero screenshot — primary LCP candidate
-    useEffect(() => {
-        if (!isDesktopHero) return;
-        const preloadLink = document.createElement('link');
-        preloadLink.rel = 'preload';
-        preloadLink.as = 'image';
-        preloadLink.href = '/screenshots/student-mission-overview-1200.jpg';
-        preloadLink.fetchPriority = 'high';
-        document.head.appendChild(preloadLink);
-        return () => { preloadLink.remove(); };
-    }, [isDesktopHero]);
-
     useEffect(() => {
         const originalTitle = document.title;
         document.title = 'Digitale Geletterdheid voor Scholen \u2014 Gratis Pilot | DGSkills';
@@ -409,7 +388,7 @@ export const ScholenLanding: React.FC = () => {
                 }`} style={scrolled ? { backgroundColor: `${C.bg}ee` } : undefined}>
                 <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
                     <a href="/" className="flex items-center gap-2.5">
-                        <img src="/mascot/pip-logo.png" alt="DGSkills" className="w-9 h-9 object-contain" width={36} height={36} fetchPriority="high" decoding="async" />
+                        <img src="/favicon.svg" alt="DGSkills" className="w-9 h-9 object-contain" width={36} height={36} decoding="async" />
                         <span className="font-semibold text-[15px] tracking-tight" style={{ color: C.text }}>DGSkills</span>
                     </a>
 
@@ -550,11 +529,14 @@ export const ScholenLanding: React.FC = () => {
                             {isDesktopHero && (
                                 <div className="relative hidden md:block" aria-hidden="true">
                                 {/* Background glow — warm */}
-                                <div className="absolute -inset-8 rounded-[3rem] blur-2xl" style={{ background: `linear-gradient(135deg, ${C.accent}15, transparent, ${C.bgAlt}60)` }} />
+                                <div
+                                    className="absolute -inset-4 rounded-[2.5rem] opacity-80"
+                                    style={{ background: `radial-gradient(circle at 30% 30%, ${C.accent}18, transparent 58%), linear-gradient(135deg, ${C.bgAlt}85, transparent)` }}
+                                />
 
                                 {/* Main screenshot */}
-                                <div className="relative motion-safe:animate-hero-float">
-                                    <div className="rounded-2xl overflow-hidden bg-white" style={{ boxShadow: `0 25px 50px ${C.text}12`, border: `1px solid ${C.border}` }}>
+                                <div className="relative">
+                                    <div className="rounded-2xl overflow-hidden bg-white" style={{ boxShadow: `0 18px 34px ${C.text}10`, border: `1px solid ${C.border}` }}>
                                         <div className="flex items-center gap-1.5 px-4 py-2.5" style={{ backgroundColor: C.bgAlt, borderBottom: `1px solid ${C.borderLight}` }}>
                                             <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
                                             <div className="w-2.5 h-2.5 rounded-full bg-amber-400" />
@@ -575,8 +557,8 @@ export const ScholenLanding: React.FC = () => {
                                 </div>
 
                                 {/* Floating card: XP badge */}
-                                <div className="absolute -left-8 bottom-16 motion-safe:animate-hero-float-delayed z-10">
-                                    <div className="bg-white rounded-2xl p-4 flex items-center gap-3" style={{ boxShadow: `0 8px 24px ${C.text}10`, border: `1px solid ${C.border}` }}>
+                                <div className="absolute -left-8 bottom-16 z-10">
+                                    <div className="bg-white rounded-2xl p-4 flex items-center gap-3" style={{ boxShadow: `0 8px 18px ${C.text}08`, border: `1px solid ${C.border}` }}>
                                         <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white text-sm font-bold" style={{ backgroundColor: C.accent }}>
                                             XP
                                         </div>
@@ -588,8 +570,8 @@ export const ScholenLanding: React.FC = () => {
                                 </div>
 
                                 {/* Floating card: SLO check */}
-                                <div className="absolute -right-4 top-20 motion-safe:animate-hero-float z-10" style={{ animationDelay: '1s' }}>
-                                    <div className="bg-white rounded-2xl p-4 flex items-center gap-3" style={{ boxShadow: `0 8px 24px ${C.text}10`, border: `1px solid ${C.border}` }}>
+                                <div className="absolute -right-4 top-20 z-10">
+                                    <div className="bg-white rounded-2xl p-4 flex items-center gap-3" style={{ boxShadow: `0 8px 18px ${C.text}08`, border: `1px solid ${C.border}` }}>
                                         <div className="w-10 h-10 bg-emerald-500 rounded-xl flex items-center justify-center text-white">
                                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
                                         </div>
@@ -601,8 +583,8 @@ export const ScholenLanding: React.FC = () => {
                                 </div>
 
                                 {/* Small avatar preview */}
-                                <div className="absolute -left-2 top-8 motion-safe:animate-hero-float-delayed z-10" style={{ animationDelay: '3s' }}>
-                                    <div className="bg-white rounded-xl p-2.5" style={{ boxShadow: `0 4px 16px ${C.text}08`, border: `1px solid ${C.border}` }}>
+                                <div className="absolute -left-2 top-8 z-10">
+                                    <div className="bg-white rounded-xl p-2.5" style={{ boxShadow: `0 4px 12px ${C.text}08`, border: `1px solid ${C.border}` }}>
                                         <img
                                             src="/screenshots/avatar-customization-192.jpg"
                                             alt=""
@@ -616,14 +598,15 @@ export const ScholenLanding: React.FC = () => {
                                 </div>
 
                                 {/* Pip — sitting on the browser bar */}
-                                <div className="absolute -top-7 left-16 z-20 motion-safe:animate-hero-float-delayed" style={{ animationDelay: '2s' }}>
+                                <div className="absolute -top-7 left-16 z-20">
                                     <img
-                                        src="/mascot/pip-waving.png"
+                                        src="/mascot/pip-headset.webp"
                                         alt="Pip — DGSkills mascotte"
-                                        className="w-10 h-10 object-contain drop-shadow-md"
+                                        className="w-10 h-10 object-contain"
                                         width={40}
                                         height={40}
-                                        loading="eager"
+                                        loading="lazy"
+                                        fetchPriority="low"
                                         decoding="async"
                                     />
                                 </div>
@@ -634,7 +617,7 @@ export const ScholenLanding: React.FC = () => {
                         {/* Scroll indicator with Pip */}
                         <div className="flex items-center justify-center gap-2 mt-12 md:mt-16">
                             <img
-                                src="/mascot/pip-excited.png"
+                                src="/mascot/pip-excited.webp"
                                 alt=""
                                 className="w-7 h-7 object-contain opacity-50 hidden sm:block"
                                 width={28}
@@ -718,7 +701,7 @@ export const ScholenLanding: React.FC = () => {
                 </PipGuide>
 
                 {/* Customization USP */}
-                <PipGuide pose="waving" tooltip="Volledig afgestemd op jouw school" side="left">
+                <PipGuide pose="waving" tooltip="Jullie school, jullie regels!" side="left">
                 <section id={SECTION_IDS.customization} className="py-14 md:py-20 lg:py-24 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_500px]" aria-label="Aanpasbaar aan jouw school">
                     <SectionErrorBoundary>
                         <DeferredSection minHeight="min-h-[400px]">
@@ -733,7 +716,7 @@ export const ScholenLanding: React.FC = () => {
                 </PipGuide>
 
                 {/* How it works - 3-step */}
-                <PipGuide pose="thinking" tooltip="In 3 stappen aan de slag" side="left">
+                <PipGuide pose="thinking" tooltip="Makkelijker dan het lijkt!" side="left">
                 <section id={SECTION_IDS.howItWorks} className="py-14 md:py-20 lg:py-24 px-6 [content-visibility:auto] [contain-intrinsic-size:auto_400px]" style={{ backgroundColor: C.bgAlt, borderTop: `1px solid ${C.border}`, borderBottom: `1px solid ${C.border}` }} aria-label="Hoe het werkt">
                     <DeferredSection minHeight="min-h-[400px]">
                         <AnimateOnScroll>
@@ -802,6 +785,7 @@ export const ScholenLanding: React.FC = () => {
                 </PipGuide>
 
                 {/* Game Demo */}
+                <PipGuide pose="excited" tooltip="Dit vinden leerlingen het leukst!" side="left">
                 <section className="py-14 md:py-20 lg:py-24 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_500px]" style={{ backgroundColor: C.bgAlt, borderTop: `1px solid ${C.border}`, borderBottom: `1px solid ${C.border}` }} aria-label="Game Programmeur demo">
                     <DeferredSection minHeight="min-h-[400px]">
                         <Suspense fallback={<div className="min-h-[400px]" aria-hidden="true" />}>
@@ -811,9 +795,11 @@ export const ScholenLanding: React.FC = () => {
                         </Suspense>
                     </DeferredSection>
                 </section>
+                </PipGuide>
 
 
                 {/* Dashboard Demo */}
+                <PipGuide pose="waving" tooltip="Altijd weten waar je leerlingen staan" side="left">
                 <section className="py-14 md:py-20 lg:py-24 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_500px]" style={{ backgroundColor: C.bgAlt, borderTop: `1px solid ${C.border}`, borderBottom: `1px solid ${C.border}` }} aria-label="Docenten dashboard demo">
                     <DeferredSection minHeight="min-h-[400px]">
                         <Suspense fallback={<div className="min-h-[400px]" aria-hidden="true" />}>
@@ -823,6 +809,7 @@ export const ScholenLanding: React.FC = () => {
                         </Suspense>
                     </DeferredSection>
                 </section>
+                </PipGuide>
 
                 {/* Platform preview */}
                 <section id={SECTION_IDS.platform} className="py-14 md:py-20 lg:py-24 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_500px]" style={{ borderBottom: `1px solid ${C.border}` }} aria-label="Platform preview">
@@ -948,7 +935,7 @@ export const ScholenLanding: React.FC = () => {
                 <div className="max-w-5xl mx-auto px-6 py-12">
                     <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-8">
                         <div className="flex items-center gap-2.5">
-                            <img src="/mascot/pip-logo.png" alt="" className="w-7 h-7 object-contain opacity-60 brightness-200" width={28} height={28} loading="lazy" decoding="async" />
+                            <img src="/favicon.svg" alt="" className="w-7 h-7 object-contain opacity-60 brightness-200" width={28} height={28} loading="lazy" decoding="async" />
                             <span className="text-sm font-semibold" style={{ color: `${C.bg}cc` }}>DGSkills</span>
                         </div>
                         <div className="flex flex-wrap items-center gap-5 text-xs" style={{ color: `${C.bg}88` }}>

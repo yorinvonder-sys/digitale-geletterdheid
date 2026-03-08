@@ -99,7 +99,7 @@ export const ScholenLandingSlo: React.FC = () => {
                         </p>
                     </div>
                     <div className="hidden md:flex items-center justify-center flex-shrink-0">
-                        <img src="/mascot/pip-celebrating.png" alt="" className="w-16 h-16 object-contain" loading="lazy" aria-hidden="true" />
+                        <img src="/mascot/pip-celebrating.webp" alt="" className="w-16 h-16 object-contain" loading="lazy" aria-hidden="true" />
                     </div>
                     <div className="flex flex-col items-end gap-3">
                         <div className="flex flex-wrap gap-2">

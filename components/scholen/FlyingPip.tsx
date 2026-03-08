@@ -16,14 +16,14 @@ import React, { useEffect } from 'react';
 type PipPose = 'flying' | 'concerned' | 'excited' | 'thinking' | 'checkmark' | 'waving' | 'celebrating' | 'reading';
 
 const POSE_SRC: Record<PipPose, string> = {
-    flying: '/mascot/pip-flying.png',
-    concerned: '/mascot/pip-concerned.png',
-    excited: '/mascot/pip-excited.png',
-    thinking: '/mascot/pip-thinking.png',
-    checkmark: '/mascot/pip-checkmark.png',
-    waving: '/mascot/pip-waving.png',
-    celebrating: '/mascot/pip-celebrating.png',
-    reading: '/mascot/pip-reading.png',
+    flying: '/mascot/pip-flying.webp',
+    concerned: '/mascot/pip-concerned.webp',
+    excited: '/mascot/pip-excited.webp',
+    thinking: '/mascot/pip-thinking.webp',
+    checkmark: '/mascot/pip-checkmark.webp',
+    waving: '/mascot/pip-waving.webp',
+    celebrating: '/mascot/pip-celebrating.webp',
+    reading: '/mascot/pip-reading.webp',
 };
 
 interface HeroPipNestProps {
@@ -109,7 +109,7 @@ export function PipGuide({ pose, tooltip, side, topOffset = '8.5rem', xOffset, c
                             borderRadius: 10,
                             fontSize: 13,
                             lineHeight: 1.4,
-                            fontFamily: "'Inter', system-ui, sans-serif",
+                            fontFamily: "'Outfit', system-ui, sans-serif",
                             color: '#1A1A19',
                             background: '#FAF9F0',
                             border: '1px solid #E8E6DF',
@@ -132,7 +132,7 @@ export function PipGuide({ pose, tooltip, side, topOffset = '8.5rem', xOffset, c
                             position: 'relative',
                             width: 48,
                             height: 'auto',
-                            filter: 'drop-shadow(0 3px 10px rgba(0,0,0,0.12))',
+                            filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.10))',
                         }}
                         width={48}
                         loading="lazy"
@@ -153,12 +153,12 @@ export function HeroPipNest(_props: HeroPipNestProps) {
             aria-label="Pip slaapt in zijn nest"
         >
             <img
-                src="/mascot/pip-sleeping-nest.png"
+                src="/mascot/pip-sleeping-nest.webp"
                 alt="Pip slaapt in zijn nest"
                 style={{
                     width: 160,
                     height: 'auto',
-                    filter: 'drop-shadow(0 6px 12px rgba(26,26,25,0.08))',
+                    filter: 'drop-shadow(0 4px 8px rgba(26,26,25,0.08))',
                 }}
                 width={160}
                 loading="lazy"

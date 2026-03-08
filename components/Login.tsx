@@ -311,7 +311,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                         {/* Header */}
                         <div className="text-center mb-8">
                             <div className="w-20 h-20 mx-auto mb-4">
-                                <img src="/mascot/pip-logo.png" alt="Pip — DGSkills mascotte" className="w-full h-full object-contain" width={80} height={80} fetchPriority="high" decoding="async" />
+                                <img src="/favicon.svg" alt="DGSkills logo" className="w-full h-full object-contain" width={80} height={80} fetchPriority="high" decoding="async" />
                             </div>
                             <h1 className="text-2xl font-black text-slate-900 mb-1 tracking-tight">
                                 Mission <span style={{ color: '#D97757' }}>Control</span>

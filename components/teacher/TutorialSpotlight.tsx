@@ -65,14 +65,26 @@ const TutorialSpotlight: React.FC = () => {
             }
             if (!hasScrolled) {
                 hasScrolled = true;
-                el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                const r = el.getBoundingClientRect();
+                const elHeight = r.height;
+                // Large elements (taller than 60% of viewport): scroll to top edge
+                // Small elements: center them
+                const block: ScrollLogicalPosition = elHeight > window.innerHeight * 0.6 ? 'start' : 'center';
+                el.scrollIntoView({ behavior: 'smooth', block });
+                // Wait for smooth scroll to finish before measuring
+                window.setTimeout(() => measure(), 400);
+                return true; // Return true to stop retries — we'll re-measure after scroll
             }
             const r = el.getBoundingClientRect();
+            // For large elements, clamp the spotlight to the visible portion of the viewport
+            const visibleTop = Math.max(r.top, 0);
+            const visibleBottom = Math.min(r.bottom, window.innerHeight);
+            const visibleHeight = Math.max(visibleBottom - visibleTop, 60); // min 60px spotlight
             setRect({
-                top: r.top - PADDING,
+                top: visibleTop - PADDING,
                 left: r.left - PADDING,
                 width: r.width + PADDING * 2,
-                height: r.height + PADDING * 2,
+                height: visibleHeight + PADDING * 2,
             });
             attachClick(el);
             return true;
@@ -125,21 +137,35 @@ const TutorialSpotlight: React.FC = () => {
 
         const pos = currentStep?.position || 'bottom';
         const style: React.CSSProperties = { position: 'absolute', maxWidth: 320 };
+        const TOOLTIP_HEIGHT_ESTIMATE = 160; // approx tooltip height for clamping
+        const VIEWPORT_MARGIN = 12;
 
         if (pos === 'bottom') {
-            style.top = rect.top + rect.height + TOOLTIP_GAP;
-            style.left = rect.left + rect.width / 2;
+            let top = rect.top + rect.height + TOOLTIP_GAP;
+            // If tooltip would go below viewport, flip to top
+            if (top + TOOLTIP_HEIGHT_ESTIMATE > window.innerHeight - VIEWPORT_MARGIN) {
+                top = Math.max(VIEWPORT_MARGIN, rect.top - TOOLTIP_HEIGHT_ESTIMATE - TOOLTIP_GAP);
+            }
+            style.top = top;
+            style.left = Math.min(Math.max(VIEWPORT_MARGIN, rect.left + rect.width / 2), window.innerWidth - VIEWPORT_MARGIN);
             style.transform = 'translateX(-50%)';
         } else if (pos === 'top') {
-            style.bottom = window.innerHeight - rect.top + TOOLTIP_GAP;
-            style.left = rect.left + rect.width / 2;
+            let top = rect.top - TOOLTIP_HEIGHT_ESTIMATE - TOOLTIP_GAP;
+            // If tooltip would go above viewport, flip to bottom
+            if (top < VIEWPORT_MARGIN) {
+                top = rect.top + rect.height + TOOLTIP_GAP;
+            }
+            // Clamp to viewport bottom
+            top = Math.min(top, window.innerHeight - TOOLTIP_HEIGHT_ESTIMATE - VIEWPORT_MARGIN);
+            style.top = Math.max(VIEWPORT_MARGIN, top);
+            style.left = Math.min(Math.max(VIEWPORT_MARGIN, rect.left + rect.width / 2), window.innerWidth - VIEWPORT_MARGIN);
             style.transform = 'translateX(-50%)';
         } else if (pos === 'left') {
-            style.top = rect.top + rect.height / 2;
+            style.top = Math.max(VIEWPORT_MARGIN, Math.min(rect.top + rect.height / 2, window.innerHeight - TOOLTIP_HEIGHT_ESTIMATE - VIEWPORT_MARGIN));
             style.right = window.innerWidth - rect.left + TOOLTIP_GAP;
             style.transform = 'translateY(-50%)';
         } else {
-            style.top = rect.top + rect.height / 2;
+            style.top = Math.max(VIEWPORT_MARGIN, Math.min(rect.top + rect.height / 2, window.innerHeight - TOOLTIP_HEIGHT_ESTIMATE - VIEWPORT_MARGIN));
             style.left = rect.left + rect.width + TOOLTIP_GAP;
             style.transform = 'translateY(-50%)';
         }
@@ -211,15 +237,16 @@ const TutorialSpotlight: React.FC = () => {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -8 }}
                     transition={{ duration: 0.25 }}
-                    style={{ ...getTooltipStyle(), pointerEvents: 'auto' }}
-                    className="bg-white rounded-2xl shadow-2xl border border-slate-200/80 overflow-hidden"
+                    style={{ ...getTooltipStyle(), pointerEvents: 'auto', backgroundColor: '#FFFFFF', borderWidth: 1, borderColor: '#E8E6DF' }}
+                    className="rounded-2xl shadow-2xl overflow-hidden"
                 >
                     {/* Step counter bar */}
                     <div className="flex h-1">
                         {steps.map((_, i) => (
                             <div
                                 key={i}
-                                className={`flex-1 transition-colors duration-300 ${i <= currentStepIndex ? 'bg-indigo-500' : 'bg-slate-100'}`}
+                                className="flex-1 transition-colors duration-300"
+                                style={{ backgroundColor: i <= currentStepIndex ? '#D97757' : '#F0EEE8' }}
                             />
                         ))}
                     </div>
@@ -227,9 +254,9 @@ const TutorialSpotlight: React.FC = () => {
                     {/* Fullscreen intro: Pip centered above content */}
                     {isFullscreen && (
                         <div className="flex justify-center pt-4 pb-1">
-                            <div className="w-16 h-16 rounded-full bg-indigo-50 flex items-center justify-center">
-                                <motion.img
-                                    src="/mascot/pip-excited.png"
+                            <div className="w-16 h-16 rounded-full flex items-center justify-center" style={{ backgroundColor: '#FAF9F0' }}>
+                                    <motion.img
+                                        src="/mascot/pip-excited.webp"
                                     alt=""
                                     className="w-12 h-12 object-contain"
                                     aria-hidden="true"
@@ -244,9 +271,9 @@ const TutorialSpotlight: React.FC = () => {
                         {/* Pip mascot — inline guide for targeted steps */}
                         {!isFullscreen && (
                             <div className="shrink-0 mt-0.5">
-                                <div className="w-10 h-10 rounded-full bg-indigo-50 flex items-center justify-center">
+                                <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ backgroundColor: '#FAF9F0' }}>
                                     <motion.img
-                                        src="/mascot/pip-waving.png"
+                                        src="/mascot/pip-waving.webp"
                                         alt=""
                                         className="w-8 h-8 object-contain"
                                         aria-hidden="true"
@@ -260,10 +287,11 @@ const TutorialSpotlight: React.FC = () => {
                         <div className={`flex-1 min-w-0 ${isFullscreen ? 'text-center' : ''}`}>
                             {/* Title + skip */}
                             <div className="flex items-center justify-between gap-2 mb-1">
-                                <h3 className="text-sm font-bold text-slate-900 leading-tight">{currentStep.title}</h3>
+                                <h3 className="text-sm font-bold leading-tight" style={{ color: '#1A1A19', fontFamily: "'Newsreader', Georgia, serif" }}>{currentStep.title}</h3>
                                 <button
                                     onClick={skipTutorial}
-                                    className="shrink-0 p-1 text-slate-300 hover:text-slate-500 rounded transition-colors"
+                                    className="shrink-0 p-1 rounded transition-colors"
+                                    style={{ color: '#6B6B66' }}
                                     title="Tutorial overslaan"
                                 >
                                     <X size={14} />
@@ -271,26 +299,27 @@ const TutorialSpotlight: React.FC = () => {
                             </div>
 
                             {/* Description */}
-                            <p className="text-xs text-slate-500 leading-relaxed mb-3">{currentStep.content}</p>
+                            <p className="text-xs leading-relaxed mb-3" style={{ color: '#3D3D38' }}>{currentStep.content}</p>
 
                             {/* Required click hint */}
                             {currentStep.requireClick && rect && !targetNotFound && (
-                                <p className="text-[11px] text-indigo-600 font-semibold mb-3 flex items-center gap-1.5">
-                                    <span className="w-1.5 h-1.5 bg-indigo-500 rounded-full animate-pulse" />
+                                <p className="text-[11px] font-semibold mb-3 flex items-center gap-1.5" style={{ color: '#D97757' }}>
+                                    <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: '#D97757' }} />
                                     Klik op het uitgelichte element
                                 </p>
                             )}
 
                             {/* Navigation */}
                             <div className={`flex items-center ${isFullscreen ? 'justify-center gap-3' : 'justify-between'}`}>
-                                <span className="text-[10px] text-slate-400 font-medium">
+                                <span className="text-[10px] font-medium" style={{ color: '#6B6B66' }}>
                                     {currentStepIndex + 1}/{steps.length}
                                 </span>
                                 <div className="flex items-center gap-1">
                                     {!isFirstStep && (
                                         <button
                                             onClick={prevStep}
-                                            className="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-50 rounded-lg transition-colors"
+                                            className="p-1.5 rounded-lg transition-colors"
+                                            style={{ color: '#6B6B66' }}
                                         >
                                             <ChevronLeft size={16} />
                                         </button>
@@ -298,7 +327,10 @@ const TutorialSpotlight: React.FC = () => {
                                     {(!currentStep.requireClick || targetNotFound) && (
                                         <button
                                             onClick={isLastStep ? skipTutorial : nextStep}
-                                            className="flex items-center gap-1 px-3 py-1.5 bg-indigo-500 hover:bg-indigo-600 text-white text-xs font-semibold rounded-lg transition-colors"
+                                            className="flex items-center gap-1 px-3 py-1.5 text-white text-xs font-semibold rounded-full transition-all duration-300"
+                                            style={{ backgroundColor: '#D97757' }}
+                                            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#C46849'}
+                                            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#D97757'}
                                         >
                                             {isLastStep ? 'Klaar' : 'Volgende'}
                                             <ChevronRight size={14} />
@@ -322,7 +354,8 @@ export const TutorialRestartButton: React.FC = () => {
     return (
         <button
             onClick={startTutorial}
-            className="fixed bottom-6 right-6 w-10 h-10 bg-white border border-slate-200 text-slate-400 hover:text-indigo-600 hover:border-indigo-200 rounded-full flex items-center justify-center shadow-md transition-all hover:scale-110 z-40"
+            className="fixed bottom-6 right-6 w-10 h-10 rounded-full flex items-center justify-center shadow-md transition-all hover:scale-110 z-40"
+            style={{ backgroundColor: '#FFFFFF', borderWidth: 1, borderColor: '#E8E6DF', color: '#6B6B66' }}
             title="Tutorial Herhalen"
         >
             <span className="text-sm">?</span>
