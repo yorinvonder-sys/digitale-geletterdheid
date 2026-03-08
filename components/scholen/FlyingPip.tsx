@@ -26,12 +26,15 @@ const POSE_SRC: Record<PipPose, string> = {
     reading: '/mascot/pip-reading.png',
 };
 
+interface HeroPipNestProps {
+    tooltip: string;
+}
+
 interface PipGuideProps {
     pose: PipPose;
     tooltip: string;
     side: 'left' | 'right';
     topOffset?: string;
-    // Optional translateX override from the section center, e.g. 'translateX(calc(-50% - 20rem))'
     xOffset?: string;
     children: React.ReactNode;
 }
@@ -139,5 +142,27 @@ export function PipGuide({ pose, tooltip, side, topOffset = '8.5rem', xOffset, c
 
             {children}
         </div>
+    );
+}
+
+export function HeroPipNest(_props: HeroPipNestProps) {
+    return (
+        <aside
+            className="mt-10 hidden xl:block"
+            role="note"
+            aria-label="Pip slaapt in zijn nest"
+        >
+            <img
+                src="/mascot/pip-sleeping-nest.png"
+                alt="Pip slaapt in zijn nest"
+                style={{
+                    width: 160,
+                    height: 'auto',
+                    filter: 'drop-shadow(0 6px 12px rgba(26,26,25,0.08))',
+                }}
+                width={160}
+                loading="lazy"
+            />
+        </aside>
     );
 }

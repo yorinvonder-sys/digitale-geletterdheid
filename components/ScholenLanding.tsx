@@ -172,7 +172,6 @@ const ScholenLandingExpertise = React.lazy(() => import('./scholen/ScholenLandin
 const ScholenLandingPlatformPreview = React.lazy(() => import('./scholen/ScholenLandingPlatformPreview').then(m => ({ default: m.ScholenLandingPlatformPreview })));
 const ScholenLandingCustomization = React.lazy(() => import('./scholen/ScholenLandingCustomization').then(m => ({ default: m.ScholenLandingCustomization })));
 const ScholenLandingGameDemo = React.lazy(() => import('./scholen/ScholenLandingGameDemo').then(m => ({ default: m.ScholenLandingGameDemo })));
-const ScholenLandingAIChatDemo = React.lazy(() => import('./scholen/ScholenLandingAIChatDemo').then(m => ({ default: m.ScholenLandingAIChatDemo })));
 const ScholenLandingDashboardDemo = React.lazy(() => import('./scholen/ScholenLandingDashboardDemo').then(m => ({ default: m.ScholenLandingDashboardDemo })));
 
 // Pip the Robin — static guide in section margins
@@ -268,6 +267,7 @@ const SECTION_IDS = {
     painPoints: 'de-uitdaging',
     features: 'waarom-dgskills',
     customization: 'op-maat',
+    howItWorks: 'hoe-het-werkt',
     platform: 'platform-preview',
     slo: 'slo-kerndoelen',
     ict: 'voor-ict',
@@ -409,7 +409,7 @@ export const ScholenLanding: React.FC = () => {
                 }`} style={scrolled ? { backgroundColor: `${C.bg}ee` } : undefined}>
                 <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
                     <a href="/" className="flex items-center gap-2.5">
-                        <img src="/mascot-pip.png" alt="Pip — DGSkills mascotte" className="w-9 h-9 object-contain" width={36} height={36} fetchPriority="high" decoding="async" />
+                        <img src="/mascot/pip-logo.png" alt="DGSkills" className="w-9 h-9 object-contain" width={36} height={36} fetchPriority="high" decoding="async" />
                         <span className="font-semibold text-[15px] tracking-tight" style={{ color: C.text }}>DGSkills</span>
                     </a>
 
@@ -614,12 +614,34 @@ export const ScholenLanding: React.FC = () => {
                                         />
                                     </div>
                                 </div>
+
+                                {/* Pip — sitting on the browser bar */}
+                                <div className="absolute -top-7 left-16 z-20 motion-safe:animate-hero-float-delayed" style={{ animationDelay: '2s' }}>
+                                    <img
+                                        src="/mascot/pip-waving.png"
+                                        alt="Pip — DGSkills mascotte"
+                                        className="w-10 h-10 object-contain drop-shadow-md"
+                                        width={40}
+                                        height={40}
+                                        loading="eager"
+                                        decoding="async"
+                                    />
+                                </div>
                                 </div>
                             )}
                         </div>
 
-                        {/* Scroll indicator */}
-                        <div className="flex justify-center mt-12 md:mt-16">
+                        {/* Scroll indicator with Pip */}
+                        <div className="flex items-center justify-center gap-2 mt-12 md:mt-16">
+                            <img
+                                src="/mascot/pip-excited.png"
+                                alt=""
+                                className="w-7 h-7 object-contain opacity-50 hidden sm:block"
+                                width={28}
+                                height={28}
+                                loading="lazy"
+                                aria-hidden="true"
+                            />
                             <button
                                 onClick={() => scrollTo(SECTION_IDS.painPoints)}
                                 className="transition-colors p-2"
@@ -712,7 +734,7 @@ export const ScholenLanding: React.FC = () => {
 
                 {/* How it works - 3-step */}
                 <PipGuide pose="thinking" tooltip="In 3 stappen aan de slag" side="left">
-                <section className="py-14 md:py-20 lg:py-24 px-6 [content-visibility:auto] [contain-intrinsic-size:auto_400px]" style={{ backgroundColor: C.bgAlt, borderTop: `1px solid ${C.border}`, borderBottom: `1px solid ${C.border}` }} aria-label="Hoe het werkt">
+                <section id={SECTION_IDS.howItWorks} className="py-14 md:py-20 lg:py-24 px-6 [content-visibility:auto] [contain-intrinsic-size:auto_400px]" style={{ backgroundColor: C.bgAlt, borderTop: `1px solid ${C.border}`, borderBottom: `1px solid ${C.border}` }} aria-label="Hoe het werkt">
                     <DeferredSection minHeight="min-h-[400px]">
                         <AnimateOnScroll>
                             <div className="max-w-5xl mx-auto">
@@ -790,16 +812,6 @@ export const ScholenLanding: React.FC = () => {
                     </DeferredSection>
                 </section>
 
-                {/* AI Chat Demo */}
-                <section className="py-14 md:py-20 lg:py-24 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_500px]" aria-label="AI Privacy Coach demo">
-                    <DeferredSection minHeight="min-h-[400px]">
-                        <Suspense fallback={<div className="min-h-[400px]" aria-hidden="true" />}>
-                            <AnimateOnScroll>
-                                <ScholenLandingAIChatDemo />
-                            </AnimateOnScroll>
-                        </Suspense>
-                    </DeferredSection>
-                </section>
 
                 {/* Dashboard Demo */}
                 <section className="py-14 md:py-20 lg:py-24 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_500px]" style={{ backgroundColor: C.bgAlt, borderTop: `1px solid ${C.border}`, borderBottom: `1px solid ${C.border}` }} aria-label="Docenten dashboard demo">
@@ -826,7 +838,6 @@ export const ScholenLanding: React.FC = () => {
                 </section>
 
                 {/* SLO Kerndoelen */}
-                <PipGuide pose="celebrating" tooltip="Alle 9 SLO-kerndoelen gedekt" side="right">
                 <section id={SECTION_IDS.slo} className="py-14 md:py-20 lg:py-24 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_400px]" style={{ backgroundColor: C.bgAlt, borderTop: `1px solid ${C.border}`, borderBottom: `1px solid ${C.border}` }}>
                     <SectionErrorBoundary>
                         <DeferredSection minHeight="min-h-[300px]">
@@ -838,7 +849,6 @@ export const ScholenLanding: React.FC = () => {
                         </DeferredSection>
                     </SectionErrorBoundary>
                 </section>
-                </PipGuide>
 
                 {/* FAQ */}
                 <section id={SECTION_IDS.faq} className="py-14 md:py-20 lg:py-24 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_400px]" style={{ backgroundColor: C.bgAlt, borderTop: `1px solid ${C.border}`, borderBottom: `1px solid ${C.border}` }}>
@@ -889,7 +899,6 @@ export const ScholenLanding: React.FC = () => {
                 </section>
 
                 {/* Contact / Pricing */}
-                <PipGuide pose="waving" tooltip="Neem contact op!" side="left">
                 <section id={SECTION_IDS.contact} className="py-14 md:py-20 lg:py-24 px-6 text-white scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_500px]" style={{ backgroundColor: C.dark }}>
                     <SectionErrorBoundary>
                         <DeferredSection minHeight="min-h-[400px]">
@@ -899,7 +908,6 @@ export const ScholenLanding: React.FC = () => {
                         </DeferredSection>
                     </SectionErrorBoundary>
                 </section>
-                </PipGuide>
             </main>
 
             {/* Floating CTA — Mobile */}
@@ -940,7 +948,7 @@ export const ScholenLanding: React.FC = () => {
                 <div className="max-w-5xl mx-auto px-6 py-12">
                     <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-8">
                         <div className="flex items-center gap-2.5">
-                            <img src="/mascot-pip.png" alt="" className="w-7 h-7 object-contain opacity-60 brightness-200" width={28} height={28} loading="lazy" decoding="async" />
+                            <img src="/mascot/pip-logo.png" alt="" className="w-7 h-7 object-contain opacity-60 brightness-200" width={28} height={28} loading="lazy" decoding="async" />
                             <span className="text-sm font-semibold" style={{ color: `${C.bg}cc` }}>DGSkills</span>
                         </div>
                         <div className="flex flex-wrap items-center gap-5 text-xs" style={{ color: `${C.bg}88` }}>

@@ -88,7 +88,7 @@ export const ScholenLandingSlo: React.FC = () => {
     return (
         <div>
             <div className="max-w-5xl mx-auto">
-                <div className="md:flex md:items-start md:justify-between md:gap-16 mb-14">
+                <div className="md:flex md:items-start md:justify-between md:gap-10 mb-14">
                     <div className="max-w-lg mb-8 md:mb-0">
                         <h2 className="text-2xl md:text-3xl font-medium tracking-tight mb-4" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#1A1A19' }}>
                             Afgestemd op de SLO-conceptkerndoelen 2025
@@ -97,6 +97,9 @@ export const ScholenLandingSlo: React.FC = () => {
                             DGSkills dekt alle drie de domeinen van de SLO-leerlijn Digitale Geletterdheid af.
                             Docenten exporteren voortgangsrapporten voor verantwoording aan inspectie en schoolleiding.
                         </p>
+                    </div>
+                    <div className="hidden md:flex items-center justify-center flex-shrink-0">
+                        <img src="/mascot/pip-celebrating.png" alt="" className="w-16 h-16 object-contain" loading="lazy" aria-hidden="true" />
                     </div>
                     <div className="flex flex-col items-end gap-3">
                         <div className="flex flex-wrap gap-2">
