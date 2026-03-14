@@ -91,6 +91,7 @@ export const CURRICULUM: CurriculumConfig = {
                         'game-director',
                         'ai-tekengame',
                         'ai-beleid-brainstorm',
+                        'code-denker',
                     ],
                     reviewMissions: [
                         'review-week-2',
@@ -100,10 +101,11 @@ export const CURRICULUM: CurriculumConfig = {
                 3: {
                     title: 'Digitaal Burgerschap',
                     subtitle: 'Veilig en bewust online',
-                    sloFocus: ['23A', '23B', '23C', '21B'],
+                    sloFocus: ['23A', '23B', '23C', '21B', '21C'],
                     sloFocusVso: ['18B', '18C', '20A', '20B'],
                     missions: [
                         'data-detective',
+                        'data-verzamelaar',
                         'deepfake-detector',
                         'ai-spiegel',
                         'social-safeguard',
@@ -168,14 +170,16 @@ export const CURRICULUM: CurriculumConfig = {
                 2: {
                     title: 'Programmeren & Computational Thinking',
                     subtitle: 'Leer denken als een programmeur',
-                    sloFocus: ['22A', '22B'],
+                    sloFocus: ['21A', '22A', '22B', '23A'],
                     missions: [
                         'algorithm-architect',
                         'web-developer',
+                        'network-navigator',
                         'app-prototyper',
                         'bug-hunter',
                         'automation-engineer',
                         'code-reviewer',
+                        'privacy-by-design',
                     ],
                     reviewMissions: [
                         'code-review-2',
