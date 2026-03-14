@@ -72,7 +72,11 @@ Geef je antwoord UITSLUITEND als geldig JSON in dit exacte formaat, NIETS anders
   "vatAmount": 0.00,
   "vatRate": 21,
   "description": "korte omschrijving van de aankoop",
-  "category": "een van de categorieën hieronder"
+  "category": "een van de categorieën hieronder",
+  "isAsset": false,
+  "assetName": "",
+  "assetCategory": "",
+  "assetLifeYears": 0
 }
 
 Regels:
@@ -83,6 +87,10 @@ Regels:
 - vatRate: 0, 9 of 21 (meest voorkomend op het bonnetje). Schat op basis van type aankoop.
 - description: korte omschrijving (max 50 tekens).
 - category: kies de meest passende uit: kantoorkosten | reiskosten | marketing | automatisering | opleiding | telefoon-internet | representatie | overig. Bij twijfel: "overig".
+- isAsset: true als de aankoop een bedrijfsmiddel is dat geactiveerd moet worden (duurzaam, >€450 excl. BTW, langer dan 1 jaar bruikbaar). Voorbeelden: laptop, monitor, bureau, telefoon, fiets, camera, printer. NIET: kantoorartikelen, eten, benzine, abonnementen, treinkaartjes.
+- assetName: als isAsset=true, een korte naam voor het bedrijfsmiddel (bijv. "MacBook Pro 14 inch", "IKEA Bureau BEKANT").
+- assetCategory: als isAsset=true, kies uit: computer | meubilair | software | vervoer | overig.
+- assetLifeYears: als isAsset=true, de geschatte levensduur in jaren. Standaarden: computer/telefoon=3, meubilair=5, software=3, auto=5, fiets=5, overig=5.
 - Als een veld niet leesbaar is, gebruik een lege string "" voor tekst of 0 voor getallen.
 
 Antwoord ALLEEN met de JSON, geen uitleg of extra tekst.`;

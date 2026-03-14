@@ -427,6 +427,8 @@ function CopyField({ label, rugnummer, value, hint }: {
 }
 
 function BelastingdienstInvulhulp({ tax, summary }: { tax: TaxCalculation; summary: YearSummary }) {
+    const currentTaxConfig = getTaxConfig(summary.year);
+
     const fmt = (v: number) => new Intl.NumberFormat('nl-NL', {
         minimumFractionDigits: 0, maximumFractionDigits: 0
     }).format(Math.round(v));
