@@ -168,7 +168,7 @@ Deno.serve(async (req: Request) => {
             "anthropic-version": "2023-06-01",
         },
         body: JSON.stringify({
-            model: "claude-sonnet-4-6-20250514",
+            model: "claude-sonnet-4-6-20250620",
             max_tokens: 1024,
             messages: [{
                 role: "user",
@@ -185,6 +185,15 @@ Deno.serve(async (req: Request) => {
         const errBody = await claudeResponse.text().catch(() => "");
         console.error(`[scanSubscriptionClaude] Claude API error ${status}:`, errBody.slice(0, 500));
 
+        // Parse Claude API error for details
+        let claudeError = "AI-service tijdelijk niet beschikbaar.";
+        try {
+            const parsed = JSON.parse(errBody);
+            if (parsed?.error?.message) {
+                claudeError = `Claude API: ${parsed.error.message}`;
+            }
+        } catch { /* use default */ }
+
         if (status === 429) {
             return new Response(
                 JSON.stringify({ error: "Te veel verzoeken. Wacht even en probeer opnieuw." }),
@@ -192,7 +201,7 @@ Deno.serve(async (req: Request) => {
             );
         }
         return new Response(
-            JSON.stringify({ error: "AI-service tijdelijk niet beschikbaar." }),
+            JSON.stringify({ error: claudeError }),
             { status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" } }
         );
     }
