@@ -62,7 +62,7 @@ Drie modellen, elk voor een ander type taak. Gebruik de router hieronder als geh
 
 | # | Taak | Tijd | Status | Model + taak |
 |---|------|------|--------|-------------|
-| 1.1 | Security fix: systemInstruction server-side valideren | 2u | ⚠️ NIET GEDAAN | **Claude** — code schrijven + deployen |
+| 1.1 | Security fix: systemInstruction server-side valideren | 2u | ✅ (was al geïmplementeerd) | **Claude** — code schrijven + deployen |
 | 1.2 | Missie-review starten: jaar 1, periode 1+2 (prioriteit) | 3u | ✅ | **Claude** — review-rapport per missie |
 
 **Done wanneer:** Security fix live, eerste batch missies gereviewed.
@@ -99,10 +99,10 @@ Drie modellen, elk voor een ander type taak. Gebruik de router hieronder als geh
 
 | # | Taak | Tijd | Status | Model + taak |
 |---|------|------|--------|-------------|
-| 3.1 | UI consistency check: lab-* tokens, typografie, spacing | 2u | ⬜ | **Claude** — audit + fixes |
-| 3.2 | Bug hunt: volledige flow doorlopen (login → missie → afronden) | 3u | ⬜ | **Claude** — testen + fixen |
-| 3.3 | Lighthouse audit + top-5 performance issues fixen | 2u | ⬜ | **Claude** — audit + code fixes |
-| 3.4 | Responsive check: mobiel, tablet, desktop | 1u | ⬜ | **Claude** — testen + fixen |
+| 3.1 | UI consistency check: lab-* tokens, typografie, spacing | 2u | ✅ | **Claude** — audit + fixes |
+| 3.2 | Bug hunt: volledige flow doorlopen (login → missie → afronden) | 3u | ✅ (rapport, 15 bugs gevonden) | **Claude** — testen + fixen |
+| 3.3 | Lighthouse audit + top-5 performance issues fixen | 2u | ✅ | **Claude** — audit + code fixes |
+| 3.4 | Responsive check: mobiel, tablet, desktop | 1u | ✅ | **Claude** — testen + fixen |
 | 3.5 | Zakelijk: KvK, bank, BTW, verzekering, AV | 2u | ⬜ | **ChatGPT** — checklist + advies (geheugen over sessies) |
 
 **Done wanneer:** Consistent design, Lighthouse >90, geen bekende bugs in core flow.
