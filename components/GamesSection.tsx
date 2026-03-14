@@ -114,7 +114,7 @@ export const GamesSection: React.FC<GamesSectionProps> = ({
         return () => unsubscribe();
     }, []);
 
-    const isTeacher = userRole === 'teacher' || userRole === 'admin';
+    const isTeacher = userRole === 'teacher' || userRole === 'admin' || userRole === 'developer';
 
     const games: GameCard[] = [
         {
