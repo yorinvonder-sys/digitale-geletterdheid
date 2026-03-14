@@ -75,6 +75,8 @@ Deno.serve(async (req: Request) => {
         return new Response(null, { headers: corsHeaders });
     }
 
+    try {
+
     // 1. Auth check
     const authHeader = req.headers.get("Authorization");
     if (!authHeader) {
@@ -234,4 +236,17 @@ Deno.serve(async (req: Request) => {
     return new Response(JSON.stringify({ result }), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
+
+    } catch (err) {
+        console.error("[scanSubscriptionClaude] Uncaught error:", err);
+        const corsHeaders = {
+            "Access-Control-Allow-Origin": req.headers.get("Origin") || "https://dgskills.app",
+            "Access-Control-Allow-Methods": "POST, OPTIONS",
+            "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        };
+        return new Response(
+            JSON.stringify({ error: `Server error: ${err instanceof Error ? err.message : String(err)}` }),
+            { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+    }
 });

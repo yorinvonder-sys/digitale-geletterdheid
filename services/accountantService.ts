@@ -517,10 +517,11 @@ export async function scanSubscriptionWithClaude(
 
     if (!response.ok) {
         const err = await response.json().catch(() => ({}));
-        throw new Error(err.error || 'Bestand scannen mislukt.');
+        throw new Error(err.error || err.msg || err.message || `Bestand scannen mislukt (status ${response.status}).`);
     }
 
     const data = await response.json();
+    if (!data.result) throw new Error('Geen resultaat ontvangen van scanner.');
     return data.result as ScannedSubscriptionData;
 }
 
