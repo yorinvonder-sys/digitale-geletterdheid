@@ -314,7 +314,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                                 <img src="/mascot/pip-logo.webp" alt="DGSkills logo" className="w-full h-full object-contain" width={80} height={80} fetchPriority="high" decoding="async" />
                             </div>
                             <h1 className="text-2xl font-black text-slate-900 mb-1 tracking-tight">
-                                Mission <span style={{ color: '#D97757' }}>Control</span>
+                                Mission <span className="text-lab-primary">Control</span>
                             </h1>
                             <p className="text-slate-500 font-bold text-[10px] uppercase tracking-widest">
                                 DGSkills • Voortgezet Onderwijs

@@ -105,7 +105,7 @@ export function MfaGate({ onVerified }: MfaGateProps) {
 
     return (
         <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
-            <div className="bg-white rounded-2xl shadow-lg border border-slate-200 max-w-md w-full p-8">
+            <div className="bg-white rounded-2xl shadow-xl border border-slate-100 max-w-md w-full p-8">
                 <div className="flex items-center gap-3 mb-6">
                     <div className="w-12 h-12 rounded-xl bg-indigo-100 flex items-center justify-center">
                         <ShieldCheck size={24} className="text-indigo-600" />
@@ -126,15 +126,15 @@ export function MfaGate({ onVerified }: MfaGateProps) {
                 </p>
 
                 {error && (
-                    <div className="flex items-start gap-2 bg-red-50 border border-red-200 rounded-lg p-3 mb-4">
+                    <div className="flex items-start gap-2 bg-red-50 border border-red-100 rounded-xl p-3 mb-4">
                         <AlertTriangle size={16} className="text-red-500 mt-0.5 flex-shrink-0" />
-                        <p className="text-sm text-red-700">{error}</p>
+                        <p className="text-xs font-bold text-red-500">{error}</p>
                     </div>
                 )}
 
                 {step === 'enroll' && (
                     <div className="space-y-4">
-                        <div className="bg-slate-50 rounded-lg p-4">
+                        <div className="bg-slate-50 rounded-xl p-4">
                             <p className="text-sm font-medium text-slate-700 mb-3">
                                 1. Scan de QR-code met een authenticator-app
                             </p>
@@ -184,14 +184,14 @@ export function MfaGate({ onVerified }: MfaGateProps) {
                                             setError(null);
                                         }}
                                         onKeyDown={(e) => e.key === 'Enter' && code.length === 6 && handleVerify()}
-                                        className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg text-center text-lg font-mono tracking-widest focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
+                                        className="w-full pl-10 pr-4 py-3 border border-slate-200 rounded-xl text-center text-lg font-mono tracking-widest focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all"
                                         autoFocus
                                     />
                                 </div>
                                 <button
                                     onClick={handleVerify}
                                     disabled={code.length !== 6 || verifying}
-                                    className="px-6 py-3 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
+                                    className="px-6 py-3 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
                                 >
                                     {verifying ? (
                                         <Loader2 size={16} className="animate-spin" />
@@ -207,7 +207,7 @@ export function MfaGate({ onVerified }: MfaGateProps) {
 
                 {step === 'verify' && (
                     <div className="space-y-4">
-                        <div className="bg-indigo-50 rounded-lg p-4">
+                        <div className="bg-indigo-50 rounded-xl p-4">
                             <p className="text-sm text-indigo-700">
                                 MFA is geactiveerd. Voer de code van je authenticator-app in om door te gaan.
                             </p>
@@ -228,14 +228,14 @@ export function MfaGate({ onVerified }: MfaGateProps) {
                                         setError(null);
                                     }}
                                     onKeyDown={(e) => e.key === 'Enter' && code.length === 6 && handleVerify()}
-                                    className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg text-center text-lg font-mono tracking-widest focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
+                                    className="w-full pl-10 pr-4 py-3 border border-slate-200 rounded-xl text-center text-lg font-mono tracking-widest focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all"
                                     autoFocus
                                 />
                             </div>
                             <button
                                 onClick={handleVerify}
                                 disabled={code.length !== 6 || verifying}
-                                className="px-6 py-3 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
+                                className="px-6 py-3 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
                             >
                                 {verifying ? (
                                     <Loader2 size={16} className="animate-spin" />

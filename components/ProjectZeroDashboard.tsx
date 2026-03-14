@@ -1086,7 +1086,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                         : 'hover:border-slate-300 hover:-translate-y-[1px]'
                                         }`}
                                 >
-                                    <span className={`min-w-[210px] max-w-[72vw] flex items-center gap-2.5 rounded-xl border bg-white px-3 py-2 transition-all ${showYearGroupMenu ? `${activeYearTheme.activeBorder} shadow-sm` : 'border-slate-200'}`}>
+                                    <span className={`min-w-0 sm:min-w-[210px] max-w-[72vw] flex items-center gap-2.5 rounded-xl border bg-white px-3 py-2 transition-all ${showYearGroupMenu ? `${activeYearTheme.activeBorder} shadow-sm` : 'border-slate-200'}`}>
                                         <span className={`w-7 h-7 rounded-lg ${activeYearTheme.badgeBg} ${activeYearTheme.badgeText} flex items-center justify-center shrink-0`}>
                                             <activeYearTheme.Icon size={13} />
                                         </span>

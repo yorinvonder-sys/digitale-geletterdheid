@@ -203,7 +203,7 @@ export const TrainerPreview: React.FC<TrainerPreviewProps> = ({ data }) => {
             {/* Header */}
             <div className="px-4 py-3 flex justify-between items-center shrink-0 z-20" style={{ backgroundColor: '#FFFFFF', borderBottom: '1px solid #E8E6DF' }}>
                 <div className="flex items-center gap-3">
-                    <img src="/mascot/pip-thinking.webp" alt="Pip" className="w-8 h-8 object-contain" />
+                    <img src="/mascot/pip-thinking.webp" alt="Pip" className="w-8 h-8 object-contain" loading="lazy" />
                     <div>
                         <h3 className="font-bold text-xs tracking-wider uppercase" style={{ color: '#D97757' }}>Pip's Sorteer Lab</h3>
                         <span className="font-bold text-sm" style={{ color: '#1A1A19' }}>Afval Sorteerder</span>
@@ -242,7 +242,7 @@ export const TrainerPreview: React.FC<TrainerPreviewProps> = ({ data }) => {
             {showInstructionBanner && (
                 <div className="mx-4 mt-4 rounded-2xl p-3 shadow-sm" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
                     <div className="flex items-start gap-3">
-                        <img src="/mascot/pip-waving.webp" alt="Pip" className="w-10 h-10 object-contain shrink-0" />
+                        <img src="/mascot/pip-waving.webp" alt="Pip" className="w-10 h-10 object-contain shrink-0" loading="lazy" />
                         <div>
                             <h4 className="font-bold text-sm mb-1" style={{ color: '#1A1A19' }}>Wat moet je nu doen?</h4>
                             <p className="text-xs leading-relaxed mb-2" style={{ color: '#3D3D38' }}>
@@ -399,7 +399,7 @@ export const TrainerPreview: React.FC<TrainerPreviewProps> = ({ data }) => {
                         </>
                     ) : (
                         <div className="w-full text-center text-sm flex flex-col items-center gap-2" style={{ color: '#6B6B66' }}>
-                            <img src="/mascot/pip-thinking.webp" alt="Pip denkt na" className="w-12 h-12 object-contain" />
+                            <img src="/mascot/pip-thinking.webp" alt="Pip denkt na" className="w-12 h-12 object-contain" loading="lazy" />
                             <span className="font-medium" style={{ color: '#1A1A19' }}>Hier test je de AI straks</span>
                             <div className="rounded-lg px-3 py-2 text-xs" style={{ backgroundColor: '#FAF9F0', border: '1px solid #F0EEE8' }}>
                                 <p style={{ color: '#3D3D38' }}>Als je genoeg voorbeelden hebt gegeven, typ dan in de chat:</p>

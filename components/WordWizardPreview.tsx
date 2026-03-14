@@ -14,6 +14,7 @@ interface WordWizardPreviewProps {
 }
 
 export const WordWizardPreview: React.FC<WordWizardPreviewProps> = ({ onTaskComplete }) => {
+    const [showIntro, setShowIntro] = useState(true);
     const [blocks, setBlocks] = useState<TextBlock[]>([
         { id: '1', type: 'h1', text: 'Mijn Spreekbeurt' },
         { id: '2', type: 'p', text: 'Dit is de inleiding van mijn verslag. Hier vertel ik waar het over gaat.' },
@@ -94,6 +95,53 @@ export const WordWizardPreview: React.FC<WordWizardPreviewProps> = ({ onTaskComp
         }
     };
 
+    if (showIntro) {
+        return (
+            <div className="w-full h-full flex flex-col items-center justify-center bg-slate-100 font-sans p-6">
+                <div className="bg-white rounded-2xl shadow-xl max-w-md w-full p-8 flex flex-col gap-6">
+                    <div className="flex items-center gap-3">
+                        <div className="bg-[#2b579a] p-3 rounded-xl">
+                            <AlignLeft size={24} className="text-white" />
+                        </div>
+                        <div>
+                            <h2 className="text-xl font-bold text-[#2b579a]">Word Wizard</h2>
+                            <p className="text-sm text-slate-500">Leer werken met een tekstverwerker</p>
+                        </div>
+                    </div>
+
+                    <div className="bg-slate-50 rounded-xl p-5">
+                        <p className="font-semibold text-slate-700 mb-4">Zo werkt het:</p>
+                        <ol className="space-y-3">
+                            <li className="flex gap-3 items-start">
+                                <span className="bg-[#2b579a] text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center shrink-0 mt-0.5">1</span>
+                                <span className="text-sm text-slate-700">Je ziet een document met tekst. Klik op een blok om het te bewerken.</span>
+                            </li>
+                            <li className="flex gap-3 items-start">
+                                <span className="bg-[#2b579a] text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center shrink-0 mt-0.5">2</span>
+                                <span className="text-sm text-slate-700">Gebruik de knop <strong>Kop 1</strong> om een titel te maken, of <strong>Normaal</strong> voor gewone tekst.</span>
+                            </li>
+                            <li className="flex gap-3 items-start">
+                                <span className="bg-[#2b579a] text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center shrink-0 mt-0.5">3</span>
+                                <span className="text-sm text-slate-700">Ga naar het tabblad <strong>Invoegen</strong> om een afbeelding of inhoudsopgave toe te voegen.</span>
+                            </li>
+                            <li className="flex gap-3 items-start">
+                                <span className="bg-[#2b579a] text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center shrink-0 mt-0.5">4</span>
+                                <span className="text-sm text-slate-700">Druk op <strong>Enter</strong> om een nieuw blok toe te voegen. Gebruik de <strong>+</strong> knop onderaan voor meer ruimte.</span>
+                            </li>
+                        </ol>
+                    </div>
+
+                    <button
+                        onClick={() => setShowIntro(false)}
+                        className="w-full bg-[#2b579a] text-white font-bold py-3 px-6 rounded-xl hover:bg-[#1e3f73] transition-colors text-base"
+                    >
+                        Aan de slag
+                    </button>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className="w-full h-full flex flex-col bg-slate-100 font-sans">
             {/* WORD UI HEADER */}
@@ -138,7 +186,7 @@ export const WordWizardPreview: React.FC<WordWizardPreviewProps> = ({ onTaskComp
                     {activeTab === 'start' && (
                         <>
                             {/* STYLES SECTION */}
-                            <div className="flex flex-col justify-between gap-1 pr-4 border-r border-slate-300 min-w-[200px]">
+                            <div className="flex flex-col justify-between gap-1 pr-4 border-r border-slate-300 min-w-[140px] md:min-w-[200px]">
                                 <span className="text-[10px] text-slate-400 font-bold uppercase text-center w-full">Stijlen</span>
                                 <div className="flex gap-2 h-full items-center">
                                     <button

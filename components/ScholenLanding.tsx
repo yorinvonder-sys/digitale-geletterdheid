@@ -174,9 +174,16 @@ const ScholenLandingCustomization = React.lazy(() => import('./scholen/ScholenLa
 const ScholenLandingGameDemo = React.lazy(() => import('./scholen/ScholenLandingGameDemo').then(m => ({ default: m.ScholenLandingGameDemo })));
 const ScholenLandingDashboardDemo = React.lazy(() => import('./scholen/ScholenLandingDashboardDemo').then(m => ({ default: m.ScholenLandingDashboardDemo })));
 const ScholenLandingMissionShowcase = React.lazy(() => import('./scholen/ScholenLandingMissionShowcase').then(m => ({ default: m.ScholenLandingMissionShowcase })));
+const ScholenLandingDidactiek = React.lazy(() => import('./scholen/ScholenLandingDidactiek').then(m => ({ default: m.ScholenLandingDidactiek })));
 
-// Pip the Robin — static guide in section margins
-import { PipGuide } from './scholen/FlyingPip';
+// Pip the Robin — lazy so it stays out of the landing page's main chunk
+const PipGuideModule = React.lazy(() => import('./scholen/FlyingPip').then(m => ({ default: m.PipGuide })));
+/** Wrapper that renders PipGuide only after idle, with Suspense fallback */
+const PipGuide: React.FC<{ pose: string; tooltip: string; side: string; children: React.ReactNode }> = (props) => (
+    <Suspense fallback={<>{props.children}</>}>
+        <PipGuideModule {...props as any} />
+    </Suspense>
+);
 
 // JSON-LD structured data for Google rich results
 const structuredData = {
@@ -543,7 +550,7 @@ export const ScholenLanding: React.FC = () => {
                                             loop
                                             muted
                                             playsInline
-                                            preload="auto"
+                                            preload="metadata"
                                             className="w-full rounded-2xl"
                                             src="/videos/hero-pip-adventure.mp4"
                                         />
@@ -784,6 +791,19 @@ export const ScholenLanding: React.FC = () => {
                             <Suspense fallback={<div className="min-h-[400px]" aria-hidden="true" />}>
                                 <AnimateOnScroll>
                                     <ScholenLandingMissionShowcase />
+                                </AnimateOnScroll>
+                            </Suspense>
+                        </DeferredSection>
+                    </SectionErrorBoundary>
+                </section>
+
+                {/* Didactische Onderbouwing */}
+                <section className="py-14 md:py-20 lg:py-24 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_500px]" aria-label="Didactische onderbouwing">
+                    <SectionErrorBoundary>
+                        <DeferredSection minHeight="min-h-[400px]">
+                            <Suspense fallback={<div className="min-h-[400px]" aria-hidden="true" />}>
+                                <AnimateOnScroll>
+                                    <ScholenLandingDidactiek />
                                 </AnimateOnScroll>
                             </Suspense>
                         </DeferredSection>

@@ -147,7 +147,7 @@ export const ScholenLandingContact: React.FC = () => {
                     </div>
 
                     {/* Form */}
-                    <div id="pilot-form" className="flex-[1.3] max-w-lg scroll-mt-24 lg:min-w-[340px]">
+                    <div id="pilot-form" className="flex-[1.3] max-w-lg scroll-mt-24 w-full lg:min-w-[340px]">
                         <p className="text-sm font-medium mb-6" style={{ color: '#D97757' }}>Schooljaar 2025-2026 is het laatste volledige pilotjaar vóór de verwachte verplichting in 2027.</p>
                         <div className="bg-white rounded-2xl p-7 shadow-2xl shadow-black/10">
                             {isSubmitted ? (

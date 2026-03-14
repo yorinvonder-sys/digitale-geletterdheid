@@ -681,15 +681,29 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
                 {challengeToast}
                 <div className="flex-1 flex flex-col items-center justify-center p-6 relative z-10">
                     <div className="relative mb-6">
-                        <img src="/mascot/pip-excited.webp" alt="Pip" className="w-20 h-20 object-contain" />
+                        <img src="/mascot/pip-excited.webp" alt="Pip" className="w-20 h-20 object-contain" loading="lazy" />
                     </div>
                     <h2 className="text-2xl font-black mb-2 text-center" style={{ color: '#1A1A19' }}>AI Tekengame 2.0</h2>
-                    <p className="text-center max-w-sm mb-6 text-sm" style={{ color: '#6B6B66' }}>
+                    <p className="text-center max-w-sm mb-4 text-sm" style={{ color: '#6B6B66' }}>
                         Leer hoe een Neuraal Netwerk jouw tekeningen ziet! De AI analyseert pixels, zoekt patronen en berekent de waarschijnlijkheid.
                     </p>
 
+                    {/* Stappenplan voor duidelijkheid */}
+                    <div className="w-full max-w-sm mb-6 rounded-xl p-4 text-sm" style={{ backgroundColor: '#EEF2FF', border: '1px solid rgba(99,102,241,0.2)' }}>
+                        <p className="font-bold mb-2" style={{ color: '#6366F1' }}>Zo werkt het spel:</p>
+                        <ol className="space-y-1.5" style={{ color: '#3D3D38' }}>
+                            <li className="flex gap-2"><span className="font-bold shrink-0" style={{ color: '#6366F1' }}>1.</span> Je krijgt een woord te zien (bijvoorbeeld &quot;kat&quot; of &quot;huis&quot;)</li>
+                            <li className="flex gap-2"><span className="font-bold shrink-0" style={{ color: '#6366F1' }}>2.</span> Teken het woord op het tekenveld hieronder</li>
+                            <li className="flex gap-2"><span className="font-bold shrink-0" style={{ color: '#6366F1' }}>3.</span> De AI bekijkt je tekening en raadt wat het is</li>
+                            <li className="flex gap-2"><span className="font-bold shrink-0" style={{ color: '#6366F1' }}>4.</span> Hoe beter de AI het herkent, hoe meer punten je krijgt!</li>
+                        </ol>
+                        <p className="mt-3 text-xs" style={{ color: '#6B6B66' }}>
+                            Teken hier! Gebruik je muis of vinger om te tekenen.
+                        </p>
+                    </div>
+
                     {/* Solo Mode Button */}
-                    <button onClick={() => { setHasStarted(true); onStart?.(); }} disabled={countdown > 0} className={`w-full max-w-sm px-6 py-4 rounded-xl font-bold text-lg transition-all duration-300 flex items-center justify-center gap-3 ${countdown <= 0 ? 'shadow-lg hover:scale-105 cursor-pointer' : 'cursor-not-allowed opacity-50'}`} style={{ backgroundColor: countdown <= 0 ? '#D97757' : '#E8E6DF', color: countdown <= 0 ? '#FFFFFF' : '#6B6B66' }}>
+                    <button onClick={() => { setHasStarted(true); onStart?.(); }} disabled={countdown > 0} className={`w-full max-w-sm px-6 py-4 rounded-xl font-bold text-lg transition-all duration-300 flex items-center justify-center gap-3 ${countdown <= 0 ? 'shadow-lg hover:scale-105 cursor-pointer' : 'cursor-not-allowed opacity-50'}`} style={{ backgroundColor: countdown <= 0 ? '#6366F1' : '#E8E6DF', color: countdown <= 0 ? '#FFFFFF' : '#6B6B66' }}>
                         {countdown > 0 ? <span>{countdown} - Lees de uitleg...</span> : <> <Pencil size={24} /> Solo Training </>}
                     </button>
 
@@ -727,7 +741,7 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
                 </div>
                 <div className="flex items-center gap-2">
                     {gamePhase === 'draw' && (
-                        <div className={`flex items-center gap-1 px-3 py-1 rounded-full font-mono font-bold text-white ${timeLeft <= 5 ? 'bg-red-500 animate-pulse' : ''}`} style={timeLeft > 5 ? { backgroundColor: '#D97757' } : {}}>
+                        <div className={`flex items-center gap-1 px-3 py-1 rounded-full font-mono font-bold text-white ${timeLeft <= 5 ? 'bg-red-500 animate-pulse' : ''}`} style={timeLeft > 5 ? { backgroundColor: '#6366F1' } : {}}>
                             <Clock size={16} /> {timeLeft}s
                         </div>
                     )}
@@ -792,7 +806,7 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
             <div className="flex-1 p-4 flex gap-4 overflow-hidden relative">
                 {/* EDUCATIONAL SIDEBAR - ACTIVE DURING ANALYSIS */}
                 <div className={`absolute left-4 top-4 bottom-4 w-64 rounded-2xl p-4 transition-all duration-500 transform ${gamePhase !== 'draw' ? 'translate-x-0' : '-translate-x-full opacity-0'}`} style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
-                    <h4 className="font-black mb-4 flex items-center gap-2" style={{ color: '#D97757' }}>
+                    <h4 className="font-black mb-4 flex items-center gap-2" style={{ color: '#6366F1' }}>
                         <Brain size={18} /> Hoe AI Denkt
                     </h4>
 
@@ -812,8 +826,8 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
                     </div>
 
                     <div className="mt-6 pt-4" style={{ borderTop: '1px solid #E8E6DF' }}>
-                        <div className="rounded-xl p-3" style={{ backgroundColor: '#FFF7ED', border: '1px solid #D97757', borderColor: 'rgba(217,119,87,0.3)' }}>
-                            <p className="text-xs font-bold uppercase mb-1 flex items-center gap-1" style={{ color: '#D97757' }}>
+                        <div className="rounded-xl p-3" style={{ backgroundColor: '#EEF2FF', border: '1px solid #6366F1', borderColor: 'rgba(99,102,241,0.3)' }}>
+                            <p className="text-xs font-bold uppercase mb-1 flex items-center gap-1" style={{ color: '#6366F1' }}>
                                 {AI_FACTS[currentFactIndex].emoji} Wist je dat?
                             </p>
                             <p className="text-xs leading-relaxed" style={{ color: '#3D3D38' }}>
@@ -882,7 +896,7 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
                                         ))}
                                     </div>
 
-                                    <div className="p-3 rounded-lg text-sm mb-4" style={{ backgroundColor: '#FAF9F0', color: '#3D3D38', borderLeft: '2px solid #D97757' }}>
+                                    <div className="p-3 rounded-lg text-sm mb-4" style={{ backgroundColor: '#FAF9F0', color: '#3D3D38', borderLeft: '2px solid #6366F1' }}>
                                         "{result.reasoning}"
                                     </div>
 
@@ -903,7 +917,7 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
 
                                         {result.success && (
                                             currentRound < totalRounds - 1 ? (
-                                                <button onClick={nextRound} className="px-5 py-2 rounded-lg font-bold flex items-center gap-2 text-sm transition-colors text-white" style={{ backgroundColor: '#D97757' }}>
+                                                <button onClick={nextRound} className="px-5 py-2 rounded-lg font-bold flex items-center gap-2 text-sm transition-colors text-white" style={{ backgroundColor: '#6366F1' }}>
                                                     Volgende <ArrowRight size={16} />
                                                 </button>
                                             ) : (

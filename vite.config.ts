@@ -117,6 +117,7 @@ export default defineConfig(({ mode }) => {
             // jspdf: NOT in manualChunks — stays with PDF export flow (BookPreview), avoids preload on landing
 
             if (pkg === 'react-markdown') return 'vendor-react-markdown';
+            if (pkg.startsWith('@supabase') || pkg === 'supabase') return 'vendor-supabase';
           }
         }
       },

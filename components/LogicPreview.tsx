@@ -126,7 +126,7 @@ export const LogicPreview: React.FC<LogicPreviewProps> = ({ code, onStart, onLev
                 <div className="flex-1 flex flex-col items-center justify-start p-6 relative z-10 overflow-y-auto">
                     {/* Header met Pip */}
                     <div className="relative mb-4">
-                        <img src="/mascot/pip-excited.webp" alt="Pip" className="w-20 h-20 object-contain" />
+                        <img src="/mascot/pip-excited.webp" alt="Pip" className="w-20 h-20 object-contain" loading="lazy" />
                     </div>
 
                     <h2 className="text-xl font-black mb-1 tracking-tight text-center" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#1A1A19' }}>

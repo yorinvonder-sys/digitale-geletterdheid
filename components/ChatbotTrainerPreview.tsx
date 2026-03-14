@@ -593,7 +593,7 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
         return (
             <div className="w-full h-full flex flex-col relative overflow-hidden" style={{ backgroundColor: '#FAF9F0', color: '#1A1A19' }}>
                 <div className="flex-1 flex flex-col items-center justify-center p-6 relative z-10">
-                    <img src="/mascot/pip-excited.webp" alt="Pip" className="w-20 h-20 object-contain mb-6" />
+                    <img src="/mascot/pip-excited.webp" alt="Pip" className="w-20 h-20 object-contain mb-6" loading="lazy" />
 
                     <h2 className="text-3xl font-black mb-2 text-center" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#1A1A19' }}>AI Chatbot Trainer</h2>
                     <p className="text-center max-w-md mb-4 text-lg font-medium" style={{ color: '#6B6B66' }}>
@@ -603,24 +603,24 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                     {/* Explanation Box */}
                     <div className="rounded-2xl p-5 max-w-md mb-6" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
                         <h3 className="text-sm font-bold uppercase mb-3 flex items-center gap-2" style={{ color: '#D97757' }}>
-                            <HelpCircle size={16} /> Wat ga je doen?
+                            <HelpCircle size={16} /> Zo werkt het:
                         </h3>
                         <ul className="space-y-2 text-sm" style={{ color: '#3D3D38' }}>
                             <li className="flex items-start gap-2">
                                 <span className="rounded-full w-5 h-5 flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5 text-white" style={{ backgroundColor: '#D97757' }}>1</span>
-                                <span><strong>Onderwerpen kiezen:</strong> Bepaal waar je chatbot vragen over krijgt (bijv. "Begroeting", "Menu", "Bestellen")</span>
+                                <span><strong>Kies een scenario</strong> — bijvoorbeeld een pizzeria of klantenservice</span>
                             </li>
                             <li className="flex items-start gap-2">
                                 <span className="rounded-full w-5 h-5 flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5 text-white" style={{ backgroundColor: '#D97757' }}>2</span>
-                                <span><strong>Voorbeeldzinnen geven:</strong> Leer je bot welke zinnen bij welk onderwerp horen</span>
+                                <span><strong>Train de chatbot</strong> door voorbeeldzinnen toe te voegen</span>
                             </li>
                             <li className="flex items-start gap-2">
                                 <span className="rounded-full w-5 h-5 flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5 text-white" style={{ backgroundColor: '#D97757' }}>3</span>
-                                <span><strong>Antwoorden schrijven:</strong> Bepaal wat je bot moet antwoorden</span>
+                                <span><strong>Test je chatbot</strong> door vragen te stellen</span>
                             </li>
                             <li className="flex items-start gap-2">
                                 <span className="rounded-full w-5 h-5 flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5 text-white" style={{ backgroundColor: '#10B981' }}>4</span>
-                                <span><strong>Testen:</strong> Kijk of je bot de juiste antwoorden geeft!</span>
+                                <span><strong>Hoe meer voorbeelden, hoe slimmer je chatbot wordt!</strong></span>
                             </li>
                         </ul>
                     </div>
@@ -787,7 +787,7 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                         </button>
                     )}
                     {activeScenario.isCustom && (
-                        <span className="text-xs px-2 py-1 rounded font-bold" style={{ backgroundColor: 'rgba(138,111,158,0.1)', color: '#8B6F9E', border: '1px solid rgba(138,111,158,0.3)' }}>
+                        <span className="text-xs px-2 py-1 rounded font-bold" style={{ backgroundColor: 'rgba(79,70,229,0.1)', color: '#4F46E5', border: '1px solid rgba(79,70,229,0.3)' }}>
                             {isSharedView ? 'Gedeeld Project' : 'Jouw Project'}
                         </span>
                     )}
@@ -971,8 +971,8 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
 
                                     <div className="space-y-2 mb-4">
                                         {selectedIntentData.trainingExamples.length === 0 ? (
-                                            <div className="text-sm italic py-2" style={{ color: '#6B6B66' }}>
-                                                Nog geen voorbeelden...
+                                            <div className="text-sm py-3 px-4 rounded-lg" style={{ color: '#6B6B66', backgroundColor: 'rgba(217,119,87,0.05)', border: '1px dashed rgba(217,119,87,0.3)' }}>
+                                                Nog geen voorbeelden. Typ een zin in het tekstveld hieronder en klik op <strong>+</strong> om toe te voegen.
                                             </div>
                                         ) : (
                                             selectedIntentData.trainingExamples.slice().reverse().map((example) => (
@@ -991,13 +991,15 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                                         )}
                                     </div>
 
-                                    <div className="flex gap-2">
+                                    <div className="flex flex-col gap-1">
+                                        <label className="text-xs font-bold" style={{ color: '#6B6B66' }}>Voorbeeldzin toevoegen</label>
+                                        <div className="flex gap-2">
                                         <input
                                             type="text"
                                             value={newExample}
                                             onChange={(e) => setNewExample(e.target.value)}
                                             onKeyDown={(e) => e.key === 'Enter' && addExample()}
-                                            placeholder="Typ een voorbeeldzin en druk op Enter..."
+                                            placeholder="Bijv. 'Wat kost een pizza margherita?'"
                                             className="flex-1 rounded-xl px-4 py-3 text-sm focus:outline-none transition-colors"
                                             style={{ backgroundColor: '#FAF9F0', border: '1px solid #E8E6DF', color: '#1A1A19' }}
                                         />
@@ -1009,6 +1011,7 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                                         >
                                             <Plus size={20} />
                                         </button>
+                                        </div>
                                     </div>
                                 </div>
 

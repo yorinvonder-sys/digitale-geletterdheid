@@ -138,10 +138,17 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
       // SECURITY: Only accept messages from our preview iframe.
-      // Blob URLs have origin 'null', so we check the source window reference.
+      // 1. Source check: verify the message comes from our iframe's window reference.
+      //    This is the primary defense since blob URLs have an opaque origin ('null').
       if (!iframeRef.current || event.source !== iframeRef.current.contentWindow) return;
+      // 2. Origin check: allow blob origin ('null') and same-origin messages only.
       if (event.origin !== 'null' && event.origin !== window.location.origin) return;
-      if (event.data === 'GAME_COMPLETE' || (typeof event.data === 'object' && event.data?.type === 'GAME_COMPLETE')) {
+      // 3. Payload validation: only accept the exact expected message formats.
+      const data = event.data;
+      const isComplete =
+        data === 'GAME_COMPLETE' ||
+        (typeof data === 'object' && data !== null && data.type === 'GAME_COMPLETE');
+      if (isComplete) {
         setShowConclusion(true);
       }
     };
@@ -372,7 +379,7 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
               disabled={isSavingToLibrary}
               className="transition-all p-1.5 rounded-lg active:scale-95 flex items-center gap-1.5"
               style={{
-                color: librarySaveSuccess ? '#10B981' : '#8B6F9E',
+                color: librarySaveSuccess ? '#10B981' : '#4F46E5',
                 backgroundColor: librarySaveSuccess ? 'rgba(16, 185, 129, 0.1)' : undefined,
               }}
               title="Opslaan in Bibliotheek"
@@ -507,7 +514,7 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
                 <div className="text-center max-w-sm md:max-w-md w-full">
                   {/* Pip mascot */}
                   <div className="relative mb-4 md:mb-6 mx-auto w-fit">
-                    <img src="/mascot/pip-excited.webp" alt="Pip" className="w-20 h-20 object-contain" />
+                    <img src="/mascot/pip-excited.webp" alt="Pip" className="w-20 h-20 object-contain" loading="lazy" />
                   </div>
 
                   {/* Title */}
@@ -537,6 +544,31 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
                         <span>Probeer: <em style={{ color: '#2A9D8F' }}>"Maak de speler blauw"</em> of <em style={{ color: '#2A9D8F' }}>"Spring hoger"</em></span>
                       </li>
                     </ul>
+                  </div>
+
+                  {/* Numbered Intro Steps */}
+                  <div className="rounded-xl md:rounded-2xl p-4 md:p-5 mb-4 md:mb-6 text-left mx-auto" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
+                    <h3 className="text-xs md:text-sm font-bold uppercase tracking-widest mb-3 flex items-center gap-2" style={{ color: '#4F46E5' }}>
+                      <Sparkles size={14} /> Zo werkt het
+                    </h3>
+                    <ol className="space-y-2 md:space-y-3 text-sm md:text-base" style={{ color: '#3D3D38' }}>
+                      <li className="flex items-start gap-3">
+                        <span className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white" style={{ backgroundColor: '#4F46E5' }}>1</span>
+                        <span>Beschrijf in de chat welk spel je wilt maken</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white" style={{ backgroundColor: '#4F46E5' }}>2</span>
+                        <span>De AI schrijft de code voor je</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white" style={{ backgroundColor: '#4F46E5' }}>3</span>
+                        <span>Je ziet het resultaat live in het speelveld rechts</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white" style={{ backgroundColor: '#4F46E5' }}>4</span>
+                        <span>Vraag de AI om aanpassingen totdat je tevreden bent!</span>
+                      </li>
+                    </ol>
                   </div>
 
                   {/* BIG Start Button */}
@@ -659,8 +691,8 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
           <div className="rounded-2xl p-6 w-full max-w-md shadow-2xl animate-in zoom-in-95" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
-                <div className="p-2 rounded-lg" style={{ backgroundColor: 'rgba(139, 111, 158, 0.1)' }}>
-                  <BookOpen size={20} style={{ color: '#8B6F9E' }} />
+                <div className="p-2 rounded-lg" style={{ backgroundColor: 'rgba(79, 70, 229, 0.1)' }}>
+                  <BookOpen size={20} style={{ color: '#4F46E5' }} />
                 </div>
                 <div>
                   <h3 className="text-lg font-black" style={{ color: '#1A1A19' }}>Opslaan in Bibliotheek</h3>
@@ -716,7 +748,7 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
                 onClick={handleConfirmSave}
                 disabled={!projectName.trim() || isSavingToLibrary || isCheckingLimit}
                 className="w-full py-4 text-white rounded-full font-black text-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg active:scale-95"
-                style={{ backgroundColor: '#8B6F9E' }}
+                style={{ backgroundColor: '#4F46E5' }}
               >
                 {(isSavingToLibrary || isCheckingLimit) ? (
                   <>

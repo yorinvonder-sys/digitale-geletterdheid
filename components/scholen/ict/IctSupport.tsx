@@ -94,17 +94,17 @@ export const IctSupport: React.FC = () => {
                         Mocht een incident niet naar tevredenheid worden opgelost binnen de SLA-termijnen, 
                         dan beschikken wij over een vastgelegd escalatiepad naar onze Customer Success Manager en Technisch Directeur.
                     </p>
-                    <div className="flex flex-wrap gap-4">
-                        <div className="flex-1 min-w-[200px] p-4 bg-white/5 rounded-xl border border-white/10">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div className="p-4 bg-white/5 rounded-xl border border-white/10">
                             <p className="text-[10px] font-bold text-indigo-400 uppercase mb-1">Eerstelijns</p>
                             <p className="text-sm font-bold">Support Desk</p>
                             <p className="text-xs text-slate-500">support@dgskills.app</p>
                         </div>
-                        <div className="flex-1 min-w-[200px] p-4 bg-white/5 rounded-xl border border-white/10">
+                        <div className="p-4 bg-white/5 rounded-xl border border-white/10">
                             <p className="text-[10px] font-bold text-indigo-400 uppercase mb-1">Tweedelijns</p>
                             <p className="text-sm font-bold">Account Management</p>
                         </div>
-                        <div className="flex-1 min-w-[200px] p-4 bg-white/5 rounded-xl border border-white/10">
+                        <div className="p-4 bg-white/5 rounded-xl border border-white/10">
                             <p className="text-[10px] font-bold text-indigo-400 uppercase mb-1">Eindverantwoordelijk</p>
                             <p className="text-sm font-bold">CTO / Directie</p>
                         </div>

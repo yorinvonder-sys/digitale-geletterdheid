@@ -765,15 +765,15 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
             )}
 
             {/* Main Content Area - Full Height Grid */}
-            <div className="flex-1 flex overflow-hidden">
+            <div className="flex-1 flex flex-col md:flex-row overflow-hidden">
 
                 {/* Left Panel: Block Palette */}
-                <div className="w-64 bg-[#FAF9F0] border-r border-[#E8E6DF] flex flex-col shrink-0 z-10 p-2">
+                <div className="w-full md:w-64 bg-[#FAF9F0] border-b md:border-b-0 md:border-r border-[#E8E6DF] flex flex-col shrink-0 z-10 p-2 max-h-[30vh] md:max-h-none overflow-y-auto">
                     <BlockPalette onDragStart={setDraggingBlock} />
                 </div>
 
                 {/* Middle Panel: Workspace */}
-                <div className="flex-1 bg-[#FAF9F0] relative flex flex-col min-w-[300px] p-2">
+                <div className="flex-1 bg-[#FAF9F0] relative flex flex-col min-w-0 p-2">
                     <div className="absolute inset-0 bg-[linear-gradient(#E8E6DF_1px,transparent_1px),linear-gradient(90deg,#E8E6DF_1px,transparent_1px)] bg-[size:20px_20px] opacity-40 pointer-events-none"></div>
                     <CodeWorkspace
                         blocks={blocks}
@@ -785,7 +785,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                 </div>
 
                 {/* Right Panel: Game Preview (Larger!) */}
-                <div className="w-[40%] min-w-[500px] max-w-[800px] bg-white border-l border-[#E8E6DF] flex flex-col shadow-2xl z-20">
+                <div className="w-full md:w-[40%] md:min-w-[320px] md:max-w-[800px] bg-white border-t md:border-t-0 md:border-l border-[#E8E6DF] flex flex-col shadow-2xl z-20">
                     <div className="p-4 bg-[#FAF9F0] border-b border-[#E8E6DF] flex justify-between items-center">
                         <div className="flex items-center gap-2">
                             <div className="w-2 h-2 rounded-full bg-[#10B981] animate-pulse"></div>

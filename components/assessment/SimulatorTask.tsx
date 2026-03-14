@@ -83,7 +83,7 @@ export const SimulatorTask: React.FC<Props> = ({ task, onComplete }) => {
                 <div className="absolute inset-0 opacity-5 bg-[radial-gradient(#D97757_1px,transparent_1px)] [background-size:20px_20px]"></div>
 
                 {/* Left: Desktop Icons (Source) */}
-                <div className="flex-1 p-6 grid grid-cols-3 grid-rows-3 gap-4 content-start">
+                <div className="flex-1 p-3 sm:p-6 grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-4 content-start">
                     {activeItems.map(item => (
                         <div
                             key={item.id}
@@ -94,7 +94,7 @@ export const SimulatorTask: React.FC<Props> = ({ task, onComplete }) => {
                             <div className="group-hover:scale-110 transition-transform">
                                 {getIcon(item.icon)}
                             </div>
-                            <span className="text-xs font-bold text-center bg-lab-bg px-2 py-1 rounded truncate w-full max-w-[80px] text-lab-text">
+                            <span className="text-xs font-bold text-center bg-lab-bg px-2 py-1 rounded w-full text-lab-text break-words">
                                 {item.name}
                             </span>
                         </div>
@@ -102,7 +102,7 @@ export const SimulatorTask: React.FC<Props> = ({ task, onComplete }) => {
                 </div>
 
                 {/* Right: Targets (Destination) */}
-                <div className="w-1/3 bg-lab-bg/50 border-l border-neutral-200 p-4 flex flex-col gap-4 justify-center">
+                <div className="w-2/5 sm:w-1/3 bg-lab-bg/50 border-l border-neutral-200 p-2 sm:p-4 flex flex-col gap-4 justify-center">
                     {task.targets.map(target => (
                         <div
                             key={target.id}

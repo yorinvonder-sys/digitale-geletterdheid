@@ -58,7 +58,7 @@ export const WebPreviewModal: React.FC<WebPreviewModalProps> = ({ url, onClose }
                         </div>
                         <div className="flex flex-col overflow-hidden">
                             <h3 className="font-bold text-slate-800 text-sm truncate">Web Voorvertoning</h3>
-                            <span className="text-xs text-slate-500 truncate font-mono bg-slate-100 px-1 rounded max-w-[300px]">{safeUrl}</span>
+                            <span className="text-xs text-slate-500 truncate font-mono bg-slate-100 px-1 rounded max-w-[60vw] sm:max-w-[300px]">{safeUrl}</span>
                         </div>
                     </div>
 

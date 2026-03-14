@@ -17,7 +17,7 @@ export function MissionFeedbackCard({ score, config, whatWentWell, improvementPo
   const percentage = Math.round((score / maxScore) * 100);
 
   return (
-    <div className="bg-white rounded-2xl shadow-lg border border-[#E8E6DF] overflow-hidden">
+    <div className="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
       {/* Badge header */}
       <div className={`bg-gradient-to-r ${getBadgeGradient(badge.tier)} p-6 text-center text-white`}>
         <div className="text-5xl mb-2">{badge.emoji}</div>
@@ -28,39 +28,39 @@ export function MissionFeedbackCard({ score, config, whatWentWell, improvementPo
       {/* Score */}
       <div className="p-6 space-y-4">
         <div className="flex items-center justify-between">
-          <span className="text-[#3D3D38] font-medium" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Score</span>
+          <span className="text-lab-text font-medium" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Score</span>
           <span className={`text-2xl font-bold ${getScoreColor(score, config)}`}>{score}/{maxScore}</span>
         </div>
 
         {/* Progress bar */}
-        <div className="w-full bg-[#F0EEE8] rounded-full h-3">
+        <div className="w-full bg-slate-100 rounded-full h-3">
           <div
-            className="bg-gradient-to-r from-[#D97757] to-[#C46849] h-3 rounded-full transition-all duration-500"
+            className="bg-gradient-to-r from-lab-primary to-lab-primaryDark h-3 rounded-full transition-all duration-500"
             style={{ width: `${percentage}%` }}
           />
         </div>
 
-        <p className="text-[#3D3D38]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{message}</p>
+        <p className="text-lab-text" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{message}</p>
 
         {/* Feedback sections */}
         {whatWentWell && (
-          <div className="bg-[#10B981]/10 rounded-2xl p-4 border border-[#10B981]/20">
-            <h4 className="font-semibold text-[#10B981] mb-1" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Wat ging goed</h4>
-            <p className="text-[#3D3D38] text-sm" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{whatWentWell}</p>
+          <div className="bg-lab-green/10 rounded-2xl p-4 border border-lab-green/20">
+            <h4 className="font-semibold text-lab-green mb-1" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Wat ging goed</h4>
+            <p className="text-lab-text text-sm" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{whatWentWell}</p>
           </div>
         )}
 
         {improvementPoint && (
-          <div className="bg-[#D97757]/10 rounded-2xl p-4 border border-[#D97757]/20">
-            <h4 className="font-semibold text-[#D97757] mb-1" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Verbeterpunt</h4>
-            <p className="text-[#3D3D38] text-sm" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{improvementPoint}</p>
+          <div className="bg-lab-primary/10 rounded-2xl p-4 border border-lab-primary/20">
+            <h4 className="font-semibold text-lab-primary mb-1" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Verbeterpunt</h4>
+            <p className="text-lab-text text-sm" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{improvementPoint}</p>
           </div>
         )}
 
         {nextStep && (
-          <div className="bg-[#2A9D8F]/10 rounded-2xl p-4 border border-[#2A9D8F]/20">
-            <h4 className="font-semibold text-[#2A9D8F] mb-1" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Volgende stap</h4>
-            <p className="text-[#3D3D38] text-sm" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{nextStep}</p>
+          <div className="bg-lab-accent/10 rounded-2xl p-4 border border-lab-accent/20">
+            <h4 className="font-semibold text-lab-accent mb-1" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Volgende stap</h4>
+            <p className="text-lab-text text-sm" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{nextStep}</p>
           </div>
         )}
 

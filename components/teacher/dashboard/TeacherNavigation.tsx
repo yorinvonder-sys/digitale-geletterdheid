@@ -27,7 +27,7 @@ export const TeacherNavigation: React.FC<TeacherNavigationProps> = ({ activeTab,
                             key={tab.id}
                             data-tutorial={tab.tutorialId}
                             onClick={() => setActiveTab(tab.subTabs[0] as MainTab)}
-                            className={`relative flex items-center gap-2 px-4 md:px-6 py-3 rounded-xl text-sm font-bold transition-all ${isActive
+                            className={`relative flex items-center gap-2 px-3 sm:px-4 md:px-6 py-3 min-h-[44px] rounded-xl text-sm font-bold transition-all ${isActive
                                 ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-200'
                                 : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50'
                                 }`}
@@ -57,7 +57,7 @@ export const TeacherNavigation: React.FC<TeacherNavigationProps> = ({ activeTab,
                             <button
                                 key={sub.id}
                                 onClick={() => setActiveTab(sub.id as MainTab)}
-                                className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${activeTab === sub.id
+                                className={`px-4 py-2.5 min-h-[36px] rounded-lg text-xs font-bold transition-all ${activeTab === sub.id
                                     ? 'bg-indigo-100 text-indigo-700'
                                     : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
                                     }`}
@@ -81,7 +81,7 @@ export const TeacherNavigation: React.FC<TeacherNavigationProps> = ({ activeTab,
                             <button
                                 key={sub.id}
                                 onClick={() => setActiveTab(sub.id as MainTab)}
-                                className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${activeTab === sub.id
+                                className={`px-4 py-2.5 min-h-[36px] rounded-lg text-xs font-bold transition-all ${activeTab === sub.id
                                     ? 'bg-indigo-100 text-indigo-700'
                                     : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
                                     }`}
@@ -106,7 +106,7 @@ export const TeacherNavigation: React.FC<TeacherNavigationProps> = ({ activeTab,
                                 key={sub.id}
                                 data-tutorial={sub.id === 'gamification' ? 'gamification-subtab' : undefined}
                                 onClick={() => setActiveTab(sub.id as MainTab)}
-                                className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${activeTab === sub.id
+                                className={`px-4 py-2.5 min-h-[36px] rounded-lg text-xs font-bold transition-all ${activeTab === sub.id
                                     ? 'bg-indigo-100 text-indigo-700'
                                     : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
                                     }`}
@@ -130,7 +130,7 @@ export const TeacherNavigation: React.FC<TeacherNavigationProps> = ({ activeTab,
                             <button
                                 key={sub.id}
                                 onClick={() => setActiveTab(sub.id as MainTab)}
-                                className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${activeTab === sub.id
+                                className={`px-4 py-2.5 min-h-[36px] rounded-lg text-xs font-bold transition-all ${activeTab === sub.id
                                     ? 'bg-indigo-100 text-indigo-700'
                                     : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
                                     }`}

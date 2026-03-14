@@ -121,7 +121,7 @@ export const ChatBubble: React.FC<ChatBubbleProps> = ({ message, onLinkClick, is
             <div className="w-5 h-5 bg-lab-primary rounded-md flex items-center justify-center">
               <Sparkles size={12} className="text-white" />
             </div>
-            <span className="text-[10px] font-extrabold uppercase tracking-widest text-lab-primary">Pip</span>
+            <span className="text-[11px] font-extrabold uppercase tracking-widest text-lab-primary">Pip</span>
           </div>
         )}
 
@@ -136,7 +136,7 @@ export const ChatBubble: React.FC<ChatBubbleProps> = ({ message, onLinkClick, is
             <a
               href={message.image}
               download="mijn-boek-plaatje.png"
-              className="absolute top-3 right-3 bg-white/80 backdrop-blur p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-sm"
+              className="absolute top-3 right-3 bg-white/80 backdrop-blur p-2 rounded-full opacity-0 group-hover:opacity-100 active:opacity-100 transition-opacity shadow-sm min-w-[44px] min-h-[44px] flex items-center justify-center"
               title="Download plaatje"
             >
               <Download size={16} className="text-slate-700" />
@@ -241,8 +241,8 @@ export const ChatBubble: React.FC<ChatBubbleProps> = ({ message, onLinkClick, is
 
         {/* AI Disclaimer (EU AI Act Transparency) */}
         {!isUser && (
-          <div className="mt-3 pt-2 border-t border-slate-100 text-[10px] text-slate-400 flex items-center gap-1">
-            <Info size={10} className="shrink-0" />
+          <div className="mt-3 pt-2 border-t border-slate-100 text-[11px] text-slate-400 flex items-center gap-1">
+            <Info size={11} className="shrink-0" />
             <span>Gegenereerd door AI. Controleer altijd de feiten.</span>
           </div>
         )}
