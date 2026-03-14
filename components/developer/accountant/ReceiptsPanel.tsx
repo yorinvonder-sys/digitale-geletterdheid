@@ -12,9 +12,11 @@ import {
     uploadReceiptImage,
     saveReceipt,
     deleteReceipt,
+    createTransaction,
     formatEuro,
     formatDate,
 } from '../../../services/accountantService';
+import { createAsset } from '../../../services/accountantAssetService';
 
 interface ReceiptsPanelProps {
     receipts: AccountantReceipt[];
@@ -50,6 +52,7 @@ export function ReceiptsPanel({ receipts, userId, onRefresh }: ReceiptsPanelProp
     const [previewUrl,  setPreviewUrl]  = useState<string | null>(null);
     const [uploadedFile, setUploadedFile] = useState<File | null>(null);
     const [scanSuccess, setScanSuccess] = useState(false);
+    const [scanAssetData, setScanAssetData] = useState<{ isAsset: boolean; assetName: string; assetCategory: string; assetLifeYears: number } | null>(null);
     const dropRef = useRef<HTMLDivElement>(null);
     const fileRef = useRef<HTMLInputElement>(null);
 
@@ -86,7 +89,7 @@ export function ReceiptsPanel({ receipts, userId, onRefresh }: ReceiptsPanelProp
         setScanSuccess(false);
         setError('');
         try {
-            const data: ScannedReceiptData = await uploadAndScanReceipt(file, userId);
+            const data = await uploadAndScanReceipt(file, userId) as ScannedReceiptData & { isAsset?: boolean; assetName?: string; assetCategory?: string; assetLifeYears?: number };
             setScanSuccess(true);
             setForm({
                 supplier:    data.supplier,
@@ -97,6 +100,16 @@ export function ReceiptsPanel({ receipts, userId, onRefresh }: ReceiptsPanelProp
                 description: data.description,
                 category:    data.category as TransactionCategory || 'overig',
             });
+            if (data.isAsset) {
+                setScanAssetData({
+                    isAsset: true,
+                    assetName: data.assetName || data.description || '',
+                    assetCategory: data.assetCategory || 'overig',
+                    assetLifeYears: data.assetLifeYears || 5,
+                });
+            } else {
+                setScanAssetData(null);
+            }
         } catch (e: any) {
             setError(e.message || 'Scannen mislukt. Vul de gegevens handmatig in.');
             setForm(emptyForm());
@@ -137,10 +150,42 @@ export function ReceiptsPanel({ receipts, userId, onRefresh }: ReceiptsPanelProp
                 ai_scanned:  scanSuccess,
             });
 
+            // Automatisch transactie aanmaken (uitgave = negatief bedrag)
+            await createTransaction({
+                user_id:     userId,
+                date:        form.date,
+                amount:      -amount,
+                description: `${form.supplier || 'Bonnetje'}${form.description ? ` — ${form.description}` : ''}`,
+                category:    form.category,
+            });
+
+            // Automatisch activum aanmaken als AI het als bedrijfsmiddel herkent
+            if (scanAssetData?.isAsset && amount > 0) {
+                const amountExVat = form.vatRate > 0
+                    ? amount / (1 + form.vatRate / 100)
+                    : amount;
+                try {
+                    await createAsset({
+                        user_id:             userId,
+                        name:                scanAssetData.assetName || form.description || form.supplier || 'Bedrijfsmiddel',
+                        purchase_date:       form.date,
+                        purchase_price:      Math.round(amountExVat * 100) / 100,
+                        residual_value:      0,
+                        useful_life_years:   scanAssetData.assetLifeYears || 5,
+                        depreciation_method: 'linear',
+                        category:            scanAssetData.assetCategory || 'overig',
+                        notes:               `Automatisch aangemaakt vanuit bonnetje (${form.supplier})`,
+                    });
+                } catch (e) {
+                    console.warn('Asset aanmaken mislukt:', e);
+                }
+            }
+
             setForm(null);
             setPreviewUrl(null);
             setUploadedFile(null);
             setScanSuccess(false);
+            setScanAssetData(null);
             onRefresh();
         } catch (e: any) {
             setError(e.message || 'Opslaan mislukt.');

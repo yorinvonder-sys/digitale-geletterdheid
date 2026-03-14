@@ -11,17 +11,11 @@
  */
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { buildCorsHeaders, rejectDisallowedBrowserRequest } from "../_shared/cors.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
 const ANTHROPIC_API_KEY = Deno.env.get("ANTHROPIC_API_KEY")!;
-
-const ALLOWED_ORIGINS = new Set([
-    "https://dgskills.app",
-    "https://www.dgskills.app",
-    "http://localhost:5173",
-    "http://localhost:3000",
-]);
 
 const ALLOWED_MIME_TYPES = new Set([
     "image/jpeg",
@@ -96,13 +90,9 @@ Regels:
 Antwoord ALLEEN met de JSON, geen uitleg of extra tekst.`;
 
 Deno.serve(async (req: Request) => {
-    const origin = req.headers.get("Origin") || "";
-    const allowedOrigin = ALLOWED_ORIGINS.has(origin) ? origin : "https://dgskills.app";
-    const corsHeaders = {
-        "Access-Control-Allow-Origin": allowedOrigin,
-        "Access-Control-Allow-Methods": "POST, OPTIONS",
-        "Access-Control-Allow-Headers": "Content-Type, Authorization",
-    };
+    const corsHeaders = buildCorsHeaders(req, "POST, OPTIONS", "Content-Type, Authorization");
+    const rejectedOrigin = rejectDisallowedBrowserRequest(req, corsHeaders);
+    if (rejectedOrigin) return rejectedOrigin;
 
     if (req.method === "OPTIONS") {
         return new Response(null, { headers: corsHeaders });
@@ -269,13 +259,17 @@ Deno.serve(async (req: Request) => {
     const validFrequencies = ["monthly", "quarterly", "yearly"];
     const result = isReceipt
         ? {
-            supplier:    typeof parsed.supplier === "string" ? parsed.supplier : "",
-            date:        typeof parsed.date === "string" ? parsed.date : new Date().toISOString().split("T")[0],
-            amount:      typeof parsed.amount === "number" ? parsed.amount : 0,
-            vatAmount:   typeof parsed.vatAmount === "number" ? parsed.vatAmount : 0,
-            vatRate:     [0, 9, 21].includes(Number(parsed.vatRate)) ? Number(parsed.vatRate) : 21,
-            description: typeof parsed.description === "string" ? parsed.description : "",
-            category:    typeof parsed.category === "string" ? parsed.category : "overig",
+            supplier:       typeof parsed.supplier === "string" ? parsed.supplier : "",
+            date:           typeof parsed.date === "string" ? parsed.date : new Date().toISOString().split("T")[0],
+            amount:         typeof parsed.amount === "number" ? parsed.amount : 0,
+            vatAmount:      typeof parsed.vatAmount === "number" ? parsed.vatAmount : 0,
+            vatRate:        [0, 9, 21].includes(Number(parsed.vatRate)) ? Number(parsed.vatRate) : 21,
+            description:    typeof parsed.description === "string" ? parsed.description : "",
+            category:       typeof parsed.category === "string" ? parsed.category : "overig",
+            isAsset:        parsed.isAsset === true,
+            assetName:      typeof parsed.assetName === "string" ? parsed.assetName : "",
+            assetCategory:  typeof parsed.assetCategory === "string" ? parsed.assetCategory : "",
+            assetLifeYears: typeof parsed.assetLifeYears === "number" ? parsed.assetLifeYears : 0,
         }
         : {
             name:      typeof parsed.name === "string" ? parsed.name : "",
