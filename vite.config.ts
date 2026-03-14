@@ -112,7 +112,7 @@ export default defineConfig(({ mode }) => {
             if (pkg === 'framer-motion') return 'vendor-framer';
             if (pkg === 'lucide-react') return 'vendor-lucide';
             if (pkg.startsWith('@google/')) return 'vendor-genai';
-            if (pkg === 'xlsx') return 'vendor-xlsx';
+            if (pkg === 'exceljs') return 'vendor-exceljs';
             if (pkg === 'dompurify') return 'vendor-dompurify';
             // jspdf: NOT in manualChunks — stays with PDF export flow (BookPreview), avoids preload on landing
 

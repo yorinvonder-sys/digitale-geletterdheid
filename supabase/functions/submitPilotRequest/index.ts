@@ -9,13 +9,7 @@
 import { serve } from 'https://deno.land/std@0.177.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import { SMTPClient } from 'https://deno.land/x/denomailer@1.6.0/mod.ts';
-
-const ALLOWED_ORIGINS = new Set([
-  'https://dgskills.app',
-  'https://www.dgskills.app',
-  'http://localhost:5173',
-  'http://localhost:3000',
-]);
+import { buildCorsHeaders, rejectDisallowedBrowserRequest } from '../_shared/cors.ts';
 
 const ALLOWED_ROLES = new Set([
   'docent',
@@ -38,15 +32,6 @@ const IP_MAX_REQUESTS = 5;
 const EMAIL_WINDOW_MS = 60 * 60_000;
 const EMAIL_MAX_REQUESTS = 3;
 const MIN_FORM_FILL_MS = 800;
-
-function getCorsHeaders(req: Request) {
-  const origin = req.headers.get('Origin') || '';
-  return {
-    'Access-Control-Allow-Origin': ALLOWED_ORIGINS.has(origin) ? origin : 'https://dgskills.app',
-    'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-    'Access-Control-Allow-Methods': 'POST, OPTIONS',
-  };
-}
 
 interface PilotRequest {
   schoolNaam: string;
@@ -106,6 +91,43 @@ function consumeRateLimit(key: string, max: number, windowMs: number): boolean {
   return true;
 }
 
+async function exceedsPersistentRateLimit(
+  supabase: ReturnType<typeof createClient>,
+  clientIp: string,
+  email: string,
+): Promise<{ ipLimited: boolean; emailLimited: boolean }> {
+  const ipSince = new Date(Date.now() - IP_WINDOW_MS).toISOString();
+  const emailSince = new Date(Date.now() - EMAIL_WINDOW_MS).toISOString();
+
+  const [
+    { count: recentIpCount, error: ipError },
+    { count: recentEmailCount, error: emailError },
+  ] = await Promise.all([
+    supabase
+      .from('pilot_requests')
+      .select('id', { count: 'exact', head: true })
+      .eq('ip_address', clientIp)
+      .gte('created_at', ipSince),
+    supabase
+      .from('pilot_requests')
+      .select('id', { count: 'exact', head: true })
+      .eq('email', email)
+      .gte('created_at', emailSince),
+  ]);
+
+  if (ipError) {
+    console.error('[submitPilotRequest] persistent IP rate limit check failed:', ipError);
+  }
+  if (emailError) {
+    console.error('[submitPilotRequest] persistent email rate limit check failed:', emailError);
+  }
+
+  return {
+    ipLimited: !ipError && (recentIpCount || 0) >= IP_MAX_REQUESTS,
+    emailLimited: !emailError && (recentEmailCount || 0) >= EMAIL_MAX_REQUESTS,
+  };
+}
+
 function validate(data: PilotRequest): string | null {
   const schoolNaam = normalizeText(data.schoolNaam, 200);
   const contactPersoon = normalizeText(data.contactPersoon, 200);
@@ -127,7 +149,9 @@ function validate(data: PilotRequest): string | null {
 }
 
 serve(async (req: Request) => {
-  const corsHeaders = getCorsHeaders(req);
+  const corsHeaders = buildCorsHeaders(req, 'POST, OPTIONS');
+  const rejectedOrigin = rejectDisallowedBrowserRequest(req, corsHeaders);
+  if (rejectedOrigin) return rejectedOrigin;
 
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -176,16 +200,32 @@ serve(async (req: Request) => {
       ip_address: clientIp,
     };
 
-    if (!consumeRateLimit(`email:${sanitized.email}`, EMAIL_MAX_REQUESTS, EMAIL_WINDOW_MS)) {
+    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+
+    const persistentRateLimit = await exceedsPersistentRateLimit(
+      supabase,
+      clientIp,
+      sanitized.email,
+    );
+
+    if (persistentRateLimit.ipLimited) {
+      return new Response(JSON.stringify({ error: 'Te veel aanvragen vanaf dit netwerk. Probeer het later opnieuw.' }), {
+        status: 429,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json', 'Retry-After': '60' },
+      });
+    }
+
+    if (
+      !consumeRateLimit(`email:${sanitized.email}`, EMAIL_MAX_REQUESTS, EMAIL_WINDOW_MS)
+      || persistentRateLimit.emailLimited
+    ) {
       return new Response(JSON.stringify({ error: 'Er zijn al meerdere aanvragen gedaan met dit e-mailadres. Probeer het later opnieuw.' }), {
         status: 429,
         headers: { ...corsHeaders, 'Content-Type': 'application/json', 'Retry-After': '600' },
       });
     }
-
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
     const { error: dbError } = await supabase
       .from('pilot_requests')

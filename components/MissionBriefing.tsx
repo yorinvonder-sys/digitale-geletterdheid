@@ -138,7 +138,7 @@ export const MissionBriefing: React.FC<MissionBriefingProps> = ({ role, onStart,
 
                                     <div className="bg-white border-2 border-[#F0EEE8] p-4 rounded-2xl flex items-start gap-4 shadow-sm">
                                         <div className="mt-1">
-                                            <div className="w-2 h-2 rounded-full bg-[#10B981] animate-pulse"></div>
+                                            <div className="w-2 h-2 rounded-full bg-[#10B981] animate-pulse motion-reduce:animate-none"></div>
                                         </div>
                                         <div>
                                             <span className="text-xs font-bold text-[#6B6B66] uppercase tracking-wide block mb-1">Voorbeeld Actie</span>
@@ -154,7 +154,8 @@ export const MissionBriefing: React.FC<MissionBriefingProps> = ({ role, onStart,
                     <div className="mt-8 flex items-center gap-4 pt-6 border-t border-[#F0EEE8] shrink-0">
                         <button
                             onClick={handlePrev}
-                            className="p-3 rounded-xl hover:bg-[#FAF9F0] text-[#6B6B66] transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#D97757]"
+                            className="p-3 rounded-xl hover:bg-[#FAF9F0] text-[#6B6B66] transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#D97757] min-h-[44px] min-w-[44px] flex items-center justify-center"
+                            aria-label="Vorige stap"
                         >
                             <ChevronLeft size={24} />
                         </button>

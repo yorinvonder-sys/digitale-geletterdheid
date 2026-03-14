@@ -1,13 +1,14 @@
 /**
  * Edge Function: /mfa-trust — MFA Trusted Session Management
  *
- * Handles IP-based MFA grace periods. After successful MFA verification,
- * creates a trusted session so the user doesn't need to re-enter MFA
- * for 30 minutes from the same IP address.
+ * Stores a short-lived "recent MFA verification" marker.
+ * The frontend still requires an actual AAL2 session for access, but
+ * this marker can be used for extra risk checks and is revoked on logout
+ * or password reset.
  *
  * Endpoints:
- * - GET  /mfa-trust — Check if current IP has a valid trusted session
- * - POST /mfa-trust — Create a trusted session for current IP after MFA success
+ * - GET  /mfa-trust — Check if current device has a valid trusted session marker
+ * - POST /mfa-trust — Create a trusted session marker after MFA success
  * - DELETE /mfa-trust — Revoke all trusted sessions (security action)
  *
  * Security:
@@ -18,26 +19,11 @@
  * - Max 5 sessions per user, auto-cleanup of expired
  */
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { buildCorsHeaders, rejectDisallowedBrowserRequest } from "../_shared/cors.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
 const TRUST_DURATION_MINUTES = 30;
-
-const ALLOWED_ORIGINS = new Set([
-    "https://dgskills.app",
-    "https://www.dgskills.app",
-    "http://localhost:5173",
-    "http://localhost:3000",
-]);
-
-function getCorsHeaders(req: Request) {
-    const origin = req.headers.get("Origin") || "";
-    return {
-        "Access-Control-Allow-Origin": ALLOWED_ORIGINS.has(origin) ? origin : "https://dgskills.app",
-        "Access-Control-Allow-Methods": "GET, POST, DELETE, OPTIONS",
-        "Access-Control-Allow-Headers": "Content-Type, Authorization",
-    };
-}
 
 function getClientIp(req: Request): string {
     const raw = req.headers.get("cf-connecting-ip")
@@ -56,7 +42,9 @@ async function sha256(input: string): Promise<string> {
 }
 
 Deno.serve(async (req: Request) => {
-    const corsHeaders = getCorsHeaders(req);
+    const corsHeaders = buildCorsHeaders(req, "GET, POST, DELETE, OPTIONS", "Content-Type, Authorization");
+    const rejectedOrigin = rejectDisallowedBrowserRequest(req, corsHeaders);
+    if (rejectedOrigin) return rejectedOrigin;
 
     if (req.method === "OPTIONS") {
         return new Response(null, { headers: corsHeaders });
@@ -91,10 +79,11 @@ Deno.serve(async (req: Request) => {
 
     try {
         if (req.method === "GET") {
-            // Check if user has valid trusted session for this IP
+            // Check if user has valid trusted session for this IP + device
             const { data, error } = await supabase.rpc("has_mfa_trust", {
                 p_user_id: user.id,
                 p_ip_hash: ipHash,
+                p_user_agent_hash: userAgentHash,
             });
 
             if (error) {
@@ -106,7 +95,7 @@ Deno.serve(async (req: Request) => {
             }
 
             return new Response(
-                JSON.stringify({ trusted: !!data, ip_hash: ipHash }),
+                JSON.stringify({ trusted: !!data }),
                 { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
             );
         }

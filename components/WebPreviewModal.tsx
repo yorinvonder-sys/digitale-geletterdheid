@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { X, ExternalLink, Globe, AlertTriangle } from 'lucide-react';
 
 interface WebPreviewModalProps {
@@ -9,6 +9,25 @@ interface WebPreviewModalProps {
 export const WebPreviewModal: React.FC<WebPreviewModalProps> = ({ url, onClose }) => {
     const [hasError, setHasError] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+    const modalRef = useRef<HTMLDivElement>(null);
+
+    // Focus trap: move focus into modal when opened
+    useEffect(() => {
+        if (modalRef.current) {
+            const firstFocusable = modalRef.current.querySelector<HTMLElement>('button, a, [tabindex]:not([tabindex="-1"])');
+            firstFocusable?.focus();
+        }
+    }, []);
+
+    // Escape to close
+    const handleKeyDown = useCallback((e: KeyboardEvent) => {
+        if (e.key === 'Escape') onClose();
+    }, [onClose]);
+
+    useEffect(() => {
+        document.addEventListener('keydown', handleKeyDown);
+        return () => document.removeEventListener('keydown', handleKeyDown);
+    }, [handleKeyDown]);
 
     // Sanitizing URL to ensure it has a protocol
     const safeUrl = url.startsWith('http') ? url : `https://${url}`;
@@ -29,7 +48,7 @@ export const WebPreviewModal: React.FC<WebPreviewModalProps> = ({ url, onClose }
             />
 
             {/* Modal Content */}
-            <div className="bg-white w-full h-full max-w-6xl rounded-3xl shadow-2xl flex flex-col overflow-hidden relative z-10 animate-in zoom-in-95 duration-300 border border-slate-200">
+            <div ref={modalRef} role="dialog" aria-modal="true" aria-label="Web voorvertoning" className="bg-white w-full h-full max-w-6xl rounded-3xl shadow-2xl flex flex-col overflow-hidden relative z-10 animate-in zoom-in-95 duration-300 motion-reduce:animate-none border border-slate-200">
 
                 {/* Header */}
                 <div className="bg-slate-50 border-b border-slate-100 p-4 flex items-center justify-between shrink-0">
@@ -55,7 +74,8 @@ export const WebPreviewModal: React.FC<WebPreviewModalProps> = ({ url, onClose }
                         </a>
                         <button
                             onClick={onClose}
-                            className="p-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl transition-colors"
+                            className="p-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+                            aria-label="Sluiten"
                         >
                             <X size={20} />
                         </button>
@@ -67,7 +87,7 @@ export const WebPreviewModal: React.FC<WebPreviewModalProps> = ({ url, onClose }
                     {isLoading && !hasError && (
                         <div className="absolute inset-0 flex items-center justify-center text-slate-400" role="status" aria-live="polite">
                             <span className="sr-only">Pagina laden...</span>
-                            <div className="w-8 h-8 border-4 border-indigo-200 border-t-indigo-500 rounded-full animate-spin" aria-hidden="true"></div>
+                            <div className="w-8 h-8 border-4 border-indigo-200 border-t-indigo-500 rounded-full animate-spin motion-reduce:animate-none" aria-hidden="true"></div>
                         </div>
                     )}
 

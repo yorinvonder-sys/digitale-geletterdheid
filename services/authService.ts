@@ -5,6 +5,7 @@ import { logAccountCreated } from './auditService';
 import { enforcePasswordPolicy } from '../utils/passwordValidator';
 import { validateEmail } from '../utils/emailValidator';
 import { revokeAllMfaTrust } from './mfaTrustService';
+import { getAllSSODomains } from './curriculumService';
 import type { AuthChangeEvent, Session, User as SupabaseUser } from '@supabase/supabase-js';
 
 // --- Helpers ---
@@ -83,7 +84,21 @@ export const registerWithEmail = async (
         }
 
         const [localPart = '', domain = ''] = email.toLowerCase().split('@');
-        if (domain === 'almerecollege.nl' && /^[a-z]{3}$/.test(localPart)) {
+
+        // Block teacher-pattern registrations on any configured SSO domain.
+        // Teacher accounts on SSO domains must use Microsoft SSO.
+        // Fallback: if no school configs exist, use legacy almerecollege.nl check.
+        let ssoDomains: string[];
+        try {
+            ssoDomains = await getAllSSODomains();
+        } catch {
+            ssoDomains = [];
+        }
+        if (ssoDomains.length === 0) {
+            // Legacy fallback: no school configs provisioned yet
+            ssoDomains = ['almerecollege.nl'];
+        }
+        if (ssoDomains.includes(domain) && /^[a-z]{3}$/.test(localPart)) {
             throw new Error(
                 'Docentaccounts mogen niet via e-mailregistratie worden aangemaakt. Gebruik Microsoft SSO.'
             );
@@ -506,7 +521,7 @@ export const subscribeToAuthChanges = (callback: (user: ParentUser | null) => vo
 
 /** Privileged roles must use MFA (Cbw/NIS2 compliance). */
 export const requiresMfa = (role: UserRole | null): boolean =>
-    role !== null && ['teacher', 'admin'].includes(role);
+    role !== null && ['teacher', 'admin', 'developer'].includes(role);
 
 
 export const enrollMfa = async (): Promise<{

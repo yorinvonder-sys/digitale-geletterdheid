@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { X, Terminal, Activity, Wifi, Shield, Clock, AlertTriangle } from 'lucide-react';
 import { StudentData, StudentActivity } from '../../types';
 import { supabase } from '../../services/supabase';
@@ -73,6 +73,18 @@ export const LiveStudentModal: React.FC<LiveStudentModalProps> = ({ student, onC
         };
     }, [student]);
 
+    // Escape to close
+    const handleKeyDown = useCallback((e: KeyboardEvent) => {
+        if (e.key === 'Escape') onClose();
+    }, [onClose]);
+
+    useEffect(() => {
+        if (student) {
+            document.addEventListener('keydown', handleKeyDown);
+            return () => document.removeEventListener('keydown', handleKeyDown);
+        }
+    }, [student, handleKeyDown]);
+
     if (!student) return null;
 
     const getActivityColor = (type: string) => {
@@ -101,7 +113,7 @@ export const LiveStudentModal: React.FC<LiveStudentModalProps> = ({ student, onC
 
     return (
         <div className="fixed inset-0 z-[60] bg-black/80 backdrop-blur-md flex items-center justify-center p-4 font-mono" onClick={onClose}>
-            <div className="bg-slate-950 rounded-lg shadow-2xl border border-slate-800 w-full max-w-2xl overflow-hidden flex flex-col max-h-[80vh]" onClick={e => e.stopPropagation()}>
+            <div role="dialog" aria-modal="true" aria-label="Live meekijken terminal" className="bg-slate-950 rounded-lg shadow-2xl border border-slate-800 w-full max-w-2xl overflow-hidden flex flex-col max-h-[80vh]" onClick={e => e.stopPropagation()}>
 
                 {/* TERMINAL HEADER */}
                 <div className="bg-slate-900 px-4 py-2 border-b border-slate-800 flex items-center justify-between select-none">
@@ -112,12 +124,12 @@ export const LiveStudentModal: React.FC<LiveStudentModalProps> = ({ student, onC
                     <div className="flex items-center gap-3">
                         <div className="flex items-center gap-1.5">
                             <span className="relative flex h-2 w-2">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                <span className="animate-ping motion-reduce:animate-none absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                             </span>
                             <span className="text-[10px] text-emerald-500 font-bold tracking-widest uppercase">LIVE</span>
                         </div>
-                        <button onClick={onClose} className="hover:bg-slate-800 p-1 rounded transition-colors text-slate-500 hover:text-white">
+                        <button onClick={onClose} className="hover:bg-slate-800 p-1 rounded transition-colors text-slate-500 hover:text-white min-h-[44px] min-w-[44px] flex items-center justify-center" aria-label="Sluiten">
                             <X size={16} />
                         </button>
                     </div>
@@ -137,8 +149,8 @@ export const LiveStudentModal: React.FC<LiveStudentModalProps> = ({ student, onC
                     {/* ACTIVITY FEED */}
                     {connectionStep >= 3 && (
                         loading ? (
-                            <div className="p-4 flex items-center justify-center gap-2 text-indigo-400 animate-pulse">
-                                <Activity size={16} className="animate-spin" /> Gegevens ophalen...
+                            <div className="p-4 flex items-center justify-center gap-2 text-indigo-400 animate-pulse motion-reduce:animate-none">
+                                <Activity size={16} className="animate-spin motion-reduce:animate-none" /> Gegevens ophalen...
                             </div>
                         ) : activities.length === 0 ? (
                             <div className="py-8 text-center text-slate-600 italic">
@@ -172,7 +184,7 @@ export const LiveStudentModal: React.FC<LiveStudentModalProps> = ({ student, onC
 
                     {/* Blink cursor at the bottom */}
                     {connectionStep >= 3 && (
-                        <div className="mt-4 flex items-center gap-2 text-emerald-500 animate-pulse">
+                        <div className="mt-4 flex items-center gap-2 text-emerald-500 animate-pulse motion-reduce:animate-none">
                             <span className="font-bold">{'>'}</span> Wachten op nieuwe signalen...
                         </div>
                     )}

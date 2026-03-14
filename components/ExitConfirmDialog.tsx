@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 import { AlertTriangle } from 'lucide-react';
 
 interface ExitConfirmDialogProps {
@@ -16,6 +16,28 @@ export const ExitConfirmDialog: React.FC<ExitConfirmDialogProps> = ({
     title = 'Missie verlaten?',
     message = 'Weet je zeker dat je deze missie wilt verlaten? Je voortgang voor deze missie kan verloren gaan.'
 }) => {
+    const dialogRef = useRef<HTMLDivElement>(null);
+
+    // Focus trap: move focus into dialog when opened
+    useEffect(() => {
+        if (isOpen && dialogRef.current) {
+            const firstFocusable = dialogRef.current.querySelector<HTMLElement>('button');
+            firstFocusable?.focus();
+        }
+    }, [isOpen]);
+
+    // Escape to close
+    const handleKeyDown = useCallback((e: KeyboardEvent) => {
+        if (e.key === 'Escape') onCancel();
+    }, [onCancel]);
+
+    useEffect(() => {
+        if (isOpen) {
+            document.addEventListener('keydown', handleKeyDown);
+            return () => document.removeEventListener('keydown', handleKeyDown);
+        }
+    }, [isOpen, handleKeyDown]);
+
     if (!isOpen) return null;
 
     return (
@@ -25,7 +47,8 @@ export const ExitConfirmDialog: React.FC<ExitConfirmDialogProps> = ({
                 onClick={onCancel}
             />
             <div
-                className="bg-white rounded-2xl p-6 shadow-2xl border border-slate-100 w-full max-w-sm relative z-10 animate-in zoom-in duration-200"
+                ref={dialogRef}
+                className="bg-white rounded-2xl p-6 shadow-2xl border border-slate-100 w-full max-w-sm relative z-10 animate-in zoom-in duration-200 motion-reduce:animate-none"
                 role="alertdialog"
                 aria-modal="true"
                 aria-labelledby="exit-dialog-title"

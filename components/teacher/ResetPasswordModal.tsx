@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { X, KeyRound, Check, AlertCircle, Eye, EyeOff, Loader2 } from 'lucide-react';
 import { StudentData } from '../../types';
 import { resetStudentPassword } from '../../services/teacherService';
 import { motion, AnimatePresence } from 'framer-motion';
+import { validatePassword } from '../../utils/passwordValidator';
 
 interface ResetPasswordModalProps {
     student: StudentData | null;
@@ -24,10 +25,31 @@ export const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({ student,
         }
     }, [student]);
 
+    // Escape to close
+    const handleKeyDown = useCallback((e: KeyboardEvent) => {
+        if (e.key === 'Escape') onClose();
+    }, [onClose]);
+
+    useEffect(() => {
+        if (student) {
+            document.addEventListener('keydown', handleKeyDown);
+            return () => document.removeEventListener('keydown', handleKeyDown);
+        }
+    }, [student, handleKeyDown]);
+
     if (!student) return null;
 
     const handleReset = async () => {
         if (!password.trim()) return;
+
+        const validation = validatePassword(password);
+        if (!validation.isValid) {
+            setResult({
+                success: false,
+                message: validation.errors[0],
+            });
+            return;
+        }
 
         setIsResetting(true);
         try {
@@ -62,6 +84,9 @@ export const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({ student,
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.95, y: 20 }}
                     transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+                    role="dialog"
+                    aria-modal="true"
+                    aria-labelledby="reset-password-modal-title"
                     className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden"
                     onClick={(e) => e.stopPropagation()}
                 >
@@ -74,13 +99,14 @@ export const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({ student,
                                     <KeyRound size={20} />
                                 </div>
                                 <div>
-                                    <h2 className="text-lg font-black">Wachtwoord Resetten</h2>
+                                    <h2 id="reset-password-modal-title" className="text-lg font-black">Wachtwoord Resetten</h2>
                                     <p className="text-white/70 text-xs font-medium">{student.displayName}</p>
                                 </div>
                             </div>
                             <button
                                 onClick={onClose}
-                                className="p-2 hover:bg-white/10 rounded-xl transition-colors"
+                                className="p-2 hover:bg-white/10 rounded-xl transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+                                aria-label="Sluiten"
                             >
                                 <X size={18} />
                             </button>
@@ -108,7 +134,8 @@ export const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({ student,
                                         <button
                                             type="button"
                                             onClick={() => setShowPassword(!showPassword)}
-                                            className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 text-slate-400 hover:text-slate-600 transition-colors"
+                                            className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 text-slate-400 hover:text-slate-600 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+                                            aria-label={showPassword ? 'Wachtwoord verbergen' : 'Wachtwoord tonen'}
                                         >
                                             {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                                         </button>
@@ -167,7 +194,7 @@ export const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({ student,
                             >
                                 {isResetting ? (
                                     <>
-                                        <Loader2 size={16} className="animate-spin" />
+                                        <Loader2 size={16} className="animate-spin motion-reduce:animate-none" />
                                         Bezig...
                                     </>
                                 ) : (

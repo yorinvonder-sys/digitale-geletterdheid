@@ -105,7 +105,7 @@ REGELS VOOR JOU:
     // 2. Initialize Chat
     useEffect(() => {
         if (!chatSessionRef.current) {
-            chatSessionRef.current = createChatSession(systemInstruction);
+            chatSessionRef.current = createChatSession('student-assistant', systemInstruction);
             // Add welcome message
             setMessages([{
                 role: 'model',

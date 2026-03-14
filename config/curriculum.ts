@@ -302,6 +302,45 @@ export const CURRICULUM: CurriculumConfig = {
 };
 
 // ============================================================================
+// School Overrides — per-school missie in-/uitschakeling
+// ============================================================================
+
+export interface SchoolCurriculumOverrides {
+    /** Missie-IDs die deze school heeft uitgeschakeld */
+    disabledMissions?: string[];
+    /** Extra missie-IDs per periode (schoolId → yearGroup → period → missionIds) */
+    extraMissions?: Record<number, Record<number, string[]>>;
+}
+
+/**
+ * Pas school-specifieke overrides toe op een lijst missie-IDs.
+ * Filtert disabled missions eruit en voegt eventuele extra missions toe.
+ */
+export function applySchoolOverrides(
+    missionIds: string[],
+    overrides: SchoolCurriculumOverrides | undefined,
+    yearGroup?: number,
+    period?: number,
+): string[] {
+    if (!overrides) return missionIds;
+
+    let result = missionIds;
+
+    // Filter disabled missions
+    if (overrides.disabledMissions?.length) {
+        const disabled = new Set(overrides.disabledMissions);
+        result = result.filter(id => !disabled.has(id));
+    }
+
+    // Add extra missions for this period
+    if (yearGroup !== undefined && period !== undefined && overrides.extraMissions?.[yearGroup]?.[period]) {
+        result = [...result, ...overrides.extraMissions[yearGroup][period]];
+    }
+
+    return result;
+}
+
+// ============================================================================
 // Helper Functions
 // ============================================================================
 

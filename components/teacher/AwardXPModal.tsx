@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { X, Zap, Sparkles, TrendingUp, Check, Loader2 } from 'lucide-react';
 import { StudentData } from '../../types';
 import { awardXP } from '../../services/teacherService';
@@ -25,6 +25,18 @@ export const AwardXPModal: React.FC<AwardXPModalProps> = ({ student, onClose, on
             setTimeout(() => inputRef.current?.select(), 100);
         }
     }, [student]);
+
+    // Escape to close
+    const handleKeyDown = useCallback((e: KeyboardEvent) => {
+        if (e.key === 'Escape') onClose();
+    }, [onClose]);
+
+    useEffect(() => {
+        if (student) {
+            document.addEventListener('keydown', handleKeyDown);
+            return () => document.removeEventListener('keydown', handleKeyDown);
+        }
+    }, [student, handleKeyDown]);
 
     if (!student) return null;
 
@@ -65,6 +77,9 @@ export const AwardXPModal: React.FC<AwardXPModalProps> = ({ student, onClose, on
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.95, y: 20 }}
                     transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+                    role="dialog"
+                    aria-modal="true"
+                    aria-labelledby="award-xp-modal-title"
                     className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden"
                     onClick={(e) => e.stopPropagation()}
                 >
@@ -78,13 +93,14 @@ export const AwardXPModal: React.FC<AwardXPModalProps> = ({ student, onClose, on
                                     <Zap size={24} className="text-white" />
                                 </div>
                                 <div>
-                                    <h2 className="text-lg font-black">XP Toekennen</h2>
+                                    <h2 id="award-xp-modal-title" className="text-lg font-black">XP Toekennen</h2>
                                     <p className="text-white/80 text-xs font-medium">{student.displayName}</p>
                                 </div>
                             </div>
                             <button
                                 onClick={onClose}
-                                className="p-2 hover:bg-white/10 rounded-xl transition-colors"
+                                className="p-2 hover:bg-white/10 rounded-xl transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+                                aria-label="Sluiten"
                             >
                                 <X size={18} />
                             </button>
@@ -182,7 +198,7 @@ export const AwardXPModal: React.FC<AwardXPModalProps> = ({ student, onClose, on
                             >
                                 {isAwarding ? (
                                     <>
-                                        <Loader2 size={16} className="animate-spin" />
+                                        <Loader2 size={16} className="animate-spin motion-reduce:animate-none" />
                                         Bezig...
                                     </>
                                 ) : (

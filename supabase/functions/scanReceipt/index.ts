@@ -14,16 +14,10 @@
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { getAccessToken, getVertexUrl } from "../_shared/vertexAuth.ts";
+import { buildCorsHeaders, rejectDisallowedBrowserRequest } from "../_shared/cors.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
-
-const ALLOWED_ORIGINS = new Set([
-    "https://dgskills.app",
-    "https://www.dgskills.app",
-    "http://localhost:5173",
-    "http://localhost:3000",
-]);
 
 const ALLOWED_MIME_TYPES = new Set([
     "image/jpeg",
@@ -37,13 +31,9 @@ const ALLOWED_MIME_TYPES = new Set([
 const MAX_BASE64_LENGTH = 14_000_000; // ~10 MB
 
 Deno.serve(async (req: Request) => {
-    const origin = req.headers.get("Origin") || "";
-    const allowedOrigin = ALLOWED_ORIGINS.has(origin) ? origin : "https://dgskills.app";
-    const corsHeaders = {
-        "Access-Control-Allow-Origin": allowedOrigin,
-        "Access-Control-Allow-Methods": "POST, OPTIONS",
-        "Access-Control-Allow-Headers": "Content-Type, Authorization",
-    };
+    const corsHeaders = buildCorsHeaders(req, "POST, OPTIONS", "Content-Type, Authorization");
+    const rejectedOrigin = rejectDisallowedBrowserRequest(req, corsHeaders);
+    if (rejectedOrigin) return rejectedOrigin;
 
     if (req.method === "OPTIONS") {
         return new Response(null, { headers: corsHeaders });
@@ -67,6 +57,14 @@ Deno.serve(async (req: Request) => {
         return new Response(
             JSON.stringify({ error: "Ongeldige sessie." }),
             { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+    }
+
+    const callerRole = user.app_metadata?.role;
+    if (callerRole !== "developer" && callerRole !== "admin") {
+        return new Response(
+            JSON.stringify({ error: "Geen toegang tot de boekhoudscanner." }),
+            { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } }
         );
     }
 

@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, GraduationCap, Send, Award, RotateCcw, Star, Zap, Eye, StickyNote, Plus, Trash2, Edit2, Loader2, AlertCircle } from 'lucide-react';
+import { X, GraduationCap, Send, Award, RotateCcw, Star, Zap, Eye, StickyNote, Plus, Trash2, Edit2, Loader2, AlertCircle, Target, Clock } from 'lucide-react';
 import { StudentData } from '../../types';
-import { TeacherNote } from '../../services/teacherService';
+import { TeacherNote, StudentMissionScore, getStudentMissionScores } from '../../services/teacherService';
 import { AVAILABLE_BADGES } from '../../config/badges';
 import { AwardXPModal } from './AwardXPModal';
 import { addTeacherNote, getTeacherNotes, updateTeacherNote, deleteTeacherNote } from '../../services/teacherService';
 import { supabase } from '../../services/supabase';
 import { SLOProgressPanel } from './SLOProgressPanel';
+import { getMissionsForYear } from '../../config/missions';
 
 interface StudentModalProps {
     student: StudentData | null;
@@ -32,17 +33,55 @@ export const StudentModal: React.FC<StudentModalProps> = ({ student, onClose, on
     const [savingNote, setSavingNote] = useState(false);
     const [deletingNoteId, setDeletingNoteId] = useState<string | null>(null);
 
-    const [activeTab, setActiveTab] = useState<'overview' | 'slo'>('overview');
+    const [activeTab, setActiveTab] = useState<'overview' | 'missions' | 'slo'>('overview');
+    const [missionScores, setMissionScores] = useState<StudentMissionScore[]>([]);
+    const [loadingScores, setLoadingScores] = useState(false);
+    const modalRef = useRef<HTMLDivElement>(null);
 
-    // Load notes when student changes
+    // Focus trap: move focus into modal when opened
+    useEffect(() => {
+        if (student && modalRef.current) {
+            const firstFocusable = modalRef.current.querySelector<HTMLElement>('button, [tabindex]:not([tabindex="-1"])');
+            firstFocusable?.focus();
+        }
+    }, [student]);
+
+    // Escape to close
+    const handleKeyDown = useCallback((e: KeyboardEvent) => {
+        if (e.key === 'Escape') onClose();
+    }, [onClose]);
+
+    useEffect(() => {
+        if (student) {
+            document.addEventListener('keydown', handleKeyDown);
+            return () => document.removeEventListener('keydown', handleKeyDown);
+        }
+    }, [student, handleKeyDown]);
+
+    // Load notes and mission scores when student changes
     useEffect(() => {
         if (student) {
             loadNotes();
+            loadMissionScores();
             setActiveTab('overview');
         } else {
             setNotes([]);
+            setMissionScores([]);
         }
     }, [student?.uid]);
+
+    const loadMissionScores = async () => {
+        if (!student) return;
+        setLoadingScores(true);
+        try {
+            const scores = await getStudentMissionScores(student.uid);
+            setMissionScores(scores);
+        } catch (error) {
+            console.error('Failed to load mission scores:', error);
+        } finally {
+            setLoadingScores(false);
+        }
+    };
 
     const loadNotes = async () => {
         if (!student) return;
@@ -130,7 +169,7 @@ export const StudentModal: React.FC<StudentModalProps> = ({ student, onClose, on
 
     return (
         <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4" onClick={onClose}>
-            <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto flex flex-col" onClick={e => e.stopPropagation()}>
+            <div ref={modalRef} role="dialog" aria-modal="true" aria-labelledby="student-modal-title" className="bg-white rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto flex flex-col" onClick={e => e.stopPropagation()}>
                 <div className="p-4 border-b border-slate-100 flex items-center justify-between shrink-0">
                     <div className="flex items-center gap-3">
                         <div className="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center text-indigo-600">
@@ -155,6 +194,12 @@ export const StudentModal: React.FC<StudentModalProps> = ({ student, onClose, on
                         Overzicht
                     </button>
                     <button
+                        onClick={() => setActiveTab('missions')}
+                        className={`py-3 text-xs font-bold uppercase tracking-wider border-b-2 transition-colors ${activeTab === 'missions' ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-slate-400 hover:text-slate-600'}`}
+                    >
+                        Missies
+                    </button>
+                    <button
                         onClick={() => setActiveTab('slo')}
                         className={`py-3 text-xs font-bold uppercase tracking-wider border-b-2 transition-colors ${activeTab === 'slo' ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-slate-400 hover:text-slate-600'}`}
                     >
@@ -163,7 +208,13 @@ export const StudentModal: React.FC<StudentModalProps> = ({ student, onClose, on
                 </div>
 
                 <div className="p-4 space-y-4 flex-1 overflow-y-auto">
-                    {activeTab === 'slo' ? (
+                    {activeTab === 'missions' ? (
+                        <MissionScoresView
+                            student={student}
+                            missionScores={missionScores}
+                            loading={loadingScores}
+                        />
+                    ) : activeTab === 'slo' ? (
                         <SLOProgressPanel student={student} />
                     ) : (
                         <>
@@ -405,6 +456,115 @@ export const StudentModal: React.FC<StudentModalProps> = ({ student, onClose, on
                     // Optionally refresh parent data
                 }}
             />
+        </div>
+    );
+};
+
+// --- Mission Scores sub-view ---
+const MissionScoresView: React.FC<{
+    student: StudentData;
+    missionScores: StudentMissionScore[];
+    loading: boolean;
+}> = ({ student, missionScores, loading }) => {
+    const yearGroup = student.stats?.yearGroup || 1;
+    const allMissions = getMissionsForYear(yearGroup);
+    const completedIds = student.stats?.missionsCompleted || [];
+
+    const scoreMap = new Map<string, StudentMissionScore>();
+    missionScores.forEach(s => scoreMap.set(s.mission_id, s));
+
+    const getStatus = (missionId: string): 'completed' | 'in_progress' | 'not_started' => {
+        if (completedIds.includes(missionId)) return 'completed';
+        const scoreEntry = scoreMap.get(missionId);
+        if (scoreEntry && scoreEntry.status === 'in_progress') return 'in_progress';
+        return 'not_started';
+    };
+
+    const statusLabel = (s: 'completed' | 'in_progress' | 'not_started') => {
+        switch (s) {
+            case 'completed': return 'Afgerond';
+            case 'in_progress': return 'Bezig';
+            case 'not_started': return 'Niet gestart';
+        }
+    };
+
+    const statusColor = (s: 'completed' | 'in_progress' | 'not_started') => {
+        switch (s) {
+            case 'completed': return 'bg-emerald-100 text-emerald-700';
+            case 'in_progress': return 'bg-amber-100 text-amber-700';
+            case 'not_started': return 'bg-slate-100 text-slate-400';
+        }
+    };
+
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center py-8">
+                <Loader2 size={20} className="animate-spin text-slate-400" />
+            </div>
+        );
+    }
+
+    return (
+        <div className="space-y-3">
+            <div className="flex items-center justify-between">
+                <h3 className="text-[10px] font-black text-slate-500 uppercase flex items-center gap-2">
+                    <Target size={12} /> Missie Voortgang ({completedIds.length}/{allMissions.length})
+                </h3>
+            </div>
+
+            {/* Progress bar */}
+            <div className="w-full bg-slate-100 rounded-full h-2">
+                <div
+                    className="bg-emerald-500 h-2 rounded-full transition-all"
+                    style={{ width: `${allMissions.length > 0 ? (completedIds.length / allMissions.length) * 100 : 0}%` }}
+                />
+            </div>
+
+            {/* Mission cards */}
+            <div className="space-y-2">
+                {allMissions.map(mission => {
+                    const status = getStatus(mission.id);
+                    const scoreEntry = scoreMap.get(mission.id);
+                    const score = scoreEntry?.score;
+                    const lastActive = scoreEntry?.updated_at;
+
+                    return (
+                        <div key={mission.id} className="flex items-center gap-3 p-3 bg-slate-50 rounded-xl">
+                            <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-xs font-black ${statusColor(status)}`}>
+                                {status === 'completed' ? '✓' : mission.short[0]}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                                <div className="font-bold text-sm text-slate-900 truncate">{mission.name}</div>
+                                <div className="flex items-center gap-2 mt-0.5">
+                                    <span className={`inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-bold ${statusColor(status)}`}>
+                                        {statusLabel(status)}
+                                    </span>
+                                    {lastActive && (
+                                        <span className="flex items-center gap-1 text-[9px] text-slate-400">
+                                            <Clock size={8} />
+                                            {new Date(lastActive).toLocaleDateString('nl-NL', { day: 'numeric', month: 'short' })}
+                                        </span>
+                                    )}
+                                </div>
+                            </div>
+                            {score !== null && score !== undefined && (
+                                <div className="text-right">
+                                    <div className={`text-lg font-black ${score >= 70 ? 'text-emerald-600' : score >= 50 ? 'text-amber-600' : 'text-red-500'}`}>
+                                        {score}%
+                                    </div>
+                                    <div className="text-[8px] font-bold text-slate-400 uppercase">Score</div>
+                                </div>
+                            )}
+                        </div>
+                    );
+                })}
+            </div>
+
+            {allMissions.length === 0 && (
+                <div className="text-center py-4 text-slate-400 text-xs">
+                    Geen missies gevonden voor leerjaar {yearGroup}
+                </div>
+            )}
         </div>
     );
 };

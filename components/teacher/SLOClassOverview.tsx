@@ -70,8 +70,15 @@ export const SLOClassOverview: React.FC<SLOClassOverviewProps> = ({ students, sc
         setExporting(true);
 
         try {
-            const XLSX = await import('xlsx');
-            const workbook = XLSX.utils.book_new();
+            const ExcelJS = await import('exceljs');
+            const workbook = new ExcelJS.Workbook();
+
+            // Helper: add rows from array-of-arrays to a worksheet
+            const addAoaSheet = (name: string, rows: any[][]) => {
+                const ws = workbook.addWorksheet(name);
+                rows.forEach(row => ws.addRow(row));
+                return ws;
+            };
 
             // Sheet: Kerndoelen definitions
             const kerndoelenData: any[] = [
@@ -81,7 +88,7 @@ export const SLOClassOverview: React.FC<SLOClassOverviewProps> = ({ students, sc
                 const kd = SLO_KERNDOELEN[code];
                 kerndoelenData.push([kd.code, kd.domein, kd.label, kd.omschrijving]);
             });
-            XLSX.utils.book_append_sheet(workbook, XLSX.utils.aoa_to_sheet(kerndoelenData), 'Kerndoelen');
+            addAoaSheet('Kerndoelen', kerndoelenData);
 
             // Sheet 1: Overview per class
             const overviewHeader = ['Klas', 'Aantal Leerlingen', ...KERNDOEL_CODES.map(code => `${code} ${SLO_KERNDOELEN[code].label}`)];
@@ -96,7 +103,7 @@ export const SLOClassOverview: React.FC<SLOClassOverviewProps> = ({ students, sc
                 ]);
             });
 
-            XLSX.utils.book_append_sheet(workbook, XLSX.utils.aoa_to_sheet(overviewData), 'Overzicht per Klas');
+            addAoaSheet('Overzicht per Klas', overviewData);
 
             // Sheet 2: Detail per student
             const detailHeader = [
@@ -126,7 +133,7 @@ export const SLOClassOverview: React.FC<SLOClassOverviewProps> = ({ students, sc
                 });
             });
 
-            XLSX.utils.book_append_sheet(workbook, XLSX.utils.aoa_to_sheet(detailData), 'Detail per Leerling');
+            addAoaSheet('Detail per Leerling', detailData);
 
             // Sheet 3: Activities/events for growth analysis (last 90 days)
             const cutoff = new Date();
@@ -261,11 +268,18 @@ export const SLOClassOverview: React.FC<SLOClassOverviewProps> = ({ students, sc
                 ]);
             });
 
-            XLSX.utils.book_append_sheet(workbook, XLSX.utils.aoa_to_sheet(activitiesData), 'Activiteiten (90d)');
+            addAoaSheet('Activiteiten (90d)', activitiesData);
 
             // Download
             const date = new Date().toISOString().split('T')[0];
-            XLSX.writeFile(workbook, `SLO_Kerndoelen_${date}.xlsx`);
+            const buffer = await workbook.xlsx.writeBuffer();
+            const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `SLO_Kerndoelen_${date}.xlsx`;
+            a.click();
+            URL.revokeObjectURL(url);
         } catch (e: any) {
             console.error('[SLO Export] Failed:', e);
             setExportError('Export mislukt. Controleer je verbinding en probeer opnieuw.');

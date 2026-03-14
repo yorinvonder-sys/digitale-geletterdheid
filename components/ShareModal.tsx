@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Share, X, Check, Copy, Loader2 } from 'lucide-react';
 
 interface ShareModalProps {
@@ -19,6 +19,27 @@ export const ShareModal: React.FC<ShareModalProps> = ({
     description = "Laat anderen jouw creatie zien."
 }) => {
     const [copied, setCopied] = useState(false);
+    const modalRef = useRef<HTMLDivElement>(null);
+
+    // Focus trap: move focus into modal when opened
+    useEffect(() => {
+        if (isOpen && modalRef.current) {
+            const firstFocusable = modalRef.current.querySelector<HTMLElement>('button, input, [tabindex]:not([tabindex="-1"])');
+            firstFocusable?.focus();
+        }
+    }, [isOpen]);
+
+    // Escape to close
+    const handleKeyDown = useCallback((e: KeyboardEvent) => {
+        if (e.key === 'Escape') onClose();
+    }, [onClose]);
+
+    useEffect(() => {
+        if (isOpen) {
+            document.addEventListener('keydown', handleKeyDown);
+            return () => document.removeEventListener('keydown', handleKeyDown);
+        }
+    }, [isOpen, handleKeyDown]);
 
     if (!isOpen) return null;
 
@@ -30,10 +51,11 @@ export const ShareModal: React.FC<ShareModalProps> = ({
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in">
-            <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl relative animate-in zoom-in-95">
+            <div ref={modalRef} role="dialog" aria-modal="true" aria-labelledby="share-modal-title" className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl relative animate-in zoom-in-95 motion-reduce:animate-none">
                 <button
                     onClick={onClose}
-                    className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 transition-colors"
+                    className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+                    aria-label="Sluiten"
                 >
                     <X size={20} />
                 </button>
@@ -42,13 +64,13 @@ export const ShareModal: React.FC<ShareModalProps> = ({
                     <div className="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4 text-indigo-600">
                         <Share size={32} />
                     </div>
-                    <h3 className="text-xl font-black text-slate-900 mb-1">{title}</h3>
+                    <h3 id="share-modal-title" className="text-xl font-black text-slate-900 mb-1">{title}</h3>
                     <p className="text-slate-500 text-sm">{description}</p>
                 </div>
 
                 {isSharing ? (
                     <div className="flex flex-col items-center justify-center py-8">
-                        <Loader2 size={32} className="animate-spin text-indigo-500 mb-2" />
+                        <Loader2 size={32} className="animate-spin motion-reduce:animate-none text-indigo-500 mb-2" />
                         <span className="text-slate-400 text-sm">Link genereren...</span>
                     </div>
                 ) : (
@@ -62,8 +84,8 @@ export const ShareModal: React.FC<ShareModalProps> = ({
                             />
                             <button
                                 onClick={copyToClipboard}
-                                className="absolute right-2 top-2 p-1.5 text-slate-400 hover:text-indigo-600 transition-colors bg-white rounded-lg border border-slate-200 shadow-sm hover:shadow"
-                                title="Kopieer link"
+                                className="absolute right-2 top-2 p-1.5 text-slate-400 hover:text-indigo-600 transition-colors bg-white rounded-lg border border-slate-200 shadow-sm hover:shadow min-h-[44px] min-w-[44px] flex items-center justify-center"
+                                aria-label="Kopieer link"
                             >
                                 {copied ? <Check size={18} className="text-emerald-500" /> : <Copy size={18} />}
                             </button>

@@ -118,6 +118,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
     const selectedClassId = classFilter === 'all' ? 'MH1A' : classFilter;
 
     const [retryCount, setRetryCount] = useState(0);
+    const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
 
     const addToast = (title: string, message: string, type: 'error' | 'success' | 'info' | 'warning' = 'info', studentUid?: string) => {
         const id = Math.random().toString(36).substr(2, 9);
@@ -152,6 +153,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                 return bTime - aTime;
             });
             setStudents(studentList);
+            setLastUpdated(new Date());
             setLoading(false);
             if (retryCount > 0) setRetryCount(0);
         };
@@ -521,6 +523,8 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                                     onClassFilterChange={setClassFilter}
                                     onSelectStudent={setSelectedStudent}
                                     yearGroup={yearGroupFilter}
+                                    lastUpdated={lastUpdated}
+                                    classroomConfig={classRoomConfig}
                                 />
                             </PageTransition>
                         )}

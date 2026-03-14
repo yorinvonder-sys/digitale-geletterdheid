@@ -73,10 +73,13 @@ interface ChatMessage {
 
 export class Chat {
   private history: ChatMessage[] = [];
+  private roleId: string;
   private systemInstruction: string;
 
-  constructor(systemInstruction: string) {
-    this.systemInstruction = systemInstruction;
+  constructor(roleId: string, systemInstruction?: string) {
+    this.roleId = roleId;
+    // systemInstruction is kept only for local DEV fallback simulation — never sent to the server
+    this.systemInstruction = systemInstruction || '';
   }
 
   getHistory(): ChatMessage[] {
@@ -111,7 +114,7 @@ export class Chat {
       }
       const token = session.access_token;
 
-      // G-02 FIX: Send the sanitized cleanMessage to the backend, not the original
+      // SECURITY: Only send roleId, never systemInstruction — server looks it up
       const response = await fetchWithRetry(`${EDGE_FUNCTION_URL}/chat`, {
         method: 'POST',
         headers: {
@@ -120,7 +123,7 @@ export class Chat {
         },
         body: JSON.stringify({
           message: cleanMessage,
-          systemInstruction: this.systemInstruction,
+          roleId: this.roleId,
           history: this.history.slice(0, -1)
         })
       });
@@ -190,6 +193,7 @@ export class Chat {
     const token = session.access_token;
 
     try {
+      // SECURITY: Only send roleId, never systemInstruction — server looks it up
       const response = await fetchWithRetry(`${EDGE_FUNCTION_URL}/chatStream`, {
         method: 'POST',
         headers: {
@@ -198,7 +202,7 @@ export class Chat {
         },
         body: JSON.stringify({
           message: cleanMessage,
-          systemInstruction: this.systemInstruction,
+          roleId: this.roleId,
           history: this.history.slice(0, -1)
         })
       });
@@ -439,8 +443,13 @@ Dan kan ik je het beste helpen! 💪`;
 
 // --- Public API ---
 
-export const createChatSession = (systemInstruction: string): Chat => {
-  return new Chat(systemInstruction);
+/**
+ * Create a new chat session.
+ * @param roleId - The server-side role identifier (must match a key in systemInstructions.ts)
+ * @param systemInstruction - Optional, only used for local DEV fallback simulation
+ */
+export const createChatSession = (roleId: string, systemInstruction?: string): Chat => {
+  return new Chat(roleId, systemInstruction);
 };
 
 export const sendMessageToGemini = async (chat: Chat, message: string): Promise<string> => {

@@ -130,7 +130,8 @@ export const RescuerTask: React.FC<Props> = ({ task, onComplete }) => {
                         <button
                             onClick={handleReset}
                             disabled={selectedSteps.length === 0 || !!result}
-                            className="px-4 py-3 bg-slate-700 text-white font-bold rounded-xl hover:bg-slate-600 disabled:opacity-50 transition-colors"
+                            className="px-4 py-3 bg-slate-700 text-white font-bold rounded-xl hover:bg-slate-600 disabled:opacity-50 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+                            aria-label="Oplossing resetten"
                         >
                             <RotateCcw size={20} />
                         </button>
@@ -153,7 +154,7 @@ export const RescuerTask: React.FC<Props> = ({ task, onComplete }) => {
                     </div>
 
                     {result === 'fail' && (
-                        <div className="bg-red-500/20 text-red-200 px-4 py-2 rounded-xl text-center text-sm border border-red-500/50 animate-in shake">
+                        <div className="bg-red-500/20 text-red-200 px-4 py-2 rounded-xl text-center text-sm border border-red-500/50 animate-in shake motion-reduce:animate-none">
                             Dat is niet de juiste volgorde of actie. Reset en probeer het nog eens!
                         </div>
                     )}

@@ -4,11 +4,15 @@ import { EducationLevel } from '../types';
 export interface SchoolConfig {
     id: string;
     schoolId: string;
+    schoolName?: string;
     periodNaming: string;
     periodsPerYear: number;
     maxYearMavo: number;
     maxYearHavo: number;
     maxYearVwo: number;
+    allowedSSODomains?: string[];
+    curriculumModel?: 'project' | 'sequential' | 'elective';
+    disabledMissions?: string[];
     customConfig: Record<string, any>;
 }
 
@@ -40,15 +44,21 @@ export async function getSchoolConfig(schoolId: string): Promise<SchoolConfig | 
 
     if (error || !data) return null;
 
+    const customConfig = data.custom_config || {};
+
     return {
         id: data.id,
         schoolId: data.school_id,
+        schoolName: customConfig.schoolName ?? undefined,
         periodNaming: data.period_naming || 'Periode',
         periodsPerYear: data.periods_per_year || 4,
         maxYearMavo: data.max_year_mavo || 2,
         maxYearHavo: data.max_year_havo || 3,
         maxYearVwo: data.max_year_vwo || 3,
-        customConfig: data.custom_config || {}
+        allowedSSODomains: customConfig.allowedSSODomains ?? undefined,
+        curriculumModel: customConfig.curriculumModel ?? undefined,
+        disabledMissions: customConfig.disabledMissions ?? undefined,
+        customConfig,
     };
 }
 
@@ -113,6 +123,48 @@ export async function getMissionsForYear(
     if (error || !data) return [];
 
     return data.map(mapMission);
+}
+
+// Get allowed SSO domains for a school (from school_configs.custom_config)
+export async function getAllowedSSODomains(schoolId: string): Promise<string[]> {
+    const config = await getSchoolConfig(schoolId);
+    return config?.allowedSSODomains ?? [];
+}
+
+// Get all allowed SSO domains across all schools (for registration guard)
+export async function getAllSSODomains(): Promise<string[]> {
+    const { data, error } = await supabase
+        .from('school_configs')
+        .select('custom_config') as { data: Array<{ custom_config: Record<string, any> }> | null; error: any };
+
+    if (error || !data) return [];
+
+    const domains: string[] = [];
+    for (const row of data) {
+        const ssoDomains = row.custom_config?.allowedSSODomains;
+        if (Array.isArray(ssoDomains)) {
+            domains.push(...ssoDomains);
+        }
+    }
+    return [...new Set(domains)];
+}
+
+// Get missions for a school, filtering out disabled missions
+export async function getSchoolMissions(
+    schoolId: string,
+    yearGroup: number,
+    period: number,
+    educationLevel?: EducationLevel
+): Promise<CurriculumMission[]> {
+    const [missions, config] = await Promise.all([
+        getMissionsForPeriod(yearGroup, period, educationLevel),
+        getSchoolConfig(schoolId),
+    ]);
+
+    if (!config?.disabledMissions?.length) return missions;
+
+    const disabled = new Set(config.disabledMissions);
+    return missions.filter(m => !disabled.has(m.id));
 }
 
 // Get maximum year for education level

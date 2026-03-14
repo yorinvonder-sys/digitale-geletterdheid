@@ -243,7 +243,7 @@ ${challenge.feedbackCriteria.slice(1).map((c, i) => `${i + 2}. ${c.label}: [GEVO
 
     try {
         // Create a chat session for analysis
-        const chatSession = createChatSession('Je bent een behulpzame prompt engineering leraar.');
+        const chatSession = createChatSession('prompt-master');
 
         await new Promise(r => setTimeout(r, 800)); // Small delay for UX
         onThinkingStep('🧠 AI denkt na...');

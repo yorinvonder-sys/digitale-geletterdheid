@@ -12,27 +12,22 @@
  */
 import { serve } from 'https://deno.land/std@0.177.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-
-const ALLOWED_ORIGINS = new Set([
-  'https://dgskills.app',
-  'https://www.dgskills.app',
-  'http://localhost:5173',
-  'http://localhost:3000',
-]);
-
-function getCorsHeaders(req: Request) {
-  const origin = req.headers.get('Origin') || '';
-  return {
-    'Access-Control-Allow-Origin': ALLOWED_ORIGINS.has(origin) ? origin : 'https://dgskills.app',
-    'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-  };
-}
+import { buildCorsHeaders, rejectDisallowedBrowserRequest } from '../_shared/cors.ts';
 
 serve(async (req: Request) => {
-  const corsHeaders = getCorsHeaders(req);
+  const corsHeaders = buildCorsHeaders(req, 'POST, OPTIONS');
+  const rejectedOrigin = rejectDisallowedBrowserRequest(req, corsHeaders);
+  if (rejectedOrigin) return rejectedOrigin;
 
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders });
+  }
+
+  if (req.method !== 'POST') {
+    return new Response(JSON.stringify({ error: 'Method not allowed' }), {
+      status: 405,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
   }
 
   try {

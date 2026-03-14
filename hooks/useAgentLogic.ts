@@ -119,7 +119,7 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
         console.log('[Memory] Refreshing chat session to prevent memory buildup');
 
         // Create fresh session
-        const newSession = createChatSession(selectedRole.systemInstruction);
+        const newSession = createChatSession(selectedRole.id, selectedRole.systemInstruction);
 
         // Re-inject essential context (last N messages)
         const contextMessages = recentMessages.slice(-MAX_CONTEXT_MESSAGES);
@@ -168,7 +168,7 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
             setSuggestions(starterTips);
 
             try {
-                const session = createChatSession(selectedRole.systemInstruction);
+                const session = createChatSession(selectedRole.id, selectedRole.systemInstruction);
                 chatSessionRef.current = session;
 
                 // If it's a game programmer, we provide initial code as context
@@ -311,7 +311,7 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
             }
 
             // 3. Clear Chat Context (Optional, but often desired on hard reset)
-            // createChatSession(selectedRole.systemInstruction); // Reset Gemini session too if desired
+            // createChatSession(selectedRole.id, selectedRole.systemInstruction); // Reset Gemini session too if desired
 
         } catch (err) {
             console.error("Reset failed:", err);

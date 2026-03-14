@@ -1,5 +1,5 @@
-import { Search, Filter, GraduationCap, ChevronRight, KeyRound, RotateCcw } from 'lucide-react';
-import { StudentData } from '../../types';
+import { Search, Filter, GraduationCap, ChevronRight, KeyRound, RotateCcw, Radio, Focus } from 'lucide-react';
+import { StudentData, ClassroomConfig } from '../../types';
 import { getMissionsForYear } from '../../config/missions';
 import { AVAILABLE_BADGES } from '../../config/badges';
 import { TableRowSkeleton } from './Skeleton';
@@ -16,6 +16,8 @@ interface StudentListProps {
     onClassFilterChange: (cls: string) => void;
     onSelectStudent: (student: StudentData) => void;
     yearGroup?: number;
+    lastUpdated?: Date | null;
+    classroomConfig?: ClassroomConfig | null;
 }
 
 export const StudentList: React.FC<StudentListProps> = ({
@@ -26,7 +28,9 @@ export const StudentList: React.FC<StudentListProps> = ({
     classFilter,
     onClassFilterChange,
     onSelectStudent,
-    yearGroup = 1
+    yearGroup = 1,
+    lastUpdated,
+    classroomConfig
 }) => {
     const classGroups = useMemo(() => {
         const groups = new Set<string>();
@@ -74,7 +78,13 @@ export const StudentList: React.FC<StudentListProps> = ({
                         className="w-full pl-9 pr-4 py-2 bg-slate-50 border-none rounded-xl outline-none focus:ring-2 focus:ring-slate-200 transition-all text-sm font-medium"
                     />
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-3">
+                    {lastUpdated && (
+                        <div className="flex items-center gap-1.5 text-[10px] text-slate-400 font-medium">
+                            <Radio size={10} className="text-emerald-500 animate-pulse" />
+                            <span>Live — {lastUpdated.toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}</span>
+                        </div>
+                    )}
                     <Filter size={12} className="text-slate-400" />
                     <select
                         value={classFilter}
@@ -100,6 +110,7 @@ export const StudentList: React.FC<StudentListProps> = ({
                             <th className="px-4 py-3">XP</th>
                             <th className="px-4 py-3 hidden md:table-cell">Missies</th>
                             <th className="px-4 py-3 hidden lg:table-cell">Badges</th>
+                            {classroomConfig?.focusMode && <th className="px-4 py-3 hidden md:table-cell">Focus</th>}
                             <th className="px-4 py-3"></th>
                         </tr>
                     </thead>
@@ -194,6 +205,23 @@ export const StudentList: React.FC<StudentListProps> = ({
                                             )}
                                         </div>
                                     </td>
+                                    {classroomConfig?.focusMode && (
+                                        <td className="px-4 py-3 hidden md:table-cell">
+                                            {(() => {
+                                                const focusMissionId = classroomConfig.focusMissionId;
+                                                if (!focusMissionId) return <span className="text-slate-300">-</span>;
+                                                const isOnFocusMission = student.stats?.activeMission === focusMissionId;
+                                                const hasCompleted = (student.stats?.missionsCompleted || []).includes(focusMissionId);
+                                                if (hasCompleted) {
+                                                    return <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-700">Klaar</span>;
+                                                }
+                                                if (isOnFocusMission) {
+                                                    return <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[10px] font-bold bg-emerald-50 text-emerald-600"><Focus size={10} /> Actief</span>;
+                                                }
+                                                return <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[10px] font-bold bg-red-50 text-red-500">Niet actief</span>;
+                                            })()}
+                                        </td>
+                                    )}
                                     <td className="px-4 py-3 text-right">
                                         <div className="flex items-center justify-end gap-2">
                                             <button

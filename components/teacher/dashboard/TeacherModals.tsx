@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Users, GraduationCap, Target, Send, Sparkles, Trophy, AlertTriangle } from 'lucide-react';
 import { StudentData, ClassroomConfig } from '../../../types';
@@ -101,6 +101,26 @@ export const TeacherModals: React.FC<TeacherModalsProps> = (props) => {
         setSelectedStudent, awardXP, showLiveModal, setShowLiveModal, handleDeleteStudent
     } = props;
 
+    // Global Escape handler for all inline modals
+    const handleKeyDown = useCallback((e: KeyboardEvent) => {
+        if (e.key !== 'Escape') return;
+        if (showMessageModal) { setShowMessageModal(false); return; }
+        if (showBadgeModal) { setShowBadgeModal(false); return; }
+        if (showResetConfirm) { setShowResetConfirm(false); return; }
+        if (showHighlightModal) { setShowHighlightModal(false); return; }
+        if (showEventModal) { setShowEventModal(false); return; }
+        if (studentToDelete) { setStudentToDelete(null); return; }
+    }, [showMessageModal, showBadgeModal, showResetConfirm, showHighlightModal, showEventModal, studentToDelete,
+        setShowMessageModal, setShowBadgeModal, setShowResetConfirm, setShowHighlightModal, setShowEventModal, setStudentToDelete]);
+
+    useEffect(() => {
+        const anyOpen = showMessageModal || showBadgeModal || showResetConfirm || showHighlightModal || showEventModal || !!studentToDelete;
+        if (anyOpen) {
+            document.addEventListener('keydown', handleKeyDown);
+            return () => document.removeEventListener('keydown', handleKeyDown);
+        }
+    }, [handleKeyDown, showMessageModal, showBadgeModal, showResetConfirm, showHighlightModal, showEventModal, studentToDelete]);
+
     return (
         <>
             {/* STUDENT MODAL */}
@@ -137,7 +157,7 @@ export const TeacherModals: React.FC<TeacherModalsProps> = (props) => {
             {/* MESSAGE MODAL */}
             {showMessageModal && (
                 <div className="fixed inset-0 z-[60] bg-black/50 backdrop-blur-sm flex items-center justify-center p-4" onClick={() => setShowMessageModal(false)}>
-                    <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6" onClick={e => e.stopPropagation()}>
+                    <div role="dialog" aria-modal="true" aria-label="Bericht versturen" className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6" onClick={e => e.stopPropagation()}>
                         <h3 className="text-lg font-black text-slate-900 mb-4 flex items-center gap-2">
                             <Send className="text-indigo-500" size={20} />
                             Bericht Versturen
@@ -256,7 +276,7 @@ export const TeacherModals: React.FC<TeacherModalsProps> = (props) => {
             {/* BADGE MODAL */}
             {showBadgeModal && selectedStudent && (
                 <div className="fixed inset-0 z-[60] bg-black/50 backdrop-blur-sm flex items-center justify-center p-4" onClick={() => setShowBadgeModal(false)}>
-                    <div className="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6" onClick={e => e.stopPropagation()}>
+                    <div role="dialog" aria-modal="true" aria-label="Badge toekennen" className="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6" onClick={e => e.stopPropagation()}>
                         <h3 className="text-lg font-black text-slate-900 mb-4">Badge Toekennen</h3>
                         <div className="grid grid-cols-4 gap-2 mb-4">
                             {AVAILABLE_BADGES.map(badge => (
@@ -281,7 +301,7 @@ export const TeacherModals: React.FC<TeacherModalsProps> = (props) => {
             {/* RESET CONFIRM */}
             {showResetConfirm && selectedStudent && (
                 <div className="fixed inset-0 z-[60] bg-black/50 backdrop-blur-sm flex items-center justify-center p-4" onClick={() => setShowResetConfirm(false)}>
-                    <div className="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6" onClick={e => e.stopPropagation()}>
+                    <div role="alertdialog" aria-modal="true" aria-label="Bevestig reset" className="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6" onClick={e => e.stopPropagation()}>
                         <div className="text-center mb-4">
                             <div className="text-4xl mb-2">⚠️</div>
                             <h3 className="text-lg font-black text-slate-900">Weet je het zeker?</h3>
@@ -298,7 +318,7 @@ export const TeacherModals: React.FC<TeacherModalsProps> = (props) => {
             {/* HIGHLIGHT MODAL */}
             {showHighlightModal && selectedStudent && (
                 <div className="fixed inset-0 z-[60] bg-black/50 backdrop-blur-sm flex items-center justify-center p-4" onClick={() => setShowHighlightModal(false)}>
-                    <div className="bg-white rounded-[2rem] shadow-2xl max-w-md w-full p-8" onClick={e => e.stopPropagation()}>
+                    <div role="dialog" aria-modal="true" aria-label="Werk uitlichten" className="bg-white rounded-[2rem] shadow-2xl max-w-md w-full p-8" onClick={e => e.stopPropagation()}>
                         <div className="w-16 h-16 bg-amber-100 text-amber-600 rounded-2xl flex items-center justify-center mb-6">
                             <Trophy size={32} />
                         </div>
@@ -354,7 +374,7 @@ export const TeacherModals: React.FC<TeacherModalsProps> = (props) => {
             {/* EVENT MODAL */}
             {showEventModal && (
                 <div className="fixed inset-0 z-[60] bg-black/50 backdrop-blur-sm flex items-center justify-center p-4" onClick={() => setShowEventModal(false)}>
-                    <div className="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6" onClick={e => e.stopPropagation()}>
+                    <div role="dialog" aria-modal="true" aria-label="XP Boost Event" className="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6" onClick={e => e.stopPropagation()}>
                         <h3 className="text-lg font-black text-slate-900 mb-4 flex items-center gap-2">
                             <Sparkles className="text-purple-500" /> XP Boost Event
                         </h3>
@@ -408,7 +428,7 @@ export const TeacherModals: React.FC<TeacherModalsProps> = (props) => {
             {/* DELETE CONFIRMATION MODAL */}
             {studentToDelete && (
                 <div className="fixed inset-0 z-[70] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm" onClick={() => setStudentToDelete(null)}>
-                    <div className="bg-white rounded-2xl shadow-xl max-w-sm w-full p-6 animate-in fade-in zoom-in-95 duration-200" onClick={e => e.stopPropagation()}>
+                    <div role="alertdialog" aria-modal="true" aria-label="Bevestig verwijderen" className="bg-white rounded-2xl shadow-xl max-w-sm w-full p-6 animate-in fade-in zoom-in-95 duration-200 motion-reduce:animate-none" onClick={e => e.stopPropagation()}>
                         <div className="flex items-center justify-center w-12 h-12 mx-auto bg-red-100 rounded-full mb-4">
                             <AlertTriangle className="text-red-600" size={24} />
                         </div>

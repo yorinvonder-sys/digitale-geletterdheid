@@ -66,18 +66,28 @@ export const FeedbackPanel: React.FC<FeedbackPanelProps> = ({ schoolId }) => {
     };
 
     const handleExport = async () => {
-        const XLSX = await import('xlsx');
-        const data = filteredFeedback.map(f => ({
-            Datum: formatDate(f.created_at),
-            Klas: f.user_class || 'Onbekend',
-            Leerling: f.user_name || 'Anoniem',
-            Bericht: f.message
-        }));
+        const ExcelJS = await import('exceljs');
+        const wb = new ExcelJS.Workbook();
+        const ws = wb.addWorksheet('Feedback');
 
-        const wb = XLSX.utils.book_new();
-        const ws = XLSX.utils.json_to_sheet(data);
-        XLSX.utils.book_append_sheet(wb, ws, "Feedback");
-        XLSX.writeFile(wb, `Feedback_Export_${new Date().toISOString().split('T')[0]}.xlsx`);
+        ws.addRow(['Datum', 'Klas', 'Leerling', 'Bericht']);
+        filteredFeedback.forEach(f => {
+            ws.addRow([
+                formatDate(f.created_at),
+                f.user_class || 'Onbekend',
+                f.user_name || 'Anoniem',
+                f.message
+            ]);
+        });
+
+        const buffer = await wb.xlsx.writeBuffer();
+        const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Feedback_Export_${new Date().toISOString().split('T')[0]}.xlsx`;
+        a.click();
+        URL.revokeObjectURL(url);
     };
 
     const toggleSelect = (id: string) => {

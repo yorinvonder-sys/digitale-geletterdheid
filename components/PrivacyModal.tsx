@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { X, Shield, Download, Trash2, AlertTriangle, CheckCircle, Loader2, ExternalLink, Clock } from 'lucide-react';
 import { deleteUserAccount, exportUserData, requestProcessingRestriction } from '../services/accountService';
 import { logPrivacyViewed, logDataExported, logAccountDeleted } from '../services/auditService';
@@ -18,12 +18,34 @@ export const PrivacyModal: React.FC<PrivacyModalProps> = ({ isOpen, onClose, onA
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState<string | null>(null);
 
+    const modalRef = useRef<HTMLDivElement>(null);
+
     // Log that privacy settings were viewed (audit trail)
     useEffect(() => {
         if (isOpen) {
             logPrivacyViewed(schoolId);
         }
     }, [isOpen, schoolId]);
+
+    // Focus trap: move focus into modal when opened
+    useEffect(() => {
+        if (isOpen && modalRef.current) {
+            const firstFocusable = modalRef.current.querySelector<HTMLElement>('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+            firstFocusable?.focus();
+        }
+    }, [isOpen]);
+
+    // Escape to close
+    const handleKeyDown = useCallback((e: KeyboardEvent) => {
+        if (e.key === 'Escape') onClose();
+    }, [onClose]);
+
+    useEffect(() => {
+        if (isOpen) {
+            document.addEventListener('keydown', handleKeyDown);
+            return () => document.removeEventListener('keydown', handleKeyDown);
+        }
+    }, [isOpen, handleKeyDown]);
 
     if (!isOpen) return null;
 
@@ -80,16 +102,22 @@ export const PrivacyModal: React.FC<PrivacyModalProps> = ({ isOpen, onClose, onA
             <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={onClose} />
 
             {/* Modal */}
-            <div className="relative bg-white rounded-3xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto animate-in zoom-in-95 fade-in duration-300">
+            <div
+                ref={modalRef}
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="privacy-modal-title"
+                className="relative bg-white rounded-3xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto animate-in zoom-in-95 fade-in duration-300 motion-reduce:animate-none"
+            >
                 {/* Header */}
                 <div className="sticky top-0 bg-white border-b border-slate-100 px-6 py-4 flex items-center justify-between rounded-t-3xl">
                     <div className="flex items-center gap-3">
                         <div className="w-10 h-10 bg-indigo-100 rounded-xl flex items-center justify-center">
                             <Shield className="text-indigo-600" size={20} />
                         </div>
-                        <h2 className="text-xl font-black text-slate-900">Privacy & Gegevens</h2>
+                        <h2 id="privacy-modal-title" className="text-xl font-black text-slate-900">Privacy & Gegevens</h2>
                     </div>
-                    <button onClick={onClose} className="p-2 hover:bg-slate-100 rounded-xl transition-colors">
+                    <button onClick={onClose} className="p-2 hover:bg-slate-100 rounded-xl transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center" aria-label="Sluiten">
                         <X size={20} className="text-slate-400" />
                     </button>
                 </div>
@@ -163,7 +191,7 @@ export const PrivacyModal: React.FC<PrivacyModalProps> = ({ isOpen, onClose, onA
                                         <p className="text-xs text-slate-500">Ontvang een kopie van al je data (JSON)</p>
                                     </div>
                                 </div>
-                                {isExporting && <Loader2 size={20} className="animate-spin text-slate-400" />}
+                                {isExporting && <Loader2 size={20} className="animate-spin motion-reduce:animate-none text-slate-400" />}
                             </button>
 
                             {/* Delete Account */}
@@ -223,7 +251,7 @@ export const PrivacyModal: React.FC<PrivacyModalProps> = ({ isOpen, onClose, onA
                                     <p className="font-bold text-indigo-700">Vraag verwerkingsbeperking aan</p>
                                     <p className="text-xs text-indigo-500">Wij markeren je account voor tijdelijke beperking (AVG art. 18)</p>
                                 </div>
-                                {isRequestingRestriction && <Loader2 size={20} className="animate-spin text-indigo-500" />}
+                                {isRequestingRestriction && <Loader2 size={20} className="animate-spin motion-reduce:animate-none text-indigo-500" />}
                             </button>
                         </div>
                     </section>

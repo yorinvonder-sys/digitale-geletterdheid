@@ -5,19 +5,14 @@
  * Uses service role writes so anonymous page loads can still be measured.
  */
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import {
+  buildCorsHeaders,
+  rejectDisallowedBrowserRequest,
+} from '../_shared/cors.ts';
 
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
+const SUPABASE_ANON_KEY = Deno.env.get('SUPABASE_ANON_KEY')!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-
-const ALLOWED_ORIGINS = new Set([
-  'https://dgskills.app',
-  'https://www.dgskills.app',
-  'http://localhost:5173',
-  'http://localhost:3000',
-  'http://127.0.0.1:5173',
-  'http://127.0.0.1:3000',
-  'http://127.0.0.1:4173',
-]);
 
 const ALLOWED_EVENTS = new Set([
   'pilot_request_start',
@@ -38,17 +33,19 @@ const ALLOWED_EVENTS = new Set([
   'mission_complete',
 ]);
 
-const ALLOWED_ROLES = new Set(['anonymous', 'student', 'teacher', 'developer']);
 const ALLOWED_DEVICE_CLASSES = new Set(['mobile', 'tablet', 'desktop', 'unknown']);
 const ALLOWED_NAV_TYPES = new Set(['navigate', 'reload', 'back_forward', 'prerender', 'unknown']);
 const ALLOWED_METRIC_NAMES = new Set(['LCP', 'INP', 'CLS', 'FCP', 'TTFB']);
 const ALLOWED_METRIC_RATINGS = new Set(['good', 'needs-improvement', 'poor']);
+const MAX_METRIC_VALUE = 300_000;
+const RATE_LIMIT_WINDOW_MS = 60_000;
+const RATE_LIMIT_MAX_REQUESTS = 60;
+const rateLimitBuckets = new Map<string, number[]>();
 
 interface AnalyticsRequest {
   eventName?: string;
   pageKey?: string;
   ctaKey?: string;
-  role?: string;
   route?: string;
   metric_name?: string;
   metric_value?: number;
@@ -57,15 +54,6 @@ interface AnalyticsRequest {
   device_class?: string;
   nav_type?: string;
   build_id?: string;
-}
-
-function getCorsHeaders(req: Request) {
-  const origin = req.headers.get('Origin') || '';
-  return {
-    'Access-Control-Allow-Origin': ALLOWED_ORIGINS.has(origin) ? origin : 'https://dgskills.app',
-    'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-    'Access-Control-Allow-Methods': 'POST, OPTIONS',
-  };
 }
 
 function sanitizeToken(value: unknown, maxLen: number): string {
@@ -97,12 +85,68 @@ function normalizeMetricName(value: unknown): string | null {
 }
 
 function normalizeMetricValue(value: unknown): number | null {
-  if (typeof value !== 'number' || !Number.isFinite(value) || value < 0) return null;
+  if (typeof value !== 'number' || !Number.isFinite(value) || value < 0 || value > MAX_METRIC_VALUE) return null;
   return value;
 }
 
+function getClientIp(req: Request): string {
+  const raw = req.headers.get('cf-connecting-ip')
+    || req.headers.get('x-real-ip')
+    || req.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
+    || 'unknown';
+  return sanitizeToken(raw, 128) || 'unknown';
+}
+
+async function sha256(input: string): Promise<string> {
+  const data = new TextEncoder().encode(input);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  return Array.from(new Uint8Array(hashBuffer))
+    .map((byte) => byte.toString(16).padStart(2, '0'))
+    .join('');
+}
+
+function consumeRateLimit(key: string): boolean {
+  const now = Date.now();
+  const recent = (rateLimitBuckets.get(key) || []).filter((ts) => now - ts < RATE_LIMIT_WINDOW_MS);
+
+  if (recent.length === 0) {
+    rateLimitBuckets.delete(key);
+  }
+
+  if (recent.length >= RATE_LIMIT_MAX_REQUESTS) {
+    rateLimitBuckets.set(key, recent);
+    return false;
+  }
+
+  recent.push(now);
+  rateLimitBuckets.set(key, recent);
+  return true;
+}
+
+async function resolveRole(req: Request): Promise<'anonymous' | 'student' | 'teacher' | 'developer'> {
+  const authHeader = req.headers.get('Authorization');
+  if (!authHeader?.startsWith('Bearer ')) return 'anonymous';
+
+  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+    global: { headers: { Authorization: authHeader } },
+  });
+
+  const { data: { user }, error } = await supabase.auth.getUser();
+  if (error || !user) {
+    return 'anonymous';
+  }
+
+  const role = user.app_metadata?.role;
+  if (role === 'teacher') return 'teacher';
+  if (role === 'developer' || role === 'admin') return 'developer';
+  if (role === 'student') return 'student';
+  return 'anonymous';
+}
+
 Deno.serve(async (req: Request) => {
-  const corsHeaders = getCorsHeaders(req);
+  const corsHeaders = buildCorsHeaders(req, 'POST, OPTIONS');
+  const rejectedOrigin = rejectDisallowedBrowserRequest(req, corsHeaders);
+  if (rejectedOrigin) return rejectedOrigin;
 
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -116,6 +160,17 @@ Deno.serve(async (req: Request) => {
   }
 
   try {
+    const clientIp = getClientIp(req);
+    const userAgent = req.headers.get('User-Agent') || 'unknown';
+    const fingerprintHash = await sha256(`${clientIp}|${userAgent}`);
+
+    if (!consumeRateLimit(fingerprintHash)) {
+      return new Response(JSON.stringify({ error: 'Te veel analytics-verzoeken.' }), {
+        status: 429,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json', 'Retry-After': '60' },
+      });
+    }
+
     const body = (await req.json()) as AnalyticsRequest;
     const eventName = sanitizeToken(body.eventName, 64);
 
@@ -129,7 +184,7 @@ Deno.serve(async (req: Request) => {
     const route = sanitizeRoute(body.route ?? body.pageKey ?? '/');
     const pageKey = sanitizeToken(body.pageKey, 80) || 'unknown';
     const ctaKey = sanitizeToken(body.ctaKey, 50) || 'none';
-    const role = normalizeEnum(body.role, ALLOWED_ROLES, 'anonymous');
+    const role = await resolveRole(req);
     const deviceClass = normalizeEnum(body.device_class, ALLOWED_DEVICE_CLASSES, 'unknown');
     const navType = normalizeEnum(body.nav_type, ALLOWED_NAV_TYPES, 'unknown');
     const buildId = sanitizeToken(body.build_id, 64) || 'unknown';
@@ -161,6 +216,7 @@ Deno.serve(async (req: Request) => {
       metric_value: metricValue,
       metric_rating: metricRating || null,
       metric_id: metricId,
+      fingerprint_hash: fingerprintHash,
       ts: new Date().toISOString(),
     };
 
@@ -196,6 +252,7 @@ Deno.serve(async (req: Request) => {
           role,
           metadata: {
             metric_id: metricId,
+            fingerprint_hash: fingerprintHash,
           },
         });
 

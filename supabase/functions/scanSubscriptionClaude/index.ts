@@ -121,6 +121,14 @@ Deno.serve(async (req: Request) => {
         );
     }
 
+    const callerRole = user.app_metadata?.role;
+    if (callerRole !== "developer" && callerRole !== "admin") {
+        return new Response(
+            JSON.stringify({ error: "Geen toegang tot de boekhoudscanner." }),
+            { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+    }
+
     // 2. Check Anthropic API key
     if (!ANTHROPIC_API_KEY) {
         return new Response(

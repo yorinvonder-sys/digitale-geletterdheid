@@ -350,7 +350,7 @@ export const AssessmentEngine: React.FC<Props> = ({ tasks, config, onComplete, o
             </div>
 
             {/* Exit Button */}
-            <button onClick={onExit} className="absolute top-4 right-4 p-2 bg-slate-900/50 text-slate-400 rounded-lg hover:bg-slate-800 hover:text-white transition-colors z-50">
+            <button onClick={onExit} className="absolute top-4 right-4 p-2 bg-slate-900/50 text-slate-400 rounded-lg hover:bg-slate-800 hover:text-white transition-colors z-50 min-h-[44px] min-w-[44px] flex items-center justify-center" aria-label="Missie verlaten">
                 <XCircle size={20} />
             </button>
         </div>

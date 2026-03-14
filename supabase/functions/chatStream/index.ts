@@ -10,32 +10,21 @@
  * 3. Rate limiting via Supabase auth (429 propagation)
  * 4. Vertex AI (europe-west4) — enterprise ToS, no age restriction
  * 5. Service account auth (no API key in URL)
+ * 6. Server-side system instruction lookup via roleId (prevents prompt injection via systemInstruction)
  */
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { sanitizePrompt } from "../_shared/promptSanitizer.ts";
 import { getAccessToken, getVertexStreamUrl } from "../_shared/vertexAuth.ts";
+import { getSystemInstruction, isValidRoleId } from "../_shared/systemInstructions.ts";
+import { buildCorsHeaders, rejectDisallowedBrowserRequest } from "../_shared/cors.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
 
-const ALLOWED_ORIGINS = new Set([
-    "https://dgskills.app",
-    "https://www.dgskills.app",
-    "http://localhost:5173",
-    "http://localhost:3000",
-]);
-
-function getCorsHeaders(req: Request) {
-    const origin = req.headers.get("Origin") || "";
-    return {
-        "Access-Control-Allow-Origin": ALLOWED_ORIGINS.has(origin) ? origin : "https://dgskills.app",
-        "Access-Control-Allow-Methods": "POST, OPTIONS",
-        "Access-Control-Allow-Headers": "Content-Type, Authorization",
-    };
-}
-
 Deno.serve(async (req: Request) => {
-    const corsHeaders = getCorsHeaders(req);
+    const corsHeaders = buildCorsHeaders(req, "POST, OPTIONS", "Content-Type, Authorization");
+    const rejectedOrigin = rejectDisallowedBrowserRequest(req, corsHeaders);
+    if (rejectedOrigin) return rejectedOrigin;
 
     if (req.method === "OPTIONS") {
         return new Response(null, { headers: corsHeaders });
@@ -63,7 +52,8 @@ Deno.serve(async (req: Request) => {
     }
 
     // 2. Parse request
-    let body: { message?: string; systemInstruction?: string; history?: unknown[] };
+    // SECURITY: systemInstruction is server-side only — never trust client input
+    let body: { message?: string; roleId?: string; history?: unknown[] };
     try {
         body = await req.json();
     } catch {
@@ -79,6 +69,15 @@ Deno.serve(async (req: Request) => {
             { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
         );
     }
+
+    // SECURITY: Validate roleId and look up system instruction server-side
+    if (!body.roleId || typeof body.roleId !== "string" || !isValidRoleId(body.roleId)) {
+        return new Response(
+            JSON.stringify({ error: "Ongeldige of ontbrekende roleId." }),
+            { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+    }
+    const systemInstruction = getSystemInstruction(body.roleId)!;
 
     // 3. Server-side prompt injection check (defense-in-depth)
     const validation = sanitizePrompt(body.message);
@@ -123,9 +122,7 @@ Deno.serve(async (req: Request) => {
             body: JSON.stringify({
                 contents,
                 safetySettings,
-                ...(body.systemInstruction
-                    ? { systemInstruction: { parts: [{ text: body.systemInstruction }] } }
-                    : {}),
+                systemInstruction: { parts: [{ text: systemInstruction }] },
             }),
         });
     } catch (err: unknown) {

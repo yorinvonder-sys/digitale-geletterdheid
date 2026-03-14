@@ -180,7 +180,7 @@ export const InspectorTask: React.FC<Props> = ({ task, onComplete }) => {
                     {clicks.map((c, i) => (
                         <div
                             key={i}
-                            className="absolute w-6 h-6 -ml-3 -mt-3 border-2 border-amber-500 rounded-full animate-ping pointer-events-none"
+                            className="absolute w-6 h-6 -ml-3 -mt-3 border-2 border-amber-500 rounded-full animate-ping motion-reduce:animate-none pointer-events-none"
                             style={{ left: `${c.x}%`, top: `${c.y}%` }}
                         />
                     ))}

@@ -221,30 +221,11 @@ export const endEvent = async (eventId: string): Promise<void> => {
 // --- Student management ---
 export const resetStudentProgress = async (userId: string): Promise<boolean> => {
     try {
-        // Get current stats first
-        const { data: user, error: fetchError } = await supabase
-            .from('users')
-            .select('stats')
-            .eq('id', userId)
-            .single();
-
-        if (fetchError) throw fetchError;
-
-        const currentStats = (user?.stats as any) || {};
-        const { error } = await supabase
-            .from('users')
-            .update({
-                stats: {
-                    ...currentStats,
-                    xp: 0,
-                    level: 1,
-                    missionsCompleted: [],
-                },
-            })
-            .eq('id', userId);
-
+        const { data, error } = await supabase.rpc('reset_student_progress', {
+            p_student_id: userId,
+        });
         if (error) throw error;
-        return true;
+        return data === true;
     } catch (error) {
         console.error('Error resetting student:', error);
         return false;
@@ -253,12 +234,11 @@ export const resetStudentProgress = async (userId: string): Promise<boolean> => 
 
 export const deleteStudent = async (userId: string): Promise<boolean> => {
     try {
-        const { error } = await supabase
-            .from('users')
-            .delete()
-            .eq('id', userId);
+        const { data, error } = await supabase.rpc('delete_student', {
+            p_student_id: userId,
+        });
         if (error) throw error;
-        return true;
+        return data === true;
     } catch (error) {
         console.error('Error deleting student:', error);
         return false;
@@ -564,9 +544,6 @@ export const getAiBeleidStats = async (filterClass?: string, schoolId?: string):
 
 export const resetStudentPassword = async (studentUid: string, customPassword?: string): Promise<boolean> => {
     try {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (!session) throw new Error('Not authenticated');
-
         const { callEdgeFunction } = await import('./supabase');
         await callEdgeFunction('resetStudentPassword', { studentUid, customPassword });
         return true;
@@ -687,6 +664,47 @@ export const updateStudentGroup = async (groupId: string, updates: Partial<Stude
     } catch (error) {
         console.error('Error updating student group:', error);
         return false;
+    }
+};
+
+// --- Mission scores for teacher dashboard ---
+export interface StudentMissionScore {
+    mission_id: string;
+    status: string;
+    score: number | null;
+    updated_at: string;
+}
+
+export const getStudentMissionScores = async (userId: string): Promise<StudentMissionScore[]> => {
+    try {
+        const { data, error } = await supabase
+            .from('mission_progress')
+            .select('mission_id, status, score, updated_at')
+            .eq('user_id', userId)
+            .order('updated_at', { ascending: false });
+
+        if (error) throw error;
+        return (data || []) as unknown as StudentMissionScore[];
+    } catch (error) {
+        console.error('Error getting student mission scores:', error);
+        return [];
+    }
+};
+
+// --- Classroom configs for focus mode monitoring ---
+export const getClassroomConfigs = async (classIds: string[]): Promise<ClassroomConfig[]> => {
+    if (classIds.length === 0) return [];
+    try {
+        const { data, error } = await supabase
+            .from('classroom_configs')
+            .select('*')
+            .in('id', classIds);
+
+        if (error) throw error;
+        return (data || []) as unknown as ClassroomConfig[];
+    } catch (error) {
+        console.error('Error getting classroom configs:', error);
+        return [];
     }
 };
 
