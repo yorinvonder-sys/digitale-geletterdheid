@@ -780,7 +780,7 @@ export const TeacherPresentation = ({ activeWeekId, onClose }: { activeWeekId: s
                     </div>
                     <div className="w-16 h-16 bg-white rounded-xl p-1 shadow-lg group-hover:shadow-white/20 transition-all">
                         <img
-                            src="/assets/qr-dgskills.png"
+                            src="/assets/qr-dgskills.webp"
                             alt="QR Code naar dgskills.app"
                             className="w-full h-full"
                         />
@@ -834,7 +834,7 @@ export const TeacherPresentation = ({ activeWeekId, onClose }: { activeWeekId: s
                                 <div className="absolute -inset-4 bg-blue-500/10 rounded-[3rem] blur-2xl group-hover:bg-blue-500/20 transition-all duration-500" />
                                 <div className="relative bg-white p-4 rounded-[2rem] shadow-inner">
                                     <img
-                                        src="/assets/qr-dgskills.png"
+                                        src="/assets/qr-dgskills.webp"
                                         alt="Large QR Code"
                                         className="w-full aspect-square max-w-[280px] rounded-2xl"
                                     />

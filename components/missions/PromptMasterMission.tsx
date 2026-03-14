@@ -60,7 +60,7 @@ const CHALLENGES: Challenge[] = [
         scenario: 'Je wilt een afbeelding voor je dierenpresentatie. Je vraagt de AI om een hond te tekenen.',
         badOutputExample: 'De AI tekent een bruine straathond in een witte ruimte. Saai, geen achtergrond, verkeerde kleur.',
         goodOutputExample: 'De AI tekent een schattige golden retriever puppy die vrolijk rent door een groen park met de zon op de achtergrond.',
-        exampleImage: '/assets/agents/prompt_master.png',
+        exampleImage: '/assets/agents/prompt_master.webp',
         feedbackCriteria: [
             { keyword: 'golden|retriever|labrador|puppy|pup|puppie|poedel|teckel|husky|beagle|bulldog|herder|terrier|chihuahua|dalmatier|corgi|mopshond|boxer|rottweiler|pitbull|dobermann|schnauzer|shiba|akita|border|collie|pomeranian|maltees|jack russell|sint bernard|cocker|spaniel|ras|soort|type', label: 'Specifiek ras', hint: 'Welk soort hond wil je precies?' },
             { keyword: 'park|tuin|bos|strand|buiten|gras|veld|weide|natuur|buitenshuis|landschap|berg|buitenlucht|grasveld|plein|straat|thuis|huis|kamer|binnen|rivier|meer|water|zon|zonnig|zomer|lente|herfst|winter|sneeuw|regen|achtergrond|omgeving|setting|locatie|plek|waar|ergens', label: 'Locatie', hint: 'Waar staat de hond?' },

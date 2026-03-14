@@ -3163,7 +3163,7 @@ TIPS VOOR BEGELEIDING:
         description: 'Bouw je eigen chatbot en leer hoe AI gesprekken voert.',
         problemScenario: 'Bedrijven gebruiken chatbots om klanten te helpen. Maar hoe weet een chatbot wat hij moet antwoorden? Leer het door er zelf één te bouwen!',
         missionObjective: 'Maak regels voor een chatbot en test of hij correct antwoordt.',
-        briefingImage: '/assets/agents/chatbot_trainer.png',
+        briefingImage: '/assets/agents/chatbot_trainer.webp',
         difficulty: 'Medium',
         examplePrompt: 'Ik wil een chatbot maken voor een pizzeria.',
         visualPreview: (
@@ -3243,7 +3243,7 @@ REFLECTIE VRAGEN:
         description: 'Teken en laat de AI raden wat het is!',
         problemScenario: 'Hoe leert een computer om plaatjes te herkennen? Door HEEL VEEL voorbeelden te zien! Test hoe goed de AI jouw tekeningen herkent.',
         missionObjective: 'Teken 3 objecten en kijk of de AI het kan raden.',
-        briefingImage: '/assets/agents/ai_tekengame.png',
+        briefingImage: '/assets/agents/ai_tekengame.webp',
         difficulty: 'Easy',
         examplePrompt: 'Hoe herkent AI patronen in tekeningen?',
         visualPreview: (

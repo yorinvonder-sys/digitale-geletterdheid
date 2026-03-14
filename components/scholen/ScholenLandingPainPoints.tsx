@@ -23,7 +23,7 @@ const BG = {
 
 const painPoints = [
     {
-        illustration: '/illustrations/pain-point-low-scores.png',
+        illustration: '/illustrations/pain-point-low-scores.webp',
         alt: 'Docent houdt rapport vast met cijfer 4,7 omcirkeld in rood, met dalende grafiek en een rood kruisteken',
         bgColor: BG.rose,
         stat: '4,7',
@@ -33,7 +33,7 @@ const painPoints = [
         source: 'Monitor Digitale Geletterdheid 2023, DUO/ECP; ICILS 2023',
     },
     {
-        illustration: '/illustrations/pain-point-deadline.png',
+        illustration: '/illustrations/pain-point-deadline.webp',
         alt: 'Wandkalender met 2027, wekker op bijna middernacht, en een map Digitale Geletterdheid op een rommelig bureau',
         bgColor: BG.amber,
         stat: '2027',
@@ -43,7 +43,7 @@ const painPoints = [
         source: 'ECP Monitor Digitale Geletterdheid VO; Kamerbrief OCW 2025',
     },
     {
-        illustration: '/illustrations/pain-point-teacher-shortage.png',
+        illustration: '/illustrations/pain-point-teacher-shortage.webp',
         alt: 'Leeg docentenbureau met VACATURE op het whiteboard, verwarde leerlingen kijken om zich heen',
         bgColor: BG.slate,
         stat: '3.800',
@@ -53,7 +53,7 @@ const painPoints = [
         source: 'Trendrapportage Arbeidsmarkt Leraren 2024, OCW',
     },
     {
-        illustration: '/illustrations/pain-point-no-platform.png',
+        illustration: '/illustrations/pain-point-no-platform.webp',
         alt: 'Verveelde leerling leest saai AI-theorieboek, met een gedachtewolk van een interactief scherm met hands-on activiteiten',
         bgColor: BG.mint,
         stat: '1e',

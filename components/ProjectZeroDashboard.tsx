@@ -863,7 +863,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                         aria-label="Ga naar de startpagina"
                         className="flex items-center gap-3 hover:opacity-80 transition-opacity text-left bg-transparent border-none p-0 cursor-pointer focus:outline-none"
                     >
-                        <img src="/mascot/pip-logo.png" alt="DGSkills" className="w-9 h-9 object-contain" width={36} height={36} decoding="async" />
+                        <img src="/mascot/pip-logo.webp" alt="DGSkills" className="w-9 h-9 object-contain" width={36} height={36} decoding="async" />
                         <span className="text-[15px] font-semibold tracking-tight text-slate-900">DGSkills</span>
                     </button>
 

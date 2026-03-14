@@ -45,7 +45,7 @@ export const AiGeletterdheid: React.FC = () => {
             <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-100">
                 <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
                     <a href="/" className="flex items-center gap-2.5">
-                        <img src="/mascot/pip-logo.png" alt="DGSkills logo" className="w-8 h-8 object-contain" />
+                        <img src="/mascot/pip-logo.webp" alt="DGSkills logo" className="w-8 h-8 object-contain" />
                         <span className="font-bold text-slate-900">DGSkills</span>
                     </a>
                     <a href="/login" className="text-sm font-medium text-slate-600">Inloggen</a>

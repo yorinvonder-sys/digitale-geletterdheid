@@ -41,7 +41,7 @@ const domains: SloDomain[] = [
         accentLight: 'bg-[#F0EEE8]',
         color: 'text-[#D97757]',
         icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="2"/><circle cx="18" cy="6" r="2"/><circle cx="12" cy="18" r="2"/><line x1="6" y1="8" x2="12" y2="16"/><line x1="18" y1="8" x2="12" y2="16"/><line x1="8" y1="6" x2="16" y2="6"/><path d="M12 12l-2-1.5"/><path d="M12 12l2-1.5"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg>,
-        illustration: '/illustrations/slo-domain-systems.png',
+        illustration: '/illustrations/slo-domain-systems.webp',
         kerndoelen: [
             { id: '21A', title: 'De leerling zet digitale systemen functioneel in' },
             { id: '21B', title: 'De leerling navigeert doelgericht in het digitale media- en informatielandschap' },
@@ -57,7 +57,7 @@ const domains: SloDomain[] = [
         accentLight: 'bg-emerald-100',
         color: 'text-emerald-600',
         icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="8" cy="12" r="3"/><circle cx="16" cy="12" r="3"/><path d="M11 12h2"/><path d="M5 12H2"/><path d="M22 12h-3"/><path d="M8 9V4l-2 2"/><path d="M16 15v5l2-2"/></svg>,
-        illustration: '/illustrations/slo-domain-programming.png',
+        illustration: '/illustrations/slo-domain-programming.webp',
         kerndoelen: [
             { id: '22A', title: 'De leerling gebruikt passende werkwijzen bij het creëren van digitale producten' },
             { id: '22B', title: 'De leerling programmeert met behulp van computationele denkstrategieën' },
@@ -71,7 +71,7 @@ const domains: SloDomain[] = [
         accentLight: 'bg-amber-100',
         color: 'text-amber-600',
         icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><circle cx="12" cy="11" r="2.5"/><path d="M9.5 11c0-1.5 1-3 2.5-3s2.5 1.5 2.5 3" /><line x1="12" y1="13.5" x2="12" y2="15"/></svg>,
-        illustration: '/illustrations/slo-domain-safety.png',
+        illustration: '/illustrations/slo-domain-safety.webp',
         kerndoelen: [
             { id: '23A', title: 'De leerling gaat veilig om met digitale systemen, data en privacy' },
             { id: '23B', title: 'De leerling maakt weloverwogen keuzes bij het gebruik van digitale technologie' },

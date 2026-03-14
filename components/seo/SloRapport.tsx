@@ -29,7 +29,7 @@ export const SloRapport: React.FC = () => {
                         <h1 className="text-2xl font-bold text-slate-900 mb-2">SLO-Dekkingsrapport (Voorbeeld)</h1>
                         <p className="text-slate-500 text-sm">Gegenereerd voor: Voorbeeldschool VO — Datum: 14 feb 2026</p>
                     </div>
-                    <img src="/mascot/pip-logo.png" alt="DGSkills" className="w-10 h-10 object-contain opacity-20" />
+                    <img src="/mascot/pip-logo.webp" alt="DGSkills" className="w-10 h-10 object-contain opacity-20" />
                 </div>
 
                 <div className="grid md:grid-cols-4 gap-4 mb-12">

@@ -388,7 +388,7 @@ export const ScholenLanding: React.FC = () => {
                 }`} style={scrolled ? { backgroundColor: `${C.bg}ee` } : undefined}>
                 <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
                     <a href="/" className="flex items-center gap-2.5">
-                        <img src="/mascot/pip-logo.png" alt="DGSkills" className="w-9 h-9 object-contain" width={36} height={36} decoding="async" />
+                        <img src="/mascot/pip-logo.webp" alt="DGSkills" className="w-9 h-9 object-contain" width={36} height={36} decoding="async" />
                         <span className="font-semibold text-[15px] tracking-tight" style={{ color: C.text }}>DGSkills</span>
                     </a>
 
@@ -544,7 +544,7 @@ export const ScholenLanding: React.FC = () => {
                                             <span className="ml-3 text-[10px] font-medium" style={{ color: C.textLight }}>dgskills.app</span>
                                         </div>
                                         <img
-                                            src="/screenshots/student-mission-overview-1200.jpg"
+                                            src="/screenshots/student-mission-overview-1200.webp"
                                             alt="DGSkills missie overzicht"
                                             className="w-full"
                                             width={1200}
@@ -586,7 +586,7 @@ export const ScholenLanding: React.FC = () => {
                                 <div className="absolute -left-2 top-8 z-10">
                                     <div className="bg-white rounded-xl p-2.5" style={{ boxShadow: `0 4px 12px ${C.text}08`, border: `1px solid ${C.border}` }}>
                                         <img
-                                            src="/screenshots/avatar-customization-192.jpg"
+                                            src="/screenshots/avatar-customization-192.webp"
                                             alt=""
                                             className="w-16 h-16 rounded-lg object-cover"
                                             width={192}
@@ -741,21 +741,21 @@ export const ScholenLanding: React.FC = () => {
                                             step: '01',
                                             title: 'Pilot aanvragen',
                                             description: 'Vul het formulier in. Wij nemen binnen 2 werkdagen contact op voor een korte kennismaking.',
-                                            illustration: '/illustrations/how-it-works-pilot.png',
+                                            illustration: '/illustrations/how-it-works-pilot.webp',
                                             bgColor: '#F0D5D0',
                                         },
                                         {
                                             step: '02',
                                             title: 'Onboarding (30 min)',
                                             description: 'Een korte sessie met docenten: account aanmaken, dashboard uitleg en eerste missies klaarzetten.',
-                                            illustration: '/illustrations/how-it-works-onboarding.png',
+                                            illustration: '/illustrations/how-it-works-onboarding.webp',
                                             bgColor: '#EDE0C8',
                                         },
                                         {
                                             step: '03',
                                             title: 'Leerlingen starten',
                                             description: 'Leerlingen loggen in en beginnen direct met hun eerste AI-missie. Jij volgt de voortgang live.',
-                                            illustration: '/illustrations/how-it-works-students.png',
+                                            illustration: '/illustrations/how-it-works-students.webp',
                                             bgColor: '#D0E0D4',
                                         },
                                     ].map((item, i) => (

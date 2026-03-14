@@ -885,7 +885,7 @@ const levels: LevelConfig[] = [
             {
                 id: 'romans-img',
                 type: 'image',
-                src: '/assets/word-simulator/roman-casus.png',
+                src: '/assets/word-simulator/roman-casus.webp',
                 x: 60,
                 y: 120,
                 width: 250,

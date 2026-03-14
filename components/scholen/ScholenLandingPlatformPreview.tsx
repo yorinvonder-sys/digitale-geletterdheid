@@ -13,7 +13,7 @@ interface JourneyStep {
 
 const journeySteps: JourneyStep[] = [
     {
-        src: '/screenshots/student-mission-overview-1200.jpg',
+        src: '/screenshots/student-mission-overview-1200.webp',
         alt: 'Missie Overzicht — kies een missie en begin je reis',
         title: 'Kies je missie',
         subtitle: 'START JE REIS',
@@ -26,7 +26,7 @@ const journeySteps: JourneyStep[] = [
         ),
     },
     {
-        src: '/screenshots/avatar-customization-1200.jpg',
+        src: '/screenshots/avatar-customization-1200.webp',
         alt: 'Avatar aanpassen — maak je eigen 3D-karakter',
         title: 'Maak je avatar',
         subtitle: 'JOUW DIGITALE IK',
@@ -41,7 +41,7 @@ const journeySteps: JourneyStep[] = [
         objectPosition: 'center',
     },
     {
-        src: '/screenshots/prompt-master.png',
+        src: '/screenshots/prompt-master.webp',
         alt: 'Prompt Master — leer de juiste prompts schrijven voor AI',
         title: 'Speel AI games',
         subtitle: 'LEER DOOR TE SPELEN',
@@ -56,7 +56,7 @@ const journeySteps: JourneyStep[] = [
         objectPosition: 'center',
     },
     {
-        src: '/screenshots/student-progress-xp-1200.jpg',
+        src: '/screenshots/student-progress-xp-1200.webp',
         alt: 'Level up — verdien XP en stijg in level',
         title: 'Level up!',
         subtitle: 'VERDIEN BELONINGEN',

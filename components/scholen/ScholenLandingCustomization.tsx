@@ -53,7 +53,7 @@ const IconCheck = () => (
 const customizationPillars = [
     {
         icon: <IconToggleStar />,
-        illustration: '/illustrations/custom-toggle.png',
+        illustration: '/illustrations/custom-toggle.webp',
         illustrationAlt: 'Hand die toggle-schakelaars bedient op een dashboard met missie-iconen',
         title: 'Missies op maat',
         description: 'Kies zelf welke missies je aanbiedt. Zet specifieke modules aan of uit op basis van jullie jaarplanning en schoolvisie.',
@@ -61,7 +61,7 @@ const customizationPillars = [
     },
     {
         icon: <IconSteps />,
-        illustration: '/illustrations/custom-levels.png',
+        illustration: '/illustrations/custom-levels.webp',
         illustrationAlt: 'Drie trappen met MAVO, HAVO en VWO labels, elk met een blije leerling bovenaan',
         title: 'Niveaudifferentiatie',
         description: 'Stel per klas het niveau in: MAVO, HAVO of VWO. DGSkills past de moeilijkheidsgraad automatisch aan per leerling.',
@@ -69,7 +69,7 @@ const customizationPillars = [
     },
     {
         icon: <IconBinoculars />,
-        illustration: '/illustrations/custom-focus.png',
+        illustration: '/illustrations/custom-focus.webp',
         illustrationAlt: 'Docent plaatst leermissie-blokken in een weekrooster op een smartboard',
         title: 'Focus Mode voor docenten',
         description: 'Bepaal precies wanneer leerlingen aan welke missie werken. Ideaal voor gestructureerde lessen of open keuzemomenten.',
@@ -77,7 +77,7 @@ const customizationPillars = [
     },
     {
         icon: <IconBuildingBlocks />,
-        illustration: '/illustrations/custom-modular.png',
+        illustration: '/illustrations/custom-modular.webp',
         illustrationAlt: 'Handen stapelen bouwblokken met AI, data en code iconen, plantje groeit uit de top',
         title: 'Modulaire opbouw',
         description: 'Start met de domeinen die bij jullie school prioriteit hebben. Breid later uit wanneer jullie er klaar voor zijn.',
@@ -85,7 +85,7 @@ const customizationPillars = [
     },
     {
         icon: <IconHandshake />,
-        illustration: '/illustrations/custom-contact.png',
+        illustration: '/illustrations/custom-contact.webp',
         illustrationAlt: 'Docent en platformmaker in gesprek aan een cafétafel met koffie en een roodborstje',
         title: 'Persoonlijk contact',
         description: 'Geen standaard helpdesk. Wij denken actief mee over hoe DGSkills het beste past bij jouw school, curriculum en planning.',

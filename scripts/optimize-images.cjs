@@ -12,16 +12,38 @@ const path = require('path');
 const ASSETS_DIRS = [
     './public/assets/agents',
     './public/assets/previews',
+    './public/assets/word-simulator',
+    './public/illustrations',
+    './public/screenshots',
+    './public/mascot',
     './public'
 ];
 
-const QUALITY = 80; // WebP quality (0-100)
+const QUALITY = 85; // WebP quality (0-100), 85 for good quality/size balance
+
+const EXCLUDE_FILES = new Set([
+    'favicon-16.png',
+    'favicon-32.png',
+    'icon-512x512.png',
+    'apple-touch-icon.png',
+    'og-image.png',
+]);
 
 async function optimizeImage(inputPath) {
     const ext = path.extname(inputPath).toLowerCase();
     if (!['.png', '.jpg', '.jpeg'].includes(ext)) return null;
 
+    const basename = path.basename(inputPath);
+    if (EXCLUDE_FILES.has(basename)) return null;
+
     const outputPath = inputPath.replace(/\.(png|jpg|jpeg)$/i, '.webp');
+
+    // Skip if webp already exists and is newer than source
+    if (fs.existsSync(outputPath)) {
+        const srcMtime = fs.statSync(inputPath).mtimeMs;
+        const webpMtime = fs.statSync(outputPath).mtimeMs;
+        if (webpMtime > srcMtime) return null;
+    }
 
     try {
         const inputStats = fs.statSync(inputPath);
