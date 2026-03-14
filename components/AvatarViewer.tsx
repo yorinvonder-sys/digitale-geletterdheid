@@ -2000,6 +2000,16 @@ const AvatarModel = memo<{
                         gender={config.gender}
                         headMount={false}
                     />
+
+                    {/* Companion pet (separate from accessory) */}
+                    {config.pet && config.pet !== 'none' && config.accessory !== config.pet && (
+                        <AccessoryLayer
+                            accessory={config.pet}
+                            color={config.accessoryColor ?? config.shirtColor}
+                            gender={config.gender}
+                            headMount={false}
+                        />
+                    )}
                 </group>
             )}
         </group>
@@ -2036,8 +2046,9 @@ export const AvatarViewer: React.FC<AvatarViewerProps> = ({
     );
 
     return (
-        <div className={`w-full h-full relative ${variant === 'head' ? '' : 'min-h-[300px]'}`} style={variant === 'full' ? { backgroundColor: '#FAF9F0' } : undefined}>
+        <div className={`w-full h-full relative ${variant === 'head' ? '' : 'min-h-[300px]'}`} style={{ backgroundColor: variant === 'full' ? '#FAF9F0' : 'transparent' }}>
             <Canvas
+                style={{ background: variant === 'full' ? '#FAF9F0' : 'transparent' }}
                 className={variant === 'full' ? 'bg-[#FAF9F0]' : 'bg-transparent'}
                 shadows={{ type: THREE.PCFSoftShadowMap }}
                 gl={{

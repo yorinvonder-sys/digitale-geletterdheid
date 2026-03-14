@@ -111,17 +111,17 @@ const ACCESSORIES = [
     { value: 'cape', label: 'Cape', locked: true },
     { value: 'wings', label: 'Vleugels', locked: true },
     { value: 'crown', label: 'Kroon', locked: true },
-    { value: 'pet_cat', label: 'Kat', locked: true },
-    { value: 'pet_dog', label: 'Hond', locked: true },
     { value: 'sword', label: 'Zwaard', locked: true },
 ];
 
-const POSES = [
-    { value: 'idle', label: 'Relaxed', emoji: '🧍' },
-    { value: 'wave', label: 'Zwaaien', emoji: '👋' },
-    { value: 'peace', label: 'Peace', emoji: '✌️' },
-    { value: 'dab', label: 'Dab', emoji: '💃' },
-] as const;
+const PETS = [
+    { value: 'none', label: 'Geen', emoji: '🚫', locked: false },
+    { value: 'pet_dog', label: 'Hond', emoji: '🐕', locked: false },
+    { value: 'pet_cat', label: 'Kat', emoji: '🐱', locked: false },
+    { value: 'pet_robo', label: 'Robot', emoji: '🤖', locked: false },
+];
+
+// Poses removed — animations were inaccurate
 
 export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, initialConfig }) => {
     const [currentStep, setCurrentStep] = useState(0);
@@ -465,21 +465,21 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
                                         </div>
                                     </div>
 
-                                    {/* Pose */}
+                                    {/* Huisdier */}
                                     <div>
-                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: '#6B6B66' }}>Pose</p>
+                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: '#6B6B66' }}>Huisdier</p>
                                         <div className="grid grid-cols-4 gap-2">
-                                            {POSES.map(pose => (
+                                            {PETS.map(pet => (
                                                 <button
-                                                    key={pose.value}
-                                                    onClick={() => setConfig({ ...config, pose: pose.value })}
-                                                    className={`p-3 rounded-xl border-2 transition-all flex flex-col items-center gap-1 active:scale-95 ${config.pose === pose.value
+                                                    key={pet.value}
+                                                    onClick={() => setConfig({ ...config, pet: pet.value as any })}
+                                                    className={`p-3 rounded-xl border-2 transition-all flex flex-col items-center gap-1 active:scale-95 ${config.pet === pet.value || (!config.pet && pet.value === 'pet_dog')
                                                         ? 'border-[#D97757] bg-[#D97757]/15 text-[#3D3D38]'
                                                         : 'border-[#D5D3CC] text-[#6B6B66] hover:border-[#D97757]/40'
                                                         }`}
                                                 >
-                                                    <span className="text-xl">{pose.emoji}</span>
-                                                    <span className="font-bold text-[11px]">{pose.label}</span>
+                                                    <span className="text-xl">{pet.emoji}</span>
+                                                    <span className="font-bold text-[11px]">{pet.label}</span>
                                                 </button>
                                             ))}
                                         </div>

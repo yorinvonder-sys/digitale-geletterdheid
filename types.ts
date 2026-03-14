@@ -146,6 +146,8 @@ export interface AvatarConfig {
   expression?: 'neutral' | 'happy' | 'cool' | 'surprised';
   // Body pose
   pose?: 'idle' | 'wave' | 'dab' | 'peace';
+  // Companion pet (separate from accessory)
+  pet?: 'none' | 'pet_dog' | 'pet_cat' | 'pet_robo';
   gender: 'male' | 'female';
 }
 
@@ -155,6 +157,7 @@ export const DEFAULT_AVATAR_CONFIG: AvatarConfig = {
   shirtColor: '#D97757',
   pantsColor: '#1e293b',
   accessory: 'none',
+  pet: 'pet_dog',
   hairStyle: 'short',
   shirtStyle: 't-shirt',
   hairColor: '#5D4037',
