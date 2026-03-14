@@ -425,7 +425,12 @@ export async function uploadAndScanReceipt(
     // Converteer naar base64
     const arrayBuffer = await file.arrayBuffer();
     const uint8Array  = new Uint8Array(arrayBuffer);
-    const base64      = btoa(String.fromCharCode(...uint8Array));
+    let binary = '';
+    const chunkSize = 8192;
+    for (let i = 0; i < uint8Array.length; i += chunkSize) {
+        binary += String.fromCharCode(...uint8Array.subarray(i, i + chunkSize));
+    }
+    const base64 = btoa(binary);
     const mimeType    = file.type || 'image/jpeg';
 
     // Stuur naar edge function
@@ -455,7 +460,12 @@ export async function scanSubscriptionScreenshot(
 
     const arrayBuffer = await file.arrayBuffer();
     const uint8Array  = new Uint8Array(arrayBuffer);
-    const base64      = btoa(String.fromCharCode(...uint8Array));
+    let binary = '';
+    const chunkSize = 8192;
+    for (let i = 0; i < uint8Array.length; i += chunkSize) {
+        binary += String.fromCharCode(...uint8Array.subarray(i, i + chunkSize));
+    }
+    const base64 = btoa(binary);
     const mimeType    = file.type || 'image/jpeg';
 
     const response = await fetch(`${EDGE_FUNCTION_URL}/scanReceipt`, {
@@ -488,7 +498,12 @@ export async function scanSubscriptionWithClaude(
 
     const arrayBuffer = await file.arrayBuffer();
     const uint8Array  = new Uint8Array(arrayBuffer);
-    const base64      = btoa(String.fromCharCode(...uint8Array));
+    let binary = '';
+    const chunkSize = 8192;
+    for (let i = 0; i < uint8Array.length; i += chunkSize) {
+        binary += String.fromCharCode(...uint8Array.subarray(i, i + chunkSize));
+    }
+    const base64 = btoa(binary);
     const mimeType    = file.type || 'image/jpeg';
 
     const response = await fetch(`${EDGE_FUNCTION_URL}/scanSubscriptionClaude`, {
