@@ -6,6 +6,9 @@ on:
     branches:
       - main
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   performance:
     runs-on: ubuntu-latest
@@ -18,11 +21,14 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Install Lighthouse
+        run: npm install -g lighthouse
 
       - name: Build
         run: npm run build
@@ -34,4 +40,5 @@ jobs:
           LH_ROOT_LCP_MAX: 4000
           LH_LOGIN_LCP_MAX: 4000
           LH_SCHOLEN_LCP_MAX: 4000
+          CHROME_PATH: /usr/bin/google-chrome-stable
         run: npm run performance:ci
