@@ -61,7 +61,7 @@ export const CURRICULUM: CurriculumConfig = {
                 1: {
                     title: 'Digitale Basisvaardigheden',
                     subtitle: 'Leren werken met digitale tools',
-                    sloFocus: ['21A', '22A'],
+                    sloFocus: ['21A', '22A', '23A'],
                     sloFocusVso: ['18A', '19A', '20A'],
                     missions: [
                         'magister-master',
@@ -80,7 +80,7 @@ export const CURRICULUM: CurriculumConfig = {
                 2: {
                     title: 'AI & Creatie',
                     subtitle: 'Ontdek kunstmatige intelligentie',
-                    sloFocus: ['21B', '21D', '22A', '22B'],
+                    sloFocus: ['21D', '22A', '22B', '23B', '23C'],
                     sloFocusVso: ['18C', '19A', '20B'],
                     missions: [
                         'prompt-master',
@@ -109,7 +109,6 @@ export const CURRICULUM: CurriculumConfig = {
                         'social-safeguard',
                         'cookie-crusher',
                         'data-handelaar',
-                        'privacy-profiel-spiegel',
                         'filter-bubble-breaker',
                         'datalekken-rampenplan',
                         'data-voor-data',
