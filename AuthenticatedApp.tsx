@@ -547,7 +547,9 @@ export function AuthenticatedApp() {
         const missionToRoleMap: Record<string, RoleId> = {};
         ROLES.forEach(role => { missionToRoleMap[role.id] = role.id; });
 
-        const role = activeModule ? missionToRoleMap[activeModule] : undefined;
+        // Missions with dedicated full-screen components bypass AiLab
+        const dedicatedMissions = new Set(['prompt-master', 'game-director', 'cloud-cleaner', 'layout-doctor', 'pitch-police', 'data-detective', 'deepfake-detector', 'ipad-print-instructies', 'filter-bubble-breaker', 'datalekken-rampenplan', 'data-voor-data']);
+        const role = activeModule && !dedicatedMissions.has(activeModule) ? missionToRoleMap[activeModule] : undefined;
 
         if (role) {
             return (
