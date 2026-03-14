@@ -120,7 +120,7 @@ export function ReceiptsPanel({ receipts, userId, onRefresh }: ReceiptsPanelProp
         setError('');
         try {
             let imageUrl: string | undefined;
-            if (uploadedFile && uploadedFile.type.startsWith('image/')) {
+            if (uploadedFile) {
                 imageUrl = await uploadReceiptImage(uploadedFile, userId);
             }
 
@@ -388,13 +388,20 @@ export function ReceiptsPanel({ receipts, userId, onRefresh }: ReceiptsPanelProp
                         {receipts.map(r => (
                             <div key={r.id} className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden group">
                                 {r.image_url ? (
-                                    <div className="h-32 bg-slate-50 overflow-hidden">
-                                        <img
-                                            src={r.image_url}
-                                            alt={r.supplier || 'Bonnetje'}
-                                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                                        />
-                                    </div>
+                                    r.image_url.endsWith('.pdf') ? (
+                                        <a href={r.image_url} target="_blank" rel="noopener noreferrer" className="h-32 bg-slate-50 flex flex-col items-center justify-center hover:bg-indigo-50 transition-colors cursor-pointer">
+                                            <FileText size={32} className="text-indigo-400" />
+                                            <span className="text-[10px] text-indigo-500 font-bold mt-1 uppercase">PDF openen</span>
+                                        </a>
+                                    ) : (
+                                        <a href={r.image_url} target="_blank" rel="noopener noreferrer" className="block h-32 bg-slate-50 overflow-hidden cursor-pointer">
+                                            <img
+                                                src={r.image_url}
+                                                alt={r.supplier || 'Bonnetje'}
+                                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                            />
+                                        </a>
+                                    )
                                 ) : (
                                     <div className="h-32 bg-slate-50 flex items-center justify-center">
                                         <FileText size={32} className="text-slate-300" />
