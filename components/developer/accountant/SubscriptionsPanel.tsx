@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
-    Plus, Trash2, X, AlertCircle, RefreshCw, Pause, Play, CreditCard, CalendarClock
+    Plus, Trash2, X, AlertCircle, RefreshCw, Pause, Play, CreditCard, CalendarClock, Upload, Sparkles
 } from 'lucide-react';
 import {
     Subscription,
@@ -20,6 +20,7 @@ import {
     CATEGORY_LABELS,
     formatEuro,
     formatDate,
+    scanSubscriptionWithClaude,
 } from '../../../services/accountantService';
 
 interface SubscriptionsPanelProps {
@@ -62,6 +63,33 @@ export function SubscriptionsPanel({ userId, onRefresh }: SubscriptionsPanelProp
     const [error, setError]             = useState('');
     const [genResult, setGenResult]     = useState<number | null>(null);
     const [form, setForm]               = useState<SubForm>(emptyForm());
+    const [scanning, setScanning]       = useState(false);
+    const fileInputRef                  = useRef<HTMLInputElement>(null);
+
+    async function handleScanScreenshot(file: File) {
+        setScanning(true);
+        setError('');
+        try {
+            const result = await scanSubscriptionWithClaude(file);
+            setForm(f => ({
+                ...f,
+                name:      result.name || f.name,
+                supplier:  result.supplier || f.supplier,
+                amount:    result.amount ? String(result.amount) : f.amount,
+                vatAmount: result.vatAmount ? String(result.vatAmount) : f.vatAmount,
+                vatRate:   result.vatRate ?? f.vatRate,
+                category:  (EXPENSE_CATEGORIES.includes(result.category as TransactionCategory) ? result.category : f.category) as TransactionCategory,
+                frequency: (['monthly', 'quarterly', 'yearly'].includes(result.frequency) ? result.frequency : f.frequency) as SubscriptionFrequency,
+                startDate: result.startDate || f.startDate,
+                notes:     result.notes || f.notes,
+            }));
+        } catch (e: any) {
+            setError(e.message || 'Screenshot scannen mislukt.');
+        } finally {
+            setScanning(false);
+            if (fileInputRef.current) fileInputRef.current.value = '';
+        }
+    }
 
     const loadSubs = useCallback(async () => {
         setLoading(true);
@@ -276,6 +304,40 @@ export function SubscriptionsPanel({ userId, onRefresh }: SubscriptionsPanelProp
                             <button onClick={() => { setShowForm(false); setError(''); }} className="p-2 hover:bg-slate-100 rounded-xl">
                                 <X size={20} className="text-slate-500" />
                             </button>
+                        </div>
+
+                        {/* AI Screenshot Scanner */}
+                        <div className="mb-5">
+                            <input
+                                ref={fileInputRef}
+                                type="file"
+                                accept="image/jpeg,image/png,image/webp,image/gif,application/pdf"
+                                className="hidden"
+                                onChange={e => {
+                                    const file = e.target.files?.[0];
+                                    if (file) handleScanScreenshot(file);
+                                }}
+                            />
+                            <button
+                                onClick={() => fileInputRef.current?.click()}
+                                disabled={scanning}
+                                className="w-full flex items-center justify-center gap-2 px-4 py-3 border-2 border-dashed border-slate-200 rounded-xl text-sm font-bold text-slate-500 hover:border-indigo-300 hover:text-indigo-600 hover:bg-indigo-50/50 transition-all disabled:opacity-60 disabled:cursor-wait"
+                            >
+                                {scanning ? (
+                                    <>
+                                        <Sparkles size={16} className="animate-pulse text-indigo-500" />
+                                        <span className="text-indigo-600">Claude AI scant bestand...</span>
+                                    </>
+                                ) : (
+                                    <>
+                                        <Upload size={16} />
+                                        Upload screenshot of PDF — Claude AI vult velden in
+                                    </>
+                                )}
+                            </button>
+                            <p className="text-[10px] text-slate-400 mt-1 text-center">
+                                JPEG, PNG, WebP, GIF of PDF — max 10 MB
+                            </p>
                         </div>
 
                         {error && (
