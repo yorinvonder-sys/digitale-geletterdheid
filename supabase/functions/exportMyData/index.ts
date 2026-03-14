@@ -5,6 +5,7 @@
 import { serve } from 'https://deno.land/std@0.177.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import { buildCorsHeaders, rejectDisallowedBrowserRequest } from '../_shared/cors.ts';
+import { checkRateLimit, rateLimitResponse, rateLimitHeaders } from '../_shared/rateLimiter.ts';
 
 serve(async (req: Request) => {
   const corsHeaders = buildCorsHeaders(req, 'POST, OPTIONS');
@@ -44,6 +45,12 @@ serve(async (req: Request) => {
     }
 
     const uid = user.id;
+
+    // Rate limit: 2 requests per hour per user
+    const rateCheck = checkRateLimit(uid, { maxRequests: 2, windowMs: 3_600_000 });
+    if (!rateCheck.allowed) {
+      return rateLimitResponse(rateCheck, corsHeaders);
+    }
 
     const [
       profileRes, missionRes, xpRes, sharedProjectsRes, sharedGamesRes,
@@ -111,6 +118,7 @@ serve(async (req: Request) => {
         ...corsHeaders,
         'Content-Type': 'application/json',
         'Content-Disposition': `attachment; filename="mijn-data-${exportDate.split('T')[0]}.json"`,
+        ...rateLimitHeaders(rateCheck),
       },
     });
   } catch (err) {

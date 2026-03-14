@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
-import { User, Shield, Trophy, ChevronLeft, Sparkles, ShoppingBag, Palette, Crown, Headphones, Shirt, Columns as Pants, Smile, Glasses, Bot, Backpack, Zap, Scissors, X, Award, Gamepad2, BookOpen, BrainCircuit, Search, RotateCcw, Calendar, Printer, Projector, FileText, Cloud, Share2, MessageSquare, Scale, Save, Star, Heart, Laugh, Meh, Dumbbell, CheckCircle2, AlertTriangle } from 'lucide-react';
+import React, { useState, lazy, Suspense } from 'react';
+import { User, Shield, Trophy, ChevronLeft, Sparkles, ShoppingBag, Palette, Crown, Headphones, Shirt, Columns as Pants, Smile, Glasses, Bot, Backpack, Zap, Scissors, X, Award, Gamepad2, BookOpen, BrainCircuit, Search, RotateCcw, Calendar, Printer, Projector, FileText, Cloud, Share2, MessageSquare, Scale, Save, Star, Heart, Laugh, Meh, Dumbbell, CheckCircle2, AlertTriangle, ShieldCheck } from 'lucide-react';
 import { ParentUser, UserStats, AvatarConfig, DEFAULT_AVATAR_CONFIG } from '../types';
 import { LazyAvatarViewer } from './LazyAvatarViewer';
 import { AvatarViewer2D } from './AvatarViewer2D';
+
+const ConsentManager = lazy(() => import('./consent/ConsentManager').then(m => ({ default: m.ConsentManager })));
 
 
 interface UserProfileProps {
@@ -10,7 +12,7 @@ interface UserProfileProps {
     onBack: () => void;
     onUpdateProfile: (data: Partial<ParentUser>) => void;
     onLogout?: () => void;
-    initialTab?: 'profile' | 'shop' | 'trophies';
+    initialTab?: 'profile' | 'shop' | 'trophies' | 'privacy';
 }
 
 const PALETTE_COLORS = [
@@ -290,7 +292,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
     };
 
     const hasDoneOnboarding = stats.hasCompletedOnboarding;
-    const [activeTab, setActiveTab] = useState<'profile' | 'shop' | 'trophies'>(initialTab || 'profile');
+    const [activeTab, setActiveTab] = useState<'profile' | 'shop' | 'trophies' | 'privacy'>(initialTab || 'profile');
     const [shopCategory, setShopCategory] = useState<'all' | 'gender' | 'body' | 'hair' | 'clothes' | 'acc' | 'colors' | 'emotes'>('all');
     const [onboardingStep, setOnboardingStep] = useState<number | null>(hasDoneOnboarding ? null : 0);
     const [previewConfig, setPreviewConfig] = useState<AvatarConfig>(stats.avatarConfig || DEFAULT_AVATAR_CONFIG);
@@ -675,9 +677,18 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
                                 <button onClick={() => setActiveTab('profile')} className={`flex-1 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${activeTab === 'profile' ? 'bg-[#D97757] text-white shadow-lg' : 'text-slate-400 hover:bg-slate-50'}`}><User size={16} /> Stats</button>
                                 <button onClick={() => setActiveTab('shop')} className={`flex-1 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${activeTab === 'shop' ? 'bg-[#D97757] text-white shadow-lg' : 'text-slate-400 hover:bg-slate-50'}`}><ShoppingBag size={16} /> Winkel</button>
                                 <button onClick={() => setActiveTab('trophies')} className={`flex-1 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${activeTab === 'trophies' ? 'bg-[#D97757] text-white shadow-lg' : 'text-slate-400 hover:bg-slate-50'}`}><Trophy size={16} /> Trofeeën</button>
+                                <button onClick={() => setActiveTab('privacy')} className={`flex-1 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${activeTab === 'privacy' ? 'bg-[#D97757] text-white shadow-lg' : 'text-slate-400 hover:bg-slate-50'}`}><ShieldCheck size={16} /> Privacy</button>
                             </div>
                             <div className="bg-white rounded-[2.5rem] p-8 shadow-sm border border-slate-100 overflow-y-auto custom-scrollbar flex-1">
-                            {activeTab === 'trophies' ? (
+                            {activeTab === 'privacy' ? (
+                                <Suspense fallback={<div className="flex items-center justify-center p-8"><div className="w-6 h-6 border-2 border-indigo-200 border-t-indigo-600 rounded-full animate-spin" /></div>}>
+                                    <ConsentManager
+                                        studentId={user.uid}
+                                        schoolId={user.schoolId || 'unknown'}
+                                        studentAge={14}
+                                    />
+                                </Suspense>
+                            ) : activeTab === 'trophies' ? (
                                 <TrophyRoom completedMissions={stats.missionsCompleted || []} />
                             ) : activeTab === 'profile' ? (
                                 <div className="space-y-8 animate-in fade-in duration-300">

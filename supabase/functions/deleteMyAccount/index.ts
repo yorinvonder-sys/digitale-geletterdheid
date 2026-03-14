@@ -13,6 +13,7 @@
 import { serve } from 'https://deno.land/std@0.177.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import { buildCorsHeaders, rejectDisallowedBrowserRequest } from '../_shared/cors.ts';
+import { checkRateLimit, rateLimitResponse } from '../_shared/rateLimiter.ts';
 
 serve(async (req: Request) => {
   const corsHeaders = buildCorsHeaders(req, 'POST, OPTIONS');
@@ -53,6 +54,12 @@ serve(async (req: Request) => {
     }
 
     const uid = user.id;
+
+    // Rate limit: 1 request per hour per user
+    const rateCheck = checkRateLimit(uid, { maxRequests: 1, windowMs: 3_600_000 });
+    if (!rateCheck.allowed) {
+      return rateLimitResponse(rateCheck, corsHeaders);
+    }
 
     // Admin client for privileged operations (service role key never exposed to client)
     const adminClient = createClient(

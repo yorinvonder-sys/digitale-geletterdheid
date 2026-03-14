@@ -15,6 +15,7 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { getAccessToken, getVertexUrl } from "../_shared/vertexAuth.ts";
 import { buildCorsHeaders, rejectDisallowedBrowserRequest } from "../_shared/cors.ts";
+import { checkRateLimit, rateLimitResponse, rateLimitHeaders } from "../_shared/rateLimiter.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
@@ -66,6 +67,12 @@ Deno.serve(async (req: Request) => {
             JSON.stringify({ error: "Geen toegang tot de boekhoudscanner." }),
             { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } }
         );
+    }
+
+    // Rate limit: 5 requests per minute per user (heavy operation)
+    const rateCheck = checkRateLimit(user.id, { maxRequests: 5, windowMs: 60_000 });
+    if (!rateCheck.allowed) {
+        return rateLimitResponse(rateCheck, corsHeaders);
     }
 
     // 2. Parse request
@@ -248,6 +255,6 @@ Antwoord ALLEEN met de JSON, geen uitleg of extra tekst.`;
         };
 
     return new Response(JSON.stringify({ result }), {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        headers: { ...corsHeaders, "Content-Type": "application/json", ...rateLimitHeaders(rateCheck) },
     });
 });

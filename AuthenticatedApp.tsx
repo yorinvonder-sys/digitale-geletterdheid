@@ -11,6 +11,7 @@ import { ClassroomConfig } from './types';
 import { logActivity, updateClassroomConfig } from './services/teacherService';
 import { TutorialProvider, STUDENT_TUTORIAL_STEPS, STUDENT_STORAGE_KEY, TutorialStep } from './contexts/TutorialContext';
 import { lazyWithRetry } from './utils/lazyWithRetry';
+const ConsentGate = lazyWithRetry(() => import('./components/consent/ConsentGate').then(m => ({ default: m.ConsentGate })));
 import { useTeacherMessages } from './hooks/useTeacherMessages';
 import { TeacherMessagePopup } from './components/TeacherMessagePopup';
 import { ExitConfirmDialog } from './components/ExitConfirmDialog';
@@ -46,6 +47,7 @@ const DeveloperDashboard = lazyWithRetry(() => import('./components/developer/De
 const FilterBubbleBreakerMission = lazyWithRetry(() => import('./components/missions/FilterBubbleBreakerMission').then(m => ({ default: m.FilterBubbleBreakerMission })));
 const DatalekkenRampenplanMission = lazyWithRetry(() => import('./components/missions/DatalekkenRampenplanMission').then(m => ({ default: m.DatalekkenRampenplanMission })));
 const DataVoorDataMission = lazyWithRetry(() => import('./components/missions/DataVoorDataMission').then(m => ({ default: m.DataVoorDataMission })));
+const PeerFeedbackPanel = lazyWithRetry(() => import('./components/missions/PeerFeedbackPanel').then(m => ({ default: m.PeerFeedbackPanel })));
 
 const LoadingFallback = () => (
     <div className="flex-1 flex items-center justify-center bg-slate-50" role="status" aria-live="polite">
@@ -63,7 +65,7 @@ export function AuthenticatedApp() {
     const [activeModule, setActiveModule] = useState<string | null>(null);
     const [pendingLibraryItem, setPendingLibraryItem] = useState<any | null>(null);
     const [isProfileOpen, setIsProfileOpen] = useState(false);
-    const [initialProfileTab, setInitialProfileTab] = useState<'profile' | 'shop' | 'trophies'>('profile');
+    const [initialProfileTab, setInitialProfileTab] = useState<'profile' | 'shop' | 'trophies' | 'privacy'>('profile');
     const [loading, setLoading] = useState(true);
     const [viewMode, setViewMode] = useState<'assignments' | 'monitoring'>('monitoring');
     const [activeWeek, setActiveWeek] = useState(2);
@@ -85,6 +87,7 @@ export function AuthenticatedApp() {
     const [showStudentOnboarding, setShowStudentOnboarding] = useState(false);
     const [showAvatarSetup, setShowAvatarSetup] = useState(false);
     const [showExitConfirm, setShowExitConfirm] = useState(false);
+    const [peerFeedbackMissionId, setPeerFeedbackMissionId] = useState<string | null>(null);
     const [toast, setToast] = useState<{ message: string; type: 'error' | 'success' | 'info' } | null>(null);
     const [isOnline, setIsOnline] = useState(navigator.onLine);
 
@@ -553,14 +556,23 @@ export function AuthenticatedApp() {
 
         if (role) {
             return (
-                <AiLab
-                    user={user}
-                    onExit={handleRequestExitModule}
-                    saveProgress={handleSaveProgress}
-                    initialRole={role}
-                    libraryData={pendingLibraryItem}
-                    vsoProfile={user?.stats?.vsoProfile}
-                />
+                <ConsentGate
+                    consentType="ai_interaction"
+                    studentId={user?.uid || ''}
+                    onRequestConsent={() => {
+                        setIsProfileOpen(true);
+                        setInitialProfileTab('privacy');
+                    }}
+                >
+                    <AiLab
+                        user={user}
+                        onExit={handleRequestExitModule}
+                        saveProgress={handleSaveProgress}
+                        initialRole={role}
+                        libraryData={pendingLibraryItem}
+                        vsoProfile={user?.stats?.vsoProfile}
+                    />
+                </ConsentGate>
             );
         }
 
@@ -608,8 +620,38 @@ export function AuthenticatedApp() {
                     }
                 }
             }
-            handleExitModule();
+            // Show peer feedback panel instead of immediately exiting
+            setPeerFeedbackMissionId(missionId);
         };
+
+        // Peer feedback overlay after mission completion
+        if (peerFeedbackMissionId && user) {
+            const cls = user.stats?.studentClass || user.studentClass || '';
+            return (
+                <div className="min-h-screen bg-[#FAFAF8] flex flex-col items-center justify-center p-4">
+                    <div className="w-full max-w-md space-y-4">
+                        <Suspense fallback={<LoadingFallback />}>
+                            <PeerFeedbackPanel
+                                missionId={peerFeedbackMissionId}
+                                studentId={user.uid}
+                                schoolId={user.schoolId || ''}
+                                classId={cls}
+                            />
+                        </Suspense>
+                        <button
+                            onClick={() => {
+                                setPeerFeedbackMissionId(null);
+                                handleExitModule();
+                            }}
+                            className="w-full py-3 bg-[#3D3D38] hover:bg-[#2A2A26] text-white rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2"
+                        >
+                            <ArrowLeft size={16} />
+                            Terug naar dashboard
+                        </button>
+                    </div>
+                </div>
+            );
+        }
 
         if (activeModule === 'cloud-cleaner') {
             return (

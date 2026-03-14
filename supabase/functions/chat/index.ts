@@ -4,7 +4,7 @@
  * Security layers:
  * 1. JWT auth verification (Supabase)
  * 2. Server-side prompt injection filtering (mirrors client-side)
- * 3. Rate limiting via Supabase auth (429 propagation)
+ * 3. Server-side rate limiting (15 req/min per user)
  * 4. Vertex AI (europe-west4) — enterprise ToS, no age restriction
  * 5. Service account auth (no API key in URL)
  * 6. Server-side system instruction lookup via roleId (prevents prompt injection via systemInstruction)
@@ -14,6 +14,7 @@ import { sanitizePrompt } from "../_shared/promptSanitizer.ts";
 import { getAccessToken, getVertexUrl } from "../_shared/vertexAuth.ts";
 import { getSystemInstruction, isValidRoleId } from "../_shared/systemInstructions.ts";
 import { buildCorsHeaders, rejectDisallowedBrowserRequest } from "../_shared/cors.ts";
+import { checkRateLimit, rateLimitResponse, rateLimitHeaders } from "../_shared/rateLimiter.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
@@ -48,7 +49,13 @@ Deno.serve(async (req: Request) => {
         );
     }
 
-    // 2. Parse request
+    // 2. Rate limit: 15 requests per minute per user
+    const rateCheck = checkRateLimit(user.id, { maxRequests: 15, windowMs: 60_000 });
+    if (!rateCheck.allowed) {
+        return rateLimitResponse(rateCheck, corsHeaders);
+    }
+
+    // 3. Parse request
     // SECURITY: systemInstruction is server-side only — never trust client input
     let body: { message?: string; roleId?: string; history?: unknown[] };
     try {
@@ -149,7 +156,7 @@ Deno.serve(async (req: Request) => {
         console.log("[chat] Step 5: Success, text length:", text.length);
 
         return new Response(JSON.stringify({ text }), {
-            headers: { ...corsHeaders, "Content-Type": "application/json" },
+            headers: { ...corsHeaders, "Content-Type": "application/json", ...rateLimitHeaders(rateCheck) },
         });
     } catch (err: unknown) {
         const message = err instanceof Error ? err.message : String(err);
