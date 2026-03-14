@@ -104,6 +104,18 @@ export interface ScannedReceiptData {
     category: TransactionCategory;
 }
 
+export interface ScannedSubscriptionData {
+    name: string;
+    supplier: string;
+    amount: number;
+    vatAmount: number;
+    vatRate: 0 | 9 | 21;
+    frequency: 'monthly' | 'quarterly' | 'yearly';
+    startDate: string;
+    category: TransactionCategory;
+    notes: string;
+}
+
 export interface YearSummary {
     year: number;
     totalIncome: number;
@@ -433,6 +445,68 @@ export async function uploadAndScanReceipt(
 
     const data = await response.json();
     return data.result as ScannedReceiptData;
+}
+
+export async function scanSubscriptionScreenshot(
+    file: File,
+): Promise<ScannedSubscriptionData> {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session?.access_token) throw new Error('Authenticatie vereist.');
+
+    const arrayBuffer = await file.arrayBuffer();
+    const uint8Array  = new Uint8Array(arrayBuffer);
+    const base64      = btoa(String.fromCharCode(...uint8Array));
+    const mimeType    = file.type || 'image/jpeg';
+
+    const response = await fetch(`${EDGE_FUNCTION_URL}/scanReceipt`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${session.access_token}`,
+        },
+        body: JSON.stringify({ imageBase64: base64, mimeType, mode: 'subscription' }),
+    });
+
+    if (!response.ok) {
+        const err = await response.json().catch(() => ({}));
+        throw new Error(err.error || 'Screenshot scannen mislukt.');
+    }
+
+    const data = await response.json();
+    return data.result as ScannedSubscriptionData;
+}
+
+/**
+ * Scan abonnement via Claude Opus 4.6 (developer-omgeving).
+ * Ondersteunt afbeeldingen + PDF.
+ */
+export async function scanSubscriptionWithClaude(
+    file: File,
+): Promise<ScannedSubscriptionData> {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session?.access_token) throw new Error('Authenticatie vereist.');
+
+    const arrayBuffer = await file.arrayBuffer();
+    const uint8Array  = new Uint8Array(arrayBuffer);
+    const base64      = btoa(String.fromCharCode(...uint8Array));
+    const mimeType    = file.type || 'image/jpeg';
+
+    const response = await fetch(`${EDGE_FUNCTION_URL}/scanSubscriptionClaude`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${session.access_token}`,
+        },
+        body: JSON.stringify({ fileBase64: base64, mimeType }),
+    });
+
+    if (!response.ok) {
+        const err = await response.json().catch(() => ({}));
+        throw new Error(err.error || 'Bestand scannen mislukt.');
+    }
+
+    const data = await response.json();
+    return data.result as ScannedSubscriptionData;
 }
 
 export async function uploadReceiptImage(file: File, userId: string): Promise<string> {
