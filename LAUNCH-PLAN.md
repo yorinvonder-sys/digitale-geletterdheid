@@ -82,11 +82,11 @@ Drie modellen, elk voor een ander type taak. Gebruik de router hieronder als geh
 
 | # | Taak | Tijd | Status | Model + taak |
 |---|------|------|--------|-------------|
-| 2.1 | Missie-review afronden: jaar 1 periode 3+4, jaar 2+3 | 3u | ⬜ | **Claude** — review-rapport |
-| 2.2 | Gap-analyse: welke SLO kerndoelen missen een missie? | 1u | ⬜ | **ChatGPT** — abstracte redenering + aanbeveling |
-| 2.3 | Top-3 ontbrekende missies schrijven | 3u | ⬜ | **Claude** — missies schrijven (pakt schrijfstijl beter op) |
-| 2.4 | Didactische onderbouwing schrijven (visie, leerlijnen) | 2u | ⬜ | **Claude** — concept + SLO-mapping check |
-| 2.5 | Branding document: visie, missie, tone-of-voice | 1u | ⬜ | **Claude** — concept schrijven |
+| 2.1 | Missie-review afronden: jaar 1 periode 3+4, jaar 2+3 | 3u | ✅ | **Claude** — review-rapport |
+| 2.2 | Gap-analyse: welke SLO kerndoelen missen een missie? | 1u | ✅ | **Claude** — abstracte redenering + aanbeveling |
+| 2.3 | Top-3 ontbrekende missies schrijven | 3u | ✅ | **Claude** — missies schrijven (pakt schrijfstijl beter op) |
+| 2.4 | Didactische onderbouwing schrijven (visie, leerlijnen) | 2u | ✅ | **Claude** — concept + SLO-mapping check |
+| 2.5 | Branding document: visie, missie, tone-of-voice | 1u | ✅ | **Claude** — concept schrijven |
 
 **Done wanneer:** Alle missies gereviewed, gaps gevuld, branding op papier.
 
