@@ -24,15 +24,15 @@ export const KERNDOEL_MISSIONS: KerndoelMissionMeta[] = [
 
   // Week 1
   { id: 'magister-master', title: 'Magister Meester', week: 1, yearGroup: 1, sloKerndoelen: ['21A'], sloVsoKerndoelen: ['18A'] },
-  { id: 'cloud-commander', title: 'Cloud Commander', week: 1, yearGroup: 1, sloKerndoelen: ['21A'], sloVsoKerndoelen: ['18A'] },
+  { id: 'cloud-commander', title: 'Cloud Commander', week: 1, yearGroup: 1, sloKerndoelen: ['21A', '23A'], sloVsoKerndoelen: ['18A', '20A'] },
   { id: 'word-wizard', title: 'Word Wizard', week: 1, yearGroup: 1, sloKerndoelen: ['21A', '22A'], sloVsoKerndoelen: ['18A', '19A'] },
   { id: 'slide-specialist', title: 'Slide Specialist', week: 1, yearGroup: 1, sloKerndoelen: ['21A', '22A'], sloVsoKerndoelen: ['18A', '19A'] },
   { id: 'print-pro', title: 'Print Pro', week: 1, yearGroup: 1, sloKerndoelen: ['21A'], sloVsoKerndoelen: ['18A'] },
 
   // Week 2
   { id: 'ipad-print-instructies', title: 'iPad Print Instructies', week: 2, yearGroup: 1, sloKerndoelen: ['21A'], sloVsoKerndoelen: ['18A'], classRestriction: 'MH1A' },
-  { id: 'cloud-cleaner', title: 'Cloud Schoonmaker', week: 2, yearGroup: 1, sloKerndoelen: ['21A'], sloVsoKerndoelen: ['18A'] },
-  { id: 'layout-doctor', title: 'Word Match', week: 2, yearGroup: 1, sloKerndoelen: ['21A'], sloVsoKerndoelen: ['18A'] },
+  { id: 'cloud-cleaner', title: 'Cloud Schoonmaker', week: 2, yearGroup: 1, sloKerndoelen: ['21A', '23A'], sloVsoKerndoelen: ['18A', '20A'] },
+  { id: 'layout-doctor', title: 'Word Match', week: 2, yearGroup: 1, sloKerndoelen: ['21A', '22A'], sloVsoKerndoelen: ['18A', '19A'] },
   { id: 'pitch-police', title: 'Pitch Politie', week: 2, yearGroup: 1, sloKerndoelen: ['21A', '22A'], sloVsoKerndoelen: ['18A', '19A'] },
   { id: 'prompt-master', title: 'Prompt Perfectionist', week: 2, yearGroup: 1, sloKerndoelen: ['21D', '22A'], sloVsoKerndoelen: ['18C', '19A', '20B'] },
   { id: 'game-programmeur', title: 'Game Programmeur', week: 2, yearGroup: 1, sloKerndoelen: ['22A', '22B'], sloVsoKerndoelen: ['19A'] },
@@ -46,6 +46,7 @@ export const KERNDOEL_MISSIONS: KerndoelMissionMeta[] = [
   // Week 3
   { id: 'review-week-2', title: 'De Code-Criticus', week: 3, yearGroup: 1, sloKerndoelen: ['21B', '21D'], sloVsoKerndoelen: ['18C'] },
   { id: 'data-detective', title: 'Data Detective', week: 3, yearGroup: 1, sloKerndoelen: ['21B', '23C'], sloVsoKerndoelen: ['18B', '20A'] },
+  { id: 'data-verzamelaar', title: 'Data Verzamelaar', week: 3, yearGroup: 1, sloKerndoelen: ['21C', '21B', '23C'], sloVsoKerndoelen: ['18B', '20B'] },
   { id: 'deepfake-detector', title: 'Deepfake Detector', week: 3, yearGroup: 1, sloKerndoelen: ['21B', '21D', '23C'], sloVsoKerndoelen: ['18B', '18C', '20A'] },
   { id: 'ai-spiegel', title: 'De AI Spiegel', week: 3, yearGroup: 1, sloKerndoelen: ['23B', '23C'], sloVsoKerndoelen: ['20A', '20B'] },
   { id: 'social-safeguard', title: 'Social Safeguard', week: 3, yearGroup: 1, sloKerndoelen: ['23A', '23B'], sloVsoKerndoelen: ['20A', '20B'] },
@@ -82,6 +83,8 @@ export const KERNDOEL_MISSIONS: KerndoelMissionMeta[] = [
   { id: 'bug-hunter', title: 'Bug Hunter', week: 2, yearGroup: 2, sloKerndoelen: ['22B'] },
   { id: 'automation-engineer', title: 'Automation Engineer', week: 2, yearGroup: 2, sloKerndoelen: ['22A', '22B'] },
   { id: 'code-reviewer', title: 'Code Reviewer', week: 2, yearGroup: 2, sloKerndoelen: ['22B', '23B'] },
+  { id: 'network-navigator', title: 'Network Navigator', week: 2, yearGroup: 2, sloKerndoelen: ['21A', '22B'] },
+  { id: 'privacy-by-design', title: 'Privacy by Design', week: 2, yearGroup: 2, sloKerndoelen: ['23A', '22B'] },
   { id: 'code-review-2', title: 'Code Review', week: 2, yearGroup: 2, sloKerndoelen: ['22A', '22B'] },
 
   // Periode 3: Digitale Media & Creatie

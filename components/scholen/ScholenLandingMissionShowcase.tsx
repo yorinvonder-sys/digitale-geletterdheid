@@ -67,6 +67,7 @@ const YEARS: ShowcaseYear[] = [
                     { title: 'Filter Bubble Breaker', description: 'Doorbreek je online bubbel', difficulty: 'Hard', color: '#EC4899', iconLabel: '🫧' },
                     { title: 'Datalekken Rampenplan', description: 'Maak een plan voor als het misgaat', difficulty: 'Hard', color: '#EF4444', iconLabel: '🚨' },
                     { title: 'Data voor Data', description: 'Onderhandel over je privacy', difficulty: 'Medium', color: '#3B82F6', iconLabel: '⚖️' },
+                    { title: 'Data Verzamelaar', description: 'Onderzoek een dataset en ontdek de beperkingen', difficulty: 'Medium', color: '#6366F1', iconLabel: '📊' },
                 ],
             },
             {
@@ -106,6 +107,8 @@ const YEARS: ShowcaseYear[] = [
                     { title: 'Bug Hunter', description: 'Vind en fix bugs in code', difficulty: 'Hard', color: '#EF4444', iconLabel: '🐛' },
                     { title: 'Automation Engineer', description: 'Automatiseer saaie taken', difficulty: 'Medium', color: '#F59E0B', iconLabel: '⚡' },
                     { title: 'Code Reviewer', description: 'Beoordeel code als een senior dev', difficulty: 'Hard', color: '#10B981', iconLabel: '👨‍💻' },
+                    { title: 'Network Navigator', description: 'Volg een bericht door het internet', difficulty: 'Medium', color: '#0891B2', iconLabel: '🌐' },
+                    { title: 'Privacy by Design', description: 'Maak een app AVG-proof', difficulty: 'Medium', color: '#7C3AED', iconLabel: '🔒' },
                 ],
             },
             {
