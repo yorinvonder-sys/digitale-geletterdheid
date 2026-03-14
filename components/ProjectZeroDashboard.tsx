@@ -542,6 +542,9 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
         }
 
         // 2. Generic review gate: if period has reviewMissions, require them first
+        // TEMPORARILY DISABLED for review — all missions are available
+        // TODO: Re-enable review gate after testing
+        /*
         const pConfig = getPeriodConfig(currentYearGroup, activeWeek);
         const hasReviewGate = pConfig?.reviewMissions && pConfig.reviewMissions.length > 0;
 
@@ -564,6 +567,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                 return { ...mission, status: 'available' as const };
             });
         }
+        */
 
         return missions;
     }, [currentYearGroup, activeWeek, stats, permissions, isTeacher, periodNaming]);
