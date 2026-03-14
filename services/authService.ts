@@ -4,6 +4,7 @@ import type { ParentUser, UserRole } from '../types';
 import { logAccountCreated } from './auditService';
 import { enforcePasswordPolicy } from '../utils/passwordValidator';
 import { validateEmail } from '../utils/emailValidator';
+import { revokeAllMfaTrust } from './mfaTrustService';
 import type { AuthChangeEvent, Session, User as SupabaseUser } from '@supabase/supabase-js';
 
 // --- Helpers ---
@@ -256,6 +257,16 @@ export const logout = async () => {
     const redirectToLogin = () => {
         window.location.href = '/login';
     };
+
+    // Revoke MFA trusted sessions on logout (security: prevents trust lingering)
+    try {
+        await Promise.race([
+            revokeAllMfaTrust(),
+            new Promise<void>((resolve) => setTimeout(resolve, 2_000)),
+        ]);
+    } catch {
+        // Non-critical: trust will expire naturally after 30 min
+    }
 
     try {
         await Promise.race([

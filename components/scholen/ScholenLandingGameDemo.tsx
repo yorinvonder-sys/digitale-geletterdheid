@@ -831,7 +831,7 @@ export function ScholenLandingGameDemo() {
                         aria-selected={i === activeStep}
                         aria-label={`Stap ${i + 1}: ${s.label}`}
                         onClick={() => goToStep(i)}
-                        className={`relative flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold border-2 transition-all focus-visible:ring-2 focus-visible:ring-offset-2 ${
+                        className={`relative overflow-hidden flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold border-2 transition-all focus-visible:ring-2 focus-visible:ring-offset-2 ${
                             i === activeStep
                                 ? s.accentClass
                                 : 'bg-white'
@@ -843,7 +843,7 @@ export function ScholenLandingGameDemo() {
 
                         {i === activeStep && !isPaused && (
                             <span
-                                className="absolute bottom-0 left-0 h-0.5 bg-current rounded-full animate-carousel-progress"
+                                className="absolute bottom-[-1px] left-0 h-[3px] bg-current rounded-full animate-carousel-progress"
                                 style={{ animationDuration: `${STEP_DURATION}ms` }}
                             />
                         )}

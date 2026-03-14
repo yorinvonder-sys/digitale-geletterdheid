@@ -25,7 +25,7 @@ const LoadingOverlay = () => (
 
 export const LazyAvatarViewer: React.FC<LazyAvatarViewerProps> = (props) => {
     return (
-        <div className="relative w-full h-full group">
+        <div className="relative w-full h-full group" style={{ backgroundColor: '#FAF9F0' }}>
             <Suspense fallback={
                 <>
                     <AvatarViewer2D {...props} interactive={false} />

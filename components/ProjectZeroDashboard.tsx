@@ -508,7 +508,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
     );
 
     // Filter relevant missions and apply locking logic
-    const isTeacher = userRole === 'teacher' || userRole === 'admin';
+    const isTeacher = userRole === 'teacher' || userRole === 'admin' || userRole === 'developer';
     const [leerdoelenOpen, setLeerdoelenOpen] = useState(isTeacher);
 
     const currentMissions = useMemo(() => {
