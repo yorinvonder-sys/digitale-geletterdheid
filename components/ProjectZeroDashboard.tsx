@@ -514,6 +514,15 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
     const currentMissions = useMemo(() => {
         let missions = buildMissionsForPeriod(currentYearGroup, activeWeek);
 
+        // TEMPORARILY: All missions available for everyone (review period)
+        // TODO: Re-enable lock logic after testing
+        return missions.map(mission => ({
+            ...mission,
+            status: 'available' as const
+        }));
+
+        /* ORIGINAL LOCK LOGIC — re-enable after review:
+
         // Teachers can see ALL missions without any restrictions
         if (isTeacher) {
             return missions.map(mission => ({
@@ -542,9 +551,6 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
         }
 
         // 2. Generic review gate: if period has reviewMissions, require them first
-        // TEMPORARILY DISABLED for review — all missions are available
-        // TODO: Re-enable review gate after testing
-        /*
         const pConfig = getPeriodConfig(currentYearGroup, activeWeek);
         const hasReviewGate = pConfig?.reviewMissions && pConfig.reviewMissions.length > 0;
 
@@ -567,9 +573,9 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                 return { ...mission, status: 'available' as const };
             });
         }
-        */
 
         return missions;
+        */
     }, [currentYearGroup, activeWeek, stats, permissions, isTeacher, periodNaming]);
 
     // Stable callbacks for MissionCard memoization (reduces re-renders of mission grid)
@@ -1141,7 +1147,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                         <div className="flex items-center gap-2 bg-slate-100 p-1.5 rounded-2xl flex-1 md:flex-initial border border-slate-200 shadow-inner overflow-x-auto no-scrollbar">
                         {Object.keys(yearConfig?.periods || {}).map(Number).sort((a, b) => a - b).map((period) => {
                             const pConf = yearConfig?.periods[period];
-                            const isLocked = !isTeacher && !permissions?.enabled_games?.includes(`week-${period}`);
+                            const isLocked = false; // TEMPORARILY: all periods unlocked for review
 
                             return (
                                 <button
