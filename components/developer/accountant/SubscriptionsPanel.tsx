@@ -64,7 +64,9 @@ export function SubscriptionsPanel({ userId, onRefresh }: SubscriptionsPanelProp
     const [genResult, setGenResult]     = useState<number | null>(null);
     const [form, setForm]               = useState<SubForm>(emptyForm());
     const [scanning, setScanning]       = useState(false);
+    const [scanProgress, setScanProgress] = useState<{ total: number; done: number; results: string[] }>({ total: 0, done: 0, results: [] });
     const fileInputRef                  = useRef<HTMLInputElement>(null);
+    const batchFileInputRef             = useRef<HTMLInputElement>(null);
 
     async function handleScanScreenshot(file: File) {
         setScanning(true);
@@ -89,6 +91,58 @@ export function SubscriptionsPanel({ userId, onRefresh }: SubscriptionsPanelProp
             setScanning(false);
             if (fileInputRef.current) fileInputRef.current.value = '';
         }
+    }
+
+    async function handleBatchScan(files: FileList) {
+        const fileArray = Array.from(files);
+        if (fileArray.length === 0) return;
+
+        setScanning(true);
+        setError('');
+        const progress = { total: fileArray.length, done: 0, results: [] as string[] };
+        setScanProgress(progress);
+
+        for (const file of fileArray) {
+            try {
+                const result = await scanSubscriptionWithClaude(file);
+                const amount = result.amount || 0;
+                const validCategory = EXPENSE_CATEGORIES.includes(result.category as TransactionCategory)
+                    ? result.category as TransactionCategory
+                    : 'automatisering';
+                const validFrequency = ['monthly', 'quarterly', 'yearly'].includes(result.frequency)
+                    ? result.frequency as SubscriptionFrequency
+                    : 'monthly';
+
+                if (result.name && amount > 0) {
+                    await createSubscription({
+                        user_id:    userId,
+                        name:       result.name,
+                        supplier:   result.supplier || undefined,
+                        amount,
+                        vat_amount: result.vatAmount || 0,
+                        vat_rate:   result.vatRate ?? 21,
+                        category:   validCategory,
+                        frequency:  validFrequency,
+                        start_date: result.startDate || new Date().toISOString().split('T')[0],
+                        end_date:   null,
+                        is_active:  true,
+                        notes:      result.notes || `Automatisch gescand vanuit ${file.name}`,
+                    });
+                    progress.results.push(`✓ ${result.name} — ${formatEuro(amount)}`);
+                } else {
+                    progress.results.push(`⚠ ${file.name} — onvoldoende data gevonden`);
+                }
+            } catch (e: any) {
+                progress.results.push(`✗ ${file.name} — ${e.message || 'scannen mislukt'}`);
+            }
+            progress.done++;
+            setScanProgress({ ...progress });
+        }
+
+        setScanning(false);
+        if (batchFileInputRef.current) batchFileInputRef.current.value = '';
+        loadSubs();
+        onRefresh();
     }
 
     const loadSubs = useCallback(async () => {

@@ -141,17 +141,106 @@ export interface TaxCalculation {
 }
 
 // ===========================================================================
-// Belastingconstanten 2025 (IB Box 1 ZZP)
+// Belastingconstanten per jaar (IB Box 1 ZZP / Eenmanszaak)
 // ===========================================================================
 
-const TAX_2025 = {
-    zelfstandigenaftrek: 5030,
-    startersaftrek:      2123,
-    mkbWinstvrijstelling: 0.1331,  // 13,31%
-    bracket1Rate: 0.3697,          // 36,97% tot €76.814
-    bracket1Limit: 76814,
-    bracket2Rate: 0.495,           // 49,50% daarboven
-} as const;
+export interface TaxYearConfig {
+    year: number;
+    zelfstandigenaftrek: number;
+    startersaftrek: number;
+    mkbWinstvrijstelling: number;   // als fractie (0.127 = 12,7%)
+    bracket1Rate: number;
+    bracket1Limit: number;
+    bracket2Rate: number;
+    kmVergoeding: number;           // onbelaste km-vergoeding
+    kiaMinimum: number;             // minimum investering voor KIA
+    kiaMaximum: number;             // maximum investering voor KIA
+    urencriterium: number;          // minimum uren voor zelfstandigenaftrek
+    source: string;                 // bron van de gegevens
+    lastVerified: string;           // ISO datum laatste verificatie
+}
+
+const TAX_CONFIGS: Record<number, TaxYearConfig> = {
+    2024: {
+        year: 2024,
+        zelfstandigenaftrek: 3750,
+        startersaftrek: 2123,
+        mkbWinstvrijstelling: 0.1331,
+        bracket1Rate: 0.3693,
+        bracket1Limit: 75518,
+        bracket2Rate: 0.495,
+        kmVergoeding: 0.23,
+        kiaMinimum: 2801,
+        kiaMaximum: 387580,
+        urencriterium: 1225,
+        source: 'belastingdienst.nl',
+        lastVerified: '2025-01-15',
+    },
+    2025: {
+        year: 2025,
+        zelfstandigenaftrek: 2470,
+        startersaftrek: 2123,
+        mkbWinstvrijstelling: 0.127,
+        bracket1Rate: 0.3697,
+        bracket1Limit: 76814,
+        bracket2Rate: 0.495,
+        kmVergoeding: 0.23,
+        kiaMinimum: 2901,
+        kiaMaximum: 398235,
+        urencriterium: 1225,
+        source: 'belastingdienst.nl',
+        lastVerified: '2026-03-14',
+    },
+    2026: {
+        year: 2026,
+        zelfstandigenaftrek: 2470,
+        startersaftrek: 2123,
+        mkbWinstvrijstelling: 0.127,
+        bracket1Rate: 0.3756,
+        bracket1Limit: 78826,
+        bracket2Rate: 0.495,
+        kmVergoeding: 0.23,
+        kiaMinimum: 2900,
+        kiaMaximum: 398235,
+        urencriterium: 1225,
+        source: 'belastingdienst.nl / prinsjesdag 2025',
+        lastVerified: '2026-03-14',
+    },
+};
+
+/** Haal de belastingconfiguratie op voor een specifiek jaar. Valt terug op het meest recente beschikbare jaar. */
+export function getTaxConfig(year: number): TaxYearConfig {
+    if (TAX_CONFIGS[year]) return TAX_CONFIGS[year];
+    const availableYears = Object.keys(TAX_CONFIGS).map(Number).sort((a, b) => b - a);
+    const fallback = availableYears.find(y => y <= year) || availableYears[0];
+    return TAX_CONFIGS[fallback];
+}
+
+/** Geeft alle beschikbare belastingjaren terug. */
+export function getAvailableTaxYears(): number[] {
+    return Object.keys(TAX_CONFIGS).map(Number).sort((a, b) => b - a);
+}
+
+/** Check of de configuratie voor het huidige jaar beschikbaar en recent geverifieerd is. */
+export function getTaxConfigStatus(): { year: number; isAvailable: boolean; isOutdated: boolean; lastVerified: string | null } {
+    const currentYear = new Date().getFullYear();
+    const config = TAX_CONFIGS[currentYear];
+    if (!config) {
+        return { year: currentYear, isAvailable: false, isOutdated: true, lastVerified: null };
+    }
+    const verifiedDate = new Date(config.lastVerified);
+    const sixMonthsAgo = new Date();
+    sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+    return {
+        year: currentYear,
+        isAvailable: true,
+        isOutdated: verifiedDate < sixMonthsAgo,
+        lastVerified: config.lastVerified,
+    };
+}
+
+// Backward compat alias
+const TAX_2025 = TAX_CONFIGS[2025];
 
 // ===========================================================================
 // Transacties
@@ -433,22 +522,23 @@ export async function uploadAndScanReceipt(
     const base64 = btoa(binary);
     const mimeType    = file.type || 'image/jpeg';
 
-    // Stuur naar edge function
-    const response = await fetch(`${EDGE_FUNCTION_URL}/scanReceipt`, {
+    // Stuur naar Claude edge function (was Gemini, nu Claude Sonnet 4.6)
+    const response = await fetch(`${EDGE_FUNCTION_URL}/scanSubscriptionClaude`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${session.access_token}`,
         },
-        body: JSON.stringify({ imageBase64: base64, mimeType }),
+        body: JSON.stringify({ fileBase64: base64, mimeType, mode: 'receipt' }),
     });
 
     if (!response.ok) {
         const err = await response.json().catch(() => ({}));
-        throw new Error(err.error || 'Bonnetje scannen mislukt.');
+        throw new Error(err.error || err.msg || err.message || `Bonnetje scannen mislukt (status ${response.status}).`);
     }
 
     const data = await response.json();
+    if (!data.result) throw new Error('Geen resultaat ontvangen van scanner.');
     return data.result as ScannedReceiptData;
 }
 
@@ -614,29 +704,30 @@ export async function getYearSummary(userId: string, year: number): Promise<Year
     };
 }
 
-export function calculateTax(summary: YearSummary, starterAftrek: boolean): TaxCalculation {
+export function calculateTax(summary: YearSummary, starterAftrek: boolean, year?: number): TaxCalculation {
+    const taxConfig = getTaxConfig(year || summary.year);
     const { totalIncome, totalExpenses } = summary;
     const profit = Math.max(0, totalIncome - totalExpenses);
 
-    // Aftrekposten
-    const zelfstandigenaftrek = profit >= TAX_2025.zelfstandigenaftrek
-        ? TAX_2025.zelfstandigenaftrek
+    // Aftrekposten (op basis van het juiste belastingjaar)
+    const zelfstandigenaftrek = profit >= taxConfig.zelfstandigenaftrek
+        ? taxConfig.zelfstandigenaftrek
         : profit;
     const startersaftrek = starterAftrek
-        ? Math.min(TAX_2025.startersaftrek, Math.max(0, profit - zelfstandigenaftrek))
+        ? Math.min(taxConfig.startersaftrek, Math.max(0, profit - zelfstandigenaftrek))
         : 0;
 
     const afterAftrekposten = Math.max(0, profit - zelfstandigenaftrek - startersaftrek);
-    const mkbWinstvrijstelling = afterAftrekposten * TAX_2025.mkbWinstvrijstelling;
+    const mkbWinstvrijstelling = afterAftrekposten * taxConfig.mkbWinstvrijstelling;
     const taxableIncome = Math.max(0, afterAftrekposten - mkbWinstvrijstelling);
 
-    // Belasting berekenen (schijven 2025)
+    // Belasting berekenen (schijven voor het juiste jaar)
     let estimatedTax = 0;
-    if (taxableIncome <= TAX_2025.bracket1Limit) {
-        estimatedTax = taxableIncome * TAX_2025.bracket1Rate;
+    if (taxableIncome <= taxConfig.bracket1Limit) {
+        estimatedTax = taxableIncome * taxConfig.bracket1Rate;
     } else {
-        estimatedTax = TAX_2025.bracket1Limit * TAX_2025.bracket1Rate
-            + (taxableIncome - TAX_2025.bracket1Limit) * TAX_2025.bracket2Rate;
+        estimatedTax = taxConfig.bracket1Limit * taxConfig.bracket1Rate
+            + (taxableIncome - taxConfig.bracket1Limit) * taxConfig.bracket2Rate;
     }
 
     const effectiveRate = taxableIncome > 0 ? (estimatedTax / taxableIncome) * 100 : 0;

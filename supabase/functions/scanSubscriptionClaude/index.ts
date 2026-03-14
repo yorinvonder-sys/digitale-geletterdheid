@@ -62,6 +62,31 @@ Regels:
 
 Antwoord ALLEEN met de JSON, geen uitleg of extra tekst.`;
 
+const RECEIPT_PROMPT = `Je bent een Nederlandse boekhoudings-AI. Analyseer dit bonnetje, factuur of betaalbewijs en extraheer de gegevens.
+
+Geef je antwoord UITSLUITEND als geldig JSON in dit exacte formaat, NIETS anders:
+{
+  "supplier": "naam van de leverancier of winkel",
+  "date": "YYYY-MM-DD",
+  "amount": 0.00,
+  "vatAmount": 0.00,
+  "vatRate": 21,
+  "description": "korte omschrijving van de aankoop",
+  "category": "een van de categorieën hieronder"
+}
+
+Regels:
+- supplier: naam van de winkel, leverancier of dienstverlener.
+- date: datum van het bonnetje in ISO-formaat (YYYY-MM-DD). Als het jaar onduidelijk is, gebruik het meest recente jaar.
+- amount: totaalbedrag INCLUSIEF BTW als getal (bijv. 12.50, niet "12,50").
+- vatAmount: het BTW-bedrag. Als niet zichtbaar, bereken het uit het BTW-percentage.
+- vatRate: 0, 9 of 21 (meest voorkomend op het bonnetje). Schat op basis van type aankoop.
+- description: korte omschrijving (max 50 tekens).
+- category: kies de meest passende uit: kantoorkosten | reiskosten | marketing | automatisering | opleiding | telefoon-internet | representatie | overig. Bij twijfel: "overig".
+- Als een veld niet leesbaar is, gebruik een lege string "" voor tekst of 0 voor getallen.
+
+Antwoord ALLEEN met de JSON, geen uitleg of extra tekst.`;
+
 Deno.serve(async (req: Request) => {
     const origin = req.headers.get("Origin") || "";
     const allowedOrigin = ALLOWED_ORIGINS.has(origin) ? origin : "https://dgskills.app";
@@ -107,7 +132,7 @@ Deno.serve(async (req: Request) => {
     }
 
     // 3. Parse request
-    let body: { fileBase64?: string; mimeType?: string };
+    let body: { fileBase64?: string; mimeType?: string; mode?: string };
     try {
         body = await req.json();
     } catch {
@@ -159,7 +184,11 @@ Deno.serve(async (req: Request) => {
             },
         };
 
-    // 5. Call Claude API
+    // 5. Select prompt based on mode
+    const isReceipt = body.mode === "receipt";
+    const prompt = isReceipt ? RECEIPT_PROMPT : SUBSCRIPTION_PROMPT;
+
+    // 6. Call Claude API
     const claudeResponse = await fetch("https://api.anthropic.com/v1/messages", {
         method: "POST",
         headers: {
@@ -174,7 +203,7 @@ Deno.serve(async (req: Request) => {
                 role: "user",
                 content: [
                     contentBlock,
-                    { type: "text", text: SUBSCRIPTION_PROMPT },
+                    { type: "text", text: prompt },
                 ],
             }],
         }),
@@ -228,19 +257,29 @@ Deno.serve(async (req: Request) => {
         );
     }
 
-    // 7. Validate and normalize
+    // 7. Validate and normalize (different format for receipt vs subscription)
     const validFrequencies = ["monthly", "quarterly", "yearly"];
-    const result = {
-        name:      typeof parsed.name === "string" ? parsed.name : "",
-        supplier:  typeof parsed.supplier === "string" ? parsed.supplier : "",
-        amount:    typeof parsed.amount === "number" ? parsed.amount : 0,
-        vatAmount: typeof parsed.vatAmount === "number" ? parsed.vatAmount : 0,
-        vatRate:   [0, 9, 21].includes(Number(parsed.vatRate)) ? Number(parsed.vatRate) : 0,
-        frequency: validFrequencies.includes(String(parsed.frequency)) ? String(parsed.frequency) : "monthly",
-        startDate: typeof parsed.startDate === "string" ? parsed.startDate : new Date().toISOString().split("T")[0],
-        category:  typeof parsed.category === "string" ? parsed.category : "automatisering",
-        notes:     typeof parsed.notes === "string" ? parsed.notes : "",
-    };
+    const result = isReceipt
+        ? {
+            supplier:    typeof parsed.supplier === "string" ? parsed.supplier : "",
+            date:        typeof parsed.date === "string" ? parsed.date : new Date().toISOString().split("T")[0],
+            amount:      typeof parsed.amount === "number" ? parsed.amount : 0,
+            vatAmount:   typeof parsed.vatAmount === "number" ? parsed.vatAmount : 0,
+            vatRate:     [0, 9, 21].includes(Number(parsed.vatRate)) ? Number(parsed.vatRate) : 21,
+            description: typeof parsed.description === "string" ? parsed.description : "",
+            category:    typeof parsed.category === "string" ? parsed.category : "overig",
+        }
+        : {
+            name:      typeof parsed.name === "string" ? parsed.name : "",
+            supplier:  typeof parsed.supplier === "string" ? parsed.supplier : "",
+            amount:    typeof parsed.amount === "number" ? parsed.amount : 0,
+            vatAmount: typeof parsed.vatAmount === "number" ? parsed.vatAmount : 0,
+            vatRate:   [0, 9, 21].includes(Number(parsed.vatRate)) ? Number(parsed.vatRate) : 0,
+            frequency: validFrequencies.includes(String(parsed.frequency)) ? String(parsed.frequency) : "monthly",
+            startDate: typeof parsed.startDate === "string" ? parsed.startDate : new Date().toISOString().split("T")[0],
+            category:  typeof parsed.category === "string" ? parsed.category : "automatisering",
+            notes:     typeof parsed.notes === "string" ? parsed.notes : "",
+        };
 
     return new Response(JSON.stringify({ result }), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },

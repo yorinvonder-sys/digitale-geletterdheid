@@ -9,6 +9,8 @@ import {
     AccountantSettings,
     saveSettings,
     formatEuro,
+    getTaxConfig,
+    getTaxConfigStatus,
 } from '../../../services/accountantService';
 
 interface TaxReportPanelProps {
@@ -124,7 +126,8 @@ export function TaxReportPanel({ summary, tax, settings, userId, onSettingsChang
             doc.setFont('helvetica', 'normal');
             line('Zelfstandigenaftrek', -tax.zelfstandigenaftrek);
             if (tax.startersaftrek > 0) line('Startersaftrek', -tax.startersaftrek);
-            line('MKB-winstvrijstelling (13,31%)', -tax.mkbWinstvrijstelling);
+            const tc = getTaxConfig(year);
+            line(`MKB-winstvrijstelling (${(tc.mkbWinstvrijstelling * 100).toFixed(1)}%)`, -tax.mkbWinstvrijstelling);
             doc.line(20, y, 190, y);
             y += 4;
             line('Belastbaar inkomen Box 1', tax.taxableIncome, true);
@@ -132,14 +135,14 @@ export function TaxReportPanel({ summary, tax, settings, userId, onSettingsChang
 
             // Belasting
             doc.setFont('helvetica', 'bold');
-            doc.text('Inkomstenbelasting 2025', 20, y);
+            doc.text(`Inkomstenbelasting ${year}`, 20, y);
             y += 8;
             doc.setFont('helvetica', 'normal');
 
-            const in1 = Math.min(tax.taxableIncome, 76814);
-            const in2 = Math.max(0, tax.taxableIncome - 76814);
-            line(`Schijf 1 (t/m € 76.814 × 36,97%)`, in1 * 0.3697);
-            if (in2 > 0) line(`Schijf 2 (boven € 76.814 × 49,50%)`, in2 * 0.495);
+            const in1 = Math.min(tax.taxableIncome, tc.bracket1Limit);
+            const in2 = Math.max(0, tax.taxableIncome - tc.bracket1Limit);
+            line(`Schijf 1 (t/m € ${tc.bracket1Limit.toLocaleString('nl-NL')} × ${(tc.bracket1Rate * 100).toFixed(2)}%)`, in1 * tc.bracket1Rate);
+            if (in2 > 0) line(`Schijf 2 (boven € ${tc.bracket1Limit.toLocaleString('nl-NL')} × ${(tc.bracket2Rate * 100).toFixed(2)}%)`, in2 * tc.bracket2Rate);
             doc.line(20, y, 190, y);
             y += 4;
             line('Geschatte inkomstenbelasting', tax.estimatedTax, true);
@@ -171,6 +174,10 @@ export function TaxReportPanel({ summary, tax, settings, userId, onSettingsChang
         });
     }
 
+    // Belastingconfiguratie-status
+    const taxStatus = getTaxConfigStatus();
+    const currentTaxConfig = getTaxConfig(summary.year);
+
     // Checklist items voor aangifte
     const checklistItems = [
         { label: 'Bedrijfsnaam ingevuld', done: !!settings?.business_name },
@@ -178,6 +185,7 @@ export function TaxReportPanel({ summary, tax, settings, userId, onSettingsChang
         { label: 'Omzet geboekt',          done: summary.totalIncome > 0 },
         { label: 'Kosten gecategoriseerd', done: summary.totalExpenses > 0 },
         { label: 'Bonnetjes opgeslagen',   done: true },
+        { label: `Belastingtarieven ${summary.year} actueel`, done: !taxStatus.isOutdated },
     ];
     const allDone = checklistItems.every(i => i.done);
 
@@ -290,11 +298,11 @@ export function TaxReportPanel({ summary, tax, settings, userId, onSettingsChang
                     <div className="h-3" />
                     <p className="text-[10px] text-slate-500 font-black uppercase tracking-widest">Inkomstenbelasting</p>
 
-                    <Row label="Schijf 1 (t/m €76.814 × 36,97%)"
-                        value={Math.min(tax.taxableIncome, 76814) * 0.3697} color="text-slate-300" />
-                    {tax.taxableIncome > 76814 && (
-                        <Row label="Schijf 2 (boven €76.814 × 49,50%)"
-                            value={(tax.taxableIncome - 76814) * 0.495} color="text-slate-300" />
+                    <Row label={`Schijf 1 (t/m €${currentTaxConfig.bracket1Limit.toLocaleString('nl-NL')} × ${(currentTaxConfig.bracket1Rate * 100).toFixed(2)}%)`}
+                        value={Math.min(tax.taxableIncome, currentTaxConfig.bracket1Limit) * currentTaxConfig.bracket1Rate} color="text-slate-300" />
+                    {tax.taxableIncome > currentTaxConfig.bracket1Limit && (
+                        <Row label={`Schijf 2 (boven €${currentTaxConfig.bracket1Limit.toLocaleString('nl-NL')} × ${(currentTaxConfig.bracket2Rate * 100).toFixed(2)}%)`}
+                            value={(tax.taxableIncome - currentTaxConfig.bracket1Limit) * currentTaxConfig.bracket2Rate} color="text-slate-300" />
                     )}
                     <Divider />
                     <Row label="Geschatte belasting" value={tax.estimatedTax} bold color="text-amber-400" />
@@ -488,7 +496,7 @@ function BelastingdienstInvulhulp({ tax, summary }: { tax: TaxCalculation; summa
                             rugnummer="2a"
                             label="Zelfstandigenaftrek"
                             value={fmt(tax.zelfstandigenaftrek)}
-                            hint="Maximaal €5.030 voor belastingjaar 2025"
+                            hint={`Maximaal €${currentTaxConfig.zelfstandigenaftrek.toLocaleString('nl-NL')} voor belastingjaar ${summary.year}`}
                         />
                         {tax.startersaftrek > 0 && (
                             <CopyField
@@ -500,7 +508,7 @@ function BelastingdienstInvulhulp({ tax, summary }: { tax: TaxCalculation; summa
                         )}
                         <CopyField
                             rugnummer="2c"
-                            label="MKB-winstvrijstelling (13,31%)"
+                            label={`MKB-winstvrijstelling (${(currentTaxConfig.mkbWinstvrijstelling * 100).toFixed(1)}%)`}
                             value={fmt(tax.mkbWinstvrijstelling)}
                             hint="Automatisch berekend na ondernemersaftrek"
                         />
