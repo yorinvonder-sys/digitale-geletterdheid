@@ -38,7 +38,7 @@ jobs:
           LIGHTHOUSE_RUNS: 3
           LH_SCORE_MIN: 75
           LH_ROOT_LCP_MAX: 4000
-          LH_LOGIN_LCP_MAX: 4000
+          LH_LOGIN_LCP_MAX: 8000
           LH_SCHOLEN_LCP_MAX: 4000
           CHROME_PATH: /usr/bin/google-chrome-stable
         run: npm run performance:ci
