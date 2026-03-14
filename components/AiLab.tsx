@@ -2,37 +2,28 @@
 import React, { useState, useRef, useEffect, useMemo, lazy, Suspense, useCallback } from 'react';
 import { AgentSelector } from './lab/AgentSelector';
 import { ChatBubble } from './ChatBubble';
-import { GamePreview } from './GamePreview';
-import { BookPreview } from './BookPreview';
-import { WordWizardPreview } from './WordWizardPreview';
 
-import { TrainerPreview } from './TrainerPreview';
-import { ChatbotTrainerPreview } from './ChatbotTrainerPreview';
-import { DrawingGamePreview } from './DrawingGamePreview';
-import { AiBeleidBrainstormPreview } from './AiBeleidBrainstormPreview';
+
 import { MissionBriefing } from './MissionBriefing';
 import { AgentRole, UserStats, AiLabProps } from '../types';
 import { ROLES } from '../config/agents';
 import { useAgentLogic } from '../hooks/useAgentLogic';
 import { Loader2, ChevronRight, Trophy, ArrowLeft, Target, Lightbulb, Sparkles, RotateCcw, Send, AlertCircle, Gamepad2, Download, CheckCircle2, PenTool, Palette, BrainCircuit } from 'lucide-react';
 import { WebPreviewModal } from './WebPreviewModal';
-import { GamesSection } from './GamesSection';
+
+
 import { getSharedProject, SharedProject } from '../services/missionService';
 import { LEVEL_THRESHOLDS, getLevelProgress, getXPForNextLevel, getXPToNextLevel, getLevelFromXP } from '../utils/xp';
 import { awardXP } from '../services/XPService';
 import { logger } from '../utils/logger';
 // KnowledgeRunner removed - using AssessmentEngine for all review missions
-import { AssessmentEngine } from './assessment/AssessmentEngine';
+
 import { getAssessment, hasAssessment } from './assessment/data/assessmentRegistry';
 import { RotateDevicePrompt } from './RotateDevicePrompt';
 import { logActivity, saveHybridAssessmentRecord } from '../services/teacherService';
 
-// Periode 3 interactive mission components
-import { DataDetectiveMission } from './missions/DataDetectiveMission';
-import { DeepfakeDetectorMission } from './missions/DeepfakeDetectorMission';
-import { FilterBubbleBreakerMission } from './missions/FilterBubbleBreakerMission';
-import { DatalekkenRampenplanMission } from './missions/DatalekkenRampenplanMission';
-import { DataVoorDataMission } from './missions/DataVoorDataMission';
+
+
 
 
 // Filter lijst voor ongepast taalgebruik (Silent Blocking)
@@ -41,9 +32,26 @@ const FORBIDDEN_WORDS = [
   'bitch', 'sukkel', 'dombo', 'mongool', 'ezel', 'klootzak'
 ];
 
-const CloudCleanerMission = lazy(() => import('./missions/review/CloudCleanerMission').then(module => ({ default: module.CloudCleanerMission })));
-const WordSimulator = lazy(() => import('./WordSimulator/WordSimulator').then(module => ({ default: module.WordSimulator })));
-const PitchPoliceMission = lazy(() => import('./missions/review/PitchPoliceMission').then(module => ({ default: module.PitchPoliceMission })));
+// Lazy-loaded preview components (conditioneel per missie-type)
+const GamePreview = lazy(() => import('./GamePreview').then(m => ({ default: m.GamePreview })));
+const BookPreview = lazy(() => import('./BookPreview').then(m => ({ default: m.BookPreview })));
+const WordWizardPreview = lazy(() => import('./WordWizardPreview').then(m => ({ default: m.WordWizardPreview })));
+const TrainerPreview = lazy(() => import('./TrainerPreview').then(m => ({ default: m.TrainerPreview })));
+const ChatbotTrainerPreview = lazy(() => import('./ChatbotTrainerPreview').then(m => ({ default: m.ChatbotTrainerPreview })));
+const DrawingGamePreview = lazy(() => import('./DrawingGamePreview').then(m => ({ default: m.DrawingGamePreview })));
+const AiBeleidBrainstormPreview = lazy(() => import('./AiBeleidBrainstormPreview').then(m => ({ default: m.AiBeleidBrainstormPreview })));
+const GamesSection = lazy(() => import('./GamesSection').then(m => ({ default: m.GamesSection })));
+const AssessmentEngine = lazy(() => import('./assessment/AssessmentEngine').then(m => ({ default: m.AssessmentEngine })));
+
+// Lazy-loaded mission components
+const DataDetectiveMission = lazy(() => import('./missions/DataDetectiveMission').then(m => ({ default: m.DataDetectiveMission })));
+const DeepfakeDetectorMission = lazy(() => import('./missions/DeepfakeDetectorMission').then(m => ({ default: m.DeepfakeDetectorMission })));
+const FilterBubbleBreakerMission = lazy(() => import('./missions/FilterBubbleBreakerMission').then(m => ({ default: m.FilterBubbleBreakerMission })));
+const DatalekkenRampenplanMission = lazy(() => import('./missions/DatalekkenRampenplanMission').then(m => ({ default: m.DatalekkenRampenplanMission })));
+const DataVoorDataMission = lazy(() => import('./missions/DataVoorDataMission').then(m => ({ default: m.DataVoorDataMission })));
+const CloudCleanerMission = lazy(() => import('./missions/review/CloudCleanerMission').then(m => ({ default: m.CloudCleanerMission })));
+const WordSimulator = lazy(() => import('./WordSimulator/WordSimulator').then(m => ({ default: m.WordSimulator })));
+const PitchPoliceMission = lazy(() => import('./missions/review/PitchPoliceMission').then(m => ({ default: m.PitchPoliceMission })));
 
 
 const ConfettiExplosion = () => {
@@ -793,7 +801,7 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
           title="Terug naar Dashboard"
         >
           <div className="w-8 h-8 md:w-10 md:h-10 bg-white border border-slate-100 rounded-xl flex items-center justify-center text-white transform rotate-3 overflow-hidden shadow-sm">
-            <img src="/mascot/pip-logo.webp" alt="Logo" className="w-full h-full object-contain p-1" />
+            <img src="/mascot/pip-logo.webp" alt="Logo" className="w-full h-full object-contain p-1" loading="lazy" />
           </div>
           <div className="flex flex-col text-left">
             {/* Breadcrumb: Dashboard > AI Lab > missienaam */}

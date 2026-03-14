@@ -234,7 +234,7 @@ export const WordWizardPreview: React.FC<WordWizardPreviewProps> = ({ onTaskComp
                     `}>
                                 {block.image && (
                                     <div className={`relative group/img ${block.textWrap ? 'w-1/3 float-right ml-4 mb-2' : 'w-full mb-4'}`}>
-                                        <img src={block.image} alt="Inserted" className="w-full rounded shadow-sm border border-slate-200" />
+                                        <img src={block.image} alt="Inserted" className="w-full rounded shadow-sm border border-slate-200" loading="lazy" />
                                         <button
                                             onClick={(e) => {
                                                 e.stopPropagation();

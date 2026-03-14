@@ -427,7 +427,7 @@ const PageContent = ({
                             </div>
                         ) : page?.image ? (
                             <>
-                                <img src={page.image} className="w-full h-full object-cover" alt={`Pagina ${pageIndex + 1}`} />
+                                <img src={page.image} className="w-full h-full object-cover" alt={`Pagina ${pageIndex + 1}`} loading="lazy" />
                                 {isInteractive && (
                                     <div className="absolute inset-0 bg-pink-500/0 hover:bg-pink-500/10 transition-colors flex items-center justify-center">
                                         <div className="opacity-0 group-hover/edit:opacity-100 bg-white/90 px-3 py-1.5 rounded-full text-xs font-bold text-pink-600 shadow-lg transition-opacity">
@@ -974,7 +974,7 @@ Maak de titel en de tekst van de eerste pagina, plus een illustratie voor de kaf
 
                         {data.coverImage && data.coverImage !== 'loading' && !data.coverImage.startsWith('error') ? (
                             <div className="w-[60%] aspect-[4/3] rounded-2xl overflow-hidden border-8 border-white shadow-xl rotate-1">
-                                <img src={data.coverImage} className="w-full h-full object-cover" alt="Kaft" />
+                                <img src={data.coverImage} className="w-full h-full object-cover" alt="Kaft" loading="lazy" />
                             </div>
                         ) : (
                             <div className="w-[60%] aspect-[4/3] rounded-2xl border-4 border-dashed border-amber-300 bg-white/50 flex items-center justify-center">
@@ -1007,7 +1007,7 @@ Maak de titel en de tekst van de eerste pagina, plus een illustratie voor de kaf
                             <div className="flex-1 flex flex-col gap-8 items-center justify-center">
                                 {spread.left.image && spread.left.image !== 'loading' && !spread.left.image.startsWith('error') ? (
                                     <div className="w-full aspect-video rounded-xl overflow-hidden border-4 border-slate-100 shadow-sm bg-slate-50">
-                                        <img src={spread.left.image} className="w-full h-full object-cover" alt={`Pagina ${spread.leftIndex + 1}`} />
+                                        <img src={spread.left.image} className="w-full h-full object-cover" alt={`Pagina ${spread.leftIndex + 1}`} loading="lazy" />
                                     </div>
                                 ) : (
                                     <div className="w-full aspect-video rounded-xl border-2 border-dashed border-slate-200 flex items-center justify-center text-slate-300 bg-slate-50/50">
@@ -1037,7 +1037,7 @@ Maak de titel en de tekst van de eerste pagina, plus een illustratie voor de kaf
                                 <div className="flex-1 flex flex-col gap-8 items-center justify-center">
                                     {spread.right.image && spread.right.image !== 'loading' && !spread.right.image.startsWith('error') ? (
                                         <div className="w-full aspect-video rounded-xl overflow-hidden border-4 border-slate-100 shadow-sm bg-slate-50">
-                                            <img src={spread.right.image} className="w-full h-full object-cover" alt={`Pagina ${spread.rightIndex + 1}`} />
+                                            <img src={spread.right.image} className="w-full h-full object-cover" alt={`Pagina ${spread.rightIndex + 1}`} loading="lazy" />
                                         </div>
                                     ) : (
                                         <div className="w-full aspect-video rounded-xl border-2 border-dashed border-slate-200 flex items-center justify-center text-slate-300 bg-slate-50/50">
@@ -1199,7 +1199,7 @@ Maak de titel en de tekst van de eerste pagina, plus een illustratie voor de kaf
                                                     {data.coverImage === 'loading' ? (
                                                         <Loader2 className="animate-spin text-amber-600" />
                                                     ) : data.coverImage ? (
-                                                        <img src={data.coverImage} alt="Cover" className="w-full h-full object-cover" />
+                                                        <img src={data.coverImage} alt="Cover" className="w-full h-full object-cover" loading="lazy" />
                                                     ) : (
                                                         <div className="flex flex-col items-center text-amber-800/30">
                                                             <BookOpen size={48} className="mb-2" />

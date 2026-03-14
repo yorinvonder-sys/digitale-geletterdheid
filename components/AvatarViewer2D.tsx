@@ -519,31 +519,57 @@ function renderHairFront(
         case 'messy':
             return (
                 <g>
-                    <path d={`M ${cx - rx - 4} ${cy - 6}
-                        Q ${cx - rx - 6} ${top - 12} ${cx - 15} ${top - 8}
-                        Q ${cx - 8} ${top - 16} ${cx + 5} ${top - 6}
-                        Q ${cx + 15} ${top - 14} ${cx + rx + 4} ${cy - 6}
-                        Q ${cx + rx + 2} ${cy - 22} ${cx} ${top - 16}
-                        Q ${cx - rx - 4} ${cy - 22} ${cx - rx - 4} ${cy - 6}`}
+                    {/* Full hair base covering top of head */}
+                    <path d={`M ${cx - rx - 4} ${cy - 4}
+                        Q ${cx - rx - 6} ${top - 14} ${cx - 10} ${top - 10}
+                        Q ${cx} ${top - 18} ${cx + 10} ${top - 10}
+                        Q ${cx + rx + 6} ${top - 14} ${cx + rx + 4} ${cy - 4}
+                        Q ${cx + rx + 2} ${cy - 16} ${cx} ${top - 12}
+                        Q ${cx - rx - 2} ${cy - 16} ${cx - rx - 4} ${cy - 4}`}
                         fill={color} />
-                    {/* Messy strands */}
-                    <path d={`M ${cx - rx} ${cy - 12} Q ${cx - rx - 6} ${cy - 4} ${cx - rx + 2} ${cy + 2}`}
+                    {/* Messy tufts sticking out */}
+                    <path d={`M ${cx - 16} ${top - 6} L ${cx - 20} ${top - 22} L ${cx - 8} ${top - 10}`}
+                        fill={color} />
+                    <path d={`M ${cx + 4} ${top - 8} L ${cx + 8} ${top - 24} L ${cx + 14} ${top - 10}`}
+                        fill={color} />
+                    <path d={`M ${cx + 18} ${top - 4} L ${cx + 24} ${top - 18} L ${cx + rx} ${top}`}
+                        fill={color} />
+                    {/* Side strands hanging down */}
+                    <path d={`M ${cx - rx} ${cy - 10} Q ${cx - rx - 8} ${cy} ${cx - rx + 2} ${cy + 6}`}
+                        fill="none" stroke={color} strokeWidth={6} strokeLinecap="round" />
+                    <path d={`M ${cx + rx} ${cy - 10} Q ${cx + rx + 8} ${cy} ${cx + rx - 2} ${cy + 6}`}
                         fill="none" stroke={color} strokeWidth={5} strokeLinecap="round" />
-                    <path d={`M ${cx + rx} ${cy - 12} Q ${cx + rx + 6} ${cy - 4} ${cx + rx - 2} ${cy + 2}`}
-                        fill="none" stroke={color} strokeWidth={4} strokeLinecap="round" />
+                    {/* Highlight */}
+                    <path d={`M ${cx - 12} ${top} Q ${cx} ${top - 8} ${cx + 12} ${top}`}
+                        fill={light} opacity={0.3} />
                 </g>
             );
         case 'fade':
             return (
                 <g>
-                    <path d={`M ${cx - rx - 1} ${cy + 4}
-                        Q ${cx - rx} ${cy - 8} ${cx - rx + 5} ${top + 2}
-                        Q ${cx} ${top - 10} ${cx + rx - 5} ${top + 2}
-                        Q ${cx + rx} ${cy - 8} ${cx + rx + 1} ${cy + 4}`}
+                    {/* Top hair — fuller on top */}
+                    <path d={`M ${cx - rx + 6} ${cy - 10}
+                        Q ${cx - rx + 4} ${top - 2} ${cx} ${top - 8}
+                        Q ${cx + rx - 4} ${top - 2} ${cx + rx - 6} ${cy - 10}
+                        Q ${cx} ${cy - 16} ${cx - rx + 6} ${cy - 10}`}
                         fill={color} />
-                    {/* Fade gradient effect at sides */}
-                    <rect x={cx - rx - 1} y={cy - 2} width={10} height={14} rx={4} fill={color} opacity={0.4} />
-                    <rect x={cx + rx - 9} y={cy - 2} width={10} height={14} rx={4} fill={color} opacity={0.4} />
+                    {/* Mid fade — medium opacity */}
+                    <path d={`M ${cx - rx + 1} ${cy + 2}
+                        Q ${cx - rx} ${cy - 8} ${cx - rx + 6} ${cy - 12}`}
+                        fill="none" stroke={color} strokeWidth={6} strokeLinecap="round" opacity={0.45} />
+                    <path d={`M ${cx + rx - 1} ${cy + 2}
+                        Q ${cx + rx} ${cy - 8} ${cx + rx - 6} ${cy - 12}`}
+                        fill="none" stroke={color} strokeWidth={6} strokeLinecap="round" opacity={0.45} />
+                    {/* Low fade — light opacity */}
+                    <path d={`M ${cx - rx - 1} ${cy + 8}
+                        Q ${cx - rx - 2} ${cy + 2} ${cx - rx + 1} ${cy}`}
+                        fill="none" stroke={color} strokeWidth={5} strokeLinecap="round" opacity={0.2} />
+                    <path d={`M ${cx + rx + 1} ${cy + 8}
+                        Q ${cx + rx + 2} ${cy + 2} ${cx + rx - 1} ${cy}`}
+                        fill="none" stroke={color} strokeWidth={5} strokeLinecap="round" opacity={0.2} />
+                    {/* Highlight */}
+                    <path d={`M ${cx - 10} ${top + 4} Q ${cx} ${top - 4} ${cx + 10} ${top + 4}`}
+                        fill={light} opacity={0.3} />
                 </g>
             );
         case 'curls':
@@ -571,15 +597,25 @@ function renderHairFront(
         case 'mohawk':
             return (
                 <g>
-                    {/* Side shaved */}
-                    <path d={`M ${cx - rx} ${cy - 4} Q ${cx - rx + 2} ${top + 4} ${cx - 8} ${top + 4}`}
-                        fill={color} opacity={0.3} />
-                    <path d={`M ${cx + rx} ${cy - 4} Q ${cx + rx - 2} ${top + 4} ${cx + 8} ${top + 4}`}
-                        fill={color} opacity={0.3} />
-                    {/* Mohawk strip */}
-                    <path d={`M ${cx - 10} ${top + 4} Q ${cx - 6} ${top - 26} ${cx} ${top - 28}
-                        Q ${cx + 6} ${top - 26} ${cx + 10} ${top + 4}`}
+                    {/* Side shaved — subtle stubble */}
+                    <path d={`M ${cx - rx} ${cy - 2}
+                        Q ${cx - rx + 2} ${top + 6} ${cx - 12} ${top + 6}
+                        L ${cx - 12} ${cy - 2} Z`}
+                        fill={color} opacity={0.25} />
+                    <path d={`M ${cx + rx} ${cy - 2}
+                        Q ${cx + rx - 2} ${top + 6} ${cx + 12} ${top + 6}
+                        L ${cx + 12} ${cy - 2} Z`}
+                        fill={color} opacity={0.25} />
+                    {/* Mohawk strip — tall and wide */}
+                    <path d={`M ${cx - 14} ${top + 6}
+                        Q ${cx - 14} ${top - 16} ${cx - 8} ${top - 30}
+                        Q ${cx} ${top - 36} ${cx + 8} ${top - 30}
+                        Q ${cx + 14} ${top - 16} ${cx + 14} ${top + 6}
+                        Q ${cx} ${top} ${cx - 14} ${top + 6}`}
                         fill={color} />
+                    {/* Highlight */}
+                    <path d={`M ${cx - 4} ${top + 2} Q ${cx} ${top - 28} ${cx + 4} ${top + 2}`}
+                        fill={light} opacity={0.3} />
                 </g>
             );
         case 'pigtails':
@@ -676,10 +712,15 @@ function renderAccessory(
         case 'cap':
             return (
                 <g>
-                    <ellipse cx={cx} cy={top + 6} rx={rx + 8} ry={14} fill={color} />
-                    <rect x={cx - rx - 8} y={top + 2} width={rx * 2 + 16} height={12} rx={6} fill={color} />
-                    {/* Brim */}
-                    <ellipse cx={cx + 20} cy={top + 12} rx={22} ry={6} fill={colorDk} />
+                    {/* Cap dome — sits snug on head */}
+                    <path d={`M ${cx - rx + 2} ${cy - ry / 2 + 4}
+                        Q ${cx - rx} ${top - 4} ${cx} ${top - 8}
+                        Q ${cx + rx} ${top - 4} ${cx + rx - 2} ${cy - ry / 2 + 4}`}
+                        fill={color} />
+                    {/* Cap band */}
+                    <rect x={cx - rx + 2} y={cy - ry / 2} width={rx * 2 - 4} height={8} rx={4} fill={colorDk} />
+                    {/* Brim — forward-facing visor */}
+                    <ellipse cx={cx + 18} cy={cy - ry / 2 + 4} rx={18} ry={5} fill={colorDk} />
                 </g>
             );
         case 'beanie':

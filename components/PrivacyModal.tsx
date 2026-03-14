@@ -18,14 +18,14 @@ export const PrivacyModal: React.FC<PrivacyModalProps> = ({ isOpen, onClose, onA
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState<string | null>(null);
 
-    if (!isOpen) return null;
-
     // Log that privacy settings were viewed (audit trail)
     useEffect(() => {
         if (isOpen) {
             logPrivacyViewed(schoolId);
         }
     }, [isOpen, schoolId]);
+
+    if (!isOpen) return null;
 
     const handleExportData = async () => {
         setIsExporting(true);

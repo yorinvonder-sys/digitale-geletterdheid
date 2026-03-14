@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { User, Shield, Trophy, ChevronLeft, Sparkles, ShoppingBag, Palette, Crown, Headphones, Shirt, Columns as Pants, Smile, Glasses, Bot, Backpack, Zap, Scissors, X, Award, Gamepad2, BookOpen, BrainCircuit, Search, RotateCcw, Calendar, Printer, Projector, FileText, Cloud, Share2, MessageSquare, Scale, Save, Star, Heart, Laugh, Meh, Dumbbell, CheckCircle2, AlertTriangle } from 'lucide-react';
 import { ParentUser, UserStats, AvatarConfig, DEFAULT_AVATAR_CONFIG } from '../types';
 import { LazyAvatarViewer } from './LazyAvatarViewer';
+import { AvatarViewer2D } from './AvatarViewer2D';
 
 
 interface UserProfileProps {
@@ -472,7 +473,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
                             <X size={20} />
                         </button>
 
-                        <div className="md:w-1/2 bg-slate-50 relative border-r border-slate-100">
+                        <div className="md:w-1/2 relative border-r border-slate-100" style={{ backgroundColor: '#FAF9F0' }}>
                             <LazyAvatarViewer
                                 config={previewConfig}
                                 onPartClick={handlePartClick}
@@ -627,7 +628,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 h-[calc(100dvh-180px)] min-h-[600px]">
                         <div className="lg:col-span-5 flex flex-col gap-6 h-full">
                             <div className="flex-1 bg-gradient-to-b from-slate-200 to-white rounded-[2.5rem] p-1 shadow-xl relative overflow-hidden border border-white">
-                                <div className="w-full h-full relative rounded-[2.3rem] overflow-hidden bg-slate-100">
+                                <div className="w-full h-full relative rounded-[2.3rem] overflow-hidden" style={{ backgroundColor: '#FAF9F0' }}>
                                     <div className="absolute top-0 w-full p-6 z-10 flex justify-between items-start">
                                         <div>
                                             <h2 className="text-slate-900 font-black text-3xl">{user.displayName}</h2>
@@ -667,14 +668,15 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
                                     <LazyAvatarViewer config={activeTab === 'shop' ? previewConfig : (stats.avatarConfig || DEFAULT_AVATAR_CONFIG)} />
                                 </div>
                             </div>
-                            <div className="bg-white p-2 rounded-2xl shadow-sm border border-slate-100 flex gap-2">
-                                <button onClick={() => setActiveTab('profile')} className={`flex-1 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${activeTab === 'profile' ? 'bg-indigo-600 text-white shadow-lg' : 'text-slate-400 hover:bg-slate-50'}`}><User size={16} /> Stats</button>
-                                <button onClick={() => setActiveTab('shop')} className={`flex-1 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${activeTab === 'shop' ? 'bg-indigo-600 text-white shadow-lg' : 'text-slate-400 hover:bg-slate-50'}`}><ShoppingBag size={16} /> Winkel</button>
-                                <button onClick={() => setActiveTab('trophies')} className={`flex-1 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${activeTab === 'trophies' ? 'bg-indigo-600 text-white shadow-lg' : 'text-slate-400 hover:bg-slate-50'}`}><Trophy size={16} /> Trofeeën</button>
-                            </div>
                         </div>
 
-                        <div className="lg:col-span-7 bg-white rounded-[2.5rem] p-8 shadow-sm border border-slate-100 overflow-y-auto custom-scrollbar">
+                        <div className="lg:col-span-7 flex flex-col gap-4 h-full">
+                            <div className="bg-white p-2 rounded-2xl shadow-sm border border-slate-100 flex gap-2 shrink-0">
+                                <button onClick={() => setActiveTab('profile')} className={`flex-1 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${activeTab === 'profile' ? 'bg-[#D97757] text-white shadow-lg' : 'text-slate-400 hover:bg-slate-50'}`}><User size={16} /> Stats</button>
+                                <button onClick={() => setActiveTab('shop')} className={`flex-1 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${activeTab === 'shop' ? 'bg-[#D97757] text-white shadow-lg' : 'text-slate-400 hover:bg-slate-50'}`}><ShoppingBag size={16} /> Winkel</button>
+                                <button onClick={() => setActiveTab('trophies')} className={`flex-1 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${activeTab === 'trophies' ? 'bg-[#D97757] text-white shadow-lg' : 'text-slate-400 hover:bg-slate-50'}`}><Trophy size={16} /> Trofeeën</button>
+                            </div>
+                            <div className="bg-white rounded-[2.5rem] p-8 shadow-sm border border-slate-100 overflow-y-auto custom-scrollbar flex-1">
                             {activeTab === 'trophies' ? (
                                 <TrophyRoom completedMissions={stats.missionsCompleted || []} />
                             ) : activeTab === 'profile' ? (
@@ -802,7 +804,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
                                                     <h4 className="font-black text-slate-900 uppercase tracking-widest text-sm">Kleuren & Stijl</h4>
                                                 </div>
 
-                                                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 bg-slate-50/50 p-6 rounded-[2.5rem] border border-slate-100">
+                                                <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 bg-slate-50/50 p-6 rounded-[2.5rem] border border-slate-100">
                                                     <CircularColorPicker
                                                         size="sm"
                                                         selectedColor={activeTab === 'shop' ? previewConfig.shirtColor : (stats.avatarConfig?.shirtColor || '#3b82f6')}
@@ -900,6 +902,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
                                 </div>
                             )}
                         </div>
+                        </div>
                     </div>
                 )}
             </div>
@@ -935,7 +938,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
             {itemToPurchase && (
                 <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 animate-in fade-in duration-200">
                     <div className="bg-white rounded-[2rem] shadow-2xl w-full max-w-md overflow-hidden animate-in zoom-in-95 duration-200">
-                        <div className="relative bg-slate-50 h-64 border-b border-slate-100">
+                        <div className="relative h-64 border-b border-slate-100" style={{ backgroundColor: '#FAF9F0' }}>
                             <LazyAvatarViewer config={getPurchasePreviewConfig()} />
                             <div className="absolute top-4 right-4">
                                 <span className="bg-amber-100 text-amber-600 px-3 py-1 rounded-full text-xs font-bold border border-amber-200">
@@ -983,7 +986,28 @@ const BadgeDisplay = ({ icon, label, unlocked, color }: { icon: string, label: s
     </div>
 );
 
-const CategorySection = ({ title, items, stats, handlePurchase, handleEquip, previewConfig, setPreviewConfig, equippedConfigRef, ...props }: any) => (
+const HEAD_TYPES = ['hairStyle', 'skinColor', 'expression', 'gender'];
+
+const getItemPreviewConfig = (item: any, baseConfig: AvatarConfig): AvatarConfig => {
+    const config = { ...baseConfig };
+    if (item.type === 'baseModel') config.baseModel = item.value;
+    if (item.type === 'shirtColor') config.shirtColor = item.value;
+    if (item.type === 'pantsColor') config.pantsColor = item.value;
+    if (item.type === 'pantsStyle') config.pantsStyle = item.value;
+    if (item.type === 'skinColor') config.skinColor = item.value;
+    if (item.type === 'accessory') config.accessory = item.value;
+    if (item.type === 'hairStyle') config.hairStyle = item.value;
+    if (item.type === 'shirtStyle') config.shirtStyle = item.value;
+    if (item.type === 'gender') config.gender = item.value;
+    if (item.type === 'pose') config.pose = item.value;
+    if (item.type === 'expression') config.expression = item.value;
+    return config;
+};
+
+const CategorySection = ({ title, items, stats, handlePurchase, handleEquip, previewConfig, setPreviewConfig, equippedConfigRef, ...props }: any) => {
+    const baseConfig = equippedConfigRef?.current || stats.avatarConfig || DEFAULT_AVATAR_CONFIG;
+
+    return (
     <div>
         <h4 className="font-bold text-slate-900 mb-4 px-1">{title}</h4>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
@@ -1000,6 +1024,9 @@ const CategorySection = ({ title, items, stats, handlePurchase, handleEquip, pre
                     (item.type === 'hairStyle' && stats.avatarConfig?.hairStyle === item.value) ||
                     (item.type === 'shirtStyle' && stats.avatarConfig?.shirtStyle === item.value) ||
                     (item.type === 'gender' && stats.avatarConfig?.gender === item.value);
+
+                const itemPreviewConfig = getItemPreviewConfig(item, baseConfig);
+                const useHeadVariant = HEAD_TYPES.includes(item.type);
 
                 return (
                     <button
@@ -1021,15 +1048,19 @@ const CategorySection = ({ title, items, stats, handlePurchase, handleEquip, pre
                         onMouseLeave={() => setPreviewConfig(equippedConfigRef?.current || stats.avatarConfig || DEFAULT_AVATAR_CONFIG)}
                         disabled={notEnoughMoney}
                         className={`
-                            relative text-left p-4 rounded-3xl border-2 transition-all flex flex-col items-center text-center gap-4 group
+                            relative text-left p-3 rounded-3xl border-2 transition-all flex flex-col items-center text-center gap-2 group
                             ${isEquipped ? 'border-indigo-600 bg-indigo-50/30' : 'border-slate-100 bg-white hover:border-indigo-200 hover:shadow-xl hover:-translate-y-1'}
                             ${!isEquipped && isOwned ? '' : ''}
                             ${!isOwned && !notEnoughMoney ? 'border-indigo-50 bg-indigo-50/20' : ''}
                             ${notEnoughMoney ? 'opacity-40 grayscale cursor-not-allowed' : ''}
                         `}
                     >
-                        <div className={`w-16 h-16 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110 ${isOwned ? 'bg-indigo-50 text-indigo-600 shadow-sm' : 'bg-white text-indigo-300'}`}>
-                            {React.cloneElement(item.icon as React.ReactElement<any>, { size: 28 })}
+                        <div className={`w-20 h-20 rounded-2xl overflow-hidden flex items-center justify-center transition-transform group-hover:scale-105 ${isOwned ? 'bg-gradient-to-b from-indigo-50 to-white' : 'bg-gradient-to-b from-slate-50 to-white opacity-60'}`}>
+                            <AvatarViewer2D
+                                config={itemPreviewConfig}
+                                interactive={false}
+                                variant={useHeadVariant ? 'head' : 'full'}
+                            />
                         </div>
 
                         <div className="w-full">
@@ -1075,4 +1106,5 @@ const CategorySection = ({ title, items, stats, handlePurchase, handleEquip, pre
             })}
         </div>
     </div>
-);
+    );
+};

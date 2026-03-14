@@ -178,8 +178,8 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
                 </div>
 
                 {/* Controls Panel */}
-                <div className="flex-1 p-5 md:p-8 lg:p-10 flex flex-col justify-center overflow-y-auto" style={{ background: 'linear-gradient(135deg, #FAF9F0 0%, #F5E6DC 50%, #F0D5C4 100%)' }}>
-                    <div className="max-w-md mx-auto w-full">
+                <div className="flex-1 p-5 md:p-8 lg:p-10 flex flex-col overflow-y-auto scroll-smooth" style={{ background: 'linear-gradient(135deg, #FAF9F0 0%, #F5E6DC 50%, #F0D5C4 100%)' }}>
+                    <div className="max-w-md mx-auto w-full my-auto">
                         {/* Step Header */}
                         <div className="text-center mb-5">
                             <p className="text-xs font-semibold uppercase tracking-widest mb-1" style={{ color: '#D97757' }}>{step.subtitle}</p>

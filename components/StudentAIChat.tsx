@@ -166,7 +166,7 @@ export const StudentAIChat: React.FC<StudentAIChatProps> = ({ userIdentifier, co
                     </span>
                     {/* Pip avatar */}
                     <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300 overflow-hidden flex items-center justify-center" style={{ backgroundColor: '#FFFFFF', borderWidth: 2, borderColor: '#D97757' }}>
-                        <img src="/mascot/pip-headset.webp" alt="Pip — je AI-hulpje" className="w-11 h-11 sm:w-12 sm:h-12 object-contain" draggable={false} />
+                        <img src="/mascot/pip-headset.webp" alt="Pip — je AI-hulpje" className="w-11 h-11 sm:w-12 sm:h-12 object-contain" draggable={false} loading="lazy" />
                         {/* Pulse ring */}
                         <span className="absolute inset-0 rounded-full animate-ping opacity-20 pointer-events-none" style={{ borderWidth: 2, borderColor: '#D97757' }} />
                     </div>
@@ -183,7 +183,7 @@ export const StudentAIChat: React.FC<StudentAIChatProps> = ({ userIdentifier, co
                     <div className="p-4 flex items-center justify-between" style={{ background: isLocked ? '#FEF2F2' : 'linear-gradient(to right, #D97757, #C46849)' }}>
                         <div className="flex items-center gap-2">
                             <div className="p-1 bg-white rounded-full overflow-hidden">
-                                {isLocked ? <Lock size={20} className="text-red-500" /> : <img src="/mascot/pip-headset.webp" alt="Pip" className="w-8 h-8 object-contain" />}
+                                {isLocked ? <Lock size={20} className="text-red-500" /> : <img src="/mascot/pip-headset.webp" alt="Pip" className="w-8 h-8 object-contain" loading="lazy" />}
                             </div>
                             <div>
                                 <h3 className={`font-bold ${isLocked ? 'text-red-600' : 'text-white'}`} style={{ fontFamily: "'Newsreader', Georgia, serif" }}>

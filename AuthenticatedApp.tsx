@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Suspense, useMemo } from 'react';
-import { ProjectZeroDashboard } from './components/ProjectZeroDashboard';
-import { Footer } from './components/Footer';
+
+
 import { ParentUser, UserStats, RoleId, AvatarConfig } from './types';
 import { ROLES } from './config/agents';
 import { subscribeToAuthChanges, logout } from './services/authService';
@@ -9,19 +9,24 @@ import { Rocket, Loader2, ArrowLeft, Lock } from 'lucide-react';
 import { logger } from './utils/logger';
 import { ClassroomConfig } from './types';
 import { logActivity, updateClassroomConfig } from './services/teacherService';
-import { CookieConsent } from './components/CookieConsent';
 import { TutorialProvider, STUDENT_TUTORIAL_STEPS, STUDENT_STORAGE_KEY, TutorialStep } from './contexts/TutorialContext';
-import TutorialSpotlight, { TutorialRestartButton } from './components/teacher/TutorialSpotlight';
 import { lazyWithRetry } from './utils/lazyWithRetry';
 import { useTeacherMessages } from './hooks/useTeacherMessages';
 import { TeacherMessagePopup } from './components/TeacherMessagePopup';
 import { ExitConfirmDialog } from './components/ExitConfirmDialog';
 import { Toast } from './components/Toast';
-import { MfaGate } from './components/MfaGate';
+
+
 import './styles/app.css';
 import './styles/authenticated.css';
 
 // Code splitting: Lazy load heavy components with automatic retry on failure
+const ProjectZeroDashboard = lazyWithRetry(() => import('./components/ProjectZeroDashboard').then(m => ({ default: m.ProjectZeroDashboard })));
+const Footer = lazyWithRetry(() => import('./components/Footer').then(m => ({ default: m.Footer })));
+const CookieConsent = lazyWithRetry(() => import('./components/CookieConsent').then(m => ({ default: m.CookieConsent })));
+const TutorialSpotlight = lazyWithRetry(() => import('./components/teacher/TutorialSpotlight').then(m => ({ default: m.default })));
+const TutorialRestartButton = lazyWithRetry(() => import('./components/teacher/TutorialSpotlight').then(m => ({ default: m.TutorialRestartButton })));
+const MfaGate = lazyWithRetry(() => import('./components/MfaGate').then(m => ({ default: m.MfaGate })));
 const AiLab = lazyWithRetry(() => import('./components/AiLab').then(m => ({ default: m.AiLab })));
 const TeacherDashboard = lazyWithRetry(() => import('./components/TeacherDashboard').then(m => ({ default: m.TeacherDashboard })));
 const UserProfile = lazyWithRetry(() => import('./components/UserProfile').then(m => ({ default: m.UserProfile })));
@@ -414,9 +419,11 @@ export function AuthenticatedApp() {
     // M-05: MFA gate — privileged roles must verify AAL2 before accessing the app
     if (user.mfaPending) {
         return (
-            <MfaGate onVerified={() => {
-                setUser({ ...user, mfaPending: false });
-            }} />
+            <Suspense fallback={<LoadingFallback />}>
+                <MfaGate onVerified={() => {
+                    setUser({ ...user, mfaPending: false });
+                }} />
+            </Suspense>
         );
     }
 
@@ -833,10 +840,10 @@ export function AuthenticatedApp() {
 
             <main id="main-content" className={`flex-1 flex flex-col${showFooter ? '' : ' min-h-0'}`} tabIndex={-1}>
                 {user.role === 'student' && (
-                    <>
+                    <Suspense fallback={null}>
                         <TutorialSpotlight />
                         <TutorialRestartButton />
-                    </>
+                    </Suspense>
                 )}
                 <Suspense fallback={<LoadingFallback />}>
                     {renderContent()}
@@ -863,12 +870,16 @@ export function AuthenticatedApp() {
                 </div>
             )}
             {showFooter && (
-                <Footer
-                    onAccountDeleted={handleLogout}
-                    schoolId={user.schoolId}
-                />
+                <Suspense fallback={null}>
+                    <Footer
+                        onAccountDeleted={handleLogout}
+                        schoolId={user.schoolId}
+                    />
+                </Suspense>
             )}
-            <CookieConsent schoolId={user.schoolId} />
+            <Suspense fallback={null}>
+                <CookieConsent schoolId={user.schoolId} />
+            </Suspense>
             {user.role === 'student' && (
                 <TeacherMessagePopup
                     message={latestMessage}

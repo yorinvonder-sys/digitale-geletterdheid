@@ -1817,6 +1817,15 @@ const AvatarModel = memo<{
 
     const armColor = getArmColor(config.shirtStyle, shirtColor, skinColor);
 
+    // Flatten hair under headwear (cap/beanie)
+    const hasHeadCover = config.accessory === 'cap' || config.accessory === 'beanie';
+    const hairScale: [number, number, number] = hasHeadCover
+        ? [1, config.accessory === 'beanie' ? 0.35 : 0.5, 1]
+        : [1, 1, 1];
+    const hairOffset: [number, number, number] = hasHeadCover
+        ? [0, config.accessory === 'beanie' ? -0.10 : -0.06, 0]
+        : [0, 0, 0];
+
     return (
         <group position={[0, variant === 'head' ? -1.5 : -0.105, 0]}>
 
@@ -1851,6 +1860,8 @@ const AvatarModel = memo<{
                     onClick={(e) => handleClick(e, 'hair')}
                     onPointerEnter={(e) => handlePointerEnter(e, 'hair')}
                     onPointerLeave={handlePointerLeave}
+                    scale={hairScale}
+                    position={hairOffset}
                 >
                     <HairLayer style={config.hairStyle} color={hairColor} />
                 </group>
@@ -1999,22 +2010,7 @@ const AvatarModel = memo<{
 
 const SceneSurface = memo<{ variant: 'full' | 'head' }>(({ variant }) => {
     const { gl, scene } = useThree();
-
-    // Set background immediately on mount and when variant changes
     const bgColor = useMemo(() => new THREE.Color('#FAF9F0'), []);
-
-    // Use a ref to track if we've already set the background
-    const initialized = useRef(false);
-    if (!initialized.current) {
-        if (variant === 'full') {
-            gl.setClearColor(bgColor, 1);
-            scene.background = bgColor;
-        } else {
-            gl.setClearColor('#000000', 0);
-            scene.background = null;
-        }
-        initialized.current = true;
-    }
 
     useEffect(() => {
         if (variant === 'head') {
@@ -2040,7 +2036,7 @@ export const AvatarViewer: React.FC<AvatarViewerProps> = ({
     );
 
     return (
-        <div className={`w-full h-full relative ${variant === 'head' ? '' : 'min-h-[300px]'}`}>
+        <div className={`w-full h-full relative ${variant === 'head' ? '' : 'min-h-[300px]'}`} style={variant === 'full' ? { backgroundColor: '#FAF9F0' } : undefined}>
             <Canvas
                 className={variant === 'full' ? 'bg-[#FAF9F0]' : 'bg-transparent'}
                 shadows={{ type: THREE.PCFSoftShadowMap }}
@@ -2050,7 +2046,17 @@ export const AvatarViewer: React.FC<AvatarViewerProps> = ({
                     toneMapping: THREE.ACESFilmicToneMapping,
                     toneMappingExposure: 1.15,
                     outputColorSpace: THREE.SRGBColorSpace,
-
+                    powerPreference: 'high-performance',
+                }}
+                onCreated={({ gl, scene }) => {
+                    if (variant === 'full') {
+                        const bg = new THREE.Color('#FAF9F0');
+                        gl.setClearColor(bg, 1);
+                        scene.background = bg;
+                    } else {
+                        gl.setClearColor('#000000', 0);
+                        scene.background = null;
+                    }
                 }}
                 dpr={[1, 1.5]}
                 camera={{ position: cameraPos, fov: 45 }}

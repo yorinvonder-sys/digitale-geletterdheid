@@ -90,6 +90,8 @@ export default defineConfig(({ mode }) => {
       // Keep lazy routes lazy: avoid eager modulepreload chains on public landing routes.
       modulePreload: false,
       rollupOptions: {
+        // html2canvas is an optional jsPDF dep — never used, don't bundle it
+        external: ['html2canvas'],
         output: {
           manualChunks(id) {
             // Keep Vite's preload runtime in its own tiny chunk so it never drags
@@ -113,7 +115,7 @@ export default defineConfig(({ mode }) => {
             if (pkg === 'xlsx') return 'vendor-xlsx';
             if (pkg === 'dompurify') return 'vendor-dompurify';
             // jspdf: NOT in manualChunks — stays with PDF export flow (BookPreview), avoids preload on landing
-            if (pkg.startsWith('html2canvas')) return 'vendor-html2canvas';
+
             if (pkg === 'react-markdown') return 'vendor-react-markdown';
           }
         }
