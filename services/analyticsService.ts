@@ -18,8 +18,6 @@ export type AnalyticsEvent =
     | 'mission_start'
     | 'mission_complete';
 
-type AnalyticsRole = 'anonymous' | 'student' | 'teacher' | 'developer';
-
 interface AnalyticsPayload extends Record<string, unknown> {
     route?: string;
     page?: string;
@@ -49,14 +47,6 @@ const hasAnalyticsConsent = (): boolean => {
     } catch {
         return false;
     }
-};
-
-const mapRole = (roleValue: unknown): AnalyticsRole => {
-    if (typeof roleValue !== 'string') return 'student';
-    const normalized = roleValue.toLowerCase();
-    if (normalized === 'teacher') return 'teacher';
-    if (normalized === 'developer' || normalized === 'admin') return 'developer';
-    return 'student';
 };
 
 const sanitizeToken = (value: unknown, maxLen: number): string => {
@@ -137,19 +127,11 @@ const sendAnalyticsEvent = async (event: AnalyticsEvent, data?: AnalyticsPayload
             return;
         }
 
-        // Determine role + token before sending to avoid role race conditions.
-        let role: AnalyticsRole = 'anonymous';
         let accessToken: string | null = null;
         if (hasLikelySupabaseSession()) {
             try {
                 const { supabase } = await import('./supabase');
-                const [{ data: { user } }, { data: { session } }] = await Promise.all([
-                    supabase.auth.getUser(),
-                    supabase.auth.getSession(),
-                ]);
-                if (user) {
-                    role = mapRole(user.user_metadata?.role ?? user.app_metadata?.role);
-                }
+                const { data: { session } } = await supabase.auth.getSession();
                 accessToken = session?.access_token ?? null;
             } catch (authErr) {
                 if (isDev) console.warn('[Analytics] Could not resolve auth context:', authErr);
@@ -171,7 +153,6 @@ const sendAnalyticsEvent = async (event: AnalyticsEvent, data?: AnalyticsPayload
                 eventName: event,
                 pageKey,
                 ctaKey,
-                role,
                 route,
                 metric_name: metricName,
                 metric_value: metricValue,

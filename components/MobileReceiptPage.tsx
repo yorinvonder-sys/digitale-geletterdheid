@@ -5,7 +5,7 @@
  * Geoptimaliseerd voor één-hand gebruik op telefoon:
  * - Grote camera-knop (opent direct de camera)
  * - Drag-drop of gallerij-keuze
- * - AI-scan via Gemini Vision
+ * - AI-scan via Claude Vision
  * - Formulier invullen en opslaan
  * - Recente bonnetjes lijst
  */
@@ -216,7 +216,7 @@ export function MobileReceiptPage({ userId, onNavigateHome }: MobileReceiptPageP
                     <div className="w-16 h-16 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin" />
                     <div>
                         <p className="text-white font-black text-xl">AI scant bonnetje...</p>
-                        <p className="text-slate-400 text-sm mt-1">Gemini Vision analyseert je bonnetje</p>
+                        <p className="text-slate-400 text-sm mt-1">AI analyseert je bonnetje</p>
                     </div>
                 </div>
             </div>
@@ -428,7 +428,7 @@ export function MobileReceiptPage({ userId, onNavigateHome }: MobileReceiptPageP
                 <div className="bg-amber-50 border border-amber-100 rounded-2xl px-4 py-3 flex items-start gap-3">
                     <Sparkles size={18} className="text-amber-500 shrink-0 mt-0.5" />
                     <p className="text-xs text-amber-800 leading-relaxed">
-                        <strong>Gemini AI</strong> leest automatisch de leverancier, datum, bedrag en BTW van je bonnetje. Je kunt daarna alles controleren en aanpassen.
+                        <strong>AI</strong> leest automatisch de leverancier, datum, bedrag en BTW van je bonnetje. Je kunt daarna alles controleren en aanpassen.
                     </p>
                 </div>
 

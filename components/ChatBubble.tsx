@@ -121,7 +121,7 @@ export const ChatBubble: React.FC<ChatBubbleProps> = ({ message, onLinkClick, is
             <div className="w-5 h-5 bg-lab-primary rounded-md flex items-center justify-center">
               <Sparkles size={12} className="text-white" />
             </div>
-            <span className="text-[10px] font-extrabold uppercase tracking-widest text-lab-primary">AI Mentor</span>
+            <span className="text-[10px] font-extrabold uppercase tracking-widest text-lab-primary">Pip</span>
           </div>
         )}
 

@@ -34,9 +34,9 @@ const StorySetupForm = ({ onCancel, onSubmit }: { onCancel: () => void, onSubmit
     };
 
     return (
-        <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300 border border-amber-100 max-h-[85vh] flex flex-col">
-            <div className="bg-gradient-to-r from-amber-400 to-pink-500 p-6 text-white text-center shrink-0">
-                <Sparkles size={32} className="mx-auto mb-2 text-yellow-200" />
+        <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300 max-h-[85vh] flex flex-col" style={{ borderColor: '#E8E6DF', borderWidth: 1 }}>
+            <div className="p-6 text-white text-center shrink-0" style={{ backgroundColor: '#D97757' }}>
+                <Sparkles size={32} className="mx-auto mb-2 text-white/80" />
                 <h3 className="text-xl font-black uppercase tracking-tight">Verhaal Setup</h3>
                 <p className="text-white/80 text-sm font-medium">Vertel ons kort over je idee!</p>
             </div>
@@ -51,7 +51,7 @@ const StorySetupForm = ({ onCancel, onSubmit }: { onCancel: () => void, onSubmit
                             value={heroName}
                             onChange={e => setHeroName(e.target.value)}
                             placeholder="Bijv. Tim, Bello, Robo..."
-                            className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-400 outline-none font-bold text-slate-700"
+                            className="w-full p-3 border rounded-xl outline-none font-bold" style={{ backgroundColor: '#FAF9F0', borderColor: '#E8E6DF', color: '#3D3D38' }}
                         />
                     </div>
 
@@ -64,7 +64,7 @@ const StorySetupForm = ({ onCancel, onSubmit }: { onCancel: () => void, onSubmit
                                 value={heroType}
                                 onChange={e => setHeroType(e.target.value)}
                                 placeholder="Bijv. Een robot..."
-                                className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-400 outline-none font-bold text-slate-700"
+                                className="w-full p-3 border rounded-xl outline-none font-bold" style={{ backgroundColor: '#FAF9F0', borderColor: '#E8E6DF', color: '#3D3D38' }}
                             />
                         </div>
                         <div>
@@ -75,7 +75,7 @@ const StorySetupForm = ({ onCancel, onSubmit }: { onCancel: () => void, onSubmit
                                 value={setting}
                                 onChange={e => setSetting(e.target.value)}
                                 placeholder="Bijv. Op Mars..."
-                                className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-400 outline-none font-bold text-slate-700"
+                                className="w-full p-3 border rounded-xl outline-none font-bold" style={{ backgroundColor: '#FAF9F0', borderColor: '#E8E6DF', color: '#3D3D38' }}
                             />
                         </div>
                     </div>
@@ -88,7 +88,7 @@ const StorySetupForm = ({ onCancel, onSubmit }: { onCancel: () => void, onSubmit
                             onChange={e => setTheme(e.target.value)}
                             placeholder="Bijv. Hij zoekt zijn verloren vlieger..."
                             rows={3}
-                            className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-400 outline-none font-bold text-slate-700 resize-none"
+                            className="w-full p-3 border rounded-xl outline-none font-bold resize-none" style={{ backgroundColor: '#FAF9F0', borderColor: '#E8E6DF', color: '#3D3D38' }}
                         />
                     </div>
 
@@ -102,7 +102,7 @@ const StorySetupForm = ({ onCancel, onSubmit }: { onCancel: () => void, onSubmit
                         </button>
                         <button
                             type="submit"
-                            className="flex-[2] py-3 bg-gradient-to-r from-amber-400 to-pink-500 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-95 transition-all"
+                            className="flex-[2] py-3 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-95 transition-all" style={{ backgroundColor: '#D97757' }}
                         >
                             Start Verhaal! 🚀
                         </button>
@@ -159,10 +159,10 @@ const PromptPopup: React.FC<PromptPopupProps> = ({
     if (!isOpen) return null;
 
     const typeConfig = {
-        text: { icon: <Edit3 size={16} />, color: 'from-blue-500 to-indigo-500' },
-        image: { icon: <ImageIcon size={16} />, color: 'from-pink-500 to-rose-500' },
-        title: { icon: <Wand2 size={16} />, color: 'from-amber-500 to-orange-500' },
-        'new-page': { icon: <Sparkles size={16} />, color: 'from-emerald-500 to-green-500' }
+        text: { icon: <Edit3 size={16} />, color: 'from-[#2A9D8F] to-[#238B7F]' },
+        image: { icon: <ImageIcon size={16} />, color: 'from-[#8B6F9E] to-[#7A5F8D]' },
+        title: { icon: <Wand2 size={16} />, color: 'from-[#D97757] to-[#C46849]' },
+        'new-page': { icon: <Sparkles size={16} />, color: 'from-[#10B981] to-[#059669]' }
     };
 
     const config = typeConfig[type];
@@ -205,7 +205,7 @@ const PromptPopup: React.FC<PromptPopupProps> = ({
                         onChange={e => setPrompt(e.target.value)}
                         placeholder={placeholder}
                         rows={3}
-                        className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-pink-400 outline-none font-medium text-slate-700 resize-none placeholder:text-slate-400"
+                        className="w-full p-3 border rounded-xl focus:ring-2 outline-none font-medium resize-none" style={{ backgroundColor: '#FAF9F0', borderColor: '#E8E6DF', color: '#3D3D38' }}
                     />
 
                     <div className="flex gap-2">
@@ -258,11 +258,11 @@ const PageContent = ({
 
     // Shared interactive styles
     const interactiveWrapperClass = isInteractive
-        ? "cursor-pointer transition-all duration-200 hover:border-dashed hover:border-2 hover:border-pink-400 hover:bg-pink-50/30 group/edit"
+        ? "cursor-pointer transition-all duration-200 hover:border-dashed hover:border-2 hover:border-[#2A9D8F] hover:bg-[#2A9D8F]/10 group/edit"
         : "";
     // Only show edit hint tooltips if interactive
     const editHintClass = isInteractive
-        ? "absolute -top-2 -right-2 w-6 h-6 bg-pink-500 rounded-full flex items-center justify-center text-white opacity-0 group-hover/edit:opacity-100 transition-opacity shadow-lg"
+        ? "absolute -top-2 -right-2 w-6 h-6 bg-[#D97757] rounded-full flex items-center justify-center text-white opacity-0 group-hover/edit:opacity-100 transition-opacity shadow-lg"
         : "hidden";
 
     // --- RENDER COVER (FRONT ONLY) ---
@@ -279,7 +279,7 @@ const PageContent = ({
                 <div
                     className={`absolute inset-0 z-0 m-4 rounded overflow-hidden shadow-inner border-[6px] transition-all group/edit 
                     ${isInteractive
-                            ? 'border-amber-400/50 cursor-pointer hover:border-pink-500 hover:shadow-[0_0_20px_rgba(236,72,153,0.3)]'
+                            ? 'border-amber-400/50 cursor-pointer hover:border-[#D97757] hover:shadow-[0_0_20px_rgba(217,119,87,0.3)]'
                             : 'border-white/20'}`}
                     onClick={() => isInteractive && onImageClick?.(0)}
                 >
@@ -310,19 +310,19 @@ const PageContent = ({
                             />
                             {isInteractive && (
                                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent p-4 flex justify-center opacity-0 group-hover/edit:opacity-100 transition-opacity">
-                                    <div className="bg-pink-500 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg flex items-center gap-2">
+                                    <div className="text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg flex items-center gap-2" style={{ backgroundColor: '#D97757' }}>
                                         <Edit3 size={12} /> Kaft Afbeelding Wijzigen
                                     </div>
                                 </div>
                             )}
                         </>
                     ) : (
-                        <div className={`w-full h-full flex items-center justify-center text-yellow-900/10 ${isInteractive ? 'hover:bg-pink-50/20' : ''}`}>
+                        <div className={`w-full h-full flex items-center justify-center text-yellow-900/10 ${isInteractive ? 'hover:bg-[#D97757]/10' : ''}`}>
                             <div className="flex flex-col items-center gap-2">
-                                <BookOpen size={60} className={isInteractive ? 'text-amber-400' : ''} />
+                                <BookOpen size={60} className={isInteractive ? 'text-[#D97757]' : ''} />
                                 <span className="text-amber-900/40 text-xs font-bold uppercase tracking-widest">Kaft Illustratie</span>
                                 {isInteractive && (
-                                    <span className="text-pink-500 text-xs font-bold bg-white/80 px-3 py-1 rounded-full shadow-sm">
+                                    <span className="text-xs font-bold bg-white/80 px-3 py-1 rounded-full shadow-sm" style={{ color: '#D97757' }}>
                                         📸 Klik om illustratie te maken
                                     </span>
                                 )}
@@ -335,7 +335,7 @@ const PageContent = ({
                 <div className="relative z-20 w-full flex-1 flex flex-col items-center justify-between py-4 px-4 pointer-events-none">
                     {/* Title Area - Clickable - Now at top with less padding */}
                     <div
-                        className={`w-full text-center relative p-2 rounded-lg bg-white/90 shadow-lg border-2 border-white backdrop-blur-sm transform -rotate-1 transition-all duration-300 pointer-events-auto ${isInteractive ? 'cursor-pointer hover:border-pink-300 hover:scale-[1.02] group/edit' : ''}`}
+                        className={`w-full text-center relative p-2 rounded-lg bg-white/90 shadow-lg border-2 border-white backdrop-blur-sm transform -rotate-1 transition-all duration-300 pointer-events-auto ${isInteractive ? 'cursor-pointer hover:border-[#D97757] hover:scale-[1.02] group/edit' : ''}`}
                         onClick={(e) => {
                             if (isInteractive) {
                                 e.stopPropagation();
@@ -395,7 +395,7 @@ const PageContent = ({
                 {/* REMOVED: bg-stone-50 and p-1.5 to remove the gray box/frame effect */}
                 <div
                     className={`w-full max-h-[40%] shadow-sm rounded border transition-all duration-300 shrink-0 ${isInteractive
-                        ? 'cursor-pointer border-dashed border-2 border-stone-300 hover:border-pink-400 hover:bg-pink-50/30 group/edit'
+                        ? 'cursor-pointer border-dashed border-2 border-stone-300 hover:border-[#8B6F9E] hover:bg-[#8B6F9E]/10 group/edit'
                         : 'border-stone-100 transform rotate-[0.5deg] hover:rotate-0'
                         }`}
                     onClick={() => isInteractive && onImageClick?.(pageIndex + 1)}
@@ -420,7 +420,7 @@ const PageContent = ({
                                     💡 <strong>Tip:</strong> Vermijd enge, gewelddadige of ongepaste beschrijvingen.
                                 </div>
                                 {isInteractive && (
-                                    <button className="text-[10px] bg-amber-500 text-white px-3 py-1.5 rounded-full shadow-sm hover:bg-amber-600 transition-colors mt-1 font-bold">
+                                    <button className="text-[10px] text-white px-3 py-1.5 rounded-full shadow-sm transition-colors mt-1 font-bold" style={{ backgroundColor: '#D97757' }}>
                                         ✏️ Opnieuw proberen
                                     </button>
                                 )}
@@ -429,8 +429,8 @@ const PageContent = ({
                             <>
                                 <img src={page.image} className="w-full h-full object-cover" alt={`Pagina ${pageIndex + 1}`} loading="lazy" />
                                 {isInteractive && (
-                                    <div className="absolute inset-0 bg-pink-500/0 hover:bg-pink-500/10 transition-colors flex items-center justify-center">
-                                        <div className="opacity-0 group-hover/edit:opacity-100 bg-white/90 px-3 py-1.5 rounded-full text-xs font-bold text-pink-600 shadow-lg transition-opacity">
+                                    <div className="absolute inset-0 bg-[#8B6F9E]/0 hover:bg-[#8B6F9E]/10 transition-colors flex items-center justify-center">
+                                        <div className="opacity-0 group-hover/edit:opacity-100 bg-white/90 px-3 py-1.5 rounded-full text-xs font-bold shadow-lg transition-opacity" style={{ color: '#8B6F9E' }}>
                                             ✏️ Afbeelding wijzigen
                                         </div>
                                     </div>
@@ -438,8 +438,8 @@ const PageContent = ({
                             </>
                         ) : (
                             <div className="w-full h-full flex flex-col items-center justify-center text-stone-300 gap-1 bg-stone-50/50">
-                                <ImageIcon size={20} className={isInteractive ? 'text-pink-400' : 'opacity-50'} />
-                                <span className={`text-[9px] font-medium ${isInteractive ? 'text-pink-400' : ''}`}>
+                                <ImageIcon size={20} className={isInteractive ? 'text-[#8B6F9E]' : 'opacity-50'} />
+                                <span className={`text-[9px] font-medium ${isInteractive ? 'text-[#8B6F9E]' : ''}`}>
                                     {isInteractive ? 'Klik om illustratie toe te voegen' : 'Wacht op illustratie...'}
                                 </span>
                             </div>
@@ -455,7 +455,7 @@ const PageContent = ({
                 {/* Text Area - Clickable */}
                 <div
                     className={`flex-1 relative overflow-y-auto custom-scrollbar rounded-lg p-2 ${isInteractive
-                        ? 'cursor-pointer border-2 border-dashed border-stone-300 hover:border-blue-400 hover:bg-blue-50/30 transition-all group/edit'
+                        ? 'cursor-pointer border-2 border-dashed border-stone-300 hover:border-[#2A9D8F] hover:bg-[#2A9D8F]/10 transition-all group/edit'
                         : ''
                         }`}
                     onClick={(e) => {
@@ -469,7 +469,7 @@ const PageContent = ({
                     <div className="absolute inset-0 flex flex-col justify-start pt-1 pointer-events-none opacity-15">
                         {[...Array(12)].map((_, i) => <div key={i} className="w-full h-5 border-b border-stone-300"></div>)}
                     </div>
-                    <p className="font-serif text-stone-700 text-base md:text-lg leading-relaxed relative z-10 first-letter:text-2xl first-letter:font-black first-letter:text-amber-500 first-letter:mr-0.5 first-letter:float-left">
+                    <p className="font-serif text-stone-700 text-base md:text-lg leading-relaxed relative z-10 first-letter:text-2xl first-letter:font-black first-letter:text-[#D97757] first-letter:mr-0.5 first-letter:float-left">
                         {page?.text || "Het verhaal gaat hier verder..."}
                     </p>
                     {isInteractive && (
@@ -848,8 +848,8 @@ Maak de titel en de tekst van de eerste pagina, plus een illustratie voor de kaf
 
     if (isEmptyBook && !hasStarted) {
         return (
-            <div className="w-full h-full bg-amber-50 flex items-center justify-center p-4 relative overflow-hidden">
-                <div className="absolute inset-0 bg-[radial-gradient(#fcd34d20_1px,transparent_1px)] [background-size:20px_20px] opacity-50"></div>
+            <div className="w-full h-full flex items-center justify-center p-4 relative overflow-hidden" style={{ backgroundColor: '#FAF9F0' }}>
+                <div className="absolute inset-0 bg-[radial-gradient(#D9775720_1px,transparent_1px)] [background-size:20px_20px] opacity-50"></div>
                 <div className="z-10 w-full max-w-md">
                     {showForm ? (
                         <StorySetupForm
@@ -857,19 +857,18 @@ Maak de titel en de tekst van de eerste pagina, plus een illustratie voor de kaf
                             onSubmit={handleFormSubmit}
                         />
                     ) : (
-                        <div className="bg-white rounded-3xl shadow-xl overflow-hidden text-center p-8 border border-stone-200 animate-in zoom-in-95 duration-500">
-                            <div className="w-24 h-24 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center text-white mx-auto mb-6 shadow-lg transform -rotate-3 hover:rotate-3 transition-transform">
-                                <BookOpen size={40} />
-                            </div>
-                            <h1 className="text-3xl font-black text-slate-900 mb-2">Verhalen Ontwerper</h1>
-                            <p className="text-slate-500 font-medium mb-8">
+                        <div className="bg-white rounded-3xl shadow-xl overflow-hidden text-center p-8 animate-in zoom-in-95 duration-500" style={{ borderColor: '#E8E6DF', borderWidth: 1 }}>
+                            <img src="/mascot/pip-reading.webp" alt="Pip" className="w-24 h-24 object-contain mx-auto mb-4" />
+                            <h1 className="text-3xl font-black mb-2" style={{ color: '#1A1A19' }}>Verhalen Ontwerper</h1>
+                            <p className="font-medium mb-8" style={{ color: '#6B6B66' }}>
                                 Word een echte auteur! Samen met AI ga je je eigen prentenboek schrijven en illustreren.
                             </p>
                             <button
                                 onClick={() => setShowForm(true)}
-                                className="w-full py-4 bg-slate-900 text-white font-bold rounded-2xl shadow-lg hover:bg-slate-800 transition-all flex items-center justify-center gap-2 active:scale-95 group"
+                                className="w-full py-4 text-white font-bold rounded-2xl shadow-lg hover:opacity-90 transition-all flex items-center justify-center gap-2 active:scale-95 group"
+                                style={{ backgroundColor: '#D97757' }}
                             >
-                                <Sparkles size={18} className="text-yellow-400 group-hover:animate-spin" />
+                                <Sparkles size={18} className="text-white/80 group-hover:animate-spin" />
                                 Start Mijn Boek
                             </button>
                         </div>
@@ -949,7 +948,7 @@ Maak de titel en de tekst van de eerste pagina, plus een illustratie voor de kaf
                         }
                          /* Cover specific styling */
                         .cover-page {
-                            background-color: #fef3c7; /* Amber-50 */
+                            background-color: #FAF9F0; /* Brand cream */
                         }
                     }
                 `}</style>
@@ -957,11 +956,11 @@ Maak de titel en de tekst van de eerste pagina, plus een illustratie voor de kaf
                 {/* --- 1. FRONT COVER (Standalone Page) --- */}
                 <div className="print-page cover-page flex flex-col items-center justify-center text-center relative overflow-hidden">
                     {/* Decorative border */}
-                    <div className="absolute inset-4 border-4 border-amber-800/20 rounded-3xl"></div>
+                    <div className="absolute inset-4 border-4 border-[#D97757]/20 rounded-3xl"></div>
 
                     <div className="z-10 max-w-4xl w-full flex flex-col items-center gap-8">
                         <div className="flex flex-col gap-2">
-                            <div className="flex items-center justify-center gap-2 text-amber-600 font-bold uppercase tracking-[0.2em] text-sm mb-2">
+                            <div className="flex items-center justify-center gap-2 font-bold uppercase tracking-[0.2em] text-sm mb-2" style={{ color: '#D97757' }}>
                                 <Sparkles size={16} />
                                 <span>Een verhaal van de Toekomst</span>
                                 <Sparkles size={16} />
@@ -969,7 +968,7 @@ Maak de titel en de tekst van de eerste pagina, plus een illustratie voor de kaf
                             <h1 className="text-6xl font-black text-slate-900 leading-tight mb-2">
                                 {data.title || "Mijn Verhaal"}
                             </h1>
-                            <div className="w-32 h-1 bg-amber-500 mx-auto rounded-full"></div>
+                            <div className="w-32 h-1 mx-auto rounded-full" style={{ backgroundColor: '#D97757' }}></div>
                         </div>
 
                         {data.coverImage && data.coverImage !== 'loading' && !data.coverImage.startsWith('error') ? (
@@ -977,14 +976,14 @@ Maak de titel en de tekst van de eerste pagina, plus een illustratie voor de kaf
                                 <img src={data.coverImage} className="w-full h-full object-cover" alt="Kaft" loading="lazy" />
                             </div>
                         ) : (
-                            <div className="w-[60%] aspect-[4/3] rounded-2xl border-4 border-dashed border-amber-300 bg-white/50 flex items-center justify-center">
-                                <BookOpen size={64} className="text-amber-300" />
+                            <div className="w-[60%] aspect-[4/3] rounded-2xl border-4 border-dashed bg-white/50 flex items-center justify-center" style={{ borderColor: '#D9775740' }}>
+                                <BookOpen size={64} style={{ color: '#D9775740' }} />
                             </div>
                         )}
 
                         <div className="mt-4">
-                            <p className="text-2xl font-serif italic text-amber-900/60">Geschreven &amp; Geïllustreerd door</p>
-                            <p className="text-3xl font-black text-amber-800 mt-2 uppercase tracking-wide">
+                            <p className="text-2xl font-serif italic" style={{ color: '#6B6B66' }}>Geschreven &amp; Geïllustreerd door</p>
+                            <p className="text-3xl font-black mt-2 uppercase tracking-wide" style={{ color: '#3D3D38' }}>
                                 {user?.displayName || "Een Jonge Schrijver"}
                             </p>
                         </div>
@@ -1143,11 +1142,11 @@ Maak de titel en de tekst van de eerste pagina, plus een illustratie voor de kaf
                                         {/* Placeholder Image Area - Matching left page styling */}
                                         <div
                                             onClick={handlePlaceholderClick}
-                                            className="w-full max-h-[40%] shadow-sm rounded border transition-all duration-300 shrink-0 cursor-pointer border-dashed border-2 border-stone-300 hover:border-pink-400 hover:bg-pink-50/30 group/edit"
+                                            className="w-full max-h-[40%] shadow-sm rounded border transition-all duration-300 shrink-0 cursor-pointer border-dashed border-2 border-stone-300 hover:border-[#8B6F9E] hover:bg-[#8B6F9E]/10 group/edit"
                                         >
                                             <div className="w-full h-full aspect-[4/3] overflow-hidden relative rounded flex items-center justify-center bg-stone-50/50">
-                                                <ImageIcon size={20} className="text-pink-400" />
-                                                <span className="text-[9px] font-medium text-pink-400 ml-1">
+                                                <ImageIcon size={20} className="text-[#8B6F9E]" />
+                                                <span className="text-[9px] font-medium text-[#8B6F9E] ml-1">
                                                     Klik om illustratie toe te voegen
                                                 </span>
                                             </div>
@@ -1156,7 +1155,7 @@ Maak de titel en de tekst van de eerste pagina, plus een illustratie voor de kaf
                                         {/* Placeholder Text Area - Matching left page styling */}
                                         <div
                                             onClick={handlePlaceholderClick}
-                                            className="flex-1 relative overflow-y-auto custom-scrollbar rounded-lg p-2 cursor-pointer border-2 border-dashed border-stone-300 hover:border-blue-400 hover:bg-blue-50/30 transition-all group/edit"
+                                            className="flex-1 relative overflow-y-auto custom-scrollbar rounded-lg p-2 cursor-pointer border-2 border-dashed border-stone-300 hover:border-[#2A9D8F] hover:bg-[#2A9D8F]/10 transition-all group/edit"
                                         >
                                             {/* Lined paper effect */}
                                             <div className="absolute inset-0 flex flex-col justify-start pt-1 pointer-events-none opacity-15">
@@ -1173,7 +1172,7 @@ Maak de titel en de tekst van de eerste pagina, plus een illustratie voor de kaf
                             ) : (
                                 <div className="w-full h-full flex flex-col items-center justify-center text-stone-400 gap-4 bg-stone-50">
                                     {/* Empty book state - show loading/waiting indicator */}
-                                    <Loader2 size={32} className="animate-spin text-amber-400" />
+                                    <Loader2 size={32} className="animate-spin text-[#D97757]" />
                                     <span className="text-sm font-bold uppercase tracking-widest text-center">Verhaal aan het opbouwen...</span>
                                 </div>
                             )}
@@ -1257,7 +1256,7 @@ Maak de titel en de tekst van de eerste pagina, plus een illustratie voor de kaf
                         disabled={currentPage === 0 || isFlipping}
                         className={`p-2 rounded-full transition-all ${currentPage === 0
                             ? 'text-slate-300 cursor-not-allowed'
-                            : 'bg-slate-50 text-slate-600 hover:bg-amber-50 hover:text-amber-600 hover:scale-110 active:scale-95'
+                            : 'bg-slate-50 text-slate-600 hover:bg-[#D97757]/10 hover:text-[#D97757] hover:scale-110 active:scale-95'
                             }`}
                     >
                         <ChevronLeft size={18} />
@@ -1271,7 +1270,7 @@ Maak de titel en de tekst van de eerste pagina, plus een illustratie voor de kaf
                             {[...Array(totalPages + 1)].map((_, i) => (
                                 <div
                                     key={i}
-                                    className={`w-1 h-1 rounded-full transition-all ${i === currentPage ? 'bg-amber-500 scale-125' : 'bg-slate-300'}`}
+                                    className={`w-1 h-1 rounded-full transition-all ${i === currentPage ? 'bg-[#D97757] scale-125' : 'bg-slate-300'}`}
                                 />
                             ))}
                         </div>
@@ -1282,7 +1281,7 @@ Maak de titel en de tekst van de eerste pagina, plus een illustratie voor de kaf
                         disabled={currentPage >= totalPages || isFlipping}
                         className={`p-2 rounded-full transition-all ${currentPage >= totalPages
                             ? 'text-slate-300 cursor-not-allowed'
-                            : 'bg-slate-50 text-slate-600 hover:bg-amber-50 hover:text-amber-600 hover:scale-110 active:scale-95'
+                            : 'bg-slate-50 text-slate-600 hover:bg-[#D97757]/10 hover:text-[#D97757] hover:scale-110 active:scale-95'
                             }`}
                     >
                         <ChevronRight size={18} />
@@ -1333,12 +1332,12 @@ Maak de titel en de tekst van de eerste pagina, plus een illustratie voor de kaf
 
             {/* Publish Modal */}
             {showPublishModal && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in">
-                    <div className="bg-white rounded-2xl p-6 w-full max-w-md shadow-2xl animate-in zoom-in-95" onClick={e => e.stopPropagation()}>
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-in fade-in">
+                    <div className="bg-white rounded-2xl p-6 w-full max-w-md shadow-2xl animate-in zoom-in-95" style={{ borderColor: '#E8E6DF', borderWidth: 1 }} onClick={e => e.stopPropagation()}>
                         {publishSuccess ? (
                             <div className="text-center py-8">
-                                <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                    <Check size={32} className="text-emerald-500" />
+                                <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: '#10B98120' }}>
+                                    <Check size={32} style={{ color: '#10B981' }} />
                                 </div>
                                 <h3 className="text-xl font-black text-slate-800 mb-2">Gepubliceerd! 🎉</h3>
                                 <p className="text-slate-500 text-sm">Je boek staat nu in de galerij!</p>
@@ -1347,7 +1346,7 @@ Maak de titel en de tekst van de eerste pagina, plus een illustratie voor de kaf
                             <>
                                 <div className="flex items-center justify-between mb-6">
                                     <h3 className="text-lg font-black text-slate-800 flex items-center gap-2">
-                                        <Share2 className="text-emerald-500" size={20} />
+                                        <Share2 style={{ color: '#10B981' }} size={20} />
                                         Deel je Boek
                                     </h3>
                                     <button
@@ -1367,7 +1366,7 @@ Maak de titel en de tekst van de eerste pagina, plus een illustratie voor de kaf
                                             type="text"
                                             value={publishTitle}
                                             onChange={(e) => setPublishTitle(e.target.value)}
-                                            className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-bold focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all"
+                                            className="w-full px-4 py-3 border rounded-xl font-bold focus:ring-2 outline-none transition-all" style={{ backgroundColor: '#FAF9F0', borderColor: '#E8E6DF', color: '#1A1A19' }}
                                             maxLength={50}
                                         />
                                     </div>
@@ -1382,7 +1381,7 @@ Maak de titel en de tekst van de eerste pagina, plus een illustratie voor de kaf
                                     <button
                                         onClick={handlePublish}
                                         disabled={!publishTitle.trim() || isPublishing}
-                                        className="w-full py-4 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-xl font-black text-lg hover:shadow-lg hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                                        className="w-full py-4 text-white rounded-xl font-black text-lg hover:shadow-lg hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed" style={{ backgroundColor: '#10B981' }}
                                     >
                                         {isPublishing ? (
                                             <>
@@ -1405,8 +1404,8 @@ Maak de titel en de tekst van de eerste pagina, plus een illustratie voor de kaf
 
             {/* Feedback Toast */}
             {showToast && (
-                <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-slate-900/90 text-white px-4 py-2 rounded-full shadow-xl flex items-center gap-2 z-[100] animate-in slide-in-from-top-4 fade-in duration-300">
-                    <Sparkles size={16} className="text-pink-400" />
+                <div className="absolute top-4 left-1/2 -translate-x-1/2 text-white px-4 py-2 rounded-full shadow-xl flex items-center gap-2 z-[100] animate-in slide-in-from-top-4 fade-in duration-300" style={{ backgroundColor: '#2A9D8F' }}>
+                    <Sparkles size={16} className="text-white/80" />
                     <span className="font-bold text-sm">Opdracht verstuurd aan AI!</span>
                 </div>
             )}

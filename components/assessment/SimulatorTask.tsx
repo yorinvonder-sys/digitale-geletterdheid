@@ -68,19 +68,19 @@ export const SimulatorTask: React.FC<Props> = ({ task, onComplete }) => {
     };
 
     return (
-        <div className="flex flex-col h-full bg-slate-900 text-white p-4">
+        <div className="flex flex-col h-full bg-lab-bg text-lab-dark p-4">
             <div className="mb-4 text-center">
-                <h2 className="text-2xl font-black text-amber-400 flex items-center justify-center gap-2">
+                <h2 className="text-2xl font-black text-lab-primary flex items-center justify-center gap-2">
                     <Monitor /> {task.title}
                 </h2>
-                <p className="text-slate-300">{task.description}</p>
+                <p className="text-lab-textLight">{task.description}</p>
             </div>
 
             {/* Desktop Area */}
-            <div className="flex-1 bg-slate-800 rounded-2xl border-4 border-slate-700 relative overflow-hidden flex">
+            <div className="flex-1 bg-white rounded-2xl border-2 border-neutral-200 shadow-md relative overflow-hidden flex">
 
                 {/* Wallpaper */}
-                <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:20px_20px]"></div>
+                <div className="absolute inset-0 opacity-5 bg-[radial-gradient(#D97757_1px,transparent_1px)] [background-size:20px_20px]"></div>
 
                 {/* Left: Desktop Icons (Source) */}
                 <div className="flex-1 p-6 grid grid-cols-3 grid-rows-3 gap-4 content-start">
@@ -89,12 +89,12 @@ export const SimulatorTask: React.FC<Props> = ({ task, onComplete }) => {
                             key={item.id}
                             draggable
                             onDragStart={(e) => handleDragStart(e, item.id)}
-                            className="flex flex-col items-center gap-2 p-4 rounded-xl hover:bg-white/10 cursor-move transition-colors active:scale-95 group"
+                            className="flex flex-col items-center gap-2 p-4 rounded-xl hover:bg-lab-primary/5 cursor-move transition-colors active:scale-95 group"
                         >
                             <div className="group-hover:scale-110 transition-transform">
                                 {getIcon(item.icon)}
                             </div>
-                            <span className="text-xs font-bold text-center bg-slate-900/50 px-2 py-1 rounded truncate w-full max-w-[80px]">
+                            <span className="text-xs font-bold text-center bg-lab-bg px-2 py-1 rounded truncate w-full max-w-[80px] text-lab-text">
                                 {item.name}
                             </span>
                         </div>
@@ -102,7 +102,7 @@ export const SimulatorTask: React.FC<Props> = ({ task, onComplete }) => {
                 </div>
 
                 {/* Right: Targets (Destination) */}
-                <div className="w-1/3 bg-slate-900/50 border-l border-slate-700 p-4 flex flex-col gap-4 justify-center">
+                <div className="w-1/3 bg-lab-bg/50 border-l border-neutral-200 p-4 flex flex-col gap-4 justify-center">
                     {task.targets.map(target => (
                         <div
                             key={target.id}
@@ -110,24 +110,24 @@ export const SimulatorTask: React.FC<Props> = ({ task, onComplete }) => {
                             onDrop={(e) => handleDrop(e, target.id)}
                             className={`
                                 h-32 rounded-xl border-2 border-dashed flex flex-col items-center justify-center gap-2 transition-all
-                                ${target.type === 'trash' ? 'border-red-500/50 bg-red-500/10 hover:bg-red-500/20' : 'border-blue-500/50 bg-blue-500/10 hover:bg-blue-500/20'}
+                                ${target.type === 'trash' ? 'border-red-400/50 bg-red-50 hover:bg-red-100' : 'border-lab-accent/50 bg-lab-accent/5 hover:bg-lab-accent/10'}
                             `}
                         >
-                            {target.type === 'trash' ? <Trash2 size={32} className="text-red-400" /> : <UploadCloud size={32} className="text-blue-400" />}
-                            <span className="font-bold text-sm text-slate-400">{target.name}</span>
+                            {target.type === 'trash' ? <Trash2 size={32} className="text-red-400" /> : <UploadCloud size={32} className="text-lab-accent" />}
+                            <span className="font-bold text-sm text-lab-textLight">{target.name}</span>
                         </div>
                     ))}
                 </div>
 
                 {feedback && (
-                    <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-slate-800 border border-slate-600 px-6 py-3 rounded-xl shadow-xl font-bold animate-in slide-in-from-bottom-4">
+                    <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-white border border-neutral-200 px-6 py-3 rounded-xl shadow-xl font-bold text-lab-dark animate-in slide-in-from-bottom-4">
                         {feedback}
                     </div>
                 )}
             </div>
 
-            <div className="mt-4 bg-slate-800 p-4 rounded-xl border border-slate-700 text-center">
-                <p className="font-bold text-lg text-emerald-400">Doel: {task.goal}</p>
+            <div className="mt-4 bg-white p-4 rounded-xl border border-neutral-200 shadow-sm text-center">
+                <p className="font-bold text-lg text-lab-accent">Doel: {task.goal}</p>
             </div>
         </div>
     );

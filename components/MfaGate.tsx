@@ -7,7 +7,7 @@
 import React, { useState, useEffect } from 'react';
 import { ShieldCheck, Loader2, AlertTriangle, CheckCircle2, Copy, KeyRound } from 'lucide-react';
 import { enrollMfa, verifyMfa, getMfaStatus, logout } from '../services/authService';
-import { checkMfaTrust, createMfaTrust } from '../services/mfaTrustService';
+import { createMfaTrust } from '../services/mfaTrustService';
 
 interface MfaGateProps {
     onVerified: () => void;
@@ -38,21 +38,6 @@ export function MfaGate({ onVerified }: MfaGateProps) {
             if (status.isVerified) {
                 onVerified();
                 return;
-            }
-
-            // Check IP-based trust: skip MFA if recently verified from same IP
-            if (status.isEnrolled) {
-                try {
-                    const isTrusted = await checkMfaTrust();
-                    if (isTrusted) {
-                        // Trust valid — re-verify MFA silently via Supabase to get AAL2
-                        // (trust only skips the UI prompt, not the AAL level)
-                        onVerified();
-                        return;
-                    }
-                } catch {
-                    // Trust check failed — fall through to normal MFA flow
-                }
             }
 
             if (status.isEnrolled && status.factors.length > 0) {
@@ -89,8 +74,8 @@ export function MfaGate({ onVerified }: MfaGateProps) {
 
         try {
             await verifyMfa(factorId, code);
-            // Create IP-based trusted session so MFA is skipped for 30 min
-            createMfaTrust();
+            // Persist a recent-verification marker for additional risk checks.
+            void createMfaTrust();
             onVerified();
         } catch (err: any) {
             setError(err.message || 'Verificatie mislukt. Probeer opnieuw.');

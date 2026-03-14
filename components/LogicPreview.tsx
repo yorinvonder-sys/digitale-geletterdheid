@@ -122,97 +122,81 @@ export const LogicPreview: React.FC<LogicPreviewProps> = ({ code, onStart, onLev
     // INTRO SCREEN
     if (!code && !hasStarted) {
         return (
-            <div className="w-full h-full flex flex-col bg-gradient-to-br from-amber-900 to-orange-950 text-slate-200 relative overflow-hidden">
-                <div className="absolute inset-0 opacity-10">
-                    {[...Array(20)].map((_, i) => (
-                        <div key={i} className="absolute text-2xl" style={{
-                            left: `${Math.random() * 100}%`,
-                            top: `${Math.random() * 100}%`,
-                            transform: `rotate(${Math.random() * 360}deg)`
-                        }}>🐾</div>
-                    ))}
-                </div>
-                <div className="absolute inset-0 bg-gradient-to-b from-amber-800/20 via-transparent to-orange-950"></div>
-
+            <div className="w-full h-full flex flex-col relative overflow-hidden" style={{ backgroundColor: '#FAF9F0' }}>
                 <div className="flex-1 flex flex-col items-center justify-start p-6 relative z-10 overflow-y-auto">
-                    {/* Header met Robbie */}
+                    {/* Header met Pip */}
                     <div className="relative mb-4">
-                        <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-2xl shadow-amber-500/30 text-4xl">
-                            🐕
-                        </div>
-                        <div className="absolute -bottom-1 -right-1 w-7 h-7 bg-amber-300 rounded-full flex items-center justify-center text-sm shadow-lg">
-                            🦴
-                        </div>
+                        <img src="/mascot/pip-excited.webp" alt="Pip" className="w-20 h-20 object-contain" />
                     </div>
 
-                    <h2 className="text-xl font-black text-white mb-1 tracking-tight text-center">
-                        🎮 Robbie de Speurhond
+                    <h2 className="text-xl font-black mb-1 tracking-tight text-center" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#1A1A19' }}>
+                        Robbie de Speurhond
                     </h2>
-                    <p className="text-amber-300 text-sm font-bold mb-4">Leer programmeren door Robbie te besturen!</p>
+                    <p className="text-sm font-bold mb-4" style={{ color: '#D97757' }}>Leer programmeren door Robbie te besturen!</p>
 
-                    {/* WAT GA JE DOEN - Duidelijke uitleg */}
-                    <div className="bg-amber-950/60 backdrop-blur border-2 border-amber-500/50 rounded-2xl p-4 max-w-md w-full mb-4">
-                        <h3 className="text-sm font-black text-amber-300 uppercase tracking-widest mb-3 flex items-center gap-2">
-                            📋 Wat Ga Je Doen?
+                    {/* WAT GA JE DOEN */}
+                    <div className="rounded-2xl p-4 max-w-md w-full mb-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
+                        <h3 className="text-sm font-black uppercase tracking-widest mb-3 flex items-center gap-2" style={{ color: '#D97757' }}>
+                            Wat Ga Je Doen?
                         </h3>
                         <div className="space-y-2 text-sm">
-                            <div className="flex items-start gap-3 bg-amber-900/40 rounded-xl p-3">
-                                <span className="bg-amber-500 text-white w-6 h-6 rounded-full flex items-center justify-center font-black text-xs shrink-0">1</span>
+                            <div className="flex items-start gap-3 rounded-xl p-3" style={{ backgroundColor: '#FAF9F0', border: '1px solid #F0EEE8' }}>
+                                <span className="w-6 h-6 rounded-full flex items-center justify-center font-black text-xs shrink-0 text-white" style={{ backgroundColor: '#D97757' }}>1</span>
                                 <div>
-                                    <p className="text-white font-bold">Chat met Robbie in de chatbalk links</p>
-                                    <p className="text-amber-400 text-xs">Typ commando's zoals "stap" of "draai rechts"</p>
+                                    <p className="font-bold" style={{ color: '#1A1A19' }}>Chat met Pip in de chatbalk links</p>
+                                    <p className="text-xs" style={{ color: '#6B6B66' }}>Typ commando's zoals "stap" of "draai rechts"</p>
                                 </div>
                             </div>
-                            <div className="flex items-start gap-3 bg-amber-900/40 rounded-xl p-3">
-                                <span className="bg-amber-500 text-white w-6 h-6 rounded-full flex items-center justify-center font-black text-xs shrink-0">2</span>
+                            <div className="flex items-start gap-3 rounded-xl p-3" style={{ backgroundColor: '#FAF9F0', border: '1px solid #F0EEE8' }}>
+                                <span className="w-6 h-6 rounded-full flex items-center justify-center font-black text-xs shrink-0 text-white" style={{ backgroundColor: '#2A9D8F' }}>2</span>
                                 <div>
-                                    <p className="text-white font-bold">Robbie stuurt je code terug</p>
-                                    <p className="text-amber-400 text-xs">De code verschijnt dan hier in dit venster</p>
+                                    <p className="font-bold" style={{ color: '#1A1A19' }}>Pip stuurt je code terug</p>
+                                    <p className="text-xs" style={{ color: '#6B6B66' }}>De code verschijnt dan hier in dit venster</p>
                                 </div>
                             </div>
-                            <div className="flex items-start gap-3 bg-amber-900/40 rounded-xl p-3">
-                                <span className="bg-amber-500 text-white w-6 h-6 rounded-full flex items-center justify-center font-black text-xs shrink-0">3</span>
+                            <div className="flex items-start gap-3 rounded-xl p-3" style={{ backgroundColor: '#FAF9F0', border: '1px solid #F0EEE8' }}>
+                                <span className="w-6 h-6 rounded-full flex items-center justify-center font-black text-xs shrink-0 text-white" style={{ backgroundColor: '#10B981' }}>3</span>
                                 <div>
-                                    <p className="text-white font-bold">Klik op RUN om de code uit te voeren</p>
-                                    <p className="text-amber-400 text-xs">Kijk of Robbie alle botjes 🦴 vindt!</p>
+                                    <p className="font-bold" style={{ color: '#1A1A19' }}>Klik op RUN om de code uit te voeren</p>
+                                    <p className="text-xs" style={{ color: '#6B6B66' }}>Kijk of Robbie alle botjes vindt!</p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     {/* DE 3 COMMANDO'S */}
-                    <div className="bg-amber-950/50 backdrop-blur border border-amber-700/50 rounded-2xl p-4 max-w-md w-full mb-4">
-                        <h3 className="text-xs font-bold text-amber-400 uppercase tracking-widest mb-2 flex items-center gap-2">
-                            🐾 De 3 Commando's Die Robbie Begrijpt
+                    <div className="rounded-2xl p-4 max-w-md w-full mb-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
+                        <h3 className="text-xs font-bold uppercase tracking-widest mb-2 flex items-center gap-2" style={{ color: '#8B6F9E' }}>
+                            De 3 Commando's Die Robbie Begrijpt
                         </h3>
                         <div className="grid grid-cols-3 gap-2">
-                            <div className="bg-amber-900/50 rounded-xl p-2 text-center border border-amber-700/50">
-                                <code className="text-amber-200 font-bold text-xs">stap</code>
-                                <p className="text-amber-500 text-[9px] mt-1">1 hokje vooruit</p>
+                            <div className="rounded-xl p-2 text-center" style={{ backgroundColor: '#FAF9F0', border: '1px solid #F0EEE8' }}>
+                                <code className="font-bold text-xs" style={{ color: '#D97757' }}>stap</code>
+                                <p className="text-[9px] mt-1" style={{ color: '#6B6B66' }}>1 hokje vooruit</p>
                             </div>
-                            <div className="bg-amber-900/50 rounded-xl p-2 text-center border border-amber-700/50">
-                                <code className="text-amber-200 font-bold text-xs">draai links</code>
-                                <p className="text-amber-500 text-[9px] mt-1">90° draaien</p>
+                            <div className="rounded-xl p-2 text-center" style={{ backgroundColor: '#FAF9F0', border: '1px solid #F0EEE8' }}>
+                                <code className="font-bold text-xs" style={{ color: '#D97757' }}>draai links</code>
+                                <p className="text-[9px] mt-1" style={{ color: '#6B6B66' }}>90° draaien</p>
                             </div>
-                            <div className="bg-amber-900/50 rounded-xl p-2 text-center border border-amber-700/50">
-                                <code className="text-amber-200 font-bold text-xs">draai rechts</code>
-                                <p className="text-amber-500 text-[9px] mt-1">90° draaien</p>
+                            <div className="rounded-xl p-2 text-center" style={{ backgroundColor: '#FAF9F0', border: '1px solid #F0EEE8' }}>
+                                <code className="font-bold text-xs" style={{ color: '#D97757' }}>draai rechts</code>
+                                <p className="text-[9px] mt-1" style={{ color: '#6B6B66' }}>90° draaien</p>
                             </div>
                         </div>
                     </div>
 
                     {/* HET DOEL */}
-                    <div className="bg-emerald-900/40 border border-emerald-500/50 rounded-xl p-3 max-w-md w-full mb-4">
-                        <h3 className="text-xs font-bold text-emerald-400 uppercase tracking-widest mb-2">🎯 Het Doel</h3>
-                        <div className="flex items-center justify-center gap-4 text-white text-sm">
+                    <div className="rounded-xl p-3 max-w-md w-full mb-4" style={{ backgroundColor: 'rgba(16, 185, 129, 0.06)', border: '1px solid rgba(16, 185, 129, 0.2)' }}>
+                        <h3 className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: '#10B981' }}>Het Doel</h3>
+                        <div className="flex items-center justify-center gap-4 text-sm" style={{ color: '#3D3D38' }}>
                             <div className="flex flex-col items-center">
                                 <span className="text-2xl">🦴</span>
-                                <span className="text-[10px] text-emerald-300">Pak alle botjes</span>
+                                <span className="text-[10px]" style={{ color: '#10B981' }}>Pak alle botjes</span>
                             </div>
-                            <span className="text-emerald-400 font-bold">→</span>
+                            <span className="font-bold" style={{ color: '#10B981' }}>→</span>
                             <div className="flex flex-col items-center">
                                 <span className="text-2xl">🏠</span>
-                                <span className="text-[10px] text-emerald-300">Ga naar het hok</span>
+                                <span className="text-[10px]" style={{ color: '#10B981' }}>Ga naar het hok</span>
                             </div>
                         </div>
                     </div>
@@ -223,9 +207,12 @@ export const LogicPreview: React.FC<LogicPreviewProps> = ({ code, onStart, onLev
                                 setHasStarted(true);
                                 onStart?.();
                             }}
-                            className="w-full max-w-md bg-gradient-to-r from-amber-400 to-orange-500 text-white font-bold text-lg py-4 px-8 rounded-2xl shadow-xl hover:shadow-2xl hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-3"
+                            className="w-full max-w-md text-white font-bold text-lg py-4 px-8 rounded-full shadow-xl active:scale-95 transition-all flex items-center justify-center gap-3"
+                            style={{ backgroundColor: '#D97757' }}
+                            onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#C46849')}
+                            onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#D97757')}
                         >
-                            🐾 Ik Snap Het - Start!
+                            Ik Snap Het - Start!
                         </button>
                     )}
                 </div>
@@ -280,7 +267,7 @@ export const LogicPreview: React.FC<LogicPreviewProps> = ({ code, onStart, onLev
                     crashed = true;
                     setStatus('crashed');
                     setLives(prev => prev - 1);
-                    setLogs(prev => [...prev, `❌ Botsing!`]);
+                    setLogs(prev => [...prev, `Botsing!`]);
                 } else {
                     currentX = nextX;
                     currentY = nextY;
@@ -290,21 +277,21 @@ export const LogicPreview: React.FC<LogicPreviewProps> = ({ code, onStart, onLev
                     if (lvl.grid[currentY][currentX] === 'B' && !localCollected.has(key)) {
                         localCollected.add(key);
                         setCollectedBones(new Set(localCollected));
-                        setLogs(prev => [...prev, `🦴 Botje gepakt!`]);
+                        setLogs(prev => [...prev, `Botje gepakt!`]);
                     } else {
-                        setLogs(prev => [...prev, `→ Stap`]);
+                        setLogs(prev => [...prev, `Stap`]);
                     }
                 }
 
             } else if (line.includes('rechts') || line.includes('right')) {
                 currentDir = (currentDir + 1) % 4;
                 setRobotPos({ x: currentX, y: currentY, dir: currentDir });
-                setLogs(prev => [...prev, `↻ Draai Rechts`]);
+                setLogs(prev => [...prev, `Draai Rechts`]);
 
             } else if (line.includes('links') || line.includes('left')) {
                 currentDir = (currentDir + 3) % 4;
                 setRobotPos({ x: currentX, y: currentY, dir: currentDir });
-                setLogs(prev => [...prev, `↺ Draai Links`]);
+                setLogs(prev => [...prev, `Draai Links`]);
             }
         }
 
@@ -314,7 +301,7 @@ export const LogicPreview: React.FC<LogicPreviewProps> = ({ code, onStart, onLev
 
             if (atKennel && allBonesCollected) {
                 setStatus('success');
-                setLogs(prev => [...prev, `🎉 LEVEL ${currentLevel + 1} VOLTOOID!`]);
+                setLogs(prev => [...prev, `LEVEL ${currentLevel + 1} VOLTOOID!`]);
 
                 if (onLevelComplete) {
                     onLevelComplete(currentLevel + 1);
@@ -327,10 +314,10 @@ export const LogicPreview: React.FC<LogicPreviewProps> = ({ code, onStart, onLev
                 }, 1500);
             } else if (atKennel && !allBonesCollected) {
                 setStatus('incomplete');
-                setLogs(prev => [...prev, `⚠️ Nog ${totalBones - localCollected.size} botje(s) nodig!`]);
+                setLogs(prev => [...prev, `Nog ${totalBones - localCollected.size} botje(s) nodig!`]);
             } else {
                 setStatus('idle');
-                setLogs(prev => [...prev, `⏹️ Nog niet bij het hok 🏠`]);
+                setLogs(prev => [...prev, `Nog niet bij het hok`]);
             }
         }
 
@@ -346,31 +333,35 @@ export const LogicPreview: React.FC<LogicPreviewProps> = ({ code, onStart, onLev
                     const boneKey = `${x},${y}`;
                     const boneCollected = collectedBones.has(boneKey);
 
-                    let bgClass = 'bg-emerald-200 border-emerald-300';
+                    let bgStyle = { backgroundColor: '#e8f5e9', borderColor: '#c8e6c9' };
                     let content = null;
 
                     if (cell === '#') {
-                        bgClass = 'bg-amber-700 border-amber-800';
-                        content = <span className="text-amber-900 text-lg">🌲</span>;
+                        bgStyle = { backgroundColor: '#8d6e63', borderColor: '#6d4c41' };
+                        content = <span className="text-lg">🌲</span>;
                     } else if (cell === '~') {
-                        bgClass = 'bg-blue-400 border-blue-500';
-                        content = <span className="text-blue-600 text-xs">💧</span>;
+                        bgStyle = { backgroundColor: '#81d4fa', borderColor: '#4fc3f7' };
+                        content = <span className="text-xs">💧</span>;
                     } else if (cell === 'K') {
-                        bgClass = 'bg-red-200 border-red-300';
+                        bgStyle = { backgroundColor: 'rgba(217, 119, 87, 0.15)', borderColor: 'rgba(217, 119, 87, 0.3)' };
                         content = <span className="text-2xl">🏠</span>;
                     } else if (cell === 'B' && !boneCollected) {
                         content = <span className="text-xl animate-pulse">🦴</span>;
                     }
 
                     return (
-                        <div key={`${x}-${y}`} className={`w-10 h-10 sm:w-11 sm:h-11 border flex items-center justify-center relative ${bgClass}`}>
+                        <div
+                            key={`${x}-${y}`}
+                            className="w-10 h-10 sm:w-11 sm:h-11 border flex items-center justify-center relative"
+                            style={bgStyle}
+                        >
                             {content}
                             {isRobotHere && (
                                 <div
                                     className="absolute transition-all duration-300 z-10"
                                     style={{ transform: `rotate(${robotPos.dir * 90}deg)` }}
                                 >
-                                    <div className="w-8 h-8 sm:w-9 sm:h-9 bg-amber-500 rounded-full shadow-lg flex items-center justify-center text-xl border-2 border-amber-600">
+                                    <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full shadow-lg flex items-center justify-center text-xl border-2" style={{ backgroundColor: '#D97757', borderColor: '#C46849' }}>
                                         🐕
                                     </div>
                                 </div>
@@ -383,39 +374,40 @@ export const LogicPreview: React.FC<LogicPreviewProps> = ({ code, onStart, onLev
     };
 
     return (
-        <div className="w-full h-full flex flex-col bg-slate-900">
-            {/* Orange Header Bar */}
-            <div className="bg-orange-500 px-3 py-2 flex justify-between items-center shrink-0 shadow-lg">
+        <div className="w-full h-full flex flex-col" style={{ backgroundColor: '#FAF9F0' }}>
+            {/* Header Bar */}
+            <div className="px-3 py-2 flex justify-between items-center shrink-0" style={{ backgroundColor: '#FFFFFF', borderBottom: '1px solid #E8E6DF' }}>
                 <div className="flex items-center gap-2">
-                    <span className="flex items-center gap-1.5 bg-orange-600/50 px-2 py-1 rounded-lg">
+                    <span className="flex items-center gap-1.5 px-2 py-1 rounded-lg" style={{ backgroundColor: 'rgba(217, 119, 87, 0.08)', border: '1px solid rgba(217, 119, 87, 0.2)' }}>
                         <span className="text-lg">🦴</span>
-                        <span className="text-white font-black text-xs">{collectedBones.size}/{totalBones}</span>
+                        <span className="font-black text-xs" style={{ color: '#D97757' }}>{collectedBones.size}/{totalBones}</span>
                     </span>
-                    <span className="flex items-center gap-0.5 bg-orange-600/50 px-2 py-1 rounded-lg">
+                    <span className="flex items-center gap-0.5 px-2 py-1 rounded-lg" style={{ backgroundColor: '#FAF9F0', border: '1px solid #F0EEE8' }}>
                         {[...Array(3)].map((_, i) => (
                             <span key={i} className={`text-sm ${i < lives ? '' : 'opacity-30'}`}>❤️</span>
                         ))}
                     </span>
-                    <span className="bg-orange-600/50 px-2 py-1 rounded-lg text-white font-black text-xs hidden sm:block">
+                    <span className="px-2 py-1 rounded-lg font-black text-xs hidden sm:block" style={{ backgroundColor: '#FAF9F0', color: '#3D3D38', border: '1px solid #F0EEE8' }}>
                         Lvl {currentLevel + 1}: {level.name}
                     </span>
                 </div>
                 <div className="flex gap-2">
-                    {/* Help/Info button to go back to intro */}
                     <button
                         onClick={() => setHasStarted(false)}
-                        className="p-1.5 text-white/60 hover:text-white hover:bg-orange-600 rounded-lg transition-colors"
+                        className="p-1.5 rounded-lg transition-colors"
+                        style={{ color: '#6B6B66' }}
                         title="Bekijk uitleg"
                     >
                         <HelpCircle size={16} />
                     </button>
-                    <button onClick={resetLevel} disabled={isRunning} className="p-1.5 text-white/80 hover:text-white hover:bg-orange-600 rounded-lg transition-colors">
+                    <button onClick={resetLevel} disabled={isRunning} className="p-1.5 rounded-lg transition-colors" style={{ color: '#6B6B66' }}>
                         <RotateCcw size={16} />
                     </button>
                     <button
                         onClick={runCode}
                         disabled={isRunning || !code}
-                        className="flex items-center gap-1.5 px-3 py-1.5 bg-white text-orange-600 font-black text-xs rounded-lg transition-all hover:bg-orange-100 disabled:opacity-50 disabled:cursor-not-allowed shadow-md"
+                        className="flex items-center gap-1.5 px-3 py-1.5 text-white font-black text-xs rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-md"
+                        style={{ backgroundColor: '#D97757' }}
                     >
                         <Play size={14} fill="currentColor" /> RUN
                     </button>
@@ -426,27 +418,29 @@ export const LogicPreview: React.FC<LogicPreviewProps> = ({ code, onStart, onLev
             <div className="flex-1 flex flex-col md:flex-row overflow-hidden">
 
                 {/* Game Area */}
-                <div className="flex-1 p-3 overflow-y-auto flex flex-col items-center justify-center gap-3 bg-gradient-to-b from-emerald-800 to-emerald-900">
+                <div className="flex-1 p-3 overflow-y-auto flex flex-col items-center justify-center gap-3" style={{ backgroundColor: '#e8f5e9' }}>
 
                     {/* Status Banner */}
                     {status !== 'idle' && status !== 'running' && (
-                        <div className={`px-4 py-2 rounded-xl font-black text-xs uppercase tracking-widest animate-in zoom-in ${status === 'success' ? 'bg-emerald-500 text-white' :
-                            status === 'crashed' ? 'bg-red-500 text-white' :
-                                'bg-amber-500 text-white'
-                            }`}>
-                            {status === 'success' && '🎉 Level Gehaald!'}
-                            {status === 'crashed' && '💥 Gecrasht!'}
-                            {status === 'incomplete' && '⚠️ Verzamel eerst alle botjes!'}
+                        <div className="px-4 py-2 rounded-xl font-black text-xs uppercase tracking-widest animate-in zoom-in text-white"
+                            style={{
+                                backgroundColor: status === 'success' ? '#10B981' :
+                                    status === 'crashed' ? '#EF4444' : '#D97757'
+                            }}
+                        >
+                            {status === 'success' && 'Level Gehaald!'}
+                            {status === 'crashed' && 'Gecrasht!'}
+                            {status === 'incomplete' && 'Verzamel eerst alle botjes!'}
                         </div>
                     )}
 
                     {/* Grid */}
-                    <div className="border-4 border-amber-800 rounded-xl overflow-hidden shadow-2xl bg-emerald-300">
+                    <div className="rounded-xl overflow-hidden shadow-2xl" style={{ border: '4px solid #8d6e63', backgroundColor: '#e8f5e9' }}>
                         {renderGrid()}
                     </div>
 
                     {/* Legend */}
-                    <div className="flex gap-3 text-[10px] text-emerald-200 font-bold">
+                    <div className="flex gap-3 text-[10px] font-bold" style={{ color: '#6B6B66' }}>
                         <span>🐕 Robbie</span>
                         <span>🦴 Botje</span>
                         <span>🏠 Hok</span>
@@ -456,7 +450,7 @@ export const LogicPreview: React.FC<LogicPreviewProps> = ({ code, onStart, onLev
                     {/* Logs */}
                     <div className="w-full max-w-md max-h-16 overflow-y-auto custom-scrollbar">
                         {logs.slice(-5).map((log, i) => (
-                            <div key={i} className="text-[10px] font-mono text-emerald-300/70 pl-2 border-l-2 border-emerald-600 mb-0.5">
+                            <div key={i} className="text-[10px] font-mono pl-2 mb-0.5" style={{ color: '#6B6B66', borderLeft: '2px solid #D97757' }}>
                                 {log}
                             </div>
                         ))}
@@ -464,39 +458,39 @@ export const LogicPreview: React.FC<LogicPreviewProps> = ({ code, onStart, onLev
                 </div>
 
                 {/* PERMANENT INSTRUCTIONS PANEL */}
-                <div className="w-full md:w-56 bg-slate-800 border-t md:border-t-0 md:border-l border-slate-700 p-3 shrink-0 overflow-y-auto">
+                <div className="w-full md:w-56 p-3 shrink-0 overflow-y-auto" style={{ backgroundColor: '#FFFFFF', borderTop: '1px solid #E8E6DF', borderLeft: '1px solid #E8E6DF' }}>
                     <div className="flex items-center gap-2 mb-3">
-                        <HelpCircle size={14} className="text-amber-400" />
-                        <span className="text-[10px] font-black text-amber-400 uppercase tracking-widest">Commando's</span>
+                        <HelpCircle size={14} style={{ color: '#D97757' }} />
+                        <span className="text-[10px] font-black uppercase tracking-widest" style={{ color: '#D97757' }}>Commando's</span>
                     </div>
 
                     <div className="space-y-2">
-                        <div className="bg-slate-700/50 rounded-lg p-2 border border-slate-600">
-                            <code className="text-amber-300 font-bold text-xs">stap</code>
-                            <p className="text-slate-400 text-[10px] mt-0.5">1 hokje vooruit</p>
+                        <div className="rounded-lg p-2" style={{ backgroundColor: '#FAF9F0', border: '1px solid #F0EEE8' }}>
+                            <code className="font-bold text-xs" style={{ color: '#D97757' }}>stap</code>
+                            <p className="text-[10px] mt-0.5" style={{ color: '#6B6B66' }}>1 hokje vooruit</p>
                         </div>
-                        <div className="bg-slate-700/50 rounded-lg p-2 border border-slate-600">
-                            <code className="text-amber-300 font-bold text-xs">draai links</code>
-                            <p className="text-slate-400 text-[10px] mt-0.5">90° naar links draaien</p>
+                        <div className="rounded-lg p-2" style={{ backgroundColor: '#FAF9F0', border: '1px solid #F0EEE8' }}>
+                            <code className="font-bold text-xs" style={{ color: '#D97757' }}>draai links</code>
+                            <p className="text-[10px] mt-0.5" style={{ color: '#6B6B66' }}>90° naar links draaien</p>
                         </div>
-                        <div className="bg-slate-700/50 rounded-lg p-2 border border-slate-600">
-                            <code className="text-amber-300 font-bold text-xs">draai rechts</code>
-                            <p className="text-slate-400 text-[10px] mt-0.5">90° naar rechts draaien</p>
+                        <div className="rounded-lg p-2" style={{ backgroundColor: '#FAF9F0', border: '1px solid #F0EEE8' }}>
+                            <code className="font-bold text-xs" style={{ color: '#D97757' }}>draai rechts</code>
+                            <p className="text-[10px] mt-0.5" style={{ color: '#6B6B66' }}>90° naar rechts draaien</p>
                         </div>
                     </div>
 
-                    <div className="mt-4 pt-3 border-t border-slate-700">
-                        <div className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Doel</div>
-                        <div className="text-slate-300 text-xs leading-relaxed">
-                            <span className="text-amber-300">1.</span> Pak alle 🦴<br />
-                            <span className="text-amber-300">2.</span> Ga naar 🏠
+                    <div className="mt-4 pt-3" style={{ borderTop: '1px solid #F0EEE8' }}>
+                        <div className="text-[10px] font-black uppercase tracking-widest mb-2" style={{ color: '#6B6B66' }}>Doel</div>
+                        <div className="text-xs leading-relaxed" style={{ color: '#3D3D38' }}>
+                            <span style={{ color: '#D97757' }}>1.</span> Pak alle 🦴<br />
+                            <span style={{ color: '#D97757' }}>2.</span> Ga naar 🏠
                         </div>
                     </div>
 
                     {/* Code Preview */}
-                    <div className="mt-4 pt-3 border-t border-slate-700">
-                        <div className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Jouw Code</div>
-                        <div className="bg-slate-900 rounded-lg p-2 font-mono text-[10px] text-amber-300 max-h-24 overflow-y-auto whitespace-pre-wrap">
+                    <div className="mt-4 pt-3" style={{ borderTop: '1px solid #F0EEE8' }}>
+                        <div className="text-[10px] font-black uppercase tracking-widest mb-2" style={{ color: '#6B6B66' }}>Jouw Code</div>
+                        <div className="rounded-lg p-2 font-mono text-[10px] max-h-24 overflow-y-auto whitespace-pre-wrap" style={{ backgroundColor: '#FAF9F0', color: '#D97757', border: '1px solid #F0EEE8' }}>
                             {code || "// Wachten..."}
                         </div>
                     </div>
@@ -505,12 +499,12 @@ export const LogicPreview: React.FC<LogicPreviewProps> = ({ code, onStart, onLev
 
             {/* Game Over Overlay */}
             {lives <= 0 && (
-                <div className="absolute inset-0 bg-black/80 flex items-center justify-center z-50">
-                    <div className="bg-slate-800 rounded-2xl p-6 text-center max-w-xs">
+                <div className="absolute inset-0 bg-black/60 flex items-center justify-center z-50">
+                    <div className="rounded-2xl p-6 text-center max-w-xs" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
                         <div className="text-4xl mb-3">😢</div>
-                        <h3 className="text-xl font-black text-white mb-2">Game Over!</h3>
-                        <p className="text-slate-400 text-sm mb-4">Je hebt geen levens meer.</p>
-                        <button onClick={fullReset} className="w-full py-2.5 bg-orange-500 text-white font-bold rounded-xl hover:bg-orange-600 transition-all text-sm">
+                        <h3 className="text-xl font-black mb-2" style={{ color: '#1A1A19' }}>Game Over!</h3>
+                        <p className="text-sm mb-4" style={{ color: '#6B6B66' }}>Je hebt geen levens meer.</p>
+                        <button onClick={fullReset} className="w-full py-2.5 text-white font-bold rounded-xl transition-all text-sm" style={{ backgroundColor: '#D97757' }}>
                             Opnieuw Proberen
                         </button>
                     </div>

@@ -1,8 +1,8 @@
 /**
- * MFA Trust Service — Client-side interface for IP-based MFA grace periods.
+ * MFA Trust Service — Client-side interface for recent MFA verification signals.
  *
- * After successful MFA verification, creates a trusted session so the user
- * doesn't need to re-enter MFA for 30 minutes from the same IP address.
+ * We store a short-lived trusted session after MFA verification so the backend
+ * can use it in additional risk checks and revoke it on logout/password changes.
  */
 import { supabase, EDGE_FUNCTION_URL } from './supabase';
 
@@ -30,8 +30,7 @@ async function callMfaTrust<T = any>(method: 'GET' | 'POST' | 'DELETE'): Promise
 }
 
 /**
- * Check if the current IP has a valid MFA trusted session.
- * Returns true if MFA can be skipped for this session.
+ * Check if the current device has a valid trusted session marker.
  */
 export async function checkMfaTrust(): Promise<boolean> {
     try {

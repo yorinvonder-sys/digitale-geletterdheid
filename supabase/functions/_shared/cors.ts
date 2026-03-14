@@ -19,8 +19,11 @@ const DEV_ORIGINS = [
 
 function buildAllowedOrigins(): Set<string> {
     const origins = new Set(PRODUCTION_ORIGINS);
+    const environment = (globalThis as { Deno?: { env?: { get?: (key: string) => string | undefined } } }).Deno
+        ?.env
+        ?.get?.("ENVIRONMENT");
 
-    if (Deno.env.get("ENVIRONMENT") !== "production") {
+    if (environment !== "production") {
         for (const o of DEV_ORIGINS) {
             origins.add(o);
         }
@@ -46,9 +49,12 @@ export function isAllowedReferer(referer: string | null): boolean {
 }
 
 export function getAllowedOrigin(input: Request | string | null): string {
-    const origin = typeof input === "string" || input === null
-        ? input || ""
-        : input.headers.get("Origin") || "";
+    let origin = "";
+    if (typeof input === "string") {
+        origin = input;
+    } else if (input) {
+        origin = input.headers.get("Origin") || "";
+    }
     return ALLOWED_ORIGINS.has(origin) ? origin : "https://dgskills.app";
 }
 

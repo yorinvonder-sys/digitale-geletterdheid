@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Lock, Eye, EyeOff, Save } from 'lucide-react';
 import { supabase } from '../services/supabase';
+import { revokeAllMfaTrust } from '../services/mfaTrustService';
 import { validatePassword } from '../utils/passwordValidator';
 
 interface ChangePasswordProps {
@@ -45,6 +46,8 @@ export const ChangePassword: React.FC<ChangePasswordProps> = ({ onComplete }) =>
                 .update({ must_change_password: false })
                 .eq('id', session.user.id);
             if (dbError) throw dbError;
+
+            await revokeAllMfaTrust();
 
             // 3. Complete
             onComplete();

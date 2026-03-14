@@ -5,6 +5,9 @@ on:
     branches:
       - 'claude/**'
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   merge-to-main:
     runs-on: ubuntu-latest

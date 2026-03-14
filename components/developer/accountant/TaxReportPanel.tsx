@@ -25,24 +25,47 @@ export function TaxReportPanel({ summary, tax, settings, userId, onSettingsChang
     const [showSettings, setShowSettings] = useState(false);
     const [savingSettings, setSavingSettings] = useState(false);
     const [saveError, setSaveError] = useState('');
+    // Defaults voor DGSkills.app — worden alleen gebruikt als er nog geen settings zijn opgeslagen
+    const DEFAULT_BUSINESS_NAME = 'DGSkills.app';
+    const DEFAULT_KVK_NUMBER = '81819889';
+
     const [localSettings, setLocalSettings] = useState({
-        business_name:  settings?.business_name  || '',
-        kvk_number:     settings?.kvk_number     || '',
+        business_name:  settings?.business_name  || DEFAULT_BUSINESS_NAME,
+        kvk_number:     settings?.kvk_number     || DEFAULT_KVK_NUMBER,
         starter_aftrek: settings?.starter_aftrek || false,
         tax_year:       settings?.tax_year        || 2025,
     });
+    const [autoSaved, setAutoSaved] = useState(false);
 
     // Sync localSettings als de settings-prop van buiten verandert (bijv. na eerste load)
     useEffect(() => {
         setLocalSettings({
-            business_name:  settings?.business_name  || '',
-            kvk_number:     settings?.kvk_number     || '',
+            business_name:  settings?.business_name  || DEFAULT_BUSINESS_NAME,
+            kvk_number:     settings?.kvk_number     || DEFAULT_KVK_NUMBER,
             starter_aftrek: settings?.starter_aftrek || false,
             tax_year:       settings?.tax_year        || 2025,
         });
         // Toon formulier direct als bedrijfsnaam nog leeg is
         setShowSettings(!settings?.business_name);
     }, [settings]);
+
+    // Auto-save defaults als er nog geen settings zijn opgeslagen
+    useEffect(() => {
+        if (!settings?.business_name && !autoSaved && userId) {
+            setAutoSaved(true);
+            saveSettings({
+                user_id:       userId,
+                business_name: DEFAULT_BUSINESS_NAME,
+                kvk_number:    DEFAULT_KVK_NUMBER,
+                starter_aftrek: false,
+                tax_year:      new Date().getFullYear(),
+            }).then(saved => {
+                onSettingsChange(saved);
+            }).catch(() => {
+                // Stille fout — gebruiker kan handmatig opslaan
+            });
+        }
+    }, [settings, userId, autoSaved]); // eslint-disable-line react-hooks/exhaustive-deps
 
     async function handleSaveSettings() {
         setSavingSettings(true);

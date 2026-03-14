@@ -173,6 +173,7 @@ const ScholenLandingPlatformPreview = React.lazy(() => import('./scholen/Scholen
 const ScholenLandingCustomization = React.lazy(() => import('./scholen/ScholenLandingCustomization').then(m => ({ default: m.ScholenLandingCustomization })));
 const ScholenLandingGameDemo = React.lazy(() => import('./scholen/ScholenLandingGameDemo').then(m => ({ default: m.ScholenLandingGameDemo })));
 const ScholenLandingDashboardDemo = React.lazy(() => import('./scholen/ScholenLandingDashboardDemo').then(m => ({ default: m.ScholenLandingDashboardDemo })));
+const ScholenLandingMissionShowcase = React.lazy(() => import('./scholen/ScholenLandingMissionShowcase').then(m => ({ default: m.ScholenLandingMissionShowcase })));
 
 // Pip the Robin — static guide in section margins
 import { PipGuide } from './scholen/FlyingPip';
@@ -525,7 +526,7 @@ export const ScholenLanding: React.FC = () => {
                                 </div>
                             </div>
 
-                            {/* Right: floating screenshot composition */}
+                            {/* Right: hero video */}
                             {isDesktopHero && (
                                 <div className="relative hidden md:block" aria-hidden="true">
                                 {/* Background glow — warm */}
@@ -534,70 +535,22 @@ export const ScholenLanding: React.FC = () => {
                                     style={{ background: `radial-gradient(circle at 30% 30%, ${C.accent}18, transparent 58%), linear-gradient(135deg, ${C.bgAlt}85, transparent)` }}
                                 />
 
-                                {/* Main screenshot */}
+                                {/* Video container */}
                                 <div className="relative">
-                                    <div className="rounded-2xl overflow-hidden bg-white" style={{ boxShadow: `0 18px 34px ${C.text}10`, border: `1px solid ${C.border}` }}>
-                                        <div className="flex items-center gap-1.5 px-4 py-2.5" style={{ backgroundColor: C.bgAlt, borderBottom: `1px solid ${C.borderLight}` }}>
-                                            <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
-                                            <div className="w-2.5 h-2.5 rounded-full bg-amber-400" />
-                                            <div className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
-                                            <span className="ml-3 text-[10px] font-medium" style={{ color: C.textLight }}>dgskills.app</span>
-                                        </div>
-                                        <img
-                                            src="/screenshots/student-mission-overview-1200.webp"
-                                            alt="DGSkills missie overzicht"
-                                            className="w-full"
-                                            width={1200}
-                                            height={750}
-                                            loading="eager"
-                                            fetchPriority="high"
-                                            decoding="async"
+                                    <div className="rounded-2xl overflow-hidden" style={{ boxShadow: `0 18px 34px ${C.text}12`, border: `1px solid ${C.border}` }}>
+                                        <video
+                                            autoPlay
+                                            loop
+                                            muted
+                                            playsInline
+                                            preload="auto"
+                                            className="w-full rounded-2xl"
+                                            src="/videos/hero-pip-adventure.mp4"
                                         />
                                     </div>
                                 </div>
 
-                                {/* Floating card: XP badge */}
-                                <div className="absolute -left-8 bottom-16 z-10">
-                                    <div className="bg-white rounded-2xl p-4 flex items-center gap-3" style={{ boxShadow: `0 8px 18px ${C.text}08`, border: `1px solid ${C.border}` }}>
-                                        <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white text-sm font-bold" style={{ backgroundColor: C.accent }}>
-                                            XP
-                                        </div>
-                                        <div>
-                                            <p className="text-xs font-bold" style={{ color: C.text }}>+250 XP verdiend!</p>
-                                            <p className="text-xs" style={{ color: C.textMuted }}>Level 5 bereikt</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* Floating card: SLO check */}
-                                <div className="absolute -right-4 top-20 z-10">
-                                    <div className="bg-white rounded-2xl p-4 flex items-center gap-3" style={{ boxShadow: `0 8px 18px ${C.text}08`, border: `1px solid ${C.border}` }}>
-                                        <div className="w-10 h-10 bg-emerald-500 rounded-xl flex items-center justify-center text-white">
-                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-                                        </div>
-                                        <div>
-                                            <p className="text-xs font-bold" style={{ color: C.text }}>Kerndoel behaald</p>
-                                            <p className="text-[10px] font-medium text-emerald-600">DV-2: Cloud beheer</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* Small avatar preview */}
-                                <div className="absolute -left-2 top-8 z-10">
-                                    <div className="bg-white rounded-xl p-2.5" style={{ boxShadow: `0 4px 12px ${C.text}08`, border: `1px solid ${C.border}` }}>
-                                        <img
-                                            src="/screenshots/avatar-customization-192.webp"
-                                            alt=""
-                                            className="w-16 h-16 rounded-lg object-cover"
-                                            width={192}
-                                            height={120}
-                                            loading="lazy"
-                                            decoding="async"
-                                        />
-                                    </div>
-                                </div>
-
-                                {/* Pip — sitting on the browser bar */}
+                                {/* Pip — floating near the video */}
                                 <div className="absolute -top-7 left-16 z-20">
                                     <img
                                         src="/mascot/pip-headset.webp"
@@ -818,6 +771,19 @@ export const ScholenLanding: React.FC = () => {
                             <Suspense fallback={<div className="min-h-[400px]" aria-hidden="true" />}>
                                 <AnimateOnScroll>
                                     <ScholenLandingPlatformPreview />
+                                </AnimateOnScroll>
+                            </Suspense>
+                        </DeferredSection>
+                    </SectionErrorBoundary>
+                </section>
+
+                {/* Mission Showcase */}
+                <section className="py-14 md:py-20 lg:py-24 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_600px]" style={{ backgroundColor: C.bgAlt, borderTop: `1px solid ${C.border}`, borderBottom: `1px solid ${C.border}` }} aria-label="Missie overzicht">
+                    <SectionErrorBoundary>
+                        <DeferredSection minHeight="min-h-[400px]">
+                            <Suspense fallback={<div className="min-h-[400px]" aria-hidden="true" />}>
+                                <AnimateOnScroll>
+                                    <ScholenLandingMissionShowcase />
                                 </AnimateOnScroll>
                             </Suspense>
                         </DeferredSection>

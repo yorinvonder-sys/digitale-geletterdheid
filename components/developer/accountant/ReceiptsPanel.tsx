@@ -53,6 +53,7 @@ export function ReceiptsPanel({ receipts, userId, onRefresh }: ReceiptsPanelProp
     const [uploadedFile, setUploadedFile] = useState<File | null>(null);
     const [scanSuccess, setScanSuccess] = useState(false);
     const [scanAssetData, setScanAssetData] = useState<{ isAsset: boolean; assetName: string; assetCategory: string; assetLifeYears: number } | null>(null);
+    const [detailReceipt, setDetailReceipt] = useState<AccountantReceipt | null>(null);
     const dropRef = useRef<HTMLDivElement>(null);
     const fileRef = useRef<HTMLInputElement>(null);
 
@@ -250,7 +251,7 @@ export function ReceiptsPanel({ receipts, userId, onRefresh }: ReceiptsPanelProp
                         Sleep een foto of PDF van je bonnetje hierheen of klik om te selecteren
                     </p>
                     <p className="text-xs text-slate-400 mt-2">
-                        JPG, PNG, WEBP, GIF, HEIC, PDF — max 10 MB — AI scant automatisch
+                        JPG, PNG, WEBP, GIF, HEIC, PDF — max 10 MB — Claude AI scant automatisch
                     </p>
                 </div>
             ) : (
@@ -431,21 +432,25 @@ export function ReceiptsPanel({ receipts, userId, onRefresh }: ReceiptsPanelProp
                 ) : (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         {receipts.map(r => (
-                            <div key={r.id} className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden group">
+                            <div
+                                key={r.id}
+                                className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden group cursor-pointer hover:border-indigo-300 hover:shadow-md transition-all"
+                                onClick={() => setDetailReceipt(r)}
+                            >
                                 {r.image_url ? (
                                     r.image_url.endsWith('.pdf') ? (
-                                        <a href={r.image_url} target="_blank" rel="noopener noreferrer" className="h-32 bg-slate-50 flex flex-col items-center justify-center hover:bg-indigo-50 transition-colors cursor-pointer">
+                                        <div className="h-32 bg-slate-50 flex flex-col items-center justify-center">
                                             <FileText size={32} className="text-indigo-400" />
-                                            <span className="text-[10px] text-indigo-500 font-bold mt-1 uppercase">PDF openen</span>
-                                        </a>
+                                            <span className="text-[10px] text-indigo-500 font-bold mt-1 uppercase">PDF</span>
+                                        </div>
                                     ) : (
-                                        <a href={r.image_url} target="_blank" rel="noopener noreferrer" className="block h-32 bg-slate-50 overflow-hidden cursor-pointer">
+                                        <div className="block h-32 bg-slate-50 overflow-hidden">
                                             <img
                                                 src={r.image_url}
                                                 alt={r.supplier || 'Bonnetje'}
                                                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                                             />
-                                        </a>
+                                        </div>
                                     )
                                 ) : (
                                     <div className="h-32 bg-slate-50 flex items-center justify-center">
@@ -461,7 +466,7 @@ export function ReceiptsPanel({ receipts, userId, onRefresh }: ReceiptsPanelProp
                                             <p className="text-xs text-slate-400">{formatDate(r.date)}</p>
                                         </div>
                                         <button
-                                            onClick={() => r.id && handleDelete(r.id, r.image_url)}
+                                            onClick={e => { e.stopPropagation(); r.id && handleDelete(r.id, r.image_url); }}
                                             className="opacity-0 group-hover:opacity-100 p-1.5 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all shrink-0"
                                         >
                                             <Trash2 size={14} />
@@ -487,6 +492,136 @@ export function ReceiptsPanel({ receipts, userId, onRefresh }: ReceiptsPanelProp
                     </div>
                 )}
             </div>
+
+            {/* Detail modal */}
+            {detailReceipt && (
+                <div
+                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4"
+                    onClick={() => setDetailReceipt(null)}
+                >
+                    <div
+                        className="bg-white rounded-[2rem] shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-hidden"
+                        onClick={e => e.stopPropagation()}
+                    >
+                        <div className="grid grid-cols-1 md:grid-cols-2 max-h-[90vh]">
+                            {/* Bestand preview */}
+                            <div className="bg-slate-50 p-6 flex flex-col items-center justify-center min-h-64 max-h-[45vh] md:max-h-[90vh] overflow-auto">
+                                {detailReceipt.image_url ? (
+                                    detailReceipt.image_url.endsWith('.pdf') ? (
+                                        <a
+                                            href={detailReceipt.image_url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="flex flex-col items-center gap-3 hover:opacity-80 transition-opacity"
+                                        >
+                                            <FileText size={64} className="text-indigo-400" />
+                                            <span className="text-sm text-indigo-600 font-bold">PDF openen in nieuw tabblad</span>
+                                        </a>
+                                    ) : (
+                                        <a href={detailReceipt.image_url} target="_blank" rel="noopener noreferrer">
+                                            <img
+                                                src={detailReceipt.image_url}
+                                                alt={detailReceipt.supplier || 'Bonnetje'}
+                                                className="max-h-[70vh] object-contain rounded-xl shadow-md cursor-zoom-in"
+                                            />
+                                        </a>
+                                    )
+                                ) : (
+                                    <div className="flex flex-col items-center gap-3">
+                                        <FileText size={64} className="text-slate-300" />
+                                        <p className="text-sm text-slate-400">Geen bestand beschikbaar</p>
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Gegevens */}
+                            <div className="p-8 space-y-5 overflow-auto max-h-[45vh] md:max-h-[90vh]">
+                                <div className="flex items-center justify-between">
+                                    <h3 className="font-black text-slate-900 uppercase tracking-tight text-lg">Bonnetje details</h3>
+                                    <button
+                                        onClick={() => setDetailReceipt(null)}
+                                        className="p-2 hover:bg-slate-100 rounded-xl transition-colors"
+                                    >
+                                        <X size={20} className="text-slate-400" />
+                                    </button>
+                                </div>
+
+                                <div className="space-y-4">
+                                    <div>
+                                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Leverancier</p>
+                                        <p className="font-bold text-slate-800 text-lg">{detailReceipt.supplier || 'Onbekend'}</p>
+                                    </div>
+
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Datum</p>
+                                            <p className="font-bold text-slate-800">{formatDate(detailReceipt.date)}</p>
+                                        </div>
+                                        <div>
+                                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Bedrag</p>
+                                            <p className="font-black text-slate-900 text-xl">{formatEuro(detailReceipt.amount)}</p>
+                                        </div>
+                                    </div>
+
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">BTW-bedrag</p>
+                                            <p className="font-bold text-slate-800">{formatEuro(detailReceipt.vat_amount)}</p>
+                                        </div>
+                                        <div>
+                                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">BTW-tarief</p>
+                                            <p className="font-bold text-slate-800">{detailReceipt.vat_rate}%</p>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Categorie</p>
+                                        <span className="inline-block text-xs bg-indigo-50 text-indigo-600 px-3 py-1.5 rounded-lg font-bold">
+                                            {CATEGORY_LABELS[detailReceipt.category] || detailReceipt.category}
+                                        </span>
+                                    </div>
+
+                                    {detailReceipt.description && (
+                                        <div>
+                                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Omschrijving</p>
+                                            <p className="text-sm text-slate-700">{detailReceipt.description}</p>
+                                        </div>
+                                    )}
+
+                                    {detailReceipt.ai_scanned && (
+                                        <div className="flex items-center gap-2 text-indigo-500 bg-indigo-50 rounded-xl px-3 py-2">
+                                            <Sparkles size={14} />
+                                            <span className="text-xs font-bold">Automatisch gescand door AI</span>
+                                        </div>
+                                    )}
+                                </div>
+
+                                <div className="flex gap-3 pt-2">
+                                    {detailReceipt.image_url && (
+                                        <a
+                                            href={detailReceipt.image_url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="flex-1 py-2.5 border border-slate-200 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 text-center"
+                                        >
+                                            Bestand openen
+                                        </a>
+                                    )}
+                                    <button
+                                        onClick={() => {
+                                            if (detailReceipt.id) handleDelete(detailReceipt.id, detailReceipt.image_url);
+                                            setDetailReceipt(null);
+                                        }}
+                                        className="flex-1 py-2.5 border border-red-200 rounded-xl text-sm font-bold text-red-600 hover:bg-red-50"
+                                    >
+                                        Verwijderen
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

@@ -42,7 +42,7 @@ export const AiTransparency: React.FC = () => {
                             DGSkills gebruikt de volgende AI-modellen:
                         </p>
                         <ul>
-                            <li><strong>Google Gemini (Pro/Flash):</strong> Voor de AI Mentor chat en feedback op missies.</li>
+                            <li><strong>Google Gemini (Pro/Flash):</strong> Voor Pip (de AI-assistent) chat en feedback op missies.</li>
                             <li><strong>Imagen:</strong> Voor het genereren van afbeeldingen in specifieke ontwerp-missies.</li>
                         </ul>
 
@@ -51,7 +51,7 @@ export const AiTransparency: React.FC = () => {
                             In lijn met de EU AI Act (Art. 50) zorgen wij ervoor dat het voor leerlingen altijd duidelijk is wanneer zij met AI communiceren:
                         </p>
                         <ul>
-                            <li>AI-antwoorden zijn gemarkeerd met het label <strong>"AI Mentor"</strong> en een sparkles-icoon.</li>
+                            <li>AI-antwoorden zijn gemarkeerd met het label <strong>"Pip"</strong> en een sparkles-icoon.</li>
                             <li>Gegenereerde afbeeldingen bevatten een visueel watermerk en UI-disclaimer.</li>
                         </ul>
 

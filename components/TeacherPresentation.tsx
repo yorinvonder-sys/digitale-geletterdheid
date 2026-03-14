@@ -154,7 +154,7 @@ const WEEKS_DATA: WeekConfig[] = [
                                 <div className="bg-white/10 p-6 rounded-2xl text-center border border-white/10">
                                     <div className="text-4xl mb-3">🤖</div>
                                     <h4 className="font-bold text-white mb-2">Vraag de Chatbot</h4>
-                                    <p className="text-sm text-white/90">De AI Mentor geeft je handige tips.</p>
+                                    <p className="text-sm text-white/90">Pip geeft je handige tips.</p>
                                 </div>
                                 <div className="bg-white/10 p-6 rounded-2xl text-center border border-white/10">
                                     <div className="text-4xl mb-3">🙋</div>
@@ -350,7 +350,7 @@ const WEEKS_DATA: WeekConfig[] = [
                                 <div className="bg-white/10 p-6 rounded-2xl text-center border border-white/10">
                                     <div className="text-4xl mb-3">🤖</div>
                                     <h4 className="font-bold text-white mb-2">Vraag de Chatbot</h4>
-                                    <p className="text-sm text-white/90">De AI Mentor geeft je handige tips.</p>
+                                    <p className="text-sm text-white/90">Pip geeft je handige tips.</p>
                                 </div>
                                 <div className="bg-white/10 p-6 rounded-2xl text-center border border-white/10">
                                     <div className="text-4xl mb-3">🙋</div>
@@ -487,7 +487,7 @@ const WEEKS_DATA: WeekConfig[] = [
                                 <div className="bg-white/10 p-6 rounded-2xl text-center border border-white/10">
                                     <div className="text-4xl mb-3">🤖</div>
                                     <h4 className="font-bold text-white mb-2">Vraag de Chatbot</h4>
-                                    <p className="text-sm text-white/90">De AI Mentor geeft je handige tips.</p>
+                                    <p className="text-sm text-white/90">Pip geeft je handige tips.</p>
                                 </div>
                                 <div className="bg-white/10 p-6 rounded-2xl text-center border border-white/10">
                                     <div className="text-4xl mb-3">🙋</div>
@@ -592,7 +592,7 @@ const WEEKS_DATA: WeekConfig[] = [
                                 <div className="bg-white/10 p-6 rounded-2xl text-center border border-white/10">
                                     <div className="text-4xl mb-3">🤖</div>
                                     <h4 className="font-bold text-white mb-2">Vraag de Chatbot</h4>
-                                    <p className="text-sm text-white/90">De AI Mentor geeft je handige tips.</p>
+                                    <p className="text-sm text-white/90">Pip geeft je handige tips.</p>
                                 </div>
                                 <div className="bg-white/10 p-6 rounded-2xl text-center border border-white/10">
                                     <div className="text-4xl mb-3">🙋</div>

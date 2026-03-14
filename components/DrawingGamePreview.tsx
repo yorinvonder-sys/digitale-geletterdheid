@@ -677,29 +677,19 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
     // INTRO SCREEN
     if (!hasStarted) {
         return (
-            <div className="w-full h-full flex flex-col bg-gradient-to-br from-amber-500 via-orange-500 to-red-500 text-white relative overflow-hidden">
+            <div className="w-full h-full flex flex-col relative overflow-hidden" style={{ backgroundColor: '#FAF9F0' }}>
                 {challengeToast}
-                <div className="absolute inset-0 opacity-20">
-                    {['🎨', '🧠', '👁️', '🖍️'].map((emoji, i) => (
-                        <div key={i} className="absolute text-4xl" style={{
-                            left: `${20 + i * 20}%`, top: `${10 + (i % 2) * 30}%`, animationDelay: `${i * 0.2}s`
-                        }}>{emoji}</div>
-                    ))}
-                </div>
                 <div className="flex-1 flex flex-col items-center justify-center p-6 relative z-10">
                     <div className="relative mb-6">
-                        <div className="w-24 h-24 rounded-2xl bg-white flex items-center justify-center shadow-2xl">
-                            <Brain size={48} className="text-orange-500" />
-                        </div>
-                        <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-amber-400 rounded-full flex items-center justify-center text-xl shadow-lg">⚡</div>
+                        <img src="/mascot/pip-excited.webp" alt="Pip" className="w-20 h-20 object-contain" />
                     </div>
-                    <h2 className="text-2xl font-black mb-2 text-center">AI Tekengame 2.0</h2>
-                    <p className="text-orange-100 text-center max-w-sm mb-6 text-sm">
+                    <h2 className="text-2xl font-black mb-2 text-center" style={{ color: '#1A1A19' }}>AI Tekengame 2.0</h2>
+                    <p className="text-center max-w-sm mb-6 text-sm" style={{ color: '#6B6B66' }}>
                         Leer hoe een Neuraal Netwerk jouw tekeningen ziet! De AI analyseert pixels, zoekt patronen en berekent de waarschijnlijkheid.
                     </p>
 
                     {/* Solo Mode Button */}
-                    <button onClick={() => { setHasStarted(true); onStart?.(); }} disabled={countdown > 0} className={`w-full max-w-sm px-6 py-4 rounded-xl font-bold text-lg transition-all duration-300 flex items-center justify-center gap-3 ${countdown <= 0 ? 'bg-white text-orange-500 shadow-2xl hover:scale-105 cursor-pointer' : 'bg-white/30 text-white/60 cursor-not-allowed'}`}>
+                    <button onClick={() => { setHasStarted(true); onStart?.(); }} disabled={countdown > 0} className={`w-full max-w-sm px-6 py-4 rounded-xl font-bold text-lg transition-all duration-300 flex items-center justify-center gap-3 ${countdown <= 0 ? 'shadow-lg hover:scale-105 cursor-pointer' : 'cursor-not-allowed opacity-50'}`} style={{ backgroundColor: countdown <= 0 ? '#D97757' : '#E8E6DF', color: countdown <= 0 ? '#FFFFFF' : '#6B6B66' }}>
                         {countdown > 0 ? <span>{countdown} - Lees de uitleg...</span> : <> <Pencil size={24} /> Solo Training </>}
                     </button>
 
@@ -707,16 +697,17 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
                     {user?.studentClass && (
                         <button
                             onClick={() => setDuelMode('lobby')}
-                            className="w-full max-w-sm px-6 py-4 mt-3 rounded-xl font-bold text-lg transition-all duration-300 flex items-center justify-center gap-3 bg-gradient-to-r from-red-600 to-pink-600 text-white shadow-xl hover:scale-105 hover:shadow-red-500/30"
+                            className="w-full max-w-sm px-6 py-4 mt-3 rounded-xl font-bold text-lg transition-all duration-300 flex items-center justify-center gap-3 shadow-lg hover:scale-105"
+                            style={{ backgroundColor: '#2A9D8F', color: '#FFFFFF' }}
                         >
                             <Swords size={24} />
-                            🎮 Duel een Klasgenoot!
+                            Duel een Klasgenoot!
                         </button>
                     )}
 
                     {!user?.studentClass && (
-                        <p className="text-orange-200/70 text-xs mt-4 text-center max-w-xs">
-                            💡 Om klasgenoten uit te dagen moet je aan een klas zijn toegevoegd.
+                        <p className="text-xs mt-4 text-center max-w-xs" style={{ color: '#6B6B66' }}>
+                            Om klasgenoten uit te dagen moet je aan een klas zijn toegevoegd.
                         </p>
                     )}
                 </div>
@@ -725,23 +716,23 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
     }
 
     return (
-        <div className="w-full h-full flex flex-col bg-slate-900 text-white relative">
-            <div className="bg-orange-600 px-4 py-3 flex items-center justify-between shrink-0 shadow-lg z-20">
+        <div className="w-full h-full flex flex-col relative" style={{ backgroundColor: '#FAF9F0', color: '#3D3D38' }}>
+            <div className="px-4 py-3 flex items-center justify-between shrink-0 shadow-sm z-20" style={{ backgroundColor: '#FFFFFF', borderBottom: '1px solid #E8E6DF' }}>
                 <div className="flex items-center gap-3">
                     <div className="text-2xl">{currentPrompt?.icon || '🎨'}</div>
                     <div>
-                        <p className="text-orange-100 text-[10px] font-bold uppercase tracking-wider">Target</p>
-                        <h3 className="font-black text-xl uppercase tracking-wider">{currentPrompt?.word}</h3>
+                        <p className="text-[10px] font-bold uppercase tracking-wider" style={{ color: '#6B6B66' }}>Target</p>
+                        <h3 className="font-black text-xl uppercase tracking-wider" style={{ color: '#1A1A19' }}>{currentPrompt?.word}</h3>
                     </div>
                 </div>
                 <div className="flex items-center gap-2">
                     {gamePhase === 'draw' && (
-                        <div className={`flex items-center gap-1 px-3 py-1 rounded-full font-mono font-bold ${timeLeft <= 5 ? 'bg-red-500 animate-pulse' : 'bg-black/20'}`}>
+                        <div className={`flex items-center gap-1 px-3 py-1 rounded-full font-mono font-bold text-white ${timeLeft <= 5 ? 'bg-red-500 animate-pulse' : ''}`} style={timeLeft > 5 ? { backgroundColor: '#D97757' } : {}}>
                             <Clock size={16} /> {timeLeft}s
                         </div>
                     )}
-                    <div className="bg-black/20 px-3 py-1 rounded-full text-sm font-bold"><Trophy size={14} className="inline mr-1" /> {score}</div>
-                    <div className="bg-black/20 px-3 py-1 rounded-full text-xs font-bold">{currentRound + 1}/{totalRounds}</div>
+                    <div className="px-3 py-1 rounded-full text-sm font-bold" style={{ backgroundColor: '#F0EEE8', color: '#3D3D38' }}><Trophy size={14} className="inline mr-1" style={{ color: '#D97757' }} /> {score}</div>
+                    <div className="px-3 py-1 rounded-full text-xs font-bold" style={{ backgroundColor: '#F0EEE8', color: '#3D3D38' }}>{currentRound + 1}/{totalRounds}</div>
 
                     {/* Duel Button - Switch to duel lobby */}
                     {user && (
@@ -754,10 +745,8 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
                                     alert('Je moet aan een klas zijn toegevoegd om te kunnen duelleren. Vraag je docent!');
                                 }
                             }}
-                            className={`flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold transition-all active:scale-95 ${user.studentClass
-                                ? 'bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-400 hover:to-red-400'
-                                : 'bg-slate-600 opacity-70'
-                                }`}
+                            className="flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold transition-all active:scale-95 text-white"
+                            style={{ backgroundColor: user.studentClass ? '#2A9D8F' : '#6B6B66', opacity: user.studentClass ? 1 : 0.7 }}
                             title={user.studentClass ? "Speel tegen klasgenoot" : "Geen klas - kan niet duelleren"}
                         >
                             <Swords size={14} />
@@ -771,7 +760,8 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
                             setHasStarted(false);
                             setDuelMode('off');
                         }}
-                        className="flex items-center gap-1 px-2 py-1 bg-black/20 rounded-full text-xs font-bold hover:bg-black/30 transition-all"
+                        className="flex items-center gap-1 px-2 py-1 rounded-full text-xs font-bold transition-all"
+                        style={{ backgroundColor: '#F0EEE8', color: '#6B6B66' }}
                         title="Terug naar menu"
                     >
                         <LogOut size={14} />
@@ -801,32 +791,32 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
 
             <div className="flex-1 p-4 flex gap-4 overflow-hidden relative">
                 {/* EDUCATIONAL SIDEBAR - ACTIVE DURING ANALYSIS */}
-                <div className={`absolute left-4 top-4 bottom-4 w-64 bg-slate-800 rounded-2xl border border-slate-700 p-4 transition-all duration-500 transform ${gamePhase !== 'draw' ? 'translate-x-0' : '-translate-x-full opacity-0'}`}>
-                    <h4 className="font-black text-orange-400 mb-4 flex items-center gap-2">
+                <div className={`absolute left-4 top-4 bottom-4 w-64 rounded-2xl p-4 transition-all duration-500 transform ${gamePhase !== 'draw' ? 'translate-x-0' : '-translate-x-full opacity-0'}`} style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
+                    <h4 className="font-black mb-4 flex items-center gap-2" style={{ color: '#D97757' }}>
                         <Brain size={18} /> Hoe AI Denkt
                     </h4>
 
                     <div className="space-y-4">
-                        <div className={`p-3 rounded-xl border ${analysisStep >= 1 ? 'bg-indigo-900/50 border-indigo-500 text-white' : 'bg-slate-900 border-slate-800 text-slate-500'}`}>
+                        <div className="p-3 rounded-xl border" style={analysisStep >= 1 ? { backgroundColor: '#EEF2FF', borderColor: '#2A9D8F', color: '#1A1A19' } : { backgroundColor: '#F0EEE8', borderColor: '#E8E6DF', color: '#6B6B66' }}>
                             <div className="text-xs font-bold uppercase mb-1">Stap 1: Input</div>
                             <div className="text-sm">AI scant de pixels van jouw tekening (28x28 grid).</div>
                         </div>
-                        <div className={`p-3 rounded-xl border ${analysisStep >= 2 ? 'bg-purple-900/50 border-purple-500 text-white' : 'bg-slate-900 border-slate-800 text-slate-500'}`}>
+                        <div className="p-3 rounded-xl border" style={analysisStep >= 2 ? { backgroundColor: '#F3EEFF', borderColor: '#8B6F9E', color: '#1A1A19' } : { backgroundColor: '#F0EEE8', borderColor: '#E8E6DF', color: '#6B6B66' }}>
                             <div className="text-xs font-bold uppercase mb-1">Stap 2: Patronen</div>
                             <div className="text-sm">Neurale lagen zoeken naar lijnen, bochten en vormen.</div>
                         </div>
-                        <div className={`p-3 rounded-xl border ${analysisStep >= 3 ? 'bg-emerald-900/50 border-emerald-500 text-white' : 'bg-slate-900 border-slate-800 text-slate-500'}`}>
+                        <div className="p-3 rounded-xl border" style={analysisStep >= 3 ? { backgroundColor: '#ECFDF5', borderColor: '#10B981', color: '#1A1A19' } : { backgroundColor: '#F0EEE8', borderColor: '#E8E6DF', color: '#6B6B66' }}>
                             <div className="text-xs font-bold uppercase mb-1">Stap 3: Waarschijnlijkheid</div>
                             <div className="text-sm">AI berekent % match met getrainde concepten.</div>
                         </div>
                     </div>
 
-                    <div className="mt-6 pt-4 border-t border-slate-700">
-                        <div className="bg-amber-500/10 border border-amber-500/30 rounded-xl p-3">
-                            <p className="text-xs font-bold text-amber-400 uppercase mb-1 flex items-center gap-1">
+                    <div className="mt-6 pt-4" style={{ borderTop: '1px solid #E8E6DF' }}>
+                        <div className="rounded-xl p-3" style={{ backgroundColor: '#FFF7ED', border: '1px solid #D97757', borderColor: 'rgba(217,119,87,0.3)' }}>
+                            <p className="text-xs font-bold uppercase mb-1 flex items-center gap-1" style={{ color: '#D97757' }}>
                                 {AI_FACTS[currentFactIndex].emoji} Wist je dat?
                             </p>
-                            <p className="text-xs text-slate-300 leading-relaxed">
+                            <p className="text-xs leading-relaxed" style={{ color: '#3D3D38' }}>
                                 {AI_FACTS[currentFactIndex].fact}
                             </p>
                         </div>
@@ -848,10 +838,10 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
                         {/* ANALYSIS OVERLAY */}
                         {gamePhase === 'analyzing' && (
                             <div className="absolute inset-0 flex flex-col items-center justify-center z-10">
-                                <div className="absolute inset-0 bg-indigo-500/20 animate-pulse rounded-2xl"></div>
-                                <div className="bg-slate-900/90 backdrop-blur p-6 rounded-2xl border border-indigo-500/50 flex flex-col items-center text-center shadow-2xl">
-                                    <Loader2 size={32} className="animate-spin text-indigo-400 mb-2" />
-                                    <h3 className="text-xl font-black text-white mb-1">
+                                <div className="absolute inset-0 animate-pulse rounded-2xl" style={{ backgroundColor: 'rgba(42,157,143,0.1)' }}></div>
+                                <div className="backdrop-blur p-6 rounded-2xl flex flex-col items-center text-center shadow-2xl" style={{ backgroundColor: 'rgba(255,255,255,0.95)', border: '1px solid #E8E6DF' }}>
+                                    <Loader2 size={32} className="animate-spin mb-2" style={{ color: '#2A9D8F' }} />
+                                    <h3 className="text-xl font-black mb-1" style={{ color: '#1A1A19' }}>
                                         {analysisStep === 1 && "Pixels Scannen..."}
                                         {analysisStep === 2 && "Features Extracten..."}
                                         {analysisStep === 3 && "Vergelijken met Dataset..."}
@@ -863,13 +853,13 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
                         {/* RESULT OVERLAY */}
                         {gamePhase === 'result' && result && (
                             <div className="absolute inset-0 z-20 flex items-center justify-center">
-                                <div className="bg-slate-900 w-full max-w-md p-6 rounded-2xl border border-slate-700 shadow-2xl animate-in zoom-in-95 duration-300">
+                                <div className="w-full max-w-md p-6 rounded-2xl shadow-2xl animate-in zoom-in-95 duration-300" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
                                     <div className="flex items-center justify-between mb-4">
-                                        <h3 className="text-lg font-bold text-white flex items-center gap-2">
-                                            {result.success ? <Check className="text-green-500" /> : <X className="text-red-500" />}
+                                        <h3 className="text-lg font-bold flex items-center gap-2" style={{ color: '#1A1A19' }}>
+                                            {result.success ? <Check style={{ color: '#10B981' }} /> : <X className="text-red-500" />}
                                             {result.success ? 'Correct Herkend!' : 'Niet Helemaal...'}
                                         </h3>
-                                        <div className="text-xs font-bold text-slate-400 uppercase">AI Confidence</div>
+                                        <div className="text-xs font-bold uppercase" style={{ color: '#6B6B66' }}>AI Confidence</div>
                                     </div>
 
                                     {/* PROBABILISTIC RESULTS */}
@@ -877,22 +867,22 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
                                         {result.guesses.slice(0, 3).map((guess, idx) => (
                                             <div key={idx} className="relative">
                                                 <div className="flex justify-between text-xs font-bold mb-1">
-                                                    <span className={guess.label === currentPrompt?.word ? 'text-green-400' : 'text-slate-300'}>
+                                                    <span style={{ color: guess.label === currentPrompt?.word ? '#10B981' : '#3D3D38' }}>
                                                         {guess.label.toUpperCase()}
                                                     </span>
-                                                    <span className="text-slate-400">{guess.confidence}%</span>
+                                                    <span style={{ color: '#6B6B66' }}>{guess.confidence}%</span>
                                                 </div>
-                                                <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                                                <div className="w-full h-2 rounded-full overflow-hidden" style={{ backgroundColor: '#F0EEE8' }}>
                                                     <div
-                                                        className={`h-full rounded-full transition-all duration-1000 ${guess.label === currentPrompt?.word ? 'bg-green-500' : 'bg-slate-500'}`}
-                                                        style={{ width: `${guess.confidence}%` }}
+                                                        className="h-full rounded-full transition-all duration-1000"
+                                                        style={{ width: `${guess.confidence}%`, backgroundColor: guess.label === currentPrompt?.word ? '#10B981' : '#E8E6DF' }}
                                                     ></div>
                                                 </div>
                                             </div>
                                         ))}
                                     </div>
 
-                                    <div className="bg-slate-800/50 p-3 rounded-lg text-sm text-slate-300 mb-4 border-l-2 border-orange-500">
+                                    <div className="p-3 rounded-lg text-sm mb-4" style={{ backgroundColor: '#FAF9F0', color: '#3D3D38', borderLeft: '2px solid #D97757' }}>
                                         "{result.reasoning}"
                                     </div>
 
@@ -904,7 +894,8 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
                                                     setResult(null);
                                                     setIsDrawing(false);
                                                 }}
-                                                className="px-5 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg font-bold flex items-center gap-2 text-sm transition-colors"
+                                                className="px-5 py-2 rounded-lg font-bold flex items-center gap-2 text-sm transition-colors"
+                                                style={{ backgroundColor: '#F0EEE8', color: '#3D3D38' }}
                                             >
                                                 <RotateCcw size={16} /> Probeer Opnieuw
                                             </button>
@@ -912,11 +903,11 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
 
                                         {result.success && (
                                             currentRound < totalRounds - 1 ? (
-                                                <button onClick={nextRound} className="px-5 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg font-bold flex items-center gap-2 text-sm transition-colors">
+                                                <button onClick={nextRound} className="px-5 py-2 rounded-lg font-bold flex items-center gap-2 text-sm transition-colors text-white" style={{ backgroundColor: '#D97757' }}>
                                                     Volgende <ArrowRight size={16} />
                                                 </button>
                                             ) : (
-                                                <button onClick={nextRound} className="px-5 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-bold flex items-center gap-2 text-sm transition-colors shadow-lg animate-pulse">
+                                                <button onClick={nextRound} className="px-5 py-2 rounded-lg font-bold flex items-center gap-2 text-sm transition-colors text-white shadow-lg animate-pulse" style={{ backgroundColor: '#10B981' }}>
                                                     Afronden <Trophy size={16} />
                                                 </button>
                                             )
@@ -931,9 +922,9 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
 
             {/* CONTROLS - iPad optimized touch targets */}
             {gamePhase === 'draw' && (
-                <div className="p-4 bg-slate-800 flex justify-center gap-4 shrink-0">
-                    <button onClick={clearCanvas} className="touch-friendly-btn px-6 py-4 bg-slate-700 hover:bg-slate-600 rounded-xl font-bold flex items-center gap-2 transition-colors min-h-[56px]"><RotateCcw size={20} /> Wissen</button>
-                    <button onClick={submitDrawing} disabled={!isDrawing} className="touch-friendly-btn px-10 py-4 bg-green-600 hover:bg-green-700 disabled:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl font-bold flex items-center gap-2 shadow-lg hover:shadow-green-900/20 transition-all active:scale-95 min-h-[56px]"><Check size={20} /> Klaar!</button>
+                <div className="p-4 flex justify-center gap-4 shrink-0" style={{ backgroundColor: '#FFFFFF', borderTop: '1px solid #E8E6DF' }}>
+                    <button onClick={clearCanvas} className="touch-friendly-btn px-6 py-4 rounded-xl font-bold flex items-center gap-2 transition-colors min-h-[56px]" style={{ backgroundColor: '#F0EEE8', color: '#3D3D38' }}><RotateCcw size={20} /> Wissen</button>
+                    <button onClick={submitDrawing} disabled={!isDrawing} className="touch-friendly-btn px-10 py-4 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl font-bold flex items-center gap-2 shadow-lg transition-all active:scale-95 min-h-[56px] text-white" style={{ backgroundColor: isDrawing ? '#10B981' : '#E8E6DF', color: isDrawing ? '#FFFFFF' : '#6B6B66' }}><Check size={20} /> Klaar!</button>
                 </div>
             )}
         </div>

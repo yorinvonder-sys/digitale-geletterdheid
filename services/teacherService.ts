@@ -221,7 +221,7 @@ export const endEvent = async (eventId: string): Promise<void> => {
 // --- Student management ---
 export const resetStudentProgress = async (userId: string): Promise<boolean> => {
     try {
-        const { data, error } = await supabase.rpc('reset_student_progress', {
+        const { data, error } = await (supabase as any).rpc('reset_student_progress', {
             p_student_id: userId,
         });
         if (error) throw error;
@@ -234,7 +234,7 @@ export const resetStudentProgress = async (userId: string): Promise<boolean> => 
 
 export const deleteStudent = async (userId: string): Promise<boolean> => {
     try {
-        const { data, error } = await supabase.rpc('delete_student', {
+        const { data, error } = await (supabase as any).rpc('delete_student', {
             p_student_id: userId,
         });
         if (error) throw error;

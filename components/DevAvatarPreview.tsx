@@ -60,9 +60,9 @@ const DevAvatarPreview: React.FC = () => {
     const [selected, setSelected] = useState(0);
 
     return (
-        <div className="min-h-screen bg-slate-900 text-white p-6">
-            <h1 className="text-2xl font-bold mb-2 text-center">Avatar 2D Preview</h1>
-            <p className="text-slate-400 text-sm text-center mb-6">DEV ONLY — verwijder voor productie</p>
+        <div className="min-h-screen p-6" style={{ backgroundColor: '#FAF9F0', color: '#1A1A19' }}>
+            <h1 className="text-2xl font-bold mb-2 text-center" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Avatar 2D Preview</h1>
+            <p className="text-sm text-center mb-6" style={{ color: '#6B6B66' }}>DEV ONLY — verwijder voor productie</p>
 
             {/* Full body grid */}
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-8">
@@ -72,14 +72,17 @@ const DevAvatarPreview: React.FC = () => {
                         className={`flex flex-col items-center gap-2 cursor-pointer transition-all ${selected === i ? 'scale-105' : 'opacity-70 hover:opacity-100'}`}
                         onClick={() => setSelected(i)}
                     >
-                        <div className={`w-full aspect-[2/3] rounded-2xl overflow-hidden border-4 transition-all ${selected === i ? 'border-indigo-500 shadow-lg shadow-indigo-500/30' : 'border-transparent'}`}>
+                        <div className="w-full aspect-[2/3] rounded-2xl overflow-hidden transition-all" style={{
+                            border: selected === i ? '4px solid #D97757' : '4px solid transparent',
+                            boxShadow: selected === i ? '0 10px 25px -5px rgba(217, 119, 87, 0.3)' : undefined
+                        }}>
                             <AvatarViewer2D
                                 config={preset.config}
                                 variant={preset.label === 'Head Only' ? 'head' : 'full'}
                                 interactive={false}
                             />
                         </div>
-                        <span className="text-xs font-medium text-slate-300">{preset.label}</span>
+                        <span className="text-xs font-medium" style={{ color: '#3D3D38' }}>{preset.label}</span>
                     </div>
                 ))}
             </div>
@@ -87,7 +90,7 @@ const DevAvatarPreview: React.FC = () => {
             {/* Large selected preview: 3D (left) + 2D (right) */}
             <div className="grid grid-cols-2 gap-6 max-w-2xl mx-auto">
                 <div>
-                    <div className="h-[500px] rounded-3xl overflow-hidden border-4 border-indigo-500/50 shadow-2xl bg-[#FAF9F0]">
+                    <div className="h-[500px] rounded-3xl overflow-hidden shadow-2xl bg-[#FAF9F0]" style={{ border: '4px solid rgba(217, 119, 87, 0.3)' }}>
                         <LazyAvatarViewer
                             config={PRESETS[selected].config}
                             variant={PRESETS[selected].label === 'Head Only' ? 'head' : 'full'}
@@ -95,10 +98,10 @@ const DevAvatarPreview: React.FC = () => {
                             onPartClick={(part) => console.log('Clicked:', part)}
                         />
                     </div>
-                    <p className="text-center mt-3 text-indigo-300 font-bold">3D Minecraft — {PRESETS[selected].label}</p>
+                    <p className="text-center mt-3 font-bold" style={{ color: '#D97757' }}>3D Minecraft — {PRESETS[selected].label}</p>
                 </div>
                 <div>
-                    <div className="h-[500px] rounded-3xl overflow-hidden border-4 border-slate-500/50 shadow-2xl">
+                    <div className="h-[500px] rounded-3xl overflow-hidden shadow-2xl" style={{ border: '4px solid #E8E6DF' }}>
                         <AvatarViewer2D
                             config={PRESETS[selected].config}
                             variant={PRESETS[selected].label === 'Head Only' ? 'head' : 'full'}
@@ -106,7 +109,7 @@ const DevAvatarPreview: React.FC = () => {
                             onPartClick={(part) => console.log('Clicked:', part)}
                         />
                     </div>
-                    <p className="text-center mt-3 text-slate-400 font-bold">2D — {PRESETS[selected].label}</p>
+                    <p className="text-center mt-3 font-bold" style={{ color: '#6B6B66' }}>2D — {PRESETS[selected].label}</p>
                 </div>
             </div>
         </div>

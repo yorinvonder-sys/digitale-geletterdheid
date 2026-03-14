@@ -100,7 +100,7 @@ export async function callEdgeFunction<T = any>(
 
     if (!response.ok) {
         const error = await response.json().catch(() => ({ message: response.statusText }));
-        throw new Error(error.message || `Edge function ${functionName} failed: ${response.status}`);
+        throw new Error(error.error || error.message || `Edge function ${functionName} failed: ${response.status}`);
     }
 
     const data = await response.json();
@@ -154,7 +154,7 @@ export async function callStreamingEdgeFunction(
 
     if (!response.ok) {
         const error = await response.json().catch(() => ({ message: response.statusText }));
-        throw new Error(error.message || `Edge function ${functionName} failed: ${response.status}`);
+        throw new Error(error.error || error.message || `Edge function ${functionName} failed: ${response.status}`);
     }
 
     const reader = response.body?.getReader();
