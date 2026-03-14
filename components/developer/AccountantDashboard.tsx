@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { LayoutDashboard, ArrowLeftRight, Receipt, FileText, ChevronDown, Clock, Percent, Euro, CreditCard } from 'lucide-react';
+import { LayoutDashboard, ArrowLeftRight, Receipt, FileText, ChevronDown, Clock, Percent, Euro, CreditCard, Download, HardDrive, Package } from 'lucide-react';
 import { OverviewPanel } from './accountant/OverviewPanel';
 import { TransactionsPanel } from './accountant/TransactionsPanel';
 import { ReceiptsPanel } from './accountant/ReceiptsPanel';
@@ -8,6 +8,9 @@ import { HoursPanel } from './accountant/HoursPanel';
 import { InvoicesPanel } from './accountant/InvoicesPanel';
 import { VATPanel } from './accountant/VATPanel';
 import { SubscriptionsPanel } from './accountant/SubscriptionsPanel';
+import { ExportPanel } from './accountant/ExportPanel';
+import { BackupSection } from './accountant/BackupSection';
+import { AssetsPanel } from './accountant/AssetsPanel';
 import {
     AccountantTransaction,
     AccountantReceipt,
@@ -26,17 +29,20 @@ interface AccountantDashboardProps {
     userId: string;
 }
 
-type SubTab = 'overzicht' | 'transacties' | 'bonnetjes' | 'abonnementen' | 'uren' | 'facturen' | 'btw' | 'aangifte';
+type SubTab = 'overzicht' | 'transacties' | 'bonnetjes' | 'abonnementen' | 'uren' | 'facturen' | 'btw' | 'aangifte' | 'activa' | 'export' | 'backup';
 
 const SUB_TABS: { id: SubTab; label: string; icon: React.ReactNode }[] = [
-    { id: 'overzicht',    label: 'Overzicht',    icon: <LayoutDashboard size={16} /> },
-    { id: 'transacties',  label: 'Transacties',  icon: <ArrowLeftRight size={16} /> },
-    { id: 'bonnetjes',    label: 'Bonnetjes',    icon: <Receipt size={16} /> },
-    { id: 'abonnementen', label: 'Abonnementen', icon: <CreditCard size={16} /> },
-    { id: 'uren',         label: 'Uren',         icon: <Clock size={16} /> },
-    { id: 'facturen',     label: 'Facturen',     icon: <FileText size={16} /> },
-    { id: 'btw',          label: 'BTW',          icon: <Percent size={16} /> },
-    { id: 'aangifte',     label: 'Aangifte',     icon: <Euro size={16} /> },
+    { id: 'overzicht',    label: 'Overzicht',      icon: <LayoutDashboard size={16} /> },
+    { id: 'transacties',  label: 'Transacties',    icon: <ArrowLeftRight size={16} /> },
+    { id: 'bonnetjes',    label: 'Bonnetjes',      icon: <Receipt size={16} /> },
+    { id: 'abonnementen', label: 'Abonnementen',   icon: <CreditCard size={16} /> },
+    { id: 'activa',       label: 'Activa',         icon: <Package size={16} /> },
+    { id: 'uren',         label: 'Uren',           icon: <Clock size={16} /> },
+    { id: 'facturen',     label: 'Facturen',       icon: <FileText size={16} /> },
+    { id: 'btw',          label: 'BTW',            icon: <Percent size={16} /> },
+    { id: 'aangifte',     label: 'Aangifte',       icon: <Euro size={16} /> },
+    { id: 'export',       label: 'Export',         icon: <Download size={16} /> },
+    { id: 'backup',       label: 'Backup',         icon: <HardDrive size={16} /> },
 ];
 
 const CURRENT_YEAR = new Date().getFullYear();
@@ -234,6 +240,15 @@ export function AccountantDashboard({ userId }: AccountantDashboardProps) {
                         userId={userId}
                         onSettingsChange={handleSettingsChange}
                     />
+                )}
+                {activeTab === 'activa' && (
+                    <AssetsPanel userId={userId} year={year} />
+                )}
+                {activeTab === 'export' && (
+                    <ExportPanel userId={userId} year={year} settings={settings} />
+                )}
+                {activeTab === 'backup' && (
+                    <BackupSection userId={userId} year={year} />
                 )}
             </div>
         </div>
