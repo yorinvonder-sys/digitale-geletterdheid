@@ -153,10 +153,32 @@ export function needsParentalConsent(studentAge: number): boolean {
   return studentAge < 16;
 }
 
-/** Placeholder: stuur ouderlijke toestemmingsmail */
-export function sendParentalConsentEmail(parentEmail: string, studentName: string, schoolName: string): void {
-  // TODO: Implementeer via edge function met echte e-mail service
-  logger.log(`[consentService] Ouderlijke toestemmingsmail zou verstuurd worden naar ${parentEmail} voor ${studentName} (${schoolName})`);
+/** Stuur ouderlijke toestemmingsmail via edge function */
+export async function sendParentalConsentEmail(
+  parentEmail: string,
+  parentName: string,
+  studentName: string,
+  schoolName: string,
+  consentTypes: ConsentType[] = ['data_processing', 'ai_interaction'],
+): Promise<{ success: boolean; error?: string }> {
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session) return { success: false, error: 'Niet ingelogd.' };
+
+  try {
+    const { data, error } = await supabase.functions.invoke('sendConsentEmail', {
+      body: { parentEmail, parentName, studentName, schoolName, consentTypes },
+    });
+
+    if (error) {
+      logger.error('[consentService] sendParentalConsentEmail error:', error);
+      return { success: false, error: 'Kon e-mail niet versturen.' };
+    }
+
+    return { success: (data as any)?.success === true };
+  } catch (err) {
+    logger.error('[consentService] sendParentalConsentEmail unexpected error:', err);
+    return { success: false, error: 'Er ging iets mis bij het versturen van de e-mail.' };
+  }
 }
 
 /** Overzicht van alle consent types met status */

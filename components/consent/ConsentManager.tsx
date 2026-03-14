@@ -14,12 +14,16 @@ interface ConsentManagerProps {
   studentId: string;
   schoolId: string;
   studentAge: number;
+  studentName?: string;
+  schoolName?: string;
 }
 
 export const ConsentManager: React.FC<ConsentManagerProps> = ({
   studentId,
   schoolId,
   studentAge,
+  studentName = '',
+  schoolName = '',
 }) => {
   const [statuses, setStatuses] = useState<ConsentStatus[]>([]);
   const [loading, setLoading] = useState(true);
@@ -101,6 +105,8 @@ export const ConsentManager: React.FC<ConsentManagerProps> = ({
       <ParentalConsentForm
         statuses={statuses}
         initialConsentType={pendingConsentType}
+        studentName={studentName}
+        schoolName={schoolName}
         onSubmit={handleParentalConsentGranted}
         onCancel={() => {
           setShowParentalForm(false);

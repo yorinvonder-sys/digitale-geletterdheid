@@ -6,6 +6,8 @@ import { sendParentalConsentEmail } from '../../services/consentService';
 interface ParentalConsentFormProps {
   statuses: ConsentStatus[];
   initialConsentType: ConsentType | null;
+  studentName: string;
+  schoolName: string;
   onSubmit: (consentTypes: ConsentType[], parentEmail: string, parentName: string) => void;
   onCancel: () => void;
 }
@@ -13,6 +15,8 @@ interface ParentalConsentFormProps {
 export const ParentalConsentForm: React.FC<ParentalConsentFormProps> = ({
   statuses,
   initialConsentType,
+  studentName,
+  schoolName,
   onSubmit,
   onCancel,
 }) => {
@@ -58,9 +62,9 @@ export const ParentalConsentForm: React.FC<ParentalConsentFormProps> = ({
     if (!validate()) return;
 
     setSubmitting(true);
-    // Placeholder: stuur bevestigingsmail
-    sendParentalConsentEmail(parentEmail.trim(), parentName.trim(), '');
-    onSubmit(Array.from(selectedTypes), parentEmail.trim(), parentName.trim());
+    const types = Array.from(selectedTypes);
+    await sendParentalConsentEmail(parentEmail.trim(), parentName.trim(), studentName, schoolName, types);
+    onSubmit(types, parentEmail.trim(), parentName.trim());
   };
 
   // Alleen niet-goedgekeurde consents tonen

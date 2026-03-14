@@ -1,11 +1,20 @@
 import React, { useState, lazy, Suspense } from 'react';
 import { User, Shield, Trophy, ChevronLeft, Sparkles, ShoppingBag, Palette, Crown, Headphones, Shirt, Columns as Pants, Smile, Glasses, Bot, Backpack, Zap, Scissors, X, Award, Gamepad2, BookOpen, BrainCircuit, Search, RotateCcw, Calendar, Printer, Projector, FileText, Cloud, Share2, MessageSquare, Scale, Save, Star, Heart, Laugh, Meh, Dumbbell, CheckCircle2, AlertTriangle, ShieldCheck } from 'lucide-react';
-import { ParentUser, UserStats, AvatarConfig, DEFAULT_AVATAR_CONFIG } from '../types';
+import { ParentUser, UserStats, AvatarConfig, DEFAULT_AVATAR_CONFIG, EducationLevel } from '../types';
 import { LazyAvatarViewer } from './LazyAvatarViewer';
 import { AvatarViewer2D } from './AvatarViewer2D';
 
 const ConsentManager = lazy(() => import('./consent/ConsentManager').then(m => ({ default: m.ConsentManager })));
 
+/** Schat leeftijd op basis van leerjaar en onderwijsniveau.
+ *  VO klas 1 = ~12 jaar, klas 2 = ~13, etc.
+ *  Zonder data: 14 (conservatief — onder de 16, dus ouderlijke toestemming vereist). */
+function estimateStudentAge(yearGroup?: number, _educationLevel?: EducationLevel): number {
+  if (yearGroup && yearGroup >= 1 && yearGroup <= 6) {
+    return 11 + yearGroup; // klas 1 → 12, klas 2 → 13, ..., klas 6 → 17
+  }
+  return 14; // fallback: onder 16, dus ouderlijke toestemming vereist
+}
 
 interface UserProfileProps {
     user: ParentUser;
@@ -685,7 +694,9 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
                                     <ConsentManager
                                         studentId={user.uid}
                                         schoolId={user.schoolId || 'unknown'}
-                                        studentAge={14}
+                                        studentAge={estimateStudentAge(user.yearGroup, user.educationLevel)}
+                                        studentName={user.displayName || ''}
+                                        schoolName={user.schoolId || ''}
                                     />
                                 </Suspense>
                             ) : activeTab === 'trophies' ? (
