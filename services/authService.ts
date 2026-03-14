@@ -506,7 +506,7 @@ export const subscribeToAuthChanges = (callback: (user: ParentUser | null) => vo
 
 /** Privileged roles must use MFA (Cbw/NIS2 compliance). */
 export const requiresMfa = (role: UserRole | null): boolean =>
-    role !== null && ['teacher', 'admin', 'developer'].includes(role);
+    role !== null && ['teacher', 'admin'].includes(role);
 
 
 export const enrollMfa = async (): Promise<{
