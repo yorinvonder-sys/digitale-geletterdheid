@@ -1,0 +1,56 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background: warm off-white (matches other illustrations) -->
+  <rect width="1024" height="1024" fill="#F5F0E8"/>
+
+  <!-- ====== LAPTOP SCREEN FRAME ====== -->
+  <rect x="252" y="255" width="500" height="355" rx="20" fill="#EEEAE3" stroke="#1A1A19" stroke-width="9"/>
+  <!-- Display area (inner white) -->
+  <rect x="278" y="280" width="448" height="305" rx="6" fill="white" stroke="#1A1A19" stroke-width="4"/>
+
+  <!-- ====== LAPTOP BASE (keyboard) ====== -->
+  <path d="M190 610 C190 604 195 600 201 600 L823 600 C829 600 834 604 834 610 L834 634 C834 640 829 644 823 644 L201 644 C195 644 190 640 190 634 Z" fill="#EEEAE3" stroke="#1A1A19" stroke-width="8"/>
+  <line x1="252" y1="610" x2="752" y2="610" stroke="#1A1A19" stroke-width="5"/>
+  <!-- Trackpad -->
+  <rect x="452" y="617" width="100" height="20" rx="5" fill="none" stroke="#1A1A19" stroke-width="3.5"/>
+
+  <!-- ====== CHAT BUBBLES ON SCREEN ====== -->
+
+  <!-- User bubble (top-left, neutral) -->
+  <rect x="296" y="308" width="205" height="58" rx="18" fill="#E8E4DE" stroke="#1A1A19" stroke-width="5"/>
+  <!-- tail bottom-left -->
+  <path d="M318 366 L303 390 L340 366" fill="#E8E4DE" stroke="#1A1A19" stroke-width="4.5" stroke-linejoin="round"/>
+  <!-- typing dots -->
+  <circle cx="368" cy="337" r="8" fill="#1A1A19" opacity="0.2"/>
+  <circle cx="396" cy="337" r="8" fill="#1A1A19" opacity="0.45"/>
+  <circle cx="424" cy="337" r="8" fill="#1A1A19" opacity="0.75"/>
+
+  <!-- AI bubble (right, warm tint) -->
+  <rect x="390" y="416" width="316" height="110" rx="18" fill="#FBF2EC" stroke="#1A1A19" stroke-width="5"/>
+  <!-- tail bottom-right -->
+  <path d="M682 526 L706 550 L670 526" fill="#FBF2EC" stroke="#1A1A19" stroke-width="4.5" stroke-linejoin="round"/>
+
+  <!-- AI sparkle star inside bubble -->
+  <path d="M420 466 L426 450 L432 466 L448 472 L432 478 L426 494 L420 478 L404 472 Z" fill="#D97757"/>
+
+  <!-- Simulated text lines in AI bubble -->
+  <rect x="460" y="452" width="130" height="9" rx="4.5" fill="#1A1A19" opacity="0.14"/>
+  <rect x="460" y="468" width="185" height="9" rx="4.5" fill="#1A1A19" opacity="0.14"/>
+  <rect x="460" y="484" width="98"  height="9" rx="4.5" fill="#1A1A19" opacity="0.14"/>
+  <rect x="460" y="500" width="155" height="9" rx="4.5" fill="#1A1A19" opacity="0.1"/>
+
+  <!-- ====== SHIELD BADGE (bottom-right of screen, overlapping) ====== -->
+  <path d="M710 520 C712 520 790 543 790 608 C790 656 756 698 710 710 C664 698 630 656 630 608 C630 543 708 520 710 520 Z"
+        fill="white" stroke="#1A1A19" stroke-width="8" stroke-linejoin="round"/>
+  <!-- Checkmark (terracotta) -->
+  <path d="M678 608 L700 632 L744 572" stroke="#D97757" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- ====== SPARKLE STARS (terracotta) ====== -->
+  <!-- Large — top-left -->
+  <path d="M213 340 L222 312 L231 340 L259 349 L231 358 L222 386 L213 358 L185 349 Z" fill="#D97757" opacity="0.9"/>
+  <!-- Medium — top-right -->
+  <path d="M790 220 L797 201 L804 220 L823 227 L804 234 L797 253 L790 234 L771 227 Z" fill="#D97757" opacity="0.85"/>
+  <!-- Small — far right -->
+  <path d="M840 355 L844 345 L848 355 L858 359 L848 363 L844 373 L840 363 L830 359 Z" fill="#D97757" opacity="0.8"/>
+  <!-- Small — bottom-left -->
+  <path d="M185 740 L189 730 L193 740 L203 744 L193 748 L189 758 L185 748 L175 744 Z" fill="#D97757" opacity="0.65"/>
+</svg>

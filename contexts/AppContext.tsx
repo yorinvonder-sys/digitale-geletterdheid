@@ -68,7 +68,34 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
             setUser(u);
             setLoading(false);
         });
-        return () => unsubscribe();
+
+        // Cross-tab sync: detecteer wanneer een andere tab de auth token wijzigt
+        // in localStorage en herlaad de sessie zodat alle tabs gesynchroniseerd blijven.
+        const handleStorageChange = (e: StorageEvent) => {
+            if (e.key && /^sb-[a-z0-9_-]+-auth-token$/i.test(e.key)) {
+                if (e.newValue === null) {
+                    // Andere tab heeft uitgelogd
+                    setUser(null);
+                    setLoading(false);
+                } else {
+                    // Andere tab heeft in-/uitgelogd met ander account — hersync
+                    supabase.auth.getSession().then(({ data: { session } }) => {
+                        if (!session?.user) {
+                            setUser(null);
+                            setLoading(false);
+                        }
+                        // Als er wél een sessie is, vuurt onAuthStateChange vanzelf
+                    });
+                }
+            }
+        };
+
+        window.addEventListener('storage', handleStorageChange);
+
+        return () => {
+            unsubscribe();
+            window.removeEventListener('storage', handleStorageChange);
+        };
     }, []);
 
     // Actions

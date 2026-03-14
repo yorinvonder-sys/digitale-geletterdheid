@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Hooks — Visuele Uitleg</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: #0f1117;
+    color: #e2e8f0;
+    line-height: 1.6;
+    padding: 2rem;
+  }
+  h1 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, #6366f1, #a78bfa, #c084fc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .subtitle {
+    text-align: center;
+    color: #94a3b8;
+    margin-bottom: 3rem;
+    font-size: 1.1rem;
+  }
+  section {
+    max-width: 1000px;
+    margin: 0 auto 4rem;
+  }
+  h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: #a78bfa;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  h2 .num {
+    background: #6366f1;
+    color: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+  .description {
+    color: #94a3b8;
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+  }
+
+  /* ===== SCHEMA 1: Grote Plaatje (Timeline) ===== */
+  .timeline {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    position: relative;
+    padding: 2rem 0;
+    overflow-x: auto;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    top: 55px;
+    left: 40px;
+    right: 40px;
+    height: 4px;
+    background: linear-gradient(90deg, #6366f1, #a78bfa, #c084fc, #6366f1);
+    border-radius: 2px;
+    z-index: 0;
+  }
+  .timeline-step {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+    min-width: 140px;
+  }
+  .timeline-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    border: 3px solid;
+    position: relative;
+  }
+  .timeline-icon.user { background: #1e1b4b; border-color: #6366f1; }
+  .timeline-icon.claude { background: #1a1a2e; border-color: #a78bfa; }
+  .timeline-icon.tool { background: #1a2332; border-color: #38bdf8; }
+  .timeline-icon.done { background: #1a2e1a; border-color: #4ade80; }
+  .timeline-label {
+    font-weight: 600;
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    text-align: center;
+  }
+  .timeline-hook {
+    background: linear-gradient(135deg, #7c3aed22, #6366f144);
+    border: 1px solid #7c3aed;
+    border-radius: 8px;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.75rem;
+    color: #c4b5fd;
+    margin-top: 0.5rem;
+    text-align: center;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 #7c3aed44; }
+    50% { box-shadow: 0 0 12px 4px #7c3aed44; }
+  }
+  .timeline-arrow {
+    font-size: 1.5rem;
+    color: #6366f1;
+    align-self: center;
+    margin-top: 0.5rem;
+  }
+
+  /* ===== SCHEMA 2: Flowchart ===== */
+  .flowchart {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+  .flow-node {
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    text-align: center;
+    font-weight: 500;
+    position: relative;
+    max-width: 340px;
+    width: 100%;
+  }
+  .flow-node.start {
+    background: linear-gradient(135deg, #312e81, #4338ca);
+    border: 2px solid #6366f1;
+    color: #e0e7ff;
+  }
+  .flow-node.hook {
+    background: linear-gradient(135deg, #4c1d95, #6d28d9);
+    border: 2px solid #a78bfa;
+    color: #ede9fe;
+    clip-path: polygon(15% 0%, 85% 0%, 100% 50%, 85% 100%, 15% 100%, 0% 50%);
+    padding: 1.2rem 3rem;
+  }
+  .flow-node.decision {
+    background: linear-gradient(135deg, #7c2d12, #c2410c);
+    border: 2px solid #fb923c;
+    color: #ffedd5;
+    transform: rotate(0deg);
+    border-radius: 4px;
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    padding: 2rem 3rem;
+    width: 240px;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .flow-node.allow {
+    background: linear-gradient(135deg, #14532d, #15803d);
+    border: 2px solid #4ade80;
+    color: #dcfce7;
+  }
+  .flow-node.deny {
+    background: linear-gradient(135deg, #7f1d1d, #b91c1c);
+    border: 2px solid #f87171;
+    color: #fee2e2;
+  }
+  .flow-node.process {
+    background: linear-gradient(135deg, #0c4a6e, #0369a1);
+    border: 2px solid #38bdf8;
+    color: #e0f2fe;
+  }
+  .flow-arrow {
+    width: 3px;
+    height: 36px;
+    background: #64748b;
+    position: relative;
+  }
+  .flow-arrow::after {
+    content: '▼';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #64748b;
+    font-size: 0.8rem;
+  }
+  .flow-branch {
+    display: flex;
+    gap: 3rem;
+    align-items: flex-start;
+    position: relative;
+  }
+  .flow-branch::before {
+    content: '';
+    position: absolute;
+    top: -18px;
+    left: 25%;
+    right: 25%;
+    height: 3px;
+    background: #64748b;
+  }
+  .flow-branch-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+  .flow-branch-label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    padding: 0.2rem 0.8rem;
+    border-radius: 999px;
+  }
+  .flow-branch-label.yes { color: #4ade80; background: #14532d; }
+  .flow-branch-label.no { color: #f87171; background: #7f1d1d; }
+
+  /* ===== SCHEMA 3: Data flow ===== */
+  .dataflow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding: 2rem;
+  }
+  .dataflow-box {
+    border-radius: 16px;
+    padding: 1.5rem;
+    min-width: 260px;
+    max-width: 320px;
+  }
+  .dataflow-box.claude-box {
+    background: linear-gradient(135deg, #1e1b4b, #312e81);
+    border: 2px solid #6366f1;
+  }
+  .dataflow-box.script-box {
+    background: linear-gradient(135deg, #1a2e1a, #14532d);
+    border: 2px solid #4ade80;
+  }
+  .dataflow-box h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+  }
+  .dataflow-box .icon { font-size: 2rem; margin-bottom: 0.5rem; }
+  .dataflow-arrow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 160px;
+  }
+  .dataflow-arrow .arrow-line {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+  }
+  .dataflow-arrow .arrow-line.right { color: #6366f1; }
+  .dataflow-arrow .arrow-line.left { color: #4ade80; }
+  .json-block {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    padding: 0.75rem;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 0.75rem;
+    line-height: 1.5;
+    color: #c9d1d9;
+    margin-top: 0.5rem;
+  }
+  .json-key { color: #79c0ff; }
+  .json-string { color: #a5d6ff; }
+
+  /* ===== SCHEMA 4: Hook Types ===== */
+  .types-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+  }
+  .type-card {
+    border-radius: 16px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: transform 0.2s;
+  }
+  .type-card:hover { transform: translateY(-4px); }
+  .type-card.command {
+    background: linear-gradient(135deg, #1e1b4b, #312e81);
+    border: 2px solid #6366f1;
+  }
+  .type-card.http {
+    background: linear-gradient(135deg, #0c4a6e, #0369a1);
+    border: 2px solid #38bdf8;
+  }
+  .type-card.prompt {
+    background: linear-gradient(135deg, #4c1d95, #6d28d9);
+    border: 2px solid #a78bfa;
+  }
+  .type-card.agent {
+    background: linear-gradient(135deg, #134e4a, #0f766e);
+    border: 2px solid #2dd4bf;
+  }
+  .type-card .card-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.75rem;
+  }
+  .type-card h3 { margin-bottom: 0.5rem; }
+  .type-card p { color: #94a3b8; font-size: 0.85rem; }
+  .type-card .use-case {
+    margin-top: 0.75rem;
+    background: #00000033;
+    padding: 0.5rem;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    color: #cbd5e1;
+  }
+
+  /* ===== SCHEMA 5: Settings locaties ===== */
+  .locations {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  .location-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    position: relative;
+  }
+  .location-row.global {
+    background: linear-gradient(135deg, #1e1b4b, #312e81);
+    border: 2px solid #6366f1;
+  }
+  .location-row.project {
+    background: linear-gradient(135deg, #0c4a6e, #0369a1);
+    border: 2px solid #38bdf8;
+  }
+  .location-row.local {
+    background: linear-gradient(135deg, #134e4a, #0f766e);
+    border: 2px solid #2dd4bf;
+  }
+  .location-icon { font-size: 2rem; }
+  .location-info { flex: 1; }
+  .location-info h3 { font-size: 1rem; margin-bottom: 0.25rem; }
+  .location-info .path {
+    font-family: monospace;
+    font-size: 0.8rem;
+    color: #94a3b8;
+  }
+  .location-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+  .location-badge.shared { background: #14532d; color: #4ade80; }
+  .location-badge.private { background: #7f1d1d; color: #f87171; }
+  .priority-arrow {
+    text-align: center;
+    color: #64748b;
+    font-size: 0.85rem;
+    padding: 0.25rem;
+  }
+
+  /* ===== SCHEMA 6: Praktijkvoorbeeld ===== */
+  .example-flow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    padding: 2rem 0;
+  }
+  .example-step {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 600px;
+  }
+  .step-num {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #312e81;
+    border: 2px solid #6366f1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .step-content {
+    flex: 1;
+    background: #1e293b;
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    border-left: 4px solid;
+  }
+  .step-content.action { border-color: #6366f1; }
+  .step-content.hook { border-color: #a78bfa; }
+  .step-content.result-ok { border-color: #4ade80; }
+  .step-content.result-block { border-color: #f87171; }
+  .step-connector {
+    width: 3px;
+    height: 24px;
+    background: #475569;
+    margin-left: 19px;
+  }
+
+  /* ===== SCHEMA 7: Events overzicht ===== */
+  .events-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 0.5rem;
+  }
+  .events-table th {
+    text-align: left;
+    padding: 0.75rem 1rem;
+    color: #94a3b8;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .events-table td {
+    padding: 0.75rem 1rem;
+    background: #1e293b;
+  }
+  .events-table tr td:first-child {
+    border-radius: 8px 0 0 8px;
+    font-weight: 600;
+    color: #a78bfa;
+  }
+  .events-table tr td:last-child {
+    border-radius: 0 8px 8px 0;
+  }
+  .event-tag {
+    display: inline-block;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+  .event-tag.before { background: #7c2d1233; color: #fb923c; }
+  .event-tag.after { background: #14532d33; color: #4ade80; }
+  .event-tag.lifecycle { background: #312e8133; color: #818cf8; }
+</style>
+</head>
+<body>
+
+<h1>Claude Hooks</h1>
+<p class="subtitle">Visuele uitleg — hoe automatische acties werken in Claude Code</p>
+
+<!-- SCHEMA 1: Het grote plaatje -->
+<section>
+  <h2><span class="num">1</span> Het grote plaatje — waar zitten hooks?</h2>
+  <p class="description">Hooks zijn checkpoints op de tijdlijn. Bij elk punt kan jouw script ingrijpen.</p>
+
+  <div class="timeline">
+    <div class="timeline-step">
+      <div class="timeline-icon user">👤</div>
+      <div class="timeline-label">Jij typt<br>een prompt</div>
+      <div class="timeline-hook">UserPromptSubmit</div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-icon claude">🤖</div>
+      <div class="timeline-label">Claude<br>denkt na</div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-icon tool">🔧</div>
+      <div class="timeline-label">Vóór tool<br>uitvoering</div>
+      <div class="timeline-hook">PreToolUse</div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-icon tool">⚡</div>
+      <div class="timeline-label">Tool<br>draait</div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-icon tool">✅</div>
+      <div class="timeline-label">Ná tool<br>uitvoering</div>
+      <div class="timeline-hook">PostToolUse</div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-icon done">🏁</div>
+      <div class="timeline-label">Claude<br>stopt</div>
+      <div class="timeline-hook">Stop</div>
+    </div>
+  </div>
+</section>
+
+<!-- SCHEMA 2: PreToolUse flowchart -->
+<section>
+  <h2><span class="num">2</span> Hoe werkt een PreToolUse hook?</h2>
+  <p class="description">De meest gebruikte hook: beslissen of een actie mag doorgaan of geblokkeerd wordt.</p>
+
+  <div class="flowchart">
+    <div class="flow-node start">🤖 Claude wil een tool gebruiken<br><small>bijv. "npm test" of een bestand bewerken</small></div>
+    <div class="flow-arrow"></div>
+    <div class="flow-node hook">⚡ PreToolUse HOOK draait<br><small>jouw script ontvangt de details</small></div>
+    <div class="flow-arrow"></div>
+    <div class="flow-node decision">Mag dit<br>doorgaan?</div>
+    <div style="height: 18px"></div>
+    <div class="flow-branch">
+      <div class="flow-branch-item">
+        <div class="flow-branch-label yes">✓ JA (exit 0)</div>
+        <div class="flow-arrow"></div>
+        <div class="flow-node allow">✅ Tool draait normaal<br><small>PostToolUse hook volgt hierna</small></div>
+      </div>
+      <div class="flow-branch-item">
+        <div class="flow-branch-label no">✗ NEE (exit 2)</div>
+        <div class="flow-arrow"></div>
+        <div class="flow-node deny">🚫 GEBLOKKEERD<br><small>Claude ziet jouw reden en past aan</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCHEMA 3: Data flow -->
+<section>
+  <h2><span class="num">3</span> Wat stuurt Claude naar jouw script?</h2>
+  <p class="description">Claude stuurt JSON-data. Jouw script leest het, beslist, en geeft een exit code terug.</p>
+
+  <div class="dataflow">
+    <div class="dataflow-box claude-box">
+      <div class="icon">🤖</div>
+      <h3>Claude Code</h3>
+      <p style="color: #94a3b8; font-size: 0.85rem;">Stuurt details over wat hij wil doen</p>
+      <div class="json-block">
+        {<br>
+        &nbsp;&nbsp;<span class="json-key">"tool_name"</span>: <span class="json-string">"Bash"</span>,<br>
+        &nbsp;&nbsp;<span class="json-key">"tool_input"</span>: {<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="json-key">"command"</span>: <span class="json-string">"rm -rf /"</span><br>
+        &nbsp;&nbsp;}<br>
+        }
+      </div>
+    </div>
+
+    <div class="dataflow-arrow">
+      <div class="arrow-line right">JSON via stdin ──────▶</div>
+      <div style="height: 1.5rem"></div>
+      <div class="arrow-line left">◀────── exit 0 of exit 2</div>
+    </div>
+
+    <div class="dataflow-box script-box">
+      <div class="icon">📜</div>
+      <h3>Jouw Script</h3>
+      <p style="color: #94a3b8; font-size: 0.85rem;">Leest JSON, neemt beslissing</p>
+      <div class="json-block">
+        <span style="color: #7ee787;">#!/bin/bash</span><br>
+        INPUT=$(cat)<br>
+        CMD=$(echo "$INPUT" | jq -r<br>
+        &nbsp;&nbsp;'.tool_input.command')<br><br>
+        <span style="color: #ff7b72;">if</span> [[ "$CMD" == *"rm -rf"* ]]; <span style="color: #ff7b72;">then</span><br>
+        &nbsp;&nbsp;echo <span class="json-string">"Geblokkeerd!"</span> >&2<br>
+        &nbsp;&nbsp;<span style="color: #ff7b72;">exit 2</span><br>
+        <span style="color: #ff7b72;">fi</span><br>
+        <span style="color: #7ee787;">exit 0</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCHEMA 4: Soorten hooks -->
+<section>
+  <h2><span class="num">4</span> De 4 soorten hooks</h2>
+  <p class="description">Kies het type dat past bij wat je wilt doen.</p>
+
+  <div class="types-grid">
+    <div class="type-card command">
+      <div class="card-icon">⚙️</div>
+      <h3>Command</h3>
+      <p>Draait een bash-script op je computer</p>
+      <div class="use-case">Meest gebruikt! Format code, blokkeer acties, log alles</div>
+    </div>
+    <div class="type-card http">
+      <div class="card-icon">🌐</div>
+      <h3>HTTP</h3>
+      <p>Stuurt een POST naar een server</p>
+      <div class="use-case">Audit logging naar extern systeem, team-brede regels</div>
+    </div>
+    <div class="type-card prompt">
+      <div class="card-icon">🧠</div>
+      <h3>Prompt</h3>
+      <p>Vraagt een AI-model om te beslissen</p>
+      <div class="use-case">Slimme checks: "slagen de tests?" — AI beslist</div>
+    </div>
+    <div class="type-card agent">
+      <div class="card-icon">🤖</div>
+      <h3>Agent</h3>
+      <p>Start een sub-agent die tools kan gebruiken</p>
+      <div class="use-case">Complexe verificatie: bestanden lezen + commando's draaien</div>
+    </div>
+  </div>
+</section>
+
+<!-- SCHEMA 5: Waar configureer je hooks -->
+<section>
+  <h2><span class="num">5</span> Waar zet je hooks neer?</h2>
+  <p class="description">3 plekken, van breed naar specifiek. Specifiekere instellingen winnen.</p>
+
+  <div class="locations">
+    <div class="location-row global">
+      <div class="location-icon">🌍</div>
+      <div class="location-info">
+        <h3>Globaal (persoonlijk)</h3>
+        <div class="path">~/.claude/settings.json</div>
+      </div>
+      <div class="location-badge private">Alleen jij</div>
+    </div>
+    <div class="priority-arrow">▼ overschrijft</div>
+    <div class="location-row project">
+      <div class="location-icon">📁</div>
+      <div class="location-info">
+        <h3>Project (gedeeld via git)</h3>
+        <div class="path">.claude/settings.json</div>
+      </div>
+      <div class="location-badge shared">Heel het team</div>
+    </div>
+    <div class="priority-arrow">▼ overschrijft</div>
+    <div class="location-row local">
+      <div class="location-icon">🔒</div>
+      <div class="location-info">
+        <h3>Project (persoonlijk)</h3>
+        <div class="path">.claude/settings.local.json</div>
+      </div>
+      <div class="location-badge private">Alleen jij</div>
+    </div>
+  </div>
+</section>
+
+<!-- SCHEMA 6: Praktijkvoorbeeld stap voor stap -->
+<section>
+  <h2><span class="num">6</span> Praktijkvoorbeeld: .env beschermen</h2>
+  <p class="description">Stap voor stap: wat er gebeurt als Claude een beschermd bestand wil bewerken.</p>
+
+  <div class="example-flow">
+    <div class="example-step">
+      <div class="step-num">1</div>
+      <div class="step-content action">
+        <strong>Claude wil .env bewerken</strong><br>
+        <small style="color: #94a3b8">tool_name: "Edit", file_path: ".env"</small>
+      </div>
+    </div>
+    <div class="step-connector"></div>
+    <div class="example-step">
+      <div class="step-num">2</div>
+      <div class="step-content hook">
+        <strong>PreToolUse hook vangt het op</strong><br>
+        <small style="color: #94a3b8">matcher "Edit|Write" matcht → script draait</small>
+      </div>
+    </div>
+    <div class="step-connector"></div>
+    <div class="example-step">
+      <div class="step-num">3</div>
+      <div class="step-content hook">
+        <strong>Script checkt het bestandspad</strong><br>
+        <small style="color: #94a3b8">".env" zit in de beschermde lijst → BLOKKEREN</small>
+      </div>
+    </div>
+    <div class="step-connector"></div>
+    <div class="example-step">
+      <div class="step-num">4</div>
+      <div class="step-content result-block">
+        <strong>🚫 Exit 2 — actie geblokkeerd</strong><br>
+        <small style="color: #94a3b8">"Blocked: .env bestanden zijn beschermd"</small>
+      </div>
+    </div>
+    <div class="step-connector"></div>
+    <div class="example-step">
+      <div class="step-num">5</div>
+      <div class="step-content result-ok">
+        <strong>Claude past zich aan</strong><br>
+        <small style="color: #94a3b8">Zoekt een andere oplossing die .env niet aanraakt</small>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCHEMA 7: Alle events -->
+<section>
+  <h2><span class="num">7</span> Alle hook-events op een rij</h2>
+  <p class="description">Elk event is een moment waarop jouw hook kan ingrijpen.</p>
+
+  <table class="events-table">
+    <thead>
+      <tr>
+        <th>Event</th>
+        <th>Wanneer</th>
+        <th>Gebruik</th>
+        <th>Fase</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>SessionStart</td>
+        <td>Sessie begint of hervat</td>
+        <td>Context injecteren</td>
+        <td><span class="event-tag lifecycle">Lifecycle</span></td>
+      </tr>
+      <tr>
+        <td>UserPromptSubmit</td>
+        <td>Jij drukt Enter</td>
+        <td>Input valideren</td>
+        <td><span class="event-tag before">Vóór</span></td>
+      </tr>
+      <tr>
+        <td>PreToolUse</td>
+        <td>Vóór tool draait</td>
+        <td>Blokkeren / toestaan</td>
+        <td><span class="event-tag before">Vóór</span></td>
+      </tr>
+      <tr>
+        <td>PostToolUse</td>
+        <td>Ná tool succesvol</td>
+        <td>Auto-format, logging</td>
+        <td><span class="event-tag after">Ná</span></td>
+      </tr>
+      <tr>
+        <td>PostToolUseFailure</td>
+        <td>Ná tool faalt</td>
+        <td>Error logging</td>
+        <td><span class="event-tag after">Ná</span></td>
+      </tr>
+      <tr>
+        <td>Stop</td>
+        <td>Claude klaar met antwoord</td>
+        <td>Check of taak af is</td>
+        <td><span class="event-tag after">Ná</span></td>
+      </tr>
+      <tr>
+        <td>Notification</td>
+        <td>Claude wacht op jou</td>
+        <td>Desktop notificatie</td>
+        <td><span class="event-tag lifecycle">Lifecycle</span></td>
+      </tr>
+      <tr>
+        <td>SessionEnd</td>
+        <td>Sessie eindigt</td>
+        <td>Cleanup, logging</td>
+        <td><span class="event-tag lifecycle">Lifecycle</span></td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<div style="text-align: center; padding: 2rem; color: #475569; font-size: 0.85rem;">
+  Gemaakt voor het DGSkills project — Claude Hooks visuele referentie
+</div>
+
+</body>
+</html>

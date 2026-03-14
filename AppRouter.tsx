@@ -297,7 +297,9 @@ function LoginRoute() {
 
     return (
         <PublicPageShell>
-            <Login onLoginSuccess={handleSuccess} />
+            <React.Suspense fallback={<LoadingFallback />}>
+                <Login onLoginSuccess={handleSuccess} />
+            </React.Suspense>
         </PublicPageShell>
     );
 }

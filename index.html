@@ -60,7 +60,15 @@
 </head>
 
 <body>
-  <div id="root"></div>
+  <div id="root">
+    <!-- Inline loading skeleton: painted immediately, replaced by React on first render.
+         Ensures FCP fires in headless Chrome before JS modules execute. -->
+    <div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#FAF9F0" aria-hidden="true">
+      <div style="width:3rem;height:3rem;border:2px solid #c7d2fe;border-top-color:#4f46e5;border-radius:50%;animation:spin 1s linear infinite"></div>
+      <p style="margin-top:1rem;font-family:system-ui,-apple-system,sans-serif;color:#64748b;font-size:0.875rem">Laden...</p>
+    </div>
+    <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+  </div>
   <script type="module" src="/index.tsx"></script>
 
   <!-- Static JSON-LD structured data — visible to all crawlers without JS execution -->
