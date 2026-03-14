@@ -227,7 +227,7 @@ export function ReceiptsPanel({ receipts, userId, onRefresh }: ReceiptsPanelProp
             {!form ? (
                 <div
                     ref={dropRef}
-                    className="border-2 border-dashed border-slate-300 rounded-[2rem] p-12 text-center cursor-pointer hover:border-indigo-400 hover:bg-indigo-50/50 transition-all group"
+                    className="border-2 border-dashed border-slate-300 rounded-[2rem] p-6 sm:p-12 text-center cursor-pointer hover:border-indigo-400 hover:bg-indigo-50/50 transition-all group"
                     onClick={() => fileRef.current?.click()}
                     onDragOver={e => e.preventDefault()}
                     onDrop={e => {
@@ -259,7 +259,7 @@ export function ReceiptsPanel({ receipts, userId, onRefresh }: ReceiptsPanelProp
                 <div className="bg-white rounded-[2rem] border border-slate-200 shadow-sm overflow-hidden">
                     <div className="grid grid-cols-1 md:grid-cols-2">
                         {/* Preview */}
-                        <div className="bg-slate-50 p-8 flex flex-col items-center justify-center min-h-64">
+                        <div className="bg-slate-50 p-4 sm:p-8 flex flex-col items-center justify-center min-h-64">
                             {previewUrl ? (
                                 <img
                                     src={previewUrl}
@@ -287,7 +287,7 @@ export function ReceiptsPanel({ receipts, userId, onRefresh }: ReceiptsPanelProp
                         </div>
 
                         {/* Formulier */}
-                        <div className="p-8 space-y-4">
+                        <div className="p-4 sm:p-8 space-y-4">
                             <div className="flex items-center justify-between mb-2">
                                 <h3 className="font-black text-slate-900 uppercase tracking-tight">Gegevens controleren</h3>
                                 <button onClick={handleReset} className="p-2 hover:bg-slate-100 rounded-xl">
@@ -467,9 +467,9 @@ export function ReceiptsPanel({ receipts, userId, onRefresh }: ReceiptsPanelProp
                                         </div>
                                         <button
                                             onClick={e => { e.stopPropagation(); r.id && handleDelete(r.id, r.image_url); }}
-                                            className="opacity-0 group-hover:opacity-100 p-1.5 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all shrink-0"
+                                            className="opacity-0 group-hover:opacity-100 p-2.5 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all shrink-0"
                                         >
-                                            <Trash2 size={14} />
+                                            <Trash2 size={16} />
                                         </button>
                                     </div>
                                     <div className="flex items-center justify-between mt-3">
@@ -505,7 +505,7 @@ export function ReceiptsPanel({ receipts, userId, onRefresh }: ReceiptsPanelProp
                     >
                         <div className="grid grid-cols-1 md:grid-cols-2 max-h-[90vh]">
                             {/* Bestand preview */}
-                            <div className="bg-slate-50 p-6 flex flex-col items-center justify-center min-h-64 max-h-[45vh] md:max-h-[90vh] overflow-auto">
+                            <div className="bg-slate-50 p-3 sm:p-6 flex flex-col items-center justify-center min-h-64 max-h-[45vh] md:max-h-[90vh] overflow-auto">
                                 {detailReceipt.image_url ? (
                                     detailReceipt.image_url.endsWith('.pdf') ? (
                                         <a
@@ -535,7 +535,7 @@ export function ReceiptsPanel({ receipts, userId, onRefresh }: ReceiptsPanelProp
                             </div>
 
                             {/* Gegevens */}
-                            <div className="p-8 space-y-5 overflow-auto max-h-[45vh] md:max-h-[90vh]">
+                            <div className="p-4 sm:p-8 space-y-5 overflow-auto max-h-[45vh] md:max-h-[90vh]">
                                 <div className="flex items-center justify-between">
                                     <h3 className="font-black text-slate-900 uppercase tracking-tight text-lg">Bonnetje details</h3>
                                     <button

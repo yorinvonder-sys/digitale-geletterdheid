@@ -151,7 +151,7 @@ export function HoursPanel({ userId, year }: HoursPanelProps) {
         <div className="space-y-8">
 
             {/* ===== SECTIE 1: Voortgang urencriterium ===== */}
-            <div className="bg-slate-900 text-white rounded-[2rem] p-8">
+            <div className="bg-slate-900 text-white rounded-[2rem] p-4 sm:p-8">
                 <div className="flex items-center gap-3 mb-6">
                     <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center">
                         <TrendingUp size={20} className="text-white" />
@@ -222,7 +222,7 @@ export function HoursPanel({ userId, year }: HoursPanelProps) {
             </div>
 
             {/* ===== SECTIE 2: Snelle toevoeg-kaart ===== */}
-            <div className="bg-white rounded-[2rem] border border-slate-200 shadow-sm p-8">
+            <div className="bg-white rounded-[2rem] border border-slate-200 shadow-sm p-4 sm:p-8">
                 <div className="flex items-center gap-3 mb-6">
                     <div className="w-10 h-10 bg-indigo-100 rounded-xl flex items-center justify-center">
                         <Plus size={20} className="text-indigo-600" />
@@ -325,7 +325,7 @@ export function HoursPanel({ userId, year }: HoursPanelProps) {
             </div>
 
             {/* ===== SECTIE 3: Uren per maand (mini bar chart) ===== */}
-            <div className="bg-white rounded-[2rem] border border-slate-200 shadow-sm p-8">
+            <div className="bg-white rounded-[2rem] border border-slate-200 shadow-sm p-4 sm:p-8">
                 <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-6">
                     Uren per maand — {year}
                 </h3>
@@ -449,10 +449,10 @@ export function HoursPanel({ userId, year }: HoursPanelProps) {
                                         <td className="px-6 py-4 text-right">
                                             <button
                                                 onClick={() => entry.id && handleDelete(entry.id)}
-                                                className={`p-1.5 rounded-lg text-slate-300 hover:text-red-500 hover:bg-red-50 transition-all ${hoveredRow === entry.id ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}
+                                                className={`p-2.5 rounded-lg text-slate-300 hover:text-red-500 hover:bg-red-50 transition-all ${hoveredRow === entry.id ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}
                                                 title="Verwijderen"
                                             >
-                                                <Trash2 size={14} />
+                                                <Trash2 size={16} />
                                             </button>
                                         </td>
                                     </tr>

@@ -147,7 +147,7 @@ export function AccountantDashboard({ userId }: AccountantDashboardProps) {
                         <button
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id)}
-                            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap transition-all ${activeTab === tab.id
+                            className={`flex items-center gap-2 px-2.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all ${activeTab === tab.id
                                 ? 'bg-indigo-600 text-white shadow-sm'
                                 : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'
                                 }`}

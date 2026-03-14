@@ -267,7 +267,7 @@ export function TransactionsPanel({ transactions, userId, year, onRefresh }: Tra
                         ))}
                     </div>
                     <div
-                        className="border-2 border-dashed border-slate-300 rounded-xl p-8 text-center cursor-pointer hover:border-indigo-400 hover:bg-indigo-50 transition-colors"
+                        className="border-2 border-dashed border-slate-300 rounded-xl p-4 sm:p-8 text-center cursor-pointer hover:border-indigo-400 hover:bg-indigo-50 transition-colors"
                         onClick={() => fileRef.current?.click()}
                         onDragOver={e => e.preventDefault()}
                         onDrop={e => {
@@ -413,9 +413,9 @@ export function TransactionsPanel({ transactions, userId, year, onRefresh }: Tra
                                             <td className="px-4 py-4">
                                                 <button
                                                     onClick={() => tx.id && handleDelete(tx.id)}
-                                                    className="opacity-0 group-hover:opacity-100 p-1.5 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"
+                                                    className="opacity-0 group-hover:opacity-100 p-2.5 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"
                                                 >
-                                                    <Trash2 size={14} />
+                                                    <Trash2 size={16} />
                                                 </button>
                                             </td>
                                         </tr>

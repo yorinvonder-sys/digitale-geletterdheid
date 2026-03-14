@@ -334,7 +334,7 @@ export function AssetsPanel({ userId, year, onRefresh }: AssetsPanelProps) {
             {/* Modal: bedrijfsmiddel toevoegen */}
             {showForm && (
                 <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-                    <div className="bg-white rounded-3xl shadow-2xl w-full max-w-md p-8 max-h-[90vh] overflow-y-auto">
+                    <div className="bg-white rounded-3xl shadow-2xl w-full max-w-md p-5 sm:p-8 max-h-[90vh] overflow-y-auto">
                         <div className="flex items-center justify-between mb-6">
                             <h3 className="text-lg font-black text-slate-900 uppercase tracking-tight">Bedrijfsmiddel Toevoegen</h3>
                             <button onClick={() => { setShowForm(false); setError(''); }} className="p-2 hover:bg-slate-100 rounded-xl">
@@ -365,7 +365,7 @@ export function AssetsPanel({ userId, year, onRefresh }: AssetsPanelProps) {
                             {/* Categorie */}
                             <div>
                                 <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Categorie</label>
-                                <div className="grid grid-cols-5 gap-2">
+                                <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
                                     {(Object.keys(ASSET_CATEGORY_LABELS) as AssetCategory[]).map(cat => (
                                         <button
                                             key={cat}

@@ -294,7 +294,7 @@ function ExportCard({
     onClick: () => void;
 }) {
     return (
-        <div className="bg-white rounded-[2rem] border border-slate-200 shadow-sm p-6 flex flex-col">
+        <div className="bg-white rounded-[2rem] border border-slate-200 shadow-sm p-4 sm:p-6 flex flex-col">
             <div className="flex items-center gap-3 mb-3">
                 <div className={`w-10 h-10 ${iconBg} rounded-xl flex items-center justify-center shrink-0`}>
                     {icon}
