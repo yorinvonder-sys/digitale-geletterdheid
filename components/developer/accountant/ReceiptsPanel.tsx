@@ -61,8 +61,9 @@ export function ReceiptsPanel({ receipts, userId, onRefresh }: ReceiptsPanelProp
     }, [previewUrl]);
 
     function handleFile(file: File) {
-        if (!file.type.startsWith('image/') && file.type !== 'application/pdf') {
-            setError('Alleen afbeeldingen (JPG, PNG, WEBP) zijn toegestaan.');
+        const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/gif', 'application/pdf'];
+        if (!allowedTypes.includes(file.type)) {
+            setError('Alleen JPG, PNG, WEBP, GIF, HEIC of PDF toegestaan.');
             return;
         }
         if (file.size > 10 * 1024 * 1024) {
@@ -192,7 +193,7 @@ export function ReceiptsPanel({ receipts, userId, onRefresh }: ReceiptsPanelProp
                     <input
                         ref={fileRef}
                         type="file"
-                        accept="image/jpeg,image/png,image/webp,image/heic"
+                        accept="image/jpeg,image/png,image/webp,image/heic,image/gif,application/pdf"
                         className="hidden"
                         onChange={e => { const f = e.target.files?.[0]; if (f) handleFile(f); }}
                     />
@@ -201,10 +202,10 @@ export function ReceiptsPanel({ receipts, userId, onRefresh }: ReceiptsPanelProp
                     </div>
                     <h3 className="text-lg font-black text-slate-800 mb-2">Bonnetje uploaden</h3>
                     <p className="text-sm text-slate-500">
-                        Sleep een foto van je bonnetje hierheen of klik om te selecteren
+                        Sleep een foto of PDF van je bonnetje hierheen of klik om te selecteren
                     </p>
                     <p className="text-xs text-slate-400 mt-2">
-                        JPG, PNG, WEBP — max 10 MB — Gemini AI scant automatisch
+                        JPG, PNG, WEBP, GIF, HEIC, PDF — max 10 MB — AI scant automatisch
                     </p>
                 </div>
             ) : (

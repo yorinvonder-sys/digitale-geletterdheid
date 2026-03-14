@@ -30,6 +30,8 @@ const ALLOWED_MIME_TYPES = new Set([
     "image/png",
     "image/webp",
     "image/heic",
+    "image/gif",
+    "application/pdf",
 ]);
 
 const MAX_BASE64_LENGTH = 14_000_000; // ~10 MB
@@ -69,7 +71,7 @@ Deno.serve(async (req: Request) => {
     }
 
     // 2. Parse request
-    let body: { imageBase64?: string; mimeType?: string };
+    let body: { imageBase64?: string; mimeType?: string; mode?: string };
     try {
         body = await req.json();
     } catch {
@@ -105,7 +107,9 @@ Deno.serve(async (req: Request) => {
     const geminiUrl = getVertexUrl("gemini-2.0-flash");
     const accessToken = await getAccessToken();
 
-    const prompt = `Je bent een Nederlandse boekhoudings-AI. Analyseer dit bonnetje of factuur en extraheer de volgende gegevens.
+    const isSubscription = body.mode === "subscription";
+
+    const receiptPrompt = `Je bent een Nederlandse boekhoudings-AI. Analyseer dit bonnetje of factuur en extraheer de volgende gegevens.
 
 Geef je antwoord UITSLUITEND als geldig JSON in dit exacte formaat, NIETS anders:
 {
@@ -127,6 +131,37 @@ Regels:
 - Als een veld niet leesbaar is, gebruik een lege string "" voor tekst of 0 voor getallen.
 
 Antwoord ALLEEN met de JSON, geen uitleg of extra tekst.`;
+
+    const subscriptionPrompt = `Je bent een Nederlandse boekhoudings-AI. Analyseer deze screenshot van een abonnement, factuur of betalingspagina en extraheer de abonnementsgegevens.
+
+Geef je antwoord UITSLUITEND als geldig JSON in dit exacte formaat, NIETS anders:
+{
+  "name": "productnaam van het abonnement (bijv. Claude Pro, Vercel Pro)",
+  "supplier": "naam van het bedrijf/leverancier (bijv. Anthropic, Vercel Inc.)",
+  "amount": 0.00,
+  "vatAmount": 0.00,
+  "vatRate": 0,
+  "frequency": "monthly",
+  "startDate": "YYYY-MM-DD",
+  "category": "automatisering",
+  "notes": ""
+}
+
+Regels:
+- name: de naam van het abonnement of product. Wees specifiek (bijv. "Claude Pro" niet "Anthropic").
+- supplier: het bedrijf dat het abonnement levert.
+- amount: het bedrag EXCLUSIEF BTW als getal. Als alleen incl. BTW zichtbaar is, reken terug.
+- vatAmount: het BTW-bedrag. Bij buitenlandse SaaS (niet-NL) is dit meestal 0 (BTW verlegd).
+- vatRate: 0 voor buitenlandse SaaS-diensten (BTW verlegd), 21 voor Nederlandse diensten, 9 voor laag tarief.
+- frequency: "monthly" voor maandelijks, "quarterly" voor per kwartaal, "yearly" voor jaarlijks. Kijk naar bedrag en periode-aanduiding.
+- startDate: de startdatum of factuurdatum in ISO-formaat (YYYY-MM-DD). Als het jaar onduidelijk is, gebruik het huidige jaar.
+- category: kies de meest passende uit: kantoorkosten | reiskosten | marketing | automatisering | opleiding | telefoon-internet | representatie | overig. Software/SaaS = "automatisering".
+- notes: eventuele extra info zoals plan-type, limieten, etc. Kort houden.
+- Als een veld niet leesbaar is, gebruik een lege string "" voor tekst of 0 voor getallen.
+
+Antwoord ALLEEN met de JSON, geen uitleg of extra tekst.`;
+
+    const prompt = isSubscription ? subscriptionPrompt : receiptPrompt;
 
     const geminiResponse = await fetch(geminiUrl, {
         method: "POST",
@@ -191,15 +226,28 @@ Antwoord ALLEEN met de JSON, geen uitleg of extra tekst.`;
     }
 
     // 5. Valideer en normaliseer output
-    const result = {
-        supplier:    typeof parsed.supplier === "string" ? parsed.supplier : "",
-        date:        typeof parsed.date === "string" ? parsed.date : new Date().toISOString().split("T")[0],
-        amount:      typeof parsed.amount === "number" ? parsed.amount : 0,
-        vatAmount:   typeof parsed.vatAmount === "number" ? parsed.vatAmount : 0,
-        vatRate:     [0, 9, 21].includes(Number(parsed.vatRate)) ? Number(parsed.vatRate) : 21,
-        description: typeof parsed.description === "string" ? parsed.description : "",
-        category:    typeof parsed.category === "string" ? parsed.category : "overig",
-    };
+    const validFrequencies = ["monthly", "quarterly", "yearly"];
+    const result = isSubscription
+        ? {
+            name:      typeof parsed.name === "string" ? parsed.name : "",
+            supplier:  typeof parsed.supplier === "string" ? parsed.supplier : "",
+            amount:    typeof parsed.amount === "number" ? parsed.amount : 0,
+            vatAmount: typeof parsed.vatAmount === "number" ? parsed.vatAmount : 0,
+            vatRate:   [0, 9, 21].includes(Number(parsed.vatRate)) ? Number(parsed.vatRate) : 0,
+            frequency: validFrequencies.includes(String(parsed.frequency)) ? String(parsed.frequency) : "monthly",
+            startDate: typeof parsed.startDate === "string" ? parsed.startDate : new Date().toISOString().split("T")[0],
+            category:  typeof parsed.category === "string" ? parsed.category : "automatisering",
+            notes:     typeof parsed.notes === "string" ? parsed.notes : "",
+        }
+        : {
+            supplier:    typeof parsed.supplier === "string" ? parsed.supplier : "",
+            date:        typeof parsed.date === "string" ? parsed.date : new Date().toISOString().split("T")[0],
+            amount:      typeof parsed.amount === "number" ? parsed.amount : 0,
+            vatAmount:   typeof parsed.vatAmount === "number" ? parsed.vatAmount : 0,
+            vatRate:     [0, 9, 21].includes(Number(parsed.vatRate)) ? Number(parsed.vatRate) : 21,
+            description: typeof parsed.description === "string" ? parsed.description : "",
+            category:    typeof parsed.category === "string" ? parsed.category : "overig",
+        };
 
     return new Response(JSON.stringify({ result }), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
