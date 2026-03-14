@@ -793,7 +793,7 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
           title="Terug naar Dashboard"
         >
           <div className="w-8 h-8 md:w-10 md:h-10 bg-white border border-slate-100 rounded-xl flex items-center justify-center text-white transform rotate-3 overflow-hidden shadow-sm">
-            <img src="/logo.svg" alt="Logo" className="w-full h-full object-contain p-1" />
+            <img src="/mascot/pip-logo.png" alt="Logo" className="w-full h-full object-contain p-1" />
           </div>
           <div className="flex flex-col text-left">
             {/* Breadcrumb: Dashboard > AI Lab > missienaam */}

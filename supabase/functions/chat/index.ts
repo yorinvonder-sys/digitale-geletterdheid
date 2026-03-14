@@ -94,8 +94,11 @@ Deno.serve(async (req: Request) => {
 
     // 4. Forward sanitized message to Gemini via Vertex AI (EU endpoint)
     try {
+        console.log("[chat] Step 1: Building Vertex URL...");
         const geminiUrl = getVertexUrl("gemini-2.0-flash");
+        console.log("[chat] Step 2: Getting access token...");
         const accessToken = await getAccessToken();
+        console.log("[chat] Step 3: Sending to Vertex AI...");
 
         const contents = [
             ...(Array.isArray(body.history) ? body.history : []),
@@ -144,7 +147,9 @@ Deno.serve(async (req: Request) => {
         const geminiData = await geminiResponse.json();
 
         // Extract text from Vertex AI response format
+        console.log("[chat] Step 4: Vertex AI response OK, extracting text...");
         const text = geminiData?.candidates?.[0]?.content?.parts?.[0]?.text || "";
+        console.log("[chat] Step 5: Success, text length:", text.length);
 
         return new Response(JSON.stringify({ text }), {
             headers: { ...corsHeaders, "Content-Type": "application/json" },

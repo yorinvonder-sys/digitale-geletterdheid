@@ -255,11 +255,13 @@ export const Bomberman: React.FC<BombermanProps> = ({ avatarConfig, schoolId, on
 
     if (error) {
         return (
-            <div className="w-full h-full flex items-center justify-center bg-slate-900 text-white">
-                <div className="text-center p-8 bg-slate-800 rounded-2xl border border-red-500/50 shadow-2xl">
-                    <p className="text-red-400 mb-6 text-xl font-bold">⚠️ Connection Error</p>
-                    <p className="mb-6 text-slate-300">{error}</p>
-                    <button onClick={onExit} className="px-6 py-3 bg-slate-700 hover:bg-slate-600 rounded-xl font-bold transition-all">
+            <div className="w-full h-full flex items-center justify-center text-white" style={{ backgroundColor: '#1A1A19' }}>
+                <div className="text-center p-8 rounded-2xl border shadow-2xl" style={{ backgroundColor: '#FFFFFF', borderColor: '#E8E6DF' }}>
+                    <p className="mb-6 text-xl font-bold" style={{ color: '#D97757', fontFamily: "'Newsreader', Georgia, serif" }}>Verbindingsfout</p>
+                    <p className="mb-6" style={{ color: '#3D3D38' }}>{error}</p>
+                    <button onClick={onExit} className="px-6 py-3 rounded-full font-bold transition-all duration-300" style={{ backgroundColor: '#D97757', color: '#FFFFFF' }}
+                        onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#C46849')}
+                        onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#D97757')}>
                         Terug naar Dashboard
                     </button>
                 </div>
@@ -269,15 +271,15 @@ export const Bomberman: React.FC<BombermanProps> = ({ avatarConfig, schoolId, on
 
     if (!gameState) {
         return (
-            <div className="w-full h-full flex flex-col items-center justify-center bg-slate-900 text-white relative overflow-hidden">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-emerald-900/20 via-slate-900 to-slate-900 animate-pulse"></div>
+            <div className="w-full h-full flex flex-col items-center justify-center text-white relative overflow-hidden" style={{ backgroundColor: '#1A1A19' }}>
+                <div className="absolute inset-0 animate-pulse" style={{ background: 'radial-gradient(circle at center, rgba(217,119,87,0.15), #1A1A19 70%)' }}></div>
                 <div className="z-10 flex flex-col items-center">
                     <div className="relative">
-                        <div className="absolute inset-0 bg-emerald-500 blur-xl opacity-20 animate-ping"></div>
-                        <Loader className="animate-spin mb-8 text-emerald-400" size={64} />
+                        <div className="absolute inset-0 blur-xl opacity-20 animate-ping" style={{ backgroundColor: '#D97757' }}></div>
+                        <Loader className="animate-spin mb-8" size={64} style={{ color: '#D97757' }} />
                     </div>
-                    <h2 className="text-3xl font-black tracking-tighter mb-2">ARENA BATTLE</h2>
-                    <p className="text-emerald-400 font-mono text-sm animate-pulse">CONNECTING TO SERVER...</p>
+                    <h2 className="text-3xl font-black tracking-tighter mb-2" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>ARENA BATTLE</h2>
+                    <p className="font-mono text-sm animate-pulse" style={{ color: '#D97757' }}>VERBINDEN MET SERVER...</p>
                 </div>
             </div>
         );
@@ -289,39 +291,45 @@ export const Bomberman: React.FC<BombermanProps> = ({ avatarConfig, schoolId, on
         const playerCount = players.length;
 
         return (
-            <div className="w-full h-full flex items-center justify-center bg-slate-900 overflow-hidden relative">
+            <div className="w-full h-full flex items-center justify-center overflow-hidden relative" style={{ backgroundColor: '#1A1A19' }}>
                 {/* Dynamic Background */}
-                <div className="absolute inset-0 opacity-20 bg-[radial-gradient(#10b981_1px,transparent_1px)] [background-size:32px_32px]"></div>
+                <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(#D97757 1px, transparent 1px)', backgroundSize: '32px 32px' }}></div>
 
                 {/* Main Modal */}
-                <div className="relative w-full max-w-4xl h-[90%] md:h-auto bg-slate-800/90 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row">
+                <div className="relative w-full max-w-4xl h-[90%] md:h-auto backdrop-blur-xl rounded-2xl overflow-hidden shadow-2xl flex flex-col md:flex-row" style={{ backgroundColor: 'rgba(255,255,255,0.95)', border: '1px solid #E8E6DF' }}>
 
                     {/* Instructions Side */}
-                    <div className="w-full md:w-1/2 p-8 bg-gradient-to-br from-slate-800 to-slate-900 flex flex-col">
+                    <div className="w-full md:w-1/2 p-8 flex flex-col" style={{ backgroundColor: '#FAF9F0' }}>
                         <div className="flex justify-between items-start mb-6">
                             <div className="flex items-center gap-3">
                                 <button
                                     onClick={onExit}
-                                    className="p-2 bg-white/10 rounded-full hover:bg-white/20 transition-colors"
+                                    className="p-2 rounded-full transition-all duration-300"
+                                    style={{ backgroundColor: '#F0EEE8', color: '#3D3D38' }}
                                     title="Terug naar dashboard"
+                                    onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#E8E6DF')}
+                                    onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#F0EEE8')}
                                 >
-                                    <ArrowLeft size={20} className="text-white" />
+                                    <ArrowLeft size={20} />
                                 </button>
-                                <h2 className="text-2xl font-black text-white italic">HOW TO PLAY</h2>
+                                <h2 className="text-2xl font-black italic" style={{ color: '#1A1A19', fontFamily: "'Newsreader', Georgia, serif" }}>Zo speel je</h2>
                             </div>
                             {gameState.status === 'playing' && (
-                                <button onClick={() => setShowInstructions(false)} className="p-2 bg-white/10 rounded-full hover:bg-white/20">
-                                    <X size={20} className="text-white" />
+                                <button onClick={() => setShowInstructions(false)} className="p-2 rounded-full transition-all duration-300"
+                                    style={{ backgroundColor: '#F0EEE8', color: '#3D3D38' }}
+                                    onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#E8E6DF')}
+                                    onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#F0EEE8')}>
+                                    <X size={20} />
                                 </button>
                             )}
                         </div>
 
                         <div className="space-y-6 flex-1 overflow-y-auto">
-                            <div className="bg-white/5 p-4 rounded-xl border border-white/5">
-                                <h3 className="text-emerald-400 font-bold mb-2 flex items-center gap-2">
-                                    🎯 Doel
+                            <div className="p-4 rounded-2xl" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
+                                <h3 className="font-bold mb-2 flex items-center gap-2" style={{ color: '#D97757', fontFamily: "'Newsreader', Georgia, serif" }}>
+                                    Doel
                                 </h3>
-                                <p className="text-slate-300 text-sm">
+                                <p className="text-sm" style={{ color: '#3D3D38', fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                     Plaats bommen om kisten te vernietigen en power-ups te vinden.
                                     Blaas je tegenstanders op om te winnen!
                                 </p>
@@ -329,41 +337,41 @@ export const Bomberman: React.FC<BombermanProps> = ({ avatarConfig, schoolId, on
 
                             {/* Show controls based on detected device */}
                             {isTouchDevice ? (
-                                <div className="bg-white/5 p-4 rounded-xl border border-emerald-500/30">
-                                    <h3 className="text-emerald-400 font-bold mb-2 flex items-center gap-2">
-                                        📱 Touch Besturing
+                                <div className="p-4 rounded-2xl" style={{ backgroundColor: '#FFFFFF', border: '1px solid #D97757' }}>
+                                    <h3 className="font-bold mb-2 flex items-center gap-2" style={{ color: '#D97757', fontFamily: "'Newsreader', Georgia, serif" }}>
+                                        Touch Besturing
                                     </h3>
-                                    <p className="text-slate-300 text-sm">
+                                    <p className="text-sm" style={{ color: '#3D3D38', fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                         Gebruik de virtuele joystick links om te bewegen en de bom-knop rechts om bommen te plaatsen.
                                     </p>
                                     <div className="mt-3 flex justify-center gap-4">
                                         <div className="flex flex-col items-center">
-                                            <div className="w-12 h-12 rounded-full bg-slate-700 border-2 border-slate-500 flex items-center justify-center">
-                                                <div className="w-4 h-4 rounded-full bg-slate-400"></div>
+                                            <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ backgroundColor: '#F0EEE8', border: '2px solid #E8E6DF' }}>
+                                                <div className="w-4 h-4 rounded-full" style={{ backgroundColor: '#6B6B66' }}></div>
                                             </div>
-                                            <span className="text-xs text-slate-400 mt-1">Joystick</span>
+                                            <span className="text-xs mt-1" style={{ color: '#6B6B66' }}>Joystick</span>
                                         </div>
                                         <div className="flex flex-col items-center">
-                                            <div className="w-12 h-12 rounded-full bg-red-600 border-2 border-red-400 flex items-center justify-center text-white font-bold text-lg">
+                                            <div className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg" style={{ backgroundColor: '#D97757', border: '2px solid #C46849' }}>
                                                 💣
                                             </div>
-                                            <span className="text-xs text-slate-400 mt-1">Bom</span>
+                                            <span className="text-xs mt-1" style={{ color: '#6B6B66' }}>Bom</span>
                                         </div>
                                     </div>
                                 </div>
                             ) : (
-                                <div className="bg-white/5 p-4 rounded-xl border border-white/5">
-                                    <h3 className="text-emerald-400 font-bold mb-2 flex items-center gap-2">
-                                        ⌨️ Toetsenbord Besturing
+                                <div className="p-4 rounded-2xl" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
+                                    <h3 className="font-bold mb-2 flex items-center gap-2" style={{ color: '#D97757', fontFamily: "'Newsreader', Georgia, serif" }}>
+                                        Toetsenbord Besturing
                                     </h3>
                                     <div className="grid grid-cols-2 gap-4">
                                         <div className="text-center">
-                                            <div className="text-slate-400 text-xs mb-1">Bewegen</div>
-                                            <div className="font-mono text-white text-sm bg-black/30 p-2 rounded">WASD / Pijltjes</div>
+                                            <div className="text-xs mb-1" style={{ color: '#6B6B66' }}>Bewegen</div>
+                                            <div className="font-mono text-sm p-2 rounded-xl" style={{ backgroundColor: '#FAF9F0', color: '#1A1A19', border: '1px solid #E8E6DF' }}>WASD / Pijltjes</div>
                                         </div>
                                         <div className="text-center">
-                                            <div className="text-slate-400 text-xs mb-1">Bom</div>
-                                            <div className="font-mono text-white text-sm bg-black/30 p-2 rounded">Spatie</div>
+                                            <div className="text-xs mb-1" style={{ color: '#6B6B66' }}>Bom</div>
+                                            <div className="font-mono text-sm p-2 rounded-xl" style={{ backgroundColor: '#FAF9F0', color: '#1A1A19', border: '1px solid #E8E6DF' }}>Spatie</div>
                                         </div>
                                     </div>
                                 </div>
@@ -371,22 +379,22 @@ export const Bomberman: React.FC<BombermanProps> = ({ avatarConfig, schoolId, on
                         </div>
 
                         {gameState.status === 'lobby' && (
-                            <div className="mt-6 pt-6 border-t border-white/5">
-                                <p className="text-center text-slate-500 text-xs">Waiting for players...</p>
+                            <div className="mt-6 pt-6" style={{ borderTop: '1px solid #E8E6DF' }}>
+                                <p className="text-center text-xs" style={{ color: '#6B6B66' }}>Wachten op spelers...</p>
                             </div>
                         )}
                     </div>
 
                     {/* Lobby Side */}
                     {gameState.status === 'lobby' && (
-                        <div className="w-full md:w-1/2 p-8 bg-slate-900/50 flex flex-col justify-center border-t md:border-t-0 md:border-l border-white/10">
+                        <div className="w-full md:w-1/2 p-8 flex flex-col justify-center" style={{ backgroundColor: '#FFFFFF', borderLeft: '1px solid #E8E6DF' }}>
                             <div className="text-center mb-8">
-                                <h1 className="text-4xl font-black text-white mb-2 tracking-tighter">
-                                    <span className="text-emerald-500">ARENA</span> BATTLE
+                                <h1 className="text-4xl font-black mb-2 tracking-tighter" style={{ color: '#1A1A19', fontFamily: "'Newsreader', Georgia, serif" }}>
+                                    <span style={{ color: '#D97757' }}>ARENA</span> BATTLE
                                 </h1>
                                 <div className="flex justify-center items-center gap-2">
-                                    <div className="h-2 w-2 rounded-full bg-emerald-500 animate-ping"></div>
-                                    <p className="text-emerald-400 font-mono text-sm">LIVE LOBBY</p>
+                                    <div className="h-2 w-2 rounded-full animate-ping" style={{ backgroundColor: '#2A9D8F' }}></div>
+                                    <p className="font-mono text-sm" style={{ color: '#2A9D8F' }}>LIVE LOBBY</p>
                                 </div>
                             </div>
 
@@ -394,10 +402,14 @@ export const Bomberman: React.FC<BombermanProps> = ({ avatarConfig, schoolId, on
                                 {[0, 1, 2, 3].map(i => {
                                     const player = players[i];
                                     return (
-                                        <div key={i} className={`p-4 rounded-xl border flex items-center gap-4 transition-all ${player
-                                            ? 'bg-slate-800 border-emerald-500/50 shadow-lg shadow-emerald-500/10 transform hover:scale-[1.02]'
-                                            : 'bg-slate-800/30 border-dashed border-slate-700'
-                                            }`}>
+                                        <div key={i} className={`p-4 rounded-2xl flex items-center gap-4 transition-all duration-300 ${player
+                                            ? 'transform hover:scale-[1.02]'
+                                            : ''
+                                            }`}
+                                            style={player
+                                                ? { backgroundColor: '#FFFFFF', border: '1px solid #D97757', boxShadow: '0 4px 12px rgba(217,119,87,0.1)' }
+                                                : { backgroundColor: '#FAF9F0', border: '1px dashed #E8E6DF' }
+                                            }>
                                             {player ? (
                                                 <>
                                                     <div className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold shadow-lg"
@@ -405,20 +417,20 @@ export const Bomberman: React.FC<BombermanProps> = ({ avatarConfig, schoolId, on
                                                         {player.name.charAt(0)}
                                                     </div>
                                                     <div className="flex-1">
-                                                        <p className="font-bold text-white truncate max-w-[120px]">
+                                                        <p className="font-bold truncate max-w-[120px]" style={{ color: '#1A1A19', fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                                             {player.id === myPlayerId ? 'Jij' : player.name}
                                                         </p>
                                                     </div>
-                                                    <div className="px-2 py-1 bg-emerald-500/20 text-emerald-400 text-xs rounded font-bold">
+                                                    <div className="px-3 py-1 text-xs rounded-full font-bold inline-flex items-center" style={{ backgroundColor: 'rgba(16,185,129,0.1)', color: '#10B981', border: '1px solid rgba(16,185,129,0.3)' }}>
                                                         READY
                                                     </div>
                                                 </>
                                             ) : (
-                                                <div className="flex items-center gap-3 text-slate-600 w-full">
-                                                    <div className="w-10 h-10 rounded-full border-2 border-dashed border-slate-700 flex items-center justify-center">
+                                                <div className="flex items-center gap-3 w-full" style={{ color: '#6B6B66' }}>
+                                                    <div className="w-10 h-10 rounded-full border-2 border-dashed flex items-center justify-center" style={{ borderColor: '#E8E6DF' }}>
                                                         <Users size={16} />
                                                     </div>
-                                                    <span className="font-mono text-sm">Waiting...</span>
+                                                    <span className="font-mono text-sm">Wachten...</span>
                                                 </div>
                                             )}
                                         </div>
@@ -429,46 +441,44 @@ export const Bomberman: React.FC<BombermanProps> = ({ avatarConfig, schoolId, on
                             <div className="flex justify-center">
                                 {playerCount >= 2 && lobbyCountdown !== null ? (
                                     // Auto-start countdown active
-                                    <div className="w-full py-4 bg-gradient-to-r from-emerald-900 to-emerald-800 text-white font-bold rounded-xl text-center border border-emerald-600 flex items-center justify-center gap-3 shadow-lg shadow-emerald-900/30">
+                                    <div className="w-full py-4 text-white font-bold rounded-2xl text-center flex items-center justify-center gap-3 shadow-lg" style={{ background: 'linear-gradient(135deg, #D97757, #C46849)', boxShadow: '0 4px 20px rgba(217,119,87,0.3)' }}>
                                         <div className="relative w-12 h-12">
                                             <svg className="w-12 h-12 -rotate-90" viewBox="0 0 36 36">
                                                 <path
-                                                    className="text-emerald-950"
                                                     d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                                                     fill="none"
-                                                    stroke="currentColor"
+                                                    stroke="rgba(255,255,255,0.2)"
                                                     strokeWidth="3"
                                                 />
                                                 <path
-                                                    className="text-emerald-400"
                                                     d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                                                     fill="none"
-                                                    stroke="currentColor"
+                                                    stroke="#FFFFFF"
                                                     strokeWidth="3"
                                                     strokeDasharray={`${((60 - lobbyCountdown) / 60) * 100}, 100`}
                                                 />
                                             </svg>
-                                            <span className="absolute inset-0 flex items-center justify-center text-lg font-black text-emerald-300">
+                                            <span className="absolute inset-0 flex items-center justify-center text-lg font-black text-white">
                                                 {lobbyCountdown}
                                             </span>
                                         </div>
                                         <div className="flex flex-col items-start">
-                                            <span className="text-emerald-300 text-lg">Game start in {lobbyCountdown}s</span>
-                                            <span className="text-emerald-500 text-xs">Of wacht tot docent start</span>
+                                            <span className="text-white text-lg">Game start in {lobbyCountdown}s</span>
+                                            <span className="text-white/70 text-xs">Of wacht tot docent start</span>
                                         </div>
                                     </div>
                                 ) : playerCount >= 1 ? (
                                     // Waiting for more players
-                                    <div className="w-full py-4 bg-slate-800 text-slate-400 font-bold rounded-xl text-center border border-slate-700 flex flex-col items-center gap-2">
+                                    <div className="w-full py-4 font-bold rounded-2xl text-center flex flex-col items-center gap-2" style={{ backgroundColor: '#FAF9F0', color: '#6B6B66', border: '1px solid #E8E6DF' }}>
                                         <div className="flex items-center gap-2">
-                                            <div className="w-2 h-2 bg-amber-500 rounded-full animate-pulse" />
-                                            <span>Wachten op meer spelers...</span>
+                                            <div className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: '#D97757' }} />
+                                            <span style={{ color: '#3D3D38' }}>Wachten op meer spelers...</span>
                                         </div>
-                                        <span className="text-xs text-slate-500">{playerCount}/2 spelers nodig om te starten</span>
-                                        <span className="text-[10px] text-slate-600 mt-1">💡 Docent kan het spel ook direct starten</span>
+                                        <span className="text-xs" style={{ color: '#6B6B66' }}>{playerCount}/2 spelers nodig om te starten</span>
+                                        <span className="text-[10px] mt-1" style={{ color: '#6B6B66' }}>Docent kan het spel ook direct starten</span>
                                     </div>
                                 ) : (
-                                    <div className="w-full py-4 bg-slate-800 text-slate-500 font-bold rounded-xl text-center border border-slate-700">
+                                    <div className="w-full py-4 font-bold rounded-2xl text-center" style={{ backgroundColor: '#FAF9F0', color: '#6B6B66', border: '1px solid #E8E6DF' }}>
                                         Wachten op spelers...
                                     </div>
                                 )}
@@ -478,14 +488,17 @@ export const Bomberman: React.FC<BombermanProps> = ({ avatarConfig, schoolId, on
 
                     {/* If Playing but Instructions Open */}
                     {gameState.status === 'playing' && (
-                        <div className="w-full md:w-1/2 p-8 flex flex-col justify-center items-center text-center">
+                        <div className="w-full md:w-1/2 p-8 flex flex-col justify-center items-center text-center" style={{ backgroundColor: '#FFFFFF' }}>
                             <div className="mb-6">
-                                <Play size={64} className="text-emerald-500 mx-auto mb-4" />
-                                <h2 className="text-2xl font-bold text-white">Game Started!</h2>
+                                <Play size={64} className="mx-auto mb-4" style={{ color: '#D97757' }} />
+                                <h2 className="text-2xl font-bold" style={{ color: '#1A1A19', fontFamily: "'Newsreader', Georgia, serif" }}>Game gestart!</h2>
                             </div>
                             <button
                                 onClick={() => setShowInstructions(false)}
-                                className="px-8 py-3 bg-white text-slate-900 font-bold rounded-xl hover:bg-slate-200 transition-colors"
+                                className="px-8 py-3 font-bold rounded-full transition-all duration-300 text-white"
+                                style={{ backgroundColor: '#D97757' }}
+                                onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#C46849')}
+                                onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#D97757')}
                             >
                                 Sluit Menu & Speel
                             </button>
@@ -497,7 +510,7 @@ export const Bomberman: React.FC<BombermanProps> = ({ avatarConfig, schoolId, on
     }
 
     return (
-        <div className="w-full h-full relative bg-slate-900 select-none overflow-hidden touch-none">
+        <div className="w-full h-full relative select-none overflow-hidden touch-none" style={{ backgroundColor: '#1A1A19' }}>
             {/* Game Canvas */}
             <GameCanvas
                 gameState={gameState}
@@ -514,32 +527,41 @@ export const Bomberman: React.FC<BombermanProps> = ({ avatarConfig, schoolId, on
             {/* HUD */}
             <div className="absolute top-0 left-0 right-0 p-4 pointer-events-none flex justify-between items-start z-10">
                 <div className="flex gap-2 pointer-events-auto">
-                    <button onClick={onExit} className="bg-slate-800/90 backdrop-blur text-white p-3 rounded-xl hover:bg-red-500/20 hover:text-red-400 transition-colors border border-white/10">
+                    <button onClick={onExit} className="backdrop-blur text-white p-3 rounded-full transition-all duration-300" style={{ backgroundColor: 'rgba(26,26,25,0.8)', border: '1px solid rgba(232,230,223,0.2)' }}
+                        onMouseEnter={e => { e.currentTarget.style.backgroundColor = 'rgba(217,119,87,0.2)'; e.currentTarget.style.color = '#D97757'; }}
+                        onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'rgba(26,26,25,0.8)'; e.currentTarget.style.color = '#FFFFFF'; }}>
                         <X size={20} />
                     </button>
-                    <button onClick={() => setShowInstructions(true)} className="bg-slate-800/90 backdrop-blur text-white p-3 rounded-xl hover:bg-blue-500/20 hover:text-blue-400 transition-colors border border-white/10">
+                    <button onClick={() => setShowInstructions(true)} className="backdrop-blur text-white p-3 rounded-full transition-all duration-300" style={{ backgroundColor: 'rgba(26,26,25,0.8)', border: '1px solid rgba(232,230,223,0.2)' }}
+                        onMouseEnter={e => { e.currentTarget.style.backgroundColor = 'rgba(42,157,143,0.2)'; e.currentTarget.style.color = '#2A9D8F'; }}
+                        onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'rgba(26,26,25,0.8)'; e.currentTarget.style.color = '#FFFFFF'; }}>
                         <Info size={20} />
                     </button>
                 </div>
 
-                <div className={`absolute top-4 left-1/2 -translate-x-1/2 backdrop-blur px-6 py-2 rounded-2xl font-mono text-2xl font-black border shadow-[0_0_20px_rgba(16,185,129,0.3)] transition-all ${timeLeft <= 30
-                    ? 'bg-red-900/90 text-red-400 border-red-500/50 animate-pulse shadow-[0_0_30px_rgba(220,38,38,0.5)]'
-                    : isSuddenDeath
-                        ? 'bg-red-900/90 text-red-300 border-red-500/50'
-                        : 'bg-slate-900/90 text-emerald-400 border-emerald-500/30'
-                    }`}>
-                    {isSuddenDeath ? '☠️ SUDDEN DEATH' : `${Math.floor(timeLeft / 60)}:${(timeLeft % 60).toString().padStart(2, '0')}`}
+                <div className={`absolute top-4 left-1/2 -translate-x-1/2 backdrop-blur px-6 py-2 rounded-full font-mono text-2xl font-black transition-all ${timeLeft <= 30
+                    ? 'animate-pulse'
+                    : ''
+                    }`}
+                    style={timeLeft <= 30
+                        ? { backgroundColor: 'rgba(220,38,38,0.9)', color: '#fca5a5', border: '1px solid rgba(220,38,38,0.5)', boxShadow: '0 0 30px rgba(220,38,38,0.5)' }
+                        : isSuddenDeath
+                            ? { backgroundColor: 'rgba(220,38,38,0.9)', color: '#fca5a5', border: '1px solid rgba(220,38,38,0.5)' }
+                            : { backgroundColor: 'rgba(26,26,25,0.9)', color: '#D97757', border: '1px solid rgba(217,119,87,0.3)', boxShadow: '0 0 20px rgba(217,119,87,0.2)' }
+                    }>
+                    {isSuddenDeath ? 'SUDDEN DEATH' : `${Math.floor(timeLeft / 60)}:${(timeLeft % 60).toString().padStart(2, '0')}`}
                 </div>
 
                 <div className="flex flex-col gap-2">
                     {Object.values(gameState.players).map(p => (
-                        <div key={p.id} className={`flex items-center gap-2 bg-slate-900/80 p-2 pl-3 rounded-lg border transition-all ${p.isAlive
-                            ? 'border-emerald-500/30 shadow-lg'
-                            : 'border-red-500/30 opacity-50 grayscale'
-                            }`}>
-                            <div className="w-2 h-2 rounded-full shadow-[0_0_10px_currentColor]" style={{ backgroundColor: p.color, color: p.color }} />
+                        <div key={p.id} className={`flex items-center gap-2 p-2 pl-3 rounded-xl transition-all duration-300 ${!p.isAlive ? 'opacity-50 grayscale' : ''}`}
+                            style={p.isAlive
+                                ? { backgroundColor: 'rgba(26,26,25,0.85)', border: '1px solid rgba(217,119,87,0.3)', boxShadow: '0 2px 8px rgba(0,0,0,0.3)' }
+                                : { backgroundColor: 'rgba(26,26,25,0.6)', border: '1px solid rgba(220,38,38,0.3)' }
+                            }>
+                            <div className="w-2 h-2 rounded-full" style={{ backgroundColor: p.color, boxShadow: `0 0 10px ${p.color}` }} />
                             <div className="flex flex-col">
-                                <span className="text-xs text-white font-bold truncate max-w-[80px]">{p.name}</span>
+                                <span className="text-xs text-white font-bold truncate max-w-[80px]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{p.name}</span>
                                 <div className="flex gap-0.5 text-[10px]">
                                     {Array(Math.max(0, p.lives || 0)).fill('❤️').map((h, i) => <span key={i}>{h}</span>)}
                                 </div>
@@ -551,12 +573,11 @@ export const Bomberman: React.FC<BombermanProps> = ({ avatarConfig, schoolId, on
 
             {/* GAME OVER OVERLAY */}
             {showGameOver && (
-                <div className="absolute inset-0 bg-black/70 flex items-center justify-center z-30 animate-pulse">
-                    <div className="text-center">
-                        <div className="text-6xl mb-4">💀</div>
-                        <h2 className="text-4xl font-black text-red-500 mb-2">GAME OVER</h2>
-                        <p className="text-slate-400">Je bent uitgeschakeld!</p>
-                        <p className="text-slate-500 text-sm mt-2">Je kunt blijven kijken...</p>
+                <div className="absolute inset-0 flex items-center justify-center z-30 animate-pulse" style={{ backgroundColor: 'rgba(26,26,25,0.8)' }}>
+                    <div className="text-center p-8 rounded-2xl" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF', boxShadow: '0 8px 32px rgba(0,0,0,0.2)' }}>
+                        <h2 className="text-4xl font-black mb-2" style={{ color: '#D97757', fontFamily: "'Newsreader', Georgia, serif" }}>GAME OVER</h2>
+                        <p style={{ color: '#3D3D38' }}>Je bent uitgeschakeld!</p>
+                        <p className="text-sm mt-2" style={{ color: '#6B6B66' }}>Je kunt blijven kijken...</p>
                     </div>
                 </div>
             )}
@@ -648,26 +669,27 @@ export const Bomberman: React.FC<BombermanProps> = ({ avatarConfig, schoolId, on
                     }}
                 >
                     {/* Outer Ring */}
-                    <div className="absolute inset-0 bg-slate-800/70 backdrop-blur-sm rounded-full border-2 border-slate-600/50 shadow-lg shadow-black/30"></div>
+                    <div className="absolute inset-0 backdrop-blur-sm rounded-full shadow-lg" style={{ backgroundColor: 'rgba(26,26,25,0.7)', border: '2px solid rgba(232,230,223,0.3)', boxShadow: '0 4px 12px rgba(0,0,0,0.3)' }}></div>
 
                     {/* Direction Indicators */}
-                    <div className="absolute inset-4 rounded-full border border-slate-600/30"></div>
+                    <div className="absolute inset-4 rounded-full" style={{ border: '1px solid rgba(232,230,223,0.2)' }}></div>
 
                     {/* Joystick Thumb (Movable) */}
                     <div
-                        className="joystick-thumb absolute top-1/2 left-1/2 -ml-7 -mt-7 w-14 h-14 bg-gradient-to-br from-slate-500 to-slate-700 rounded-full shadow-xl border-2 border-slate-400/50 transition-transform duration-75"
-                        style={{ transform: 'translate(0, 0)' }}
+                        className="joystick-thumb absolute top-1/2 left-1/2 -ml-7 -mt-7 w-14 h-14 rounded-full shadow-xl transition-transform duration-75"
+                        style={{ background: 'linear-gradient(135deg, #6B6B66, #3D3D38)', border: '2px solid rgba(232,230,223,0.4)', transform: 'translate(0, 0)' }}
                     >
                         {/* Inner highlight */}
-                        <div className="absolute inset-1 bg-gradient-to-br from-slate-400/30 to-transparent rounded-full"></div>
+                        <div className="absolute inset-1 rounded-full" style={{ background: 'linear-gradient(135deg, rgba(232,230,223,0.2), transparent)' }}></div>
                     </div>
                 </div>
 
                 {/* BOMB BUTTON */}
                 <button
-                    className="w-24 h-24 bg-red-500/80 backdrop-blur-sm rounded-full shadow-2xl border-4 border-red-400 active:scale-90 active:bg-red-400 transition-all pointer-events-auto flex items-center justify-center group"
+                    className="w-24 h-24 backdrop-blur-sm rounded-full shadow-2xl active:scale-90 transition-all duration-300 pointer-events-auto flex items-center justify-center group"
+                    style={{ backgroundColor: 'rgba(217,119,87,0.85)', border: '4px solid #C46849' }}
                     onTouchStart={(e) => { e.preventDefault(); handleBombPress(); }}
-                    onClick={(e) => { e.preventDefault(); handleBombPress(); }} // Fallback for mouse
+                    onClick={(e) => { e.preventDefault(); handleBombPress(); }}
                 >
                     <span className="text-4xl filter drop-shadow-lg group-active:scale-125 transition-transform">💣</span>
                 </button>

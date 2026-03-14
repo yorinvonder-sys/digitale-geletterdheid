@@ -94,10 +94,10 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
             case 'Bestand':
                 return (
                     <div className="px-4 py-2 flex items-center gap-4 overflow-x-auto h-24 bg-[#C46849] text-white w-full absolute top-[88px] left-0 z-50">
-                        <button onClick={() => alert("Nieuw document wordt gesimuleerd")} className="flex flex-col items-center gap-2 p-2 hover:bg-white/10 rounded-lg min-w-[60px]">
+                        <button onClick={() => alert("Nieuw document wordt gesimuleerd")} className="flex flex-col items-center gap-2 p-2 hover:bg-white/10 rounded-lg min-w-[60px] transition-all duration-300">
                             <FilePlus size={24} /> <span className="text-xs">Nieuw</span>
                         </button>
-                        <button onClick={() => alert("Opslaan gesimuleerd")} className="flex flex-col items-center gap-2 p-2 hover:bg-white/10 rounded-lg min-w-[60px]">
+                        <button onClick={() => alert("Opslaan gesimuleerd")} className="flex flex-col items-center gap-2 p-2 hover:bg-white/10 rounded-lg min-w-[60px] transition-all duration-300">
                             <Save size={24} /> <span className="text-xs">Opslaan</span>
                         </button>
                     </div>
@@ -106,41 +106,41 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
                 return (
                     <div className="px-4 py-2 flex items-center gap-2 overflow-x-auto h-24">
                         {/* Font & Title Styles logic similar to before but generalized */}
-                        <div className="flex flex-col px-2 border-r border-slate-200 h-full justify-between pb-1">
+                        <div className="flex flex-col px-2 border-r border-[#E8E6DF] h-full justify-between pb-1">
                             <div className="flex gap-1 mb-1">
                                 <select
-                                    className="w-32 text-xs border border-slate-300 rounded"
+                                    className="w-32 text-xs border border-[#E8E6DF] rounded focus-visible:ring-2 focus-visible:ring-[#D97757]"
                                     value={bodyFont === 'comic' ? 'Comic Sans MS' : 'Arial'}
                                     onChange={(e) => setBodyFont(e.target.value === 'Arial' ? 'sans' : 'comic')}
                                 >
                                     <option value="Comic Sans MS">Comic Sans MS</option>
                                     <option value="Arial">Arial</option>
                                 </select>
-                                <div className="flex bg-slate-100 rounded">
-                                    <button onClick={() => setIsBold(!isBold)} className={`p-1 ${isBold ? 'bg-slate-300' : ''} rounded hover:bg-slate-200`}><Bold size={14} /></button>
-                                    <button onClick={() => setIsItalic(!isItalic)} className={`p-1 ${isItalic ? 'bg-slate-300' : ''} rounded hover:bg-slate-200`}><Italic size={14} /></button>
-                                    <button onClick={() => setIsUnderlined(!isUnderlined)} className={`p-1 ${isUnderlined ? 'bg-slate-300' : ''} rounded hover:bg-slate-200`}><div className="underline text-[10px] font-bold">U</div></button>
+                                <div className="flex bg-[#FAF9F0] rounded">
+                                    <button onClick={() => setIsBold(!isBold)} className={`p-1 ${isBold ? 'bg-[#E8E6DF]' : ''} rounded hover:bg-[#E8E6DF] transition-all duration-300`}><Bold size={14} /></button>
+                                    <button onClick={() => setIsItalic(!isItalic)} className={`p-1 ${isItalic ? 'bg-[#E8E6DF]' : ''} rounded hover:bg-[#E8E6DF] transition-all duration-300`}><Italic size={14} /></button>
+                                    <button onClick={() => setIsUnderlined(!isUnderlined)} className={`p-1 ${isUnderlined ? 'bg-[#E8E6DF]' : ''} rounded hover:bg-[#E8E6DF] transition-all duration-300`}><div className="underline text-[10px] font-bold">U</div></button>
                                 </div>
                             </div>
-                            <span className="text-[10px] text-center text-slate-500">Lettertype</span>
+                            <span className="text-[10px] text-center text-[#6B6B66]">Lettertype</span>
                         </div>
-                        <div className="flex flex-col px-2 border-r border-slate-200 h-full justify-between pb-1">
+                        <div className="flex flex-col px-2 border-r border-[#E8E6DF] h-full justify-between pb-1">
                             <div className="flex gap-2">
-                                <button onClick={() => setTitleStyle('comic')} className={`p-2 border ${titleStyle === 'comic' ? 'bg-blue-100 border-blue-300' : ''} w-20`}>
+                                <button onClick={() => setTitleStyle('comic')} className={`p-2 border rounded-lg transition-all duration-300 ${titleStyle === 'comic' ? 'bg-[#D97757]/10 border-[#D97757]' : 'border-[#E8E6DF]'} w-20`}>
                                     <span className="font-[Comic_Sans_MS] text-xs">Normaal</span>
                                 </button>
-                                <button onClick={() => setTitleStyle('modern')} className={`p-2 border ${titleStyle === 'modern' ? 'bg-blue-100 border-blue-300' : ''} w-20`}>
+                                <button onClick={() => setTitleStyle('modern')} className={`p-2 border rounded-lg transition-all duration-300 ${titleStyle === 'modern' ? 'bg-[#D97757]/10 border-[#D97757]' : 'border-[#E8E6DF]'} w-20`}>
                                     <span className="font-sans font-bold text-lg">Kop 1</span>
                                 </button>
                             </div>
-                            <span className="text-[10px] text-center text-slate-500">Stijlen</span>
+                            <span className="text-[10px] text-center text-[#6B6B66]">Stijlen</span>
                         </div>
                         {selection === 'image' && (
-                            <div className="flex flex-col px-2 border-r border-slate-200 h-full justify-between pb-1 animate-in fade-in slide-in-from-top-2">
-                                <button onClick={() => setImageAlign('wrap')} className={`flex flex-col items-center p-1 ${imageAlign === 'wrap' ? 'bg-slate-200' : ''}`}>
+                            <div className="flex flex-col px-2 border-r border-[#E8E6DF] h-full justify-between pb-1 animate-in fade-in slide-in-from-top-2">
+                                <button onClick={() => setImageAlign('wrap')} className={`flex flex-col items-center p-1 rounded-lg transition-all duration-300 ${imageAlign === 'wrap' ? 'bg-[#E8E6DF]' : ''}`}>
                                     <AlignLeft size={20} /> <span className="text-[10px]">Tekstterugloop</span>
                                 </button>
-                                <span className="text-[10px] text-center text-purple-600 font-bold">Afbeelding</span>
+                                <span className="text-[10px] text-center text-[#8B6F9E] font-bold">Afbeelding</span>
                             </div>
                         )}
                     </div>
@@ -148,54 +148,54 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
             case 'Invoegen':
                 return (
                     <div className="px-4 py-2 flex items-center gap-4 h-24">
-                        <button onClick={() => addBlock('pagebreak')} className="flex flex-col items-center gap-1 hover:bg-slate-100 p-2 rounded">
-                            <FilePlus size={24} className="text-slate-600" /> <span className="text-[10px]">Pagina-einde</span>
+                        <button onClick={() => addBlock('pagebreak')} className="flex flex-col items-center gap-1 hover:bg-[#FAF9F0] p-2 rounded-lg transition-all duration-300">
+                            <FilePlus size={24} className="text-[#3D3D38]" /> <span className="text-[10px] text-[#6B6B66]">Pagina-einde</span>
                         </button>
-                        <button onClick={() => addBlock('table')} className="flex flex-col items-center gap-1 hover:bg-slate-100 p-2 rounded">
-                            <Table size={24} className="text-slate-600" /> <span className="text-[10px]">Tabel</span>
+                        <button onClick={() => addBlock('table')} className="flex flex-col items-center gap-1 hover:bg-[#FAF9F0] p-2 rounded-lg transition-all duration-300">
+                            <Table size={24} className="text-[#3D3D38]" /> <span className="text-[10px] text-[#6B6B66]">Tabel</span>
                         </button>
-                        <button onClick={() => addBlock('shape')} className="flex flex-col items-center gap-1 hover:bg-slate-100 p-2 rounded">
-                            <Square size={24} className="text-slate-600" /> <span className="text-[10px]">Vormen</span>
+                        <button onClick={() => addBlock('shape')} className="flex flex-col items-center gap-1 hover:bg-[#FAF9F0] p-2 rounded-lg transition-all duration-300">
+                            <Square size={24} className="text-[#3D3D38]" /> <span className="text-[10px] text-[#6B6B66]">Vormen</span>
                         </button>
                     </div>
                 );
             case 'Ontwerpen':
                 return (
                     <div className="px-4 py-2 flex items-center gap-4 h-24">
-                        <button onClick={() => { setBodyFont('comic'); setPageColor('white'); }} className="flex flex-col items-center hover:bg-slate-100 p-2 rounded">
-                            <span className="font-[Comic_Sans_MS] text-lg">Aa</span> <span className="text-[10px]">Basis</span>
+                        <button onClick={() => { setBodyFont('comic'); setPageColor('white'); }} className="flex flex-col items-center hover:bg-[#FAF9F0] p-2 rounded-lg transition-all duration-300">
+                            <span className="font-[Comic_Sans_MS] text-lg text-[#3D3D38]">Aa</span> <span className="text-[10px] text-[#6B6B66]">Basis</span>
                         </button>
-                        <button onClick={() => { setBodyFont('sans'); setPageColor('#fdf6e3'); }} className="flex flex-col items-center hover:bg-slate-100 p-2 rounded">
-                            <span className="font-sans font-bold text-lg text-orange-600">Aa</span> <span className="text-[10px]">Retro</span>
+                        <button onClick={() => { setBodyFont('sans'); setPageColor('#fdf6e3'); }} className="flex flex-col items-center hover:bg-[#FAF9F0] p-2 rounded-lg transition-all duration-300">
+                            <span className="font-sans font-bold text-lg text-[#D97757]">Aa</span> <span className="text-[10px] text-[#6B6B66]">Retro</span>
                         </button>
-                        <div className="h-full w-px bg-slate-200 mx-2"></div>
-                        <button onClick={() => setShowWatermark(!showWatermark)} className={`flex flex-col items-center hover:bg-slate-100 p-2 rounded ${showWatermark ? 'bg-slate-200' : ''}`}>
-                            <Type size={20} /> <span className="text-[10px]">Watermerk</span>
+                        <div className="h-full w-px bg-[#E8E6DF] mx-2"></div>
+                        <button onClick={() => setShowWatermark(!showWatermark)} className={`flex flex-col items-center hover:bg-[#FAF9F0] p-2 rounded-lg transition-all duration-300 ${showWatermark ? 'bg-[#E8E6DF]' : ''}`}>
+                            <Type size={20} className="text-[#3D3D38]" /> <span className="text-[10px] text-[#6B6B66]">Watermerk</span>
                         </button>
-                        <button onClick={() => setPageColor(pageColor === 'white' ? '#FDF5F0' : 'white')} className="flex flex-col items-center hover:bg-slate-100 p-2 rounded">
-                            <Droplet size={20} /> <span className="text-[10px]">Paginakleur</span>
+                        <button onClick={() => setPageColor(pageColor === 'white' ? '#FDF5F0' : 'white')} className="flex flex-col items-center hover:bg-[#FAF9F0] p-2 rounded-lg transition-all duration-300">
+                            <Droplet size={20} className="text-[#3D3D38]" /> <span className="text-[10px] text-[#6B6B66]">Paginakleur</span>
                         </button>
                     </div>
                 );
             case 'Indeling':
                 return (
                     <div className="px-4 py-2 flex items-center gap-4 h-24">
-                        <button onClick={() => setLayout({ ...layout, margins: layout.margins === 'normal' ? 'narrow' : 'normal' })} className="flex flex-col items-center hover:bg-slate-100 p-2 rounded">
-                            <LayoutTemplate size={24} /> <span className="text-[10px]">{layout.margins === 'normal' ? 'Normaal' : 'Smal'}</span>
+                        <button onClick={() => setLayout({ ...layout, margins: layout.margins === 'normal' ? 'narrow' : 'normal' })} className="flex flex-col items-center hover:bg-[#FAF9F0] p-2 rounded-lg transition-all duration-300">
+                            <LayoutTemplate size={24} className="text-[#3D3D38]" /> <span className="text-[10px] text-[#6B6B66]">{layout.margins === 'normal' ? 'Normaal' : 'Smal'}</span>
                         </button>
-                        <button onClick={() => setLayout({ ...layout, orientation: layout.orientation === 'portrait' ? 'landscape' : 'portrait' })} className="flex flex-col items-center hover:bg-slate-100 p-2 rounded">
-                            <Layout size={24} className={layout.orientation === 'landscape' ? 'rotate-90' : ''} /> <span className="text-[10px]">Afdrukstand</span>
+                        <button onClick={() => setLayout({ ...layout, orientation: layout.orientation === 'portrait' ? 'landscape' : 'portrait' })} className="flex flex-col items-center hover:bg-[#FAF9F0] p-2 rounded-lg transition-all duration-300">
+                            <Layout size={24} className={`text-[#3D3D38] ${layout.orientation === 'landscape' ? 'rotate-90' : ''}`} /> <span className="text-[10px] text-[#6B6B66]">Afdrukstand</span>
                         </button>
-                        <button onClick={() => setLayout({ ...layout, columns: layout.columns === 1 ? 2 : 1 })} className="flex flex-col items-center hover:bg-slate-100 p-2 rounded">
-                            <Columns size={24} /> <span className="text-[10px]">Kolommen</span>
+                        <button onClick={() => setLayout({ ...layout, columns: layout.columns === 1 ? 2 : 1 })} className="flex flex-col items-center hover:bg-[#FAF9F0] p-2 rounded-lg transition-all duration-300">
+                            <Columns size={24} className="text-[#3D3D38]" /> <span className="text-[10px] text-[#6B6B66]">Kolommen</span>
                         </button>
                     </div>
                 );
             case 'Verwijzingen':
                 return (
                     <div className="px-4 py-2 flex items-center gap-4 h-24">
-                        <button onClick={generateTOC} className="flex flex-col items-center gap-1 hover:bg-slate-100 p-2 rounded">
-                            <List size={24} /> <span className="text-[10px]">Inhoudsopgave</span>
+                        <button onClick={generateTOC} className="flex flex-col items-center gap-1 hover:bg-[#FAF9F0] p-2 rounded-lg transition-all duration-300">
+                            <List size={24} className="text-[#3D3D38]" /> <span className="text-[10px] text-[#6B6B66]">Inhoudsopgave</span>
                         </button>
                     </div>
                 );
@@ -204,35 +204,35 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
     };
 
     return (
-        <div className="min-h-screen bg-[#F5F3EC] flex flex-col font-sans text-slate-900" onClick={() => setSelection('none')}>
+        <div className="min-h-screen bg-[#FAF9F0] flex flex-col text-[#1A1A19]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }} onClick={() => setSelection('none')}>
             {/* Header */}
             <header className="bg-[#C46849] text-white px-4 py-2 flex items-center justify-between shadow-md relative z-20">
                 <div className="flex items-center gap-4">
-                    <button onClick={onBack} className="p-1.5 hover:bg-white/10 rounded-lg"><ArrowLeft size={20} /></button>
+                    <button onClick={onBack} className="p-1.5 hover:bg-white/10 rounded-lg transition-all duration-300 focus-visible:ring-2 focus-visible:ring-white"><ArrowLeft size={20} /></button>
                     <div className="flex flex-col">
                         <span className="font-medium text-sm">Document1 - Word</span>
                         <div className="flex gap-4 text-[11px] text-white/80">
                             {['Bestand', 'Start', 'Invoegen', 'Ontwerpen', 'Indeling', 'Verwijzingen'].map(tab => (
-                                <span key={tab} onClick={() => setActiveTab(tab)} className={`cursor-pointer px-1 ${activeTab === tab ? 'font-bold border-b-2 border-white pb-0.5' : 'hover:text-white'}`}>{tab}</span>
+                                <span key={tab} onClick={() => setActiveTab(tab)} className={`cursor-pointer px-1 transition-all duration-300 ${activeTab === tab ? 'font-bold border-b-2 border-white pb-0.5' : 'hover:text-white'}`}>{tab}</span>
                             ))}
                         </div>
                     </div>
                 </div>
                 <button
                     onClick={() => isComplete ? onComplete(true) : alert('Nog niet klaar! Check de opdracht.')}
-                    className={`px-4 py-1.5 rounded-md font-bold text-sm flex items-center gap-2 ${isComplete ? 'bg-green-500 hover:bg-green-600' : 'bg-white/20'}`}
+                    className={`px-4 py-1.5 rounded-full font-bold text-sm flex items-center gap-2 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-white ${isComplete ? 'bg-[#10B981] hover:bg-emerald-600' : 'bg-white/20'}`}
                 >
                     <CheckCircle size={16} /> {isComplete ? 'Inleveren' : 'Nog Bezig'}
                 </button>
             </header>
 
             {/* Ribbon */}
-            <div className="bg-white border-b border-slate-200 shadow-sm relative z-10" onClick={(e) => e.stopPropagation()}>
+            <div className="bg-white border-b border-[#E8E6DF] shadow-sm relative z-10" onClick={(e) => e.stopPropagation()}>
                 {renderRibbon()}
             </div>
 
             {/* Workspace */}
-            <div className="flex-1 overflow-y-auto p-8 flex justify-center bg-[#F5F3EC] perspective-[1000px]">
+            <div className="flex-1 overflow-y-auto p-8 flex justify-center bg-[#FAF9F0] perspective-[1000px]">
                 <div
                     className={`bg-white shadow-xl relative transition-all duration-500 ease-in-out`}
                     style={{
@@ -244,7 +244,7 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
                 >
                     {/* Watermark */}
                     {showWatermark && (
-                        <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden text-slate-200/50 font-black text-[120px] -rotate-45 select-none">
+                        <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden text-[#E8E6DF]/50 font-black text-[120px] -rotate-45 select-none">
                             VOORBEELD
                         </div>
                     )}
@@ -257,7 +257,7 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
                             if (info.point.x > window.innerWidth / 2) setIsImageRight(true);
                         }}
                         onClick={(e) => handleSelection(e as unknown as React.MouseEvent, 'image', 'image')}
-                        className={`absolute w-48 h-32 bg-slate-200 z-20 cursor-move ${selection === 'image' ? 'ring-2 ring-blue-500' : ''}`}
+                        className={`absolute w-48 h-32 bg-[#E8E6DF] z-20 cursor-move ${selection === 'image' ? 'ring-2 ring-[#D97757]' : ''}`}
                         style={{ top: 150, left: 100 }}
                         initial={{ opacity: 0.9 }}
                         animate={{ opacity: 1 }}
@@ -267,7 +267,7 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
                             alt="Voorbeeldafbeelding voor opmaakopdracht"
                             className="w-full h-full object-cover pointer-events-none"
                         />
-                        <div className="absolute bottom-0 right-0 bg-black/50 text-white text-[9px] px-1">{imageAlign}</div>
+                        <div className="absolute bottom-0 right-0 bg-[#1A1A19]/50 text-white text-[9px] px-1">{imageAlign}</div>
                     </motion.div>
 
                     {/* Content Renderer */}
@@ -280,7 +280,7 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
                                 {block.type === 'heading' && (
                                     <h1
                                         onClick={(e) => handleSelection(e, block.id, 'heading')}
-                                        className={`cursor-text ${titleStyle === 'comic' ? 'text-2xl text-green-600 text-center font-[Comic_Sans_MS]' : 'text-4xl font-bold border-b-2 border-black pb-2 text-left font-sans'} ${selection === block.id ? 'bg-blue-50' : ''}`}
+                                        className={`cursor-text ${titleStyle === 'comic' ? 'text-2xl text-green-600 text-center font-[Comic_Sans_MS]' : 'text-4xl font-bold border-b-2 border-[#1A1A19] pb-2 text-left font-sans'} ${selection === block.id ? 'bg-[#D97757]/10' : ''}`}
                                     >
                                         {block.content}
                                     </h1>
@@ -288,16 +288,16 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
                                 {block.type === 'paragraph' && (
                                     <p
                                         onClick={(e) => handleSelection(e, block.id, 'paragraph')}
-                                        className={`text-justify leading-relaxed cursor-text p-1 rounded ${selection === block.id ? 'bg-blue-50' : ''} ${isBold && selection === block.id ? 'font-bold' : ''} ${isItalic && selection === block.id ? 'italic' : ''} ${isUnderlined && selection === block.id ? 'underline' : ''} ${imageAlign === 'wrap' && isImageRight ? 'w-[65%]' : ''}`}
+                                        className={`text-justify leading-relaxed cursor-text p-1 rounded ${selection === block.id ? 'bg-[#D97757]/10' : ''} ${isBold && selection === block.id ? 'font-bold' : ''} ${isItalic && selection === block.id ? 'italic' : ''} ${isUnderlined && selection === block.id ? 'underline' : ''} ${imageAlign === 'wrap' && isImageRight ? 'w-[65%]' : ''}`}
                                         style={{ fontSize: `${fontSize}px` }}
                                     >
                                         {block.content}
                                     </p>
                                 )}
                                 {block.type === 'toc' && (
-                                    <div className="bg-slate-50 p-4 rounded border border-slate-200 mb-6 font-sans">
-                                        <h2 className="font-bold text-lg mb-2 text-slate-700">Inhoudsopgave</h2>
-                                        <ul className="list-decimal pl-4 space-y-1 text-blue-600 text-sm">
+                                    <div className="bg-[#FAF9F0] p-4 rounded-2xl border border-[#E8E6DF] mb-6 font-sans">
+                                        <h2 className="font-bold text-lg mb-2 text-[#3D3D38]" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Inhoudsopgave</h2>
+                                        <ul className="list-decimal pl-4 space-y-1 text-[#2A9D8F] text-sm">
                                             {blocks.filter(b => b.type === 'heading').map(h => (
                                                 <li key={'toc-' + h.id} className="hover:underline cursor-pointer">{h.content}</li>
                                             ))}
@@ -306,12 +306,12 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
                                     </div>
                                 )}
                                 {block.type === 'table' && (
-                                    <table className="w-full border-collapse border border-slate-300 mb-4">
+                                    <table className="w-full border-collapse border border-[#E8E6DF] mb-4">
                                         <tbody>
                                             {[1, 2, 3].map(row => (
                                                 <tr key={row}>
                                                     {[1, 2, 3].map(col => (
-                                                        <td key={col} className="border border-slate-300 p-2 text-sm text-slate-500">Cel {row},{col}</td>
+                                                        <td key={col} className="border border-[#E8E6DF] p-2 text-sm text-[#6B6B66]">Cel {row},{col}</td>
                                                     ))}
                                                 </tr>
                                             ))}
@@ -319,14 +319,14 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
                                     </table>
                                 )}
                                 {block.type === 'shape' && (
-                                    <div className="w-32 h-32 bg-indigo-500 rounded-lg mx-auto mb-4 flex items-center justify-center text-white font-bold opacity-80">
+                                    <div className="w-32 h-32 bg-[#8B6F9E] rounded-2xl mx-auto mb-4 flex items-center justify-center text-white font-bold opacity-80">
                                         Vorm
                                     </div>
                                 )}
                                 {block.type === 'pagebreak' && (
                                     <div className="w-full h-8 flex items-center justify-center my-4">
-                                        <div className="h-px bg-slate-300 w-full relative">
-                                            <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-2 text-[10px] text-slate-400">Pagina-einde</span>
+                                        <div className="h-px bg-[#E8E6DF] w-full relative">
+                                            <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-2 text-[10px] text-[#6B6B66]">Pagina-einde</span>
                                         </div>
                                     </div>
                                 )}

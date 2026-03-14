@@ -29,11 +29,11 @@ export const MissionConclusion: React.FC<MissionConclusionProps> = ({
     }, []);
 
     return (
-        <div className="absolute inset-0 z-50 bg-slate-900/95 backdrop-blur overflow-y-auto animate-in fade-in duration-500">
+        <div className="absolute inset-0 z-50 bg-[#1A1A19]/95 backdrop-blur overflow-y-auto animate-in fade-in duration-500">
         <div className="min-h-full flex items-center justify-center p-6">
-            <div className="max-w-2xl w-full bg-white rounded-[2.5rem] shadow-2xl overflow-hidden relative">
+            <div className="max-w-2xl w-full bg-white rounded-2xl shadow-2xl overflow-hidden relative">
                 {/* Header Pattern */}
-                <div className="h-32 bg-indigo-600 relative overflow-hidden flex items-center justify-center">
+                <div className="h-32 bg-[#D97757] relative overflow-hidden flex items-center justify-center">
                     <div className="absolute inset-0 opacity-20">
                         {[...Array(20)].map((_, i) => (
                             <div key={i} className="absolute bg-white rounded-full w-2 h-2" style={{
@@ -44,36 +44,36 @@ export const MissionConclusion: React.FC<MissionConclusionProps> = ({
                         ))}
                     </div>
                     <div className={`transform transition-all duration-700 ${showContent ? 'scale-100 translate-y-0' : 'scale-50 translate-y-10 opacity-0'}`}>
-                        <div className="bg-white text-indigo-600 px-6 py-2 rounded-full font-black uppercase tracking-widest shadow-lg flex items-center gap-2">
-                            <CheckCircle2 size={24} className="text-green-500" />
+                        <div className="bg-white text-[#D97757] px-6 py-2 rounded-full font-black uppercase tracking-widest shadow-lg flex items-center gap-2">
+                            <CheckCircle2 size={24} className="text-[#10B981]" />
                             {title}
                         </div>
                     </div>
                 </div>
 
                 <div className="p-8 md:p-12">
-                    <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-4 tracking-tight leading-tight">
+                    <h2 className="text-3xl md:text-4xl font-black text-[#1A1A19] mb-4 tracking-tight leading-tight" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
                         {title}
                     </h2>
-                    <p className="text-lg text-slate-500 font-medium mb-8 leading-relaxed">
+                    <p className="text-lg text-[#6B6B66] font-medium mb-8 leading-relaxed" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                         {description}
                     </p>
 
                     {/* AI Insight Box */}
-                    <div className={`bg-gradient-to-br from-indigo-50 to-purple-50 border border-indigo-100 rounded-3xl p-6 md:p-8 mb-8 relative overflow-hidden transition-all duration-700 delay-300 ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+                    <div className={`bg-gradient-to-br from-[#FAF9F0] to-[#F0EEE8] border border-[#E8E6DF] rounded-2xl p-6 md:p-8 mb-8 relative overflow-hidden transition-all duration-700 delay-300 ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
                         <div className="absolute top-0 right-0 p-4 opacity-5">
                             <BrainCircuit size={120} />
                         </div>
 
-                        <div className="flex items-start gap-4 relatie z-10">
-                            <div className="w-12 h-12 bg-indigo-100 rounded-2xl flex items-center justify-center text-indigo-600 shrink-0">
-                                <Lightbulb size={24} fill="currentColor" className="text-indigo-500" />
+                        <div className="flex items-start gap-4 relative z-10">
+                            <div className="w-12 h-12 bg-[#FAF9F0] rounded-2xl flex items-center justify-center text-[#2A9D8F] shrink-0 border border-[#E8E6DF]">
+                                <Lightbulb size={24} fill="currentColor" className="text-[#2A9D8F]" />
                             </div>
                             <div>
-                                <h3 className="text-indigo-900 font-black text-lg uppercase tracking-wide mb-2">
+                                <h3 className="text-[#1A1A19] font-black text-lg uppercase tracking-wide mb-2" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
                                     AI Insight: {aiConcept.title}
                                 </h3>
-                                <div className="text-indigo-800/80 leading-relaxed space-y-2 text-sm md:text-base">
+                                <div className="text-[#3D3D38] leading-relaxed space-y-2 text-sm md:text-base" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                     {aiConcept.text.split('\n').map((line, i) => (
                                         <p key={i}>{line}</p>
                                     ))}
@@ -82,12 +82,12 @@ export const MissionConclusion: React.FC<MissionConclusionProps> = ({
                         </div>
                     </div>
 
-                    <div className="flex flex-col md:flex-row gap-4 items-center justify-between pt-4 border-t border-slate-100">
+                    <div className="flex flex-col md:flex-row gap-4 items-center justify-between pt-4 border-t border-[#F0EEE8]">
                         <div className="flex gap-2">
                             {onPrint && (
                                 <button
                                     onClick={onPrint}
-                                    className="px-6 py-3 bg-slate-100 text-slate-700 rounded-xl font-bold uppercase tracking-widest hover:bg-indigo-100 hover:text-indigo-700 transition-all flex items-center gap-2"
+                                    className="px-6 py-3 bg-[#FAF9F0] text-[#3D3D38] rounded-full font-bold uppercase tracking-widest hover:bg-[#F0EEE8] hover:text-[#D97757] transition-all duration-300 flex items-center gap-2 border border-[#E8E6DF] focus-visible:ring-2 focus-visible:ring-[#D97757]"
                                 >
                                     <Share2 size={18} /> Print
                                 </button>
@@ -95,7 +95,7 @@ export const MissionConclusion: React.FC<MissionConclusionProps> = ({
                             {onDownload && (
                                 <button
                                     onClick={onDownload}
-                                    className="px-6 py-3 bg-slate-100 text-slate-700 rounded-xl font-bold uppercase tracking-widest hover:bg-indigo-100 hover:text-indigo-700 transition-all flex items-center gap-2"
+                                    className="px-6 py-3 bg-[#FAF9F0] text-[#3D3D38] rounded-full font-bold uppercase tracking-widest hover:bg-[#F0EEE8] hover:text-[#D97757] transition-all duration-300 flex items-center gap-2 border border-[#E8E6DF] focus-visible:ring-2 focus-visible:ring-[#D97757]"
                                 >
                                     <Share2 size={18} /> PDF
                                 </button>
@@ -105,7 +105,7 @@ export const MissionConclusion: React.FC<MissionConclusionProps> = ({
                         {onExit && (
                             <button
                                 onClick={onExit}
-                                className="w-full md:w-auto px-8 py-4 bg-slate-900 text-white rounded-2xl font-bold uppercase tracking-widest hover:bg-indigo-600 hover:scale-[1.02] transition-all shadow-xl hover:shadow-indigo-500/20 active:scale-95 flex items-center justify-center gap-3"
+                                className="w-full md:w-auto px-8 py-4 bg-[#D97757] text-white rounded-full font-bold uppercase tracking-widest hover:bg-[#C46849] hover:scale-[1.02] transition-all duration-300 shadow-xl hover:shadow-[#D97757]/20 active:scale-95 flex items-center justify-center gap-3 focus-visible:ring-2 focus-visible:ring-[#D97757]"
                             >
                                 Terug naar Mission Control <ArrowRight size={20} />
                             </button>

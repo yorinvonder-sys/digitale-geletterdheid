@@ -842,6 +842,31 @@ const ShirtOverlay = memo<{
                     </mesh>
                 </group>
             );
+        case 'tank':
+            return (
+                <group>
+                    {/* Visible strap left */}
+                    <mesh position={[-bodyWidth * 0.28, 0.3, 0]}>
+                        <boxGeometry args={[0.06, 0.08, bodyDepth + 0.02]} />
+                        {mcMat(darker)}
+                    </mesh>
+                    {/* Visible strap right */}
+                    <mesh position={[bodyWidth * 0.28, 0.3, 0]}>
+                        <boxGeometry args={[0.06, 0.08, bodyDepth + 0.02]} />
+                        {mcMat(darker)}
+                    </mesh>
+                    {/* Wider neckline scoop (darker inset) */}
+                    <mesh position={[0, 0.28, fz]}>
+                        <boxGeometry args={[bodyWidth * 0.45, 0.08, 0.005]} />
+                        {mcMat(darker)}
+                    </mesh>
+                    {/* Bottom hem */}
+                    <mesh position={[0, -0.3, 0]}>
+                        <boxGeometry args={[bodyWidth + 0.02, 0.04, bodyDepth + 0.02]} />
+                        {mcMat(darker)}
+                    </mesh>
+                </group>
+            );
         default:
             return null;
     }
@@ -1347,22 +1372,36 @@ const AccessoryLayer = memo<{
             );
         case 'cape':
             return (
-                <group position={[0, 1.1, -0.25]}>
-                    <mesh position={[0, 0.08, 0.08]}>
-                        <boxGeometry args={[0.5, 0.04, 0.04]} />
+                <group position={[0, 1.1, -0.22]}>
+                    {/* Shoulder bar */}
+                    <mesh position={[0, 0.1, 0.1]}>
+                        <boxGeometry args={[0.55, 0.04, 0.04]} />
                         {matFab}
                     </mesh>
+                    {/* Cape body — wider to peek past shoulders */}
                     <mesh position={[0, -0.3, -0.02]}>
-                        <boxGeometry args={[0.55, 0.8, 0.04]} />
+                        <boxGeometry args={[0.6, 0.85, 0.04]} />
                         {matFab}
                     </mesh>
-                    <mesh position={[-0.2, 0.08, 0.1]}>
-                        <boxGeometry args={[0.05, 0.05, 0.05]} />
+                    {/* Left shoulder clasp — visible from front */}
+                    <mesh position={[-0.25, 0.1, 0.16]}>
+                        <boxGeometry args={[0.07, 0.07, 0.07]} />
                         {matGold}
                     </mesh>
-                    <mesh position={[0.2, 0.08, 0.1]}>
-                        <boxGeometry args={[0.05, 0.05, 0.05]} />
+                    {/* Right shoulder clasp — visible from front */}
+                    <mesh position={[0.25, 0.1, 0.16]}>
+                        <boxGeometry args={[0.07, 0.07, 0.07]} />
                         {matGold}
+                    </mesh>
+                    {/* Side drapes visible from front — left */}
+                    <mesh position={[-0.3, -0.05, 0.06]}>
+                        <boxGeometry args={[0.06, 0.35, 0.03]} />
+                        {matFab}
+                    </mesh>
+                    {/* Side drapes visible from front — right */}
+                    <mesh position={[0.3, -0.05, 0.06]}>
+                        <boxGeometry args={[0.06, 0.35, 0.03]} />
+                        {matFab}
                     </mesh>
                 </group>
             );
@@ -1408,39 +1447,63 @@ const AccessoryLayer = memo<{
             );
         case 'wings':
             return (
-                <group position={[0, 1.15, -0.3]}>
-                    <mesh position={[-0.3, 0.08, -0.02]} rotation={[0, 0.2, 0.15]}>
-                        <boxGeometry args={[0.4, 0.35, 0.03]} />
+                <group position={[0, 1.15, -0.2]}>
+                    {/* Upper wing feathers — extend far past body silhouette */}
+                    <mesh position={[-0.42, 0.1, -0.02]} rotation={[0, 0.3, 0.2]}>
+                        <boxGeometry args={[0.5, 0.4, 0.03]} />
                         {matWht}
                     </mesh>
-                    <mesh position={[-0.35, -0.1, -0.04]} rotation={[0, 0.3, 0.3]}>
-                        <boxGeometry args={[0.3, 0.25, 0.03]} />
+                    <mesh position={[0.42, 0.1, -0.02]} rotation={[0, -0.3, -0.2]}>
+                        <boxGeometry args={[0.5, 0.4, 0.03]} />
                         {matWht}
                     </mesh>
-                    <mesh position={[0.3, 0.08, -0.02]} rotation={[0, -0.2, -0.15]}>
-                        <boxGeometry args={[0.4, 0.35, 0.03]} />
+                    {/* Lower wing feathers */}
+                    <mesh position={[-0.48, -0.15, -0.04]} rotation={[0, 0.4, 0.35]}>
+                        <boxGeometry args={[0.38, 0.28, 0.03]} />
                         {matWht}
                     </mesh>
-                    <mesh position={[0.35, -0.1, -0.04]} rotation={[0, -0.3, -0.3]}>
-                        <boxGeometry args={[0.3, 0.25, 0.03]} />
+                    <mesh position={[0.48, -0.15, -0.04]} rotation={[0, -0.4, -0.35]}>
+                        <boxGeometry args={[0.38, 0.28, 0.03]} />
+                        {matWht}
+                    </mesh>
+                    {/* Wing tips — outermost, clearly visible from front */}
+                    <mesh position={[-0.6, 0.22, -0.06]} rotation={[0, 0.4, 0.35]}>
+                        <boxGeometry args={[0.2, 0.18, 0.02]} />
+                        {matWht}
+                    </mesh>
+                    <mesh position={[0.6, 0.22, -0.06]} rotation={[0, -0.4, -0.35]}>
+                        <boxGeometry args={[0.2, 0.18, 0.02]} />
                         {matWht}
                     </mesh>
                 </group>
             );
         case 'sword':
             return (
-                <group position={[-0.4, 0.65, 0]} rotation={[0, 0, 0.15]}>
-                    <mesh position={[0, 0.25, 0]}>
-                        <boxGeometry args={[0.04, 0.45, 0.02]} />
-                        <meshStandardMaterial color="#d0d0d0" roughness={0.1} metalness={0.9} />
+                <group position={[-0.42, 0.6, 0.08]} rotation={[0, 0, 0.12]}>
+                    {/* Blade — wider and more visible */}
+                    <mesh position={[0, 0.28, 0]}>
+                        <boxGeometry args={[0.07, 0.5, 0.03]} />
+                        <meshStandardMaterial color="#d8d8d8" roughness={0.08} metalness={0.95} />
                     </mesh>
+                    {/* Blade tip */}
+                    <mesh position={[0, 0.56, 0]}>
+                        <boxGeometry args={[0.05, 0.08, 0.02]} />
+                        <meshStandardMaterial color="#e0e0e0" roughness={0.05} metalness={1} />
+                    </mesh>
+                    {/* Crossguard */}
                     <mesh position={[0, 0, 0]}>
-                        <boxGeometry args={[0.15, 0.04, 0.04]} />
+                        <boxGeometry args={[0.2, 0.05, 0.05]} />
                         {matGold}
                     </mesh>
-                    <mesh position={[0, -0.1, 0]}>
-                        <boxGeometry args={[0.04, 0.12, 0.04]} />
+                    {/* Handle/grip */}
+                    <mesh position={[0, -0.12, 0]}>
+                        <boxGeometry args={[0.05, 0.16, 0.05]} />
                         {matDk}
+                    </mesh>
+                    {/* Pommel */}
+                    <mesh position={[0, -0.22, 0]}>
+                        <boxGeometry args={[0.06, 0.04, 0.06]} />
+                        {matGold}
                     </mesh>
                 </group>
             );
@@ -1540,47 +1603,61 @@ const AccessoryLayer = memo<{
             );
         case 'wings_cyber':
             return (
-                <group position={[0, 1.15, -0.3]}>
-                    <mesh position={[-0.3, 0.08, -0.02]}>
-                        <boxGeometry args={[0.4, 0.04, 0.03]} />
+                <group position={[0, 1.15, -0.2]}>
+                    {/* Left cyber wing frame — extends past body */}
+                    <mesh position={[-0.45, 0.1, -0.02]}>
+                        <boxGeometry args={[0.5, 0.04, 0.03]} />
                         {matMet}
                     </mesh>
-                    <mesh position={[-0.32, -0.05, -0.04]}>
-                        <boxGeometry args={[0.35, 0.04, 0.03]} />
+                    <mesh position={[-0.48, -0.06, -0.04]}>
+                        <boxGeometry args={[0.44, 0.04, 0.03]} />
                         {matMet}
                     </mesh>
-                    <mesh position={[-0.3, 0.02, -0.03]}>
-                        <boxGeometry args={[0.35, 0.18, 0.02]} />
+                    <mesh position={[-0.45, 0.02, -0.03]}>
+                        <boxGeometry args={[0.44, 0.2, 0.02]} />
                         <meshStandardMaterial color={color} roughness={0.1} metalness={0.5} transparent opacity={0.5} />
                     </mesh>
-                    <mesh position={[0.3, 0.08, -0.02]}>
-                        <boxGeometry args={[0.4, 0.04, 0.03]} />
+                    {/* Right cyber wing frame — extends past body */}
+                    <mesh position={[0.45, 0.1, -0.02]}>
+                        <boxGeometry args={[0.5, 0.04, 0.03]} />
                         {matMet}
                     </mesh>
-                    <mesh position={[0.32, -0.05, -0.04]}>
-                        <boxGeometry args={[0.35, 0.04, 0.03]} />
+                    <mesh position={[0.48, -0.06, -0.04]}>
+                        <boxGeometry args={[0.44, 0.04, 0.03]} />
                         {matMet}
                     </mesh>
-                    <mesh position={[0.3, 0.02, -0.03]}>
-                        <boxGeometry args={[0.35, 0.18, 0.02]} />
+                    <mesh position={[0.45, 0.02, -0.03]}>
+                        <boxGeometry args={[0.44, 0.2, 0.02]} />
                         <meshStandardMaterial color={color} roughness={0.1} metalness={0.5} transparent opacity={0.5} />
                     </mesh>
                 </group>
             );
         case 'jetpack':
             return (
-                <group position={[0, 1.05, -0.32]}>
-                    <mesh position={[-0.1, 0, 0]}><boxGeometry args={[0.12, 0.3, 0.12]} />{matMet}</mesh>
-                    <mesh position={[0.1, 0, 0]}><boxGeometry args={[0.12, 0.3, 0.12]} />{matMet}</mesh>
+                <group position={[0, 1.05, -0.28]}>
+                    {/* Main tanks */}
+                    <mesh position={[-0.1, 0, 0]}><boxGeometry args={[0.14, 0.32, 0.14]} />{matMet}</mesh>
+                    <mesh position={[0.1, 0, 0]}><boxGeometry args={[0.14, 0.32, 0.14]} />{matMet}</mesh>
+                    {/* Center connector */}
                     <mesh position={[0, 0.04, 0.04]}><boxGeometry args={[0.08, 0.04, 0.04]} />{matDk}</mesh>
+                    {/* Shoulder straps visible from front — left */}
+                    <mesh position={[-0.12, 0.16, 0.2]}>
+                        <boxGeometry args={[0.04, 0.04, 0.35]} />{matDk}
+                    </mesh>
+                    {/* Shoulder straps visible from front — right */}
+                    <mesh position={[0.12, 0.16, 0.2]}>
+                        <boxGeometry args={[0.04, 0.04, 0.35]} />{matDk}
+                    </mesh>
+                    {/* Nozzles */}
                     <mesh position={[-0.1, -0.2, 0]}><boxGeometry args={[0.08, 0.08, 0.08]} />{matBlk}</mesh>
                     <mesh position={[0.1, -0.2, 0]}><boxGeometry args={[0.08, 0.08, 0.08]} />{matBlk}</mesh>
+                    {/* Flames */}
                     <mesh position={[-0.1, -0.28, 0]}>
-                        <boxGeometry args={[0.06, 0.1, 0.06]} />
+                        <boxGeometry args={[0.06, 0.12, 0.06]} />
                         <meshStandardMaterial color="#ff6600" emissive="#ff4400" emissiveIntensity={1.5} transparent opacity={0.7} />
                     </mesh>
                     <mesh position={[0.1, -0.28, 0]}>
-                        <boxGeometry args={[0.06, 0.1, 0.06]} />
+                        <boxGeometry args={[0.06, 0.12, 0.06]} />
                         <meshStandardMaterial color="#ff6600" emissive="#ff4400" emissiveIntensity={1.5} transparent opacity={0.7} />
                     </mesh>
                 </group>
@@ -2013,14 +2090,14 @@ export const AvatarViewer: React.FC<AvatarViewerProps> = ({
                 />
 
                 {variant === 'full' && (
-                    <mesh position={[0, -0.05, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+                    <mesh position={[0, -0.06, 0]} rotation={[-Math.PI / 2, 0, 0]}>
                         <boxGeometry args={[2.4, 2.4, 0.06]} />
-                        <meshStandardMaterial color="#E8E6DF" roughness={0.9} metalness={0} />
+                        <meshStandardMaterial color="#E8E6DF" roughness={0.9} metalness={0} polygonOffset polygonOffsetFactor={2} polygonOffsetUnits={2} />
                     </mesh>
                 )}
 
                 <ContactShadows
-                    position={[0, -0.01, 0]}
+                    position={[0, -0.028, 0]}
                     opacity={0.35}
                     scale={6}
                     blur={2.5}

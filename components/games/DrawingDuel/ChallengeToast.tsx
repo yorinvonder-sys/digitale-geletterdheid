@@ -54,16 +54,16 @@ export const ChallengeToast: React.FC<ChallengeToastProps> = ({
     if (showBlockConfirm) {
         return (
             <div className="fixed top-4 left-1/2 -translate-x-1/2 z-[100] animate-in zoom-in-95 duration-200">
-                <div className="bg-slate-900 rounded-2xl shadow-2xl border border-red-500/30 p-6 max-w-sm">
+                <div className="rounded-2xl shadow-2xl p-6 max-w-sm" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
                     <div className="flex items-center gap-3 mb-4">
-                        <div className="w-12 h-12 bg-red-500/20 rounded-full flex items-center justify-center">
-                            <Ban size={24} className="text-red-400" />
+                        <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(239,68,68,0.1)' }}>
+                            <Ban size={24} style={{ color: '#ef4444' }} />
                         </div>
                         <div>
-                            <p className="text-white font-black text-lg">
+                            <p className="text-lg" style={{ fontFamily: "'Newsreader', Georgia, serif", fontWeight: 700, color: '#1A1A19' }}>
                                 {challenge.challenger_name} blokkeren?
                             </p>
-                            <p className="text-slate-400 text-xs">
+                            <p className="text-xs" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#6B6B66' }}>
                                 Deze persoon kan je niet meer uitdagen.
                             </p>
                         </div>
@@ -72,15 +72,17 @@ export const ChallengeToast: React.FC<ChallengeToastProps> = ({
                     <div className="flex gap-3">
                         <button
                             onClick={() => setShowBlockConfirm(false)}
-                            className="flex-1 py-3 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl font-bold transition-colors"
+                            className="flex-1 py-3 rounded-full font-bold transition-all duration-300"
+                            style={{ backgroundColor: '#F0EEE8', color: '#3D3D38' }}
                         >
                             Annuleren
                         </button>
                         <button
                             onClick={handleBlockConfirm}
-                            className="flex-1 py-3 bg-red-600 hover:bg-red-500 text-white rounded-xl font-bold transition-colors"
+                            className="flex-1 py-3 rounded-full font-bold transition-all duration-300"
+                            style={{ backgroundColor: '#ef4444', color: '#FFFFFF' }}
                         >
-                            🚫 Ja, Blokkeer
+                            Ja, Blokkeer
                         </button>
                     </div>
                 </div>
@@ -90,30 +92,35 @@ export const ChallengeToast: React.FC<ChallengeToastProps> = ({
 
     return (
         <div className="fixed top-4 left-1/2 -translate-x-1/2 z-[100] animate-in slide-in-from-top-4 fade-in duration-300">
-            <div className="bg-gradient-to-r from-orange-500 to-red-500 rounded-2xl shadow-2xl shadow-orange-500/30 p-1">
-                <div className="bg-slate-900 rounded-xl p-4">
+            <div className="p-[2px] rounded-2xl" style={{ background: 'linear-gradient(135deg, #D97757, #C46849)' }}>
+                <div className="rounded-2xl p-4" style={{ backgroundColor: '#FFFFFF' }}>
                     {/* Header */}
                     <div className="flex items-center gap-3 mb-4">
-                        <div className="w-12 h-12 bg-orange-500/20 rounded-full flex items-center justify-center">
-                            <Swords size={24} className="text-orange-400" />
+                        <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(217,119,87,0.12)' }}>
+                            <Swords size={24} style={{ color: '#D97757' }} />
                         </div>
                         <div className="flex-1">
-                            <p className="text-orange-400 text-xs font-bold uppercase tracking-wider">
+                            <p className="text-xs font-bold uppercase tracking-wider" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#D97757' }}>
                                 Tekenduel Uitdaging!
                             </p>
-                            <p className="text-white font-black text-lg">
+                            <p className="text-lg" style={{ fontFamily: "'Newsreader', Georgia, serif", fontWeight: 700, color: '#1A1A19' }}>
                                 {challenge.challenger_name} daagt je uit!
                             </p>
                         </div>
-                        <div className={`flex items-center gap-1 px-3 py-1 rounded-full font-mono font-bold text-sm
-                            ${timeLeft <= 10 ? 'bg-red-500 text-white animate-pulse' : 'bg-slate-800 text-slate-300'}`}>
+                        <div
+                            className="flex items-center gap-1 px-3 py-1 rounded-full font-mono font-bold text-sm"
+                            style={timeLeft <= 10
+                                ? { backgroundColor: '#ef4444', color: '#FFFFFF' }
+                                : { backgroundColor: '#F0EEE8', color: '#3D3D38' }
+                            }
+                        >
                             <Clock size={14} />
                             {timeLeft}s
                         </div>
                     </div>
 
                     {/* Description */}
-                    <p className="text-slate-400 text-sm mb-4">
+                    <p className="text-sm mb-4" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#6B6B66' }}>
                         1 minuut tekenen - wie krijgt de meeste tekeningen goedgekeurd door de AI?
                     </p>
 
@@ -122,7 +129,8 @@ export const ChallengeToast: React.FC<ChallengeToastProps> = ({
                         {onBlock && (
                             <button
                                 onClick={() => setShowBlockConfirm(true)}
-                                className="py-3 px-3 bg-red-900/50 hover:bg-red-800 text-red-400 hover:text-red-300 rounded-xl font-bold flex items-center justify-center transition-colors"
+                                className="py-3 px-3 rounded-full font-bold flex items-center justify-center transition-all duration-300"
+                                style={{ backgroundColor: 'rgba(239,68,68,0.1)', color: '#ef4444' }}
                                 title="Blokkeer deze persoon"
                             >
                                 <Ban size={18} />
@@ -130,14 +138,16 @@ export const ChallengeToast: React.FC<ChallengeToastProps> = ({
                         )}
                         <button
                             onClick={onDecline}
-                            className="flex-1 py-3 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl font-bold flex items-center justify-center gap-2 transition-colors"
+                            className="flex-1 py-3 rounded-full font-bold flex items-center justify-center gap-2 transition-all duration-300"
+                            style={{ backgroundColor: '#F0EEE8', color: '#3D3D38' }}
                         >
                             <X size={18} />
                             Weigeren
                         </button>
                         <button
                             onClick={onAccept}
-                            className="flex-1 py-3 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-400 hover:to-red-400 text-white rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-lg shadow-orange-500/30 active:scale-95"
+                            className="flex-1 py-3 rounded-full font-bold flex items-center justify-center gap-2 transition-all duration-300 active:scale-95 focus-visible:ring-2 focus-visible:ring-[#D97757]"
+                            style={{ background: 'linear-gradient(135deg, #D97757, #C46849)', color: '#FFFFFF', boxShadow: '0 4px 14px rgba(217,119,87,0.3)' }}
                         >
                             <Check size={18} />
                             Accepteren!
@@ -150,4 +160,3 @@ export const ChallengeToast: React.FC<ChallengeToastProps> = ({
 };
 
 export default ChallengeToast;
-

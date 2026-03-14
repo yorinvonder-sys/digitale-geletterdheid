@@ -167,7 +167,7 @@ export const ScholenLandingCustomization: React.FC = () => {
                     <div className="rounded-3xl border overflow-hidden h-full flex flex-col justify-center p-8 md:p-10 transition-all duration-300" style={{ backgroundColor: 'transparent', borderColor: '#E8E6DF' }}>
                         {/* Title row with illustration */}
                         <div className="flex items-center gap-4 mb-4">
-                            <div className="w-16 h-16 rounded-xl flex-shrink-0 flex items-center justify-center" style={{ backgroundColor: '#F0EEE8' }}>
+                            <div className="w-16 h-16 rounded-xl flex-shrink-0 flex items-center justify-center" style={{ backgroundColor: 'transparent' }}>
                                 <img
                                     src={active.illustration}
                                     alt={active.illustrationAlt}

@@ -60,6 +60,36 @@ Voorbeeld:
 ### Prompt templates
 Beschikbaar in `.claude/prompt-templates.md` — verwijs hiernaar als Yorin een nieuw type taak start.
 
+### Prompt Score — na ELKE response
+
+Na ELKE inhoudelijke response voegt Claude een kort scoreblok toe onderaan. Dit helpt Yorin om betere prompts te leren schrijven.
+
+**Format (altijd dit exacte format):**
+
+```
+---
+Prompt Score: X/5
+[per criterium: check of tip]
+Tip: [één concrete verbetering voor de volgende keer]
+```
+
+**Scorecriteria:**
+- **1/5** — Alleen een vaag doel, geen WAAR of WAAROM
+- **2/5** — WAT is duidelijk, maar WAAR of WAAROM ontbreekt
+- **3/5** — WAT + WAAR aanwezig, WAAROM impliciet
+- **4/5** — WAT + WAAR + WAAROM aanwezig, maar details missen (bijv. geen randgevallen, geen gewenst gedrag)
+- **5/5** — Volledig: WAT + WAAR + WAAROM + specifieke details/constraints
+
+**Bij audits/analyses extra:**
+- KADER en OUTPUT meewegen in de score (max 5/5 alleen als deze ook aanwezig zijn)
+
+**Regels:**
+- Altijd eerlijk scoren — ook bij 5/5 (dan: "Sterke prompt, niks toe te voegen")
+- De tip moet specifiek zijn, niet generiek ("voeg WAAROM toe" > "wees specifieker")
+- Bij follow-ups in een lopend gesprek: score de originele prompt + context samen
+- Bij simpele vragen ("Wat doet deze functie?"): geen score tonen
+- Maximaal 3 regels — dit is een leermoment, geen essay
+
 ## ADHD Werkprotocol
 - Eén taak tegelijk. Niet springen.
 - Als Yorin afdwaalt: vriendelijk terugsturen naar het plan.

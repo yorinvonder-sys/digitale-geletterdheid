@@ -118,15 +118,18 @@ function PlatformerIllustration({ state }: { state: GameVisualState }) {
 
                 {state.effect2 && (
                     <g>
-                        <circle cx="130" cy="220" r="8" fill="none" stroke="#f59e0b" strokeWidth="2" opacity="0.7">
-                            <animate attributeName="r" values="8;22" dur="1.2s" repeatCount="indefinite" />
-                            <animate attributeName="opacity" values="0.7;0" dur="1.2s" repeatCount="indefinite" />
-                        </circle>
-                        <circle cx="130" cy="220" r="8" fill="none" stroke="#f59e0b" strokeWidth="1.5" opacity="0.5">
-                            <animate attributeName="r" values="8;22" dur="1.2s" begin="0.4s" repeatCount="indefinite" />
-                            <animate attributeName="opacity" values="0.5;0" dur="1.2s" begin="0.4s" repeatCount="indefinite" />
-                        </circle>
-                        <path d="M128 214 l-4 3h-3v6h3l4 3z" fill="#f59e0b" />
+                        <line x1="85" y1="228" x2="55" y2="228" stroke="#f59e0b" strokeWidth="2.5" strokeLinecap="round" opacity="0.8">
+                            <animate attributeName="x2" values="55;35;55" dur="0.6s" repeatCount="indefinite" />
+                            <animate attributeName="opacity" values="0.8;0.3;0.8" dur="0.6s" repeatCount="indefinite" />
+                        </line>
+                        <line x1="85" y1="236" x2="45" y2="236" stroke="#f59e0b" strokeWidth="2" strokeLinecap="round" opacity="0.6">
+                            <animate attributeName="x2" values="45;25;45" dur="0.7s" repeatCount="indefinite" />
+                            <animate attributeName="opacity" values="0.6;0.2;0.6" dur="0.7s" repeatCount="indefinite" />
+                        </line>
+                        <line x1="85" y1="244" x2="60" y2="244" stroke="#f59e0b" strokeWidth="1.5" strokeLinecap="round" opacity="0.5">
+                            <animate attributeName="x2" values="60;40;60" dur="0.5s" repeatCount="indefinite" />
+                            <animate attributeName="opacity" values="0.5;0.15;0.5" dur="0.5s" repeatCount="indefinite" />
+                        </line>
                     </g>
                 )}
             </g>
@@ -448,17 +451,17 @@ const GAMES: GameDemo[] = [
                 accentClass: 'border-blue-400 bg-blue-50 text-blue-700',
             },
             {
-                studentMessage: 'Voeg een springgeluid toe',
-                aiResponse: 'Er zit nu een geluid bij elke sprong!',
+                studentMessage: 'Geef de speler een speed boost',
+                aiResponse: 'Speed boost toegevoegd! Je speler laat nu een snelheidsspoor achter.',
                 gameState: { primary: '#10B981', secondary: '#64b5f6', effect1: true, effect2: true },
-                label: 'Geluid',
+                label: 'Snelheid',
                 accentClass: 'border-amber-400 bg-amber-50 text-amber-700',
             },
         ],
         stepIcons: [
             <svg key="p1" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5" /><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" /></svg>,
             <svg key="p2" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z" /></svg>,
-            <svg key="p3" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" /><path d="M15.54 8.46a5 5 0 0 1 0 7.07" /></svg>,
+            <svg key="p3" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2l-2 6h6l-8 14 2-8H5l8-12z" /></svg>,
         ],
     },
     {
@@ -606,6 +609,7 @@ export function ScholenLandingGameDemo() {
     const [phase, setPhase] = useState<Phase>('student-typing');
     const [isPaused, setIsPaused] = useState(false);
     const timerRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+    const manualRef = useRef(false);
 
     const game = GAMES[activeGameIdx];
     const steps = game.steps;
@@ -626,6 +630,7 @@ export function ScholenLandingGameDemo() {
         });
 
         const advance = setTimeout(() => {
+            manualRef.current = false;
             setActiveStep(prev => (prev + 1) % steps.length);
         }, STEP_DURATION);
         timerRef.current.push(advance);
@@ -640,6 +645,7 @@ export function ScholenLandingGameDemo() {
     const switchGame = (idx: number) => {
         if (idx === activeGameIdx) return;
         clearTimers();
+        manualRef.current = true;
         setIsPaused(false);
         setActiveGameIdx(idx);
         setActiveStep(0);
@@ -658,6 +664,7 @@ export function ScholenLandingGameDemo() {
 
     const goToStep = (idx: number) => {
         clearTimers();
+        manualRef.current = true;
         setIsPaused(false);
         setActiveStep(idx);
         setPhase('student-typing');
@@ -729,8 +736,8 @@ export function ScholenLandingGameDemo() {
             <div
                 className="grid grid-cols-1 lg:grid-cols-5 gap-0 rounded-3xl overflow-hidden shadow-xl bg-white"
                 style={{ borderWidth: '1px', borderStyle: 'solid', borderColor: '#E8E6DF' }}
-                onMouseEnter={() => setIsPaused(true)}
-                onMouseLeave={() => setIsPaused(false)}
+                onMouseEnter={() => { if (!manualRef.current) setIsPaused(true); }}
+                onMouseLeave={() => { if (!manualRef.current) setIsPaused(false); }}
             >
                 {/* Chat panel */}
                 <div className="lg:col-span-2 bg-slate-900 flex flex-col min-h-[360px] lg:min-h-[420px] order-2 lg:order-1">

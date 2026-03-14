@@ -15,6 +15,27 @@ import { GameGallery } from './GameGallery';
 import { AvatarConfig, UserRole, DEFAULT_AVATAR_CONFIG } from '../types';
 import { supabase } from '../services/supabase';
 
+// DGSkills branding tokens
+const C = {
+    bg: '#FAF9F0',
+    bgAlt: '#F5F3EC',
+    surface: '#FFFFFF',
+    text: '#1A1A19',
+    textBody: '#3D3D38',
+    textMuted: '#6B6B66',
+    textLight: '#9C9C95',
+    accent: '#D97757',
+    accentHover: '#C46849',
+    teal: '#2A9D8F',
+    lavender: '#8B6F9E',
+    success: '#10B981',
+    border: '#E8E6DF',
+    borderLight: '#F0EEE8',
+} as const;
+
+const SERIF = "'Newsreader', Georgia, serif";
+const SANS = "'Outfit', system-ui, sans-serif";
+
 interface GamesSectionProps {
     userRole: UserRole;
     schoolId?: string;
@@ -100,7 +121,7 @@ export const GamesSection: React.FC<GamesSectionProps> = ({
             id: 'arena-battle',
             name: 'Arena Battle',
             description: 'Strijd tegen je klasgenoten in de arena! (1vs1vs1vs1)',
-            color: 'from-emerald-500 to-teal-500',
+            color: '#D97757',
             emoji: '💣',
             onlineRequired: true,
             component: (
@@ -116,11 +137,11 @@ export const GamesSection: React.FC<GamesSectionProps> = ({
             id: 'drawing-duel',
             name: 'Drawing Duel',
             description: 'Daag een klasgenoot uit voor een 1-minuut tekenstrijd met AI-beoordeling.',
-            color: 'from-orange-500 to-pink-500',
+            color: '#B8886F',
             emoji: '🎨',
             onlineRequired: true,
             component: (
-                <div className="fixed inset-0 z-50 bg-slate-900">
+                <div className="fixed inset-0 z-50" style={{ backgroundColor: C.text }}>
                     <DrawingDuelGame
                         user={{
                             uid: userId || '',
@@ -138,7 +159,7 @@ export const GamesSection: React.FC<GamesSectionProps> = ({
             id: 'typing-trainer',
             name: 'Typing Trainer',
             description: 'Train je typevaardigheid met een korte sprint en haal een hogere WPM.',
-            color: 'from-sky-500 to-cyan-500',
+            color: '#9C9C95',
             emoji: '⌨️',
             component: (
                 <TypingTrainer
@@ -156,7 +177,7 @@ export const GamesSection: React.FC<GamesSectionProps> = ({
         const game = games.find(g => g.id === activeGame);
         if (game) {
             return (
-                <div className="fixed inset-0 z-50 bg-slate-900">
+                <div className="fixed inset-0 z-50" style={{ backgroundColor: C.text }}>
                     {game.component}
                 </div>
             );
@@ -164,25 +185,26 @@ export const GamesSection: React.FC<GamesSectionProps> = ({
     }
 
     return (
-        <div className="w-full h-full flex flex-col bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 overflow-auto">
+        <div className="w-full h-full flex flex-col overflow-auto" style={{ backgroundColor: C.bg, fontFamily: SANS }}>
             {/* Header */}
-            <div className="shrink-0 px-6 py-4 border-b border-white/10">
+            <div className="shrink-0 px-6 py-4" style={{ borderBottom: `1px solid ${C.border}` }}>
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
                         {onBack && (
                             <button
                                 onClick={onBack}
-                                className="w-12 h-12 bg-white/10 hover:bg-white/20 rounded-xl flex items-center justify-center text-white transition-colors touch-friendly-btn text-lg"
+                                className="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 touch-friendly-btn text-base focus-visible:outline-none focus-visible:ring-2"
+                                style={{ backgroundColor: C.bgAlt, color: C.textMuted, border: `1px solid ${C.border}`, '--tw-ring-color': C.accent } as React.CSSProperties}
                             >
                                 ←
                             </button>
                         )}
                         <div>
-                            <h1 className="text-2xl font-black text-white flex items-center gap-2">
-                                <Gamepad2 className="text-amber-400" />
+                            <h1 className="text-xl font-bold flex items-center gap-2" style={{ fontFamily: SERIF, color: C.text }}>
+                                <Gamepad2 size={22} style={{ color: C.accent }} />
                                 Games
                             </h1>
-                            <p className="text-slate-400 text-sm">Speel en leer tegelijk!</p>
+                            <p className="text-sm" style={{ color: C.textMuted }}>Speel en leer tegelijk!</p>
                         </div>
                     </div>
 
@@ -190,12 +212,13 @@ export const GamesSection: React.FC<GamesSectionProps> = ({
                     {isTeacher && (
                         <button
                             onClick={() => setShowTeacherPanel(!showTeacherPanel)}
-                            className={`flex items-center gap-2 px-4 py-2 rounded-xl font-bold text-sm transition-all ${showTeacherPanel
-                                ? 'bg-amber-500 text-slate-900'
-                                : 'bg-white/10 text-white hover:bg-white/20'
-                                }`}
+                            className="flex items-center gap-2 px-4 py-2 rounded-full font-semibold text-sm transition-all duration-300 focus-visible:outline-none focus-visible:ring-2"
+                            style={showTeacherPanel
+                                ? { backgroundColor: C.accent, color: '#fff', '--tw-ring-color': C.accent } as React.CSSProperties
+                                : { backgroundColor: C.bgAlt, color: C.textMuted, border: `1px solid ${C.border}`, '--tw-ring-color': C.accent } as React.CSSProperties
+                            }
                         >
-                            <Shield size={16} />
+                            <Shield size={14} />
                             Docent Panel
                         </button>
                     )}
@@ -205,23 +228,25 @@ export const GamesSection: React.FC<GamesSectionProps> = ({
                 <div className="flex gap-2 mt-4">
                     <button
                         onClick={() => setActiveTab('games')}
-                        className={`flex items-center gap-2 px-4 py-2 rounded-xl font-bold text-sm transition-all ${activeTab === 'games'
-                            ? 'bg-emerald-500 text-white'
-                            : 'bg-white/10 text-slate-400 hover:bg-white/20 hover:text-white'
-                            }`}
+                        className="flex items-center gap-2 px-4 py-2 rounded-full font-semibold text-sm transition-all duration-300 focus-visible:outline-none focus-visible:ring-2"
+                        style={activeTab === 'games'
+                            ? { backgroundColor: C.accent, color: '#fff', '--tw-ring-color': C.accent } as React.CSSProperties
+                            : { backgroundColor: C.bgAlt, color: C.textLight, border: `1px solid ${C.border}`, '--tw-ring-color': C.accent } as React.CSSProperties
+                        }
                     >
-                        <Gamepad2 size={16} />
+                        <Gamepad2 size={14} />
                         Mini Games
                     </button>
                     <button
                         onClick={() => setActiveTab('gallery')}
                         disabled={isOffline}
-                        className={`flex items-center gap-2 px-4 py-2 rounded-xl font-bold text-sm transition-all ${activeTab === 'gallery'
-                            ? 'bg-emerald-500 text-white'
-                            : 'bg-white/10 text-slate-400 hover:bg-white/20 hover:text-white'
-                            }`}
+                        className="flex items-center gap-2 px-4 py-2 rounded-full font-semibold text-sm transition-all duration-300 focus-visible:outline-none focus-visible:ring-2"
+                        style={activeTab === 'gallery'
+                            ? { backgroundColor: C.accent, color: '#fff', '--tw-ring-color': C.accent } as React.CSSProperties
+                            : { backgroundColor: C.bgAlt, color: C.textLight, border: `1px solid ${C.border}`, '--tw-ring-color': C.accent } as React.CSSProperties
+                        }
                     >
-                        <Users size={16} />
+                        <Users size={14} />
                         {isOffline ? 'Galerij (offline uit)' : 'Leerling Galerij'}
                     </button>
                 </div>
@@ -229,13 +254,13 @@ export const GamesSection: React.FC<GamesSectionProps> = ({
 
             {/* Teacher Panel (conditionally shown) */}
             {isTeacher && showTeacherPanel && (
-                <div className="shrink-0 p-6 border-b border-white/10 bg-slate-800/50">
+                <div className="shrink-0 p-6" style={{ borderBottom: `1px solid ${C.border}`, backgroundColor: C.bgAlt }}>
                     <TeacherGameToggle />
                 </div>
             )}
 
             {isOffline && (
-                <div className="shrink-0 px-6 py-3 bg-amber-500/10 border-b border-amber-500/30 text-amber-200 text-sm flex items-center gap-2">
+                <div className="shrink-0 px-6 py-3 text-sm flex items-center gap-2 font-medium" style={{ backgroundColor: '#FEF3C7', borderBottom: '1px solid #FDE68A', color: '#92400E' }}>
                     <WifiOff size={16} />
                     Offline modus: alleen lokale games zijn beschikbaar.
                 </div>
@@ -253,10 +278,10 @@ export const GamesSection: React.FC<GamesSectionProps> = ({
 
             {activeTab === 'gallery' && isOffline && (
                 <div className="flex-1 p-6">
-                    <div className="max-w-2xl mx-auto bg-slate-800/40 border border-white/10 rounded-2xl p-6 text-center">
-                        <WifiOff className="mx-auto mb-3 text-amber-300" />
-                        <h3 className="text-white font-bold mb-1">Galerij vereist internet</h3>
-                        <p className="text-slate-400 text-sm">
+                    <div className="max-w-2xl mx-auto rounded-2xl p-6 text-center" style={{ backgroundColor: C.bgAlt, border: `1px solid ${C.border}` }}>
+                        <WifiOff className="mx-auto mb-3" style={{ color: C.accent }} />
+                        <h3 className="font-bold mb-1" style={{ fontFamily: SERIF, color: C.text }}>Galerij vereist internet</h3>
+                        <p className="text-sm" style={{ color: C.textMuted }}>
                             Verbind met internet om games van klasgenoten te laden.
                         </p>
                     </div>
@@ -275,19 +300,19 @@ export const GamesSection: React.FC<GamesSectionProps> = ({
                             return (
                                 <div
                                     key={game.id}
-                                    className={`relative bg-slate-800/50 backdrop-blur border border-white/10 rounded-2xl overflow-hidden transition-all group ${canPlay ? 'hover:scale-[1.02] hover:border-white/20' : 'opacity-60'
-                                        }`}
+                                    className={`relative rounded-2xl overflow-hidden transition-all duration-300 group ${canPlay ? 'hover:scale-[1.02] hover:shadow-lg' : 'opacity-60'}`}
+                                    style={{ backgroundColor: C.surface, border: `1px solid ${C.border}` }}
                                 >
                                     {/* Game Card Header */}
-                                    <div className={`h-32 bg-gradient-to-br ${game.color} flex items-center justify-center relative`}>
-                                        <span className="text-6xl">{game.emoji}</span>
+                                    <div className="h-32 flex items-center justify-center relative" style={{ backgroundColor: `${game.color}14` }}>
+                                        <span className="text-6xl group-hover:scale-110 transition-transform duration-300">{game.emoji}</span>
 
                                         {/* Lock overlay */}
                                         {!canPlay && (
-                                            <div className="absolute inset-0 bg-slate-900/80 flex items-center justify-center">
+                                            <div className="absolute inset-0 flex items-center justify-center" style={{ backgroundColor: `${C.bg}e0` }}>
                                                 <div className="text-center">
-                                                    <Lock size={32} className="text-slate-400 mx-auto mb-2" />
-                                                    <p className="text-slate-400 text-xs">Vergrendeld</p>
+                                                    <Lock size={28} className="mx-auto mb-2" style={{ color: C.textLight }} />
+                                                    <p className="text-xs font-medium" style={{ color: C.textLight }}>Vergrendeld</p>
                                                 </div>
                                             </div>
                                         )}
@@ -295,30 +320,33 @@ export const GamesSection: React.FC<GamesSectionProps> = ({
 
                                     {/* Game Card Content */}
                                     <div className="p-4">
-                                        <h3 className="text-lg font-black text-white mb-1">{game.name}</h3>
-                                        <p className="text-slate-400 text-sm mb-4">{game.description}</p>
+                                        <h3 className="text-base font-bold mb-1" style={{ fontFamily: SERIF, color: C.text }}>{game.name}</h3>
+                                        <p className="text-sm mb-4" style={{ color: C.textBody }}>{game.description}</p>
 
                                         <button
                                             onClick={() => canPlay && setActiveGame(game.id)}
                                             disabled={!canPlay}
-                                            className={`w-full py-4 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all min-h-[56px] touch-friendly-btn ${canPlay
-                                                ? `bg-gradient-to-r ${game.color} text-white hover:shadow-lg active:scale-95`
-                                                : 'bg-slate-700 text-slate-500 cursor-not-allowed'
-                                                }`}
+                                            className="w-full py-3.5 rounded-full font-semibold text-sm flex items-center justify-center gap-2 transition-all duration-300 min-h-[48px] touch-friendly-btn active:scale-95 focus-visible:outline-none focus-visible:ring-2"
+                                            style={canPlay
+                                                ? { backgroundColor: C.accent, color: '#fff', '--tw-ring-color': C.accent } as React.CSSProperties
+                                                : { backgroundColor: C.bgAlt, color: C.textLight, cursor: 'not-allowed' }
+                                            }
+                                            onMouseEnter={(e) => { if (canPlay) (e.currentTarget.style.backgroundColor = C.accentHover); }}
+                                            onMouseLeave={(e) => { if (canPlay) (e.currentTarget.style.backgroundColor = C.accent); }}
                                         >
                                             {canPlay ? (
                                                 <>
-                                                    <Play size={20} fill="currentColor" />
+                                                    <Play size={16} fill="currentColor" />
                                                     Spelen
                                                 </>
                                             ) : blockedByOffline ? (
                                                 <>
-                                                    <WifiOff size={18} />
+                                                    <WifiOff size={16} />
                                                     Online nodig
                                                 </>
                                             ) : (
                                                 <>
-                                                    <Lock size={18} />
+                                                    <Lock size={16} />
                                                     Wacht op docent
                                                 </>
                                             )}
@@ -329,12 +357,12 @@ export const GamesSection: React.FC<GamesSectionProps> = ({
                         })}
 
                         {/* Coming Soon Card */}
-                        <div className="bg-slate-800/30 border border-dashed border-white/10 rounded-2xl p-6 flex flex-col items-center justify-center text-center min-h-[200px]">
-                            <div className="w-16 h-16 bg-slate-700/50 rounded-full flex items-center justify-center mb-4">
-                                <span className="text-3xl">🎮</span>
+                        <div className="rounded-2xl p-6 flex flex-col items-center justify-center text-center min-h-[200px] transition-all duration-300" style={{ border: `2px dashed ${C.border}` }}>
+                            <div className="w-14 h-14 rounded-full flex items-center justify-center mb-4" style={{ backgroundColor: C.bgAlt }}>
+                                <Gamepad2 size={24} style={{ color: C.textLight }} />
                             </div>
-                            <h3 className="text-slate-400 font-bold mb-1">Meer Games</h3>
-                            <p className="text-slate-500 text-xs">Binnenkort beschikbaar...</p>
+                            <h3 className="font-bold mb-1" style={{ fontFamily: SERIF, color: C.textLight }}>Meer Games</h3>
+                            <p className="text-xs" style={{ color: C.textMuted }}>Binnenkort beschikbaar...</p>
                         </div>
                     </div>
                 </div>

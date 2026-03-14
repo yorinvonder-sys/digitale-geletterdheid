@@ -22,80 +22,57 @@ interface Student {
 
 const STUDENTS: Student[] = [
     {
-        id: 1,
-        name: 'Samir K.',
-        initials: 'SK',
-        avatarColor: 'bg-indigo-500',
-        xp: 850,
-        maxXp: 1000,
-        level: 8,
-        missionsCompleted: 7,
-        totalMissions: 9,
-        currentMission: 'Data Detective bezig...',
-        sloKerndoelen: ['Digitale geletterdheid', 'Computational Thinking', 'Data & informatie'],
-        timeSpent: '4u 12m',
-        streak: 5,
+        id: 1, name: 'Samir K.', initials: 'SK', avatarColor: 'bg-indigo-500',
+        xp: 850, maxXp: 1000, level: 8, missionsCompleted: 7, totalMissions: 9,
+        currentMission: 'Data Detective bezig...', sloKerndoelen: ['Digitale geletterdheid', 'Computational Thinking', 'Data & informatie'],
+        timeSpent: '4u 12m', streak: 5,
     },
     {
-        id: 2,
-        name: 'Lisa M.',
-        initials: 'LM',
-        avatarColor: 'bg-emerald-500',
-        xp: 1200,
-        maxXp: 1200,
-        level: 12,
-        missionsCompleted: 9,
-        totalMissions: 9,
-        currentMission: 'Alle missies afgerond!',
-        sloKerndoelen: ['Digitale geletterdheid', 'Computational Thinking', 'Creatief ontwerpen'],
-        timeSpent: '6u 45m',
-        streak: 12,
+        id: 2, name: 'Lisa M.', initials: 'LM', avatarColor: 'bg-emerald-500',
+        xp: 1200, maxXp: 1200, level: 12, missionsCompleted: 9, totalMissions: 9,
+        currentMission: 'Alle missies afgerond!', sloKerndoelen: ['Digitale geletterdheid', 'Computational Thinking', 'Creatief ontwerpen'],
+        timeSpent: '6u 45m', streak: 12,
     },
     {
-        id: 3,
-        name: 'Jayden R.',
-        initials: 'JR',
-        avatarColor: 'bg-amber-500',
-        xp: 340,
-        maxXp: 500,
-        level: 4,
-        missionsCompleted: 3,
-        totalMissions: 9,
-        currentMission: 'Game Programmeur bezig...',
-        sloKerndoelen: ['Computational Thinking', 'Algoritmen & patronen'],
-        timeSpent: '2u 08m',
-        streak: 2,
+        id: 3, name: 'Jayden R.', initials: 'JR', avatarColor: 'bg-amber-500',
+        xp: 340, maxXp: 500, level: 4, missionsCompleted: 3, totalMissions: 9,
+        currentMission: 'Game Programmeur bezig...', sloKerndoelen: ['Computational Thinking', 'Algoritmen & patronen'],
+        timeSpent: '2u 08m', streak: 2,
     },
     {
-        id: 4,
-        name: 'Fatima B.',
-        initials: 'FB',
-        avatarColor: 'bg-rose-500',
-        xp: 680,
-        maxXp: 800,
-        level: 7,
-        missionsCompleted: 5,
-        totalMissions: 9,
-        currentMission: 'Deepfake Detector bezig...',
-        sloKerndoelen: ['Digitale geletterdheid', 'Mediawijsheid', 'Ethiek & AI'],
-        timeSpent: '3u 34m',
-        streak: 4,
+        id: 4, name: 'Fatima B.', initials: 'FB', avatarColor: 'bg-rose-500',
+        xp: 680, maxXp: 800, level: 7, missionsCompleted: 5, totalMissions: 9,
+        currentMission: 'Deepfake Detector bezig...', sloKerndoelen: ['Digitale geletterdheid', 'Mediawijsheid', 'Ethiek & AI'],
+        timeSpent: '3u 34m', streak: 4,
     },
     {
-        id: 5,
-        name: 'Noah V.',
-        initials: 'NV',
-        avatarColor: 'bg-cyan-500',
-        xp: 520,
-        maxXp: 700,
-        level: 5,
-        missionsCompleted: 4,
-        totalMissions: 9,
-        currentMission: 'AI Trainer bezig...',
-        sloKerndoelen: ['Computational Thinking', 'Data & informatie', 'AI & machine learning'],
-        timeSpent: '2u 51m',
-        streak: 3,
+        id: 5, name: 'Noah V.', initials: 'NV', avatarColor: 'bg-cyan-500',
+        xp: 520, maxXp: 700, level: 5, missionsCompleted: 4, totalMissions: 9,
+        currentMission: 'AI Trainer bezig...', sloKerndoelen: ['Computational Thinking', 'Data & informatie', 'AI & machine learning'],
+        timeSpent: '2u 51m', streak: 3,
     },
+];
+
+const STEP_DURATION = 8000;
+
+type Phase = 'idle' | 'highlight' | 'action' | 'result';
+
+const PHASE_TIMINGS: Record<Phase, number> = {
+    idle: 0,
+    highlight: 1000,
+    action: 2500,
+    result: 3500,
+};
+
+interface DemoStep {
+    label: string;
+    accentClass: string;
+}
+
+const DEMO_STEPS: DemoStep[] = [
+    { label: 'Leerling bekijken', accentClass: 'border-blue-400 bg-blue-50 text-blue-700' },
+    { label: 'Focus Mode', accentClass: 'border-orange-400 bg-orange-50 text-orange-700' },
+    { label: 'Klasoverzicht', accentClass: 'border-emerald-400 bg-emerald-50 text-emerald-700' },
 ];
 
 /* ═══════════════════════════════════════════════════════════
@@ -118,47 +95,35 @@ function MissionDots({ completed, total }: { completed: number; total: number })
     return (
         <div className="flex gap-1">
             {Array.from({ length: total }, (_, i) => (
-                <div
-                    key={i}
-                    className="w-2 h-2 rounded-full transition-colors duration-300"
-                    style={{ backgroundColor: i < completed ? '#D97757' : '#E8E6DF' }}
-                />
+                <div key={i} className="w-2 h-2 rounded-full transition-colors duration-300" style={{ backgroundColor: i < completed ? '#D97757' : '#E8E6DF' }} />
             ))}
         </div>
     );
 }
 
 function StudentCard({
-    student,
-    isSelected,
-    isFocusMode,
-    focusMission,
-    animate,
-    onClick,
+    student, isSelected, isHighlighted, isFocusMode, focusMission, animate,
 }: {
     student: Student;
     isSelected: boolean;
+    isHighlighted: boolean;
     isFocusMode: boolean;
     focusMission: string;
     animate: boolean;
-    onClick: () => void;
 }) {
     const isComplete = student.missionsCompleted === student.totalMissions;
 
     return (
-        <button
-            onClick={onClick}
-            className={`relative w-full text-left p-3 rounded-xl border-2 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-offset-2 ${
-                isSelected
-                    ? 'shadow-md scale-[1.02]'
-                    : 'bg-white hover:shadow-sm'
+        <div
+            className={`relative w-full text-left p-3 rounded-xl border-2 transition-all duration-500 ${
+                isSelected ? 'shadow-md scale-[1.02]' : 'bg-white'
             } ${isFocusMode ? 'ring-2 ring-orange-300 ring-offset-1' : ''}`}
             style={{
-                borderColor: isSelected ? '#D97757' : '#E8E6DF',
+                borderColor: isHighlighted ? '#3b82f6' : isSelected ? '#D97757' : '#E8E6DF',
                 backgroundColor: isSelected ? 'rgba(217,119,87,0.06)' : undefined,
+                boxShadow: isHighlighted ? '0 0 0 3px rgba(59, 130, 246, 0.3), 0 0 16px rgba(59, 130, 246, 0.15)' : undefined,
             }}
         >
-            {/* Avatar + name */}
             <div className="flex items-center gap-2.5 mb-2">
                 <div className={`w-8 h-8 rounded-full ${student.avatarColor} flex items-center justify-center text-white text-xs font-bold shrink-0`}>
                     {student.initials}
@@ -176,7 +141,6 @@ function StudentCard({
                 )}
             </div>
 
-            {/* XP bar */}
             <div className="mb-1.5">
                 <div className="flex justify-between text-[10px] text-slate-400 mb-0.5">
                     <span>{student.xp} XP</span>
@@ -185,19 +149,17 @@ function StudentCard({
                 <AnimatedXpBar value={student.xp} max={student.maxXp} animate={animate} />
             </div>
 
-            {/* Mission dots */}
             <div className="flex items-center justify-between">
                 <MissionDots completed={student.missionsCompleted} total={student.totalMissions} />
                 <span className="text-[10px] text-slate-400">{student.missionsCompleted}/{student.totalMissions}</span>
             </div>
 
-            {/* Focus mode override label */}
             {isFocusMode && (
                 <div className="mt-2 px-2 py-1 rounded-md bg-orange-50 border border-orange-200 text-[10px] text-orange-600 font-medium truncate">
                     {focusMission}
                 </div>
             )}
-        </button>
+        </div>
     );
 }
 
@@ -212,7 +174,6 @@ function DetailPanel({ student, visible }: { student: Student | null; visible: b
 
     return (
         <div className={`p-4 space-y-4 transition-all duration-500 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}`}>
-            {/* Header */}
             <div className="flex items-center gap-3">
                 <div className={`w-10 h-10 rounded-full ${student.avatarColor} flex items-center justify-center text-white text-sm font-bold`}>
                     {student.initials}
@@ -223,13 +184,11 @@ function DetailPanel({ student, visible }: { student: Student | null; visible: b
                 </div>
             </div>
 
-            {/* Current mission */}
             <div className="p-3 rounded-lg" style={{ backgroundColor: 'rgba(217,119,87,0.06)', border: '1px solid rgba(217,119,87,0.15)' }}>
                 <p className="text-[10px] uppercase tracking-wider font-semibold mb-1" style={{ color: '#D97757' }}>Huidige missie</p>
                 <p className="text-sm font-medium" style={{ color: '#1A1A19' }}>{student.currentMission}</p>
             </div>
 
-            {/* Missions progress */}
             <div>
                 <p className="text-[10px] uppercase tracking-wider text-slate-400 font-semibold mb-2">Missie-voortgang</p>
                 <div className="w-full h-3 rounded-full bg-slate-100 overflow-hidden">
@@ -241,7 +200,6 @@ function DetailPanel({ student, visible }: { student: Student | null; visible: b
                 <p className="text-xs text-slate-500 mt-1">{student.missionsCompleted} van {student.totalMissions} missies voltooid</p>
             </div>
 
-            {/* SLO kerndoelen */}
             <div>
                 <p className="text-[10px] uppercase tracking-wider text-slate-400 font-semibold mb-2">SLO-kerndoelen</p>
                 <div className="flex flex-wrap gap-1.5">
@@ -253,7 +211,6 @@ function DetailPanel({ student, visible }: { student: Student | null; visible: b
                 </div>
             </div>
 
-            {/* Stats row */}
             <div className="grid grid-cols-2 gap-2">
                 <div className="p-2 rounded-lg bg-slate-50 border border-slate-100 text-center">
                     <p className="text-lg font-bold text-slate-800">{student.timeSpent}</p>
@@ -269,107 +226,127 @@ function DetailPanel({ student, visible }: { student: Student | null; visible: b
 }
 
 /* ═══════════════════════════════════════════════════════════
+   ANIMATED STAT CARD
+   ═══════════════════════════════════════════════════════════ */
+
+function AnimatedStat({ value, label, color, borderColor, animate, delay }: {
+    value: string; label: string; color: string; borderColor: string; animate: boolean; delay: number;
+}) {
+    const [visible, setVisible] = useState(false);
+
+    useEffect(() => {
+        if (animate) {
+            const t = setTimeout(() => setVisible(true), delay);
+            return () => clearTimeout(t);
+        }
+        setVisible(false);
+    }, [animate, delay]);
+
+    return (
+        <div
+            className="p-3 rounded-xl transition-all duration-500"
+            style={{
+                backgroundColor: `${color}08`,
+                border: `1px solid ${borderColor}`,
+                transform: visible ? 'scale(1.05)' : 'scale(1)',
+                boxShadow: visible ? `0 0 0 2px ${color}30, 0 4px 12px ${color}15` : 'none',
+            }}
+        >
+            <p className="text-xl font-bold" style={{ color }}>{value}</p>
+            <p className="text-[10px] font-medium" style={{ color: '#6B6B66' }}>{label}</p>
+        </div>
+    );
+}
+
+/* ═══════════════════════════════════════════════════════════
    MAIN COMPONENT
    ═══════════════════════════════════════════════════════════ */
 
 export const ScholenLandingDashboardDemo: React.FC = () => {
-    const [selectedId, setSelectedId] = useState<number | null>(null);
-    const [focusMode, setFocusMode] = useState(false);
+    const [activeStep, setActiveStep] = useState(0);
+    const [phase, setPhase] = useState<Phase>('idle');
+    const [isPaused, setIsPaused] = useState(false);
     const [barsAnimated, setBarsAnimated] = useState(false);
-    const [detailVisible, setDetailVisible] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
-    const autoPlayRef = useRef<ReturnType<typeof setTimeout>[]>([]);
-    const [autoPlayActive, setAutoPlayActive] = useState(true);
-    const autoPlayCycleRef = useRef(0);
+    const timerRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+    const manualRef = useRef(false);
 
-    const selectedStudent = STUDENTS.find((s) => s.id === selectedId) ?? null;
+    const clearTimers = useCallback(() => {
+        timerRef.current.forEach(clearTimeout);
+        timerRef.current = [];
+    }, []);
 
     // Intersection observer for bar animation
     useEffect(() => {
         const el = containerRef.current;
         if (!el) return;
-
         const observer = new IntersectionObserver(
-            ([entry]) => {
-                if (entry.isIntersecting) {
-                    setBarsAnimated(true);
-                    observer.disconnect();
-                }
-            },
+            ([entry]) => { if (entry.isIntersecting) { setBarsAnimated(true); observer.disconnect(); } },
             { threshold: 0.2 }
         );
         observer.observe(el);
         return () => observer.disconnect();
     }, []);
 
-    // Show detail panel with slight delay for animation
+    // Phase progression
     useEffect(() => {
-        if (selectedId !== null) {
-            setDetailVisible(false);
-            const t = setTimeout(() => setDetailVisible(true), 50);
-            return () => clearTimeout(t);
-        } else {
-            setDetailVisible(false);
-        }
-    }, [selectedId]);
+        if (isPaused || !barsAnimated) return;
+        clearTimers();
 
-    const clearAutoPlay = useCallback(() => {
-        autoPlayRef.current.forEach(clearTimeout);
-        autoPlayRef.current = [];
-    }, []);
+        const phases: Phase[] = ['idle', 'highlight', 'action', 'result'];
+        phases.forEach(p => {
+            const t = setTimeout(() => setPhase(p), PHASE_TIMINGS[p]);
+            timerRef.current.push(t);
+        });
 
-    // Auto-play flow
+        const advance = setTimeout(() => {
+            manualRef.current = false;
+            setActiveStep(prev => (prev + 1) % DEMO_STEPS.length);
+        }, STEP_DURATION);
+        timerRef.current.push(advance);
+
+        return clearTimers;
+    }, [activeStep, isPaused, barsAnimated, clearTimers]);
+
     useEffect(() => {
-        if (!autoPlayActive || !barsAnimated) return;
-        clearAutoPlay();
+        setPhase('idle');
+    }, [activeStep]);
 
-        const cycle = autoPlayCycleRef.current;
-        const studentOrder = [0, 1, 2, 3, 4];
-        const studentIdx = studentOrder[cycle % studentOrder.length];
-        const student = STUDENTS[studentIdx];
-
-        // After 3s: select student
-        const t1 = setTimeout(() => {
-            setSelectedId(student.id);
-        }, 3000);
-        autoPlayRef.current.push(t1);
-
-        // After 9s: activate focus mode
-        const t3 = setTimeout(() => {
-            setFocusMode(true);
-        }, 9000);
-        autoPlayRef.current.push(t3);
-
-        // After 12s: reset and advance
-        const t4 = setTimeout(() => {
-            setFocusMode(false);
-            setSelectedId(null);
-            autoPlayCycleRef.current = cycle + 1;
-            setAutoPlayActive((prev) => prev); // trigger re-run
-        }, 12000);
-        autoPlayRef.current.push(t4);
-
-        return clearAutoPlay;
-    }, [autoPlayActive, barsAnimated, clearAutoPlay]);
-
-    // Re-trigger auto-play cycle
-    useEffect(() => {
-        if (!autoPlayActive) return;
-        // This effect re-runs whenever autoPlayCycleRef changes via state trigger
-    }, [autoPlayActive]);
-
-    const handleStudentClick = (id: number) => {
-        setAutoPlayActive(false);
-        clearAutoPlay();
-        setFocusMode(false);
-        setSelectedId(selectedId === id ? null : id);
+    const goToStep = (idx: number) => {
+        clearTimers();
+        manualRef.current = true;
+        setIsPaused(false);
+        setActiveStep(idx);
+        setPhase('idle');
     };
 
-    const handleFocusToggle = () => {
-        setAutoPlayActive(false);
-        clearAutoPlay();
-        setFocusMode(!focusMode);
-    };
+    // Derive dashboard visual state from step + phase
+    const phaseIdx = ['idle', 'highlight', 'action', 'result'].indexOf(phase);
+
+    let selectedId: number | null = null;
+    let focusMode = false;
+    let highlightStudentId: number | null = null;
+    let highlightFocusBtn = false;
+    let highlightStats = false;
+
+    switch (activeStep) {
+        case 0: // Leerling bekijken
+            if (phaseIdx === 1) highlightStudentId = 4;
+            if (phaseIdx >= 2) selectedId = 4;
+            break;
+        case 1: // Focus Mode
+            selectedId = 4;
+            if (phaseIdx === 1) highlightFocusBtn = true;
+            if (phaseIdx >= 2) focusMode = true;
+            break;
+        case 2: // Klasoverzicht
+            if (phaseIdx < 1) { selectedId = 4; focusMode = true; }
+            if (phaseIdx >= 2) highlightStats = true;
+            break;
+    }
+
+    const selectedStudent = STUDENTS.find(s => s.id === selectedId) ?? null;
+    const detailVisible = selectedId !== null && phaseIdx >= 3;
 
     return (
         <div ref={containerRef} className="max-w-6xl mx-auto">
@@ -386,7 +363,12 @@ export const ScholenLandingDashboardDemo: React.FC = () => {
             </div>
 
             {/* Dashboard container */}
-            <div className="rounded-3xl overflow-hidden shadow-xl bg-white" style={{ borderWidth: '1px', borderStyle: 'solid', borderColor: '#E8E6DF' }}>
+            <div
+                className="rounded-3xl overflow-hidden shadow-xl bg-white"
+                style={{ borderWidth: '1px', borderStyle: 'solid', borderColor: '#E8E6DF' }}
+                onMouseEnter={() => { if (!manualRef.current) setIsPaused(true); }}
+                onMouseLeave={() => { if (!manualRef.current) setIsPaused(false); }}
+            >
                 {/* Top bar */}
                 <div className="flex items-center justify-between px-4 sm:px-6 py-3 border-b border-slate-100 bg-slate-50/50">
                     <div className="flex items-center gap-3">
@@ -404,13 +386,15 @@ export const ScholenLandingDashboardDemo: React.FC = () => {
                         </span>
 
                         {/* Focus Mode toggle */}
-                        <button
-                            onClick={handleFocusToggle}
-                            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-300 ${
+                        <div
+                            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-500 ${
                                 focusMode
                                     ? 'bg-orange-500 text-white shadow-md shadow-orange-200'
-                                    : 'bg-slate-100 text-slate-500 hover:bg-slate-200'
+                                    : 'bg-slate-100 text-slate-500'
                             }`}
+                            style={{
+                                boxShadow: highlightFocusBtn ? '0 0 0 3px rgba(249, 115, 22, 0.4), 0 0 16px rgba(249, 115, 22, 0.2)' : undefined,
+                            }}
                         >
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                                 <circle cx="12" cy="12" r="10" />
@@ -418,16 +402,12 @@ export const ScholenLandingDashboardDemo: React.FC = () => {
                                 <circle cx="12" cy="12" r="2" />
                             </svg>
                             Focus Mode
-                        </button>
+                        </div>
                     </div>
                 </div>
 
                 {/* Focus Mode banner */}
-                <div
-                    className={`overflow-hidden transition-all duration-500 ${
-                        focusMode ? 'max-h-16 opacity-100' : 'max-h-0 opacity-0'
-                    }`}
-                >
+                <div className={`overflow-hidden transition-all duration-500 ${focusMode ? 'max-h-16 opacity-100' : 'max-h-0 opacity-0'}`}>
                     <div className="px-4 sm:px-6 py-2.5 bg-orange-50 border-b border-orange-100 flex items-center gap-2">
                         <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
                         <p className="text-xs text-orange-700 font-medium">
@@ -450,32 +430,20 @@ export const ScholenLandingDashboardDemo: React.FC = () => {
                                     key={student.id}
                                     student={student}
                                     isSelected={selectedId === student.id}
+                                    isHighlighted={highlightStudentId === student.id}
                                     isFocusMode={focusMode}
                                     focusMission="Data Detective"
                                     animate={barsAnimated}
-                                    onClick={() => handleStudentClick(student.id)}
                                 />
                             ))}
                         </div>
 
                         {/* Class stats */}
                         <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3">
-                            <div className="p-3 rounded-xl" style={{ backgroundColor: 'rgba(217,119,87,0.06)', border: '1px solid rgba(217,119,87,0.15)' }}>
-                                <p className="text-xl font-bold" style={{ color: '#D97757' }}>3.590</p>
-                                <p className="text-[10px] font-medium" style={{ color: '#6B6B66' }}>Totaal XP klas</p>
-                            </div>
-                            <div className="p-3 rounded-xl bg-purple-50 border border-purple-100">
-                                <p className="text-xl font-bold text-purple-700">62%</p>
-                                <p className="text-[10px] text-purple-400 font-medium">Gem. voortgang</p>
-                            </div>
-                            <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-100">
-                                <p className="text-xl font-bold text-emerald-700">28</p>
-                                <p className="text-[10px] text-emerald-400 font-medium">Missies voltooid</p>
-                            </div>
-                            <div className="p-3 rounded-xl bg-amber-50 border border-amber-100">
-                                <p className="text-xl font-bold text-amber-700">5.2</p>
-                                <p className="text-[10px] text-amber-400 font-medium">Gem. streak</p>
-                            </div>
+                            <AnimatedStat value="3.590" label="Totaal XP klas" color="#D97757" borderColor="rgba(217,119,87,0.15)" animate={highlightStats} delay={0} />
+                            <AnimatedStat value="62%" label="Gem. voortgang" color="#7c3aed" borderColor="rgba(124,58,237,0.15)" animate={highlightStats} delay={200} />
+                            <AnimatedStat value="28" label="Missies voltooid" color="#059669" borderColor="rgba(5,150,105,0.15)" animate={highlightStats} delay={400} />
+                            <AnimatedStat value="5.2" label="Gem. streak" color="#d97706" borderColor="rgba(217,119,6,0.15)" animate={highlightStats} delay={600} />
                         </div>
                     </div>
 
@@ -487,6 +455,47 @@ export const ScholenLandingDashboardDemo: React.FC = () => {
                         <DetailPanel student={selectedStudent} visible={detailVisible} />
                     </div>
                 </div>
+            </div>
+
+            {/* Step navigation */}
+            <div className="flex items-center justify-center gap-3 mt-6" role="tablist" aria-label="Demo stappen">
+                {DEMO_STEPS.map((s, i) => (
+                    <button
+                        key={s.label}
+                        role="tab"
+                        aria-selected={i === activeStep}
+                        aria-label={`Stap ${i + 1}: ${s.label}`}
+                        onClick={() => goToStep(i)}
+                        className={`relative flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold border-2 transition-all focus-visible:ring-2 focus-visible:ring-offset-2 ${
+                            i === activeStep ? s.accentClass + ' shadow-sm' : 'bg-white'
+                        }`}
+                        style={i !== activeStep ? { borderColor: '#E8E6DF', color: '#6B6B66' } : undefined}
+                    >
+                        {i === 0 && (
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" />
+                            </svg>
+                        )}
+                        {i === 1 && (
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                <circle cx="12" cy="12" r="10" /><circle cx="12" cy="12" r="6" /><circle cx="12" cy="12" r="2" />
+                            </svg>
+                        )}
+                        {i === 2 && (
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M18 20V10M12 20V4M6 20v-6" />
+                            </svg>
+                        )}
+                        {s.label}
+
+                        {i === activeStep && !isPaused && (
+                            <span
+                                className="absolute bottom-0 left-0 h-0.5 bg-current rounded-full animate-carousel-progress"
+                                style={{ animationDuration: `${STEP_DURATION}ms` }}
+                            />
+                        )}
+                    </button>
+                ))}
             </div>
         </div>
     );

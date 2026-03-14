@@ -18,18 +18,18 @@ const TILE_SIZE = 48;
 
 // Visual Assets / Constants
 const COLORS = {
-    bg: '#0f172a', // Slate 900
-    gridLight: '#1e3a8a', // Blue 900 (Dark Blue)
-    gridDark: '#172554', // Blue 950 (Darker Blue)
-    wallTop: '#334155',
-    wallSide: '#1e293b',
-    crate: '#d97706',
-    crateDark: '#92400e',
-    bomb: '#000000',
-    bombFuse: '#ef4444',
-    explosionCore: '#fef08a', // Yellow 200
-    explosionOuter: '#ef4444', // Red 500
-    dangerZone: 'rgba(220, 38, 38, 0.5)', // Red danger zone
+    bg: '#1A1A19', // DGSkills dark
+    gridLight: '#2A2A28', // Warm dark grid
+    gridDark: '#232322', // Darker warm grid
+    wallTop: '#6B6B66', // Muted text
+    wallSide: '#3D3D38', // Body text dark
+    crate: '#D97757', // Terracotta primary
+    crateDark: '#C46849', // Terracotta hover
+    bomb: '#1A1A19',
+    bombFuse: '#D97757',
+    explosionCore: '#FAF9F0', // Creme
+    explosionOuter: '#D97757', // Terracotta
+    dangerZone: 'rgba(220, 38, 38, 0.5)', // Red danger zone (keep for gameplay clarity)
 };
 
 export const GameCanvas: React.FC<GameCanvasProps> = ({
@@ -84,7 +84,7 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({
                         vx: Math.cos(angle) * speed,
                         vy: Math.sin(angle) * speed,
                         life: 1.0,
-                        color: Math.random() > 0.5 ? '#f59e0b' : '#ef4444',
+                        color: Math.random() > 0.5 ? '#D97757' : '#C46849',
                         size: Math.random() * 6 + 2
                     });
                 }
@@ -246,20 +246,20 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({
                     ctx.fillStyle = (x + y) % 2 === 0 ? COLORS.gridLight : COLORS.gridDark;
                     ctx.fillRect(px, py, TILE_SIZE, TILE_SIZE);
 
-                    // Grid lines for tech feel
-                    ctx.strokeStyle = '#334155';
+                    // Grid lines
+                    ctx.strokeStyle = '#3D3D38';
                     ctx.lineWidth = 0.5;
                     ctx.strokeRect(px, py, TILE_SIZE, TILE_SIZE);
 
                     if (tile === 'wall') {
-                        // Neon Wall
-                        ctx.shadowBlur = 10;
-                        ctx.shadowColor = '#64748b';
-                        ctx.fillStyle = '#475569';
+                        // Wall
+                        ctx.shadowBlur = 6;
+                        ctx.shadowColor = '#6B6B66';
+                        ctx.fillStyle = '#4A4A45';
                         ctx.fillRect(px + 2, py + 2, TILE_SIZE - 4, TILE_SIZE - 4);
 
                         // Top Highlight
-                        ctx.fillStyle = '#94a3b8';
+                        ctx.fillStyle = '#6B6B66';
                         ctx.fillRect(px + 2, py + 2, TILE_SIZE - 4, 4);
                         ctx.shadowBlur = 0;
                     } else if (tile === 'crate') {
@@ -272,17 +272,17 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({
                         ctx.fillRect(px + 8, py + 8, TILE_SIZE - 16, TILE_SIZE - 16);
 
                         // X
-                        ctx.strokeStyle = '#d97706';
+                        ctx.strokeStyle = '#D97757';
                         ctx.lineWidth = 2;
                         ctx.beginPath();
                         ctx.moveTo(px + 8, py + 8); ctx.lineTo(px + TILE_SIZE - 8, py + TILE_SIZE - 8);
                         ctx.moveTo(px + TILE_SIZE - 8, py + 8); ctx.lineTo(px + 8, py + TILE_SIZE - 8);
                         ctx.stroke();
                     } else if (tile === 'powerup_bomb') {
-                        // Extra Bomb Power-up (Blue)
+                        // Extra Bomb Power-up (Teal accent)
                         ctx.shadowBlur = 15;
-                        ctx.shadowColor = '#3b82f6';
-                        ctx.fillStyle = '#3b82f6';
+                        ctx.shadowColor = '#2A9D8F';
+                        ctx.fillStyle = '#2A9D8F';
                         ctx.beginPath();
                         ctx.arc(px + TILE_SIZE / 2, py + TILE_SIZE / 2, TILE_SIZE / 3, 0, Math.PI * 2);
                         ctx.fill();
@@ -293,10 +293,10 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({
                         ctx.textBaseline = 'middle';
                         ctx.fillText('💣', px + TILE_SIZE / 2, py + TILE_SIZE / 2);
                     } else if (tile === 'powerup_radius') {
-                        // Blast Radius Power-up (Orange)
+                        // Blast Radius Power-up (Terracotta)
                         ctx.shadowBlur = 15;
-                        ctx.shadowColor = '#f97316';
-                        ctx.fillStyle = '#f97316';
+                        ctx.shadowColor = '#D97757';
+                        ctx.fillStyle = '#D97757';
                         ctx.beginPath();
                         ctx.arc(px + TILE_SIZE / 2, py + TILE_SIZE / 2, TILE_SIZE / 3, 0, Math.PI * 2);
                         ctx.fill();
@@ -307,10 +307,10 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({
                         ctx.textBaseline = 'middle';
                         ctx.fillText('💥', px + TILE_SIZE / 2, py + TILE_SIZE / 2);
                     } else if (tile === 'powerup_speed') {
-                        // Speed Power-up (Green)
+                        // Speed Power-up (Success green)
                         ctx.shadowBlur = 15;
-                        ctx.shadowColor = '#22c55e';
-                        ctx.fillStyle = '#22c55e';
+                        ctx.shadowColor = '#10B981';
+                        ctx.fillStyle = '#10B981';
                         ctx.beginPath();
                         ctx.arc(px + TILE_SIZE / 2, py + TILE_SIZE / 2, TILE_SIZE / 3, 0, Math.PI * 2);
                         ctx.fill();
@@ -356,15 +356,15 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({
                 const pulse = Math.abs(Math.sin(time / 200));
 
                 ctx.shadowBlur = 15;
-                ctx.shadowColor = '#ef4444';
+                ctx.shadowColor = '#D97757';
 
-                ctx.fillStyle = '#000';
+                ctx.fillStyle = '#1A1A19';
                 ctx.beginPath();
                 ctx.arc(px, py, TILE_SIZE / 2 - 4, 0, Math.PI * 2);
                 ctx.fill();
 
                 // Core
-                ctx.fillStyle = `rgba(239, 68, 68, ${0.5 + pulse * 0.5})`;
+                ctx.fillStyle = `rgba(217, 119, 87, ${0.5 + pulse * 0.5})`;
                 ctx.beginPath();
                 ctx.arc(px, py, (TILE_SIZE / 2 - 8) * (0.8 + pulse * 0.2), 0, Math.PI * 2);
                 ctx.fill();
@@ -381,7 +381,7 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({
                     const cy = exp.y * TILE_SIZE + TILE_SIZE / 2;
 
                     // Cross shape using explicit spans if available
-                    ctx.fillStyle = `rgba(255, 200, 0, 0.5)`;
+                    ctx.fillStyle = `rgba(217, 119, 87, 0.5)`;
 
                     if (exp.spans) {
                         // Draw center
@@ -530,6 +530,6 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({
     }, [gameState, myPlayerId]);
 
     return (
-        <canvas ref={canvasRef} className="block w-full h-full bg-slate-900" />
+        <canvas ref={canvasRef} className="block w-full h-full" style={{ backgroundColor: '#1A1A19' }} />
     );
 };

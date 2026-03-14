@@ -61,7 +61,7 @@ export const IctLandingPage: React.FC = () => {
             <nav className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${scrolled ? 'bg-white shadow-[0_1px_0_0_rgba(0,0,0,0.04)]' : 'bg-transparent'}`}>
                 <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
                     <a href="/" className="flex items-center gap-2.5">
-                        <img src="/logo.svg" alt="DGSkills logo" className="w-8 h-8" width={32} height={32} loading="lazy" decoding="async" />
+                        <img src="/mascot/pip-logo.png" alt="DGSkills logo" className="w-8 h-8 object-contain" width={32} height={32} loading="lazy" decoding="async" />
                         <span className="font-bold text-[15px] text-slate-900 tracking-tight">DGSkills</span>
                     </a>
                     <div className="hidden lg:flex items-center gap-6">
@@ -95,7 +95,7 @@ export const IctLandingPage: React.FC = () => {
             <footer className="py-8 px-6 bg-slate-950">
                 <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
                     <div className="flex items-center gap-2">
-                        <img src="/logo.svg" alt="" className="w-5 h-5 opacity-50 invert" width={20} height={20} loading="lazy" decoding="async" />
+                        <img src="/mascot/pip-logo.png" alt="" className="w-5 h-5 object-contain opacity-50" width={20} height={20} loading="lazy" decoding="async" />
                         <span className="text-xs text-slate-500">DGSkills — Digitale geletterdheid voor het voortgezet onderwijs</span>
                     </div>
                     <div className="flex flex-wrap items-center gap-5 text-xs text-slate-500">

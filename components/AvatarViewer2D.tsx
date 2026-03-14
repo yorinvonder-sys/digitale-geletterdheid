@@ -303,7 +303,7 @@ export const AvatarViewer2D: React.FC<AvatarViewer2DProps> = ({
 
                     {/* === ACCESSORY === */}
                     {config.accessory && config.accessory !== 'none' && (
-                        renderAccessory(config.accessory, headCx, headCy, headRx, headRy)
+                        renderAccessory(config.accessory, headCx, headCy, headRx, headRy, config.accessoryColor || shirtColor)
                     )}
                 </g>
             </svg>
@@ -667,18 +667,19 @@ function renderHairFront(
 // === ACCESSORIES ===
 
 function renderAccessory(
-    accessory: string, cx: number, cy: number, rx: number, ry: number
+    accessory: string, cx: number, cy: number, rx: number, ry: number, color: string
 ): React.ReactNode {
     const top = cy - ry;
+    const colorDk = darken(color, 0.15);
 
     switch (accessory) {
         case 'cap':
             return (
                 <g>
-                    <ellipse cx={cx} cy={top + 6} rx={rx + 8} ry={14} fill="#1e40af" />
-                    <rect x={cx - rx - 8} y={top + 2} width={rx * 2 + 16} height={12} rx={6} fill="#1e40af" />
+                    <ellipse cx={cx} cy={top + 6} rx={rx + 8} ry={14} fill={color} />
+                    <rect x={cx - rx - 8} y={top + 2} width={rx * 2 + 16} height={12} rx={6} fill={color} />
                     {/* Brim */}
-                    <ellipse cx={cx + 20} cy={top + 12} rx={22} ry={6} fill="#1e3a8a" />
+                    <ellipse cx={cx + 20} cy={top + 12} rx={22} ry={6} fill={colorDk} />
                 </g>
             );
         case 'beanie':
@@ -687,21 +688,21 @@ function renderAccessory(
                     <path d={`M ${cx - rx - 2} ${cy - 14}
                         Q ${cx - rx} ${top - 14} ${cx} ${top - 18}
                         Q ${cx + rx} ${top - 14} ${cx + rx + 2} ${cy - 14}`}
-                        fill="#dc2626" />
+                        fill={color} />
                     {/* Beanie fold */}
-                    <rect x={cx - rx - 2} y={cy - 18} width={rx * 2 + 4} height={8} rx={4} fill="#b91c1c" />
+                    <rect x={cx - rx - 2} y={cy - 18} width={rx * 2 + 4} height={8} rx={4} fill={colorDk} />
                     {/* Pom pom */}
-                    <circle cx={cx} cy={top - 18} r={8} fill="#fca5a5" />
+                    <circle cx={cx} cy={top - 18} r={8} fill={lighten(color, 0.25)} />
                 </g>
             );
         case 'glasses':
             return (
                 <g>
-                    <circle cx={cx - 15} cy={cy - 4} r={14} fill="none" stroke="#7c3aed" strokeWidth={2.5} />
-                    <circle cx={cx + 15} cy={cy - 4} r={14} fill="none" stroke="#7c3aed" strokeWidth={2.5} />
-                    <line x1={cx - 1} y1={cy - 4} x2={cx + 1} y2={cy - 4} stroke="#7c3aed" strokeWidth={2.5} />
-                    <line x1={cx - 29} y1={cy - 6} x2={cx - 40} y2={cy - 2} stroke="#7c3aed" strokeWidth={2} />
-                    <line x1={cx + 29} y1={cy - 6} x2={cx + 40} y2={cy - 2} stroke="#7c3aed" strokeWidth={2} />
+                    <circle cx={cx - 15} cy={cy - 4} r={14} fill="none" stroke={color} strokeWidth={2.5} />
+                    <circle cx={cx + 15} cy={cy - 4} r={14} fill="none" stroke={color} strokeWidth={2.5} />
+                    <line x1={cx - 1} y1={cy - 4} x2={cx + 1} y2={cy - 4} stroke={color} strokeWidth={2.5} />
+                    <line x1={cx - 29} y1={cy - 6} x2={cx - 40} y2={cy - 2} stroke={color} strokeWidth={2} />
+                    <line x1={cx + 29} y1={cy - 6} x2={cx + 40} y2={cy - 2} stroke={color} strokeWidth={2} />
                 </g>
             );
         case 'headphones':
@@ -711,10 +712,10 @@ function renderAccessory(
                         Q ${cx + rx + 8} ${top - 18} ${cx + rx + 6} ${cy - 2}`}
                         fill="none" stroke="#374151" strokeWidth={5} strokeLinecap="round" />
                     {/* Ear cups */}
-                    <rect x={cx - rx - 14} y={cy - 10} width={14} height={20} rx={5} fill="#1f2937" />
-                    <rect x={cx - rx - 12} y={cy - 6} width={6} height={12} rx={3} fill="#4b5563" />
-                    <rect x={cx + rx} y={cy - 10} width={14} height={20} rx={5} fill="#1f2937" />
-                    <rect x={cx + rx + 6} y={cy - 6} width={6} height={12} rx={3} fill="#4b5563" />
+                    <rect x={cx - rx - 14} y={cy - 10} width={14} height={20} rx={5} fill={color} />
+                    <rect x={cx - rx - 12} y={cy - 6} width={6} height={12} rx={3} fill={lighten(color, 0.15)} />
+                    <rect x={cx + rx} y={cy - 10} width={14} height={20} rx={5} fill={color} />
+                    <rect x={cx + rx + 6} y={cy - 6} width={6} height={12} rx={3} fill={lighten(color, 0.15)} />
                 </g>
             );
         case 'backpack':

@@ -148,7 +148,7 @@ export const STUDENT_TUTORIAL_STEPS: TutorialStep[] = [
         title: 'Jouw Profiel',
         content: 'Bekijk je avatar, trofeeën en de winkel. Verdien XP om nieuwe items vrij te spelen!',
         requireClick: false,
-        position: 'bottom',
+        position: 'left',
     },
     {
         id: 'first-mission',

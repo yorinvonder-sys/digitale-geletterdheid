@@ -388,7 +388,7 @@ export const ScholenLanding: React.FC = () => {
                 }`} style={scrolled ? { backgroundColor: `${C.bg}ee` } : undefined}>
                 <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
                     <a href="/" className="flex items-center gap-2.5">
-                        <img src="/favicon.svg" alt="DGSkills" className="w-9 h-9 object-contain" width={36} height={36} decoding="async" />
+                        <img src="/mascot/pip-logo.png" alt="DGSkills" className="w-9 h-9 object-contain" width={36} height={36} decoding="async" />
                         <span className="font-semibold text-[15px] tracking-tight" style={{ color: C.text }}>DGSkills</span>
                     </a>
 

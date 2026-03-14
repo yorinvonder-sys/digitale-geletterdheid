@@ -143,10 +143,12 @@ export const TypingTrainer: React.FC<TypingTrainerProps> = ({ onExit, onXPEarned
     }
   };
 
+  const progressPct = startedAt ? Math.min(100, (elapsedMs / (durationSec * 1000)) * 100) : 0;
+
   const renderPrompt = () => {
     const chars = prompt.split('');
     return (
-      <div className="font-mono text-sm md:text-base leading-relaxed bg-slate-950/60 border border-white/10 rounded-2xl p-4">
+      <div className="font-mono text-sm md:text-base leading-relaxed rounded-2xl p-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
         {chars.map((ch, i) => {
           const typed = input[i];
           const isTyped = typed !== undefined;
@@ -155,15 +157,17 @@ export const TypingTrainer: React.FC<TypingTrainerProps> = ({ onExit, onXPEarned
           return (
             <span
               key={i}
-              className={
-                ok
-                  ? 'text-emerald-300'
+              style={{
+                color: ok
+                  ? '#10B981'
                   : bad
-                    ? 'text-red-300 underline decoration-red-400/60'
+                    ? '#EF4444'
                     : isTyped
-                      ? 'text-slate-300'
-                      : 'text-slate-500'
-              }
+                      ? '#3D3D38'
+                      : '#6B6B66',
+                textDecoration: bad ? 'underline' : 'none',
+                textDecorationColor: bad ? '#EF444499' : undefined,
+              }}
             >
               {ch}
             </span>
@@ -174,26 +178,32 @@ export const TypingTrainer: React.FC<TypingTrainerProps> = ({ onExit, onXPEarned
   };
 
   return (
-    <div className="w-full h-full bg-gradient-to-br from-slate-900 via-sky-950 to-slate-900 text-white flex flex-col">
+    <div className="w-full h-full flex flex-col" style={{ backgroundColor: '#FAF9F0', color: '#1A1A19', fontFamily: "'Outfit', system-ui, sans-serif" }}>
       {/* Header */}
-      <div className="shrink-0 px-4 py-3 border-b border-white/10 flex items-center justify-between">
+      <div className="shrink-0 px-4 py-3 flex items-center justify-between" style={{ borderBottom: '1px solid #E8E6DF' }}>
         <button
           onClick={onExit}
-          className="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-xl flex items-center justify-center transition-colors"
+          className="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300"
+          style={{ backgroundColor: '#F0EEE8', color: '#3D3D38' }}
+          onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#E8E6DF'; }}
+          onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = '#F0EEE8'; }}
           aria-label="Terug"
         >
           <ArrowLeft size={20} />
         </button>
         <div className="flex items-center gap-2">
-          <Keyboard size={18} className="text-sky-300" />
-          <span className="font-black uppercase tracking-widest text-sm">Typing Trainer</span>
+          <Keyboard size={18} style={{ color: '#D97757' }} />
+          <span className="font-black uppercase tracking-widest text-sm" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#1A1A19' }}>Typing Trainer</span>
         </div>
         <button
           onClick={() => {
             resetRun();
             setMode('menu');
           }}
-          className="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-xl flex items-center justify-center transition-colors"
+          className="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300"
+          style={{ backgroundColor: '#F0EEE8', color: '#3D3D38' }}
+          onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#E8E6DF'; }}
+          onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = '#F0EEE8'; }}
           aria-label="Reset"
           title="Reset"
         >
@@ -205,27 +215,29 @@ export const TypingTrainer: React.FC<TypingTrainerProps> = ({ onExit, onXPEarned
       <div className="flex-1 p-4 md:p-6 overflow-auto">
         {mode === 'menu' && (
           <div className="max-w-2xl mx-auto space-y-6">
-            <div className="bg-white/5 border border-white/10 rounded-3xl p-6">
-              <h2 className="text-2xl font-black mb-2">Train je typevaardigheid</h2>
-              <p className="text-slate-300 text-sm">
+            <div className="rounded-2xl p-6" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
+              <h2 className="text-2xl font-black mb-2" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#1A1A19' }}>Train je typevaardigheid</h2>
+              <p className="text-sm" style={{ color: '#3D3D38' }}>
                 Typ de tekst zo nauwkeurig mogelijk. Hoe sneller en netter je typt, hoe hoger je score.
               </p>
             </div>
 
-            <div className="bg-white/5 border border-white/10 rounded-3xl p-6 space-y-4">
+            <div className="rounded-2xl p-6 space-y-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
               <div className="flex items-center justify-between">
-                <span className="text-xs font-black uppercase tracking-widest text-slate-300">Duur</span>
-                <span className="text-xs font-mono text-slate-400">{durationSec}s</span>
+                <span className="text-xs font-black uppercase tracking-widest" style={{ color: '#6B6B66' }}>Duur</span>
+                <span className="text-xs font-mono" style={{ color: '#6B6B66' }}>{durationSec}s</span>
               </div>
               <div className="flex gap-2">
                 {[30, 60, 120].map((s) => (
                   <button
                     key={s}
                     onClick={() => setDurationSec(s)}
-                    className={`flex-1 py-3 rounded-2xl font-bold text-sm transition-all border ${durationSec === s
-                      ? 'bg-sky-500/20 border-sky-400/40 text-sky-200'
-                      : 'bg-white/5 border-white/10 text-slate-300 hover:bg-white/10'
-                      }`}
+                    className="flex-1 py-3 rounded-full font-bold text-sm transition-all duration-300"
+                    style={{
+                      backgroundColor: durationSec === s ? '#D9775715' : '#FFFFFF',
+                      border: `1px solid ${durationSec === s ? '#D97757' : '#E8E6DF'}`,
+                      color: durationSec === s ? '#D97757' : '#3D3D38',
+                    }}
                   >
                     {s}s
                   </button>
@@ -237,7 +249,10 @@ export const TypingTrainer: React.FC<TypingTrainerProps> = ({ onExit, onXPEarned
                   resetRun();
                   setMode('countdown');
                 }}
-                className="w-full py-4 rounded-2xl font-black uppercase tracking-widest bg-gradient-to-r from-sky-500 to-cyan-500 hover:from-sky-400 hover:to-cyan-400 transition-all shadow-lg shadow-sky-500/20 active:scale-95"
+                className="w-full py-4 rounded-full font-black uppercase tracking-widest transition-all duration-300 active:scale-95"
+                style={{ background: 'linear-gradient(to right, #D97757, #C46849)', color: '#FFFFFF', boxShadow: '0 4px 14px #D9775730' }}
+                onMouseEnter={(e) => { e.currentTarget.style.background = 'linear-gradient(to right, #C46849, #B35A3D)'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.background = 'linear-gradient(to right, #D97757, #C46849)'; }}
               >
                 Start
               </button>
@@ -248,75 +263,107 @@ export const TypingTrainer: React.FC<TypingTrainerProps> = ({ onExit, onXPEarned
         {mode === 'countdown' && (
           <div className="h-full flex items-center justify-center">
             <div className="text-center">
-              <div className="text-slate-300 font-bold mb-2">Klaar voor de start?</div>
-              <div className="text-7xl md:text-8xl font-black text-sky-300 animate-pulse">{countdown}</div>
-              <div className="mt-4 text-slate-400 text-sm">Focus op nauwkeurigheid.</div>
+              <div className="font-bold mb-2" style={{ color: '#3D3D38' }}>Klaar voor de start?</div>
+              <div className="text-7xl md:text-8xl font-black animate-pulse" style={{ color: '#D97757', fontFamily: "'Newsreader', Georgia, serif" }}>{countdown}</div>
+              <div className="mt-4 text-sm" style={{ color: '#6B6B66' }}>Focus op nauwkeurigheid.</div>
             </div>
           </div>
         )}
 
         {(mode === 'playing' || mode === 'results') && (
           <div className="max-w-3xl mx-auto space-y-4">
+            {/* Progress bar */}
+            <div className="rounded-full h-2 overflow-hidden" style={{ backgroundColor: '#F0EEE8' }}>
+              <div
+                className="h-full rounded-full transition-all duration-300"
+                style={{ width: `${progressPct}%`, background: 'linear-gradient(to right, #D97757, #C46849)' }}
+              />
+            </div>
+
             <div className="grid grid-cols-3 gap-2">
-              <div className="bg-white/5 border border-white/10 rounded-2xl p-4">
-                <div className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1 flex items-center gap-1">
+              <div className="rounded-2xl p-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
+                <div className="text-[10px] font-black uppercase tracking-widest mb-1 flex items-center gap-1" style={{ color: '#6B6B66' }}>
                   <Clock size={12} /> Tijd
                 </div>
-                <div className={`text-2xl font-black ${timeLeftSec <= 10 && mode === 'playing' ? 'text-red-300' : 'text-white'}`}>
+                <div
+                  className="text-2xl font-black"
+                  style={{
+                    color: timeLeftSec <= 10 && mode === 'playing' ? '#EF4444' : '#1A1A19',
+                    fontFamily: "'Newsreader', Georgia, serif",
+                  }}
+                >
                   {timeLeftSec}s
                 </div>
               </div>
-              <div className="bg-white/5 border border-white/10 rounded-2xl p-4">
-                <div className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">WPM</div>
-                <div className="text-2xl font-black text-white">{wpm}</div>
+              <div className="rounded-2xl p-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
+                <div className="text-[10px] font-black uppercase tracking-widest mb-1" style={{ color: '#6B6B66' }}>WPM</div>
+                <div className="text-2xl font-black" style={{ color: '#1A1A19', fontFamily: "'Newsreader', Georgia, serif" }}>{wpm}</div>
               </div>
-              <div className="bg-white/5 border border-white/10 rounded-2xl p-4">
-                <div className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Acc</div>
-                <div className="text-2xl font-black text-white">{accuracyPct}%</div>
+              <div className="rounded-2xl p-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
+                <div className="text-[10px] font-black uppercase tracking-widest mb-1" style={{ color: '#6B6B66' }}>Acc</div>
+                <div className="text-2xl font-black" style={{ color: '#1A1A19', fontFamily: "'Newsreader', Georgia, serif" }}>{accuracyPct}%</div>
               </div>
             </div>
 
             {renderPrompt()}
 
-            <div className="bg-white/5 border border-white/10 rounded-2xl p-4">
+            <div className="rounded-2xl p-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
               <input
                 ref={inputRef}
                 value={input}
                 onChange={(e) => handleChange(e.target.value)}
                 disabled={mode !== 'playing'}
                 placeholder={mode === 'playing' ? 'Begin met typen...' : 'Klaar'}
-                className="w-full px-4 py-4 rounded-2xl bg-slate-950/70 border border-white/10 outline-none focus:ring-2 focus:ring-sky-500/40 font-mono text-sm md:text-base"
+                className="w-full px-4 py-4 rounded-2xl font-mono text-sm md:text-base outline-none transition-all duration-300"
+                style={{
+                  backgroundColor: '#FAF9F0',
+                  border: '1px solid #E8E6DF',
+                  color: '#1A1A19',
+                }}
+                onFocus={(e) => { e.currentTarget.style.boxShadow = '0 0 0 2px #D9775740'; e.currentTarget.style.borderColor = '#D97757'; }}
+                onBlur={(e) => { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.borderColor = '#E8E6DF'; }}
               />
-              <div className="mt-2 text-[10px] text-slate-400 font-bold uppercase tracking-widest">
+              <div className="mt-2 text-[10px] font-bold uppercase tracking-widest" style={{ color: '#6B6B66' }}>
                 Tip: spaties tellen mee. Backspace mag, maar focus op flow.
               </div>
             </div>
 
             {mode === 'results' && (
-              <div className="bg-gradient-to-br from-amber-500/15 to-orange-500/10 border border-amber-400/20 rounded-3xl p-6">
+              <div className="rounded-2xl p-6" style={{ background: 'linear-gradient(135deg, #D9775712, #C4684908)', border: '1px solid #D9775730' }}>
                 <div className="flex items-center gap-3 mb-3">
-                  <div className="w-12 h-12 bg-amber-500/20 rounded-2xl flex items-center justify-center">
-                    <Trophy className="text-amber-300" size={24} />
+                  <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={{ backgroundColor: '#D9775720' }}>
+                    <Trophy style={{ color: '#D97757' }} size={24} />
                   </div>
                   <div>
-                    <div className="text-xs font-black uppercase tracking-widest text-amber-200/80">Resultaat</div>
-                    <div className="text-xl font-black text-white">{wpm} WPM • {accuracyPct}%</div>
+                    <div className="text-xs font-black uppercase tracking-widest" style={{ color: '#6B6B66' }}>Resultaat</div>
+                    <div className="text-xl font-black" style={{ color: '#1A1A19', fontFamily: "'Newsreader', Georgia, serif" }}>{wpm} WPM • {accuracyPct}%</div>
                   </div>
                 </div>
 
-                <div className="flex gap-2 mt-4">
+                {/* XP display */}
+                <div className="rounded-full inline-flex items-center gap-1.5 px-3 py-1 mb-4" style={{ border: '1px solid #10B98140', backgroundColor: '#10B98110', color: '#10B981' }}>
+                  <span className="text-xs font-bold">+{computeXp(wpm, accuracyPct)} XP</span>
+                </div>
+
+                <div className="flex gap-2 mt-2">
                   <button
                     onClick={() => {
                       resetRun();
                       setMode('countdown');
                     }}
-                    className="flex-1 py-4 rounded-2xl font-black uppercase tracking-widest bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 transition-all active:scale-95"
+                    className="flex-1 py-4 rounded-full font-black uppercase tracking-widest transition-all duration-300 active:scale-95"
+                    style={{ background: 'linear-gradient(to right, #D97757, #C46849)', color: '#FFFFFF', boxShadow: '0 4px 14px #D9775730' }}
+                    onMouseEnter={(e) => { e.currentTarget.style.background = 'linear-gradient(to right, #C46849, #B35A3D)'; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.background = 'linear-gradient(to right, #D97757, #C46849)'; }}
                   >
                     Opnieuw
                   </button>
                   <button
                     onClick={onExit}
-                    className="flex-1 py-4 rounded-2xl font-black uppercase tracking-widest bg-white/10 hover:bg-white/20 border border-white/10 transition-all active:scale-95"
+                    className="flex-1 py-4 rounded-full font-black uppercase tracking-widest transition-all duration-300 active:scale-95"
+                    style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF', color: '#3D3D38' }}
+                    onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#F0EEE8'; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = '#FFFFFF'; }}
                   >
                     Terug
                   </button>
@@ -331,4 +378,3 @@ export const TypingTrainer: React.FC<TypingTrainerProps> = ({ onExit, onXPEarned
 };
 
 export default TypingTrainer;
-

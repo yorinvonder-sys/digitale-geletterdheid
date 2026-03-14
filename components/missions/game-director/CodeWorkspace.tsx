@@ -202,9 +202,9 @@ export const CodeWorkspace: React.FC<CodeWorkspaceProps> = ({
                             {/* Drop indicator between blocks */}
                             {parentId === null && (
                                 <div
-                                    className={`h-3 rounded-full mb-1 transition-all ${dragOverIndex === index
-                                        ? 'bg-indigo-400 h-4'
-                                        : reorderingBlockId ? 'bg-slate-200 hover:bg-white' : 'bg-transparent'
+                                    className={`h-3 rounded-full mb-1 transition-all duration-300 ${dragOverIndex === index
+                                        ? 'bg-[#D97757] h-4'
+                                        : reorderingBlockId ? 'bg-[#F0EEE8] hover:bg-white' : 'bg-transparent'
                                         }`}
                                     onDragOver={(e) => {
                                         e.preventDefault();
@@ -235,7 +235,7 @@ export const CodeWorkspace: React.FC<CodeWorkspaceProps> = ({
 
                 {parentId === null && (
                     <div
-                        className={`h-12 rounded-lg border-2 border-dashed mt-2 transition-all flex items-center justify-center ${dragOverIndex === currentBlocks.length ? 'border-indigo-400 bg-indigo-100' : 'border-transparent'
+                        className={`h-12 rounded-2xl border-2 border-dashed mt-2 transition-all duration-300 flex items-center justify-center ${dragOverIndex === currentBlocks.length ? 'border-[#D97757] bg-[#D97757]/10' : 'border-transparent'
                             }`}
                         onDragOver={(e) => {
                             e.preventDefault();
@@ -243,7 +243,7 @@ export const CodeWorkspace: React.FC<CodeWorkspaceProps> = ({
                         }}
                         onDrop={(e) => handleDrop(e, null, currentBlocks.length)}
                     >
-                        {dragOverIndex === currentBlocks.length && <span className="text-indigo-500 font-bold text-xs">Drop hier</span>}
+                        {dragOverIndex === currentBlocks.length && <span className="text-[#D97757] font-bold text-xs">Drop hier</span>}
                     </div>
                 )}
             </div>
@@ -251,25 +251,25 @@ export const CodeWorkspace: React.FC<CodeWorkspaceProps> = ({
     };
 
     return (
-        <div className="h-full flex flex-col bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-lg">
+        <div className="h-full flex flex-col bg-white rounded-2xl overflow-hidden border border-[#E8E6DF] shadow-lg">
             {/* Header with controls */}
-            <div className="px-4 py-3 bg-slate-900 text-white flex items-center justify-between">
+            <div className="px-4 py-3 bg-white border-b border-[#E8E6DF] flex items-center justify-between">
                 <div>
-                    <h3 className="font-black text-sm uppercase tracking-widest">📝 Jouw Code</h3>
-                    <p className="text-[10px] text-slate-400 mt-0.5">{blocks.length} stack{blocks.length !== 1 ? 's' : ''}</p>
+                    <h3 className="font-black text-sm uppercase tracking-widest text-[#1A1A19] font-['Newsreader',Georgia,serif]">📝 Jouw Code</h3>
+                    <p className="text-[10px] text-[#6B6B66] mt-0.5">{blocks.length} stack{blocks.length !== 1 ? 's' : ''}</p>
                 </div>
                 <div className="flex items-center gap-2">
                     <button
                         onClick={handleClearAll}
                         disabled={blocks.length === 0}
-                        className="p-2 rounded-lg hover:bg-slate-700 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                        className="p-2 rounded-full text-[#6B6B66] hover:bg-[#FAF9F0] hover:text-[#D97757] transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed"
                         title="Verwijder alles"
                     >
                         <Trash2 size={16} />
                     </button>
                     <button
                         onClick={onReset}
-                        className="p-2 rounded-lg hover:bg-slate-700 transition-colors"
+                        className="p-2 rounded-full text-[#6B6B66] hover:bg-[#FAF9F0] hover:text-[#D97757] transition-all duration-300"
                         title="Reset game"
                     >
                         <RotateCcw size={16} />
@@ -277,9 +277,9 @@ export const CodeWorkspace: React.FC<CodeWorkspaceProps> = ({
                     <button
                         onClick={onRun}
                         disabled={blocks.length === 0}
-                        className={`px-4 py-2 rounded-xl font-bold text-sm flex items-center gap-2 transition-all ${isRunning
+                        className={`px-4 py-2 rounded-full font-bold text-sm text-white flex items-center gap-2 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#D97757] ${isRunning
                             ? 'bg-red-500 hover:bg-red-600'
-                            : 'bg-emerald-500 hover:bg-emerald-600 disabled:bg-slate-600 disabled:cursor-not-allowed'
+                            : 'bg-[#D97757] hover:bg-[#C46849] disabled:bg-[#E8E6DF] disabled:text-[#6B6B66] disabled:cursor-not-allowed'
                             }`}
                     >
                         <Play size={14} fill="currentColor" />
@@ -292,26 +292,26 @@ export const CodeWorkspace: React.FC<CodeWorkspaceProps> = ({
             <div
                 ref={dropZoneRef}
                 data-drop-zone="main"
-                className={`flex-1 p-4 overflow-y-auto transition-colors ${isDraggingOver ? 'bg-indigo-50' : 'bg-slate-50'
+                className={`flex-1 p-4 overflow-y-auto transition-all duration-300 ${isDraggingOver ? 'bg-[#D97757]/5' : 'bg-[#FAF9F0]'
                     }`}
                 onDrop={(e) => handleDrop(e)}
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
             >
                 {blocks.length === 0 ? (
-                    <div className={`h-full flex flex-col items-center justify-center text-center p-8 border-2 border-dashed rounded-2xl transition-all ${isDraggingOver ? 'border-indigo-400 bg-indigo-100/50 scale-[1.02]' : 'border-slate-300'
+                    <div className={`h-full flex flex-col items-center justify-center text-center p-8 border-2 border-dashed rounded-2xl transition-all duration-300 ${isDraggingOver ? 'border-[#D97757] bg-[#D97757]/5 scale-[1.02]' : 'border-[#E8E6DF]'
                         }`}>
                         {/* Placeholder box for visual guidance */}
-                        <div className={`w-48 h-16 mb-4 border-2 border-dashed rounded-lg flex items-center justify-center transition-all ${isDraggingOver ? 'border-indigo-500 bg-indigo-200/50' : 'border-slate-300 bg-slate-100'}`}>
-                            <Plus size={24} className={`${isDraggingOver ? 'text-indigo-600' : 'text-slate-400'}`} />
+                        <div className={`w-48 h-16 mb-4 border-2 border-dashed rounded-2xl flex items-center justify-center transition-all duration-300 ${isDraggingOver ? 'border-[#D97757] bg-[#D97757]/10' : 'border-[#E8E6DF] bg-white'}`}>
+                            <Plus size={24} className={`${isDraggingOver ? 'text-[#D97757]' : 'text-[#6B6B66]'}`} />
                         </div>
                         <div className="text-5xl mb-4">🧩</div>
-                        <h4 className="font-bold text-slate-700 mb-2">Sleep blokken hierheen</h4>
-                        <p className="text-sm text-slate-400 max-w-xs">
-                            Begin met een <span className="text-amber-600 font-bold">gele gebeurtenis</span> blok en voeg daarna andere blokken toe.
+                        <h4 className="font-bold text-[#1A1A19] mb-2">Sleep blokken hierheen</h4>
+                        <p className="text-sm text-[#6B6B66] max-w-xs">
+                            Begin met een <span className="text-[#D97757] font-bold">gele gebeurtenis</span> blok en voeg daarna andere blokken toe.
                         </p>
                         {/* iPad hint */}
-                        <p className="text-xs text-slate-400 mt-4 bg-slate-100 px-3 py-1.5 rounded-full">
+                        <p className="text-xs text-[#6B6B66] mt-4 bg-white px-3 py-1.5 rounded-full border border-[#F0EEE8]">
                             📱 Op iPad: Houd een blok ingedrukt en sleep naar hier
                         </p>
                     </div>
@@ -323,8 +323,8 @@ export const CodeWorkspace: React.FC<CodeWorkspaceProps> = ({
             {/* Touch drag CSS */}
             <style>{`
                 .touch-drag-over {
-                    background-color: rgba(99, 102, 241, 0.2) !important;
-                    border-color: rgb(99, 102, 241) !important;
+                    background-color: rgba(217, 119, 87, 0.15) !important;
+                    border-color: rgb(217, 119, 87) !important;
                 }
             `}</style>
         </div>
