@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { PlacedBlock, BlockDefinition, getBlockById } from './BlockTypes';
 import { CodeBlock } from './CodeBlock';
-import { Trash2, Play, RotateCcw, Plus } from 'lucide-react';
+import { Trash2, Play, RotateCcw, Plus, Undo2, X, AlertTriangle } from 'lucide-react';
 
 interface CodeWorkspaceProps {
     blocks: PlacedBlock[];
@@ -21,10 +21,25 @@ export const CodeWorkspace: React.FC<CodeWorkspaceProps> = ({
     const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
     const [isDraggingOver, setIsDraggingOver] = useState(false);
     const [reorderingBlockId, setReorderingBlockId] = useState<string | null>(null);
+    const [showClearConfirm, setShowClearConfirm] = useState(false);
+    const [undoStack, setUndoStack] = useState<PlacedBlock[][]>([]);
     const dropZoneRef = useRef<HTMLDivElement>(null);
 
     // Generate unique ID for new blocks
     const generateId = () => `block-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+
+    // Save current state to undo stack before making changes
+    const saveToUndo = useCallback(() => {
+        setUndoStack(prev => [...prev.slice(-9), blocks]);
+    }, [blocks]);
+
+    // Undo last action
+    const handleUndo = useCallback(() => {
+        if (undoStack.length === 0) return;
+        const previousState = undoStack[undoStack.length - 1];
+        setUndoStack(prev => prev.slice(0, -1));
+        onBlocksChange(previousState);
+    }, [undoStack, onBlocksChange]);
 
     // Recursive helper to update a block in the tree
     const updateBlockInTree = useCallback((currentBlocks: PlacedBlock[], blockId: string, updater: (block: PlacedBlock) => PlacedBlock): PlacedBlock[] => {
@@ -106,6 +121,7 @@ export const CodeWorkspace: React.FC<CodeWorkspaceProps> = ({
         e.stopPropagation();
         setIsDraggingOver(false);
         setDragOverIndex(null);
+        saveToUndo();
 
         const reorderBlockId = e.dataTransfer.getData('reorderBlockId');
         const definitionId = e.dataTransfer.getData('blockDefinitionId');
@@ -160,7 +176,7 @@ export const CodeWorkspace: React.FC<CodeWorkspaceProps> = ({
         }
 
         setReorderingBlockId(null);
-    }, [blocks, onBlocksChange, updateBlockInTree, removeBlockFromTree]);
+    }, [blocks, onBlocksChange, updateBlockInTree, removeBlockFromTree, saveToUndo]);
 
     const handleDragOver = useCallback((e: React.DragEvent) => {
         e.preventDefault();
@@ -180,13 +196,20 @@ export const CodeWorkspace: React.FC<CodeWorkspaceProps> = ({
     }, [blocks, onBlocksChange, updateBlockInTree]);
 
     const handleRemove = useCallback((blockId: string) => {
+        saveToUndo();
         onBlocksChange(removeBlockFromTree(blocks, blockId));
-    }, [blocks, onBlocksChange, removeBlockFromTree]);
+    }, [blocks, onBlocksChange, removeBlockFromTree, saveToUndo]);
 
     const handleClearAll = () => {
-        if (blocks.length > 0 && confirm('Weet je zeker dat je alle blokken wilt verwijderen?')) {
-            onBlocksChange([]);
+        if (blocks.length > 0) {
+            setShowClearConfirm(true);
         }
+    };
+
+    const confirmClearAll = () => {
+        saveToUndo();
+        onBlocksChange([]);
+        setShowClearConfirm(false);
     };
 
     // Sub-component for rendering a list of blocks recursively
@@ -260,6 +283,15 @@ export const CodeWorkspace: React.FC<CodeWorkspaceProps> = ({
                 </div>
                 <div className="flex items-center gap-2">
                     <button
+                        onClick={handleUndo}
+                        disabled={undoStack.length === 0}
+                        className="p-2 rounded-full text-[#6B6B66] hover:bg-[#FAF9F0] hover:text-[#8B6F9E] transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed"
+                        title="Ongedaan maken"
+                        aria-label="Ongedaan maken"
+                    >
+                        <Undo2 size={16} />
+                    </button>
+                    <button
                         onClick={handleClearAll}
                         disabled={blocks.length === 0}
                         className="p-2 rounded-full text-[#6B6B66] hover:bg-[#FAF9F0] hover:text-[#D97757] transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed"
@@ -319,6 +351,37 @@ export const CodeWorkspace: React.FC<CodeWorkspaceProps> = ({
                     <BlockList currentBlocks={blocks} parentId={null} />
                 )}
             </div>
+
+            {/* Clear All Confirmation Dialog */}
+            {showClearConfirm && (
+                <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm rounded-2xl">
+                    <div className="bg-white rounded-2xl shadow-2xl border border-[#E8E6DF] p-6 mx-4 max-w-sm w-full">
+                        <div className="flex items-center gap-3 mb-3">
+                            <div className="p-2 bg-[#D97757]/10 rounded-xl">
+                                <AlertTriangle size={20} className="text-[#D97757]" />
+                            </div>
+                            <h4 className="font-bold text-[#1A1A19] text-sm font-['Newsreader',Georgia,serif]">Alles verwijderen?</h4>
+                        </div>
+                        <p className="text-xs text-[#6B6B66] mb-4">
+                            Weet je zeker dat je alle {blocks.length} blok{blocks.length !== 1 ? 'ken' : ''} wilt verwijderen? Je kunt dit ongedaan maken met de undo-knop.
+                        </p>
+                        <div className="flex items-center gap-2 justify-end">
+                            <button
+                                onClick={() => setShowClearConfirm(false)}
+                                className="px-4 py-2 rounded-full text-xs font-bold text-[#6B6B66] hover:bg-[#FAF9F0] transition-all duration-300 border border-[#E8E6DF]"
+                            >
+                                Annuleren
+                            </button>
+                            <button
+                                onClick={confirmClearAll}
+                                className="px-4 py-2 rounded-full text-xs font-bold text-white bg-[#D97757] hover:bg-[#C46849] transition-all duration-300 shadow-lg shadow-[#D97757]/20"
+                            >
+                                Verwijder alles
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {/* Touch drag CSS */}
             <style>{`

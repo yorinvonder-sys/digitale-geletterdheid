@@ -1,6 +1,13 @@
 import React, { useState } from 'react';
-import { ArrowLeft, CheckCircle, Monitor, X, Play, Palette, Type, Layout, MousePointer, Image as ImageIcon, Zap, AlertTriangle, ArrowRight } from 'lucide-react';
+import { ArrowLeft, CheckCircle, Monitor, X, Play, Palette, Type, Layout, MousePointer, Image as ImageIcon, Zap, AlertTriangle, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import type { VsoProfile } from '../../../types';
+import { useMissionAutoSave } from '@/hooks/useMissionAutoSave';
+
+interface PitchPoliceState {
+    currentSlideIndex: number;
+    slideStates: Record<number, 'broken' | 'fixed'>;
+    showIntro: boolean;
+}
 
 interface PitchPoliceProps {
     onComplete: (success: boolean) => void;
@@ -241,12 +248,23 @@ const SLIDES: SlideData[] = [
 ];
 
 export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onBack }) => {
-    const [showIntro, setShowIntro] = useState(true);
-    const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
-    const [slideState, setSlideState] = useState<'broken' | 'fixed'>('broken');
-    const [showFeedback, setShowFeedback] = useState<boolean | null>(null); // true = correct, false = wrong
+    const { state, setState, clearSave } = useMissionAutoSave<PitchPoliceState>(
+        'pitch-police',
+        {
+            currentSlideIndex: 0,
+            slideStates: {},
+            showIntro: true,
+        }
+    );
+
+    const { currentSlideIndex, slideStates, showIntro } = state;
+
+    // Transient UI state - niet opgeslagen
+    const [showFeedback, setShowFeedback] = useState<boolean | null>(null);
+    const [showMobileInspector, setShowMobileInspector] = useState(false);
 
     const currentSlide = SLIDES[currentSlideIndex];
+    const slideState = slideStates[currentSlideIndex] || 'broken';
     const isFixed = slideState === 'fixed';
 
     const handleOptionSelect = (isCorrect: boolean) => {
@@ -255,8 +273,12 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
 
             // Wait a bit, then fix the slide
             setTimeout(() => {
-                setSlideState('fixed');
+                setState(prev => ({
+                    ...prev,
+                    slideStates: { ...prev.slideStates, [prev.currentSlideIndex]: 'fixed' },
+                }));
                 setShowFeedback(null);
+                setShowMobileInspector(false);
             }, 1000);
 
         } else {
@@ -267,10 +289,22 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
 
     const handleNextSlide = () => {
         if (currentSlideIndex < SLIDES.length - 1) {
-            setCurrentSlideIndex(prev => prev + 1);
-            setSlideState('broken');
+            setState(prev => ({
+                ...prev,
+                currentSlideIndex: prev.currentSlideIndex + 1,
+            }));
         } else {
+            clearSave();
             onComplete(true);
+        }
+    };
+
+    const handlePrevSlide = () => {
+        if (currentSlideIndex > 0) {
+            setState(prev => ({
+                ...prev,
+                currentSlideIndex: prev.currentSlideIndex - 1,
+            }));
         }
     };
 
@@ -348,7 +382,7 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
 
                     {/* Start Button */}
                     <button
-                        onClick={() => setShowIntro(false)}
+                        onClick={() => setState(prev => ({ ...prev, showIntro: false }))}
                         className="px-12 py-5 bg-[#D97757] hover:bg-[#C46849] text-white rounded-full font-black text-xl shadow-2xl shadow-[#D97757]/30 hover:scale-105 transition-all duration-300 flex items-center gap-3 mx-auto group focus-visible:ring-2 focus-visible:ring-[#D97757]"
                     >
                         <Play size={24} fill="currentColor" />
@@ -401,9 +435,9 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
                 />
             </div>
 
-            <div className="flex-1 flex overflow-hidden">
-                {/* Thumbnails Sidebar */}
-                <aside className="w-48 bg-[#2d2d2a] border-r border-[#3D3D38] p-4 flex flex-col gap-4 overflow-y-auto hidden md:flex">
+            <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
+                {/* Thumbnails Sidebar - hidden on mobile */}
+                <aside className="w-48 bg-[#2d2d2a] border-r border-[#3D3D38] p-4 flex-col gap-4 overflow-y-auto hidden lg:flex">
                     {SLIDES.map((slide, idx) => (
                         <div
                             key={slide.id}
@@ -413,7 +447,7 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
                             `}
                         >
                             <span className="font-bold text-[#6B6B66]">Dia {idx + 1}</span>
-                            {idx < currentSlideIndex && (
+                            {slideStates[idx] === 'fixed' && (
                                 <div className="absolute top-1 right-1 bg-[#10B981] rounded-full p-0.5">
                                     <CheckCircle size={10} className="text-white" />
                                 </div>
@@ -423,7 +457,7 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
                 </aside>
 
                 {/* Main Slide Editor */}
-                <main className="flex-1 bg-[#1A1A19] p-8 flex items-center justify-center relative flex-col gap-6">
+                <main className="flex-1 bg-[#1A1A19] p-4 lg:p-8 flex items-center justify-center relative flex-col gap-4 lg:gap-6">
                     {/* The Slide Container */}
                     <div className="relative w-full max-w-4xl aspect-video group">
                         <div className={`
@@ -456,13 +490,49 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
                         </div>
                     </div>
 
-                    {/* Next Button - Appears only when Fixed */}
+                    {/* Navigation Buttons */}
                     {isFixed && (
+                        <div className="flex items-center gap-3 animate-in slide-in-from-bottom-5 fade-in">
+                            {currentSlideIndex > 0 && (
+                                <button
+                                    onClick={handlePrevSlide}
+                                    className="bg-[#3D3D38] text-white px-4 py-3 rounded-full font-bold text-sm lg:text-lg shadow-lg hover:bg-[#4a4a44] hover:scale-105 transition-all duration-300 flex items-center gap-2 focus-visible:ring-2 focus-visible:ring-[#6B6B66]"
+                                >
+                                    <ChevronLeft size={20} /> <span className="hidden sm:inline">Vorige</span>
+                                </button>
+                            )}
+                            <button
+                                onClick={handleNextSlide}
+                                className="bg-[#10B981] text-white px-6 lg:px-8 py-3 rounded-full font-bold text-sm lg:text-lg shadow-lg hover:bg-emerald-600 hover:scale-105 transition-all duration-300 flex items-center gap-2 focus-visible:ring-2 focus-visible:ring-[#10B981]"
+                            >
+                                {currentSlideIndex < SLIDES.length - 1 ? 'Volgende Dia' : 'Afronden'} <ArrowRight size={20} />
+                            </button>
+                        </div>
+                    )}
+
+                    {/* Mobile slide indicator dots */}
+                    <div className="flex lg:hidden items-center gap-1.5">
+                        {SLIDES.map((_, idx) => (
+                            <div
+                                key={idx}
+                                className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                                    idx === currentSlideIndex
+                                        ? 'bg-[#D97757] w-6'
+                                        : slideStates[idx] === 'fixed'
+                                            ? 'bg-[#10B981]'
+                                            : 'bg-[#3D3D38]'
+                                }`}
+                            />
+                        ))}
+                    </div>
+
+                    {/* Mobile Inspector Toggle */}
+                    {!isFixed && (
                         <button
-                            onClick={handleNextSlide}
-                            className="bg-[#10B981] text-white px-8 py-3 rounded-full font-bold text-lg shadow-lg hover:bg-emerald-600 hover:scale-105 transition-all duration-300 flex items-center gap-2 animate-in slide-in-from-bottom-5 fade-in focus-visible:ring-2 focus-visible:ring-[#10B981]"
+                            onClick={() => setShowMobileInspector(!showMobileInspector)}
+                            className="lg:hidden bg-[#D97757] text-white px-6 py-3 rounded-full font-bold text-sm shadow-lg hover:bg-[#C46849] transition-all duration-300 flex items-center gap-2 focus-visible:ring-2 focus-visible:ring-[#D97757]"
                         >
-                            {currentSlideIndex < SLIDES.length - 1 ? 'Volgende Dia' : 'Afronden'} <ArrowRight size={20} />
+                            <AlertTriangle size={16} /> Bekijk Rapport & Opties
                         </button>
                     )}
 
@@ -488,8 +558,11 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
                     )}
                 </main>
 
-                {/* Inspector Panel - Only visible when NOT fixed */}
-                <aside className={`w-80 bg-[#2d2d2a] border-l border-[#3D3D38] flex flex-col transition-all duration-500 ${isFixed ? 'opacity-30 pointer-events-none grayscale' : 'opacity-100'}`}>
+                {/* Inspector Panel - Desktop: sidebar, Mobile: bottom sheet */}
+                <aside className={`
+                    hidden lg:flex w-80 bg-[#2d2d2a] border-l border-[#3D3D38] flex-col transition-all duration-500
+                    ${isFixed ? 'opacity-30 pointer-events-none grayscale' : 'opacity-100'}
+                `}>
                     <div className="p-6">
                         <div className="mb-6">
                             <h3 className="text-lg font-black text-white mb-2 flex items-center gap-2" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
@@ -526,6 +599,49 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
                         </div>
                     </div>
                 </aside>
+
+                {/* Mobile Inspector Bottom Sheet */}
+                {showMobileInspector && !isFixed && (
+                    <div className="lg:hidden fixed inset-0 z-50 flex flex-col justify-end">
+                        <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setShowMobileInspector(false)} />
+                        <div className="relative bg-[#2d2d2a] rounded-t-3xl p-6 max-h-[80vh] overflow-y-auto animate-in slide-in-from-bottom fade-in duration-300">
+                            <div className="w-10 h-1 bg-[#6B6B66] rounded-full mx-auto mb-4" />
+                            <div className="mb-4">
+                                <h3 className="text-lg font-black text-white mb-2 flex items-center gap-2" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
+                                    Politie Rapport
+                                </h3>
+                                <div className="bg-[#1A1A19] p-4 rounded-2xl border border-[#3D3D38]">
+                                    <p className="text-red-400 font-bold text-xs uppercase mb-1 flex items-center gap-1">
+                                        <AlertTriangle size={12} /> Overtreding:
+                                    </p>
+                                    <p className="text-slate-300 text-sm leading-relaxed">
+                                        {currentSlide.feedback}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div className="space-y-3">
+                                <h4 className="text-xs font-bold text-[#6B6B66] uppercase tracking-widest pl-1">Jouw Oplossing:</h4>
+                                {currentSlide.options.map((opt) => (
+                                    <button
+                                        key={opt.id}
+                                        onClick={() => handleOptionSelect(opt.correct)}
+                                        className="w-full text-left p-4 rounded-2xl bg-[#3D3D38] hover:bg-[#4a4a44] border border-transparent hover:border-[#D97757] transition-all duration-300 group relative overflow-hidden focus-visible:ring-2 focus-visible:ring-[#D97757]"
+                                    >
+                                        <div className="flex items-start gap-3 relative z-10">
+                                            <div className="w-6 h-6 rounded-full bg-[#1A1A19] flex items-center justify-center text-xs font-bold group-hover:bg-[#D97757] transition-all duration-300 shrink-0 text-white">
+                                                {opt.id.toUpperCase()}
+                                            </div>
+                                            <span className="text-sm font-medium text-slate-200 group-hover:text-white">
+                                                {opt.text}
+                                            </span>
+                                        </div>
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );

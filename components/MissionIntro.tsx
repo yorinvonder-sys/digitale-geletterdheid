@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { ChevronRight, Play } from 'lucide-react';
+import { ChevronRight, Play, Loader2 } from 'lucide-react';
 
 interface IntroProject {
     title: string;
@@ -18,12 +18,14 @@ interface MissionIntroProps {
 
 export const MissionIntro: React.FC<MissionIntroProps> = ({ weekNumber, projects, onFinish }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [imageLoading, setImageLoading] = useState(true);
     if (!projects || projects.length === 0) return null;
     const currentProject = projects[currentIndex];
 
     const handleNext = () => {
         if (currentIndex < projects.length - 1) {
             setCurrentIndex(currentIndex + 1);
+            setImageLoading(true);
         } else {
             onFinish();
         }
@@ -51,12 +53,20 @@ export const MissionIntro: React.FC<MissionIntroProps> = ({ weekNumber, projects
                         {/* Center Visual */}
                         <div className="relative z-10 w-full h-full transition-all duration-300 group-hover:scale-105 flex items-center justify-center">
                             {currentProject.image ? (
-                                <img
-                                    src={currentProject.image}
-                                    alt={currentProject.title}
-                                    className="w-full h-full object-cover rounded-2xl"
-                                    decoding="async"
-                                />
+                                <>
+                                    {imageLoading && (
+                                        <div className="absolute inset-0 z-20 flex items-center justify-center">
+                                            <Loader2 size={32} className="text-[#D97757] animate-spin" />
+                                        </div>
+                                    )}
+                                    <img
+                                        src={currentProject.image}
+                                        alt={currentProject.title}
+                                        className={`w-full h-full object-cover rounded-2xl transition-opacity duration-300 ${imageLoading ? 'opacity-0' : 'opacity-100'}`}
+                                        decoding="async"
+                                        onLoad={() => setImageLoading(false)}
+                                    />
+                                </>
                             ) : (
                                 <div className="scale-125">
                                     {currentProject.icon}
@@ -77,6 +87,7 @@ export const MissionIntro: React.FC<MissionIntroProps> = ({ weekNumber, projects
 
                     <button
                         onClick={handleNext}
+                        aria-label={currentIndex === projects.length - 1 ? 'Start missies' : `Ga naar volgend project: ${projects[currentIndex + 1]?.title || ''}`}
                         className="w-full bg-[#D97757] text-white py-6 rounded-full font-black text-lg uppercase tracking-widest flex items-center justify-center gap-3 hover:bg-[#C46849] transition-all duration-300 shadow-xl shadow-[#D97757]/20 focus-visible:ring-2 focus-visible:ring-[#D97757]"
                     >
                         {currentIndex === projects.length - 1 ? (

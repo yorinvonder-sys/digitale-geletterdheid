@@ -1,10 +1,10 @@
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Settings2, Play, RotateCcw, ArrowLeft, Sparkles, Trophy, HelpCircle, CheckCircle2 } from 'lucide-react';
+import { Settings2, Play, RotateCcw, ArrowLeft, Sparkles, Trophy, HelpCircle, CheckCircle2, Puzzle, Code2, Gamepad2 } from 'lucide-react';
 import { UserStats } from '../../types';
 import { BlockPalette } from './game-director/BlockPalette';
 import { CodeWorkspace } from './game-director/CodeWorkspace';
-import { PlacedBlock, BlockDefinition, GameContext } from './game-director/BlockTypes';
+import { PlacedBlock, BlockDefinition, GameContext, getBlockById } from './game-director/BlockTypes';
 import { createExecutor, BlockExecutor } from './game-director/BlockExecutor';
 import { MissionConclusion } from '../MissionConclusion';
 import { StudentAIChat } from '../StudentAIChat';
@@ -195,6 +195,23 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
     // Block programming state
     const [blocks, setBlocks] = useState<PlacedBlock[]>([]);
     const [draggingBlock, setDraggingBlock] = useState<BlockDefinition | null>(null);
+
+    // Mobile tab state
+    type MobileTab = 'blocks' | 'code' | 'game';
+    const [mobileTab, setMobileTab] = useState<MobileTab>('code');
+
+    // Add block handler (for keyboard/button add from palette)
+    const handleAddBlock = useCallback((definition: BlockDefinition) => {
+        const newBlock: PlacedBlock = {
+            id: `block-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+            definitionId: definition.id,
+            inputs: definition.inputs.reduce((acc, input) => {
+                acc[input.name] = input.default;
+                return acc;
+            }, {} as Record<string, any>)
+        };
+        setBlocks(prev => [...prev, newBlock]);
+    }, []);
 
     // Transient game state
     const [isPlaying, setIsPlaying] = useState(false);
@@ -764,16 +781,38 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                 </div>
             )}
 
+            {/* Mobile Tab Bar */}
+            <div className="md:hidden flex border-b border-[#E8E6DF] bg-white shrink-0">
+                {([
+                    { key: 'blocks' as MobileTab, label: 'Blokken', icon: <Puzzle size={16} /> },
+                    { key: 'code' as MobileTab, label: 'Code', icon: <Code2 size={16} /> },
+                    { key: 'game' as MobileTab, label: 'Game', icon: <Gamepad2 size={16} /> },
+                ]).map(tab => (
+                    <button
+                        key={tab.key}
+                        onClick={() => setMobileTab(tab.key)}
+                        className={`flex-1 flex items-center justify-center gap-2 py-3 text-xs font-bold uppercase tracking-wider transition-all duration-300 ${
+                            mobileTab === tab.key
+                                ? 'text-[#D97757] border-b-2 border-[#D97757] bg-[#D97757]/5'
+                                : 'text-[#6B6B66] hover:text-[#1A1A19]'
+                        }`}
+                    >
+                        {tab.icon}
+                        {tab.label}
+                    </button>
+                ))}
+            </div>
+
             {/* Main Content Area - Full Height Grid */}
             <div className="flex-1 flex flex-col md:flex-row overflow-hidden">
 
                 {/* Left Panel: Block Palette */}
-                <div className="w-full md:w-64 bg-[#FAF9F0] border-b md:border-b-0 md:border-r border-[#E8E6DF] flex flex-col shrink-0 z-10 p-2 max-h-[30vh] md:max-h-none overflow-y-auto">
-                    <BlockPalette onDragStart={setDraggingBlock} />
+                <div className={`${mobileTab === 'blocks' ? 'flex' : 'hidden'} md:flex w-full md:w-64 bg-[#FAF9F0] border-b md:border-b-0 md:border-r border-[#E8E6DF] flex-col shrink-0 z-10 p-2 flex-1 md:flex-initial md:max-h-none overflow-y-auto`}>
+                    <BlockPalette onDragStart={setDraggingBlock} onAddBlock={handleAddBlock} />
                 </div>
 
                 {/* Middle Panel: Workspace */}
-                <div className="flex-1 bg-[#FAF9F0] relative flex flex-col min-w-0 p-2">
+                <div className={`${mobileTab === 'code' ? 'flex' : 'hidden'} md:flex flex-1 bg-[#FAF9F0] relative flex-col min-w-0 p-2`}>
                     <div className="absolute inset-0 bg-[linear-gradient(#E8E6DF_1px,transparent_1px),linear-gradient(90deg,#E8E6DF_1px,transparent_1px)] bg-[size:20px_20px] opacity-40 pointer-events-none"></div>
                     <CodeWorkspace
                         blocks={blocks}
@@ -785,7 +824,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                 </div>
 
                 {/* Right Panel: Game Preview (Larger!) */}
-                <div className="w-full md:w-[40%] md:min-w-[320px] md:max-w-[800px] bg-white border-t md:border-t-0 md:border-l border-[#E8E6DF] flex flex-col shadow-2xl z-20">
+                <div className={`${mobileTab === 'game' ? 'flex' : 'hidden'} md:flex w-full md:w-[40%] md:min-w-[320px] md:max-w-[800px] bg-white border-t md:border-t-0 md:border-l border-[#E8E6DF] flex-col shadow-2xl z-20`}>
                     <div className="p-4 bg-[#FAF9F0] border-b border-[#E8E6DF] flex justify-between items-center">
                         <div className="flex items-center gap-2">
                             <div className="w-2 h-2 rounded-full bg-[#10B981] animate-pulse"></div>
@@ -796,7 +835,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                         </div>
                     </div>
 
-                    <div className="flex-1 p-6 flex flex-col gap-4 overflow-y-auto bg-[#FAF9F0] relative">
+                    <div className="flex-1 p-4 md:p-6 flex flex-col gap-4 overflow-y-auto bg-[#FAF9F0] relative">
                         {/* Game Screen Container - Maintains Aspect Ratio but fills space */}
                         <div className="flex-1 relative bg-[#1A1A19] rounded-2xl overflow-hidden shadow-2xl border-4 border-[#E8E6DF] ring-1 ring-black/5 group">
                             {/* Canvas needs to respond to size */}
@@ -810,8 +849,8 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                                 />
                             </div>
 
-                            {/* Overlay Controls (Play/Stop) on top of Game */}
-                            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 bg-white/90 backdrop-blur-sm p-1.5 rounded-full border border-[#E8E6DF] shadow-xl opacity-0 group-hover:opacity-100 transition-all duration-300">
+                            {/* Overlay Controls (Play/Stop) on top of Game - always visible on touch, hover on desktop */}
+                            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 bg-white/90 backdrop-blur-sm p-1.5 rounded-full border border-[#E8E6DF] shadow-xl opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-300">
                                 <button
                                     onClick={handleTogglePlay}
                                     className={`p-3 rounded-full transition-all duration-300 active:scale-95 ${isPlaying
@@ -844,6 +883,30 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                         </div>
                     </div>
                 </div>
+            </div>
+
+            {/* Mobile Sticky Bottom Bar with Run/Reset */}
+            <div className="md:hidden flex items-center justify-between px-4 py-2 bg-white border-t border-[#E8E6DF] shrink-0 gap-2">
+                <button
+                    onClick={handleReset}
+                    className="flex items-center gap-2 px-4 py-2.5 rounded-full text-[#6B6B66] hover:text-[#D97757] bg-[#FAF9F0] border border-[#E8E6DF] font-bold text-xs transition-all duration-300"
+                >
+                    <RotateCcw size={14} /> Reset
+                </button>
+                <div className="flex items-center gap-2 text-xs text-[#6B6B66] font-bold">
+                    {blocks.length} blok{blocks.length !== 1 ? 'ken' : ''}
+                </div>
+                <button
+                    onClick={handleTogglePlay}
+                    disabled={blocks.length === 0}
+                    className={`flex items-center gap-2 px-6 py-2.5 rounded-full font-bold text-sm text-white transition-all duration-300 ${isPlaying
+                        ? 'bg-red-500 hover:bg-red-600'
+                        : 'bg-[#D97757] hover:bg-[#C46849] disabled:bg-[#E8E6DF] disabled:text-[#6B6B66]'
+                    }`}
+                >
+                    <Play size={14} fill="currentColor" />
+                    {isPlaying ? 'STOP' : 'START'}
+                </button>
             </div>
         </div>
     );

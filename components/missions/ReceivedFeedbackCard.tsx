@@ -17,6 +17,7 @@ const criteriaLabels: Record<string, string> = {
 export const ReceivedFeedbackCard: React.FC<Props> = ({ feedback, onVoted }) => {
   const [voting, setVoting] = useState(false);
   const [localVote, setLocalVote] = useState<boolean | null>(feedback.helpfulVote);
+  const [voteError, setVoteError] = useState(false);
 
   const avgScore = feedback.criteria
     ? Math.round(
@@ -29,12 +30,14 @@ export const ReceivedFeedbackCard: React.FC<Props> = ({ feedback, onVoted }) => 
   const handleVote = async (helpful: boolean) => {
     if (voting || localVote !== null) return;
     setVoting(true);
+    setVoteError(false);
     try {
       await voteHelpful(feedback.id, helpful);
       setLocalVote(helpful);
       onVoted?.();
     } catch {
-      // stil falen
+      setVoteError(true);
+      setTimeout(() => setVoteError(false), 3000);
     } finally {
       setVoting(false);
     }
@@ -107,6 +110,9 @@ export const ReceivedFeedbackCard: React.FC<Props> = ({ feedback, onVoted }) => 
           >
             <ThumbsDown size={14} />
           </button>
+          {voteError && (
+            <span className="text-xs text-red-500 font-medium ml-1">Stem niet opgeslagen</span>
+          )}
         </div>
       ) : (
         <p className="text-xs text-[#A3A196] pt-1">

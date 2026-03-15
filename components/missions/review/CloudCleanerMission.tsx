@@ -1,7 +1,66 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Cloud, FileText, Image as ImageIcon, Folder, ArrowLeft, CheckCircle, AlertCircle, Monitor, Trash2, FileWarning, Sparkles } from 'lucide-react';
+import { Cloud, FileText, Image as ImageIcon, Folder, ArrowLeft, CheckCircle, AlertCircle, Monitor, Trash2, FileWarning, Sparkles, X } from 'lucide-react';
 import type { UserStats, VsoProfile } from '../../../types';
+import { useMissionAutoSave } from '@/hooks/useMissionAutoSave';
+
+interface CloudCleanerState {
+    remainingFileIds: string[];
+    score: number;
+    mistakes: number;
+}
+
+// "Waarom" reflectievragen per map
+const WHY_QUESTIONS: Record<string, { question: string; options: { text: string; correct: boolean }[] }> = {
+    nederlands: {
+        question: 'Waarom past dit bestand in de map Nederlands?',
+        options: [
+            { text: 'Het is een schooldocument voor het vak Nederlands', correct: true },
+            { text: 'Omdat het een .docx bestand is', correct: false },
+            { text: 'Omdat het een klein bestand is', correct: false },
+        ],
+    },
+    wiskunde: {
+        question: 'Waarom hoort dit bestand bij Wiskunde?',
+        options: [
+            { text: 'Het gaat over wiskundige opdrachten of huiswerk', correct: true },
+            { text: 'Omdat het een PDF is', correct: false },
+            { text: 'Omdat de bestandsnaam kort is', correct: false },
+        ],
+    },
+    aardrijkskunde: {
+        question: 'Waarom past dit in de map Aardrijkskunde?',
+        options: [
+            { text: 'Het is een presentatie of document voor het vak Aardrijkskunde', correct: true },
+            { text: 'Omdat het een PowerPoint is', correct: false },
+            { text: 'Omdat het groot is', correct: false },
+        ],
+    },
+    school_algemeen: {
+        question: 'Waarom past dit bij School Algemeen?',
+        options: [
+            { text: 'Het is een algemeen schooldocument, niet voor een specifiek vak', correct: true },
+            { text: 'Omdat het een tekstbestand is', correct: false },
+            { text: 'Omdat het niet belangrijk is', correct: false },
+        ],
+    },
+    prive: {
+        question: 'Waarom hoort dit in Priv\u00e9?',
+        options: [
+            { text: 'Het is een persoonlijk bestand, niet voor school', correct: true },
+            { text: 'Omdat het een afbeelding is', correct: false },
+            { text: 'Omdat het gevaarlijk is', correct: false },
+        ],
+    },
+    trash: {
+        question: 'Waarom gooi je dit weg?',
+        options: [
+            { text: 'Het is een verdacht of ongewenst bestand (virus, spam, troep)', correct: true },
+            { text: 'Omdat de bestandsnaam lang is', correct: false },
+            { text: 'Omdat je het niet kent', correct: false },
+        ],
+    },
+};
 
 interface CloudCleanerProps {
     onComplete: (success: boolean) => void;
@@ -46,9 +105,21 @@ const FOLDERS: FolderItem[] = [
 ];
 
 export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, onBack }) => {
-    const [files, setFiles] = useState<FileItem[]>(FILES);
-    const [score, setScore] = useState(0);
-    const [mistakes, setMistakes] = useState(0);
+    const { state: savedState, setState: setSavedState, clearSave } = useMissionAutoSave<CloudCleanerState>(
+        'cloud-cleaner',
+        {
+            remainingFileIds: FILES.map(f => f.id),
+            score: 0,
+            mistakes: 0,
+        }
+    );
+
+    // Derive files from saved remaining IDs
+    const files = FILES.filter(f => savedState.remainingFileIds.includes(f.id));
+    const score = savedState.score;
+    const mistakes = savedState.mistakes;
+
+    // Transient UI state - niet opgeslagen
     const [showSuccess, setShowSuccess] = useState(false);
     const [dragActive, setDragActive] = useState<string | null>(null);
     const [selectedFolder, setSelectedFolder] = useState<string | null>(null);
@@ -58,6 +129,11 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
     const [dragOverFolderId, setDragOverFolderId] = useState<string | null>(null);
     const [shakeFolder, setShakeFolder] = useState<string | null>(null);
     const [lastSuccessFolder, setLastSuccessFolder] = useState<string | null>(null);
+    const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+
+    // "Waarom" reflectie state
+    const [whyQuestion, setWhyQuestion] = useState<{ folderId: string; fileName: string } | null>(null);
+    const [whyFeedback, setWhyFeedback] = useState<'correct' | 'wrong' | null>(null);
 
     // Touch drag state
     const [touchDragFile, setTouchDragFile] = useState<string | null>(null);
@@ -110,22 +186,32 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
         if (file.correctFolder === folderId) {
             // Correct! Show success animation
             setLastSuccessFolder(folderId);
-            setSuccessMessage(`✓ ${file.name} geplaatst!`);
-            setFiles(prev => prev.filter(f => f.id !== fileId));
-            setScore(s => s + 10);
+            setSuccessMessage(`\u2713 ${file.name} geplaatst!`);
+            setSavedState(prev => ({
+                ...prev,
+                remainingFileIds: prev.remainingFileIds.filter(id => id !== fileId),
+                score: prev.score + 10,
+            }));
             setSelectedFile(null);
             setSelectedFolder(null);
 
+            // Show "waarom" reflectie vraag
+            if (WHY_QUESTIONS[folderId]) {
+                setTimeout(() => {
+                    setWhyQuestion({ folderId, fileName: file.name });
+                }, 800);
+            }
+
             // Check win condition
             if (files.length === 1) {
-                setTimeout(() => setShowSuccess(true), 500);
+                setTimeout(() => setShowSuccess(true), 1500);
             }
         } else {
             // Wrong folder - shake animation
             setShakeFolder(folderId);
             setTimeout(() => setShakeFolder(null), 500);
 
-            setMistakes(m => m + 1);
+            setSavedState(prev => ({ ...prev, mistakes: prev.mistakes + 1 }));
             if (folderId === 'trash' && file.correctFolder !== 'trash') {
                 setErrorMessage('Ho! Dit is een belangrijk bestand, niet weggooien!');
             } else if (file.correctFolder === 'trash' && folderId !== 'trash') {
@@ -312,9 +398,28 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
             </header>
 
             {/* Main Interface */}
-            <div className="flex-1 flex overflow-hidden">
+            <div className="flex-1 flex overflow-hidden relative">
+                {/* Mobile sidebar toggle */}
+                <button
+                    onClick={() => setMobileSidebarOpen(!mobileSidebarOpen)}
+                    className="lg:hidden fixed bottom-4 left-4 z-40 w-14 h-14 bg-[#D97757] text-white rounded-full shadow-xl flex items-center justify-center hover:bg-[#C46849] transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#D97757]"
+                >
+                    {mobileSidebarOpen ? <X size={24} /> : <Folder size={24} />}
+                </button>
+
+                {/* Mobile sidebar backdrop */}
+                {mobileSidebarOpen && (
+                    <div className="lg:hidden fixed inset-0 z-30 bg-black/30 backdrop-blur-sm" onClick={() => setMobileSidebarOpen(false)} />
+                )}
+
                 {/* Sidebar (Folders) */}
-                <aside className="w-64 bg-[#FAF9F0] border-r border-[#E8E6DF] p-4 flex flex-col overflow-y-auto">
+                <aside className={`
+                    fixed lg:relative z-30 lg:z-auto
+                    w-64 bg-[#FAF9F0] border-r border-[#E8E6DF] p-4 flex flex-col overflow-y-auto
+                    h-[calc(100vh-56px)] lg:h-auto
+                    transition-transform duration-300 lg:transition-none
+                    ${mobileSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+                `}>
                     <h3 className="text-xs font-bold text-[#6B6B66] uppercase tracking-widest mb-4 px-2">Mijn Mappen</h3>
 
                     {/* Instruction hint when dragging */}
@@ -563,6 +668,75 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
                 </main>
             </div>
 
+            {/* "Waarom" Reflectie Modal */}
+            <AnimatePresence>
+                {whyQuestion && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#1A1A19]/40 backdrop-blur-sm"
+                    >
+                        <motion.div
+                            initial={{ scale: 0.8, y: 30 }}
+                            animate={{ scale: 1, y: 0 }}
+                            exit={{ scale: 0.8, y: 30 }}
+                            className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl"
+                        >
+                            <div className="text-center mb-4">
+                                <div className="w-12 h-12 bg-[#2A9D8F]/10 rounded-full flex items-center justify-center mx-auto mb-3">
+                                    <Sparkles size={24} className="text-[#2A9D8F]" />
+                                </div>
+                                <p className="text-sm text-[#6B6B66] mb-1">Even nadenken over:</p>
+                                <p className="font-bold text-[#1A1A19]">{whyQuestion.fileName}</p>
+                            </div>
+                            <p className="text-sm font-medium text-[#3D3D38] mb-4 text-center">
+                                {WHY_QUESTIONS[whyQuestion.folderId]?.question}
+                            </p>
+                            <div className="space-y-2">
+                                {WHY_QUESTIONS[whyQuestion.folderId]?.options.map((opt, idx) => (
+                                    <button
+                                        key={idx}
+                                        onClick={() => {
+                                            if (opt.correct) {
+                                                setWhyFeedback('correct');
+                                                setTimeout(() => {
+                                                    setWhyQuestion(null);
+                                                    setWhyFeedback(null);
+                                                }, 800);
+                                            } else {
+                                                setWhyFeedback('wrong');
+                                                setTimeout(() => setWhyFeedback(null), 1500);
+                                            }
+                                        }}
+                                        disabled={whyFeedback === 'correct'}
+                                        className={`w-full text-left p-3 rounded-xl text-sm font-medium transition-all duration-300 border-2 ${
+                                            whyFeedback === 'correct' && opt.correct
+                                                ? 'border-[#10B981] bg-[#10B981]/10 text-[#10B981]'
+                                                : 'border-[#E8E6DF] hover:border-[#2A9D8F] text-[#3D3D38]'
+                                        }`}
+                                    >
+                                        {opt.text}
+                                    </button>
+                                ))}
+                            </div>
+                            {whyFeedback === 'wrong' && (
+                                <p className="text-xs text-red-500 text-center mt-3 font-medium">Niet helemaal, probeer nog eens!</p>
+                            )}
+                            {whyFeedback === 'correct' && (
+                                <p className="text-xs text-[#10B981] text-center mt-3 font-bold">Goed beredeneerd!</p>
+                            )}
+                            <button
+                                onClick={() => { setWhyQuestion(null); setWhyFeedback(null); }}
+                                className="w-full mt-4 text-xs text-[#6B6B66] hover:text-[#1A1A19] transition-colors"
+                            >
+                                Overslaan
+                            </button>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
             {/* Success Modal */}
             <AnimatePresence>
                 {showSuccess && (
@@ -598,7 +772,7 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
                                     )}
                                 </div>
                                 <button
-                                    onClick={() => onComplete(true)}
+                                    onClick={() => { clearSave(); onComplete(true); }}
                                     className="w-full py-4 bg-[#D97757] hover:bg-[#C46849] text-white rounded-full font-bold transition-all duration-300 shadow-lg hover:shadow-[#D97757]/30 focus-visible:ring-2 focus-visible:ring-[#D97757]"
                                 >
                                     Voltooien

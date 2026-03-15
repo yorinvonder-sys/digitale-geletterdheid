@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { BLOCK_DEFINITIONS, CATEGORY_INFO, BlockCategory, BlockDefinition } from './BlockTypes';
 import { DraggablePaletteBlock } from './CodeBlock';
-import { ChevronDown, ChevronRight } from 'lucide-react';
+import { ChevronDown, ChevronRight, Plus } from 'lucide-react';
 
 interface BlockPaletteProps {
     onDragStart: (definition: BlockDefinition) => void;
+    onAddBlock?: (definition: BlockDefinition) => void;
 }
 
-export const BlockPalette: React.FC<BlockPaletteProps> = ({ onDragStart }) => {
+export const BlockPalette: React.FC<BlockPaletteProps> = ({ onDragStart, onAddBlock }) => {
     const [expandedCategories, setExpandedCategories] = useState<Record<BlockCategory, boolean>>({
         event: true,
         motion: true,
@@ -33,7 +34,7 @@ export const BlockPalette: React.FC<BlockPaletteProps> = ({ onDragStart }) => {
             </div>
 
             {/* Categories */}
-            <div className="flex-1 overflow-y-auto p-2 space-y-2">
+            <div className="flex-1 overflow-y-auto p-2 space-y-2" role="list" aria-label="Beschikbare code blokken">
                 {categories.map(category => {
                     const info = CATEGORY_INFO[category];
                     const blocks = BLOCK_DEFINITIONS.filter(b => b.category === category);
@@ -63,11 +64,28 @@ export const BlockPalette: React.FC<BlockPaletteProps> = ({ onDragStart }) => {
                             {isExpanded && (
                                 <div className="p-2 space-y-2 bg-[#FAF9F0]/50">
                                     {blocks.map(block => (
-                                        <DraggablePaletteBlock
-                                            key={block.id}
-                                            definition={block}
-                                            onDragStart={onDragStart}
-                                        />
+                                        <div key={block.id} className="flex items-center gap-1">
+                                            <div
+                                                className="flex-1 min-w-0"
+                                                role="listitem"
+                                                aria-label={`${block.label.replace(/[{}]/g, '')} blok - sleep naar werkgebied of klik plus om toe te voegen`}
+                                            >
+                                                <DraggablePaletteBlock
+                                                    definition={block}
+                                                    onDragStart={onDragStart}
+                                                />
+                                            </div>
+                                            {onAddBlock && (
+                                                <button
+                                                    onClick={() => onAddBlock(block)}
+                                                    className="p-1.5 rounded-lg bg-white border border-[#E8E6DF] text-[#6B6B66] hover:text-[#D97757] hover:border-[#D97757]/30 hover:bg-[#D97757]/5 transition-all duration-300 shrink-0"
+                                                    aria-label={`Voeg ${block.label.replace(/[{}]/g, '')} toe aan werkgebied`}
+                                                    title="Toevoegen"
+                                                >
+                                                    <Plus size={12} />
+                                                </button>
+                                            )}
+                                        </div>
                                     ))}
                                 </div>
                             )}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Trophy, ChevronRight, Check, X, Brain, Sparkles, ArrowLeftRight } from 'lucide-react';
+import { ArrowLeft, Trophy, ChevronRight, Check, X, Brain, Sparkles, ArrowLeftRight, Search } from 'lucide-react';
 import { useMissionAutoSave } from '@/hooks/useMissionAutoSave';
 
 interface Props {
@@ -40,16 +40,17 @@ const CHALLENGES: Challenge[] = [
 ];
 
 interface FilterBubbleState {
-    phase: 'intro' | 'compare' | 'challenge' | 'results';
+    phase: 'intro' | 'compare' | 'analyze' | 'challenge' | 'results';
     currentChallenge: number;
     score: number;
     answers: boolean[];
+    analyzeResponse: string;
 }
 
 export const FilterBubbleBreakerMission: React.FC<Props> = ({ onBack, onComplete }) => {
     const { state: saved, setState: setSaved, clearSave } = useMissionAutoSave<FilterBubbleState>(
         'filter-bubble-breaker',
-        { phase: 'intro', currentChallenge: 0, score: 0, answers: [] }
+        { phase: 'intro', currentChallenge: 0, score: 0, answers: [], analyzeResponse: '' }
     );
     const phase = saved.phase;
     const currentChallenge = saved.currentChallenge;
@@ -170,8 +171,62 @@ export const FilterBubbleBreakerMission: React.FC<Props> = ({ onBack, onComplete
                         )}
                     </div>
                     <div className="text-center mt-8">
-                        <button onClick={() => setPhase('challenge')} className="px-8 py-4 bg-[#D97757] hover:bg-[#C46849] text-white rounded-full font-black transition-all duration-300 active:scale-95 shadow-xl focus-visible:ring-2 focus-visible:ring-[#D97757]">Start de vragen →</button>
+                        <button onClick={() => setPhase('analyze')} className="px-8 py-4 bg-[#D97757] hover:bg-[#C46849] text-white rounded-full font-black transition-all duration-300 active:scale-95 shadow-xl focus-visible:ring-2 focus-visible:ring-[#D97757]">Ga dieper analyseren →</button>
                     </div>
+                </div>
+            </div>
+        );
+    }
+
+    if (phase === 'analyze') {
+        const analyzeResponse = saved.analyzeResponse;
+        const setAnalyzeResponse = (val: string) => setSaved(prev => ({ ...prev, analyzeResponse: val }));
+        return (
+            <div className="min-h-screen bg-[#FAF9F0] overflow-y-auto p-4 pb-safe">
+                <div className="max-w-lg mx-auto space-y-6">
+                    <button onClick={() => setPhase('compare')} className="flex items-center gap-2 text-[#6B6B66] hover:text-[#1A1A19] transition-all duration-300"><ArrowLeft size={18} /> <span className="text-sm font-bold" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Terug</span></button>
+
+                    <div className="bg-white rounded-2xl shadow-xl border border-[#E8E6DF] p-6 text-center space-y-4">
+                        <div className="w-12 h-12 bg-[#8B6F9E]/10 rounded-xl flex items-center justify-center mx-auto border border-[#8B6F9E]/20">
+                            <Search size={24} className="text-[#8B6F9E]" />
+                        </div>
+                        <h2 className="text-xl font-black text-[#1A1A19]" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Analyseer de bubbel</h2>
+                        <p className="text-sm text-[#3D3D38]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                            Zoek <span className="font-black text-[#D97757]">1 onderwerp</span> dat {PROFILE_A.name} zou missen in zijn feed.
+                            Leg in 1-2 zinnen uit waarom dit onderwerp belangrijk is om te weten.
+                        </p>
+                    </div>
+
+                    <div className="space-y-2">
+                        <div className="flex items-center gap-2 mb-1">
+                            <span className="text-[10px] font-black text-[#6B6B66] uppercase tracking-widest" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Ter herinnering: {PROFILE_A.name} ziet alleen</span>
+                        </div>
+                        <div className="flex flex-wrap gap-1.5">
+                            {FEED_A.map(item => (
+                                <span key={item.title} className="text-[10px] bg-[#2A9D8F]/10 text-[#2A9D8F] px-2 py-1 rounded-full border border-[#2A9D8F]/20 font-bold">{item.category}</span>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="space-y-2">
+                        <label className="text-xs font-black text-[#3D3D38]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Jouw analyse:</label>
+                        <textarea
+                            value={analyzeResponse}
+                            onChange={e => setAnalyzeResponse(e.target.value)}
+                            placeholder="Bijv: Daan mist nieuws over klimaatverandering. Dit is belangrijk omdat..."
+                            className="w-full p-4 rounded-2xl border-2 border-[#E8E6DF] bg-white text-sm text-[#1A1A19] placeholder-[#B5B5AF] focus:border-[#8B6F9E] focus:outline-none transition-all duration-300 resize-none"
+                            style={{ fontFamily: "'Outfit', system-ui, sans-serif", minHeight: '120px' }}
+                        />
+                        <p className="text-[10px] text-[#6B6B66] text-right" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{analyzeResponse.length} tekens</p>
+                    </div>
+
+                    <button
+                        onClick={() => setPhase('challenge')}
+                        disabled={analyzeResponse.trim().length < 10}
+                        className={`w-full py-4 text-white rounded-full font-black text-lg transition-all duration-300 active:scale-95 shadow-xl flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-[#D97757] ${analyzeResponse.trim().length < 10 ? 'bg-[#E8E6DF] text-[#B5B5AF] shadow-none cursor-not-allowed' : 'bg-[#D97757] hover:bg-[#C46849] shadow-[#D97757]/30'}`}
+                    >
+                        Start de vragen <ChevronRight size={20} />
+                    </button>
                 </div>
             </div>
         );

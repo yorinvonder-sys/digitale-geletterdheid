@@ -1,16 +1,43 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
     ArrowLeft, CheckCircle, Type, Image as ImageIcon, Layout, Bold, Italic,
     AlignLeft, AlignCenter, AlignRight, Play, FileText, Save, Printer,
     Table, Square, Palette, Droplet, LayoutTemplate, Columns, FilePlus,
-    List, BookOpen, ChevronDown
+    List, BookOpen, ChevronDown, ChevronUp, Info, X, Lightbulb
 } from 'lucide-react';
+import { useMissionAutoSave } from '@/hooks/useMissionAutoSave';
 
 interface LayoutDoctorProps {
     onComplete: (success: boolean) => void;
     onBack: () => void;
 }
+
+interface LayoutDoctorState {
+    titleStyle: string;
+    imageAlign: string;
+    bodyFont: string;
+    fontSize: number;
+    isImageRight: boolean;
+}
+
+// Opdrachtcriteria
+const ASSIGNMENT_CRITERIA = [
+    { id: 'title', label: 'Verander de titel naar stijl "Kop 1"', check: (s: LayoutDoctorState) => s.titleStyle === 'modern' },
+    { id: 'font', label: 'Zet het lettertype op Arial', check: (s: LayoutDoctorState) => s.bodyFont === 'sans' },
+    { id: 'image', label: 'Stel tekstterugloop in voor de afbeelding', check: (s: LayoutDoctorState) => s.imageAlign === 'wrap' },
+    { id: 'imagepos', label: 'Sleep de afbeelding naar rechts', check: (s: LayoutDoctorState) => s.isImageRight },
+    { id: 'fontsize', label: 'Gebruik minimaal lettergrootte 12', check: (s: LayoutDoctorState) => s.fontSize >= 12 },
+];
+
+// Uitleg per wijziging
+const CHANGE_EXPLANATIONS: Record<string, string> = {
+    titleStyle: 'Kopstijlen zorgen voor een duidelijke structuur. Een lezer ziet direct wat de titel is en kan het document snel scannen.',
+    bodyFont: 'Sans-serif lettertypen zoals Arial zijn beter leesbaar op schermen. Comic Sans wordt als onprofessioneel gezien.',
+    imageAlign: 'Tekstterugloop laat tekst om een afbeelding heen lopen. Dit maakt het document compacter en professioneler.',
+    isImageRight: 'Afbeeldingen rechts plaatsen is een veelgebruikte conventie die de leesbaarheid verbetert.',
+    fontSize: 'Lettergrootte 12 of hoger is de standaard voor goed leesbare documenten. Kleiner is vermoeiend voor de ogen.',
+};
 
 type BlockType = 'paragraph' | 'heading' | 'image' | 'table' | 'shape' | 'toc' | 'pagebreak';
 
@@ -22,20 +49,70 @@ interface ContentBlock {
 }
 
 export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, onBack }) => {
-    // Document Settings
-    const [titleStyle, setTitleStyle] = useState('comic');
-    const [imageAlign, setImageAlign] = useState('overlap');
-    const [bodyFont, setBodyFont] = useState('comic');
-    const [fontSize, setFontSize] = useState(11);
+    const { state: savedState, setState: setSavedState, clearSave } = useMissionAutoSave<LayoutDoctorState>(
+        'layout-doctor',
+        {
+            titleStyle: 'comic',
+            imageAlign: 'overlap',
+            bodyFont: 'comic',
+            fontSize: 11,
+            isImageRight: false,
+        }
+    );
 
-    // Page Settings
+    const { titleStyle, imageAlign, bodyFont, fontSize, isImageRight } = savedState;
+
+    // Wrapper setters that update auto-save state
+    const setTitleStyle = (v: string) => {
+        setSavedState(prev => ({ ...prev, titleStyle: v }));
+        if (v === 'modern') setChangeExplanation('titleStyle');
+    };
+    const setImageAlign = (v: string) => {
+        setSavedState(prev => ({ ...prev, imageAlign: v }));
+        if (v === 'wrap') setChangeExplanation('imageAlign');
+    };
+    const setBodyFont = (v: string) => {
+        setSavedState(prev => ({ ...prev, bodyFont: v }));
+        if (v === 'sans') setChangeExplanation('bodyFont');
+    };
+    const setFontSize = (v: number) => {
+        setSavedState(prev => ({ ...prev, fontSize: v }));
+        if (v >= 12) setChangeExplanation('fontSize');
+    };
+    const setIsImageRight = (v: boolean) => {
+        setSavedState(prev => ({ ...prev, isImageRight: v }));
+        if (v) setChangeExplanation('isImageRight');
+    };
+
+    // Transient UI state
+    const [showAssignment, setShowAssignment] = useState(true);
+    const [changeExplanation, setChangeExplanation] = useState<string | null>(null);
+    const [inlineMessage, setInlineMessage] = useState<string | null>(null);
+
+    // Page Settings (not saved - cosmetic)
     const [pageColor, setPageColor] = useState('white');
     const [showWatermark, setShowWatermark] = useState(false);
     const [layout, setLayout] = useState({
         columns: 1,
-        orientation: 'portrait', // portrait, landscape
-        margins: 'normal', // normal, narrow
+        orientation: 'portrait',
+        margins: 'normal',
     });
+
+    // Auto-hide change explanation
+    useEffect(() => {
+        if (changeExplanation) {
+            const timer = setTimeout(() => setChangeExplanation(null), 4000);
+            return () => clearTimeout(timer);
+        }
+    }, [changeExplanation]);
+
+    // Auto-hide inline message
+    useEffect(() => {
+        if (inlineMessage) {
+            const timer = setTimeout(() => setInlineMessage(null), 3000);
+            return () => clearTimeout(timer);
+        }
+    }, [inlineMessage]);
 
     // Content State
     const [blocks, setBlocks] = useState<ContentBlock[]>([
@@ -53,9 +130,6 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
     const [isBold, setIsBold] = useState(false);
     const [isItalic, setIsItalic] = useState(false);
     const [isUnderlined, setIsUnderlined] = useState(false);
-
-    // Image Drag State
-    const [isImageRight, setIsImageRight] = useState(false);
 
     // Helpers
     const addBlock = (type: BlockType, content: string = '') => {
@@ -94,10 +168,10 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
             case 'Bestand':
                 return (
                     <div className="px-4 py-2 flex items-center gap-4 overflow-x-auto h-24 bg-[#C46849] text-white w-full absolute top-[88px] left-0 z-50">
-                        <button onClick={() => alert("Nieuw document wordt gesimuleerd")} className="flex flex-col items-center gap-2 p-2 hover:bg-white/10 rounded-lg min-w-[60px] transition-all duration-300">
+                        <button onClick={() => setInlineMessage('Nieuw document wordt gesimuleerd')} className="flex flex-col items-center gap-2 p-2 hover:bg-white/10 rounded-lg min-w-[60px] transition-all duration-300">
                             <FilePlus size={24} /> <span className="text-xs">Nieuw</span>
                         </button>
-                        <button onClick={() => alert("Opslaan gesimuleerd")} className="flex flex-col items-center gap-2 p-2 hover:bg-white/10 rounded-lg min-w-[60px] transition-all duration-300">
+                        <button onClick={() => setInlineMessage('Document opgeslagen!')} className="flex flex-col items-center gap-2 p-2 hover:bg-white/10 rounded-lg min-w-[60px] transition-all duration-300">
                             <Save size={24} /> <span className="text-xs">Opslaan</span>
                         </button>
                     </div>
@@ -211,15 +285,15 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
                     <button onClick={onBack} className="p-1.5 hover:bg-white/10 rounded-lg transition-all duration-300 focus-visible:ring-2 focus-visible:ring-white"><ArrowLeft size={20} /></button>
                     <div className="flex flex-col">
                         <span className="font-medium text-sm">Document1 - Word</span>
-                        <div className="flex gap-4 text-[11px] text-white/80">
+                        <div className="flex gap-2 lg:gap-4 text-[11px] text-white/80 overflow-x-auto">
                             {['Bestand', 'Start', 'Invoegen', 'Ontwerpen', 'Indeling', 'Verwijzingen'].map(tab => (
-                                <span key={tab} onClick={() => setActiveTab(tab)} className={`cursor-pointer px-1 transition-all duration-300 ${activeTab === tab ? 'font-bold border-b-2 border-white pb-0.5' : 'hover:text-white'}`}>{tab}</span>
+                                <span key={tab} onClick={() => setActiveTab(tab)} className={`cursor-pointer px-1 whitespace-nowrap transition-all duration-300 ${activeTab === tab ? 'font-bold border-b-2 border-white pb-0.5' : 'hover:text-white'}`}>{tab}</span>
                             ))}
                         </div>
                     </div>
                 </div>
                 <button
-                    onClick={() => isComplete ? onComplete(true) : alert('Nog niet klaar! Check de opdracht.')}
+                    onClick={() => { if (isComplete) { clearSave(); onComplete(true); } else { setInlineMessage('Nog niet klaar! Check de opdrachtkaart bovenaan.'); setShowAssignment(true); } }}
                     className={`px-4 py-1.5 rounded-full font-bold text-sm flex items-center gap-2 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-white ${isComplete ? 'bg-[#10B981] hover:bg-emerald-600' : 'bg-white/20'}`}
                 >
                     <CheckCircle size={16} /> {isComplete ? 'Inleveren' : 'Nog Bezig'}
@@ -227,18 +301,90 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
             </header>
 
             {/* Ribbon */}
-            <div className="bg-white border-b border-[#E8E6DF] shadow-sm relative z-10" onClick={(e) => e.stopPropagation()}>
-                {renderRibbon()}
+            <div className="bg-white border-b border-[#E8E6DF] shadow-sm relative z-10 overflow-x-auto" onClick={(e) => e.stopPropagation()}>
+                <div className="min-w-max">
+                    {renderRibbon()}
+                </div>
             </div>
 
+            {/* Inline Message Toast */}
+            <AnimatePresence>
+                {inlineMessage && (
+                    <motion.div
+                        initial={{ opacity: 0, y: -30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -30 }}
+                        className="fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-[#1A1A19] text-white px-5 py-3 rounded-full shadow-2xl text-sm font-medium flex items-center gap-2"
+                    >
+                        <Info size={16} />
+                        {inlineMessage}
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* Change Explanation Toast */}
+            <AnimatePresence>
+                {changeExplanation && CHANGE_EXPLANATIONS[changeExplanation] && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 30 }}
+                        className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-[#2A9D8F] text-white px-5 py-3 rounded-2xl shadow-2xl text-sm font-medium max-w-md flex items-start gap-3"
+                    >
+                        <Lightbulb size={18} className="shrink-0 mt-0.5" />
+                        <span>{CHANGE_EXPLANATIONS[changeExplanation]}</span>
+                        <button onClick={() => setChangeExplanation(null)} className="shrink-0 hover:bg-white/10 rounded-full p-0.5 transition-colors">
+                            <X size={14} />
+                        </button>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
             {/* Workspace */}
-            <div className="flex-1 overflow-y-auto p-8 flex justify-center bg-[#FAF9F0] perspective-[1000px]">
+            <div className="flex-1 overflow-y-auto p-4 lg:p-8 flex flex-col items-center bg-[#FAF9F0] perspective-[1000px]">
+                {/* Opdrachtkaart */}
+                <div className={`w-full max-w-4xl mb-4 transition-all duration-300 ${showAssignment ? '' : 'mb-2'}`}>
+                    <button
+                        onClick={() => setShowAssignment(!showAssignment)}
+                        className="w-full flex items-center justify-between bg-white border border-[#E8E6DF] rounded-t-2xl px-4 py-3 text-left shadow-sm hover:bg-[#FAF9F0] transition-colors"
+                    >
+                        <span className="font-bold text-sm text-[#D97757] flex items-center gap-2" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
+                            <FileText size={16} /> Opdracht: Maak dit document professioneel
+                        </span>
+                        {showAssignment ? <ChevronUp size={16} className="text-[#6B6B66]" /> : <ChevronDown size={16} className="text-[#6B6B66]" />}
+                    </button>
+                    {showAssignment && (
+                        <div className="bg-white border border-t-0 border-[#E8E6DF] rounded-b-2xl px-4 py-4 shadow-sm">
+                            <p className="text-sm text-[#3D3D38] mb-3">Voer alle stappen uit om het document op te knappen:</p>
+                            <ul className="space-y-2">
+                                {ASSIGNMENT_CRITERIA.map((criterion) => {
+                                    const done = criterion.check(savedState);
+                                    return (
+                                        <li key={criterion.id} className={`flex items-center gap-3 text-sm transition-all duration-300 ${done ? 'text-[#10B981]' : 'text-[#3D3D38]'}`}>
+                                            <div className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 ${done ? 'bg-[#10B981] text-white' : 'border-2 border-[#E8E6DF]'}`}>
+                                                {done && <CheckCircle size={12} />}
+                                            </div>
+                                            <span className={done ? 'line-through' : ''}>{criterion.label}</span>
+                                        </li>
+                                    );
+                                })}
+                            </ul>
+                            <div className="mt-3 h-2 bg-[#E8E6DF] rounded-full overflow-hidden">
+                                <div
+                                    className="h-full bg-[#10B981] rounded-full transition-all duration-500"
+                                    style={{ width: `${(ASSIGNMENT_CRITERIA.filter(c => c.check(savedState)).length / ASSIGNMENT_CRITERIA.length) * 100}%` }}
+                                />
+                            </div>
+                        </div>
+                    )}
+                </div>
+
                 <div
-                    className={`bg-white shadow-xl relative transition-all duration-500 ease-in-out`}
+                    className="bg-white shadow-xl relative transition-all duration-500 ease-in-out w-full max-w-full lg:max-w-none"
                     style={{
-                        width: layout.orientation === 'portrait' ? '21cm' : '29.7cm',
+                        width: layout.orientation === 'portrait' ? 'min(21cm, 100%)' : 'min(29.7cm, 100%)',
                         minHeight: layout.orientation === 'portrait' ? '29.7cm' : '21cm',
-                        padding: layout.margins === 'normal' ? '2.5cm' : '1.27cm',
+                        padding: layout.margins === 'normal' ? 'clamp(1rem, 4vw, 2.5cm)' : 'clamp(0.5rem, 2vw, 1.27cm)',
                         backgroundColor: pageColor
                     }}
                 >
@@ -257,7 +403,7 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
                             if (info.point.x > window.innerWidth / 2) setIsImageRight(true);
                         }}
                         onClick={(e) => handleSelection(e as unknown as React.MouseEvent, 'image', 'image')}
-                        className={`absolute w-48 h-32 bg-[#E8E6DF] z-20 cursor-move ${selection === 'image' ? 'ring-2 ring-[#D97757]' : ''}`}
+                        className={`absolute w-32 h-24 lg:w-48 lg:h-32 bg-[#E8E6DF] z-20 cursor-move ${selection === 'image' ? 'ring-2 ring-[#D97757]' : ''}`}
                         style={{ top: 150, left: 100 }}
                         initial={{ opacity: 0.9 }}
                         animate={{ opacity: 1 }}

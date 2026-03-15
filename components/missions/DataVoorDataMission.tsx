@@ -1,11 +1,18 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Trophy, ChevronRight, ThumbsUp, ThumbsDown, Scale, Sparkles } from 'lucide-react';
+import { ArrowLeft, Trophy, ChevronRight, ThumbsUp, ThumbsDown, Scale, Sparkles, Pause } from 'lucide-react';
+import { useMissionAutoSave } from '@/hooks/useMissionAutoSave';
 
 interface Props {
     onBack: () => void;
     onComplete: (success: boolean) => void;
     stats?: any;
     vsoProfile?: any;
+}
+
+interface DataVoorDataState {
+    phase: 'intro' | 'auction' | 'reflection' | 'results';
+    currentRound: number;
+    choices: ('deal' | 'no-deal')[];
 }
 
 interface AuctionRound {
@@ -55,9 +62,24 @@ const RISK_COLORS = { low: 'bg-[#10B981]', medium: 'bg-[#D97757]', high: 'bg-red
 const RISK_LABELS = { low: 'Laag risico', medium: 'Gemiddeld risico', high: 'Hoog risico', extreme: 'Extreem risico' };
 
 export const DataVoorDataMission: React.FC<Props> = ({ onBack, onComplete }) => {
-    const [phase, setPhase] = useState<'intro' | 'auction' | 'results'>('intro');
-    const [currentRound, setCurrentRound] = useState(0);
-    const [choices, setChoices] = useState<('deal' | 'no-deal')[]>([]);
+    const { state: saved, setState: setSaved, clearSave } = useMissionAutoSave<DataVoorDataState>(
+        'data-voor-data',
+        { phase: 'intro', currentRound: 0, choices: [] }
+    );
+    const phase = saved.phase;
+    const currentRound = saved.currentRound;
+    const choices = saved.choices;
+    const setPhase = (p: DataVoorDataState['phase']) => setSaved(prev => ({ ...prev, phase: p }));
+    const setCurrentRound = (updater: React.SetStateAction<number>) => setSaved(prev => ({
+        ...prev,
+        currentRound: typeof updater === 'function' ? updater(prev.currentRound) : updater,
+    }));
+    const setChoices = (updater: React.SetStateAction<('deal' | 'no-deal')[]>) => setSaved(prev => ({
+        ...prev,
+        choices: typeof updater === 'function' ? updater(prev.choices) : updater,
+    }));
+
+    // Transient UI state - niet opgeslagen
     const [showExplanation, setShowExplanation] = useState(false);
     const [hasChosen, setHasChosen] = useState(false);
 
@@ -71,6 +93,11 @@ export const DataVoorDataMission: React.FC<Props> = ({ onBack, onComplete }) => 
     const nextRound = () => {
         setHasChosen(false);
         setShowExplanation(false);
+        // Na ronde 3 (index 2): toon reflectie
+        if (currentRound === 2) {
+            setPhase('reflection');
+            return;
+        }
         if (currentRound < ROUNDS.length - 1) setCurrentRound(c => c + 1);
         else setPhase('results');
     };
@@ -119,6 +146,67 @@ export const DataVoorDataMission: React.FC<Props> = ({ onBack, onComplete }) => 
                     </div>
                     <p className="text-[#6B6B66] text-xs" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>5 rondes -- vergelijk je keuzes met anderen</p>
                     <button onClick={() => setPhase('auction')} className="px-8 py-4 bg-[#D97757] hover:bg-[#C46849] text-white rounded-full font-black text-lg transition-all duration-300 active:scale-95 shadow-xl shadow-[#D97757]/30 focus-visible:ring-2 focus-visible:ring-[#D97757]">Start de veiling →</button>
+                </div>
+            </div>
+        );
+    }
+
+    if (phase === 'reflection') {
+        const dealCount = choices.filter(c => c === 'deal').length;
+        return (
+            <div className="min-h-screen bg-[#FAF9F0] text-[#1A1A19] overflow-y-auto p-4 pb-safe">
+                <div className="max-w-lg mx-auto space-y-6">
+                    <div className="text-center space-y-4">
+                        <div className="w-16 h-16 bg-[#8B6F9E]/10 rounded-2xl flex items-center justify-center mx-auto border border-[#8B6F9E]/20">
+                            <Pause size={32} className="text-[#8B6F9E]" />
+                        </div>
+                        <h2 className="text-2xl font-black" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Even pauzeren...</h2>
+                        <p className="text-sm text-[#3D3D38]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                            Je hebt tot nu toe <span className="font-black text-[#D97757]">{dealCount}x</span> je data gedeeld.
+                            Kijk terug: zou je een eerdere ronde nu anders beantwoorden?
+                        </p>
+                    </div>
+
+                    <div className="space-y-3">
+                        {ROUNDS.slice(0, 3).map((round, i) => (
+                            <div key={i} className="bg-white rounded-2xl border border-[#E8E6DF] p-4">
+                                <div className="flex items-center justify-between mb-2">
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-xl">{round.emoji}</span>
+                                        <span className="text-sm font-black text-[#1A1A19]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{round.service}</span>
+                                    </div>
+                                    <span className={`text-[10px] font-black px-2 py-0.5 rounded-full inline-flex border ${choices[i] === 'deal' ? 'bg-[#10B981]/10 text-[#10B981] border-[#10B981]/20' : 'bg-[#D97757]/10 text-[#D97757] border-[#D97757]/20'}`}>
+                                        {choices[i] === 'deal' ? 'DEAL' : 'NO DEAL'}
+                                    </span>
+                                </div>
+                                <div className="flex flex-wrap gap-1.5">
+                                    {round.dataAsked.map((d, j) => (
+                                        <span key={j} className="text-[10px] bg-[#FAF9F0] border border-[#E8E6DF] px-2 py-0.5 rounded-full text-[#6B6B66]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{d}</span>
+                                    ))}
+                                </div>
+                                <div className="mt-2 flex items-center gap-2">
+                                    <div className={`w-2 h-2 rounded-full ${RISK_COLORS[round.privacyRisk]}`} />
+                                    <span className="text-[10px] text-[#6B6B66]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{RISK_LABELS[round.privacyRisk]}</span>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="bg-[#8B6F9E]/5 border border-[#8B6F9E]/20 rounded-2xl p-4">
+                        <p className="text-xs text-[#3D3D38] text-center" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                            De volgende 2 rondes worden zwaarder. Denk goed na over wat je data waard is!
+                        </p>
+                    </div>
+
+                    <button
+                        onClick={() => {
+                            setCurrentRound(c => c + 1);
+                            setPhase('auction');
+                        }}
+                        className="w-full py-4 bg-[#D97757] hover:bg-[#C46849] text-white rounded-full font-black text-lg transition-all duration-300 active:scale-95 shadow-xl shadow-[#D97757]/30 flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-[#D97757]"
+                    >
+                        Verder met de veiling <ChevronRight size={20} />
+                    </button>
                 </div>
             </div>
         );
@@ -217,7 +305,7 @@ export const DataVoorDataMission: React.FC<Props> = ({ onBack, onComplete }) => 
                     <p className="text-xs font-bold text-[#3D3D38] mb-2" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>De les:</p>
                     <p className="text-xs text-[#6B6B66]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>"Gratis" bestaat niet op internet. Je betaalt altijd met je data. Hoe meer je deelt, hoe meer macht je weggeeft. Kies bewust!</p>
                 </div>
-                <button onClick={() => onComplete(true)} className="w-full py-4 bg-[#10B981] hover:bg-[#059669] text-white rounded-full font-black text-lg transition-all duration-300 active:scale-95 shadow-xl flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-[#10B981]"><Trophy size={20} /> Missie Voltooid!</button>
+                <button onClick={() => { clearSave(); onComplete(true); }} className="w-full py-4 bg-[#10B981] hover:bg-[#059669] text-white rounded-full font-black text-lg transition-all duration-300 active:scale-95 shadow-xl flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-[#10B981]"><Trophy size={20} /> Missie Voltooid!</button>
             </div>
             </div>
         </div>

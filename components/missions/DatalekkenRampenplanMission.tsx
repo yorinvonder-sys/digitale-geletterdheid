@@ -1,11 +1,19 @@
 import React, { useState } from 'react';
 import { ArrowLeft, Trophy, ChevronRight, Check, X, AlertTriangle, Clock, Users, Shield, FileText, Sparkles } from 'lucide-react';
+import { useMissionAutoSave } from '@/hooks/useMissionAutoSave';
 
 interface Props {
     onBack: () => void;
     onComplete: (success: boolean) => void;
     stats?: any;
     vsoProfile?: any;
+}
+
+interface DatalekkenState {
+    phase: 'intro' | 'scenarios' | 'results';
+    currentScenario: number;
+    score: number;
+    answers: boolean[];
 }
 
 interface Scenario {
@@ -68,11 +76,30 @@ const SCENARIOS: Scenario[] = [
 ];
 
 export const DatalekkenRampenplanMission: React.FC<Props> = ({ onBack, onComplete }) => {
-    const [phase, setPhase] = useState<'intro' | 'scenarios' | 'results'>('intro');
-    const [currentScenario, setCurrentScenario] = useState(0);
-    const [score, setScore] = useState(0);
+    const { state: saved, setState: setSaved, clearSave } = useMissionAutoSave<DatalekkenState>(
+        'datalekken-rampenplan',
+        { phase: 'intro', currentScenario: 0, score: 0, answers: [] }
+    );
+    const phase = saved.phase;
+    const currentScenario = saved.currentScenario;
+    const score = saved.score;
+    const answers = saved.answers;
+    const setPhase = (p: DatalekkenState['phase']) => setSaved(prev => ({ ...prev, phase: p }));
+    const setCurrentScenario = (updater: React.SetStateAction<number>) => setSaved(prev => ({
+        ...prev,
+        currentScenario: typeof updater === 'function' ? updater(prev.currentScenario) : updater,
+    }));
+    const setScore = (updater: React.SetStateAction<number>) => setSaved(prev => ({
+        ...prev,
+        score: typeof updater === 'function' ? updater(prev.score) : updater,
+    }));
+    const setAnswers = (updater: React.SetStateAction<boolean[]>) => setSaved(prev => ({
+        ...prev,
+        answers: typeof updater === 'function' ? updater(prev.answers) : updater,
+    }));
+
+    // Transient UI state - niet opgeslagen
     const [selectedAction, setSelectedAction] = useState<number | null>(null);
-    const [answers, setAnswers] = useState<boolean[]>([]);
 
     const handleAction = (index: number) => {
         if (selectedAction !== null) return;
@@ -196,7 +223,7 @@ export const DatalekkenRampenplanMission: React.FC<Props> = ({ onBack, onComplet
                     <p className="text-xs text-[#6B6B66]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>3. COMMUNICEER eerlijk, transparant en concreet</p>
                     <p className="text-xs text-[#6B6B66]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>4. VOORKOM met 2FA, training en een vast aanspreekpunt</p>
                 </div>
-                <button onClick={() => onComplete(true)} className="w-full py-4 bg-[#10B981] hover:bg-[#059669] text-white rounded-full font-black text-lg transition-all duration-300 active:scale-95 shadow-xl flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-[#10B981]"><Trophy size={20} /> Missie Voltooid!</button>
+                <button onClick={() => { clearSave(); onComplete(true); }} className="w-full py-4 bg-[#10B981] hover:bg-[#059669] text-white rounded-full font-black text-lg transition-all duration-300 active:scale-95 shadow-xl flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-[#10B981]"><Trophy size={20} /> Missie Voltooid!</button>
             </div>
             </div>
         </div>

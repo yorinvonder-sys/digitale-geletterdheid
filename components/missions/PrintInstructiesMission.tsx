@@ -1,13 +1,19 @@
 /**
  * PrintInstructiesMission.tsx
  *
- * Interactive step-by-step tutorial for opening a document in the Books app on iPad.
- * Simplified to 2 steps.
+ * "Print Troubleshooter" — leerlingen diagnosticeren printproblemen en kiezen
+ * de juiste oplossing. 5 scenario's, multiple choice met feedback en retry.
+ *
+ * Bloom niveau 3 (toepassen): leerlingen passen kennis over printerinstellingen
+ * toe op realistische probleemsituaties.
+ *
+ * SLO-doelen: Digitale basisvaardigheden, probleemoplossend denken
  */
 
 import React, { useState } from 'react';
-import { ArrowLeft, ArrowRight, Check, Printer, FileText, CheckCircle, BookOpen } from 'lucide-react';
+import { ArrowLeft, Printer, ChevronRight, Check, X, RotateCcw, Trophy, Sparkles, Lightbulb } from 'lucide-react';
 import type { VsoProfile } from '../../types';
+import { useMissionAutoSave } from '@/hooks/useMissionAutoSave';
 
 interface Props {
     onBack: () => void;
@@ -15,244 +21,563 @@ interface Props {
     vsoProfile?: VsoProfile;
 }
 
-// Step data - Simplified instructions for opening a document in Books app
-const STEPS = [
+interface Option {
+    id: string;
+    text: string;
+    isCorrect: boolean;
+    feedback: string;
+}
+
+interface Scenario {
+    id: number;
+    emoji: string;
+    title: string;
+    description: string;
+    visual: string;
+    options: Option[];
+    tip: string;
+}
+
+interface PrintTroubleshooterState {
+    currentScenario: number;
+    score: number;
+    attemptsPerScenario: Record<number, number>;
+    correctScenarios: number[];
+    showIntro: boolean;
+    showComplete: boolean;
+}
+
+const SCENARIOS: Scenario[] = [
+    {
+        id: 0,
+        emoji: '🖨️',
+        title: 'Mijn document print niet!',
+        description: 'Je drukt op "Printen", maar er gebeurt niks. De printer reageert helemaal niet. Je ziet dat het WiFi-icoontje op de printer uit staat.',
+        visual: 'wifi-off',
+        options: [
+            { id: 'a', text: 'Controleer de WiFi-verbinding van de printer', isCorrect: true, feedback: 'Goed gezien! Als het WiFi-icoontje uit staat, is de printer niet verbonden met het netwerk. Zonder verbinding kan je computer de printer niet bereiken.' },
+            { id: 'b', text: 'Installeer de printer opnieuw op je computer', isCorrect: false, feedback: 'Dat is niet nodig. De printer was al eerder geinstalleerd — het probleem zit bij de verbinding, niet bij de installatie.' },
+            { id: 'c', text: 'Vervang de inktcartridges', isCorrect: false, feedback: 'Inkt heeft niks te maken met het probleem. De printer reageert helemaal niet, dus het gaat om de verbinding.' },
+        ],
+        tip: 'Check altijd eerst of de printer verbonden is met WiFi of een kabel voordat je andere dingen probeert.',
+    },
     {
         id: 1,
-        title: 'Boeken App Openen',
-        subtitle: 'Stap 1 van 2',
-        icon: <BookOpen size={32} />,
-        instruction: 'Open de app "Boeken" op je iPad. Dit is de standaard app van Apple om documenten en boeken te lezen.',
-        visual: 'books-app',
-        tip: '💡 De Boeken app heeft een oranje icoon met een open boek. Je vindt hem op je startscherm of in de App Bibliotheek.',
-        checkText: 'Ik heb de Boeken app geopend'
+        emoji: '🎨',
+        title: 'Het print alleen zwart-wit!',
+        description: 'Je hebt een kleurrijke presentatie gemaakt, maar als je hem print komt alles er in zwart-wit uit. De printer heeft wel kleurenpatronen.',
+        visual: 'grayscale',
+        options: [
+            { id: 'a', text: 'Koop een nieuwe kleurenprinter', isCorrect: false, feedback: 'De printer kan wel kleuren printen — het probleem zit in de instellingen, niet in de hardware.' },
+            { id: 'b', text: 'Wijzig de printerinstellingen naar "Kleur" in plaats van "Grijswaarden"', isCorrect: true, feedback: 'Precies! In de printerinstellingen staat de kleuroptie waarschijnlijk op "Grijswaarden" of "Zwart-wit". Verander dit naar "Kleur" en je presentatie print in vol kleur.' },
+            { id: 'c', text: 'Sla het bestand op als PDF en probeer opnieuw', isCorrect: false, feedback: 'Het bestandsformaat verandert de printerinstelling niet. Het probleem zit in de kleurinstelling van de printer zelf.' },
+        ],
+        tip: 'Kijk voor het printen altijd even bij "Printerinstellingen" of de juiste kleuroptie is geselecteerd.',
     },
     {
         id: 2,
-        title: 'Document Openen',
-        subtitle: 'Stap 2 van 2',
-        icon: <FileText size={32} />,
-        instruction: 'Klik bovenin op "Bibliotheek" en open het printdocument dat je nodig hebt.',
-        visual: 'library-open',
-        tip: '💡 In de Bibliotheek vind je alle documenten en boeken die je hebt toegevoegd. Tik op het document om het te openen.',
-        checkText: 'Ik heb het document geopend'
-    }
+        emoji: '📄',
+        title: 'De tekst wordt afgesneden!',
+        description: 'Je print een werkstuk, maar de rechterrand van de tekst valt steeds van de pagina af. Het lijkt alsof het papierformaat niet klopt.',
+        visual: 'paper-size',
+        options: [
+            { id: 'a', text: 'Maak het lettertype kleiner', isCorrect: false, feedback: 'Dat lost het symptoom misschien deels op, maar het echte probleem is het papierformaat. Bij een ander document heb je dan weer hetzelfde probleem.' },
+            { id: 'b', text: 'Print alles dubbelzijdig', isCorrect: false, feedback: 'Dubbelzijdig printen verandert niks aan de paginabreedte. De tekst wordt nog steeds afgesneden.' },
+            { id: 'c', text: 'Wijzig het papierformaat van "Letter" naar "A4"', isCorrect: true, feedback: 'Klopt! "Letter" is het Amerikaanse formaat dat iets breder en korter is dan A4. In Nederland gebruiken we A4, dus je moet het papierformaat goed instellen.' },
+        ],
+        tip: 'In Nederland is A4 de standaard. Check bij afgeknipte tekst altijd of het papierformaat op A4 staat.',
+    },
+    {
+        id: 3,
+        emoji: '📚',
+        title: 'Er komen 10 kopieën uit!',
+        description: 'Je wilde 1 kopie printen van je huiswerk, maar de printer stopt niet. Er komen maar pagina\'s uit — je telt er al 10!',
+        visual: 'copies',
+        options: [
+            { id: 'a', text: 'Trek de stekker uit de printer', isCorrect: false, feedback: 'Dat is een noodoplossing, maar geen slimme. Je verliest de printwachtrij en moet mogelijk de printer opnieuw opstarten. Beter: annuleer de opdracht.' },
+            { id: 'b', text: 'Controleer het aantal exemplaren in de printerinstellingen', isCorrect: true, feedback: 'Goed gedacht! Iemand (of jijzelf per ongeluk) heeft het aantal kopieën op 10 gezet. Altijd even checken voordat je op "Printen" drukt.' },
+            { id: 'c', text: 'De printer is kapot en moet gerepareerd worden', isCorrect: false, feedback: 'De printer doet precies wat er gevraagd is — 10 kopieën printen. Het probleem zit bij de instelling, niet bij de printer.' },
+        ],
+        tip: 'Check voor het printen ALTIJD het aantal kopieën. Standaard staat dit op 1, maar het kan per ongeluk veranderd zijn.',
+    },
+    {
+        id: 4,
+        emoji: '🔍',
+        title: 'Het document past niet op 1 pagina!',
+        description: 'Je wilt een overzichtelijke tabel printen op 1 pagina, maar hij wordt over 3 pagina\'s verdeeld. De tabel is niet eens zo groot.',
+        visual: 'margins',
+        options: [
+            { id: 'a', text: 'Knip de tabel in 3 delen en print elk deel apart', isCorrect: false, feedback: 'Dat is veel werk en onnodig. Het probleem zit in de schaal of marges — niet in de tabel zelf.' },
+            { id: 'b', text: 'Gebruik een grotere papiersoort (A3)', isCorrect: false, feedback: 'A3 is vaak niet beschikbaar op schoolprinters en ook niet nodig. Het probleem zit in de instellingen.' },
+            { id: 'c', text: 'Pas de marges aan of zet de schaal op "Passend op 1 pagina"', isCorrect: true, feedback: 'Precies! Grote marges of een te hoge schaal (bijv. 150%) zorgen ervoor dat de inhoud niet past. Met "Passend op 1 pagina" schaalt de printer het automatisch.' },
+        ],
+        tip: 'De optie "Passend op 1 pagina" of "Fit to Page" is je beste vriend bij tabellen en overzichten.',
+    },
 ];
 
-// iPad Visual Component
-const IPadVisual: React.FC<{ step: number }> = ({ step }) => {
-    const renderScreen = () => {
-        switch (step) {
-            case 1:
-                // Books app on home screen
-                return (
-                    <div className="bg-gradient-to-br from-[#FAF9F0] to-[#F0EEE8] p-4 rounded-lg w-full h-full flex flex-col items-center justify-center">
-                        <div className="text-xs text-[#6B6B66] mb-4" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>iPad Home</div>
-                        <div className="grid grid-cols-3 gap-3 mb-4">
-                            <div className="w-12 h-12 bg-[#E8E6DF] rounded-xl"></div>
-                            <div className="w-12 h-12 bg-[#E8E6DF] rounded-xl"></div>
-                            <div className="w-12 h-12 bg-[#E8E6DF] rounded-xl"></div>
-                        </div>
-                        <div className="bg-gradient-to-br from-[#D97757] to-[#C46849] rounded-2xl p-3 w-16 h-16 flex items-center justify-center text-white mb-2 shadow-lg ring-4 ring-[#D97757]/30 animate-pulse">
-                            <BookOpen size={28} />
-                        </div>
-                        <div className="text-[11px] font-bold text-[#1A1A19]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Boeken</div>
-                        <div className="text-center mt-3">
-                            <span className="inline-block text-xs bg-[#D97757]/10 text-[#D97757] px-2 py-0.5 rounded-full font-bold" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
-                                ↑ Tik hier
-                            </span>
-                        </div>
-                    </div>
-                );
-            case 2:
-                // Library view in Books app
-                return (
-                    <div className="bg-white p-3 rounded-lg w-full h-full flex flex-col">
-                        {/* Header with Library tab */}
-                        <div className="flex items-center justify-center gap-4 mb-3 border-b border-[#E8E6DF] pb-2">
-                            <span className="text-[10px] text-[#6B6B66]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Lezen</span>
-                            <span className="text-[10px] font-bold text-[#D97757] border-b-2 border-[#D97757] pb-1" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Bibliotheek</span>
-                            <span className="text-[10px] text-[#6B6B66]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Winkel</span>
-                        </div>
-                        {/* Documents grid */}
-                        <div className="flex-1 grid grid-cols-2 gap-2">
-                            <div className="bg-[#FAF9F0] rounded-lg p-2 border border-[#D97757] ring-2 ring-[#D97757]/20">
-                                <div className="bg-[#E8E6DF] rounded h-12 mb-1 flex items-center justify-center">
-                                    <FileText size={20} className="text-[#6B6B66]" />
-                                </div>
-                                <div className="text-[9px] font-bold text-[#3D3D38] truncate" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Printdocument</div>
-                            </div>
-                            <div className="bg-[#FAF9F0] rounded-lg p-2 border border-[#E8E6DF]">
-                                <div className="bg-[#E8E6DF] rounded h-12 mb-1"></div>
-                                <div className="text-[9px] text-[#6B6B66] truncate" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Ander doc</div>
-                            </div>
-                        </div>
-                        <div className="text-center mt-2">
-                            <span className="inline-block text-xs bg-[#D97757]/10 text-[#D97757] px-2 py-0.5 rounded-full font-bold" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
-                                Tik op document
-                            </span>
-                        </div>
-                    </div>
-                );
-            default:
-                return null;
-        }
-    };
+const PrinterVisual: React.FC<{ scenario: Scenario; showCorrect: boolean }> = ({ scenario, showCorrect }) => {
+    const borderColor = showCorrect ? '#10B981' : '#E8E6DF';
 
     return (
-        <div className="relative mx-auto" style={{ maxWidth: '200px' }}>
-            {/* iPad Frame */}
-            <div className="relative bg-[#1A1A19] rounded-[2rem] p-2 shadow-2xl">
-                {/* Camera */}
-                <div className="absolute top-4 left-1/2 -translate-x-1/2 w-2 h-2 bg-[#3D3D38] rounded-full"></div>
-                {/* Screen */}
-                <div className="bg-[#FAF9F0] rounded-2xl overflow-hidden" style={{ height: '280px' }}>
-                    <div className="p-2 h-full">
-                        {renderScreen()}
+        <div className="rounded-2xl p-5 mx-auto max-w-xs" style={{ backgroundColor: '#FFFFFF', border: `2px solid ${borderColor}` }}>
+            <div className="text-center mb-3">
+                <span className="text-5xl">{scenario.emoji}</span>
+            </div>
+            <div className="rounded-xl p-3" style={{ backgroundColor: '#FAF9F0', border: '1px solid #E8E6DF' }}>
+                {scenario.visual === 'wifi-off' && (
+                    <div className="flex flex-col items-center gap-2">
+                        <div className="flex items-center gap-2">
+                            <Printer size={24} style={{ color: '#6B6B66' }} />
+                            <span className="text-xs font-bold line-through" style={{ color: '#EF4444', fontFamily: "'Outfit', system-ui, sans-serif" }}>WiFi</span>
+                        </div>
+                        <div className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ backgroundColor: 'rgba(239, 68, 68, 0.1)', color: '#EF4444', fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                            Geen verbinding
+                        </div>
                     </div>
-                </div>
-                {/* Home Button */}
-                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 w-6 h-6 border-2 border-[#3D3D38] rounded-full"></div>
+                )}
+                {scenario.visual === 'grayscale' && (
+                    <div className="flex flex-col items-center gap-2">
+                        <div className="flex gap-1">
+                            <div className="w-6 h-6 rounded bg-gray-800" />
+                            <div className="w-6 h-6 rounded bg-gray-500" />
+                            <div className="w-6 h-6 rounded bg-gray-300" />
+                        </div>
+                        <div className="text-[10px] font-bold" style={{ color: '#6B6B66', fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                            Alleen grijstinten...
+                        </div>
+                    </div>
+                )}
+                {scenario.visual === 'paper-size' && (
+                    <div className="flex items-end justify-center gap-3">
+                        <div className="flex flex-col items-center">
+                            <div className="w-8 h-10 rounded border-2" style={{ borderColor: '#EF4444' }} />
+                            <span className="text-[9px] mt-1 font-bold" style={{ color: '#EF4444', fontFamily: "'Outfit', system-ui, sans-serif" }}>Letter</span>
+                        </div>
+                        <span className="text-xs font-bold mb-3" style={{ color: '#6B6B66' }}>→</span>
+                        <div className="flex flex-col items-center">
+                            <div className="w-7 h-11 rounded border-2" style={{ borderColor: '#10B981' }} />
+                            <span className="text-[9px] mt-1 font-bold" style={{ color: '#10B981', fontFamily: "'Outfit', system-ui, sans-serif" }}>A4</span>
+                        </div>
+                    </div>
+                )}
+                {scenario.visual === 'copies' && (
+                    <div className="flex flex-col items-center gap-1">
+                        <div className="flex gap-0.5">
+                            {Array.from({ length: 5 }).map((_, i) => (
+                                <div key={i} className="w-4 h-5 rounded-sm bg-white border" style={{ borderColor: '#D97757', marginLeft: i > 0 ? '-2px' : '0' }} />
+                            ))}
+                        </div>
+                        <div className="text-[10px] font-bold" style={{ color: '#D97757', fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                            Kopieën: 10 !!
+                        </div>
+                    </div>
+                )}
+                {scenario.visual === 'margins' && (
+                    <div className="flex flex-col items-center gap-1">
+                        <div className="w-12 h-14 rounded border-2 relative" style={{ borderColor: '#D97757' }}>
+                            <div className="absolute inset-2 border border-dashed rounded-sm" style={{ borderColor: '#6B6B66' }}>
+                                <div className="text-[6px] text-center mt-1" style={{ color: '#6B6B66' }}>tabel</div>
+                            </div>
+                        </div>
+                        <div className="text-[10px] font-bold" style={{ color: '#D97757', fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                            Marges te groot
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );
 };
 
 export const PrintInstructiesMission: React.FC<Props> = ({ onBack, onComplete }) => {
-    const [currentStep, setCurrentStep] = useState(0);
-    const [completedSteps, setCompletedSteps] = useState<number[]>([]);
-
-    const step = STEPS[currentStep];
-    const isLastStep = currentStep === STEPS.length - 1;
-    const canProceed = completedSteps.includes(step.id);
-
-    const handleCheck = () => {
-        if (!completedSteps.includes(step.id)) {
-            setCompletedSteps([...completedSteps, step.id]);
+    const { state, setState, clearSave } = useMissionAutoSave<PrintTroubleshooterState>(
+        'print-troubleshooter',
+        {
+            currentScenario: 0,
+            score: 0,
+            attemptsPerScenario: {},
+            correctScenarios: [],
+            showIntro: true,
+            showComplete: false,
         }
+    );
+
+    const { currentScenario, score, attemptsPerScenario, correctScenarios, showIntro, showComplete } = state;
+
+    // Transient UI state — niet opgeslagen
+    const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
+    const [showFeedback, setShowFeedback] = useState(false);
+
+    const scenario = SCENARIOS[currentScenario];
+    const currentAttempts = attemptsPerScenario[currentScenario] || 0;
+    const isCorrect = selectedAnswer ? scenario.options.find(o => o.id === selectedAnswer)?.isCorrect : false;
+    const canRetry = showFeedback && !isCorrect && currentAttempts < 2;
+
+    const handleAnswer = (optionId: string) => {
+        if (showFeedback) return;
+        setSelectedAnswer(optionId);
+        setShowFeedback(true);
+
+        const option = scenario.options.find(o => o.id === optionId);
+        const attempts = (attemptsPerScenario[currentScenario] || 0) + 1;
+
+        setState(prev => ({
+            ...prev,
+            attemptsPerScenario: { ...prev.attemptsPerScenario, [currentScenario]: attempts },
+        }));
+
+        if (option?.isCorrect) {
+            // Eerste poging: 20 punten, tweede poging: 10 punten
+            const points = attempts === 1 ? 20 : 10;
+            setState(prev => ({
+                ...prev,
+                score: prev.score + points,
+                correctScenarios: [...prev.correctScenarios, currentScenario],
+            }));
+        }
+    };
+
+    const handleRetry = () => {
+        setSelectedAnswer(null);
+        setShowFeedback(false);
     };
 
     const handleNext = () => {
-        if (isLastStep) {
-            onComplete(true);
+        setSelectedAnswer(null);
+        setShowFeedback(false);
+
+        if (currentScenario < SCENARIOS.length - 1) {
+            setState(prev => ({ ...prev, currentScenario: prev.currentScenario + 1 }));
         } else {
-            setCurrentStep(currentStep + 1);
+            setState(prev => ({ ...prev, showComplete: true }));
         }
     };
 
-    const handlePrev = () => {
-        if (currentStep > 0) {
-            setCurrentStep(currentStep - 1);
-        }
-    };
-
-    const progress = ((completedSteps.length) / STEPS.length) * 100;
-
-    return (
-        <div className="min-h-screen bg-[#FAF9F0] text-[#1A1A19] flex flex-col" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
-            {/* Header */}
-            <header className="bg-white border-b border-[#E8E6DF] px-6 py-4 flex items-center justify-between sticky top-0 z-20">
-                <button
-                    onClick={onBack}
-                    className="flex items-center gap-2 text-[#6B6B66] hover:text-[#1A1A19] transition-all duration-300 font-bold text-sm uppercase tracking-widest focus-visible:ring-2 focus-visible:ring-[#D97757] rounded-full px-3 py-1"
-                >
-                    <ArrowLeft size={16} /> Terug
-                </button>
-                <div className="flex items-center gap-3">
-                    <div className="p-2 bg-[#D97757]/10 text-[#D97757] rounded-xl">
-                        <BookOpen size={24} />
-                    </div>
-                    <div>
-                        <h1 className="text-lg font-black uppercase tracking-tight" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
-                            Document Openen
-                        </h1>
-                        <p className="text-[10px] text-[#6B6B66] uppercase tracking-widest font-bold">
-                            Boeken App Tutorial
-                        </p>
-                    </div>
-                </div>
-                <div className="text-sm text-[#6B6B66]">
-                    {currentStep + 1} / {STEPS.length}
-                </div>
-            </header>
-
-            {/* Progress Bar */}
-            <div className="w-full bg-[#E8E6DF] h-2">
-                <div
-                    className="h-full bg-gradient-to-r from-[#D97757] to-[#C46849] transition-all duration-500"
-                    style={{ width: `${progress}%` }}
-                />
-            </div>
-
-            {/* Main Content */}
-            <div className="flex-1 flex flex-col lg:flex-row items-center justify-center gap-8 p-6 lg:p-12">
-                {/* iPad Mockup */}
-                <div className="lg:w-1/3">
-                    <IPadVisual step={step.id} />
-                </div>
-
-                {/* Instructions */}
-                <div className="lg:w-2/3 max-w-xl">
-                    {/* Step Badge */}
-                    <div className="inline-flex items-center gap-2 bg-[#D97757]/10 border border-[#D97757]/30 text-[#D97757] px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-4">
-                        {step.icon}
-                        {step.subtitle}
-                    </div>
-
-                    {/* Title */}
-                    <h2 className="text-3xl font-black mb-4 text-[#1A1A19]" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>{step.title}</h2>
-
-                    {/* Instruction */}
-                    <p className="text-lg text-[#3D3D38] mb-6 leading-relaxed">
-                        {step.instruction}
-                    </p>
-
-                    {/* Tip */}
-                    <div className="bg-[#D97757]/10 border border-[#D97757]/30 rounded-2xl p-4 mb-6">
-                        <p className="text-sm text-[#3D3D38]">{step.tip}</p>
-                    </div>
-
-                    {/* Checkbox */}
-                    <button
-                        onClick={handleCheck}
-                        className={`w-full p-4 rounded-2xl font-bold flex items-center gap-3 transition-all duration-300 mb-6 focus-visible:ring-2 focus-visible:ring-[#D97757] ${canProceed
-                            ? 'bg-[#10B981]/10 border-2 border-[#10B981] text-[#10B981]'
-                            : 'bg-white border-2 border-[#E8E6DF] text-[#3D3D38] hover:border-[#D97757] hover:text-[#D97757]'
-                            }`}
-                    >
-                        <div className={`w-6 h-6 rounded-lg border-2 flex items-center justify-center ${canProceed ? 'bg-[#10B981] border-[#10B981]' : 'border-[#6B6B66]'
-                            }`}>
-                            {canProceed && <Check size={14} className="text-white" />}
-                        </div>
-                        {step.checkText}
-                    </button>
-
-                    {/* Navigation */}
-                    <div className="flex gap-4">
-                        {currentStep > 0 && (
-                            <button
-                                onClick={handlePrev}
-                                className="flex-1 py-4 rounded-full font-bold border border-[#E8E6DF] text-[#6B6B66] hover:bg-white transition-all duration-300 flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-[#D97757]"
-                            >
-                                <ArrowLeft size={18} /> Vorige
-                            </button>
-                        )}
+    // Intro screen
+    if (showIntro) {
+        return (
+            <div className="min-h-screen overflow-y-auto" style={{ backgroundColor: '#FAF9F0' }}>
+                <div className="min-h-full flex items-center justify-center p-4">
+                    <div className="max-w-lg w-full text-center space-y-8">
                         <button
-                            onClick={handleNext}
-                            disabled={!canProceed}
-                            className={`flex-1 py-4 rounded-full font-bold flex items-center justify-center gap-2 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#D97757] ${canProceed
-                                ? 'bg-[#D97757] text-white shadow-lg hover:bg-[#C46849] hover:shadow-[#D97757]/30'
-                                : 'bg-[#E8E6DF] text-[#6B6B66] cursor-not-allowed'
-                                }`}
+                            onClick={onBack}
+                            className="flex items-center gap-2 transition-all duration-300 font-bold text-sm uppercase tracking-widest mx-auto"
+                            style={{ color: '#6B6B66', fontFamily: "'Outfit', system-ui, sans-serif" }}
                         >
-                            {isLastStep ? (
-                                <>Afronden <CheckCircle size={18} /></>
-                            ) : (
-                                <>Volgende <ArrowRight size={18} /></>
-                            )}
+                            <ArrowLeft size={16} /> Terug
+                        </button>
+
+                        <div className="relative inline-block">
+                            <div className="absolute inset-0 blur-3xl rounded-full animate-pulse" style={{ backgroundColor: 'rgba(217, 119, 87, 0.2)' }} />
+                            <div className="relative w-32 h-32 rounded-3xl flex items-center justify-center shadow-2xl" style={{ background: 'linear-gradient(to bottom right, #D97757, #C46849)' }}>
+                                <Printer size={64} className="text-white" />
+                            </div>
+                        </div>
+
+                        <div className="space-y-4">
+                            <h1 className="text-4xl font-black" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#1A1A19' }}>
+                                Print Troubleshooter
+                            </h1>
+                            <p className="text-lg" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#3D3D38' }}>
+                                Er gaat van alles mis met de printer! Kun jij elk probleem oplossen?
+                            </p>
+                            <p className="text-sm font-semibold" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#6B6B66' }}>
+                                5 printproblemen — diagnosticeer het probleem en kies de juiste oplossing
+                            </p>
+                        </div>
+
+                        <div className="grid grid-cols-3 gap-4 text-center">
+                            <div className="rounded-2xl p-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
+                                <span className="text-2xl block mb-2">🔍</span>
+                                <p className="font-bold text-sm" style={{ color: '#1A1A19', fontFamily: "'Outfit', system-ui, sans-serif" }}>Diagnose</p>
+                            </div>
+                            <div className="rounded-2xl p-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
+                                <span className="text-2xl block mb-2">🛠️</span>
+                                <p className="font-bold text-sm" style={{ color: '#1A1A19', fontFamily: "'Outfit', system-ui, sans-serif" }}>Oplossen</p>
+                            </div>
+                            <div className="rounded-2xl p-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
+                                <span className="text-2xl block mb-2">💡</span>
+                                <p className="font-bold text-sm" style={{ color: '#1A1A19', fontFamily: "'Outfit', system-ui, sans-serif" }}>Onthouden</p>
+                            </div>
+                        </div>
+
+                        <button
+                            onClick={() => setState(prev => ({ ...prev, showIntro: false }))}
+                            className="w-full py-4 text-white rounded-full font-black uppercase tracking-wide transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#D97757]"
+                            style={{ backgroundColor: '#D97757', fontFamily: "'Outfit', system-ui, sans-serif" }}
+                            onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#C46849')}
+                            onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#D97757')}
+                        >
+                            Start Troubleshooting
                         </button>
                     </div>
                 </div>
+            </div>
+        );
+    }
+
+    // Complete screen
+    if (showComplete) {
+        const maxScore = SCENARIOS.length * 20;
+        const percentage = Math.round((score / maxScore) * 100);
+        const allCorrect = correctScenarios.length === SCENARIOS.length;
+
+        return (
+            <div className="min-h-screen overflow-y-auto" style={{ backgroundColor: '#FAF9F0' }}>
+                <div className="min-h-full flex items-center justify-center p-4">
+                    <div className="max-w-lg w-full text-center space-y-8">
+                        <div className="relative inline-block">
+                            <div className="absolute inset-0 blur-3xl rounded-full animate-pulse" style={{ backgroundColor: allCorrect ? 'rgba(16, 185, 129, 0.2)' : 'rgba(217, 119, 87, 0.2)' }} />
+                            <div className="relative w-32 h-32 rounded-3xl flex items-center justify-center shadow-2xl animate-bounce" style={{ background: allCorrect ? 'linear-gradient(to bottom right, #10B981, #2A9D8F)' : 'linear-gradient(to bottom right, #D97757, #C46849)' }}>
+                                {allCorrect ? <Trophy size={64} className="text-white" /> : <Sparkles size={64} className="text-white" />}
+                            </div>
+                        </div>
+
+                        <div className="space-y-2">
+                            <h1 className="text-4xl font-black" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#1A1A19' }}>
+                                {allCorrect ? 'Print Expert!' : 'Missie Voltooid!'}
+                            </h1>
+                            <p className="text-lg" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#3D3D38' }}>
+                                {allCorrect
+                                    ? 'Alle printproblemen opgelost — je bent een echte troubleshooter!'
+                                    : 'Je hebt alle scenario\'s doorlopen. Bekijk de tips hieronder om het te onthouden.'}
+                            </p>
+                        </div>
+
+                        <div className="rounded-2xl p-6" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
+                            <div className="flex justify-around">
+                                <div>
+                                    <p className="text-3xl font-black" style={{ color: '#10B981' }}>{correctScenarios.length}/{SCENARIOS.length}</p>
+                                    <p className="text-sm" style={{ color: '#6B6B66', fontFamily: "'Outfit', system-ui, sans-serif" }}>Opgelost</p>
+                                </div>
+                                <div>
+                                    <p className="text-3xl font-black" style={{ color: '#D97757' }}>{score}/{maxScore}</p>
+                                    <p className="text-sm" style={{ color: '#6B6B66', fontFamily: "'Outfit', system-ui, sans-serif" }}>Punten</p>
+                                </div>
+                                <div>
+                                    <p className="text-3xl font-black" style={{ color: '#2A9D8F' }}>{percentage}%</p>
+                                    <p className="text-sm" style={{ color: '#6B6B66', fontFamily: "'Outfit', system-ui, sans-serif" }}>Score</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="rounded-2xl p-6 text-left" style={{ backgroundColor: 'rgba(42, 157, 143, 0.06)', border: '1px solid rgba(42, 157, 143, 0.2)' }}>
+                            <h3 className="text-lg font-bold mb-3 flex items-center gap-2" style={{ color: '#2A9D8F', fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                <Lightbulb size={20} /> Tips om te onthouden
+                            </h3>
+                            <ul className="space-y-2">
+                                {SCENARIOS.map((s, i) => (
+                                    <li key={i} className="flex items-start gap-2">
+                                        <span className="text-sm flex-shrink-0">{s.emoji}</span>
+                                        <span className="text-sm" style={{ color: '#3D3D38', fontFamily: "'Outfit', system-ui, sans-serif" }}>{s.tip}</span>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+
+                        <button
+                            onClick={() => { clearSave(); onComplete(true); }}
+                            className="w-full py-4 text-white rounded-full font-black uppercase tracking-wide transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#D97757]"
+                            style={{ backgroundColor: '#D97757', fontFamily: "'Outfit', system-ui, sans-serif" }}
+                            onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#C46849')}
+                            onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#D97757')}
+                        >
+                            Terug naar Mission Control
+                        </button>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    // Main game screen
+    return (
+        <div className="min-h-screen" style={{ backgroundColor: '#FAF9F0' }}>
+            {/* Header */}
+            <div className="sticky top-0 z-20 backdrop-blur-md" style={{ backgroundColor: 'rgba(255, 255, 255, 0.9)', borderBottom: '1px solid #E8E6DF' }}>
+                <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
+                    <button
+                        onClick={onBack}
+                        className="p-2 transition-colors"
+                        style={{ color: '#6B6B66' }}
+                        onMouseEnter={e => (e.currentTarget.style.color = '#1A1A19')}
+                        onMouseLeave={e => (e.currentTarget.style.color = '#6B6B66')}
+                    >
+                        <ArrowLeft size={24} />
+                    </button>
+
+                    <div className="flex items-center gap-4">
+                        <span className="px-3 py-1 rounded-full text-xs font-bold" style={{
+                            backgroundColor: 'rgba(217, 119, 87, 0.1)',
+                            color: '#D97757',
+                            border: '1px solid rgba(217, 119, 87, 0.2)',
+                            fontFamily: "'Outfit', system-ui, sans-serif",
+                        }}>
+                            Scenario {currentScenario + 1}/{SCENARIOS.length}
+                        </span>
+
+                        <div className="flex items-center gap-1 px-3 py-1.5 rounded-full" style={{ backgroundColor: 'rgba(42, 157, 143, 0.1)', border: '1px solid rgba(42, 157, 143, 0.2)' }}>
+                            <Printer size={14} style={{ color: '#2A9D8F' }} />
+                            <span className="font-bold text-sm" style={{ color: '#2A9D8F', fontFamily: "'Outfit', system-ui, sans-serif" }}>{score} pts</span>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Progress bar */}
+                <div className="h-1.5" style={{ backgroundColor: '#F0EEE8' }}>
+                    <div
+                        className="h-full transition-all duration-500"
+                        style={{
+                            width: `${((currentScenario + (showFeedback && isCorrect ? 1 : 0)) / SCENARIOS.length) * 100}%`,
+                            background: 'linear-gradient(to right, #D97757, #C46849)',
+                        }}
+                    />
+                </div>
+            </div>
+
+            {/* Content */}
+            <div className="max-w-2xl mx-auto px-4 py-8 space-y-6">
+                {/* Scenario card */}
+                <div className="rounded-2xl p-5" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
+                    <div className="flex items-center gap-3 mb-4">
+                        <span className="text-3xl">{scenario.emoji}</span>
+                        <div>
+                            <span className="text-[10px] font-black uppercase tracking-widest" style={{ color: '#D97757', fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                Probleem {currentScenario + 1}
+                            </span>
+                            <h2 className="text-xl font-black" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#1A1A19' }}>
+                                {scenario.title}
+                            </h2>
+                        </div>
+                    </div>
+                    <p className="text-sm leading-relaxed" style={{ color: '#3D3D38', fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                        {scenario.description}
+                    </p>
+                </div>
+
+                {/* Visual */}
+                <PrinterVisual scenario={scenario} showCorrect={showFeedback && !!isCorrect} />
+
+                {/* Question */}
+                <div className="rounded-2xl p-4 text-center" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
+                    <p className="font-bold" style={{ color: '#1A1A19', fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                        Wat is de juiste oplossing?
+                    </p>
+                    {currentAttempts === 1 && !isCorrect && showFeedback && (
+                        <p className="text-xs mt-1" style={{ color: '#D97757', fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                            Nog 1 poging over
+                        </p>
+                    )}
+                </div>
+
+                {/* Options */}
+                <div className="space-y-3">
+                    {scenario.options.map((option) => {
+                        const isSelected = selectedAnswer === option.id;
+                        const showResult = showFeedback && isSelected;
+
+                        return (
+                            <button
+                                key={option.id}
+                                onClick={() => handleAnswer(option.id)}
+                                disabled={showFeedback}
+                                className="w-full p-4 rounded-2xl text-left transition-all duration-300"
+                                style={{
+                                    backgroundColor: showResult
+                                        ? option.isCorrect ? 'rgba(16, 185, 129, 0.08)' : 'rgba(239, 68, 68, 0.08)'
+                                        : '#FFFFFF',
+                                    border: `2px solid ${showResult
+                                        ? option.isCorrect ? '#10B981' : '#EF4444'
+                                        : '#E8E6DF'}`,
+                                    opacity: showFeedback && !isSelected ? 0.4 : 1,
+                                }}
+                            >
+                                <div className="flex items-start gap-3">
+                                    <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{
+                                        backgroundColor: showResult
+                                            ? option.isCorrect ? '#10B981' : '#EF4444'
+                                            : '#F0EEE8',
+                                    }}>
+                                        {showResult ? (
+                                            option.isCorrect ? <Check size={16} className="text-white" /> : <X size={16} className="text-white" />
+                                        ) : (
+                                            <span className="font-bold text-sm" style={{ color: '#6B6B66', fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                                {option.id.toUpperCase()}
+                                            </span>
+                                        )}
+                                    </div>
+                                    <div className="flex-1">
+                                        <p className="font-medium" style={{ color: '#1A1A19', fontFamily: "'Outfit', system-ui, sans-serif" }}>{option.text}</p>
+                                        {showResult && (
+                                            <p className="text-sm mt-2" style={{ color: option.isCorrect ? '#10B981' : '#EF4444', fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                                {option.feedback}
+                                            </p>
+                                        )}
+                                    </div>
+                                </div>
+                            </button>
+                        );
+                    })}
+                </div>
+
+                {/* Feedback actions */}
+                {showFeedback && (
+                    <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4">
+                        {/* Tip bij correct antwoord */}
+                        {isCorrect && (
+                            <div className="rounded-2xl p-4" style={{ backgroundColor: 'rgba(42, 157, 143, 0.06)', border: '1px solid rgba(42, 157, 143, 0.2)' }}>
+                                <div className="flex items-start gap-3">
+                                    <Lightbulb className="flex-shrink-0 mt-1" size={20} style={{ color: '#2A9D8F' }} />
+                                    <div>
+                                        <p className="font-bold text-sm mb-1" style={{ color: '#2A9D8F', fontFamily: "'Outfit', system-ui, sans-serif" }}>Tip om te onthouden</p>
+                                        <p className="text-sm" style={{ color: '#3D3D38', fontFamily: "'Outfit', system-ui, sans-serif" }}>{scenario.tip}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Retry of Volgende */}
+                        {canRetry ? (
+                            <button
+                                onClick={handleRetry}
+                                className="w-full py-4 rounded-full font-black uppercase tracking-wide transition-all duration-300 flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-[#D97757]"
+                                style={{ backgroundColor: '#D97757', color: '#FFFFFF', fontFamily: "'Outfit', system-ui, sans-serif" }}
+                                onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#C46849')}
+                                onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#D97757')}
+                            >
+                                <RotateCcw size={18} /> Probeer opnieuw
+                            </button>
+                        ) : (
+                            <>
+                                {/* Toon tip ook bij fout na alle pogingen */}
+                                {!isCorrect && (
+                                    <div className="rounded-2xl p-4" style={{ backgroundColor: 'rgba(42, 157, 143, 0.06)', border: '1px solid rgba(42, 157, 143, 0.2)' }}>
+                                        <div className="flex items-start gap-3">
+                                            <Lightbulb className="flex-shrink-0 mt-1" size={20} style={{ color: '#2A9D8F' }} />
+                                            <div>
+                                                <p className="font-bold text-sm mb-1" style={{ color: '#2A9D8F', fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                                    Het juiste antwoord was: {scenario.options.find(o => o.isCorrect)?.text}
+                                                </p>
+                                                <p className="text-sm" style={{ color: '#3D3D38', fontFamily: "'Outfit', system-ui, sans-serif" }}>{scenario.tip}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+                                <button
+                                    onClick={handleNext}
+                                    className="w-full py-4 rounded-full font-black uppercase tracking-wide transition-all duration-300 flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-[#D97757]"
+                                    style={{ backgroundColor: '#D97757', color: '#FFFFFF', fontFamily: "'Outfit', system-ui, sans-serif" }}
+                                    onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#C46849')}
+                                    onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#D97757')}
+                                >
+                                    {currentScenario < SCENARIOS.length - 1
+                                        ? <>Volgend probleem <ChevronRight size={20} /></>
+                                        : <>Bekijk resultaat <Trophy size={20} /></>}
+                                </button>
+                            </>
+                        )}
+                    </div>
+                )}
             </div>
         </div>
     );
