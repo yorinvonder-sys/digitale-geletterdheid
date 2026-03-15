@@ -14,7 +14,9 @@ export type AuditEventType =
     | 'privacy_viewed'
     | 'ai_interaction'
     | 'ai_image_generated'
-    | 'ai_drawing_analyzed';
+    | 'ai_drawing_analyzed'
+    | 'step_complete'
+    | 'teacher_step_override';
 
 export interface AuditLogEntry {
     event_type: AuditEventType;
@@ -116,3 +118,38 @@ export const logAiInteraction = (
         ...(metadata.fallback_used !== undefined ? { fallback_used: metadata.fallback_used } : {}),
     });
 };
+
+/**
+ * Log wanneer AI een stap als voltooid markeert (STEP_COMPLETE).
+ * EU AI Act Art. 12 — traceerbaarheid van AI-beslissingen.
+ */
+export const logStepComplete = (
+    missionId: string,
+    stepNumber: number,
+    agentId: string
+) =>
+    logAuditEvent('step_complete', {
+        mission_id: missionId,
+        step_number: stepNumber,
+        agent_id: agentId,
+        source: 'ai',
+    });
+
+/**
+ * Log wanneer een docent een AI-beoordeling overrulet.
+ * EU AI Act Art. 14 — menselijk toezicht.
+ */
+export const logTeacherOverride = (
+    studentId: string,
+    missionId: string,
+    stepNumber: number,
+    overrideType: string,
+    reason?: string
+) =>
+    logAuditEvent('teacher_step_override', {
+        student_id: studentId,
+        mission_id: missionId,
+        step_number: stepNumber,
+        override_type: overrideType,
+        ...(reason ? { reason } : {}),
+    });
