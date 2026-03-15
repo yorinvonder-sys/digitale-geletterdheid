@@ -34,6 +34,21 @@ export interface SloGoal {
   parts: SloGoalPart[];
 }
 
+// Basisvaardigheden raakvlakken
+export type BasisvaardighedenCategorie = 'taal' | 'rekenen' | 'burgerschap';
+
+export interface BasisvaardigheidTag {
+  categorie: BasisvaardighedenCategorie;
+  subcategorie: string;  // bijv. 'schrijfvaardigheid', 'logisch-redeneren', 'privacy-rechten'
+  label: string;         // Mensleesbaar label, bijv. "Schrijfvaardigheid"
+  toelichting: string;   // Korte uitleg van het raakvlak
+}
+
+export interface MissieBasisvaardigheden {
+  missionId: string;
+  basisvaardigheden: BasisvaardigheidTag[];
+}
+
 export const SLO_VSO_GOALS: SloGoal[] = [
   {
     id: 18,

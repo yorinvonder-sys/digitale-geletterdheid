@@ -14,3 +14,4 @@ SLO-doelen
 .env.local
 .env.production
 .mcp.json
+public/dev-docs

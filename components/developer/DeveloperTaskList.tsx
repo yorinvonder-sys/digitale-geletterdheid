@@ -92,57 +92,12 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
         return () => unsubscribe();
     }, [user.uid]);
 
-    // Trigger B: Document set change (simulated via manifest fetch)
     useEffect(() => {
-        const checkManifest = async () => {
-            try {
-                const response = await fetch('/dev-docs/manifest.json');
-                const manifest = await response.json();
-                const manifestHash = JSON.stringify(manifest).length; // Simple hash
-                const lastHash = localStorage.getItem(`dev-docs-hash-${user.uid}`);
-                
-                if (lastHash && parseInt(lastHash) !== manifestHash && !isPlanning && !isAutoPlanning) {
-                    console.log("Trigger B: Document manifest changed, suggesting new tasks...");
-                    handleAIPlanning(true);
-                }
-                localStorage.setItem(`dev-docs-hash-${user.uid}`, manifestHash.toString());
-            } catch (err) {
-                console.error("Failed to check manifest hash:", err);
-            }
-        };
-
-        checkManifest();
+        localStorage.removeItem(`dev-docs-hash-${user.uid}`);
     }, [user.uid]);
 
     const getDocumentContext = async () => {
-        try {
-            const response = await fetch('/dev-docs/manifest.json');
-            const manifest = await response.json();
-            const selectedDocs = manifest.slice(0, 5);
-            
-            const contextDocs = await Promise.all(selectedDocs.map(async (doc: any) => {
-                if (doc.format === 'MD' || doc.format === 'HTML') {
-                    try {
-                        const contentResponse = await fetch(doc.path);
-                        const content = await contentResponse.text();
-                        return {
-                            id: doc.id,
-                            title: doc.title,
-                            category: doc.category,
-                            content: content.substring(0, 2000)
-                        };
-                    } catch (e) {
-                        return { id: doc.id, title: doc.title, category: doc.category };
-                    }
-                }
-                return { id: doc.id, title: doc.title, category: doc.category };
-            }));
-            
-            return contextDocs;
-        } catch (err) {
-            console.error("Failed to get document context:", err);
-            return [];
-        }
+        return [];
     };
 
     const handleAIPlanning = async (isAuto = false) => {

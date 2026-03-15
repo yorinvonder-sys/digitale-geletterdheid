@@ -2,48 +2,6 @@ import path from 'path';
 import { defineConfig, loadEnv } from 'vite';
 import type { Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
-import { execSync } from 'child_process';
-
-function docSyncPlugin() {
-  const syncDocs = () => {
-    try {
-      console.log('[Vite] Running document sync...');
-      execSync('node scripts/sync-dev-docs.mjs', { stdio: 'inherit' });
-    } catch (err) {
-      console.error('[Vite] Document sync failed:', err);
-    }
-  };
-
-  return {
-    name: 'doc-sync-plugin',
-    buildStart() {
-      syncDocs();
-    },
-    configureServer(server) {
-      syncDocs();
-
-      // Watch source folders
-      const foldersToWatch = [
-        path.resolve(__dirname, 'business/nl-vo/export'),
-        path.resolve(__dirname, 'business/nl-vo/compliance'),
-        path.resolve(__dirname, 'public/compliance')
-      ];
-
-      foldersToWatch.forEach(folder => {
-        server.watcher.add(folder);
-      });
-
-      server.watcher.on('all', (event, filePath) => {
-        const isDoc = ['.pdf', '.docx', '.html', '.md'].some(ext => filePath.endsWith(ext));
-        if (isDoc && (event === 'add' || event === 'change' || event === 'unlink')) {
-          console.log(`[Vite] Document ${event}: ${path.basename(filePath)}`);
-          syncDocs();
-          server.ws.send({ type: 'full-reload' });
-        }
-      });
-    }
-  };
-}
 
 /**
  * Make Vite's injected CSS non-render-blocking.
@@ -79,7 +37,7 @@ export default defineConfig(({ mode }) => {
         ignored: ['**/node_modules/**', '**/.git/**', '**/.agent/**']
       }
     },
-    plugins: [react(), docSyncPlugin(), asyncCssPlugin()],
+    plugins: [react(), asyncCssPlugin()],
     // SECURITY: API keys removed from client bundle - all AI calls go through Supabase Edge Functions proxy
     resolve: {
       alias: {
