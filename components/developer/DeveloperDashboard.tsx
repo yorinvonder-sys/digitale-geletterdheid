@@ -22,6 +22,7 @@ import {
     Users
 } from 'lucide-react';
 import { DeveloperSprintPlan } from './DeveloperSprintPlan';
+import { PWAInstallPrompt } from '../PWAInstallPrompt';
 
 const DeveloperTaskList = React.lazy(() => import('./DeveloperTaskList').then(m => ({ default: m.DeveloperTaskList })));
 const DeveloperTimeline = React.lazy(() => import('./DeveloperTimeline').then(m => ({ default: m.DeveloperTimeline })));
@@ -401,6 +402,8 @@ export function DeveloperDashboard({ user, onLogout, onSwitchView }: DeveloperDa
                     {renderContent()}
                 </div>
             </main>
+
+            <PWAInstallPrompt />
         </div>
     );
 

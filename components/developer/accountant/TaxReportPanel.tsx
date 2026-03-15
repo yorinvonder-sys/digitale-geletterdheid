@@ -87,114 +87,64 @@ export function TaxReportPanel({ summary, tax, settings, userId, onSettingsChang
         }
     }
 
-    function exportPDF() {
-        // Dynamisch importeren zodat de bundle niet altijd jsPDF laadt
-        import('jspdf').then(({ jsPDF }) => {
-            const doc = new jsPDF();
-            const year = summary.year;
-            const name = settings?.business_name || 'ZZP-er';
-            const kvk  = settings?.kvk_number ? `KvK: ${settings.kvk_number}` : '';
+    async function exportPDF() {
+        const [{ jsPDF }, { createBrandedPdf, sectionTitle: brandedSection, labelValueRow, divider: brandedDivider, spacer, paragraph: brandedParagraph, finalizePdf, BRAND }] = await Promise.all([
+            import('jspdf'),
+            import('../../../services/pdfBrandingService'),
+        ]);
 
-            const euro = (v: number) => `€ ${v.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`;
-            const line = (label: string, value: number | string, bold = false, offset = 0) => {
-                if (bold) doc.setFont('helvetica', 'bold');
-                else doc.setFont('helvetica', 'normal');
-                doc.text(label, 20 + offset, y);
-                if (typeof value === 'number') {
-                    doc.text(euro(value), 160, y, { align: 'right' });
-                } else {
-                    doc.text(value, 160, y, { align: 'right' });
-                }
-                y += 8;
-            };
+        const year = summary.year;
+        const name = settings?.business_name || 'ZZP-er';
+        const kvk  = settings?.kvk_number ? `KvK: ${settings.kvk_number}` : '';
 
-            let y = 20;
-
-            // Header
-            doc.setFontSize(18);
-            doc.setFont('helvetica', 'bold');
-            doc.text(`Belastingoverzicht ${year}`, 20, y);
-            y += 8;
-
-            doc.setFontSize(10);
-            doc.setFont('helvetica', 'normal');
-            doc.text(name, 20, y);
-            if (kvk) { y += 5; doc.text(kvk, 20, y); }
-            y += 5;
-            doc.text(`Gegenereerd op: ${new Date().toLocaleDateString('nl-NL')}`, 20, y);
-            y += 12;
-
-            // Scheidingslijn
-            doc.setDrawColor(200, 200, 200);
-            doc.line(20, y, 190, y);
-            y += 8;
-
-            doc.setFontSize(12);
-            doc.setFont('helvetica', 'bold');
-            doc.text('Winst- en verliesrekening', 20, y);
-            y += 8;
-
-            doc.setFontSize(10);
-            line('Bruto-omzet', summary.totalIncome);
-            line('Zakelijke kosten', -summary.totalExpenses);
-            doc.line(20, y, 190, y);
-            y += 4;
-            line('Winst uit onderneming', summary.profit, true);
-            y += 6;
-
-            // Aftrekposten
-            doc.setFont('helvetica', 'bold');
-            doc.text('Aftrekposten (ZZP)', 20, y);
-            y += 8;
-            doc.setFont('helvetica', 'normal');
-            line('Zelfstandigenaftrek', -tax.zelfstandigenaftrek);
-            if (tax.startersaftrek > 0) line('Startersaftrek', -tax.startersaftrek);
-            const tc = getTaxConfig(year);
-            line(`MKB-winstvrijstelling (${(tc.mkbWinstvrijstelling * 100).toFixed(1)}%)`, -tax.mkbWinstvrijstelling);
-            doc.line(20, y, 190, y);
-            y += 4;
-            line('Belastbaar inkomen Box 1', tax.taxableIncome, true);
-            y += 6;
-
-            // Belasting
-            doc.setFont('helvetica', 'bold');
-            doc.text(`Inkomstenbelasting ${year}`, 20, y);
-            y += 8;
-            doc.setFont('helvetica', 'normal');
-
-            const in1 = Math.min(tax.taxableIncome, tc.bracket1Limit);
-            const in2 = Math.max(0, tax.taxableIncome - tc.bracket1Limit);
-            line(`Schijf 1 (t/m € ${tc.bracket1Limit.toLocaleString('nl-NL')} × ${(tc.bracket1Rate * 100).toFixed(2)}%)`, in1 * tc.bracket1Rate);
-            if (in2 > 0) line(`Schijf 2 (boven € ${tc.bracket1Limit.toLocaleString('nl-NL')} × ${(tc.bracket2Rate * 100).toFixed(2)}%)`, in2 * tc.bracket2Rate);
-            doc.line(20, y, 190, y);
-            y += 4;
-            line('Geschatte inkomstenbelasting', tax.estimatedTax, true);
-            doc.text(`Effectief tarief: ${tax.effectiveRate.toFixed(1)}%`, 20, y);
-            y += 10;
-
-            // BTW
-            doc.setFont('helvetica', 'bold');
-            doc.text('BTW-opgave', 20, y);
-            y += 8;
-            doc.setFont('helvetica', 'normal');
-            line('BTW ontvangen (omzet)', summary.vatCollected);
-            line('BTW betaald (inkoop)', -summary.vatPaid);
-            doc.line(20, y, 190, y);
-            y += 4;
-            line(summary.vatBalance >= 0 ? 'BTW af te dragen' : 'BTW te vorderen', Math.abs(summary.vatBalance), true);
-            y += 10;
-
-            // Disclaimer
-            doc.setFontSize(8);
-            doc.setFont('helvetica', 'italic');
-            doc.setTextColor(150, 150, 150);
-            doc.text(
-                'Dit overzicht is indicatief. Raadpleeg een belastingadviseur voor definitieve aangifte.',
-                20, y
-            );
-
-            doc.save(`belastingoverzicht_${year}.pdf`);
+        const ctx = createBrandedPdf(jsPDF, {
+            title: `Belastingoverzicht ${year}`,
+            subtitle: name + (kvk ? ` — ${kvk}` : ''),
+            date: `Gegenereerd op: ${new Date().toLocaleDateString('nl-NL')}`,
         });
+
+        const euro = (v: number) => `€ ${v.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`;
+        const row = (label: string, value: number | string, bold = false) => {
+            const displayValue = typeof value === 'number' ? euro(value) : value;
+            labelValueRow(ctx, label, displayValue, { bold });
+        };
+
+        brandedSection(ctx, 'Winst- en verliesrekening');
+        row('Bruto-omzet', summary.totalIncome);
+        row('Zakelijke kosten', -summary.totalExpenses);
+        brandedDivider(ctx);
+        row('Winst uit onderneming', summary.profit, true);
+        spacer(ctx, 4);
+
+        brandedSection(ctx, 'Aftrekposten (ZZP)');
+        row('Zelfstandigenaftrek', -tax.zelfstandigenaftrek);
+        if (tax.startersaftrek > 0) row('Startersaftrek', -tax.startersaftrek);
+        const tc = getTaxConfig(year);
+        row(`MKB-winstvrijstelling (${(tc.mkbWinstvrijstelling * 100).toFixed(1)}%)`, -tax.mkbWinstvrijstelling);
+        brandedDivider(ctx);
+        row('Belastbaar inkomen Box 1', tax.taxableIncome, true);
+        spacer(ctx, 4);
+
+        brandedSection(ctx, `Inkomstenbelasting ${year}`);
+        const in1 = Math.min(tax.taxableIncome, tc.bracket1Limit);
+        const in2 = Math.max(0, tax.taxableIncome - tc.bracket1Limit);
+        row(`Schijf 1 (t/m € ${tc.bracket1Limit.toLocaleString('nl-NL')} × ${(tc.bracket1Rate * 100).toFixed(2)}%)`, in1 * tc.bracket1Rate);
+        if (in2 > 0) row(`Schijf 2 (boven € ${tc.bracket1Limit.toLocaleString('nl-NL')} × ${(tc.bracket2Rate * 100).toFixed(2)}%)`, in2 * tc.bracket2Rate);
+        brandedDivider(ctx);
+        row('Geschatte inkomstenbelasting', tax.estimatedTax, true);
+        brandedParagraph(ctx, `Effectief tarief: ${tax.effectiveRate.toFixed(1)}%`, { fontSize: 8, color: BRAND.muted });
+        spacer(ctx, 4);
+
+        brandedSection(ctx, 'BTW-opgave');
+        row('BTW ontvangen (omzet)', summary.vatCollected);
+        row('BTW betaald (inkoop)', -summary.vatPaid);
+        brandedDivider(ctx);
+        row(summary.vatBalance >= 0 ? 'BTW af te dragen' : 'BTW te vorderen', Math.abs(summary.vatBalance), true);
+        spacer(ctx, 6);
+
+        brandedParagraph(ctx, 'Dit overzicht is indicatief. Raadpleeg een belastingadviseur voor definitieve aangifte.', { fontSize: 8, italic: true, color: BRAND.muted });
+
+        finalizePdf(ctx, `belastingoverzicht_${year}.pdf`);
     }
 
     // Belastingconfiguratie-status

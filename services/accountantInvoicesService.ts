@@ -309,6 +309,7 @@ export async function generateInvoicePDF(
     }
 ): Promise<void> {
     const { jsPDF } = await import('jspdf');
+    const { BRAND } = await import('./pdfBrandingService');
     const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
 
     const pageW = 210;
@@ -323,19 +324,25 @@ export async function generateInvoicePDF(
     const formatDate = (iso: string): string =>
         new Date(iso).toLocaleDateString('nl-NL', { day: '2-digit', month: 'long', year: 'numeric' });
 
-    let y = 20;
+    let y = 0;
+
+    // ── Terracotta accent balk bovenaan ──────────────────────────────────────
+    doc.setFillColor(...BRAND.primary);
+    doc.rect(0, 0, 210, 3.5, 'F');
+
+    y = 16;
 
     // ── Header: Bedrijfsnaam links, KvK/BTW/IBAN rechts ──────────────────────
     const businessName = businessSettings?.business_name || 'Uw bedrijf';
 
-    doc.setFontSize(22);
+    doc.setFontSize(20);
     doc.setFont('helvetica', 'bold');
-    doc.setTextColor(30, 30, 30);
+    doc.setTextColor(...BRAND.dark);
     doc.text(businessName, marginL, y);
 
     doc.setFontSize(8);
     doc.setFont('helvetica', 'normal');
-    doc.setTextColor(100, 100, 100);
+    doc.setTextColor(...BRAND.textLight);
 
     let rightY = y - 6;
     const rightLines: string[] = [];
@@ -351,7 +358,7 @@ export async function generateInvoicePDF(
     y += 8;
 
     // ── Horizontale scheidingslijn ─────────────────────────────────────────
-    doc.setDrawColor(220, 220, 220);
+    doc.setDrawColor(...BRAND.primary);
     doc.setLineWidth(0.4);
     doc.line(marginL, y, rightX, y);
     y += 10;
@@ -361,13 +368,13 @@ export async function generateInvoicePDF(
 
     doc.setFontSize(9);
     doc.setFont('helvetica', 'bold');
-    doc.setTextColor(30, 30, 30);
+    doc.setTextColor(...BRAND.primary);
     doc.text('FACTUUR', marginL, y);
     doc.text('KLANT', col2X, y);
     y += 5;
 
     doc.setFont('helvetica', 'normal');
-    doc.setTextColor(60, 60, 60);
+    doc.setTextColor(...BRAND.text);
     doc.setFontSize(8.5);
 
     // Factuurgegevens links
@@ -376,10 +383,10 @@ export async function generateInvoicePDF(
 
     function labelValue(label: string, value: string, yPos: number): void {
         doc.setFont('helvetica', 'bold');
-        doc.setTextColor(100, 100, 100);
+        doc.setTextColor(...BRAND.textLight);
         doc.text(label, marginL, yPos);
         doc.setFont('helvetica', 'normal');
-        doc.setTextColor(30, 30, 30);
+        doc.setTextColor(...BRAND.dark);
         doc.text(value, valueX, yPos);
     }
 
@@ -391,13 +398,13 @@ export async function generateInvoicePDF(
 
     // Klantgegevens rechts
     doc.setFont('helvetica', 'bold');
-    doc.setTextColor(30, 30, 30);
+    doc.setTextColor(...BRAND.dark);
     doc.setFontSize(9);
     doc.text(invoice.client_name, col2X, y);
 
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(8.5);
-    doc.setTextColor(60, 60, 60);
+    doc.setTextColor(...BRAND.text);
 
     let clientY = y + 5;
     if (invoice.client_address) {
@@ -418,7 +425,8 @@ export async function generateInvoicePDF(
     y += 22;
 
     // ── Factuurregels tabel ────────────────────────────────────────────────
-    doc.setDrawColor(220, 220, 220);
+    doc.setDrawColor(...BRAND.primary);
+    doc.setLineWidth(0.3);
     doc.line(marginL, y, rightX, y);
     y += 5;
 
@@ -430,10 +438,13 @@ export async function generateInvoicePDF(
     const colVatAmt = marginL + 138;
     const colTotal = rightX;
 
-    // Header rij
+    // Header rij — lichte achtergrond
+    doc.setFillColor(250, 248, 242);
+    doc.rect(marginL, y - 4, contentW, 7, 'F');
+
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(7.5);
-    doc.setTextColor(100, 100, 100);
+    doc.setTextColor(...BRAND.textLight);
     doc.text('Omschrijving', colDesc, y);
     doc.text('Aantal', colQty, y, { align: 'right' });
     doc.text('Prijs', colPrice, y, { align: 'right' });
@@ -442,14 +453,15 @@ export async function generateInvoicePDF(
     doc.text('Totaal', colTotal, y, { align: 'right' });
     y += 3;
 
-    doc.setDrawColor(220, 220, 220);
+    doc.setDrawColor(...BRAND.primary);
+    doc.setLineWidth(0.3);
     doc.line(marginL, y, rightX, y);
     y += 5;
 
     // Regels
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(8.5);
-    doc.setTextColor(30, 30, 30);
+    doc.setTextColor(...BRAND.dark);
 
     const lines = invoice.lines || [];
     for (const line of lines) {
@@ -471,7 +483,7 @@ export async function generateInvoicePDF(
 
         y += lineH + 1;
 
-        doc.setDrawColor(240, 240, 240);
+        doc.setDrawColor(...BRAND.border);
         doc.line(marginL, y - 1, rightX, y - 1);
     }
 
@@ -484,10 +496,10 @@ export async function generateInvoicePDF(
     function totaalRij(label: string, value: string, bold = false): void {
         if (bold) {
             doc.setFont('helvetica', 'bold');
-            doc.setTextColor(30, 30, 30);
+            doc.setTextColor(...BRAND.dark);
         } else {
             doc.setFont('helvetica', 'normal');
-            doc.setTextColor(80, 80, 80);
+            doc.setTextColor(...BRAND.textLight);
         }
         doc.setFontSize(8.5);
         doc.text(label, totLabelX, y);
@@ -498,14 +510,14 @@ export async function generateInvoicePDF(
     totaalRij('Subtotaal (excl. BTW)', euro(invoice.subtotal));
     totaalRij('BTW', euro(invoice.vat_amount));
 
-    doc.setDrawColor(30, 30, 30);
+    doc.setDrawColor(...BRAND.primary);
     doc.setLineWidth(0.5);
     doc.line(totLabelX, y, rightX, y);
     y += 4;
 
     doc.setFontSize(10);
     doc.setFont('helvetica', 'bold');
-    doc.setTextColor(30, 30, 30);
+    doc.setTextColor(...BRAND.dark);
     doc.text('Totaal incl. BTW', totLabelX, y);
     doc.text(euro(invoice.total), totValueX, y, { align: 'right' });
     y += 10;
@@ -514,7 +526,7 @@ export async function generateInvoicePDF(
     if (invoice.notes) {
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(8.5);
-        doc.setTextColor(80, 80, 80);
+        doc.setTextColor(...BRAND.textLight);
         doc.text('Opmerkingen:', marginL, y);
         y += 5;
         doc.setFont('helvetica', 'normal');
@@ -525,13 +537,13 @@ export async function generateInvoicePDF(
 
     // ── Voetnoot / Betalingsinfo ──────────────────────────────────────────
     const footerY = 275;
-    doc.setDrawColor(220, 220, 220);
+    doc.setDrawColor(...BRAND.border);
     doc.setLineWidth(0.3);
     doc.line(marginL, footerY - 4, rightX, footerY - 4);
 
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(7.5);
-    doc.setTextColor(130, 130, 130);
+    doc.setTextColor(...BRAND.muted);
 
     const ibanText = businessSettings?.iban
         ? `Graag betalen binnen 30 dagen op rekening ${businessSettings.iban} o.v.v. factuurnummer ${invoice.invoice_number}.`

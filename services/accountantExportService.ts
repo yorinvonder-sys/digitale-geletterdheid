@@ -295,77 +295,39 @@ export async function generateAnnualReportPDF(
     const tax = calculateTax(summary, starterAftrek ?? settings?.starter_aftrek ?? false);
 
     const { jsPDF } = await import('jspdf');
-    const doc = new jsPDF();
+    const { createBrandedPdf, sectionTitle: brandedSection, labelValueRow, divider: brandedDivider, spacer, finalizePdf, checkPageBreak, BRAND, drawTable } = await import('./pdfBrandingService');
 
     const name = settings?.business_name || 'ZZP-er';
     const kvk = settings?.kvk_number ? `KvK: ${settings.kvk_number}` : '';
 
+    const ctx = createBrandedPdf(jsPDF, {
+        title: `Jaaroverzicht ${year}`,
+        subtitle: name + (kvk ? ` — ${kvk}` : ''),
+        date: `Gegenereerd op: ${new Date().toLocaleDateString('nl-NL')}`,
+    });
+
     const euro = (v: number) =>
         `\u20AC ${Math.abs(v).toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`;
 
-    let y = 20;
-
-    function checkPageBreak(needed: number) {
-        if (y + needed > 280) {
-            doc.addPage();
-            y = 20;
-        }
-    }
-
-    function sectionTitle(title: string) {
-        checkPageBreak(20);
-        doc.setFontSize(12);
-        doc.setFont('helvetica', 'bold');
-        doc.setTextColor(30, 30, 30);
-        doc.text(title, 20, y);
-        y += 8;
-    }
-
     function row(label: string, value: number | string, bold = false) {
-        checkPageBreak(10);
-        doc.setFontSize(10);
-        doc.setFont('helvetica', bold ? 'bold' : 'normal');
-        doc.setTextColor(bold ? 30 : 80, bold ? 30 : 80, bold ? 30 : 80);
-        doc.text(label, 24, y);
         const displayValue = typeof value === 'number' ? euro(value) : value;
-        doc.text(displayValue, 180, y, { align: 'right' });
-        y += 7;
+        labelValueRow(ctx, label, displayValue, { bold });
     }
 
-    function divider() {
-        doc.setDrawColor(200, 200, 200);
-        doc.line(20, y, 190, y);
-        y += 5;
+    function dividerLine() {
+        brandedDivider(ctx);
     }
-
-    // === Header ===
-    doc.setFontSize(18);
-    doc.setFont('helvetica', 'bold');
-    doc.setTextColor(30, 30, 30);
-    doc.text(`Jaaroverzicht ${year}`, 20, y);
-    y += 8;
-
-    doc.setFontSize(10);
-    doc.setFont('helvetica', 'normal');
-    doc.setTextColor(80, 80, 80);
-    doc.text(name, 20, y);
-    if (kvk) { y += 5; doc.text(kvk, 20, y); }
-    y += 5;
-    doc.text(`Gegenereerd op: ${new Date().toLocaleDateString('nl-NL')}`, 20, y);
-    y += 12;
-    divider();
-    y += 3;
 
     // === Winst-en-verliesrekening ===
-    sectionTitle('Winst- en Verliesrekening');
+    brandedSection(ctx, 'Winst- en Verliesrekening');
     row('Bruto-omzet', summary.totalIncome);
     row('Zakelijke kosten', -summary.totalExpenses);
-    divider();
+    dividerLine();
     row('Winst uit onderneming', summary.profit, true);
-    y += 6;
+    spacer(ctx, 4);
 
     // === Kosten per categorie ===
-    sectionTitle('Kosten per Categorie');
+    brandedSection(ctx, 'Kosten per Categorie');
     const expenseCategories = Object.entries(summary.byCategory)
         .filter(([cat]) => !INCOME_CATEGORIES.includes(cat as TransactionCategory))
         .sort(([, a], [, b]) => b - a);
@@ -374,87 +336,65 @@ export async function generateAnnualReportPDF(
         const label = CATEGORY_LABELS[cat as TransactionCategory] || cat;
         row(label, amount);
     }
-    divider();
+    dividerLine();
     row('Totaal kosten', summary.totalExpenses, true);
-    y += 6;
+    spacer(ctx, 4);
 
     // === BTW-overzicht per kwartaal ===
-    sectionTitle('BTW-overzicht per Kwartaal');
+    brandedSection(ctx, 'BTW-overzicht per Kwartaal');
 
-    checkPageBreak(60);
-    doc.setFontSize(9);
-    doc.setFont('helvetica', 'bold');
-    doc.setTextColor(80, 80, 80);
-    const colX = [24, 65, 100, 135, 160];
-    doc.text('Kwartaal', colX[0], y);
-    doc.text('Ontvangen', colX[1], y);
-    doc.text('Betaald', colX[2], y);
-    doc.text('Verlegd', colX[3], y);
-    doc.text('Saldo', colX[4], y);
-    y += 6;
-    divider();
-
-    doc.setFont('helvetica', 'normal');
-    for (const q of btwOverview.quarters) {
-        checkPageBreak(10);
-        doc.text(q.label, colX[0], y);
-        doc.text(euro(q.vatCollected), colX[1], y);
-        doc.text(euro(q.vatPaid), colX[2], y);
-        doc.text(euro(q.vatReversed), colX[3], y);
-        doc.text(euro(q.vatBalance), colX[4], y);
-        y += 7;
-    }
-    divider();
-    doc.setFont('helvetica', 'bold');
-    doc.text('Totaal', colX[0], y);
-    doc.text(euro(btwOverview.totals.vatCollected), colX[1], y);
-    doc.text(euro(btwOverview.totals.vatPaid), colX[2], y);
-    doc.text(euro(btwOverview.totals.vatReversed), colX[3], y);
-    doc.text(euro(btwOverview.totals.vatBalance), colX[4], y);
-    y += 10;
+    const btwColumns = [
+        { header: 'Kwartaal', width: 20 },
+        { header: 'Ontvangen', width: 20, align: 'right' as const },
+        { header: 'Betaald', width: 20, align: 'right' as const },
+        { header: 'Verlegd', width: 20, align: 'right' as const },
+        { header: 'Saldo', width: 20, align: 'right' as const },
+    ];
+    const btwRows = btwOverview.quarters.map(q => [
+        q.label,
+        euro(q.vatCollected),
+        euro(q.vatPaid),
+        euro(q.vatReversed),
+        euro(q.vatBalance),
+    ]);
+    btwRows.push([
+        'Totaal',
+        euro(btwOverview.totals.vatCollected),
+        euro(btwOverview.totals.vatPaid),
+        euro(btwOverview.totals.vatReversed),
+        euro(btwOverview.totals.vatBalance),
+    ]);
+    drawTable(ctx, btwColumns, btwRows);
+    spacer(ctx, 4);
 
     // === Ondernemersaftrekken ===
-    sectionTitle('Ondernemersaftrekken');
+    brandedSection(ctx, 'Ondernemersaftrekken');
     row('Zelfstandigenaftrek', -tax.zelfstandigenaftrek);
     if (tax.startersaftrek > 0) {
         row('Startersaftrek', -tax.startersaftrek);
     }
     row('MKB-winstvrijstelling (12,7%)', -tax.mkbWinstvrijstelling);
-    divider();
+    dividerLine();
     row('Belastbaar inkomen Box 1', tax.taxableIncome, true);
-    y += 6;
+    spacer(ctx, 4);
 
     // === Belastingberekening ===
-    sectionTitle('Geschatte Inkomstenbelasting');
+    brandedSection(ctx, 'Geschatte Inkomstenbelasting');
     const in1 = Math.min(tax.taxableIncome, 76814);
     const in2 = Math.max(0, tax.taxableIncome - 76814);
     row(`Schijf 1 (t/m \u20AC76.814 x 36,97%)`, in1 * 0.3697);
     if (in2 > 0) {
         row(`Schijf 2 (boven \u20AC76.814 x 49,50%)`, in2 * 0.495);
     }
-    divider();
+    dividerLine();
     row('Geschatte inkomstenbelasting', tax.estimatedTax, true);
-    y += 3;
-    doc.setFontSize(9);
-    doc.setFont('helvetica', 'normal');
-    doc.setTextColor(120, 120, 120);
-    doc.text(`Effectief tarief: ${tax.effectiveRate.toFixed(1)}%`, 24, y);
-    y += 12;
+
+    const { paragraph: brandedParagraph } = await import('./pdfBrandingService');
+    brandedParagraph(ctx, `Effectief tarief: ${tax.effectiveRate.toFixed(1)}%`, { fontSize: 8, color: BRAND.muted });
+    spacer(ctx, 6);
 
     // === Disclaimer ===
-    checkPageBreak(20);
-    doc.setFontSize(8);
-    doc.setFont('helvetica', 'italic');
-    doc.setTextColor(150, 150, 150);
-    doc.text(
-        'Dit overzicht is indicatief en dient als voorbereiding op je belastingaangifte.',
-        20, y,
-    );
-    y += 4;
-    doc.text(
-        'Raadpleeg een belastingadviseur voor je definitieve aangifte.',
-        20, y,
-    );
+    brandedParagraph(ctx, 'Dit overzicht is indicatief en dient als voorbereiding op je belastingaangifte. Raadpleeg een belastingadviseur voor je definitieve aangifte.', { fontSize: 8, italic: true, color: BRAND.muted });
 
-    doc.save(`jaaroverzicht_${year}.pdf`);
+    finalizePdf(ctx, `jaaroverzicht_${year}.pdf`);
 }
