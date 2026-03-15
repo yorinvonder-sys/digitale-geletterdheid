@@ -2,6 +2,7 @@ import React, { useState, useEffect, Suspense, useMemo } from 'react';
 
 
 import { ParentUser, UserStats, RoleId, AvatarConfig } from './types';
+import type { NulmetingResult } from '@/components/assessment/escaperoom/types';
 import { isAgentRoleId } from './config/agentRoleIds';
 import { subscribeToAuthChanges, logout } from './services/authService';
 import { supabase } from './services/supabase';
@@ -49,6 +50,7 @@ const FilterBubbleBreakerMission = lazyWithRetry(() => import('./components/miss
 const DatalekkenRampenplanMission = lazyWithRetry(() => import('./components/missions/DatalekkenRampenplanMission').then(m => ({ default: m.DatalekkenRampenplanMission })));
 const DataVoorDataMission = lazyWithRetry(() => import('./components/missions/DataVoorDataMission').then(m => ({ default: m.DataVoorDataMission })));
 const PeerFeedbackPanel = lazyWithRetry(() => import('./components/missions/PeerFeedbackPanel').then(m => ({ default: m.PeerFeedbackPanel })));
+const NulmetingFlow = lazyWithRetry(() => import('./components/assessment/escaperoom/NulmetingFlow').then(m => ({ default: m.NulmetingFlow })));
 
 const LoadingFallback = () => (
     <div className="flex-1 flex items-center justify-center bg-slate-50" role="status" aria-live="polite">
@@ -102,6 +104,7 @@ export function AuthenticatedApp() {
     const FOCUS_INTENT_TTL = 5 * 60 * 1000; // 5 minutes
     const [showStudentOnboarding, setShowStudentOnboarding] = useState(false);
     const [showAvatarSetup, setShowAvatarSetup] = useState(false);
+    const [showNulmeting, setShowNulmeting] = useState(false);
     const [showExitConfirm, setShowExitConfirm] = useState(false);
     const [peerFeedbackMissionId, setPeerFeedbackMissionId] = useState<string | null>(null);
     const [toast, setToast] = useState<{ message: string; type: 'error' | 'success' | 'info' } | null>(null);
@@ -475,6 +478,36 @@ export function AuthenticatedApp() {
                     onComplete={handleAvatarComplete}
                     userName={user.displayName || undefined}
                     initialConfig={user.stats?.avatarConfig}
+                />
+            </Suspense>
+        );
+    }
+
+    // Nulmeting escaperoom: na avatar setup, voor het dashboard
+    const hasCompletedNulmeting = user.stats?.hasCompletedNulmeting === true;
+
+    if (user.role === 'student' && !hasCompletedNulmeting && !showNulmeting) {
+        setTimeout(() => setShowNulmeting(true), 100);
+    }
+
+    if (showNulmeting && user.role === 'student' && !hasCompletedNulmeting) {
+        const handleNulmetingComplete = async (result: NulmetingResult) => {
+            if (user) {
+                const newStats = {
+                    ...user.stats,
+                    hasCompletedNulmeting: true,
+                    nulmetingResult: result,
+                };
+                await handleSaveProgress(newStats);
+                setUser({ ...user, stats: newStats });
+            }
+            setShowNulmeting(false);
+        };
+        return (
+            <Suspense fallback={<LoadingFallback />}>
+                <NulmetingFlow
+                    onComplete={handleNulmetingComplete}
+                    onBack={handleLogout}
                 />
             </Suspense>
         );

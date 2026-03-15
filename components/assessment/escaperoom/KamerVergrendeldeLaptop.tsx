@@ -1,35 +1,42 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Monitor, CheckCircle, XCircle, FolderOpen, FileText, Image, Table } from 'lucide-react';
+import { Monitor, CheckCircle, XCircle, FolderOpen, FileText, Image, Table, Presentation } from 'lucide-react';
 import { KamerScore } from './types';
 
 interface BestandItem {
   id: string;
   naam: string;
-  type: 'document' | 'afbeelding' | 'spreadsheet' | 'onbekend';
+  type: 'document' | 'afbeelding' | 'spreadsheet' | 'presentatie';
   icon: React.ReactNode;
 }
 
 interface MapTarget {
   id: string;
   naam: string;
-  accepteert: string[]; // bestandstype dat hier thuis hoort
+  accepteert: string[];
   icon: React.ReactNode;
-  color: string;
+  kleurBorder: string;
+  kleurBg: string;
+  kleurTekst: string;
 }
 
 const BESTANDEN: BestandItem[] = [
-  { id: 'b1', naam: 'Werkstuk_Nederlands.docx', type: 'document', icon: <FileText size={20} /> },
-  { id: 'b2', naam: 'Vakantie_foto.jpg', type: 'afbeelding', icon: <Image size={20} /> },
-  { id: 'b3', naam: 'Cijferlijst.xlsx', type: 'spreadsheet', icon: <Table size={20} /> },
-  { id: 'b4', naam: 'Presentatie_Bio.pptx', type: 'document', icon: <FileText size={20} /> },
+  { id: 'b1', naam: 'Werkstuk_Nederlands.docx', type: 'document', icon: <FileText size={18} /> },
+  { id: 'b2', naam: 'Vakantie_foto.jpg', type: 'afbeelding', icon: <Image size={18} /> },
+  { id: 'b3', naam: 'Cijferlijst.xlsx', type: 'spreadsheet', icon: <Table size={18} /> },
+  { id: 'b4', naam: 'Presentatie_Bio.pptx', type: 'presentatie', icon: <Presentation size={18} /> },
+  { id: 'b5', naam: 'Selfie_schoolreisje.png', type: 'afbeelding', icon: <Image size={18} /> },
+  { id: 'b6', naam: 'Huiswerk_Wiskunde.pdf', type: 'document', icon: <FileText size={18} /> },
+  { id: 'b7', naam: 'Budget_feestcommissie.xlsx', type: 'spreadsheet', icon: <Table size={18} /> },
+  { id: 'b8', naam: 'Spreekbeurt_Klimaat.pptx', type: 'presentatie', icon: <Presentation size={18} /> },
 ];
 
 const MAPPEN: MapTarget[] = [
-  { id: 'm1', naam: 'Documenten', accepteert: ['document'], icon: <FolderOpen size={20} />, color: 'cyan' },
-  { id: 'm2', naam: 'Afbeeldingen', accepteert: ['afbeelding'], icon: <FolderOpen size={20} />, color: 'emerald' },
-  { id: 'm3', naam: 'Spreadsheets', accepteert: ['spreadsheet'], icon: <FolderOpen size={20} />, color: 'amber' },
+  { id: 'm1', naam: 'Documenten', accepteert: ['document'], icon: <FolderOpen size={20} />, kleurBorder: 'border-cyan-400', kleurBg: 'bg-cyan-500/20', kleurTekst: 'text-cyan-400' },
+  { id: 'm2', naam: 'Afbeeldingen', accepteert: ['afbeelding'], icon: <FolderOpen size={20} />, kleurBorder: 'border-emerald-400', kleurBg: 'bg-emerald-500/20', kleurTekst: 'text-emerald-400' },
+  { id: 'm3', naam: 'Spreadsheets', accepteert: ['spreadsheet'], icon: <FolderOpen size={20} />, kleurBorder: 'border-amber-400', kleurBg: 'bg-amber-500/20', kleurTekst: 'text-amber-400' },
+  { id: 'm4', naam: 'Presentaties', accepteert: ['presentatie'], icon: <FolderOpen size={20} />, kleurBorder: 'border-purple-400', kleurBg: 'bg-purple-500/20', kleurTekst: 'text-purple-400' },
 ];
 
 interface Props {
@@ -169,15 +176,15 @@ export const KamerVergrendeldeLaptop: React.FC<Props> = ({ onComplete }) => {
                 onDragOver={e => { handleDragOver(e); setDragOverMap(map.id); }}
                 onDragLeave={() => setDragOverMap(null)}
                 onDrop={e => handleDrop(e, map.id)}
-                className={`rounded-xl border-2 border-dashed p-4 transition-all min-h-[80px] ${
+                className={`rounded-xl border-2 border-dashed p-4 transition-all min-h-[70px] ${
                   isOver
-                    ? `border-${map.color}-400 bg-${map.color}-500/20`
-                    : `border-gray-700 bg-gray-800/50 hover:border-gray-600`
+                    ? `${map.kleurBorder} ${map.kleurBg}`
+                    : 'border-gray-700 bg-gray-800/50 hover:border-gray-600'
                 }`}
               >
                 <div className="flex items-center gap-2 mb-2">
-                  <span className={`text-${map.color}-400`}>{map.icon}</span>
-                  <span className={`text-sm font-bold text-${map.color}-400`}>{map.naam}</span>
+                  <span className={map.kleurTekst}>{map.icon}</span>
+                  <span className={`text-sm font-bold ${map.kleurTekst}`}>{map.naam}</span>
                 </div>
                 <div className="space-y-1">
                   {bestandenInMap.map(b => (

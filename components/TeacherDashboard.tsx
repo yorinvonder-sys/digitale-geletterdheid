@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useMemo, lazy, Suspense } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { PageTransition } from './ui/PageTransition';
 import { supabase } from '../services/supabase';
@@ -37,8 +37,12 @@ import { TeacherNavigation } from './teacher/dashboard/TeacherNavigation';
 import { TeacherModals } from './teacher/dashboard/TeacherModals';
 import { TeacherDocumentsPanel } from './teacher/TeacherDocumentsPanel';
 
+// Lazy loaded panels
+const LazyDigitaalPaspoortTeacher = lazy(() => import('./assessment/escaperoom/DigitaalPaspoortTeacher').then(m => ({ default: m.DigitaalPaspoortTeacher })));
+const LazySamenhangMatrix = lazy(() => import('./teacher/SamenhangMatrix').then(m => ({ default: m.SamenhangMatrix })));
+
 // Tab type definitions
-type MainTab = 'overview' | 'students' | 'gamification' | 'games' | 'settings' | 'activity' | 'ai-beleid' | 'feedback' | 'progress' | 'slo' | 'documenten';
+type MainTab = 'overview' | 'students' | 'gamification' | 'games' | 'settings' | 'activity' | 'ai-beleid' | 'feedback' | 'progress' | 'slo' | 'documenten' | 'nulmeting' | 'samenhang';
 type GamificationTab = 'leaderboard' | 'gallery' | 'events';
 type MessageTargetType = 'student' | 'class' | 'all';
 
@@ -555,6 +559,31 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                         {activeTab === 'feedback' && <PageTransition key="feedback"><FeedbackPanel schoolId={user?.schoolId} /></PageTransition>}
                         {activeTab === 'progress' && <PageTransition key="progress" className="space-y-6"><MissionProgressPanel students={students} classFilter={classFilter} availableClasses={classGroups} onClassFilterChange={setClassFilter} onSelectStudent={setSelectedStudent} yearGroup={yearGroupFilter} /><HybridAssessmentPanel records={hybridAssessments} classFilter={classFilter} /></PageTransition>}
                         {activeTab === 'slo' && <PageTransition key="slo"><SLOClassOverview students={students} schoolId={user?.schoolId} /></PageTransition>}
+                        {activeTab === 'nulmeting' && (
+                            <PageTransition key="nulmeting">
+                                <Suspense fallback={<div className="flex items-center justify-center py-12"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600" /></div>}>
+                                    <LazyDigitaalPaspoortTeacher
+                                        klasResults={students
+                                            .filter(s => {
+                                                const mC = classFilter === 'all' || s.studentClass === classFilter || s.identifier?.startsWith(classFilter);
+                                                return mC && s.stats?.nulmetingResult;
+                                            })
+                                            .map(s => ({
+                                                studentName: s.displayName || 'Naamloos',
+                                                studentId: s.uid,
+                                                result: s.stats!.nulmetingResult!,
+                                            }))}
+                                    />
+                                </Suspense>
+                            </PageTransition>
+                        )}
+                        {activeTab === 'samenhang' && (
+                            <PageTransition key="samenhang">
+                                <Suspense fallback={<div className="flex items-center justify-center py-12"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600" /></div>}>
+                                    <LazySamenhangMatrix selectedYear={yearGroupFilter} />
+                                </Suspense>
+                            </PageTransition>
+                        )}
                         {activeTab === 'documenten' && <PageTransition key="documenten"><TeacherDocumentsPanel /></PageTransition>}
                     </AnimatePresence>
                 </main>

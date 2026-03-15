@@ -1,5 +1,6 @@
 
 import { ReactNode } from 'react';
+import type { NulmetingResult } from '@/components/assessment/escaperoom/types';
 
 export interface CodeChange {
   variable: string;
@@ -203,6 +204,8 @@ export interface UserStats {
   educationLevel?: EducationLevel;
   dailyStreak?: number;
   lastLoginDate?: string;
+  nulmetingResult?: NulmetingResult;
+  hasCompletedNulmeting?: boolean;
 }
 
 export interface ChatState {

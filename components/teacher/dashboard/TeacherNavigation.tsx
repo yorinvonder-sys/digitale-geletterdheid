@@ -3,7 +3,7 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart3, Users, Sparkles, Settings } from 'lucide-react';
 
-type MainTab = 'overview' | 'students' | 'gamification' | 'games' | 'settings' | 'activity' | 'ai-beleid' | 'feedback' | 'progress' | 'slo' | 'documenten';
+type MainTab = 'overview' | 'students' | 'gamification' | 'games' | 'settings' | 'activity' | 'ai-beleid' | 'feedback' | 'progress' | 'slo' | 'documenten' | 'nulmeting' | 'samenhang';
 
 interface TeacherNavigationProps {
     activeTab: MainTab;
@@ -15,7 +15,7 @@ export const TeacherNavigation: React.FC<TeacherNavigationProps> = ({ activeTab,
         <div data-tutorial="main-tabs" className="bg-white rounded-2xl border border-slate-200 shadow-sm p-2">
             <div className="flex items-center justify-center gap-1 md:gap-2">
                 {[
-                    { id: 'overview', label: 'Dashboard', icon: BarChart3, subTabs: ['overview', 'progress', 'slo', 'documenten'], tutorialId: 'dashboard-tab', tooltip: 'Overzicht van voortgang, SLO-doelen en signalering' },
+                    { id: 'overview', label: 'Dashboard', icon: BarChart3, subTabs: ['overview', 'progress', 'slo', 'nulmeting', 'samenhang', 'documenten'], tutorialId: 'dashboard-tab', tooltip: 'Overzicht van voortgang, SLO-doelen en signalering' },
                     { id: 'students', label: 'Leerlingen', icon: Users, subTabs: ['students', 'feedback'], tutorialId: 'students-tab', tooltip: 'Bekijk en beheer je leerlingen per klas' },
                     { id: 'games', label: 'Activiteiten', icon: Sparkles, subTabs: ['games', 'gamification'], tutorialId: 'activities-tab', tooltip: 'Games, ranglijsten en XP-beloningen' },
                     { id: 'settings', label: 'Beheer', icon: Settings, subTabs: ['ai-beleid', 'settings'], tutorialId: 'settings-tab', tooltip: 'AI-beleid en klas-instellingen' },
@@ -42,7 +42,7 @@ export const TeacherNavigation: React.FC<TeacherNavigationProps> = ({ activeTab,
 
             {/* Sub-tabs for active section */}
             <AnimatePresence mode="wait">
-                {(activeTab === 'overview' || activeTab === 'progress' || activeTab === 'slo' || activeTab === 'documenten') && (
+                {(activeTab === 'overview' || activeTab === 'progress' || activeTab === 'slo' || activeTab === 'documenten' || activeTab === 'nulmeting' || activeTab === 'samenhang') && (
                     <motion.div
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
@@ -53,6 +53,8 @@ export const TeacherNavigation: React.FC<TeacherNavigationProps> = ({ activeTab,
                             { id: 'overview', label: 'Overzicht', tooltip: 'Statistieken en vroege signalering' },
                             { id: 'progress', label: 'Voortgang', tooltip: 'Missie-voortgang per leerling' },
                             { id: 'slo', label: 'SLO Doelen', tooltip: 'Kerndoelen Digitale Geletterdheid (SLO 2025)' },
+                            { id: 'nulmeting', label: 'Nulmeting', tooltip: 'Nulmetingsresultaten en digitaal paspoort per klas' },
+                            { id: 'samenhang', label: 'Samenhang', tooltip: 'Samenhang basisvaardigheden: taal, rekenen, burgerschap' },
                             { id: 'documenten', label: 'Documenten', tooltip: 'Compliance- en beleidsdocumenten' },
                         ].map(sub => (
                             <button
