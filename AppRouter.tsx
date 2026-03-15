@@ -22,6 +22,7 @@ const SloRapport = React.lazy(() => import('./components/seo/SloRapport').then(m
 const ComparisonPage = React.lazy(() => import('./components/seo/ComparisonPage').then(m => ({ default: m.ComparisonPage })));
 const NotFound = React.lazy(() => import('./components/NotFound').then(m => ({ default: m.NotFound })));
 const MobileReceiptPage = React.lazy(() => import('./components/MobileReceiptPage').then(m => ({ default: m.MobileReceiptPage })));
+const ParentConsentApproval = React.lazy(() => import('./components/ParentConsentApproval').then(m => ({ default: m.ParentConsentApproval })));
 
 import { ParentUser } from './types';
 const CookieConsent = React.lazy(() => import('./components/CookieConsent').then(m => ({ default: m.CookieConsent })));
@@ -375,6 +376,16 @@ export function AppRouter() {
         return <LoginRoute />;
     }
 
+    if (normalizedPath === '/ouderlijke-toestemming') {
+        return (
+            <PublicPageShell>
+                <React.Suspense fallback={<LoadingFallback />}>
+                    <ParentConsentApproval />
+                </React.Suspense>
+            </PublicPageShell>
+        );
+    }
+
     // DEV ONLY: Avatar preview route
     if (normalizedPath === '/dev/avatar') {
         return (
@@ -426,7 +437,7 @@ export function AppRouter() {
     }
 
     // 404 handler for public routes
-    const isPublicRoute = normalizedPath === '' || normalizedPath === '/' || normalizedPath === '/scholen' || normalizedPath === '/ict' || normalizedPath.startsWith('/ict/') || normalizedPath === '/login' || normalizedPath === '/digitale-geletterdheid-vo' || normalizedPath === '/slo-kerndoelen-digitale-geletterdheid' || normalizedPath === '/ai-geletterdheid-onderwijs-ai-act' || normalizedPath === '/compliance-hub' || normalizedPath.startsWith('/compliance/') || normalizedPath.startsWith('/vergelijking/') || normalizedPath.startsWith('/gids/');
+    const isPublicRoute = normalizedPath === '' || normalizedPath === '/' || normalizedPath === '/scholen' || normalizedPath === '/ict' || normalizedPath.startsWith('/ict/') || normalizedPath === '/login' || normalizedPath === '/ouderlijke-toestemming' || normalizedPath === '/digitale-geletterdheid-vo' || normalizedPath === '/slo-kerndoelen-digitale-geletterdheid' || normalizedPath === '/ai-geletterdheid-onderwijs-ai-act' || normalizedPath === '/compliance-hub' || normalizedPath.startsWith('/compliance/') || normalizedPath.startsWith('/vergelijking/') || normalizedPath.startsWith('/gids/');
 
     if (isPublicRoute) {
         return (

@@ -8,7 +8,7 @@ interface ParentalConsentFormProps {
   initialConsentType: ConsentType | null;
   studentName: string;
   schoolName: string;
-  onSubmit: (consentTypes: ConsentType[], parentEmail: string, parentName: string) => void;
+  onSubmit: (consentTypes: ConsentType[], parentEmail: string, parentName: string) => Promise<void> | void;
   onCancel: () => void;
 }
 
@@ -30,6 +30,7 @@ export const ParentalConsentForm: React.FC<ParentalConsentFormProps> = ({
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const toggleType = (type: ConsentType) => {
     setSelectedTypes((prev) => {
@@ -62,9 +63,24 @@ export const ParentalConsentForm: React.FC<ParentalConsentFormProps> = ({
     if (!validate()) return;
 
     setSubmitting(true);
+    setSubmitError(null);
     const types = Array.from(selectedTypes);
-    await sendParentalConsentEmail(parentEmail.trim(), parentName.trim(), studentName, schoolName, types);
-    onSubmit(types, parentEmail.trim(), parentName.trim());
+    const result = await sendParentalConsentEmail(parentEmail.trim(), parentName.trim(), studentName, schoolName, types);
+    if (!result.success) {
+      setSubmitError(result.error ?? 'Kon de toestemmingsmail niet versturen.');
+      setSubmitting(false);
+      return;
+    }
+
+    try {
+      await onSubmit(types, parentEmail.trim(), parentName.trim());
+    } catch (err: any) {
+      setSubmitError(err?.message || 'Kon de aanvraag niet afronden.');
+      setSubmitting(false);
+      return;
+    }
+
+    setSubmitting(false);
   };
 
   // Alleen niet-goedgekeurde consents tonen
@@ -90,11 +106,17 @@ export const ParentalConsentForm: React.FC<ParentalConsentFormProps> = ({
 
       <div className="p-3 bg-blue-50 border border-blue-200 rounded-xl">
         <p className="text-xs text-blue-800 leading-relaxed">
-          Laat je ouder of voogd dit formulier invullen. Zij geven hiermee toestemming voor het
-          gebruik van specifieke functies op het platform. Deze toestemming kan altijd worden
-          ingetrokken via de instellingen.
+          We versturen een unieke, beveiligde link naar je ouder of voogd. De toestemming wordt
+          pas actief nadat die link is bevestigd.
         </p>
       </div>
+
+      {submitError && (
+        <div className="p-3 bg-red-50 border border-red-200 rounded-xl flex items-start gap-2">
+          <AlertTriangle size={16} className="text-red-500 mt-0.5 shrink-0" />
+          <p className="text-xs text-red-700 leading-relaxed">{submitError}</p>
+        </div>
+      )}
 
       {/* Naam ouder/voogd */}
       <div>
@@ -215,13 +237,13 @@ export const ParentalConsentForm: React.FC<ParentalConsentFormProps> = ({
           className="flex-1 px-4 py-2.5 bg-indigo-600 text-white rounded-xl text-sm font-semibold hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
         >
           <ShieldCheck size={16} />
-          {submitting ? 'Opslaan...' : 'Ik ga akkoord'}
+          {submitting ? 'Versturen...' : 'Verstuur toestemmingsmail'}
         </button>
       </div>
 
       <p className="text-[10px] text-slate-400 text-center leading-relaxed">
-        Door op "Ik ga akkoord" te klikken, geeft u als ouder/voogd toestemming voor de geselecteerde
-        verwerkingen. U kunt deze toestemming altijd intrekken via het profiel van de leerling.
+        Deze aanvraag verleent nog geen toestemming. Alleen de bevestiging via de e-mail activeert
+        de geselecteerde verwerkingen.
       </p>
     </form>
   );

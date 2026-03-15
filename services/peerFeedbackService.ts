@@ -69,15 +69,12 @@ export async function submitPeerFeedback(input: PeerFeedbackInput): Promise<void
     throw new Error('Je kunt jezelf geen feedback geven.');
   }
 
-  const { error } = await (supabase.from as any)('peer_feedback').insert({
-    mission_id: input.missionId,
-    from_student_id: user.id,
-    to_student_id: input.toStudentId,
-    school_id: input.schoolId,
-    class_id: input.classId,
-    feedback_text: safeText,
-    rating: input.rating,
-    criteria: input.criteria,
+  const { error } = await (supabase as any).rpc('submit_peer_feedback', {
+    p_mission_id: input.missionId,
+    p_to_student_id: input.toStudentId,
+    p_feedback_text: safeText,
+    p_rating: input.rating,
+    p_criteria: input.criteria,
   });
 
   if (error) throw new Error('Feedback opslaan mislukt: ' + error.message);
@@ -163,37 +160,21 @@ export async function getClassFeedbackStats(
  */
 export async function getRandomPeerForReview(
   missionId: string,
-  classId: string,
-  excludeStudentId: string
+  _classId: string,
+  _excludeStudentId: string
 ): Promise<{ studentId: string; displayName: string } | null> {
-  // Get classmates who completed this mission
-  const { data: classmates, error: classError }: any = await (supabase.from as any)('mission_progress')
-    .select('user_id')
-    .eq('mission_id', missionId)
-    .eq('status', 'completed')
-    .neq('user_id', excludeStudentId);
+  const { data, error }: any = await (supabase as any).rpc('get_random_peer_for_review', {
+    p_mission_id: missionId,
+  });
 
-  if (classError || !classmates || classmates.length === 0) return null;
+  if (error || !data) return null;
 
-  // Get peers this student already reviewed for this mission
-  const { data: alreadyReviewed }: any = await (supabase.from as any)('peer_feedback')
-    .select('to_student_id')
-    .eq('from_student_id', excludeStudentId)
-    .eq('mission_id', missionId);
-
-  const reviewedIds = new Set((alreadyReviewed ?? []).map((r: any) => r.to_student_id));
-
-  // Filter out already-reviewed classmates
-  const eligible = classmates.filter((c: any) => !reviewedIds.has(c.user_id));
-
-  if (eligible.length === 0) return null;
-
-  // Pick random
-  const picked = eligible[Math.floor(Math.random() * eligible.length)];
+  const row = Array.isArray(data) ? data[0] : data;
+  if (!row?.student_id) return null;
 
   return {
-    studentId: picked.user_id,
-    displayName: 'Klasgenoot', // Anoniem
+    studentId: row.student_id,
+    displayName: row.display_name || 'Klasgenoot',
   };
 }
 
@@ -201,9 +182,10 @@ export async function getRandomPeerForReview(
  * Vote whether received feedback was helpful.
  */
 export async function voteHelpful(feedbackId: string, helpful: boolean): Promise<void> {
-  const { error } = await (supabase.from as any)('peer_feedback')
-    .update({ helpful_vote: helpful, updated_at: new Date().toISOString() })
-    .eq('id', feedbackId);
+  const { error } = await (supabase as any).rpc('vote_peer_feedback_helpful', {
+    p_feedback_id: feedbackId,
+    p_helpful: helpful,
+  });
 
   if (error) throw new Error('Stem opslaan mislukt: ' + error.message);
 }

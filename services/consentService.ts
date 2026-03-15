@@ -5,7 +5,7 @@
 // Tot de database types opnieuw gegenereerd zijn, gebruiken we `as any` casts
 // op supabase.from() calls. Dit is veilig zolang de migratie is gedraaid.
 
-import { supabase } from './supabase';
+import { EDGE_FUNCTION_URL, supabase } from './supabase';
 import { logger } from '../utils/logger';
 
 export type ConsentType = 'data_processing' | 'ai_interaction' | 'analytics' | 'peer_feedback';
@@ -38,6 +38,15 @@ export interface ConsentStatus {
   grantedAt: string | null;
   consentVersion: string;
   needsRenewal: boolean;
+}
+
+export interface ParentalConsentRequestPreview {
+  parentName: string;
+  studentName: string;
+  schoolName: string;
+  consentTypes: ConsentType[];
+  expiresAt: string;
+  status: 'pending' | 'approved' | 'expired' | 'cancelled';
 }
 
 const CURRENT_CONSENT_VERSION = '1.0';
@@ -85,28 +94,19 @@ export async function getStudentConsents(studentId: string): Promise<StudentCons
 export async function grantConsent(
   consentType: ConsentType,
   grantedBy: GrantedBy,
-  schoolId: string,
-  parentEmail?: string,
-  parentName?: string,
+  _schoolId: string,
+  _parentEmail?: string,
+  _parentName?: string,
 ): Promise<{ success: boolean; error?: string }> {
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return { success: false, error: 'Niet ingelogd.' };
+  if (grantedBy !== 'student') {
+    return { success: false, error: 'Ouderlijke toestemming moet via de beveiligde e-maillink worden bevestigd.' };
+  }
 
-  const { error } = await consentTable()
-    .upsert({
-      student_id: user.id,
-      school_id: schoolId,
-      consent_type: consentType,
-      granted: true,
-      granted_by: grantedBy,
-      granted_at: new Date().toISOString(),
-      revoked_at: null,
-      parent_email: parentEmail ?? null,
-      parent_name: parentName ?? null,
-      consent_version: CURRENT_CONSENT_VERSION,
-    }, {
-      onConflict: 'student_id,consent_type',
-    });
+  const { error } = await (supabase as any).rpc('set_own_consent', {
+    p_consent_type: consentType,
+    p_granted: true,
+    p_consent_version: CURRENT_CONSENT_VERSION,
+  });
 
   if (error) {
     logger.error('[consentService] grantConsent error:', error);
@@ -117,16 +117,11 @@ export async function grantConsent(
 
 /** Consent intrekken */
 export async function revokeConsent(consentType: ConsentType): Promise<{ success: boolean; error?: string }> {
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return { success: false, error: 'Niet ingelogd.' };
-
-  const { error } = await consentTable()
-    .update({
-      granted: false,
-      revoked_at: new Date().toISOString(),
-    })
-    .eq('student_id', user.id)
-    .eq('consent_type', consentType);
+  const { error } = await (supabase as any).rpc('set_own_consent', {
+    p_consent_type: consentType,
+    p_granted: false,
+    p_consent_version: CURRENT_CONSENT_VERSION,
+  });
 
   if (error) {
     logger.error('[consentService] revokeConsent error:', error);
@@ -179,6 +174,34 @@ export async function sendParentalConsentEmail(
     logger.error('[consentService] sendParentalConsentEmail unexpected error:', err);
     return { success: false, error: 'Er ging iets mis bij het versturen van de e-mail.' };
   }
+}
+
+async function callParentalConsentApprovalEndpoint(
+  token: string,
+  preview: boolean,
+): Promise<ParentalConsentRequestPreview> {
+  const response = await fetch(`${EDGE_FUNCTION_URL}/approveParentalConsent`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ token, preview }),
+  });
+
+  const payload = await response.json().catch(() => null);
+  if (!response.ok) {
+    throw new Error(payload?.error || 'Kon ouderlijke toestemming niet verwerken.');
+  }
+
+  return payload as ParentalConsentRequestPreview;
+}
+
+export async function previewParentalConsentRequest(token: string): Promise<ParentalConsentRequestPreview> {
+  return callParentalConsentApprovalEndpoint(token, true);
+}
+
+export async function approveParentalConsentRequest(token: string): Promise<ParentalConsentRequestPreview> {
+  return callParentalConsentApprovalEndpoint(token, false);
 }
 
 /** Overzicht van alle consent types met status */

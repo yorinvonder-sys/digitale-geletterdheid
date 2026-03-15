@@ -30,6 +30,7 @@ export const ConsentManager: React.FC<ConsentManagerProps> = ({
   const [toggling, setToggling] = useState<ConsentType | null>(null);
   const [showParentalForm, setShowParentalForm] = useState(false);
   const [pendingConsentType, setPendingConsentType] = useState<ConsentType | null>(null);
+  const [requestNotice, setRequestNotice] = useState<string | null>(null);
   const requiresParent = needsParentalConsent(studentAge);
 
   const loadStatuses = useCallback(async () => {
@@ -45,6 +46,7 @@ export const ConsentManager: React.FC<ConsentManagerProps> = ({
 
   const handleToggle = async (status: ConsentStatus) => {
     if (toggling) return;
+    setRequestNotice(null);
 
     // Als consent nu aan staat: intrekken
     if (status.granted) {
@@ -57,7 +59,12 @@ export const ConsentManager: React.FC<ConsentManagerProps> = ({
       }
 
       setToggling(status.consentType);
-      await revokeConsent(status.consentType);
+      const result = await revokeConsent(status.consentType);
+      if (!result.success) {
+        window.alert(result.error || 'Kon toestemming niet intrekken.');
+        setToggling(null);
+        return;
+      }
       await loadStatuses();
       setToggling(null);
       return;
@@ -71,25 +78,27 @@ export const ConsentManager: React.FC<ConsentManagerProps> = ({
     } else {
       // >=16 jaar: direct consent geven
       setToggling(status.consentType);
-      await grantConsent(status.consentType, 'student', schoolId);
+      const result = await grantConsent(status.consentType, 'student', schoolId);
+      if (!result.success) {
+        window.alert(result.error || 'Kon toestemming niet opslaan.');
+        setToggling(null);
+        return;
+      }
       await loadStatuses();
       setToggling(null);
     }
   };
 
-  const handleParentalConsentGranted = async (
-    consentTypes: ConsentType[],
+  const handleParentalConsentRequested = async (
+    _consentTypes: ConsentType[],
     parentEmail: string,
     parentName: string,
   ) => {
     setShowParentalForm(false);
-    setToggling(pendingConsentType);
-    for (const type of consentTypes) {
-      await grantConsent(type, 'parent', schoolId, parentEmail, parentName);
-    }
-    await loadStatuses();
-    setToggling(null);
     setPendingConsentType(null);
+    setRequestNotice(
+      `De toestemmingsmail voor ${parentName} is verstuurd naar ${parentEmail}. De geselecteerde rechten worden pas actief nadat de link in die e-mail is bevestigd.`
+    );
   };
 
   if (loading) {
@@ -107,7 +116,7 @@ export const ConsentManager: React.FC<ConsentManagerProps> = ({
         initialConsentType={pendingConsentType}
         studentName={studentName}
         schoolName={schoolName}
-        onSubmit={handleParentalConsentGranted}
+        onSubmit={handleParentalConsentRequested}
         onCancel={() => {
           setShowParentalForm(false);
           setPendingConsentType(null);
@@ -137,6 +146,13 @@ export const ConsentManager: React.FC<ConsentManagerProps> = ({
             Omdat je jonger bent dan 16, moet een ouder of voogd toestemming geven.
             Klik op een schakelaar om het formulier te openen.
           </p>
+        </div>
+      )}
+
+      {requestNotice && (
+        <div className="flex items-start gap-2 p-3 bg-blue-50 border border-blue-200 rounded-xl">
+          <Info size={16} className="text-blue-600 mt-0.5 shrink-0" />
+          <p className="text-xs text-blue-800 leading-relaxed">{requestNotice}</p>
         </div>
       )}
 
