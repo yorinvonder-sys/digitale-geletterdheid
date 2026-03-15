@@ -1,6 +1,7 @@
 import { serve } from 'https://deno.land/std@0.177.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import { buildCorsHeaders, rejectDisallowedBrowserRequest } from '../_shared/cors.ts';
+import { checkRateLimit, rateLimitResponse, rateLimitHeaders } from '../_shared/rateLimiter.ts';
 
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
 const SUPABASE_ANON_KEY = Deno.env.get('SUPABASE_ANON_KEY')!;
@@ -104,6 +105,12 @@ serve(async (req: Request) => {
         status: 401,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
+    }
+
+    // Rate limit: 10 requests per hour per user
+    const rateCheck = checkRateLimit(`reset-pwd:${user.id}`, { maxRequests: 10, windowMs: 3_600_000 });
+    if (!rateCheck.allowed) {
+      return rateLimitResponse(rateCheck, corsHeaders);
     }
 
     const callerRole = user.app_metadata?.role;
@@ -214,7 +221,7 @@ serve(async (req: Request) => {
 
     return new Response(JSON.stringify({ success: true }), {
       status: 200,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      headers: { ...corsHeaders, 'Content-Type': 'application/json', ...rateLimitHeaders(rateCheck) },
     });
   } catch (error) {
     console.error('[resetStudentPassword] unexpected error:', error);

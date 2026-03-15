@@ -20,6 +20,7 @@
  */
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { buildCorsHeaders, rejectDisallowedBrowserRequest } from "../_shared/cors.ts";
+import { checkRateLimit, rateLimitResponse } from "../_shared/rateLimiter.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
@@ -69,6 +70,12 @@ Deno.serve(async (req: Request) => {
             JSON.stringify({ error: "Ongeldige sessie" }),
             { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
         );
+    }
+
+    // Rate limit: 20 requests per minute per user
+    const rateCheck = checkRateLimit(`mfa-trust:${user.id}`, { maxRequests: 20, windowMs: 60_000 });
+    if (!rateCheck.allowed) {
+        return rateLimitResponse(rateCheck, corsHeaders);
     }
 
     // Hash IP and User-Agent

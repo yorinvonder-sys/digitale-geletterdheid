@@ -14,10 +14,13 @@ import { sanitizePrompt } from "../_shared/promptSanitizer.ts";
 import { getAccessToken, getVertexUrl } from "../_shared/vertexAuth.ts";
 import { getSystemInstruction, isValidRoleId } from "../_shared/systemInstructions.ts";
 import { buildCorsHeaders, rejectDisallowedBrowserRequest } from "../_shared/cors.ts";
-import { checkRateLimit, rateLimitResponse, rateLimitHeaders } from "../_shared/rateLimiter.ts";
+import { buildSafeHistory } from "../_shared/chatHistory.ts";
+import { checkDurableRateLimit, rateLimitResponse, rateLimitHeaders } from "../_shared/rateLimiter.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
+const MAX_REQUEST_BYTES = 20_000;
+const MAX_MESSAGE_LENGTH = 4_000;
 
 Deno.serve(async (req: Request) => {
     const corsHeaders = buildCorsHeaders(req, "POST, OPTIONS", "Content-Type, Authorization");
@@ -26,6 +29,14 @@ Deno.serve(async (req: Request) => {
 
     if (req.method === "OPTIONS") {
         return new Response(null, { headers: corsHeaders });
+    }
+
+    const contentLength = Number(req.headers.get("content-length") ?? "0");
+    if (Number.isFinite(contentLength) && contentLength > MAX_REQUEST_BYTES) {
+        return new Response(
+            JSON.stringify({ error: "Verzoek is te groot." }),
+            { status: 413, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
     }
 
     // 1. Auth check
@@ -50,7 +61,11 @@ Deno.serve(async (req: Request) => {
     }
 
     // 2. Rate limit: 15 requests per minute per user
-    const rateCheck = checkRateLimit(user.id, { maxRequests: 15, windowMs: 60_000 });
+    const rateCheck = await checkDurableRateLimit(
+        `chat:${user.id}`,
+        { maxRequests: 15, windowMs: 60_000 },
+        authHeader,
+    );
     if (!rateCheck.allowed) {
         return rateLimitResponse(rateCheck, corsHeaders);
     }
@@ -67,9 +82,9 @@ Deno.serve(async (req: Request) => {
         );
     }
 
-    if (!body.message || typeof body.message !== "string") {
+    if (!body.message || typeof body.message !== "string" || body.message.length > MAX_MESSAGE_LENGTH) {
         return new Response(
-            JSON.stringify({ error: "Bericht ontbreekt." }),
+            JSON.stringify({ error: "Bericht ontbreekt of is te lang." }),
             { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
         );
     }
@@ -98,6 +113,24 @@ Deno.serve(async (req: Request) => {
         );
     }
 
+    const safeHistory = buildSafeHistory(body.history, {
+        maxMessages: 12,
+        maxPartsPerMessage: 2,
+        maxPartChars: 1_000,
+        maxTotalChars: 6_000,
+    });
+
+    if (safeHistory.blocked) {
+        console.warn(`[HISTORY_BLOCKED] user=${user.id} label=${safeHistory.detectionLabel}`);
+        return new Response(
+            JSON.stringify({
+                error: "blocked",
+                reason: "De gesprekshistorie bevat een patroon dat niet is toegestaan.",
+            }),
+            { status: 422, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+    }
+
     // 4. Forward sanitized message to Gemini via Vertex AI (EU endpoint)
     try {
         console.log("[chat] Step 1: Building Vertex URL...");
@@ -107,7 +140,7 @@ Deno.serve(async (req: Request) => {
         console.log("[chat] Step 3: Sending to Vertex AI...");
 
         const contents = [
-            ...(Array.isArray(body.history) ? body.history : []),
+            ...safeHistory.history,
             { role: "user", parts: [{ text: validation.sanitized }] },
         ];
 
@@ -129,6 +162,7 @@ Deno.serve(async (req: Request) => {
                 contents,
                 safetySettings,
                 systemInstruction: { parts: [{ text: systemInstruction }] },
+                generationConfig: { maxOutputTokens: 1024, temperature: 0.7 },
             }),
         });
 

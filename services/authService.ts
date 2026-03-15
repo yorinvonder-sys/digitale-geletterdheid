@@ -273,6 +273,13 @@ export const logout = async () => {
         window.location.href = '/login';
     };
 
+    // Clear mission autosave data (privacy: prevent next user on shared computer from seeing work)
+    Object.keys(localStorage).forEach(key => {
+        if (key.startsWith('mission-autosave-')) {
+            localStorage.removeItem(key);
+        }
+    });
+
     // Revoke MFA trusted sessions on logout (security: prevents trust lingering)
     try {
         await Promise.race([

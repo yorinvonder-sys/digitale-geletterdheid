@@ -227,14 +227,7 @@ Deno.serve(async (req: Request) => {
         const errBody = await claudeResponse.text().catch(() => "");
         console.error(`[scanSubscriptionClaude] Claude API error ${status}:`, errBody.slice(0, 500));
 
-        // Parse Claude API error for details
-        let claudeError = "AI-service tijdelijk niet beschikbaar.";
-        try {
-            const parsed = JSON.parse(errBody);
-            if (parsed?.error?.message) {
-                claudeError = `Claude API: ${parsed.error.message}`;
-            }
-        } catch { /* use default */ }
+        const claudeError = "AI-service tijdelijk niet beschikbaar. Probeer het later opnieuw.";
 
         if (status === 429) {
             return new Response(
@@ -310,7 +303,7 @@ Deno.serve(async (req: Request) => {
             "Access-Control-Allow-Headers": "Content-Type, Authorization",
         };
         return new Response(
-            JSON.stringify({ error: `Server error: ${err instanceof Error ? err.message : String(err)}` }),
+            JSON.stringify({ error: "AI-service tijdelijk niet beschikbaar. Probeer het later opnieuw." }),
             { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
         );
     }

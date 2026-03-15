@@ -9,6 +9,7 @@ import {
   buildCorsHeaders,
   rejectDisallowedBrowserRequest,
 } from '../_shared/cors.ts';
+import { checkDurableRateLimit, rateLimitHeaders, rateLimitResponse } from '../_shared/rateLimiter.ts';
 
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
 const SUPABASE_ANON_KEY = Deno.env.get('SUPABASE_ANON_KEY')!;
@@ -33,14 +34,27 @@ const ALLOWED_EVENTS = new Set([
   'mission_complete',
 ]);
 
+const ANONYMOUS_ALLOWED_EVENTS = new Set([
+  'pilot_request_start',
+  'pilot_request_success',
+  'contact_click',
+  'ict_check_click',
+  'ict_document_download',
+  'ict_subpage_view',
+  'seo_page_view',
+  'seo_asset_view',
+  'dual_cta_click',
+  'offline_detected',
+  'auth_error',
+  'web_vital',
+]);
+
 const ALLOWED_DEVICE_CLASSES = new Set(['mobile', 'tablet', 'desktop', 'unknown']);
 const ALLOWED_NAV_TYPES = new Set(['navigate', 'reload', 'back_forward', 'prerender', 'unknown']);
 const ALLOWED_METRIC_NAMES = new Set(['LCP', 'INP', 'CLS', 'FCP', 'TTFB']);
 const ALLOWED_METRIC_RATINGS = new Set(['good', 'needs-improvement', 'poor']);
 const MAX_METRIC_VALUE = 300_000;
-const RATE_LIMIT_WINDOW_MS = 60_000;
-const RATE_LIMIT_MAX_REQUESTS = 60;
-const rateLimitBuckets = new Map<string, number[]>();
+const MAX_REQUEST_BYTES = 4_096;
 
 interface AnalyticsRequest {
   eventName?: string;
@@ -54,6 +68,11 @@ interface AnalyticsRequest {
   device_class?: string;
   nav_type?: string;
   build_id?: string;
+}
+
+interface AuthContext {
+  userId: string | null;
+  role: 'anonymous' | 'student' | 'teacher' | 'developer';
 }
 
 function sanitizeToken(value: unknown, maxLen: number): string {
@@ -105,27 +124,11 @@ async function sha256(input: string): Promise<string> {
     .join('');
 }
 
-function consumeRateLimit(key: string): boolean {
-  const now = Date.now();
-  const recent = (rateLimitBuckets.get(key) || []).filter((ts) => now - ts < RATE_LIMIT_WINDOW_MS);
-
-  if (recent.length === 0) {
-    rateLimitBuckets.delete(key);
-  }
-
-  if (recent.length >= RATE_LIMIT_MAX_REQUESTS) {
-    rateLimitBuckets.set(key, recent);
-    return false;
-  }
-
-  recent.push(now);
-  rateLimitBuckets.set(key, recent);
-  return true;
-}
-
-async function resolveRole(req: Request): Promise<'anonymous' | 'student' | 'teacher' | 'developer'> {
+async function resolveAuthContext(req: Request): Promise<AuthContext> {
   const authHeader = req.headers.get('Authorization');
-  if (!authHeader?.startsWith('Bearer ')) return 'anonymous';
+  if (!authHeader?.startsWith('Bearer ')) {
+    return { userId: null, role: 'anonymous' };
+  }
 
   const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
     global: { headers: { Authorization: authHeader } },
@@ -133,14 +136,14 @@ async function resolveRole(req: Request): Promise<'anonymous' | 'student' | 'tea
 
   const { data: { user }, error } = await supabase.auth.getUser();
   if (error || !user) {
-    return 'anonymous';
+    return { userId: null, role: 'anonymous' };
   }
 
   const role = user.app_metadata?.role;
-  if (role === 'teacher') return 'teacher';
-  if (role === 'developer' || role === 'admin') return 'developer';
-  if (role === 'student') return 'student';
-  return 'anonymous';
+  if (role === 'teacher') return { userId: user.id, role: 'teacher' };
+  if (role === 'developer' || role === 'admin') return { userId: user.id, role: 'developer' };
+  if (role === 'student') return { userId: user.id, role: 'student' };
+  return { userId: user.id, role: 'anonymous' };
 }
 
 Deno.serve(async (req: Request) => {
@@ -159,17 +162,18 @@ Deno.serve(async (req: Request) => {
     });
   }
 
+  const contentLength = Number(req.headers.get('content-length') ?? '0');
+  if (Number.isFinite(contentLength) && contentLength > MAX_REQUEST_BYTES) {
+    return new Response(JSON.stringify({ error: 'Verzoek is te groot.' }), {
+      status: 413,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
+  }
+
   try {
     const clientIp = getClientIp(req);
     const userAgent = req.headers.get('User-Agent') || 'unknown';
     const fingerprintHash = await sha256(`${clientIp}|${userAgent}`);
-
-    if (!consumeRateLimit(fingerprintHash)) {
-      return new Response(JSON.stringify({ error: 'Te veel analytics-verzoeken.' }), {
-        status: 429,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json', 'Retry-After': '60' },
-      });
-    }
 
     const body = (await req.json()) as AnalyticsRequest;
     const eventName = sanitizeToken(body.eventName, 64);
@@ -181,10 +185,30 @@ Deno.serve(async (req: Request) => {
       });
     }
 
+    const authContext = await resolveAuthContext(req);
+    if (!authContext.userId && !ANONYMOUS_ALLOWED_EVENTS.has(eventName)) {
+      return new Response(JSON.stringify({ error: 'Authenticatie vereist voor dit event.' }), {
+        status: 401,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    const rateLimitKey = authContext.userId
+      ? `analytics:user:${authContext.userId}`
+      : `analytics:anon:${fingerprintHash}`;
+    const rateCheck = await checkDurableRateLimit(rateLimitKey, {
+      maxRequests: authContext.userId ? 120 : 30,
+      windowMs: 60_000,
+    }, req.headers.get('Authorization'));
+
+    if (!rateCheck.allowed) {
+      return rateLimitResponse(rateCheck, corsHeaders);
+    }
+
     const route = sanitizeRoute(body.route ?? body.pageKey ?? '/');
     const pageKey = sanitizeToken(body.pageKey, 80) || 'unknown';
     const ctaKey = sanitizeToken(body.ctaKey, 50) || 'none';
-    const role = await resolveRole(req);
+    const role = authContext.role;
     const deviceClass = normalizeEnum(body.device_class, ALLOWED_DEVICE_CLASSES, 'unknown');
     const navType = normalizeEnum(body.nav_type, ALLOWED_NAV_TYPES, 'unknown');
     const buildId = sanitizeToken(body.build_id, 64) || 'unknown';
@@ -267,7 +291,7 @@ Deno.serve(async (req: Request) => {
 
     return new Response(JSON.stringify({ success: true }), {
       status: 200,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      headers: { ...corsHeaders, 'Content-Type': 'application/json', ...rateLimitHeaders(rateCheck) },
     });
   } catch (error) {
     console.error('[trackClickEvent] unexpected error:', error);

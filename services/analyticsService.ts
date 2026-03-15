@@ -35,6 +35,13 @@ interface AnalyticsPayload extends Record<string, unknown> {
     id?: string;
 }
 
+const AUTH_REQUIRED_EVENTS = new Set<AnalyticsEvent>([
+    'auth_success',
+    'api_retry',
+    'mission_start',
+    'mission_complete',
+]);
+
 const hasAnalyticsConsent = (): boolean => {
     if (typeof window === 'undefined') return false;
     try {
@@ -136,6 +143,11 @@ const sendAnalyticsEvent = async (event: AnalyticsEvent, data?: AnalyticsPayload
             } catch (authErr) {
                 if (isDev) console.warn('[Analytics] Could not resolve auth context:', authErr);
             }
+        }
+
+        if (AUTH_REQUIRED_EVENTS.has(event) && !accessToken) {
+            if (isDev) console.log(`[Analytics] Skipped ${event} (auth required)`);
+            return;
         }
 
         const headers: Record<string, string> = {

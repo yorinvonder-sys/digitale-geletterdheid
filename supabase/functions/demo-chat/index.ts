@@ -15,7 +15,18 @@
 import { sanitizePrompt } from "../_shared/promptSanitizer.ts";
 import { getAccessToken, getVertexUrl } from "../_shared/vertexAuth.ts";
 import { buildCorsHeaders, rejectDisallowedBrowserRequest } from "../_shared/cors.ts";
-import { checkRateLimit, rateLimitHeaders } from "../_shared/rateLimiter.ts";
+import { buildSafeHistory } from "../_shared/chatHistory.ts";
+import { checkDurableRateLimit, rateLimitHeaders } from "../_shared/rateLimiter.ts";
+
+const MAX_REQUEST_BYTES = 8_000;
+
+async function sha256(input: string): Promise<string> {
+    const data = new TextEncoder().encode(input);
+    const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+    return Array.from(new Uint8Array(hashBuffer))
+        .map((byte) => byte.toString(16).padStart(2, "0"))
+        .join("");
+}
 
 /** Extract client IP from request headers (Supabase/Vercel proxy chain) */
 function getClientIp(req: Request): string {
@@ -85,10 +96,19 @@ Deno.serve(async (req: Request) => {
         );
     }
 
+    const contentLength = Number(req.headers.get("content-length") ?? "0");
+    if (Number.isFinite(contentLength) && contentLength > MAX_REQUEST_BYTES) {
+        return new Response(
+            JSON.stringify({ error: "Verzoek is te groot." }),
+            { status: 413, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+    }
+
     // 1. IP-based rate limiting: 5 messages per 24 hours
     const clientIp = getClientIp(req);
-    const rateKey = `demo:${clientIp}`;
-    const rateCheck = checkRateLimit(rateKey, {
+    const userAgent = req.headers.get("User-Agent") || "unknown";
+    const rateFingerprint = await sha256(`${clientIp}|${userAgent}`);
+    const rateCheck = await checkDurableRateLimit(`demo-chat:${rateFingerprint}`, {
         maxRequests: 5,
         windowMs: 24 * 60 * 60 * 1000, // 24 hours
     });
@@ -142,13 +162,31 @@ Deno.serve(async (req: Request) => {
         );
     }
 
+    const safeHistory = buildSafeHistory(body.history, {
+        maxMessages: 6,
+        maxPartsPerMessage: 1,
+        maxPartChars: 500,
+        maxTotalChars: 2_000,
+    });
+
+    if (safeHistory.blocked) {
+        console.warn(`[DEMO_HISTORY_BLOCKED] ip=${clientIp} label=${safeHistory.detectionLabel}`);
+        return new Response(
+            JSON.stringify({
+                error: "blocked",
+                reason: "De gesprekshistorie bevat een patroon dat niet is toegestaan.",
+            }),
+            { status: 422, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+    }
+
     // 4. Send to Gemini via Vertex AI
     try {
         const geminiUrl = getVertexUrl("gemini-2.0-flash");
         const accessToken = await getAccessToken();
 
         const contents = [
-            ...(Array.isArray(body.history) ? body.history.slice(-8) : []), // Max 8 history entries
+            ...safeHistory.history,
             { role: "user", parts: [{ text: validation.sanitized }] },
         ];
 
@@ -188,7 +226,7 @@ Deno.serve(async (req: Request) => {
         return new Response(
             JSON.stringify({
                 text,
-                remaining: rateCheck.remaining,
+                remaining: Math.max(rateCheck.remaining, 0),
             }),
             {
                 headers: {

@@ -1,7 +1,10 @@
 /**
- * Simple in-memory rate limiter per user.
- * Note: resets bij cold start van edge function, maar dat is acceptabel.
+ * Rate limiting helpers for edge functions.
+ * - `checkRateLimit`: simple in-memory fallback
+ * - `checkDurableRateLimit`: uses Postgres via RPC when available
  */
+
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 interface RateLimitEntry {
   count: number;
@@ -22,6 +25,13 @@ export interface RateLimitResult {
   limit: number;
 }
 
+interface DurableRateLimitRow {
+  allowed: boolean;
+  remaining: number | null;
+  retry_after_seconds: number | null;
+  limit_value: number | null;
+}
+
 export function checkRateLimit(userId: string, config: RateLimitConfig): RateLimitResult {
   const now = Date.now();
   const entry = limits.get(userId);
@@ -37,6 +47,44 @@ export function checkRateLimit(userId: string, config: RateLimitConfig): RateLim
 
   entry.count++;
   return { allowed: true, remaining: config.maxRequests - entry.count, retryAfterMs: 0, limit: config.maxRequests };
+}
+
+export async function checkDurableRateLimit(
+  key: string,
+  config: RateLimitConfig,
+  authHeader?: string | null,
+): Promise<RateLimitResult> {
+  const supabaseUrl = Deno.env.get("SUPABASE_URL");
+  const supabaseAnonKey = Deno.env.get("SUPABASE_ANON_KEY");
+
+  if (!supabaseUrl || !supabaseAnonKey) {
+    return checkRateLimit(key, config);
+  }
+
+  const client = createClient(supabaseUrl, supabaseAnonKey, authHeader?.startsWith("Bearer ")
+    ? { global: { headers: { Authorization: authHeader } } }
+    : undefined);
+
+  const { data, error } = await client
+    .rpc("consume_edge_rate_limit", {
+      p_key: key,
+      p_limit: config.maxRequests,
+      p_window_seconds: Math.max(1, Math.ceil(config.windowMs / 1000)),
+    })
+    .single();
+
+  if (error || !data) {
+    console.error("[rateLimiter] durable limiter unavailable, using in-memory fallback:", error);
+    return checkRateLimit(key, config);
+  }
+
+  const row = data as DurableRateLimitRow;
+  return {
+    allowed: Boolean(row.allowed),
+    remaining: Math.max(0, row.remaining ?? 0),
+    retryAfterMs: Math.max(0, (row.retry_after_seconds ?? 0) * 1000),
+    limit: row.limit_value ?? config.maxRequests,
+  };
 }
 
 export function rateLimitHeaders(result: RateLimitResult): Record<string, string> {
