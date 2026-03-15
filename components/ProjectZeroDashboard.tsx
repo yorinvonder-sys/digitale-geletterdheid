@@ -5,8 +5,6 @@ import { Rocket, BrainCircuit, ShieldCheck, Gamepad2, Stars, Info, Play, Feather
 import { getLevelProgress, getXPToNextLevel, LEVEL_THRESHOLDS } from '../utils/xp';
 import { LazyAvatarViewer } from './LazyAvatarViewer';
 import { DEFAULT_AVATAR_CONFIG, UserStats, EducationLevel } from '../types';
-import { StudentAIChat } from './StudentAIChat';
-import { ConsentGate } from './consent/ConsentGate';
 import { subscribeToPermissions, getGamePermissions, GamePermissions } from '../services/PermissionService';
 import { submitFeedback } from '../services/feedbackService';
 import { StudentLibrary } from './StudentLibrary';
@@ -654,12 +652,6 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
 
     return (
         <div className="flex-1 w-full flex flex-col font-sans text-slate-900 pb-safe relative">
-                {/* Student AI Chat - Floating Button (AVG Art. 8: consent vereist) */}
-                {userUid && (
-                    <ConsentGate consentType="ai_interaction" studentId={userUid}>
-                        <StudentAIChat userIdentifier={userUid} context={{ week: activeWeek }} />
-                    </ConsentGate>
-                )}
 
                 {/* Student Library Modal */}
                 {userUid && (
