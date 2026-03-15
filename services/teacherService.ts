@@ -2,6 +2,11 @@ import { supabase } from './supabase';
 import { GamificationEvent, StudentActivity, HighlightedWork, ClassroomConfig, HybridAssessmentRecord } from '../types';
 import { AVAILABLE_BADGES } from '../config/badges';
 import { AiBeleidIdee } from '../types';
+import {
+    createDefaultClassroomConfig,
+    deserializeClassroomConfig,
+    serializeClassroomConfig,
+} from '../utils/classroomConfig';
 
 export { AVAILABLE_BADGES };
 export interface ClassSettings {
@@ -335,8 +340,7 @@ export const getClassroomConfig = async (classId: string): Promise<ClassroomConf
             .maybeSingle();
 
         if (error) throw error;
-        if (data) return data as ClassroomConfig;
-        return { id: classId, focusMode: false } as ClassroomConfig;
+        return deserializeClassroomConfig(data) ?? createDefaultClassroomConfig(classId);
     } catch (error) {
         console.error('Error getting classroom config:', error);
         return null;
@@ -345,12 +349,17 @@ export const getClassroomConfig = async (classId: string): Promise<ClassroomConf
 
 export const updateClassroomConfig = async (classId: string, config: Partial<ClassroomConfig> & { schoolId?: string }): Promise<void> => {
     try {
+        const currentConfig = (await getClassroomConfig(classId)) ?? createDefaultClassroomConfig(classId);
+        const nextConfig: ClassroomConfig = {
+            ...currentConfig,
+            ...config,
+            id: classId,
+        };
         const { error } = await supabase
             .from('classroom_configs')
             .upsert({
                 id: classId,
-                ...config,
-                school_id: config.schoolId,
+                data: serializeClassroomConfig(nextConfig),
             }, { onConflict: 'id' });
         if (error) throw error;
     } catch (error) {
@@ -701,7 +710,9 @@ export const getClassroomConfigs = async (classIds: string[]): Promise<Classroom
             .in('id', classIds);
 
         if (error) throw error;
-        return (data || []) as unknown as ClassroomConfig[];
+        return (data || [])
+            .map((row) => deserializeClassroomConfig(row))
+            .filter((config): config is ClassroomConfig => config !== null);
     } catch (error) {
         console.error('Error getting classroom configs:', error);
         return [];

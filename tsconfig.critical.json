@@ -1,0 +1,20 @@
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    "components/ChangePassword.tsx",
+    "components/MfaGate.tsx",
+    "config/agentRoleIds.ts",
+    "services/analyticsService.ts",
+    "services/authService.ts",
+    "services/supabase.ts",
+    "types.ts",
+    "types/database.types.ts",
+    "utils/classroomConfig.ts",
+    "utils/lazyWithRetry.ts",
+    "utils/logger.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}

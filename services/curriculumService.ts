@@ -1,5 +1,6 @@
 import { supabase } from './supabase';
 import { EducationLevel } from '../types';
+import type { Json } from '../types/database.types';
 
 export interface SchoolConfig {
     id: string;
@@ -34,6 +35,10 @@ export interface CurriculumMission {
     status: string;
 }
 
+function isJsonRecord(value: Json | null | undefined): value is Record<string, Json | undefined> {
+    return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
 // Get school configuration
 export async function getSchoolConfig(schoolId: string): Promise<SchoolConfig | null> {
     const { data, error } = await supabase
@@ -44,20 +49,26 @@ export async function getSchoolConfig(schoolId: string): Promise<SchoolConfig | 
 
     if (error || !data) return null;
 
-    const customConfig = data.custom_config || {};
+    const customConfig = isJsonRecord(data.custom_config) ? data.custom_config : {};
 
     return {
         id: data.id,
         schoolId: data.school_id,
-        schoolName: customConfig.schoolName ?? undefined,
+        schoolName: typeof customConfig.schoolName === 'string' ? customConfig.schoolName : undefined,
         periodNaming: data.period_naming || 'Periode',
         periodsPerYear: data.periods_per_year || 4,
         maxYearMavo: data.max_year_mavo || 2,
         maxYearHavo: data.max_year_havo || 3,
         maxYearVwo: data.max_year_vwo || 3,
-        allowedSSODomains: customConfig.allowedSSODomains ?? undefined,
-        curriculumModel: customConfig.curriculumModel ?? undefined,
-        disabledMissions: customConfig.disabledMissions ?? undefined,
+        allowedSSODomains: Array.isArray(customConfig.allowedSSODomains)
+            ? customConfig.allowedSSODomains.filter((domain): domain is string => typeof domain === 'string')
+            : undefined,
+        curriculumModel: customConfig.curriculumModel === 'project' || customConfig.curriculumModel === 'sequential' || customConfig.curriculumModel === 'elective'
+            ? customConfig.curriculumModel
+            : undefined,
+        disabledMissions: Array.isArray(customConfig.disabledMissions)
+            ? customConfig.disabledMissions.filter((mission): mission is string => typeof mission === 'string')
+            : undefined,
         customConfig,
     };
 }

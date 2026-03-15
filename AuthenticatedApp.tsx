@@ -5,7 +5,7 @@ import { ParentUser, UserStats, RoleId, AvatarConfig } from './types';
 import { isAgentRoleId } from './config/agentRoleIds';
 import { subscribeToAuthChanges, logout } from './services/authService';
 import { supabase } from './services/supabase';
-import { Rocket, Loader2, ArrowLeft, Lock } from 'lucide-react';
+import { Rocket, Loader2, ArrowLeft, Lock, GraduationCap, Users, Code2 } from 'lucide-react';
 import { logger } from './utils/logger';
 import { logActivity, updateClassroomConfig } from './services/teacherService';
 import { awardXP } from './services/XPService';
@@ -852,6 +852,44 @@ export function AuthenticatedApp() {
         }
 
         if (user.role === 'developer') {
+            if (devViewOverride === 'teacher') {
+                return (
+                    <TeacherDashboard
+                        user={user}
+                        onUpdateStats={handleSaveProgress}
+                        onViewAssignments={() => setViewMode('assignments')}
+                        onLogout={handleLogout}
+                        onOpenGames={(gameId) => {
+                            setInitialGameId(gameId || null);
+                            setShowGames(true);
+                        }}
+                    />
+                );
+            }
+            if (devViewOverride === 'student') {
+                return (
+                    <ProjectZeroDashboard
+                        onSelectModule={handleSelectModule}
+                        userDisplayName={user?.displayName}
+                        userUid={user?.uid}
+                        onOpenProfile={(tab?: 'profile' | 'shop' | 'trophies') => {
+                            setInitialProfileTab(tab || 'profile');
+                            setIsProfileOpen(true);
+                        }}
+                        onLogout={handleLogout}
+                        onOpenGames={() => setShowGames(true)}
+                        gamesEnabled={gamesEnabled}
+                        activeWeek={activeWeek}
+                        setActiveWeek={setActiveWeek}
+                        onGoHome={handleGoHome}
+                        stats={user?.stats}
+                        focusMode={focusMode && !hasCompletedFocusMission}
+                        userRole={user?.role}
+                        activeYearGroup={activeYearGroup}
+                        setActiveYearGroup={setActiveYearGroup}
+                    />
+                );
+            }
             return (
                 <DeveloperDashboard
                     user={user}
