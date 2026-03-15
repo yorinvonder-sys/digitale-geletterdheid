@@ -884,7 +884,7 @@ export function AuthenticatedApp() {
                         onGoHome={handleGoHome}
                         stats={user?.stats}
                         focusMode={focusMode && !hasCompletedFocusMission}
-                        userRole={user?.role}
+                        userRole={'student'}
                         activeYearGroup={activeYearGroup}
                         setActiveYearGroup={setActiveYearGroup}
                     />

@@ -175,6 +175,7 @@ const ScholenLandingGameDemo = React.lazy(() => import('./scholen/ScholenLanding
 const ScholenLandingDashboardDemo = React.lazy(() => import('./scholen/ScholenLandingDashboardDemo').then(m => ({ default: m.ScholenLandingDashboardDemo })));
 const ScholenLandingMissionShowcase = React.lazy(() => import('./scholen/ScholenLandingMissionShowcase').then(m => ({ default: m.ScholenLandingMissionShowcase })));
 const ScholenLandingDidactiek = React.lazy(() => import('./scholen/ScholenLandingDidactiek').then(m => ({ default: m.ScholenLandingDidactiek })));
+const ScholenLandingLiveDemo = React.lazy(() => import('./scholen/ScholenLandingLiveDemo').then(m => ({ default: m.ScholenLandingLiveDemo })));
 
 // Pip the Robin — lazy so it stays out of the landing page's main chunk
 const PipGuideModule = React.lazy(() => import('./scholen/FlyingPip').then(m => ({ default: m.PipGuide })));
@@ -787,6 +788,21 @@ export const ScholenLanding: React.FC = () => {
                 </section>
                 </PipGuide>
 
+
+                {/* Live Interactive Demo — real AI chat + game builder */}
+                <PipGuide pose="excited" tooltip="Probeer het zelf!" side="right">
+                <section id="probeer-het" className="py-14 md:py-20 lg:py-24 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_600px]" aria-label="Interactieve AI demo">
+                    <SectionErrorBoundary>
+                        <DeferredSection minHeight="min-h-[400px]">
+                            <Suspense fallback={<div className="min-h-[400px]" aria-hidden="true" />}>
+                                <AnimateOnScroll>
+                                    <ScholenLandingLiveDemo />
+                                </AnimateOnScroll>
+                            </Suspense>
+                        </DeferredSection>
+                    </SectionErrorBoundary>
+                </section>
+                </PipGuide>
 
                 {/* Dashboard Demo */}
                 <PipGuide pose="waving" tooltip="Altijd weten waar je leerlingen staan" side="left">

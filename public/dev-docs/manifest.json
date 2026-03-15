@@ -52,6 +52,19 @@
     "format": "PDF"
   },
   {
+    "id": "REdTa2lsbHNfRGlkYWN0aXNjaGVfT25kZXJib3V3aW5nLm1k",
+    "title": "DGSkills Didactische Onderbouwing",
+    "description": "Document uit de business/nl-vo/export map.",
+    "category": "strategy",
+    "path": "/dev-docs/DGSkills_Didactische_Onderbouwing.md",
+    "updatedAt": "2026-03-14",
+    "tags": [
+      "Strategy",
+      "Marketing"
+    ],
+    "format": "MD"
+  },
+  {
     "id": "REdTa2lsbHNfT3B0aWUxX1VpdHZvZXJpbmdzcGxhbl9CcmFuZGVkLmRvY3g",
     "title": "DGSkills Optie 1 Uitvoeringsplan Branded",
     "description": "Document uit de business/nl-vo/export map.",
@@ -416,6 +429,19 @@
       "School"
     ],
     "format": "HTML"
+  },
+  {
+    "id": "c2xvLWtlcm5kb2VsZW4tbWFwcGluZy1qMS5tZA",
+    "title": "Slo Kerndoelen Mapping J1",
+    "description": "Document uit de business/nl-vo/compliance map.",
+    "category": "compliance",
+    "path": "/dev-docs/slo-kerndoelen-mapping-j1.md",
+    "updatedAt": "2026-03-14",
+    "tags": [
+      "Legal",
+      "GDPR"
+    ],
+    "format": "MD"
   },
   {
     "id": "dmVyd2Vya2Vyc292ZXJlZW5rb21zdGVuLXJhcHBvcnQubWQ",
