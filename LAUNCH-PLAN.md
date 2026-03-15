@@ -116,11 +116,11 @@ Drie modellen, elk voor een ander type taak. Gebruik de router hieronder als geh
 
 | # | Taak | Tijd | Status | Model + taak |
 |---|------|------|--------|-------------|
-| 4.1 | Homepage: AI Chat Demo + Dashboard Demo secties afmaken | 2u | ⬜ | **Claude** — componenten bouwen |
-| 4.2 | Homepage: conversie-optimalisatie (CTA, social proof) | 2u | ⬜ | **Claude** — copy + design |
-| 4.3 | Homepage: SEO meta tags, alt texts, schema markup | 1u | ⬜ | **Claude** — SEO audit + fixes |
-| 4.4 | Docentendashboard: UX vereenvoudigen (5-min onboarding) | 3u | ⬜ | **Claude** — redesign waar nodig |
-| 4.5 | Docentendashboard: focus mode + groepen testen | 1u | ⬜ | **Claude** — testen + fixen |
+| 4.1 | Homepage: AI Chat Demo + Dashboard Demo secties afmaken | 2u | ✅ (compleet, geen actie nodig) | **Claude** — componenten bouwen |
+| 4.2 | Homepage: conversie-optimalisatie (CTA, social proof) | 2u | ✅ | **Claude** — copy + design |
+| 4.3 | Homepage: SEO meta tags, alt texts, schema markup | 1u | ✅ | **Claude** — SEO audit + fixes |
+| 4.4 | Docentendashboard: UX vereenvoudigen (5-min onboarding) | 3u | ✅ | **Claude** — redesign waar nodig |
+| 4.5 | Docentendashboard: focus mode + groepen testen | 1u | ✅ (audit + bugfix) | **Claude** — testen + fixen |
 | 4.6 | Pilotovereenkomst + pricing finaliseren | 2u | ⬜ | **ChatGPT** — juridische documenten + onderhandelingsadvies |
 
 **Done wanneer:** Homepage verkoopt, dashboard is intuïtief, pricing staat.
