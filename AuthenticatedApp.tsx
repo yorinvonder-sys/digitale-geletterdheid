@@ -854,46 +854,65 @@ export function AuthenticatedApp() {
         if (user.role === 'developer') {
             if (devViewOverride === 'teacher') {
                 return (
-                    <TeacherDashboard
-                        user={user}
-                        onUpdateStats={handleSaveProgress}
-                        onViewAssignments={() => setViewMode('assignments')}
-                        onLogout={handleLogout}
-                        onOpenGames={(gameId) => {
-                            setInitialGameId(gameId || null);
-                            setShowGames(true);
-                        }}
-                    />
+                    <div className="relative">
+                        <button
+                            onClick={() => setDevViewOverride('developer')}
+                            className="fixed bottom-6 right-6 z-50 flex items-center gap-2 px-4 py-3 bg-indigo-600 text-white rounded-xl font-bold text-sm shadow-lg shadow-indigo-200 hover:bg-indigo-700 transition-colors"
+                        >
+                            <Code2 size={18} />
+                            Terug naar Developer
+                        </button>
+                        <TeacherDashboard
+                            user={user}
+                            onUpdateStats={handleSaveProgress}
+                            onViewAssignments={() => setViewMode('assignments')}
+                            onLogout={handleLogout}
+                            onOpenGames={(gameId) => {
+                                setInitialGameId(gameId || null);
+                                setShowGames(true);
+                            }}
+                        />
+                    </div>
                 );
             }
             if (devViewOverride === 'student') {
                 return (
-                    <ProjectZeroDashboard
-                        onSelectModule={handleSelectModule}
-                        userDisplayName={user?.displayName}
-                        userUid={user?.uid}
-                        onOpenProfile={(tab?: 'profile' | 'shop' | 'trophies') => {
-                            setInitialProfileTab(tab || 'profile');
-                            setIsProfileOpen(true);
-                        }}
-                        onLogout={handleLogout}
-                        onOpenGames={() => setShowGames(true)}
-                        gamesEnabled={gamesEnabled}
-                        activeWeek={activeWeek}
-                        setActiveWeek={setActiveWeek}
-                        onGoHome={handleGoHome}
-                        stats={user?.stats}
-                        focusMode={focusMode && !hasCompletedFocusMission}
-                        userRole={'student'}
-                        activeYearGroup={activeYearGroup}
-                        setActiveYearGroup={setActiveYearGroup}
-                    />
+                    <div className="relative">
+                        <button
+                            onClick={() => setDevViewOverride('developer')}
+                            className="fixed bottom-6 right-6 z-50 flex items-center gap-2 px-4 py-3 bg-indigo-600 text-white rounded-xl font-bold text-sm shadow-lg shadow-indigo-200 hover:bg-indigo-700 transition-colors"
+                        >
+                            <Code2 size={18} />
+                            Terug naar Developer
+                        </button>
+                        <ProjectZeroDashboard
+                            onSelectModule={handleSelectModule}
+                            userDisplayName={user?.displayName}
+                            userUid={user?.uid}
+                            onOpenProfile={(tab?: 'profile' | 'shop' | 'trophies') => {
+                                setInitialProfileTab(tab || 'profile');
+                                setIsProfileOpen(true);
+                            }}
+                            onLogout={handleLogout}
+                            onOpenGames={() => setShowGames(true)}
+                            gamesEnabled={gamesEnabled}
+                            activeWeek={activeWeek}
+                            setActiveWeek={setActiveWeek}
+                            onGoHome={handleGoHome}
+                            stats={user?.stats}
+                            focusMode={focusMode && !hasCompletedFocusMission}
+                            userRole={'student'}
+                            activeYearGroup={activeYearGroup}
+                            setActiveYearGroup={setActiveYearGroup}
+                        />
+                    </div>
                 );
             }
             return (
                 <DeveloperDashboard
                     user={user}
                     onLogout={handleLogout}
+                    onSwitchView={setDevViewOverride}
                 />
             );
         }

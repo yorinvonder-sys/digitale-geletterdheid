@@ -17,7 +17,9 @@ import {
     ChevronRight,
     BarChart3,
     Calculator,
-    Rocket
+    Rocket,
+    GraduationCap,
+    Users
 } from 'lucide-react';
 import { DeveloperSprintPlan } from './DeveloperSprintPlan';
 
@@ -44,11 +46,12 @@ function TabLoader() {
 interface DeveloperDashboardProps {
     user: ParentUser;
     onLogout: () => void;
+    onSwitchView?: (view: 'developer' | 'student' | 'teacher') => void;
 }
 
 type TabId = 'overview' | 'tasks' | 'timeline' | 'docs' | 'analytics' | 'boekhouding' | 'sprintplan';
 
-export function DeveloperDashboard({ user, onLogout }: DeveloperDashboardProps) {
+export function DeveloperDashboard({ user, onLogout, onSwitchView }: DeveloperDashboardProps) {
     const [activeTab, setActiveTab] = useState<TabId>('sprintplan');
     const [tasks, setTasks] = useState<DeveloperTask[]>([]);
     const [planHistory, setPlanHistory] = useState<DeveloperPlan[]>([]);
@@ -345,6 +348,26 @@ export function DeveloperDashboard({ user, onLogout }: DeveloperDashboardProps) 
                         );
                     })}
                 </nav>
+
+                {onSwitchView && (
+                    <div className="px-4 pb-2 space-y-2">
+                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-4 mb-1">Bekijk als</p>
+                        <button
+                            onClick={() => onSwitchView('student')}
+                            className="w-full flex items-center gap-3 px-4 py-3 text-emerald-600 bg-emerald-50 hover:bg-emerald-100 rounded-xl font-bold text-sm transition-colors"
+                        >
+                            <GraduationCap size={20} />
+                            Leerling Dashboard
+                        </button>
+                        <button
+                            onClick={() => onSwitchView('teacher')}
+                            className="w-full flex items-center gap-3 px-4 py-3 text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-xl font-bold text-sm transition-colors"
+                        >
+                            <Users size={20} />
+                            Docenten Dashboard
+                        </button>
+                    </div>
+                )}
 
                 <div className="p-4 mt-auto border-t border-slate-100">
                     <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-xl mb-4">
