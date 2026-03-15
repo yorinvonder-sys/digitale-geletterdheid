@@ -461,7 +461,7 @@ export const ScholenLanding: React.FC = () => {
                             Voor het voortgezet onderwijs
                         </p>
 
-                        <h1 id="hero-heading" className="text-lg sm:text-xl md:text-2xl leading-snug font-medium tracking-tight mb-8" style={{ fontFamily: SERIF }}>
+                        <h1 id="hero-heading" className="text-2xl sm:text-3xl md:text-4xl leading-snug font-medium tracking-tight mb-8" style={{ fontFamily: SERIF }}>
                             Digitale geletterdheid waar leerlingen <em className="not-italic" style={{ color: C.accent }}>wel</em> enthousiast van worden
                         </h1>
 
@@ -484,9 +484,14 @@ export const ScholenLanding: React.FC = () => {
                                     <circle cx="150" cy="150" r="6" fill={C.text}/>
                                 </svg>
 
-                                <p className="text-base leading-relaxed max-w-xl mb-8" style={{ color: C.textMuted }}>
+                                <p className="text-base leading-relaxed max-w-xl mb-4" style={{ color: C.textMuted }}>
                                     DGSkills combineert AI-missies, gamification en de
                                     SLO Kerndoelen 2025 tot een complete lesmethode voor digitale geletterdheid.
+                                    Gebouwd door een docent, voor docenten.
+                                </p>
+                                <p className="text-sm font-medium mb-8 px-3 py-1.5 rounded-full inline-flex items-center gap-2" style={{ backgroundColor: `${C.accent}10`, color: C.accent, border: `1px solid ${C.accent}25` }}>
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                    Kerndoelen verplicht per 2027 — start nu met de gratis pilot
                                 </p>
 
                                 <div className="flex flex-col sm:flex-row sm:items-center gap-4">
@@ -503,17 +508,17 @@ export const ScholenLanding: React.FC = () => {
                                         Gratis pilot aanvragen
                                         <span className="group-hover:translate-x-0.5 transition-transform inline-block"><IconArrowRight /></span>
                                     </button>
-                                    <a
-                                        href="/ict"
+                                    <button
                                         onClick={() => {
-                                            trackLandingEvent('dual_cta_click', { type: 'ict' });
+                                            scrollTo(SECTION_IDS.features);
+                                            trackLandingEvent('dual_cta_click', { type: 'demo' });
                                         }}
                                         className="group px-4 py-2 rounded-full text-xs font-medium transition-all flex items-center justify-center gap-2 hover:-translate-y-0.5"
                                         style={{ border: `1.5px solid ${C.border}`, color: C.text }}
                                     >
-                                        Voor ICT-coordinatoren
+                                        Bekijk de demo
                                         <span style={{ color: C.textLight }}><IconArrowRight /></span>
-                                    </a>
+                                    </button>
                                 </div>
 
                                 {/* Trust badges */}
@@ -524,11 +529,15 @@ export const ScholenLanding: React.FC = () => {
                                     </span>
                                     <span className="flex items-center gap-1.5">
                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-                                        SLO 2025
+                                        SLO Kerndoelen 2025
                                     </span>
                                     <span className="flex items-center gap-1.5">
                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
                                         Geen installatie
+                                    </span>
+                                    <span className="flex items-center gap-1.5">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                                        EU AI Act ready
                                     </span>
                                 </div>
                             </div>
@@ -552,7 +561,7 @@ export const ScholenLanding: React.FC = () => {
                                             playsInline
                                             preload="metadata"
                                             className="w-full rounded-2xl"
-                                            src="/videos/hero-pip-adventure.mp4"
+                                            src="/videos/hero-hybrid.mp4"
                                         />
                                     </div>
                                 </div>
@@ -603,19 +612,19 @@ export const ScholenLanding: React.FC = () => {
                         <div className="grid grid-cols-2 md:grid-cols-5 gap-8 md:gap-6 items-center">
                             <div>
                                 <p className="text-2xl font-semibold tabular-nums" style={{ color: C.text, fontFamily: SERIF }}><AnimatedCounter value="20" suffix="+" /></p>
-                                <p className="text-sm mt-0.5" style={{ color: C.textMuted }}>Interactieve missies</p>
+                                <p className="text-sm mt-0.5" style={{ color: C.textMuted }}>Interactieve AI-missies</p>
                             </div>
                             <div>
                                 <p className="text-2xl font-semibold tabular-nums" style={{ color: C.text, fontFamily: SERIF }}><AnimatedCounter value="9" /></p>
                                 <p className="text-sm mt-0.5" style={{ color: C.textMuted }}>SLO Kerndoelen gedekt</p>
                             </div>
                             <div>
-                                <p className="text-2xl font-semibold tabular-nums" style={{ color: C.text, fontFamily: SERIF }}><AnimatedCounter value="3" /></p>
-                                <p className="text-sm mt-0.5" style={{ color: C.textMuted }}>Domeinen afgedekt</p>
+                                <p className="text-2xl font-semibold tabular-nums" style={{ color: C.text, fontFamily: SERIF }}><AnimatedCounter value="10" /></p>
+                                <p className="text-sm mt-0.5" style={{ color: C.textMuted }}>Werkdagen tot livegang</p>
                             </div>
                             <div>
-                                <p className="text-2xl font-semibold" style={{ color: C.text, fontFamily: SERIF }}>Pilot</p>
-                                <p className="text-sm mt-0.5" style={{ color: C.textMuted }}>Actief in VO-scholen</p>
+                                <p className="text-2xl font-semibold" style={{ color: C.text, fontFamily: SERIF }}><AnimatedCounter prefix="€" value="0" /></p>
+                                <p className="text-sm mt-0.5" style={{ color: C.textMuted }}>Gratis pilot, 3 maanden</p>
                             </div>
                             <div className="col-span-2 md:col-span-1 flex items-center gap-3 md:justify-end">
                                 <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${C.accent}18`, color: C.accent }}>
@@ -659,6 +668,27 @@ export const ScholenLanding: React.FC = () => {
                     </SectionErrorBoundary>
                 </section>
                 </PipGuide>
+
+                {/* Mid-page CTA */}
+                <section className="py-10 px-6" aria-label="Pilot aanvragen">
+                    <div className="max-w-3xl mx-auto text-center">
+                        <p className="text-lg font-medium mb-4" style={{ fontFamily: SERIF, color: C.text }}>
+                            Klaar om digitale geletterdheid concreet te maken?
+                        </p>
+                        <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                            <button
+                                onClick={() => scrollTo(SECTION_IDS.contact)}
+                                className="text-white px-6 py-3 rounded-full text-sm font-semibold transition-all hover:-translate-y-0.5"
+                                style={{ backgroundColor: C.accent, boxShadow: `0 8px 24px ${C.accent}33` }}
+                                onMouseEnter={e => (e.currentTarget.style.backgroundColor = C.accentHover)}
+                                onMouseLeave={e => (e.currentTarget.style.backgroundColor = C.accent)}
+                            >
+                                Start een gratis pilot
+                            </button>
+                            <span className="text-xs" style={{ color: C.textLight }}>Geen verplichtingen, live binnen 10 werkdagen</span>
+                        </div>
+                    </div>
+                </section>
 
                 {/* Customization USP */}
                 <PipGuide pose="waving" tooltip="Jullie school, jullie regels!" side="left">

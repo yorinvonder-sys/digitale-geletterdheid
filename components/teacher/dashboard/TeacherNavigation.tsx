@@ -15,10 +15,10 @@ export const TeacherNavigation: React.FC<TeacherNavigationProps> = ({ activeTab,
         <div data-tutorial="main-tabs" className="bg-white rounded-2xl border border-slate-200 shadow-sm p-2">
             <div className="flex items-center justify-center gap-1 md:gap-2">
                 {[
-                    { id: 'overview', label: 'Dashboard', icon: BarChart3, subTabs: ['overview', 'progress', 'slo', 'documenten'], tutorialId: 'dashboard-tab' },
-                    { id: 'students', label: 'Leerlingen', icon: Users, subTabs: ['students', 'feedback'], tutorialId: 'students-tab' },
-                    { id: 'games', label: 'Activiteiten', icon: Sparkles, subTabs: ['games', 'gamification'], tutorialId: 'activities-tab' },
-                    { id: 'settings', label: 'Beheer', icon: Settings, subTabs: ['ai-beleid', 'settings'], tutorialId: 'settings-tab' },
+                    { id: 'overview', label: 'Dashboard', icon: BarChart3, subTabs: ['overview', 'progress', 'slo', 'documenten'], tutorialId: 'dashboard-tab', tooltip: 'Overzicht van voortgang, SLO-doelen en signalering' },
+                    { id: 'students', label: 'Leerlingen', icon: Users, subTabs: ['students', 'feedback'], tutorialId: 'students-tab', tooltip: 'Bekijk en beheer je leerlingen per klas' },
+                    { id: 'games', label: 'Activiteiten', icon: Sparkles, subTabs: ['games', 'gamification'], tutorialId: 'activities-tab', tooltip: 'Games, ranglijsten en XP-beloningen' },
+                    { id: 'settings', label: 'Beheer', icon: Settings, subTabs: ['ai-beleid', 'settings'], tutorialId: 'settings-tab', tooltip: 'AI-beleid en klas-instellingen' },
                 ].map(tab => {
                     const isActive = tab.subTabs.includes(activeTab);
                     const Icon = tab.icon;
@@ -27,6 +27,7 @@ export const TeacherNavigation: React.FC<TeacherNavigationProps> = ({ activeTab,
                             key={tab.id}
                             data-tutorial={tab.tutorialId}
                             onClick={() => setActiveTab(tab.subTabs[0] as MainTab)}
+                            title={tab.tooltip}
                             className={`relative flex items-center gap-2 px-3 sm:px-4 md:px-6 py-3 min-h-[44px] rounded-xl text-sm font-bold transition-all ${isActive
                                 ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-200'
                                 : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50'
@@ -49,14 +50,15 @@ export const TeacherNavigation: React.FC<TeacherNavigationProps> = ({ activeTab,
                         className="flex justify-center gap-2 pt-3 mt-2 border-t border-slate-100"
                     >
                         {[
-                            { id: 'overview', label: 'Overzicht' },
-                            { id: 'progress', label: 'Voortgang' },
-                            { id: 'slo', label: 'SLO Doelen' },
-                            { id: 'documenten', label: 'Documenten' },
+                            { id: 'overview', label: 'Overzicht', tooltip: 'Statistieken en vroege signalering' },
+                            { id: 'progress', label: 'Voortgang', tooltip: 'Missie-voortgang per leerling' },
+                            { id: 'slo', label: 'SLO Doelen', tooltip: 'Kerndoelen Digitale Geletterdheid (SLO 2025)' },
+                            { id: 'documenten', label: 'Documenten', tooltip: 'Compliance- en beleidsdocumenten' },
                         ].map(sub => (
                             <button
                                 key={sub.id}
                                 onClick={() => setActiveTab(sub.id as MainTab)}
+                                title={sub.tooltip}
                                 className={`px-4 py-2.5 min-h-[36px] rounded-lg text-xs font-bold transition-all ${activeTab === sub.id
                                     ? 'bg-indigo-100 text-indigo-700'
                                     : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
@@ -75,12 +77,13 @@ export const TeacherNavigation: React.FC<TeacherNavigationProps> = ({ activeTab,
                         className="flex justify-center gap-2 pt-3 mt-2 border-t border-slate-100"
                     >
                         {[
-                            { id: 'students', label: 'Leerlingenlijst' },
-                            { id: 'feedback', label: 'Feedback' },
+                            { id: 'students', label: 'Leerlingenlijst', tooltip: 'Alle leerlingen met status en missies' },
+                            { id: 'feedback', label: 'Feedback', tooltip: 'Feedback van leerlingen over het platform' },
                         ].map(sub => (
                             <button
                                 key={sub.id}
                                 onClick={() => setActiveTab(sub.id as MainTab)}
+                                title={sub.tooltip}
                                 className={`px-4 py-2.5 min-h-[36px] rounded-lg text-xs font-bold transition-all ${activeTab === sub.id
                                     ? 'bg-indigo-100 text-indigo-700'
                                     : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
@@ -99,13 +102,14 @@ export const TeacherNavigation: React.FC<TeacherNavigationProps> = ({ activeTab,
                         className="flex justify-center gap-2 pt-3 mt-2 border-t border-slate-100"
                     >
                         {[
-                            { id: 'games', label: 'Games' },
-                            { id: 'gamification', label: 'Beloningen' },
+                            { id: 'games', label: 'Games', tooltip: 'Beschikbare games en opdrachten' },
+                            { id: 'gamification', label: 'Beloningen', tooltip: 'Ranglijst, gallery en XP-events' },
                         ].map(sub => (
                             <button
                                 key={sub.id}
                                 data-tutorial={sub.id === 'gamification' ? 'gamification-subtab' : undefined}
                                 onClick={() => setActiveTab(sub.id as MainTab)}
+                                title={sub.tooltip}
                                 className={`px-4 py-2.5 min-h-[36px] rounded-lg text-xs font-bold transition-all ${activeTab === sub.id
                                     ? 'bg-indigo-100 text-indigo-700'
                                     : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
@@ -124,12 +128,13 @@ export const TeacherNavigation: React.FC<TeacherNavigationProps> = ({ activeTab,
                         className="flex justify-center gap-2 pt-3 mt-2 border-t border-slate-100"
                     >
                         {[
-                            { id: 'ai-beleid', label: 'AI Beleid' },
-                            { id: 'settings', label: 'Instellingen' },
+                            { id: 'ai-beleid', label: 'AI Beleid', tooltip: 'Feedback en ideeën over AI-beleid op school' },
+                            { id: 'settings', label: 'Instellingen', tooltip: 'Missies aan/uit, moeilijkheidsgraad en klas-config' },
                         ].map(sub => (
                             <button
                                 key={sub.id}
                                 onClick={() => setActiveTab(sub.id as MainTab)}
+                                title={sub.tooltip}
                                 className={`px-4 py-2.5 min-h-[36px] rounded-lg text-xs font-bold transition-all ${activeTab === sub.id
                                     ? 'bg-indigo-100 text-indigo-700'
                                     : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'

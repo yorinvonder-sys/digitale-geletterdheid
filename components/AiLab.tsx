@@ -578,12 +578,7 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
     // This ensures students earn ~300-400 XP in 90 min (~40-60 interactions)
     if (inputText && inputText.trim().length > 0) {
       const xpAmount = inputText.length > 20 ? 10 : 5;
-      // Award XP for each meaningful interaction (5-10 XP based on message length)
-      // This ensures students earn ~300-400 XP in 90 min (~40-60 interactions)
-      if (inputText && inputText.trim().length > 0) {
-        const xpAmount = inputText.length > 20 ? 10 : 5;
-        handleAwardXP(xpAmount, "Bericht Verstuurd");
-      }
+      handleAwardXP(xpAmount, "Bericht Verstuurd");
 
       handleSend(text);
     }

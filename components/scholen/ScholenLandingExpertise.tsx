@@ -19,7 +19,7 @@ export const ScholenLandingExpertise: React.FC = () => {
                         <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-5 overflow-hidden" style={{ backgroundColor: '#D9775712' }}>
                             <img src="/illustrations/expertise-founder.webp" alt="" className="w-10 h-10 object-contain" loading="lazy" aria-hidden="true" />
                         </div>
-                        <h4 className="font-medium text-lg mb-1" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#1A1A19' }}>Yorin Vonder</h4>
+                        <h3 className="font-medium text-lg mb-1" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#1A1A19' }}>Yorin Vonder</h3>
                         <p className="text-xs font-bold uppercase tracking-wider mb-4" style={{ color: '#D97757' }}>Oprichter & Docent</p>
                         <p className="text-sm leading-relaxed mb-4" style={{ color: '#6B6B66' }}>
                             Als docent geschiedenis, informatievaardigheden en coördinator digitale
@@ -42,7 +42,7 @@ export const ScholenLandingExpertise: React.FC = () => {
                 <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-32 -mt-32" />
                 <div className="flex items-center gap-5 relative">
                     <div className="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center border border-white/10 flex-shrink-0 overflow-hidden" aria-hidden="true">
-                        <img src="/illustrations/expertise-pilot.webp" alt="" className="w-10 h-10 object-contain" loading="lazy" />
+                        <img src="/illustrations/expertise-pilot.webp" alt="" className="w-10 h-10 object-contain" loading="lazy" aria-hidden="true" />
                     </div>
                     <div>
                         <p className="text-base font-medium text-white mb-1" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Actieve samenwerking met pilotscholen</p>

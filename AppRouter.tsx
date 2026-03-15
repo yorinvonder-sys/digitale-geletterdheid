@@ -283,11 +283,18 @@ function LoginRoute() {
         window.dispatchEvent(new Event('pathchange'));
     };
 
+    const isLoggedIn = shouldProbeAuth && !loading && !!user;
+
+    // Redirect side effect moet in useEffect, niet in render body
+    useEffect(() => {
+        if (isLoggedIn) {
+            handleSuccess();
+        }
+    }, [isLoggedIn, postLoginPath]);
+
     // Toon het login formulier ALTIJD direct — ook als auth check nog loopt.
     // Alleen als auth check klaar is EN user geldig is, redirect naar dashboard.
-    if (shouldProbeAuth && !loading && user) {
-        // Logged-in user on /login: redirect naar aangevraagde private route of dashboard.
-        handleSuccess();
+    if (isLoggedIn) {
         return (
             <React.Suspense fallback={<LoadingFallback />}>
                 <AuthenticatedApp />

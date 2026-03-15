@@ -28,7 +28,7 @@ export const TeacherHeader: React.FC<TeacherHeaderProps> = ({
                         <h1 className="text-2xl font-black text-slate-900 tracking-tight">
                             Docenten Dashboard
                         </h1>
-                        <p className="text-slate-500 font-medium text-sm">Project 0 DG • Almere College</p>
+                        <p className="text-slate-500 font-medium text-sm">Beheer je klassen, volg voortgang en stuur je lessen.</p>
                     </div>
 
                     {/* Right: Action Buttons - Grouped */}

@@ -2,15 +2,16 @@ import React, { useState, useEffect, Suspense, useMemo } from 'react';
 
 
 import { ParentUser, UserStats, RoleId, AvatarConfig } from './types';
-import { ROLES } from './config/agents';
+import { isAgentRoleId } from './config/agentRoleIds';
 import { subscribeToAuthChanges, logout } from './services/authService';
 import { supabase } from './services/supabase';
 import { Rocket, Loader2, ArrowLeft, Lock } from 'lucide-react';
 import { logger } from './utils/logger';
-import { ClassroomConfig } from './types';
 import { logActivity, updateClassroomConfig } from './services/teacherService';
+import { awardXP } from './services/XPService';
 import { TutorialProvider, STUDENT_TUTORIAL_STEPS, STUDENT_STORAGE_KEY, TutorialStep } from './contexts/TutorialContext';
 import { lazyWithRetry } from './utils/lazyWithRetry';
+import { deserializeClassroomConfig } from './utils/classroomConfig';
 const ConsentGate = lazyWithRetry(() => import('./components/consent/ConsentGate').then(m => ({ default: m.ConsentGate })));
 import { useTeacherMessages } from './hooks/useTeacherMessages';
 import { TeacherMessagePopup } from './components/TeacherMessagePopup';
@@ -58,6 +59,20 @@ const LoadingFallback = () => (
     </div>
 );
 
+const DEDICATED_MISSIONS = new Set([
+    'prompt-master',
+    'game-director',
+    'cloud-cleaner',
+    'layout-doctor',
+    'pitch-police',
+    'data-detective',
+    'deepfake-detector',
+    'ipad-print-instructies',
+    'filter-bubble-breaker',
+    'datalekken-rampenplan',
+    'data-voor-data',
+]);
+
 /** Authenticated app shell — only loaded for private/authenticated flows. Public routes use AppRouter. */
 export function AuthenticatedApp() {
     logger.log("AuthenticatedApp Component Mounting...");
@@ -73,6 +88,7 @@ export function AuthenticatedApp() {
     const [initialGameId, setInitialGameId] = useState<string | null>(null);
     const [gamesEnabled, setGamesEnabled] = useState(true);
     const [activeYearGroup, setActiveYearGroup] = useState<number>(1);
+    const [devViewOverride, setDevViewOverride] = useState<'developer' | 'student' | 'teacher'>('developer');
     const [focusMode, setFocusMode] = useState(false);
     const [focusMissionId, setFocusMissionId] = useState<string | null>(null);
     const [focusMissionTitle, setFocusMissionTitle] = useState<string | null>(null);
@@ -127,7 +143,8 @@ export function AuthenticatedApp() {
                 table: 'classroom_configs',
                 filter: `id=eq.${cls}`
             }, (payload) => {
-                const config = (payload.new || {}) as ClassroomConfig;
+                const config = deserializeClassroomConfig(payload.new as any);
+                if (!config) return;
 
                 // Only reset acknowledgement if focus mode changed or mission ID changed
                 const focusModeChanged = config.focusMode !== lastProcessedFocusMode.current;
@@ -177,8 +194,8 @@ export function AuthenticatedApp() {
             .eq('id', cls)
             .single()
             .then(({ data }) => {
-                if (data) {
-                    const config = data as ClassroomConfig;
+                const config = deserializeClassroomConfig(data);
+                if (config) {
                     lastProcessedFocusMode.current = !!config.focusMode;
                     lastProcessedFocusMissionId.current = config.focusMissionId || null;
                     setFocusMode(config.focusMode);
@@ -188,7 +205,7 @@ export function AuthenticatedApp() {
             });
 
         return () => { supabase.removeChannel(channel); };
-    }, [user, focusMissionId]);
+    }, [user]);
 
     useEffect(() => {
         if (!user || user.role !== 'student' || activeModule || !focusMode || !focusMissionId) return;
@@ -546,13 +563,10 @@ export function AuthenticatedApp() {
     };
 
     const renderContent = () => {
-        // Build mission-to-role map dynamically from ROLES config (covers Y1, Y2, Y3)
-        const missionToRoleMap: Record<string, RoleId> = {};
-        ROLES.forEach(role => { missionToRoleMap[role.id] = role.id; });
-
-        // Missions with dedicated full-screen components bypass AiLab
-        const dedicatedMissions = new Set(['prompt-master', 'game-director', 'cloud-cleaner', 'layout-doctor', 'pitch-police', 'data-detective', 'deepfake-detector', 'ipad-print-instructies', 'filter-bubble-breaker', 'datalekken-rampenplan', 'data-voor-data']);
-        const role = activeModule && !dedicatedMissions.has(activeModule) ? missionToRoleMap[activeModule] : undefined;
+        const role =
+            activeModule && !DEDICATED_MISSIONS.has(activeModule) && isAgentRoleId(activeModule)
+                ? activeModule as RoleId
+                : undefined;
 
         if (role) {
             return (
@@ -593,10 +607,19 @@ export function AuthenticatedApp() {
                     const newStats = {
                         ...user.stats,
                         missionsCompleted: [...currentCompleted, missionId],
-                        xp: (user.stats.xp || 0) + 50
                     };
                     setUser({ ...user, stats: newStats });
                     await handleSaveProgress(newStats);
+
+                    // Award XP via server-side RPC (enforces rate limiting + daily cap)
+                    const xpResult = await awardXP(user.uid, 50, 'Missie Voltooid', missionId);
+                    if (xpResult.awarded && xpResult.newXP !== undefined) {
+                        setUser(prev => prev ? {
+                            ...prev,
+                            stats: { ...prev.stats, xp: xpResult.newXP!, level: xpResult.newLevel ?? prev.stats.level }
+                        } : prev);
+                    }
+
                     logActivity({
                         uid: user.uid,
                         schoolId: user.schoolId,
@@ -606,17 +629,9 @@ export function AuthenticatedApp() {
                         missionId
                     });
                     if (focusMissionId && missionId === focusMissionId) {
-                        const cls = user.stats?.studentClass || user.studentClass;
-                        if (cls) {
-                            await updateClassroomConfig(cls, {
-                                focusMode: false,
-                                focusMissionId: undefined,
-                                focusMissionTitle: undefined
-                            });
-                            setFocusMode(false);
-                            setFocusMissionId(null);
-                            setFocusMissionTitle(null);
-                        }
+                        setFocusMode(false);
+                        setFocusMissionId(null);
+                        setFocusMissionTitle(null);
                     }
                 }
             }
