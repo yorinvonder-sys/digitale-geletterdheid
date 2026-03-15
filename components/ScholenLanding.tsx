@@ -523,7 +523,7 @@ export const ScholenLanding: React.FC = () => {
                                 </div>
 
                                 {/* Trust badges */}
-                                <div className="flex flex-wrap items-center gap-4 mt-8 text-xs font-medium" style={{ color: C.textMuted }}>
+                                <div className="flex flex-wrap items-center gap-x-3 gap-y-2 sm:gap-4 mt-8 text-xs font-medium" style={{ color: C.textMuted }}>
                                     <span className="flex items-center gap-1.5">
                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                                         AVG-compliant
@@ -610,7 +610,7 @@ export const ScholenLanding: React.FC = () => {
                 {/* Social proof strip */}
                 <section className="py-10 px-6 [content-visibility:auto] [contain-intrinsic-size:auto_120px]" style={{ borderTop: `1px solid ${C.border}`, borderBottom: `1px solid ${C.border}`, backgroundColor: `${C.bgAlt}80` }} aria-label="Feiten en cijfers">
                     <div className="max-w-5xl mx-auto">
-                        <div className="grid grid-cols-2 md:grid-cols-5 gap-8 md:gap-6 items-center">
+                        <div className="grid grid-cols-2 md:grid-cols-5 gap-5 md:gap-6 items-center">
                             <div>
                                 <p className="text-2xl font-semibold tabular-nums" style={{ color: C.text, fontFamily: SERIF }}><AnimatedCounter value="20" suffix="+" /></p>
                                 <p className="text-sm mt-0.5" style={{ color: C.textMuted }}>Interactieve AI-missies</p>
