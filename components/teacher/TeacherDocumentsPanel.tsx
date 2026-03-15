@@ -16,7 +16,7 @@ const TEACHER_DOCUMENTS: SloDocument[] = [
         id: 'slo-dg-kerndoelen-2025',
         title: 'SLO Definitieve Conceptkerndoelen Digitale Geletterdheid',
         description: 'Het officiële SLO-document met alle definitieve conceptkerndoelen voor digitale geletterdheid, inclusief toelichtingsdocument. Opgeleverd in 2025 aan het ministerie van OCW.',
-        path: '/dev-docs/SLO_definitieve_conceptkerndoelen_digitale_geletterdheid.pdf',
+        path: '/resources/SLO_definitieve_conceptkerndoelen_digitale_geletterdheid.pdf',
         category: 'slo',
         updatedAt: '2025-09-01',
         tags: ['SLO', 'Kerndoelen', 'Digitale Geletterdheid', '2025'],

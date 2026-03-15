@@ -309,13 +309,14 @@ export const ScholenLandingLiveDemo: React.FC = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [remaining, setRemaining] = useState(MAX_MESSAGES);
     const [error, setError] = useState<string | null>(null);
-    const chatEndRef = useRef<HTMLDivElement>(null);
+    const chatContainerRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
 
     const isLocked = remaining <= 0;
 
     useEffect(() => {
-        chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+        const el = chatContainerRef.current;
+        if (el) el.scrollTop = el.scrollHeight;
     }, [messages, isLoading]);
 
     const sendMessage = useCallback(async () => {
@@ -453,7 +454,7 @@ export const ScholenLandingLiveDemo: React.FC = () => {
                     </div>
 
                     {/* Messages */}
-                    <div className="flex-1 px-4 py-4 space-y-3 overflow-y-auto" role="log" aria-label="Chat berichten" aria-live="polite">
+                    <div ref={chatContainerRef} className="flex-1 px-4 py-4 space-y-3 overflow-y-auto" role="log" aria-label="Chat berichten" aria-live="polite">
                         {messages.map((msg, i) => (
                             <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                                 {msg.role === 'assistant' && (
@@ -491,7 +492,6 @@ export const ScholenLandingLiveDemo: React.FC = () => {
                             </div>
                         )}
 
-                        <div ref={chatEndRef} />
                     </div>
 
                     {/* Input or lock */}

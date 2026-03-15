@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, lazy, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, GraduationCap, Send, Award, RotateCcw, Star, Zap, Eye, StickyNote, Plus, Trash2, Edit2, Loader2, AlertCircle, Target, Clock } from 'lucide-react';
 import { StudentData } from '../../types';
@@ -9,6 +9,8 @@ import { addTeacherNote, getTeacherNotes, updateTeacherNote, deleteTeacherNote }
 import { supabase } from '../../services/supabase';
 import { SLOProgressPanel } from './SLOProgressPanel';
 import { getMissionsForYear } from '../../config/missions';
+
+const LazyDigitaalPaspoort = lazy(() => import('../assessment/escaperoom/DigitaalPaspoort').then(m => ({ default: m.DigitaalPaspoort })));
 
 interface StudentModalProps {
     student: StudentData | null;
@@ -33,7 +35,7 @@ export const StudentModal: React.FC<StudentModalProps> = ({ student, onClose, on
     const [savingNote, setSavingNote] = useState(false);
     const [deletingNoteId, setDeletingNoteId] = useState<string | null>(null);
 
-    const [activeTab, setActiveTab] = useState<'overview' | 'missions' | 'slo'>('overview');
+    const [activeTab, setActiveTab] = useState<'overview' | 'missions' | 'slo' | 'paspoort'>('overview');
     const [missionScores, setMissionScores] = useState<StudentMissionScore[]>([]);
     const [loadingScores, setLoadingScores] = useState(false);
     const modalRef = useRef<HTMLDivElement>(null);
@@ -168,8 +170,8 @@ export const StudentModal: React.FC<StudentModalProps> = ({ student, onClose, on
     if (!student) return null;
 
     return (
-        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4" onClick={onClose}>
-            <div ref={modalRef} role="dialog" aria-modal="true" aria-labelledby="student-modal-title" className="bg-white rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto flex flex-col" onClick={e => e.stopPropagation()}>
+        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-end md:items-center md:justify-center md:p-4" onClick={onClose}>
+            <div ref={modalRef} role="dialog" aria-modal="true" aria-labelledby="student-modal-title" className="bg-white rounded-t-2xl md:rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto flex flex-col" onClick={e => e.stopPropagation()}>
                 <div className="p-4 border-b border-slate-100 flex items-center justify-between shrink-0">
                     <div className="flex items-center gap-3">
                         <div className="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center text-indigo-600">
@@ -205,6 +207,14 @@ export const StudentModal: React.FC<StudentModalProps> = ({ student, onClose, on
                     >
                         SLO Doelen
                     </button>
+                    {student.stats?.nulmetingResult && (
+                        <button
+                            onClick={() => setActiveTab('paspoort')}
+                            className={`py-3 text-xs font-bold uppercase tracking-wider border-b-2 transition-colors ${activeTab === 'paspoort' ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-slate-400 hover:text-slate-600'}`}
+                        >
+                            Paspoort
+                        </button>
+                    )}
                 </div>
 
                 <div className="p-4 space-y-4 flex-1 overflow-y-auto">
@@ -216,6 +226,12 @@ export const StudentModal: React.FC<StudentModalProps> = ({ student, onClose, on
                         />
                     ) : activeTab === 'slo' ? (
                         <SLOProgressPanel student={student} />
+                    ) : activeTab === 'paspoort' && student.stats?.nulmetingResult ? (
+                        <Suspense fallback={<div className="flex items-center justify-center py-8"><div className="animate-spin rounded-full h-6 w-6 border-b-2 border-indigo-600" /></div>}>
+                            <div className="rounded-2xl overflow-hidden [&>div]:min-h-0 [&>div]:p-4">
+                                <LazyDigitaalPaspoort result={student.stats.nulmetingResult} onContinue={() => setActiveTab('overview')} />
+                            </div>
+                        </Suspense>
                     ) : (
                         <>
                             {/* Quick Stats */}
@@ -352,7 +368,7 @@ export const StudentModal: React.FC<StudentModalProps> = ({ student, onClose, on
                                                             {note.created_at ? new Date(note.created_at).toLocaleDateString('nl-NL') : 'Recent'}
                                                         </p>
                                                     </div>
-                                                    <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                    <div className="flex items-center gap-1 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
                                                         <button
                                                             onClick={() => startEditNote(note)}
                                                             className="p-1.5 bg-white/50 hover:bg-white rounded-lg transition-colors"

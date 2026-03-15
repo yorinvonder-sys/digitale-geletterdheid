@@ -372,9 +372,10 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
                             className="px-6 pb-6 space-y-3 relative z-10"
                         >
                             {students.filter(s => (s.stats?.xp || 0) < 100).slice(0, 3).map(student => (
-                                <div
+                                <button
                                     key={student.uid}
-                                    className="bg-white/5 border border-white/10 p-4 rounded-xl flex items-center justify-between group hover:bg-white/10 transition-all cursor-pointer"
+                                    type="button"
+                                    className="w-full bg-white/5 border border-white/10 p-4 rounded-xl flex items-center justify-between group hover:bg-white/10 active:bg-white/15 transition-all cursor-pointer text-left"
                                     onClick={() => onSelectStudent?.(student)}
                                 >
                                     <div className="flex items-center gap-3">
@@ -392,7 +393,7 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
                                         </div>
                                         <ChevronRight size={14} className="text-slate-600 group-hover:translate-x-1 transition-transform" />
                                     </div>
-                                </div>
+                                </button>
                             ))}
                             {students.filter(s => (s.stats?.xp || 0) < 100).length === 0 && (
                                 <div className="text-slate-500 text-xs italic py-4 text-center">Iedereen ligt op koers! 🎉</div>

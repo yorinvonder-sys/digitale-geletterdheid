@@ -100,7 +100,7 @@ export const StudentList: React.FC<StudentListProps> = ({
             </div>
 
             {/* Table */}
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
                 <table className="w-full">
                     <thead>
 
@@ -139,8 +139,11 @@ export const StudentList: React.FC<StudentListProps> = ({
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, scale: 0.95 }}
                                     key={student.uid}
-                                    className="hover:bg-slate-50/50 transition-colors cursor-pointer"
+                                    className="hover:bg-slate-50/50 active:bg-indigo-50/50 transition-colors cursor-pointer select-none"
                                     onClick={() => onSelectStudent(student)}
+                                    role="button"
+                                    tabIndex={0}
+                                    onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onSelectStudent(student); } }}
                                 >
                                     <td className="px-4 py-3">
                                         <div className="flex items-center gap-2">

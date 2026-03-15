@@ -26,6 +26,8 @@ export function PWAInstallPrompt() {
     useEffect(() => {
         // Niet tonen als al geïnstalleerd (standalone modus)
         if (window.matchMedia('(display-mode: standalone)').matches) return;
+        // Alleen tonen op mobiel en tablet (max 1024px), niet op laptop/desktop
+        if (!window.matchMedia('(max-width: 1024px)').matches) return;
         if (wasDismissed()) return;
 
         function handleBeforeInstall(e: Event) {

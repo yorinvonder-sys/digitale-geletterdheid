@@ -94,84 +94,140 @@ export function MfaGate({ onVerified }: MfaGateProps) {
 
     if (step === 'loading') {
         return (
-            <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-                <div className="flex flex-col items-center gap-4">
-                    <Loader2 size={48} className="animate-spin text-indigo-600" />
-                    <p className="text-slate-500 font-medium">MFA-status controleren...</p>
+            <div className="fixed inset-0 bg-slate-50 flex items-center justify-center">
+                <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-50 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl opacity-50 pointer-events-none" />
+                <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-indigo-50 rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl opacity-50 pointer-events-none" />
+                <div className="flex flex-col items-center gap-4 relative z-10">
+                    <div className="w-16 h-16 mx-auto">
+                        <img src="/mascot/pip-logo.webp" alt="DGSkills" className="w-full h-full object-contain" width={64} height={64} decoding="async" />
+                    </div>
+                    <div className="w-6 h-6 border-2 border-indigo-200 border-t-indigo-500 rounded-full animate-spin" />
+                    <p className="text-slate-400 text-sm font-medium">MFA-status controleren...</p>
                 </div>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
-            <div className="bg-white rounded-2xl shadow-xl border border-slate-100 max-w-md w-full p-8">
-                <div className="flex items-center gap-3 mb-6">
-                    <div className="w-12 h-12 rounded-xl bg-indigo-100 flex items-center justify-center">
-                        <ShieldCheck size={24} className="text-indigo-600" />
-                    </div>
-                    <div>
-                        <h1 className="text-xl font-bold text-slate-900">
-                            Tweefactorauthenticatie vereist
-                        </h1>
-                        <p className="text-sm text-slate-500">
-                            Cbw/NIS2 beveiligingsvereiste
-                        </p>
-                    </div>
-                </div>
+        <div className="fixed inset-0 bg-slate-50 font-sans overflow-hidden">
+            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-50 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl opacity-50 pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-indigo-50 rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl opacity-50 pointer-events-none" />
 
-                <p className="text-slate-600 text-sm mb-6">
-                    Als docent of beheerder is tweefactorauthenticatie (MFA) verplicht
-                    om de gegevens van leerlingen te beschermen.
-                </p>
+            <div className="absolute inset-0 overflow-y-auto flex items-center justify-center p-6">
+                <div className="max-w-md w-full relative z-10 my-auto">
+                    <div className="bg-white rounded-[2rem] shadow-2xl shadow-indigo-100 p-8 md:p-10 border border-slate-100">
 
-                {error && (
-                    <div className="flex items-start gap-2 bg-red-50 border border-red-100 rounded-xl p-3 mb-4">
-                        <AlertTriangle size={16} className="text-red-500 mt-0.5 flex-shrink-0" />
-                        <p className="text-xs font-bold text-red-500">{error}</p>
-                    </div>
-                )}
-
-                {step === 'enroll' && (
-                    <div className="space-y-4">
-                        <div className="bg-slate-50 rounded-xl p-4">
-                            <p className="text-sm font-medium text-slate-700 mb-3">
-                                1. Scan de QR-code met een authenticator-app
-                            </p>
-                            <p className="text-xs text-slate-500 mb-3">
-                                Gebruik Google Authenticator, Microsoft Authenticator of een andere TOTP-app.
-                            </p>
-                            {qrCode && (
-                                <div className="flex justify-center mb-3">
-                                    <img
-                                        src={qrCode}
-                                        alt="MFA QR Code"
-                                        className="w-48 h-48 rounded-lg border border-slate-200"
-                                    />
-                                </div>
-                            )}
-                            <div className="flex items-center gap-2">
-                                <code className="flex-1 text-xs bg-white border border-slate-200 rounded px-2 py-1.5 font-mono text-slate-600 truncate">
-                                    {secret}
-                                </code>
-                                <button
-                                    onClick={handleCopySecret}
-                                    className="flex items-center gap-1 text-xs text-indigo-600 hover:text-indigo-700 px-2 py-1.5 rounded border border-indigo-200 hover:bg-indigo-50 transition-colors"
-                                    title="Kopieer geheime sleutel"
-                                >
-                                    {copiedSecret ? <CheckCircle2 size={14} /> : <Copy size={14} />}
-                                    {copiedSecret ? 'Gekopieerd' : 'Kopieer'}
-                                </button>
+                        {/* Header met logo */}
+                        <div className="text-center mb-8">
+                            <div className="w-20 h-20 mx-auto mb-4">
+                                <img src="/mascot/pip-logo.webp" alt="DGSkills logo" className="w-full h-full object-contain" width={80} height={80} decoding="async" />
                             </div>
+                            <h1 className="text-2xl font-black text-slate-900 mb-1 tracking-tight">
+                                Verificatie <span className="text-lab-primary">vereist</span>
+                            </h1>
+                            <p className="text-slate-400 font-bold text-[10px] uppercase tracking-widest">
+                                Tweefactorauthenticatie • Cbw/NIS2
+                            </p>
                         </div>
 
-                        <div>
-                            <p className="text-sm font-medium text-slate-700 mb-2">
-                                2. Voer de 6-cijferige code in
-                            </p>
-                            <div className="flex gap-2">
-                                <div className="relative flex-1">
-                                    <KeyRound size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                        <p className="text-slate-500 text-sm text-center mb-6 leading-relaxed">
+                            Als docent of beheerder is tweefactorauthenticatie (MFA) verplicht
+                            om de gegevens van leerlingen te beschermen.
+                        </p>
+
+                        {error && (
+                            <div className="flex items-start gap-2 bg-red-50 border border-red-100 rounded-xl p-3 mb-5 animate-in shake">
+                                <AlertTriangle size={16} className="text-red-500 mt-0.5 flex-shrink-0" />
+                                <p className="text-xs font-bold text-red-500">{error}</p>
+                            </div>
+                        )}
+
+                        {step === 'enroll' && (
+                            <div className="space-y-5">
+                                <div className="bg-slate-50 rounded-2xl p-5">
+                                    <p className="text-sm font-bold text-slate-700 mb-1">
+                                        1. Scan de QR-code
+                                    </p>
+                                    <p className="text-xs text-slate-400 mb-4">
+                                        Gebruik Google Authenticator, Microsoft Authenticator of een andere TOTP-app.
+                                    </p>
+                                    {qrCode && (
+                                        <div className="flex justify-center mb-4">
+                                            <div className="bg-white p-3 rounded-2xl shadow-sm border border-slate-100">
+                                                <img
+                                                    src={qrCode}
+                                                    alt="MFA QR Code"
+                                                    className="w-44 h-44 rounded-lg"
+                                                />
+                                            </div>
+                                        </div>
+                                    )}
+                                    <div className="flex items-center gap-2">
+                                        <code className="flex-1 text-xs bg-white border border-slate-200 rounded-lg px-3 py-2 font-mono text-slate-500 truncate">
+                                            {secret}
+                                        </code>
+                                        <button
+                                            onClick={handleCopySecret}
+                                            className="flex items-center gap-1.5 text-xs font-bold text-indigo-600 hover:text-indigo-700 px-3 py-2 rounded-lg border border-indigo-200 hover:bg-indigo-50 transition-colors"
+                                            title="Kopieer geheime sleutel"
+                                        >
+                                            {copiedSecret ? <CheckCircle2 size={14} /> : <Copy size={14} />}
+                                            {copiedSecret ? 'Gekopieerd!' : 'Kopieer'}
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <p className="text-sm font-bold text-slate-700 mb-3">
+                                        2. Voer de 6-cijferige code in
+                                    </p>
+                                    <div className="relative mb-3">
+                                        <KeyRound size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+                                        <input
+                                            type="text"
+                                            inputMode="numeric"
+                                            maxLength={6}
+                                            placeholder="000000"
+                                            value={code}
+                                            onChange={(e) => {
+                                                const val = e.target.value.replace(/\D/g, '').slice(0, 6);
+                                                setCode(val);
+                                                setError(null);
+                                            }}
+                                            onKeyDown={(e) => e.key === 'Enter' && code.length === 6 && handleVerify()}
+                                            className="w-full pl-12 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-center text-lg font-mono tracking-widest focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all"
+                                            autoFocus
+                                        />
+                                    </div>
+                                    <button
+                                        onClick={handleVerify}
+                                        disabled={code.length !== 6 || verifying}
+                                        className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg shadow-indigo-200/50 disabled:opacity-50 disabled:cursor-not-allowed hover:-translate-y-0.5"
+                                    >
+                                        {verifying ? (
+                                            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                                        ) : (
+                                            <ShieldCheck size={18} />
+                                        )}
+                                        MFA Activeren
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+
+                        {step === 'verify' && (
+                            <div className="space-y-5">
+                                <div className="bg-indigo-50 rounded-2xl p-4 text-center">
+                                    <div className="w-10 h-10 mx-auto mb-2 rounded-full bg-indigo-100 flex items-center justify-center">
+                                        <ShieldCheck size={20} className="text-indigo-600" />
+                                    </div>
+                                    <p className="text-sm font-medium text-indigo-700">
+                                        MFA is geactiveerd. Voer de code van je authenticator-app in.
+                                    </p>
+                                </div>
+
+                                <div className="relative">
+                                    <KeyRound size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
                                     <input
                                         type="text"
                                         inputMode="numeric"
@@ -184,77 +240,35 @@ export function MfaGate({ onVerified }: MfaGateProps) {
                                             setError(null);
                                         }}
                                         onKeyDown={(e) => e.key === 'Enter' && code.length === 6 && handleVerify()}
-                                        className="w-full pl-10 pr-4 py-3 border border-slate-200 rounded-xl text-center text-lg font-mono tracking-widest focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all"
+                                        className="w-full pl-12 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-center text-lg font-mono tracking-widest focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all"
                                         autoFocus
                                     />
                                 </div>
+
                                 <button
                                     onClick={handleVerify}
                                     disabled={code.length !== 6 || verifying}
-                                    className="px-6 py-3 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
+                                    className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg shadow-indigo-200/50 disabled:opacity-50 disabled:cursor-not-allowed hover:-translate-y-0.5"
                                 >
                                     {verifying ? (
-                                        <Loader2 size={16} className="animate-spin" />
+                                        <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                                     ) : (
-                                        <ShieldCheck size={16} />
+                                        <ShieldCheck size={18} />
                                     )}
-                                    Activeer
+                                    Verifieer
                                 </button>
                             </div>
-                        </div>
-                    </div>
-                )}
+                        )}
 
-                {step === 'verify' && (
-                    <div className="space-y-4">
-                        <div className="bg-indigo-50 rounded-xl p-4">
-                            <p className="text-sm text-indigo-700">
-                                MFA is geactiveerd. Voer de code van je authenticator-app in om door te gaan.
-                            </p>
-                        </div>
-
-                        <div className="flex gap-2">
-                            <div className="relative flex-1">
-                                <KeyRound size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-                                <input
-                                    type="text"
-                                    inputMode="numeric"
-                                    maxLength={6}
-                                    placeholder="000000"
-                                    value={code}
-                                    onChange={(e) => {
-                                        const val = e.target.value.replace(/\D/g, '').slice(0, 6);
-                                        setCode(val);
-                                        setError(null);
-                                    }}
-                                    onKeyDown={(e) => e.key === 'Enter' && code.length === 6 && handleVerify()}
-                                    className="w-full pl-10 pr-4 py-3 border border-slate-200 rounded-xl text-center text-lg font-mono tracking-widest focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all"
-                                    autoFocus
-                                />
-                            </div>
+                        <div className="mt-8 pt-5 border-t border-slate-100 text-center">
                             <button
-                                onClick={handleVerify}
-                                disabled={code.length !== 6 || verifying}
-                                className="px-6 py-3 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
+                                onClick={() => logout()}
+                                className="text-xs font-bold text-slate-400 hover:text-indigo-600 transition-colors"
                             >
-                                {verifying ? (
-                                    <Loader2 size={16} className="animate-spin" />
-                                ) : (
-                                    <ShieldCheck size={16} />
-                                )}
-                                Verifieer
+                                Uitloggen en later terugkomen
                             </button>
                         </div>
                     </div>
-                )}
-
-                <div className="mt-6 pt-4 border-t border-slate-200">
-                    <button
-                        onClick={() => logout()}
-                        className="text-sm text-slate-500 hover:text-slate-700 transition-colors"
-                    >
-                        Uitloggen en later terugkomen
-                    </button>
                 </div>
             </div>
         </div>

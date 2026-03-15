@@ -22,7 +22,7 @@ export const AlertsPanel: React.FC<AlertsPanelProps> = ({ students, onSelectStud
                         <button
                             key={student.uid}
                             onClick={() => onSelectStudent(student)}
-                            className="flex items-center justify-between p-3 bg-amber-50 hover:bg-amber-100 rounded-xl border border-amber-100 transition-colors text-left"
+                            className="flex items-center justify-between p-4 bg-amber-50 hover:bg-amber-100 active:bg-amber-200 rounded-xl border border-amber-100 transition-colors text-left min-h-[48px]"
                         >
                             <div>
                                 <div className="font-bold text-slate-900 text-xs">{student.displayName}</div>
