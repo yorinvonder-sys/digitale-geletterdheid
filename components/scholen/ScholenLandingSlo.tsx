@@ -99,7 +99,7 @@ export const ScholenLandingSlo: React.FC = () => {
                         </p>
                     </div>
                     <div className="hidden md:flex items-center justify-center flex-shrink-0">
-                        <img src="/mascot/pip-celebrating.webp" alt="" className="w-16 h-16 object-contain" loading="lazy" aria-hidden="true" />
+                        <img src="/mascot/pip-celebrating.webp" alt="" className="w-16 h-16 object-contain" loading="lazy" decoding="async" aria-hidden="true" />
                     </div>
                     <div className="flex flex-col items-end gap-3">
                         <div className="flex flex-wrap gap-2">
@@ -148,7 +148,7 @@ export const ScholenLandingSlo: React.FC = () => {
                                     aria-controls={`domain-panel-${idx}`}
                                 >
                                     <div className="flex flex-col items-center flex-shrink-0 gap-1">
-                                        <img src={domain.illustration} alt="" className="w-12 h-12 object-contain" loading="lazy" aria-hidden="true" />
+                                        <img src={domain.illustration} alt="" className="w-12 h-12 object-contain" loading="lazy" decoding="async" aria-hidden="true" />
                                     </div>
                                     <div className="flex-1 min-w-0">
                                         <div className="flex items-center gap-2 mb-1">

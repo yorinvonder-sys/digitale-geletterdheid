@@ -35,6 +35,7 @@ function FeatureImage({ src, alt }: { src: string; alt: string }) {
             alt={alt}
             className="w-full h-full object-cover rounded-2xl"
             loading="lazy"
+            decoding="async"
         />
     );
 }

@@ -173,6 +173,7 @@ export const ScholenLandingCustomization: React.FC = () => {
                                     alt={active.illustrationAlt}
                                     className="w-[3.25rem] h-[3.25rem] object-contain"
                                     loading="lazy"
+                                    decoding="async"
                                 />
                             </div>
                             <h3 className="text-2xl font-medium" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#1A1A19' }}>

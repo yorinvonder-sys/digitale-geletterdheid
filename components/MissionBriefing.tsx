@@ -54,7 +54,7 @@ export const MissionBriefing: React.FC<MissionBriefingProps> = ({ role, onStart,
 
 
     return (
-        <div className="w-full h-full max-w-3xl mx-auto flex items-center justify-center p-2 animate-in fade-in zoom-in-95 duration-500">
+        <div className="w-full h-full max-w-3xl mx-auto flex items-center justify-center px-4 sm:px-6 py-2 animate-in fade-in zoom-in-95 duration-500">
 
             {/* Main Card Container - Single Column Text Only */}
             <div className="w-full bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden flex flex-col h-auto max-h-[90vh]">

@@ -13,7 +13,7 @@ interface TeacherNavigationProps {
 export const TeacherNavigation: React.FC<TeacherNavigationProps> = ({ activeTab, setActiveTab }) => {
     return (
         <div data-tutorial="main-tabs" className="bg-white rounded-2xl border border-slate-200 shadow-sm p-2">
-            <div className="flex items-center justify-center gap-1 md:gap-2">
+            <div className="flex items-center justify-center gap-1 md:gap-2 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                 {[
                     { id: 'overview', label: 'Dashboard', icon: BarChart3, subTabs: ['overview', 'progress', 'slo', 'nulmeting', 'samenhang', 'documenten'], tutorialId: 'dashboard-tab', tooltip: 'Overzicht van voortgang, SLO-doelen en signalering' },
                     { id: 'students', label: 'Leerlingen', icon: Users, subTabs: ['students', 'feedback'], tutorialId: 'students-tab', tooltip: 'Bekijk en beheer je leerlingen per klas' },
@@ -28,7 +28,7 @@ export const TeacherNavigation: React.FC<TeacherNavigationProps> = ({ activeTab,
                             data-tutorial={tab.tutorialId}
                             onClick={() => setActiveTab(tab.subTabs[0] as MainTab)}
                             title={tab.tooltip}
-                            className={`relative flex items-center gap-2 px-3 sm:px-4 md:px-6 py-3 min-h-[44px] rounded-xl text-sm font-bold transition-all ${isActive
+                            className={`relative flex items-center gap-2 px-2 sm:px-3 md:px-6 py-3 min-h-[44px] rounded-xl text-sm font-bold transition-all flex-shrink-0 ${isActive
                                 ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-200'
                                 : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50'
                                 }`}
@@ -47,7 +47,7 @@ export const TeacherNavigation: React.FC<TeacherNavigationProps> = ({ activeTab,
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
-                        className="flex justify-center gap-2 pt-3 mt-2 border-t border-slate-100"
+                        className="flex justify-center gap-2 pt-3 mt-2 border-t border-slate-100 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
                     >
                         {[
                             { id: 'overview', label: 'Overzicht', tooltip: 'Statistieken en vroege signalering' },
@@ -61,7 +61,7 @@ export const TeacherNavigation: React.FC<TeacherNavigationProps> = ({ activeTab,
                                 key={sub.id}
                                 onClick={() => setActiveTab(sub.id as MainTab)}
                                 title={sub.tooltip}
-                                className={`px-4 py-2.5 min-h-[36px] rounded-lg text-xs font-bold transition-all ${activeTab === sub.id
+                                className={`px-4 py-2.5 min-h-[36px] rounded-lg text-xs font-bold transition-all flex-shrink-0 ${activeTab === sub.id
                                     ? 'bg-indigo-100 text-indigo-700'
                                     : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
                                     }`}
@@ -76,7 +76,7 @@ export const TeacherNavigation: React.FC<TeacherNavigationProps> = ({ activeTab,
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
-                        className="flex justify-center gap-2 pt-3 mt-2 border-t border-slate-100"
+                        className="flex justify-center gap-2 pt-3 mt-2 border-t border-slate-100 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
                     >
                         {[
                             { id: 'students', label: 'Leerlingenlijst', tooltip: 'Alle leerlingen met status en missies' },
@@ -86,7 +86,7 @@ export const TeacherNavigation: React.FC<TeacherNavigationProps> = ({ activeTab,
                                 key={sub.id}
                                 onClick={() => setActiveTab(sub.id as MainTab)}
                                 title={sub.tooltip}
-                                className={`px-4 py-2.5 min-h-[36px] rounded-lg text-xs font-bold transition-all ${activeTab === sub.id
+                                className={`px-4 py-2.5 min-h-[36px] rounded-lg text-xs font-bold transition-all flex-shrink-0 ${activeTab === sub.id
                                     ? 'bg-indigo-100 text-indigo-700'
                                     : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
                                     }`}
@@ -101,7 +101,7 @@ export const TeacherNavigation: React.FC<TeacherNavigationProps> = ({ activeTab,
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
-                        className="flex justify-center gap-2 pt-3 mt-2 border-t border-slate-100"
+                        className="flex justify-center gap-2 pt-3 mt-2 border-t border-slate-100 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
                     >
                         {[
                             { id: 'games', label: 'Games', tooltip: 'Beschikbare games en opdrachten' },
@@ -112,7 +112,7 @@ export const TeacherNavigation: React.FC<TeacherNavigationProps> = ({ activeTab,
                                 data-tutorial={sub.id === 'gamification' ? 'gamification-subtab' : undefined}
                                 onClick={() => setActiveTab(sub.id as MainTab)}
                                 title={sub.tooltip}
-                                className={`px-4 py-2.5 min-h-[36px] rounded-lg text-xs font-bold transition-all ${activeTab === sub.id
+                                className={`px-4 py-2.5 min-h-[36px] rounded-lg text-xs font-bold transition-all flex-shrink-0 ${activeTab === sub.id
                                     ? 'bg-indigo-100 text-indigo-700'
                                     : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
                                     }`}
@@ -127,7 +127,7 @@ export const TeacherNavigation: React.FC<TeacherNavigationProps> = ({ activeTab,
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
-                        className="flex justify-center gap-2 pt-3 mt-2 border-t border-slate-100"
+                        className="flex justify-center gap-2 pt-3 mt-2 border-t border-slate-100 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
                     >
                         {[
                             { id: 'ai-beleid', label: 'AI Beleid', tooltip: 'Feedback en ideeën over AI-beleid op school' },
@@ -137,7 +137,7 @@ export const TeacherNavigation: React.FC<TeacherNavigationProps> = ({ activeTab,
                                 key={sub.id}
                                 onClick={() => setActiveTab(sub.id as MainTab)}
                                 title={sub.tooltip}
-                                className={`px-4 py-2.5 min-h-[36px] rounded-lg text-xs font-bold transition-all ${activeTab === sub.id
+                                className={`px-4 py-2.5 min-h-[36px] rounded-lg text-xs font-bold transition-all flex-shrink-0 ${activeTab === sub.id
                                     ? 'bg-indigo-100 text-indigo-700'
                                     : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
                                     }`}

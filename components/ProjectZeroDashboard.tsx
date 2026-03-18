@@ -618,12 +618,15 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
     };
 
 
+    // Memoized mission filtering — avoid recalculating on every render
+    const reviewMissions = useMemo(() => currentMissions.filter(m => m.isReview), [currentMissions]);
+    const mainMissions = useMemo(() => currentMissions.filter(m => !m.isReview), [currentMissions]);
+
     // Calculate progress stats for the current week
-    const totalMissions = currentMissions.filter(m => !m.isReview).length;
-    const completedCount = currentMissions.filter(m => !m.isReview && stats?.missionsCompleted?.includes(m.id)).length;
+    const totalMissions = mainMissions.length;
+    const completedCount = mainMissions.filter(m => stats?.missionsCompleted?.includes(m.id)).length;
 
     // For Week 2: check review mission progress
-    const reviewMissions = currentMissions.filter(m => m.isReview);
     const completedReviewCount = reviewMissions.filter(m => stats?.missionsCompleted?.includes(m.id) || (m.id === 'ipad-print-instructies' && stats?.studentClass !== 'MH1A')).length;
     const allReviewsDone = reviewMissions.length === 0 || completedReviewCount >= reviewMissions.length;
 
@@ -1318,7 +1321,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                     )}
 
                                     {/* OPTIONAL: Review Missions Row (if any) */}
-                                    {currentMissions.some(m => m.isReview) && (
+                                    {reviewMissions.length > 0 && (
                                         <div className="w-full" data-tutorial="student-review-missions">
                                             <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
                                                 <RotateCcw size={16} /> Herhaling &amp; Basics
@@ -1326,7 +1329,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                                                 {(() => {
                                                     let firstOpenReviewFound = false;
-                                                    return currentMissions.filter(m => m.isReview).map((mission, rIdx) => {
+                                                    return reviewMissions.map((mission, rIdx) => {
                                                         const isNormallyCompleted = stats?.missionsCompleted?.includes(mission.id);
                                                         const isAutoCompleted = mission.id === 'ipad-print-instructies' && stats?.studentClass !== 'MH1A';
                                                         const isCompleted = isNormallyCompleted || isAutoCompleted;
@@ -1356,8 +1359,8 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
 
                                     {/* Main Mission Grid */}
                                     <div id="mission-grid-container" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6 pb-28 sm:pb-12" data-tutorial="student-main-missions">
-                                        {(currentMissions.filter(m => !m.isReview) || []).length > 0 ? (
-                                            currentMissions.filter(m => !m.isReview).map((mission, index) => {
+                                        {mainMissions.length > 0 ? (
+                                            mainMissions.map((mission, index) => {
                                                 const isCompleted = stats?.missionsCompleted?.includes(mission.id);
 
                                                 return (

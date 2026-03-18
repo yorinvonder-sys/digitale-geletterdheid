@@ -123,6 +123,8 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
 
     const [retryCount, setRetryCount] = useState(0);
     const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
+    const refetchStudentsTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const refetchAssessmentsTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     const addToast = (title: string, message: string, type: 'error' | 'success' | 'info' | 'warning' = 'info', studentUid?: string) => {
         const id = Math.random().toString(36).substr(2, 9);
@@ -167,11 +169,17 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
         const channel = supabase
             .channel('teacher-students')
             .on('postgres_changes', { event: '*', schema: 'public', table: 'users', filter: 'role=eq.student' }, () => {
-                fetchStudents();
+                if (refetchStudentsTimeoutRef.current) clearTimeout(refetchStudentsTimeoutRef.current);
+                refetchStudentsTimeoutRef.current = setTimeout(() => {
+                    fetchStudents();
+                }, 500);
             })
             .subscribe();
 
-        return () => { supabase.removeChannel(channel); };
+        return () => {
+            supabase.removeChannel(channel);
+            if (refetchStudentsTimeoutRef.current) clearTimeout(refetchStudentsTimeoutRef.current);
+        };
     }, [retryCount]);
 
     useEffect(() => {
@@ -190,11 +198,17 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
         const channel = supabase
             .channel('teacher-assessments')
             .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'hybrid_assessments' }, () => {
-                fetchAssessments();
+                if (refetchAssessmentsTimeoutRef.current) clearTimeout(refetchAssessmentsTimeoutRef.current);
+                refetchAssessmentsTimeoutRef.current = setTimeout(() => {
+                    fetchAssessments();
+                }, 500);
             })
             .subscribe();
 
-        return () => { supabase.removeChannel(channel); };
+        return () => {
+            supabase.removeChannel(channel);
+            if (refetchAssessmentsTimeoutRef.current) clearTimeout(refetchAssessmentsTimeoutRef.current);
+        };
     }, []);
 
     useEffect(() => {

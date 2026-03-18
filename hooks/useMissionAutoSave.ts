@@ -3,6 +3,20 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 const STORAGE_PREFIX = 'dgskills_mission_';
 const DEBOUNCE_MS = 1_000;
 
+/** Best-effort sync extraction of current user ID from Supabase's localStorage session. */
+const getCurrentUserId = (): string | null => {
+    try {
+        const key = Object.keys(localStorage).find(k => /^sb-[a-z0-9_-]+-auth-token$/i.test(k));
+        if (!key) return null;
+        const raw = localStorage.getItem(key);
+        if (!raw) return null;
+        const parsed = JSON.parse(raw);
+        return parsed?.user?.id ?? null;
+    } catch {
+        return null;
+    }
+};
+
 interface AutoSaveResult<T> {
     /** Current state value */
     state: T;
@@ -39,7 +53,11 @@ export function useMissionAutoSave<T>(
     missionId: string,
     initialState: T
 ): AutoSaveResult<T> {
-    const storageKey = `${STORAGE_PREFIX}${missionId}`;
+    // Include userId in key to prevent cross-user data leakage on shared computers
+    const userId = useRef(getCurrentUserId()).current;
+    const storageKey = userId
+        ? `${STORAGE_PREFIX}${userId}_${missionId}`
+        : `${STORAGE_PREFIX}${missionId}`;
 
     // Try to restore saved state on initial render
     const [state, setState] = useState<T>(() => {

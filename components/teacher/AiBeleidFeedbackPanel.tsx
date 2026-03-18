@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { supabase } from '../../services/supabase';
 import { getAiBeleidStats, getAiBeleidIdeeen } from '../../services/teacherService';
@@ -18,6 +18,7 @@ interface AiBeleidFeedbackPanelProps {
 }
 
 export const AiBeleidFeedbackPanel: React.FC<AiBeleidFeedbackPanelProps> = ({ classFilter, schoolId }) => {
+    const refetchTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const [ideeen, setIdeeen] = useState<AiBeleidIdee[]>([]);
     const [stats, setStats] = useState<{
         totaal: number;
@@ -87,14 +88,18 @@ export const AiBeleidFeedbackPanel: React.FC<AiBeleidFeedbackPanelProps> = ({ cl
                 'postgres_changes',
                 { event: '*', schema: 'public', table: 'ai_beleid_feedback' },
                 () => {
-                    // Re-fetch on any change (INSERT/UPDATE/DELETE)
-                    fetchAndProcess();
+                    // Re-fetch on any change (INSERT/UPDATE/DELETE), debounced
+                    if (refetchTimeoutRef.current) clearTimeout(refetchTimeoutRef.current);
+                    refetchTimeoutRef.current = setTimeout(() => {
+                        fetchAndProcess();
+                    }, 500);
                 }
             )
             .subscribe();
 
         return () => {
             supabase.removeChannel(channel);
+            if (refetchTimeoutRef.current) clearTimeout(refetchTimeoutRef.current);
         };
     }, [classFilter, schoolId]);
 

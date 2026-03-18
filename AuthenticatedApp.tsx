@@ -12,6 +12,7 @@ import { logActivity, updateClassroomConfig } from './services/teacherService';
 import { awardXP } from './services/XPService';
 import { TutorialProvider, STUDENT_TUTORIAL_STEPS, STUDENT_STORAGE_KEY, TutorialStep } from './contexts/TutorialContext';
 import { lazyWithRetry } from './utils/lazyWithRetry';
+import { SecureErrorBoundary } from './components/SecureErrorBoundary';
 import { deserializeClassroomConfig } from './utils/classroomConfig';
 const ConsentGate = lazyWithRetry(() => import('./components/consent/ConsentGate').then(m => ({ default: m.ConsentGate })));
 import { useTeacherMessages } from './hooks/useTeacherMessages';
@@ -98,6 +99,8 @@ export function AuthenticatedApp() {
     // NEW: Robust tracking of focus state to prevent reset loops
     const lastProcessedFocusMissionId = React.useRef<string | null>(null);
     const lastProcessedFocusMode = React.useRef<boolean>(false);
+    // Guard against double mission completion (race condition on rapid clicks)
+    const completingMissionRef = React.useRef<Set<string>>(new Set());
 
     // NEW: Session storage key for focus intent persistence
     const FOCUS_INTENT_KEY = 'dgskills_focus_intent';
@@ -634,37 +637,45 @@ export function AuthenticatedApp() {
         }
 
         const handleMissionComplete = async (missionId: string) => {
+            // Idempotency guard: prevent double completion from rapid clicks or re-renders
+            if (completingMissionRef.current.has(missionId)) return;
+
             if (user && user.stats) {
                 const currentCompleted = user.stats.missionsCompleted || [];
                 if (!currentCompleted.includes(missionId)) {
-                    const newStats = {
-                        ...user.stats,
-                        missionsCompleted: [...currentCompleted, missionId],
-                    };
-                    setUser({ ...user, stats: newStats });
-                    await handleSaveProgress(newStats);
+                    completingMissionRef.current.add(missionId);
+                    try {
+                        const newStats = {
+                            ...user.stats,
+                            missionsCompleted: [...currentCompleted, missionId],
+                        };
+                        setUser({ ...user, stats: newStats });
+                        await handleSaveProgress(newStats);
 
-                    // Award XP via server-side RPC (enforces rate limiting + daily cap)
-                    const xpResult = await awardXP(user.uid, 50, 'Missie Voltooid', missionId);
-                    if (xpResult.awarded && xpResult.newXP !== undefined) {
-                        setUser(prev => prev ? {
-                            ...prev,
-                            stats: { ...prev.stats, xp: xpResult.newXP!, level: xpResult.newLevel ?? prev.stats.level }
-                        } : prev);
-                    }
+                        // Award XP via server-side RPC (enforces rate limiting + daily cap)
+                        const xpResult = await awardXP(user.uid, 50, 'Missie Voltooid', missionId);
+                        if (xpResult.awarded && xpResult.newXP !== undefined) {
+                            setUser(prev => prev ? {
+                                ...prev,
+                                stats: { ...prev.stats, xp: xpResult.newXP!, level: xpResult.newLevel ?? prev.stats.level }
+                            } : prev);
+                        }
 
-                    logActivity({
-                        uid: user.uid,
-                        schoolId: user.schoolId,
-                        studentName: user.displayName || 'Naamloos',
-                        type: 'mission_complete',
-                        data: `Missie voltooid: ${missionId} (+50 XP)`,
-                        missionId
-                    });
-                    if (focusMissionId && missionId === focusMissionId) {
-                        setFocusMode(false);
-                        setFocusMissionId(null);
-                        setFocusMissionTitle(null);
+                        logActivity({
+                            uid: user.uid,
+                            schoolId: user.schoolId,
+                            studentName: user.displayName || 'Naamloos',
+                            type: 'mission_complete',
+                            data: `Missie voltooid: ${missionId} (+50 XP)`,
+                            missionId
+                        });
+                        if (focusMissionId && missionId === focusMissionId) {
+                            setFocusMode(false);
+                            setFocusMissionId(null);
+                            setFocusMissionTitle(null);
+                        }
+                    } finally {
+                        completingMissionRef.current.delete(missionId);
                     }
                 }
             }
@@ -994,9 +1005,11 @@ export function AuthenticatedApp() {
                         <TutorialRestartButton />
                     </Suspense>
                 )}
-                <Suspense fallback={<LoadingFallback />}>
-                    {renderContent()}
-                </Suspense>
+                <SecureErrorBoundary>
+                    <Suspense fallback={<LoadingFallback />}>
+                        {renderContent()}
+                    </Suspense>
+                </SecureErrorBoundary>
             </main>
             <div className="fixed top-4 right-4 pr-safe pt-safe flex items-center gap-3 z-50" />
             {user.role === 'teacher' && viewMode === 'assignments' && (

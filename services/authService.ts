@@ -333,6 +333,15 @@ export const handleRedirectResult = async () => {
 
 export const subscribeToAuthChanges = (callback: (user: ParentUser | null) => void) => {
 
+    // Cancel token: prevents stale resolveParentUser results from calling back
+    // after unsubscribe (e.g., rapid login/logout/login).
+    let cancelled = false;
+    let resolveGeneration = 0;
+
+    const safeCallback = (user: ParentUser | null, generation: number) => {
+        if (cancelled || generation !== resolveGeneration) return;
+        callback(user);
+    };
 
     const buildFallbackParentUser = (supabaseUser: SupabaseUser): ParentUser => {
         const metaRole = getRoleFromMeta(supabaseUser);
@@ -480,13 +489,15 @@ export const subscribeToAuthChanges = (callback: (user: ParentUser | null) => vo
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
         async (event: AuthChangeEvent, session: Session | null) => {
             if (event === 'INITIAL_SESSION' || event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+                // Increment generation so stale resolves from previous events are ignored
+                const thisGeneration = ++resolveGeneration;
                 if (session?.user) {
                     try {
                         const parentUser = await resolveParentUser(session.user);
-                        callback(parentUser);
+                        safeCallback(parentUser, thisGeneration);
                     } catch (err) {
                         console.error('Auth resolveParentUser failed, using fallback:', err);
-                        callback(buildFallbackParentUser(session.user));
+                        safeCallback(buildFallbackParentUser(session.user), thisGeneration);
                     }
                 } else if (event === 'INITIAL_SESSION') {
                     // Fallback: INITIAL_SESSION kan null retourneren door een race
@@ -498,21 +509,22 @@ export const subscribeToAuthChanges = (callback: (user: ParentUser | null) => vo
                         if (fallbackSession?.user) {
                             try {
                                 const parentUser = await resolveParentUser(fallbackSession.user);
-                                callback(parentUser);
+                                safeCallback(parentUser, thisGeneration);
                             } catch (err) {
                                 console.error('Auth resolveParentUser failed (fallback), using minimal user:', err);
-                                callback(buildFallbackParentUser(fallbackSession.user));
+                                safeCallback(buildFallbackParentUser(fallbackSession.user), thisGeneration);
                             }
                             return;
                         }
                     } catch {
                         // getSession() mislukt → val door naar null
                     }
-                    callback(null);
+                    safeCallback(null, thisGeneration);
                 } else {
-                    callback(null);
+                    safeCallback(null, thisGeneration);
                 }
             } else if (event === 'SIGNED_OUT') {
+                ++resolveGeneration; // Invalidate any in-flight resolves
                 callback(null);
             }
         }
@@ -520,6 +532,7 @@ export const subscribeToAuthChanges = (callback: (user: ParentUser | null) => vo
 
 
     return () => {
+        cancelled = true;
         subscription.unsubscribe();
     };
 };

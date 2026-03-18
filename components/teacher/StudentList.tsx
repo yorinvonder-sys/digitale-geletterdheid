@@ -75,7 +75,7 @@ export const StudentList: React.FC<StudentListProps> = ({
                         placeholder="Zoek leerling..."
                         value={searchTerm}
                         onChange={(e) => onSearchChange(e.target.value)}
-                        className="w-full pl-9 pr-4 py-2 bg-slate-50 border-none rounded-xl outline-none focus:ring-2 focus:ring-slate-200 transition-all text-sm font-medium"
+                        className="w-full pl-9 pr-4 py-2 min-h-[44px] bg-slate-50 border-none rounded-xl outline-none focus:ring-2 focus:ring-slate-200 transition-all text-sm font-medium"
                     />
                 </div>
                 <div className="flex items-center gap-3">
@@ -89,7 +89,7 @@ export const StudentList: React.FC<StudentListProps> = ({
                     <select
                         value={classFilter}
                         onChange={(e) => onClassFilterChange(e.target.value)}
-                        className="px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 outline-none hover:bg-slate-50"
+                        className="px-3 py-2 min-h-[44px] bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 outline-none hover:bg-slate-50"
                     >
                         <option value="all">Alle Klassen</option>
                         {classGroups.map(g => (
