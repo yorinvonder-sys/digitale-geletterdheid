@@ -86,26 +86,26 @@ export const KamerDilemma: React.FC<Props> = ({ onComplete }) => {
       {/* Header */}
       <div className="text-center mb-4 md:mb-6">
         <div className="flex items-center justify-center gap-2 mb-2">
-          <Heart className="text-pink-400" size={24} />
-          <h2 className="text-xl md:text-2xl font-black text-pink-400">Het Dilemma</h2>
+          <Heart className="text-sky-600" size={24} />
+          <h2 className="text-xl md:text-2xl font-black text-sky-600">Het Dilemma</h2>
         </div>
       </div>
 
       <div className="flex-1 flex items-center justify-center">
         <div className="w-full max-w-lg">
           {/* Scenario */}
-          <div className="bg-gray-800 rounded-xl border border-gray-700 p-5 mb-4">
+          <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5 mb-4">
             <div className="flex items-start gap-3 mb-4">
-              <div className="w-10 h-10 rounded-full bg-pink-500/20 flex items-center justify-center shrink-0">
-                <MessageCircle size={18} className="text-pink-400" />
+              <div className="w-10 h-10 rounded-full bg-sky-50 flex items-center justify-center shrink-0">
+                <MessageCircle size={18} className="text-sky-600" />
               </div>
               <div>
-                <p className="text-sm font-bold text-pink-400 mb-1">Situatie</p>
-                <p className="text-gray-300 text-sm leading-relaxed">
+                <p className="text-sm font-bold text-sky-600 mb-1">Situatie</p>
+                <p className="text-slate-600 text-sm leading-relaxed">
                   Je vriend wordt online gepest. Iemand stuurt je een screenshot van gemene
                   berichten over je vriend en vraagt: "Stuur dit even door, iedereen moet dit zien!"
                 </p>
-                <p className="text-gray-400 text-sm mt-2 italic">
+                <p className="text-slate-400 text-sm mt-2 italic">
                   Wat doe je?
                 </p>
               </div>
@@ -119,7 +119,7 @@ export const KamerDilemma: React.FC<Props> = ({ onComplete }) => {
                 <button
                   key={optie.id}
                   onClick={() => kiesOptie(optie.id)}
-                  className="w-full text-left px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-sm text-gray-300 hover:border-pink-500/50 hover:bg-pink-500/10 transition-colors active:scale-[0.98]"
+                  className="w-full text-left px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-600 hover:border-sky-300 hover:bg-sky-50 transition-colors active:scale-[0.98]"
                 >
                   {optie.tekst}
                 </button>
@@ -132,17 +132,17 @@ export const KamerDilemma: React.FC<Props> = ({ onComplete }) => {
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
               <div className={`p-4 rounded-xl border mb-4 ${
                 optie.score >= 75
-                  ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400'
+                  ? 'bg-emerald-50 border-emerald-200 text-emerald-700'
                   : optie.score >= 25
-                    ? 'bg-amber-500/10 border-amber-500/30 text-amber-400'
-                    : 'bg-red-500/10 border-red-500/30 text-red-400'
+                    ? 'bg-amber-50 border-amber-200 text-amber-700'
+                    : 'bg-rose-50 border-rose-200 text-rose-700'
               }`}>
                 <p className="text-sm font-bold mb-1">Jouw keuze: {optie.tekst}</p>
                 <p className="text-sm opacity-80">{optie.feedback}</p>
               </div>
 
-              <div className="bg-gray-800 rounded-xl border border-gray-700 p-4">
-                <label className="text-xs font-bold uppercase tracking-wider text-gray-500 block mb-2">
+              <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-4">
+                <label className="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-2">
                   Leg kort uit waarom je deze keuze maakte (2-3 zinnen)
                 </label>
                 <textarea
@@ -150,17 +150,17 @@ export const KamerDilemma: React.FC<Props> = ({ onComplete }) => {
                   onChange={e => setReflectie(e.target.value)}
                   placeholder="Ik koos dit omdat..."
                   rows={3}
-                  className="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-sm text-gray-200 placeholder-gray-600 resize-none focus:outline-none focus:border-pink-500/50 focus:ring-1 focus:ring-pink-500/30"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-sm text-slate-700 placeholder-slate-400 resize-none focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-200"
                 />
               </div>
 
               <button
                 onClick={verzendReflectie}
-                className="mt-4 w-full py-3 rounded-xl font-bold text-sm bg-gradient-to-r from-pink-500 to-pink-600 text-white hover:from-pink-400 hover:to-pink-500 transition-all active:scale-[0.98] flex items-center justify-center gap-2"
+                className="mt-4 w-full py-3 rounded-xl font-bold text-sm bg-sky-600 hover:bg-sky-700 text-white transition-all active:scale-[0.98] flex items-center justify-center gap-2 shadow-lg shadow-sky-200"
               >
                 <Send size={18} /> Verzend antwoord
               </button>
-              <p className="text-center text-gray-600 text-xs mt-2">
+              <p className="text-center text-slate-400 text-xs mt-2">
                 Je reflectie wordt bewaard zodat je docent het kan lezen.
               </p>
             </motion.div>
@@ -173,11 +173,11 @@ export const KamerDilemma: React.FC<Props> = ({ onComplete }) => {
               animate={{ opacity: 1, scale: 1 }}
               className="text-center py-8"
             >
-              <div className="w-16 h-16 rounded-full bg-pink-500/20 flex items-center justify-center mx-auto mb-4">
-                <Heart size={32} className="text-pink-400" />
+              <div className="w-16 h-16 rounded-full bg-sky-50 flex items-center justify-center mx-auto mb-4">
+                <Heart size={32} className="text-sky-600" />
               </div>
-              <p className="text-pink-400 font-bold text-lg mb-2">Antwoord opgeslagen!</p>
-              <p className="text-gray-500 text-sm">Je gaat door naar de resultaten...</p>
+              <p className="text-sky-600 font-bold text-lg mb-2">Antwoord opgeslagen!</p>
+              <p className="text-slate-400 text-sm">Je gaat door naar de resultaten...</p>
             </motion.div>
           )}
         </div>

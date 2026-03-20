@@ -54,7 +54,7 @@ const RadarChart: React.FC<{ scores: number[]; labels: string[] }> = ({ scores, 
           key={level}
           points={polygonPoints(angles, RADIUS * level)}
           fill="none"
-          stroke="rgba(255,255,255,0.15)"
+          stroke="rgba(0,0,0,0.08)"
           strokeWidth={1}
         />
       ))}
@@ -69,7 +69,7 @@ const RadarChart: React.FC<{ scores: number[]; labels: string[] }> = ({ scores, 
             y1={CENTER}
             x2={x}
             y2={y}
-            stroke="rgba(255,255,255,0.1)"
+            stroke="rgba(0,0,0,0.06)"
             strokeWidth={1}
           />
         );
@@ -80,8 +80,8 @@ const RadarChart: React.FC<{ scores: number[]; labels: string[] }> = ({ scores, 
         initial={{ points: polygonPoints(angles, 0) }}
         animate={{ points: dataPolygonPoints(angles, scores) }}
         transition={{ duration: 1.2, ease: 'easeOut', delay: 0.3 }}
-        fill="rgba(34,211,238,0.2)"
-        stroke="#22d3ee"
+        fill="rgba(217,119,87,0.15)"
+        stroke="#D97757"
         strokeWidth={2}
       />
 
@@ -95,8 +95,8 @@ const RadarChart: React.FC<{ scores: number[]; labels: string[] }> = ({ scores, 
             initial={{ cx: CENTER, cy: CENTER, r: 0 }}
             animate={{ cx: x, cy: y, r: 4 }}
             transition={{ duration: 1.2, ease: 'easeOut', delay: 0.3 }}
-            fill="#22d3ee"
-            stroke="#0e7490"
+            fill="#D97757"
+            stroke="#C46849"
             strokeWidth={1.5}
           />
         );
@@ -113,7 +113,7 @@ const RadarChart: React.FC<{ scores: number[]; labels: string[] }> = ({ scores, 
             y={y}
             textAnchor="middle"
             dominantBaseline="central"
-            className="fill-gray-300 text-[10px] font-bold"
+            className="fill-slate-600 text-[10px] font-bold"
           >
             {lines.map((line, li) => (
               <tspan key={li} x={x} dy={li === 0 ? `-${(lines.length - 1) * 5}` : '12'}>
@@ -138,20 +138,20 @@ function getNiveauInfo(niveau: NulmetingResult['niveau']): { label: string; colo
     case 'gevorderd':
       return {
         label: 'Gevorderd',
-        color: 'from-emerald-500 to-cyan-500',
+        color: 'from-emerald-500 to-emerald-600',
         tekst: 'Indrukwekkend! Je hebt al een sterke digitale basis. Klaar voor de uitdaging!',
       };
     case 'basis':
       return {
         label: 'Basis',
-        color: 'from-cyan-500 to-blue-500',
+        color: 'from-indigo-500 to-indigo-600',
         tekst: 'Goed begin! Je weet al het een en ander. Dit jaar ga je nog veel bijleren.',
       };
     case 'starter':
     default:
       return {
         label: 'Starter',
-        color: 'from-purple-500 to-pink-500',
+        color: 'from-violet-500 to-violet-600',
         tekst: 'Welkom! Er ligt een wereld voor je open. Stap voor stap word je een digitale pro.',
       };
   }
@@ -166,7 +166,7 @@ export const DigitaalPaspoort: React.FC<DigitaalPaspoortProps> = ({ result, onCo
   const niveauInfo = getNiveauInfo(result.niveau);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
@@ -179,11 +179,11 @@ export const DigitaalPaspoort: React.FC<DigitaalPaspoortProps> = ({ result, onCo
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.2 }}
-            className="text-2xl font-black text-white tracking-tight"
+            className="text-2xl font-black text-slate-900 tracking-tight"
           >
             Jouw Digitaal Paspoort
           </motion.h1>
-          <p className="text-sm text-gray-400">Resultaat van de nulmeting escaperoom</p>
+          <p className="text-sm text-slate-400">Resultaat van de nulmeting escaperoom</p>
         </div>
 
         {/* Radardiagram */}
@@ -191,7 +191,7 @@ export const DigitaalPaspoort: React.FC<DigitaalPaspoortProps> = ({ result, onCo
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}
-          className="bg-white/5 border border-white/10 rounded-2xl p-4"
+          className="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm"
         >
           <RadarChart scores={scores} labels={labels} />
         </motion.div>
@@ -208,17 +208,17 @@ export const DigitaalPaspoort: React.FC<DigitaalPaspoortProps> = ({ result, onCo
             return (
               <div
                 key={domein.key}
-                className="flex items-center gap-3 bg-white/5 border border-white/10 rounded-xl px-4 py-3"
+                className="flex items-center gap-3 bg-white border border-slate-200 rounded-xl px-4 py-3 shadow-sm"
               >
                 <span className="text-lg">{feedback.emoji}</span>
                 <div className="flex-1 min-w-0">
-                  <div className="text-xs font-bold text-gray-300">
+                  <div className="text-xs font-bold text-slate-700">
                     {domein.label.replace('\n', ' ')}
-                    <span className="text-gray-500 ml-1">({domein.short})</span>
+                    <span className="text-slate-400 ml-1">({domein.short})</span>
                   </div>
-                  <div className="text-[11px] text-gray-400">{feedback.tekst}</div>
+                  <div className="text-[11px] text-slate-400">{feedback.tekst}</div>
                 </div>
-                <div className={`text-sm font-black ${scores[i] >= 80 ? 'text-emerald-400' : scores[i] >= 50 ? 'text-cyan-400' : 'text-purple-400'}`}>
+                <div className={`text-sm font-black ${scores[i] >= 80 ? 'text-emerald-600' : scores[i] >= 50 ? 'text-indigo-600' : 'text-violet-600'}`}>
                   {scores[i]}
                 </div>
               </div>
@@ -234,12 +234,12 @@ export const DigitaalPaspoort: React.FC<DigitaalPaspoortProps> = ({ result, onCo
           className="text-center space-y-3"
         >
           <div className="inline-flex items-center gap-2">
-            <span className="text-xs font-bold text-gray-500 uppercase tracking-widest">Jouw niveau</span>
+            <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Jouw niveau</span>
           </div>
           <div className={`inline-block px-6 py-2 rounded-full bg-gradient-to-r ${niveauInfo.color} text-white font-black text-lg tracking-wide shadow-lg`}>
             {niveauInfo.label}
           </div>
-          <p className="text-sm text-gray-400 max-w-xs mx-auto">{niveauInfo.tekst}</p>
+          <p className="text-sm text-slate-500 max-w-xs mx-auto">{niveauInfo.tekst}</p>
         </motion.div>
 
         {/* CTA */}
@@ -248,7 +248,7 @@ export const DigitaalPaspoort: React.FC<DigitaalPaspoortProps> = ({ result, onCo
           animate={{ opacity: 1 }}
           transition={{ delay: 1.5 }}
           onClick={onContinue}
-          className="w-full flex items-center justify-center gap-2 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-black rounded-2xl text-sm hover:brightness-110 active:scale-[0.98] transition-all shadow-lg shadow-cyan-500/20"
+          className="w-full flex items-center justify-center gap-2 py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-black rounded-2xl text-sm transition-all shadow-lg shadow-indigo-200 hover:brightness-110 active:scale-[0.98]"
         >
           Start je eerste missie
           <ChevronRight size={18} />

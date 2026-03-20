@@ -106,7 +106,7 @@ Deno.serve(async (req: Request) => {
     // 5. Create root folder in Drive
     let rootFolderId: string;
     try {
-        rootFolderId = await ensureDriveFolder(tokens.access_token, "DGSkills Backups");
+        rootFolderId = await ensureDriveFolder(tokens.access_token, "Boekhouding");
     } catch (err) {
         console.error("[gdrive-callback] Folder creation failed:", err);
         return redirect("gdrive=error&reason=folder_creation");

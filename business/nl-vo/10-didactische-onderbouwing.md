@@ -85,15 +85,15 @@ Vanaf augustus 2027 zijn de SLO-kerndoelen Digitale Geletterdheid verplicht. Elk
 
 | SLO-code | Kerndoel | Aantal missies | Voorbeelden |
 |---|---|---|---|
-| **21A** | Digitale systemen begrijpen | 12 | Magister Master, Network Navigator |
-| **21B** | Media & informatie beoordelen | 8 | Data Detective, Factchecker |
-| **21C** | Data verzamelen en verwerken | 9 | Spreadsheet Specialist, Data Pipeline |
-| **21D** | AI begrijpen en toepassen | 14 | Prompt Master, AI-Trainer, Neural Navigator |
-| **22A** | Digitale producten maken | 11 | Game Director, Brand Builder |
-| **22B** | Programmeren en computational thinking | 10 | Web Developer, Bug Hunter |
-| **23A** | Veiligheid en privacy | 9 | Social Safeguard, Cyber Detective |
-| **23B** | Digitaal welzijn | 6 | AI-Spiegel, Filter Bubble Breaker |
-| **23C** | Maatschappelijke impact van technologie | 8 | AI-Ethicus, Digital Divide Researcher |
+| **21A** | Digitale systemen begrijpen | 19 | Magister Master, Cloud Commander, Network Navigator |
+| **21B** | Media & informatie beoordelen | 20 | Data Detective, Factchecker, Podcast Producer |
+| **21C** | Data verzamelen en verwerken | 11 | Spreadsheet Specialist, Data Pipeline, Data Journalist |
+| **21D** | AI begrijpen en toepassen | 18 | Prompt Master, AI-Trainer, Neural Navigator, ML Trainer |
+| **22A** | Digitale producten maken | 30 | Game Director, Brand Builder, Web Developer |
+| **22B** | Programmeren en computational thinking | 20 | Web Developer, Bug Hunter, Algorithm Architect |
+| **23A** | Veiligheid en privacy | 14 | Social Safeguard, Cyber Detective, Security Auditor |
+| **23B** | Digitaal welzijn | 21 | AI-Spiegel, Filter Bubble Breaker, Digital Rights Defender |
+| **23C** | Maatschappelijke impact van technologie | 26 | AI-Ethicus, Digital Divide Researcher, Tech Court |
 
 ### Aantoonbaar voor de inspectie
 Het docentendashboard toont realtime per leerling welke kerndoelen zijn behaald, welke in progress zijn, en welke nog niet zijn aangeraakt. Bij een inspectiebezoek open je het dashboard en laat je zien: "Dit is waar we staan."
@@ -113,8 +113,25 @@ Het curriculum is opgebouwd per leerjaar (J1, J2, J3) met variatie per profiel:
 - Leerlingen die sneller gaan krijgen bonusopdrachten aangeboden
 - De docent kan via het dashboard specifieke missies toewijzen of afsluiten per klas
 
+### Waar we nog aan werken
+Eerlijk: differentiatie is het punt waar het platform nog het meest in groeit. De meeste missies volgen nu een lineair 3-stappenpad. De AI-mentor past zich aan per leerling (andere hints, ander tempo), maar een expliciet basis/verdieping-spoor per missie is de volgende stap. We bouwen hier actief aan.
+
 ### Inclusief ontwerp
 Elke missie begint met een genummerd stappenplan: "Stap 1: ..., Stap 2: ..., Stap 3: ...". Dat is niet alleen prettig voor leerlingen met ASS of ADHD — het helpt alle leerlingen. Instructies zijn expliciet, voorbeelden zijn concreet, en interactieve elementen zijn altijd zichtbaar (niet verstopt achter hover-states).
+
+---
+
+## De doorlopende leerlijn: J1 → J2 → J3
+
+Het curriculum is geen verzameling losse missies, maar een opbouwende leerlijn over drie leerjaren:
+
+| Leerjaar | Thema | Bloom-focus | Kerndoel-accenten | Doelgroep |
+|----------|-------|-------------|-------------------|-----------|
+| **J1 — Digitale Basis** | Toolgebruik, AI verkennen, digitaal burgerschap | Onthouden → Toepassen | 21A, 21D, 23A-C | Mavo + Havo + VWO |
+| **J2 — Digitale Verdieping** | Data-analyse, programmeren, media maken, ethiek | Toepassen → Analyseren | 21B-C, 22A-B, 23C | Mavo + Havo + VWO |
+| **J3 — Digitaal Meesterschap** | ML/AI, cybersecurity, maatschappelijke impact, meesterproef | Analyseren → Creëren | 22B, 23A, 21D | Havo + VWO |
+
+Elk leerjaar heeft 4 periodes met een eigen thema. Elke periode eindigt met een reviewmissie of eindproject. De moeilijkheidsgraad stijgt niet alleen inhoudelijk, maar ook in zelfstandigheid: J1 geeft veel sturing, J2 biedt meer keuze, J3 verwacht zelfregie.
 
 ---
 

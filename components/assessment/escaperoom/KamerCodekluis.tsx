@@ -105,10 +105,10 @@ export const KamerCodekluis: React.FC<Props> = ({ onComplete }) => {
       {/* Header */}
       <div className="text-center mb-4 md:mb-6">
         <div className="flex items-center justify-center gap-2 mb-2">
-          <Lock className="text-purple-400" size={24} />
-          <h2 className="text-xl md:text-2xl font-black text-purple-400">Codekluis</h2>
+          <Lock className="text-violet-600" size={24} />
+          <h2 className="text-xl md:text-2xl font-black text-violet-600">Codekluis</h2>
         </div>
-        <p className="text-gray-400 text-sm md:text-base max-w-lg mx-auto">
+        <p className="text-slate-500 text-sm md:text-base max-w-lg mx-auto">
           De deur zit op slot! Sleep de codeblokken in de juiste volgorde om de kluis te openen.
           Maak een alarmsysteem: als de deur opengaat, moet het alarm afgaan.
         </p>
@@ -116,11 +116,11 @@ export const KamerCodekluis: React.FC<Props> = ({ onComplete }) => {
 
       <div className="flex-1 flex flex-col md:flex-row gap-4 min-h-0">
         {/* Gekozen volgorde */}
-        <div className="md:w-1/2 bg-gray-800 rounded-xl border border-gray-700 p-4 flex flex-col">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-3">Jouw code (klik om toe te voegen)</h3>
+        <div className="md:w-1/2 bg-white rounded-xl border border-slate-200 shadow-sm p-4 flex flex-col">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">Jouw code (klik om toe te voegen)</h3>
           <div className="flex-1 space-y-2">
             {gekozen.length === 0 && (
-              <div className="h-full flex items-center justify-center text-gray-600 text-sm border-2 border-dashed border-gray-700 rounded-xl p-4">
+              <div className="h-full flex items-center justify-center text-slate-400 text-sm border-2 border-dashed border-slate-200 rounded-xl p-4">
                 Klik op codeblokken om ze hier toe te voegen
               </div>
             )}
@@ -131,13 +131,13 @@ export const KamerCodekluis: React.FC<Props> = ({ onComplete }) => {
                 animate={{ opacity: 1, x: 0 }}
                 className="flex items-center gap-3"
               >
-                <div className="w-6 h-6 rounded-full bg-purple-500 flex items-center justify-center text-xs font-bold shrink-0">
+                <div className="w-6 h-6 rounded-full bg-violet-500 text-white flex items-center justify-center text-xs font-bold shrink-0">
                   {index + 1}
                 </div>
                 <button
                   onClick={() => verwijder(index)}
                   disabled={!!resultaat}
-                  className="flex-1 text-left px-4 py-3 bg-purple-600/20 border border-purple-500/30 rounded-lg font-mono text-sm text-purple-300 hover:bg-red-500/20 hover:border-red-500/30 hover:text-red-300 transition-colors group"
+                  className="flex-1 text-left px-4 py-3 bg-violet-50 border border-violet-200 rounded-lg font-mono text-sm text-violet-700 hover:bg-rose-50 hover:border-rose-200 hover:text-rose-700 transition-colors group"
                 >
                   <span className="group-hover:hidden">{blok.tekst}</span>
                   <span className="hidden group-hover:inline">Verwijderen</span>
@@ -148,21 +148,21 @@ export const KamerCodekluis: React.FC<Props> = ({ onComplete }) => {
         </div>
 
         {/* Beschikbare blokken */}
-        <div className="md:w-1/2 bg-gray-800/50 rounded-xl border border-gray-700 p-4 flex flex-col">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-3">Beschikbare blokken</h3>
+        <div className="md:w-1/2 bg-slate-50 rounded-xl border border-slate-200 p-4 flex flex-col">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">Beschikbare blokken</h3>
           <div className="flex-1 space-y-2">
             {beschikbareBlokken.map(blok => (
               <button
                 key={blok.id}
                 onClick={() => voegToe(blok)}
                 disabled={!!resultaat}
-                className="w-full text-left px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg font-mono text-sm text-gray-300 hover:border-purple-500/50 hover:bg-purple-500/10 transition-colors active:scale-[0.98]"
+                className="w-full text-left px-4 py-3 bg-white border border-slate-200 rounded-lg font-mono text-sm text-slate-600 hover:border-violet-300 hover:bg-violet-50 transition-colors active:scale-[0.98]"
               >
                 + {blok.tekst}
               </button>
             ))}
             {beschikbareBlokken.length === 0 && (
-              <p className="text-gray-600 text-sm italic text-center py-4">Alle blokken zijn geplaatst!</p>
+              <p className="text-slate-400 text-sm italic text-center py-4">Alle blokken zijn geplaatst!</p>
             )}
           </div>
         </div>
@@ -175,8 +175,8 @@ export const KamerCodekluis: React.FC<Props> = ({ onComplete }) => {
           animate={{ opacity: 1, y: 0 }}
           className={`mt-4 p-4 rounded-xl border text-center ${
             resultaat === 'success'
-              ? 'bg-emerald-500/20 border-emerald-500/50 text-emerald-400'
-              : 'bg-red-500/20 border-red-500/50 text-red-400'
+              ? 'bg-emerald-50 border-emerald-200 text-emerald-700'
+              : 'bg-rose-50 border-rose-200 text-rose-700'
           }`}
         >
           <div className="flex items-center justify-center gap-2 font-bold">
@@ -195,13 +195,13 @@ export const KamerCodekluis: React.FC<Props> = ({ onComplete }) => {
           <>
             <button
               onClick={() => { reset(); setResultaat(null); setLaatsteScore(null); }}
-              className="px-4 py-3 bg-gray-800 border border-gray-700 text-gray-400 rounded-xl font-bold hover:bg-gray-700 transition-colors flex items-center gap-2"
+              className="px-4 py-3 bg-white border border-slate-200 text-slate-500 rounded-xl font-bold hover:bg-slate-50 transition-colors flex items-center gap-2"
             >
               <RotateCcw size={18} /> Opnieuw
             </button>
             <button
               onClick={gaVerderMetScore}
-              className="flex-1 py-3 rounded-xl font-bold text-lg transition-all bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-400 hover:to-purple-500 text-white shadow-lg shadow-purple-500/20 active:scale-[0.98] flex items-center justify-center gap-2"
+              className="flex-1 py-3 rounded-xl font-bold text-lg transition-all bg-violet-600 hover:bg-violet-700 text-white shadow-lg shadow-violet-200 active:scale-[0.98] flex items-center justify-center gap-2"
             >
               <ArrowRight size={18} /> Ga door
             </button>
@@ -211,14 +211,14 @@ export const KamerCodekluis: React.FC<Props> = ({ onComplete }) => {
             <button
               onClick={reset}
               disabled={gekozen.length === 0 || resultaat === 'success'}
-              className="px-4 py-3 bg-gray-800 border border-gray-700 text-gray-400 rounded-xl font-bold hover:bg-gray-700 disabled:opacity-40 transition-colors flex items-center gap-2"
+              className="px-4 py-3 bg-white border border-slate-200 text-slate-500 rounded-xl font-bold hover:bg-slate-50 disabled:opacity-40 transition-colors flex items-center gap-2"
             >
               <RotateCcw size={18} /> Reset
             </button>
             <button
               onClick={controleer}
               disabled={gekozen.length < BESCHIKBARE_BLOKKEN.length || !!resultaat}
-              className="flex-1 py-3 rounded-xl font-bold text-lg transition-all disabled:opacity-40 disabled:cursor-not-allowed bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-400 hover:to-purple-500 text-white shadow-lg shadow-purple-500/20 active:scale-[0.98] flex items-center justify-center gap-2"
+              className="flex-1 py-3 rounded-xl font-bold text-lg transition-all disabled:opacity-40 disabled:cursor-not-allowed bg-violet-600 hover:bg-violet-700 text-white shadow-lg shadow-violet-200 active:scale-[0.98] flex items-center justify-center gap-2"
             >
               <ArrowRight size={18} /> Controleer code
             </button>

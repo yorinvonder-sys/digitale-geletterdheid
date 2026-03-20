@@ -874,7 +874,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                         className="flex items-center gap-3 hover:opacity-80 transition-opacity text-left bg-transparent border-none p-0 cursor-pointer focus:outline-none"
                     >
                         <img src="/mascot/pip-logo.webp" alt="DGSkills" className="w-9 h-9 object-contain" width={36} height={36} decoding="async" />
-                        <span className="text-[15px] font-semibold tracking-tight text-slate-900">DGSkills</span>
+                        <span className="text-[15px] font-semibold tracking-tight text-slate-900 hidden sm:inline">DGSkills</span>
                     </button>
 
                     {/* FEEDBACK BUTTON */}
@@ -891,11 +891,13 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                     <div className="flex items-center gap-4">
                         {/* DAILY STREAK BADGE */}
                         {dailyStreak > 0 && (
-                            <div className={`flex items-center gap-1 px-3 py-1 rounded-full text-sm font-bold
+                            <div className={`flex items-center gap-1 px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs sm:text-sm font-bold
                                 ${dailyStreak >= 7 ? 'bg-orange-500 text-white animate-pulse shadow-lg shadow-orange-500/30' :
                                   dailyStreak >= 3 ? 'bg-orange-100 text-orange-600' :
                                   'bg-slate-100 text-slate-500'}`}>
-                                <span role="img" aria-label="streak">&#x1F525;</span> {dailyStreak} {dailyStreak === 1 ? 'dag' : 'dagen'}
+                                <span role="img" aria-label="streak">&#x1F525;</span>
+                                <span>{dailyStreak}</span>
+                                <span className="hidden sm:inline">{dailyStreak === 1 ? 'dag' : 'dagen'}</span>
                             </div>
                         )}
 
@@ -908,7 +910,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                             >
                                 <div className="flex items-center gap-3">
                                     <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest group-hover:text-indigo-600 transition-colors">Lvl {level}</span>
-                                    <div className="w-32 h-2.5 bg-slate-100 rounded-full overflow-hidden border border-slate-200 p-[1px]">
+                                    <div className="w-20 sm:w-32 h-2.5 bg-slate-100 rounded-full overflow-hidden border border-slate-200 p-[1px]">
                                         <div
                                             className="h-full bg-indigo-600 rounded-full transition-all duration-700 shadow-[0_0_8px_rgba(79,70,229,0.3)]"
                                             style={{ width: `${progressPercentage}%` }}
@@ -1174,7 +1176,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
 
                     {/* Dynamisch leerdoelenblok — collapsible accordion */}
                     {currentPeriodConfig && (
-                        <div className={`mb-4 bg-white rounded-2xl border ${periodTheme.border} shadow-sm overflow-hidden`}>
+                        <div className={`mb-6 bg-white rounded-2xl border ${periodTheme.border} shadow-sm overflow-hidden`}>
                             {/* Collapsed header — altijd zichtbaar */}
                             <button
                                 onClick={() => setLeerdoelenOpen(!leerdoelenOpen)}
@@ -1326,7 +1328,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                             <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
                                                 <RotateCcw size={16} /> Herhaling &amp; Basics
                                             </h3>
-                                            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                            <div className="grid grid-cols-2 md:grid-cols-4 gap-5 md:gap-4">
                                                 {(() => {
                                                     let firstOpenReviewFound = false;
                                                     return reviewMissions.map((mission, rIdx) => {
@@ -1491,7 +1493,7 @@ const MissionCard = React.memo(({ mission, onSelectModule, onInfoClick, isComple
             aria-disabled={mission.status === 'locked'}
             onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleClick(); } }}
             className={`
-            group relative rounded-lg
+            group relative rounded-lg overflow-hidden
             transition-all duration-300 flex flex-col justify-between
             ${isCompact ? 'p-4 min-h-[200px]' : 'p-6 md:p-7 min-h-[260px] md:min-h-[280px]'}
             ${mission.status === 'locked'
@@ -1501,7 +1503,7 @@ const MissionCard = React.memo(({ mission, onSelectModule, onInfoClick, isComple
             style={{
                 backgroundColor: stickyColor.bg,
                 border: `1px solid ${stickyColor.border}`,
-                transform: `rotate(${rotation}deg)`,
+                transform: window.innerWidth < 640 ? 'none' : `rotate(${rotation}deg)`,
                 boxShadow: '2px 3px 8px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04)',
                 transition: 'all 0.3s ease',
             }}
@@ -1512,13 +1514,13 @@ const MissionCard = React.memo(({ mission, onSelectModule, onInfoClick, isComple
                 }
             }}
             onMouseLeave={(e) => {
-                e.currentTarget.style.transform = `rotate(${rotation}deg)`;
+                e.currentTarget.style.transform = window.innerWidth < 640 ? 'none' : `rotate(${rotation}deg)`;
                 e.currentTarget.style.boxShadow = '2px 3px 8px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04)';
             }}
         >
             {/* Tape decoration at top — hide when a header banner is present */}
             {!isCompact && !customHeader && !mission.isBonus && !mission.isExternal && (
-                <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-12 h-5 rounded-sm opacity-60 z-20"
+                <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-12 h-5 rounded-sm opacity-60 z-20"
                     style={{
                         background: 'linear-gradient(180deg, rgba(200,190,170,0.5) 0%, rgba(200,190,170,0.3) 100%)',
                         backdropFilter: 'blur(1px)',
@@ -1572,7 +1574,7 @@ const MissionCard = React.memo(({ mission, onSelectModule, onInfoClick, isComple
             )}
 
             {/* Background Decorative Icon */}
-            <div className={`absolute -top-6 -right-6 opacity-[0.04] group-hover:scale-110 transition-transform duration-700 rotate-12 ${isCompact ? 'scale-75' : ''}`} style={{ color: '#8B7355' }}>
+            <div className={`absolute top-0 right-0 opacity-[0.04] group-hover:scale-110 transition-transform duration-700 rotate-12 ${isCompact ? 'scale-75' : ''}`} style={{ color: '#8B7355' }}>
                 {mission.icon}
             </div>
 

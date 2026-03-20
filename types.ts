@@ -21,9 +21,9 @@ export type RoleId =
   // Leerjaar 1 - Periode 1
   'magister-master' | 'cloud-commander' | 'word-wizard' | 'social-media-psychologist' | 'slide-specialist' | 'print-pro' | 'layout-doctor' |
   // Leerjaar 1 - Periode 2
-  'ipad-print-instructies' | 'review-week-1' | 'week1-review' | 'verhalen-ontwerper' | 'nepnieuws-speurder' | 'game-programmeur' | 'ai-trainer' | 'chatbot-trainer' | 'ai-tekengame' |
+  'ipad-print-instructies' | 'review-week-1' | 'week1-review' | 'verhalen-ontwerper' | 'nepnieuws-speurder' | 'game-programmeur' | 'ai-trainer' | 'chatbot-trainer' | 'ai-tekengame' | 'website-bouwer' |
   // Leerjaar 1 - Periode 3
-  'review-week-2' | 'ai-spiegel' | 'social-safeguard' | 'data-detective' | 'deepfake-detector' | 'cookie-crusher' | 'data-handelaar' | 'privacy-profiel-spiegel' | 'filter-bubble-breaker' | 'datalekken-rampenplan' | 'data-voor-data' |
+  'review-week-2' | 'ai-spiegel' | 'social-safeguard' | 'data-detective' | 'deepfake-detector' | 'cookie-crusher' | 'data-handelaar' | 'privacy-profiel-spiegel' | 'filter-bubble-breaker' | 'datalekken-rampenplan' | 'data-voor-data' | 'data-speurder' |
   // Leerjaar 1 - Periode 4
   'review-week-3' | 'mission-blueprint' | 'mission-vision' | 'mission-launch' | 'startup-pitch' |
   // Leerjaar 1 - Speciaal
@@ -33,7 +33,7 @@ export type RoleId =
   // Leerjaar 2 - Periode 1: Data & Informatie
   'data-journalist' | 'spreadsheet-specialist' | 'factchecker' | 'api-verkenner' | 'dashboard-designer' | 'ai-bias-detective' | 'data-review' |
   // Leerjaar 2 - Periode 2: Programmeren & CT
-  'algorithm-architect' | 'web-developer' | 'app-prototyper' | 'bug-hunter' | 'automation-engineer' | 'code-reviewer' | 'code-review-2' |
+  'algorithm-architect' | 'web-developer' | 'app-prototyper' | 'bug-hunter' | 'automation-engineer' | 'code-reviewer' | 'code-review-2' | 'wachtwoord-warrior' |
   // Leerjaar 2 - Periode 3: Digitale Media & Creatie
   'ux-detective' | 'podcast-producer' | 'meme-machine' | 'digital-storyteller' | 'brand-builder' | 'video-editor' | 'media-review' |
   // Leerjaar 2 - Periode 4: Ethiek & Eindproject

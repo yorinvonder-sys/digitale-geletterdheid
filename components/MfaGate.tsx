@@ -119,8 +119,8 @@ export function MfaGate({ onVerified }: MfaGateProps) {
 
                         {/* Header met logo */}
                         <div className="text-center mb-8">
-                            <div className="w-20 h-20 mx-auto mb-4">
-                                <img src="/mascot/pip-logo.webp" alt="DGSkills logo" className="w-full h-full object-contain" width={80} height={80} decoding="async" />
+                            <div className="w-24 h-24 mx-auto mb-4">
+                                <img src="/mascot/pip-2fa.png" alt="Pip met telefoon" className="w-full h-full object-contain" width={96} height={96} decoding="async" />
                             </div>
                             <h1 className="text-2xl font-black text-slate-900 mb-1 tracking-tight">
                                 Verificatie <span className="text-lab-primary">vereist</span>

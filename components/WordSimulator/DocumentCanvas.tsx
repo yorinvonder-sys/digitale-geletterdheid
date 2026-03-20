@@ -115,15 +115,16 @@ export const DocumentCanvas: React.FC<DocumentCanvasProps> = ({
                 {Array.from({ length: pageCount }).map((_, i) => (
                     <div
                         key={i}
-                        className="bg-white shadow-xl relative"
+                        className="bg-white relative"
                         style={{
                             width: '100%',
                             height: '1123px',
                             position: 'absolute',
                             top: i * 1123,
                             left: 0,
-                            borderBottom: i < pageCount - 1 ? '20px solid #E8E6DF' : 'none', // Thick gray border acts as "gap"
-                            boxSizing: 'border-box'
+                            borderBottom: i < pageCount - 1 ? '20px solid #E8E6DF' : 'none',
+                            boxSizing: 'border-box',
+                            boxShadow: '0 1px 4px rgba(0,0,0,0.15), 0 0 0 1px rgba(0,0,0,0.05)'
                         }}
                     >
                         {/* Visual Margin Box */}
@@ -134,7 +135,7 @@ export const DocumentCanvas: React.FC<DocumentCanvasProps> = ({
                                 left: padding.left,
                                 right: padding.right,
                                 bottom: padding.bottom, // Visual border stops here
-                                border: '1px solid rgba(139, 92, 246, 0.4)',
+                                    border: '1px dashed rgba(180, 180, 180, 0.4)',
                             }}
                         />
                         {/* Page Break Visual (The Gap) */}

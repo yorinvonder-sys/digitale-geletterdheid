@@ -5,7 +5,7 @@ import { Ribbon } from './Ribbon';
 import { DocumentCanvas } from './DocumentCanvas';
 import { SimulatorState, DragItem, LevelConfig } from './types';
 import { MissionConclusion } from '../MissionConclusion';
-import { Check, Eye, Search, Undo, X } from 'lucide-react';
+import { Check, Eye, Search, Undo, X, Save, RotateCcw, RotateCw, ChevronDown, ZoomIn, ZoomOut, FileText, PanelLeft, Minus, Plus } from 'lucide-react';
 import type { VsoProfile } from '../../types';
 
 export interface WordSimulatorProps {
@@ -550,30 +550,59 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
     }
 
     return (
-        <div className="fixed inset-0 z-[100] bg-slate-100 flex flex-col font-sans text-slate-900 overflow-hidden">
-            {/* APP HEADER */}
-            <div className="bg-[#C46849] text-white px-4 py-2 flex items-center justify-between shadow-sm shrink-0">
-                <div className="flex items-center gap-4">
-                    {onExit && (
-                        <button
-                            onClick={onExit}
-                            className="flex items-center gap-2 bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded transition-colors text-sm font-medium"
-                        >
-                            <Undo size={16} /> Dashboard
+        <div className="fixed inset-0 z-[100] bg-[#e8e6df] flex flex-col font-sans text-slate-900 overflow-hidden">
+            {/* WORD TITLE BAR */}
+            <div className="bg-[#2b579a] text-white shrink-0 select-none">
+                {/* Quick Access Toolbar + Title */}
+                <div className="flex items-center h-[30px] px-1">
+                    {/* Quick Access Toolbar */}
+                    <div className="flex items-center gap-0 mr-2">
+                        {onExit && (
+                            <button
+                                onClick={onExit}
+                                className="flex items-center justify-center w-6 h-6 hover:bg-white/15 rounded-sm transition-colors"
+                                title="Terug naar Dashboard"
+                            >
+                                <Undo size={12} />
+                            </button>
+                        )}
+                        <button className="flex items-center justify-center w-6 h-6 hover:bg-white/15 rounded-sm transition-colors" title="Opslaan">
+                            <Save size={12} />
                         </button>
-                    )}
-                    <div className="h-6 w-px bg-white/20"></div>
-                    <div className="font-medium flex items-center gap-2">
-                        <span>Word Layout Doctor</span>
+                        <button className="flex items-center justify-center w-6 h-6 hover:bg-white/15 rounded-sm transition-colors" title="Ongedaan maken">
+                            <RotateCcw size={12} />
+                        </button>
+                        <button className="flex items-center justify-center w-6 h-6 hover:bg-white/15 rounded-sm transition-colors" title="Opnieuw">
+                            <RotateCw size={12} />
+                        </button>
+                        <div className="w-px h-4 bg-white/20 mx-1" />
                     </div>
-                </div>
 
-                <div className="flex items-center gap-4">
-                    <div className="text-xs bg-black/20 px-3 py-1 rounded-full">
-                        Casus {currentLevelIndex + 1}/{levels.length}
+                    {/* Document Title (centered) */}
+                    <div className="flex-1 text-center">
+                        <span className="text-[12px] font-normal">Document - Word Layout Doctor</span>
                     </div>
+
+                    {/* Right side: case indicator + user */}
                     <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center text-xs font-bold">JD</div>
+                        <div className="text-[10px] bg-white/15 px-2 py-0.5 rounded-sm">
+                            Casus {currentLevelIndex + 1}/{levels.length}
+                        </div>
+                        <div className="w-6 h-6 bg-[#d04a2e] rounded-full flex items-center justify-center text-[10px] font-bold">
+                            JD
+                        </div>
+                        {/* Window controls */}
+                        <div className="flex items-center ml-2">
+                            <div className="flex items-center justify-center w-[46px] h-[30px] hover:bg-white/10 cursor-default">
+                                <Minus size={12} />
+                            </div>
+                            <div className="flex items-center justify-center w-[46px] h-[30px] hover:bg-white/10 cursor-default">
+                                <div className="w-[10px] h-[10px] border border-white" />
+                            </div>
+                            <div className="flex items-center justify-center w-[46px] h-[30px] hover:bg-[#c42b1c] cursor-default">
+                                <X size={14} />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -586,6 +615,54 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
                 hasSelection={!!selectedImageId}
                 selectedImageWrapMode={images.find(i => i.id === selectedImageId)?.wrapMode as any}
             />
+
+            {/* HORIZONTAL RULER */}
+            <div className="bg-white border-b border-[#d1d1d1] shrink-0 h-[22px] flex items-center overflow-hidden select-none">
+                {/* Left margin area (matches sidebar width) */}
+                <div className="w-[300px] shrink-0 bg-[#f3f3f3] h-full border-r border-[#d1d1d1]" />
+                {/* Ruler */}
+                <div className="flex-1 relative h-full flex items-center justify-center">
+                    <div className="relative w-[794px] h-full">
+                        {/* Ruler background */}
+                        <div className="absolute inset-0 bg-white" />
+                        {/* Left margin indicator */}
+                        <div className="absolute left-0 top-0 h-full bg-[#d8d8d8]" style={{ width: simState.margins === 'narrow' ? '20px' : simState.margins === 'wide' ? '80px' : '50px' }} />
+                        {/* Right margin indicator */}
+                        <div className="absolute right-0 top-0 h-full bg-[#d8d8d8]" style={{ width: simState.margins === 'narrow' ? '20px' : simState.margins === 'wide' ? '80px' : '50px' }} />
+                        {/* Tick marks */}
+                        <svg className="absolute inset-0 w-full h-full" viewBox="0 0 794 22" preserveAspectRatio="none">
+                            {/* Major marks every ~96px (1 inch) */}
+                            {[0, 1, 2, 3, 4, 5, 6, 7, 8].map(i => {
+                                const x = 47 + i * 87.5;
+                                return (
+                                    <g key={i}>
+                                        <line x1={x} y1={6} x2={x} y2={16} stroke="#808080" strokeWidth={0.5} />
+                                        <text x={x} y={15} textAnchor="middle" fill="#808080" fontSize="7" fontFamily="Arial">{i + 1}</text>
+                                        {/* Half marks */}
+                                        <line x1={x + 43.75} y1={9} x2={x + 43.75} y2={13} stroke="#a0a0a0" strokeWidth={0.5} />
+                                        {/* Quarter marks */}
+                                        <line x1={x + 21.875} y1={10} x2={x + 21.875} y2={12} stroke="#c0c0c0" strokeWidth={0.5} />
+                                        <line x1={x + 65.625} y1={10} x2={x + 65.625} y2={12} stroke="#c0c0c0" strokeWidth={0.5} />
+                                    </g>
+                                );
+                            })}
+                        </svg>
+                        {/* Indent markers (blue triangles) */}
+                        <div
+                            className="absolute top-0"
+                            style={{ left: simState.margins === 'narrow' ? '18px' : simState.margins === 'wide' ? '78px' : '48px' }}
+                        >
+                            <div className="w-0 h-0 border-l-[5px] border-r-[5px] border-t-[5px] border-l-transparent border-r-transparent border-t-[#6b6b6b]" />
+                        </div>
+                        <div
+                            className="absolute bottom-0"
+                            style={{ left: simState.margins === 'narrow' ? '18px' : simState.margins === 'wide' ? '78px' : '48px' }}
+                        >
+                            <div className="w-0 h-0 border-l-[5px] border-r-[5px] border-b-[5px] border-l-transparent border-r-transparent border-b-[#6b6b6b]" />
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             {/* MAIN CONTENT SPLIT */}
             <div className="flex-1 flex overflow-hidden">
@@ -671,7 +748,7 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
                 </div>
 
                 {/* DOCUMENT CANVAS CONTAINER WITH FOOTER */}
-                <div className="flex-1 bg-slate-200 overflow-auto p-8 relative flex justify-center shadow-inner">
+                <div className="flex-1 bg-[#e8e6df] overflow-auto p-8 relative flex justify-center">
                     <div className="relative">
                         <DocumentCanvas
                             state={simState}
@@ -826,12 +903,70 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
                 </div>
             </div>
 
-            {/* STATUS BAR */}
-            <div className="bg-[#C46849] text-white/80 text-[10px] px-2 py-0.5 flex justify-between shrink-0">
-                <div className="flex gap-4">
-                    <span>Pagina 1 van 1</span>
-                    <span>{editorContent.split(' ').length} woorden</span>
-                    <span>Nederlands (NL)</span>
+            {/* WORD STATUS BAR */}
+            <div className="bg-[#2b579a] text-white text-[11px] px-3 h-[24px] flex items-center justify-between shrink-0 select-none">
+                {/* Left side: page info */}
+                <div className="flex items-center gap-4">
+                    <span className="hover:bg-white/10 px-1.5 py-0.5 rounded-sm cursor-default">Pagina 1 van 1</span>
+                    <span className="hover:bg-white/10 px-1.5 py-0.5 rounded-sm cursor-default">{editorContent.split(/\s+/).filter(Boolean).length} woorden</span>
+                    <span className="hover:bg-white/10 px-1.5 py-0.5 rounded-sm cursor-default flex items-center gap-1">
+                        <div className="w-1.5 h-1.5 rounded-full bg-green-400" />
+                        Nederlands (NL)
+                    </span>
+                </div>
+
+                {/* Right side: view modes + zoom */}
+                <div className="flex items-center gap-2">
+                    {/* View mode buttons */}
+                    <div className="flex items-center gap-0 mr-2">
+                        <button className="p-1 hover:bg-white/10 rounded-sm cursor-default" title="Leesmodus">
+                            <Eye size={13} />
+                        </button>
+                        <button className="p-1 bg-white/15 rounded-sm cursor-default" title="Afdrukweergave">
+                            <FileText size={13} />
+                        </button>
+                        <button className="p-1 hover:bg-white/10 rounded-sm cursor-default" title="Webindeling">
+                            <PanelLeft size={13} />
+                        </button>
+                    </div>
+
+                    {/* Zoom controls */}
+                    <div className="flex items-center gap-1">
+                        <button
+                            className="p-0.5 hover:bg-white/10 rounded-sm cursor-default"
+                            onClick={() => handleSimulatorAction('zoomOut')}
+                            title="Uitzoomen"
+                        >
+                            <Minus size={12} />
+                        </button>
+                        {/* Zoom slider */}
+                        <div className="relative w-[100px] h-[14px] flex items-center cursor-default">
+                            <div className="absolute inset-y-0 left-0 right-0 flex items-center">
+                                <div className="w-full h-[1px] bg-white/40" />
+                            </div>
+                            {/* Tick marks */}
+                            {[0, 25, 50, 75, 100].map((_, i) => (
+                                <div
+                                    key={i}
+                                    className="absolute w-[1px] h-[5px] bg-white/40"
+                                    style={{ left: `${i * 25}%` }}
+                                />
+                            ))}
+                            {/* Slider thumb */}
+                            <div
+                                className="absolute w-[8px] h-[12px] bg-white/70 rounded-sm border border-white/40"
+                                style={{ left: `${Math.max(0, Math.min(100, ((simState.zoom - 50) / 150) * 100))}%`, transform: 'translateX(-50%)' }}
+                            />
+                        </div>
+                        <button
+                            className="p-0.5 hover:bg-white/10 rounded-sm cursor-default"
+                            onClick={() => handleSimulatorAction('zoomIn')}
+                            title="Inzoomen"
+                        >
+                            <Plus size={12} />
+                        </button>
+                        <span className="text-[10px] ml-1 w-[30px] text-right">{simState.zoom}%</span>
+                    </div>
                 </div>
             </div>
 

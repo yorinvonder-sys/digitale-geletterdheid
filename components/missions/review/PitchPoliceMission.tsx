@@ -311,71 +311,70 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
     // INTRO SCREEN
     if (showIntro) {
         return (
-            <div className="min-h-screen bg-[#FAF9F0] flex flex-col items-center justify-center p-6 text-[#1A1A19] relative overflow-hidden" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+            <div className="h-screen bg-[#FAF9F0] flex flex-col items-center justify-center p-4 text-[#1A1A19] relative overflow-hidden" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                 {/* Background decorations */}
                 <div className="absolute inset-0 opacity-10 pointer-events-none">
                     <div className="absolute top-10 left-10 w-32 h-32 bg-[#D97757] rounded-full blur-3xl animate-pulse" />
                     <div className="absolute bottom-20 right-20 w-40 h-40 bg-[#C46849] rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
-                    <div className="absolute top-1/2 left-1/3 w-24 h-24 bg-[#2A9D8F] rounded-full blur-2xl animate-pulse" style={{ animationDelay: '0.5s' }} />
                 </div>
 
-                <div className="max-w-2xl w-full text-center relative z-10">
-                    {/* Icon */}
-                    <div className="relative inline-block mb-8">
-                        <div className="w-28 h-28 bg-gradient-to-br from-[#D97757] to-[#C46849] rounded-[2rem] flex items-center justify-center shadow-2xl shadow-[#D97757]/30 transform rotate-3">
-                            <Monitor size={56} className="text-white" />
+                <div className="max-w-xl w-full text-center relative z-10">
+                    {/* Icon + Title row */}
+                    <div className="flex items-center justify-center gap-4 mb-3">
+                        <div className="relative shrink-0">
+                            <div className="w-16 h-16 bg-gradient-to-br from-[#D97757] to-[#C46849] rounded-2xl flex items-center justify-center shadow-xl shadow-[#D97757]/30 rotate-3">
+                                <Monitor size={32} className="text-white" />
+                            </div>
+                            <div className="absolute -bottom-1 -right-1 w-7 h-7 bg-[#2A9D8F] rounded-lg flex items-center justify-center text-sm shadow-lg -rotate-6 text-white font-bold">
+                                !
+                            </div>
                         </div>
-                        <div className="absolute -bottom-2 -right-2 w-12 h-12 bg-[#2A9D8F] rounded-xl flex items-center justify-center text-2xl shadow-lg transform -rotate-6 text-white font-bold">
-                            !
-                        </div>
+                        <h1 className="text-3xl md:text-4xl font-black tracking-tight text-left" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
+                            <span className="text-[#D97757]">Pitch Politie</span>
+                        </h1>
                     </div>
 
-                    {/* Title */}
-                    <h1 className="text-4xl md:text-5xl font-black mb-4 tracking-tight" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
-                        Welkom bij de <span className="text-[#D97757]">Pitch Politie!</span>
-                    </h1>
-
-                    <p className="text-xl text-[#3D3D38] mb-8 leading-relaxed max-w-xl mx-auto">
-                        Jij bent vandaag de presentatie-expert. Help medeleerlingen hun saaie of rommelige slides te verbeteren!
+                    <p className="text-base text-[#3D3D38] mb-5 max-w-md mx-auto">
+                        Jij bent de presentatie-expert. Help medeleerlingen hun rommelige slides te verbeteren!
                     </p>
 
-                    {/* Instructions Card */}
-                    <div className="bg-white border border-[#E8E6DF] rounded-2xl p-8 mb-8 text-left shadow-sm">
-                        <h3 className="text-sm font-black text-[#D97757] uppercase tracking-widest mb-4 flex items-center gap-2">
-                            <Zap size={16} /> Hoe werkt het?
+                    {/* Instructions Card — compact */}
+                    <div className="bg-white border border-[#E8E6DF] rounded-xl p-5 mb-5 text-left shadow-sm">
+                        <h3 className="text-xs font-black text-[#D97757] uppercase tracking-widest mb-3 flex items-center gap-2">
+                            <Zap size={14} /> Hoe werkt het?
                         </h3>
-                        <ul className="space-y-4 text-lg">
-                            <li className="flex items-start gap-4">
-                                <span className="bg-[#D97757]/10 text-[#D97757] rounded-full w-8 h-8 flex items-center justify-center shrink-0 font-bold text-sm">1</span>
-                                <span className="text-[#3D3D38]">Je ziet <strong className="text-[#1A1A19]">slides met fouten</strong> -- te veel tekst, slechte kleuren, of chaos</span>
-                            </li>
-                            <li className="flex items-start gap-4">
-                                <span className="bg-[#D97757]/10 text-[#D97757] rounded-full w-8 h-8 flex items-center justify-center shrink-0 font-bold text-sm">2</span>
-                                <span className="text-[#3D3D38]">Lees het <strong className="text-[#1A1A19]">Politie Rapport</strong> om te zien wat er mis is</span>
-                            </li>
-                            <li className="flex items-start gap-4">
-                                <span className="bg-[#D97757]/10 text-[#D97757] rounded-full w-8 h-8 flex items-center justify-center shrink-0 font-bold text-sm">3</span>
-                                <span className="text-[#3D3D38]">Kies de <strong className="text-[#1A1A19]">beste oplossing</strong> om de slide te fixen</span>
-                            </li>
-                            <li className="flex items-start gap-4">
-                                <span className="bg-[#10B981]/10 text-[#10B981] rounded-full w-8 h-8 flex items-center justify-center shrink-0 font-bold text-sm">✓</span>
-                                <span className="text-[#3D3D38]">Zie de slide <strong className="text-[#1A1A19]">live verbeteren</strong> voor je ogen!</span>
-                            </li>
-                        </ul>
+                        <div className="grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
+                            <div className="flex items-start gap-2">
+                                <span className="bg-[#D97757]/10 text-[#D97757] rounded-full w-6 h-6 flex items-center justify-center shrink-0 font-bold text-xs">1</span>
+                                <span className="text-[#3D3D38]">Bekijk slides <strong className="text-[#1A1A19]">met fouten</strong></span>
+                            </div>
+                            <div className="flex items-start gap-2">
+                                <span className="bg-[#D97757]/10 text-[#D97757] rounded-full w-6 h-6 flex items-center justify-center shrink-0 font-bold text-xs">2</span>
+                                <span className="text-[#3D3D38]">Lees het <strong className="text-[#1A1A19]">Politie Rapport</strong></span>
+                            </div>
+                            <div className="flex items-start gap-2">
+                                <span className="bg-[#D97757]/10 text-[#D97757] rounded-full w-6 h-6 flex items-center justify-center shrink-0 font-bold text-xs">3</span>
+                                <span className="text-[#3D3D38]">Kies de <strong className="text-[#1A1A19]">beste oplossing</strong></span>
+                            </div>
+                            <div className="flex items-start gap-2">
+                                <span className="bg-[#10B981]/10 text-[#10B981] rounded-full w-6 h-6 flex items-center justify-center shrink-0 font-bold text-xs">✓</span>
+                                <span className="text-[#3D3D38]">Zie de slide <strong className="text-[#1A1A19]">live verbeteren</strong></span>
+                            </div>
+                        </div>
                     </div>
 
                     {/* Tips */}
-                    <div className="flex flex-wrap justify-center gap-4 mb-10">
-                        <div className="bg-white border border-[#E8E6DF] rounded-full px-4 py-2 flex items-center gap-2 text-sm">
-                            <Type size={16} className="text-[#2A9D8F]" />
+                    <div className="flex flex-wrap justify-center gap-2 mb-6">
+                        <div className="bg-white border border-[#E8E6DF] rounded-full px-3 py-1.5 flex items-center gap-1.5 text-xs">
+                            <Type size={14} className="text-[#2A9D8F]" />
                             <span className="text-[#3D3D38]">Minder tekst = Beter</span>
                         </div>
-                        <div className="bg-white border border-[#E8E6DF] rounded-full px-4 py-2 flex items-center gap-2 text-sm">
-                            <Palette size={16} className="text-[#8B6F9E]" />
+                        <div className="bg-white border border-[#E8E6DF] rounded-full px-3 py-1.5 flex items-center gap-1.5 text-xs">
+                            <Palette size={14} className="text-[#8B6F9E]" />
                             <span className="text-[#3D3D38]">Goed contrast is key</span>
                         </div>
-                        <div className="bg-white border border-[#E8E6DF] rounded-full px-4 py-2 flex items-center gap-2 text-sm">
-                            <Layout size={16} className="text-[#10B981]" />
+                        <div className="bg-white border border-[#E8E6DF] rounded-full px-3 py-1.5 flex items-center gap-1.5 text-xs">
+                            <Layout size={14} className="text-[#10B981]" />
                             <span className="text-[#3D3D38]">Keep it simple</span>
                         </div>
                     </div>
@@ -383,17 +382,17 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
                     {/* Start Button */}
                     <button
                         onClick={() => setState(prev => ({ ...prev, showIntro: false }))}
-                        className="px-12 py-5 bg-[#D97757] hover:bg-[#C46849] text-white rounded-full font-black text-xl shadow-2xl shadow-[#D97757]/30 hover:scale-105 transition-all duration-300 flex items-center gap-3 mx-auto group focus-visible:ring-2 focus-visible:ring-[#D97757]"
+                        className="px-10 py-4 bg-[#D97757] hover:bg-[#C46849] text-white rounded-full font-black text-lg shadow-2xl shadow-[#D97757]/30 hover:scale-105 transition-all duration-300 flex items-center gap-3 mx-auto group focus-visible:ring-2 focus-visible:ring-[#D97757]"
                     >
-                        <Play size={24} fill="currentColor" />
+                        <Play size={20} fill="currentColor" />
                         Start de Inspectie
-                        <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                        <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                     </button>
 
                     {/* Back button */}
                     <button
                         onClick={onBack}
-                        className="mt-6 text-[#6B6B66] hover:text-[#1A1A19] text-sm font-medium flex items-center gap-2 mx-auto transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#D97757] rounded-full px-3 py-1"
+                        className="mt-4 text-[#6B6B66] hover:text-[#1A1A19] text-sm font-medium flex items-center gap-2 mx-auto transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#D97757] rounded-full px-3 py-1"
                     >
                         <ArrowLeft size={16} />
                         Terug naar missies

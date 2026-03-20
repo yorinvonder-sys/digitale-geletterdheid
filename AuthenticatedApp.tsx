@@ -14,7 +14,7 @@ import { TutorialProvider, STUDENT_TUTORIAL_STEPS, STUDENT_STORAGE_KEY, Tutorial
 import { lazyWithRetry } from './utils/lazyWithRetry';
 import { SecureErrorBoundary } from './components/SecureErrorBoundary';
 import { deserializeClassroomConfig } from './utils/classroomConfig';
-const ConsentGate = lazyWithRetry(() => import('./components/consent/ConsentGate').then(m => ({ default: m.ConsentGate })));
+const AiTransparencyNotice = lazyWithRetry(() => import('./components/consent/AiTransparencyNotice').then(m => ({ default: m.AiTransparencyNotice })));
 import { useTeacherMessages } from './hooks/useTeacherMessages';
 import { TeacherMessagePopup } from './components/TeacherMessagePopup';
 import { ExitConfirmDialog } from './components/ExitConfirmDialog';
@@ -606,14 +606,7 @@ export function AuthenticatedApp() {
 
         if (role) {
             return (
-                <ConsentGate
-                    consentType="ai_interaction"
-                    studentId={user?.uid || ''}
-                    onRequestConsent={() => {
-                        setIsProfileOpen(true);
-                        setInitialProfileTab('privacy');
-                    }}
-                >
+                <AiTransparencyNotice studentId={user?.uid || ''}>
                     <AiLab
                         user={user}
                         onExit={handleRequestExitModule}
@@ -622,7 +615,7 @@ export function AuthenticatedApp() {
                         libraryData={pendingLibraryItem}
                         vsoProfile={user?.stats?.vsoProfile}
                     />
-                </ConsentGate>
+                </AiTransparencyNotice>
             );
         }
 
@@ -901,10 +894,11 @@ export function AuthenticatedApp() {
                     <div className="relative">
                         <button
                             onClick={() => setDevViewOverride('developer')}
-                            className="fixed bottom-6 right-6 z-50 flex items-center gap-2 px-4 py-3 bg-indigo-600 text-white rounded-xl font-bold text-sm shadow-lg shadow-indigo-200 hover:bg-indigo-700 transition-colors"
+                            className="fixed bottom-20 sm:bottom-6 right-4 sm:right-6 z-50 flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 sm:py-3 bg-indigo-600 text-white rounded-xl font-bold text-xs sm:text-sm shadow-lg shadow-indigo-200 hover:bg-indigo-700 transition-colors"
                         >
-                            <Code2 size={18} />
-                            Terug naar Developer
+                            <Code2 size={16} />
+                            <span className="hidden sm:inline">Terug naar Developer</span>
+                            <span className="sm:hidden">Dev</span>
                         </button>
                         <TeacherDashboard
                             user={user}
@@ -924,10 +918,11 @@ export function AuthenticatedApp() {
                     <div className="relative">
                         <button
                             onClick={() => setDevViewOverride('developer')}
-                            className="fixed bottom-6 right-6 z-50 flex items-center gap-2 px-4 py-3 bg-indigo-600 text-white rounded-xl font-bold text-sm shadow-lg shadow-indigo-200 hover:bg-indigo-700 transition-colors"
+                            className="fixed bottom-20 sm:bottom-6 right-4 sm:right-6 z-50 flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 sm:py-3 bg-indigo-600 text-white rounded-xl font-bold text-xs sm:text-sm shadow-lg shadow-indigo-200 hover:bg-indigo-700 transition-colors"
                         >
-                            <Code2 size={18} />
-                            Terug naar Developer
+                            <Code2 size={16} />
+                            <span className="hidden sm:inline">Terug naar Developer</span>
+                            <span className="sm:hidden">Dev</span>
                         </button>
                         <ProjectZeroDashboard
                             onSelectModule={handleSelectModule}

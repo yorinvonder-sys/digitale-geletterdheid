@@ -160,40 +160,40 @@ export const AssessmentEngine: React.FC<Props> = ({ tasks, config, onComplete, o
 
     if (view === 'intro') {
         return (
-            <div className="w-full h-full bg-slate-900 overflow-y-auto text-white text-center">
+            <div className="w-full h-full bg-lab-bg overflow-y-auto text-lab-dark text-center">
             <div className="min-h-full flex items-center justify-center p-6">
-                <div className="max-w-md w-full bg-slate-800 rounded-3xl p-8 shadow-2xl border-4 border-slate-700 animate-in zoom-in-95">
+                <div className="max-w-md w-full bg-white rounded-3xl p-8 shadow-xl border border-slate-200 animate-in zoom-in-95">
                     <div className={`w-20 h-20 rounded-2xl mx-auto mb-6 flex items-center justify-center text-4xl shadow-lg transform rotate-3 ${config?.themeColor ? `bg-${config.themeColor}-500 text-white` : 'bg-lab-primary text-white'}`}>
                         {config?.introIcon || '🛠️'}
                     </div>
-                    <h1 className="text-3xl font-black mb-4">{config?.title || 'Praktijk Test'}</h1>
-                    <div className="text-slate-300 mb-8 leading-relaxed">
+                    <h1 className="text-3xl font-black mb-4 text-lab-dark">{config?.title || 'Praktijk Test'}</h1>
+                    <div className="text-lab-textLight mb-8 leading-relaxed">
                         {config?.introText || (
                             <p>
                                 In plaats van saaie vragen ga je nu echt aan de slag.
-                                Je krijgt <strong>{tasks.length} opdrachten</strong> waarin je moet laten zien wat je kunt.
+                                Je krijgt <strong className="text-lab-dark">{tasks.length} opdrachten</strong> waarin je moet laten zien wat je kunt.
                             </p>
                         )}
                     </div>
 
-                    <div className="space-y-4 mb-8 text-left bg-slate-900/50 p-4 rounded-xl">
-                        <div className="flex items-center gap-3 text-sm font-bold text-slate-400">
-                            <span className="w-6 h-6 rounded bg-indigo-500/20 text-indigo-400 flex items-center justify-center">1</span>
+                    <div className="space-y-4 mb-8 text-left bg-lab-bg p-4 rounded-xl">
+                        <div className="flex items-center gap-3 text-sm font-bold text-lab-text">
+                            <span className="w-6 h-6 rounded bg-lab-primary/20 text-lab-primary flex items-center justify-center">1</span>
                             Fouten opsporen
                         </div>
-                        <div className="flex items-center gap-3 text-sm font-bold text-slate-400">
-                            <span className="w-6 h-6 rounded bg-purple-500/20 text-purple-400 flex items-center justify-center">2</span>
+                        <div className="flex items-center gap-3 text-sm font-bold text-lab-text">
+                            <span className="w-6 h-6 rounded bg-lab-secondary/20 text-lab-secondary flex items-center justify-center">2</span>
                             Bureaublad Simulator
                         </div>
-                        <div className="flex items-center gap-3 text-sm font-bold text-slate-400">
-                            <span className="w-6 h-6 rounded bg-emerald-500/20 text-emerald-400 flex items-center justify-center">3</span>
+                        <div className="flex items-center gap-3 text-sm font-bold text-lab-text">
+                            <span className="w-6 h-6 rounded bg-lab-accent/20 text-lab-accent flex items-center justify-center">3</span>
                             Klasgenoten Helpen
                         </div>
                     </div>
                     {hybridConfig && (
-                        <div className="mb-8 rounded-xl border border-indigo-400/30 bg-indigo-500/10 p-4 text-left">
-                            <p className="text-xs font-black uppercase tracking-widest text-indigo-300 mb-2">Hybride Beoordeling</p>
-                            <p className="text-sm text-slate-200 leading-relaxed">
+                        <div className="mb-8 rounded-xl border border-lab-primary/30 bg-lab-primary/5 p-4 text-left">
+                            <p className="text-xs font-black uppercase tracking-widest text-lab-primary mb-2">Hybride Beoordeling</p>
+                            <p className="text-sm text-lab-text leading-relaxed">
                                 AI beoordeelt {Math.round(hybridConfig.autoWeight * 100)}% automatisch. De docent beoordeelt
                                 {' '}{Math.round(hybridConfig.teacherWeight * 100)}% op jouw echte product en inlevering.
                             </p>
@@ -202,7 +202,7 @@ export const AssessmentEngine: React.FC<Props> = ({ tasks, config, onComplete, o
 
                     <button
                         onClick={handleStart}
-                        className="w-full py-4 bg-gradient-to-r from-lab-primary to-indigo-600 rounded-xl font-black text-xl shadow-xl hover:scale-105 transition-transform active:scale-95"
+                        className="w-full py-4 bg-lab-primary hover:bg-lab-primaryDark text-white rounded-xl font-black text-xl shadow-xl hover:scale-105 transition-all active:scale-95"
                     >
                         START DE MISSIE
                     </button>
@@ -228,52 +228,52 @@ export const AssessmentEngine: React.FC<Props> = ({ tasks, config, onComplete, o
             : false;
 
         return (
-            <div className="w-full h-full bg-slate-900 overflow-y-auto text-white text-center">
+            <div className="w-full h-full bg-lab-bg overflow-y-auto text-lab-dark text-center">
             <div className="min-h-full flex items-center justify-center p-6">
-                <div className="max-w-md w-full bg-slate-800 rounded-3xl p-8 shadow-2xl border-4 border-slate-700 animate-in zoom-in-95">
-                    <div className={`w-24 h-24 rounded-full mx-auto mb-6 flex items-center justify-center border-4 ${passed ? 'bg-emerald-500/20 border-emerald-500 text-emerald-400' : 'bg-red-500/20 border-red-500 text-red-400'}`}>
+                <div className="max-w-md w-full bg-white rounded-3xl p-8 shadow-xl border border-slate-200 animate-in zoom-in-95">
+                    <div className={`w-24 h-24 rounded-full mx-auto mb-6 flex items-center justify-center border-4 ${passed ? 'bg-emerald-50 border-emerald-500 text-emerald-600' : 'bg-red-50 border-red-400 text-red-500'}`}>
                         {passed ? <Trophy size={48} /> : <XCircle size={48} />}
                     </div>
 
-                    <h1 className="text-3xl font-black mb-2">{passed ? 'Missie Voltooid!' : 'Helaas...'}</h1>
-                    <p className={`text-xl font-bold mb-8 ${passed ? 'text-emerald-400' : 'text-red-400'}`}>
+                    <h1 className="text-3xl font-black mb-2 text-lab-dark">{passed ? 'Missie Voltooid!' : 'Helaas...'}</h1>
+                    <p className={`text-xl font-bold mb-8 ${passed ? 'text-emerald-600' : 'text-red-500'}`}>
                         Score: {finalPercentage}%
                     </p>
 
                     {hybridConfig ? (
-                        <div className="mb-6 rounded-xl border border-indigo-400/30 bg-indigo-500/10 p-4 text-left">
-                            <div className="flex items-center gap-2 text-indigo-300 font-black text-xs uppercase tracking-widest mb-2">
+                        <div className="mb-6 rounded-xl border border-lab-primary/30 bg-lab-primary/5 p-4 text-left">
+                            <div className="flex items-center gap-2 text-lab-primary font-black text-xs uppercase tracking-widest mb-2">
                                 <ClipboardCheck size={14} /> Hybride score-opbouw
                             </div>
-                            <p className="text-sm text-slate-200">
+                            <p className="text-sm text-lab-text">
                                 AI automatisch: <strong>{autoPercentage}%</strong> ({Math.round(hybridConfig.autoWeight * 100)}%)
                             </p>
-                            <p className="text-sm text-slate-200">
+                            <p className="text-sm text-lab-text">
                                 Docentcheck: <strong>{teacherPercentage}%</strong> ({Math.round(hybridConfig.teacherWeight * 100)}%)
                             </p>
                             {hybridConfig.teacherInstructions && (
-                                <p className="text-xs text-slate-300 mt-2 leading-relaxed">{hybridConfig.teacherInstructions}</p>
+                                <p className="text-xs text-lab-textLight mt-2 leading-relaxed">{hybridConfig.teacherInstructions}</p>
                             )}
                         </div>
                     ) : (
-                        <p className="text-sm text-slate-300 mb-6">
+                        <p className="text-sm text-lab-textLight mb-6">
                             AI automatisch: {autoPercentage}% ({score}/{totalPossibleScore} XP)
                         </p>
                     )}
 
                     {hybridConfig && checklist.length > 0 && (
                         <div className="space-y-2 mb-6 text-left">
-                            <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Docent validatie</p>
+                            <p className="text-[10px] font-black uppercase tracking-widest text-lab-textLight">Docent validatie</p>
                             {checklist.map((item) => (
-                                <label key={item.id} className="flex items-start gap-3 p-3 bg-slate-900/50 rounded-xl border border-slate-700 cursor-pointer">
+                                <label key={item.id} className="flex items-start gap-3 p-3 bg-lab-bg rounded-xl border border-slate-200 cursor-pointer hover:border-lab-primary/40 transition-colors">
                                     <input
                                         type="checkbox"
                                         checked={!!teacherChecks[item.id]}
                                         onChange={(e) => setTeacherChecks((prev) => ({ ...prev, [item.id]: e.target.checked }))}
-                                        className="mt-1"
+                                        className="mt-1 accent-lab-primary"
                                     />
-                                    <span className="text-sm text-slate-200 leading-relaxed">
-                                        {item.label} {item.required && <span className="text-amber-400">(verplicht)</span>}
+                                    <span className="text-sm text-lab-text leading-relaxed">
+                                        {item.label} {item.required && <span className="text-lab-primary font-semibold">(verplicht)</span>}
                                     </span>
                                 </label>
                             ))}
@@ -284,10 +284,10 @@ export const AssessmentEngine: React.FC<Props> = ({ tasks, config, onComplete, o
                         {tasks.map((task) => {
                             const result = taskResults.find(r => r.id === task.id);
                             return (
-                                <div key={task.id} className="flex items-center justify-between p-3 bg-slate-900/50 rounded-xl border border-slate-700">
-                                    <span className="text-sm font-bold text-slate-300">{task.title}</span>
+                                <div key={task.id} className="flex items-center justify-between p-3 bg-lab-bg rounded-xl border border-slate-200">
+                                    <span className="text-sm font-bold text-lab-text">{task.title}</span>
                                     {result?.success
-                                        ? <CheckCircle size={16} className="text-emerald-400" />
+                                        ? <CheckCircle size={16} className="text-emerald-500" />
                                         : <XCircle size={16} className="text-red-400" />
                                     }
                                 </div>
@@ -300,14 +300,14 @@ export const AssessmentEngine: React.FC<Props> = ({ tasks, config, onComplete, o
                             <button
                                 onClick={handleFinish}
                                 disabled={hasMissingRequired}
-                                className="flex-1 py-4 bg-emerald-500 hover:bg-emerald-400 disabled:bg-slate-600 disabled:text-slate-300 disabled:cursor-not-allowed text-white rounded-xl font-black text-lg shadow-lg transition-all active:scale-95"
+                                className="flex-1 py-4 bg-lab-primary hover:bg-lab-primaryDark disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed text-white rounded-xl font-black text-lg shadow-lg transition-all active:scale-95"
                             >
                                 {hasMissingRequired ? 'Wacht op docentcheck' : 'Definitief beoordelen'}
                             </button>
                         ) : passed ? (
                             <button
                                 onClick={handleFinish}
-                                className="flex-1 py-4 bg-emerald-500 hover:bg-emerald-400 text-white rounded-xl font-black text-lg shadow-lg transition-all active:scale-95"
+                                className="flex-1 py-4 bg-lab-primary hover:bg-lab-primaryDark text-white rounded-xl font-black text-lg shadow-lg transition-all active:scale-95"
                             >
                                 Terug naar Dashboard
                             </button>
@@ -315,13 +315,13 @@ export const AssessmentEngine: React.FC<Props> = ({ tasks, config, onComplete, o
                             <>
                                 <button
                                     onClick={onExit}
-                                    className="flex-1 py-4 bg-slate-700 hover:bg-slate-600 text-slate-300 rounded-xl font-bold shadow-lg transition-all"
+                                    className="flex-1 py-4 bg-slate-100 hover:bg-slate-200 text-lab-text rounded-xl font-bold shadow-lg transition-all"
                                 >
                                     Stoppen
                                 </button>
                                 <button
-                                    onClick={() => window.location.reload()} // Quick restart hack or implement reset prop
-                                    className="flex-1 py-4 bg-amber-500 hover:bg-amber-400 text-white rounded-xl font-black shadow-lg transition-all"
+                                    onClick={() => window.location.reload()}
+                                    className="flex-1 py-4 bg-lab-primary hover:bg-lab-primaryDark text-white rounded-xl font-black shadow-lg transition-all"
                                 >
                                     <RotateCcw className="inline mr-2" /> Opnieuw
                                 </button>
@@ -337,7 +337,7 @@ export const AssessmentEngine: React.FC<Props> = ({ tasks, config, onComplete, o
     return (
         <div className="w-full h-full relative overflow-hidden">
             {/* Progress Bar */}
-            <div className="absolute top-0 left-0 right-0 h-2 bg-slate-900 z-50">
+            <div className="absolute top-0 left-0 right-0 h-2 bg-slate-200 z-50">
                 <div
                     className="h-full bg-lab-primary transition-all duration-500"
                     style={{ width: `${((currentTaskIndex) / tasks.length) * 100}%` }}
@@ -350,7 +350,7 @@ export const AssessmentEngine: React.FC<Props> = ({ tasks, config, onComplete, o
             </div>
 
             {/* Exit Button */}
-            <button onClick={onExit} className="absolute top-4 right-4 p-2 bg-slate-900/50 text-slate-400 rounded-lg hover:bg-slate-800 hover:text-white transition-colors z-50 min-h-[44px] min-w-[44px] flex items-center justify-center" aria-label="Missie verlaten">
+            <button onClick={onExit} className="absolute top-4 right-4 p-2 bg-white/80 text-lab-textLight rounded-lg hover:bg-white hover:text-lab-dark transition-colors z-50 min-h-[44px] min-w-[44px] flex items-center justify-center shadow-sm border border-slate-200" aria-label="Missie verlaten">
                 <XCircle size={20} />
             </button>
         </div>

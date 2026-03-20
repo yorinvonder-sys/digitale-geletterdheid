@@ -31,6 +31,7 @@ export default defineConfig(({ mode }) => {
       port: 3000,
       strictPort: true,
       host: '0.0.0.0',
+      allowedHosts: ['.loca.lt'],
       watch: {
         usePolling: false, // Use native fsevents on Mac (M1 friendly)
         interval: 100, // Debounce delay

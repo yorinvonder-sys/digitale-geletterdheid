@@ -10,11 +10,13 @@
 ### Merknaam
 **DGSkills** — afkorting van *Digitale Geletterdheid Skills*. Kort, herkenbaar, en direct gekoppeld aan het vakgebied. De naam communiceert zowel het domein (digitale geletterdheid) als de focus (vaardigheden, niet theorie).
 
-### Tagline — drie opties
+### Tagline
 
-1. **"Digitale geletterdheid, missie voor missie"** — benadrukt de gamified aanpak en het stap-voor-stap leerpad.
-2. **"Van missie naar meetbare groei"** — koppelt de leerlingervaring aan de verantwoordingsbehoefte van scholen.
-3. **"Leer het door te doen"** — simpel, activerend, sluit aan bij de hands-on filosofie van het platform.
+**Primair:** "Digitale geletterdheid, missie voor missie" — benadrukt de gamified aanpak en het stap-voor-stap leerpad. Dit is de tagline die het best de kern van het product communiceert.
+
+**Alternatieven voor specifieke contexten:**
+- "Van missie naar meetbare groei" — voor bestuurders en ICT-coördinatoren (verantwoording)
+- "Leer het door te doen" — voor leerlingen en docenten (activerend, simpel)
 
 ### Merkbelofte
 
@@ -72,7 +74,7 @@ DGSkills biedt scholen een kant-en-klare, gamified leeromgeving voor digitale ge
 - **Stijl:** Feiten en cijfers. Beantwoord de vraag "wat levert het op?" en "is het veilig?" Focus op ontzorging en verantwoording.
 
 **Voorbeeldzinnen:**
-- "DGSkills dekt 94 SLO-kerndoelen af met aantoonbare voortgangsdata per leerling."
+- "DGSkills dekt alle 9 SLO-kerndoelen af met aantoonbare voortgangsdata per leerling."
 - "Volledig AVG-compliant: DPIA uitgevoerd, data in Nederland, DPA conform Model 4.0 Privacyconvenant Onderwijs."
 - "Binnen 30 dagen live, zonder belasting voor uw ICT-afdeling. Cloud-hosted, geen installatie nodig."
 
@@ -97,10 +99,9 @@ DGSkills gebruikt een warm, aards kleurenpalet dat professioneel oogt maar niet 
 | `lab-textLight` | `#6B6B66` | Secundaire tekst, labels |
 
 **Leerjaar-kleuren** worden gebruikt om visueel onderscheid te maken tussen jaarlagen in het platform:
-- **Groen** (`#10B981`) — frisse start, instap
-- **Paars** (`#8B5CF6`) — verdieping
-- **Roze** (`#EC4899`) — specialisatie
-- **Blauw** (`#3B82F6`) — uitdaging, gevorderd
+- **Indigo** (`#6366F1`) — Leerjaar 1: Digitale Basis
+- **Emerald** (`#10B981`) — Leerjaar 2: Digitale Verdieping
+- **Violet** (`#8B5CF6`) — Leerjaar 3: Digitaal Meesterschap
 
 ### Typografie
 
@@ -150,7 +151,7 @@ DGSkills gebruikt een warm, aards kleurenpalet dat professioneel oogt maar niet 
 - Onzekerheid over of hun lessen voldoen aan de inspectie-eisen.
 
 **Hoe DGSkills dit adresseert:**
-- 94 kant-en-klare missies, direct inzetbaar.
+- 140+ kant-en-klare missies, direct inzetbaar.
 - Automatische voortgangsregistratie en feedback.
 - Docentendashboard met SLO-kerndoeldekking per leerling.
 - Exporteerbare rapportages voor LVS en inspectie.
@@ -197,7 +198,7 @@ DGSkills positioneert zich als het **missiegedreven alternatief** voor tradition
 
 ### Do's
 
-- **Wees concreet.** Noem aantallen (94 missies, 30 dagen live), geen vage beloften.
+- **Wees concreet.** Noem aantallen (140+ missies, 30 dagen live), geen vage beloften.
 - **Wees enthousiast maar onderbouwd.** Energie in de communicatie, feiten als fundament.
 - **Spreek de taal van je publiek.** Gaming-taal voor leerlingen, kerndoelen voor docenten, compliance voor bestuurders.
 - **Laat het platform spreken.** Screenshots, demo's en concrete voorbeelden overtuigen meer dan tekst.

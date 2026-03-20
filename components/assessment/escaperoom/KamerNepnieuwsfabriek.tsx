@@ -117,10 +117,10 @@ export const KamerNepnieuwsfabriek: React.FC<Props> = ({ onComplete }) => {
       {/* Header */}
       <div className="text-center mb-4 md:mb-6">
         <div className="flex items-center justify-center gap-2 mb-2">
-          <Newspaper className="text-emerald-400" size={24} />
-          <h2 className="text-xl md:text-2xl font-black text-emerald-400">Nepnieuwsfabriek</h2>
+          <Newspaper className="text-emerald-600" size={24} />
+          <h2 className="text-xl md:text-2xl font-black text-emerald-600">Nepnieuwsfabriek</h2>
         </div>
-        <p className="text-gray-400 text-sm md:text-base max-w-lg mx-auto">
+        <p className="text-slate-500 text-sm md:text-base max-w-lg mx-auto">
           Je onderschept 5 nieuwsberichten. Welke zijn echt en welke zijn nep?
         </p>
         <div className="flex items-center justify-center gap-1 mt-2">
@@ -128,7 +128,7 @@ export const KamerNepnieuwsfabriek: React.FC<Props> = ({ onComplete }) => {
             <div
               key={i}
               className={`w-2 h-2 rounded-full transition-colors ${
-                i < huidigIndex ? 'bg-emerald-400' : i === huidigIndex ? 'bg-emerald-400 ring-2 ring-emerald-400/30' : 'bg-gray-700'
+                i < huidigIndex ? 'bg-emerald-500' : i === huidigIndex ? 'bg-emerald-500 ring-2 ring-emerald-200' : 'bg-slate-300'
               }`}
             />
           ))}
@@ -145,24 +145,24 @@ export const KamerNepnieuwsfabriek: React.FC<Props> = ({ onComplete }) => {
             exit={{ opacity: 0, y: -20 }}
             className="w-full max-w-lg"
           >
-            <div className="bg-gray-800 rounded-xl border border-gray-700 overflow-hidden">
+            <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
               {/* Bron */}
-              <div className="px-4 py-2 bg-gray-900/50 border-b border-gray-700 flex items-center justify-between">
-                <span className="text-xs font-mono text-gray-500">{huidigBericht.bron}</span>
-                <span className="text-xs text-gray-600">Bericht {huidigIndex + 1}/{BERICHTEN.length}</span>
+              <div className="px-4 py-2 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+                <span className="text-xs font-mono text-slate-400">{huidigBericht.bron}</span>
+                <span className="text-xs text-slate-400">Bericht {huidigIndex + 1}/{BERICHTEN.length}</span>
               </div>
 
               {/* Content */}
               <div className="p-5">
-                <h3 className="text-lg font-bold text-white mb-3">{huidigBericht.titel}</h3>
-                <p className="text-gray-300 text-sm leading-relaxed">{huidigBericht.tekst}</p>
+                <h3 className="text-lg font-bold text-slate-900 mb-3">{huidigBericht.titel}</h3>
+                <p className="text-slate-600 text-sm leading-relaxed">{huidigBericht.tekst}</p>
               </div>
 
               {/* Hints */}
               <div className="px-5 pb-4">
                 <div className="flex flex-wrap gap-2">
                   {huidigBericht.hints.map((hint, i) => (
-                    <span key={i} className="text-xs px-2 py-1 rounded-full bg-gray-700 text-gray-400">
+                    <span key={i} className="text-xs px-2 py-1 rounded-full bg-slate-100 text-slate-500">
                       {hint}
                     </span>
                   ))}
@@ -177,8 +177,8 @@ export const KamerNepnieuwsfabriek: React.FC<Props> = ({ onComplete }) => {
                 animate={{ opacity: 1, y: 0 }}
                 className={`mt-3 p-4 rounded-xl border ${
                   isCorrect
-                    ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400'
-                    : 'bg-red-500/10 border-red-500/30 text-red-400'
+                    ? 'bg-emerald-50 border-emerald-200 text-emerald-700'
+                    : 'bg-rose-50 border-rose-200 text-rose-700'
                 }`}
               >
                 <div className="flex items-start gap-2">
@@ -197,13 +197,13 @@ export const KamerNepnieuwsfabriek: React.FC<Props> = ({ onComplete }) => {
                 <>
                   <button
                     onClick={() => geefAntwoord(false)}
-                    className="flex-1 py-3 rounded-xl font-bold text-sm bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors active:scale-[0.98]"
+                    className="flex-1 py-3 rounded-xl font-bold text-sm bg-emerald-50 border border-emerald-200 text-emerald-700 hover:bg-emerald-100 transition-colors active:scale-[0.98]"
                   >
                     Echt
                   </button>
                   <button
                     onClick={() => geefAntwoord(true)}
-                    className="flex-1 py-3 rounded-xl font-bold text-sm bg-red-500/20 border border-red-500/30 text-red-400 hover:bg-red-500/30 transition-colors active:scale-[0.98]"
+                    className="flex-1 py-3 rounded-xl font-bold text-sm bg-rose-50 border border-rose-200 text-rose-700 hover:bg-rose-100 transition-colors active:scale-[0.98]"
                   >
                     Nep
                   </button>
@@ -211,7 +211,7 @@ export const KamerNepnieuwsfabriek: React.FC<Props> = ({ onComplete }) => {
               ) : (
                 <button
                   onClick={volgendBericht}
-                  className="flex-1 py-3 rounded-xl font-bold text-sm bg-gradient-to-r from-emerald-500 to-emerald-600 text-white hover:from-emerald-400 hover:to-emerald-500 transition-all active:scale-[0.98] flex items-center justify-center gap-2"
+                  className="flex-1 py-3 rounded-xl font-bold text-sm bg-emerald-600 hover:bg-emerald-700 text-white transition-all active:scale-[0.98] flex items-center justify-center gap-2 shadow-lg shadow-emerald-200"
                 >
                   {isLaatste ? 'Afronden' : 'Volgend bericht'}
                   <ChevronRight size={18} />

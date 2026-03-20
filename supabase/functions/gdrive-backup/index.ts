@@ -237,19 +237,19 @@ async function backupUserToDrive(
 
     const zipData = zipSync(zipFiles);
 
-    // 7. Upload to Drive
-    const yearFolder = await ensureDriveFolder(
+    // 7. Upload to Drive — elke backup in eigen subfolder
+    const dateStr = new Date().toISOString().split("T")[0];
+    const backupFolder = await ensureDriveFolder(
         accessToken,
-        String(currentYear),
+        `backup-${dateStr}`,
         conn.root_folder_id,
     );
 
-    const dateStr = new Date().toISOString().split("T")[0];
     const fileName = `boekhouding-backup-compleet-${dateStr}.zip`;
 
     const { fileId, fileSize } = await uploadFileToDrive(
         accessToken,
-        yearFolder,
+        backupFolder,
         fileName,
         zipData,
         "application/zip",

@@ -92,6 +92,7 @@ export const CURRICULUM: CurriculumConfig = {
                         'ai-tekengame',
                         'ai-beleid-brainstorm',
                         'code-denker',
+                        'website-bouwer',
                     ],
                     reviewMissions: [
                         'review-week-2',
@@ -114,6 +115,7 @@ export const CURRICULUM: CurriculumConfig = {
                         'filter-bubble-breaker',
                         'datalekken-rampenplan',
                         'data-voor-data',
+                        'data-speurder',
                     ],
                     assessmentId: 'assessment-j1-p3',
                 },
@@ -180,6 +182,7 @@ export const CURRICULUM: CurriculumConfig = {
                         'automation-engineer',
                         'code-reviewer',
                         'privacy-by-design',
+                        'wachtwoord-warrior',
                     ],
                     reviewMissions: [
                         'code-review-2',

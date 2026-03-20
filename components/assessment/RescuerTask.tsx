@@ -25,7 +25,6 @@ export const RescuerTask: React.FC<Props> = ({ task, onComplete }) => {
     };
 
     const checkSolution = () => {
-        // Compare IDs
         const selectedIds = selectedSteps.map(s => s.id);
         const correctIds = task.correctSequence;
 
@@ -43,30 +42,30 @@ export const RescuerTask: React.FC<Props> = ({ task, onComplete }) => {
     };
 
     return (
-        <div className="flex flex-col h-full bg-slate-900 text-white p-4">
+        <div className="flex flex-col h-full bg-lab-bg text-lab-dark p-4">
             <div className="mb-4 text-center">
-                <h2 className="text-2xl font-black text-amber-400 flex items-center justify-center gap-2">
+                <h2 className="text-2xl font-black text-lab-primary flex items-center justify-center gap-2">
                     <UserCircle /> {task.title}
                 </h2>
-                <p className="text-slate-300">{task.description}</p>
+                <p className="text-lab-textLight">{task.description}</p>
             </div>
 
             <div className="flex-1 flex gap-4 min-h-0">
                 {/* Left: Chat / Scenario */}
                 <div className="w-1/3 flex flex-col gap-4">
-                    <div className="bg-slate-800 p-4 rounded-xl border border-slate-700 flex-1">
+                    <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex-1">
                         <div className="flex items-center gap-3 mb-4">
-                            <div className="w-12 h-12 bg-indigo-500 rounded-full flex items-center justify-center font-bold text-xl">
+                            <div className="w-12 h-12 bg-lab-secondary rounded-full flex items-center justify-center font-bold text-xl text-white">
                                 {task.npcName.charAt(0)}
                             </div>
                             <div>
-                                <h3 className="font-bold">{task.npcName}</h3>
-                                <span className="text-xs text-slate-400">Klasgenoot</span>
+                                <h3 className="font-bold text-lab-dark">{task.npcName}</h3>
+                                <span className="text-xs text-lab-textLight">Klasgenoot</span>
                             </div>
                         </div>
-                        <div className="bg-slate-700/50 p-4 rounded-xl rounded-tl-none relative">
-                            <MessageSquare className="absolute -top-3 -left-2 text-slate-700 fill-current" size={24} transform="scale(-1, 1)" />
-                            <p className="text-slate-200 leading-relaxed italic">"{task.scenario}"</p>
+                        <div className="bg-lab-bg p-4 rounded-xl rounded-tl-none relative border border-slate-200">
+                            <MessageSquare className="absolute -top-3 -left-2 text-slate-300 fill-current" size={24} transform="scale(-1, 1)" />
+                            <p className="text-lab-text leading-relaxed italic">"{task.scenario}"</p>
                         </div>
                     </div>
                 </div>
@@ -75,30 +74,30 @@ export const RescuerTask: React.FC<Props> = ({ task, onComplete }) => {
                 <div className="flex-1 flex flex-col gap-4">
 
                     {/* Solution Area */}
-                    <div className="flex-1 bg-slate-800 rounded-xl p-4 border-2 border-slate-700 flex flex-col">
-                        <h4 className="font-bold text-slate-400 mb-2 uppercase text-xs tracking-wider">Jouw Oplossing (Sleep / Klik):</h4>
+                    <div className="flex-1 bg-white rounded-xl p-4 border border-slate-200 shadow-sm flex flex-col">
+                        <h4 className="font-bold text-lab-textLight mb-2 uppercase text-xs tracking-wider">Jouw Oplossing (Sleep / Klik):</h4>
 
                         <div className="flex-1 space-y-2">
                             {selectedSteps.length === 0 && (
-                                <div className="h-full flex items-center justify-center text-slate-500 text-sm border-2 border-dashed border-slate-700 rounded-xl">
+                                <div className="h-full flex items-center justify-center text-lab-textLight text-sm border-2 border-dashed border-slate-200 rounded-xl">
                                     Selecteer stappen om de oplossing te bouwen
                                 </div>
                             )}
                             {selectedSteps.map((step, index) => (
                                 <div key={step.id} className="flex items-center gap-3 animate-in fade-in slide-in-from-left-4">
-                                    <div className="w-6 h-6 rounded-full bg-lab-primary flex items-center justify-center text-xs font-bold shadow-sm z-10">
+                                    <div className="w-6 h-6 rounded-full bg-lab-primary flex items-center justify-center text-xs font-bold text-white shadow-sm z-10">
                                         {index + 1}
                                     </div>
                                     <button
                                         onClick={() => handleRemoveStep(index)}
                                         disabled={!!result}
-                                        className="flex-1 bg-indigo-600 hover:bg-red-500 hover:text-white text-left px-4 py-3 rounded-xl font-medium text-sm transition-colors shadow-md group"
+                                        className="flex-1 bg-lab-primary/10 border border-lab-primary/30 hover:bg-red-50 hover:border-red-300 hover:text-red-600 text-lab-dark text-left px-4 py-3 rounded-xl font-medium text-sm transition-colors shadow-sm group"
                                     >
                                         <span className="group-hover:hidden">{step.text}</span>
                                         <span className="hidden group-hover:inline">Verwijderen</span>
                                     </button>
                                     {index < selectedSteps.length - 1 && (
-                                        <div className="h-4 border-l-2 border-dashed border-slate-600 absolute ml-3 mt-10 -z-0" />
+                                        <div className="h-4 border-l-2 border-dashed border-slate-300 absolute ml-3 mt-10 -z-0" />
                                     )}
                                 </div>
                             ))}
@@ -106,21 +105,21 @@ export const RescuerTask: React.FC<Props> = ({ task, onComplete }) => {
                     </div>
 
                     {/* Available Steps Pool */}
-                    <div className="bg-slate-800/50 rounded-xl p-4 border border-slate-700 min-h-[140px]">
-                        <h4 className="font-bold text-slate-400 mb-2 uppercase text-xs tracking-wider">Beschikbare Stappen:</h4>
+                    <div className="bg-white rounded-xl p-4 border border-slate-200 shadow-sm min-h-[140px]">
+                        <h4 className="font-bold text-lab-textLight mb-2 uppercase text-xs tracking-wider">Beschikbare Stappen:</h4>
                         <div className="flex flex-wrap gap-2">
                             {availableSteps.map(step => (
                                 <button
                                     key={step.id}
                                     onClick={() => handleSelectStep(step)}
                                     disabled={!!result}
-                                    className="px-3 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-bold rounded-lg border border-slate-600 transition-colors shadow-sm active:scale-95"
+                                    className="px-3 py-2 bg-lab-bg hover:bg-lab-primary/10 text-lab-text text-xs font-bold rounded-lg border border-slate-200 hover:border-lab-primary/40 transition-colors shadow-sm active:scale-95"
                                 >
                                     + {step.text}
                                 </button>
                             ))}
                             {availableSteps.length === 0 && (
-                                <span className="text-slate-500 text-xs italic">Geen stappen meer beschikbaar.</span>
+                                <span className="text-lab-textLight text-xs italic">Geen stappen meer beschikbaar.</span>
                             )}
                         </div>
                     </div>
@@ -130,7 +129,7 @@ export const RescuerTask: React.FC<Props> = ({ task, onComplete }) => {
                         <button
                             onClick={handleReset}
                             disabled={selectedSteps.length === 0 || !!result}
-                            className="px-4 py-3 bg-slate-700 text-white font-bold rounded-xl hover:bg-slate-600 disabled:opacity-50 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+                            className="px-4 py-3 bg-white border border-slate-200 text-lab-text font-bold rounded-xl hover:bg-slate-50 disabled:opacity-50 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center shadow-sm"
                             aria-label="Oplossing resetten"
                         >
                             <RotateCcw size={20} />
@@ -140,7 +139,7 @@ export const RescuerTask: React.FC<Props> = ({ task, onComplete }) => {
                             disabled={selectedSteps.length === 0 || !!result}
                             className={`
                                 flex-1 py-3 font-bold rounded-xl shadow-lg transition-all flex items-center justify-center gap-2
-                                ${result === 'success' ? 'bg-emerald-500 text-white' : result === 'fail' ? 'bg-red-500 text-white' : 'bg-lab-primary text-white hover:bg-lab-primary/90'}
+                                ${result === 'success' ? 'bg-emerald-500 text-white' : result === 'fail' ? 'bg-red-500 text-white' : 'bg-lab-primary text-white hover:bg-lab-primaryDark'}
                             `}
                         >
                             {result === 'success' ? (
@@ -154,7 +153,7 @@ export const RescuerTask: React.FC<Props> = ({ task, onComplete }) => {
                     </div>
 
                     {result === 'fail' && (
-                        <div className="bg-red-500/20 text-red-200 px-4 py-2 rounded-xl text-center text-sm border border-red-500/50 animate-in shake motion-reduce:animate-none">
+                        <div className="bg-red-50 text-red-600 px-4 py-2 rounded-xl text-center text-sm border border-red-200 animate-in shake motion-reduce:animate-none">
                             Dat is niet de juiste volgorde of actie. Reset en probeer het nog eens!
                         </div>
                     )}

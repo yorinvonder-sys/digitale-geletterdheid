@@ -42,6 +42,7 @@ export const KERNDOEL_MISSIONS: KerndoelMissionMeta[] = [
   { id: 'game-director', title: 'De Game Director', week: 2, yearGroup: 1, sloKerndoelen: ['22A', '22B'], sloVsoKerndoelen: ['19A'] },
   { id: 'verhalen-ontwerper', title: 'Verhalen Ontwerper', week: 2, yearGroup: 1, sloKerndoelen: ['21D', '22A'], sloVsoKerndoelen: ['18C', '19A'] },
   { id: 'ai-beleid-brainstorm', title: 'AI Beleid Brainstorm', week: 2, yearGroup: 1, sloKerndoelen: ['23B', '23C'], sloVsoKerndoelen: ['20B'] },
+  { id: 'website-bouwer', title: 'Website Bouwer', week: 2, yearGroup: 1, sloKerndoelen: ['22B', '22A'], sloVsoKerndoelen: ['19A'] },
 
   // Week 3
   { id: 'review-week-2', title: 'De Code-Criticus', week: 3, yearGroup: 1, sloKerndoelen: ['21B', '21D'], sloVsoKerndoelen: ['18C'] },
@@ -56,6 +57,7 @@ export const KERNDOEL_MISSIONS: KerndoelMissionMeta[] = [
   { id: 'filter-bubble-breaker', title: 'Filter Bubble Breaker', week: 3, yearGroup: 1, sloKerndoelen: ['23B', '23C', '21B'], sloVsoKerndoelen: ['20A', '20B'] },
   { id: 'datalekken-rampenplan', title: 'Datalekken Rampenplan', week: 3, yearGroup: 1, sloKerndoelen: ['23A', '23B', '23C'], sloVsoKerndoelen: ['20A', '20B'] },
   { id: 'data-voor-data', title: 'Data voor Data', week: 3, yearGroup: 1, sloKerndoelen: ['23C', '23B'], sloVsoKerndoelen: ['20A', '20B'] },
+  { id: 'data-speurder', title: 'Data Speurder', week: 3, yearGroup: 1, sloKerndoelen: ['21C', '21B'], sloVsoKerndoelen: ['18B'] },
 
   // Week 4
   { id: 'review-week-3', title: 'De Ethische Raad', week: 4, yearGroup: 1, sloKerndoelen: ['23C'], sloVsoKerndoelen: ['20B'] },
@@ -85,6 +87,7 @@ export const KERNDOEL_MISSIONS: KerndoelMissionMeta[] = [
   { id: 'code-reviewer', title: 'Code Reviewer', week: 2, yearGroup: 2, sloKerndoelen: ['22B', '23B'] },
   { id: 'network-navigator', title: 'Network Navigator', week: 2, yearGroup: 2, sloKerndoelen: ['21A', '22B'] },
   { id: 'privacy-by-design', title: 'Privacy by Design', week: 2, yearGroup: 2, sloKerndoelen: ['23A', '22B'] },
+  { id: 'wachtwoord-warrior', title: 'Wachtwoord Warrior', week: 2, yearGroup: 2, sloKerndoelen: ['23A', '21A'] },
   { id: 'code-review-2', title: 'Code Review', week: 2, yearGroup: 2, sloKerndoelen: ['22A', '22B'] },
 
   // Periode 3: Digitale Media & Creatie
