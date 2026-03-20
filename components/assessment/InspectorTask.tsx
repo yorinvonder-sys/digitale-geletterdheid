@@ -175,6 +175,79 @@ export const InspectorTask: React.FC<Props> = ({ task, onComplete }) => {
         );
     };
 
+    const renderBarChartMisleading = () => {
+        const yAxisHotspot = task.hotspots.find(h => h.id === 'y-axis');
+        const titleHotspot = task.hotspots.find(h => h.id === 'title');
+        const barsHotspot = task.hotspots.find(h => h.id === 'bars');
+
+        const data = [
+            { label: '12-13', value: 85 },
+            { label: '14-15', value: 92 },
+            { label: '16-17', value: 95 },
+            { label: '18+', value: 97 },
+        ];
+        // Y-axis starts at 60 — this is the misleading trick
+        const yMin = 60;
+        const yMax = 100;
+
+        return (
+            <div
+                className="absolute inset-0 bg-white flex flex-col cursor-crosshair select-none"
+                onClick={handleImageClick}
+            >
+                {/* Title area — hotspot */}
+                <button
+                    onClick={(e) => { e.stopPropagation(); titleHotspot && handleHotspotClick(titleHotspot); }}
+                    className="pt-5 pb-2 px-6 text-center hover:bg-slate-50 transition-colors"
+                >
+                    <h3 className="text-base font-bold text-slate-800">Smartphonegebruik onder jongeren (%)</h3>
+                    <p className="text-[11px] text-slate-400 mt-0.5">Bron: Schoolkrant De Digitale Pen, 2026</p>
+                </button>
+
+                <div className="flex-1 flex px-4 pb-4 min-h-0">
+                    {/* Y-axis area — hotspot (correct answer) */}
+                    <button
+                        onClick={(e) => { e.stopPropagation(); yAxisHotspot && handleHotspotClick(yAxisHotspot); }}
+                        className="w-14 flex flex-col justify-between items-end pr-2 py-2 hover:bg-amber-50 rounded-l-lg transition-colors border border-transparent hover:border-amber-200"
+                    >
+                        {[100, 90, 80, 70, 60].map(v => (
+                            <span key={v} className="text-[11px] font-mono text-slate-500 leading-none">{v}%</span>
+                        ))}
+                    </button>
+
+                    {/* Chart bars area — hotspot */}
+                    <button
+                        onClick={(e) => { e.stopPropagation(); barsHotspot && handleHotspotClick(barsHotspot); }}
+                        className="flex-1 flex items-end justify-around gap-3 px-4 py-2 border-l-2 border-b-2 border-slate-300 hover:bg-blue-50/30 rounded-r-lg transition-colors"
+                    >
+                        {data.map(d => {
+                            const heightPct = ((d.value - yMin) / (yMax - yMin)) * 100;
+                            return (
+                                <div key={d.label} className="flex flex-col items-center flex-1 h-full justify-end">
+                                    <span className="text-[11px] font-bold text-slate-600 mb-1">{d.value}%</span>
+                                    <div
+                                        className="w-full rounded-t-md bg-gradient-to-t from-lab-primary to-lab-primary/70 transition-all min-h-[8px]"
+                                        style={{ height: `${heightPct}%` }}
+                                    />
+                                    <span className="text-[11px] text-slate-500 mt-2 font-medium">{d.label}</span>
+                                </div>
+                            );
+                        })}
+                    </button>
+                </div>
+
+                {/* Click markers */}
+                {clicks.map((c, i) => (
+                    <div
+                        key={i}
+                        className="absolute w-6 h-6 -ml-3 -mt-3 border-2 border-lab-primary rounded-full animate-ping motion-reduce:animate-none pointer-events-none"
+                        style={{ left: `${c.x}%`, top: `${c.y}%` }}
+                    />
+                ))}
+            </div>
+        );
+    };
+
     return (
         <div className="flex flex-col h-full bg-lab-bg text-lab-dark p-4">
             <div className="mb-4 text-center">
@@ -190,6 +263,7 @@ export const InspectorTask: React.FC<Props> = ({ task, onComplete }) => {
                     <div className="relative w-full max-w-2xl aspect-[4/3]">
                         {task.image === 'SPECIAL:PROMPT_COMPARISON' && renderPromptComparison()}
                         {task.image === 'SPECIAL:CHATBOT_ERROR_DETECTION' && renderChatbotError()}
+                        {task.image === 'SPECIAL:BAR_CHART_MISLEADING' && renderBarChartMisleading()}
                         {task.image === 'SPECIAL:BAD_SLIDE' && (
                             <div
                                 className="relative w-full h-full cursor-crosshair"
