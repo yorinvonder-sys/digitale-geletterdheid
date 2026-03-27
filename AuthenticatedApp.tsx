@@ -243,7 +243,18 @@ export function AuthenticatedApp() {
         let authTimeoutId: ReturnType<typeof setTimeout> | undefined;
         const unsubscribe = subscribeToAuthChanges((u) => {
             clearTimeout(authTimeoutId);
-            setUser(u);
+            // Avoid unnecessary re-renders on TOKEN_REFRESHED: only update state
+            // when the user object actually changed. This prevents game components
+            // from unmounting/remounting mid-play.
+            setUser(prev => {
+                if (prev && u && prev.uid === u.uid && prev.role === u.role &&
+                    prev.displayName === u.displayName && prev.email === u.email &&
+                    prev.schoolId === u.schoolId && prev.mfaPending === u.mfaPending &&
+                    prev.mustChangePassword === u.mustChangePassword) {
+                    return prev;
+                }
+                return u;
+            });
             setLoading(false);
             if (u?.role === 'teacher') {
                 setViewMode('monitoring');

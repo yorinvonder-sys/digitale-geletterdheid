@@ -4,7 +4,7 @@
  * Shows available games, permission status, and teacher controls.
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { Gamepad2, Lock, Play, Shield, Users, WifiOff } from 'lucide-react';
 import { isGameEnabled, subscribeToPermissions } from '../services/PermissionService';
 import { Bomberman } from './games/Bomberman';
@@ -116,7 +116,9 @@ export const GamesSection: React.FC<GamesSectionProps> = ({
 
     const isTeacher = userRole === 'teacher' || userRole === 'admin' || userRole === 'developer';
 
-    const games: GameCard[] = [
+    const handleExitGame = useCallback(() => setActiveGame(null), []);
+
+    const games: GameCard[] = useMemo(() => [
         {
             id: 'arena-battle',
             name: 'Arena Battle',
@@ -129,7 +131,7 @@ export const GamesSection: React.FC<GamesSectionProps> = ({
                     avatarConfig={avatarConfig || DEFAULT_AVATAR_CONFIG}
                     schoolId={schoolId}
                     onXPEarned={onXPEarned}
-                    onExit={() => setActiveGame(null)}
+                    onExit={handleExitGame}
                 />
             ),
         },
@@ -150,7 +152,7 @@ export const GamesSection: React.FC<GamesSectionProps> = ({
                             schoolId: schoolId,
                         }}
                         onXPEarned={onXPEarned}
-                        onExit={() => setActiveGame(null)}
+                        onExit={handleExitGame}
                     />
                 </div>
             ),
@@ -164,13 +166,13 @@ export const GamesSection: React.FC<GamesSectionProps> = ({
             component: (
                 <TypingTrainer
                     onXPEarned={onXPEarned}
-                    onExit={() => setActiveGame(null)}
+                    onExit={handleExitGame}
                 />
             ),
         },
 
         // Add more games here
-    ];
+    ], [avatarConfig, schoolId, onXPEarned, handleExitGame, userId, userClass]);
 
     // If a game is active, show it fullscreen
     if (activeGame) {
