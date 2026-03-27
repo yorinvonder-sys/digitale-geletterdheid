@@ -28,7 +28,14 @@ export function MfaGate({ onVerified }: MfaGateProps) {
     useEffect(() => {
         if (initiated.current) return;
         initiated.current = true;
-        checkMfaStatus();
+
+        // Timeout: if MFA check takes longer than 10s, go to enrollment screen
+        const timeout = setTimeout(() => {
+            setError('MFA-status ophalen duurde te lang. Probeer opnieuw.');
+            setStep('enroll');
+        }, 10_000);
+
+        checkMfaStatus().finally(() => clearTimeout(timeout));
     }, []);
 
     const checkMfaStatus = async () => {
@@ -60,6 +67,7 @@ export function MfaGate({ onVerified }: MfaGateProps) {
             setStep('enroll');
         } catch (err: any) {
             setError(err.message || 'MFA activeren mislukt.');
+            setStep('enroll');
         }
     };
 
@@ -103,6 +111,9 @@ export function MfaGate({ onVerified }: MfaGateProps) {
                     </div>
                     <div className="w-6 h-6 border-2 border-indigo-200 border-t-indigo-500 rounded-full animate-spin" />
                     <p className="text-slate-400 text-sm font-medium">MFA-status controleren...</p>
+                    {error && (
+                        <p className="text-red-500 text-xs font-medium mt-2">{error}</p>
+                    )}
                 </div>
             </div>
         );
