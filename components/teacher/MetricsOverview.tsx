@@ -596,59 +596,119 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
             )}
 
             {/* VROEGE SIGNALERING - Collapsible */}
-            <div className="bg-slate-900 rounded-[2rem] shadow-2xl overflow-hidden relative">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/10 rounded-full -mr-32 -mt-32 blur-3xl"></div>
+            {(() => {
+                const signalStudents = displayedStudents
+                    .map(s => {
+                        const xp = s.stats?.xp || 0;
+                        const lastActiveMs = s.lastActive?.toDate?.()?.getTime() || 0;
+                        const daysSinceActive = lastActiveMs > 0 ? Math.floor((now - lastActiveMs) / oneDay) : null;
+                        const missionsCompleted = s.stats?.missionsCompleted?.length || 0;
 
-                <button
-                    onClick={() => setExpandedSignaling(!expandedSignaling)}
-                    className="w-full p-6 text-left flex items-center justify-between relative z-10"
-                >
-                    <h3 className="text-sm font-black text-white uppercase tracking-widest flex items-center gap-2">
-                        <Sparkles size={16} className="text-indigo-400" />
-                        Vroege Signalering
-                    </h3>
-                    <ChevronDown size={20} className={`text-white/40 transition-transform ${expandedSignaling ? 'rotate-180' : ''}`} />
-                </button>
+                        // Determine reason for signal
+                        if (xp < 50) return { student: s, reason: `${xp} XP — nog niet op gang`, tone: 'warning' as const };
+                        if (daysSinceActive !== null && daysSinceActive > 7 && xp >= 50)
+                            return { student: s, reason: `${daysSinceActive} dagen inactief — ${missionsCompleted} missie${missionsCompleted !== 1 ? 's' : ''} afgerond`, tone: 'attention' as const };
+                        if (xp < 100 && missionsCompleted === 0)
+                            return { student: s, reason: `${xp} XP — nog geen missie afgerond`, tone: 'attention' as const };
+                        return null;
+                    })
+                    .filter((x): x is NonNullable<typeof x> => x !== null)
+                    .sort((a, b) => (a.tone === 'warning' ? -1 : 1) - (b.tone === 'warning' ? -1 : 1))
+                    .slice(0, 5);
 
-                <AnimatePresence>
-                    {expandedSignaling && (
-                        <motion.div
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: 'auto', opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            className="px-6 pb-6 space-y-3 relative z-10"
+                const hasSignals = signalStudents.length > 0;
+
+                return (
+                    <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+                        <button
+                            onClick={() => setExpandedSignaling(!expandedSignaling)}
+                            className="w-full px-5 py-4 text-left flex items-center justify-between"
                         >
-                            {students.filter(s => (s.stats?.xp || 0) < 100).slice(0, 3).map(student => (
-                                <button
-                                    key={student.uid}
-                                    type="button"
-                                    className="w-full bg-white/5 border border-white/10 p-4 rounded-xl flex items-center justify-between group hover:bg-white/10 active:bg-white/15 transition-all cursor-pointer text-left"
-                                    onClick={() => onSelectStudent?.(student)}
+                            <div className="flex items-center gap-3">
+                                <div className={`size-8 rounded-lg flex items-center justify-center ${hasSignals ? 'bg-amber-100' : 'bg-emerald-100'}`}>
+                                    {hasSignals
+                                        ? <AlertTriangle size={16} className="text-amber-600" />
+                                        : <CheckCircle2 size={16} className="text-emerald-600" />
+                                    }
+                                </div>
+                                <div>
+                                    <h3 className="text-xs font-black text-slate-900 uppercase tracking-widest text-balance">
+                                        Vroege Signalering
+                                    </h3>
+                                    {!expandedSignaling && (
+                                        <p className="text-[10px] text-slate-500 mt-0.5">
+                                            {hasSignals ? `${signalStudents.length} leerling${signalStudents.length !== 1 ? 'en' : ''} verdien${signalStudents.length !== 1 ? 'en' : 't'} aandacht` : 'Iedereen ligt op koers'}
+                                        </p>
+                                    )}
+                                </div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                {hasSignals && (
+                                    <span className="inline-flex items-center justify-center size-5 rounded-full bg-amber-500 text-[10px] font-black text-white tabular-nums">
+                                        {signalStudents.length}
+                                    </span>
+                                )}
+                                <ChevronDown size={18} className={`text-slate-400 transition-transform ${expandedSignaling ? 'rotate-180' : ''}`} />
+                            </div>
+                        </button>
+
+                        <AnimatePresence>
+                            {expandedSignaling && (
+                                <motion.div
+                                    initial={{ height: 0, opacity: 0 }}
+                                    animate={{ height: 'auto', opacity: 1 }}
+                                    exit={{ height: 0, opacity: 0 }}
+                                    className="px-5 pb-5 space-y-2"
                                 >
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center text-white/40">
-                                            <GraduationCap size={20} />
+                                    {signalStudents.map(({ student, reason, tone }) => (
+                                        <button
+                                            key={student.uid}
+                                            type="button"
+                                            className={`w-full p-3 rounded-xl flex items-center justify-between group transition-colors text-left ${
+                                                tone === 'warning'
+                                                    ? 'bg-amber-50 border border-amber-100 hover:bg-amber-100'
+                                                    : 'bg-slate-50 border border-slate-100 hover:bg-slate-100'
+                                            }`}
+                                            onClick={() => onSelectStudent?.(student)}
+                                        >
+                                            <div className="flex items-center gap-3 min-w-0">
+                                                <div className={`size-9 rounded-lg flex items-center justify-center flex-shrink-0 ${
+                                                    tone === 'warning' ? 'bg-amber-100 text-amber-600' : 'bg-slate-200 text-slate-500'
+                                                }`}>
+                                                    <GraduationCap size={18} />
+                                                </div>
+                                                <div className="min-w-0">
+                                                    <div className="text-xs font-bold text-slate-900 truncate">{student.displayName}</div>
+                                                    <div className={`text-[10px] mt-0.5 ${tone === 'warning' ? 'text-amber-600' : 'text-slate-500'}`}>{reason}</div>
+                                                </div>
+                                            </div>
+                                            <div className="flex items-center gap-2 flex-shrink-0 ml-2">
+                                                <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-lg border ${
+                                                    tone === 'warning'
+                                                        ? 'text-amber-700 bg-white border-amber-200'
+                                                        : 'text-slate-600 bg-white border-slate-200'
+                                                }`}>
+                                                    Begeleid
+                                                </span>
+                                                <ChevronRight size={14} className="text-slate-300 group-hover:translate-x-0.5 transition-transform" />
+                                            </div>
+                                        </button>
+                                    ))}
+                                    {!hasSignals && (
+                                        <div className="flex flex-col items-center py-6 gap-2">
+                                            <div className="size-10 rounded-full bg-emerald-100 flex items-center justify-center">
+                                                <CheckCircle2 size={20} className="text-emerald-600" />
+                                            </div>
+                                            <p className="text-sm font-bold text-slate-700 text-balance text-center">Iedereen ligt op koers</p>
+                                            <p className="text-[11px] text-slate-500 text-center text-pretty max-w-xs">Geen leerlingen die extra aandacht nodig hebben op dit moment.</p>
                                         </div>
-                                        <div>
-                                            <div className="text-sm font-bold text-white">{student.displayName}</div>
-                                            <div className="text-[10px] text-slate-400">Vertoont lage activiteit in week 2</div>
-                                        </div>
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                        <div className="text-[10px] font-black text-indigo-400 uppercase tracking-widest border border-indigo-400/30 px-2 py-1 rounded-lg">
-                                            Intervenieer
-                                        </div>
-                                        <ChevronRight size={14} className="text-slate-600 group-hover:translate-x-1 transition-transform" />
-                                    </div>
-                                </button>
-                            ))}
-                            {students.filter(s => (s.stats?.xp || 0) < 100).length === 0 && (
-                                <div className="text-slate-500 text-xs italic py-4 text-center">Iedereen ligt op koers! 🎉</div>
+                                    )}
+                                </motion.div>
                             )}
-                        </motion.div>
-                    )}
-                </AnimatePresence>
-            </div>
+                        </AnimatePresence>
+                    </div>
+                );
+            })()}
 
             {/* SLO KERNDOELEN DIGITALE GELETTERDHEID - Collapsible */}
             <div className="bg-white rounded-[2rem] shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden">
