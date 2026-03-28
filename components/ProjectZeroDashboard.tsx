@@ -197,6 +197,7 @@ const MISSION_OVERRIDES: Record<string, Partial<Mission>> = {
     'mission-blueprint': { info: 'Elk groot project begint met een plan. Gebruik je digitale skills om je eindwerk te organiseren.' },
     'mission-vision': { info: 'Verbeeld je idee. Gebruik AI en design tools om je concept tot leven te wekken in een pitch.' },
     'mission-launch': { info: 'Showtime! Presenteer je werk aan de klas en laat zien wat je hebt geleerd als Digitale Expert.' },
+    'access-control-engineer': { info: 'Het inlogportaal van school is lek! Gasten komen overal bij, leerlingen zien elkaars cijfers. Analyseer de beveiligingsregels, stel de juiste rechten in per rol en test of alles klopt.' },
 };
 
 // Bouw missies dynamisch op basis van curriculum config + agent definities
@@ -1461,14 +1462,16 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
     );
 };
 
-// Sticky note paper tones — warm, analog feel
+// Sticky-note kleuren — kleurrijk & speels, aantrekkelijk voor leerlingen
 const STICKY_COLORS = [
-    { bg: '#FFF9EC', border: '#F0E4C8' },  // warm cream
-    { bg: '#FFF3E6', border: '#EDCFB0' },  // soft peach
-    { bg: '#F5F0E8', border: '#DED5C4' },  // parchment
-    { bg: '#FFF8F0', border: '#EDDDCC' },  // vanilla
-    { bg: '#F0EDE6', border: '#D9D3C6' },  // aged paper
-    { bg: '#FFFBF2', border: '#E8DFC8' },  // ivory
+    { bg: '#FFE066', border: '#E6C84D' },  // zonnig geel
+    { bg: '#FF9ED2', border: '#E680B5' },  // bubblegum roze
+    { bg: '#7ED4FC', border: '#5BB8E6' },  // helder hemelsblauw
+    { bg: '#A8F0C6', border: '#80D9A4' },  // fris mintgroen
+    { bg: '#FFB347', border: '#E69A30' },  // warm oranje
+    { bg: '#C4B5FD', border: '#A78BFA' },  // zacht lavendel
+    { bg: '#FCA5A5', border: '#E88A8A' },  // koraalrood
+    { bg: '#67E8F9', border: '#4DD4E6' },  // turquoise
 ] as const;
 const STICKY_ROTATIONS = [-1.2, 0.6, -0.4, 1, -0.8, 0.3] as const;
 const SERIF_FONT = "'Newsreader', Georgia, serif";

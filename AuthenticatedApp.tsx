@@ -49,6 +49,7 @@ const PrintInstructiesMission = lazyWithRetry(() => import('./components/mission
 const DeveloperDashboard = lazyWithRetry(() => import('./components/developer/DeveloperDashboard').then(m => ({ default: m.DeveloperDashboard })));
 const FilterBubbleBreakerMission = lazyWithRetry(() => import('./components/missions/FilterBubbleBreakerMission').then(m => ({ default: m.FilterBubbleBreakerMission })));
 const DatalekkenRampenplanMission = lazyWithRetry(() => import('./components/missions/DatalekkenRampenplanMission').then(m => ({ default: m.DatalekkenRampenplanMission })));
+const AccessControlEngineerMission = lazyWithRetry(() => import('./components/missions/AccessControlEngineerMission').then(m => ({ default: m.AccessControlEngineerMission })));
 const DataVoorDataMission = lazyWithRetry(() => import('./components/missions/DataVoorDataMission').then(m => ({ default: m.DataVoorDataMission })));
 const PeerFeedbackPanel = lazyWithRetry(() => import('./components/missions/PeerFeedbackPanel').then(m => ({ default: m.PeerFeedbackPanel })));
 const NulmetingFlow = lazyWithRetry(() => import('./components/assessment/escaperoom/NulmetingFlow').then(m => ({ default: m.NulmetingFlow })));
@@ -74,6 +75,7 @@ const DEDICATED_MISSIONS = new Set([
     'filter-bubble-breaker',
     'datalekken-rampenplan',
     'data-voor-data',
+    'access-control-engineer',
 ]);
 
 /** Authenticated app shell — only loaded for private/authenticated flows. Public routes use AppRouter. */
@@ -839,6 +841,19 @@ export function AuthenticatedApp() {
             );
         }
 
+        if (activeModule === 'access-control-engineer') {
+            return (
+                <AccessControlEngineerMission
+                    onBack={handleRequestExitModule}
+                    onComplete={(success) => {
+                        if (success) handleMissionComplete('access-control-engineer');
+                        else handleExitModule();
+                    }}
+                    stats={user?.stats}
+                    vsoProfile={user?.stats?.vsoProfile}
+                />
+            );
+        }
 
         if (isProfileOpen) {
             return (

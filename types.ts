@@ -33,7 +33,7 @@ export type RoleId =
   // Leerjaar 2 - Periode 1: Data & Informatie
   'data-journalist' | 'spreadsheet-specialist' | 'factchecker' | 'api-verkenner' | 'dashboard-designer' | 'ai-bias-detective' | 'data-review' |
   // Leerjaar 2 - Periode 2: Programmeren & CT
-  'algorithm-architect' | 'web-developer' | 'app-prototyper' | 'bug-hunter' | 'automation-engineer' | 'code-reviewer' | 'code-review-2' | 'wachtwoord-warrior' |
+  'algorithm-architect' | 'web-developer' | 'network-navigator' | 'app-prototyper' | 'bug-hunter' | 'automation-engineer' | 'code-reviewer' | 'code-review-2' | 'privacy-by-design' | 'wachtwoord-warrior' | 'access-control-engineer' |
   // Leerjaar 2 - Periode 3: Digitale Media & Creatie
   'ux-detective' | 'podcast-producer' | 'meme-machine' | 'digital-storyteller' | 'brand-builder' | 'video-editor' | 'media-review' |
   // Leerjaar 2 - Periode 4: Ethiek & Eindproject

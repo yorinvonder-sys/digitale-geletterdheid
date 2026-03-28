@@ -1,0 +1,56 @@
+name: Claude PR Gate
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - edited
+      - ready_for_review
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+permissions:
+  contents: read
+
+jobs:
+  validate-handoff:
+    if: startsWith(github.head_ref, 'claude/')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate Claude handoff
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: node scripts/validate-claude-handoff.mjs
+
+  quality-checks:
+    if: startsWith(github.head_ref, 'claude/')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type-check
+        run: npx tsc --noEmit
+
+      - name: Security audit
+        run: npm audit --audit-level=high
+
+      - name: Production build
+        run: npm run build:prod

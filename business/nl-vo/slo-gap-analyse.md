@@ -138,19 +138,36 @@ Op basis van de gap-analyse worden de volgende drie missies aanbevolen om de mee
 
 ---
 
+### 4.4 Access Control Engineer
+
+| Kenmerk | Waarde |
+|---------|--------|
+| **Kerndoel** | 21A — Digitale Systemen, 23A — Veiligheid & Privacy, 22B — Programmeren |
+| **Leerjaar** | J2, Periode 2 |
+| **Prioriteit** | P2 (hoog) |
+| **Duur** | 3-4 lessen |
+
+**Beschrijving:** Leerlingen nemen de rol aan van Access Control Engineer bij een school. Ze analyseren onveilige login- en toegangsregels, stellen rechten correct in per gebruikersrol (leerling, docent, admin, gast), en testen hun configuratie met scenario's. De missie combineert systeemdenken (21A), privacy/veiligheid (23A) en programmeerlogica (22B) in één herkenbare schoolcontext.
+
+**Waarom deze missie:** Versterkt de drie zwakste J2-kerndoelen tegelijk. De niet-game programmeercontext (toegangsregels configureren) biedt diversiteit naast de al aanwezige game- en web-missies. De schoolcontext is direct herkenbaar voor leerlingen.
+
+---
+
 ## 5. Conclusie
 
 De algehele dekking van het DGSkills-curriculum is **goed**: alle 9 SLO-kerndoelen worden bediend met in totaal 142+ missies. Geen enkel kerndoel is volledig afwezig in een leerjaar.
 
 De **verdeling over leerjaren is echter ongelijk**. Met name in J1 zijn data (21C) en programmeren (22B) onderbezet, en in J2 vallen veiligheid (23A) en digitale systemen (21A) weg. Dit patroon creëert kennisklooven die de doorlopende leerlijn ondermijnen.
 
-De drie voorgestelde missies — Data Speurder, Website Bouwer en Wachtwoord Warrior — adresseren de twee kritieke en één hoge-prioriteit gap. Na implementatie van deze missies:
+De vier voorgestelde missies — Data Speurder, Website Bouwer, Wachtwoord Warrior en Access Control Engineer — adresseren de kritieke en hoge-prioriteit gaps. Na implementatie van deze missies:
 
 - Stijgt 21C in J1 van 2 naar 3 missies (+50%)
 - Stijgt 22B in J1 van 2 naar 3 missies (+50%) met diversificatie van context
-- Stijgt 23A in J2 van 2 naar 3 missies (+50%)
+- Stijgt 23A in J2 van 2 naar 4 missies (+100%)
+- Stijgt 21A in J2 van 2 naar 3 missies (+50%)
+- 22B in J2 krijgt extra niet-game programmeercontext
 
-Dit brengt het totaal op 145+ missies en elimineert de meest kwetsbare punten in de curriculumdekking. Voor verkoopgesprekken met scholen betekent dit dat DGSkills met meer vertrouwen kan worden gepresenteerd als een volledige, SLO-dekkende oplossing.
+Dit brengt het totaal op 146+ missies en elimineert de meest kwetsbare punten in de curriculumdekking. Voor verkoopgesprekken met scholen betekent dit dat DGSkills met meer vertrouwen kan worden gepresenteerd als een volledige, SLO-dekkende oplossing.
 
 ---
 

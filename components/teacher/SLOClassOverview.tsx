@@ -9,7 +9,30 @@ import { calculateStudentKerndoelStats, getMissionMeta, KERNDOEL_CODES } from '.
 interface SLOClassOverviewProps {
     students: StudentData[];
     schoolId?: string;
+    selectedYear?: number;
 }
+
+interface MissionSpotlight {
+    yearGroup: number;
+    periodLabel: string;
+    missionId: string;
+    title: string;
+    kerndoelen: string[];
+    summary: string;
+    teacherSignal: string;
+}
+
+const MISSION_SPOTLIGHTS: MissionSpotlight[] = [
+    {
+        yearGroup: 2,
+        periodLabel: 'Periode 2',
+        missionId: 'access-control-engineer',
+        title: 'Access Control Engineer',
+        kerndoelen: ['21A', '23A', '22B'],
+        summary: 'Verbindt systeembegrip, privacy en programmeerlogica in een herkenbare schoolcasus rond rollen en rechten.',
+        teacherSignal: 'Sterk bewijs als leerlingen onveilige regels herkennen, rechten per rol toewijzen en testscenario’s inhoudelijk kunnen uitleggen.',
+    },
+];
 
 function parseMissionIdFromActivityData(data: unknown): string | null {
     if (typeof data !== 'string') return null;
@@ -17,7 +40,7 @@ function parseMissionIdFromActivityData(data: unknown): string | null {
     return m?.[1] || null;
 }
 
-export const SLOClassOverview: React.FC<SLOClassOverviewProps> = ({ students, schoolId }) => {
+export const SLOClassOverview: React.FC<SLOClassOverviewProps> = ({ students, schoolId, selectedYear }) => {
     const [expandedClasses, setExpandedClasses] = useState<Set<string>>(new Set());
     const [exporting, setExporting] = useState(false);
     const [exportError, setExportError] = useState<string | null>(null);
@@ -37,6 +60,11 @@ export const SLOClassOverview: React.FC<SLOClassOverviewProps> = ({ students, sc
         students.forEach(s => map.set(s.uid, s));
         return map;
     }, [students]);
+
+    const activeSpotlights = useMemo(() => {
+        if (!selectedYear) return MISSION_SPOTLIGHTS;
+        return MISSION_SPOTLIGHTS.filter(spotlight => spotlight.yearGroup === selectedYear);
+    }, [selectedYear]);
 
     const calculateClassStats = (classStudents: StudentData[]) => {
         const classStats: Record<string, { avgPercentage: number; students: number; hasData: boolean }> = {};
@@ -89,6 +117,22 @@ export const SLOClassOverview: React.FC<SLOClassOverviewProps> = ({ students, sc
                 kerndoelenData.push([kd.code, kd.domein, kd.label, kd.omschrijving]);
             });
             addAoaSheet('Kerndoelen', kerndoelenData);
+
+            const spotlightRows: any[] = [
+                ['Leerjaar', 'Periode', 'Missie ID', 'Missie', 'Kerndoelen', 'Waarom belangrijk', 'Docentobservatie']
+            ];
+            MISSION_SPOTLIGHTS.forEach(spotlight => {
+                spotlightRows.push([
+                    `J${spotlight.yearGroup}`,
+                    spotlight.periodLabel,
+                    spotlight.missionId,
+                    spotlight.title,
+                    spotlight.kerndoelen.join(', '),
+                    spotlight.summary,
+                    spotlight.teacherSignal,
+                ]);
+            });
+            addAoaSheet('Missie Spotlights', spotlightRows);
 
             // Sheet 1: Overview per class
             const overviewHeader = ['Klas', 'Aantal Leerlingen', ...KERNDOEL_CODES.map(code => `${code} ${SLO_KERNDOELEN[code].label}`)];
@@ -353,6 +397,43 @@ export const SLOClassOverview: React.FC<SLOClassOverviewProps> = ({ students, sc
                     </div>
                 </div>
             </div>
+
+            {activeSpotlights.length > 0 && (
+                <div className="bg-white rounded-xl border border-indigo-100 shadow-sm overflow-hidden">
+                    <div className="px-4 py-3 border-b border-indigo-100 bg-indigo-50/70">
+                        <p className="text-[10px] font-black text-indigo-600 uppercase tracking-widest">Curriculum Spotlight</p>
+                        <h3 className="text-sm font-bold text-slate-900 mt-1">
+                            Missie die extra sterk bewijs geeft in het SLO-verhaal
+                        </h3>
+                    </div>
+                    <div className="p-4 space-y-3">
+                        {activeSpotlights.map(spotlight => (
+                            <div key={spotlight.missionId} className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                                <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                                    <div className="min-w-0">
+                                        <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+                                            J{spotlight.yearGroup} • {spotlight.periodLabel}
+                                        </p>
+                                        <h4 className="text-base font-bold text-slate-900 mt-1">{spotlight.title}</h4>
+                                    </div>
+                                    <div className="flex flex-wrap gap-2">
+                                        {spotlight.kerndoelen.map(code => (
+                                            <span key={code} className="inline-flex px-2 py-1 rounded-full bg-indigo-100 text-indigo-700 text-[11px] font-bold">
+                                                {code}
+                                            </span>
+                                        ))}
+                                    </div>
+                                </div>
+                                <p className="text-sm text-slate-600 mt-3">{spotlight.summary}</p>
+                                <div className="mt-3 rounded-lg bg-white border border-slate-200 px-3 py-2">
+                                    <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Docent kan observeren</p>
+                                    <p className="text-sm text-slate-700 mt-1">{spotlight.teacherSignal}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
 
             <div className="space-y-4">
                 {Object.entries(studentsByClass).sort().map(([className, classStudents]) => {

@@ -8038,5 +8038,99 @@ REGELS:
             }
         ],
     },
+    // --- MISSIE: Access Control Engineer (21A + 23A + 22B gap filler) ---
+    {
+        id: 'access-control-engineer',
+        yearGroup: 2,
+        educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
+        title: 'Access Control Engineer',
+        icon: <Shield size={28} />,
+        color: '#4F46E5',
+        description: 'Repareer de onveilige login- en toegangsregels van een schoolsysteem.',
+        problemScenario: 'Het inlogportaal van Het Rijnlands Lyceum zit vol beveiligingsfouten: gasten kunnen zonder wachtwoord inloggen, leerlingen zien cijfers van anderen, en roosters zijn door iedereen aanpasbaar. De directie heeft jou als Access Control Engineer ingehuurd om het systeem te repareren voordat er een datalek ontstaat.',
+        missionObjective: 'Analyseer de toegangsregels, stel de juiste rechten in per rol, en test of je configuratie klopt met realistische scenario\'s.',
+        briefingImage: '/assets/agents/access_control_engineer.webp',
+        difficulty: 'Medium',
+        examplePrompt: 'Mag een leerling de cijfers van een andere leerling bekijken?',
+        primaryGoal: '🛡️ Beveilig het schoolsysteem als Access Control Engineer',
+        goalCriteria: { type: 'steps-complete', min: 3 },
+        visualPreview: (
+            <div className="w-full h-full bg-indigo-600 flex flex-col items-center justify-center p-4 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 to-indigo-800"></div>
+                <div className="relative z-10 flex flex-col items-center gap-2">
+                    <div className="w-40 bg-white/10 backdrop-blur rounded-xl p-3 border border-white/20">
+                        <div className="flex items-center gap-2 mb-2">
+                            <div className="w-3 h-3 rounded-full bg-green-400"></div>
+                            <div className="text-[8px] text-white/80 font-mono">admin</div>
+                            <div className="text-[7px] text-green-300">TOEGANG</div>
+                        </div>
+                        <div className="flex items-center gap-2 mb-2">
+                            <div className="w-3 h-3 rounded-full bg-green-400"></div>
+                            <div className="text-[8px] text-white/80 font-mono">docent</div>
+                            <div className="text-[7px] text-green-300">TOEGANG</div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <div className="w-3 h-3 rounded-full bg-red-400"></div>
+                            <div className="text-[8px] text-white/80 font-mono">gast</div>
+                            <div className="text-[7px] text-red-300">GEBLOKKEERD</div>
+                        </div>
+                    </div>
+                </div>
+                <Shield size={20} className="text-indigo-200 absolute top-3 right-3" />
+            </div>
+        ),
+        systemInstruction: `Je bent een Cybersecurity Coach die leerlingen (13-16 jaar, leerjaar 2) begeleidt bij het begrijpen van toegangscontrole (access control) in digitale systemen.
+
+KERNIDEE:
+De leerling is ingehuurd als Access Control Engineer bij een school. Het inlogportaal heeft beveiligingsfouten: verkeerde rollen hebben verkeerde rechten. De leerling moet analyseren wat mis is, de regels repareren, en testen of het klopt.
+
+JOUW MISSIE:
+Begeleid de leerling door 3 stappen: (1) analyseren welke beveiligingsregels onveilig zijn, (2) de juiste rechten toekennen per rol (leerling, docent, admin, gast), (3) testen met scenario's.
+
+WERKWIJZE:
+- Maak het concreet: gebruik de schoolcontext (cijfers, roosters, accounts) zodat leerlingen het herkennen.
+- Stel vragen: "Mag een leerling het rooster van een andere klas wijzigen? Waarom wel of niet?"
+- Leg het principe uit: "principle of least privilege" — geef alleen toegang die echt nodig is.
+- Gebruik vergelijkingen: "Rollen zijn als sleutels. De conciërge heeft een loper, maar de leerling heeft alleen een kluissleutel."
+- Verbind aan privacy: leg uit waarom toegangscontrole ook privacybescherming is (AVG).
+
+STAP-VOLTOOIING:
+- STAP 1 klaar als de leerling minstens 3 onveilige regels correct identificeert EN kan uitleggen WAAROM ze onveilig zijn. Bevestig: "Je denkt als een beveiligingsexpert — je ziet kwetsbaarheden die anderen missen."
+- STAP 2 klaar als de leerling voor minstens 4 resources de juiste rollen heeft toegewezen en kan uitleggen waarom. Bevestig: "Je hebt het principe van minimale rechten toegepast. Elke rol heeft precies de sleutels die nodig zijn."
+- STAP 3 klaar als de leerling minstens 5 testscenario's heeft doorlopen met minstens 4 correct. Bevestig: "Je configuratie is getest en beveiligd. Dit systeem is nu veel veiliger!"
+
+EERSTE BERICHT:
+"Hoi! Ik ben je Security Coach. 🛡️
+
+Het Rijnlands Lyceum heeft een probleem: hun inlogsysteem zit vol beveiligingsfouten. Gasten kunnen zonder wachtwoord inloggen, leerlingen zien de cijfers van de hele school, en iedereen kan het rooster aanpassen.
+
+De directie heeft jou gevraagd om het systeem te repareren. Jij wordt de Access Control Engineer!
+
+**Je eerste opdracht:** Bekijk de huidige beveiligingsregels. Welke vind je onveilig, en waarom?"
+
+REGELS:
+- Leer NOOIT hoe je daadwerkelijk systemen kunt hacken of beveiligingen kunt omzeilen.
+- Focus op DEFENSIEF denken: hoe bescherm je een systeem?
+- Als de leerling vraagt hoe je een systeem kunt kraken: "We leren hoe je systemen BESCHERMT, niet hoe je ze aanvalt."
+- Maak het tastbaar met schoolvoorbeelden die leerlingen herkennen.
+- Vier ontdekkingen: als een leerling een subtiel probleem vindt, benoem dat expliciet.` + SYSTEM_INSTRUCTION_SUFFIX,
+        steps: [
+            {
+                title: "Analyseer de regels",
+                description: "Vind welke beveiligingsregels onveilig zijn in het schoolsysteem.",
+                example: "Bekijk de regels en selecteer welke onveilig zijn. Leg uit waarom."
+            },
+            {
+                title: "Stel rechten in",
+                description: "Bepaal per resource welke rollen er toegang toe moeten hebben.",
+                example: "Wie mag cijfers van alle leerlingen bekijken? Alleen de docent en admin, of ook gasten?"
+            },
+            {
+                title: "Test je configuratie",
+                description: "Voer testscenario's uit om te checken of je regels correct werken.",
+                example: "Test: mag Emma (leerling) het rooster wijzigen? Wat verwacht je?"
+            }
+        ],
+    },
 ];
 

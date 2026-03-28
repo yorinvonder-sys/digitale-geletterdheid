@@ -98,14 +98,11 @@ export const KERNDOEL_MISSIONS: KerndoelMissionMeta[] = [
   { id: 'deepfake-detector', title: 'Deepfake Detector', week: 3, yearGroup: 1, sloKerndoelen: ['21B', '21D', '23C'], sloVsoKerndoelen: ['18B', '18C', '20B'] },
   { id: 'ai-spiegel', title: 'De AI Spiegel', week: 3, yearGroup: 1, sloKerndoelen: ['23B', '23C'], sloVsoKerndoelen: ['20B'] },
   { id: 'social-safeguard', title: 'Social Safeguard', week: 3, yearGroup: 1, sloKerndoelen: ['23A', '23B'], sloVsoKerndoelen: ['20A', '20B'] },
-  // cookie-crusher: dark patterns herkennen → 23A (veiligheid/privacy), niet 21B (mediabegrip)
+  { id: 'scroll-stopper', title: 'De Scroll Stopper', week: 3, yearGroup: 1, sloKerndoelen: ['23B', '21B'], sloVsoKerndoelen: ['20A', '20B'] },
   { id: 'cookie-crusher', title: 'Cookie Crusher', week: 3, yearGroup: 1, sloKerndoelen: ['23A', '23C'], sloVsoKerndoelen: ['20A', '20B'] },
-  // data-handelaar: AVG-overtredingen opsporen → 23A (privacy) + 23C (ethiek); 23B (welzijn) niet van toepassing
   { id: 'data-handelaar', title: 'De Data Handelaar', week: 3, yearGroup: 1, sloKerndoelen: ['23A', '23C'], sloVsoKerndoelen: ['20A', '20B'] },
   { id: 'privacy-profiel-spiegel', title: 'Privacy Profiel Spiegel', week: 3, yearGroup: 1, sloKerndoelen: ['23A', '23B'], sloVsoKerndoelen: ['20A', '20B'] },
-  // filter-bubble-breaker: algoritme-impact begrijpen → 21B + 23C; 23B (welzijn) verwijderd
   { id: 'filter-bubble-breaker', title: 'Filter Bubble Breaker', week: 3, yearGroup: 1, sloKerndoelen: ['21B', '23C'], sloVsoKerndoelen: ['18B', '20B'] },
-  // datalekken-rampenplan: crisisplan bij datalek → 23A + 23C; 23B (welzijn/schermtijd) niet van toepassing
   { id: 'datalekken-rampenplan', title: 'Datalekken Rampenplan', week: 3, yearGroup: 1, sloKerndoelen: ['23A', '23C'], sloVsoKerndoelen: ['20A', '20B'] },
   { id: 'data-voor-data', title: 'Data voor Data', week: 3, yearGroup: 1, sloKerndoelen: ['23C', '23B'], sloVsoKerndoelen: ['20B'] },
   { id: 'data-speurder', title: 'Data Speurder', week: 3, yearGroup: 1, sloKerndoelen: ['21C', '21B'], sloVsoKerndoelen: ['18B'] },
@@ -145,6 +142,7 @@ export const KERNDOEL_MISSIONS: KerndoelMissionMeta[] = [
   // privacy-by-design: privacy-audit van een app → 23A; geen programmeeropdracht
   { id: 'privacy-by-design', title: 'Privacy by Design', week: 2, yearGroup: 2, sloKerndoelen: ['23A'] },
   { id: 'wachtwoord-warrior', title: 'Wachtwoord Warrior', week: 2, yearGroup: 2, sloKerndoelen: ['23A', '21A'] },
+  { id: 'access-control-engineer', title: 'Access Control Engineer', week: 2, yearGroup: 2, sloKerndoelen: ['21A', '23A', '22B'] },
   { id: 'code-review-2', title: 'Code Review', week: 2, yearGroup: 2, sloKerndoelen: ['22A', '22B'] },
 
   // Periode 3: Digitale Media & Creatie

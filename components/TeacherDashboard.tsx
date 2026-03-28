@@ -572,7 +572,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                         {activeTab === 'ai-beleid' && <PageTransition key="ai-beleid"><div className="bg-white rounded-[2rem] border border-slate-100 p-6"><AiBeleidFeedbackPanel classFilter={classFilter !== 'all' ? classFilter : undefined} schoolId={user?.schoolId} /></div></PageTransition>}
                         {activeTab === 'feedback' && <PageTransition key="feedback"><FeedbackPanel schoolId={user?.schoolId} /></PageTransition>}
                         {activeTab === 'progress' && <PageTransition key="progress" className="space-y-6"><MissionProgressPanel students={students} classFilter={classFilter} availableClasses={classGroups} onClassFilterChange={setClassFilter} onSelectStudent={setSelectedStudent} yearGroup={yearGroupFilter} /><HybridAssessmentPanel records={hybridAssessments} classFilter={classFilter} /></PageTransition>}
-                        {activeTab === 'slo' && <PageTransition key="slo"><SLOClassOverview students={students} schoolId={user?.schoolId} /></PageTransition>}
+                        {activeTab === 'slo' && <PageTransition key="slo"><SLOClassOverview students={students} schoolId={user?.schoolId} selectedYear={yearGroupFilter} /></PageTransition>}
                         {activeTab === 'nulmeting' && (
                             <PageTransition key="nulmeting">
                                 <Suspense fallback={<div className="flex items-center justify-center py-12"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600" /></div>}>

@@ -57,6 +57,7 @@ export const AGENT_ROLE_IDS = [
   'code-reviewer',
   'network-navigator',
   'privacy-by-design',
+  'access-control-engineer',
   'code-review-2',
   'ux-detective',
   'podcast-producer',
