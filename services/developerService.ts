@@ -1,5 +1,13 @@
 import { supabase } from './supabase';
 import type { RealtimeChannel } from '@supabase/supabase-js';
+
+// Several developer tables have JSONB `data` columns or are missing from the generated DB types.
+// We use untyped helpers to bypass strict Supabase type checks for these tables.
+const devTasksTable = () => (supabase as any).from('developer_tasks');
+const devMilestonesTable = () => (supabase as any).from('developer_milestones');
+const devPlansTable = () => (supabase as any).from('developer_plans');
+const devSettingsTable = () => (supabase as any).from('developer_settings');
+
 export interface DeveloperTask {
     id?: string;
     user_id: string;
@@ -41,8 +49,7 @@ export interface DeveloperSettings {
 
 // --- Tasks ---
 export const getDeveloperTasks = async (userId: string): Promise<DeveloperTask[]> => {
-    const { data, error } = await supabase
-        .from('developer_tasks')
+    const { data, error } = await devTasksTable()
         .select('*')
         .eq('user_id', userId)
         .order('created_at', { ascending: false });
@@ -52,8 +59,7 @@ export const getDeveloperTasks = async (userId: string): Promise<DeveloperTask[]
 };
 
 export const createDeveloperTask = async (task: Omit<DeveloperTask, 'id' | 'created_at' | 'updated_at'>): Promise<string> => {
-    const { data, error } = await supabase
-        .from('developer_tasks')
+    const { data, error } = await devTasksTable()
         .insert(task)
         .select('id')
         .single();
@@ -63,8 +69,7 @@ export const createDeveloperTask = async (task: Omit<DeveloperTask, 'id' | 'crea
 };
 
 export const updateDeveloperTask = async (taskId: string, updates: Partial<DeveloperTask>): Promise<void> => {
-    const { error } = await supabase
-        .from('developer_tasks')
+    const { error } = await devTasksTable()
         .update({ ...updates, updated_at: new Date().toISOString() })
         .eq('id', taskId);
 
@@ -72,8 +77,7 @@ export const updateDeveloperTask = async (taskId: string, updates: Partial<Devel
 };
 
 export const deleteDeveloperTask = async (taskId: string): Promise<void> => {
-    const { error } = await supabase
-        .from('developer_tasks')
+    const { error } = await devTasksTable()
         .delete()
         .eq('id', taskId);
 
@@ -111,8 +115,7 @@ export const subscribeToDeveloperTasks = (
 
 // --- Milestones ---
 export const getDeveloperMilestones = async (userId: string): Promise<DeveloperMilestone[]> => {
-    const { data, error } = await supabase
-        .from('developer_milestones')
+    const { data, error } = await devMilestonesTable()
         .select('*')
         .eq('user_id', userId)
         .order('created_at', { ascending: false });
@@ -122,8 +125,7 @@ export const getDeveloperMilestones = async (userId: string): Promise<DeveloperM
 };
 
 export const createDeveloperMilestone = async (milestone: Omit<DeveloperMilestone, 'id' | 'created_at'>): Promise<string> => {
-    const { data, error } = await supabase
-        .from('developer_milestones')
+    const { data, error } = await devMilestonesTable()
         .insert(milestone)
         .select('id')
         .single();
@@ -133,8 +135,7 @@ export const createDeveloperMilestone = async (milestone: Omit<DeveloperMileston
 };
 
 export const updateDeveloperMilestone = async (milestoneId: string, updates: Partial<DeveloperMilestone>): Promise<void> => {
-    const { error } = await supabase
-        .from('developer_milestones')
+    const { error } = await devMilestonesTable()
         .update(updates)
         .eq('id', milestoneId);
 
@@ -143,8 +144,7 @@ export const updateDeveloperMilestone = async (milestoneId: string, updates: Par
 
 // --- Plan history ---
 export const getDeveloperPlanHistory = async (userId: string): Promise<DeveloperPlan[]> => {
-    const { data, error } = await supabase
-        .from('developer_plans')
+    const { data, error } = await devPlansTable()
         .select('*')
         .eq('user_id', userId)
         .order('version', { ascending: false });
@@ -155,8 +155,7 @@ export const getDeveloperPlanHistory = async (userId: string): Promise<Developer
 
 export const saveDeveloperPlan = async (userId: string, planData: any): Promise<string> => {
     // Get latest version
-    const { data: latestPlan } = await supabase
-        .from('developer_plans')
+    const { data: latestPlan } = await devPlansTable()
         .select('version')
         .eq('user_id', userId)
         .order('version', { ascending: false })
@@ -165,8 +164,7 @@ export const saveDeveloperPlan = async (userId: string, planData: any): Promise<
 
     const newVersion = (latestPlan?.version || 0) + 1;
 
-    const { data, error } = await supabase
-        .from('developer_plans')
+    const { data, error } = await devPlansTable()
         .insert({
             user_id: userId,
             plan_data: planData,
@@ -181,8 +179,7 @@ export const saveDeveloperPlan = async (userId: string, planData: any): Promise<
 
 // --- Settings ---
 export const getDeveloperSettings = async (userId: string): Promise<DeveloperSettings> => {
-    const { data, error } = await supabase
-        .from('developer_settings')
+    const { data, error } = await devSettingsTable()
         .select('settings')
         .eq('user_id', userId)
         .maybeSingle();
@@ -192,8 +189,7 @@ export const getDeveloperSettings = async (userId: string): Promise<DeveloperSet
 };
 
 export const updateDeveloperSettings = async (userId: string, settings: DeveloperSettings): Promise<void> => {
-    const { error } = await supabase
-        .from('developer_settings')
+    const { error } = await devSettingsTable()
         .upsert({
             user_id: userId,
             settings,
@@ -233,7 +229,7 @@ export const addDevTask = async (userId: string, task: Partial<DevTask>): Promis
         user_id: userId,
         title: task.title || 'Untitled',
         description: task.description,
-        status: task.status === 'completed' ? 'done' : task.status === 'pending' ? 'todo' : (task.status as any) || 'todo',
+        status: (task.status as string) === 'completed' ? 'done' : task.status === 'pending' ? 'todo' : (task.status as any) || 'todo',
         priority: task.priority || 'medium',
         category: task.category,
     });
@@ -311,8 +307,7 @@ export const subscribeToDevTimeline = (
     onUpdate: (milestones: DevMilestone[]) => void
 ): (() => void) => {
     const fetchMilestones = async () => {
-        const { data, error } = await supabase
-            .from('developer_milestones')
+        const { data, error } = await devMilestonesTable()
             .select('*')
             .eq('user_id', userId)
             .order('created_at', { ascending: true });
@@ -356,8 +351,7 @@ export const deleteDevMilestone = async (
     _userId: string,
     milestoneId: string
 ): Promise<void> => {
-    const { error } = await supabase
-        .from('developer_milestones')
+    const { error } = await devMilestonesTable()
         .delete()
         .eq('id', milestoneId);
 

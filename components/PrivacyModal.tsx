@@ -87,7 +87,7 @@ export const PrivacyModal: React.FC<PrivacyModalProps> = ({ isOpen, onClose, onA
         setIsRequestingRestriction(true);
         setError(null);
         try {
-            await requestProcessingRestriction('requested_via_privacy_modal');
+            await requestProcessingRestriction();
             setSuccess('Aanvraag voor verwerkingsbeperking is verstuurd. Je school ontvangt dit verzoek.');
         } catch (err: any) {
             setError(err.message);

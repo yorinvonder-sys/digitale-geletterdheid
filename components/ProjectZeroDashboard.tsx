@@ -30,7 +30,7 @@ interface DashboardProps {
     onGoHome?: () => void;
     stats?: UserStats;
     focusMode?: boolean;
-    userRole?: 'student' | 'teacher' | 'admin'; // For teacher bypass of restrictions
+    userRole?: 'student' | 'teacher' | 'admin' | 'developer'; // For teacher bypass of restrictions
 }
 
 interface Mission {
@@ -214,7 +214,7 @@ function buildMissionsForPeriod(yearGroup: number, period: number): Mission[] {
             id: missionId,
             title: role?.title || missionId,
             description: role?.description || '',
-            icon: role?.icon ? React.cloneElement(role.icon as React.ReactElement, { size: 40 }) : <RotateCcw size={40} />,
+            icon: role?.icon ? React.cloneElement(role.icon as React.ReactElement<any>, { size: 40 }) : <RotateCcw size={40} />,
             number: 'Review',
             status: 'available',
             info: overrides.info || role?.problemScenario,
@@ -236,7 +236,7 @@ function buildMissionsForPeriod(yearGroup: number, period: number): Mission[] {
             id: missionId,
             title: role?.title || missionId,
             description: role?.description || '',
-            icon: role?.icon ? React.cloneElement(role.icon as React.ReactElement, { size: 40 }) : <Puzzle size={40} />,
+            icon: role?.icon ? React.cloneElement(role.icon as React.ReactElement<any>, { size: 40 }) : <Puzzle size={40} />,
             number: overrides.number || String(missionNum).padStart(2, '0'),
             status: 'available',
             info: overrides.info || (role ? `${role.problemScenario || ''} ${role.missionObjective || ''}`.trim() : undefined),
@@ -425,13 +425,13 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
     // Subscribe to permission changes
     useEffect(() => {
         // Initial load
-        getGamePermissions(stats?.schoolId).then((initialPerms) => {
+        getGamePermissions(((stats as any)?.schoolId as string | undefined)).then((initialPerms) => {
             setPermissions(initialPerms);
             prevPermissionsRef.current = initialPerms;
         });
 
         // Real-time updates - detect when games become enabled
-        const unsubscribe = subscribeToPermissions(stats?.schoolId, (newPermissions) => {
+        const unsubscribe = subscribeToPermissions(((stats as any)?.schoolId as string | undefined), (newPermissions) => {
             // Check if arena-battle was just enabled
             const arenaBattleWasEnabled = prevPermissionsRef.current?.enabled_games?.includes('arena-battle');
             const arenaBattleIsNowEnabled = newPermissions.enabled_games?.includes('arena-battle');

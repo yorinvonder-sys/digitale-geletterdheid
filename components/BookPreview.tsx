@@ -528,8 +528,8 @@ export const BookPreview: React.FC<BookPreviewProps> = ({ data, onStart, onSendP
                 type: 'book',
                 name: bookName,
                 data: { bookData: data },
-                missionId: 'verhalen-ontwerper',
-                missionName: 'Verhalen Ontwerper'
+                mission_id: 'verhalen-ontwerper',
+                mission_name: 'Verhalen Ontwerper'
             });
             setLibrarySaveSuccess(true);
             setTimeout(() => setLibrarySaveSuccess(false), 3000);

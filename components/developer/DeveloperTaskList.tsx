@@ -117,8 +117,18 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
             };
             
             console.log(`[DeveloperAI] Generating plan for user ${user.uid}`, { taskCount: tasks.length });
-            const proposal = await generateDeveloperPlan(context);
-            
+            const generatedPlan = await generateDeveloperPlan(JSON.stringify(context));
+
+            // Map GeneratedPlan to AIPlanProposal
+            const proposal: AIPlanProposal = {
+                tasks: (generatedPlan?.steps || []).map(s => ({
+                    title: s.title,
+                    description: s.description,
+                    priority: s.priority,
+                })),
+                milestones: generatedPlan?.milestones || [],
+            };
+
             await addDevPlanHistory(user.uid, {
                 proposal,
                 status: 'proposed'
@@ -128,7 +138,7 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
                     console.log("[DeveloperAI] Auto-applying initial plan for empty list...");
                     // Direct application for a smooth first-time experience
                     for (const task of proposal.tasks) {
-                        await addDevTask(user.uid, { checked: false, ...task });
+                        await addDevTask(user.uid, { checked: false, ...task, status: undefined } as Partial<DevTask>);
                     }
                     for (const milestone of proposal.milestones) {
                         await addDevMilestone(user.uid, milestone);
@@ -223,7 +233,7 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
         try {
             await updateDevTask(user.uid, taskId, { 
                 status,
-                checked: status === 'completed'
+                checked: status === 'done'
             });
         } catch (error) {
             console.error("Error updating status:", error);
@@ -250,7 +260,7 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
         );
 
     const handleAIValidation = async () => {
-        const completedTasks = tasks.filter(t => t.status === 'completed' && t.evidence);
+        const completedTasks = tasks.filter(t => t.status === 'done' && t.evidence);
         if (completedTasks.length === 0) {
             alert('Geen voltooide taken met bewijsmateriaal gevonden om te valideren.');
             return;
@@ -296,12 +306,12 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
         if (!aiProposal) return;
         try {
             for (const task of aiProposal.tasks) {
-                await addDevTask(user.uid, { checked: false, ...task });
+                await addDevTask(user.uid, { checked: false, ...task, status: undefined } as Partial<DevTask>);
             }
             for (const milestone of aiProposal.milestones) {
                 await addDevMilestone(user.uid, milestone);
             }
-            
+
             await addDevPlanHistory(user.uid, {
                 proposal: aiProposal,
                 status: 'approved'
@@ -345,7 +355,7 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
                     >
                         <option value="all">Alle</option>
                         <option value="pending">Openstaand</option>
-                        <option value="completed">Voltooid</option>
+                        <option value="done">Voltooid</option>
                     </select>
                 </div>
 
@@ -498,7 +508,7 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
                                             value={task.status}
                                             onChange={(e) => updateTaskStatus(task.id!, e.target.value as any)}
                                             className={`text-[10px] font-black uppercase tracking-widest px-2 py-1 rounded-full border transition-all outline-none ${
-                                                task.status === 'completed' ? 'bg-emerald-50 text-emerald-600 border-emerald-100' :
+                                                task.status === 'done' ? 'bg-emerald-50 text-emerald-600 border-emerald-100' :
                                                 task.status === 'in_progress' ? 'bg-indigo-50 text-indigo-600 border-indigo-100' :
                                                 task.status === 'blocked' ? 'bg-red-50 text-red-600 border-red-100' :
                                                 task.status === 'waiting_external' ? 'bg-purple-50 text-purple-600 border-purple-100' :
@@ -509,7 +519,7 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
                                             <option value="in_progress">Bezig</option>
                                             <option value="blocked">Geblokkeerd</option>
                                             <option value="waiting_external">Extern</option>
-                                            <option value="completed">Gereed</option>
+                                            <option value="done">Gereed</option>
                                         </select>
                                         <span className={`px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${
                                             task.priority === 'high' ? 'bg-red-50 text-red-600' :
@@ -585,7 +595,7 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
                                     </div>
                                 )}
 
-                                {!task.evidence && task.status === 'completed' && (
+                                {!task.evidence && task.status === 'done' && (
                                     <button 
                                         onClick={() => {
                                             const url = window.prompt('URL naar bewijs (optioneel):');
@@ -776,7 +786,7 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
                                         <option value="in_progress">Bezig</option>
                                         <option value="blocked">Geblokkeerd</option>
                                         <option value="waiting_external">Extern</option>
-                                        <option value="completed">Gereed</option>
+                                        <option value="done">Gereed</option>
                                     </select>
                                 </div>
                             </div>

@@ -1,12 +1,15 @@
 import { supabase } from './supabase';
 
+// The user_blocks table has extra columns (blocked_name, reason) not yet in the generated DB types.
+// We use a typed helper to bypass the strict Supabase type checks for this table.
+const userBlocksTable = () => (supabase as any).from('user_blocks');
+
 const challengeRateLimits: Map<string, number[]> = new Map();
 const MAX_CHALLENGES_PER_MINUTE = 5;
 
 export async function blockUser(blockerId: string, blockedId: string, blockedName: string, reason?: string): Promise<boolean> {
     try {
-        const { error } = await supabase
-            .from('user_blocks')
+        const { error } = await userBlocksTable()
             .insert({
                 blocker_id: blockerId,
                 blocked_id: blockedId,
@@ -96,15 +99,14 @@ export async function getBlockRecords(blockerId: string): Promise<Array<{
     createdAt: string;
 }>> {
     try {
-        const { data, error } = await supabase
-            .from('user_blocks')
+        const { data, error } = await userBlocksTable()
             .select('blocked_id, blocked_name, reason, created_at')
             .eq('blocker_id', blockerId)
             .order('created_at', { ascending: false });
 
         if (error) throw error;
 
-        return (data || []).map(row => ({
+        return (data || []).map((row: any) => ({
             blockedId: row.blocked_id,
             blockedName: row.blocked_name,
             reason: row.reason,

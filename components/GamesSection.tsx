@@ -93,20 +93,26 @@ export const GamesSection: React.FC<GamesSectionProps> = ({
     // Subscribe to real-time permission updates from Supabase
     useEffect(() => {
         // Initial load from cache
-        setPermissions({
-            'arena-battle': isGameEnabled('arena-battle'),
-            'code-breaker': isGameEnabled('code-breaker'),
-            'typing-trainer': isGameEnabled('typing-trainer'),
-            // Drawing Duel is always available for students
-            'drawing-duel': true,
+        // Load initial permissions asynchronously
+        Promise.all([
+            isGameEnabled('arena-battle'),
+            isGameEnabled('code-breaker'),
+            isGameEnabled('typing-trainer'),
+        ]).then(([arena, code, typing]) => {
+            setPermissions({
+                'arena-battle': arena,
+                'code-breaker': code,
+                'typing-trainer': typing,
+                'drawing-duel': true,
+            });
         });
 
         // Subscribe to Supabase for real-time updates
-        const unsubscribe = subscribeToPermissions((perms: Record<string, { enabled: boolean }>) => {
+        const unsubscribe = subscribeToPermissions(undefined, (perms) => {
             setPermissions({
-                'arena-battle': perms['arena-battle']?.enabled ?? false,
-                'code-breaker': perms['code-breaker']?.enabled ?? false,
-                'typing-trainer': perms['typing-trainer']?.enabled ?? false,
+                'arena-battle': perms.enabled_games?.includes('arena-battle') ?? false,
+                'code-breaker': perms.enabled_games?.includes('code-breaker') ?? false,
+                'typing-trainer': perms.enabled_games?.includes('typing-trainer') ?? false,
                 'drawing-duel': true,
             });
         });

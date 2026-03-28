@@ -48,7 +48,7 @@ export const AiBeleidFeedbackPanel: React.FC<AiBeleidFeedbackPanelProps> = ({ cl
                 return;
             }
 
-            let items = (data || []) as AiBeleidIdee[];
+            let items = (data || []) as unknown as AiBeleidIdee[];
 
             // Apply class filter if specified
             if (classFilter) {

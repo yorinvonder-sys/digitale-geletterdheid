@@ -155,7 +155,7 @@ export async function verifyC2paCredentials(
             /* webpackChunkName: "c2pa" */
             'c2pa'
         );
-        const c2pa = await createC2pa();
+        const c2pa: any = await (createC2pa as any)();
         const result = await c2pa.read(imageBlob);
 
         if (result?.manifestStore?.activeManifest) {
@@ -163,7 +163,7 @@ export async function verifyC2paCredentials(
             return {
                 claimGenerator: active.claimGenerator || 'unknown',
                 title: active.title || 'unknown',
-                instanceId: active.instanceID || 'unknown',
+                instanceId: active.instanceId || 'unknown',
                 provenance: createImageProvenance('verified'),
                 embedded: true,
             };
@@ -189,7 +189,7 @@ async function embedBinaryC2pa(
             /* webpackChunkName: "c2pa" */
             'c2pa'
         );
-        const c2pa = await createC2pa();
+        const c2pa: any = await (createC2pa as any)();
 
         const { signedAsset } = await c2pa.sign({
             asset: {

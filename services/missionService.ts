@@ -1,5 +1,9 @@
 import { supabase } from './supabase';
 
+// Tables not in the generated DB types.
+const missionProgressTable = () => (supabase as any).from('mission_progress');
+const sharedProjectsTable = () => (supabase as any).from('shared_projects');
+
 /** Recursively strips undefined values and caps nesting depth for Postgres JSONB. */
 function sanitizeForPostgres(data: any, maxDepth = 5, currentDepth = 0): any {
     if (currentDepth > maxDepth) return null;
@@ -26,8 +30,7 @@ export const saveMissionProgress = async (
     try {
         const sanitized = sanitizeForPostgres(progressData);
 
-        const { error } = await supabase
-            .from('mission_progress')
+        const { error } = await missionProgressTable()
             .upsert({
                 user_id: userId,
                 mission_id: missionId,
@@ -53,8 +56,7 @@ export const loadMissionProgress = async (
     missionId: string
 ): Promise<Record<string, any> | null> => {
     try {
-        const { data, error } = await supabase
-            .from('mission_progress')
+        const { data, error } = await missionProgressTable()
             .select('progress_data')
             .eq('user_id', userId)
             .eq('mission_id', missionId)
@@ -73,8 +75,7 @@ export const resetMissionProgress = async (
     missionId: string
 ): Promise<boolean> => {
     try {
-        const { error } = await supabase
-            .from('mission_progress')
+        const { error } = await missionProgressTable()
             .delete()
             .eq('user_id', userId)
             .eq('mission_id', missionId);
@@ -91,8 +92,7 @@ export const getAllMissionProgress = async (
     userId: string
 ): Promise<Record<string, any>> => {
     try {
-        const { data, error } = await supabase
-            .from('mission_progress')
+        const { data, error } = await missionProgressTable()
             .select('mission_id, progress_data, status, score')
             .eq('user_id', userId);
 
@@ -136,8 +136,7 @@ export interface SharedProject {
 }
 
 export const shareProject = async (project: SharedProject): Promise<string> => {
-    const { data, error } = await supabase
-        .from('shared_projects')
+    const { data, error } = await sharedProjectsTable()
         .insert({
             type: project.type,
             data: sanitizeForPostgres(project.data),
@@ -154,8 +153,7 @@ export const shareProject = async (project: SharedProject): Promise<string> => {
 
 export const getSharedProject = async (shareId: string): Promise<SharedProject | null> => {
     try {
-        const { data, error } = await supabase
-            .from('shared_projects')
+        const { data, error } = await sharedProjectsTable()
             .select('*')
             .eq('id', shareId)
             .maybeSingle();

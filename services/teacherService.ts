@@ -10,6 +10,20 @@ import {
 
 export { AVAILABLE_BADGES };
 
+// Several tables have JSONB `data` columns or column structures that don't match
+// the service interfaces. We use untyped helpers to bypass strict type checks.
+const classSettingsTable = () => (supabase as any).from('class_settings');
+const teacherMessagesTable = () => (supabase as any).from('teacher_messages');
+const gamificationEventsTable = () => (supabase as any).from('gamification_events');
+const studentActivitiesTable = () => (supabase as any).from('student_activities');
+const hybridAssessmentsTable = () => (supabase as any).from('hybrid_assessments');
+const highlightedWorkTable = () => (supabase as any).from('highlighted_work');
+const aiBeleidSurveysTable = () => (supabase as any).from('ai_beleid_surveys');
+const aiBeleidFeedbackTable = () => (supabase as any).from('ai_beleid_feedback');
+const teacherNotesTable = () => (supabase as any).from('teacher_notes');
+const studentGroupsTable = () => (supabase as any).from('student_groups');
+const missionProgressTable = () => (supabase as any).from('mission_progress');
+
 // SECURITY: school-scoped access control — verify teacher belongs to same school as student
 const verifySchoolMatch = async (studentId: string, teacherSchoolId: string): Promise<boolean> => {
     const { data: student } = await supabase
@@ -33,9 +47,12 @@ export interface TeacherMessage {
     school_id?: string;
     target_type: 'student' | 'class' | 'all';
     target_id: string;
-    sender_name: string;
-    text: string;
+    sender_name?: string;
+    sender_id?: string;
+    content?: string;
+    text?: string;
     created_at?: string;
+    timestamp?: string;
     read: boolean;
 }
 
@@ -73,8 +90,7 @@ export interface AiBeleidSurveyData {
 // --- Class settings ---
 export const getClassSettings = async (classId: string): Promise<ClassSettings | null> => {
     try {
-        const { data, error } = await supabase
-            .from('class_settings')
+        const { data, error } = await classSettingsTable()
             .select('*')
             .eq('class_id', classId)
             .maybeSingle();
@@ -89,8 +105,7 @@ export const getClassSettings = async (classId: string): Promise<ClassSettings |
 
 export const updateClassSettings = async (classId: string, settings: Partial<ClassSettings> & { schoolId?: string }): Promise<boolean> => {
     try {
-        const { error } = await supabase
-            .from('class_settings')
+        const { error } = await classSettingsTable()
             .upsert({
                 class_id: classId,
                 ...settings,
@@ -109,8 +124,7 @@ export const updateClassSettings = async (classId: string, settings: Partial<Cla
 // --- Messages ---
 export const sendMessage = async (message: Omit<TeacherMessage, 'id' | 'created_at' | 'read'>): Promise<boolean> => {
     try {
-        const { error } = await supabase
-            .from('teacher_messages')
+        const { error } = await teacherMessagesTable()
             .insert({
                 school_id: message.school_id,
                 target_type: message.target_type,
@@ -132,8 +146,7 @@ export const getMessagesForUser = async (userId: string, classId?: string, schoo
     try {
         // SECURITY: school-scoped access control — only fetch messages within same school
         // Get messages for this specific student
-        let studentQuery = supabase
-            .from('teacher_messages')
+        let studentQuery = teacherMessagesTable()
             .select('*')
             .eq('target_type', 'student')
             .eq('target_id', userId);
@@ -144,8 +157,7 @@ export const getMessagesForUser = async (userId: string, classId?: string, schoo
         // Get class messages
         let classMessages: any[] = [];
         if (classId) {
-            let classQuery = supabase
-                .from('teacher_messages')
+            let classQuery = teacherMessagesTable()
                 .select('*')
                 .eq('target_type', 'class')
                 .eq('target_id', classId);
@@ -156,8 +168,7 @@ export const getMessagesForUser = async (userId: string, classId?: string, schoo
         }
 
         // Get broadcast messages
-        let broadcastQuery = supabase
-            .from('teacher_messages')
+        let broadcastQuery = teacherMessagesTable()
             .select('*')
             .eq('target_type', 'all');
         if (schoolId) broadcastQuery = broadcastQuery.eq('school_id', schoolId);
@@ -182,8 +193,7 @@ export const getMessagesForUser = async (userId: string, classId?: string, schoo
 
 export const markMessageRead = async (messageId: string): Promise<void> => {
     try {
-        const { error } = await supabase
-            .from('teacher_messages')
+        const { error } = await teacherMessagesTable()
             .update({ read: true })
             .eq('id', messageId);
         if (error) throw error;
@@ -195,8 +205,7 @@ export const markMessageRead = async (messageId: string): Promise<void> => {
 // --- Gamification events ---
 export const createEvent = async (event: Omit<GamificationEvent, 'id'> & { schoolId?: string }): Promise<boolean> => {
     try {
-        const { error } = await supabase
-            .from('gamification_events')
+        const { error } = await gamificationEventsTable()
             .insert({
                 ...event,
                 school_id: event.schoolId,
@@ -211,8 +220,7 @@ export const createEvent = async (event: Omit<GamificationEvent, 'id'> & { schoo
 
 export const getActiveEvents = async (schoolId?: string): Promise<GamificationEvent[]> => {
     try {
-        let q = supabase
-            .from('gamification_events')
+        let q = gamificationEventsTable()
             .select('*')
             .eq('active', true);
 
@@ -231,8 +239,7 @@ export const getActiveEvents = async (schoolId?: string): Promise<GamificationEv
 
 export const endEvent = async (eventId: string): Promise<void> => {
     try {
-        const { error } = await supabase
-            .from('gamification_events')
+        const { error } = await gamificationEventsTable()
             .update({ active: false })
             .eq('id', eventId);
         if (error) throw error;
@@ -397,7 +404,7 @@ export const updateClassroomConfig = async (classId: string, config: Partial<Cla
             .from('classroom_configs')
             .upsert({
                 id: classId,
-                data: serializeClassroomConfig(nextConfig),
+                data: serializeClassroomConfig(nextConfig) as any,
             }, { onConflict: 'id' });
         if (error) throw error;
     } catch (error) {
@@ -408,8 +415,7 @@ export const updateClassroomConfig = async (classId: string, config: Partial<Cla
 // --- Activity logging ---
 export const logActivity = async (activity: Omit<StudentActivity, 'id' | 'timestamp'> & { missionId?: string }): Promise<void> => {
     try {
-        const { error } = await supabase
-            .from('student_activities')
+        const { error } = await studentActivitiesTable()
             .insert({
                 uid: activity.uid,
                 school_id: (activity as any).schoolId,
@@ -427,8 +433,7 @@ export const logActivity = async (activity: Omit<StudentActivity, 'id' | 'timest
 // --- Hybrid assessment ---
 export const saveHybridAssessmentRecord = async (record: Omit<HybridAssessmentRecord, 'id' | 'timestamp'>): Promise<boolean> => {
     try {
-        const { error } = await supabase
-            .from('hybrid_assessments')
+        const { error } = await hybridAssessmentsTable()
             .insert({
                 uid: record.uid,
                 school_id: record.schoolId,
@@ -460,8 +465,7 @@ export const saveHybridAssessmentRecord = async (record: Omit<HybridAssessmentRe
 // --- Highlighted work ---
 export const highlightWork = async (work: Omit<HighlightedWork, 'id' | 'timestamp'>): Promise<void> => {
     try {
-        const { error } = await supabase
-            .from('highlighted_work')
+        const { error } = await highlightedWorkTable()
             .insert(work);
         if (error) throw error;
     } catch (error) {
@@ -472,8 +476,7 @@ export const highlightWork = async (work: Omit<HighlightedWork, 'id' | 'timestam
 // --- AI beleid brainstorm ---
 export const submitAiBeleidSurvey = async (data: AiBeleidSurveyData): Promise<boolean> => {
     try {
-        const { error } = await supabase
-            .from('ai_beleid_surveys')
+        const { error } = await aiBeleidSurveysTable()
             .insert({
                 uid: data.uid,
                 school_id: data.school_id,
@@ -494,8 +497,7 @@ export const submitAiBeleidSurvey = async (data: AiBeleidSurveyData): Promise<bo
 
 export const submitAiBeleidIdee = async (idee: Omit<AiBeleidIdee, 'id' | 'timestamp' | 'stemmen' | 'gestemdeUids'>): Promise<string | null> => {
     try {
-        const { data, error } = await supabase
-            .from('ai_beleid_feedback')
+        const { data, error } = await aiBeleidFeedbackTable()
             .insert({
                 ...idee,
                 stemmen: 0,
@@ -514,8 +516,7 @@ export const submitAiBeleidIdee = async (idee: Omit<AiBeleidIdee, 'id' | 'timest
 
 export const getAiBeleidIdeeen = async (filterClass?: string, schoolId?: string): Promise<AiBeleidIdee[]> => {
     try {
-        let q = supabase
-            .from('ai_beleid_feedback')
+        let q = aiBeleidFeedbackTable()
             .select('*')
             .order('created_at', { ascending: false });
 
@@ -608,8 +609,7 @@ export const resetStudentPassword = async (studentUid: string, customPassword?: 
 // ============ TEACHER NOTES ============
 export const addTeacherNote = async (note: Omit<TeacherNote, 'id' | 'created_at' | 'updated_at'>): Promise<string | null> => {
     try {
-        const { data, error } = await supabase
-            .from('teacher_notes')
+        const { data, error } = await teacherNotesTable()
             .insert(note)
             .select('id')
             .single();
@@ -625,8 +625,7 @@ export const addTeacherNote = async (note: Omit<TeacherNote, 'id' | 'created_at'
 export const getTeacherNotes = async (studentUid: string, teacherSchoolId?: string): Promise<TeacherNote[]> => {
     try {
         // SECURITY: school-scoped access control
-        let q = supabase
-            .from('teacher_notes')
+        let q = teacherNotesTable()
             .select('*')
             .eq('student_uid', studentUid)
             .order('created_at', { ascending: false });
@@ -646,8 +645,7 @@ export const getTeacherNotes = async (studentUid: string, teacherSchoolId?: stri
 
 export const updateTeacherNote = async (noteId: string, updates: Partial<TeacherNote> & { schoolId?: string }): Promise<boolean> => {
     try {
-        const { error } = await supabase
-            .from('teacher_notes')
+        const { error } = await teacherNotesTable()
             .update({
                 ...updates,
                 updated_at: new Date().toISOString(),
@@ -664,8 +662,7 @@ export const updateTeacherNote = async (noteId: string, updates: Partial<Teacher
 
 export const deleteTeacherNote = async (noteId: string): Promise<boolean> => {
     try {
-        const { error } = await supabase
-            .from('teacher_notes')
+        const { error } = await teacherNotesTable()
             .delete()
             .eq('id', noteId);
         if (error) throw error;
@@ -679,8 +676,7 @@ export const deleteTeacherNote = async (noteId: string): Promise<boolean> => {
 // ============ STUDENT GROUPS ============
 export const createStudentGroup = async (group: Omit<StudentGroup, 'id' | 'created_at'>): Promise<string | null> => {
     try {
-        const { data, error } = await supabase
-            .from('student_groups')
+        const { data, error } = await studentGroupsTable()
             .insert(group)
             .select('id')
             .single();
@@ -695,7 +691,7 @@ export const createStudentGroup = async (group: Omit<StudentGroup, 'id' | 'creat
 
 export const getStudentGroups = async (classId?: string, schoolId?: string): Promise<StudentGroup[]> => {
     try {
-        let q = supabase.from('student_groups').select('*');
+        let q = studentGroupsTable().select('*');
 
         if (schoolId) q = q.eq('school_id', schoolId);
         if (classId) q = q.eq('class_id', classId);
@@ -713,8 +709,7 @@ export const getStudentGroups = async (classId?: string, schoolId?: string): Pro
 
 export const updateStudentGroup = async (groupId: string, updates: Partial<StudentGroup>): Promise<boolean> => {
     try {
-        const { error } = await supabase
-            .from('student_groups')
+        const { error } = await studentGroupsTable()
             .update(updates)
             .eq('id', groupId);
         if (error) throw error;
@@ -740,8 +735,7 @@ export const getStudentMissionScores = async (userId: string, teacherSchoolId?: 
             console.error('School mismatch: teacher cannot view scores of student from another school');
             return [];
         }
-        const { data, error } = await supabase
-            .from('mission_progress')
+        const { data, error } = await missionProgressTable()
             .select('mission_id, status, score, updated_at')
             .eq('user_id', userId)
             .order('updated_at', { ascending: false });
@@ -775,8 +769,7 @@ export const getClassroomConfigs = async (classIds: string[]): Promise<Classroom
 
 export const deleteStudentGroup = async (groupId: string): Promise<boolean> => {
     try {
-        const { error } = await supabase
-            .from('student_groups')
+        const { error } = await studentGroupsTable()
             .delete()
             .eq('id', groupId);
         if (error) throw error;
@@ -789,8 +782,7 @@ export const deleteStudentGroup = async (groupId: string): Promise<boolean> => {
 
 export const addStudentToGroup = async (groupId: string, studentUid: string): Promise<boolean> => {
     try {
-        const { data: group, error: fetchError } = await supabase
-            .from('student_groups')
+        const { data: group, error: fetchError } = await studentGroupsTable()
             .select('student_uids')
             .eq('id', groupId)
             .single();
@@ -801,8 +793,7 @@ export const addStudentToGroup = async (groupId: string, studentUid: string): Pr
         const current = (group.student_uids as string[]) || [];
         if (current.includes(studentUid)) return true;
 
-        const { error } = await supabase
-            .from('student_groups')
+        const { error } = await studentGroupsTable()
             .update({ student_uids: [...current, studentUid] })
             .eq('id', groupId);
 
@@ -816,8 +807,7 @@ export const addStudentToGroup = async (groupId: string, studentUid: string): Pr
 
 export const removeStudentFromGroup = async (groupId: string, studentUid: string): Promise<boolean> => {
     try {
-        const { data: group, error: fetchError } = await supabase
-            .from('student_groups')
+        const { data: group, error: fetchError } = await studentGroupsTable()
             .select('student_uids')
             .eq('id', groupId)
             .single();
@@ -826,8 +816,7 @@ export const removeStudentFromGroup = async (groupId: string, studentUid: string
         if (!group) return false;
 
         const current = (group.student_uids as string[]) || [];
-        const { error } = await supabase
-            .from('student_groups')
+        const { error } = await studentGroupsTable()
             .update({ student_uids: current.filter(uid => uid !== studentUid) })
             .eq('id', groupId);
 

@@ -792,14 +792,6 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
                         text: "Net als jouw hersenen bestaat AI uit lagen. De eerste laag ziet pixels, de volgende ziet lijnen, dan vormen, en ten slotte herkent het 'een kat'. Soms raakt de AI in de war als de pixels lijken op iets anders!"
                     }}
                     onExit={() => setShowConclusion(false)}
-                    enablePeerFeedback={enablePeerFeedback}
-                    {...(peerFeedbackProps && {
-                        currentUserId: peerFeedbackProps.currentUserId,
-                        currentUserName: peerFeedbackProps.currentUserName,
-                        targetUserId: peerFeedbackProps.targetUserId,
-                        missionId: peerFeedbackProps.missionId,
-                        schoolId: peerFeedbackProps.schoolId,
-                    })}
                 />
             )}
 

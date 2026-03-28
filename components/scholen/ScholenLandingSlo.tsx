@@ -20,8 +20,8 @@ interface SloDomain {
     kerndoelen: SloKerndoel[];
 }
 
-const IconChevronDown = ({ className = '' }: { className?: string }) => (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden="true">
+const IconChevronDown = ({ className = '', style }: { className?: string; style?: React.CSSProperties }) => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} style={style} aria-hidden="true">
         <path d="m6 9 6 6 6-6" />
     </svg>
 );

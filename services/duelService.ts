@@ -1,5 +1,11 @@
 import { supabase } from './supabase';
 import type { RealtimeChannel } from '@supabase/supabase-js';
+
+// Duel tables are not in the generated DB types.
+const duelPresenceTable = () => (supabase as any).from('duel_presence');
+const duelChallengesTable = () => (supabase as any).from('duel_challenges');
+const activeDuelsTable = () => (supabase as any).from('active_duels');
+
 export interface OnlinePlayer {
     uid: string;
     name: string;
@@ -42,8 +48,7 @@ export interface ActiveDuel {
 // --- Presence ---
 export const setPlayerOnline = async (uid: string, name: string, classId?: string, schoolId?: string): Promise<void> => {
     try {
-        const { error } = await supabase
-            .from('duel_presence')
+        const { error } = await duelPresenceTable()
             .upsert({
                 uid,
                 name,
@@ -60,8 +65,7 @@ export const setPlayerOnline = async (uid: string, name: string, classId?: strin
 
 export const setPlayerOffline = async (uid: string): Promise<void> => {
     try {
-        const { error } = await supabase
-            .from('duel_presence')
+        const { error } = await duelPresenceTable()
             .delete()
             .eq('uid', uid);
         if (error) throw error;
@@ -78,8 +82,7 @@ export const subscribeToOnlinePlayers = (
         // Only show players online in the last 2 minutes
         const twoMinutesAgo = new Date(Date.now() - 120000).toISOString();
 
-        let q = supabase
-            .from('duel_presence')
+        let q = duelPresenceTable()
             .select('*')
             .gte('online_at', twoMinutesAgo);
 
@@ -119,8 +122,7 @@ export const subscribeToOnlinePlayers = (
 
 // --- Challenges ---
 export const sendChallenge = async (challenge: Omit<DuelChallenge, 'id' | 'created_at' | 'status'>): Promise<string> => {
-    const { data, error } = await supabase
-        .from('duel_challenges')
+    const { data, error } = await duelChallengesTable()
         .insert({
             ...challenge,
             status: 'pending',
@@ -133,8 +135,7 @@ export const sendChallenge = async (challenge: Omit<DuelChallenge, 'id' | 'creat
 };
 
 export const respondToChallenge = async (challengeId: string, accept: boolean): Promise<void> => {
-    const { error } = await supabase
-        .from('duel_challenges')
+    const { error } = await duelChallengesTable()
         .update({ status: accept ? 'accepted' : 'declined' })
         .eq('id', challengeId);
 
@@ -146,8 +147,7 @@ export const subscribeToChallenges = (
     onUpdate: (challenges: DuelChallenge[]) => void
 ): (() => void) => {
     const fetchChallenges = async () => {
-        const { data, error } = await supabase
-            .from('duel_challenges')
+        const { data, error } = await duelChallengesTable()
             .select('*')
             .eq('challenged_uid', uid)
             .eq('status', 'pending')
@@ -178,8 +178,7 @@ export const subscribeToChallenges = (
 export const cleanupExpiredChallenges = async (): Promise<void> => {
     const fiveMinutesAgo = new Date(Date.now() - 300000).toISOString();
 
-    await supabase
-        .from('duel_challenges')
+    await duelChallengesTable()
         .update({ status: 'expired' })
         .eq('status', 'pending')
         .lt('created_at', fiveMinutesAgo);
@@ -187,8 +186,7 @@ export const cleanupExpiredChallenges = async (): Promise<void> => {
 
 // --- Active duels ---
 export const createDuel = async (duel: Omit<ActiveDuel, 'id' | 'created_at' | 'updated_at'>): Promise<string> => {
-    const { data, error } = await supabase
-        .from('active_duels')
+    const { data, error } = await activeDuelsTable()
         .insert(duel)
         .select('id')
         .single();
@@ -198,8 +196,7 @@ export const createDuel = async (duel: Omit<ActiveDuel, 'id' | 'created_at' | 'u
 };
 
 export const updateDuel = async (duelId: string, updates: Partial<ActiveDuel>): Promise<void> => {
-    const { error } = await supabase
-        .from('active_duels')
+    const { error } = await activeDuelsTable()
         .update({
             ...updates,
             updated_at: new Date().toISOString(),
@@ -214,8 +211,7 @@ export const subscribeToDuel = (
     onUpdate: (duel: ActiveDuel | null) => void
 ): (() => void) => {
     const fetchDuel = async () => {
-        const { data, error } = await supabase
-            .from('active_duels')
+        const { data, error } = await activeDuelsTable()
             .select('*')
             .eq('id', duelId)
             .maybeSingle();
@@ -253,8 +249,7 @@ export const updateDrawingData = async (duelId: string, drawingData: any): Promi
 };
 
 export const submitGuess = async (duelId: string, guess: string, guesserId: string): Promise<boolean> => {
-    const { data: duel, error } = await supabase
-        .from('active_duels')
+    const { data: duel, error } = await activeDuelsTable()
         .select('current_word, player1_uid, player1_score, player2_score')
         .eq('id', duelId)
         .single();
@@ -279,8 +274,7 @@ export const submitGuess = async (duelId: string, guess: string, guesserId: stri
 };
 
 export const getActiveDuelForUser = async (uid: string): Promise<ActiveDuel | null> => {
-    const { data, error } = await supabase
-        .from('active_duels')
+    const { data, error } = await activeDuelsTable()
         .select('*')
         .neq('status', 'finished')
         .or(`player1_uid.eq.${uid},player2_uid.eq.${uid}`)

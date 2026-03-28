@@ -1,12 +1,14 @@
 import { supabase } from './supabase';
 
+// The mission_progress table is not in the generated DB types.
+const missionProgressTable = () => (supabase as any).from('mission_progress');
+
 export const saveGameCode = async (
     userId: string,
     missionId: string,
     code: string
 ): Promise<void> => {
-    const { error } = await supabase
-        .from('mission_progress')
+    const { error } = await missionProgressTable()
         .upsert({
             user_id: userId,
             mission_id: missionId,
@@ -26,8 +28,7 @@ export const loadGameCode = async (
     userId: string,
     missionId: string
 ): Promise<string | null> => {
-    const { data, error } = await supabase
-        .from('mission_progress')
+    const { data, error } = await missionProgressTable()
         .select('game_code')
         .eq('user_id', userId)
         .eq('mission_id', missionId)

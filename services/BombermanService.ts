@@ -1,5 +1,10 @@
 import { supabase } from './supabase';
 import type { RealtimeChannel } from '@supabase/supabase-js';
+
+// The bomberman_lobbies table is not yet in the generated DB types.
+// We use an untyped helper to bypass strict Supabase type checks.
+const lobbiesTable = () => (supabase as any).from('bomberman_lobbies');
+
 export interface BombermanLobby {
     id?: string;
     host_uid: string;
@@ -12,6 +17,9 @@ export interface BombermanLobby {
     settings: BombermanSettings;
     created_at?: string;
     updated_at?: string;
+    playerCount: number;
+    playerNames: string[];
+    lobbyStartTime?: string;
 }
 
 export interface BombermanPlayer {
@@ -31,8 +39,7 @@ export interface BombermanSettings {
 
 // --- Lobby management ---
 export const createLobby = async (lobby: Omit<BombermanLobby, 'id' | 'created_at' | 'updated_at'>): Promise<string> => {
-    const { data, error } = await supabase
-        .from('bomberman_lobbies')
+    const { data, error } = await lobbiesTable()
         .insert(lobby)
         .select('id')
         .single();
@@ -42,8 +49,7 @@ export const createLobby = async (lobby: Omit<BombermanLobby, 'id' | 'created_at
 };
 
 export const getLobby = async (lobbyId: string): Promise<BombermanLobby | null> => {
-    const { data, error } = await supabase
-        .from('bomberman_lobbies')
+    const { data, error } = await lobbiesTable()
         .select('*')
         .eq('id', lobbyId)
         .maybeSingle();
@@ -53,8 +59,7 @@ export const getLobby = async (lobbyId: string): Promise<BombermanLobby | null> 
 };
 
 export const updateLobby = async (lobbyId: string, updates: Partial<BombermanLobby>): Promise<void> => {
-    const { error } = await supabase
-        .from('bomberman_lobbies')
+    const { error } = await lobbiesTable()
         .update({
             ...updates,
             updated_at: new Date().toISOString(),
@@ -65,8 +70,7 @@ export const updateLobby = async (lobbyId: string, updates: Partial<BombermanLob
 };
 
 export const deleteLobby = async (lobbyId: string): Promise<void> => {
-    const { error } = await supabase
-        .from('bomberman_lobbies')
+    const { error } = await lobbiesTable()
         .delete()
         .eq('id', lobbyId);
 
@@ -76,8 +80,7 @@ export const deleteLobby = async (lobbyId: string): Promise<void> => {
 // --- Player management ---
 export const joinLobby = async (lobbyId: string, player: BombermanPlayer): Promise<boolean> => {
     try {
-        const { data: lobby, error: fetchError } = await supabase
-            .from('bomberman_lobbies')
+        const { data: lobby, error: fetchError } = await lobbiesTable()
             .select('players, max_players, status')
             .eq('id', lobbyId)
             .single();
@@ -89,8 +92,7 @@ export const joinLobby = async (lobbyId: string, player: BombermanPlayer): Promi
         if (players.length >= lobby.max_players) return false;
         if (players.some(p => p.uid === player.uid)) return true; // Already joined
 
-        const { error } = await supabase
-            .from('bomberman_lobbies')
+        const { error } = await lobbiesTable()
             .update({
                 players: [...players, player],
                 updated_at: new Date().toISOString(),
@@ -107,8 +109,7 @@ export const joinLobby = async (lobbyId: string, player: BombermanPlayer): Promi
 
 export const leaveLobby = async (lobbyId: string, uid: string): Promise<void> => {
     try {
-        const { data: lobby, error: fetchError } = await supabase
-            .from('bomberman_lobbies')
+        const { data: lobby, error: fetchError } = await lobbiesTable()
             .select('players')
             .eq('id', lobbyId)
             .single();
@@ -118,8 +119,7 @@ export const leaveLobby = async (lobbyId: string, uid: string): Promise<void> =>
         const players = (lobby.players as BombermanPlayer[]) || [];
         const updated = players.filter(p => p.uid !== uid);
 
-        const { error } = await supabase
-            .from('bomberman_lobbies')
+        const { error } = await lobbiesTable()
             .update({
                 players: updated,
                 updated_at: new Date().toISOString(),
@@ -134,8 +134,7 @@ export const leaveLobby = async (lobbyId: string, uid: string): Promise<void> =>
 
 export const setPlayerReady = async (lobbyId: string, uid: string, ready: boolean): Promise<void> => {
     try {
-        const { data: lobby, error: fetchError } = await supabase
-            .from('bomberman_lobbies')
+        const { data: lobby, error: fetchError } = await lobbiesTable()
             .select('players')
             .eq('id', lobbyId)
             .single();
@@ -145,8 +144,7 @@ export const setPlayerReady = async (lobbyId: string, uid: string, ready: boolea
         const players = (lobby.players as BombermanPlayer[]) || [];
         const updated = players.map(p => p.uid === uid ? { ...p, ready } : p);
 
-        const { error } = await supabase
-            .from('bomberman_lobbies')
+        const { error } = await lobbiesTable()
             .update({
                 players: updated,
                 updated_at: new Date().toISOString(),
@@ -192,8 +190,7 @@ export const subscribeToLobby = (
  * Get available lobbies to join
  */
 export const getAvailableLobbies = async (schoolId?: string): Promise<BombermanLobby[]> => {
-    let q = supabase
-        .from('bomberman_lobbies')
+    let q = lobbiesTable()
         .select('*')
         .eq('status', 'waiting')
         .order('created_at', { ascending: false });
@@ -207,8 +204,7 @@ export const getAvailableLobbies = async (schoolId?: string): Promise<BombermanL
 
 // --- Teacher controls ---
 export const endAllGames = async (schoolId: string): Promise<void> => {
-    const { error } = await supabase
-        .from('bomberman_lobbies')
+    const { error } = await lobbiesTable()
         .update({
             status: 'finished',
             updated_at: new Date().toISOString(),
@@ -220,8 +216,7 @@ export const endAllGames = async (schoolId: string): Promise<void> => {
 };
 
 export const pauseAllGames = async (schoolId: string): Promise<void> => {
-    const { error } = await supabase
-        .from('bomberman_lobbies')
+    const { error } = await lobbiesTable()
         .update({
             status: 'waiting',
             updated_at: new Date().toISOString(),
@@ -240,8 +235,7 @@ export const subscribeToActiveLobbies = (
     onUpdate: (lobbies: (BombermanLobby & { playerCount: number })[]) => void
 ): (() => void) => {
     const fetchLobbies = async () => {
-        const { data, error } = await supabase
-            .from('bomberman_lobbies')
+        const { data, error } = await lobbiesTable()
             .select('*')
             .neq('status', 'finished')
             .order('created_at', { ascending: false });
@@ -281,8 +275,7 @@ export const subscribeToActiveLobbies = (
  * Force-start all waiting lobbies (teacher action).
  */
 export const forceStartAllLobbies = async (_teacherId: string): Promise<number> => {
-    const { data, error } = await supabase
-        .from('bomberman_lobbies')
+    const { data, error } = await lobbiesTable()
         .update({
             status: 'playing',
             updated_at: new Date().toISOString(),
@@ -301,8 +294,7 @@ export const forceStartAllLobbies = async (_teacherId: string): Promise<number> 
  * Force-start waiting lobbies filtered by class (teacher action).
  */
 export const forceStartLobbiesByClass = async (classId: string, _teacherId: string): Promise<number> => {
-    const { data, error } = await supabase
-        .from('bomberman_lobbies')
+    const { data, error } = await lobbiesTable()
         .update({
             status: 'playing',
             updated_at: new Date().toISOString(),

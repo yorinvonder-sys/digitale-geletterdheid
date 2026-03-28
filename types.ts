@@ -30,6 +30,8 @@ export type RoleId =
   'ai-beleid-brainstorm' |
   // Leerjaar 1 - Reviews
   'cloud-cleaner' | 'pitch-police' |
+  // Leerjaar 1 - Extra
+  'prompt-master' | 'game-director' | 'data-verzamelaar' | 'code-denker' |
   // Leerjaar 2 - Periode 1: Data & Informatie
   'data-journalist' | 'spreadsheet-specialist' | 'factchecker' | 'api-verkenner' | 'dashboard-designer' | 'ai-bias-detective' | 'data-review' |
   // Leerjaar 2 - Periode 2: Programmeren & CT
@@ -40,6 +42,8 @@ export type RoleId =
   'ai-ethicus' | 'digital-rights-defender' | 'tech-court' | 'future-forecaster' | 'sustainability-scanner' | 'eindproject-j2' |
   // Leerjaar 3 - Periode 1: Geavanceerd Programmeren & AI
   'ml-trainer' | 'api-architect' | 'neural-navigator' | 'data-pipeline' | 'open-source-contributor' | 'advanced-code-review' |
+  // Leerjaar 2 - Extra
+  'network-navigator' | 'privacy-by-design' |
   // Leerjaar 3 - Periode 2: Cybersecurity & Privacy
   'cyber-detective' | 'encryption-expert' | 'phishing-fighter' | 'security-auditor' | 'digital-forensics' | 'security-review' |
   // Leerjaar 3 - Periode 3: Maatschappelijke Impact
@@ -104,16 +108,17 @@ export interface AgentRole {
   id: RoleId;
   title: string;
   icon: ReactNode;
-  color: string;
-  description: string;
+  color?: string;
+  description?: string;
   systemInstruction: string;
-  missionObjective: string; // De Oplossing/Taak
-  problemScenario: string;  // NIEUW: Het Probleem/De Urgentie
-  briefingImage: string;    // NIEUW: Visuele ondersteuning
-  difficulty: 'Easy' | 'Medium' | 'Hard';
-  examplePrompt: string;
+  missionObjective?: string; // De Oplossing/Taak
+  problemScenario?: string;  // NIEUW: Het Probleem/De Urgentie
+  briefingImage?: string;    // NIEUW: Visuele ondersteuning
+  difficulty?: 'Easy' | 'Medium' | 'Hard';
+  examplePrompt?: string;
   steps: MissionStep[];
-  visualPreview: ReactNode;
+  visualPreview?: ReactNode;
+  isReview?: boolean;
   initialCode?: string;
   bonusChallenges?: BonusChallenge[];  // Optional bonus challenges for fast learners
   // NEW: Clear goal system

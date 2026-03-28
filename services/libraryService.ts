@@ -3,6 +3,9 @@
 
 import { supabase } from './supabase';
 
+// The library_items table is not in the generated DB types.
+const libraryTable = () => (supabase as any).from('library_items');
+
 export type LibraryItemType = 'game' | 'book' | 'chatbot' | 'drawing';
 
 export interface LibraryItem {
@@ -25,8 +28,7 @@ export async function saveToLibrary(
 ): Promise<string> {
     if (!userId) throw new Error('User ID required');
 
-    const { data, error } = await supabase
-        .from('library_items')
+    const { data, error } = await libraryTable()
         .insert({
             user_id: userId,
             type: item.type,
@@ -48,8 +50,7 @@ export async function saveToLibrary(
 export async function getLibraryItems(userId: string): Promise<LibraryItem[]> {
     if (!userId) return [];
 
-    const { data, error } = await supabase
-        .from('library_items')
+    const { data, error } = await libraryTable()
         .select('*')
         .eq('user_id', userId)
         .order('created_at', { ascending: false });
@@ -61,8 +62,7 @@ export async function getLibraryItems(userId: string): Promise<LibraryItem[]> {
 export async function getLibraryItem(userId: string, itemId: string): Promise<LibraryItem | null> {
     if (!userId || !itemId) return null;
 
-    const { data, error } = await supabase
-        .from('library_items')
+    const { data, error } = await libraryTable()
         .select('*')
         .eq('id', itemId)
         .eq('user_id', userId)
@@ -75,8 +75,7 @@ export async function getLibraryItem(userId: string, itemId: string): Promise<Li
 export async function deleteLibraryItem(userId: string, itemId: string): Promise<boolean> {
     if (!userId || !itemId) return false;
 
-    const { error } = await supabase
-        .from('library_items')
+    const { error } = await libraryTable()
         .delete()
         .eq('id', itemId)
         .eq('user_id', userId);
@@ -92,8 +91,7 @@ export async function updateLibraryItem(
 ): Promise<boolean> {
     if (!userId || !itemId) return false;
 
-    const { error } = await supabase
-        .from('library_items')
+    const { error } = await libraryTable()
         .update({
             ...updates,
             updated_at: new Date().toISOString(),
@@ -108,8 +106,7 @@ export async function updateLibraryItem(
 export async function getLibraryCount(userId: string): Promise<number> {
     if (!userId) return 0;
 
-    const { count, error } = await supabase
-        .from('library_items')
+    const { count, error } = await libraryTable()
         .select('*', { count: 'exact', head: true })
         .eq('user_id', userId);
 

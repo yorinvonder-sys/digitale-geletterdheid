@@ -242,7 +242,7 @@ export function AccountantDashboard({ userId }: AccountantDashboardProps) {
                     />
                 )}
                 {activeTab === 'activa' && (
-                    <AssetsPanel userId={userId} year={year} />
+                    <AssetsPanel userId={userId} year={year} onRefresh={() => {}} />
                 )}
                 {activeTab === 'export' && (
                     <ExportPanel userId={userId} year={year} settings={settings} />

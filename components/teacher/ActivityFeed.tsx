@@ -27,7 +27,7 @@ export const ActivityFeed: React.FC<ActivityFeedProps> = ({ schoolId }) => {
             const { data, error } = await queryBuilder;
 
             if (!error && data) {
-                setActivities(data as StudentActivity[]);
+                setActivities(data as unknown as StudentActivity[]);
             } else if (error) {
                 console.error("ActivityFeed error:", error);
             }

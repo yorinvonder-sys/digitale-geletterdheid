@@ -16,7 +16,7 @@ import {
     formatEuro,
     formatDate,
 } from '../../../services/accountantService';
-import { createAsset } from '../../../services/accountantAssetService';
+import { createAsset, AssetCategory } from '../../../services/accountantAssetService';
 
 interface ReceiptsPanelProps {
     receipts: AccountantReceipt[];
@@ -174,8 +174,9 @@ export function ReceiptsPanel({ receipts, userId, onRefresh }: ReceiptsPanelProp
                         residual_value:      0,
                         useful_life_years:   scanAssetData.assetLifeYears || 5,
                         depreciation_method: 'linear',
-                        category:            scanAssetData.assetCategory || 'overig',
+                        category:            (scanAssetData.assetCategory || 'overig') as AssetCategory,
                         notes:               `Automatisch aangemaakt vanuit bonnetje (${form.supplier})`,
+                        is_disposed:         false,
                     });
                 } catch (e) {
                     console.warn('Asset aanmaken mislukt:', e);

@@ -42,7 +42,7 @@ export const LiveStudentModal: React.FC<LiveStudentModalProps> = ({ student, onC
                 .limit(50);
 
             if (!error && data) {
-                setActivities(data as StudentActivity[]);
+                setActivities(data as unknown as StudentActivity[]);
             }
             setLoading(false);
         };

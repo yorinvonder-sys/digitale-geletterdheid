@@ -5,8 +5,8 @@
 import React, { useState } from 'react';
 import { trackEvent } from '../../services/analyticsService';
 
-const IconCheckCircle = ({ className = '' }: { className?: string }) => (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden="true">
+const IconCheckCircle = ({ className = '', style }: { className?: string; style?: React.CSSProperties }) => (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} style={style} aria-hidden="true">
         <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
         <path d="m9 11 3 3L22 4" />
     </svg>

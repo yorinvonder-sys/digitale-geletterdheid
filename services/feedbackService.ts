@@ -1,6 +1,9 @@
 import { supabase } from './supabase';
 import { sanitizeTextInput } from '../utils/inputSanitizer';
 
+// The feedback table is not in the generated DB types.
+const feedbackTable = () => (supabase as any).from('feedback');
+
 export interface Feedback {
     id?: string;
     user_id: string;
@@ -22,8 +25,7 @@ export async function submitFeedback(
     const safeMessage = sanitizeTextInput(message, 2000);
     const safeName = sanitizeTextInput(userName, 100);
 
-    const { data, error } = await supabase
-        .from('feedback')
+    const { data, error } = await feedbackTable()
         .insert({
             user_id: userId,
             user_name: safeName,
@@ -40,8 +42,7 @@ export async function submitFeedback(
 }
 
 export async function getAllFeedback(schoolId?: string): Promise<Feedback[]> {
-    let q = supabase
-        .from('feedback')
+    let q = feedbackTable()
         .select('*')
         .order('created_at', { ascending: false });
 
@@ -55,8 +56,7 @@ export async function getAllFeedback(schoolId?: string): Promise<Feedback[]> {
 }
 
 export async function deleteFeedback(feedbackId: string): Promise<void> {
-    const { error } = await supabase
-        .from('feedback')
+    const { error } = await feedbackTable()
         .delete()
         .eq('id', feedbackId);
 

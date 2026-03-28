@@ -35,7 +35,7 @@ export const useTeacherMessages = ({ userId, classId, enabled = true }: UseTeach
                 .limit(15);
 
             if (!error && data) {
-                const msgs = data as TeacherMessage[];
+                const msgs = data as unknown as TeacherMessage[];
                 checkForNewMessages(msgs);
             }
         };

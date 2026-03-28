@@ -55,7 +55,7 @@ export async function publishGame(
     if (schoolId) gameData.school_id = schoolId;
     if (description?.trim()) gameData.description = description.trim();
 
-    const { data, error } = await supabase
+    const { data, error } = await (supabase as any)
         .from('shared_games')
         .insert(gameData)
         .select('id')
@@ -76,7 +76,7 @@ export async function getSharedGames(classFilter?: string, schoolId?: string): P
 
     const { data, error } = await q;
     if (error) throw error;
-    return (data || []) as SharedGame[];
+    return (data || []) as unknown as SharedGame[];
 }
 
 
@@ -88,7 +88,7 @@ export async function getSharedGame(gameId: string): Promise<SharedGame | null> 
         .maybeSingle();
 
     if (error) throw error;
-    return data as SharedGame | null;
+    return data as unknown as SharedGame | null;
 }
 
 

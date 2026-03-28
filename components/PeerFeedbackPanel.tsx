@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ThumbsUp, Lightbulb, HelpCircle, Send, MessageSquare, Loader2, AlertCircle } from 'lucide-react';
-import { submitPeerFeedback, getFeedbackForMission, PeerFeedback } from '../services/peerFeedbackService';
+import { submitLegacyPeerFeedback, getFeedbackForMission, PeerFeedback } from '../services/peerFeedbackService';
 
 // =====================================================================
 // CONTENT FILTER — Block inappropriate content (same pattern as
@@ -134,7 +134,7 @@ export const PeerFeedbackPanel: React.FC<PeerFeedbackPanelProps> = ({
     setIsSubmitting(true);
 
     try {
-      await submitPeerFeedback({
+      await submitLegacyPeerFeedback({
         fromUid: currentUserId,
         fromName: currentUserName,
         targetUid: targetUserId,

@@ -87,7 +87,7 @@ export const useBombermanGame = (avatarConfig: AvatarConfig, schoolId?: string, 
                     .eq('id', roomId)
                     .single();
 
-                const currentPlayers = roomData?.players || {};
+                const currentPlayers = (roomData?.players || {}) as Record<string, any>;
                 const updatedPlayers = { ...currentPlayers, [user.id]: newPlayer };
 
                 await supabase
@@ -149,19 +149,20 @@ export const useBombermanGame = (avatarConfig: AvatarConfig, schoolId?: string, 
                     .single();
 
                 if (initialRoom) {
-                    const parsedGrid = typeof initialRoom.grid === 'string' ? JSON.parse(initialRoom.grid as string) : initialRoom.grid;
+                    const room = initialRoom as any;
+                    const parsedGrid = typeof room.grid === 'string' ? JSON.parse(room.grid as string) : room.grid;
                     setGameState({
-                        id: initialRoom.id,
-                        status: initialRoom.status as GameStatus,
+                        id: room.id,
+                        status: room.status as GameStatus,
                         grid: parsedGrid,
-                        players: (initialRoom.players || {}) as Record<string, Player>,
-                        bombs: (initialRoom.bombs || {}) as Record<string, Bomb>,
-                        explosions: (initialRoom.explosions || {}) as Record<string, any>,
-                        createdAt: initialRoom.created_at ? new Date(initialRoom.created_at).getTime() : Date.now(),
-                        winnerId: (initialRoom as any).winner_id,
-                        lobbyStartTime: (initialRoom as any).lobby_start_time ? new Date((initialRoom as any).lobby_start_time).getTime() : undefined,
-                        forceStarted: (initialRoom as any).force_started,
-                        forceStartedBy: (initialRoom as any).force_started_by
+                        players: (room.players || {}) as Record<string, Player>,
+                        bombs: (room.bombs || {}) as Record<string, Bomb>,
+                        explosions: (room.explosions || {}) as Record<string, any>,
+                        createdAt: room.created_at ? new Date(room.created_at).getTime() : Date.now(),
+                        winnerId: room.winner_id,
+                        lobbyStartTime: room.lobby_start_time ? new Date(room.lobby_start_time).getTime() : undefined,
+                        forceStarted: room.force_started,
+                        forceStartedBy: room.force_started_by
                     });
                 }
 

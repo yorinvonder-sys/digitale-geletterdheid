@@ -3,6 +3,9 @@
 
 import { supabase } from './supabase';
 
+// The xp_abuse_logs table is not in the generated DB types.
+const xpAbuseLogsTable = () => (supabase as any).from('xp_abuse_logs');
+
 interface RateLimitEntry {
     timestamps: number[];
     totalXpLast24h: number;
@@ -91,7 +94,7 @@ async function logSuspiciousActivity(
     details: Record<string, any>
 ): Promise<void> {
     try {
-        await supabase.from('xp_abuse_logs').insert({
+        await xpAbuseLogsTable().insert({
             user_id: userId,
             activity_type: activityType,
             details,
@@ -107,8 +110,7 @@ export async function getXpAbuseSummary(userId: string): Promise<{
     isSuspicious: boolean;
 }> {
     try {
-        const { data, error } = await supabase
-            .from('xp_abuse_logs')
+        const { data, error } = await xpAbuseLogsTable()
             .select('id, created_at')
             .eq('user_id', userId);
 

@@ -24,7 +24,7 @@ export const GoudenPromptGallery: React.FC<GoudenPromptGalleryProps> = ({ school
 
             const { data, error } = await queryBuilder;
             if (!error && data) {
-                setHighlights(data as HighlightedWork[]);
+                setHighlights(data as unknown as HighlightedWork[]);
             }
             setLoading(false);
         };

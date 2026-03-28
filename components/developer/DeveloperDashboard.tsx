@@ -31,9 +31,9 @@ const DeveloperAnalyticsPanel = React.lazy(() => import('./DeveloperAnalyticsPan
 const AccountantDashboard = React.lazy(() => import('./AccountantDashboard').then(m => ({ default: m.AccountantDashboard })));
 import {
     subscribeToDeveloperTasks,
-    DeveloperTask,
     getDeveloperPlanHistory,
-    DeveloperPlan
+    DeveloperPlan,
+    DevTask
 } from '../../services/developerService';
 
 function TabLoader() {
@@ -54,12 +54,12 @@ type TabId = 'overview' | 'tasks' | 'timeline' | 'docs' | 'analytics' | 'boekhou
 
 export function DeveloperDashboard({ user, onLogout, onSwitchView }: DeveloperDashboardProps) {
     const [activeTab, setActiveTab] = useState<TabId>('sprintplan');
-    const [tasks, setTasks] = useState<DeveloperTask[]>([]);
+    const [tasks, setTasks] = useState<DevTask[]>([]);
     const [planHistory, setPlanHistory] = useState<DeveloperPlan[]>([]);
 
     useEffect(() => {
         const unsubTasks = subscribeToDeveloperTasks(user.uid, (fetched) => {
-            setTasks(fetched);
+            setTasks(fetched as DevTask[]);
         });
         getDeveloperPlanHistory(user.uid).then(setPlanHistory).catch(console.error);
         return () => {

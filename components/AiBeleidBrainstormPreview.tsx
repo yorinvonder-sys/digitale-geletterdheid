@@ -125,8 +125,8 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
     const [phase, setPhase] = useState<Phase>(hasParticipated ? 'browse' : 'intro');
 
     // Survey State
-    const [surveyData, setSurveyData] = useState<Omit<AiBeleidSurveyData, 'uid' | 'studentName' | 'studentClass' | 'timestamp'>>({
-        freqUse: '',
+    const [surveyData, setSurveyData] = useState<Omit<AiBeleidSurveyData, 'uid' | 'student_name' | 'student_class' | 'school_id'>>({
+        freq_use: '',
         purpose: '',
         useful: '',
         missing: ''
@@ -228,8 +228,8 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
         try {
             await submitAiBeleidSurvey({
                 uid: user.uid,
-                studentName: user.displayName || 'Anoniem',
-                studentClass: user.studentClass,
+                student_name: user.displayName || 'Anoniem',
+                student_class: user.studentClass,
                 ...surveyData
             });
             setPhase('categories');
@@ -267,8 +267,8 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
                                 {['Nooit', 'Soms (1x per maand)', 'Regelmatig (wekelijks)', 'Vaak (dagelijks)'].map((option) => (
                                     <button
                                         key={option}
-                                        onClick={() => setSurveyData(prev => ({ ...prev, freqUse: option }))}
-                                        className={`p-3 rounded-xl border-2 text-sm font-medium transition-all ${surveyData.freqUse === option
+                                        onClick={() => setSurveyData(prev => ({ ...prev, freq_use: option }))}
+                                        className={`p-3 rounded-xl border-2 text-sm font-medium transition-all ${surveyData.freq_use === option
                                             ? 'border-indigo-500 bg-indigo-50 text-indigo-700'
                                             : 'border-slate-200 hover:border-indigo-300 hover:bg-slate-50 text-slate-600'
                                             }`}
@@ -325,7 +325,7 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
                     <div className="mt-8 pt-6 border-t border-slate-100 flex justify-end">
                         <button
                             onClick={handleSurveySubmit}
-                            disabled={!surveyData.freqUse || !surveyData.purpose || surveySubmitting}
+                            disabled={!surveyData.freq_use || !surveyData.purpose || surveySubmitting}
                             className="px-8 py-3 bg-gradient-to-r from-indigo-500 to-indigo-600 text-white font-bold rounded-xl shadow-lg shadow-indigo-500/20 hover:shadow-xl hover:scale-[1.02] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center gap-2"
                         >
                             {surveySubmitting ? (
