@@ -1,7 +1,7 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { AgentRole, ChatMessage, BookData, DetectiveCase, TrainerData, CodeChange, BonusChallenge } from '../types';
-import { createChatSession, generateImage, Chat } from '../services/geminiService';
+import { createChatSession, generateImage, Chat, type ImageAspectRatio, type ImageGenerationStyle } from '../services/geminiService';
 import { enhancePrompt, shouldShowEnhancementDiff } from '../services/promptEnhancer';
 import { computeCodeChanges } from '../components/CodeChangeCard';
 import { saveMissionProgress, loadMissionProgress, resetMissionProgress } from '../services/missionService';
@@ -51,6 +51,7 @@ function extractEersteBericht(systemInstruction: string): string | null {
 const GAME_HTML_DOCUMENT_REGEX = /<!doctype html(?:\s[^>]*)?>[\s\S]*?<\/html>/i;
 const GAME_HTML_ROOT_REGEX = /<html[\s\S]*?<\/html>/i;
 const GAME_HTML_FENCE_REGEX = /```(?:html)?\s*([\s\S]*?)```/i;
+const MODEL_IMAGE_TAG_REGEX = /\[IMG\s+target=["']?\s*([^"'>\]]+)\s*["']?\]([\s\S]*?)\[\/IMG\]/gi;
 
 function extractGameHtmlDocument(rawResponse: string): string | null {
     const cleaned = stripAiProvenance(rawResponse).trim();
@@ -102,6 +103,40 @@ function stripGameCodeFromResponse(rawResponse: string): string {
         .replace(GAME_HTML_FENCE_REGEX, '')
         .replace(/\n{3,}/g, '\n\n')
         .trim();
+}
+
+function getImageGenerationOptions(
+    roleId: string | undefined,
+    target: string
+): { style: ImageGenerationStyle; aspectRatio: ImageAspectRatio; title: string } {
+    if (roleId === 'verhalen-ontwerper') {
+        if (target === 'cover') {
+            return {
+                style: 'book',
+                aspectRatio: '2:3',
+                title: 'Prentenboek kaft',
+            };
+        }
+        return {
+            style: 'book',
+            aspectRatio: '4:3',
+            title: `Prentenboek illustratie ${target}`,
+        };
+    }
+
+    if (roleId === 'startup-pitch') {
+        return {
+            style: 'branding',
+            aspectRatio: target === 'screenshot' ? '16:9' : '1:1',
+            title: `Startup pitch ${target}`,
+        };
+    }
+
+    return {
+        style: 'general',
+        aspectRatio: '1:1',
+        title: `AI afbeelding ${target}`,
+    };
 }
 
 // ============================================================================
@@ -706,6 +741,8 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
 
             // --- PARSE ROLE SPECIFIC DATA ---
             const imageGenerationPromises: Promise<void>[] = [];
+            let generatedChatImage: string | undefined;
+            let imageGenerationError: string | null = null;
 
             // CREATOR (Book) -> verhalen-ontwerper
             if (selectedRole?.id === 'verhalen-ontwerper') {
@@ -756,15 +793,15 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
 
                 // IMAGES
                 // Improved Regex: Handles target="cover" OR target="1", loose spacing
-                const imgRegex = /\[IMG\s+target=["']?\s*([^"'>\]]+)\s*["']?\]([\s\S]*?)\[\/IMG\]/gi;
                 let imgMatch;
-                while ((imgMatch = imgRegex.exec(responseText)) !== null) {
+                while ((imgMatch = MODEL_IMAGE_TAG_REGEX.exec(responseText)) !== null) {
                     const rawTarget = imgMatch[1];
                     const rawPrompt = imgMatch[2];
 
                     if (rawTarget && rawPrompt) {
                         const target = rawTarget.trim().toLowerCase();
                         const prompt = rawPrompt.trim();
+                        const imageOptions = getImageGenerationOptions(selectedRole.id, target);
 
                         // Prepare state for loading
                         setActiveBookData(prev => {
@@ -783,7 +820,7 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
 
                         // Add to promises (Background execution)
                         imageGenerationPromises.push(
-                            generateImage(prompt).then(imgUrl => {
+                            generateImage(prompt, imageOptions).then(imgUrl => {
                                 setActiveBookData(prev => {
                                     const newData = { ...prev };
                                     const startValue = imgUrl || "error:Generatie Mislukt";
@@ -803,13 +840,43 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
                                 if (!imgUrl) {
                                     // Optional: notify chat about specific failure, or just let the book show 'Error'
                                     console.warn("Image generation failed silently for", target);
+                                } else if (imgUrl.startsWith('error:') && !imageGenerationError) {
+                                    imageGenerationError = imgUrl.slice('error:'.length);
                                 }
                             })
                         );
                     }
                 }
                 // Remove IMG tags
-                responseText = responseText.replace(imgRegex, '');
+                responseText = responseText.replace(MODEL_IMAGE_TAG_REGEX, '');
+            }
+
+            if (selectedRole?.id !== 'verhalen-ontwerper') {
+                let imageMatch;
+                while ((imageMatch = MODEL_IMAGE_TAG_REGEX.exec(responseText)) !== null) {
+                    const target = imageMatch[1]?.trim().toLowerCase();
+                    const prompt = imageMatch[2]?.trim();
+
+                    if (!target || !prompt) continue;
+
+                    const imageOptions = getImageGenerationOptions(selectedRole?.id, target);
+                    imageGenerationPromises.push(
+                        generateImage(prompt, imageOptions).then(imgUrl => {
+                            if (!imgUrl) return;
+                            if (imgUrl.startsWith('error:')) {
+                                if (!imageGenerationError) {
+                                    imageGenerationError = imgUrl.slice('error:'.length);
+                                }
+                                return;
+                            }
+                            if (!generatedChatImage) {
+                                generatedChatImage = imgUrl;
+                            }
+                        })
+                    );
+                }
+
+                responseText = responseText.replace(MODEL_IMAGE_TAG_REGEX, '');
             }
 
             // GAME MAKER -> game-programmeur
@@ -907,8 +974,13 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
             responseText = responseText.replace(/\[PROFILE\][\s\S]*?\[\/PROFILE\]/gi, '');
             responseText = responseText.replace(/\[SIMULATION\][\s\S]*?\[\/SIMULATION\]/gi, '');
 
-            // Execute image generation in background (don't block chat)
-            Promise.all(imageGenerationPromises).catch(console.error);
+            if (imageGenerationPromises.length > 0) {
+                await Promise.all(imageGenerationPromises);
+            }
+
+            if (imageGenerationError && selectedRole?.id !== 'verhalen-ontwerper') {
+                responseText = `${responseText.trim()}\n\n⚠️ De afbeelding kon niet worden gegenereerd: ${imageGenerationError}`.trim();
+            }
 
 
             // Final message update
@@ -921,7 +993,7 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
                 const newArr = [...prev];
                 const lastIdx = newArr.length - 1;
                 if (newArr[lastIdx] && newArr[lastIdx].role === 'model') {
-                    newArr[lastIdx] = { ...newArr[lastIdx], text: sanitizedText };
+                    newArr[lastIdx] = { ...newArr[lastIdx], text: sanitizedText, ...(generatedChatImage ? { image: generatedChatImage } : {}) };
                 }
                 return newArr;
             });
