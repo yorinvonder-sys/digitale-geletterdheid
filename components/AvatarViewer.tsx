@@ -1827,7 +1827,7 @@ const AvatarModel = memo<{
         : [0, 0, 0];
 
     return (
-        <group position={[0, variant === 'head' ? -1.5 : -0.105, 0]}>
+        <group position={[0, variant === 'head' ? -1.5 : 0.05, 0]}>
 
             {/* Head – cube with mouse-look */}
             <group ref={headRef} position={[0, 2.0, 0]}>
@@ -2107,14 +2107,14 @@ export const AvatarViewer: React.FC<AvatarViewerProps> = ({
                 />
 
                 {variant === 'full' && (
-                    <mesh position={[0, -0.06, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+                    <mesh position={[0, 0.1, 0]} rotation={[-Math.PI / 2, 0, 0]}>
                         <boxGeometry args={[2.4, 2.4, 0.06]} />
                         <meshStandardMaterial color="#E8E6DF" roughness={0.9} metalness={0} polygonOffset polygonOffsetFactor={2} polygonOffsetUnits={2} />
                     </mesh>
                 )}
 
                 <ContactShadows
-                    position={[0, -0.028, 0]}
+                    position={[0, 0.13, 0]}
                     opacity={0.35}
                     scale={6}
                     blur={2.5}
