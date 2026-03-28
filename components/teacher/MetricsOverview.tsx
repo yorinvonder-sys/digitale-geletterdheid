@@ -1,17 +1,18 @@
 import React, { useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Users, Zap, Target, Activity, AlertTriangle, Flame, Sparkles, GraduationCap, ChevronRight, Filter, X, Search, ChevronDown, Shield, Cpu, Database, Palette, Bot, Code, Globe, User, MonitorSmartphone, BarChart3 } from 'lucide-react';
+import { Users, Zap, Target, Activity, AlertTriangle, Flame, Sparkles, GraduationCap, ChevronRight, Filter, X, Search, ChevronDown, Shield, Cpu, Database, Palette, Bot, Code, Globe, User, MonitorSmartphone, BarChart3, Clock, CheckCircle2, ArrowRight, MessageSquare, Send } from 'lucide-react';
 import { StudentData, GamificationEvent } from '../../types';
 import { getMissionsForYear } from '../../config/missions';
 import { SLO_GOALS, SLO_DOMAINS } from '../../config/slo-goals';
 import { calculateStudentSLOStats } from '../../config/slo-mapping';
 import { StatCardSkeleton, Skeleton } from './Skeleton';
+import { buildSpotlightProgress, filterSpotlightsByYear, getTopSpotlightSignal } from './spotlightSignals';
 
 interface MetricsOverviewProps {
     students: StudentData[];
     activeEvents: GamificationEvent[];
     loading?: boolean;
-    onNavigate?: (tab: 'overview' | 'leaderboard' | 'alerts' | 'messages' | 'settings' | 'events') => void;
+    onNavigate?: (tab: 'overview' | 'leaderboard' | 'alerts' | 'messages' | 'settings' | 'events' | 'slo' | 'progress' | 'students') => void;
     onFilterConcept?: (concept: string) => void;
     onResetFilters?: () => void;
     conceptFilter?: string | null;
@@ -19,9 +20,10 @@ interface MetricsOverviewProps {
     selectedStudentId?: string | null;
     onSelectStudentFilter?: (studentId: string | null) => void;
     yearGroup?: number;
+    onSendMessage?: () => void;
 }
 
-export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, activeEvents, onNavigate, loading, onFilterConcept, onResetFilters, conceptFilter, onSelectStudent, selectedStudentId, onSelectStudentFilter, yearGroup = 1 }) => {
+export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, activeEvents, onNavigate, loading, onFilterConcept, onResetFilters, conceptFilter, onSelectStudent, selectedStudentId, onSelectStudentFilter, yearGroup = 1, onSendMessage }) => {
     const yearMissions = useMemo(() => getMissionsForYear(yearGroup), [yearGroup]);
 
     // Student filter dropdown state
@@ -66,6 +68,47 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
         });
         return Object.entries(missionCounts).sort((a, b) => b[1] - a[1])[0];
     }, [displayedStudents]);
+
+    const curriculumSpotlights = useMemo(
+        () => buildSpotlightProgress(filterSpotlightsByYear(yearGroup), students),
+        [students, yearGroup]
+    );
+
+    const topCurriculumSignal = useMemo(
+        () => getTopSpotlightSignal(curriculumSpotlights),
+        [curriculumSpotlights]
+    );
+
+    const curriculumFocus = topCurriculumSignal?.progress || curriculumSpotlights[0] || null;
+    const curriculumSignal = topCurriculumSignal?.signal || null;
+
+    const curriculumStyles = !curriculumSignal
+        ? {
+            panel: 'border-indigo-200 bg-indigo-50/80 hover:border-indigo-300',
+            icon: 'bg-indigo-100 text-indigo-700',
+            label: 'text-indigo-700',
+            badge: 'bg-white text-indigo-700 border-indigo-200',
+        }
+        : curriculumSignal.tone === 'success'
+        ? {
+            panel: 'border-emerald-200 bg-emerald-50/80 hover:border-emerald-300',
+            icon: 'bg-emerald-100 text-emerald-700',
+            label: 'text-emerald-700',
+            badge: 'bg-white text-emerald-700 border-emerald-200',
+        }
+        : curriculumSignal.tone === 'attention'
+            ? {
+                panel: 'border-amber-200 bg-amber-50/80 hover:border-amber-300',
+                icon: 'bg-amber-100 text-amber-700',
+                label: 'text-amber-700',
+                badge: 'bg-white text-amber-700 border-amber-200',
+            }
+            : {
+                panel: 'border-rose-200 bg-rose-50/80 hover:border-rose-300',
+                icon: 'bg-rose-100 text-rose-700',
+                label: 'text-rose-700',
+                badge: 'bg-white text-rose-700 border-rose-200',
+            };
 
     // Class stats for comparison (only show when not filtering individual student)
     const classGroups = useMemo(() => {
@@ -143,6 +186,54 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
 
         return sloStats;
     }, [displayedStudents]);
+
+    // Action queue: prioritized list of students needing attention
+    const actionQueue = useMemo(() => {
+        const actions: { student: StudentData; reason: string; priority: 'high' | 'medium'; icon: React.FC<{ size?: number; className?: string }>; action: string }[] = [];
+
+        displayedStudents.forEach(student => {
+            const xp = student.stats?.xp || 0;
+            const lastActive = student.lastActive?.toDate?.()?.getTime() || 0;
+            const completedCount = student.stats?.missionsCompleted?.length || 0;
+
+            // High priority: inactive > 1 week with low completion
+            if (now - lastActive > oneWeek && completedCount < 3) {
+                actions.push({ student, reason: 'Inactief + weinig voortgang', priority: 'high', icon: AlertTriangle, action: 'Gesprek starten' });
+            }
+            // Medium: very low XP (< 50) but recently active
+            else if (xp < 50 && now - lastActive < oneWeek) {
+                actions.push({ student, reason: 'Actief maar weinig XP', priority: 'medium', icon: Clock, action: 'Voortgang bekijken' });
+            }
+            // Medium: inactive > 3 days
+            else if (now - lastActive > 3 * oneDay && completedCount > 0) {
+                actions.push({ student, reason: `${Math.floor((now - lastActive) / oneDay)}d inactief`, priority: 'medium', icon: Activity, action: 'Bericht sturen' });
+            }
+        });
+
+        // Sort: high first, then by XP ascending
+        return actions
+            .sort((a, b) => {
+                if (a.priority !== b.priority) return a.priority === 'high' ? -1 : 1;
+                return (a.student.stats?.xp || 0) - (b.student.stats?.xp || 0);
+            })
+            .slice(0, 5);
+    }, [displayedStudents, now]);
+
+    // Recent completions
+    const recentCompletions = useMemo(() => {
+        const completions: { student: StudentData; missionName: string }[] = [];
+        displayedStudents.forEach(student => {
+            const completed = student.stats?.missionsCompleted || [];
+            completed.forEach(missionId => {
+                const mission = yearMissions.find(m => m.id === missionId);
+                if (mission) {
+                    completions.push({ student, missionName: mission.short || mission.name });
+                }
+            });
+        });
+        // We can't sort by completion time (not tracked per-mission), so just take recent students
+        return completions.slice(0, 5);
+    }, [displayedStudents, yearMissions]);
 
     const [expandedSlo, setExpandedSlo] = useState(false);
     const [expandedSignaling, setExpandedSignaling] = useState(true);
@@ -347,6 +438,162 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
                     </>
                 )}
             </div>
+
+            {!loading && curriculumFocus && (
+                <button
+                    type="button"
+                    onClick={() => onNavigate?.('slo')}
+                    className={`w-full rounded-[2rem] border p-5 text-left transition-all shadow-sm hover:shadow-md active:scale-[0.99] ${curriculumStyles.panel}`}
+                >
+                    <div className="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
+                        <div className="min-w-0">
+                            <div className="flex items-center gap-3">
+                                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${curriculumStyles.icon}`}>
+                                    <Target size={22} />
+                                </div>
+                                <div className="min-w-0">
+                                    <div className="flex flex-wrap items-center gap-2">
+                                        <p className={`text-[10px] font-black uppercase tracking-[0.24em] ${curriculumStyles.label}`}>Curriculum Signaal</p>
+                                        <span className={`inline-flex items-center rounded-full border px-2 py-1 text-[10px] font-black uppercase tracking-wider ${curriculumStyles.badge}`}>
+                                            J{curriculumFocus.spotlight.yearGroup} • {curriculumFocus.spotlight.periodLabel}
+                                        </span>
+                                        {selectedStudentId && (
+                                            <span className="inline-flex items-center rounded-full border border-slate-200 bg-white px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                                                Schoolbreed
+                                            </span>
+                                        )}
+                                    </div>
+                                    <h3 className="text-lg font-black text-slate-900 mt-1">
+                                        {curriculumSignal?.title || curriculumFocus.spotlight.title}
+                                    </h3>
+                                    <p className="text-sm text-slate-600 mt-1 max-w-3xl">
+                                        {curriculumSignal?.summary || `${curriculumFocus.spotlight.title}: ${curriculumFocus.startedPercentage}% gestart en ${curriculumFocus.completedPercentage}% afgerond in deze jaarlaag.`}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div className="mt-4 flex flex-wrap gap-2">
+                                {curriculumFocus.spotlight.kerndoelen.map(code => (
+                                    <span key={code} className="inline-flex rounded-full bg-white/90 px-2.5 py-1 text-[11px] font-black text-slate-700 border border-white">
+                                        {code}
+                                    </span>
+                                ))}
+                                <span className="inline-flex items-center gap-1 rounded-full bg-slate-900 px-3 py-1 text-[11px] font-black text-white">
+                                    Open SLO-rapportage <ArrowRight size={12} />
+                                </span>
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-3 gap-3 xl:min-w-[340px]">
+                            <div className="rounded-2xl border border-white bg-white/90 px-3 py-3">
+                                <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Gestart</p>
+                                <p className="text-2xl font-black text-indigo-700 mt-1">{curriculumFocus.startedStudents}</p>
+                                <p className="text-[10px] text-slate-500 mt-1">{curriculumFocus.startedPercentage}% van leerlingen</p>
+                            </div>
+                            <div className="rounded-2xl border border-white bg-white/90 px-3 py-3">
+                                <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Nog Bezig</p>
+                                <p className="text-2xl font-black text-amber-700 mt-1">{curriculumFocus.inProgressStudents}</p>
+                                <p className="text-[10px] text-slate-500 mt-1">Wel gestart, nog niet af</p>
+                            </div>
+                            <div className="rounded-2xl border border-white bg-white/90 px-3 py-3">
+                                <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Afgerond</p>
+                                <p className="text-2xl font-black text-emerald-700 mt-1">{curriculumFocus.completedStudents}</p>
+                                <p className="text-[10px] text-slate-500 mt-1">{curriculumFocus.completedPercentage}% van leerlingen</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="mt-4 rounded-2xl border border-white bg-white/85 px-4 py-3">
+                        <p className="text-[10px] font-black uppercase tracking-wider text-slate-400">Docentnudge</p>
+                        <p className="text-sm text-slate-700 mt-1">
+                            {curriculumSignal?.nudge || 'Open de SLO-rapportage om per klas te zien waar leerlingen starten, blijven hangen of juist al sterk afronden.'}
+                        </p>
+                    </div>
+                </button>
+            )}
+
+            {/* ACTION QUEUE — Wat moet je nu doen? */}
+            {!loading && actionQueue.length > 0 && (
+                <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+                    <div className="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
+                        <h3 className="text-sm font-black text-slate-900 flex items-center gap-2">
+                            <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+                            Acties voor jou
+                            <span className="text-[10px] font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">{actionQueue.length}</span>
+                        </h3>
+                        <div className="flex items-center gap-2">
+                            <button
+                                onClick={() => onNavigate?.('students')}
+                                className="text-[10px] font-bold text-indigo-600 hover:text-indigo-800 flex items-center gap-1"
+                            >
+                                Alle leerlingen <ArrowRight size={10} />
+                            </button>
+                        </div>
+                    </div>
+                    <div className="divide-y divide-slate-50">
+                        {actionQueue.map((item, i) => {
+                            const Icon = item.icon;
+                            return (
+                                <button
+                                    key={item.student.uid}
+                                    onClick={() => onSelectStudent?.(item.student)}
+                                    className="w-full px-5 py-3 flex items-center gap-4 hover:bg-slate-50 transition-colors text-left group"
+                                >
+                                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${item.priority === 'high' ? 'bg-red-100 text-red-600' : 'bg-amber-100 text-amber-600'}`}>
+                                        <Icon size={16} />
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                        <div className="flex items-center gap-2">
+                                            <span className="font-bold text-sm text-slate-900 truncate">{item.student.displayName}</span>
+                                            <span className="text-[9px] text-slate-400">{item.student.identifier}</span>
+                                        </div>
+                                        <div className="text-[10px] text-slate-500">{item.reason}</div>
+                                    </div>
+                                    <div className="flex items-center gap-2 flex-shrink-0">
+                                        <span className="text-[10px] font-bold text-slate-400">{item.student.stats?.xp || 0} XP</span>
+                                        <span className={`text-[9px] font-black uppercase tracking-wider px-2 py-1 rounded-lg ${item.priority === 'high' ? 'text-red-600 bg-red-50 border border-red-200' : 'text-amber-600 bg-amber-50 border border-amber-200'}`}>
+                                            {item.action}
+                                        </span>
+                                        <ChevronRight size={14} className="text-slate-300 group-hover:translate-x-1 transition-transform" />
+                                    </div>
+                                </button>
+                            );
+                        })}
+                    </div>
+                </div>
+            )}
+
+            {/* Quick Actions Bar */}
+            {!loading && (
+                <div className="flex items-center gap-3 flex-wrap">
+                    <button
+                        onClick={() => onNavigate?.('progress')}
+                        className="flex items-center gap-2 px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-700 hover:border-indigo-300 hover:text-indigo-700 transition-all"
+                    >
+                        <BarChart3 size={14} /> Missie-voortgang
+                    </button>
+                    <button
+                        onClick={() => onNavigate?.('slo')}
+                        className="flex items-center gap-2 px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-700 hover:border-indigo-300 hover:text-indigo-700 transition-all"
+                    >
+                        <Target size={14} /> SLO Rapportage
+                    </button>
+                    {onSendMessage && (
+                        <button
+                            onClick={onSendMessage}
+                            className="flex items-center gap-2 px-4 py-2.5 bg-indigo-600 text-white rounded-xl text-sm font-bold hover:bg-indigo-700 transition-all shadow-sm"
+                        >
+                            <Send size={14} /> Bericht aan klas
+                        </button>
+                    )}
+                    {activeEvents.length > 0 && (
+                        <div className="flex items-center gap-2 px-3 py-2 bg-amber-50 border border-amber-200 rounded-xl">
+                            <Flame size={14} className="text-amber-600" />
+                            <span className="text-[10px] font-bold text-amber-700">{activeEvents.length} actief event</span>
+                        </div>
+                    )}
+                </div>
+            )}
 
             {/* VROEGE SIGNALERING - Collapsible */}
             <div className="bg-slate-900 rounded-[2rem] shadow-2xl overflow-hidden relative">

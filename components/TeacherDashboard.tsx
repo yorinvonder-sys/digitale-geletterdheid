@@ -63,8 +63,12 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
     const [showPresentation, setShowPresentation] = useState(false);
     const [gamificationSubTab, setGamificationSubTab] = useState<GamificationTab>('leaderboard');
     const [selectedStudent, setSelectedStudent] = useState<StudentData | null>(null);
-    const [classFilter, setClassFilter] = useState<string>('all');
-    const [yearGroupFilter, setYearGroupFilter] = useState<number>(1);
+    const [classFilter, setClassFilter] = useState<string>(() => {
+        try { return sessionStorage.getItem('dgskills_teacher_classFilter') || 'all'; } catch { return 'all'; }
+    });
+    const [yearGroupFilter, setYearGroupFilter] = useState<number>(() => {
+        try { const v = sessionStorage.getItem('dgskills_teacher_yearGroup'); return v ? Number(v) : 1; } catch { return 1; }
+    });
 
     // Modals
     const [showMessageModal, setShowMessageModal] = useState(false);
@@ -120,6 +124,10 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
 
     const yearMissions = useMemo(() => getMissionsForYear(yearGroupFilter), [yearGroupFilter]);
     const selectedClassId = classFilter === 'all' ? 'MH1A' : classFilter;
+
+    // Persist filter choices across page reloads
+    useEffect(() => { try { sessionStorage.setItem('dgskills_teacher_classFilter', classFilter); } catch { /* noop */ } }, [classFilter]);
+    useEffect(() => { try { sessionStorage.setItem('dgskills_teacher_yearGroup', String(yearGroupFilter)); } catch { /* noop */ } }, [yearGroupFilter]);
 
     const [retryCount, setRetryCount] = useState(0);
     const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
@@ -503,7 +511,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                                             setActiveTab('gamification');
                                             setGamificationSubTab(tab);
                                         } else {
-                                            setActiveTab(tab as any);
+                                            setActiveTab(tab as MainTab);
                                         }
                                     }}
                                     loading={loading}
@@ -514,6 +522,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                                     selectedStudentId={selectedStudentIdFilter}
                                     onSelectStudentFilter={setSelectedStudentIdFilter}
                                     yearGroup={yearGroupFilter}
+                                    onSendMessage={() => setShowMessageModal(true)}
                                 />
                                 {students.some(s => (s.stats?.xp || 0) < 50) && <AlertsPanel students={students} onSelectStudent={setSelectedStudent} />}
                             </PageTransition>

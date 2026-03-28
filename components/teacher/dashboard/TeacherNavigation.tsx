@@ -10,23 +10,82 @@ interface TeacherNavigationProps {
     setActiveTab: (tab: MainTab) => void;
 }
 
+// Shared sub-tab rendering to avoid repetition
+const SubTabBar: React.FC<{
+    tabs: { id: string; label: string; tooltip: string; tutorialId?: string }[];
+    activeTab: string;
+    setActiveTab: (tab: MainTab) => void;
+}> = ({ tabs, activeTab, setActiveTab }) => (
+    <motion.div
+        initial={{ opacity: 0, height: 0 }}
+        animate={{ opacity: 1, height: 'auto' }}
+        exit={{ opacity: 0, height: 0 }}
+        className="flex justify-center gap-1 pt-3 mt-2 border-t border-slate-100 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+    >
+        {tabs.map(sub => (
+            <button
+                key={sub.id}
+                data-tutorial={sub.tutorialId}
+                onClick={() => setActiveTab(sub.id as MainTab)}
+                title={sub.tooltip}
+                className={`px-3 py-2 min-h-[36px] rounded-lg text-xs font-bold transition-all flex-shrink-0 ${activeTab === sub.id
+                    ? 'bg-indigo-100 text-indigo-700'
+                    : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
+                    }`}
+            >
+                {sub.label}
+            </button>
+        ))}
+    </motion.div>
+);
+
+// Dashboard sub-tabs: daily workflow first, deep-dive last
+const DASHBOARD_SUBTABS = [
+    { id: 'overview', label: 'Overzicht', tooltip: 'Statistieken, signalering en acties' },
+    { id: 'progress', label: 'Voortgang', tooltip: 'Missie-voortgang per leerling' },
+    { id: 'slo', label: 'SLO Doelen', tooltip: 'Kerndoelen Digitale Geletterdheid (SLO 2025)' },
+    { id: 'nulmeting', label: 'Nulmeting', tooltip: 'Nulmetingsresultaten en digitaal paspoort per klas' },
+    { id: 'samenhang', label: 'Samenhang', tooltip: 'Samenhang basisvaardigheden: taal, rekenen, burgerschap' },
+    { id: 'documenten', label: 'Documenten', tooltip: 'Compliance- en beleidsdocumenten' },
+];
+
+const STUDENT_SUBTABS = [
+    { id: 'students', label: 'Leerlingenlijst', tooltip: 'Alle leerlingen met status en missies' },
+    { id: 'feedback', label: 'Feedback', tooltip: 'Feedback van leerlingen over het platform' },
+];
+
+const ACTIVITY_SUBTABS = [
+    { id: 'games', label: 'Games', tooltip: 'Beschikbare games en opdrachten' },
+    { id: 'gamification', label: 'Beloningen', tooltip: 'Ranglijst, gallery en XP-events', tutorialId: 'gamification-subtab' },
+];
+
+const SETTINGS_SUBTABS = [
+    { id: 'ai-beleid', label: 'AI Beleid', tooltip: 'Feedback en ideeën over AI-beleid op school' },
+    { id: 'settings', label: 'Instellingen', tooltip: 'Missies aan/uit, moeilijkheidsgraad en klas-config' },
+];
+
+const MAIN_TABS = [
+    { id: 'overview', label: 'Dashboard', icon: BarChart3, subTabIds: DASHBOARD_SUBTABS.map(t => t.id), tutorialId: 'dashboard-tab', tooltip: 'Overzicht van voortgang, SLO-doelen en signalering' },
+    { id: 'students', label: 'Leerlingen', icon: Users, subTabIds: STUDENT_SUBTABS.map(t => t.id), tutorialId: 'students-tab', tooltip: 'Bekijk en beheer je leerlingen per klas' },
+    { id: 'games', label: 'Activiteiten', icon: Sparkles, subTabIds: ACTIVITY_SUBTABS.map(t => t.id), tutorialId: 'activities-tab', tooltip: 'Games, ranglijsten en XP-beloningen' },
+    { id: 'settings', label: 'Beheer', icon: Settings, subTabIds: SETTINGS_SUBTABS.map(t => t.id), tutorialId: 'settings-tab', tooltip: 'AI-beleid en klas-instellingen' },
+];
+
 export const TeacherNavigation: React.FC<TeacherNavigationProps> = ({ activeTab, setActiveTab }) => {
+    // Determine which main section is active
+    const activeSection = MAIN_TABS.find(t => t.subTabIds.includes(activeTab))?.id || 'overview';
+
     return (
         <div data-tutorial="main-tabs" className="bg-white rounded-2xl border border-slate-200 shadow-sm p-2">
             <div className="flex items-center justify-center gap-1 md:gap-2 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-                {[
-                    { id: 'overview', label: 'Dashboard', icon: BarChart3, subTabs: ['overview', 'progress', 'slo', 'nulmeting', 'samenhang', 'documenten'], tutorialId: 'dashboard-tab', tooltip: 'Overzicht van voortgang, SLO-doelen en signalering' },
-                    { id: 'students', label: 'Leerlingen', icon: Users, subTabs: ['students', 'feedback'], tutorialId: 'students-tab', tooltip: 'Bekijk en beheer je leerlingen per klas' },
-                    { id: 'games', label: 'Activiteiten', icon: Sparkles, subTabs: ['games', 'gamification'], tutorialId: 'activities-tab', tooltip: 'Games, ranglijsten en XP-beloningen' },
-                    { id: 'settings', label: 'Beheer', icon: Settings, subTabs: ['ai-beleid', 'settings'], tutorialId: 'settings-tab', tooltip: 'AI-beleid en klas-instellingen' },
-                ].map(tab => {
-                    const isActive = tab.subTabs.includes(activeTab);
+                {MAIN_TABS.map(tab => {
+                    const isActive = tab.subTabIds.includes(activeTab);
                     const Icon = tab.icon;
                     return (
                         <button
                             key={tab.id}
                             data-tutorial={tab.tutorialId}
-                            onClick={() => setActiveTab(tab.subTabs[0] as MainTab)}
+                            onClick={() => setActiveTab(tab.subTabIds[0] as MainTab)}
                             title={tab.tooltip}
                             className={`relative flex items-center gap-2 px-2 sm:px-3 md:px-6 py-3 min-h-[44px] rounded-xl text-sm font-bold transition-all flex-shrink-0 ${isActive
                                 ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-200'
@@ -42,111 +101,10 @@ export const TeacherNavigation: React.FC<TeacherNavigationProps> = ({ activeTab,
 
             {/* Sub-tabs for active section */}
             <AnimatePresence mode="wait">
-                {(activeTab === 'overview' || activeTab === 'progress' || activeTab === 'slo' || activeTab === 'documenten' || activeTab === 'nulmeting' || activeTab === 'samenhang') && (
-                    <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        className="flex justify-center gap-2 pt-3 mt-2 border-t border-slate-100 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
-                    >
-                        {[
-                            { id: 'overview', label: 'Overzicht', tooltip: 'Statistieken en vroege signalering' },
-                            { id: 'progress', label: 'Voortgang', tooltip: 'Missie-voortgang per leerling' },
-                            { id: 'slo', label: 'SLO Doelen', tooltip: 'Kerndoelen Digitale Geletterdheid (SLO 2025)' },
-                            { id: 'nulmeting', label: 'Nulmeting', tooltip: 'Nulmetingsresultaten en digitaal paspoort per klas' },
-                            { id: 'samenhang', label: 'Samenhang', tooltip: 'Samenhang basisvaardigheden: taal, rekenen, burgerschap' },
-                            { id: 'documenten', label: 'Documenten', tooltip: 'Compliance- en beleidsdocumenten' },
-                        ].map(sub => (
-                            <button
-                                key={sub.id}
-                                onClick={() => setActiveTab(sub.id as MainTab)}
-                                title={sub.tooltip}
-                                className={`px-4 py-2.5 min-h-[36px] rounded-lg text-xs font-bold transition-all flex-shrink-0 ${activeTab === sub.id
-                                    ? 'bg-indigo-100 text-indigo-700'
-                                    : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
-                                    }`}
-                            >
-                                {sub.label}
-                            </button>
-                        ))}
-                    </motion.div>
-                )}
-                {(activeTab === 'students' || activeTab === 'feedback') && (
-                    <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        className="flex justify-center gap-2 pt-3 mt-2 border-t border-slate-100 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
-                    >
-                        {[
-                            { id: 'students', label: 'Leerlingenlijst', tooltip: 'Alle leerlingen met status en missies' },
-                            { id: 'feedback', label: 'Feedback', tooltip: 'Feedback van leerlingen over het platform' },
-                        ].map(sub => (
-                            <button
-                                key={sub.id}
-                                onClick={() => setActiveTab(sub.id as MainTab)}
-                                title={sub.tooltip}
-                                className={`px-4 py-2.5 min-h-[36px] rounded-lg text-xs font-bold transition-all flex-shrink-0 ${activeTab === sub.id
-                                    ? 'bg-indigo-100 text-indigo-700'
-                                    : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
-                                    }`}
-                            >
-                                {sub.label}
-                            </button>
-                        ))}
-                    </motion.div>
-                )}
-                {(activeTab === 'games' || activeTab === 'gamification') && (
-                    <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        className="flex justify-center gap-2 pt-3 mt-2 border-t border-slate-100 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
-                    >
-                        {[
-                            { id: 'games', label: 'Games', tooltip: 'Beschikbare games en opdrachten' },
-                            { id: 'gamification', label: 'Beloningen', tooltip: 'Ranglijst, gallery en XP-events' },
-                        ].map(sub => (
-                            <button
-                                key={sub.id}
-                                data-tutorial={sub.id === 'gamification' ? 'gamification-subtab' : undefined}
-                                onClick={() => setActiveTab(sub.id as MainTab)}
-                                title={sub.tooltip}
-                                className={`px-4 py-2.5 min-h-[36px] rounded-lg text-xs font-bold transition-all flex-shrink-0 ${activeTab === sub.id
-                                    ? 'bg-indigo-100 text-indigo-700'
-                                    : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
-                                    }`}
-                            >
-                                {sub.label}
-                            </button>
-                        ))}
-                    </motion.div>
-                )}
-                {(activeTab === 'ai-beleid' || activeTab === 'settings') && (
-                    <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        className="flex justify-center gap-2 pt-3 mt-2 border-t border-slate-100 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
-                    >
-                        {[
-                            { id: 'ai-beleid', label: 'AI Beleid', tooltip: 'Feedback en ideeën over AI-beleid op school' },
-                            { id: 'settings', label: 'Instellingen', tooltip: 'Missies aan/uit, moeilijkheidsgraad en klas-config' },
-                        ].map(sub => (
-                            <button
-                                key={sub.id}
-                                onClick={() => setActiveTab(sub.id as MainTab)}
-                                title={sub.tooltip}
-                                className={`px-4 py-2.5 min-h-[36px] rounded-lg text-xs font-bold transition-all flex-shrink-0 ${activeTab === sub.id
-                                    ? 'bg-indigo-100 text-indigo-700'
-                                    : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
-                                    }`}
-                            >
-                                {sub.label}
-                            </button>
-                        ))}
-                    </motion.div>
-                )}
+                {activeSection === 'overview' && <SubTabBar key="dash" tabs={DASHBOARD_SUBTABS} activeTab={activeTab} setActiveTab={setActiveTab} />}
+                {activeSection === 'students' && <SubTabBar key="stu" tabs={STUDENT_SUBTABS} activeTab={activeTab} setActiveTab={setActiveTab} />}
+                {activeSection === 'games' && <SubTabBar key="act" tabs={ACTIVITY_SUBTABS} activeTab={activeTab} setActiveTab={setActiveTab} />}
+                {activeSection === 'settings' && <SubTabBar key="set" tabs={SETTINGS_SUBTABS} activeTab={activeTab} setActiveTab={setActiveTab} />}
             </AnimatePresence>
         </div>
     );
