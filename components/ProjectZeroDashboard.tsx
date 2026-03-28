@@ -194,6 +194,7 @@ const MISSION_OVERRIDES: Record<string, Partial<Mission>> = {
     'data-voor-data': { info: 'Ethische veiling: kies DEAL of NO DEAL bij steeds grotere data-verzoeken. Ontdek je persoonlijke privacy-principes.' },
     'social-media-psychologist': { isBonus: true, info: 'Bonusmissie! Ontdek waarom je blijft scrollen en hoe algoritmes je aandacht vangen.' },
     'review-week-3': { info: 'Tijd voor de balans. Wat heb je geleerd over veiligheid en ethiek? Test je kennis.' },
+    'login-locksmith': { info: 'Het inlogsysteem van SchoolConnect is gehackt! Onderzoek het systeem, vind 3 kwetsbaarheden in de code en schrijf de beveiligingspatch.' },
     'mission-blueprint': { info: 'Elk groot project begint met een plan. Gebruik je digitale skills om je eindwerk te organiseren.' },
     'mission-vision': { info: 'Verbeeld je idee. Gebruik AI en design tools om je concept tot leven te wekken in een pitch.' },
     'mission-launch': { info: 'Showtime! Presenteer je werk aan de klas en laat zien wat je hebt geleerd als Digitale Expert.' },

@@ -145,6 +145,7 @@ export const KERNDOEL_MISSIONS: KerndoelMissionMeta[] = [
   // privacy-by-design: privacy-audit van een app → 23A; geen programmeeropdracht
   { id: 'privacy-by-design', title: 'Privacy by Design', week: 2, yearGroup: 2, sloKerndoelen: ['23A'] },
   { id: 'wachtwoord-warrior', title: 'Wachtwoord Warrior', week: 2, yearGroup: 2, sloKerndoelen: ['23A', '21A'] },
+  { id: 'login-locksmith', title: 'Login Locksmith', week: 2, yearGroup: 2, sloKerndoelen: ['21A', '23A', '22B'] },
   { id: 'code-review-2', title: 'Code Review', week: 2, yearGroup: 2, sloKerndoelen: ['22A', '22B'] },
 
   // Periode 3: Digitale Media & Creatie

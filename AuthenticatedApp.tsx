@@ -50,6 +50,7 @@ const DeveloperDashboard = lazyWithRetry(() => import('./components/developer/De
 const FilterBubbleBreakerMission = lazyWithRetry(() => import('./components/missions/FilterBubbleBreakerMission').then(m => ({ default: m.FilterBubbleBreakerMission })));
 const DatalekkenRampenplanMission = lazyWithRetry(() => import('./components/missions/DatalekkenRampenplanMission').then(m => ({ default: m.DatalekkenRampenplanMission })));
 const DataVoorDataMission = lazyWithRetry(() => import('./components/missions/DataVoorDataMission').then(m => ({ default: m.DataVoorDataMission })));
+const LoginLocksmithMission = lazyWithRetry(() => import('./components/missions/LoginLocksmithMission').then(m => ({ default: m.LoginLocksmithMission })));
 const PeerFeedbackPanel = lazyWithRetry(() => import('./components/missions/PeerFeedbackPanel').then(m => ({ default: m.PeerFeedbackPanel })));
 const NulmetingFlow = lazyWithRetry(() => import('./components/assessment/escaperoom/NulmetingFlow').then(m => ({ default: m.NulmetingFlow })));
 
@@ -74,6 +75,7 @@ const DEDICATED_MISSIONS = new Set([
     'filter-bubble-breaker',
     'datalekken-rampenplan',
     'data-voor-data',
+    'login-locksmith',
 ]);
 
 /** Authenticated app shell — only loaded for private/authenticated flows. Public routes use AppRouter. */
@@ -776,6 +778,20 @@ export function AuthenticatedApp() {
                     onBack={handleRequestExitModule}
                     onComplete={(success) => {
                         if (success) handleMissionComplete('deepfake-detector');
+                        else handleExitModule();
+                    }}
+                    stats={user?.stats}
+                    vsoProfile={user?.stats?.vsoProfile}
+                />
+            );
+        }
+
+        if (activeModule === 'login-locksmith') {
+            return (
+                <LoginLocksmithMission
+                    onBack={handleRequestExitModule}
+                    onComplete={(success) => {
+                        if (success) handleMissionComplete('login-locksmith');
                         else handleExitModule();
                     }}
                     stats={user?.stats}

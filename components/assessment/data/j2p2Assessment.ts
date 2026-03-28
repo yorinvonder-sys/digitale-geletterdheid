@@ -106,5 +106,41 @@ export const J2P2_ASSESSMENT: AssessmentTask[] = [
             state?.['def-herhaling']?.includes('item-loop') &&
             state?.['def-keuze']?.includes('item-conditie') &&
             state?.['def-herbruikbaar']?.includes('item-functie')) ?? false
+    },
+
+    // ─────────────────────────────────────────────────────────
+    // MISSION 4: Login Locksmith — Security Inspector
+    // ─────────────────────────────────────────────────────────
+    {
+        id: 'j2p2-login-locksmith',
+        type: 'inspector',
+        title: 'Beveiligingsinspecteur',
+        description: 'Het inlogsysteem van SchoolConnect heeft 3 beveiligingsfouten. Vind ze in de code!',
+        xpReward: 100,
+        question: 'Bekijk de pseudocode van het inlogsysteem. Welke regel bevat een SQL-injectie kwetsbaarheid?',
+        image: 'SPECIAL:PSEUDOCODE_LOGIN_BUG',
+        hotspots: [
+            {
+                id: 'sql-injection-line',
+                x: 5, y: 25, width: 90, height: 12,
+                label: 'database.zoek("SELECT * FROM gebruikers WHERE naam = \'" + gebruikersnaam + "\'")',
+                correct: true,
+                feedback: 'Goed gevonden! De gebruikersnaam wordt direct in de SQL-query geplakt. Een aanvaller kan hiermee de query manipuleren en als elke gebruiker inloggen. De fix: gebruik een parameterized query zodat invoer als data wordt behandeld, niet als code.'
+            },
+            {
+                id: 'password-check',
+                x: 5, y: 42, width: 90, height: 12,
+                label: 'if (wachtwoord == gebruiker.wachtwoord)',
+                correct: false,
+                feedback: 'Deze regel vergelijkt het wachtwoord, maar de SQL-injectie zit in een andere regel. Kijk naar hoe de gebruikersnaam in de database-query wordt gebruikt.'
+            },
+            {
+                id: 'session-line',
+                x: 5, y: 58, width: 90, height: 12,
+                label: 'sessie.verlooptNa = "nooit"',
+                correct: false,
+                feedback: 'Dit is wél een beveiligingsprobleem (de sessie verloopt nooit), maar het is geen SQL-injectie. De vraag gaat specifiek over SQL-injectie — zoek de regel waar invoer in een query wordt geplakt.'
+            }
+        ]
     }
 ];
