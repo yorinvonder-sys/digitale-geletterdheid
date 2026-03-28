@@ -183,6 +183,7 @@ export const CURRICULUM: CurriculumConfig = {
                         'code-reviewer',
                         'privacy-by-design',
                         'wachtwoord-warrior',
+                        'access-control-engineer',
                     ],
                     reviewMissions: [
                         'code-review-2',

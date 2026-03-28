@@ -8038,5 +8038,78 @@ REGELS:
             }
         ],
     },
+
+    // ====================================================================
+    // LEERJAAR 2 — Periode 2 — Access Control Engineer
+    // ====================================================================
+    {
+        id: 'access-control-engineer',
+        yearGroup: 2,
+        educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
+        title: 'Access Control Engineer',
+        icon: <Shield size={28} />,
+        color: '#6366F1',
+        description: 'Repareer het kapotte toegangssysteem van een school. Analyseer wie waar toegang toe heeft, schrijf betere regels, en test of alles klopt.',
+        problemScenario: 'Het digitale systeem van Openbare Scholengemeenschap De Meervaart heeft een groot beveiligingsprobleem: leerlingen kunnen cijfers aanpassen, gasten zien privégegevens, en docenten missen rechten die ze nodig hebben. Als Access Control Engineer is het jouw taak om dit te repareren.',
+        missionObjective: 'Analyseer de onveilige toegangstabel, schrijf nieuwe als/dan-regels die bepalen wie wat mag, en test je oplossing met realistische scenario\'s.',
+        briefingImage: '/assets/agents/cloud_commander.webp',
+        difficulty: 'Medium',
+        examplePrompt: '',
+        primaryGoal: '🔐 Repareer de toegangsbeveiliging van een schoolsysteem',
+        goalCriteria: { type: 'steps-complete', min: 3 },
+        visualPreview: (
+            <div className="w-full h-full bg-indigo-600 flex flex-col items-center justify-center p-4 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 to-purple-700"></div>
+                <div className="relative z-10 flex flex-col items-center gap-2">
+                    <div className="w-40 bg-white/10 backdrop-blur rounded-xl p-3 border border-white/20 space-y-1.5">
+                        <div className="text-[8px] text-white/60 font-mono uppercase tracking-wider">Toegangsregels</div>
+                        <div className="flex items-center gap-1.5">
+                            <div className="w-2 h-2 rounded-full bg-green-400"></div>
+                            <div className="text-[7px] text-white/80 font-mono">docent → cijfers ✓</div>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                            <div className="w-2 h-2 rounded-full bg-red-400"></div>
+                            <div className="text-[7px] text-white/80 font-mono">gast → dossiers ✗</div>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                            <div className="w-2 h-2 rounded-full bg-red-400"></div>
+                            <div className="text-[7px] text-white/80 font-mono">leerling → admin ✗</div>
+                        </div>
+                    </div>
+                </div>
+                <Shield size={20} className="text-indigo-200 absolute top-3 right-3 animate-pulse" />
+            </div>
+        ),
+        systemInstruction: `Je bent een Access Control Coach voor leerlingen (13-16 jaar, leerjaar 2). Deze missie heeft een eigen interactief component — de systeeminstructie is beschikbaar als fallback.
+
+CONTEXT: De leerling repareert het toegangssysteem van een school. Ze analyseren wie waar bij kan, schrijven als/dan-regels, en testen scenario's.
+
+ALS de leerling vragen stelt over toegangscontrole:
+- Leg uit wat "principle of least privilege" betekent: geef iemand alleen de rechten die ze ECHT nodig hebben.
+- Gebruik schoolvoorbeelden: een leerling hoeft geen cijfers te kunnen aanpassen, een gast hoeft geen dossiers te zien.
+- Moedig de leerling aan om na te denken vanuit ROLLEN: wat heeft een leerling nodig? Een docent? Een beheerder?
+
+REGELS:
+- Geef NOOIT kant-en-klare oplossingen. Stel vragen die de leerling naar het antwoord leiden.
+- Gebruik de 3-stappen methode: Erkenning → Uitleg → Challenge.
+- Houd het concreet en herkenbaar voor schoolsituaties.` + SYSTEM_INSTRUCTION_SUFFIX,
+        steps: [
+            {
+                title: "Analyseer de toegangstabel",
+                description: "Bekijk wie waartoe toegang heeft en markeer beveiligingsproblemen.",
+                example: "Mag een leerling cijfers aanpassen? Mag een gast bij persoonlijke dossiers?"
+            },
+            {
+                title: "Schrijf toegangsregels",
+                description: "Maak als/dan-regels die bepalen wie wat mag doen.",
+                example: "Als rol === 'docent', dan mag 'Leerlingdossiers' → Lezen"
+            },
+            {
+                title: "Test je beveiligingsregels",
+                description: "Voer testscenario's uit en controleer of de juiste mensen de juiste toegang hebben.",
+                example: "Test: Leerling Sanne probeert cijfers aan te passen → Verwacht: Geblokkeerd"
+            }
+        ],
+    },
 ];
 

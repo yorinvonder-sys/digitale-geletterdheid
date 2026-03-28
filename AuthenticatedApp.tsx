@@ -41,6 +41,7 @@ const AvatarSetup = lazyWithRetry(() => import('./components/AvatarSetup').then(
 const PromptMasterMission = lazyWithRetry(() => import('./components/missions/PromptMasterMission').then(m => ({ default: m.PromptMasterMission })));
 const DataDetectiveMission = lazyWithRetry(() => import('./components/missions/DataDetectiveMission').then(m => ({ default: m.DataDetectiveMission })));
 const DeepfakeDetectorMission = lazyWithRetry(() => import('./components/missions/DeepfakeDetectorMission').then(m => ({ default: m.DeepfakeDetectorMission })));
+const AccessControlEngineerMission = lazyWithRetry(() => import('./components/missions/AccessControlEngineerMission').then(m => ({ default: m.AccessControlEngineerMission })));
 const ChangePassword = lazyWithRetry(() => import('./components/ChangePassword').then(m => ({ default: m.ChangePassword })));
 const CloudCleanerMission = lazyWithRetry(() => import('./components/missions/review/CloudCleanerMission').then(m => ({ default: m.CloudCleanerMission })));
 const WordSimulator = lazyWithRetry(() => import('./components/WordSimulator').then(m => ({ default: m.WordSimulator })));
@@ -776,6 +777,20 @@ export function AuthenticatedApp() {
                     onBack={handleRequestExitModule}
                     onComplete={(success) => {
                         if (success) handleMissionComplete('deepfake-detector');
+                        else handleExitModule();
+                    }}
+                    stats={user?.stats}
+                    vsoProfile={user?.stats?.vsoProfile}
+                />
+            );
+        }
+
+        if (activeModule === 'access-control-engineer') {
+            return (
+                <AccessControlEngineerMission
+                    onBack={handleRequestExitModule}
+                    onComplete={(success) => {
+                        if (success) handleMissionComplete('access-control-engineer');
                         else handleExitModule();
                     }}
                     stats={user?.stats}
