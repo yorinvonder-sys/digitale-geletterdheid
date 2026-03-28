@@ -11,6 +11,7 @@ interface MissionConclusionProps {
     onExit?: () => void;
     onPrint?: () => void;
     onDownload?: () => void;
+    children?: React.ReactNode;
 }
 
 export const MissionConclusion: React.FC<MissionConclusionProps> = ({
@@ -19,7 +20,8 @@ export const MissionConclusion: React.FC<MissionConclusionProps> = ({
     aiConcept = { title: "Insight", text: "AI heeft je geholpen." },
     onExit,
     onPrint,
-    onDownload
+    onDownload,
+    children
 }) => {
     const [showContent, setShowContent] = useState(false);
 
@@ -81,6 +83,8 @@ export const MissionConclusion: React.FC<MissionConclusionProps> = ({
                             </div>
                         </div>
                     </div>
+
+                    {children}
 
                     <div className="flex flex-col md:flex-row gap-4 items-center justify-between pt-4 border-t border-[#F0EEE8]">
                         <div className="flex gap-2">

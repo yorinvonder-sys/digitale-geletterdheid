@@ -45,12 +45,13 @@ interface FilterBubbleState {
     score: number;
     answers: boolean[];
     analyzeResponse: string;
+    reflectie: string;
 }
 
 export const FilterBubbleBreakerMission: React.FC<Props> = ({ onBack, onComplete }) => {
     const { state: saved, setState: setSaved, clearSave } = useMissionAutoSave<FilterBubbleState>(
         'filter-bubble-breaker',
-        { phase: 'intro', currentChallenge: 0, score: 0, answers: [], analyzeResponse: '' }
+        { phase: 'intro', currentChallenge: 0, score: 0, answers: [], analyzeResponse: '', reflectie: '' }
     );
     const phase = saved.phase;
     const currentChallenge = saved.currentChallenge;
@@ -292,7 +293,22 @@ export const FilterBubbleBreakerMission: React.FC<Props> = ({ onBack, onComplete
                     <p className="text-xs text-[#6B6B66]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>2. Zoek actief naar andere onderwerpen</p>
                     <p className="text-xs text-[#6B6B66]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>3. Gebruik "Niet geïnteresseerd" bij eenzijdige content</p>
                 </div>
-                <button onClick={() => { clearSave(); onComplete(true); }} className="w-full py-4 bg-[#10B981] hover:bg-[#059669] text-white rounded-full font-black text-lg transition-all duration-300 active:scale-95 shadow-xl flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-[#10B981]"><Trophy size={20} /> Missie Voltooid!</button>
+                {/* Reflectie */}
+                <div className="bg-white rounded-2xl p-4 border border-[#8B6F9E]/20 text-left space-y-3">
+                    <div className="flex items-center gap-2">
+                        <Sparkles size={16} className="text-[#8B6F9E]" />
+                        <p className="text-xs font-black uppercase tracking-widest text-[#8B6F9E]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Reflectie</p>
+                    </div>
+                    <p className="text-xs text-[#3D3D38]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Wat heb je geleerd in deze missie? Waar zou je dit in het dagelijks leven tegenkomen?</p>
+                    <textarea
+                        value={saved.reflectie}
+                        onChange={e => setSaved(prev => ({ ...prev, reflectie: e.target.value }))}
+                        placeholder="Wat heb je geleerd? Waar kom je dit nog meer tegen?"
+                        className="w-full p-3 rounded-xl border-2 border-[#E8E6DF] bg-[#FAF9F0] text-sm resize-none focus:border-[#8B6F9E] focus:outline-none transition-all duration-300"
+                        style={{ minHeight: '80px', fontFamily: "'Outfit', system-ui, sans-serif" }}
+                    />
+                </div>
+                <button onClick={() => { clearSave(); onComplete(true); }} disabled={saved.reflectie.trim().length < 10} className={`w-full py-4 text-white rounded-full font-black text-lg transition-all duration-300 active:scale-95 shadow-xl flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-[#10B981] ${saved.reflectie.trim().length < 10 ? 'bg-[#E8E6DF] text-[#B5B5AF] shadow-none cursor-not-allowed' : 'bg-[#10B981] hover:bg-[#059669]'}`}><Trophy size={20} /> Missie Voltooid!</button>
             </div>
             </div>
         </div>

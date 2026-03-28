@@ -55,9 +55,9 @@ Deze privacyverklaring is opgesteld conform artikel 13 en 14 van de Algemene ver
 | | |
 |---|---|
 | **Handelsnaam** | DGSkills |
-| **Statutaire naam** | [INVULLEN -- bijv. DGSkills B.V. / DGSkills VOF] |
-| **KvK-nummer** | [INVULLEN] |
-| **Vestigingsadres** | [INVULLEN -- straat, huisnummer, postcode, plaats] |
+| **Statutaire naam** | DGSkills (eenmanszaak Yorin von der Osten) |
+| **KvK-nummer** | [INVULLEN NA KVK-REGISTRATIE] |
+| **Vestigingsadres** | [INVULLEN NA KVK-REGISTRATIE] |
 | **E-mailadres** | info@dgskills.app |
 | **Website** | https://dgskills.app |
 
@@ -65,8 +65,8 @@ Deze privacyverklaring is opgesteld conform artikel 13 en 14 van de Algemene ver
 
 | | |
 |---|---|
-| **Naam** | [INVULLEN -- naam FG of extern bureau] |
-| **E-mailadres** | [INVULLEN -- bijv. privacy@dgskills.app] |
+| **Naam** | Yorin von der Osten (intern privacy-aanspreekpunt) |
+| **E-mailadres** | privacy@dgskills.app |
 | **Telefoonnummer** | [INVULLEN] |
 
 > Heb je een vraag over hoe wij met je gegevens omgaan? Je kunt altijd contact opnemen met onze Functionaris Gegevensbescherming via bovenstaand e-mailadres.

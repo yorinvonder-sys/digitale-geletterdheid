@@ -3,6 +3,7 @@ import { MessageCircle, X, Send, Lock } from 'lucide-react';
 import { useStudentAssistant } from '../hooks/useStudentAssistant';
 import { MarkdownRenderer } from './MarkdownRenderer';
 import { AiDisclosureBadge } from './AiDisclosureBadge';
+import { WellbeingAlert } from './WellbeingAlert';
 
 /** Context data passed to AI for better responses */
 interface AIContextData {
@@ -111,7 +112,10 @@ export const StudentAIChat: React.FC<StudentAIChatProps> = ({ userIdentifier, co
         isLoading,
         isLocked,
         isOpen: internalIsOpen,
-        setIsOpen: setInternalIsOpen
+        setIsOpen: setInternalIsOpen,
+        showHulplijn,
+        wellbeingMatch,
+        dismissHulplijn,
     } = useStudentAssistant({ userIdentifier, context });
 
     // Resolve controlled vs internal state
@@ -153,6 +157,9 @@ export const StudentAIChat: React.FC<StudentAIChatProps> = ({ userIdentifier, co
 
     return (
         <>
+            {/* Welzijnsdetectie overlay */}
+            {showHulplijn && <WellbeingAlert match={wellbeingMatch} onDismiss={dismissHulplijn} />}
+
             {/* Floating Pip Button */}
             {!isVisible && (
                 <button

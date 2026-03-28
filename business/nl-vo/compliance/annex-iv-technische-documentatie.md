@@ -4,9 +4,9 @@
 **Verordening (EU) 2024/1689 -- Artikel 11 + Bijlage IV**
 **Documentversie:** 1.0
 **Datum:** 15 maart 2026
-**Aanbieder:** Yorin von der Osten (DGSkills) [TODO: KvK-nummer invullen na inschrijving]
-**Contactadres:** [TODO: vestigingsadres invullen]
-**E-mail:** [TODO: zakelijk e-mailadres invullen]
+**Aanbieder:** Yorin von der Osten (DGSkills) — KvK-nummer: [INVULLEN NA KVK-REGISTRATIE]
+**Contactadres:** [INVULLEN NA KVK-REGISTRATIE]
+**E-mail:** info@dgskills.app
 **Classificatie:** Hoog-risico AI-systeem -- Annex III, punt 3(b)
 
 ---
