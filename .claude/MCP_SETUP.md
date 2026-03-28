@@ -43,3 +43,22 @@ Claude Code reads this file automatically on session start.
 
 > Brave Search dropped its free tier — Tavily replaced it.
 > Keys are read from macOS Keychain at runtime — `.mcp.json` contains no plaintext secrets.
+
+---
+
+## GitHub MCP
+**Purpose:** PRs aanmaken/reviewen, issues beheren, CI-status checken, repo-structuur inspecteren.
+**Runs:** `npx @modelcontextprotocol/server-github`
+**Key storage:** `~/.config/claude-mcp/github-pat` (chmod 600)
+**Setup (first time):**
+1. Ga naar https://github.com/settings/personal-access-tokens/new en maak een Fine-grained PAT:
+   - **Token name:** `claude-code-dgskills`
+   - **Repository access:** `yorinvonder-sys/digitale-geletterdheid`
+   - **Permissions:** Contents (read), Issues (read/write), Pull requests (read/write), Actions (read)
+2. Store it:
+   ```bash
+   mkdir -p ~/.config/claude-mcp && chmod 700 ~/.config/claude-mcp
+   echo -n "YOUR_PAT" > ~/.config/claude-mcp/github-pat && chmod 600 ~/.config/claude-mcp/github-pat
+   ```
+
+> `.mcp.json` leest het token uit `~/.config/claude-mcp/github-pat` — geen plaintext secrets in `.mcp.json`.
