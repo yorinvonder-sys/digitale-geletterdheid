@@ -70,11 +70,6 @@ export const CURRICULUM: CurriculumConfig = {
                         'slide-specialist',
                         'print-pro',
                     ],
-                    reviewMissions: [
-                        'cloud-cleaner',
-                        'layout-doctor',
-                        'pitch-police',
-                    ],
                     assessmentId: 'assessment-j1-p1',
                 },
                 2: {
@@ -96,6 +91,9 @@ export const CURRICULUM: CurriculumConfig = {
                         'schermtijd-coach',
                     ],
                     reviewMissions: [
+                        'cloud-cleaner',
+                        'layout-doctor',
+                        'pitch-police',
                         'review-week-2',
                     ],
                     assessmentId: 'assessment-j1-p2',
