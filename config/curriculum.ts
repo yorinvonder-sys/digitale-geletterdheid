@@ -110,6 +110,7 @@ export const CURRICULUM: CurriculumConfig = {
                         'deepfake-detector',
                         'ai-spiegel',
                         'social-safeguard',
+                        'scroll-stopper',
                         'cookie-crusher',
                         'data-handelaar',
                         'filter-bubble-breaker',

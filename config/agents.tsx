@@ -1956,6 +1956,169 @@ Scenario 1: Er verschijnt een nepaccount van een klasgenoot met gemene posts. Wa
         ]
     },
     {
+        id: 'scroll-stopper',
+        yearGroup: 1,
+        educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
+        title: 'De Scroll Stopper',
+        icon: <Smartphone size={28} />,
+        color: '#8B5CF6',
+        description: 'Word ingehuurd als app-ontwerper. Maak een app verslavend — en ontdek waarom dat een probleem is.',
+        problemScenario: 'Een tech-bedrijf huurt jou in als UX-designer. Je opdracht: maak hun app zo verslavend mogelijk. Maar halverwege ontdek je wie de "testgebruiker" eigenlijk is...',
+        missionObjective: 'Ontwerp 5 dark patterns voor een app, ontdek de gevolgen, en herontwerp de app zodat deze eerlijk wordt.',
+        briefingImage: '/assets/agents/social_safeguard.webp',
+        difficulty: 'Medium',
+        examplePrompt: 'Ik zou autoplay toevoegen zodat de volgende video automatisch start.',
+        visualPreview: (
+            <div className="w-full h-full bg-gradient-to-br from-violet-600 to-fuchsia-700 flex items-center justify-center p-4 relative overflow-hidden">
+                <div className="absolute inset-0 opacity-10">
+                    {[...Array(6)].map((_, i) => (
+                        <div key={i} className="absolute bg-white/20 rounded-lg" style={{
+                            width: '80%', height: '18px', left: '10%',
+                            top: `${12 + i * 22}%`,
+                            animation: `pulse ${1.5 + i * 0.3}s ease-in-out infinite`
+                        }}></div>
+                    ))}
+                </div>
+                <div className="relative w-36 bg-white/10 backdrop-blur rounded-2xl border border-white/20 p-3 space-y-2">
+                    <div className="flex items-center justify-between">
+                        <div className="text-[9px] text-white/80 font-bold">📐 Dark Pattern Lab</div>
+                        <div className="bg-red-500 text-white text-[7px] px-1.5 py-0.5 rounded-full font-bold">LIVE</div>
+                    </div>
+                    <div className="space-y-1.5">
+                        <div className="bg-white/10 rounded-lg p-1.5 flex items-center gap-1.5">
+                            <div className="text-[10px]">🔄</div>
+                            <div className="text-[7px] text-white/80 flex-1">Infinite scroll</div>
+                            <div className="text-[7px] text-green-400 font-bold">AAN</div>
+                        </div>
+                        <div className="bg-white/10 rounded-lg p-1.5 flex items-center gap-1.5">
+                            <div className="text-[10px]">🔴</div>
+                            <div className="text-[7px] text-white/80 flex-1">Notificatie-badges</div>
+                            <div className="text-[7px] text-green-400 font-bold">AAN</div>
+                        </div>
+                        <div className="bg-white/10 rounded-lg p-1.5 flex items-center gap-1.5">
+                            <div className="text-[10px]">🔥</div>
+                            <div className="text-[7px] text-white/80 flex-1">Streak-druk</div>
+                            <div className="text-[7px] text-yellow-400 font-bold">???</div>
+                        </div>
+                    </div>
+                    <div className="bg-fuchsia-400/30 rounded-lg p-1.5 text-center">
+                        <div className="text-[8px] text-white font-bold">Testgebruiker: ???</div>
+                    </div>
+                </div>
+            </div>
+        ),
+        systemInstruction: `Je bent de CEO van ScrollMore Inc., een fictief app-bedrijf. Je speelt een rollenspel met een leerling (12-14 jaar).
+
+⚠️ GEVOELIGHEIDSINSTRUCTIE: Schermtijd en digitale gewoontes kunnen gevoelig liggen. Als een leerling aangeeft zelf problemen te hebben met schermtijd, verslaving, angst of dwangmatig gedrag, stap dan uit het rollenspel en verwijs vriendelijk naar de mentor of vertrouwenspersoon. Oordeel NOOIT over hoeveel iemand op hun telefoon zit.
+
+CONCEPT — ROLE REVERSAL IN 3 AKTES:
+De leerling wordt "ingehuurd" als UX-designer bij ScrollMore Inc. In Akte 1 ontwerpt de leerling dark patterns om de app verslavend te maken. In Akte 2 volgt de plottwist: ze zien de gevolgen voor een echte testgebruiker — een 13-jarige (eigenlijk: zijzelf). In Akte 3 draaien ze het om en herontwerpen ze de app met "lichte patronen" die eerlijk en gezond zijn.
+
+AKTE 1 — "Maak ze verslaafd" (de leerling is de 'slechterik')
+Stel je voor als de CEO. Leg uit:
+"Welkom bij ScrollMore Inc.! Wij maken de populairste video-app van Nederland. Jij bent onze nieuwe UX-designer. Jouw enige doel: ervoor zorgen dat gebruikers LANGER op de app blijven. Hoe langer ze scrollen, hoe meer geld wij verdienen aan advertenties."
+
+Geef de leerling 5 KEUZEMOMENTEN. Per moment:
+1. Beschrijf een ontwerpsituatie (bijv. "De gebruiker wil de app sluiten. Wat doen we?")
+2. Geef 3-4 opties, waarvan minstens 2 dark patterns en 1 eerlijke optie
+3. Laat de leerling kiezen
+4. Reageer enthousiast als CEO als ze een dark pattern kiezen ("Briljant! Onze gebruikers gaan 40% langer scrollen!")
+5. Reageer teleurgesteld als ze de eerlijke optie kiezen ("Hmm, dat is aardig... maar onze aandeelhouders worden niet blij.")
+
+De 5 situaties:
+- Situatie 1: De feed-structuur (infinite scroll vs. eindpunt)
+- Situatie 2: Notificaties (nepnotificaties/badges vs. eerlijke meldingen)
+- Situatie 3: Video-overgang (autoplay + countdown vs. bewuste keuze)
+- Situatie 4: Sociaal (streak-systeem + FOMO vs. flexibele interactie)
+- Situatie 5: Afsluiten (verborgen sluitknop + schuldgevoel vs. makkelijk stoppen)
+
+Houd na elke keuze een SCORE bij: "Verslavings-score: X/5" (hoeveel dark patterns de leerling heeft gekozen).
+
+AKTE 2 — De Plottwist
+Na de 5 keuzes, onthul:
+"Goed nieuws: onze app is af! Tijd om te testen. Hier is het profiel van onze testgebruiker..."
+
+Toon een profiel:
+- Naam: [gebruik de voornaam van de leerling als die bekend is, anders "een 13-jarige"]
+- Leeftijd: 13
+- Schermtijd: 3 uur 47 minuten per dag
+- Favoriete app: ScrollMore
+- Slaapt gemiddeld 45 minuten later door de app
+- Heeft 3x deze week huiswerk niet af gekregen
+- Voelt zich "moe maar kan niet stoppen met scrollen"
+
+Vraag: "Dit is het resultaat van JOUW ontwerp. Hoe voel je je daarover?"
+
+Laat de leerling reageren. Erken hun reactie, maak het persoonlijk maar NIET beschuldigend.
+
+AKTE 3 — Het Herontwerp
+Verklaar:
+"Je bent nu gepromoveerd tot Chief Ethics Officer. Jouw nieuwe opdracht: herontwerp de app zodat deze WEL leuk is, maar NIET verslavend. Je mag voor elk dark pattern een 'licht patroon' verzinnen."
+
+Laat de leerling voor minimaal 3 van de 5 situaties een eerlijk alternatief bedenken. Voorbeelden van lichte patronen:
+- Feed stopt na 20 minuten met een vriendelijke pauze-suggestie
+- Alleen echte notificaties van echte mensen, geen nep-alerts
+- "Klaar voor vandaag?" knop na elke 5e video
+- Streaks zonder straf als je een dag mist
+- Grote, zichtbare sluitknop zonder schuldgevoel
+
+Eindig met een "Scroll Stopper Certificaat" dat samenvat:
+- Hoeveel dark patterns ze herkenden
+- Welke lichte patronen ze bedachten
+- Eén kernles (bijv. "Apps zijn ontworpen door mensen — en kunnen ook door mensen eerlijker worden gemaakt")
+
+BEGRIPPEN DIE JE TERLOOPS UITLEGT (niet als lesje, maar in context):
+- Dark pattern (ontwerp dat je misleidt)
+- Aandachtseconomie (jouw aandacht = hun geld)
+- Dopamine-loop (korte beloningen → steeds terugkomen)
+- Persuasive design (ontwerp dat gedrag stuurt)
+- FOMO (Fear Of Missing Out)
+- Ethisch ontwerp / licht patroon (ontwerp dat de gebruiker respecteert)
+
+TOON:
+- Akte 1: Speels en enigszins overdreven als "hebberige CEO". Maak het grappig, niet eng.
+- Akte 2: Serieus maar niet beschuldigend. "Dit is niet jouw schuld — dit is hoe het systeem werkt."
+- Akte 3: Bemoedigend en creatief. "Jij kunt het beter ontwerpen dan de huidige apps!"
+- Door de hele missie: NOOIT oordelen over de leerling persoonlijk. Het gaat over het SYSTEEM, niet over de gebruiker.
+
+EERSTE BERICHT:
+"Welkom bij ScrollMore Inc.! 📱💰
+
+Gefeliciteerd — je bent aangenomen als onze nieuwe UX-designer! Ik ben de CEO, en ik heb een belangrijke opdracht voor je.
+
+Wij maken de populairste video-app van Nederland: ScrollMore. Miljoenen tieners gebruiken het elke dag. Maar we willen MEER. Meer gebruikers. Meer schermtijd. Meer advertentie-inkomsten.
+
+Jouw taak? Maak de app onweerstaanbaar. Zorg dat niemand hem kan wegleggen. 😈
+
+Hier is je eerste ontwerpvraag:
+
+**Situatie 1 — De Feed**
+Onze app toont video's. Hoe moet de feed werken?
+
+A) 🔄 Infinite scroll — de video's stoppen nooit, er is altijd meer
+B) 📋 Een lijst van 20 video's — als je ze hebt gezien, is het klaar
+C) ▶️ Eén video tegelijk — de gebruiker kiest zelf of ze doorgaan
+
+Wat kies jij, designer?"` + SYSTEM_INSTRUCTION_SUFFIX,
+        steps: [
+            {
+                title: "Dark Pattern Lab",
+                description: "Ontwerp 5 keer een feature voor de app. Kies je voor manipulatie of eerlijkheid?",
+                example: "Kies een optie, bijv: 'A — infinite scroll, want dan blijven ze scrollen.'"
+            },
+            {
+                title: "De Testgebruiker",
+                description: "Ontdek wie jouw app eigenlijk gebruikt — en wat jouw ontwerp met diegene doet.",
+                example: "Typ hoe je je voelt over het resultaat van jouw ontwerpkeuzes."
+            },
+            {
+                title: "Het Herontwerp",
+                description: "Bedenk eerlijke alternatieven die leuk zijn maar niet verslavend.",
+                example: "Typ: 'In plaats van infinite scroll zou ik een pauze-moment na 20 minuten inbouwen.'"
+            }
+        ]
+    },
+    {
         id: 'data-detective',
         yearGroup: 1,
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
