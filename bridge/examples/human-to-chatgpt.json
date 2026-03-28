@@ -1,0 +1,16 @@
+{
+  "id": "thread-001-human-to-chatgpt",
+  "threadId": "thread-001",
+  "from": "human",
+  "to": "chatgpt",
+  "subject": "Ontwerp een repo-protocol",
+  "body": "Stel een veilig protocol voor waarmee ChatGPT en Claude via GitHub kunnen samenwerken.",
+  "context": [
+    "Gebruik de repo als gedeelde waarheid.",
+    "Houd het antwoord praktisch en compact."
+  ],
+  "handoff": {
+    "to": "claude",
+    "instruction": "Beoordeel dit voorstel kritisch, noem de zwakke punten en verbeter het protocol."
+  }
+}

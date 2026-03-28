@@ -7,6 +7,12 @@
     "dev": "vite",
     "build": "vite build && node scripts/prerender.mjs",
     "build:prod": "vite build --mode production --sourcemap false && node scripts/prerender.mjs",
+    "bridge:chatgpt": "node scripts/github-agent-bridge.mjs process-all --agent chatgpt",
+    "bridge:claude": "node scripts/github-agent-bridge.mjs process-all --agent claude",
+    "bridge:comments": "node scripts/github-agent-comments.mjs respond",
+    "bridge:comments:dry": "node scripts/github-agent-comments.mjs respond --dry-run",
+    "bridge:dry": "node scripts/github-agent-bridge.mjs process-pipeline --dry-run",
+    "bridge:pipeline": "node scripts/github-agent-bridge.mjs process-pipeline",
     "lint": "echo 'Linting not configured'",
     "preview": "vite preview",
     "clean": "./scripts/cleanup_dev_env.sh",
@@ -19,7 +25,8 @@
     "perf:assert:network": "node scripts/assert-critical-route-network.mjs",
     "perf:bundle:check": "node scripts/check-bundle-budgets.mjs",
     "performance:ci": "npm run lighthouse:median && npm run perf:assert:network && npm run perf:bundle:check",
-    "audit:security": "npm audit --audit-level=moderate"
+    "audit:security": "npm audit --audit-level=moderate",
+    "review:handoff": "node scripts/validate-claude-handoff.mjs"
   },
   "dependencies": {
     "@google/genai": "^1.34.0",
