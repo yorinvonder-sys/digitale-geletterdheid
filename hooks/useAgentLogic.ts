@@ -1,10 +1,11 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { AgentRole, ChatMessage, BookData, DetectiveCase, TrainerData, CodeChange, BonusChallenge } from '../types';
-import { createChatSession, sendMessageToGemini, generateImage, Chat } from '../services/geminiService';
+import { createChatSession, generateImage, Chat } from '../services/geminiService';
 import { enhancePrompt, shouldShowEnhancementDiff } from '../services/promptEnhancer';
 import { computeCodeChanges } from '../components/CodeChangeCard';
 import { saveMissionProgress, loadMissionProgress, resetMissionProgress } from '../services/missionService';
+import { stripAiProvenance } from '../utils/aiContentMarker';
 import DOMPurify from 'dompurify';
 
 // ============================================================================
@@ -27,11 +28,15 @@ function extractEersteBericht(systemInstruction: string): string | null {
 
     let text = systemInstruction.slice(idx + marker.length).trim();
 
+    // First, cut off the SYSTEM_INSTRUCTION_SUFFIX which always starts with
+    // "ALGEMENE REGELS:" — this prevents suffix content from polluting the result.
+    const suffixStart = text.indexOf('ALGEMENE REGELS:');
+    if (suffixStart > 0) {
+        text = text.slice(0, suffixStart).trim();
+    }
+
     // Strip surrounding quotes if present
     if (text.startsWith('"')) {
-        // Find the matching closing quote — the EERSTE BERICHT is typically
-        // the last section, so take everything up to the final quote before
-        // the SYSTEM_INSTRUCTION_SUFFIX or end-of-string.
         const closeIdx = text.lastIndexOf('"');
         if (closeIdx > 0) {
             text = text.slice(1, closeIdx).trim();
@@ -40,17 +45,63 @@ function extractEersteBericht(systemInstruction: string): string | null {
         }
     }
 
-    // Remove trailing system-suffix artifacts (e.g. the appended SYSTEM_INSTRUCTION_SUFFIX)
-    // These typically start with "\n\n---" or "\n\nBELANGRIJK:" or similar section markers
-    const suffixPatterns = ['\n\n---', '\nBELANGRIJK:', '\n\nSYSTEM', '\n\nVEILIGHEID'];
-    for (const pattern of suffixPatterns) {
-        const suffixIdx = text.indexOf(pattern);
-        if (suffixIdx > 0) {
-            text = text.slice(0, suffixIdx).trim();
-        }
+    return text.length > 10 ? text : null;
+}
+
+const GAME_HTML_DOCUMENT_REGEX = /<!doctype html(?:\s[^>]*)?>[\s\S]*?<\/html>/i;
+const GAME_HTML_ROOT_REGEX = /<html[\s\S]*?<\/html>/i;
+const GAME_HTML_FENCE_REGEX = /```(?:html)?\s*([\s\S]*?)```/i;
+
+function extractGameHtmlDocument(rawResponse: string): string | null {
+    const cleaned = stripAiProvenance(rawResponse).trim();
+    if (!cleaned) return null;
+
+    const fullDocumentMatch = cleaned.match(GAME_HTML_DOCUMENT_REGEX);
+    if (fullDocumentMatch) {
+        return fullDocumentMatch[0].trim();
     }
 
-    return text.length > 10 ? text : null;
+    const htmlRootMatch = cleaned.match(GAME_HTML_ROOT_REGEX);
+    if (htmlRootMatch) {
+        return `<!DOCTYPE html>\n${htmlRootMatch[0].trim()}`;
+    }
+
+    const fencedCodeMatch = cleaned.match(GAME_HTML_FENCE_REGEX);
+    if (fencedCodeMatch) {
+        return extractGameHtmlDocument(fencedCodeMatch[1]);
+    }
+
+    const looksLikeGameFragment =
+        /<canvas\b/i.test(cleaned) &&
+        /<script\b/i.test(cleaned) &&
+        /<\/script>/i.test(cleaned);
+
+    if (looksLikeGameFragment) {
+        return [
+            '<!DOCTYPE html>',
+            '<html lang="nl">',
+            '<head>',
+            '  <meta charset="UTF-8" />',
+            '  <meta name="viewport" content="width=device-width, initial-scale=1.0" />',
+            '  <title>Game Preview</title>',
+            '</head>',
+            '<body>',
+            cleaned,
+            '</body>',
+            '</html>',
+        ].join('\n');
+    }
+
+    return null;
+}
+
+function stripGameCodeFromResponse(rawResponse: string): string {
+    return stripAiProvenance(rawResponse)
+        .replace(GAME_HTML_DOCUMENT_REGEX, '')
+        .replace(GAME_HTML_ROOT_REGEX, '')
+        .replace(GAME_HTML_FENCE_REGEX, '')
+        .replace(/\n{3,}/g, '\n\n')
+        .trim();
 }
 
 // ============================================================================
@@ -59,56 +110,106 @@ function extractEersteBericht(systemInstruction: string): string | null {
 // ============================================================================
 const getStarterTips = (roleId: string, examplePrompt?: string): string[] => {
     const tips: Record<string, string[]> = {
-        'game-programmeur': [
-            'Maak de speler blauw',
-            'Maak het springen hoger',
-            'Voeg een springgeluid toe'
-        ],
-        'verhalen-ontwerper': [
-            'Schrijf over een draak',
-            'Mijn held is een konijn',
-            'Maak een spannend avontuur'
-        ],
-        'ai-trainer': [
-            'Dit is plastic',
-            'Voeg een kartonnen doos toe',
-            'Train de AI met papier'
-        ],
-        'nepnieuws-speurder': [
-            'Is dit echt?',
-            'Wie maakte dit?',
-            'Analyseer de bron'
-        ],
-        'magister-master': [
-            'Hoe check ik mijn rooster?',
-            'Waar vind ik mijn cijfers?',
-            'Hoe zie ik het huiswerk?'
-        ],
-        'cloud-commander': [
-            'Maak een nieuwe map',
-            'Deel een bestand',
-            'Zoek mijn document'
-        ],
-        'word-wizard': [
-            'Maak een inhoudsopgave',
-            'Voeg paginanummers toe',
-            'Hoe maak ik bullets?'
-        ],
-        'slide-specialist': [
-            'Voeg een animatie toe',
-            'Kies een mooi thema',
-            'Maak een overgang'
-        ],
-        'social-media-psychologist': [
-            'Wat is een filterbubbel?',
-            'Hoe werkt een algoritme?',
-            'Wat is echo-kamer?'
-        ],
-        'print-pro': [
-            'Hoe log ik in?',
-            'Waar vind ik de app?',
-            'Stuur een printopdracht'
-        ]
+        // === J1P1: Digitale Basisvaardigheden ===
+        'magister-master': ['Hoe check ik mijn rooster?', 'Waar vind ik mijn cijfers?', 'Hoe zie ik het huiswerk?'],
+        'cloud-commander': ['Maak een nieuwe map', 'Deel een bestand', 'Zoek mijn document'],
+        'word-wizard': ['Maak een inhoudsopgave', 'Voeg paginanummers toe', 'Hoe maak ik bullets?'],
+        'slide-specialist': ['Voeg een animatie toe', 'Kies een mooi thema', 'Maak een overgang'],
+        'print-pro': ['Hoe log ik in?', 'Waar vind ik de app?', 'Stuur een printopdracht'],
+        // === J1P2: AI & Creatie ===
+        'game-programmeur': ['Maak de speler blauw', 'Maak het springen hoger', 'Voeg een springgeluid toe'],
+        'verhalen-ontwerper': ['Schrijf over een draak', 'Mijn held is een konijn', 'Maak een spannend avontuur'],
+        'ai-trainer': ['Dit is plastic', 'Voeg een kartonnen doos toe', 'Train de AI met papier'],
+        'chatbot-trainer': ['Maak een chatbot voor een pizzeria', 'Welke sleutelwoorden horen bij bestellingen?', 'Test mijn chatbot'],
+        'ai-tekengame': ['Teken een kat', 'Hoe herkent AI mijn tekening?', 'Waarom raadt de AI het fout?'],
+        'ai-beleid-brainstorm': ['Mag je ChatGPT gebruiken voor huiswerk?', 'Welke AI-regels moet school hebben?', 'Wat als AI fout antwoordt?'],
+        'code-denker': ['Wat is een variabele?', 'Hoe werkt een loop?', 'Los het puzzelprobleem op'],
+        'website-bouwer': ['Maak een homepagina', 'Voeg een menu toe', 'Verander de kleuren'],
+        'schermtijd-coach': ['Hoeveel uur zit ik op mijn telefoon?', 'Welke apps kosten de meeste tijd?', 'Maak een schermtijd-plan'],
+        'game-director': ['Verander de zwaartekracht', 'Maak de wereld groter', 'Voeg een nieuw obstakel toe'],
+        // === J1P3: Digitaal Burgerschap ===
+        'data-detective': ['Wat weten bedrijven over mij?', 'Is dit een dark pattern?', 'Hoe bescherm ik mijn data?'],
+        'data-verzamelaar': ['Welke data verzamel ik zelf?', 'Wat mag een bedrijf opslaan?', 'Hoe werkt een cookie?'],
+        'deepfake-detector': ['Is dit echt of nep?', 'Hoe herken ik een deepfake?', 'Waarom zijn deepfakes gevaarlijk?'],
+        'ai-spiegel': ['Wat zegt mijn profiel over mij?', 'Hoe werkt een aanbevelingsalgoritme?', 'Hoe doorbreek ik mijn bubbel?'],
+        'social-safeguard': ['Wat doe ik bij online pesten?', 'Hoe bewaar ik bewijs?', 'Hoe meld ik iets onveiligs?'],
+        'scroll-stopper': ['Waarom kan ik niet stoppen met scrollen?', 'Welke trucs gebruiken apps?', 'Hoe maak ik bewuste keuzes?'],
+        'cookie-crusher': ['Wat is een tracking cookie?', 'Herken het dark pattern!', 'Welke cookies zijn oké?'],
+        'data-handelaar': ['Bekijk bewijsstuk 1', 'Is dit legaal volgens de AVG?', 'Schrijf een rapport'],
+        'filter-bubble-breaker': ['Vergelijk de twee feeds', 'Waarom ziet iedereen iets anders?', 'Hoe beïnvloedt het algoritme mij?'],
+        'datalekken-rampenplan': ['Wat is er gelekt?', 'Wie moet ik waarschuwen?', 'Maak een noodplan'],
+        'data-voor-data': ['Deal of no deal?', 'Hoeveel is mijn data waard?', 'Waar trek ik de grens?'],
+        'data-speurder': ['Welke data staat online over mij?', 'Hoe wis ik mijn digitale spoor?', 'Wat deelt deze app stiekem?'],
+        'social-media-psychologist': ['Wat is een filterbubbel?', 'Hoe werkt een algoritme?', 'Waarom blijf ik scrollen?'],
+        // === J1P4: Eindproject ===
+        'mission-blueprint': ['Ik wil een app ontwerpen', 'Help me een plan maken', 'Welke tools heb ik nodig?'],
+        'mission-vision': ['Maak een mockup van mijn idee', 'Hoe maak ik een goede pitch?', 'Ontwerp het logo'],
+        'mission-launch': ['Ik wil mijn project presenteren', 'Hoe maak ik een demo?', 'Geef feedback op mijn pitch'],
+        'review-week-2': ['Test mijn kennis over AI', 'Wat was supervised learning?', 'Leg het verschil uit'],
+        'review-week-3': ['Test mijn kennis over privacy', 'Wat is de AVG?', 'Hoe bescherm ik mijn data?'],
+        // === J2P1: Data & Informatie ===
+        'data-journalist': ['Hoe vind ik trends in data?', 'Welke grafiek past het best?', 'Maak een infographic'],
+        'spreadsheet-specialist': ['Hoe maak ik een SOM-formule?', 'Maak een grafiek van de data', 'Sorteer de gegevens'],
+        'factchecker': ['Is dit bericht betrouwbaar?', 'Hoe check ik de bron?', 'Wat maakt een bron onbetrouwbaar?'],
+        'api-verkenner': ['Wat is een API eigenlijk?', 'Hoe haal je weerdata op?', 'Leg JSON uit in simpele taal'],
+        'dashboard-designer': ['Welke data is het belangrijkst?', 'Welk type grafiek kies ik?', 'Hoe maak ik het overzichtelijk?'],
+        'ai-bias-detective': ['Waarom geeft de AI dit advies?', 'Is dit eerlijk voor iedereen?', 'Hoe herken ik bias?'],
+        'data-review': ['Test mijn datakennis', 'Wat is het verschil tussen data en informatie?', 'Hoe werkt een database?'],
+        // === J2P2: Programmeren ===
+        'algorithm-architect': ['Hoe sorteer ik deze lijst?', 'Splits het probleem in stappen', 'Maak een stroomdiagram'],
+        'web-developer': ['Maak een basispagina in HTML', 'Voeg een afbeelding toe', 'Style de pagina met CSS'],
+        'network-navigator': ['Hoe komt mijn bericht aan?', 'Wat is een IP-adres?', 'Hoe werkt DNS?'],
+        'app-prototyper': ['Wie is mijn doelgroep?', 'Schets het hoofdscherm', 'Hoe navigeert de gebruiker?'],
+        'bug-hunter': ['Reproduceer de bug', 'Waar zit het probleem?', 'Hoe test ik mijn fix?'],
+        'automation-engineer': ['Welke taken herhalen zich?', 'Maak een automatiseringsplan', 'Hoe test ik mijn workflow?'],
+        'code-reviewer': ['Lees de code hardop voor', 'Wat kan beter aan deze code?', 'Is deze code veilig?'],
+        'privacy-by-design': ['Welke data verzamelt deze app?', 'Is dit privacy-vriendelijk?', 'Hoe kan het met minder data?'],
+        'wachtwoord-warrior': ['Hoe sterk is dit wachtwoord?', 'Maak een onkraakbaar wachtwoord', 'Wat is tweestapsverificatie?'],
+        'access-control-engineer': ['Wie mag wat zien?', 'Stel de rechten in per rol', 'Test of de beveiliging klopt'],
+        'code-review-2': ['Test mijn programmeerkennis', 'Wat doet deze code?', 'Vind de bug in dit voorbeeld'],
+        // === J2P3: Media & Creatie ===
+        'ux-detective': ['Waarom krijgt deze app slechte reviews?', 'Hoe test ik gebruiksvriendelijkheid?', 'Ontwerp een betere versie'],
+        'podcast-producer': ['Kies een onderwerp voor mijn podcast', 'Schrijf een intro-script', 'Hoe maak ik het boeiend?'],
+        'meme-machine': ['Waarom werkt deze meme?', 'Maak een meme voor een campagne', 'Analyseer het doelpubliek'],
+        'digital-storyteller': ['Ontwerp de verhaalstructuur', 'Maak een keuzemoment', 'Hoe maak ik het spannend?'],
+        'brand-builder': ['Wie is mijn doelgroep?', 'Ontwerp een logo-concept', 'Kies de juiste kleuren'],
+        'video-editor': ['Schrijf een verhaallijn van 60 seconden', 'Welke shots heb ik nodig?', 'Hoe maak ik een goede opening?'],
+        'media-review': ['Test mijn mediakennis', 'Wat is UX design?', 'Hoe werkt een brand identity?'],
+        // === J2P4: Ethiek & Maatschappij ===
+        'ai-ethicus': ['Is dit AI-systeem eerlijk?', 'Wie is verantwoordelijk als AI fouten maakt?', 'Welke regels zijn nodig?'],
+        'digital-rights-defender': ['Welke rechten heb ik online?', 'Mag de school dit verzamelen?', 'Schrijf een privacycheck'],
+        'tech-court': ['Bereid mijn zaak voor', 'Wat zijn de argumenten voor?', 'Wat zijn de argumenten tegen?'],
+        'future-forecaster': ['Hoe ziet 2040 eruit?', 'Welke technologie verandert alles?', 'Wat zijn de risicos?'],
+        'sustainability-scanner': ['Hoeveel energie kost streamen?', 'Hoe verduurzaam ik mijn digitale gedrag?', 'Wat is de CO2-voetafdruk?'],
+        'eindproject-j2': ['Help me een onderwerp kiezen', 'Maak een projectplan', 'Welke vaardigheden gebruik ik?'],
+        // === J3P1: Geavanceerd Programmeren & AI ===
+        'ml-trainer': ['Hoe herken ik spam automatisch?', 'Wat is een trainingsset?', 'Hoe test ik mijn model?'],
+        'api-architect': ['Ontwerp de API-structuur', 'Welke endpoints heb ik nodig?', 'Hoe beveilig ik de API?'],
+        'neural-navigator': ['Hoe werkt een neuron?', 'Wat is een hidden layer?', 'Hoe leert het netwerk?'],
+        'data-pipeline': ['Hoe verzamel ik de data?', 'Hoe schoon ik de data op?', 'Maak een visualisatie'],
+        'open-source-contributor': ['Hoe fork ik een repository?', 'Maak een pull request', 'Schrijf goede documentatie'],
+        'advanced-code-review': ['Test mijn geavanceerde kennis', 'Analyseer dit code-voorbeeld', 'Wat is de Big O hiervan?'],
+        // === J3P2: Cybersecurity ===
+        'cyber-detective': ['Analyseer het incident', 'Welke sporen zijn achtergelaten?', 'Schrijf een forensisch rapport'],
+        'encryption-expert': ['Kraak dit Caesarcijfer', 'Hoe werkt publieke sleutelencryptie?', 'Is deze versleuteling veilig?'],
+        'phishing-fighter': ['Is deze e-mail nep?', 'Welke signalen verraden phishing?', 'Ontwerp een awareness-training'],
+        'security-auditor': ['Scan deze website op kwetsbaarheden', 'Welke OWASP-risicos zie ik?', 'Schrijf een beveiligingsadvies'],
+        'digital-forensics': ['Lees de logbestanden', 'Reconstrueer de tijdlijn', 'Wie is de verdachte?'],
+        'security-review': ['Test mijn security-kennis', 'Wat is SQL injection?', 'Hoe voorkom ik XSS?'],
+        // === J3P3: Maatschappelijke Impact ===
+        'startup-simulator': ['Pitch mijn idee in 3 minuten', 'Wie is mijn klant?', 'Hoe verdien ik geld?'],
+        'policy-maker': ['Analyseer het voorstel', 'Wie zijn de stakeholders?', 'Schrijf een beleidsadvies'],
+        'innovation-lab': ['Welk wereldprobleem pak ik aan?', 'Ontwerp een prototype', 'Hoe meet ik de impact?'],
+        'digital-divide-researcher': ['Verzamel data over digitale ongelijkheid', 'Welke groepen worden geraakt?', 'Stel oplossingen voor'],
+        'tech-impact-analyst': ['Kies een technologie om te analyseren', 'Voordelen en nadelen?', 'Schrijf een impactrapport'],
+        'impact-review': ['Test mijn kennis over impact', 'Wat is de digitale kloof?', 'Hoe beïnvloedt AI de samenleving?'],
+        // === J3P4: Meesterproef ===
+        'portfolio-builder': ['Selecteer mijn beste werk', 'Hoe presenteer ik mijn groei?', 'Ontwerp de portfolio-layout'],
+        'research-project': ['Formuleer een onderzoeksvraag', 'Welke bronnen zijn betrouwbaar?', 'Hoe analyseer ik resultaten?'],
+        'prototype-developer': ['Schets mijn app-idee', 'Bouw het eerste scherm', 'Test met een gebruiker'],
+        'pitch-perfect': ['Bereid mijn pitch voor', 'Hoe begin ik sterk?', 'Oefen met vragen uit het publiek'],
+        'reflection-report': ['Wat heb ik geleerd in 3 jaar?', 'Welke vaardigheden heb ik ontwikkeld?', 'Waar wil ik mee verder?'],
+        'meesterproef': ['Schrijf mijn projectvoorstel', 'Plan de sprints', 'Bereid de verdediging voor'],
     };
 
     // Return mission-specific tips, or fallback to examplePrompt
@@ -217,14 +318,15 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
                     welcomeText = eersteBericht;
                 } else if (selectedRole.problemScenario && selectedRole.steps && selectedRole.steps.length > 0) {
                     const firstStep = selectedRole.steps[0];
-                    welcomeText = `Welkom bij ${selectedRole.title}! 👋\n\n${selectedRole.problemScenario}\n\n**Jouw opdracht:** ${selectedRole.missionObjective}\n\n**Stap 1: ${firstStep.title}**\n${firstStep.description}\n\n💡 ${firstStep.example}`;
+                    welcomeText = `Hey! 👋 Welkom bij **${selectedRole.title}**!\n\n${selectedRole.problemScenario}\n\n🎯 **Jouw missie:** ${selectedRole.missionObjective}\n\n📋 **Stap 1: ${firstStep.title}**\n${firstStep.description}\n\n💡 **Voorbeeld:** ${firstStep.example}\n\n*Klik op een van de knoppen hieronder om te beginnen, of typ zelf een vraag!*`;
                 } else {
-                    welcomeText = `Welkom bij ${selectedRole.title}! ${selectedRole.description} Waarmee kan ik je helpen?`;
+                    welcomeText = `Hey! 👋 Welkom bij **${selectedRole.title}**!\n\n${selectedRole.description}\n\n*Klik op een van de knoppen hieronder om te beginnen, of typ zelf een vraag!*`;
                 }
                 setMessages([{
                     role: 'model',
                     text: welcomeText,
-                    timestamp: new Date()
+                    timestamp: new Date(),
+                    isWelcome: true,
                 }]);
             }
             // --- INITIALIZE STARTER TIPS ---
@@ -498,68 +600,80 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
                 console.log('[PromptEnhancer] Changes:', enhancementResult.enhancements);
             }
 
-            // 2. Prepare for streaming
+            // 2. Prepare response handling
             let isFirstChunk = true;
             let fullTextAccumulated = "";
+            const useNonStreamingResponse = selectedRole?.id === 'game-programmeur';
 
-            // Call Streaming API
-            const { sendMessageToGeminiStream } = await import('../services/geminiService');
+            const { sendMessageToGemini, sendMessageToGeminiStream } = await import('../services/geminiService');
 
             // Track already-processed trainer items to avoid duplicates during streaming
             const processedTrainA = new Set<string>();
             const processedTrainB = new Set<string>();
 
-            await sendMessageToGeminiStream(
-                chatSessionRef.current,
-                promptForAI,  // Send ENHANCED prompt to AI
-                (chunkText) => {
-                    fullTextAccumulated = chunkText;
+            if (useNonStreamingResponse) {
+                clearInterval(interval);
+                fullTextAccumulated = await sendMessageToGemini(
+                    chatSessionRef.current,
+                    promptForAI
+                );
+                setMessages(prev => [
+                    ...prev,
+                    { role: 'model', text: fullTextAccumulated, timestamp: new Date() }
+                ]);
+            } else {
+                await sendMessageToGeminiStream(
+                    chatSessionRef.current,
+                    promptForAI,  // Send ENHANCED prompt to AI
+                    (chunkText) => {
+                        fullTextAccumulated = chunkText;
 
-                    // REAL-TIME TRAINER DATA PARSING (ai-trainer mission)
-                    // Parse and add items IMMEDIATELY as they stream in for instant visual feedback
-                    if (selectedRole?.id === 'ai-trainer') {
-                        // Parse TRAIN_A tags (plastic/categorie A) in real-time
-                        const trainAMatches = [...chunkText.matchAll(/\[TRAIN_A\](.*?)\[\/TRAIN_A\]/g)];
-                        for (const match of trainAMatches) {
-                            const item = match[1];
-                            if (!processedTrainA.has(item)) {
-                                processedTrainA.add(item);
-                                setActiveTrainerData(prev => ({ ...prev, classAItems: [...prev.classAItems, item] }));
+                        // REAL-TIME TRAINER DATA PARSING (ai-trainer mission)
+                        // Parse and add items IMMEDIATELY as they stream in for instant visual feedback
+                        if (selectedRole?.id === 'ai-trainer') {
+                            // Parse TRAIN_A tags (plastic/categorie A) in real-time
+                            const trainAMatches = [...chunkText.matchAll(/\[TRAIN_A\](.*?)\[\/TRAIN_A\]/g)];
+                            for (const match of trainAMatches) {
+                                const item = match[1];
+                                if (!processedTrainA.has(item)) {
+                                    processedTrainA.add(item);
+                                    setActiveTrainerData(prev => ({ ...prev, classAItems: [...prev.classAItems, item] }));
+                                }
+                            }
+
+                            // Parse TRAIN_B tags (papier/categorie B) in real-time
+                            const trainBMatches = [...chunkText.matchAll(/\[TRAIN_B\](.*?)\[\/TRAIN_B\]/g)];
+                            for (const match of trainBMatches) {
+                                const item = match[1];
+                                if (!processedTrainB.has(item)) {
+                                    processedTrainB.add(item);
+                                    setActiveTrainerData(prev => ({ ...prev, classBItems: [...prev.classBItems, item] }));
+                                }
                             }
                         }
 
-                        // Parse TRAIN_B tags (papier/categorie B) in real-time
-                        const trainBMatches = [...chunkText.matchAll(/\[TRAIN_B\](.*?)\[\/TRAIN_B\]/g)];
-                        for (const match of trainBMatches) {
-                            const item = match[1];
-                            if (!processedTrainB.has(item)) {
-                                processedTrainB.add(item);
-                                setActiveTrainerData(prev => ({ ...prev, classBItems: [...prev.classBItems, item] }));
-                            }
+                        // On first chunk: clear thinking, add model message placeholder
+                        if (isFirstChunk) {
+                            clearInterval(interval);
+                            setMessages(prev => [
+                                ...prev,
+                                { role: 'model', text: chunkText, timestamp: new Date() }
+                            ]);
+                            isFirstChunk = false;
+                        } else {
+                            // Update the LAST message (which is the model's streaming message)
+                            setMessages(prev => {
+                                const newArr = [...prev];
+                                const lastIdx = newArr.length - 1;
+                                if (newArr[lastIdx] && newArr[lastIdx].role === 'model') {
+                                    newArr[lastIdx] = { ...newArr[lastIdx], text: chunkText };
+                                }
+                                return newArr;
+                            });
                         }
                     }
-
-                    // On first chunk: clear thinking, add model message placeholder
-                    if (isFirstChunk) {
-                        clearInterval(interval);
-                        setMessages(prev => [
-                            ...prev,
-                            { role: 'model', text: chunkText, timestamp: new Date() }
-                        ]);
-                        isFirstChunk = false;
-                    } else {
-                        // Update the LAST message (which is the model's streaming message)
-                        setMessages(prev => {
-                            const newArr = [...prev];
-                            const lastIdx = newArr.length - 1;
-                            if (newArr[lastIdx] && newArr[lastIdx].role === 'model') {
-                                newArr[lastIdx] = { ...newArr[lastIdx], text: chunkText };
-                            }
-                            return newArr;
-                        });
-                    }
-                }
-            );
+                );
+            }
 
             // 3. Post-Processing (Logic Parsing) on the FULL text
             let responseText = fullTextAccumulated;
@@ -701,9 +815,8 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
             // GAME MAKER -> game-programmeur
 
             if (selectedRole?.id === 'game-programmeur') {
-                const htmlMatch = responseText.match(/<!DOCTYPE html>[\s\S]*?<\/html>/i);
-                if (htmlMatch) {
-                    const newCode = htmlMatch[0];
+                const newCode = extractGameHtmlDocument(responseText);
+                if (newCode) {
 
                     // =====================================================================
                     // CODE VALIDATION - Protect student work from broken AI responses
@@ -759,18 +872,16 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
                         previousGameCodeRef.current = newCode;
                         setActiveGameCode(newCode);
                     } else if (!shouldUpdate && rejectionReason) {
-                        // Notify user that code update was rejected
                         console.warn('[GameCode Protection] Rejected update:', rejectionReason);
-                        setMessages(prev => [...prev, {
-                            role: 'model',
-                            text: `⚠️ **Code-bescherming actief!**\n\nDe AI probeerde je code te vervangen met iets dat mogelijk kapot was (${rejectionReason}).\n\nJe huidige game is veilig. Probeer je vraag opnieuw te formuleren, of klik op ↩️ **Ongedaan** als je toch iets wilt herstellen.`,
-                            timestamp: new Date()
-                        }]);
+                        responseText = `⚠️ **Code-bescherming actief!**\n\nDe AI probeerde je code te vervangen met iets dat mogelijk kapot was (${rejectionReason}).\n\nJe huidige game is veilig. Probeer je vraag opnieuw te formuleren, of klik op ↩️ **Ongedaan** als je toch iets wilt herstellen.`;
                     } else if (!currentCode) {
                         // First time code - always accept
                         previousGameCodeRef.current = newCode;
                         setActiveGameCode(newCode);
                     }
+
+                    const cleanedExplanation = stripGameCodeFromResponse(responseText);
+                    responseText = cleanedExplanation || '✅ Ik heb je game bijgewerkt. Bekijk de preview en test meteen of alles werkt.';
                 }
             }
 

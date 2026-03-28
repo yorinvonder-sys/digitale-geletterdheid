@@ -390,6 +390,7 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
             ]
         };
 
+        justRestored.current = false;
         setActiveScenario(newScenario);
         setMode('training');
     };
@@ -679,7 +680,7 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                                             placeholder="Bijv. GameGuide Pro"
                                             value={customName}
                                             onChange={e => setCustomName(e.target.value)}
-                                            className="w-full rounded-lg px-3 py-2 focus:outline-none"
+                                            className="w-full rounded-lg px-3 py-2 focus:outline-none placeholder:text-white/50"
                                             style={{ backgroundColor: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.3)', color: '#FFFFFF' }}
                                         />
                                     </div>
@@ -690,7 +691,7 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                                             placeholder="Bijv. Geeft tips over Minecraft"
                                             value={customContext}
                                             onChange={e => setCustomContext(e.target.value)}
-                                            className="w-full rounded-lg px-3 py-2 focus:outline-none"
+                                            className="w-full rounded-lg px-3 py-2 focus:outline-none placeholder:text-white/50"
                                             style={{ backgroundColor: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.3)', color: '#FFFFFF' }}
                                         />
                                     </div>
@@ -710,7 +711,7 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                                                         newArr[i] = e.target.value;
                                                         setCustomTestQuestions(newArr);
                                                     }}
-                                                    className="w-full rounded-lg px-3 py-2 text-sm focus:outline-none"
+                                                    className="w-full rounded-lg px-3 py-2 text-sm focus:outline-none placeholder:text-white/50"
                                                     style={{ backgroundColor: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.3)', color: '#FFFFFF' }}
                                                 />
                                             ))}
@@ -734,6 +735,7 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                             <button
                                 key={s.id}
                                 onClick={() => {
+                                    justRestored.current = false;
                                     setActiveScenario(s);
                                     setMode('training');
                                 }}

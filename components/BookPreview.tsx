@@ -322,8 +322,8 @@ const PageContent = ({
                                 <BookOpen size={60} className={isInteractive ? 'text-[#D97757]' : ''} />
                                 <span className="text-amber-900/40 text-xs font-bold uppercase tracking-widest">Kaft Illustratie</span>
                                 {isInteractive && (
-                                    <span className="text-xs font-bold bg-white/80 px-3 py-1 rounded-full shadow-sm" style={{ color: '#D97757' }}>
-                                        📸 Klik om illustratie te maken
+                                    <span className="text-xs font-bold bg-white/80 px-3 py-1 rounded-full shadow-sm text-stone-400">
+                                        📝 Illustraties binnenkort beschikbaar
                                     </span>
                                 )}
                             </div>
@@ -498,6 +498,7 @@ export const BookPreview: React.FC<BookPreviewProps> = ({ data, onStart, onSendP
     const [startTimer, setStartTimer] = useState(0);
     const [showConclusion, setShowConclusion] = useState(false);
     const [showToast, setShowToast] = useState(false);
+    const [toastMessage, setToastMessage] = useState('');
 
     // Publish modal state
     const [showPublishModal, setShowPublishModal] = useState(false);
@@ -611,15 +612,22 @@ export const BookPreview: React.FC<BookPreviewProps> = ({ data, onStart, onSendP
         });
     };
 
+    // Image generation is currently disabled by policy
+    const IMAGE_GENERATION_ENABLED = false;
+
     const handleImageClick = (pageNum: number) => {
-        if (readOnly) return; // Disable editing in read-only mode
+        if (readOnly) return;
+        if (!IMAGE_GENERATION_ENABLED) {
+            setToastMessage('Illustraties zijn tijdelijk niet beschikbaar 🎨');
+            setShowToast(true);
+            setTimeout(() => setShowToast(false), 4000);
+            return;
+        }
         const iscover = pageNum === 0;
 
-        // Filter out error messages from context to prevent contamination of new prompts
         const existingCoverImage = data.coverImage;
         const existingPageImage = pageNum > 0 ? data.pages[pageNum - 1]?.image : undefined;
 
-        // Don't include error messages or loading state as context
         const hasValidCoverImage = existingCoverImage &&
             existingCoverImage !== 'loading' &&
             !existingCoverImage.startsWith('error:');
@@ -697,6 +705,7 @@ Antwoord ALLEEN met de nieuwe [PAGE target="${popupState.pageNum}"]...[/PAGE] ta
         // Send to chat
         if (onSendPrompt) {
             onSendPrompt(fullPrompt);
+            setToastMessage('Opdracht verstuurd aan AI!');
             setShowToast(true);
             setTimeout(() => setShowToast(false), 3000);
         }
@@ -834,7 +843,7 @@ Basisgegevens voor het verhaal:
 - Locatie: ${formData.setting}
 - Het verhaal gaat over: ${formData.theme}
 
-Maak de titel en de tekst van de eerste pagina, plus een illustratie voor de kaft. Genereer nog GEEN illustratie voor de eerste pagina.`;
+Maak nu de titel met [TITLE] tags en de tekst van de eerste pagina met [PAGE] tags.`;
 
         setInternalHasStarted(true);
         setShowForm(false);
@@ -1170,10 +1179,11 @@ Maak de titel en de tekst van de eerste pagina, plus een illustratie voor de kaf
 
                                 </div>
                             ) : (
-                                <div className="w-full h-full flex flex-col items-center justify-center text-stone-400 gap-4 bg-stone-50">
-                                    {/* Empty book state - show loading/waiting indicator */}
+                                <div className="w-full h-full flex flex-col items-center justify-center text-stone-400 gap-4 bg-stone-50 p-6">
+                                    {/* Empty book state - show loading or hint */}
                                     <Loader2 size={32} className="animate-spin text-[#D97757]" />
                                     <span className="text-sm font-bold uppercase tracking-widest text-center">Verhaal aan het opbouwen...</span>
+                                    <span className="text-xs text-stone-400 text-center max-w-[200px]">Je boekje verschijnt hier zodra de AI je eerste pagina schrijft</span>
                                 </div>
                             )}
                         </div>
@@ -1406,7 +1416,7 @@ Maak de titel en de tekst van de eerste pagina, plus een illustratie voor de kaf
             {showToast && (
                 <div className="absolute top-4 left-1/2 -translate-x-1/2 text-white px-4 py-2 rounded-full shadow-xl flex items-center gap-2 z-[100] animate-in slide-in-from-top-4 fade-in duration-300" style={{ backgroundColor: '#2A9D8F' }}>
                     <Sparkles size={16} className="text-white/80" />
-                    <span className="font-bold text-sm">Opdracht verstuurd aan AI!</span>
+                    <span className="font-bold text-sm">{toastMessage || 'Opdracht verstuurd aan AI!'}</span>
                 </div>
             )}
 

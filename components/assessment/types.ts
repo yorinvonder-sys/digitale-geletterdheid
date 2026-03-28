@@ -1,7 +1,7 @@
 
 import { ReactNode } from 'react';
 
-export type AssessmentType = 'inspector' | 'simulator' | 'rescuer';
+export type AssessmentType = 'inspector' | 'simulator' | 'rescuer' | 'classifier';
 
 export interface AssessmentConfig {
     title: string;
@@ -87,7 +87,26 @@ export interface RescuerTask extends BaseTask {
     correctSequence: string[]; // Array of step IDs in order
 }
 
-export type AssessmentTask = InspectorTask | SimulatorTask | RescuerTask;
+// CLASSIFIER (Beoordeel per item)
+export interface ClassifierOption {
+    id: string;
+    text: string;
+    correct: boolean; // true = goed advies, false = slecht advies
+    feedback: string;
+}
+
+export interface ClassifierTask extends BaseTask {
+    type: 'classifier';
+    npcName: string;
+    npcAvatar?: string;
+    scenario: string;
+    options: ClassifierOption[];
+    goodLabel?: string; // default: "Goed advies"
+    badLabel?: string;  // default: "Slecht advies"
+    minCorrect?: number; // minimum correct to pass, default: all
+}
+
+export type AssessmentTask = InspectorTask | SimulatorTask | RescuerTask | ClassifierTask;
 
 export interface AssessmentState {
     currentTaskIndex: number;

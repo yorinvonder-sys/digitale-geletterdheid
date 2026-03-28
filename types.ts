@@ -15,6 +15,7 @@ export interface ChatMessage {
   image?: string; // Optionele base64 image data
   timestamp: Date;
   codeChanges?: CodeChange[]; // Track what changed in game code
+  isWelcome?: boolean; // Marks the mission welcome card (renders MissionWelcomeCard instead of ChatBubble)
 }
 
 export type RoleId =
@@ -23,7 +24,7 @@ export type RoleId =
   // Leerjaar 1 - Periode 2
   'ipad-print-instructies' | 'review-week-1' | 'week1-review' | 'verhalen-ontwerper' | 'nepnieuws-speurder' | 'game-programmeur' | 'ai-trainer' | 'chatbot-trainer' | 'ai-tekengame' | 'website-bouwer' | 'schermtijd-coach' |
   // Leerjaar 1 - Periode 3
-  'review-week-2' | 'ai-spiegel' | 'social-safeguard' | 'scroll-stopper' | 'data-detective' | 'deepfake-detector' | 'cookie-crusher' | 'data-handelaar' | 'privacy-profiel-spiegel' | 'filter-bubble-breaker' | 'datalekken-rampenplan' | 'data-voor-data' | 'data-speurder' |
+  'review-week-2' | 'ai-spiegel' | 'social-safeguard' | 'scroll-stopper' | 'data-detective' | 'deepfake-detector' | 'cookie-crusher' | 'data-handelaar' | 'privacy-profiel-spiegel' | 'filter-bubble-breaker' | 'datalekken-rampenplan' | 'data-voor-data' | 'data-speurder' | 'data-verzamelaar' |
   // Leerjaar 1 - Periode 4
   'review-week-3' | 'mission-blueprint' | 'mission-vision' | 'mission-launch' | 'startup-pitch' |
   // Leerjaar 1 - Speciaal

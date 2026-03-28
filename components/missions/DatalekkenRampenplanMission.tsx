@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { ArrowLeft, Trophy, ChevronRight, Check, X, AlertTriangle, Clock, Users, Shield, FileText, Sparkles } from 'lucide-react';
+import React, { useState, useMemo } from 'react';
+import { ArrowLeft, Trophy, ChevronRight, Search, ListOrdered, Mail, PiggyBank, Check, X, RotateCcw, Sparkles, Shield, AlertTriangle, Clock } from 'lucide-react';
 import { useMissionAutoSave } from '@/hooks/useMissionAutoSave';
 
 interface Props {
@@ -10,221 +10,930 @@ interface Props {
 }
 
 interface DatalekkenState {
-    phase: 'intro' | 'scenarios' | 'results';
-    currentScenario: number;
-    score: number;
-    answers: boolean[];
+    phase: 'intro' | 'evidence' | 'priorities' | 'letter' | 'budget' | 'results';
+    evidenceSelected: number[];
+    evidenceSubmitted: boolean;
+    priorityOrder: number[];
+    prioritySubmitted: boolean;
+    letterSelected: number[];
+    letterSubmitted: boolean;
+    budgetAllocations: Record<number, number>;
+    budgetSubmitted: boolean;
 }
 
-interface Scenario {
+const INITIAL_STATE: DatalekkenState = {
+    phase: 'intro',
+    evidenceSelected: [],
+    evidenceSubmitted: false,
+    priorityOrder: [],
+    prioritySubmitted: false,
+    letterSelected: [],
+    letterSubmitted: false,
+    budgetAllocations: {},
+    budgetSubmitted: false,
+};
+
+// === PHASE 1: Evidence items ===
+interface EvidenceItem {
+    id: number;
+    icon: string;
     title: string;
-    emoji: string;
     description: string;
-    details: string[];
-    actions: { text: string; correct: boolean; feedback: string }[];
+    relevant: boolean;
+    explanation: string;
 }
 
-const SCENARIOS: Scenario[] = [
-    {
-        title: 'Het lek wordt ontdekt',
-        emoji: '🚨',
-        description: 'Maandagochtend 08:00. De ICT-beheerder van school ontdekt dat het leerlingvolgsysteem is gehackt. Alle namen, e-mails, cijfers en BSN-nummers van 800 leerlingen liggen op straat.',
-        details: ['800 leerlingen getroffen', 'BSN-nummers gelekt', 'Cijfers en rapporten openbaar', 'Hack via zwak wachtwoord'],
-        actions: [
-            { text: 'Direct alle wachtwoorden resetten en het lek dichten', correct: true, feedback: 'Goed! Eerste stap: stop het lek. Reset alle wachtwoorden en sluit de kwetsbaarheid.' },
-            { text: 'Eerst uitzoeken wie het heeft gedaan', correct: false, feedback: 'De dader zoeken is belangrijk, maar EERST moet je het lek dichten. Elke minuut lekt er meer data.' },
-            { text: 'Niks doen, misschien valt het mee', correct: false, feedback: 'Bij een datalek met BSN-nummers is niks doen NOOIT een optie. Dit is wettelijk verplicht te melden!' },
-            { text: 'De school sluiten tot het opgelost is', correct: false, feedback: 'Dat is overdreven. Het digitale systeem moet afgesloten worden, niet de fysieke school.' }
-        ]
-    },
-    {
-        title: 'Wie moet je informeren?',
-        emoji: '📢',
-        description: 'Het lek is gedicht. Nu moet je beslissen wie je informeert. Bij een datalek met BSN-nummers heb je 72 uur om te melden bij de Autoriteit Persoonsgegevens (AP).',
-        details: ['Meldplicht: 72 uur', 'BSN = hoog risico', 'Betrokkenen informeren', 'Documentatie vereist'],
-        actions: [
-            { text: 'Melden bij de AP + alle ouders/leerlingen informeren', correct: true, feedback: 'Correct! Bij hoog risico (BSN-nummers) MOET je: 1) AP melden binnen 72 uur, 2) betrokkenen direct informeren.' },
-            { text: 'Alleen de AP melden, ouders hoeven het niet te weten', correct: false, feedback: 'Bij hoog risico (zoals BSN-nummers) ben je verplicht OOK de betrokkenen te informeren. Dat staat in de AVG.' },
-            { text: 'Alleen ouders informeren, de AP hoeft het niet te weten', correct: false, feedback: 'De AP-melding is wettelijk verplicht bij een datalek van deze omvang. Beide zijn nodig!' },
-            { text: 'Niemand informeren, dat veroorzaakt alleen maar paniek', correct: false, feedback: 'Niet melden is een overtreding van de AVG en kan leiden tot boetes tot 20 miljoen!' }
-        ]
-    },
-    {
-        title: 'Het communicatieplan',
-        emoji: '✉️',
-        description: 'Je moet een bericht sturen naar alle ouders en leerlingen. Wat moet er in staan?',
-        details: ['Eerlijk en transparant', 'Concrete acties', 'Contactgegevens helpdesk', 'Geen paniekzaaierij'],
-        actions: [
-            { text: 'Wat er is gebeurd + welke data is gelekt + wat school doet + wat ouders zelf kunnen doen', correct: true, feedback: 'Perfect! Een goed bericht bevat: WAT (is er gebeurd), WELKE data, WAT de school doet, en WAT ouders/leerlingen zelf kunnen doen (bijv. BSN-fraude check).' },
-            { text: 'Alleen zeggen "er was een klein probleempje maar het is opgelost"', correct: false, feedback: 'Dit is niet transparant genoeg. Betrokkenen hebben recht op VOLLEDIGE informatie over welke data is gelekt, zodat ze zichzelf kunnen beschermen.' },
-            { text: 'Een technisch rapport sturen met alle details van de hack', correct: false, feedback: 'Te technisch. Ouders moeten begrijpen wat het voor HEN betekent, niet hoe de SQL-injectie werkte.' },
-            { text: 'Wachten tot ouders zelf vragen stellen', correct: false, feedback: 'Proactief communiceren is verplicht en bouwt vertrouwen. Wachten maakt het erger.' }
-        ]
-    },
-    {
-        title: 'Het noodplan',
-        emoji: '📋',
-        description: 'De directeur vraagt je om een Datalekken Noodplan te maken zodat de school in de toekomst voorbereid is. Welke stap hoort er NIET in een noodplan?',
-        details: ['Preventie', 'Detectie', 'Respons', 'Herstel'],
-        actions: [
-            { text: 'Alle leerlingdata op papier bewaren in plaats van digitaal', correct: false, feedback: 'Maar dit is WEL het foute antwoord — en dus de juiste keuze hier! Papier is NIET veiliger dan digitaal. Een goed noodplan gaat over betere beveiliging, niet over terug naar papier.' },
-            { text: 'Tweefactorauthenticatie installeren op alle systemen', correct: true, feedback: 'Dit hoort er zeker in! 2FA is een van de beste manieren om accounts te beschermen.' },
-            { text: 'Een vast contactpersoon aanwijzen voor datalekken', correct: true, feedback: 'Correct! Een Functionaris Gegevensbescherming (FG) of vast aanspreekpunt is essentieel.' },
-            { text: 'Regelmatig personeel trainen in cyberveiligheid', correct: true, feedback: 'Absoluut! De meeste hacks komen door menselijke fouten. Training is cruciaal.' }
-        ]
-    }
+const EVIDENCE_ITEMS: EvidenceItem[] = [
+    { id: 0, icon: '🖥️', title: 'Serverlog 03:14', description: 'Onbekend IP-adres heeft 47.000 queries uitgevoerd op de leerlingdatabase in 12 minuten.', relevant: true, explanation: 'Dit is een duidelijk teken van data-exfiltratie — veel te veel queries in korte tijd.' },
+    { id: 1, icon: '📧', title: 'E-mail van leverancier', description: 'De softwareleverancier meldt een geplande update voor volgende week.', relevant: false, explanation: 'Dit is een normale update-mail en heeft niks met het incident te maken.' },
+    { id: 2, icon: '🔑', title: 'Wachtwoordlog', description: 'Het admin-account "beheerder01" is 340 keer geprobeerd in te loggen vanaf verschillende locaties.', relevant: true, explanation: 'Brute-force aanval! Honderden inlogpogingen wijzen op een geautomatiseerde aanval op het admin-account.' },
+    { id: 3, icon: '📱', title: 'Bericht op X (Twitter)', description: 'Een anoniem account claimt leerlinggegevens te hebben en plaatst een screenshot van namen en cijfers.', relevant: true, explanation: 'Bewijs dat de data daadwerkelijk gelekt is — het staat al online.' },
+    { id: 4, icon: '🔧', title: 'Systeemmelding', description: 'De printer op de 2e verdieping heeft een papierstoring.', relevant: false, explanation: 'Een papierstoring is gewoon een papierstoring. Niet alles is een hack.' },
+    { id: 5, icon: '📊', title: 'Exportlog database', description: 'Er is een CSV-export van 800 leerlingrecords gemaakt om 03:17, 3 minuten na de verdachte queries.', relevant: true, explanation: 'Direct na de verdachte queries is een volledige export gemaakt — dit bevestigt de datadiefstal.' },
 ];
 
-export const DatalekkenRampenplanMission: React.FC<Props> = ({ onBack, onComplete }) => {
-    const { state: saved, setState: setSaved, clearSave } = useMissionAutoSave<DatalekkenState>(
-        'datalekken-rampenplan',
-        { phase: 'intro', currentScenario: 0, score: 0, answers: [] }
-    );
-    const phase = saved.phase;
-    const currentScenario = saved.currentScenario;
-    const score = saved.score;
-    const answers = saved.answers;
-    const setPhase = (p: DatalekkenState['phase']) => setSaved(prev => ({ ...prev, phase: p }));
-    const setCurrentScenario = (updater: React.SetStateAction<number>) => setSaved(prev => ({
-        ...prev,
-        currentScenario: typeof updater === 'function' ? updater(prev.currentScenario) : updater,
-    }));
-    const setScore = (updater: React.SetStateAction<number>) => setSaved(prev => ({
-        ...prev,
-        score: typeof updater === 'function' ? updater(prev.score) : updater,
-    }));
-    const setAnswers = (updater: React.SetStateAction<boolean[]>) => setSaved(prev => ({
-        ...prev,
-        answers: typeof updater === 'function' ? updater(prev.answers) : updater,
-    }));
+const CORRECT_EVIDENCE = EVIDENCE_ITEMS.filter(e => e.relevant).map(e => e.id);
 
-    // Transient UI state - niet opgeslagen
-    const [selectedAction, setSelectedAction] = useState<number | null>(null);
+// === PHASE 2: Priority actions ===
+interface PriorityAction {
+    id: number;
+    icon: string;
+    text: string;
+    correctPosition: number;
+}
 
-    const handleAction = (index: number) => {
-        if (selectedAction !== null) return;
-        setSelectedAction(index);
-        const scenario = SCENARIOS[currentScenario];
-        // For scenario 4 (noodplan), the "wrong" answer (index 0) is actually the correct choice
-        const isCorrect = currentScenario === 3 ? index === 0 : scenario.actions[index].correct;
-        if (isCorrect) setScore(s => s + 25);
-        setAnswers(prev => [...prev, isCorrect]);
-    };
+const PRIORITY_ACTIONS: PriorityAction[] = [
+    { id: 0, icon: '🔒', text: 'Alle wachtwoorden resetten en het lek dichten', correctPosition: 1 },
+    { id: 1, icon: '📞', text: 'Autoriteit Persoonsgegevens (AP) bellen', correctPosition: 3 },
+    { id: 2, icon: '🔍', text: 'Omvang van het lek in kaart brengen', correctPosition: 2 },
+    { id: 3, icon: '📋', text: 'Intern crisisteam bij elkaar roepen', correctPosition: 0 },
+    { id: 4, icon: '✉️', text: 'Ouders en leerlingen informeren', correctPosition: 4 },
+    { id: 5, icon: '📰', text: 'Persverklaring voorbereiden', correctPosition: 5 },
+];
 
-    const nextScenario = () => {
-        setSelectedAction(null);
-        if (currentScenario < SCENARIOS.length - 1) setCurrentScenario(c => c + 1);
-        else setPhase('results');
-    };
+const CORRECT_ORDER = [...PRIORITY_ACTIONS].sort((a, b) => a.correctPosition - b.correctPosition).map(a => a.id);
 
-    const getBadge = () => {
-        if (score >= 75) return { emoji: '🛡️', title: 'Crisis Commander', color: 'from-[#10B981] to-[#2A9D8F]' };
-        if (score >= 50) return { emoji: '📋', title: 'Noodplan Specialist', color: 'from-[#2A9D8F] to-[#D97757]' };
-        return { emoji: '🔰', title: 'Crisis Trainee', color: 'from-[#D97757] to-[#C46849]' };
-    };
+// === PHASE 3: Letter blocks ===
+interface LetterBlock {
+    id: number;
+    icon: string;
+    title: string;
+    content: string;
+    belongsInLetter: boolean;
+    explanation: string;
+}
 
-    if (phase === 'intro') {
-        return (
-            <div className="min-h-screen bg-[#FAF9F0] text-[#1A1A19] overflow-y-auto p-4 pb-safe">
-                <button onClick={onBack} className="flex items-center gap-2 text-[#6B6B66] hover:text-[#1A1A19] transition-all duration-300 mb-6"><ArrowLeft size={18} /> <span className="text-sm font-bold" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Terug</span></button>
-                <div className="max-w-lg mx-auto text-center space-y-6">
-                    <div className="w-20 h-20 bg-[#D97757]/10 rounded-3xl flex items-center justify-center mx-auto border border-[#D97757]/20 animate-pulse"><span className="text-4xl">🚨</span></div>
-                    <h1 className="text-3xl font-black" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Datalekken Rampenplan</h1>
-                    <p className="text-[#3D3D38] text-sm leading-relaxed max-w-sm mx-auto" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
-                        <span className="text-[#D97757] font-bold">BREAKING:</span> De school is gehackt! 800 leerlinggegevens liggen op straat. Kun jij de crisis managen?
-                    </p>
-                    <div className="grid grid-cols-2 gap-3 max-w-xs mx-auto">
-                        {[{ icon: <AlertTriangle size={16} />, label: '800 leerlingen' }, { icon: <Clock size={16} />, label: '72 uur deadline' }, { icon: <Users size={16} />, label: 'BSN gelekt' }, { icon: <Shield size={16} />, label: 'AVG meldplicht' }].map((item, i) => (
-                            <div key={i} className="bg-white border border-[#E8E6DF] rounded-2xl p-3 flex items-center gap-2">
-                                <div className="text-[#D97757]">{item.icon}</div>
-                                <span className="text-xs font-bold text-[#3D3D38]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{item.label}</span>
-                            </div>
-                        ))}
-                    </div>
-                    <button onClick={() => setPhase('scenarios')} className="px-8 py-4 bg-[#D97757] hover:bg-[#C46849] text-white rounded-full font-black text-lg transition-all duration-300 active:scale-95 shadow-xl shadow-[#D97757]/30 focus-visible:ring-2 focus-visible:ring-[#D97757]">Start de crisis →</button>
-                </div>
-            </div>
-        );
+const LETTER_BLOCKS: LetterBlock[] = [
+    { id: 0, icon: '📌', title: 'Wat is er gebeurd', content: 'Op [datum] is ons leerlingvolgsysteem gehackt. Onbevoegden hebben toegang gekregen tot persoonsgegevens.', belongsInLetter: true, explanation: 'Essentieel — betrokkenen moeten weten WAT er is gebeurd.' },
+    { id: 1, icon: '📋', title: 'Welke gegevens', content: 'Het gaat om namen, e-mailadressen, cijfers en BSN-nummers van alle leerlingen.', belongsInLetter: true, explanation: 'Verplicht — mensen moeten weten WELKE data is gelekt zodat ze zich kunnen beschermen.' },
+    { id: 2, icon: '🛡️', title: 'Wat wij doen', content: 'Wij hebben het lek gedicht, alle wachtwoorden gereset, en melding gedaan bij de Autoriteit Persoonsgegevens.', belongsInLetter: true, explanation: 'Geeft vertrouwen — laat zien dat de school actie onderneemt.' },
+    { id: 3, icon: '✅', title: 'Wat u kunt doen', content: 'Controleer uw bankafschriften, meld identiteitsfraude bij het Centraal Meldpunt en wijzig gedeelde wachtwoorden.', belongsInLetter: true, explanation: 'Cruciaal — geeft ouders concrete stappen om zichzelf te beschermen.' },
+    { id: 4, icon: '😤', title: 'Schuld toewijzen', content: 'De ICT-beheerder had een zwak wachtwoord. Hij is inmiddels op non-actief gezet.', belongsInLetter: false, explanation: 'Niet doen! Schuld toewijzen in een crisisbericht is onprofessioneel en mogelijk juridisch problematisch.' },
+    { id: 5, icon: '📞', title: 'Contactinformatie', content: 'Voor vragen kunt u contact opnemen met ons crisisteam via [telefoonnummer] of [e-mail].', belongsInLetter: true, explanation: 'Belangrijk — mensen moeten weten waar ze terecht kunnen met vragen.' },
+    { id: 6, icon: '🤫', title: 'Bagatelliseren', content: 'Het valt allemaal wel mee. Dit soort dingen gebeurt overal. Maakt u zich geen zorgen.', belongsInLetter: false, explanation: 'Nooit bagatelliseren! Dit ondermijnt vertrouwen en is niet transparant.' },
+    { id: 7, icon: '💰', title: 'Schadeclaim aanbod', content: 'Als compensatie bieden wij elke leerling een waardebon van €50 aan.', belongsInLetter: false, explanation: 'Dit is geen goed idee in een eerste crisisbericht — het impliceert schuld en kan juridisch tegen je werken.' },
+];
+
+const CORRECT_LETTER = LETTER_BLOCKS.filter(b => b.belongsInLetter).map(b => b.id);
+
+// === PHASE 4: Budget items ===
+interface BudgetItem {
+    id: number;
+    icon: string;
+    title: string;
+    description: string;
+    cost: number;
+    effectiveness: number; // 1-5 stars
+    explanation: string;
+}
+
+const BUDGET_ITEMS: BudgetItem[] = [
+    { id: 0, icon: '🔐', title: 'Tweefactorauthenticatie (2FA)', description: 'Alle accounts krijgen verplichte 2FA via een authenticator-app.', cost: 1500, effectiveness: 5, explanation: '2FA blokkeert 99% van alle account-hackpogingen. Beste investering.' },
+    { id: 1, icon: '🎓', title: 'Security-training personeel', description: 'Elk kwartaal een interactieve cybersecurity workshop voor alle medewerkers.', cost: 3000, effectiveness: 4, explanation: 'Menselijke fouten zijn de #1 oorzaak van datalekken. Training is essentieel.' },
+    { id: 2, icon: '🔍', title: 'Penetratietest', description: 'Een extern bedrijf test alle systemen op kwetsbaarheden.', cost: 5000, effectiveness: 4, explanation: 'Vindt zwakke plekken voordat hackers dat doen. Belangrijk maar duur.' },
+    { id: 3, icon: '💾', title: 'Dagelijkse encrypted backups', description: 'Automatische versleutelde back-ups met off-site opslag.', cost: 2000, effectiveness: 3, explanation: 'Beschermt tegen ransomware en dataverlies. Goede basis-maatregel.' },
+    { id: 4, icon: '🧱', title: 'Enterprise firewall upgrade', description: 'Geavanceerde firewall met intrusion detection en DDoS-bescherming.', cost: 8000, effectiveness: 3, explanation: 'Goede verdediging maar duur. De huidige firewall is al redelijk, dus de meerwaarde is beperkt.' },
+];
+
+const TOTAL_BUDGET = 10000;
+
+// === Scoring functions ===
+function scoreEvidence(selected: number[]): { score: number; max: number } {
+    const correctSelected = selected.filter(id => CORRECT_EVIDENCE.includes(id)).length;
+    const incorrectSelected = selected.filter(id => !CORRECT_EVIDENCE.includes(id)).length;
+    const score = Math.max(0, (correctSelected / CORRECT_EVIDENCE.length) * 25 - (incorrectSelected * 5));
+    return { score: Math.round(score), max: 25 };
+}
+
+function scorePriorities(order: number[]): { score: number; max: number } {
+    if (order.length !== PRIORITY_ACTIONS.length) return { score: 0, max: 25 };
+    let correct = 0;
+    for (let i = 0; i < order.length; i++) {
+        const action = PRIORITY_ACTIONS.find(a => a.id === order[i])!;
+        if (action.correctPosition === i) correct++;
+        else if (Math.abs(action.correctPosition - i) === 1) correct += 0.5;
     }
+    return { score: Math.round((correct / PRIORITY_ACTIONS.length) * 25), max: 25 };
+}
 
-    if (phase === 'scenarios') {
-        const scenario = SCENARIOS[currentScenario];
-        return (
-            <div className="min-h-screen bg-[#FAF9F0] text-[#1A1A19] overflow-y-auto p-4 pb-safe">
-                <div className="max-w-lg mx-auto">
-                    <div className="flex items-center justify-between mb-6">
-                        <button onClick={() => currentScenario === 0 ? setPhase('intro') : setCurrentScenario(c => c - 1)} className="text-[#6B6B66] hover:text-[#1A1A19] transition-all duration-300"><ArrowLeft size={18} /></button>
-                        <div className="flex gap-1.5">{SCENARIOS.map((_, i) => (<div key={i} className={`w-8 h-1.5 rounded-full transition-all duration-300 ${i < currentScenario ? 'bg-[#10B981]' : i === currentScenario ? 'bg-gradient-to-r from-[#D97757] to-[#C46849]' : 'bg-[#E8E6DF]'}`} />))}</div>
-                        <div className="bg-[#D97757]/10 px-3 py-1 rounded-full border border-[#D97757]/20"><span className="text-xs font-black text-[#D97757]">{score} pts</span></div>
-                    </div>
+function scoreLetter(selected: number[]): { score: number; max: number } {
+    const correctSelected = selected.filter(id => CORRECT_LETTER.includes(id)).length;
+    const incorrectSelected = selected.filter(id => !CORRECT_LETTER.includes(id)).length;
+    const score = Math.max(0, (correctSelected / CORRECT_LETTER.length) * 25 - (incorrectSelected * 6));
+    return { score: Math.round(score), max: 25 };
+}
 
-                    <div className="bg-white rounded-2xl border border-[#E8E6DF] p-5 mb-6">
-                        <div className="flex items-center gap-3 mb-4">
-                            <span className="text-3xl">{scenario.emoji}</span>
-                            <div>
-                                <span className="text-[10px] font-black text-[#D97757] uppercase tracking-widest" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Fase {currentScenario + 1}/{SCENARIOS.length}</span>
-                                <h3 className="text-lg font-black text-[#1A1A19]" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>{scenario.title}</h3>
+function scoreBudget(allocations: Record<number, number>): { score: number; max: number } {
+    const totalSpent = Object.values(allocations).reduce((a, b) => a + b, 0);
+    if (totalSpent > TOTAL_BUDGET) return { score: 0, max: 25 };
+    let effectivenessScore = 0;
+    let maxPossible = 0;
+    for (const item of BUDGET_ITEMS) {
+        if (allocations[item.id] && allocations[item.id] >= item.cost) {
+            effectivenessScore += item.effectiveness;
+        }
+        maxPossible += item.effectiveness;
+    }
+    // Normalize: best possible within budget = 2FA(5) + Training(4) + Backups(3) = 12, cost = 6500
+    // Or 2FA(5) + Training(4) + Pentest(4) = 13, cost = 9500
+    const bestRealistic = 13; // 2FA + training + pentest within 10k
+    const score = Math.round((effectivenessScore / bestRealistic) * 25);
+    return { score: Math.min(25, score), max: 25 };
+}
+
+// === Phase components ===
+
+const PhaseHeader: React.FC<{
+    currentPhase: number;
+    totalPhases: number;
+    totalScore: number;
+    onBack: () => void;
+}> = ({ currentPhase, totalPhases, totalScore, onBack }) => (
+    <div className="flex items-center justify-between mb-6">
+        <button onClick={onBack} className="text-[#6B6B66] hover:text-[#1A1A19] transition-all duration-300">
+            <ArrowLeft size={18} />
+        </button>
+        <div className="flex gap-1.5">
+            {Array.from({ length: totalPhases }).map((_, i) => (
+                <div key={i} className={`w-8 h-1.5 rounded-full transition-all duration-300 ${
+                    i < currentPhase ? 'bg-[#10B981]'
+                    : i === currentPhase ? 'bg-gradient-to-r from-[#D97757] to-[#C46849]'
+                    : 'bg-[#E8E6DF]'
+                }`} />
+            ))}
+        </div>
+        <div className="bg-[#D97757]/10 px-3 py-1 rounded-full border border-[#D97757]/20">
+            <span className="text-xs font-black text-[#D97757]">{totalScore} pts</span>
+        </div>
+    </div>
+);
+
+const PhaseCard: React.FC<{
+    icon: React.ReactNode;
+    phaseNumber: number;
+    totalPhases: number;
+    title: string;
+    description: string;
+    children: React.ReactNode;
+}> = ({ icon, phaseNumber, totalPhases, title, description, children }) => (
+    <div className="bg-white rounded-2xl border border-[#E8E6DF] p-5 mb-6">
+        <div className="flex items-center gap-3 mb-4">
+            <div className="w-10 h-10 bg-[#D97757]/10 rounded-xl flex items-center justify-center text-[#D97757]">
+                {icon}
+            </div>
+            <div>
+                <span className="text-[10px] font-black text-[#D97757] uppercase tracking-widest" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                    Fase {phaseNumber}/{totalPhases}
+                </span>
+                <h3 className="text-lg font-black text-[#1A1A19]" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
+                    {title}
+                </h3>
+            </div>
+        </div>
+        <p className="text-sm text-[#3D3D38] leading-relaxed" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+            {description}
+        </p>
+        {children}
+    </div>
+);
+
+// Phase 1: Evidence
+const EvidencePhase: React.FC<{
+    selected: number[];
+    submitted: boolean;
+    onToggle: (id: number) => void;
+    onSubmit: () => void;
+}> = ({ selected, submitted, onToggle, onSubmit }) => (
+    <>
+        <div className="grid gap-3 mb-4">
+            {EVIDENCE_ITEMS.map((item) => {
+                const isSelected = selected.includes(item.id);
+                const showResult = submitted;
+                let borderClass = 'border-[#E8E6DF]';
+                let bgClass = 'bg-white';
+
+                if (isSelected && !showResult) {
+                    borderClass = 'border-[#D97757] ring-1 ring-[#D97757]/20';
+                    bgClass = 'bg-[#D97757]/5';
+                }
+                if (showResult && isSelected) {
+                    borderClass = item.relevant ? 'border-[#10B981]' : 'border-red-400';
+                    bgClass = item.relevant ? 'bg-[#10B981]/5' : 'bg-red-50';
+                }
+                if (showResult && !isSelected && item.relevant) {
+                    borderClass = 'border-[#10B981]/40';
+                    bgClass = 'bg-[#10B981]/5';
+                }
+                if (showResult && !isSelected && !item.relevant) {
+                    bgClass = 'bg-[#F0EEE8]';
+                }
+
+                return (
+                    <button
+                        key={item.id}
+                        onClick={() => !submitted && onToggle(item.id)}
+                        disabled={submitted}
+                        className={`w-full p-4 rounded-2xl border-2 text-left transition-all duration-200 ${borderClass} ${bgClass}`}
+                    >
+                        <div className="flex items-start gap-3">
+                            <span className="text-xl mt-0.5">{item.icon}</span>
+                            <div className="flex-1 min-w-0">
+                                <div className="flex items-center gap-2 mb-1">
+                                    <span className="text-sm font-bold text-[#1A1A19]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                        {item.title}
+                                    </span>
+                                    {isSelected && !showResult && (
+                                        <span className="text-[10px] bg-[#D97757]/10 text-[#D97757] px-2 py-0.5 rounded-full font-bold">geselecteerd</span>
+                                    )}
+                                    {showResult && isSelected && (
+                                        item.relevant
+                                            ? <Check size={14} className="text-[#10B981]" />
+                                            : <X size={14} className="text-red-500" />
+                                    )}
+                                    {showResult && !isSelected && item.relevant && (
+                                        <span className="text-[10px] text-[#10B981] font-bold">gemist!</span>
+                                    )}
+                                </div>
+                                <p className="text-xs text-[#6B6B66] leading-relaxed" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                    {item.description}
+                                </p>
+                                {showResult && (isSelected || item.relevant) && (
+                                    <p className="text-[11px] text-[#3D3D38] mt-2 italic" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                        {item.explanation}
+                                    </p>
+                                )}
                             </div>
                         </div>
-                        <p className="text-sm text-[#3D3D38] leading-relaxed mb-4" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{scenario.description}</p>
-                        <div className="flex flex-wrap gap-2">
-                            {scenario.details.map((d, i) => (
-                                <span key={i} className="inline-flex text-[10px] bg-[#FAF9F0] border border-[#E8E6DF] px-2 py-1 rounded-full text-[#6B6B66]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{d}</span>
-                            ))}
-                        </div>
-                    </div>
+                    </button>
+                );
+            })}
+        </div>
+        {!submitted && selected.length > 0 && (
+            <p className="text-center text-xs text-[#6B6B66] mb-3" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                {selected.length} bewijsstuk{selected.length !== 1 ? 'ken' : ''} geselecteerd
+            </p>
+        )}
+        {!submitted && (
+            <button
+                onClick={onSubmit}
+                disabled={selected.length === 0}
+                className={`w-full py-3 rounded-full font-black text-sm transition-all duration-300 ${
+                    selected.length > 0
+                        ? 'bg-[#D97757] hover:bg-[#C46849] text-white'
+                        : 'bg-[#E8E6DF] text-[#6B6B66] cursor-not-allowed'
+                }`}
+            >
+                Dien analyse in
+            </button>
+        )}
+    </>
+);
 
-                    <div className="space-y-3">
-                        {scenario.actions.map((action, i) => {
-                            const isSelected = selectedAction === i;
-                            const done = selectedAction !== null;
-                            let bg = 'bg-white border-[#E8E6DF] hover:border-[#D97757]/40';
-                            if (done && isSelected) {
-                                const isCorrect = currentScenario === 3 ? i === 0 : action.correct;
-                                bg = isCorrect ? 'bg-[#10B981]/5 border-[#10B981]' : 'bg-red-50 border-red-400';
-                            } else if (done) {
-                                bg = 'bg-[#F0EEE8] border-[#F0EEE8] opacity-40';
-                            }
+// Phase 2: Priorities
+const PrioritiesPhase: React.FC<{
+    order: number[];
+    submitted: boolean;
+    onAdd: (id: number) => void;
+    onReset: () => void;
+    onSubmit: () => void;
+}> = ({ order, submitted, onAdd, onReset, onSubmit }) => {
+    const remaining = PRIORITY_ACTIONS.filter(a => !order.includes(a.id));
+
+    return (
+        <>
+            {/* Selected order */}
+            {order.length > 0 && (
+                <div className="bg-[#FAF9F0] rounded-xl p-3 mb-4 border border-[#E8E6DF]">
+                    <div className="flex items-center justify-between mb-2">
+                        <span className="text-[10px] font-black text-[#6B6B66] uppercase tracking-widest" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                            Jouw volgorde
+                        </span>
+                        {!submitted && (
+                            <button onClick={onReset} className="text-[#6B6B66] hover:text-[#D97757] transition-colors">
+                                <RotateCcw size={14} />
+                            </button>
+                        )}
+                    </div>
+                    <div className="space-y-1.5">
+                        {order.map((id, i) => {
+                            const action = PRIORITY_ACTIONS.find(a => a.id === id)!;
+                            const isCorrectPos = submitted && action.correctPosition === i;
+                            const isClosePos = submitted && !isCorrectPos && Math.abs(action.correctPosition - i) === 1;
                             return (
-                                <button key={i} onClick={() => handleAction(i)} disabled={done} className={`w-full p-4 rounded-2xl border-2 text-left transition-all duration-300 ${bg}`}>
-                                    <span className="text-sm text-[#3D3D38]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{action.text}</span>
-                                    {done && isSelected && <p className="text-xs mt-2 text-[#6B6B66]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{action.feedback}</p>}
-                                </button>
+                                <div key={id} className={`flex items-center gap-2 p-2 rounded-lg text-xs transition-all ${
+                                    submitted
+                                        ? isCorrectPos ? 'bg-[#10B981]/10 text-[#10B981]'
+                                        : isClosePos ? 'bg-amber-50 text-amber-600'
+                                        : 'bg-red-50 text-red-500'
+                                        : 'bg-white text-[#3D3D38]'
+                                }`} style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                    <span className="w-5 h-5 rounded-full bg-[#D97757]/10 text-[#D97757] flex items-center justify-center text-[10px] font-black shrink-0">
+                                        {i + 1}
+                                    </span>
+                                    <span>{action.icon} {action.text}</span>
+                                    {submitted && isCorrectPos && <Check size={12} className="ml-auto shrink-0" />}
+                                    {submitted && !isCorrectPos && (
+                                        <span className="ml-auto text-[10px] shrink-0">→ #{action.correctPosition + 1}</span>
+                                    )}
+                                </div>
                             );
                         })}
                     </div>
+                </div>
+            )}
 
-                    {selectedAction !== null && (
-                        <button onClick={nextScenario} className="w-full mt-6 py-3 bg-[#D97757] hover:bg-[#C46849] text-white rounded-full font-black text-sm flex items-center justify-center gap-2 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#D97757]">
-                            {currentScenario < SCENARIOS.length - 1 ? <>Volgende fase <ChevronRight size={16} /></> : <>Bekijk resultaat <Trophy size={16} /></>}
+            {/* Remaining actions */}
+            {!submitted && remaining.length > 0 && (
+                <div className="grid gap-2 mb-4">
+                    <span className="text-[10px] font-black text-[#6B6B66] uppercase tracking-widest" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                        Klik in volgorde van prioriteit
+                    </span>
+                    {remaining.map((action) => (
+                        <button
+                            key={action.id}
+                            onClick={() => onAdd(action.id)}
+                            className="w-full p-3 rounded-xl border-2 border-[#E8E6DF] bg-white text-left hover:border-[#D97757]/40 transition-all duration-200"
+                        >
+                            <span className="text-sm text-[#3D3D38]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                {action.icon} {action.text}
+                            </span>
                         </button>
-                    )}
+                    ))}
+                </div>
+            )}
+
+            {submitted && (
+                <div className="bg-[#FAF9F0] rounded-xl p-3 mb-4 border border-[#E8E6DF]">
+                    <p className="text-xs text-[#3D3D38] leading-relaxed" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                        <strong>De juiste volgorde:</strong> Eerst het crisisteam bijeen, dan het lek dichten, omvang bepalen, AP melden, ouders informeren, en als laatste de pers.
+                        In de praktijk lopen sommige stappen parallel, maar deze volgorde voorkomt dat je informatie deelt voordat je weet wat er precies aan de hand is.
+                    </p>
+                </div>
+            )}
+
+            {!submitted && order.length === PRIORITY_ACTIONS.length && (
+                <button
+                    onClick={onSubmit}
+                    className="w-full py-3 rounded-full font-black text-sm bg-[#D97757] hover:bg-[#C46849] text-white transition-all duration-300"
+                >
+                    Bevestig volgorde
+                </button>
+            )}
+        </>
+    );
+};
+
+// Phase 3: Letter builder
+const LetterPhase: React.FC<{
+    selected: number[];
+    submitted: boolean;
+    onToggle: (id: number) => void;
+    onSubmit: () => void;
+}> = ({ selected, submitted, onToggle, onSubmit }) => {
+    const selectedBlocks = LETTER_BLOCKS.filter(b => selected.includes(b.id));
+
+    return (
+        <>
+            {/* Letter preview */}
+            {selectedBlocks.length > 0 && (
+                <div className="bg-white rounded-xl p-4 mb-4 border-2 border-dashed border-[#E8E6DF]">
+                    <div className="flex items-center gap-2 mb-3">
+                        <Mail size={14} className="text-[#D97757]" />
+                        <span className="text-[10px] font-black text-[#6B6B66] uppercase tracking-widest" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                            Jouw brief aan ouders
+                        </span>
+                    </div>
+                    <div className="text-xs text-[#3D3D38] space-y-2 leading-relaxed italic" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                        <p className="text-[#6B6B66]">Geachte ouders/verzorgers,</p>
+                        {selectedBlocks.map((block) => (
+                            <p key={block.id} className={submitted ? (block.belongsInLetter ? 'text-[#10B981]' : 'text-red-500 line-through') : ''}>
+                                {block.content}
+                            </p>
+                        ))}
+                        <p className="text-[#6B6B66]">Met vriendelijke groet,<br />Het crisisteam</p>
+                    </div>
+                </div>
+            )}
+
+            {/* Block options */}
+            <div className="grid gap-2 mb-4">
+                <span className="text-[10px] font-black text-[#6B6B66] uppercase tracking-widest" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                    {submitted ? 'Beoordeling' : 'Selecteer wat er in de brief moet'}
+                </span>
+                {LETTER_BLOCKS.map((block) => {
+                    const isSelected = selected.includes(block.id);
+                    let borderClass = 'border-[#E8E6DF]';
+                    let bgClass = 'bg-white';
+
+                    if (isSelected && !submitted) {
+                        borderClass = 'border-[#D97757] ring-1 ring-[#D97757]/20';
+                        bgClass = 'bg-[#D97757]/5';
+                    }
+                    if (submitted && isSelected) {
+                        borderClass = block.belongsInLetter ? 'border-[#10B981]' : 'border-red-400';
+                        bgClass = block.belongsInLetter ? 'bg-[#10B981]/5' : 'bg-red-50';
+                    }
+                    if (submitted && !isSelected && block.belongsInLetter) {
+                        borderClass = 'border-[#10B981]/40';
+                        bgClass = 'bg-[#10B981]/5';
+                    }
+                    if (submitted && !isSelected && !block.belongsInLetter) {
+                        bgClass = 'bg-[#F0EEE8]';
+                    }
+
+                    return (
+                        <button
+                            key={block.id}
+                            onClick={() => !submitted && onToggle(block.id)}
+                            disabled={submitted}
+                            className={`w-full p-3 rounded-xl border-2 text-left transition-all duration-200 ${borderClass} ${bgClass}`}
+                        >
+                            <div className="flex items-start gap-2">
+                                <span className="text-base mt-0.5">{block.icon}</span>
+                                <div className="flex-1">
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-sm font-bold text-[#1A1A19]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                            {block.title}
+                                        </span>
+                                        {submitted && isSelected && (
+                                            block.belongsInLetter
+                                                ? <Check size={12} className="text-[#10B981]" />
+                                                : <X size={12} className="text-red-500" />
+                                        )}
+                                        {submitted && !isSelected && block.belongsInLetter && (
+                                            <span className="text-[10px] text-[#10B981] font-bold">gemist!</span>
+                                        )}
+                                    </div>
+                                    {submitted && (isSelected || block.belongsInLetter) && (
+                                        <p className="text-[11px] text-[#6B6B66] mt-1" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                            {block.explanation}
+                                        </p>
+                                    )}
+                                </div>
+                            </div>
+                        </button>
+                    );
+                })}
+            </div>
+
+            {!submitted && (
+                <button
+                    onClick={onSubmit}
+                    disabled={selected.length === 0}
+                    className={`w-full py-3 rounded-full font-black text-sm transition-all duration-300 ${
+                        selected.length > 0
+                            ? 'bg-[#D97757] hover:bg-[#C46849] text-white'
+                            : 'bg-[#E8E6DF] text-[#6B6B66] cursor-not-allowed'
+                    }`}
+                >
+                    Verstuur brief
+                </button>
+            )}
+        </>
+    );
+};
+
+// Phase 4: Budget
+const BudgetPhase: React.FC<{
+    allocations: Record<number, number>;
+    submitted: boolean;
+    onToggle: (id: number) => void;
+    onSubmit: () => void;
+}> = ({ allocations, submitted, onToggle, onSubmit }) => {
+    const totalSpent = Object.values(allocations).reduce((a, b) => a + b, 0);
+    const remaining = TOTAL_BUDGET - totalSpent;
+
+    return (
+        <>
+            {/* Budget bar */}
+            <div className="bg-[#FAF9F0] rounded-xl p-3 mb-4 border border-[#E8E6DF]">
+                <div className="flex items-center justify-between mb-2">
+                    <span className="text-[10px] font-black text-[#6B6B66] uppercase tracking-widest" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                        Beschikbaar budget
+                    </span>
+                    <span className={`text-sm font-black ${remaining < 0 ? 'text-red-500' : remaining === 0 ? 'text-[#10B981]' : 'text-[#D97757]'}`} style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                        €{remaining.toLocaleString('nl-NL')} van €{TOTAL_BUDGET.toLocaleString('nl-NL')}
+                    </span>
+                </div>
+                <div className="h-2 bg-[#E8E6DF] rounded-full overflow-hidden">
+                    <div
+                        className={`h-full rounded-full transition-all duration-500 ${remaining < 0 ? 'bg-red-500' : 'bg-gradient-to-r from-[#D97757] to-[#C46849]'}`}
+                        style={{ width: `${Math.min(100, (totalSpent / TOTAL_BUDGET) * 100)}%` }}
+                    />
+                </div>
+            </div>
+
+            {/* Budget items */}
+            <div className="grid gap-3 mb-4">
+                {BUDGET_ITEMS.map((item) => {
+                    const isAllocated = allocations[item.id] && allocations[item.id] >= item.cost;
+                    const canAfford = remaining >= item.cost || isAllocated;
+
+                    return (
+                        <button
+                            key={item.id}
+                            onClick={() => !submitted && onToggle(item.id)}
+                            disabled={submitted || (!isAllocated && !canAfford)}
+                            className={`w-full p-4 rounded-2xl border-2 text-left transition-all duration-200 ${
+                                isAllocated
+                                    ? submitted
+                                        ? 'border-[#10B981] bg-[#10B981]/5'
+                                        : 'border-[#D97757] bg-[#D97757]/5'
+                                    : !canAfford && !submitted
+                                        ? 'border-[#E8E6DF] bg-[#F0EEE8] opacity-50'
+                                        : 'border-[#E8E6DF] bg-white hover:border-[#D97757]/40'
+                            }`}
+                        >
+                            <div className="flex items-start gap-3">
+                                <span className="text-xl mt-0.5">{item.icon}</span>
+                                <div className="flex-1">
+                                    <div className="flex items-center justify-between mb-1">
+                                        <span className="text-sm font-bold text-[#1A1A19]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                            {item.title}
+                                        </span>
+                                        <span className={`text-xs font-bold ${isAllocated ? 'text-[#D97757]' : 'text-[#6B6B66]'}`} style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                            €{item.cost.toLocaleString('nl-NL')}
+                                        </span>
+                                    </div>
+                                    <p className="text-xs text-[#6B6B66] leading-relaxed mb-2" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                        {item.description}
+                                    </p>
+                                    <div className="flex items-center gap-1">
+                                        <span className="text-[10px] text-[#6B6B66] mr-1" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Impact:</span>
+                                        {Array.from({ length: 5 }).map((_, i) => (
+                                            <div key={i} className={`w-2 h-2 rounded-full ${i < item.effectiveness ? 'bg-[#D97757]' : 'bg-[#E8E6DF]'}`} />
+                                        ))}
+                                    </div>
+                                    {submitted && (
+                                        <p className="text-[11px] text-[#3D3D38] mt-2 italic" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                            {item.explanation}
+                                        </p>
+                                    )}
+                                </div>
+                                {isAllocated && (
+                                    <div className="shrink-0">
+                                        <Check size={16} className={submitted ? 'text-[#10B981]' : 'text-[#D97757]'} />
+                                    </div>
+                                )}
+                            </div>
+                        </button>
+                    );
+                })}
+            </div>
+
+            {remaining < 0 && !submitted && (
+                <p className="text-center text-xs text-red-500 mb-3 font-bold" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                    Je bent over budget! Deselecteer een maatregel.
+                </p>
+            )}
+
+            {!submitted && (
+                <button
+                    onClick={onSubmit}
+                    disabled={totalSpent === 0 || remaining < 0}
+                    className={`w-full py-3 rounded-full font-black text-sm transition-all duration-300 ${
+                        totalSpent > 0 && remaining >= 0
+                            ? 'bg-[#D97757] hover:bg-[#C46849] text-white'
+                            : 'bg-[#E8E6DF] text-[#6B6B66] cursor-not-allowed'
+                    }`}
+                >
+                    Beveiligingsplan indienen
+                </button>
+            )}
+        </>
+    );
+};
+
+// === Main component ===
+export const DatalekkenRampenplanMission: React.FC<Props> = ({ onBack, onComplete }) => {
+    const { state: saved, setState: setSaved, clearSave } = useMissionAutoSave<DatalekkenState>(
+        'datalekken-rampenplan',
+        INITIAL_STATE
+    );
+
+    const phase = saved.phase;
+    const setPhase = (p: DatalekkenState['phase']) => setSaved(prev => ({ ...prev, phase: p }));
+
+    // Phase navigation
+    const PHASE_SEQUENCE: DatalekkenState['phase'][] = ['evidence', 'priorities', 'letter', 'budget'];
+    const currentPhaseIndex = PHASE_SEQUENCE.indexOf(phase);
+
+    const goNext = () => {
+        if (currentPhaseIndex < PHASE_SEQUENCE.length - 1) {
+            setPhase(PHASE_SEQUENCE[currentPhaseIndex + 1]);
+        } else {
+            setPhase('results');
+        }
+    };
+
+    const goBackPhase = () => {
+        if (currentPhaseIndex === 0) setPhase('intro');
+        // Don't allow going back to previous phases after submission
+    };
+
+    // Scores
+    const evidenceScore = scoreEvidence(saved.evidenceSelected);
+    const priorityScore = scorePriorities(saved.priorityOrder);
+    const letterScore = scoreLetter(saved.letterSelected);
+    const budgetScore = scoreBudget(saved.budgetAllocations);
+    const totalScore = evidenceScore.score + priorityScore.score + letterScore.score + budgetScore.score;
+
+    const currentRunningScore = useMemo(() => {
+        let s = 0;
+        if (saved.evidenceSubmitted) s += evidenceScore.score;
+        if (saved.prioritySubmitted) s += priorityScore.score;
+        if (saved.letterSubmitted) s += letterScore.score;
+        if (saved.budgetSubmitted) s += budgetScore.score;
+        return s;
+    }, [saved, evidenceScore, priorityScore, letterScore, budgetScore]);
+
+    // Phase-specific submitted check
+    const isCurrentPhaseSubmitted = () => {
+        switch (phase) {
+            case 'evidence': return saved.evidenceSubmitted;
+            case 'priorities': return saved.prioritySubmitted;
+            case 'letter': return saved.letterSubmitted;
+            case 'budget': return saved.budgetSubmitted;
+            default: return false;
+        }
+    };
+
+    // === INTRO ===
+    if (phase === 'intro') {
+        return (
+            <div className="min-h-screen bg-[#FAF9F0] text-[#1A1A19] overflow-y-auto p-4 pb-safe">
+                <button onClick={onBack} className="flex items-center gap-2 text-[#6B6B66] hover:text-[#1A1A19] transition-all duration-300 mb-6">
+                    <ArrowLeft size={18} />
+                    <span className="text-sm font-bold" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Terug</span>
+                </button>
+                <div className="max-w-lg mx-auto text-center space-y-6">
+                    <div className="w-20 h-20 bg-[#D97757]/10 rounded-3xl flex items-center justify-center mx-auto border border-[#D97757]/20 animate-pulse">
+                        <span className="text-4xl">🚨</span>
+                    </div>
+                    <h1 className="text-3xl font-black" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
+                        Datalekken Rampenplan
+                    </h1>
+                    <p className="text-[#3D3D38] text-sm leading-relaxed max-w-sm mx-auto" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                        <span className="text-[#D97757] font-bold">BREAKING:</span> De school is gehackt! 800 leerlinggegevens liggen op straat.
+                        Analyseer bewijs, stel prioriteiten, schrijf de crisiscommunicatie en verdeel het beveiligingsbudget.
+                    </p>
+                    <div className="grid grid-cols-2 gap-3 max-w-xs mx-auto">
+                        {[
+                            { icon: <Search size={16} />, label: 'Bewijs analyseren' },
+                            { icon: <ListOrdered size={16} />, label: 'Prioriteiten stellen' },
+                            { icon: <Mail size={16} />, label: 'Brief schrijven' },
+                            { icon: <PiggyBank size={16} />, label: 'Budget verdelen' },
+                        ].map((item, i) => (
+                            <div key={i} className="bg-white border border-[#E8E6DF] rounded-2xl p-3 flex items-center gap-2">
+                                <div className="text-[#D97757]">{item.icon}</div>
+                                <span className="text-xs font-bold text-[#3D3D38]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                    {item.label}
+                                </span>
+                            </div>
+                        ))}
+                    </div>
+                    <button
+                        onClick={() => setPhase('evidence')}
+                        className="px-8 py-4 bg-[#D97757] hover:bg-[#C46849] text-white rounded-full font-black text-lg transition-all duration-300 active:scale-95 shadow-xl shadow-[#D97757]/30 focus-visible:ring-2 focus-visible:ring-[#D97757]"
+                    >
+                        Start de crisis →
+                    </button>
                 </div>
             </div>
         );
     }
 
-    const badge = getBadge();
-    return (
-        <div className="min-h-screen bg-[#FAF9F0] text-[#1A1A19] overflow-y-auto">
-            <div className="min-h-full flex items-center justify-center p-4 pb-safe">
-            <div className="max-w-sm w-full text-center space-y-6">
-                <div className={`w-24 h-24 mx-auto bg-gradient-to-br ${badge.color} rounded-3xl flex items-center justify-center shadow-2xl`}><span className="text-5xl">{badge.emoji}</span></div>
-                <h1 className="text-2xl font-black" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>{badge.title}</h1>
-                <p className="text-[#6B6B66] text-sm" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{answers.filter(a => a).length}/{SCENARIOS.length} fases correct</p>
-                <div className="bg-white rounded-2xl p-4 border border-[#E8E6DF]">
-                    <div className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#D97757] to-[#C46849]">{score}/100</div>
-                    <p className="text-[#6B6B66] text-xs mt-1" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Crisis Score</p>
+    // === RESULTS ===
+    if (phase === 'results') {
+        const getBadge = () => {
+            if (totalScore >= 80) return { emoji: '🛡️', title: 'Crisis Commander', color: 'from-[#10B981] to-[#2A9D8F]' };
+            if (totalScore >= 55) return { emoji: '📋', title: 'Noodplan Specialist', color: 'from-[#2A9D8F] to-[#D97757]' };
+            return { emoji: '🔰', title: 'Crisis Trainee', color: 'from-[#D97757] to-[#C46849]' };
+        };
+        const badge = getBadge();
+
+        const phases = [
+            { icon: '🔍', title: 'Bewijs analyse', ...evidenceScore },
+            { icon: '📋', title: 'Prioriteiten', ...priorityScore },
+            { icon: '✉️', title: 'Crisisbrief', ...letterScore },
+            { icon: '💰', title: 'Budget', ...budgetScore },
+        ];
+
+        return (
+            <div className="min-h-screen bg-[#FAF9F0] text-[#1A1A19] overflow-y-auto">
+                <div className="min-h-full flex items-center justify-center p-4 pb-safe">
+                    <div className="max-w-sm w-full text-center space-y-6">
+                        <div className={`w-24 h-24 mx-auto bg-gradient-to-br ${badge.color} rounded-3xl flex items-center justify-center shadow-2xl`}>
+                            <span className="text-5xl">{badge.emoji}</span>
+                        </div>
+                        <h1 className="text-2xl font-black" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
+                            {badge.title}
+                        </h1>
+
+                        <div className="bg-white rounded-2xl p-4 border border-[#E8E6DF]">
+                            <div className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#D97757] to-[#C46849]">
+                                {totalScore}/100
+                            </div>
+                            <p className="text-[#6B6B66] text-xs mt-1" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                Crisis Score
+                            </p>
+                        </div>
+
+                        {/* Phase breakdown */}
+                        <div className="bg-white rounded-2xl p-4 text-left space-y-3 border border-[#E8E6DF]">
+                            <p className="text-xs font-bold text-[#3D3D38]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                Score per fase
+                            </p>
+                            {phases.map((p, i) => (
+                                <div key={i} className="flex items-center gap-3">
+                                    <span className="text-base">{p.icon}</span>
+                                    <div className="flex-1">
+                                        <div className="flex items-center justify-between mb-1">
+                                            <span className="text-xs text-[#3D3D38]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                                {p.title}
+                                            </span>
+                                            <span className="text-xs font-bold text-[#D97757]">{p.score}/{p.max}</span>
+                                        </div>
+                                        <div className="h-1.5 bg-[#E8E6DF] rounded-full overflow-hidden">
+                                            <div
+                                                className="h-full rounded-full bg-gradient-to-r from-[#D97757] to-[#C46849] transition-all duration-700"
+                                                style={{ width: `${(p.score / p.max) * 100}%` }}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* Key takeaways */}
+                        <div className="bg-white rounded-2xl p-4 text-left space-y-2 border border-[#E8E6DF]">
+                            <p className="text-xs font-bold text-[#3D3D38] mb-2" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                Wat je moet onthouden
+                            </p>
+                            <p className="text-xs text-[#6B6B66]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                🔍 Niet elk signaal is een hack — analyseer bewijs kritisch
+                            </p>
+                            <p className="text-xs text-[#6B6B66]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                📋 Volgorde doet ertoe: eerst team, dan techniek, dan communicatie
+                            </p>
+                            <p className="text-xs text-[#6B6B66]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                ✉️ Eerlijk, concreet, en actiegerichte communicatie wint vertrouwen
+                            </p>
+                            <p className="text-xs text-[#6B6B66]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                💰 Budget is beperkt — kies impact boven compleetheid
+                            </p>
+                        </div>
+
+                        <button
+                            onClick={() => { clearSave(); onComplete(true); }}
+                            className="w-full py-4 bg-[#10B981] hover:bg-[#059669] text-white rounded-full font-black text-lg transition-all duration-300 active:scale-95 shadow-xl flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-[#10B981]"
+                        >
+                            <Trophy size={20} /> Missie Voltooid!
+                        </button>
+                    </div>
                 </div>
-                <div className="bg-white rounded-2xl p-4 text-left space-y-2 border border-[#E8E6DF]">
-                    <p className="text-xs font-bold text-[#3D3D38] mb-2" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Jouw Noodplan samenvatting:</p>
-                    <p className="text-xs text-[#6B6B66]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>1. STOP het lek — dicht de kwetsbaarheid direct</p>
-                    <p className="text-xs text-[#6B6B66]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>2. MELD bij AP binnen 72 uur + informeer betrokkenen</p>
-                    <p className="text-xs text-[#6B6B66]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>3. COMMUNICEER eerlijk, transparant en concreet</p>
-                    <p className="text-xs text-[#6B6B66]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>4. VOORKOM met 2FA, training en een vast aanspreekpunt</p>
-                </div>
-                <button onClick={() => { clearSave(); onComplete(true); }} className="w-full py-4 bg-[#10B981] hover:bg-[#059669] text-white rounded-full font-black text-lg transition-all duration-300 active:scale-95 shadow-xl flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-[#10B981]"><Trophy size={20} /> Missie Voltooid!</button>
             </div>
+        );
+    }
+
+    // === INTERACTIVE PHASES ===
+    const phaseConfigs = {
+        evidence: {
+            icon: <Search size={20} />,
+            title: 'Bewijs Analyseren',
+            description: 'Maandagochtend 08:00. Er zijn meldingen van een mogelijke hack. Bekijk de bewijsstukken en selecteer welke wijzen op een echt datalek. Let op: niet alles is wat het lijkt!',
+        },
+        priorities: {
+            icon: <ListOrdered size={20} />,
+            title: 'Actieplan Opstellen',
+            description: 'Het lek is bevestigd. Je hebt 6 acties die je moet uitvoeren. Klik ze aan in de juiste volgorde van prioriteit. Wat doe je EERST?',
+        },
+        letter: {
+            icon: <Mail size={20} />,
+            title: 'De Crisisbrief',
+            description: 'Je moet een bericht sturen naar alle ouders en leerlingen. Selecteer welke onderdelen in de brief horen. Je ziet een live preview van je brief.',
+        },
+        budget: {
+            icon: <PiggyBank size={20} />,
+            title: 'Beveiligingsbudget',
+            description: `De directeur geeft je €${TOTAL_BUDGET.toLocaleString('nl-NL')} om de school beter te beveiligen. Niet alles past in het budget — waar investeer je in?`,
+        },
+    };
+
+    const config = phaseConfigs[phase as keyof typeof phaseConfigs];
+    if (!config) return null;
+
+    return (
+        <div className="min-h-screen bg-[#FAF9F0] text-[#1A1A19] overflow-y-auto p-4 pb-safe">
+            <div className="max-w-lg mx-auto">
+                <PhaseHeader
+                    currentPhase={currentPhaseIndex}
+                    totalPhases={4}
+                    totalScore={currentRunningScore}
+                    onBack={goBackPhase}
+                />
+
+                <PhaseCard
+                    icon={config.icon}
+                    phaseNumber={currentPhaseIndex + 1}
+                    totalPhases={4}
+                    title={config.title}
+                    description={config.description}
+                >
+                    <div className="mt-4" />
+                </PhaseCard>
+
+                {phase === 'evidence' && (
+                    <EvidencePhase
+                        selected={saved.evidenceSelected}
+                        submitted={saved.evidenceSubmitted}
+                        onToggle={(id) => setSaved(prev => ({
+                            ...prev,
+                            evidenceSelected: prev.evidenceSelected.includes(id)
+                                ? prev.evidenceSelected.filter(x => x !== id)
+                                : [...prev.evidenceSelected, id],
+                        }))}
+                        onSubmit={() => setSaved(prev => ({ ...prev, evidenceSubmitted: true }))}
+                    />
+                )}
+
+                {phase === 'priorities' && (
+                    <PrioritiesPhase
+                        order={saved.priorityOrder}
+                        submitted={saved.prioritySubmitted}
+                        onAdd={(id) => setSaved(prev => ({
+                            ...prev,
+                            priorityOrder: [...prev.priorityOrder, id],
+                        }))}
+                        onReset={() => setSaved(prev => ({ ...prev, priorityOrder: [] }))}
+                        onSubmit={() => setSaved(prev => ({ ...prev, prioritySubmitted: true }))}
+                    />
+                )}
+
+                {phase === 'letter' && (
+                    <LetterPhase
+                        selected={saved.letterSelected}
+                        submitted={saved.letterSubmitted}
+                        onToggle={(id) => setSaved(prev => ({
+                            ...prev,
+                            letterSelected: prev.letterSelected.includes(id)
+                                ? prev.letterSelected.filter(x => x !== id)
+                                : [...prev.letterSelected, id],
+                        }))}
+                        onSubmit={() => setSaved(prev => ({ ...prev, letterSubmitted: true }))}
+                    />
+                )}
+
+                {phase === 'budget' && (
+                    <BudgetPhase
+                        allocations={saved.budgetAllocations}
+                        submitted={saved.budgetSubmitted}
+                        onToggle={(id) => setSaved(prev => {
+                            const item = BUDGET_ITEMS.find(b => b.id === id)!;
+                            const current = prev.budgetAllocations[id] || 0;
+                            const newAllocations = { ...prev.budgetAllocations };
+                            if (current >= item.cost) {
+                                delete newAllocations[id];
+                            } else {
+                                newAllocations[id] = item.cost;
+                            }
+                            return { ...prev, budgetAllocations: newAllocations };
+                        })}
+                        onSubmit={() => setSaved(prev => ({ ...prev, budgetSubmitted: true }))}
+                    />
+                )}
+
+                {isCurrentPhaseSubmitted() && (
+                    <button
+                        onClick={goNext}
+                        className="w-full mt-4 py-3 bg-[#D97757] hover:bg-[#C46849] text-white rounded-full font-black text-sm flex items-center justify-center gap-2 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#D97757]"
+                    >
+                        {currentPhaseIndex < PHASE_SEQUENCE.length - 1
+                            ? <>Volgende fase <ChevronRight size={16} /></>
+                            : <>Bekijk resultaat <Trophy size={16} /></>
+                        }
+                    </button>
+                )}
             </div>
         </div>
     );

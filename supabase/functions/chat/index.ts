@@ -21,6 +21,26 @@ const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
 const MAX_REQUEST_BYTES = 500_000;
 const MAX_MESSAGE_LENGTH = 150_000;
+const DEFAULT_CHAT_MODEL = "gemini-3-flash-preview";
+const CODE_CHAT_MODEL = "gemini-2.5-pro";
+const DEFAULT_CHAT_TEMPERATURE = 0.7;
+const CODE_CHAT_TEMPERATURE = 0.2;
+
+function selectModel(roleId: string, hasGameContext: boolean): string {
+    if (roleId === "game-programmeur" || hasGameContext) {
+        return CODE_CHAT_MODEL;
+    }
+    return DEFAULT_CHAT_MODEL;
+}
+
+function buildGenerationConfig(roleId: string, hasGameContext: boolean) {
+    const isCodeMode = roleId === "game-programmeur" || hasGameContext;
+
+    return {
+        maxOutputTokens: isCodeMode ? 50_000 : 1024,
+        temperature: isCodeMode ? CODE_CHAT_TEMPERATURE : DEFAULT_CHAT_TEMPERATURE,
+    };
+}
 
 Deno.serve(async (req: Request) => {
     const corsHeaders = buildCorsHeaders(req, "POST, OPTIONS", "Content-Type, Authorization");
@@ -133,15 +153,18 @@ Deno.serve(async (req: Request) => {
 
     // 4. Forward sanitized message to Gemini via Vertex AI (EU endpoint)
     try {
+        const hasGameContext = !!(body.gameContext && typeof body.gameContext === "string");
+        const model = selectModel(body.roleId, hasGameContext);
+        const generationConfig = buildGenerationConfig(body.roleId, hasGameContext);
+
         console.log("[chat] Step 1: Building Vertex URL...");
-        const geminiUrl = getVertexUrl("gemini-3-flash-preview");
+        const geminiUrl = getVertexUrl(model);
         console.log("[chat] Step 2: Getting access token...");
         const accessToken = await getAccessToken();
         console.log("[chat] Step 3: Sending to Vertex AI...");
 
         // Build user message parts — include game code context if provided
         // gameContext bypasses the sanitizer because it's our own application code, not user input
-        const hasGameContext = !!(body.gameContext && typeof body.gameContext === "string");
         const userParts: { text: string }[] = [];
         if (hasGameContext) {
             userParts.push({ text: `[HUIDIGE_GAME_CODE]\n${body.gameContext}\n[/HUIDIGE_GAME_CODE]\n\nKRITIEK: Dit is de HUIDIGE game van de leerling. Je MOET deze code aanpassen — NIET een nieuwe game maken. Verwerk het verzoek hieronder in de bestaande code en geef de VOLLEDIGE aangepaste versie terug.` });
@@ -171,10 +194,7 @@ Deno.serve(async (req: Request) => {
                 contents,
                 safetySettings,
                 systemInstruction: { parts: [{ text: systemInstruction }] },
-                generationConfig: {
-                    maxOutputTokens: hasGameContext ? 50_000 : 1024,
-                    temperature: 0.7,
-                },
+                generationConfig,
             }),
         });
 

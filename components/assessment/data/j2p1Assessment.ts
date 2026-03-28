@@ -62,21 +62,53 @@ export const J2P1_ASSESSMENT: AssessmentTask[] = [
     // ─────────────────────────────────────────────────────────
     {
         id: 'j2p1-broncheck',
-        type: 'rescuer',
+        type: 'classifier',
         title: 'Bronnen Checken',
-        description: 'Een medeleerling heeft informatie gevonden voor een werkstuk. Help om de bronnen te verifiëren!',
+        description: 'Een medeleerling heeft informatie gevonden voor een werkstuk. Beoordeel elk advies: is het slim of niet?',
         xpReward: 90,
         npcName: 'Medeleerling',
         scenario: 'Ik heb een artikel gevonden dat zegt dat 90% van de jongeren verslaafd is aan social media. Het staat op een website die ik niet ken. Hoe check ik of dit betrouwbaar is?',
-        availableSteps: [
-            { id: 'step-1', text: 'Controleer wie de auteur is en wat hun expertise is.' },
-            { id: 'step-2', text: 'Zoek of andere betrouwbare bronnen (bijv. CBS, universiteit) hetzelfde beweren.' },
-            { id: 'step-3', text: 'Check wanneer het artikel is gepubliceerd (actualiteit).' },
-            { id: 'step-4', text: 'Kijk of het artikel bronvermeldingen heeft.' },
-            { id: 'step-wrong-1', text: 'Als het er professioneel uitziet, is het betrouwbaar.' },
-            { id: 'step-wrong-2', text: 'Kopieer de informatie direct in je werkstuk.' }
-        ],
-        correctSequence: ['step-1', 'step-4', 'step-2', 'step-3']
+        goodLabel: 'Slim advies',
+        badLabel: 'Niet slim',
+        minCorrect: 5,
+        options: [
+            {
+                id: 'opt-auteur',
+                text: 'Controleer wie de auteur is en wat hun expertise is.',
+                correct: true,
+                feedback: 'Goed! De achtergrond van de auteur zegt veel over de betrouwbaarheid. Een arts die over gezondheid schrijft is geloofwaardiger dan een anonieme blogger.'
+            },
+            {
+                id: 'opt-kruischeck',
+                text: 'Zoek of andere betrouwbare bronnen (bijv. CBS, universiteit) hetzelfde beweren.',
+                correct: true,
+                feedback: 'Slim! Als meerdere onafhankelijke bronnen hetzelfde zeggen, is de informatie waarschijnlijk betrouwbaarder.'
+            },
+            {
+                id: 'opt-actualiteit',
+                text: 'Check wanneer het artikel is gepubliceerd (actualiteit).',
+                correct: true,
+                feedback: 'Klopt! Een artikel uit 2015 over social media is waarschijnlijk verouderd. Recente bronnen zijn vaak betrouwbaarder voor dit soort onderwerpen.'
+            },
+            {
+                id: 'opt-bronvermelding',
+                text: 'Kijk of het artikel bronvermeldingen heeft.',
+                correct: true,
+                feedback: 'Precies! Goede artikelen verwijzen naar hun bronnen. Zonder bronvermeldingen kun je niet controleren waar de informatie vandaan komt.'
+            },
+            {
+                id: 'opt-uiterlijk',
+                text: 'Als het er professioneel uitziet, is het betrouwbaar.',
+                correct: false,
+                feedback: 'Pas op! Een mooie website zegt niets over de inhoud. Nepnieuws-sites zien er vaak heel professioneel uit om je te misleiden.'
+            },
+            {
+                id: 'opt-kopieren',
+                text: 'Kopieer de informatie direct in je werkstuk.',
+                correct: false,
+                feedback: 'Niet doen! Zonder te checken of het klopt, kun je foute informatie verspreiden. Altijd eerst verifiëren voordat je iets overneemt.'
+            }
+        ]
     },
 
     // ─────────────────────────────────────────────────────────

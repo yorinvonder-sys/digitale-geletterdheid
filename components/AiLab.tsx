@@ -2,7 +2,7 @@
 import React, { useState, useRef, useEffect, useMemo, lazy, Suspense, useCallback } from 'react';
 import { AgentSelector } from './lab/AgentSelector';
 import { ChatBubble } from './ChatBubble';
-
+import MissionWelcomeCard from './MissionWelcomeCard';
 
 import { MissionBriefing } from './MissionBriefing';
 import { AgentRole, UserStats, AiLabProps } from '../types';
@@ -53,6 +53,12 @@ const AccessControlEngineerMission = lazy(() => import('./missions/AccessControl
 const CloudCleanerMission = lazy(() => import('./missions/review/CloudCleanerMission').then(m => ({ default: m.CloudCleanerMission })));
 const WordSimulator = lazy(() => import('./WordSimulator/WordSimulator').then(m => ({ default: m.WordSimulator })));
 const PitchPoliceMission = lazy(() => import('./missions/review/PitchPoliceMission').then(m => ({ default: m.PitchPoliceMission })));
+const DataVerzamelaarPreview = lazy(() => import('./DataVerzamelaarPreview'));
+const DataJournalistPreview = lazy(() => import('./DataJournalistPreview'));
+const FactcheckerPreview = lazy(() => import('./FactcheckerPreview'));
+const ApiVerkennerPreview = lazy(() => import('./ApiVerkennerPreview'));
+const DashboardDesignerPreview = lazy(() => import('./DashboardDesignerPreview'));
+const AiBiasDetectivePreview = lazy(() => import('./AiBiasDetectivePreview'));
 
 
 const ConfettiExplosion = () => {
@@ -1118,13 +1124,19 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
                 <div className="flex-1 overflow-y-auto p-4 custom-scrollbar space-y-4 min-h-0">
                   {/* MODIFIED: Pass setPreviewUrl to handling clicks + isLatest prop */}
                   {messages.map((m, i) => (
-                    <ChatBubble
-                      key={i}
-                      message={m}
-                      onLinkClick={setPreviewUrl}
-                      isLatest={i === messages.length - 1}
-                      isBusy={isLoading || isGameLoading}
-                    />
+                    m.isWelcome && selectedRole ? (
+                      <div key={i} className="flex w-full mb-2 justify-start">
+                        <MissionWelcomeCard role={selectedRole} />
+                      </div>
+                    ) : (
+                      <ChatBubble
+                        key={i}
+                        message={m}
+                        onLinkClick={setPreviewUrl}
+                        isLatest={i === messages.length - 1}
+                        isBusy={isLoading || isGameLoading}
+                      />
+                    )
                   ))}
 
                   {isLoading && (
@@ -1309,6 +1321,28 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
 
                     ) : selectedRole?.id === 'ai-trainer' ? (
                       <TrainerPreview data={activeTrainerData} />
+                    ) : selectedRole?.id === 'data-verzamelaar' ? (
+                      <DataVerzamelaarPreview currentStep={completedSteps?.length || 0} />
+                    ) : selectedRole?.id === 'data-journalist' ? (
+                      <Suspense fallback={<div className="w-full h-full flex items-center justify-center"><Loader2 className="animate-spin text-emerald-500" size={32} /></div>}>
+                        <DataJournalistPreview />
+                      </Suspense>
+                    ) : selectedRole?.id === 'factchecker' ? (
+                      <Suspense fallback={<div className="w-full h-full flex items-center justify-center"><Loader2 className="animate-spin text-amber-500" size={32} /></div>}>
+                        <FactcheckerPreview />
+                      </Suspense>
+                    ) : selectedRole?.id === 'api-verkenner' ? (
+                      <Suspense fallback={<div className="w-full h-full flex items-center justify-center"><Loader2 className="animate-spin text-violet-500" size={32} /></div>}>
+                        <ApiVerkennerPreview />
+                      </Suspense>
+                    ) : selectedRole?.id === 'dashboard-designer' ? (
+                      <Suspense fallback={<div className="w-full h-full flex items-center justify-center"><Loader2 className="animate-spin text-blue-500" size={32} /></div>}>
+                        <DashboardDesignerPreview />
+                      </Suspense>
+                    ) : selectedRole?.id === 'ai-bias-detective' ? (
+                      <Suspense fallback={<div className="w-full h-full flex items-center justify-center"><Loader2 className="animate-spin text-red-500" size={32} /></div>}>
+                        <AiBiasDetectivePreview />
+                      </Suspense>
                     ) : (
                       <div className="w-full h-full bg-slate-100 flex items-center justify-center p-4">
                         <div className="w-full h-full max-w-lg max-h-lg rounded-3xl overflow-hidden shadow-2xl border-8 border-slate-800 transform scale-90 md:scale-100">

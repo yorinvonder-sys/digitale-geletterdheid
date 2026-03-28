@@ -4,6 +4,7 @@ import { AssessmentTask, AssessmentConfig } from './types';
 import { InspectorTask } from './InspectorTask';
 import { SimulatorTask } from './SimulatorTask';
 import { RescuerTask } from './RescuerTask';
+import { ClassifierTask } from './ClassifierTask';
 import { Trophy, RotateCcw, CheckCircle, XCircle, ClipboardCheck } from 'lucide-react';
 
 interface Props {
@@ -153,6 +154,8 @@ export const AssessmentEngine: React.FC<Props> = ({ tasks, config, onComplete, o
                 return <SimulatorTask task={currentTask} onComplete={handleTaskComplete} />;
             case 'rescuer':
                 return <RescuerTask task={currentTask} onComplete={handleTaskComplete} />;
+            case 'classifier':
+                return <ClassifierTask task={currentTask} onComplete={handleTaskComplete} />;
             default:
                 return <div>Unknown Task Type</div>;
         }

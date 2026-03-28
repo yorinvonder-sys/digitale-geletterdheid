@@ -4,7 +4,7 @@ import { Settings2, Play, RotateCcw, ArrowLeft, Sparkles, Trophy, HelpCircle, Ch
 import { UserStats } from '../../types';
 import { BlockPalette } from './game-director/BlockPalette';
 import { CodeWorkspace } from './game-director/CodeWorkspace';
-import { PlacedBlock, BlockDefinition, GameContext, getBlockById } from './game-director/BlockTypes';
+import { PlacedBlock, BlockDefinition, GameContext, MoveAction, getBlockById } from './game-director/BlockTypes';
 import { createExecutor, BlockExecutor } from './game-director/BlockExecutor';
 import { MissionConclusion } from '../MissionConclusion';
 import { StudentAIChat } from '../StudentAIChat';
@@ -37,16 +37,16 @@ const CHALLENGES: Challenge[] = [
     // === EASY ===
     {
         id: 'first_move',
-        title: '🚀 Level 1: De Robot Ontwaakt',
-        description: 'Onze robot staat stil! Gebruik de code-blokken om hem naar rechts te laten rijden zodra de game start.',
+        title: '🐾 Level 1: Robbie Ontwaakt',
+        description: 'Robbie de speurhond ruikt een spoor! Programmeer hem om naar rechts te lopen naar het eerste bewijs.',
         hint: 'Sleep een geel "wanneer game start" blok in je werkveld, en voeg dan een "ga naar rechts" blok toe.',
         check: (ctx) => ctx.player.x > 150
     },
     {
         id: 'jumping',
-        title: '🦘 Level 2: Eerste Sprong',
-        description: 'De robot moet kunnen springen! Voeg een sprong-blok toe dat werkt als je op de spatiebalk drukt.',
-        hint: 'Gebruik het "wanneer toets ingedrukt" blok met Spatiebalk, en sleep daar het "spring" blok in.',
+        title: '🦴 Level 2: Over het Hek',
+        description: 'Er staat een hek in de weg! Programmeer Robbie om te springen als je op de spatiebalk drukt.',
+        hint: 'Gebruik het "wanneer toets ingedrukt" blok met Spatiebalk, en voeg het "spring" blok toe.',
         check: (ctx, blocks) => {
             // Must have jump block AND reach the goal
             const hasJumpBlock = blocks.some(b => b.definitionId === 'jump');
@@ -55,9 +55,9 @@ const CHALLENGES: Challenge[] = [
     },
     {
         id: 'keyboard_control',
-        title: '🎮 Level 3: Volledige Besturing',
-        description: 'Maak de robot volledig bestuurbaar! Zorg dat hij naar LINKS gaat met ← en naar RECHTS met →.',
-        hint: 'Je hebt TWEE "wanneer toets ingedrukt" blokken nodig: één voor ArrowLeft en één voor ArrowRight.',
+        title: '🔍 Level 3: De Zoektocht',
+        description: 'Robbie moet overal kunnen zoeken! Zorg dat hij naar LINKS gaat met ← en naar RECHTS met →.',
+        hint: 'Je hebt TWEE "wanneer toets ingedrukt" blokken nodig: één voor ← en één voor →.',
         check: (ctx, blocks) => {
             const hasRightKey = blocks.some(b => b.definitionId === 'when_key_pressed' && b.inputs.key === 'ArrowRight');
             const hasLeftKey = blocks.some(b => b.definitionId === 'when_key_pressed' && b.inputs.key === 'ArrowLeft');
@@ -67,8 +67,8 @@ const CHALLENGES: Challenge[] = [
     },
     {
         id: 'smart_jump',
-        title: '🧠 Level 4: Slimme Robot',
-        description: 'Een echte programmeur voorkomt bugs! Zorg dat de robot ALLEEN kan springen als hij op de grond staat.',
+        title: '🧠 Level 4: Slimme Speurhond',
+        description: 'Een goede speurhond springt alleen als het veilig is! Zorg dat Robbie ALLEEN springt als hij op de grond staat.',
         hint: 'Gebruik het oranje "als op de grond dan" blok en sleep het "spring" blok NAAR BINNEN in dat blok.',
         check: (ctx, blocks) => {
             const findJumpInIfGrounded = (blockList: PlacedBlock[]): boolean => {
@@ -85,9 +85,9 @@ const CHALLENGES: Challenge[] = [
     // === HARD ===
     {
         id: 'gravity_master',
-        title: '🌍 Level 5: Meester van de Zwaartekracht',
-        description: 'EINDBAAS! We zijn op de maan. Pas de zwaartekracht aan (tussen 0.1 en 0.3) zodat de robot superhoog kan springen en het doel kan bereiken!',
-        hint: 'Gebruik het "zet zwaartekracht op" blok en experimenteer met een waarde tussen 0.1 en 0.3. Te laag = zweeft weg, te hoog = kan niet hoog genoeg springen!',
+        title: '🌙 Level 5: Maanmissie',
+        description: 'EINDBAAS! Robbie zoekt bewijs op de maan! Pas de zwaartekracht aan (tussen 0.1 en 0.3) zodat Robbie superhoog kan springen!',
+        hint: 'Gebruik het "zet zwaartekracht op" blok en experimenteer met een waarde tussen 0.1 en 0.3. Te laag = zweeft weg, te hoog = springt niet hoog genoeg!',
         check: (ctx) => ctx.variables['gravity'] <= 0.3 && ctx.variables['gravity'] >= 0.1 && ctx.reachedGoal
     }
 ];
@@ -104,7 +104,6 @@ const LEVEL_LAYOUTS = [
             goal: { x: 600, y: 500, w: 50, h: 60 }
         },
         hard: {
-            // Hard: A longer distance
             walls: [
                 { x: -50, y: 0, w: 50, h: 600 },
                 { x: 800, y: 0, w: 50, h: 600 },
@@ -112,7 +111,7 @@ const LEVEL_LAYOUTS = [
             goal: { x: 700, y: 500, w: 50, h: 60 }
         }
     },
-    // Level 2: Keyboard Control
+    // Level 2: Jumping over fence
     {
         standard: {
             walls: [
@@ -122,16 +121,14 @@ const LEVEL_LAYOUTS = [
             goal: { x: 700, y: 500, w: 50, h: 60 }
         },
         hard: {
-            // Hard: Taller bumps require jumping combined with moving? No, just moving.
-            // Maybe tighter spaces.
             walls: [
-                { x: 200, y: 500, w: 40, h: 60 }, // Taller obstacle
+                { x: 200, y: 500, w: 40, h: 60 },
                 { x: 500, y: 500, w: 40, h: 60 },
             ],
             goal: { x: 750, y: 500, w: 50, h: 60 }
         }
     },
-    // Level 3: Jumping
+    // Level 3: Navigation
     {
         standard: {
             walls: [
@@ -140,10 +137,9 @@ const LEVEL_LAYOUTS = [
             goal: { x: 650, y: 500, w: 50, h: 60 }
         },
         hard: {
-            // Hard: Double wall
             walls: [
                 { x: 300, y: 450, w: 40, h: 110 },
-                { x: 500, y: 420, w: 40, h: 140 }, // Higher second wall
+                { x: 500, y: 420, w: 40, h: 140 },
             ],
             goal: { x: 700, y: 500, w: 50, h: 60 }
         }
@@ -159,10 +155,9 @@ const LEVEL_LAYOUTS = [
             goal: { x: 650, y: 260, w: 50, h: 60 }
         },
         hard: {
-            // Hard: Smaller platforms, larger gaps
             walls: [
                 { x: 200, y: 480, w: 60, h: 20 },
-                { x: 450, y: 400, w: 60, h: 20 }, // Big gap
+                { x: 450, y: 400, w: 60, h: 20 },
                 { x: 650, y: 320, w: 80, h: 20 },
             ],
             goal: { x: 665, y: 260, w: 50, h: 60 }
@@ -177,7 +172,6 @@ const LEVEL_LAYOUTS = [
             goal: { x: 375, y: 240, w: 50, h: 60 }
         },
         hard: {
-            // Hard: Very high, very small platform
             walls: [
                 { x: 350, y: 200, w: 100, h: 20 },
             ],
@@ -233,14 +227,8 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
         vy: number;
         grounded: boolean;
         facingRight: boolean;
-        action?: {
-            type: 'move';
-            remainingDistance: number;
-            speed: number;
-            directionX: number;
-            directionY: number;
-        };
-    }>({ x: 50, y: 512, vx: 0, vy: 0, grounded: true, facingRight: true });
+        actionQueue: MoveAction[];
+    }>({ x: 50, y: 512, vx: 0, vy: 0, grounded: true, facingRight: true, actionQueue: [] });
     const keysRef = useRef<Record<string, boolean>>({});
     const reqRef = useRef<number | undefined>(undefined);
     const enemiesRef = useRef<{ x: number, y: number }[]>([]);
@@ -296,12 +284,12 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
         const width = canvasRef.current.width;
         const height = canvasRef.current.height;
 
-        // Clear
-        ctx.fillStyle = '#1A1A19'; // Dark warm background
+        // Clear — park at night theme
+        ctx.fillStyle = '#0F1A12';
         ctx.fillRect(0, 0, width, height);
 
-        // Grid pattern
-        ctx.strokeStyle = '#3D3D38';
+        // Subtle grass pattern
+        ctx.strokeStyle = '#1A2F1E';
         ctx.lineWidth = 1;
         for (let x = 0; x < width; x += 40) {
             ctx.beginPath();
@@ -316,54 +304,82 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
             ctx.stroke();
         }
 
-        // Ground
-        ctx.fillStyle = '#22c55e';
-        ctx.fillRect(0, height - 40, width, 40);
-        ctx.fillStyle = '#16a34a';
-        ctx.fillRect(0, height - 40, width, 4);
+        // Stars in the sky
+        ctx.fillStyle = 'rgba(255, 255, 200, 0.6)';
+        const starSeed = [23, 87, 142, 201, 315, 467, 523, 611, 702, 45, 189, 334, 556, 678, 99];
+        for (let i = 0; i < starSeed.length; i++) {
+            const sx = (starSeed[i] * 3) % width;
+            const sy = (starSeed[i] * 7) % (height - 200);
+            ctx.fillRect(sx, sy, 2, 2);
+        }
 
-        // Draw maze walls
+        // Ground (grass)
+        ctx.fillStyle = '#2D5A27';
+        ctx.fillRect(0, height - 40, width, 40);
+        ctx.fillStyle = '#3A7D32';
+        ctx.fillRect(0, height - 40, width, 4);
+        // Grass blades
+        ctx.fillStyle = '#4A9D42';
+        for (let gx = 0; gx < width; gx += 12) {
+            ctx.fillRect(gx, height - 44, 2, 6);
+        }
+
+        // Draw obstacles as wooden fences
         wallsRef.current.forEach(wall => {
-            // Wall shadow
+            // Shadow
             ctx.fillStyle = 'rgba(0,0,0,0.3)';
-            ctx.fillRect(wall.x + 4, wall.y + 4, wall.w, wall.h);
-            // Wall body
-            ctx.fillStyle = '#dc2626';
+            ctx.fillRect(wall.x + 3, wall.y + 3, wall.w, wall.h);
+            // Fence body (brown wood)
+            ctx.fillStyle = '#8B6914';
             ctx.fillRect(wall.x, wall.y, wall.w, wall.h);
-            // Wall highlight
-            ctx.fillStyle = '#ef4444';
-            ctx.fillRect(wall.x, wall.y, wall.w, 4);
-            // Wall stripe pattern
-            ctx.fillStyle = '#b91c1c';
-            for (let i = 0; i < wall.w; i += 20) {
-                ctx.fillRect(wall.x + i, wall.y, 10, wall.h);
+            // Wood grain
+            ctx.fillStyle = '#A0792C';
+            ctx.fillRect(wall.x, wall.y, wall.w, 3);
+            // Planks
+            ctx.fillStyle = '#6B4E11';
+            for (let i = 0; i < wall.w; i += 16) {
+                ctx.fillRect(wall.x + i, wall.y, 1, wall.h);
+            }
+            // Horizontal bars
+            ctx.fillStyle = '#7A5B18';
+            const barSpacing = Math.max(20, wall.h / 3);
+            for (let j = barSpacing; j < wall.h; j += barSpacing) {
+                ctx.fillRect(wall.x, wall.y + j, wall.w, 3);
             }
         });
 
-        // Draw finish/goal
+        // Draw goal — golden bone
         const goal = goalRef.current;
-        // Goal glow
-        ctx.fillStyle = 'rgba(34, 197, 94, 0.3)';
+        // Glow
+        ctx.fillStyle = 'rgba(255, 215, 0, 0.2)';
         ctx.beginPath();
         ctx.arc(goal.x + goal.w / 2, goal.y + goal.h / 2, 40, 0, Math.PI * 2);
         ctx.fill();
-        // Goal base
-        ctx.fillStyle = '#22c55e';
-        ctx.fillRect(goal.x, goal.y, goal.w, goal.h);
-        // Goal flag pole
-        ctx.fillStyle = '#166534';
-        ctx.fillRect(goal.x + 5, goal.y - 60, 6, 60);
-        // Goal flag
-        ctx.fillStyle = '#fbbf24';
+
+        // Bone shape
+        const boneX = goal.x + goal.w / 2;
+        const boneY = goal.y + goal.h / 2;
+        ctx.fillStyle = '#F5E6C8';
+        // Center bar
+        ctx.fillRect(boneX - 12, boneY - 4, 24, 8);
+        // Left knobs
         ctx.beginPath();
-        ctx.moveTo(goal.x + 11, goal.y - 60);
-        ctx.lineTo(goal.x + 45, goal.y - 45);
-        ctx.lineTo(goal.x + 11, goal.y - 30);
+        ctx.arc(boneX - 12, boneY - 4, 6, 0, Math.PI * 2);
+        ctx.arc(boneX - 12, boneY + 4, 6, 0, Math.PI * 2);
         ctx.fill();
-        // Goal text
+        // Right knobs
+        ctx.beginPath();
+        ctx.arc(boneX + 12, boneY - 4, 6, 0, Math.PI * 2);
+        ctx.arc(boneX + 12, boneY + 4, 6, 0, Math.PI * 2);
+        ctx.fill();
+        // Sparkle
+        ctx.fillStyle = '#FFD700';
+        ctx.font = '14px sans-serif';
+        ctx.fillText('✨', goal.x + goal.w / 2 - 6, goal.y - 15);
+        // Label
         ctx.fillStyle = '#fff';
-        ctx.font = 'bold 12px Inter, sans-serif';
-        ctx.fillText('🏁 FINISH', goal.x - 10, goal.y - 70);
+        ctx.font = 'bold 11px Inter, sans-serif';
+        ctx.fillText('🦴 BEWIJS', goal.x - 8, goal.y - 25);
 
         const p = playerRef.current;
         const gravity = variablesRef.current['gravity'] || 0.5;
@@ -372,34 +388,34 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
         // Reset horizontal velocity (blocks must apply it every frame)
         p.vx = 0;
 
-        // Execute blocks (will set action)
+        // Execute blocks (will set actions in the queue)
         if (isPlaying) {
             const gameCtx = createGameContext();
 
-            // Only execute blocks if we are NOT currently performing an action
-            // or if the action queue logic allows concurrent execution (for now, sequential)
-            if (!p.action) {
+            // Only execute blocks if no actions are pending in the queue
+            if (p.actionQueue.length === 0) {
                 const executor = createExecutor(blocks, gameCtx);
                 executor.execute();
             }
 
-            // Process current action
-            if (p.action) {
-                if (p.action.type === 'move') {
-                    const moveSpeed = p.action.speed;
-                    const distanceToMove = Math.min(p.action.remainingDistance, moveSpeed);
+            // Process current action (first in queue)
+            if (p.actionQueue.length > 0) {
+                const currentAction = p.actionQueue[0];
+                if (currentAction.type === 'move') {
+                    const moveSpeed = currentAction.speed;
+                    const distanceToMove = Math.min(currentAction.remainingDistance, moveSpeed);
 
-                    p.vx = p.action.directionX * distanceToMove;
+                    p.vx = currentAction.directionX * distanceToMove;
 
-                    // Only override vertical velocity if we are explicitly moving vertically (flying)
-                    if (p.action.directionY !== 0) {
-                        p.vy = p.action.directionY * distanceToMove;
+                    // Only override vertical velocity if we are explicitly moving vertically
+                    if (currentAction.directionY !== 0) {
+                        p.vy = currentAction.directionY * distanceToMove;
                     }
 
-                    p.action.remainingDistance -= distanceToMove;
+                    currentAction.remainingDistance -= distanceToMove;
 
-                    if (p.action.remainingDistance <= 0) {
-                        p.action = undefined;
+                    if (currentAction.remainingDistance <= 0) {
+                        p.actionQueue.shift(); // Remove completed action, next one starts
                     }
                 }
             }
@@ -458,63 +474,124 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
             if (!reachedGoal) {
                 setReachedGoal(true);
                 setScore((s: number) => s + 500);
-                log('🎉 FINISH! Je hebt het doel bereikt!');
+                log('🦴 GEVONDEN! Robbie heeft het bewijs gevonden!');
             }
         }
-
-        // (Blocks executed earlier in physics loop)
 
         // Bounds
         p.x = Math.max(0, Math.min(width - 32, p.x));
 
-        // Draw player (pixel art style)
+        // === Draw Robbie (pixel art detective dog) ===
         const px = Math.floor(p.x);
         const py = Math.floor(p.y);
 
-        // Shadow
-        ctx.fillStyle = 'rgba(0,0,0,0.3)';
-        ctx.fillRect(px + 4, height - 38, 24, 6);
+        // Shadow under dog
+        ctx.fillStyle = 'rgba(0,0,0,0.4)';
+        ctx.beginPath();
+        ctx.ellipse(px + 16, height - 38, 14, 4, 0, 0, Math.PI * 2);
+        ctx.fill();
 
-        // Body
-        ctx.fillStyle = '#D97757';
-        ctx.fillRect(px + 4, py + 16, 24, 24);
+        // Tail (behind body)
+        ctx.strokeStyle = '#D4A03C';
+        ctx.lineWidth = 4;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        if (p.facingRight) {
+            ctx.moveTo(px + 4, py + 22);
+            ctx.quadraticCurveTo(px - 8, py + 10, px - 2, py + 6);
+        } else {
+            ctx.moveTo(px + 28, py + 22);
+            ctx.quadraticCurveTo(px + 40, py + 10, px + 34, py + 6);
+        }
+        ctx.stroke();
+        ctx.lineCap = 'butt';
+
+        // Body (golden brown)
+        ctx.fillStyle = '#B8860B';
+        ctx.fillRect(px + 4, py + 18, 24, 20);
+
+        // Belly (lighter)
+        ctx.fillStyle = '#F5DEB3';
+        ctx.fillRect(px + 8, py + 30, 16, 6);
 
         // Head
-        ctx.fillStyle = '#FCD34D';
-        ctx.fillRect(px + 6, py, 20, 20);
+        ctx.fillStyle = '#D4A03C';
+        ctx.fillRect(px + 4, py + 2, 24, 18);
 
-        // Eyes
-        ctx.fillStyle = '#3D3D38';
+        // Ears (floppy, hanging down)
+        ctx.fillStyle = '#8B6914';
         if (p.facingRight) {
-            ctx.fillRect(px + 18, py + 6, 4, 4);
-            ctx.fillRect(px + 24, py + 6, 4, 4);
+            // Back ear
+            ctx.fillRect(px + 2, py, 7, 14);
+            // Front ear (slightly forward)
+            ctx.fillRect(px + 24, py + 2, 7, 12);
         } else {
-            ctx.fillRect(px + 4, py + 6, 4, 4);
-            ctx.fillRect(px + 10, py + 6, 4, 4);
+            ctx.fillRect(px + 24, py, 7, 14);
+            ctx.fillRect(px + 1, py + 2, 7, 12);
+        }
+
+        // Eye
+        ctx.fillStyle = '#1A1A19';
+        if (p.facingRight) {
+            ctx.fillRect(px + 20, py + 7, 4, 4);
+            // Eye shine
+            ctx.fillStyle = '#fff';
+            ctx.fillRect(px + 21, py + 7, 2, 2);
+        } else {
+            ctx.fillRect(px + 8, py + 7, 4, 4);
+            ctx.fillStyle = '#fff';
+            ctx.fillRect(px + 9, py + 7, 2, 2);
+        }
+
+        // Nose (round black nose)
+        ctx.fillStyle = '#1A1A19';
+        ctx.beginPath();
+        if (p.facingRight) {
+            ctx.arc(px + 30, py + 14, 3, 0, Math.PI * 2);
+        } else {
+            ctx.arc(px + 2, py + 14, 3, 0, Math.PI * 2);
+        }
+        ctx.fill();
+
+        // Snout highlight
+        ctx.fillStyle = '#E8C06A';
+        if (p.facingRight) {
+            ctx.fillRect(px + 24, py + 11, 6, 4);
+        } else {
+            ctx.fillRect(px + 2, py + 11, 6, 4);
         }
 
         // Legs
-        ctx.fillStyle = '#3D3D38';
-        ctx.fillRect(px + 6, py + 40, 8, 8);
-        ctx.fillRect(px + 18, py + 40, 8, 8);
+        ctx.fillStyle = '#B8860B';
+        ctx.fillRect(px + 6, py + 38, 6, 10);
+        ctx.fillRect(px + 20, py + 38, 6, 10);
+
+        // Paws
+        ctx.fillStyle = '#8B6914';
+        ctx.fillRect(px + 5, py + 45, 8, 3);
+        ctx.fillRect(px + 19, py + 45, 8, 3);
 
         // UI
         ctx.fillStyle = '#fff';
         ctx.font = 'bold 16px Inter, sans-serif';
         ctx.fillText(`Score: ${progress.score}`, 16, 28);
 
+        // Paw print icon next to score
+        ctx.font = '14px sans-serif';
+        ctx.fillText('🐾', width - 50, 28);
+
         // Goal indicator arrow when not visible
         if (goal.x > width - 100) {
-            ctx.fillStyle = '#22c55e';
+            ctx.fillStyle = '#FFD700';
             ctx.font = 'bold 14px Inter, sans-serif';
-            ctx.fillText('🏁 →', width - 60, 28);
+            ctx.fillText('🦴 →', width - 60, 28);
         }
 
         // Challenge indicator
         if (currentChallenge) {
-            ctx.fillStyle = '#fbbf24';
+            ctx.fillStyle = '#FFD700';
             ctx.font = 'bold 12px Inter, sans-serif';
-            ctx.fillText(`🎯 ${currentChallenge.title}`, 16, height - 52);
+            ctx.fillText(`🔍 ${currentChallenge.title}`, 16, height - 52);
         }
 
         // Victory overlay
@@ -524,9 +601,9 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
             ctx.fillStyle = '#fff';
             ctx.font = 'bold 32px Inter, sans-serif';
             ctx.textAlign = 'center';
-            ctx.fillText('🎉 GEWONNEN!', width / 2, height / 2);
+            ctx.fillText('🐾 GEVONDEN!', width / 2, height / 2);
             ctx.font = '16px Inter, sans-serif';
-            ctx.fillText('Je hebt de finish bereikt!', width / 2, height / 2 + 30);
+            ctx.fillText('Robbie heeft het bewijs gevonden!', width / 2, height / 2 + 30);
             ctx.textAlign = 'left';
         }
 
@@ -565,7 +642,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
     // Game loop management
     useEffect(() => {
         if (isPlaying) {
-            log('🚀 Game gestart!');
+            log('🐾 Robbie is wakker!');
             reqRef.current = requestAnimationFrame(update);
         } else {
             if (reqRef.current) {
@@ -582,7 +659,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
 
     // Reset game state
     const handleReset = useCallback(() => {
-        playerRef.current = { x: 50, y: 512, vx: 0, vy: 0, grounded: true, facingRight: true };
+        playerRef.current = { x: 50, y: 512, vx: 0, vy: 0, grounded: true, facingRight: true, actionQueue: [] };
         enemiesRef.current = [];
         variablesRef.current = { gravity: 0.5, speed: 5 };
         BlockExecutor.reset(); // Reset executor state so when_game_starts can trigger again
@@ -590,7 +667,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
         setIsPlaying(false);
         setChallengeComplete(false);
         setReachedGoal(false);
-        log('🔄 Game gereset');
+        log('🔄 Robbie gaat terug naar start');
     }, [log]);
 
     // Toggle play/stop
@@ -623,11 +700,11 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
             if (isFast) {
                 log(`🚀 Wow! ${duration.toFixed(1)}s is supersnel! Level ${progress.currentChallengeIndex + 2} wordt MOEILIJKER!`);
             } else {
-                log(`💪 Goed bezig. Op naar het volgende level!`);
+                log(`💪 Goed bezig, Robbie! Op naar het volgende level!`);
             }
         } else {
             // All challenges complete!
-            log('🎉 Alle uitdagingen voltooid!');
+            log('🎉 Alle uitdagingen voltooid! Robbie is de beste speurhond!');
             setShowConclusion(true);
         }
     }, [progress.currentChallengeIndex, handleReset, log, setProgress]);
@@ -649,11 +726,11 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
 
             {showConclusion && (
                 <MissionConclusion
-                    title="🏆 Missie Voltooid: Game Director!"
-                    description="Super gedaan! Je bent nu een echte Game Director. Je hebt niet alleen een game gespeeld, maar zelf de regels bedacht!"
+                    title="🏆 Missie Voltooid: Robbie de Speurhond!"
+                    description="Super gedaan! Je hebt Robbie geprogrammeerd om alle bewijzen te vinden. Je bent nu een echte Game Director!"
                     aiConcept={{
                         title: "Wie is de baas?",
-                        text: "In deze missie was JIJ de baas over de robot, net zoals programmeurs de baas zijn over AI. We moeten AI (zoals ChatGPT) duidelijke instructies geven, zodat het precies doet wat we willen en altijd veilig blijft. Dat noemen we 'AI Alignment'."
+                        text: "In deze missie was JIJ de baas over Robbie, net zoals programmeurs de baas zijn over AI. We moeten AI (zoals ChatGPT) duidelijke instructies geven, zodat het precies doet wat we willen en altijd veilig blijft. Dat noemen we 'AI Alignment'."
                     }}
                     onExit={progress.reflectie.trim().length >= 10 ? () => {
                         clearSave();
@@ -701,7 +778,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                                 Game Director <Sparkles size={14} className="text-[#D97757]" />
                             </h1>
                             <p className="text-[10px] text-[#6B6B66] uppercase tracking-widest font-bold">
-                                Visueel Programmeren
+                                Programmeer Robbie de Speurhond
                             </p>
                         </div>
                     </div>
@@ -718,7 +795,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                                 {challengeComplete ? (
                                     <Trophy size={18} className="text-[#10B981]" />
                                 ) : (
-                                    <span className="text-lg">🎯</span>
+                                    <span className="text-lg">🔍</span>
                                 )}
                                 <span className="font-bold text-xs text-[#6B6B66] uppercase tracking-widest">
                                     Puzzel {progress.currentChallengeIndex + 1}/{CHALLENGES.length}
@@ -857,9 +934,9 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
 
                     <div className="flex-1 p-4 md:p-6 flex flex-col gap-4 overflow-y-auto bg-[#FAF9F0] relative">
                         {/* Game Screen Container - Maintains Aspect Ratio but fills space */}
-                        <div className="flex-1 relative bg-[#1A1A19] rounded-2xl overflow-hidden shadow-2xl border-4 border-[#E8E6DF] ring-1 ring-black/5 group">
+                        <div className="flex-1 relative bg-[#0F1A12] rounded-2xl overflow-hidden shadow-2xl border-4 border-[#E8E6DF] ring-1 ring-black/5 group">
                             {/* Canvas needs to respond to size */}
-                            <div className="absolute inset-0 flex items-center justify-center bg-[radial-gradient(circle_at_center,#3D3D38_0%,#1A1A19_100%)]">
+                            <div className="absolute inset-0 flex items-center justify-center bg-[radial-gradient(circle_at_center,#1A2F1E_0%,#0F1A12_100%)]">
                                 <canvas
                                     ref={canvasRef}
                                     width={800}

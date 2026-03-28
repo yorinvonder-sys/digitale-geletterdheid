@@ -19,6 +19,14 @@ export interface PlacedBlock {
     children?: PlacedBlock[]; // For control blocks that contain other blocks
 }
 
+export interface MoveAction {
+    type: 'move';
+    remainingDistance: number;
+    speed: number;
+    directionX: number; // 1, -1 or 0
+    directionY: number; // 1, -1 or 0
+}
+
 export interface GameContext {
     player: {
         x: number;
@@ -27,14 +35,8 @@ export interface GameContext {
         vy: number;
         grounded: boolean;
         facingRight: boolean;
-        // Action queue for smooth movement (instead of instant teleport)
-        action?: {
-            type: 'move';
-            remainingDistance: number;
-            speed: number;
-            directionX: number; // 1, -1 or 0
-            directionY: number; // 1, -1 or 0
-        };
+        // Action queue for smooth sequential movement
+        actionQueue: MoveAction[];
     };
     keys: Record<string, boolean>;
     variables: Record<string, number>;
@@ -67,10 +69,11 @@ export const BLOCK_DEFINITIONS: BlockDefinition[] = [
     {
         id: 'when_game_starts',
         category: 'event',
-        label: '🚀 wanneer game start',
+        label: '🐾 wanneer game start',
         color: COLORS.event,
         inputs: [],
         isEvent: true,
+        hasBody: true,
         execute: () => { /* Entry point, no action needed */ }
     },
     {
@@ -97,6 +100,7 @@ export const BLOCK_DEFINITIONS: BlockDefinition[] = [
             }
         ],
         isEvent: true,
+        hasBody: true,
         execute: (ctx, inputs) => {
             // This is checked in the executor - returns true if key is pressed
             return ctx.keys[inputs.key] === true;
@@ -114,14 +118,14 @@ export const BLOCK_DEFINITIONS: BlockDefinition[] = [
         ],
         execute: (ctx, inputs) => {
             const dir = ctx.player.facingRight ? 1 : -1;
-            // Initiate a smooth move action
-            ctx.player.action = {
+            const speed = ctx.variables['speed'] || 5;
+            ctx.player.actionQueue.push({
                 type: 'move',
                 remainingDistance: inputs.steps * 30,
-                speed: 5, // Pixels per frame
+                speed,
                 directionX: dir,
                 directionY: 0
-            };
+            });
         }
     },
     {
@@ -134,13 +138,14 @@ export const BLOCK_DEFINITIONS: BlockDefinition[] = [
         ],
         execute: (ctx, inputs) => {
             ctx.player.facingRight = true;
-            ctx.player.action = {
+            const speed = ctx.variables['speed'] || 5;
+            ctx.player.actionQueue.push({
                 type: 'move',
                 remainingDistance: inputs.steps * 30,
-                speed: 5,
+                speed,
                 directionX: 1,
                 directionY: 0
-            };
+            });
         }
     },
     {
@@ -153,13 +158,14 @@ export const BLOCK_DEFINITIONS: BlockDefinition[] = [
         ],
         execute: (ctx, inputs) => {
             ctx.player.facingRight = false;
-            ctx.player.action = {
+            const speed = ctx.variables['speed'] || 5;
+            ctx.player.actionQueue.push({
                 type: 'move',
                 remainingDistance: inputs.steps * 30,
-                speed: 5,
+                speed,
                 directionX: -1,
                 directionY: 0
-            };
+            });
         }
     },
     {
@@ -171,13 +177,14 @@ export const BLOCK_DEFINITIONS: BlockDefinition[] = [
             { name: 'steps', type: 'number', default: 5, min: 1, max: 50 }
         ],
         execute: (ctx, inputs) => {
-            ctx.player.action = {
+            const speed = ctx.variables['speed'] || 5;
+            ctx.player.actionQueue.push({
                 type: 'move',
                 remainingDistance: inputs.steps * 20,
-                speed: 5,
+                speed,
                 directionX: 0,
                 directionY: -1
-            };
+            });
         }
     },
     {
@@ -189,13 +196,14 @@ export const BLOCK_DEFINITIONS: BlockDefinition[] = [
             { name: 'steps', type: 'number', default: 5, min: 1, max: 50 }
         ],
         execute: (ctx, inputs) => {
-            ctx.player.action = {
+            const speed = ctx.variables['speed'] || 5;
+            ctx.player.actionQueue.push({
                 type: 'move',
                 remainingDistance: inputs.steps * 20,
-                speed: 5,
+                speed,
                 directionX: 0,
                 directionY: 1
-            };
+            });
         }
     },
     {
@@ -262,6 +270,7 @@ export const BLOCK_DEFINITIONS: BlockDefinition[] = [
         ],
         execute: (ctx, inputs) => {
             ctx.variables['speed'] = inputs.speed;
+            ctx.log(`💨 Snelheid: ${inputs.speed}`);
         }
     },
     {
@@ -271,7 +280,7 @@ export const BLOCK_DEFINITIONS: BlockDefinition[] = [
         color: COLORS.motion,
         inputs: [],
         execute: (ctx) => {
-            if (ctx.player.x <= 0 || ctx.player.x >= 768) {
+            if (ctx.player.x <= 0 || ctx.player.x >= 800 - 32) {
                 ctx.player.facingRight = !ctx.player.facingRight;
                 ctx.log('↩️ Gekaatst bij rand!');
             }
@@ -430,7 +439,7 @@ export const BLOCK_DEFINITIONS: BlockDefinition[] = [
         label: '💬 zeg "{message}"',
         color: COLORS.variable,
         inputs: [
-            { name: 'message', type: 'string', default: 'Hallo!' }
+            { name: 'message', type: 'string', default: 'Waf!' }
         ],
         execute: (ctx, inputs) => {
             ctx.log(`💬 "${inputs.message}"`);
@@ -450,7 +459,7 @@ export const getBlocksByCategory = (category: BlockCategory): BlockDefinition[] 
 
 // Category metadata for UI
 export const CATEGORY_INFO: Record<BlockCategory, { label: string; icon: string; color: string }> = {
-    event: { label: 'Gebeurtenissen', icon: '🚀', color: COLORS.event },
+    event: { label: 'Gebeurtenissen', icon: '🐾', color: COLORS.event },
     motion: { label: 'Beweging', icon: '➡️', color: COLORS.motion },
     control: { label: 'Besturing', icon: '🔁', color: COLORS.control },
     variable: { label: 'Variabelen', icon: '📊', color: COLORS.variable },
