@@ -249,7 +249,7 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
                                                 <button
                                                     key={skin.id}
                                                     onClick={() => setConfig({ ...config, skinColor: skin.value })}
-                                                    className={`w-10 h-10 rounded-xl transition-all ${config.skinColor === skin.value
+                                                    className={`w-12 h-12 rounded-xl transition-all ${config.skinColor === skin.value
                                                         ? 'scale-110'
                                                         : 'hover:scale-105'
                                                         }`}
@@ -257,6 +257,8 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
                                                         ? { backgroundColor: skin.value, boxShadow: '0 0 0 3px #D97757, 0 0 0 5px #FAF9F0' }
                                                         : { backgroundColor: skin.value }
                                                     }
+                                                    aria-label={`Selecteer huidskleur: ${skin.label}`}
+                                                    aria-pressed={config.skinColor === skin.value}
                                                     title={skin.label}
                                                 />
                                             ))}

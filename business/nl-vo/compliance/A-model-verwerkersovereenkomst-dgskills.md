@@ -29,13 +29,13 @@
    |---|---|
    | Handelsnaam | DGSkills |
    | Rechtsvorm | Eenmanszaak (omzetting naar B.V. in voorbereiding) |
-   | KvK-nummer | [INVULLEN] |
-   | Adres | [INVULLEN] |
-   | Postcode en plaats | [INVULLEN] |
-   | Vertegenwoordigd door | [INVULLEN] |
+   | KvK-nummer | [INVULLEN NA KVK-REGISTRATIE] |
+   | Adres | [INVULLEN NA KVK-REGISTRATIE] |
+   | Postcode en plaats | [INVULLEN NA KVK-REGISTRATIE] |
+   | Vertegenwoordigd door | Yorin von der Osten |
    | Functie | Eigenaar / Directeur |
    | E-mailadres | privacy@dgskills.app |
-   | Telefoonnummer | [INVULLEN] |
+   | Telefoonnummer | [INVULLEN NA KVK-REGISTRATIE] |
    | Website | https://dgskills.app |
 
 Hierna gezamenlijk "Partijen" en afzonderlijk "Partij" genoemd.

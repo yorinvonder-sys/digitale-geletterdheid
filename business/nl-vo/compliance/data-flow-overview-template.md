@@ -34,9 +34,9 @@ Dit document maakt voor school, FG en inkoop inzichtelijk welke gegevens worden 
 
 ## 4) Opslag en doorgifte
 
-- Primaire opslaglocatie: [invullen, bij voorkeur EER].
-- Back-up opslaglocatie: [invullen].
-- Doorgifte buiten EER: [ja/nee, met juridische basis indien ja].
+- Primaire opslaglocatie: Supabase (AWS eu-central-1, Frankfurt, Duitsland — EER).
+- Back-up opslaglocatie: Supabase point-in-time recovery (zelfde regio, eu-central-1).
+- Doorgifte buiten EER: Nee. AI-verwerking via Google Vertex AI in europe-west4 (Eemshaven, Nederland). Geen persoonsgegevens verlaten de EER.
 - Subverwerkers: zie subverwerkersbijlage.
 
 ## 5) Beveiligingsmaatregelen (samenvatting)
@@ -51,7 +51,7 @@ Dit document maakt voor school, FG en inkoop inzichtelijk welke gegevens worden 
 
 - Inzage/correctie/verwijdering via schoolcontactpunt.
 - Leverancier ondersteunt school bij afhandeling binnen afgesproken termijnen.
-- Escalatiepad voor privacyvragen: [invullen contact].
+- Escalatiepad voor privacyvragen: privacy@dgskills.app → Yorin von der Osten (intern privacy-aanspreekpunt). Bij incidenten: security@dgskills.app.
 
 ## 7) Exit en verwijdering
 

@@ -52,14 +52,14 @@ export const RotateDevicePrompt: React.FC<RotateDevicePromptProps> = ({
                 <div className="relative mb-8">
                     <div className="w-32 h-32 mx-auto relative">
                         {/* Phone outline */}
-                        <div className="absolute inset-0 flex items-center justify-center animate-pulse">
+                        <div className="absolute inset-0 flex items-center justify-center animate-pulse motion-reduce:animate-none">
                             <Smartphone size={80} className="text-slate-500 transform rotate-0" />
                         </div>
                         {/* Rotating arrow */}
                         <div className="absolute inset-0 flex items-center justify-center">
                             <RotateCcw
                                 size={48}
-                                className="text-emerald-400 animate-spin"
+                                className="text-emerald-400 animate-spin motion-reduce:animate-none"
                                 style={{ animationDuration: '3s' }}
                             />
                         </div>
