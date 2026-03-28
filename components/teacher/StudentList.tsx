@@ -18,6 +18,7 @@ interface StudentListProps {
     yearGroup?: number;
     lastUpdated?: Date | null;
     classroomConfig?: ClassroomConfig | null;
+    schoolId?: string; // SECURITY: school-scoped access control
 }
 
 export const StudentList: React.FC<StudentListProps> = ({
@@ -30,7 +31,8 @@ export const StudentList: React.FC<StudentListProps> = ({
     onSelectStudent,
     yearGroup = 1,
     lastUpdated,
-    classroomConfig
+    classroomConfig,
+    schoolId
 }) => {
     const classGroups = useMemo(() => {
         const groups = new Set<string>();
@@ -302,6 +304,7 @@ export const StudentList: React.FC<StudentListProps> = ({
             <ResetPasswordModal
                 student={passwordResetStudent}
                 onClose={() => setPasswordResetStudent(null)}
+                schoolId={schoolId}
             />
         </div>
     );

@@ -386,22 +386,23 @@ export function AppRouter() {
         );
     }
 
-    // DEV ONLY: Avatar preview route
-    if (normalizedPath === '/dev/avatar') {
-        return (
-            <React.Suspense fallback={<LoadingFallback />}>
-                <DevAvatarPreview />
-            </React.Suspense>
-        );
-    }
+    // Security fix (H-5): dev routes only available in development builds
+    if (process.env.NODE_ENV === 'development') {
+        if (normalizedPath === '/dev/avatar') {
+            return (
+                <React.Suspense fallback={<LoadingFallback />}>
+                    <DevAvatarPreview />
+                </React.Suspense>
+            );
+        }
 
-    // DEV ONLY: Design preview (Anthropic-inspired redesign)
-    if (normalizedPath === '/dev/design') {
-        return (
-            <React.Suspense fallback={<LoadingFallback />}>
-                <DesignPreview />
-            </React.Suspense>
-        );
+        if (normalizedPath === '/dev/design') {
+            return (
+                <React.Suspense fallback={<LoadingFallback />}>
+                    <DesignPreview />
+                </React.Suspense>
+            );
+        }
     }
 
     if (normalizedPath === '/bonnetje') {

@@ -297,11 +297,8 @@ Deno.serve(async (req: Request) => {
 
     } catch (err) {
         console.error("[scanSubscriptionClaude] Uncaught error:", err);
-        const corsHeaders = {
-            "Access-Control-Allow-Origin": req.headers.get("Origin") || "https://dgskills.app",
-            "Access-Control-Allow-Methods": "POST, OPTIONS",
-            "Access-Control-Allow-Headers": "Content-Type, Authorization",
-        };
+        // Security fix (M-1): use shared buildCorsHeaders instead of manually
+        // reflecting the Origin header, which bypasses the CORS allowlist.
         return new Response(
             JSON.stringify({ error: "AI-service tijdelijk niet beschikbaar. Probeer het later opnieuw." }),
             { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }

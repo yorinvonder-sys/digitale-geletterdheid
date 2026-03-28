@@ -146,10 +146,15 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
         if (retryCount === 0) setError(null);
 
         const fetchStudents = async () => {
-            const { data, error: fetchError } = await supabase
+            // SECURITY: school-scoped access control — only fetch students from teacher's school
+            let query = supabase
                 .from('users')
                 .select('*')
                 .eq('role', 'student');
+            if (user?.schoolId) {
+                query = query.eq('school_id', user.schoolId);
+            }
+            const { data, error: fetchError } = await query;
             if (fetchError) {
                 console.error(fetchError);
                 if (retryCount < 3) {
@@ -188,17 +193,22 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
             supabase.removeChannel(channel);
             if (refetchStudentsTimeoutRef.current) clearTimeout(refetchStudentsTimeoutRef.current);
         };
-    }, [retryCount]);
+    }, [retryCount, user?.schoolId]);
 
     useEffect(() => {
         getActiveEvents(user?.schoolId).then(setActiveEvents).catch(console.error);
 
         const fetchAssessments = async () => {
-            const { data } = await supabase
+            // SECURITY: school-scoped access control — only fetch assessments from teacher's school
+            let assessmentQuery = supabase
                 .from('hybrid_assessments')
                 .select('*')
                 .order('timestamp', { ascending: false })
                 .limit(100);
+            if (user?.schoolId) {
+                assessmentQuery = assessmentQuery.eq('school_id', user.schoolId);
+            }
+            const { data } = await assessmentQuery;
             if (data) setHybridAssessments(data as unknown as HybridAssessmentRecord[]);
         };
         fetchAssessments();
@@ -217,7 +227,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
             supabase.removeChannel(channel);
             if (refetchAssessmentsTimeoutRef.current) clearTimeout(refetchAssessmentsTimeoutRef.current);
         };
-    }, []);
+    }, [user?.schoolId]);
 
     useEffect(() => {
         // Load per-class settings when a class is selected.
@@ -334,7 +344,8 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
 
     const handleAwardBadge = async () => {
         if (!selectedStudent || !selectedBadge) return;
-        if (await awardBadge(selectedStudent.uid, selectedBadge)) {
+        // SECURITY: school-scoped access control
+        if (await awardBadge(selectedStudent.uid, selectedBadge, user?.schoolId)) {
             setShowBadgeModal(false);
             addToast('Gelukt', 'Badge toegekend.', 'success');
         }
@@ -342,7 +353,8 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
 
     const handleResetStudent = async () => {
         if (!selectedStudent) return;
-        if (await resetStudentProgress(selectedStudent.uid)) {
+        // SECURITY: school-scoped access control
+        if (await resetStudentProgress(selectedStudent.uid, user?.schoolId)) {
             setShowResetConfirm(false);
             setSelectedStudent(null);
             addToast('Gelukt', 'Voortgang gereset.', 'info');
@@ -394,7 +406,8 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
     const confirmDelete = async () => {
         if (!studentToDelete) return;
         setIsDeleting(true);
-        if (await deleteStudent(studentToDelete.uid)) {
+        // SECURITY: school-scoped access control
+        if (await deleteStudent(studentToDelete.uid, user?.schoolId)) {
             addToast('Verwijderd', studentToDelete.displayName || '', 'info');
             setStudentToDelete(null);
         }
@@ -552,6 +565,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                                     yearGroup={yearGroupFilter}
                                     lastUpdated={lastUpdated}
                                     classroomConfig={classRoomConfig}
+                                    schoolId={user?.schoolId}
                                 />
                             </PageTransition>
                         )}
@@ -638,7 +652,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                     showFocusMissionModal={showFocusMissionModal} setShowFocusMissionModal={setShowFocusMissionModal}
                     handleFocusMissionSelect={handleFocusMissionSelect}
                     showPresentation={showPresentation} setShowPresentation={setShowPresentation}
-                    setSelectedStudent={setSelectedStudent} awardXP={awardXP}
+                    setSelectedStudent={setSelectedStudent} awardXP={(uid, amount) => awardXP(uid, amount, undefined, user?.schoolId)}
                     showLiveModal={showLiveModal} setShowLiveModal={setShowLiveModal}
                     handleDeleteStudent={handleDeleteStudent}
                 />

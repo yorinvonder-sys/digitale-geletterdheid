@@ -8,9 +8,10 @@ import { validatePassword } from '../../utils/passwordValidator';
 interface ResetPasswordModalProps {
     student: StudentData | null;
     onClose: () => void;
+    schoolId?: string; // SECURITY: school-scoped access control
 }
 
-export const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({ student, onClose }) => {
+export const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({ student, onClose, schoolId }) => {
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [isResetting, setIsResetting] = useState(false);
@@ -53,7 +54,8 @@ export const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({ student,
 
         setIsResetting(true);
         try {
-            const ok = await resetStudentPassword(student.uid, password);
+            // SECURITY: school-scoped access control
+            const ok = await resetStudentPassword(student.uid, password, schoolId);
             if (ok) {
                 setResult({
                     success: true,

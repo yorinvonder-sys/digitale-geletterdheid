@@ -1,6 +1,6 @@
 /**
  * Shared CORS configuration for all edge functions.
- * Localhost origins are only allowed in non-production environments.
+ * Localhost origins are only allowed when ENVIRONMENT is explicitly "development" or "local".
  */
 
 const PRODUCTION_ORIGINS = [
@@ -23,7 +23,11 @@ function buildAllowedOrigins(): Set<string> {
         ?.env
         ?.get?.("ENVIRONMENT");
 
-    if (environment !== "production") {
+    // Security fix (M-5): only add dev origins when ENVIRONMENT is explicitly
+    // set to "development" or "local". Previously, dev origins were included
+    // whenever ENVIRONMENT was not "production" (including when undefined),
+    // which meant a missing env var would silently allow localhost origins.
+    if (environment === "development" || environment === "local") {
         for (const o of DEV_ORIGINS) {
             origins.add(o);
         }
