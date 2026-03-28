@@ -155,7 +155,10 @@ export async function verifyC2paCredentials(
             /* webpackChunkName: "c2pa" */
             'c2pa'
         );
-        const c2pa = await createC2pa();
+        const c2pa = await createC2pa({
+            wasmSrc: new URL('c2pa/dist/assets/wasm/toolkit_bg.wasm', import.meta.url).href,
+            workerSrc: new URL('c2pa/dist/c2pa.worker.min.js', import.meta.url).href,
+        });
         const result = await c2pa.read(imageBlob);
 
         if (result?.manifestStore?.activeManifest) {
@@ -163,7 +166,7 @@ export async function verifyC2paCredentials(
             return {
                 claimGenerator: active.claimGenerator || 'unknown',
                 title: active.title || 'unknown',
-                instanceId: active.instanceID || 'unknown',
+                instanceId: active.instanceId || 'unknown',
                 provenance: createImageProvenance('verified'),
                 embedded: true,
             };
@@ -189,9 +192,14 @@ async function embedBinaryC2pa(
             /* webpackChunkName: "c2pa" */
             'c2pa'
         );
-        const c2pa = await createC2pa();
+        const c2pa = await createC2pa({
+            wasmSrc: new URL('c2pa/dist/assets/wasm/toolkit_bg.wasm', import.meta.url).href,
+            workerSrc: new URL('c2pa/dist/c2pa.worker.min.js', import.meta.url).href,
+        });
 
-        const { signedAsset } = await c2pa.sign({
+        // NOTE: sign() is not part of the browser c2pa read-only SDK type definitions.
+        // Cast to any to allow runtime resolution; if unavailable, the catch block returns null.
+        const { signedAsset } = await (c2pa as any).sign({
             asset: {
                 mimeType: imageBlob.type || 'image/png',
                 buffer: await imageBlob.arrayBuffer(),
