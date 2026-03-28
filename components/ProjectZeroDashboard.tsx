@@ -1463,16 +1463,16 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
     );
 };
 
-// Sticky-note kleuren — kleurrijk & speels, aantrekkelijk voor leerlingen
+// Sticky-note kleuren — rustig & warm, passend bij lab-branding
 const STICKY_COLORS = [
-    { bg: '#FFE066', border: '#E6C84D' },  // zonnig geel
-    { bg: '#FF9ED2', border: '#E680B5' },  // bubblegum roze
-    { bg: '#7ED4FC', border: '#5BB8E6' },  // helder hemelsblauw
-    { bg: '#A8F0C6', border: '#80D9A4' },  // fris mintgroen
-    { bg: '#FFB347', border: '#E69A30' },  // warm oranje
-    { bg: '#C4B5FD', border: '#A78BFA' },  // zacht lavendel
-    { bg: '#FCA5A5', border: '#E88A8A' },  // koraalrood
-    { bg: '#67E8F9', border: '#4DD4E6' },  // turquoise
+    { bg: '#F5E6DC', border: '#E4CFC2' },  // warm zand (terracotta-licht)
+    { bg: '#DCE9E7', border: '#C4D6D3' },  // zacht teal (accent-licht)
+    { bg: '#E8E0ED', border: '#D3C8DA' },  // gedempd lavendel (secondary-licht)
+    { bg: '#F0E4D4', border: '#DFD0BC' },  // warm crème
+    { bg: '#D6E6E1', border: '#BDD4CD' },  // mintgrijs
+    { bg: '#EDE0D4', border: '#DCC9B8' },  // warm beige
+    { bg: '#E2DDE8', border: '#CFC8D6' },  // zacht lila
+    { bg: '#DAE8E4', border: '#C4D8D2' },  // bleek zeegroen
 ] as const;
 const STICKY_ROTATIONS = [-1.2, 0.6, -0.4, 1, -0.8, 0.3] as const;
 const SERIF_FONT = "'Newsreader', Georgia, serif";

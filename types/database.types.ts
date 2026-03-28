@@ -585,31 +585,49 @@ export type Database = {
       }
       bomberman_rooms: {
         Row: {
+          bombs: Json | null
           created_at: string | null
           created_by: string
+          explosions: Json | null
+          force_started: boolean | null
+          force_started_by: string | null
+          grid: Json | null
           id: string
           lobby_start_time: string | null
           players: Json | null
           school_id: string | null
           status: string
+          winner_id: string | null
         }
         Insert: {
+          bombs?: Json | null
           created_at?: string | null
           created_by: string
+          explosions?: Json | null
+          force_started?: boolean | null
+          force_started_by?: string | null
+          grid?: Json | null
           id?: string
           lobby_start_time?: string | null
           players?: Json | null
           school_id?: string | null
           status?: string
+          winner_id?: string | null
         }
         Update: {
+          bombs?: Json | null
           created_at?: string | null
           created_by?: string
+          explosions?: Json | null
+          force_started?: boolean | null
+          force_started_by?: string | null
+          grid?: Json | null
           id?: string
           lobby_start_time?: string | null
           players?: Json | null
           school_id?: string | null
           status?: string
+          winner_id?: string | null
         }
         Relationships: []
       }
