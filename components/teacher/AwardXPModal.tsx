@@ -8,11 +8,12 @@ interface AwardXPModalProps {
     student: StudentData | null;
     onClose: () => void;
     onSuccess?: () => void;
+    schoolId?: string; // SECURITY: school-scoped access control
 }
 
 const QUICK_AMOUNTS = [5, 10, 25, 50, 100];
 
-export const AwardXPModal: React.FC<AwardXPModalProps> = ({ student, onClose, onSuccess }) => {
+export const AwardXPModal: React.FC<AwardXPModalProps> = ({ student, onClose, onSuccess, schoolId }) => {
     const [amount, setAmount] = useState(10);
     const [isAwarding, setIsAwarding] = useState(false);
     const [success, setSuccess] = useState(false);
@@ -45,7 +46,8 @@ export const AwardXPModal: React.FC<AwardXPModalProps> = ({ student, onClose, on
 
         setIsAwarding(true);
         try {
-            await awardXP(student.uid, amount, student.displayName || 'Leerling');
+            // SECURITY: school-scoped access control
+            await awardXP(student.uid, amount, student.displayName || 'Leerling', schoolId);
             setSuccess(true);
             onSuccess?.();
 

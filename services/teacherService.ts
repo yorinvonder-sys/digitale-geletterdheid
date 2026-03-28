@@ -9,6 +9,17 @@ import {
 } from '../utils/classroomConfig';
 
 export { AVAILABLE_BADGES };
+
+// SECURITY: school-scoped access control — verify teacher belongs to same school as student
+const verifySchoolMatch = async (studentId: string, teacherSchoolId: string): Promise<boolean> => {
+    const { data: student } = await supabase
+        .from('users')
+        .select('school_id')
+        .eq('id', studentId)
+        .single();
+    return student?.school_id === teacherSchoolId;
+};
+
 export interface ClassSettings {
     class_id: string;
     enabled_missions: string[];
@@ -117,33 +128,40 @@ export const sendMessage = async (message: Omit<TeacherMessage, 'id' | 'created_
     }
 };
 
-export const getMessagesForUser = async (userId: string, classId?: string): Promise<TeacherMessage[]> => {
+export const getMessagesForUser = async (userId: string, classId?: string, schoolId?: string): Promise<TeacherMessage[]> => {
     try {
+        // SECURITY: school-scoped access control — only fetch messages within same school
         // Get messages for this specific student
-        const { data: studentMessages, error: e1 } = await supabase
+        let studentQuery = supabase
             .from('teacher_messages')
             .select('*')
             .eq('target_type', 'student')
             .eq('target_id', userId);
+        if (schoolId) studentQuery = studentQuery.eq('school_id', schoolId);
+        const { data: studentMessages, error: e1 } = await studentQuery;
         if (e1) throw e1;
 
         // Get class messages
         let classMessages: any[] = [];
         if (classId) {
-            const { data, error } = await supabase
+            let classQuery = supabase
                 .from('teacher_messages')
                 .select('*')
                 .eq('target_type', 'class')
                 .eq('target_id', classId);
+            if (schoolId) classQuery = classQuery.eq('school_id', schoolId);
+            const { data, error } = await classQuery;
             if (error) throw error;
             classMessages = data || [];
         }
 
         // Get broadcast messages
-        const { data: broadcastMessages, error: e3 } = await supabase
+        let broadcastQuery = supabase
             .from('teacher_messages')
             .select('*')
             .eq('target_type', 'all');
+        if (schoolId) broadcastQuery = broadcastQuery.eq('school_id', schoolId);
+        const { data: broadcastMessages, error: e3 } = await broadcastQuery;
         if (e3) throw e3;
 
         const allMessages = [
@@ -224,8 +242,13 @@ export const endEvent = async (eventId: string): Promise<void> => {
 };
 
 // --- Student management ---
-export const resetStudentProgress = async (userId: string): Promise<boolean> => {
+export const resetStudentProgress = async (userId: string, teacherSchoolId?: string): Promise<boolean> => {
     try {
+        // SECURITY: school-scoped access control
+        if (teacherSchoolId && !(await verifySchoolMatch(userId, teacherSchoolId))) {
+            console.error('School mismatch: teacher cannot reset student from another school');
+            throw new Error('Geen toegang tot leerlingen buiten je school');
+        }
         const { data, error } = await (supabase as any).rpc('reset_student_progress', {
             p_student_id: userId,
         });
@@ -237,8 +260,13 @@ export const resetStudentProgress = async (userId: string): Promise<boolean> => 
     }
 };
 
-export const deleteStudent = async (userId: string): Promise<boolean> => {
+export const deleteStudent = async (userId: string, teacherSchoolId?: string): Promise<boolean> => {
     try {
+        // SECURITY: school-scoped access control
+        if (teacherSchoolId && !(await verifySchoolMatch(userId, teacherSchoolId))) {
+            console.error('School mismatch: teacher cannot delete student from another school');
+            throw new Error('Geen toegang tot leerlingen buiten je school');
+        }
         const { data, error } = await (supabase as any).rpc('delete_student', {
             p_student_id: userId,
         });
@@ -250,8 +278,13 @@ export const deleteStudent = async (userId: string): Promise<boolean> => {
     }
 };
 
-export const awardBadge = async (userId: string, badgeId: string): Promise<boolean> => {
+export const awardBadge = async (userId: string, badgeId: string, teacherSchoolId?: string): Promise<boolean> => {
     try {
+        // SECURITY: school-scoped access control
+        if (teacherSchoolId && !(await verifySchoolMatch(userId, teacherSchoolId))) {
+            console.error('School mismatch: teacher cannot award badge to student from another school');
+            throw new Error('Geen toegang tot leerlingen buiten je school');
+        }
         const { data: user, error: fetchError } = await supabase
             .from('users')
             .select('stats')
@@ -284,8 +317,13 @@ export const awardBadge = async (userId: string, badgeId: string): Promise<boole
 
 const LEVEL_THRESHOLDS = [0, 50, 105, 165, 231, 304, 384, 472, 569, 676, 793, 922, 1064, 1220, 1392, 1581, 1789, 2018, 2270, 2547];
 
-export const awardXP = async (studentId: string, amount: number, studentName?: string) => {
+export const awardXP = async (studentId: string, amount: number, studentName?: string, teacherSchoolId?: string) => {
     try {
+        // SECURITY: school-scoped access control
+        if (teacherSchoolId && !(await verifySchoolMatch(studentId, teacherSchoolId))) {
+            console.error('School mismatch: teacher cannot award XP to student from another school');
+            throw new Error('Geen toegang tot leerlingen buiten je school');
+        }
         const { data: user, error: fetchError } = await supabase
             .from('users')
             .select('stats')
@@ -551,8 +589,13 @@ export const getAiBeleidStats = async (filterClass?: string, schoolId?: string):
     };
 };
 
-export const resetStudentPassword = async (studentUid: string, customPassword?: string): Promise<boolean> => {
+export const resetStudentPassword = async (studentUid: string, customPassword?: string, teacherSchoolId?: string): Promise<boolean> => {
     try {
+        // SECURITY: school-scoped access control
+        if (teacherSchoolId && !(await verifySchoolMatch(studentUid, teacherSchoolId))) {
+            console.error('School mismatch: teacher cannot reset password for student from another school');
+            throw new Error('Geen toegang tot leerlingen buiten je school');
+        }
         const { callEdgeFunction } = await import('./supabase');
         await callEdgeFunction('resetStudentPassword', { studentUid, customPassword });
         return true;
@@ -579,14 +622,20 @@ export const addTeacherNote = async (note: Omit<TeacherNote, 'id' | 'created_at'
     }
 };
 
-export const getTeacherNotes = async (studentUid: string): Promise<TeacherNote[]> => {
+export const getTeacherNotes = async (studentUid: string, teacherSchoolId?: string): Promise<TeacherNote[]> => {
     try {
-        const { data, error } = await supabase
+        // SECURITY: school-scoped access control
+        let q = supabase
             .from('teacher_notes')
             .select('*')
             .eq('student_uid', studentUid)
             .order('created_at', { ascending: false });
 
+        if (teacherSchoolId) {
+            q = q.eq('school_id', teacherSchoolId);
+        }
+
+        const { data, error } = await q;
         if (error) throw error;
         return (data || []) as TeacherNote[];
     } catch (error) {
@@ -684,8 +733,13 @@ export interface StudentMissionScore {
     updated_at: string;
 }
 
-export const getStudentMissionScores = async (userId: string): Promise<StudentMissionScore[]> => {
+export const getStudentMissionScores = async (userId: string, teacherSchoolId?: string): Promise<StudentMissionScore[]> => {
     try {
+        // SECURITY: school-scoped access control
+        if (teacherSchoolId && !(await verifySchoolMatch(userId, teacherSchoolId))) {
+            console.error('School mismatch: teacher cannot view scores of student from another school');
+            return [];
+        }
         const { data, error } = await supabase
             .from('mission_progress')
             .select('mission_id, status, score, updated_at')

@@ -15,3 +15,20 @@ SLO-doelen
 .env.production
 .mcp.json
 public/dev-docs
+
+# Security: prevent internal docs from being deployed (H-2)
+CLAUDE.md
+LAUNCH-PLAN.md
+SECURITY.md
+README.md
+LOCAL-SETUP.md
+docs
+models.json
+metadata.json
+.env.production.template
+.agent
+.agents
+.github
+.playwright-mcp
+.firebaserc
+cors.json
