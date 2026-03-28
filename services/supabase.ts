@@ -61,7 +61,17 @@ export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
     },
 });
 
-export const EDGE_FUNCTION_URL = `${supabaseUrl}/functions/v1`;
+const isDevEdgeProxy = (() => {
+    try {
+        return (import.meta as any).env?.DEV === true && typeof window !== 'undefined';
+    } catch {
+        return false;
+    }
+})();
+
+export const EDGE_FUNCTION_URL = isDevEdgeProxy
+    ? '/functions/v1'
+    : `${supabaseUrl}/functions/v1`;
 
 export interface EdgeFunctionOptions<T = any> {
     /** Optional response validator. Throw or return null to reject. */

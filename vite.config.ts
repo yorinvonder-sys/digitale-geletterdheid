@@ -26,12 +26,27 @@ function asyncCssPlugin(): Plugin {
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, '.', '');
   const buildId = (env.VITE_APP_BUILD_ID || process.env.VERCEL_GIT_COMMIT_SHA || process.env.npm_package_version || 'dev').slice(0, 64);
+  const supabaseProxyTarget = env.VITE_SUPABASE_URL?.trim();
+  const proxyOrigin = 'https://dgskills.app';
   return {
     server: {
       port: 3000,
       strictPort: true,
       host: '0.0.0.0',
       allowedHosts: ['.loca.lt'],
+      proxy: supabaseProxyTarget ? {
+        '/functions/v1': {
+          target: supabaseProxyTarget,
+          changeOrigin: true,
+          secure: true,
+          configure(proxy) {
+            proxy.on('proxyReq', (proxyReq) => {
+              proxyReq.setHeader('Origin', proxyOrigin);
+              proxyReq.setHeader('Referer', `${proxyOrigin}/`);
+            });
+          },
+        }
+      } : undefined,
       watch: {
         usePolling: false, // Use native fsevents on Mac (M1 friendly)
         interval: 100, // Debounce delay

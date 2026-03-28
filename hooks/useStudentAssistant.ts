@@ -83,6 +83,15 @@ REGELS VOOR JOU:
 4. **BELANGRIJK**: Je bent er ALLEEN voor schoolwerk. Weiger alle irrelevante vragen met [ABUSE_WARNING].
 `;
 
+    const assistantMissionContext = [
+        `Rol: ${roleId}`,
+        context?.currentChallenge?.title ? `Challenge: ${context.currentChallenge.title}` : null,
+        context?.currentChallenge?.description ? `Situatie: ${context.currentChallenge.description}` : null,
+        `Week 1 focus: ${WEEK1_HELP_CONTEXT.focus.join(', ')}`,
+    ]
+        .filter(Boolean)
+        .join(' ');
+
     // 1. Check lock status on mount/change — use Supabase Realtime
     useEffect(() => {
         if (!userIdentifier) return;
@@ -128,7 +137,9 @@ REGELS VOOR JOU:
     // 2. Initialize Chat
     useEffect(() => {
         if (!chatSessionRef.current) {
-            chatSessionRef.current = createChatSession(roleId, systemInstruction);
+            chatSessionRef.current = createChatSession(roleId, systemInstruction, {
+                localMissionContext: assistantMissionContext,
+            });
             // Add welcome message
             setMessages([{
                 role: 'model',
@@ -136,7 +147,7 @@ REGELS VOOR JOU:
                 timestamp: new Date()
             }]);
         }
-    }, []);
+    }, [assistantMissionContext, roleId, systemInstruction]);
 
     const handleSend = async (messageOverride?: string) => {
         const messageText = (messageOverride ?? input).trim();
@@ -220,10 +231,13 @@ REGELS VOOR JOU:
             }
 
         } catch (error) {
+            const message = error instanceof Error
+                ? error.message
+                : "Sorry, ik ben even de draad kwijt. Probeer het later nog eens.";
             console.error("AI Chat Error:", error);
             setMessages(prev => [...prev, {
                 role: 'model',
-                text: "Sorry, ik ben even de draad kwijt. Probeer het later nog eens.",
+                text: message,
                 timestamp: new Date()
             }]);
         } finally {

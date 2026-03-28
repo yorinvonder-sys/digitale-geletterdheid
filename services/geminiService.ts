@@ -71,16 +71,33 @@ interface ChatMessage {
   parts: { text: string }[];
 }
 
+interface ChatSessionOptions {
+  fallbackRoleId?: string;
+  localMissionContext?: string;
+}
+
+interface EdgeErrorPayload {
+  error?: string;
+  reason?: string;
+  message?: string;
+}
+
+const DEFAULT_FALLBACK_ROLE_ID = 'student-assistant';
+
 export class Chat {
   private history: ChatMessage[] = [];
   private roleId: string;
   private systemInstruction: string;
   private gameContext: string | null = null;
+  private fallbackRoleId: string;
+  private localMissionContext: string;
 
-  constructor(roleId: string, systemInstruction?: string) {
+  constructor(roleId: string, systemInstruction?: string, options?: ChatSessionOptions) {
     this.roleId = roleId;
     // systemInstruction is kept only for local DEV fallback simulation — never sent to the server
     this.systemInstruction = systemInstruction || '';
+    this.fallbackRoleId = options?.fallbackRoleId || DEFAULT_FALLBACK_ROLE_ID;
+    this.localMissionContext = (options?.localMissionContext || '').trim();
   }
 
   /** Set current game code context (bypasses sanitizer — this is our own code, not user input) */
@@ -90,6 +107,106 @@ export class Chat {
 
   getHistory(): ChatMessage[] {
     return [...this.history];
+  }
+
+  private async getSessionToken(): Promise<string> {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session?.access_token) {
+      throw new Error('Je sessie is verlopen. Log opnieuw in.');
+    }
+    return session.access_token;
+  }
+
+  private buildRequestBody(message: string, roleId: string): Record<string, unknown> {
+    const requestBody: Record<string, unknown> = {
+      message,
+      roleId,
+      history: this.history.slice(0, -1)
+    };
+
+    if (this.gameContext) {
+      requestBody.gameContext = this.gameContext;
+    }
+
+    return requestBody;
+  }
+
+  private buildFallbackRoleMessage(message: string): string {
+    const compactContext = this.localMissionContext.replace(/\s+/g, ' ').trim().slice(0, 700);
+    if (!compactContext) return message;
+
+    return `${message}\n\n[MISSIE_CONTEXT]\n${compactContext}\n[/MISSIE_CONTEXT]`;
+  }
+
+  private async sendEdgeRequest(
+    endpoint: 'chat' | 'chatStream',
+    token: string,
+    message: string,
+    roleId: string
+  ): Promise<Response> {
+    return fetchWithRetry(`${EDGE_FUNCTION_URL}/${endpoint}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(this.buildRequestBody(message, roleId))
+    });
+  }
+
+  private async getEdgeErrorPayload(response: Response): Promise<EdgeErrorPayload> {
+    return response.clone().json().catch(() => ({}));
+  }
+
+  private isRoleMismatchError(status: number, error?: EdgeErrorPayload): boolean {
+    if (status !== 400) return false;
+
+    const raw = `${error?.reason || ''} ${error?.message || ''} ${error?.error || ''}`.toLowerCase();
+    return raw.includes('roleid') || raw.includes('role id');
+  }
+
+  private shouldRetryWithFallbackRole(status: number, error?: EdgeErrorPayload): boolean {
+    return this.roleId !== this.fallbackRoleId && this.isRoleMismatchError(status, error);
+  }
+
+  private buildEdgeErrorMessage(status: number, error?: EdgeErrorPayload): string {
+    if (status === 401) return 'Je sessie is verlopen. Log opnieuw in.';
+    if (status === 403) return error?.reason || 'Deze AI-functie is niet toegestaan vanaf deze omgeving.';
+    if (status === 422) return error?.reason || 'Je bericht kon niet worden verwerkt.';
+    if (status === 429) return error?.reason || 'Te veel AI-verzoeken. Wacht even en probeer opnieuw.';
+    if (this.isRoleMismatchError(status, error)) {
+      return 'Deze missie is nog niet gekoppeld aan de AI-backend. Probeer het opnieuw of kies tijdelijk een andere missie.';
+    }
+    if (status >= 500) return 'AI is tijdelijk niet beschikbaar. Probeer het later opnieuw.';
+
+    return error?.reason || error?.message || error?.error || `AI request failed (${status}).`;
+  }
+
+  private shouldBubbleError(error: unknown): boolean {
+    const message = error instanceof Error ? error.message : String(error);
+    return /sessie|log opnieuw in|niet toegestaan|niet gekoppeld|kon niet worden verwerkt|te veel ai-verzoeken/i.test(message);
+  }
+
+  private async performRequestWithRoleFallback(
+    endpoint: 'chat' | 'chatStream',
+    token: string,
+    cleanMessage: string
+  ): Promise<{ response: Response; usedFallbackRole: boolean }> {
+    let response = await this.sendEdgeRequest(endpoint, token, cleanMessage, this.roleId);
+    let error = response.ok ? undefined : await this.getEdgeErrorPayload(response);
+
+    if (!response.ok && this.shouldRetryWithFallbackRole(response.status, error)) {
+      console.warn(`[GeminiService] roleId "${this.roleId}" not available server-side, retrying with "${this.fallbackRoleId}"`);
+      response = await this.sendEdgeRequest(
+        endpoint,
+        token,
+        this.buildFallbackRoleMessage(cleanMessage),
+        this.fallbackRoleId
+      );
+      return { response, usedFallbackRole: true };
+    }
+
+    return { response, usedFallbackRole: false };
   }
 
   async sendMessage(params: { message: string }): Promise<{ text: string }> {
@@ -114,41 +231,23 @@ export class Chat {
     });
 
     try {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session?.access_token) {
-        throw new Error('Authenticatie vereist. Log opnieuw in.');
-      }
-      const token = session.access_token;
-
-      // SECURITY: Only send roleId, never systemInstruction — server looks it up
-      const requestBody: Record<string, unknown> = {
-        message: cleanMessage,
-        roleId: this.roleId,
-        history: this.history.slice(0, -1)
-      };
-      if (this.gameContext) {
-        requestBody.gameContext = this.gameContext;
-      }
-      const response = await fetchWithRetry(`${EDGE_FUNCTION_URL}/chat`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify(requestBody)
-      });
+      const token = await this.getSessionToken();
+      const { response } = await this.performRequestWithRoleFallback('chat', token, cleanMessage);
 
       if (!response.ok) {
-        const error = await response.json().catch(() => ({}));
-        if (!ALLOW_LOCAL_FALLBACK) {
-          logAiInteraction('chat', { model: 'gemini', fallback_used: false }).catch(() => { });
-          throw new Error('AI is tijdelijk niet beschikbaar. Probeer het later opnieuw.');
+        const error = await this.getEdgeErrorPayload(response);
+        const message = this.buildEdgeErrorMessage(response.status, error);
+
+        if (ALLOW_LOCAL_FALLBACK && response.status >= 500) {
+          console.warn('Backend AI request failed, falling back to local simulation (DEV only)', error);
+          const fallbackResponse = await simulateLocalResponse(this.systemInstruction, cleanMessage);
+          this.history.push({ role: 'model', parts: [{ text: fallbackResponse }] });
+          logAiInteraction('chat', { model: 'local-fallback', fallback_used: true }).catch(() => { });
+          return { text: fallbackResponse };
         }
-        console.warn('Backend AI request failed, falling back to local simulation (DEV only)', error);
-        const fallbackResponse = await simulateLocalResponse(this.systemInstruction, cleanMessage);
-        this.history.push({ role: 'model', parts: [{ text: fallbackResponse }] });
-        logAiInteraction('chat', { model: 'local-fallback', fallback_used: true }).catch(() => { });
-        return { text: fallbackResponse };
+
+        logAiInteraction('chat', { model: 'gemini', fallback_used: false }).catch(() => { });
+        throw new Error(message);
       }
 
       const data = await response.json();
@@ -162,9 +261,11 @@ export class Chat {
 
       return { text: responseText };
     } catch (error: any) {
-      if (!ALLOW_LOCAL_FALLBACK) {
-        throw new Error('AI is tijdelijk niet beschikbaar. Probeer het later opnieuw.');
+      const message = error instanceof Error ? error.message : 'AI is tijdelijk niet beschikbaar. Probeer het later opnieuw.';
+      if (!ALLOW_LOCAL_FALLBACK || this.shouldBubbleError(error)) {
+        throw new Error(message);
       }
+
       console.warn('Chat proxy network error, falling back to local simulation (DEV only):', error);
       const fallbackResponse = await simulateLocalResponse(this.systemInstruction, cleanMessage);
       this.history.push({ role: 'model', parts: [{ text: fallbackResponse }] });
@@ -196,33 +297,14 @@ export class Chat {
       parts: [{ text: cleanMessage }]
     });
 
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session?.access_token) {
-      throw new Error('Authenticatie vereist. Log opnieuw in.');
-    }
-    const token = session.access_token;
-
     try {
-      // SECURITY: Only send roleId, never systemInstruction — server looks it up
-      // gameContext is sent separately so it bypasses the sanitizer (it's our own code, not user input)
-      const requestBody: Record<string, unknown> = {
-        message: cleanMessage,
-        roleId: this.roleId,
-        history: this.history.slice(0, -1)
-      };
-      if (this.gameContext) {
-        requestBody.gameContext = this.gameContext;
-      }
-      const response = await fetchWithRetry(`${EDGE_FUNCTION_URL}/chatStream`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify(requestBody)
-      });
+      const token = await this.getSessionToken();
+      const { response } = await this.performRequestWithRoleFallback('chatStream', token, cleanMessage);
 
-      if (!response.ok) throw new Error('Stream request failed');
+      if (!response.ok) {
+        const error = await this.getEdgeErrorPayload(response);
+        throw new Error(this.buildEdgeErrorMessage(response.status, error));
+      }
 
       const reader = response.body?.getReader();
       const decoder = new TextDecoder();
@@ -257,10 +339,12 @@ export class Chat {
         }
       }
     } catch (error) {
-      if (!ALLOW_LOCAL_FALLBACK) {
-        yield { text: 'AI is tijdelijk niet beschikbaar. Probeer het later opnieuw.' };
+      if (!ALLOW_LOCAL_FALLBACK || this.shouldBubbleError(error)) {
+        const message = error instanceof Error ? error.message : 'AI is tijdelijk niet beschikbaar. Probeer het later opnieuw.';
+        yield { text: message };
         return;
       }
+
       console.warn('Streaming failed, simulating local response (DEV only)...', error);
       const fallbackResponse = await simulateLocalResponse(this.systemInstruction, cleanMessage);
       const words = fallbackResponse.split(' ');
@@ -463,8 +547,12 @@ Dan kan ik je het beste helpen! 💪`;
  * @param roleId - The server-side role identifier (must match a key in systemInstructions.ts)
  * @param systemInstruction - Optional, only used for local DEV fallback simulation
  */
-export const createChatSession = (roleId: string, systemInstruction?: string): Chat => {
-  return new Chat(roleId, systemInstruction);
+export const createChatSession = (
+  roleId: string,
+  systemInstruction?: string,
+  options?: ChatSessionOptions
+): Chat => {
+  return new Chat(roleId, systemInstruction, options);
 };
 
 export const sendMessageToGemini = async (chat: Chat, message: string): Promise<string> => {

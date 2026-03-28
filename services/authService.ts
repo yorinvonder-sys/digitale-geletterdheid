@@ -193,12 +193,12 @@ export const signInWithEmail = async (email: string, password: string) => {
         // Supabase can emit SIGNED_IN before session persistence has fully settled.
         // Poll briefly to avoid routing into private shell with a transient null session.
         // Guard each getSession call with a per-request timeout so this never hangs indefinitely.
-        const waitForSession = async (timeoutMs = 3000, pollMs = 150): Promise<Session | null> => {
+        // PERF: Faster session polling — shorter timeout, no initial delay
+        const waitForSession = async (timeoutMs = 2000, pollMs = 100): Promise<Session | null> => {
             const startedAt = Date.now();
             while (Date.now() - startedAt < timeoutMs) {
-                const elapsedMs = Date.now() - startedAt;
-                const remainingMs = timeoutMs - elapsedMs;
-                const perRequestTimeoutMs = Math.max(250, Math.min(1200, remainingMs));
+                const remainingMs = timeoutMs - (Date.now() - startedAt);
+                const perRequestTimeoutMs = Math.max(200, Math.min(800, remainingMs));
 
                 try {
                     const session = await Promise.race<Session | null>([
@@ -367,7 +367,7 @@ export const subscribeToAuthChanges = (callback: (user: ParentUser | null) => vo
             return await Promise.race<ParentUser>([
                 buildParentUser(supabaseUser),
                 new Promise<ParentUser>((resolve) => {
-                    setTimeout(() => resolve(buildFallbackParentUser(supabaseUser)), 8_000);
+                    setTimeout(() => resolve(buildFallbackParentUser(supabaseUser)), 4_000);
                 }),
             ]);
         } catch (err) {
@@ -394,72 +394,71 @@ export const subscribeToAuthChanges = (callback: (user: ParentUser | null) => vo
         let finalIdentifier = identifier;
 
 
-        try {
-            const { data: profile } = await supabase
+        // PERF: Fetch profile AND check MFA in parallel (was sequential = 3 round-trips)
+        const profilePromise = supabase
+            .from('users')
+            .select('*')
+            .eq('id', supabaseUser.id)
+            .single()
+            .then(
+                ({ data: profile }) => profile,
+                (err) => {
+                    console.error('Error fetching profile:', err);
+                    return null;
+                }
+            );
+
+        const mfaPromise = requiresMfa(finalRole)
+            ? supabase.auth.mfa.getAuthenticatorAssuranceLevel()
+                .then(({ data: aal }) => aal?.currentLevel !== 'aal2')
+                .catch(() => { console.warn('MFA check failed, continuing without enforcement'); return false; })
+            : Promise.resolve(false);
+
+        const [profile, mfaPending] = await Promise.all([profilePromise, mfaPromise]);
+
+        if (profile) {
+            // P2-2 FIX: NEVER fall back to profile.role — it is user-mutable via DB.
+            // Only trust app_metadata.role (set server-side). schoolId is safe to read from profile.
+            if (!metaSchoolId && profile.school_id) finalSchoolId = profile.school_id;
+            if (profile.student_class) existingStudentClass = profile.student_class;
+            if (profile.stats) existingStats = profile.stats as unknown as ParentUser['stats'];
+            if (profile.must_change_password) mustChangePassword = profile.must_change_password;
+            if (profile.chat_locked) chatLocked = profile.chat_locked;
+            if (profile.chat_lock_reason) chatLockReason = profile.chat_lock_reason;
+            if (profile.chat_lock_time) chatLockTime = profile.chat_lock_time;
+
+            // Fire-and-forget: update last_login without blocking login flow
+            supabase
                 .from('users')
-                .select('*')
+                .update({
+                    display_name: supabaseUser.user_metadata?.display_name ?? supabaseUser.user_metadata?.full_name ?? profile.display_name,
+                    email: supabaseUser.email,
+                    school_id: finalSchoolId,
+                    last_login: new Date().toISOString(),
+                    updated_at: new Date().toISOString(),
+                })
                 .eq('id', supabaseUser.id)
-                .single();
-
-            if (profile) {
-                // P2-2 FIX: NEVER fall back to profile.role — it is user-mutable via DB.
-                // Only trust app_metadata.role (set server-side). schoolId is safe to read from profile.
-                if (!metaSchoolId && profile.school_id) finalSchoolId = profile.school_id;
-                if (profile.student_class) existingStudentClass = profile.student_class;
-                if (profile.stats) existingStats = profile.stats as unknown as ParentUser['stats'];
-                if (profile.must_change_password) mustChangePassword = profile.must_change_password;
-                if (profile.chat_locked) chatLocked = profile.chat_locked;
-                if (profile.chat_lock_reason) chatLockReason = profile.chat_lock_reason;
-                if (profile.chat_lock_time) chatLockTime = profile.chat_lock_time;
-
-                try {
-                    await supabase
-                        .from('users')
-                        .update({
-                            display_name: supabaseUser.user_metadata?.display_name ?? supabaseUser.user_metadata?.full_name ?? profile.display_name,
-                            email: supabaseUser.email,
-                            school_id: finalSchoolId,
-                            last_login: new Date().toISOString(),
-                            updated_at: new Date().toISOString(),
-                        })
-                        .eq('id', supabaseUser.id);
-                } catch (writeErr) {
-                    console.warn('Could not update lastLogin:', writeErr);
-                }
-            } else {
-                try {
-                    await supabase.from('users').insert({
-                        id: supabaseUser.id,
-                        uid: supabaseUser.id,
-                        display_name: supabaseUser.user_metadata?.display_name ?? supabaseUser.user_metadata?.full_name ?? null,
-                        email: supabaseUser.email ?? null,
-                        role: 'student',
-                        school_id: finalSchoolId,
-                        last_login: new Date().toISOString(),
-                        created_at: new Date().toISOString(),
-                        updated_at: new Date().toISOString(),
-                    });
-                } catch (writeErr) {
-                    console.warn('Could not create user document:', writeErr);
-                }
-            }
-        } catch (err) {
-            console.error('Error syncing user to Supabase:', err);
-        }
-
-        // M-05: MFA enforcement — privileged roles must have AAL2
-        let mfaPending = false;
-        if (requiresMfa(finalRole)) {
-            try {
-                const { data: aal } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
-                // MFA pending if: role requires it, but user hasn't reached AAL2
-                if (aal?.currentLevel !== 'aal2') {
-                    mfaPending = true;
-                }
-            } catch {
-                // If MFA check fails, don't block — just log
-                console.warn('MFA check failed, continuing without enforcement');
-            }
+                .then(
+                    () => {},
+                    (writeErr) => console.warn('Could not update lastLogin:', writeErr)
+                );
+        } else {
+            // Fire-and-forget: create user row without blocking login flow
+            supabase.from('users').insert({
+                id: supabaseUser.id,
+                uid: supabaseUser.id,
+                display_name: supabaseUser.user_metadata?.display_name ?? supabaseUser.user_metadata?.full_name ?? null,
+                email: supabaseUser.email ?? null,
+                role: 'student',
+                school_id: finalSchoolId,
+                last_login: new Date().toISOString(),
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString(),
+            })
+                .then(
+                    () => {},
+                    (writeErr) => console.warn('Could not create user document:', writeErr)
+                );
         }
 
         return {
@@ -611,10 +610,14 @@ export const getMfaStatus = async (): Promise<{
     factors: Array<{ id: string; friendlyName: string; status: string }>;
     assuranceLevel: 'aal1' | 'aal2';
 }> => {
-    const { data, error } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
+    // PERF: Fetch AAL level and factors in parallel (was sequential)
+    const [aalResult, factorsResult] = await Promise.all([
+        supabase.auth.mfa.getAuthenticatorAssuranceLevel(),
+        supabase.auth.mfa.listFactors(),
+    ]);
 
-    if (error) {
-        console.error('MFA status check failed:', error);
+    if (aalResult.error) {
+        console.error('MFA status check failed:', aalResult.error);
         return {
             isEnrolled: false,
             isVerified: false,
@@ -623,8 +626,7 @@ export const getMfaStatus = async (): Promise<{
         };
     }
 
-    const { data: factorsData } = await supabase.auth.mfa.listFactors();
-    const totpFactors = (factorsData?.totp ?? []).map(f => ({
+    const totpFactors = (factorsResult.data?.totp ?? []).map(f => ({
         id: f.id,
         friendlyName: f.friendly_name ?? 'Authenticator',
         status: f.status,
@@ -632,8 +634,8 @@ export const getMfaStatus = async (): Promise<{
 
     return {
         isEnrolled: totpFactors.some(f => f.status === 'verified'),
-        isVerified: data.currentLevel === 'aal2',
+        isVerified: aalResult.data.currentLevel === 'aal2',
         factors: totpFactors,
-        assuranceLevel: data.currentLevel ?? 'aal1',
+        assuranceLevel: aalResult.data.currentLevel ?? 'aal1',
     };
 };

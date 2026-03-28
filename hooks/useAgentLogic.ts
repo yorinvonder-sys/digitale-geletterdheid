@@ -16,6 +16,44 @@ const MAX_CONTEXT_MESSAGES = 12;   // Messages to keep for context when refreshi
 const SESSION_REFRESH_THRESHOLD = 15; // Refresh Gemini session after this many exchanges
 
 // ============================================================================
+// EERSTE BERICHT PARSER
+// Extracts the "EERSTE BERICHT:" section from a systemInstruction so the
+// student sees the intended first message instead of a generic welcome.
+// ============================================================================
+function extractEersteBericht(systemInstruction: string): string | null {
+    const marker = 'EERSTE BERICHT:';
+    const idx = systemInstruction.indexOf(marker);
+    if (idx === -1) return null;
+
+    let text = systemInstruction.slice(idx + marker.length).trim();
+
+    // Strip surrounding quotes if present
+    if (text.startsWith('"')) {
+        // Find the matching closing quote — the EERSTE BERICHT is typically
+        // the last section, so take everything up to the final quote before
+        // the SYSTEM_INSTRUCTION_SUFFIX or end-of-string.
+        const closeIdx = text.lastIndexOf('"');
+        if (closeIdx > 0) {
+            text = text.slice(1, closeIdx).trim();
+        } else {
+            text = text.slice(1).trim();
+        }
+    }
+
+    // Remove trailing system-suffix artifacts (e.g. the appended SYSTEM_INSTRUCTION_SUFFIX)
+    // These typically start with "\n\n---" or "\n\nBELANGRIJK:" or similar section markers
+    const suffixPatterns = ['\n\n---', '\nBELANGRIJK:', '\n\nSYSTEM', '\n\nVEILIGHEID'];
+    for (const pattern of suffixPatterns) {
+        const suffixIdx = text.indexOf(pattern);
+        if (suffixIdx > 0) {
+            text = text.slice(0, suffixIdx).trim();
+        }
+    }
+
+    return text.length > 10 ? text : null;
+}
+
+// ============================================================================
 // STARTER TIPS - Short, actionable prompts shown when a mission starts
 // These cost XP when clicked (penalty for using hints)
 // ============================================================================
@@ -77,6 +115,18 @@ const getStarterTips = (roleId: string, examplePrompt?: string): string[] => {
     return tips[roleId] || (examplePrompt ? [examplePrompt] : []);
 };
 
+const buildMissionContext = (role: AgentRole): string => {
+    return [
+        `Missie: ${role.title}`,
+        role.description,
+        role.problemScenario,
+        `Doel: ${role.missionObjective}`,
+        role.steps?.length ? `Stappen: ${role.steps.map(step => step.title).join(', ')}` : null,
+    ]
+        .filter(Boolean)
+        .join(' ');
+};
+
 
 import { MissionProgress } from '../types';
 
@@ -119,7 +169,9 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
         console.log('[Memory] Refreshing chat session to prevent memory buildup');
 
         // Create fresh session
-        const newSession = createChatSession(selectedRole.id, selectedRole.systemInstruction);
+        const newSession = createChatSession(selectedRole.id, selectedRole.systemInstruction, {
+            localMissionContext: buildMissionContext(selectedRole),
+        });
 
         // Re-inject essential context (last N messages)
         const contextMessages = recentMessages.slice(-MAX_CONTEXT_MESSAGES);
@@ -156,9 +208,22 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
                 }));
                 setMessages(restoredMessages);
             } else {
+                // Use the EERSTE BERICHT from systemInstruction if available.
+                // If missing, build an actionable welcome from the mission's
+                // problemScenario and first step so the student knows what to do.
+                const eersteBericht = extractEersteBericht(selectedRole.systemInstruction);
+                let welcomeText: string;
+                if (eersteBericht) {
+                    welcomeText = eersteBericht;
+                } else if (selectedRole.problemScenario && selectedRole.steps && selectedRole.steps.length > 0) {
+                    const firstStep = selectedRole.steps[0];
+                    welcomeText = `Welkom bij ${selectedRole.title}! 👋\n\n${selectedRole.problemScenario}\n\n**Jouw opdracht:** ${selectedRole.missionObjective}\n\n**Stap 1: ${firstStep.title}**\n${firstStep.description}\n\n💡 ${firstStep.example}`;
+                } else {
+                    welcomeText = `Welkom bij ${selectedRole.title}! ${selectedRole.description} Waarmee kan ik je helpen?`;
+                }
                 setMessages([{
                     role: 'model',
-                    text: `Welkom bij ${selectedRole.title}! ${selectedRole.description} Waarmee kan ik je helpen?`,
+                    text: welcomeText,
                     timestamp: new Date()
                 }]);
             }
@@ -168,7 +233,9 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
             setSuggestions(starterTips);
 
             try {
-                const session = createChatSession(selectedRole.id, selectedRole.systemInstruction);
+                const session = createChatSession(selectedRole.id, selectedRole.systemInstruction, {
+                    localMissionContext: buildMissionContext(selectedRole),
+                });
                 chatSessionRef.current = session;
 
                 // If it's a game programmer, we provide initial code as context
@@ -181,7 +248,7 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
 
             } catch (e) {
                 console.error("Failed to init chat", e);
-                setError("Kon AI niet starten. Check je API key.");
+                setError("Kon AI niet starten. Controleer je sessie of AI-configuratie.");
             }
 
             // Reset role specific data
@@ -749,8 +816,11 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
             });
 
         } catch (error) {
+            const message = error instanceof Error
+                ? error.message
+                : "Oeps, er ging iets mis bij het nadenken.";
             console.error("Agent logic error:", error);
-            setMessages(prev => [...prev, { role: 'model', text: "Oeps, er ging iets mis bij het nadenken.", timestamp: new Date() }]);
+            setMessages(prev => [...prev, { role: 'model', text: message, timestamp: new Date() }]);
         } finally {
             setIsLoading(false);
             setThinkingStep("");
