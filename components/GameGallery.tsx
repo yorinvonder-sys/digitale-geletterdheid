@@ -242,7 +242,7 @@ export const GameGallery: React.FC<GameGalleryProps> = ({ userId, schoolId, user
                                 <Gamepad2 className="text-emerald-400" />
                                 Game Galerij
                             </h1>
-                            <p className="text-slate-400 text-sm mt-1">
+                            <p className="text-slate-300 text-sm mt-1">
                                 Speel games gemaakt door je klasgenoten!
                             </p>
                         </div>
@@ -325,12 +325,12 @@ export const GameGallery: React.FC<GameGalleryProps> = ({ userId, schoolId, user
                 {isLoading ? (
                     <div className="flex flex-col items-center justify-center py-20" role="status" aria-live="polite">
                         <Loader2 size={48} className="animate-spin text-emerald-500 mb-4" aria-hidden="true" />
-                        <p className="text-slate-400 font-medium">Games laden...</p>
+                        <p className="text-slate-300 font-medium">Games laden...</p>
                     </div>
                 ) : games.length === 0 ? (
                     <div className="text-center py-20">
                         <Gamepad2 size={64} className="text-slate-700 mx-auto mb-4" />
-                        <h3 className="text-xl font-bold text-slate-400 mb-2">
+                        <h3 className="text-xl font-bold text-slate-300 mb-2">
                             Nog geen games gepubliceerd
                         </h3>
                         <p className="text-slate-500">
@@ -398,7 +398,7 @@ export const GameGallery: React.FC<GameGalleryProps> = ({ userId, schoolId, user
                                     <h3 className="font-black text-white text-lg mb-1 truncate">
                                         {game.title}
                                     </h3>
-                                    <p className="text-slate-400 text-sm mb-3">
+                                    <p className="text-slate-300 text-sm mb-3">
                                         door {game.creator_name}
                                         {game.student_class && (
                                             <span className="text-slate-500"> • {game.student_class}</span>
@@ -408,7 +408,7 @@ export const GameGallery: React.FC<GameGalleryProps> = ({ userId, schoolId, user
                                     {/* Stats */}
                                     <div className="flex items-center justify-between">
                                         <div className="flex items-center gap-4 text-sm">
-                                            <span className="flex items-center gap-1 text-slate-400">
+                                            <span className="flex items-center gap-1 text-slate-300">
                                                 {game.mission_id === 'verhalen-ontwerper' ? <BookOpen size={14} /> : <Play size={14} />}
                                                 {game.play_count}
                                             </span>

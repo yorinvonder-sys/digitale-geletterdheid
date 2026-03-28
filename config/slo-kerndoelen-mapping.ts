@@ -43,6 +43,7 @@ export const KERNDOEL_MISSIONS: KerndoelMissionMeta[] = [
   { id: 'verhalen-ontwerper', title: 'Verhalen Ontwerper', week: 2, yearGroup: 1, sloKerndoelen: ['21D', '22A'], sloVsoKerndoelen: ['18C', '19A'] },
   { id: 'ai-beleid-brainstorm', title: 'AI Beleid Brainstorm', week: 2, yearGroup: 1, sloKerndoelen: ['23B', '23C'], sloVsoKerndoelen: ['20B'] },
   { id: 'website-bouwer', title: 'Website Bouwer', week: 2, yearGroup: 1, sloKerndoelen: ['22B', '22A'], sloVsoKerndoelen: ['19A'] },
+  { id: 'code-denker', title: 'Code Denker', week: 2, yearGroup: 1, sloKerndoelen: ['21C', '22B'], sloVsoKerndoelen: ['19A'] },
 
   // Week 3
   { id: 'review-week-2', title: 'De Code-Criticus', week: 3, yearGroup: 1, sloKerndoelen: ['21B', '21D'], sloVsoKerndoelen: ['18C'] },

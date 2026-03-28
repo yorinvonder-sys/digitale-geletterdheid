@@ -106,8 +106,8 @@ export const StudentOnboarding: React.FC<StudentOnboardingProps> = ({ onComplete
             {/* Animated Background */}
             <div className="absolute inset-0">
                 {/* Gradient orbs */}
-                <div className={`absolute top-1/4 -left-20 w-96 h-96 rounded-full bg-gradient-to-br ${step.color} opacity-20 blur-3xl animate-pulse`} />
-                <div className={`absolute bottom-1/4 -right-20 w-96 h-96 rounded-full bg-gradient-to-br ${step.color} opacity-20 blur-3xl animate-pulse`} style={{ animationDelay: '1s' }} />
+                <div className={`absolute top-1/4 -left-20 w-96 h-96 rounded-full bg-gradient-to-br ${step.color} opacity-20 blur-3xl animate-pulse motion-reduce:animate-none`} />
+                <div className={`absolute bottom-1/4 -right-20 w-96 h-96 rounded-full bg-gradient-to-br ${step.color} opacity-20 blur-3xl animate-pulse motion-reduce:animate-none`} style={{ animationDelay: '1s' }} />
 
                 {/* Grid pattern */}
                 <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px]" />
