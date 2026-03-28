@@ -109,7 +109,7 @@ Deno.serve(async (req: Request) => {
     }
 
     // 3. Gemini Vision aanroepen via Vertex AI (EU endpoint)
-    const geminiUrl = getVertexUrl("gemini-2.0-flash");
+    const geminiUrl = getVertexUrl("gemini-3-flash-preview");
     const accessToken = await getAccessToken();
 
     const isSubscription = body.mode === "subscription";

@@ -19,7 +19,7 @@ import { checkDurableRateLimit, rateLimitResponse, rateLimitHeaders } from "../_
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
-const MAX_REQUEST_BYTES = 200_000;
+const MAX_REQUEST_BYTES = 500_000;
 const MAX_MESSAGE_LENGTH = 150_000;
 
 Deno.serve(async (req: Request) => {
@@ -116,8 +116,8 @@ Deno.serve(async (req: Request) => {
     const safeHistory = buildSafeHistory(body.history, {
         maxMessages: 20,
         maxPartsPerMessage: 2,
-        maxPartChars: 10_000,
-        maxTotalChars: 60_000,
+        maxPartChars: 50_000,
+        maxTotalChars: 120_000,
     });
 
     if (safeHistory.blocked) {
@@ -134,16 +134,17 @@ Deno.serve(async (req: Request) => {
     // 4. Forward sanitized message to Gemini via Vertex AI (EU endpoint)
     try {
         console.log("[chat] Step 1: Building Vertex URL...");
-        const geminiUrl = getVertexUrl("gemini-2.5-flash");
+        const geminiUrl = getVertexUrl("gemini-3-flash-preview");
         console.log("[chat] Step 2: Getting access token...");
         const accessToken = await getAccessToken();
         console.log("[chat] Step 3: Sending to Vertex AI...");
 
         // Build user message parts — include game code context if provided
         // gameContext bypasses the sanitizer because it's our own application code, not user input
+        const hasGameContext = !!(body.gameContext && typeof body.gameContext === "string");
         const userParts: { text: string }[] = [];
-        if (body.gameContext && typeof body.gameContext === "string") {
-            userParts.push({ text: `[HUIDIGE_GAME_CODE]\n${body.gameContext}\n[/HUIDIGE_GAME_CODE]\n\nBELANGRIJK: Pas ALLEEN de bovenstaande code aan op basis van mijn verzoek. Geef de VOLLEDIGE aangepaste versie terug.` });
+        if (hasGameContext) {
+            userParts.push({ text: `[HUIDIGE_GAME_CODE]\n${body.gameContext}\n[/HUIDIGE_GAME_CODE]\n\nKRITIEK: Dit is de HUIDIGE game van de leerling. Je MOET deze code aanpassen — NIET een nieuwe game maken. Verwerk het verzoek hieronder in de bestaande code en geef de VOLLEDIGE aangepaste versie terug.` });
         }
         userParts.push({ text: validation.sanitized });
 
@@ -170,7 +171,10 @@ Deno.serve(async (req: Request) => {
                 contents,
                 safetySettings,
                 systemInstruction: { parts: [{ text: systemInstruction }] },
-                generationConfig: { maxOutputTokens: 1024, temperature: 0.7 },
+                generationConfig: {
+                    maxOutputTokens: hasGameContext ? 50_000 : 1024,
+                    temperature: 0.7,
+                },
             }),
         });
 

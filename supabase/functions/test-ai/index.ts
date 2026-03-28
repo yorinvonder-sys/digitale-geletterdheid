@@ -28,7 +28,7 @@ Deno.serve(async (_req: Request) => {
 
     // Test 3: Call Vertex AI with gemini-2.5-flash
     try {
-        const url = getVertexUrl("gemini-2.5-flash");
+        const url = getVertexUrl("gemini-3-flash-preview");
         results.vertexUrl = url;
         const accessToken = await getAccessToken();
 

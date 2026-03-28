@@ -195,7 +195,7 @@ export const ChatBubble: React.FC<ChatBubbleProps> = ({ message, onLinkClick, is
                         <div className="flex items-center gap-3">
                           <div className={`p-2 ${isProcessing ? 'bg-amber-100' : 'bg-emerald-100'} rounded-lg transition-colors`}>
                             {isProcessing ? (
-                              <Loader2 size={20} className="animate-spin text-amber-600" />
+                              <div className="w-5 h-5 border-[2.5px] border-amber-200 border-t-amber-600 rounded-full animate-spin" />
                             ) : (
                               <CheckCircle2 size={20} />
                             )}

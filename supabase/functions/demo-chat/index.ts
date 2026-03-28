@@ -182,7 +182,7 @@ Deno.serve(async (req: Request) => {
 
     // 4. Send to Gemini via Vertex AI
     try {
-        const geminiUrl = getVertexUrl("gemini-2.0-flash");
+        const geminiUrl = getVertexUrl("gemini-3-flash-preview");
         const accessToken = await getAccessToken();
 
         const contents = [

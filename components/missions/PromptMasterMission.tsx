@@ -200,7 +200,7 @@ PRINCIPE: Beoordeel zoals een REDELIJKE docent zou doen. Kijk naar de INTENTIE, 
 - Er is een DUIDELIJKE verwijzing naar het criterium
 - Voorbeelden die WEL tellen:
   * "golden retriever" → Specifiek ras ✅
-  * "labrador" → Specifiek ras ✅  
+  * "labrador" → Specifiek ras ✅
   * "in het park" → Locatie ✅
   * "in de tuin" → Locatie ✅
   * "die rent" of "rennend" → Actie ✅
@@ -234,9 +234,23 @@ Analyseer EERLIJK en geef voor ELK criterium:
 
 SCORE = aantal criteria dat ECHT GEVONDEN is (0-${challenge.feedbackCriteria.length})
 
+=== BELANGRIJK: SAMENVATTING INSTRUCTIES ===
+
+De SAMENVATTING moet beschrijven wat de AI ECHT zou produceren op basis van PRECIES wat de leerling schreef — NIET het ideale resultaat.
+
+- Als de prompt vaag is, beschrijf dan een VAAG, TELEURSTELLEND resultaat. Wees specifiek over WAT er mis zou gaan.
+- Als de prompt specifiek is, beschrijf dan een GEDETAILLEERD, GOED resultaat.
+- Gebruik de leerling's EIGEN woorden en keuzes in je beschrijving.
+- NIET het ideale resultaat beschrijven als de prompt dat niet verdient.
+
+Voorbeelden:
+- Prompt "teken een hond" → SAMENVATTING: "De AI tekent een willekeurige bruine hond op een lege witte achtergrond. Geen details, geen sfeer."
+- Prompt "teken een golden retriever in het park" → SAMENVATTING: "De AI tekent een golden retriever in een groen park, maar zonder duidelijke actie of sfeer."
+- Prompt "teken een vrolijke golden retriever die rent door een zonnig park" → SAMENVATTING: "De AI tekent een blije golden retriever die rent door een zonovergoten park met groen gras."
+
 Format EXACT zo (belangrijk voor parsing!):
 SCORE: [getal]
-SAMENVATTING: [Beschrijf in max 30 woorden wat de AI zou maken op basis van deze prompt]
+SAMENVATTING: [Beschrijf in max 40 woorden wat de AI ECHT zou maken op basis van DEZE specifieke prompt — reflecteer de sterke EN zwakke punten]
 CRITERIA:
 1. ${challenge.feedbackCriteria[0]?.label}: [GEVONDEN/NIET_GEVONDEN] - [uitleg]
 ${challenge.feedbackCriteria.slice(1).map((c, i) => `${i + 2}. ${c.label}: [GEVONDEN/NIET_GEVONDEN] - [uitleg]`).join('\n')}`;
@@ -285,12 +299,14 @@ ${challenge.feedbackCriteria.slice(1).map((c, i) => `${i + 2}. ${c.label}: [GEVO
             }
         }
 
-        // Build output message
+        // Build output message — use the AI's actual summary which reflects the student's specific prompt
         let output: string;
         if (score >= challenge.minScore) {
             output = summary || challenge.goodOutputExample;
         } else {
-            output = `De AI begreep je prompt niet helemaal goed. ${summary || challenge.badOutputExample}`;
+            // Use AI summary if available (it reflects the student's actual prompt),
+            // only fall back to generic badOutputExample if parsing failed
+            output = summary || challenge.badOutputExample;
         }
 
         return { output, score, feedback };
@@ -375,15 +391,24 @@ const ResultVisual: React.FC<{
                         </>
                     ) : (
                         <>
-                            <div className="absolute inset-0 bg-gradient-to-br from-[#F0EEE8] to-[#E8E6DF] opacity-50" />
-                            {/* Abstract shapes to simulate image */}
-                            <div className="absolute top-1/4 left-1/4 w-16 h-16 bg-[#D97757]/10 rounded-full blur-xl" />
-                            <div className="absolute bottom-1/3 right-1/4 w-24 h-24 bg-[#8B6F9E]/10 rounded-full blur-2xl" />
+                            {/* Simulated AI canvas - shows what the AI would produce */}
+                            <div className="absolute inset-0 bg-gradient-to-br from-[#F5F3EE] to-[#E8E6DF]" />
+                            {/* Abstract shapes to simulate a vague/incomplete image */}
+                            <div className="absolute top-1/4 left-1/4 w-20 h-20 bg-[#D97757]/8 rounded-full blur-2xl" />
+                            <div className="absolute bottom-1/4 right-1/4 w-28 h-28 bg-[#8B6F9E]/8 rounded-full blur-3xl" />
+                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 bg-[#D97757]/5 rounded-xl blur-lg" />
 
-                            <Image size={32} className={`mb-3 relative z-10`} style={{ color: isIdeal || isSuccess ? '#10B981' : '#D97757' }} />
-                            <p className={`text-sm relative z-10 font-medium`} style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: isIdeal || isSuccess ? '#10B981' : '#D97757' }}>
-                                {content.replace(/^De AI.*?:\s*/i, '')}
-                            </p>
+                            <div className="relative z-10 flex flex-col items-center gap-3 px-4">
+                                <div className="p-3 rounded-2xl" style={{ backgroundColor: 'rgba(217,119,87,0.1)' }}>
+                                    <Image size={28} className="text-[#D97757]" />
+                                </div>
+                                <div className="bg-white/80 backdrop-blur-sm rounded-xl px-4 py-3 border border-[#E8E6DF] max-w-[90%]">
+                                    <p className="text-[13px] text-[#3D3D38] font-medium text-center leading-relaxed" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                        {content.replace(/^De AI.*?:\s*/i, '')}
+                                    </p>
+                                </div>
+                                <p className="text-[10px] text-[#6B6B66] italic">Simulatie — zo zou de AI je prompt interpreteren</p>
+                            </div>
                             {isSuccess && <div className="absolute top-2 right-2 text-white text-[10px] uppercase font-bold px-2 py-0.5 rounded-full" style={{ backgroundColor: '#10B981' }}>Goed gedaan!</div>}
                         </>
                     )}
