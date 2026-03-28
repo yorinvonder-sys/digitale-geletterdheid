@@ -332,6 +332,14 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
         }
     };
 
+    const openClassMessageDraft = (targetClassId: string, text: string) => {
+        setMessageTarget('class');
+        setMessageTargetClassId(targetClassId);
+        setMessageTargetStudentId('');
+        setMessageText(text);
+        setShowMessageModal(true);
+    };
+
     const handleAwardBadge = async () => {
         if (!selectedStudent || !selectedBadge) return;
         if (await awardBadge(selectedStudent.uid, selectedBadge)) {
@@ -524,7 +532,14 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                                     yearGroup={yearGroupFilter}
                                     onSendMessage={() => setShowMessageModal(true)}
                                 />
-                                {students.some(s => (s.stats?.xp || 0) < 50) && <AlertsPanel students={students} onSelectStudent={setSelectedStudent} />}
+                                <AlertsPanel
+                                    students={students}
+                                    onSelectStudent={setSelectedStudent}
+                                    yearGroup={yearGroupFilter}
+                                    classFilter={classFilter}
+                                    onNavigateToSlo={() => setActiveTab('slo')}
+                                    onMessageClass={openClassMessageDraft}
+                                />
                             </PageTransition>
                         )}
 

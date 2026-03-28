@@ -68,7 +68,7 @@ export const getGamePermissions = async (schoolId?: string, yearGroup?: number):
             q = q.is('school_id', null);
         }
 
-        const { data: row, error } = await q.maybeSingle();
+        const { data: row, error } = await q.limit(1).maybeSingle();
 
         if (error) throw error;
 

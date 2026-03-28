@@ -36,15 +36,15 @@
 | Issue | Actie |
 |---|---|
 | CORS te breed | Verander `Access-Control-Allow-Origin: *` naar `https://dgskills.app` op alle Edge Functions |
-| SystemInstruction van client | Valideer of whitelist system prompts server-side, of sla agent configs op in de database |
-| Contactgegevens ontbreken | In privacy-explainer staan `[invullen]` placeholders - deze MOETEN ingevuld voor lancering |
+| ~~SystemInstruction van client~~ | **OPGELOST** — Server valideert via `roleId` + `getSystemInstruction()`. Client stuurt alleen roleId, niet de volledige instruction. |
+| ~~Contactgegevens ontbreken~~ | **OPGELOST** (28 mrt 2026) — Alle placeholders ingevuld: KvK 81819889, DGSkills.app (eenmanszaak), Zwolle, FG: Yorin Vonder |
 | Verwerkersovereenkomst (DPA) is een template, geen getekend document | Je hebt een juridisch waterdichte DPA nodig die scholen kunnen ondertekenen |
 
 #### Wat je moet doen voor lancering
 
-1. CORS beperken tot je eigen domein (1 uur werk)
-2. System prompts server-side valideren of whitelisten (2-3 uur werk)
-3. Alle `[invullen]` placeholders in juridische docs invullen
+1. ~~CORS beperken tot je eigen domein~~ **AFGEROND**
+2. ~~System prompts server-side valideren of whitelisten~~ **AFGEROND**
+3. ~~Alle `[invullen]` placeholders in juridische docs invullen~~ **AFGEROND** (28 mrt 2026)
 4. Een echte verwerkersovereenkomst laten maken (gebruik het Privacyconvenant Onderwijs Model 4.0 als basis)
 5. Server-side rate limiting toevoegen aan de chat Edge Function
 

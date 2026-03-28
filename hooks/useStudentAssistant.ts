@@ -22,9 +22,11 @@ const WEEK1_HELP_CONTEXT = {
 interface UseStudentAssistantProps {
     userIdentifier: string; // usually the student's UID
     context?: any; // Optional context to "watch along"
+    /** Optionele server-side roleId. Default: 'student-assistant'. */
+    roleId?: string;
 }
 
-export const useStudentAssistant = ({ userIdentifier, context }: UseStudentAssistantProps) => {
+export const useStudentAssistant = ({ userIdentifier, context, roleId = 'student-assistant' }: UseStudentAssistantProps) => {
     const [messages, setMessages] = useState<ChatMessage[]>([]);
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -126,7 +128,7 @@ REGELS VOOR JOU:
     // 2. Initialize Chat
     useEffect(() => {
         if (!chatSessionRef.current) {
-            chatSessionRef.current = createChatSession('student-assistant', systemInstruction);
+            chatSessionRef.current = createChatSession(roleId, systemInstruction);
             // Add welcome message
             setMessages([{
                 role: 'model',

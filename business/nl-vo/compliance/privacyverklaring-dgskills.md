@@ -55,9 +55,9 @@ Deze privacyverklaring is opgesteld conform artikel 13 en 14 van de Algemene ver
 | | |
 |---|---|
 | **Handelsnaam** | DGSkills |
-| **Statutaire naam** | DGSkills (eenmanszaak Yorin von der Osten) |
-| **KvK-nummer** | [INVULLEN NA KVK-REGISTRATIE] |
-| **Vestigingsadres** | [INVULLEN NA KVK-REGISTRATIE] |
+| **Statutaire naam** | DGSkills.app (eenmanszaak) |
+| **KvK-nummer** | 81819889 |
+| **Vestigingsadres** | Oldruitenborghstraat 39, 8043TP Zwolle |
 | **E-mailadres** | info@dgskills.app |
 | **Website** | https://dgskills.app |
 
@@ -65,9 +65,9 @@ Deze privacyverklaring is opgesteld conform artikel 13 en 14 van de Algemene ver
 
 | | |
 |---|---|
-| **Naam** | Yorin von der Osten (intern privacy-aanspreekpunt) |
+| **Naam** | Yorin Vonder |
 | **E-mailadres** | privacy@dgskills.app |
-| **Telefoonnummer** | [INVULLEN] |
+| **Telefoonnummer** | Op aanvraag via privacy@dgskills.app |
 
 > Heb je een vraag over hoe wij met je gegevens omgaan? Je kunt altijd contact opnemen met onze Functionaris Gegevensbescherming via bovenstaand e-mailadres.
 
@@ -548,15 +548,15 @@ Onderstaand overzicht bevat de actuele lijst van subverwerkers. Deze lijst kan w
 
 ---
 
-**[INVULLEN]-checklist voor de eigenaar:**
+**Checklist voor de eigenaar:**
 
-Voordat deze privacyverklaring gepubliceerd kan worden, moeten de volgende placeholders worden ingevuld:
+Alle contactgegevens zijn ingevuld:
 
-- [ ] Statutaire naam (bijv. DGSkills B.V.)
-- [ ] KvK-nummer
-- [ ] Vestigingsadres (straat, huisnummer, postcode, plaats)
-- [ ] Naam en contactgegevens Functionaris Gegevensbescherming (FG/DPO)
-- [ ] Privacy-specifiek e-mailadres (bijv. privacy@dgskills.app)
+- [x] Statutaire naam: DGSkills.app (eenmanszaak)
+- [x] KvK-nummer: 81819889
+- [x] Vestigingsadres: Oldruitenborghstraat 39, 8043TP Zwolle
+- [x] Naam en contactgegevens Functionaris Gegevensbescherming: Yorin Vonder, privacy@dgskills.app
+- [x] Privacy-specifiek e-mailadres: privacy@dgskills.app
 - [ ] Bewaartermijn pilot-aanvragen
 - [ ] Postadres voor schriftelijke verzoeken
 - [ ] Controleer of de lijst subverwerkers actueel is

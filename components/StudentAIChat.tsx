@@ -28,9 +28,11 @@ interface StudentAIChatProps {
     context?: AIContextData;
     isOpen?: boolean; // Controlled state
     onOpenChange?: (open: boolean) => void; // State handler
+    /** Optionele server-side roleId voor missie-specifieke AI-instructies. Default: 'student-assistant'. */
+    roleId?: string;
 }
 
-export const StudentAIChat: React.FC<StudentAIChatProps> = ({ userIdentifier, context, isOpen: controlledIsOpen, onOpenChange }) => {
+export const StudentAIChat: React.FC<StudentAIChatProps> = ({ userIdentifier, context, isOpen: controlledIsOpen, onOpenChange, roleId }) => {
     const getQuickPromptLabel = () => {
         const week = typeof context?.week === 'number' ? context.week : null;
         if (context?.currentChallenge) return 'Game Challenge Hulp';
@@ -116,7 +118,7 @@ export const StudentAIChat: React.FC<StudentAIChatProps> = ({ userIdentifier, co
         showHulplijn,
         wellbeingMatch,
         dismissHulplijn,
-    } = useStudentAssistant({ userIdentifier, context });
+    } = useStudentAssistant({ userIdentifier, context, roleId });
 
     // Resolve controlled vs internal state
     const isVisible = controlledIsOpen !== undefined ? controlledIsOpen : internalIsOpen;

@@ -1,0 +1,27 @@
+{
+  "action": "created",
+  "repository": {
+    "full_name": "example-org/example-repo"
+  },
+  "sender": {
+    "login": "yorin-vonder",
+    "type": "User"
+  },
+  "pull_request": {
+    "number": 42,
+    "title": "Refactor review bridge",
+    "body": "Deze PR voegt een bridge toe waarmee agents in GitHub-threads kunnen reageren."
+  },
+  "comment": {
+    "id": 123456,
+    "path": "src/bridge/review.ts",
+    "line": 87,
+    "side": "RIGHT",
+    "diff_hunk": "@@ -76,6 +76,15 @@ export async function replyToThread(...) {\n   const body = payload.body;\n+  // TODO: validate whether the target is a top-level review comment.\n+  const threadId = payload.commentId;\n+  const endpoint = `/pulls/${pullNumber}/comments/${threadId}/replies`;\n   return post(endpoint, { body });\n }",
+    "body": "/chatgpt\n/handoff claude\n\nIs dit veilig genoeg voor inline review threads, of missen we nog belangrijke randgevallen?",
+    "user": {
+      "login": "yorin-vonder",
+      "type": "User"
+    }
+  }
+}

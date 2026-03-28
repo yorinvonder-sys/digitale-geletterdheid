@@ -1,0 +1,16 @@
+{
+  "id": "thread-002-human-to-claude",
+  "threadId": "thread-002",
+  "from": "human",
+  "to": "claude",
+  "subject": "Review een agent-workflow",
+  "body": "Geef feedback op een simpele GitHub-workflow waarbij een agent berichten uit een inbox leest en antwoorden naar een outbox schrijft.",
+  "context": [
+    "De workflow moet zonder database kunnen werken.",
+    "Geef vooral aandacht aan foutafhandeling en race conditions."
+  ],
+  "handoff": {
+    "to": "chatgpt",
+    "instruction": "Vat de verbeteringen samen in een korter, uitvoerbaar implementatieplan."
+  }
+}

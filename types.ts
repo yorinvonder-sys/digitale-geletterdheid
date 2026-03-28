@@ -21,7 +21,7 @@ export type RoleId =
   // Leerjaar 1 - Periode 1
   'magister-master' | 'cloud-commander' | 'word-wizard' | 'social-media-psychologist' | 'slide-specialist' | 'print-pro' | 'layout-doctor' |
   // Leerjaar 1 - Periode 2
-  'ipad-print-instructies' | 'review-week-1' | 'week1-review' | 'verhalen-ontwerper' | 'nepnieuws-speurder' | 'game-programmeur' | 'ai-trainer' | 'chatbot-trainer' | 'ai-tekengame' | 'website-bouwer' |
+  'ipad-print-instructies' | 'review-week-1' | 'week1-review' | 'verhalen-ontwerper' | 'nepnieuws-speurder' | 'game-programmeur' | 'ai-trainer' | 'chatbot-trainer' | 'ai-tekengame' | 'website-bouwer' | 'schermtijd-coach' |
   // Leerjaar 1 - Periode 3
   'review-week-2' | 'ai-spiegel' | 'social-safeguard' | 'scroll-stopper' | 'data-detective' | 'deepfake-detector' | 'cookie-crusher' | 'data-handelaar' | 'privacy-profiel-spiegel' | 'filter-bubble-breaker' | 'datalekken-rampenplan' | 'data-voor-data' | 'data-speurder' |
   // Leerjaar 1 - Periode 4

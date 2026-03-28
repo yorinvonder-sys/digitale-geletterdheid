@@ -202,7 +202,7 @@ A: De actuele sub-verwerkerslijst is beschikbaar als bijlage bij de verwerkersov
 |---|---|
 | **Privacyvragen** | privacy@dgskills.app |
 | **Beveiligingsincidenten** | security@dgskills.app |
-| **Algemene vragen** | [INVULLEN] |
+| **Algemene vragen** | info@dgskills.app |
 | **Website** | https://dgskills.app |
 
 ---
