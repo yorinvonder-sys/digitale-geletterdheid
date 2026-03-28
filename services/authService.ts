@@ -4,7 +4,7 @@ import type { ParentUser, UserRole } from '../types';
 import { logAccountCreated } from './auditService';
 import { enforcePasswordPolicy } from '../utils/passwordValidator';
 import { validateEmail } from '../utils/emailValidator';
-import { revokeAllMfaTrust } from './mfaTrustService';
+import { revokeAllMfaTrust, checkMfaTrust } from './mfaTrustService';
 import { getAllSSODomains } from './curriculumService';
 import type { AuthChangeEvent, Session, User as SupabaseUser } from '@supabase/supabase-js';
 
@@ -338,6 +338,12 @@ export const subscribeToAuthChanges = (callback: (user: ParentUser | null) => vo
     let cancelled = false;
     let resolveGeneration = 0;
 
+    // In-memory flag: once a user has passed MFA in this browser session,
+    // don't re-evaluate on TOKEN_REFRESHED. This prevents the MFA gate from
+    // reappearing after a Supabase token refresh (which can downgrade AAL to aal1).
+    // Reset on SIGNED_OUT.
+    let mfaPassedThisSession = false;
+
     const safeCallback = (user: ParentUser | null, generation: number) => {
         if (cancelled || generation !== resolveGeneration) return;
         callback(user);
@@ -454,7 +460,19 @@ export const subscribeToAuthChanges = (callback: (user: ParentUser | null) => vo
                 const { data: aal } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
                 // MFA pending if: role requires it, but user hasn't reached AAL2
                 if (aal?.currentLevel !== 'aal2') {
-                    mfaPending = true;
+                    // Before requiring re-verification, check if this device
+                    // has a valid MFA trust session (created after prior verification).
+                    // This prevents forcing MFA again after token refreshes or page reloads
+                    // within the 30-minute trust window.
+                    try {
+                        const trusted = await checkMfaTrust();
+                        if (!trusted) {
+                            mfaPending = true;
+                        }
+                    } catch {
+                        // Trust check failed (network/edge function issue) — require MFA
+                        mfaPending = true;
+                    }
                 }
             } catch {
                 // If MFA check fails, don't block — just log
@@ -494,6 +512,17 @@ export const subscribeToAuthChanges = (callback: (user: ParentUser | null) => vo
                 if (session?.user) {
                     try {
                         const parentUser = await resolveParentUser(session.user);
+
+                        // If MFA was already passed this session, preserve that state
+                        // even if the token refresh downgraded AAL to aal1.
+                        if (mfaPassedThisSession && parentUser.mfaPending) {
+                            parentUser.mfaPending = false;
+                        }
+                        // Track when MFA gate is passed
+                        if (!parentUser.mfaPending && requiresMfa(parentUser.role)) {
+                            mfaPassedThisSession = true;
+                        }
+
                         safeCallback(parentUser, thisGeneration);
                     } catch (err) {
                         console.error('Auth resolveParentUser failed, using fallback:', err);
@@ -525,6 +554,7 @@ export const subscribeToAuthChanges = (callback: (user: ParentUser | null) => vo
                 }
             } else if (event === 'SIGNED_OUT') {
                 ++resolveGeneration; // Invalidate any in-flight resolves
+                mfaPassedThisSession = false; // Reset MFA session flag
                 callback(null);
             }
         }

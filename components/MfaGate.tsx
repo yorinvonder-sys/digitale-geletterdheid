@@ -14,7 +14,7 @@ interface MfaGateProps {
 }
 
 export function MfaGate({ onVerified }: MfaGateProps) {
-    const [step, setStep] = useState<'loading' | 'enroll' | 'verify'>('loading');
+    const [step, setStep] = useState<'loading' | 'enroll' | 'verify' | 'error'>('loading');
     const [qrCode, setQrCode] = useState<string>('');
     const [secret, setSecret] = useState<string>('');
     const [factorId, setFactorId] = useState<string>('');
@@ -31,9 +31,22 @@ export function MfaGate({ onVerified }: MfaGateProps) {
         checkMfaStatus();
     }, []);
 
+    /** Wrap a promise with a timeout to prevent infinite hangs */
+    const withTimeout = <T,>(promise: Promise<T>, ms: number, label: string): Promise<T> => {
+        return Promise.race([
+            promise,
+            new Promise<never>((_, reject) =>
+                setTimeout(() => reject(new Error(`${label} duurde te lang (>${ms / 1000}s). Probeer opnieuw.`)), ms)
+            ),
+        ]);
+    };
+
     const checkMfaStatus = async () => {
+        setStep('loading');
+        setError(null);
+
         try {
-            const status = await getMfaStatus();
+            const status = await withTimeout(getMfaStatus(), 8000, 'MFA-status ophalen');
 
             if (status.isVerified) {
                 onVerified();
@@ -41,13 +54,21 @@ export function MfaGate({ onVerified }: MfaGateProps) {
             }
 
             if (status.isEnrolled && status.factors.length > 0) {
-                setFactorId(status.factors[0].id);
-                setStep('verify');
+                // Filter to only verified factors — unverified ones can't be used
+                const verifiedFactors = status.factors.filter(f => f.status === 'verified');
+                if (verifiedFactors.length > 0) {
+                    setFactorId(verifiedFactors[0].id);
+                    setStep('verify');
+                } else {
+                    await withTimeout(startEnrollment(), 10000, 'MFA-activering');
+                }
             } else {
-                await startEnrollment();
+                await withTimeout(startEnrollment(), 10000, 'MFA-activering');
             }
-        } catch {
-            await startEnrollment();
+        } catch (err: any) {
+            console.error('MFA status check failed:', err);
+            setError(err.message || 'MFA-controle mislukt. Probeer het opnieuw.');
+            setStep('error');
         }
     };
 
@@ -92,17 +113,43 @@ export function MfaGate({ onVerified }: MfaGateProps) {
         });
     };
 
-    if (step === 'loading') {
+    if (step === 'loading' || step === 'error') {
         return (
             <div className="fixed inset-0 bg-slate-50 flex items-center justify-center">
                 <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-50 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl opacity-50 pointer-events-none" />
                 <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-indigo-50 rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl opacity-50 pointer-events-none" />
-                <div className="flex flex-col items-center gap-4 relative z-10">
+                <div className="flex flex-col items-center gap-4 relative z-10 max-w-sm text-center">
                     <div className="w-16 h-16 mx-auto">
                         <img src="/mascot/pip-logo.webp" alt="DGSkills" className="w-full h-full object-contain" width={64} height={64} decoding="async" />
                     </div>
-                    <div className="w-6 h-6 border-2 border-indigo-200 border-t-indigo-500 rounded-full animate-spin" />
-                    <p className="text-slate-400 text-sm font-medium">MFA-status controleren...</p>
+
+                    {step === 'loading' && (
+                        <>
+                            <div className="w-6 h-6 border-2 border-indigo-200 border-t-indigo-500 rounded-full animate-spin" />
+                            <p className="text-slate-400 text-sm font-medium">MFA-status controleren...</p>
+                        </>
+                    )}
+
+                    {step === 'error' && (
+                        <>
+                            <div className="flex items-start gap-2 bg-red-50 border border-red-100 rounded-xl p-3">
+                                <AlertTriangle size={16} className="text-red-500 mt-0.5 flex-shrink-0" />
+                                <p className="text-xs font-bold text-red-500">{error}</p>
+                            </div>
+                            <button
+                                onClick={() => { initiated.current = false; checkMfaStatus(); }}
+                                className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 px-6 rounded-xl transition-all shadow-lg shadow-indigo-200/50 hover:-translate-y-0.5 text-sm"
+                            >
+                                Opnieuw proberen
+                            </button>
+                            <button
+                                onClick={() => logout()}
+                                className="text-xs font-bold text-slate-400 hover:text-indigo-600 transition-colors"
+                            >
+                                Uitloggen
+                            </button>
+                        </>
+                    )}
                 </div>
             </div>
         );
