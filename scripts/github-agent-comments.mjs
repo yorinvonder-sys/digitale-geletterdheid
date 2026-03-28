@@ -4,6 +4,8 @@ import { generateAgentReply, normalizeAgent } from "./lib/agentBridgeCore.mjs";
 
 const COMMAND_PATTERN = /^\/(chatgpt|claude)\b/i;
 const HANDOFF_PATTERN = /^\/handoff\s+(chatgpt|claude)\b/i;
+const DEFAULT_ALLOWED_ASSOCIATIONS = ["OWNER", "MEMBER", "COLLABORATOR"];
+const DEFAULT_MAX_COMMENT_PAGES = 20;
 
 function usage() {
   return [
@@ -116,6 +118,29 @@ function stripCommandLines(text) {
     })
     .join("\n")
     .trim();
+}
+
+function getAllowedAssociations() {
+  const configured = process.env.AGENT_BRIDGE_ALLOWED_ASSOCIATIONS;
+  const values = configured
+    ? configured.split(",").map((value) => value.trim().toUpperCase()).filter(Boolean)
+    : DEFAULT_ALLOWED_ASSOCIATIONS;
+
+  return new Set(values);
+}
+
+function getMaxCommentPages() {
+  const raw = process.env.AGENT_BRIDGE_MAX_COMMENT_PAGES;
+  if (!raw) {
+    return DEFAULT_MAX_COMMENT_PAGES;
+  }
+
+  const parsed = Number(raw);
+  if (!Number.isInteger(parsed) || parsed < 1 || parsed > 100) {
+    fail("AGENT_BRIDGE_MAX_COMMENT_PAGES must be an integer between 1 and 100.");
+  }
+
+  return parsed;
 }
 
 function parseCommandBody(body) {
@@ -256,6 +281,11 @@ function formatBridgeComment({ agent, reply, triggerLogin, sourceType, handoffFr
 }
 
 async function githubRequest(url, options = {}) {
+  const { data } = await githubRequestWithMetadata(url, options);
+  return data;
+}
+
+async function githubRequestWithMetadata(url, options = {}) {
   const token = process.env.GITHUB_TOKEN;
   if (!token) {
     fail("GITHUB_TOKEN is missing.");
@@ -279,11 +309,50 @@ async function githubRequest(url, options = {}) {
     fail(`GitHub API request failed (${response.status}): ${message}`);
   }
 
-  return data;
+  return { data, headers: response.headers };
 }
 
 function getApiBaseUrl() {
   return process.env.GITHUB_API_URL || "https://api.github.com";
+}
+
+function getNextPageUrl(linkHeader) {
+  if (!linkHeader) {
+    return null;
+  }
+
+  for (const part of linkHeader.split(",")) {
+    const [urlPart, relPart] = part.split(";");
+    if (relPart?.includes('rel="next"')) {
+      return urlPart.trim().slice(1, -1);
+    }
+  }
+
+  return null;
+}
+
+async function fetchAllPages(initialUrl) {
+  const pages = [];
+  let nextUrl = initialUrl;
+  let pageCount = 0;
+  const maxPages = getMaxCommentPages();
+
+  while (nextUrl) {
+    pageCount += 1;
+    if (pageCount > maxPages) {
+      fail(`Exceeded the comment pagination limit (${maxPages} pages).`);
+    }
+
+    const { data, headers } = await githubRequestWithMetadata(nextUrl);
+    if (!Array.isArray(data)) {
+      fail(`Expected a paginated GitHub list response for ${nextUrl}.`);
+    }
+
+    pages.push(...data);
+    nextUrl = getNextPageUrl(headers.get("link"));
+  }
+
+  return pages;
 }
 
 async function fetchRecentComments(repositoryFullName, issueNumber, limit, includeCurrentCommentId = null) {
@@ -293,7 +362,7 @@ async function fetchRecentComments(repositoryFullName, issueNumber, limit, inclu
 
   const apiBaseUrl = getApiBaseUrl();
   const url = `${apiBaseUrl}/repos/${repositoryFullName}/issues/${issueNumber}/comments?per_page=100`;
-  const data = await githubRequest(url);
+  const data = await fetchAllPages(url);
 
   return (Array.isArray(data) ? data : [])
     .filter((comment) => comment?.id !== includeCurrentCommentId)
@@ -315,7 +384,7 @@ async function fetchReviewThreadComments(repositoryFullName, pullNumber, rootCom
 
   const apiBaseUrl = getApiBaseUrl();
   const url = `${apiBaseUrl}/repos/${repositoryFullName}/pulls/${pullNumber}/comments?per_page=100`;
-  const data = await githubRequest(url);
+  const data = await fetchAllPages(url);
 
   return (Array.isArray(data) ? data : [])
     .filter((comment) => comment?.id === rootCommentId || comment?.in_reply_to_id === rootCommentId)
@@ -414,6 +483,26 @@ function validateEvent(event) {
   }
 
   if (isBot(event.sender) || isBot(event.comment?.user)) {
+    return false;
+  }
+
+  return true;
+}
+
+function getAuthorAssociation(event) {
+  const association = event.comment?.author_association || event.issue?.author_association || "";
+  return typeof association === "string" ? association.trim().toUpperCase() : "";
+}
+
+function ensureTrustedAuthor(event) {
+  const association = getAuthorAssociation(event);
+  const allowedAssociations = getAllowedAssociations();
+
+  if (!allowedAssociations.has(association)) {
+    const allowed = [...allowedAssociations].join(", ");
+    console.log(
+      `Ignoring untrusted trigger from association "${association || "UNKNOWN"}". Allowed associations: ${allowed}.`
+    );
     return false;
   }
 
@@ -621,6 +710,10 @@ async function handleRespond(options) {
   const event = readJson(options.eventPath);
   if (!validateEvent(event)) {
     console.log("Ignoring bot-authored event.");
+    return;
+  }
+
+  if (!ensureTrustedAuthor(event)) {
     return;
   }
 

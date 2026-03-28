@@ -104,6 +104,8 @@ Optioneel kun je repository variables toevoegen:
 
 - `OPENAI_MODEL`
 - `ANTHROPIC_MODEL`
+- `AGENT_BRIDGE_ALLOWED_ASSOCIATIONS`
+- `AGENT_BRIDGE_MAX_COMMENT_PAGES`
 
 De workflow staat in [`.github/workflows/github-agent-bridge.yml`](/home/yorin-vonder/digitale-geletterdheid/.github/workflows/github-agent-bridge.yml).
 
@@ -133,6 +135,8 @@ Protocol:
 - inline codecomments in `Files changed` lopen via het `pull_request_review_comment` event en worden als echte thread-replies teruggeplaatst
 - GitHub ondersteunt geen replies op replies via de review-comment API; de bridge antwoordt daarom altijd op de top-level review comment van de thread
 - verborgen `agent-bridge` markers met een dedupe-key voorkomen dubbele replies bij herhaalde webhook-runs of ongewijzigde edits
+- standaard mogen alleen `OWNER`, `MEMBER` en `COLLABORATOR` slash-commands uitvoeren; dat is optioneel aanpasbaar via `AGENT_BRIDGE_ALLOWED_ASSOCIATIONS`
+- dedupe zoekt paginagewijs door GitHub comments heen; `AGENT_BRIDGE_MAX_COMMENT_PAGES` begrenst hoeveel pagina's per run worden opgehaald
 
 Voor lokale tests zonder GitHub API-calls kun je deze voorbeeldpayload gebruiken:
 

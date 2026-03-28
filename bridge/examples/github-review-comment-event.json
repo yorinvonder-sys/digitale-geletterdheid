@@ -19,6 +19,7 @@
     "side": "RIGHT",
     "diff_hunk": "@@ -76,6 +76,15 @@ export async function replyToThread(...) {\n   const body = payload.body;\n+  // TODO: validate whether the target is a top-level review comment.\n+  const threadId = payload.commentId;\n+  const endpoint = `/pulls/${pullNumber}/comments/${threadId}/replies`;\n   return post(endpoint, { body });\n }",
     "body": "/chatgpt\n/handoff claude\n\nIs dit veilig genoeg voor inline review threads, of missen we nog belangrijke randgevallen?",
+    "author_association": "MEMBER",
     "user": {
       "login": "yorin-vonder",
       "type": "User"

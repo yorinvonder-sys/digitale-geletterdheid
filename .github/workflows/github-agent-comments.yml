@@ -45,4 +45,6 @@ jobs:
           OPENAI_MODEL: ${{ vars.OPENAI_MODEL }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           ANTHROPIC_MODEL: ${{ vars.ANTHROPIC_MODEL }}
+          AGENT_BRIDGE_ALLOWED_ASSOCIATIONS: ${{ vars.AGENT_BRIDGE_ALLOWED_ASSOCIATIONS }}
+          AGENT_BRIDGE_MAX_COMMENT_PAGES: ${{ vars.AGENT_BRIDGE_MAX_COMMENT_PAGES }}
         run: node scripts/github-agent-comments.mjs respond --event-path "$GITHUB_EVENT_PATH"
