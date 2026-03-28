@@ -1,4 +1,4 @@
-import { Search, Filter, GraduationCap, ChevronRight, KeyRound, RotateCcw, Radio, Focus } from 'lucide-react';
+import { Search, Filter, GraduationCap, ChevronRight, KeyRound, RotateCcw, Radio, Focus, Clock, BookOpen } from 'lucide-react';
 import { StudentData, ClassroomConfig } from '../../types';
 import { getMissionsForYear } from '../../config/missions';
 import { AVAILABLE_BADGES } from '../../config/badges';
@@ -58,10 +58,32 @@ export const StudentList: React.FC<StudentListProps> = ({
         setPasswordResetStudent(student);
     };
 
-    const getMissionStatus = (student: StudentData, missionId: string) => {
+    const getMissionStatus = (student: StudentData, missionId: string): 'completed' | 'in-progress' | 'not-started' => {
         const completed = student.stats?.missionsCompleted || [];
         if (completed.includes(missionId)) return 'completed';
+        const progress = student.stats?.missionProgress?.[missionId];
+        if (progress && (progress.completedSteps?.length > 0 || progress.chatHistory?.length > 0)) return 'in-progress';
+        if (student.stats?.activeMission === missionId) return 'in-progress';
         return 'not-started';
+    };
+
+    // Count mission statuses for inline summary
+    const getMissionCounts = (student: StudentData) => {
+        let completed = 0, inProgress = 0;
+        yearMissions.forEach(m => {
+            const status = getMissionStatus(student, m.id);
+            if (status === 'completed') completed++;
+            else if (status === 'in-progress') inProgress++;
+        });
+        return { completed, inProgress, total: yearMissions.length };
+    };
+
+    // Get the last active mission name for a student
+    const getActiveMissionName = (student: StudentData): string | null => {
+        const activeId = student.stats?.activeMission;
+        if (!activeId) return null;
+        const mission = yearMissions.find(m => m.id === activeId);
+        return mission?.short || mission?.name || null;
     };
 
     return (
@@ -108,8 +130,9 @@ export const StudentList: React.FC<StudentListProps> = ({
                             <th className="px-4 py-3">Leerling</th>
                             <th className="px-4 py-3">Status</th>
                             <th className="px-4 py-3">XP</th>
-                            <th className="px-4 py-3 hidden md:table-cell">Missies</th>
-                            <th className="px-4 py-3 hidden lg:table-cell">Badges</th>
+                            <th className="px-4 py-3 hidden sm:table-cell">Voortgang</th>
+                            <th className="px-4 py-3 hidden lg:table-cell">Missies</th>
+                            <th className="px-4 py-3 hidden xl:table-cell">Badges</th>
                             {classroomConfig?.focusMode && <th className="px-4 py-3 hidden md:table-cell">Focus</th>}
                             <th className="px-4 py-3"></th>
                         </tr>
@@ -153,6 +176,12 @@ export const StudentList: React.FC<StudentListProps> = ({
                                             <div>
                                                 <div className="font-bold text-slate-900 text-sm">{student.displayName || 'Naamloos'}</div>
                                                 <div className="text-[10px] text-slate-400">{student.identifier}</div>
+                                                {getActiveMissionName(student) && (
+                                                    <div className="text-[9px] text-indigo-500 font-medium flex items-center gap-1 mt-0.5">
+                                                        <BookOpen size={9} />
+                                                        {getActiveMissionName(student)}
+                                                    </div>
+                                                )}
                                             </div>
                                         </div>
                                     </td>
@@ -183,21 +212,46 @@ export const StudentList: React.FC<StudentListProps> = ({
                                             <span className="text-[9px] font-bold text-indigo-600 bg-indigo-50 px-1 py-0.5 rounded">L{student.stats?.level || 1}</span>
                                         </div>
                                     </td>
-                                    <td className="px-4 py-3 hidden md:table-cell">
-                                        <div className="flex gap-0.5">
-                                            {yearMissions.map(m => (
-                                                <div
-                                                    key={m.id}
-                                                    title={m.name}
-                                                    className={`w-6 h-6 rounded flex items-center justify-center text-[8px] font-black ${getMissionStatus(student, m.id) === 'completed' ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-400'
-                                                        }`}
-                                                >
-                                                    {getMissionStatus(student, m.id) === 'completed' ? '✓' : m.short[0]}
+                                    <td className="px-4 py-3 hidden sm:table-cell">
+                                        {(() => {
+                                            const counts = getMissionCounts(student);
+                                            const pct = counts.total > 0 ? Math.round((counts.completed / counts.total) * 100) : 0;
+                                            return (
+                                                <div className="flex items-center gap-2">
+                                                    <div className="flex-1 max-w-[80px]">
+                                                        <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                                                            <div className="h-full bg-emerald-500 rounded-full transition-all" style={{ width: `${pct}%` }} />
+                                                        </div>
+                                                    </div>
+                                                    <span className="text-[10px] font-bold text-slate-600">{counts.completed}/{counts.total}</span>
+                                                    {counts.inProgress > 0 && (
+                                                        <span className="inline-flex items-center gap-0.5 text-[9px] font-bold text-amber-600" title={`${counts.inProgress} missie(s) bezig`}>
+                                                            <Clock size={9} />
+                                                            {counts.inProgress}
+                                                        </span>
+                                                    )}
                                                 </div>
-                                            ))}
-                                        </div>
+                                            );
+                                        })()}
                                     </td>
                                     <td className="px-4 py-3 hidden lg:table-cell">
+                                        <div className="flex gap-0.5 flex-wrap max-w-[200px]">
+                                            {yearMissions.map(m => {
+                                                const status = getMissionStatus(student, m.id);
+                                                return (
+                                                    <div
+                                                        key={m.id}
+                                                        title={`${m.name}${status === 'in-progress' ? ' (bezig)' : status === 'completed' ? ' (klaar)' : ''}`}
+                                                        className={`w-5 h-5 rounded flex items-center justify-center text-[7px] font-black ${status === 'completed' ? 'bg-emerald-100 text-emerald-700' : status === 'in-progress' ? 'bg-amber-100 text-amber-700' : 'bg-slate-100 text-slate-400'
+                                                            }`}
+                                                    >
+                                                        {status === 'completed' ? '✓' : status === 'in-progress' ? '⏳' : m.short[0]}
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    </td>
+                                    <td className="px-4 py-3 hidden xl:table-cell">
                                         <div className="flex gap-0.5">
                                             {(student.stats?.badges || []).slice(0, 3).map(b => {
                                                 const badge = AVAILABLE_BADGES.find(ab => ab.id === b);
