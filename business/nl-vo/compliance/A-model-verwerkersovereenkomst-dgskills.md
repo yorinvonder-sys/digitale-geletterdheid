@@ -29,13 +29,13 @@
    |---|---|
    | Handelsnaam | DGSkills |
    | Rechtsvorm | Eenmanszaak (omzetting naar B.V. in voorbereiding) |
-   | KvK-nummer | [INVULLEN NA KVK-REGISTRATIE] |
-   | Adres | [INVULLEN NA KVK-REGISTRATIE] |
-   | Postcode en plaats | [INVULLEN NA KVK-REGISTRATIE] |
-   | Vertegenwoordigd door | Yorin von der Osten |
+   | KvK-nummer | 81819889 |
+   | Adres | Oldruitenborghstraat 39 |
+   | Postcode en plaats | 8043TP Zwolle |
+   | Vertegenwoordigd door | Yorin Vonder |
    | Functie | Eigenaar / Directeur |
    | E-mailadres | privacy@dgskills.app |
-   | Telefoonnummer | [INVULLEN NA KVK-REGISTRATIE] |
+   | Telefoonnummer | Op aanvraag via privacy@dgskills.app |
    | Website | https://dgskills.app |
 
 Hierna gezamenlijk "Partijen" en afzonderlijk "Partij" genoemd.
@@ -250,9 +250,9 @@ In deze Verwerkersovereenkomst wordt verstaan onder:
 
 | | Verwerkingsverantwoordelijke | Verwerker (DGSkills) |
 |---|---|---|
-| Naam | [INVULLEN DOOR SCHOOL] | [INVULLEN] |
+| Naam | [INVULLEN DOOR SCHOOL] | Yorin Vonder |
 | Functie | [INVULLEN DOOR SCHOOL] | Eigenaar / Directeur |
-| Datum | [INVULLEN] | [INVULLEN] |
+| Datum | [INVULLEN DOOR SCHOOL] | [DATUM BIJ ONDERTEKENING] |
 | Handtekening | | |
 
 ---

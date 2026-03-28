@@ -417,6 +417,13 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
 
             let promptForAI = enhancementResult.enhancedPrompt;
 
+            // GAME PROGRAMMEUR: Set current game code as context on the chat session
+            // This is sent separately from the message so it bypasses the prompt sanitizer
+            // (it's our own code, not user input)
+            if (selectedRole?.id === 'game-programmeur' && activeGameCode) {
+                chatSessionRef.current.setGameContext(activeGameCode);
+            }
+
             // Debug logging (only in development)
             if (enhancementResult.wasEnhanced && process.env.NODE_ENV === 'development') {
                 console.log('[PromptEnhancer] Original:', textInput);

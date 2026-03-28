@@ -439,13 +439,13 @@ const ResultVisual: React.FC<{
 
 export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoProfile }) => {
     // Persistent progress state (auto-saved to localStorage)
-    const { state: progress, setState: setProgress, clearSave } = useMissionAutoSave<PromptMasterProgress>(
+    const { state: progress, setState: setProgress, clearSave, hasSavedProgress } = useMissionAutoSave<PromptMasterProgress>(
         'prompt-master',
         { currentLevel: 'beginner', challengeIndex: 0, totalScore: 0, completedChallenges: [] }
     );
 
-    // Transient UI state
-    const [phase, setPhase] = useState<'intro' | 'challenge' | 'result'>('intro');
+    // Transient UI state — skip intro if resuming saved progress
+    const [phase, setPhase] = useState<'intro' | 'challenge' | 'result'>(hasSavedProgress ? 'challenge' : 'intro');
     const [userPrompt, setUserPrompt] = useState('');
     const [aiResponse, setAiResponse] = useState<{ output: string; score: number; feedback: { label: string; found: boolean; hint: string; explanation?: string }[]; generatedImageUrl?: string } | null>(null);
     const [showFeedback, setShowFeedback] = useState(false);

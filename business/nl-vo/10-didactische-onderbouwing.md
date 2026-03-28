@@ -85,15 +85,15 @@ Vanaf augustus 2027 zijn de SLO-kerndoelen Digitale Geletterdheid verplicht. Elk
 
 | SLO-code | Kerndoel | Aantal missies | Voorbeelden |
 |---|---|---|---|
-| **21A** | Digitale systemen begrijpen | 19 | Magister Master, Cloud Commander, Network Navigator |
-| **21B** | Media & informatie beoordelen | 20 | Data Detective, Factchecker, Podcast Producer |
-| **21C** | Data verzamelen en verwerken | 11 | Spreadsheet Specialist, Data Pipeline, Data Journalist |
-| **21D** | AI begrijpen en toepassen | 18 | Prompt Master, AI-Trainer, Neural Navigator, ML Trainer |
-| **22A** | Digitale producten maken | 30 | Game Director, Brand Builder, Web Developer |
-| **22B** | Programmeren en computational thinking | 20 | Web Developer, Bug Hunter, Algorithm Architect |
-| **23A** | Veiligheid en privacy | 14 | Social Safeguard, Cyber Detective, Security Auditor |
-| **23B** | Digitaal welzijn | 21 | AI-Spiegel, Filter Bubble Breaker, Digital Rights Defender |
-| **23C** | Maatschappelijke impact van technologie | 26 | AI-Ethicus, Digital Divide Researcher, Tech Court |
+| **21A** | Digitale systemen begrijpen | 24 | Magister Master, Cloud Commander, Network Navigator |
+| **21B** | Media & informatie beoordelen | 23 | Data Detective, Factchecker, Podcast Producer |
+| **21C** | Data verzamelen en verwerken | 20 | Spreadsheet Specialist, Data Pipeline, Data Journalist |
+| **21D** | AI begrijpen en toepassen | 26 | Prompt Master, AI-Trainer, Neural Navigator, ML Trainer |
+| **22A** | Digitale producten maken | 39 | Game Director, Brand Builder, Web Developer |
+| **22B** | Programmeren en computational thinking | 26 | Web Developer, Bug Hunter, Algorithm Architect |
+| **23A** | Veiligheid en privacy | 28 | Social Safeguard, Cyber Detective, Security Auditor |
+| **23B** | Digitaal welzijn | 12 | AI-Spiegel, Schermtijd Coach, Social Safeguard, Digital Rights Defender |
+| **23C** | Maatschappelijke impact van technologie | 32 | AI-Ethicus, Digital Divide Researcher, Tech Court |
 
 ### Aantoonbaar voor de inspectie
 Het docentendashboard toont realtime per leerling welke kerndoelen zijn behaald, welke in progress zijn, en welke nog niet zijn aangeraakt. Bij een inspectiebezoek open je het dashboard en laat je zien: "Dit is waar we staan."

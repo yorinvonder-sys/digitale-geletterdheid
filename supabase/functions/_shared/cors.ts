@@ -19,11 +19,14 @@ const DEV_ORIGINS = [
 
 function buildAllowedOrigins(): Set<string> {
     const origins = new Set(PRODUCTION_ORIGINS);
-    const environment = (globalThis as { Deno?: { env?: { get?: (key: string) => string | undefined } } }).Deno
-        ?.env
-        ?.get?.("ENVIRONMENT");
+    const env = (globalThis as { Deno?: { env?: { get?: (key: string) => string | undefined } } }).Deno?.env;
+    const environment = env?.get?.("ENVIRONMENT");
+    const allowDevCors = env?.get?.("ALLOW_DEV_CORS");
 
-    if (environment !== "production") {
+    // Include dev origins when either:
+    // 1. ENVIRONMENT is not explicitly set to "production", OR
+    // 2. ALLOW_DEV_CORS is explicitly set to "true" (overrides production restriction)
+    if (environment !== "production" || allowDevCors === "true") {
         for (const o of DEV_ORIGINS) {
             origins.add(o);
         }

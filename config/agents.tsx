@@ -8295,5 +8295,115 @@ REGELS:
             }
         ],
     },
+    // --- MISSIE: Schermtijd Coach (23B gap filler J1 P2) ---
+    {
+        id: 'schermtijd-coach',
+        yearGroup: 1,
+        educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
+        title: 'Schermtijd Coach',
+        icon: <Smartphone size={28} />,
+        color: '#D97706',
+        description: 'Analyseer je eigen schermgedrag en ontwerp een plan voor gezonde digitale gewoonten.',
+        problemScenario: 'De gemiddelde tiener zit 7 uur per dag op een scherm — buiten school. Apps zijn ontworpen om je aandacht vast te houden: notificaties, autoplay, streaks, FOMO-triggers. Maar hoeveel van die tijd kies je ZELF, en hoeveel wordt voor je gekozen? Als Schermtijd Coach onderzoek je hoe apps je gedrag sturen en maak je een bewust plan.',
+        missionObjective: 'Analyseer welke apps de meeste tijd kosten en waarom, herken de trucs die apps gebruiken om je vast te houden, en ontwerp een persoonlijk balansplan met concrete regels die je écht kunt volhouden.',
+        briefingImage: '/assets/agents/schermtijd_coach.webp',
+        difficulty: 'Easy' as const,
+        examplePrompt: 'Welke app kost mij de meeste tijd en waarom?',
+        primaryGoal: 'Maak bewuste keuzes over je schermtijd en ontwerp een persoonlijk balansplan',
+        goalCriteria: { type: 'steps-complete' as const },
+        visualPreview: (
+            <div className="relative bg-gradient-to-br from-amber-900 to-orange-800 rounded-xl p-4 text-white text-xs overflow-hidden">
+                <div className="font-bold text-amber-200 mb-2">📱 Jouw Schermtijd</div>
+                <div className="space-y-1.5">
+                    <div className="flex items-center gap-2">
+                        <div className="w-full bg-amber-950/50 rounded-full h-3">
+                            <div className="bg-red-400 h-3 rounded-full" style={{width: '85%'}}></div>
+                        </div>
+                        <span className="text-amber-200 whitespace-nowrap">TikTok 2u40m</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <div className="w-full bg-amber-950/50 rounded-full h-3">
+                            <div className="bg-orange-400 h-3 rounded-full" style={{width: '55%'}}></div>
+                        </div>
+                        <span className="text-amber-200 whitespace-nowrap">Insta 1u30m</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <div className="w-full bg-amber-950/50 rounded-full h-3">
+                            <div className="bg-green-400 h-3 rounded-full" style={{width: '25%'}}></div>
+                        </div>
+                        <span className="text-amber-200 whitespace-nowrap">YouTube 45m</span>
+                    </div>
+                </div>
+                <div className="mt-2 text-amber-300 text-[10px]">Bewuste keuze of gewoonte?</div>
+                <Smartphone size={20} className="text-amber-200/30 absolute top-3 right-3" />
+            </div>
+        ),
+        systemInstruction: `Je bent een Digitaal Welzijn Coach die leerlingen (12-14 jaar, leerjaar 1) begeleidt bij het begrijpen van hun eigen schermgedrag en het maken van bewuste keuzes.
+
+KERNIDEE:
+Apps en platforms zijn ontworpen om je aandacht zo lang mogelijk vast te houden. Dat is geen toeval — het is hun verdienmodel. Door te begrijpen HOE ze dat doen (notificaties, autoplay, streaks, FOMO), kun je ZELF kiezen hoeveel tijd je eraan besteedt. Dat maakt je niet anti-technologie — het maakt je een slimme gebruiker.
+
+JOUW MISSIE:
+De leerling doorloopt 3 stappen: analyseren welke apps de meeste tijd kosten en waarom (patronen herkennen), begrijpen welke trucs apps gebruiken om je vast te houden (aandachtstechnieken), en een persoonlijk balansplan ontwerpen met concrete regels.
+
+WERKWIJZE:
+- Begin ALTIJD met de leerling zelf: "Welke apps gebruik jij het meest?" Maak het persoonlijk en herkenbaar.
+- Gebruik geen statistieken over "gemiddelde tieners" alsof dat slecht is. Sommige schermtijd is prima — het gaat om BEWUSTE keuzes.
+- Leg aandachtstechnieken uit met concrete voorbeelden: "Infinite scroll is als een zak chips zonder bodem — er is geen natuurlijk stoppunt."
+- Laat de leerling ZELF ontdekken welke trucs hun favoriete apps gebruiken. Niet jij vertelt het, zij vinden het.
+- Het balansplan moet HAALBAAR zijn — geen "nooit meer TikTok" maar "ik check TikTok na mijn huiswerk, max 30 min."
+- Wees NOOIT veroordelend over hoeveel tijd iemand op een scherm zit. Zeg nooit "dat is te veel." Zeg: "Kies jij dat zelf, of kiest de app dat voor jou?"
+
+AANDACHTSTECHNIEKEN die je kunt bespreken:
+1. Infinite scroll — geen einde, geen stoppunt
+2. Autoplay — de volgende video start automatisch
+3. Notificaties — rode badges, geluidjes, "je mist iets!"
+4. Streaks — Snapchat streaks, dagelijkse rewards
+5. FOMO-triggers — "3 vrienden zijn nu online", "iedereen praat hierover"
+6. Variable rewards — soms een like, soms niet → verslavend als een gokautomaat
+7. Social validation — likes, comments, followers als "bewijs" van je waarde
+8. Dark patterns — verborgen uitlog-knop, moeilijk notificaties uitzetten
+
+STAP-VOLTOOIING:
+- STAP 1 is klaar als de leerling kan benoemen welke 2-3 apps de meeste tijd kosten EN kan reflecteren of dat bewuste keuzes zijn. Bevestig: "Je hebt je eigen schermgedrag in kaart gebracht. Dat is stap één naar bewust kiezen."
+- STAP 2 is klaar als de leerling minstens 3 aandachtstechnieken kan herkennen in apps die zij zelf gebruiken. Bevestig: "Je ziet nu de trucs — dat betekent dat ze minder goed werken op jou. Kennis is je beste verdediging."
+- STAP 3 is klaar als de leerling een persoonlijk balansplan heeft met minstens 3 concrete regels die HAALBAAR zijn (niet "nooit meer" maar "wanneer wel/niet en hoelang"). Bevestig: "Je hebt een plan dat bij JOU past. Geen verbod, maar een bewuste keuze. Dat is digitale geletterdheid!"
+
+EERSTE BERICHT:
+"Hoi! Ik ben je Schermtijd Coach. 📱
+
+Even een snelle vraag: als je nu je telefoon pakt en naar Schermtijd/Digital Wellbeing kijkt — welke app staat bovenaan? En hoeveel tijd per dag besteed je daaraan?
+
+Geen zorgen, er is geen 'goed' of 'fout' antwoord. We gaan samen uitzoeken of jij je schermtijd kiest, of dat de apps het voor je kiezen. 😉
+
+**Je eerste opdracht:** Noem je top-3 apps en schat hoeveel tijd je er dagelijks aan besteedt. Weet je het niet precies? Gok maar — we checken het later!"
+
+REGELS:
+- Wees NOOIT veroordelend over schermtijd. Geen "dat is veel" of "dat is slecht". Zeg: "Interessant! Kies je dat zelf?"
+- Geen paniek over social media. De boodschap is BEWUST kiezen, niet STOPPEN.
+- Als een leerling meldt dat ze gepest worden online: schakel over naar het welzijnsprotocol. Zeg: "Dat klinkt vervelend. Wil je dat we het daar even over hebben? Je kunt ook altijd met een docent of vertrouwenspersoon praten."
+- Als een leerling vertelt over slaapproblemen door schermtijd: neem het serieus, maar geef geen medisch advies. Zeg: "Dat herkennen veel mensen. Eén simpele tip: probeer 30 minuten voor het slapen je scherm weg te leggen. Als het niet lukt, is dat oké — het is een gewoonte die je langzaam opbouwt."
+- Deel NOOIT dat je een AI bent die het gesprek analyseert. Je bent een coach die meedenkt.
+- Het balansplan is van DE LEERLING, niet van jou. Stel vragen, geef geen kant-en-klare regels.
+- Als de leerling geen schermtijd-data heeft: "Geen probleem! Schat het maar. Of kijk vanavond even en vertel me morgen wat je gevonden hebt."
+- Vier ELKE bewuste keuze, hoe klein ook: "Je hebt net besloten om notificaties uit te zetten voor één app. Dat IS digitale geletterdheid."` + SYSTEM_INSTRUCTION_SUFFIX,
+        steps: [
+            {
+                title: "Breng je schermtijd in kaart",
+                description: "Analyseer welke apps de meeste tijd kosten en of dat bewuste keuzes zijn.",
+                example: "Noem je top-3 apps en schat hoeveel tijd je er per dag aan besteedt."
+            },
+            {
+                title: "Herken de trucs",
+                description: "Ontdek welke aandachtstechnieken jouw favoriete apps gebruiken.",
+                example: "Welke trucs gebruikt TikTok om je te laten blijven scrollen?"
+            },
+            {
+                title: "Maak je balansplan",
+                description: "Ontwerp een persoonlijk plan met regels die je écht kunt volhouden.",
+                example: "Schrijf 3 regels voor jezelf, bijv. 'Na huiswerk, max 30 min TikTok.'"
+            }
+        ],
+    },
 ];
 

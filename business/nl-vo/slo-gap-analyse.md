@@ -33,10 +33,10 @@ Voor deze analyse zijn alle missies uit `config/slo-kerndoelen-mapping.ts` getel
 | **22A** | Digitale producten | 14 | 16 | 9 | **39** |
 | **22B** | Programmeren | 7 | 9 | 10 | **26** |
 | **23A** | Veiligheid & privacy | 12 | 7 | 9 | **28** |
-| **23B** | Digitaal welzijn | 3 | 5 | 3 | **11** |
+| **23B** | Digitaal welzijn | 4 | 5 | 3 | **12** |
 | **23C** | Maatschappij | 11 | 10 | 11 | **32** |
 
-**Totaal missies:** 39 (J1) + 35 (J2) + 28 (J3) = 102 (inclusief 12 assessments)
+**Totaal missies:** 40 (J1) + 35 (J2) + 28 (J3) = 103 (inclusief 12 assessments)
 
 ### 2.2 Vergelijking met v1.0
 

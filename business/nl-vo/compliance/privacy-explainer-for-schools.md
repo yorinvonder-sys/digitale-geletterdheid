@@ -59,5 +59,5 @@ dgskills ondersteunt de school bij:
 
 ## 8) Contact
 
-- Privacyvragen school: neem contact op met uw schooleigen privacy-contactpersoon of FG.
-- Privacy/security contact DGSkills: privacy@dgskills.app / security@dgskills.app.
+- Privacyvragen school: neem contact op met de privacyverantwoordelijke van uw school.
+- Privacy/security contact DGSkills: privacy@dgskills.app.

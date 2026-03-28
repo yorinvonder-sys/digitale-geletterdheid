@@ -198,6 +198,7 @@ const MISSION_OVERRIDES: Record<string, Partial<Mission>> = {
     'mission-vision': { info: 'Verbeeld je idee. Gebruik AI en design tools om je concept tot leven te wekken in een pitch.' },
     'mission-launch': { info: 'Showtime! Presenteer je werk aan de klas en laat zien wat je hebt geleerd als Digitale Expert.' },
     'access-control-engineer': { info: 'Het inlogportaal van school is lek! Gasten komen overal bij, leerlingen zien elkaars cijfers. Analyseer de beveiligingsregels, stel de juiste rechten in per rol en test of alles klopt.' },
+    'schermtijd-coach': { info: 'De gemiddelde tiener zit 7 uur per dag op een scherm. Maar kies jij dat zelf, of kiezen de apps dat voor jou? Analyseer je schermgedrag, herken de trucs van apps, en maak een persoonlijk balansplan.' },
 };
 
 // Bouw missies dynamisch op basis van curriculum config + agent definities

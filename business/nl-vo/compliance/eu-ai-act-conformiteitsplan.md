@@ -599,7 +599,7 @@ De conformiteitsbeoordelingsprocedure op basis van interne controle omvat drie o
 | # | Actie | Tijd | Impact |
 |---|-------|------|--------|
 | 1 | Corrigeer audit-report.md: "Limited Risk" -> "High Risk" | 30 min | Hoog (correcte classificatie) |
-| 2 | Vul alle `[invullen]` placeholders in privacy-documenten in | 2 uur | Midden |
+| 2 | ~~Vul alle `[invullen]` placeholders in privacy-documenten in~~ **Afgerond** (28 mrt 2026) | — | Voltooid |
 | 3 | Documenteer bestaande maatregelen als eerste versie risicoregister | 4 uur | Hoog (basis Art. 9) |
 | 4 | Begin Annex VIII registratiedossier (verzamel basisgegevens) | 2 uur | Midden |
 

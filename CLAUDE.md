@@ -1,5 +1,13 @@
 # Project: AI Lab - Future Architect (DGSkills)
 
+@.claude/project-context.md
+@.claude/skill-router.md
+@.claude/acceptance-checklist.md
+@.claude/workstreams.md
+@.claude/adhd-format.md
+@.claude/current-task.md
+@.claude/task-queue.md
+
 ## Stack
 - React 19 + TypeScript + Vite
 - Supabase (auth, database, edge functions, RLS)
@@ -24,71 +32,45 @@
 - Background agents for long-running tasks (builds, audits, large searches).
 - Default language: Dutch (Nederlands), unless context is English code/docs.
 
-## Prompt Coaching — VERPLICHT
+## Autonome Scoping — VERPLICHT
 
-**Bij ELKE gebruikersprompt checkt Claude eerst of deze voldoende informatie bevat.**
+**Claude werkt repo-first en context-first.**
 
-### Criteria voor een complete prompt
+Bij een onvolledige prompt moet Claude meestal niet terugkaatsen met een lijst ontbrekende velden, maar:
+1. eerst de relevante code en lokale documentatie lezen
+2. zelf een redelijke scope bepalen
+3. expliciete aannames noteren
+4. pas een vraag stellen als een verkeerde aanname grote gevolgen kan hebben
 
-Een goede prompt heeft:
-1. **WAT** — Wat moet er gebeuren? (actie/doel)
-2. **WAAR** — Welk bestand, component, of deel van het systeem?
-3. **WAAROM** — Welk probleem lost dit op? (context)
+### Standaardgedrag
+- Zoek eerst zelf uit **WAT**, **WAAR**, **WAAROM**, doelgroep, leerjaar, periode en SLO-koppeling als dat redelijk te herleiden is uit de repo.
+- Gebruik de lokale DGSkills-documentatie als standaardkader.
+- Reageer niet met alleen placeholder-coaching als je voldoende context uit de codebase kunt halen.
+- Geef altijd ook uitleg in gewone taal voor een niet-programmerende product owner.
 
-Voor audits, analyses en onderzoeksvragen ook:
-4. **KADER** — Aan welke criteria/standaard toetsen? (bijv. SLO-kerndoelen, Bloom, WCAG)
-5. **OUTPUT** — Wat verwacht je terug? (tabel, lijst, advies, code)
+### Wanneer wel terugvragen
+- Er zijn meerdere plausibele scopes die wezenlijk ander productgedrag opleveren.
+- De keuze raakt privacy, veiligheid, compliance, data model, of school-facing claims.
+- De gebruiker moet een productbeslissing nemen die je niet veilig kunt raden.
 
-### Wat Claude doet als de prompt onvolledig is
+### Wat Claude standaard oplevert
+- wat er gebouwd of onderzocht is
+- welke aannames zijn gemaakt
+- welke bestanden of systemen zijn geraakt
+- welke SLO-doelen en didactische principes relevant zijn
+- uitleg in gewone taal
+- wat de gebruiker hierover kan zeggen in een demo, pilot of verkoopgesprek
 
-1. **Benoem wat er wél goed is** — erken het doel van de gebruiker.
-2. **Benoem wat er ontbreekt** — wees specifiek: "WAAR ontbreekt" is beter dan "je prompt is vaag".
-3. **Geef een verbeterde versie** — herschrijf de prompt zodat Yorin ziet hoe het beter kan. Gebruik het format van `.claude/prompt-templates.md` als basis.
-4. **Vraag bevestiging** — "Wil je dat ik deze verbeterde prompt uitvoer, of wil je hem nog aanpassen?"
+### Handoff protocol
+- Read `.claude/current-task.md` as the active baton for what should happen next.
+- Read `.claude/task-queue.md` for the follow-up order after the current baton is done.
+- If the user gives no new priority, continue from the baton and queue.
+- If the user does override, follow the user and then resume the queue later.
 
-Voorbeeld:
-- Yorin: "Doe een audit van de opdrachten"
-- Claude: "Goed doel! Maar ik mis WAAR (welke bestanden), KADER (waarop beoordelen) en OUTPUT (hoe teruggeven). Hier is een sterkere versie: [verbeterde prompt]. Klopt dit, of wil je het kader aanpassen?"
-
-### Uitzonderingen (direct handelen, niet coachen)
-- De prompt bevat WAT + WAAR + WAAROM (en KADER/OUTPUT bij analyses)
-- De gebruiker heeft code geselecteerd in VSCode (dat is de "WAAR")
-- Het is een follow-up op een lopend gesprek waar de context al duidelijk is
-- Het is een simpele vraag ("Wat doet deze functie?")
-- De gebruiker zegt expliciet "voer uit" of "gewoon doen"
-
-### Prompt templates
-Beschikbaar in `.claude/prompt-templates.md` — verwijs hiernaar als Yorin een nieuw type taak start.
-
-### Prompt Score — na ELKE response
-
-Na ELKE inhoudelijke response voegt Claude een kort scoreblok toe onderaan. Dit helpt Yorin om betere prompts te leren schrijven.
-
-**Format (altijd dit exacte format):**
-
-```
----
-Prompt Score: X/5
-[per criterium: check of tip]
-Tip: [één concrete verbetering voor de volgende keer]
-```
-
-**Scorecriteria:**
-- **1/5** — Alleen een vaag doel, geen WAAR of WAAROM
-- **2/5** — WAT is duidelijk, maar WAAR of WAAROM ontbreekt
-- **3/5** — WAT + WAAR aanwezig, WAAROM impliciet
-- **4/5** — WAT + WAAR + WAAROM aanwezig, maar details missen (bijv. geen randgevallen, geen gewenst gedrag)
-- **5/5** — Volledig: WAT + WAAR + WAAROM + specifieke details/constraints
-
-**Bij audits/analyses extra:**
-- KADER en OUTPUT meewegen in de score (max 5/5 alleen als deze ook aanwezig zijn)
-
-**Regels:**
-- Altijd eerlijk scoren — ook bij 5/5 (dan: "Sterke prompt, niks toe te voegen")
-- De tip moet specifiek zijn, niet generiek ("voeg WAAROM toe" > "wees specifieker")
-- Bij follow-ups in een lopend gesprek: score de originele prompt + context samen
-- Bij simpele vragen ("Wat doet deze functie?"): geen score tonen
-- Maximaal 3 regels — dit is een leermoment, geen essay
+### Prompt voorbeelden
+- Voor herbruikbare gebruikersprompts: zie `.claude/prompt-templates.md`
+- Voor vaste operatorflow: zie `.claude/operator-sessions.md`
+- Voor feature-uitleg na oplevering: zie `.claude/feature-handover-template.md`
 
 ## ADHD Werkprotocol
 - Eén taak tegelijk. Niet springen.
@@ -96,6 +78,12 @@ Tip: [één concrete verbetering voor de volgende keer]
 - Vier kleine overwinningen. Elke afgeronde taak is vooruitgang.
 - Duidelijke "done" criteria per taak.
 - Geen overweldigende lijsten — max 3-5 items tegelijk zichtbaar.
+- Gebruik altijd de compacte statusweergave uit `.claude/adhd-format.md`.
+- Label altijd de huidige werkstroom met een naam uit `.claude/workstreams.md`.
+- Benoem expliciet fasewissels en scopewissels.
+- Zeg expliciet `Jij hoeft nu niets te doen.` als er geen actie nodig is van de gebruiker.
+- In ELKE nieuwe sessie moet de eerste inhoudelijke reactie direct beginnen met het statusblok uit `.claude/adhd-format.md`.
+- Sla dit niet over, ook niet als de gebruiker alleen een korte opdracht geeft.
 
 ## MCP Servers
 - **Supabase:** database queries, schema, migrations, edge functions, logs
@@ -115,16 +103,61 @@ Tip: [één concrete verbetering voor de volgende keer]
 - **Pilot playbook:** `business/nl-vo/03-pilot-cohort-playbook.md`
 - **USP strategie:** `business/nl-vo/07-usp-strategy-and-messaging.md`
 
+## Security & Cybersecurity — VERPLICHT
+
+**DGSkills verwerkt data van minderjarigen in een HIGH RISK AI-context. Security is geen nice-to-have maar een harde eis.**
+
+### Altijd-actieve security regels
+
+Bij ELKE code-wijziging checkt Claude automatisch:
+
+1. **OWASP Top 10** — Geen XSS, SQL injection, CSRF, SSRF, command injection, path traversal, of insecure deserialization introduceren.
+2. **Input validatie** — Alle user input (formulieren, URL params, API bodies, AI prompts) wordt server-side gevalideerd en gesanitized. Vertrouw nooit op client-side validatie alleen.
+3. **Output encoding** — Alle dynamische content in HTML wordt geëscaped. DOMPurify voor user-generated HTML.
+4. **Authentication & Authorization** — Supabase RLS is de primaire access control. Controleer dat RLS-policies intact blijven bij schema-wijzigingen. MFA (AAL2) is verplicht voor docent- en adminrollen.
+5. **Secrets management** — Geen secrets, API keys, tokens, of credentials in code, logs, of client-side bundles. Gebruik environment variables en Supabase secrets.
+6. **Data minimalisatie** — Verzamel alleen data die nodig is. Geen onnodige PII opslaan. Respecteer de DPIA en het verwerkingsregister.
+7. **Prompt injection preventie** — AI-interacties moeten beschermd zijn tegen prompt injection (40+ patronen, NL + EN). SystemInstruction mag niet door de client worden bepaald.
+8. **Dependency security** — Geen packages met bekende CVEs toevoegen. Bij `npm install` altijd `npm audit` overwegen.
+9. **Error handling** — Geen stack traces, interne paden, of database-structuur lekken naar de client. Gebruik generieke foutmeldingen voor gebruikers.
+10. **Transport security** — Alle communicatie via HTTPS. CSP headers intact houden. Geen `unsafe-inline` of `unsafe-eval` in script-src.
+
+### Security-gevoelige bestanden (extra voorzichtigheid)
+
+- `supabase/functions/chat/index.ts` — AI endpoint, prompt injection risico
+- `supabase/functions/chatStream/index.ts` — streaming AI endpoint
+- `supabase/functions/_shared/vertexAuth.ts` — service account authenticatie
+- `supabase/functions/_shared/cors.ts` — CORS whitelist
+- `services/PermissionService.ts` — role-based access control
+- `services/supabase.ts` — database client configuratie
+- Alle bestanden in `supabase/migrations/` — RLS policies, schema
+
+### Wanneer Claude moet waarschuwen
+
+- Een wijziging raakt auth, RLS, CORS, of permission logic → **altijd expliciet benoemen**
+- Een nieuwe dependency wordt toegevoegd → **check of het een bekende, onderhouden package is**
+- User input wordt doorgegeven aan een database query of AI prompt → **sanitization verifiëren**
+- Een edge function ontvangt data van de client → **server-side validatie verplicht**
+- Compliance-docs of privacy-claims worden aangepast → **check tegen product-werkelijkheid**
+
+### Security referentiedocumenten
+- `SECURITY.md` — vulnerability reporting en bekende controls
+- `docs/security/security-audit-rapport-dgskills.md` — laatste security audit
+- `docs/security/rapport-ai-cybersecurity-kwetsbaarheden.md` — AI-specifieke kwetsbaarheden
+- `Regelgeving/AUDIT_RAPPORT_2026.md` — compliance audit
+- `business/nl-vo/compliance/dpia-dgskills-compleet.md` — DPIA
+- `business/nl-vo/compliance/legal-matrix.md` — juridisch kader
+
 ## AI Act Classification
 - **HIGH RISK** onder EU AI Act Annex III punt 3(b) — AI voor beoordeling leerresultaten.
 - Deadline: **2 augustus 2026** — hoog-risico verplichtingen worden afdwingbaar.
 - De classificatie "beperkt risico" in `08-lanceringsrapport` is INCORRECT.
 
 ## Open Issues (Pre-Launch Blockers)
-1. `systemInstruction` wordt ongevalideerd vanuit client naar chat Edge Function gestuurd
-2. Privacy-docs bevatten `[invullen]` placeholders (wacht op KvK)
-3. Geen Algemene Voorwaarden
-4. Geen KvK-inschrijving / juridische entiteit
+1. ~~`systemInstruction` wordt ongevalideerd vanuit client naar chat Edge Function gestuurd~~ **OPGELOST** — server valideert via `roleId` + `getSystemInstruction()`
+2. ~~Privacy-docs bevatten `[invullen]` placeholders~~ **OPGELOST** (28 mrt 2026) — KvK 81819889, FG: Yorin Vonder
+3. ~~Geen Algemene Voorwaarden~~ **CONCEPT GEREED** (28 mrt 2026) — `business/nl-vo/compliance/algemene-voorwaarden-dgskills.md` — moet nog door jurist worden gereviewed
+4. ~~Geen KvK-inschrijving / juridische entiteit~~ **OPGELOST** — Eenmanszaak DGSkills.app, KvK 81819889
 5. Geen beroepsaansprakelijkheidsverzekering
 
 ## Resolved Issues (referentie, niet opnieuw doen)

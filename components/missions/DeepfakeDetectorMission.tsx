@@ -8,9 +8,10 @@
  */
 
 import React, { useState } from 'react';
-import { ArrowLeft, Trophy, ChevronRight, Check, X, Eye, Brain, Shield, AlertTriangle, Sparkles, ThumbsUp, ThumbsDown, HelpCircle, Zap, Camera, FileText, MessageSquare } from 'lucide-react';
+import { ArrowLeft, Trophy, ChevronRight, Check, X, Eye, Brain, Shield, Sparkles, ThumbsUp, ThumbsDown, HelpCircle, Zap, Camera, FileText, MessageSquare, MessageCircle, Lightbulb } from 'lucide-react';
 import { UserStats, VsoProfile } from '../../types';
 import { useMissionAutoSave } from '@/hooks/useMissionAutoSave';
+import { StudentAIChat } from '@/components/StudentAIChat';
 
 interface DeepfakeDetectorState {
     currentLevel: 'beginner' | 'gevorderd' | 'expert';
@@ -28,6 +29,7 @@ interface Props {
     onComplete: (success: boolean) => void;
     stats?: UserStats;
     vsoProfile?: VsoProfile;
+    userId?: string; // voor AI-copiloot
 }
 
 // Types
@@ -42,6 +44,10 @@ interface DetectionChallenge {
     explanation: string;
     telltaleSign?: string; // What gives it away
     category: string;
+    /** 3e stap van de 3-stappenmethode: verdiepingsvraag na de uitleg */
+    challengeQuestion: string;
+    /** Vereenvoudigde versie voor VSO dagbesteding */
+    challengeQuestionVso?: string;
 }
 
 // Challenge data - Mix of real and AI-generated descriptions
@@ -57,7 +63,9 @@ const CHALLENGES: DetectionChallenge[] = [
         hints: ['Tel het aantal poten', 'Klopt de anatomie?'],
         explanation: 'AI heeft moeite met het correct tellen van lichaamsdelen. Dieren met te veel of te weinig poten, vingers, of ogen zijn vaak AI-gegenereerd.',
         telltaleSign: 'Verkeerd aantal lichaamsdelen (7 poten)',
-        category: 'Anatomie fouten'
+        category: 'Anatomie fouten',
+        challengeQuestion: 'Welke andere lichaamsdelen zou je altijd controleren als je twijfelt of een foto echt is?',
+        challengeQuestionVso: 'Als je een foto ziet: wat check je als eerste om te zien of het echt is?',
     },
     {
         id: 'b2',
@@ -68,7 +76,9 @@ const CHALLENGES: DetectionChallenge[] = [
         isAIGenerated: false,
         hints: ['Is het taalgebruik normaal?', 'Klinkt het als echt nieuws?'],
         explanation: 'Dit is een verzonnen nieuwsbericht om te illustreren, maar het volgt normale nieuwsstructuur. Niet alles dat fake klinkt is AI - menselijk geschreven nepnieuws bestaat ook!',
-        category: 'Nepnieuws herkennen'
+        category: 'Nepnieuws herkennen',
+        challengeQuestion: 'Als je een bericht ziet dat te mooi of te bizar klinkt om waar te zijn — waar zou je het dan controleren?',
+        challengeQuestionVso: 'Je ziet een raar nieuwsbericht. Wat doe je als eerste?',
     },
     {
         id: 'b3',
@@ -80,7 +90,9 @@ const CHALLENGES: DetectionChallenge[] = [
         hints: ['Kijk naar kleine details', 'Zijn randen scherp?'],
         explanation: 'AI-gegenereerde afbeeldingen hebben vaak problemen met kleine details zoals sieraden, vingers, en overgangen tussen objecten.',
         telltaleSign: 'Smeltende oorbel en wazige vingers',
-        category: 'Detail fouten'
+        category: 'Detail fouten',
+        challengeQuestion: 'Naast vingers en sieraden: welke andere kleine details zou je bij een portretfoto altijd checken?',
+        challengeQuestionVso: 'In een echte foto: kloppen de details altijd? Geef een voorbeeld.',
     },
 
     // GEVORDERD - Harder to spot
@@ -94,7 +106,9 @@ const CHALLENGES: DetectionChallenge[] = [
         hints: ['Is het TE vriendelijk?', 'Voelt het natuurlijk?'],
         explanation: 'Dit bericht is TE perfect gestructureerd en vriendelijk. Echte tieners schrijven informeler, met typefouten en minder "perfecte" zinnen. Dit volgt een typisch AI-chatbot patroon.',
         telltaleSign: 'Te gepolijst en gestructureerd voor een tiener',
-        category: 'Chatbot herkenning'
+        category: 'Chatbot herkenning',
+        challengeQuestion: 'Hoe zou je veilig kunnen checken of een online profiel van een echte persoon is, zonder zelf risico te lopen?',
+        challengeQuestionVso: 'Je krijgt een berichtje van iemand die je niet kent. Wat doe je?',
     },
     {
         id: 'g2',
@@ -105,7 +119,9 @@ const CHALLENGES: DetectionChallenge[] = [
         isAIGenerated: false,
         hints: ['Zijn er bronnen?', 'Klinkt het te mooi om waar te zijn?'],
         explanation: 'Dit is menselijk geschreven nepnieuws/clickbait, GEEN AI. Maar het bevat typische misleidingstechnieken: overdreven claims, valse autoriteit ("Harvard"), en geen echte bron.',
-        category: 'Misleidende claims'
+        category: 'Misleidende claims',
+        challengeQuestion: 'Waarom werkt een claim als "bewezen door Harvard-wetenschappers" zo goed, ook als er geen bron bij staat?',
+        challengeQuestionVso: 'Je ziet een bericht met "wetenschappers bewezen dat...". Wat doe je voordat je het deelt?',
     },
     {
         id: 'g3',
@@ -117,7 +133,9 @@ const CHALLENGES: DetectionChallenge[] = [
         hints: ['Lees de teksten in de afbeelding', 'Klopt alle tekst?'],
         explanation: 'AI heeft grote moeite met het genereren van leesbare tekst in afbeeldingen. Winkelborden, posters, en T-shirts bevatten vaak onzin of vervormde letters.',
         telltaleSign: 'Onleesbare/onzinnige tekst op borden',
-        category: 'Tekst in afbeeldingen'
+        category: 'Tekst in afbeeldingen',
+        challengeQuestion: 'Naast tekst op borden: op welke andere plekken in een foto zou AI nog meer fouten kunnen maken met letters of cijfers?',
+        challengeQuestionVso: 'Je ziet een foto van een straat. Waar kijk jij naar om te zien of de tekst klopt?',
     },
 
     // EXPERT - Very subtle
@@ -131,7 +149,9 @@ const CHALLENGES: DetectionChallenge[] = [
         hints: ['Let op de zinsstructuur', 'Is er variatie in schrijfstijl?'],
         explanation: 'Dit is AI-gegenereerd. Let op: elke zin is kort en feitelijk. Er is geen persoonlijke stijl, geen meningen, en geen verbindingswoorden tussen zinnen. Dit is typisch voor basis-AI tekst.',
         telltaleSign: 'Monotone korte zinnen zonder persoonlijke stem',
-        category: 'AI schrijfstijl'
+        category: 'AI schrijfstijl',
+        challengeQuestion: 'Hoe zou jij dit essay herschrijven om het menselijker te laten klinken? Wat zou je toevoegen?',
+        challengeQuestionVso: 'Wat mist er in dit stuk om het "menselijk" te laten klinken?',
     },
     {
         id: 'e2',
@@ -142,7 +162,9 @@ const CHALLENGES: DetectionChallenge[] = [
         isAIGenerated: false,
         hints: ['Heeft het een persoonlijk perspectief?', 'Zijn er emoties?'],
         explanation: 'Dit is waarschijnlijk door een mens geschreven. Het heeft een persoonlijk verhaal, emotie, en reflectie. AI zou minder persoonlijke anekdotes gebruiken.',
-        category: 'Persoonlijke verhalen'
+        category: 'Persoonlijke verhalen',
+        challengeQuestion: 'Kan een AI ook een overtuigend persoonlijk verhaal schrijven? Hoe zou je dat onderscheiden van een echt verhaal?',
+        challengeQuestionVso: 'Is een persoonlijk verhaal altijd echt? Hoe check je dat?',
     },
     {
         id: 'e3',
@@ -154,7 +176,9 @@ const CHALLENGES: DetectionChallenge[] = [
         hints: ['Is het TE perfect?', 'Zijn er onnatuurlijke elementen?'],
         explanation: 'AI-landschappen zijn vaak "te perfect" - de kleuren zijn te verzadigd, de compositie is te ideaal, en er zijn geen "imperfecties" die je in echte foto\'s ziet (vogels, wolken, menselijke aanwezigheid).',
         telltaleSign: 'Onnatuurlijk perfecte compositie en kleuren',
-        category: 'Perfectie als indicator'
+        category: 'Perfectie als indicator',
+        challengeQuestion: 'Waarom is "te perfect" een waarschuwingssignaal bij digitale content? Wanneer is perfectie juist verdacht?',
+        challengeQuestionVso: 'Zou jij een "te mooie" foto vertrouwen? Waarom wel of niet?',
     }
 ];
 
@@ -216,7 +240,7 @@ const ContentCard: React.FC<{
     );
 };
 
-export const DeepfakeDetectorMission: React.FC<Props> = ({ onBack, onComplete, vsoProfile }) => {
+export const DeepfakeDetectorMission: React.FC<Props> = ({ onBack, onComplete, vsoProfile, userId }) => {
     const { state, setState, clearSave } = useMissionAutoSave<DeepfakeDetectorState>(
         'deepfake-detector',
         {
@@ -237,10 +261,17 @@ export const DeepfakeDetectorMission: React.FC<Props> = ({ onBack, onComplete, v
     const [answer, setAnswer] = useState<'real' | 'ai' | null>(null);
     const [showFeedback, setShowFeedback] = useState(false);
     const [showHints, setShowHints] = useState(vsoProfile === 'dagbesteding');
+    const [isChatOpen, setIsChatOpen] = useState(false);
 
     const levelChallenges = CHALLENGES.filter(c => c.level === currentLevel);
     const currentChallenge = levelChallenges[currentChallengeIndex];
     const totalChallenges = CHALLENGES.length;
+
+    // Globale challenge-index voor correcte voortgangsbalk over alle niveaus
+    const globalChallengeIndex =
+        currentLevel === 'beginner' ? currentChallengeIndex :
+        currentLevel === 'gevorderd' ? 3 + currentChallengeIndex :
+        6 + currentChallengeIndex;
 
     const handleAnswer = (userAnswer: 'real' | 'ai') => {
         if (showFeedback) return;
@@ -265,7 +296,8 @@ export const DeepfakeDetectorMission: React.FC<Props> = ({ onBack, onComplete, v
     const handleNext = () => {
         setAnswer(null);
         setShowFeedback(false);
-        setShowHints(false);
+        // VSO dagbesteding-leerlingen krijgen hints altijd aan
+        setShowHints(vsoProfile === 'dagbesteding');
 
         if (currentChallengeIndex < levelChallenges.length - 1) {
             setState(prev => ({ ...prev, currentChallengeIndex: prev.currentChallengeIndex + 1 }));
@@ -380,6 +412,19 @@ export const DeepfakeDetectorMission: React.FC<Props> = ({ onBack, onComplete, v
                         </div>
                     </div>
 
+                    {/* Reflectievraag tussen levels */}
+                    <div className="bg-[#2A9D8F]/10 rounded-2xl p-5 border border-[#2A9D8F]/20 text-left">
+                        <p className="text-[#2A9D8F] font-bold text-sm mb-1 flex items-center gap-2">
+                            <Lightbulb size={16} />
+                            Denk even terug
+                        </p>
+                        <p className="text-[#3D3D38] text-sm">
+                            {currentLevel === 'beginner'
+                                ? 'Welk AI-kenmerk uit dit level vond jij het duidelijkst? En welke zou je makkelijk missen in het echte leven?'
+                                : 'De gevorderde uitdagingen zijn lastiger. Wat is het verschil tussen misleidend menselijk geschreven content en AI-content?'}
+                        </p>
+                    </div>
+
                     <button
                         onClick={handleNextLevel}
                         className="w-full py-4 bg-[#D97757] hover:bg-[#C46849] text-white rounded-full font-black uppercase tracking-wide hover:shadow-lg hover:shadow-[#D97757]/30 transition-all duration-300 flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-[#D97757]"
@@ -456,6 +501,7 @@ export const DeepfakeDetectorMission: React.FC<Props> = ({ onBack, onComplete, v
                 <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
                     <button
                         onClick={onBack}
+                        aria-label="Terug naar Mission Control"
                         className="p-2 text-[#6B6B66] hover:text-[#1A1A19] transition-all duration-300"
                     >
                         <ArrowLeft size={24} />
@@ -488,17 +534,56 @@ export const DeepfakeDetectorMission: React.FC<Props> = ({ onBack, onComplete, v
                             <Sparkles size={14} className="text-[#D97757]" />
                             <span className="text-[#1A1A19] font-bold text-sm">{score}</span>
                         </div>
+
+                        {/* AI-copiloot knop */}
+                        <button
+                            onClick={() => setIsChatOpen(true)}
+                            aria-label="Open AI-assistent"
+                            className="flex items-center gap-1.5 bg-[#8B6F9E] hover:bg-[#7A5F8D] text-white px-3 py-1.5 rounded-full text-xs font-bold transition-all duration-200 shadow-sm"
+                        >
+                            <MessageCircle size={14} />
+                            <span className="hidden sm:inline">Vraag hulp</span>
+                        </button>
                     </div>
                 </div>
 
                 {/* Progress bar */}
-                <div className="h-1 bg-[#F0EEE8]">
+                <div
+                    className="h-1 bg-[#F0EEE8]"
+                    role="progressbar"
+                    aria-valuenow={globalChallengeIndex + 1}
+                    aria-valuemax={totalChallenges}
+                    aria-label={`Missie voortgang: ${globalChallengeIndex + 1} van ${totalChallenges} challenges`}
+                >
                     <div
                         className="h-full bg-gradient-to-r from-[#D97757] to-[#C46849] transition-all duration-500"
-                        style={{ width: `${((currentChallengeIndex + 1) / totalChallenges) * 100}%` }}
+                        style={{ width: `${((globalChallengeIndex + 1) / totalChallenges) * 100}%` }}
                     />
                 </div>
             </div>
+
+            {/* AI-copiloot — gebruikt missie-specifieke deepfake-detector instructie server-side */}
+            <StudentAIChat
+                roleId="deepfake-detector"
+                userIdentifier={userId ?? 'anonymous'}
+                isOpen={isChatOpen}
+                onOpenChange={setIsChatOpen}
+                context={{
+                    currentChallenge: currentChallenge ? {
+                        title: currentChallenge.title,
+                        description: currentChallenge.content,
+                        hint: showFeedback ? currentChallenge.explanation : currentChallenge.hints[0],
+                    } : null,
+                    missionStage: showFeedback ? 'feedback' : 'question',
+                    challengeQuestion: showFeedback
+                        ? (vsoProfile === 'dagbesteding' && currentChallenge?.challengeQuestionVso
+                            ? currentChallenge.challengeQuestionVso
+                            : currentChallenge?.challengeQuestion)
+                        : undefined,
+                    level: currentLevel,
+                    vsoProfile: vsoProfile ?? null,
+                }}
+            />
 
             {/* Content */}
             <div className="max-w-2xl mx-auto px-4 py-8 space-y-6">
@@ -577,7 +662,7 @@ export const DeepfakeDetectorMission: React.FC<Props> = ({ onBack, onComplete, v
                             </div>
                         </div>
 
-                        {/* Explanation */}
+                        {/* Stap 2: Uitleg */}
                         <div className="bg-white rounded-xl p-5 border border-[#E8E6DF]">
                             <h4 className="text-[#1A1A19] font-bold mb-2 flex items-center gap-2">
                                 <Brain size={18} className="text-[#8B6F9E]" />
@@ -592,6 +677,22 @@ export const DeepfakeDetectorMission: React.FC<Props> = ({ onBack, onComplete, v
                                     </p>
                                 </div>
                             )}
+                        </div>
+
+                        {/* Stap 3: Challenge — verdiepingsvraag (3-stappenmethode) */}
+                        <div className="bg-gradient-to-br from-[#8B6F9E]/10 to-[#8B6F9E]/5 rounded-xl p-5 border border-[#8B6F9E]/25">
+                            <h4 className="text-[#8B6F9E] font-bold mb-2 flex items-center gap-2 text-sm">
+                                <Lightbulb size={16} className="text-[#8B6F9E]" />
+                                Denk verder
+                            </h4>
+                            <p className="text-[#3D3D38] text-sm leading-relaxed">
+                                {vsoProfile === 'dagbesteding' && currentChallenge.challengeQuestionVso
+                                    ? currentChallenge.challengeQuestionVso
+                                    : currentChallenge.challengeQuestion}
+                            </p>
+                            <p className="text-[#8B6F9E]/60 text-xs mt-2 italic">
+                                Denk hierover na, of vraag de AI-assistent om het samen te bespreken →
+                            </p>
                         </div>
 
                         <button

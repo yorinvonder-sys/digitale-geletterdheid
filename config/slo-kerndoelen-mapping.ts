@@ -51,7 +51,8 @@ export const KERNDOEL_MISSIONS: KerndoelMissionMeta[] = [
   { id: 'ai-beleid-brainstorm', title: 'AI Beleid Brainstorm', week: 2, yearGroup: 1, sloKerndoelen: ['21D', '23C'], sloVsoKerndoelen: ['20B'] },              // 23B→21D: gaat over AI-regels, niet persoonlijk welzijn
   { id: 'code-denker', title: 'Code Denker', week: 2, yearGroup: 1, sloKerndoelen: ['22B'], sloVsoKerndoelen: ['19A'] },                                      // -21D: puur computational thinking, geen AI
   { id: 'website-bouwer', title: 'Website Bouwer', week: 2, yearGroup: 1, sloKerndoelen: ['22B', '22A'], sloVsoKerndoelen: ['19A'] },
-  { id: 'code-denker', title: 'Code Denker', week: 2, yearGroup: 1, sloKerndoelen: ['21C', '22B'], sloVsoKerndoelen: ['19A'] },
+
+  { id: 'schermtijd-coach', title: 'Schermtijd Coach', week: 2, yearGroup: 1, sloKerndoelen: ['23B', '21D'] },                                                    // digitaal welzijn + AI-bewustzijn (hoe apps je sturen)
 
   // Periode 2 review
   { id: 'review-week-2', title: 'De Code-Criticus', week: 3, yearGroup: 1, sloKerndoelen: ['21D', '22B'], sloVsoKerndoelen: ['18C'] },                        // 21B→22B: review bevat code-bugs herkennen

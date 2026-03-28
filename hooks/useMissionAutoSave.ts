@@ -112,6 +112,17 @@ export function useMissionAutoSave<T>(
         return () => window.removeEventListener('beforeunload', handleBeforeUnload);
     }, [storageKey]);
 
+    // Flush on unmount so pending changes aren't lost when leaving a mission
+    useEffect(() => {
+        return () => {
+            try {
+                localStorage.setItem(storageKey, JSON.stringify(stateRef.current));
+            } catch {
+                // Best effort
+            }
+        };
+    }, [storageKey]);
+
     const clearSave = useCallback(() => {
         try {
             localStorage.removeItem(storageKey);

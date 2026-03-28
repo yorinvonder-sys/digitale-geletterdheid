@@ -97,6 +97,8 @@ export const AGENT_ROLE_IDS = [
   'reflection-report',
   'meesterproef',
   'code-denker',
+  'website-bouwer',
+  'schermtijd-coach',
 ] as const;
 
 const AGENT_ROLE_ID_SET = new Set<string>(AGENT_ROLE_IDS);

@@ -75,11 +75,17 @@ export class Chat {
   private history: ChatMessage[] = [];
   private roleId: string;
   private systemInstruction: string;
+  private gameContext: string | null = null;
 
   constructor(roleId: string, systemInstruction?: string) {
     this.roleId = roleId;
     // systemInstruction is kept only for local DEV fallback simulation — never sent to the server
     this.systemInstruction = systemInstruction || '';
+  }
+
+  /** Set current game code context (bypasses sanitizer — this is our own code, not user input) */
+  setGameContext(code: string | null) {
+    this.gameContext = code;
   }
 
   getHistory(): ChatMessage[] {
@@ -115,17 +121,21 @@ export class Chat {
       const token = session.access_token;
 
       // SECURITY: Only send roleId, never systemInstruction — server looks it up
+      const requestBody: Record<string, unknown> = {
+        message: cleanMessage,
+        roleId: this.roleId,
+        history: this.history.slice(0, -1)
+      };
+      if (this.gameContext) {
+        requestBody.gameContext = this.gameContext;
+      }
       const response = await fetchWithRetry(`${EDGE_FUNCTION_URL}/chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({
-          message: cleanMessage,
-          roleId: this.roleId,
-          history: this.history.slice(0, -1)
-        })
+        body: JSON.stringify(requestBody)
       });
 
       if (!response.ok) {
@@ -194,17 +204,22 @@ export class Chat {
 
     try {
       // SECURITY: Only send roleId, never systemInstruction — server looks it up
+      // gameContext is sent separately so it bypasses the sanitizer (it's our own code, not user input)
+      const requestBody: Record<string, unknown> = {
+        message: cleanMessage,
+        roleId: this.roleId,
+        history: this.history.slice(0, -1)
+      };
+      if (this.gameContext) {
+        requestBody.gameContext = this.gameContext;
+      }
       const response = await fetchWithRetry(`${EDGE_FUNCTION_URL}/chatStream`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({
-          message: cleanMessage,
-          roleId: this.roleId,
-          history: this.history.slice(0, -1)
-        })
+        body: JSON.stringify(requestBody)
       });
 
       if (!response.ok) throw new Error('Stream request failed');
@@ -332,7 +347,7 @@ De jongen rende achter de vlieger aan, dwars door het bos. Opeens zag hij iets g
 [IMG target="2"]boy running in forest seeing something shiny, children book style, no text[/IMG]`;
   }
 
-  if (systemInstruction.includes('Game Programmeur')) {
+  if (systemInstruction.includes('Game Programmeur') || systemInstruction.includes('Game Developer Mentor')) {
     return `Ik heb de code voor je aangepast! Probeer dit eens:
 
 \`\`\`html

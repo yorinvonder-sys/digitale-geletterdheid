@@ -98,27 +98,25 @@ export const TrainerPreview: React.FC<TrainerPreviewProps> = ({ data }) => {
     if (showIntro) {
         return (
             <div className="w-full h-full flex flex-col relative overflow-hidden" style={{ backgroundColor: '#FAF9F0' }}>
-                {/* Content */}
-                <div className="flex-1 flex flex-col items-center justify-start p-6 md:p-10 relative z-10 overflow-y-auto custom-scrollbar pt-8 md:pt-12">
-                    {/* Pip mascot */}
-                    <div className="relative mb-5">
+                {/* Content — fits in one viewport without scrolling */}
+                <div className="flex-1 flex flex-col items-center justify-center p-5 md:p-8 relative z-10">
+                    {/* Pip mascot + Title inline */}
+                    <div className="flex items-center gap-3 mb-3">
                         <img
                             src="/mascot/pip-excited.webp"
                             alt="Pip"
-                            className="w-20 h-20 object-contain"
+                            className="w-14 h-14 object-contain"
                         />
+                        <h2 className="text-2xl font-black tracking-tight" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#1A1A19' }}>
+                            Welkom bij AI Trainer!
+                        </h2>
                     </div>
-
-                    {/* Title */}
-                    <h2 className="text-2xl font-black mb-2 tracking-tight text-center" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#1A1A19' }}>
-                        Welkom bij AI Trainer!
-                    </h2>
-                    <p className="text-center max-w-md mb-6 leading-relaxed text-sm" style={{ color: '#3D3D38' }}>
-                        In deze opdracht ga jij een computer leren om afval te sorteren. Jij geeft voorbeelden, en de AI leert daarvan.
+                    <p className="text-center max-w-md mb-5 leading-relaxed text-sm" style={{ color: '#3D3D38' }}>
+                        Leer een computer om afval te sorteren. Jij geeft voorbeelden, en de AI leert daarvan.
                     </p>
 
-                    {/* Wat ga je doen - heel expliciet */}
-                    <div className="rounded-2xl p-5 max-w-md w-full mb-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
+                    {/* Wat ga je doen */}
+                    <div className="rounded-2xl p-5 max-w-lg w-full mb-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
                         <h3 className="text-xs font-bold uppercase tracking-widest mb-1" style={{ color: '#D97757' }}>
                             Wat ga je doen?
                         </h3>
@@ -126,67 +124,56 @@ export const TrainerPreview: React.FC<TrainerPreviewProps> = ({ data }) => {
                             Je typt zinnen in het chatveld links. Pip leest jouw zin en sorteert het in de juiste bak hier rechts.
                         </p>
 
-                        <div className="space-y-4">
-                            {/* Stap 1 */}
-                            <div className="rounded-xl p-3" style={{ backgroundColor: '#FAF9F0', border: '1px solid #F0EEE8' }}>
-                                <div className="flex items-center gap-2 mb-2">
-                                    <span className="rounded-full w-6 h-6 flex items-center justify-center shrink-0 font-bold text-xs text-white" style={{ backgroundColor: '#D97757' }}>1</span>
-                                    <span className="font-bold text-sm" style={{ color: '#1A1A19' }}>Geef een voorbeeld van plastic</span>
+                        <div className="space-y-3">
+                            {/* Stap 1 & 2 side by side */}
+                            <div className="grid grid-cols-2 gap-3">
+                                <div className="rounded-xl p-3" style={{ backgroundColor: '#FAF9F0', border: '1px solid #F0EEE8' }}>
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <span className="rounded-full w-6 h-6 flex items-center justify-center shrink-0 font-bold text-xs text-white" style={{ backgroundColor: '#D97757' }}>1</span>
+                                        <span className="font-bold text-sm" style={{ color: '#1A1A19' }}>Voorbeeld plastic</span>
+                                    </div>
+                                    <p className="text-sm font-mono ml-8" style={{ color: '#D97757' }}>"Een flesje is plastic"</p>
                                 </div>
-                                <p className="text-xs ml-8 mb-2" style={{ color: '#6B6B66' }}>Typ dit in het chatveld links:</p>
-                                <div className="ml-8 rounded-lg px-3 py-2" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
-                                    <p className="text-sm font-mono" style={{ color: '#D97757' }}>"Een plastic flesje is plastic"</p>
-                                </div>
-                            </div>
-
-                            {/* Stap 2 */}
-                            <div className="rounded-xl p-3" style={{ backgroundColor: '#FAF9F0', border: '1px solid #F0EEE8' }}>
-                                <div className="flex items-center gap-2 mb-2">
-                                    <span className="rounded-full w-6 h-6 flex items-center justify-center shrink-0 font-bold text-xs text-white" style={{ backgroundColor: '#2A9D8F' }}>2</span>
-                                    <span className="font-bold text-sm" style={{ color: '#1A1A19' }}>Geef een voorbeeld van papier</span>
-                                </div>
-                                <p className="text-xs ml-8 mb-2" style={{ color: '#6B6B66' }}>Typ dit in het chatveld links:</p>
-                                <div className="ml-8 rounded-lg px-3 py-2" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
-                                    <p className="text-sm font-mono" style={{ color: '#2A9D8F' }}>"Een krant is papier"</p>
+                                <div className="rounded-xl p-3" style={{ backgroundColor: '#FAF9F0', border: '1px solid #F0EEE8' }}>
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <span className="rounded-full w-6 h-6 flex items-center justify-center shrink-0 font-bold text-xs text-white" style={{ backgroundColor: '#2A9D8F' }}>2</span>
+                                        <span className="font-bold text-sm" style={{ color: '#1A1A19' }}>Voorbeeld papier</span>
+                                    </div>
+                                    <p className="text-sm font-mono ml-8" style={{ color: '#2A9D8F' }}>"Een krant is papier"</p>
                                 </div>
                             </div>
 
-                            {/* Stap 3 */}
-                            <div className="rounded-xl p-3" style={{ backgroundColor: '#FAF9F0', border: '1px solid #F0EEE8' }}>
-                                <div className="flex items-center gap-2 mb-2">
-                                    <span className="rounded-full w-6 h-6 flex items-center justify-center shrink-0 font-bold text-xs text-white" style={{ backgroundColor: '#8B6F9E' }}>3</span>
-                                    <span className="font-bold text-sm" style={{ color: '#1A1A19' }}>Herhaal dit een paar keer</span>
+                            {/* Stap 3 & 4 side by side */}
+                            <div className="grid grid-cols-2 gap-3">
+                                <div className="rounded-xl p-3" style={{ backgroundColor: '#FAF9F0', border: '1px solid #F0EEE8' }}>
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <span className="rounded-full w-6 h-6 flex items-center justify-center shrink-0 font-bold text-xs text-white" style={{ backgroundColor: '#8B6F9E' }}>3</span>
+                                        <span className="font-bold text-sm" style={{ color: '#1A1A19' }}>Herhaal</span>
+                                    </div>
+                                    <p className="text-xs ml-8" style={{ color: '#6B6B66' }}>
+                                        Minstens 3 per categorie
+                                    </p>
                                 </div>
-                                <p className="text-xs ml-8" style={{ color: '#6B6B66' }}>
-                                    Geef minstens 3 voorbeelden per categorie. Hoe meer voorbeelden, hoe slimmer de AI wordt.
-                                </p>
-                            </div>
-
-                            {/* Stap 4 */}
-                            <div className="rounded-xl p-3" style={{ backgroundColor: '#FAF9F0', border: '1px solid #F0EEE8' }}>
-                                <div className="flex items-center gap-2 mb-2">
-                                    <span className="rounded-full w-6 h-6 flex items-center justify-center shrink-0 font-bold text-xs text-white" style={{ backgroundColor: '#10B981' }}>4</span>
-                                    <span className="font-bold text-sm" style={{ color: '#1A1A19' }}>Test de AI</span>
-                                </div>
-                                <p className="text-xs ml-8 mb-2" style={{ color: '#6B6B66' }}>Vraag de AI om iets nieuws te sorteren:</p>
-                                <div className="ml-8 rounded-lg px-3 py-2" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
-                                    <p className="text-sm font-mono" style={{ color: '#10B981' }}>"Waar hoort een cola flesje bij?"</p>
+                                <div className="rounded-xl p-3" style={{ backgroundColor: '#FAF9F0', border: '1px solid #F0EEE8' }}>
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <span className="rounded-full w-6 h-6 flex items-center justify-center shrink-0 font-bold text-xs text-white" style={{ backgroundColor: '#10B981' }}>4</span>
+                                        <span className="font-bold text-sm" style={{ color: '#1A1A19' }}>Test de AI</span>
+                                    </div>
+                                    <p className="text-sm font-mono ml-8" style={{ color: '#10B981' }}>"Waar hoort cola bij?"</p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     {/* Samenvatting */}
-                    <div className="rounded-xl p-3 max-w-md w-full mb-6" style={{ backgroundColor: 'rgba(217, 119, 87, 0.06)', border: '1px solid rgba(217, 119, 87, 0.2)' }}>
-                        <p className="text-xs text-center leading-relaxed" style={{ color: '#3D3D38' }}>
+                    <div className="rounded-xl p-3 max-w-lg w-full mb-5" style={{ backgroundColor: 'rgba(217, 119, 87, 0.06)', border: '1px solid rgba(217, 119, 87, 0.2)' }}>
+                        <p className="text-sm text-center leading-relaxed" style={{ color: '#3D3D38' }}>
                             <strong style={{ color: '#D97757' }}>Kort gezegd:</strong> typ voorbeelden in de chat links. Kijk rechts hoe de AI ze sorteert. Test daarna of de AI het snapt.
                         </p>
                     </div>
 
                     {/* Start Button with Countdown */}
-                    <div className="w-full flex justify-center pb-8">
-                        <StartButton countdown={readCountdown} onStart={() => setHasStarted(true)} />
-                    </div>
+                    <StartButton countdown={readCountdown} onStart={() => setHasStarted(true)} />
                 </div>
             </div>
         );

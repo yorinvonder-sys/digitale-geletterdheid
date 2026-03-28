@@ -13,7 +13,7 @@
 ### 2. Voor de School: Grip op Verantwoording
 - **Aantoonbare kerndoeldekking:** Elke activiteit is gekoppeld aan SLO-kerndoelen (18A t/m 23C).
 - **Werkdrukverlaging:** Geautomatiseerde monitoring en rapportage; u bespaart uren aan administratie.
-- **Inspectie-proof:** Exporteer met één klik voortgangsrapportages voor uw LVS of de inspectie.
+- **Inspectie-proof:** Exporteer voortgangsrapportages naar Excel voor docenten en inspectie — geen handmatig werk.
 
 ## Resultaten binnen 90 dagen
 Met onze **Startversneller Pilot** bent u binnen 30 dagen live. Binnen een kwartaal beschikt u over:
