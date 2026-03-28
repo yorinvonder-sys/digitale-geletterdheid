@@ -93,6 +93,7 @@ export const CURRICULUM: CurriculumConfig = {
                         'ai-beleid-brainstorm',
                         'code-denker',
                         'website-bouwer',
+                        'schermtijd-coach',
                     ],
                     reviewMissions: [
                         'review-week-2',
@@ -110,6 +111,7 @@ export const CURRICULUM: CurriculumConfig = {
                         'deepfake-detector',
                         'ai-spiegel',
                         'social-safeguard',
+                        'scroll-stopper',
                         'cookie-crusher',
                         'data-handelaar',
                         'filter-bubble-breaker',

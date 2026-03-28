@@ -42,11 +42,12 @@ export const SimulatorTask: React.FC<Props> = ({ task, onComplete }) => {
             // Success drop
             setDroppedItems(prev => [...prev, { itemId, targetId }]);
 
-            // Check success condition
-            // Ideally this logic should be more robust/generic from the types, 
-            // but for now we hardcode the specific goal check based on the task prompt
-            if (target.name === 'OneDrive' && items.find(i => i.id === itemId)?.name === 'Verslag.docx') {
-                setFeedback('✅ Goed bezig! Veilig opgeslagen in de Cloud.');
+            // Check success condition via generic callback from task definition
+            const updatedDrops = [...droppedItems, { itemId, targetId }];
+            const state = { items, droppedItems: updatedDrops, targets: task.targets };
+
+            if (task.successCondition && task.successCondition(state)) {
+                setFeedback('✅ Goed bezig! Opdracht voltooid.');
                 setTimeout(() => onComplete(true), 1500);
             } else {
                 setFeedback(`👍 ${items.find(i => i.id === itemId)?.name} verplaatst naar ${target.name}.`);

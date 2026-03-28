@@ -34,8 +34,8 @@ Dit document maakt voor school, FG en inkoop inzichtelijk welke gegevens worden 
 
 ## 4) Opslag en doorgifte
 
-- Primaire opslaglocatie: [invullen, bij voorkeur EER].
-- Back-up opslaglocatie: [invullen].
+- Primaire opslaglocatie: Supabase (AWS eu-central-1, Frankfurt, Duitsland — EER).
+- Back-up opslaglocatie: Supabase automatische back-ups (zelfde regio, eu-central-1).
 - Doorgifte buiten EER: [ja/nee, met juridische basis indien ja].
 - Subverwerkers: zie subverwerkersbijlage.
 

@@ -1,0 +1,26 @@
+{
+  "action": "created",
+  "repository": {
+    "full_name": "example-org/example-repo"
+  },
+  "sender": {
+    "login": "yorin-vonder",
+    "type": "User"
+  },
+  "issue": {
+    "number": 42,
+    "title": "Agent bridge review",
+    "body": "We onderzoeken hoe ChatGPT en Claude via GitHub kunnen samenwerken.",
+    "pull_request": {
+      "url": "https://api.github.com/repos/example-org/example-repo/pulls/42"
+    }
+  },
+  "comment": {
+    "id": 9001,
+    "body": "/chatgpt\n/handoff claude\n\nKunnen jullie dit plan reviewen voor een repo-bridge tussen twee agents?\nNoem vooral de risico's rond contextverlies, race conditions en secrets.",
+    "user": {
+      "login": "yorin-vonder",
+      "type": "User"
+    }
+  }
+}

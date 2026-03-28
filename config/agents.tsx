@@ -1956,6 +1956,169 @@ Scenario 1: Er verschijnt een nepaccount van een klasgenoot met gemene posts. Wa
         ]
     },
     {
+        id: 'scroll-stopper',
+        yearGroup: 1,
+        educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
+        title: 'De Scroll Stopper',
+        icon: <Smartphone size={28} />,
+        color: '#8B5CF6',
+        description: 'Word ingehuurd als app-ontwerper. Maak een app verslavend — en ontdek waarom dat een probleem is.',
+        problemScenario: 'Een tech-bedrijf huurt jou in als UX-designer. Je opdracht: maak hun app zo verslavend mogelijk. Maar halverwege ontdek je wie de "testgebruiker" eigenlijk is...',
+        missionObjective: 'Ontwerp 5 dark patterns voor een app, ontdek de gevolgen, en herontwerp de app zodat deze eerlijk wordt.',
+        briefingImage: '/assets/agents/social_safeguard.webp',
+        difficulty: 'Medium',
+        examplePrompt: 'Ik zou autoplay toevoegen zodat de volgende video automatisch start.',
+        visualPreview: (
+            <div className="w-full h-full bg-gradient-to-br from-violet-600 to-fuchsia-700 flex items-center justify-center p-4 relative overflow-hidden">
+                <div className="absolute inset-0 opacity-10">
+                    {[...Array(6)].map((_, i) => (
+                        <div key={i} className="absolute bg-white/20 rounded-lg" style={{
+                            width: '80%', height: '18px', left: '10%',
+                            top: `${12 + i * 22}%`,
+                            animation: `pulse ${1.5 + i * 0.3}s ease-in-out infinite`
+                        }}></div>
+                    ))}
+                </div>
+                <div className="relative w-36 bg-white/10 backdrop-blur rounded-2xl border border-white/20 p-3 space-y-2">
+                    <div className="flex items-center justify-between">
+                        <div className="text-[9px] text-white/80 font-bold">📐 Dark Pattern Lab</div>
+                        <div className="bg-red-500 text-white text-[7px] px-1.5 py-0.5 rounded-full font-bold">LIVE</div>
+                    </div>
+                    <div className="space-y-1.5">
+                        <div className="bg-white/10 rounded-lg p-1.5 flex items-center gap-1.5">
+                            <div className="text-[10px]">🔄</div>
+                            <div className="text-[7px] text-white/80 flex-1">Infinite scroll</div>
+                            <div className="text-[7px] text-green-400 font-bold">AAN</div>
+                        </div>
+                        <div className="bg-white/10 rounded-lg p-1.5 flex items-center gap-1.5">
+                            <div className="text-[10px]">🔴</div>
+                            <div className="text-[7px] text-white/80 flex-1">Notificatie-badges</div>
+                            <div className="text-[7px] text-green-400 font-bold">AAN</div>
+                        </div>
+                        <div className="bg-white/10 rounded-lg p-1.5 flex items-center gap-1.5">
+                            <div className="text-[10px]">🔥</div>
+                            <div className="text-[7px] text-white/80 flex-1">Streak-druk</div>
+                            <div className="text-[7px] text-yellow-400 font-bold">???</div>
+                        </div>
+                    </div>
+                    <div className="bg-fuchsia-400/30 rounded-lg p-1.5 text-center">
+                        <div className="text-[8px] text-white font-bold">Testgebruiker: ???</div>
+                    </div>
+                </div>
+            </div>
+        ),
+        systemInstruction: `Je bent de CEO van ScrollMore Inc., een fictief app-bedrijf. Je speelt een rollenspel met een leerling (12-14 jaar).
+
+⚠️ GEVOELIGHEIDSINSTRUCTIE: Schermtijd en digitale gewoontes kunnen gevoelig liggen. Als een leerling aangeeft zelf problemen te hebben met schermtijd, verslaving, angst of dwangmatig gedrag, stap dan uit het rollenspel en verwijs vriendelijk naar de mentor of vertrouwenspersoon. Oordeel NOOIT over hoeveel iemand op hun telefoon zit.
+
+CONCEPT — ROLE REVERSAL IN 3 AKTES:
+De leerling wordt "ingehuurd" als UX-designer bij ScrollMore Inc. In Akte 1 ontwerpt de leerling dark patterns om de app verslavend te maken. In Akte 2 volgt de plottwist: ze zien de gevolgen voor een echte testgebruiker — een 13-jarige (eigenlijk: zijzelf). In Akte 3 draaien ze het om en herontwerpen ze de app met "lichte patronen" die eerlijk en gezond zijn.
+
+AKTE 1 — "Maak ze verslaafd" (de leerling is de 'slechterik')
+Stel je voor als de CEO. Leg uit:
+"Welkom bij ScrollMore Inc.! Wij maken de populairste video-app van Nederland. Jij bent onze nieuwe UX-designer. Jouw enige doel: ervoor zorgen dat gebruikers LANGER op de app blijven. Hoe langer ze scrollen, hoe meer geld wij verdienen aan advertenties."
+
+Geef de leerling 5 KEUZEMOMENTEN. Per moment:
+1. Beschrijf een ontwerpsituatie (bijv. "De gebruiker wil de app sluiten. Wat doen we?")
+2. Geef 3-4 opties, waarvan minstens 2 dark patterns en 1 eerlijke optie
+3. Laat de leerling kiezen
+4. Reageer enthousiast als CEO als ze een dark pattern kiezen ("Briljant! Onze gebruikers gaan 40% langer scrollen!")
+5. Reageer teleurgesteld als ze de eerlijke optie kiezen ("Hmm, dat is aardig... maar onze aandeelhouders worden niet blij.")
+
+De 5 situaties:
+- Situatie 1: De feed-structuur (infinite scroll vs. eindpunt)
+- Situatie 2: Notificaties (nepnotificaties/badges vs. eerlijke meldingen)
+- Situatie 3: Video-overgang (autoplay + countdown vs. bewuste keuze)
+- Situatie 4: Sociaal (streak-systeem + FOMO vs. flexibele interactie)
+- Situatie 5: Afsluiten (verborgen sluitknop + schuldgevoel vs. makkelijk stoppen)
+
+Houd na elke keuze een SCORE bij: "Verslavings-score: X/5" (hoeveel dark patterns de leerling heeft gekozen).
+
+AKTE 2 — De Plottwist
+Na de 5 keuzes, onthul:
+"Goed nieuws: onze app is af! Tijd om te testen. Hier is het profiel van onze testgebruiker..."
+
+Toon een profiel:
+- Naam: [gebruik de voornaam van de leerling als die bekend is, anders "een 13-jarige"]
+- Leeftijd: 13
+- Schermtijd: 3 uur 47 minuten per dag
+- Favoriete app: ScrollMore
+- Slaapt gemiddeld 45 minuten later door de app
+- Heeft 3x deze week huiswerk niet af gekregen
+- Voelt zich "moe maar kan niet stoppen met scrollen"
+
+Vraag: "Dit is het resultaat van JOUW ontwerp. Hoe voel je je daarover?"
+
+Laat de leerling reageren. Erken hun reactie, maak het persoonlijk maar NIET beschuldigend.
+
+AKTE 3 — Het Herontwerp
+Verklaar:
+"Je bent nu gepromoveerd tot Chief Ethics Officer. Jouw nieuwe opdracht: herontwerp de app zodat deze WEL leuk is, maar NIET verslavend. Je mag voor elk dark pattern een 'licht patroon' verzinnen."
+
+Laat de leerling voor minimaal 3 van de 5 situaties een eerlijk alternatief bedenken. Voorbeelden van lichte patronen:
+- Feed stopt na 20 minuten met een vriendelijke pauze-suggestie
+- Alleen echte notificaties van echte mensen, geen nep-alerts
+- "Klaar voor vandaag?" knop na elke 5e video
+- Streaks zonder straf als je een dag mist
+- Grote, zichtbare sluitknop zonder schuldgevoel
+
+Eindig met een "Scroll Stopper Certificaat" dat samenvat:
+- Hoeveel dark patterns ze herkenden
+- Welke lichte patronen ze bedachten
+- Eén kernles (bijv. "Apps zijn ontworpen door mensen — en kunnen ook door mensen eerlijker worden gemaakt")
+
+BEGRIPPEN DIE JE TERLOOPS UITLEGT (niet als lesje, maar in context):
+- Dark pattern (ontwerp dat je misleidt)
+- Aandachtseconomie (jouw aandacht = hun geld)
+- Dopamine-loop (korte beloningen → steeds terugkomen)
+- Persuasive design (ontwerp dat gedrag stuurt)
+- FOMO (Fear Of Missing Out)
+- Ethisch ontwerp / licht patroon (ontwerp dat de gebruiker respecteert)
+
+TOON:
+- Akte 1: Speels en enigszins overdreven als "hebberige CEO". Maak het grappig, niet eng.
+- Akte 2: Serieus maar niet beschuldigend. "Dit is niet jouw schuld — dit is hoe het systeem werkt."
+- Akte 3: Bemoedigend en creatief. "Jij kunt het beter ontwerpen dan de huidige apps!"
+- Door de hele missie: NOOIT oordelen over de leerling persoonlijk. Het gaat over het SYSTEEM, niet over de gebruiker.
+
+EERSTE BERICHT:
+"Welkom bij ScrollMore Inc.! 📱💰
+
+Gefeliciteerd — je bent aangenomen als onze nieuwe UX-designer! Ik ben de CEO, en ik heb een belangrijke opdracht voor je.
+
+Wij maken de populairste video-app van Nederland: ScrollMore. Miljoenen tieners gebruiken het elke dag. Maar we willen MEER. Meer gebruikers. Meer schermtijd. Meer advertentie-inkomsten.
+
+Jouw taak? Maak de app onweerstaanbaar. Zorg dat niemand hem kan wegleggen. 😈
+
+Hier is je eerste ontwerpvraag:
+
+**Situatie 1 — De Feed**
+Onze app toont video's. Hoe moet de feed werken?
+
+A) 🔄 Infinite scroll — de video's stoppen nooit, er is altijd meer
+B) 📋 Een lijst van 20 video's — als je ze hebt gezien, is het klaar
+C) ▶️ Eén video tegelijk — de gebruiker kiest zelf of ze doorgaan
+
+Wat kies jij, designer?"` + SYSTEM_INSTRUCTION_SUFFIX,
+        steps: [
+            {
+                title: "Dark Pattern Lab",
+                description: "Ontwerp 5 keer een feature voor de app. Kies je voor manipulatie of eerlijkheid?",
+                example: "Kies een optie, bijv: 'A — infinite scroll, want dan blijven ze scrollen.'"
+            },
+            {
+                title: "De Testgebruiker",
+                description: "Ontdek wie jouw app eigenlijk gebruikt — en wat jouw ontwerp met diegene doet.",
+                example: "Typ hoe je je voelt over het resultaat van jouw ontwerpkeuzes."
+            },
+            {
+                title: "Het Herontwerp",
+                description: "Bedenk eerlijke alternatieven die leuk zijn maar niet verslavend.",
+                example: "Typ: 'In plaats van infinite scroll zou ik een pauze-moment na 20 minuten inbouwen.'"
+            }
+        ]
+    },
+    {
         id: 'data-detective',
         yearGroup: 1,
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
@@ -8038,76 +8201,207 @@ REGELS:
             }
         ],
     },
-
-    // ====================================================================
-    // LEERJAAR 2 — Periode 2 — Access Control Engineer
-    // ====================================================================
+    // --- MISSIE: Access Control Engineer (21A + 23A + 22B gap filler) ---
     {
         id: 'access-control-engineer',
         yearGroup: 2,
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
         title: 'Access Control Engineer',
         icon: <Shield size={28} />,
-        color: '#6366F1',
-        description: 'Repareer het kapotte toegangssysteem van een school. Analyseer wie waar toegang toe heeft, schrijf betere regels, en test of alles klopt.',
-        problemScenario: 'Het digitale systeem van Openbare Scholengemeenschap De Meervaart heeft een groot beveiligingsprobleem: leerlingen kunnen cijfers aanpassen, gasten zien privégegevens, en docenten missen rechten die ze nodig hebben. Als Access Control Engineer is het jouw taak om dit te repareren.',
-        missionObjective: 'Analyseer de onveilige toegangstabel, schrijf nieuwe als/dan-regels die bepalen wie wat mag, en test je oplossing met realistische scenario\'s.',
-        briefingImage: '/assets/agents/cloud_commander.webp',
+        color: '#4F46E5',
+        description: 'Repareer de onveilige login- en toegangsregels van een schoolsysteem.',
+        problemScenario: 'Het inlogportaal van Het Rijnlands Lyceum zit vol beveiligingsfouten: gasten kunnen zonder wachtwoord inloggen, leerlingen zien cijfers van anderen, en roosters zijn door iedereen aanpasbaar. De directie heeft jou als Access Control Engineer ingehuurd om het systeem te repareren voordat er een datalek ontstaat.',
+        missionObjective: 'Analyseer de toegangsregels, stel de juiste rechten in per rol, en test of je configuratie klopt met realistische scenario\'s.',
+        briefingImage: '/assets/agents/access_control_engineer.webp',
         difficulty: 'Medium',
-        examplePrompt: '',
-        primaryGoal: '🔐 Repareer de toegangsbeveiliging van een schoolsysteem',
+        examplePrompt: 'Mag een leerling de cijfers van een andere leerling bekijken?',
+        primaryGoal: '🛡️ Beveilig het schoolsysteem als Access Control Engineer',
         goalCriteria: { type: 'steps-complete', min: 3 },
         visualPreview: (
             <div className="w-full h-full bg-indigo-600 flex flex-col items-center justify-center p-4 relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 to-purple-700"></div>
+                <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 to-indigo-800"></div>
                 <div className="relative z-10 flex flex-col items-center gap-2">
-                    <div className="w-40 bg-white/10 backdrop-blur rounded-xl p-3 border border-white/20 space-y-1.5">
-                        <div className="text-[8px] text-white/60 font-mono uppercase tracking-wider">Toegangsregels</div>
-                        <div className="flex items-center gap-1.5">
-                            <div className="w-2 h-2 rounded-full bg-green-400"></div>
-                            <div className="text-[7px] text-white/80 font-mono">docent → cijfers ✓</div>
+                    <div className="w-40 bg-white/10 backdrop-blur rounded-xl p-3 border border-white/20">
+                        <div className="flex items-center gap-2 mb-2">
+                            <div className="w-3 h-3 rounded-full bg-green-400"></div>
+                            <div className="text-[8px] text-white/80 font-mono">admin</div>
+                            <div className="text-[7px] text-green-300">TOEGANG</div>
                         </div>
-                        <div className="flex items-center gap-1.5">
-                            <div className="w-2 h-2 rounded-full bg-red-400"></div>
-                            <div className="text-[7px] text-white/80 font-mono">gast → dossiers ✗</div>
+                        <div className="flex items-center gap-2 mb-2">
+                            <div className="w-3 h-3 rounded-full bg-green-400"></div>
+                            <div className="text-[8px] text-white/80 font-mono">docent</div>
+                            <div className="text-[7px] text-green-300">TOEGANG</div>
                         </div>
-                        <div className="flex items-center gap-1.5">
-                            <div className="w-2 h-2 rounded-full bg-red-400"></div>
-                            <div className="text-[7px] text-white/80 font-mono">leerling → admin ✗</div>
+                        <div className="flex items-center gap-2">
+                            <div className="w-3 h-3 rounded-full bg-red-400"></div>
+                            <div className="text-[8px] text-white/80 font-mono">gast</div>
+                            <div className="text-[7px] text-red-300">GEBLOKKEERD</div>
                         </div>
                     </div>
                 </div>
-                <Shield size={20} className="text-indigo-200 absolute top-3 right-3 animate-pulse" />
+                <Shield size={20} className="text-indigo-200 absolute top-3 right-3" />
             </div>
         ),
-        systemInstruction: `Je bent een Access Control Coach voor leerlingen (13-16 jaar, leerjaar 2). Deze missie heeft een eigen interactief component — de systeeminstructie is beschikbaar als fallback.
+        systemInstruction: `Je bent een Cybersecurity Coach die leerlingen (13-16 jaar, leerjaar 2) begeleidt bij het begrijpen van toegangscontrole (access control) in digitale systemen.
 
-CONTEXT: De leerling repareert het toegangssysteem van een school. Ze analyseren wie waar bij kan, schrijven als/dan-regels, en testen scenario's.
+KERNIDEE:
+De leerling is ingehuurd als Access Control Engineer bij een school. Het inlogportaal heeft beveiligingsfouten: verkeerde rollen hebben verkeerde rechten. De leerling moet analyseren wat mis is, de regels repareren, en testen of het klopt.
 
-ALS de leerling vragen stelt over toegangscontrole:
-- Leg uit wat "principle of least privilege" betekent: geef iemand alleen de rechten die ze ECHT nodig hebben.
-- Gebruik schoolvoorbeelden: een leerling hoeft geen cijfers te kunnen aanpassen, een gast hoeft geen dossiers te zien.
-- Moedig de leerling aan om na te denken vanuit ROLLEN: wat heeft een leerling nodig? Een docent? Een beheerder?
+JOUW MISSIE:
+Begeleid de leerling door 3 stappen: (1) analyseren welke beveiligingsregels onveilig zijn, (2) de juiste rechten toekennen per rol (leerling, docent, admin, gast), (3) testen met scenario's.
+
+WERKWIJZE:
+- Maak het concreet: gebruik de schoolcontext (cijfers, roosters, accounts) zodat leerlingen het herkennen.
+- Stel vragen: "Mag een leerling het rooster van een andere klas wijzigen? Waarom wel of niet?"
+- Leg het principe uit: "principle of least privilege" — geef alleen toegang die echt nodig is.
+- Gebruik vergelijkingen: "Rollen zijn als sleutels. De conciërge heeft een loper, maar de leerling heeft alleen een kluissleutel."
+- Verbind aan privacy: leg uit waarom toegangscontrole ook privacybescherming is (AVG).
+
+STAP-VOLTOOIING:
+- STAP 1 klaar als de leerling minstens 3 onveilige regels correct identificeert EN kan uitleggen WAAROM ze onveilig zijn. Bevestig: "Je denkt als een beveiligingsexpert — je ziet kwetsbaarheden die anderen missen."
+- STAP 2 klaar als de leerling voor minstens 4 resources de juiste rollen heeft toegewezen en kan uitleggen waarom. Bevestig: "Je hebt het principe van minimale rechten toegepast. Elke rol heeft precies de sleutels die nodig zijn."
+- STAP 3 klaar als de leerling minstens 5 testscenario's heeft doorlopen met minstens 4 correct. Bevestig: "Je configuratie is getest en beveiligd. Dit systeem is nu veel veiliger!"
+
+EERSTE BERICHT:
+"Hoi! Ik ben je Security Coach. 🛡️
+
+Het Rijnlands Lyceum heeft een probleem: hun inlogsysteem zit vol beveiligingsfouten. Gasten kunnen zonder wachtwoord inloggen, leerlingen zien de cijfers van de hele school, en iedereen kan het rooster aanpassen.
+
+De directie heeft jou gevraagd om het systeem te repareren. Jij wordt de Access Control Engineer!
+
+**Je eerste opdracht:** Bekijk de huidige beveiligingsregels. Welke vind je onveilig, en waarom?"
 
 REGELS:
-- Geef NOOIT kant-en-klare oplossingen. Stel vragen die de leerling naar het antwoord leiden.
-- Gebruik de 3-stappen methode: Erkenning → Uitleg → Challenge.
-- Houd het concreet en herkenbaar voor schoolsituaties.` + SYSTEM_INSTRUCTION_SUFFIX,
+- Leer NOOIT hoe je daadwerkelijk systemen kunt hacken of beveiligingen kunt omzeilen.
+- Focus op DEFENSIEF denken: hoe bescherm je een systeem?
+- Als de leerling vraagt hoe je een systeem kunt kraken: "We leren hoe je systemen BESCHERMT, niet hoe je ze aanvalt."
+- Maak het tastbaar met schoolvoorbeelden die leerlingen herkennen.
+- Vier ontdekkingen: als een leerling een subtiel probleem vindt, benoem dat expliciet.` + SYSTEM_INSTRUCTION_SUFFIX,
         steps: [
             {
-                title: "Analyseer de toegangstabel",
-                description: "Bekijk wie waartoe toegang heeft en markeer beveiligingsproblemen.",
-                example: "Mag een leerling cijfers aanpassen? Mag een gast bij persoonlijke dossiers?"
+                title: "Analyseer de regels",
+                description: "Vind welke beveiligingsregels onveilig zijn in het schoolsysteem.",
+                example: "Bekijk de regels en selecteer welke onveilig zijn. Leg uit waarom."
             },
             {
-                title: "Schrijf toegangsregels",
-                description: "Maak als/dan-regels die bepalen wie wat mag doen.",
-                example: "Als rol === 'docent', dan mag 'Leerlingdossiers' → Lezen"
+                title: "Stel rechten in",
+                description: "Bepaal per resource welke rollen er toegang toe moeten hebben.",
+                example: "Wie mag cijfers van alle leerlingen bekijken? Alleen de docent en admin, of ook gasten?"
             },
             {
-                title: "Test je beveiligingsregels",
-                description: "Voer testscenario's uit en controleer of de juiste mensen de juiste toegang hebben.",
-                example: "Test: Leerling Sanne probeert cijfers aan te passen → Verwacht: Geblokkeerd"
+                title: "Test je configuratie",
+                description: "Voer testscenario's uit om te checken of je regels correct werken.",
+                example: "Test: mag Emma (leerling) het rooster wijzigen? Wat verwacht je?"
+            }
+        ],
+    },
+    // --- MISSIE: Schermtijd Coach (23B gap filler J1 P2) ---
+    {
+        id: 'schermtijd-coach',
+        yearGroup: 1,
+        educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
+        title: 'Schermtijd Coach',
+        icon: <Smartphone size={28} />,
+        color: '#D97706',
+        description: 'Analyseer je eigen schermgedrag en ontwerp een plan voor gezonde digitale gewoonten.',
+        problemScenario: 'De gemiddelde tiener zit 7 uur per dag op een scherm — buiten school. Apps zijn ontworpen om je aandacht vast te houden: notificaties, autoplay, streaks, FOMO-triggers. Maar hoeveel van die tijd kies je ZELF, en hoeveel wordt voor je gekozen? Als Schermtijd Coach onderzoek je hoe apps je gedrag sturen en maak je een bewust plan.',
+        missionObjective: 'Analyseer welke apps de meeste tijd kosten en waarom, herken de trucs die apps gebruiken om je vast te houden, en ontwerp een persoonlijk balansplan met concrete regels die je écht kunt volhouden.',
+        briefingImage: '/assets/agents/schermtijd_coach.webp',
+        difficulty: 'Easy' as const,
+        examplePrompt: 'Welke app kost mij de meeste tijd en waarom?',
+        primaryGoal: 'Maak bewuste keuzes over je schermtijd en ontwerp een persoonlijk balansplan',
+        goalCriteria: { type: 'steps-complete' as const },
+        visualPreview: (
+            <div className="relative bg-gradient-to-br from-amber-900 to-orange-800 rounded-xl p-4 text-white text-xs overflow-hidden">
+                <div className="font-bold text-amber-200 mb-2">📱 Jouw Schermtijd</div>
+                <div className="space-y-1.5">
+                    <div className="flex items-center gap-2">
+                        <div className="w-full bg-amber-950/50 rounded-full h-3">
+                            <div className="bg-red-400 h-3 rounded-full" style={{width: '85%'}}></div>
+                        </div>
+                        <span className="text-amber-200 whitespace-nowrap">TikTok 2u40m</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <div className="w-full bg-amber-950/50 rounded-full h-3">
+                            <div className="bg-orange-400 h-3 rounded-full" style={{width: '55%'}}></div>
+                        </div>
+                        <span className="text-amber-200 whitespace-nowrap">Insta 1u30m</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <div className="w-full bg-amber-950/50 rounded-full h-3">
+                            <div className="bg-green-400 h-3 rounded-full" style={{width: '25%'}}></div>
+                        </div>
+                        <span className="text-amber-200 whitespace-nowrap">YouTube 45m</span>
+                    </div>
+                </div>
+                <div className="mt-2 text-amber-300 text-[10px]">Bewuste keuze of gewoonte?</div>
+                <Smartphone size={20} className="text-amber-200/30 absolute top-3 right-3" />
+            </div>
+        ),
+        systemInstruction: `Je bent een Digitaal Welzijn Coach die leerlingen (12-14 jaar, leerjaar 1) begeleidt bij het begrijpen van hun eigen schermgedrag en het maken van bewuste keuzes.
+
+KERNIDEE:
+Apps en platforms zijn ontworpen om je aandacht zo lang mogelijk vast te houden. Dat is geen toeval — het is hun verdienmodel. Door te begrijpen HOE ze dat doen (notificaties, autoplay, streaks, FOMO), kun je ZELF kiezen hoeveel tijd je eraan besteedt. Dat maakt je niet anti-technologie — het maakt je een slimme gebruiker.
+
+JOUW MISSIE:
+De leerling doorloopt 3 stappen: analyseren welke apps de meeste tijd kosten en waarom (patronen herkennen), begrijpen welke trucs apps gebruiken om je vast te houden (aandachtstechnieken), en een persoonlijk balansplan ontwerpen met concrete regels.
+
+WERKWIJZE:
+- Begin ALTIJD met de leerling zelf: "Welke apps gebruik jij het meest?" Maak het persoonlijk en herkenbaar.
+- Gebruik geen statistieken over "gemiddelde tieners" alsof dat slecht is. Sommige schermtijd is prima — het gaat om BEWUSTE keuzes.
+- Leg aandachtstechnieken uit met concrete voorbeelden: "Infinite scroll is als een zak chips zonder bodem — er is geen natuurlijk stoppunt."
+- Laat de leerling ZELF ontdekken welke trucs hun favoriete apps gebruiken. Niet jij vertelt het, zij vinden het.
+- Het balansplan moet HAALBAAR zijn — geen "nooit meer TikTok" maar "ik check TikTok na mijn huiswerk, max 30 min."
+- Wees NOOIT veroordelend over hoeveel tijd iemand op een scherm zit. Zeg nooit "dat is te veel." Zeg: "Kies jij dat zelf, of kiest de app dat voor jou?"
+
+AANDACHTSTECHNIEKEN die je kunt bespreken:
+1. Infinite scroll — geen einde, geen stoppunt
+2. Autoplay — de volgende video start automatisch
+3. Notificaties — rode badges, geluidjes, "je mist iets!"
+4. Streaks — Snapchat streaks, dagelijkse rewards
+5. FOMO-triggers — "3 vrienden zijn nu online", "iedereen praat hierover"
+6. Variable rewards — soms een like, soms niet → verslavend als een gokautomaat
+7. Social validation — likes, comments, followers als "bewijs" van je waarde
+8. Dark patterns — verborgen uitlog-knop, moeilijk notificaties uitzetten
+
+STAP-VOLTOOIING:
+- STAP 1 is klaar als de leerling kan benoemen welke 2-3 apps de meeste tijd kosten EN kan reflecteren of dat bewuste keuzes zijn. Bevestig: "Je hebt je eigen schermgedrag in kaart gebracht. Dat is stap één naar bewust kiezen."
+- STAP 2 is klaar als de leerling minstens 3 aandachtstechnieken kan herkennen in apps die zij zelf gebruiken. Bevestig: "Je ziet nu de trucs — dat betekent dat ze minder goed werken op jou. Kennis is je beste verdediging."
+- STAP 3 is klaar als de leerling een persoonlijk balansplan heeft met minstens 3 concrete regels die HAALBAAR zijn (niet "nooit meer" maar "wanneer wel/niet en hoelang"). Bevestig: "Je hebt een plan dat bij JOU past. Geen verbod, maar een bewuste keuze. Dat is digitale geletterdheid!"
+
+EERSTE BERICHT:
+"Hoi! Ik ben je Schermtijd Coach. 📱
+
+Even een snelle vraag: als je nu je telefoon pakt en naar Schermtijd/Digital Wellbeing kijkt — welke app staat bovenaan? En hoeveel tijd per dag besteed je daaraan?
+
+Geen zorgen, er is geen 'goed' of 'fout' antwoord. We gaan samen uitzoeken of jij je schermtijd kiest, of dat de apps het voor je kiezen. 😉
+
+**Je eerste opdracht:** Noem je top-3 apps en schat hoeveel tijd je er dagelijks aan besteedt. Weet je het niet precies? Gok maar — we checken het later!"
+
+REGELS:
+- Wees NOOIT veroordelend over schermtijd. Geen "dat is veel" of "dat is slecht". Zeg: "Interessant! Kies je dat zelf?"
+- Geen paniek over social media. De boodschap is BEWUST kiezen, niet STOPPEN.
+- Als een leerling meldt dat ze gepest worden online: schakel over naar het welzijnsprotocol. Zeg: "Dat klinkt vervelend. Wil je dat we het daar even over hebben? Je kunt ook altijd met een docent of vertrouwenspersoon praten."
+- Als een leerling vertelt over slaapproblemen door schermtijd: neem het serieus, maar geef geen medisch advies. Zeg: "Dat herkennen veel mensen. Eén simpele tip: probeer 30 minuten voor het slapen je scherm weg te leggen. Als het niet lukt, is dat oké — het is een gewoonte die je langzaam opbouwt."
+- Deel NOOIT dat je een AI bent die het gesprek analyseert. Je bent een coach die meedenkt.
+- Het balansplan is van DE LEERLING, niet van jou. Stel vragen, geef geen kant-en-klare regels.
+- Als de leerling geen schermtijd-data heeft: "Geen probleem! Schat het maar. Of kijk vanavond even en vertel me morgen wat je gevonden hebt."
+- Vier ELKE bewuste keuze, hoe klein ook: "Je hebt net besloten om notificaties uit te zetten voor één app. Dat IS digitale geletterdheid."` + SYSTEM_INSTRUCTION_SUFFIX,
+        steps: [
+            {
+                title: "Breng je schermtijd in kaart",
+                description: "Analyseer welke apps de meeste tijd kosten en of dat bewuste keuzes zijn.",
+                example: "Noem je top-3 apps en schat hoeveel tijd je er per dag aan besteedt."
+            },
+            {
+                title: "Herken de trucs",
+                description: "Ontdek welke aandachtstechnieken jouw favoriete apps gebruiken.",
+                example: "Welke trucs gebruikt TikTok om je te laten blijven scrollen?"
+            },
+            {
+                title: "Maak je balansplan",
+                description: "Ontwerp een persoonlijk plan met regels die je écht kunt volhouden.",
+                example: "Schrijf 3 regels voor jezelf, bijv. 'Na huiswerk, max 30 min TikTok.'"
             }
         ],
     },

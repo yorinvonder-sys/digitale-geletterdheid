@@ -99,6 +99,8 @@ export const AGENT_ROLE_IDS = [
   'meesterproef',
   'code-denker',
   'website-bouwer',
+  'schermtijd-coach',
+  'scroll-stopper',
   'data-speurder',
 ] as const;
 

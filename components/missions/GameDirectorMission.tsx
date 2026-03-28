@@ -14,6 +14,7 @@ interface GameDirectorProgress {
     currentChallengeIndex: number;
     score: number;
     isHardMode: boolean;
+    reflectie: string;
 }
 
 interface GameDirectorProps {
@@ -189,7 +190,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
     // Persistent progress state (auto-saved to localStorage)
     const { state: progress, setState: setProgress, clearSave } = useMissionAutoSave<GameDirectorProgress>(
         'game-director',
-        { currentChallengeIndex: 0, score: 0, isHardMode: false }
+        { currentChallengeIndex: 0, score: 0, isHardMode: false, reflectie: '' }
     );
 
     // Block programming state
@@ -654,12 +655,31 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                         title: "Wie is de baas?",
                         text: "In deze missie was JIJ de baas over de robot, net zoals programmeurs de baas zijn over AI. We moeten AI (zoals ChatGPT) duidelijke instructies geven, zodat het precies doet wat we willen en altijd veilig blijft. Dat noemen we 'AI Alignment'."
                     }}
-                    onExit={() => {
+                    onExit={progress.reflectie.trim().length >= 10 ? () => {
                         clearSave();
                         setShowConclusion(false);
                         onComplete(true);
-                    }}
-                />
+                    } : undefined}
+                >
+                    {/* Reflectie */}
+                    <div className="bg-[#FAF9F0] rounded-2xl p-4 border border-[#D97757]/20 text-left space-y-3 mt-6">
+                        <div className="flex items-center gap-2">
+                            <Sparkles size={16} className="text-[#D97757]" />
+                            <p className="text-xs font-black uppercase tracking-widest text-[#D97757]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Reflectie</p>
+                        </div>
+                        <p className="text-xs text-[#3D3D38]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Wat heb je geleerd in deze missie? Waar zou je dit in het dagelijks leven tegenkomen?</p>
+                        <textarea
+                            value={progress.reflectie}
+                            onChange={e => setProgress(prev => ({ ...prev, reflectie: e.target.value }))}
+                            placeholder="Wat heb je geleerd? Waar kom je dit nog meer tegen?"
+                            className="w-full p-3 rounded-xl border-2 border-[#E8E6DF] bg-white text-sm resize-none focus:border-[#D97757] focus:outline-none transition-all duration-300"
+                            style={{ minHeight: '80px', fontFamily: "'Outfit', system-ui, sans-serif" }}
+                        />
+                        {progress.reflectie.trim().length < 10 && (
+                            <p className="text-[10px] text-[#B5B5AF]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Schrijf minimaal 10 tekens om de missie af te ronden</p>
+                        )}
+                    </div>
+                </MissionConclusion>
             )}
 
             {/* Header */}

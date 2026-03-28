@@ -49,6 +49,7 @@ const DeepfakeDetectorMission = lazy(() => import('./missions/DeepfakeDetectorMi
 const FilterBubbleBreakerMission = lazy(() => import('./missions/FilterBubbleBreakerMission').then(m => ({ default: m.FilterBubbleBreakerMission })));
 const DatalekkenRampenplanMission = lazy(() => import('./missions/DatalekkenRampenplanMission').then(m => ({ default: m.DatalekkenRampenplanMission })));
 const DataVoorDataMission = lazy(() => import('./missions/DataVoorDataMission').then(m => ({ default: m.DataVoorDataMission })));
+const AccessControlEngineerMission = lazy(() => import('./missions/AccessControlEngineerMission').then(m => ({ default: m.AccessControlEngineerMission })));
 const CloudCleanerMission = lazy(() => import('./missions/review/CloudCleanerMission').then(m => ({ default: m.CloudCleanerMission })));
 const WordSimulator = lazy(() => import('./WordSimulator/WordSimulator').then(m => ({ default: m.WordSimulator })));
 const PitchPoliceMission = lazy(() => import('./missions/review/PitchPoliceMission').then(m => ({ default: m.PitchPoliceMission })));
@@ -896,7 +897,7 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
         )}
 
         {selectedRole && missionStarted && (
-          (hasAssessment(selectedRole.id) || selectedRole.id === 'ai-tekengame' || selectedRole.id === 'chatbot-trainer' || selectedRole.id === 'ai-beleid-brainstorm' || selectedRole.id === 'data-detective' || selectedRole.id === 'deepfake-detector' || selectedRole.id === 'filter-bubble-breaker' || selectedRole.id === 'datalekken-rampenplan' || selectedRole.id === 'data-voor-data') ? (
+          (hasAssessment(selectedRole.id) || selectedRole.id === 'ai-tekengame' || selectedRole.id === 'chatbot-trainer' || selectedRole.id === 'ai-beleid-brainstorm' || selectedRole.id === 'data-detective' || selectedRole.id === 'deepfake-detector' || selectedRole.id === 'filter-bubble-breaker' || selectedRole.id === 'datalekken-rampenplan' || selectedRole.id === 'data-voor-data' || selectedRole.id === 'access-control-engineer') ? (
             // Full Screen Game Mode fo Review Missions & Tekengame & Chatbot Trainer
             <div className="flex-1 w-full h-full min-h-0 relative animate-in zoom-in-95 duration-500 rounded-3xl overflow-hidden shadow-2xl border-4 border-slate-900 bg-slate-900">
               {selectedRole.id === 'chatbot-trainer' ? (
@@ -1011,6 +1012,22 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
                     handleBackToOverview();
                   }}
                   stats={stats}
+                />
+              ) : selectedRole.id === 'access-control-engineer' ? (
+                <AccessControlEngineerMission
+                  onBack={handleBackToOverview}
+                  onComplete={(passed) => {
+                    if (passed) {
+                      handleAwardXP(100, 'Access Control Engineer Voltooid!');
+                      setStats(prev => ({
+                        ...prev,
+                        missionsCompleted: [...new Set([...(prev.missionsCompleted || []), 'access-control-engineer'])]
+                      }));
+                    }
+                    handleBackToOverview();
+                  }}
+                  stats={stats}
+                  vsoProfile={vsoProfile}
                 />
               ) : (() => {
                 // Dynamic assessment lookup via registry

@@ -1,14 +1,16 @@
 import React, { useMemo, useState } from 'react';
-import { Download, Users, School, ChevronDown, ChevronUp, Loader2 } from 'lucide-react';
+import { Download, Users, School, ChevronDown, ChevronUp, Loader2, AlertTriangle, Lightbulb, TrendingUp } from 'lucide-react';
 import { supabase } from '../../services/supabase';
 
 import { StudentData } from '../../types';
 import { SLO_KERNDOELEN } from '../../config/sloKerndoelen';
 import { calculateStudentKerndoelStats, getMissionMeta, KERNDOEL_CODES } from '../../config/slo-kerndoelen-mapping';
+import { MISSION_SPOTLIGHTS, buildSpotlightProgress, filterSpotlightsByYear } from './spotlightSignals';
 
 interface SLOClassOverviewProps {
     students: StudentData[];
     schoolId?: string;
+    selectedYear?: number;
 }
 
 function parseMissionIdFromActivityData(data: unknown): string | null {
@@ -17,7 +19,7 @@ function parseMissionIdFromActivityData(data: unknown): string | null {
     return m?.[1] || null;
 }
 
-export const SLOClassOverview: React.FC<SLOClassOverviewProps> = ({ students, schoolId }) => {
+export const SLOClassOverview: React.FC<SLOClassOverviewProps> = ({ students, schoolId, selectedYear }) => {
     const [expandedClasses, setExpandedClasses] = useState<Set<string>>(new Set());
     const [exporting, setExporting] = useState(false);
     const [exportError, setExportError] = useState<string | null>(null);
@@ -37,6 +39,13 @@ export const SLOClassOverview: React.FC<SLOClassOverviewProps> = ({ students, sc
         students.forEach(s => map.set(s.uid, s));
         return map;
     }, [students]);
+
+    const activeSpotlights = useMemo(() => filterSpotlightsByYear(selectedYear), [selectedYear]);
+
+    const spotlightProgress = useMemo(
+        () => buildSpotlightProgress(activeSpotlights, students),
+        [activeSpotlights, students]
+    );
 
     const calculateClassStats = (classStudents: StudentData[]) => {
         const classStats: Record<string, { avgPercentage: number; students: number; hasData: boolean }> = {};
@@ -89,6 +98,44 @@ export const SLOClassOverview: React.FC<SLOClassOverviewProps> = ({ students, sc
                 kerndoelenData.push([kd.code, kd.domein, kd.label, kd.omschrijving]);
             });
             addAoaSheet('Kerndoelen', kerndoelenData);
+
+            // Sheet: Curriculum spotlights for school-facing evidence conversations
+            const spotlightRows: any[] = [
+                ['Leerjaar', 'Periode', 'Missie ID', 'Missie', 'Kerndoelen', 'Waarom belangrijk', 'Docentobservatie']
+            ];
+            MISSION_SPOTLIGHTS.forEach(spotlight => {
+                spotlightRows.push([
+                    `J${spotlight.yearGroup}`,
+                    spotlight.periodLabel,
+                    spotlight.missionId,
+                    spotlight.title,
+                    spotlight.kerndoelen.join(', '),
+                    spotlight.summary,
+                    spotlight.teacherSignal,
+                ]);
+            });
+            addAoaSheet('Missie Spotlights', spotlightRows);
+
+            const spotlightProgressRows: any[] = [
+                ['Leerjaar', 'Periode', 'Missie ID', 'Klas', 'Leerlingen', 'Gestart', 'Nog Bezig', 'Afgerond', '% Gestart', '% Afgerond']
+            ];
+            spotlightProgress.forEach(({ spotlight, classBreakdown }) => {
+                classBreakdown.forEach(classProgress => {
+                    spotlightProgressRows.push([
+                        `J${spotlight.yearGroup}`,
+                        spotlight.periodLabel,
+                        spotlight.missionId,
+                        classProgress.className,
+                        classProgress.totalStudents,
+                        classProgress.startedStudents,
+                        classProgress.inProgressStudents,
+                        classProgress.completedStudents,
+                        classProgress.startedPercentage,
+                        classProgress.completedPercentage,
+                    ]);
+                });
+            });
+            addAoaSheet('Spotlight Voortgang', spotlightProgressRows);
 
             // Sheet 1: Overview per class
             const overviewHeader = ['Klas', 'Aantal Leerlingen', ...KERNDOEL_CODES.map(code => `${code} ${SLO_KERNDOELEN[code].label}`)];
@@ -144,7 +191,8 @@ export const SLOClassOverview: React.FC<SLOClassOverviewProps> = ({ students, sc
                 .from('student_activities')
                 .select('*')
                 .gte('timestamp', cutoffISO)
-                .order('timestamp', { ascending: true });
+                .order('timestamp', { ascending: true })
+                .limit(5000);
 
             if (schoolId) {
                 activitiesQueryBuilder = activitiesQueryBuilder.eq('school_id', schoolId);
@@ -353,6 +401,176 @@ export const SLOClassOverview: React.FC<SLOClassOverviewProps> = ({ students, sc
                     </div>
                 </div>
             </div>
+
+            {spotlightProgress.length > 0 && (
+                <div className="bg-white rounded-xl border border-indigo-100 shadow-sm overflow-hidden">
+                    <div className="px-4 py-3 border-b border-indigo-100 bg-indigo-50/70">
+                        <p className="text-[10px] font-black text-indigo-600 uppercase tracking-widest">Curriculum Spotlight</p>
+                        <h3 className="text-sm font-bold text-slate-900 mt-1">
+                            Missie die extra sterk bewijs geeft in het SLO-verhaal
+                        </h3>
+                    </div>
+                    <div className="p-4 space-y-3">
+                        {spotlightProgress.map(({ spotlight, totalStudents, startedStudents, completedStudents, inProgressStudents, startedPercentage, completedPercentage, classBreakdown, signals }) => (
+                            <div key={spotlight.missionId} className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                                <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                                    <div className="min-w-0">
+                                        <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+                                            J{spotlight.yearGroup} • {spotlight.periodLabel}
+                                        </p>
+                                        <h4 className="text-base font-bold text-slate-900 mt-1">{spotlight.title}</h4>
+                                    </div>
+                                    <div className="flex flex-wrap gap-2">
+                                        {spotlight.kerndoelen.map(code => (
+                                            <span key={code} className="inline-flex px-2 py-1 rounded-full bg-indigo-100 text-indigo-700 text-[11px] font-bold">
+                                                {code}
+                                            </span>
+                                        ))}
+                                    </div>
+                                </div>
+                                <p className="text-sm text-slate-600 mt-3">{spotlight.summary}</p>
+                                <div className="mt-3 grid gap-3 md:grid-cols-4">
+                                    <div className="rounded-lg bg-white border border-slate-200 px-3 py-2">
+                                        <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Leerlingen</p>
+                                        <p className="text-xl font-black text-slate-900 mt-1">{totalStudents}</p>
+                                    </div>
+                                    <div className="rounded-lg bg-white border border-indigo-200 px-3 py-2">
+                                        <p className="text-[11px] font-bold text-indigo-600 uppercase tracking-wider">Gestart</p>
+                                        <p className="text-xl font-black text-indigo-700 mt-1">{startedStudents}</p>
+                                        <p className="text-xs text-slate-500 mt-1">{startedPercentage}% van leerjaarfilter</p>
+                                    </div>
+                                    <div className="rounded-lg bg-white border border-amber-200 px-3 py-2">
+                                        <p className="text-[11px] font-bold text-amber-600 uppercase tracking-wider">Nog Bezig</p>
+                                        <p className="text-xl font-black text-amber-700 mt-1">{inProgressStudents}</p>
+                                        <p className="text-xs text-slate-500 mt-1">Wel gestart, nog niet afgerond</p>
+                                    </div>
+                                    <div className="rounded-lg bg-white border border-emerald-200 px-3 py-2">
+                                        <p className="text-[11px] font-bold text-emerald-600 uppercase tracking-wider">Afgerond</p>
+                                        <p className="text-xl font-black text-emerald-700 mt-1">{completedStudents}</p>
+                                        <p className="text-xs text-slate-500 mt-1">{completedPercentage}% van leerjaarfilter</p>
+                                    </div>
+                                </div>
+                                <div className="mt-3 grid gap-2">
+                                    <div>
+                                        <div className="flex items-center justify-between text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+                                            <span>Gestart</span>
+                                            <span>{startedPercentage}%</span>
+                                        </div>
+                                        <div className="mt-1 h-2 rounded-full bg-slate-200 overflow-hidden">
+                                            <div className="h-full rounded-full bg-indigo-500 transition-all" style={{ width: `${startedPercentage}%` }} />
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div className="flex items-center justify-between text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+                                            <span>Afgerond</span>
+                                            <span>{completedPercentage}%</span>
+                                        </div>
+                                        <div className="mt-1 h-2 rounded-full bg-slate-200 overflow-hidden">
+                                            <div className="h-full rounded-full bg-emerald-500 transition-all" style={{ width: `${completedPercentage}%` }} />
+                                        </div>
+                                    </div>
+                                </div>
+                                {signals.length > 0 && (
+                                    <div className="mt-3 rounded-lg bg-white border border-slate-200 px-3 py-3">
+                                        <div className="flex items-center justify-between gap-3">
+                                            <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Docentsignalen</p>
+                                            <p className="text-[11px] text-slate-400">Automatische nudges op basis van start- en afronddata</p>
+                                        </div>
+                                        <div className="mt-3 grid gap-3 xl:grid-cols-3">
+                                            {signals.map(signal => {
+                                                const toneStyles = signal.tone === 'success'
+                                                    ? {
+                                                        wrapper: 'border-emerald-200 bg-emerald-50',
+                                                        icon: 'bg-emerald-100 text-emerald-700',
+                                                        title: 'text-emerald-800',
+                                                        nudge: 'bg-white/80 border-emerald-200 text-emerald-900',
+                                                    }
+                                                    : signal.tone === 'attention'
+                                                        ? {
+                                                            wrapper: 'border-amber-200 bg-amber-50',
+                                                            icon: 'bg-amber-100 text-amber-700',
+                                                            title: 'text-amber-800',
+                                                            nudge: 'bg-white/80 border-amber-200 text-amber-900',
+                                                        }
+                                                        : {
+                                                            wrapper: 'border-rose-200 bg-rose-50',
+                                                            icon: 'bg-rose-100 text-rose-700',
+                                                            title: 'text-rose-800',
+                                                            nudge: 'bg-white/80 border-rose-200 text-rose-900',
+                                                        };
+                                                const Icon = signal.tone === 'success'
+                                                    ? TrendingUp
+                                                    : signal.tone === 'attention'
+                                                        ? Lightbulb
+                                                        : AlertTriangle;
+
+                                                return (
+                                                    <div key={signal.id} className={`rounded-xl border px-3 py-3 ${toneStyles.wrapper}`}>
+                                                        <div className="flex items-start gap-3">
+                                                            <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${toneStyles.icon}`}>
+                                                                <Icon size={18} />
+                                                            </div>
+                                                            <div className="min-w-0">
+                                                                <p className={`text-sm font-bold ${toneStyles.title}`}>{signal.title}</p>
+                                                                <p className="text-sm text-slate-700 mt-1">{signal.summary}</p>
+                                                            </div>
+                                                        </div>
+                                                        <div className={`mt-3 rounded-lg border px-3 py-2 ${toneStyles.nudge}`}>
+                                                            <p className="text-[11px] font-bold uppercase tracking-wider">Docentnudge</p>
+                                                            <p className="text-sm mt-1">{signal.nudge}</p>
+                                                        </div>
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+                                )}
+                                <div className="mt-3 rounded-lg bg-white border border-slate-200 px-3 py-2">
+                                    <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Docent kan observeren</p>
+                                    <p className="text-sm text-slate-700 mt-1">{spotlight.teacherSignal}</p>
+                                </div>
+                                <div className="mt-3 rounded-lg bg-white border border-slate-200 px-3 py-3">
+                                    <div className="flex items-center justify-between gap-3">
+                                        <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Per klas</p>
+                                        <p className="text-[11px] text-slate-400">Gestart telt ook afgeronde leerlingen mee</p>
+                                    </div>
+                                    <div className="mt-3 grid gap-3 lg:grid-cols-2">
+                                        {classBreakdown.map(classProgress => (
+                                            <div key={`${spotlight.missionId}-${classProgress.className}`} className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-3">
+                                                <div className="flex items-start justify-between gap-3">
+                                                    <div className="min-w-0">
+                                                        <p className="text-sm font-bold text-slate-900">{classProgress.className}</p>
+                                                        <p className="text-xs text-slate-500 mt-1">
+                                                            {classProgress.completedStudents} van {classProgress.totalStudents} leerlingen afgerond
+                                                        </p>
+                                                    </div>
+                                                    <span className="inline-flex px-2 py-1 rounded-full bg-emerald-100 text-emerald-700 text-[11px] font-bold">
+                                                        {classProgress.completedPercentage}%
+                                                    </span>
+                                                </div>
+                                                <div className="mt-3 grid grid-cols-3 gap-2">
+                                                    <div className="rounded-lg bg-white border border-slate-200 px-2 py-2 text-center">
+                                                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Gestart</p>
+                                                        <p className="text-lg font-black text-indigo-700 mt-1">{classProgress.startedStudents}</p>
+                                                    </div>
+                                                    <div className="rounded-lg bg-white border border-slate-200 px-2 py-2 text-center">
+                                                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Bezig</p>
+                                                        <p className="text-lg font-black text-amber-700 mt-1">{classProgress.inProgressStudents}</p>
+                                                    </div>
+                                                    <div className="rounded-lg bg-white border border-slate-200 px-2 py-2 text-center">
+                                                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Afgerond</p>
+                                                        <p className="text-lg font-black text-emerald-700 mt-1">{classProgress.completedStudents}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
 
             <div className="space-y-4">
                 {Object.entries(studentsByClass).sort().map(([className, classStudents]) => {

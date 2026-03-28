@@ -160,7 +160,7 @@ Een beveiligingsincident is elke gebeurtenis die de vertrouwelijkheid, integrite
 | Contactgegevens | |
 |---|---|
 | E-mail | security@dgskills.app |
-| Telefoon | [INVULLEN] |
+| Telefoon | Op aanvraag via security@dgskills.app |
 | Beschikbaarheid | Ma-vr 08:00-18:00 CET; voor kritieke incidenten: 24/7 via e-mail met reactie binnen 4 uur |
 
 ---

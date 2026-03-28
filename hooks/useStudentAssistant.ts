@@ -3,6 +3,7 @@ import { ChatMessage } from '../types';
 import { createChatSession } from '../services/geminiService';
 import { supabase } from '../services/supabase';
 import { sanitizePrompt } from '../utils/promptSanitizer';
+import { useWellbeingMonitor, WellbeingMatch } from './useWellbeingMonitor';
 
 const MAX_UI_MESSAGES = 30;
 const ABUSE_THRESHOLD = 3;
@@ -21,9 +22,11 @@ const WEEK1_HELP_CONTEXT = {
 interface UseStudentAssistantProps {
     userIdentifier: string; // usually the student's UID
     context?: any; // Optional context to "watch along"
+    /** Optionele server-side roleId. Default: 'student-assistant'. */
+    roleId?: string;
 }
 
-export const useStudentAssistant = ({ userIdentifier, context }: UseStudentAssistantProps) => {
+export const useStudentAssistant = ({ userIdentifier, context, roleId = 'student-assistant' }: UseStudentAssistantProps) => {
     const [messages, setMessages] = useState<ChatMessage[]>([]);
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -31,6 +34,26 @@ export const useStudentAssistant = ({ userIdentifier, context }: UseStudentAssis
     const [abuseCount, setAbuseCount] = useState(0);
     const chatSessionRef = useRef<any>(null);
     const [isOpen, setIsOpen] = useState(false); // Controls UI visibility
+
+    // Welzijnsdetectie — scant berichten op zorgwekkende taal voordat ze naar AI gaan
+    const handleWellbeingAlert = useCallback(async (match: WellbeingMatch) => {
+        // Log alert naar Supabase voor docentnotificatie (zonder originele tekst — privacy)
+        try {
+            await supabase.rpc('log_wellbeing_alert' as any, {
+                p_student_id: userIdentifier,
+                p_category: match.category,
+                p_detected_at: match.timestamp,
+            });
+        } catch (err) {
+            // Tabel/RPC bestaat mogelijk nog niet — fail silently in dev, log in prod
+            console.error('Wellbeing alert logging failed:', err);
+        }
+    }, [userIdentifier]);
+
+    const { scanText: scanWellbeing, showHulplijn, lastMatch: wellbeingMatch, dismissHulplijn } = useWellbeingMonitor({
+        onAlert: handleWellbeingAlert,
+        studentId: userIdentifier,
+    });
 
     // System instruction for the student assistant
     const systemInstruction = `
@@ -105,7 +128,7 @@ REGELS VOOR JOU:
     // 2. Initialize Chat
     useEffect(() => {
         if (!chatSessionRef.current) {
-            chatSessionRef.current = createChatSession('student-assistant', systemInstruction);
+            chatSessionRef.current = createChatSession(roleId, systemInstruction);
             // Add welcome message
             setMessages([{
                 role: 'model',
@@ -118,6 +141,14 @@ REGELS VOOR JOU:
     const handleSend = async (messageOverride?: string) => {
         const messageText = (messageOverride ?? input).trim();
         if (!messageText || isLocked) return;
+
+        // Welzijnscheck — scan op zorgwekkende taal VOORDAT het bericht naar AI gaat
+        const wellbeingResult = scanWellbeing(messageText);
+        if (wellbeingResult.isBlocked) {
+            // Bericht wordt NIET verstuurd. Hulplijn-overlay verschijnt automatisch via showHulplijn state.
+            setInput('');
+            return;
+        }
 
         const userMsg: ChatMessage = {
             role: 'user',
@@ -232,6 +263,10 @@ REGELS VOOR JOU:
         isLoading,
         isLocked,
         isOpen,
-        setIsOpen
+        setIsOpen,
+        // Welzijnsdetectie
+        showHulplijn,
+        wellbeingMatch,
+        dismissHulplijn,
     };
 };

@@ -45,6 +45,7 @@ interface PrintTroubleshooterState {
     correctScenarios: number[];
     showIntro: boolean;
     showComplete: boolean;
+    reflectie: string;
 }
 
 const SCENARIOS: Scenario[] = [
@@ -199,6 +200,7 @@ export const PrintInstructiesMission: React.FC<Props> = ({ onBack, onComplete })
             correctScenarios: [],
             showIntro: true,
             showComplete: false,
+            reflectie: '',
         }
     );
 
@@ -375,12 +377,36 @@ export const PrintInstructiesMission: React.FC<Props> = ({ onBack, onComplete })
                             </ul>
                         </div>
 
+                        {/* Reflectie */}
+                        <div className="rounded-2xl p-4 text-left space-y-3" style={{ backgroundColor: '#FFFFFF', border: '1px solid rgba(217, 119, 87, 0.2)' }}>
+                            <div className="flex items-center gap-2">
+                                <Sparkles size={16} style={{ color: '#D97757' }} />
+                                <p className="text-xs font-black uppercase tracking-widest" style={{ color: '#D97757', fontFamily: "'Outfit', system-ui, sans-serif" }}>Reflectie</p>
+                            </div>
+                            <p className="text-xs" style={{ color: '#3D3D38', fontFamily: "'Outfit', system-ui, sans-serif" }}>Wat heb je geleerd in deze missie? Waar zou je dit in het dagelijks leven tegenkomen?</p>
+                            <textarea
+                                value={state.reflectie}
+                                onChange={e => setState(prev => ({ ...prev, reflectie: e.target.value }))}
+                                placeholder="Wat heb je geleerd? Waar kom je dit nog meer tegen?"
+                                className="w-full p-3 rounded-xl border-2 resize-none focus:outline-none transition-all duration-300"
+                                style={{ minHeight: '80px', fontFamily: "'Outfit', system-ui, sans-serif", borderColor: '#E8E6DF', backgroundColor: '#FAF9F0', fontSize: '0.875rem' }}
+                                onFocus={e => (e.currentTarget.style.borderColor = '#D97757')}
+                                onBlur={e => (e.currentTarget.style.borderColor = '#E8E6DF')}
+                            />
+                        </div>
+
                         <button
                             onClick={() => { clearSave(); onComplete(true); }}
+                            disabled={state.reflectie.trim().length < 10}
                             className="w-full py-4 text-white rounded-full font-black uppercase tracking-wide transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#D97757]"
-                            style={{ backgroundColor: '#D97757', fontFamily: "'Outfit', system-ui, sans-serif" }}
-                            onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#C46849')}
-                            onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#D97757')}
+                            style={{
+                                backgroundColor: state.reflectie.trim().length < 10 ? '#E8E6DF' : '#D97757',
+                                color: state.reflectie.trim().length < 10 ? '#B5B5AF' : '#FFFFFF',
+                                cursor: state.reflectie.trim().length < 10 ? 'not-allowed' : 'pointer',
+                                fontFamily: "'Outfit', system-ui, sans-serif",
+                            }}
+                            onMouseEnter={e => { if (state.reflectie.trim().length >= 10) e.currentTarget.style.backgroundColor = '#C46849'; }}
+                            onMouseLeave={e => { if (state.reflectie.trim().length >= 10) e.currentTarget.style.backgroundColor = '#D97757'; }}
                         >
                             Terug naar Mission Control
                         </button>

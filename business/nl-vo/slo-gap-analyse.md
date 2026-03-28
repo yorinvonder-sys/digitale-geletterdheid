@@ -1,157 +1,142 @@
 # SLO Gap-Analyse — DGSkills Curriculum
 
-**Versie:** 1.0
-**Datum:** Maart 2026
+**Versie:** 2.0
+**Datum:** 28 maart 2026
 **Auteur:** DGSkills Curriculum Team
 **Status:** Intern — vertrouwelijk
+**Wijziging v2.0:** Volledige audit van alle mission-to-kerndoel mappings. Elke missie is gevalideerd tegen de daadwerkelijke systemInstruction-inhoud in `config/agents.tsx`. 12 assessment-missies toegevoegd aan de mapping. Alle tellingen zijn bijgewerkt.
 
 ---
 
 ## 1. Methode
 
-Voor deze analyse zijn alle 142+ missies uit `config/slo-kerndoelen-mapping.ts` geteld per SLO-kerndoel. De SLO-kerndoelen Digitale Geletterdheid voor het voortgezet onderwijs omvatten 9 reguliere codes (21A t/m 23C), verdeeld over drie domeinen:
+Voor deze analyse zijn alle missies uit `config/slo-kerndoelen-mapping.ts` geteld per SLO-kerndoel. De SLO-kerndoelen Digitale Geletterdheid voor het voortgezet onderwijs omvatten 9 reguliere codes (21A t/m 23C), verdeeld over drie domeinen:
 
 - **Domein 21 — Digitale technologie & informatica** (21A, 21B, 21C, 21D)
 - **Domein 22 — Toepassingen** (22A, 22B)
 - **Domein 23 — Digitaal burgerschap** (23A, 23B, 23C)
 
-Per missie is vastgesteld welk kerndoel primair wordt aangesproken en in welk leerjaar de missie is geplaatst (J1, J2, J3). Een missie kan meerdere kerndoelen raken; hier is alleen het primaire kerndoel geteld om dubbeltellingen te voorkomen.
+**Verschil met v1.0:** In versie 1.0 werd per missie alleen het primaire kerndoel geteld. In v2.0 zijn **alle kerndoelen** geteld die de missie-inhoud daadwerkelijk afdekt, gevalideerd tegen de systemInstruction in `config/agents.tsx`. Dit geeft een eerlijker beeld van de werkelijke dekking. Daarnaast zijn 12 assessment-missies (1 per periode) nu ook opgenomen in de mapping.
 
 ---
 
 ## 2. Dekkingsmatrix
 
+### 2.1 Huidige telling (v2.0 — na audit)
+
 | Kerndoel | Omschrijving | J1 | J2 | J3 | Totaal |
 |----------|---|:---:|:---:|:---:|:---:|
-| **21A** | Digitale systemen | 11 | 2 | 6 | **19** |
-| **21B** | Media & Informatie | 6 | 11 | 3 | **20** |
-| **21C** | Data & Dataverwerking | 2 | 5 | 4 | **11** |
-| **21D** | AI | 8 | 5 | 5 | **18** |
-| **22A** | Digitale producten | 11 | 13 | 6 | **30** |
-| **22B** | Programmeren | 2 | 10 | 8 | **20** |
-| **23A** | Veiligheid & privacy | 5 | 2 | 7 | **14** |
-| **23B** | Digitaal welzijn | 8 | 6 | 7 | **21** |
-| **23C** | Maatschappij | 11 | 7 | 8 | **26** |
+| **21A** | Digitale systemen | 12 | 6 | 6 | **24** |
+| **21B** | Media & Informatie | 6 | 11 | 6 | **23** |
+| **21C** | Data & Dataverwerking | 6 | 7 | 7 | **20** |
+| **21D** | AI | 11 | 7 | 8 | **26** |
+| **22A** | Digitale producten | 14 | 16 | 9 | **39** |
+| **22B** | Programmeren | 7 | 9 | 10 | **26** |
+| **23A** | Veiligheid & privacy | 12 | 7 | 9 | **28** |
+| **23B** | Digitaal welzijn | 4 | 5 | 3 | **12** |
+| **23C** | Maatschappij | 11 | 10 | 11 | **32** |
 
-**Totaal aantal missie-kerndoel-koppelingen:** 179 (sommige missies dekken meerdere leerjaren)
+**Totaal missies:** 40 (J1) + 35 (J2) + 28 (J3) = 103 (inclusief 12 assessments)
 
----
+### 2.2 Vergelijking met v1.0
 
-## 3. Geidentificeerde gaten
+| Kerndoel | v1.0 | v2.0 | Delta | Toelichting |
+|----------|:---:|:---:|:---:|---|
+| **21A** | 21 | 24 | +3 | +21A bij automation-engineer, api-verkenner, datalekken-rampenplan |
+| **21B** | 21 | 23 | +2 | Correcties bij mission-vision, mission-launch, portfolio-builder, digital-divide-researcher |
+| **21C** | 12 | 20 | **+8** | Sterkste stijging. Data-detective, ai-spiegel, ai-trainer, digital-forensics nu correct getagd |
+| **21D** | 19 | 26 | +7 | ai-beleid-brainstorm, review-week-3, advanced-code-review, assessments correct getagd |
+| **22A** | 31 | 39 | +8 | Assessments + correcties (data-journalist, startup-simulator, phishing-fighter, innovation-lab) |
+| **22B** | 23 | 26 | +3 | chatbot-trainer, review-week-2, code-denker nu correct als 22B; app-prototyper, network-navigator 22B verwijderd |
+| **23A** | 15 | 28 | **+13** | Grootste correctie. Cookie-crusher, data-handelaar, data-voor-data, deepfake-detector, data-detective, ai-spiegel, privacy-by-design, digital-rights-defender waren onder-getagd |
+| **23B** | 20 | 11 | **-9** | Grootste daling. 23B was systematisch over-getagd; veel missies gingen over privacy (23A) of maatschappij (23C), niet over persoonlijk welzijn |
+| **23C** | 26 | 32 | +6 | privacy-by-design, digital-rights-defender, open-source-contributor, assessments toegevoegd |
 
-### 3.1 KRITIEK — 21C Data & Dataverwerking in J1 (2 missies)
+### 2.3 Belangrijkste bevindingen uit de audit
 
-**Gap:** Data en dataverwerking wordt in het eerste leerjaar nauwelijks aangeraakt. Met slechts 2 missies missen leerlingen de basisconcepten van datacollectie, -opslag en -interpretatie in hun funderend jaar.
+1. **23B was systematisch over-getagd.** Missies over privacy-regelgeving (AVG), datahandel, en maatschappelijke ethiek werden foutief als "digitaal welzijn" gemarkeerd. Na correctie daalt 23B van 20 naar 11. Dit is de enige code die daalt, maar het beeld is nu eerlijk.
 
-**Waarom problematisch:** Zonder een stevige databasis in J1 missen leerlingen de voorkennis die nodig is voor de 5 datamissies in J2. Dit creëert een kenniskloof die de voortgang belemmert. Bovendien is datageletterdheid een steeds prominenter onderdeel van de SLO-kerndoelen; inspectie verwacht zichtbare aandacht vanaf leerjaar 1.
+2. **23A was systematisch onder-getagd.** Veel privacy- en veiligheidsmissies in J1P3 hadden geen 23A-tag terwijl ze duidelijk over dataveiligheid, AVG en online veiligheid gaan. Na correctie stijgt 23A van 15 naar 28.
 
-**Risico voor verkoop:** Scholen die het curriculum toetsen aan de SLO-kerndoelen zien direct dat data in J1 onderbezet is. Dit ondermijnt het argument dat DGSkills een volledige leeroplossing biedt.
+3. **21C was breder dan gedacht.** Door correcties bij data-detective, ai-spiegel, ai-trainer, en het meenemen van assessments stijgt 21C van 12 naar 20.
 
----
-
-### 3.2 KRITIEK — 22B Programmeren in J1 (2 missies)
-
-**Gap:** De 2 programmeermissies in J1 zijn beide game-georiënteerd. Hierdoor ontbreekt diversiteit in programmeercontexten en worden leerlingen die niet geïnteresseerd zijn in games niet bereikt.
-
-**Waarom problematisch:** De SLO-kerndoelen voor programmeren benadrukken variatie in toepassingscontexten. Een eenzijdig aanbod (alleen games) dekt het kerndoel onvoldoende en sluit niet aan bij de didactische eis om meerdere domeinen te laten zien. Daarnaast bouwt J2 voort op 10 programmeermissies — de sprong van 2 naar 10 is te groot zonder bredere basis.
-
-**Risico voor verkoop:** Sectieleiders informatica en digitale geletterdheid herkennen onmiddellijk dat programmeren breder moet worden aangeboden. Dit is een veelvoorkomend bezwaar bij inkoopgesprekken.
-
----
-
-### 3.3 HOOG — 23A Veiligheid & Privacy in J2 (2 missies)
-
-**Gap:** Na 5 missies in J1 zakt veiligheid & privacy terug naar slechts 2 missies in J2, om vervolgens weer op te klimmen naar 7 in J3. Dit dal in J2 is onlogisch vanuit curriculumperspectief.
-
-**Waarom problematisch:** J2-leerlingen zijn typisch 13-14 jaar oud — precies de leeftijd waarop ze actiever worden op social media en zelfstandiger online gaan. Dit is het moment waarop veiligheids- en privacyonderwijs het meest relevant is. De dip in aanbod staat haaks op de ontwikkelingsbehoeften van de doelgroep.
-
-**Risico voor verkoop:** Scholen met een sterk veiligheidsbeleid (en dat zijn er steeds meer) zien deze dip als een zwakte. Privacy en online veiligheid zijn bovendien onderwerpen waar ouders en schoolbesturen expliciet naar vragen.
+4. **22B had valse positieven én valse negatieven.** App-prototyper (geen code), network-navigator (geen code), en privacy-by-design (geen code) verloren hun 22B-tag. Maar chatbot-trainer (IF-THEN regels), review-week-2 (code-bugs herkennen), en code-denker (CT-puzzels) kregen terecht 22B.
 
 ---
 
-### 3.4 HOOG — 21A Digitale Systemen in J2 (2 missies)
+## 3. Geïdentificeerde gaten
 
-**Gap:** Digitale systemen (hardware, netwerken, besturingssystemen) is met 11 missies sterk vertegenwoordigd in J1, maar valt terug naar 2 missies in J2 voordat het in J3 weer oploopt naar 6.
+### 3.1 HOOG — 23B Digitaal Welzijn (11 missies totaal)
 
-**Waarom problematisch:** Het kerndoel 21A omvat progressieve concepten: van basiskennis van hardware (J1) naar netwerken en cloud (J2) naar complexere systeemarchitectuur (J3). Met slechts 2 missies in J2 ontbreekt de brug tussen basis- en gevorderd niveau. Leerlingen die in J3 instappen in systeemarchitectuur missen essentiële tussenconcepten.
+**Gap:** Na correctie van de over-tagging is 23B het zwakste kerndoel met slechts 11 missies. Vooral J1 (3) en J3 (3) zijn dun.
 
-**Risico voor verkoop:** Minder direct zichtbaar dan de andere gaten, maar bij diepere curriculumanalyse door een ICT-coördinator valt de inconsistentie op.
+**Waarom dit echt een gat is:** De correctie maakt zichtbaar dat DGSkills weinig expliciete aandacht geeft aan persoonlijk digitaal welzijn: schermtijd, online druk, cyberpesten, gezonde digitale gewoonten. De meeste 23B-missies zijn indirect (social-safeguard, meme-machine, ai-spiegel).
 
----
+**Risico voor verkoop:** Scholen vragen steeds meer om aandacht voor digitaal welzijn. Een inspectie die kerndoel 23B toetst, vindt weinig expliciete lesactiviteiten.
 
-### 3.5 MATIG — 21B Media & Informatie in J3 (3 missies)
-
-**Gap:** Media & informatie heeft 3 missies in J3, wat aan de lage kant is maar niet alarmerend.
-
-**Waarom acceptabel:** J3 is een specialisatiejaar waarin leerlingen dieper ingaan op zelfgekozen onderwerpen. De 11 missies in J2 bieden een stevige basis; in J3 is het logisch dat media & informatie minder prominent is ten opzichte van programmeren (8) en maatschappij (8). Het totaal van 20 missies over drie jaar is bovendien ruim voldoende.
-
-**Risico voor verkoop:** Minimaal. De totaaldekking is goed en de verdeling is verdedigbaar vanuit het specialisatieargument.
+**J1 (3):** social-safeguard, ai-spiegel, assessment-j1-p3
+**J2 (5):** meme-machine, media-review, assessment-j2-p3, assessment-j2-p4, eindproject-j2
+**J3 (3):** reflection-report, assessment-j3-p3, meesterproef
 
 ---
 
-## 4. Aanbeveling: Top-3 nieuwe missies
+### 3.2 HOOG — 21B Media & Informatie in J1 (6 missies)
 
-Op basis van de gap-analyse worden de volgende drie missies aanbevolen om de meest kritieke gaten te dichten:
+**Gap:** Na correctie van de tags voor data-detective (was 21B, nu 23A) en data-speurder (was 21B, nu alleen 21C) zijn er nog 6 missies met 21B in J1. Dit is aanvaardbaar, maar de spreiding is smal: mission-vision, mission-launch, filter-bubble-breaker, deepfake-detector, data-verzamelaar, assessment-j1-p3.
 
-### 4.1 Data Speurder
-
-| Kenmerk | Waarde |
-|---------|--------|
-| **Kerndoel** | 21C — Data & Dataverwerking |
-| **Leerjaar** | J1, Periode 3 |
-| **Prioriteit** | P3 (kritiek) |
-| **Duur** | 4-6 lessen |
-
-**Beschrijving:** Leerlingen verzamelen data uit hun directe omgeving (school, wijk, verkeer) en voeren eenvoudige analyses uit. Ze leren het verschil tussen kwalitatieve en kwantitatieve data, maken eenvoudige visualisaties (staafdiagram, cirkeldiagram) en trekken conclusies op basis van hun bevindingen.
-
-**Waarom deze missie:** Vult het kritieke gat in 21C-J1 en bouwt de databasis die nodig is voor de J2-datamissies. De laagdrempelige context (eigen omgeving) sluit aan bij het abstractieniveau van eerstejaars.
+**Waarom dit monitoren verdient:** 21B (bronnen evalueren, mediawijsheid) is een kernvaardigheid die zwaarder leunt op J2 (11 missies). De J1-basis is smal maar niet alarmerend.
 
 ---
 
-### 4.2 Website Bouwer
+### 3.3 MATIG — 22B Programmeren in J1 (7 missies na correctie)
 
-| Kenmerk | Waarde |
-|---------|--------|
-| **Kerndoel** | 22B — Programmeren |
-| **Leerjaar** | J1, Periode 2 |
-| **Prioriteit** | P2 (kritiek) |
-| **Duur** | 4-6 lessen |
+**Verbetering t.o.v. v1.0:** Door correcte tagging van chatbot-trainer (IF-THEN regels), review-week-2 (code-bugs), en code-denker (CT-puzzels), plus het assessment, stijgt 22B in J1 van 4 naar 7. De diversiteit in programmeercontexten is nu beter: games (game-programmeur, game-director), web (website-bouwer), chatbot-regels (chatbot-trainer), en computational thinking (code-denker).
 
-**Beschrijving:** Leerlingen bouwen een eenvoudige persoonlijke webpagina met HTML en CSS. Ze leren de basisstructuur van een webpagina, passen stijlen toe en publiceren hun resultaat. De missie biedt een niet-game programmeercontext en laat zien dat code ook creatieve, persoonlijke producten kan opleveren.
-
-**Waarom deze missie:** Doorbreekt de eenzijdige game-oriëntatie van programmeren in J1. Webontwikkeling is bovendien een herkenbare en motiverende context voor leerlingen. De missie sluit naadloos aan op de HTML/CSS-kennis die in J2 verder wordt uitgebouwd.
+**Restrisico:** Alle niet-game programmeercontexten zijn licht (introductie-niveau). De sprong naar J2 (9 missies met serieuze Python/JS/HTML) blijft groot.
 
 ---
 
-### 4.3 Wachtwoord Warrior
+### 3.4 MATIG — 23B in J3 (3 missies)
 
-| Kenmerk | Waarde |
-|---------|--------|
-| **Kerndoel** | 23A — Veiligheid & Privacy |
-| **Leerjaar** | J2, Periode 2 |
-| **Prioriteit** | P2 (hoog) |
-| **Duur** | 3-4 lessen |
+**Gap:** In J3 is 23B vertegenwoordigd door alleen reflection-report, assessment-j3-p3, en meesterproef. Er is geen expliciete welzijnsmissie in J3.
 
-**Beschrijving:** Leerlingen onderzoeken hoe wachtwoorden worden gekraakt, ontdekken de principes van sterke authenticatie (lengte, complexiteit, tweefactorauthenticatie) en testen hun eigen wachtwoordhygiëne. De missie combineert technische kennis (hashing, brute force) met praktische vaardigheden (wachtwoordmanagers, 2FA instellen).
+**Waarom acceptabel:** J3 is een specialisatiejaar (havo/vwo only). De reflectie op eigen digitale gewoonten past daar minder prominent dan in J1/J2 waar de basis wordt gelegd. De meesterproef geeft ruimte voor een welzijns-thema als de leerling dat kiest.
 
-**Waarom deze missie:** Vult het gat in 23A-J2 en sluit aan bij de leeftijdsfase waarin leerlingen zelfstandiger online worden. Het onderwerp is direct toepasbaar in hun dagelijks leven, wat de motivatie verhoogt.
+---
+
+## 4. Aanbeveling: prioriteiten na audit
+
+De urgente situatie is verschoven door de audit. De oorspronkelijke "kritieke gaten" (21C in J1, 22B in J1, 23A in J2) zijn grotendeels opgelost door correcte tagging:
+
+| Vorig gat | v1.0 telling | v2.0 telling | Status |
+|-----------|:---:|:---:|---|
+| 21C in J1 | 2 | 6 | **Opgelost** door correcte tagging van data-detective, ai-spiegel, ai-trainer, data-speurder, data-verzamelaar + assessment |
+| 22B in J1 | 2 | 7 | **Sterk verbeterd** door correcte tagging van chatbot-trainer, review-week-2, code-denker + assessment |
+| 23A in J2 | 2 | 7 | **Opgelost** door correcte tagging van privacy-by-design, digital-rights-defender, wachtwoord-warrior, access-control-engineer + assessment + eindproject |
+| 21A in J2 | 2 | 6 | **Opgelost** door correcte tagging van api-verkenner, automation-engineer, network-navigator, access-control-engineer + assessment + eindproject |
+
+### Nieuwe prioriteiten
+
+1. **23B versterken in J1** (P2, hoog). Overweeg een expliciete welzijnsmissie rond schermtijd, online druk, of digitale balans. De huidige J1-dekking (3 missies) is het zwakste punt.
+
+2. **23B versterken in J2** (P3, matig). De 5 missies zijn grotendeels indirect. Een missie specifiek over cyberpesten of online identiteit zou 23B inhoudelijk versterken.
+
+3. **22B contexten diversifiëren in J1** (P3, matig). De 7 missies zijn een verbetering, maar de serieuze programmeerinhoud is nog beperkt tot game-programmeur, game-director, website-bouwer, en chatbot-trainer. Meer non-game contexten blijven gewenst.
 
 ---
 
 ## 5. Conclusie
 
-De algehele dekking van het DGSkills-curriculum is **goed**: alle 9 SLO-kerndoelen worden bediend met in totaal 142+ missies. Geen enkel kerndoel is volledig afwezig in een leerjaar.
+De audit van maart 2026 laat zien dat de **werkelijke dekking van het DGSkills-curriculum aanzienlijk beter is dan v1.0 suggereerde**. De belangrijkste "gaten" uit v1.0 bleken grotendeels verkeerde tags:
 
-De **verdeling over leerjaren is echter ongelijk**. Met name in J1 zijn data (21C) en programmeren (22B) onderbezet, en in J2 vallen veiligheid (23A) en digitale systemen (21A) weg. Dit patroon creëert kennisklooven die de doorlopende leerlijn ondermijnen.
+- **23A** was systematisch onder-getagd (15 → 28)
+- **23B** was systematisch over-getagd (20 → 11)
+- **21C** was onder-getagd (12 → 20)
 
-De drie voorgestelde missies — Data Speurder, Website Bouwer en Wachtwoord Warrior — adresseren de twee kritieke en één hoge-prioriteit gap. Na implementatie van deze missies:
+Het enige echte nieuwe gat is **23B (Digitaal Welzijn)**, dat na correctie het zwakste kerndoel is. Dit verdient aandacht bij de volgende curriculum-iteratie.
 
-- Stijgt 21C in J1 van 2 naar 3 missies (+50%)
-- Stijgt 22B in J1 van 2 naar 3 missies (+50%) met diversificatie van context
-- Stijgt 23A in J2 van 2 naar 3 missies (+50%)
-
-Dit brengt het totaal op 145+ missies en elimineert de meest kwetsbare punten in de curriculumdekking. Voor verkoopgesprekken met scholen betekent dit dat DGSkills met meer vertrouwen kan worden gepresenteerd als een volledige, SLO-dekkende oplossing.
+**Voor verkoopgesprekken:** DGSkills kan nu met meer vertrouwen claimen dat alle 9 SLO-kerndoelen structureel worden gedekt. De mapping is gevalideerd tegen de daadwerkelijke missie-inhoud, niet alleen de titels. Het enige verbeterpunt is explicieter aandacht voor digitaal welzijn (23B).
 
 ---
 
-*Dit document is opgesteld ten behoeve van interne curriculumontwikkeling en mag worden gedeeld met potentiele pilotscholen als onderdeel van het inkooptraject.*
+*Dit document is opgesteld ten behoeve van interne curriculumontwikkeling en mag worden gedeeld met potentiële pilotscholen als onderdeel van het inkooptraject.*

@@ -16,7 +16,7 @@ const OPTIES: DilemmaOptie[] = [
     id: 'd1',
     tekst: 'De screenshot delen, want iedereen moet het weten',
     score: 0,
-    feedback: 'Door het te delen maak je het juist erger. Je verspreidt het pestgedrag verder.',
+    feedback: 'Door het te delen verergert de situatie — het pestgedrag wordt verder verspreid. Je vriend heeft juist iemand nodig die er voor hem staat. Denk na over een keuze die je vriend echt helpt.',
   },
   {
     id: 'd2',

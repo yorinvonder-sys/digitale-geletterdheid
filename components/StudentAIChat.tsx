@@ -3,6 +3,7 @@ import { MessageCircle, X, Send, Lock } from 'lucide-react';
 import { useStudentAssistant } from '../hooks/useStudentAssistant';
 import { MarkdownRenderer } from './MarkdownRenderer';
 import { AiDisclosureBadge } from './AiDisclosureBadge';
+import { WellbeingAlert } from './WellbeingAlert';
 
 /** Context data passed to AI for better responses */
 interface AIContextData {
@@ -27,9 +28,11 @@ interface StudentAIChatProps {
     context?: AIContextData;
     isOpen?: boolean; // Controlled state
     onOpenChange?: (open: boolean) => void; // State handler
+    /** Optionele server-side roleId voor missie-specifieke AI-instructies. Default: 'student-assistant'. */
+    roleId?: string;
 }
 
-export const StudentAIChat: React.FC<StudentAIChatProps> = ({ userIdentifier, context, isOpen: controlledIsOpen, onOpenChange }) => {
+export const StudentAIChat: React.FC<StudentAIChatProps> = ({ userIdentifier, context, isOpen: controlledIsOpen, onOpenChange, roleId }) => {
     const getQuickPromptLabel = () => {
         const week = typeof context?.week === 'number' ? context.week : null;
         if (context?.currentChallenge) return 'Game Challenge Hulp';
@@ -111,8 +114,11 @@ export const StudentAIChat: React.FC<StudentAIChatProps> = ({ userIdentifier, co
         isLoading,
         isLocked,
         isOpen: internalIsOpen,
-        setIsOpen: setInternalIsOpen
-    } = useStudentAssistant({ userIdentifier, context });
+        setIsOpen: setInternalIsOpen,
+        showHulplijn,
+        wellbeingMatch,
+        dismissHulplijn,
+    } = useStudentAssistant({ userIdentifier, context, roleId });
 
     // Resolve controlled vs internal state
     const isVisible = controlledIsOpen !== undefined ? controlledIsOpen : internalIsOpen;
@@ -153,6 +159,9 @@ export const StudentAIChat: React.FC<StudentAIChatProps> = ({ userIdentifier, co
 
     return (
         <>
+            {/* Welzijnsdetectie overlay */}
+            {showHulplijn && <WellbeingAlert match={wellbeingMatch} onDismiss={dismissHulplijn} />}
+
             {/* Floating Pip Button */}
             {!isVisible && (
                 <button

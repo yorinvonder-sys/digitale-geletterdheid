@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Lock, ArrowLeft, Clock, ChevronRight, Trophy, BarChart3, Star } from 'lucide-react';
+import { Lock, ArrowLeft, Clock, ChevronRight, Trophy, BarChart3, Star, Monitor, Newspaper, Code, Shield, Heart } from 'lucide-react';
 import { NulmetingResult, KamerScore, EscaperoomStap, KAMER_VOLGORDE, KAMER_NAMEN } from './types';
 import { KamerVergrendeldeLaptop } from './KamerVergrendeldeLaptop';
 import { KamerNepnieuwsfabriek } from './KamerNepnieuwsfabriek';
@@ -49,13 +49,39 @@ export const EscaperoomNulmeting: React.FC<Props> = ({ onComplete, onBack }) => 
   const [startTijd, setStartTijd] = useState<number | null>(null);
   const [verstrekenTijd, setVerstrekenTijd] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const mountedRef = useRef(true);
 
-  // Timer
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      mountedRef.current = false;
+    };
+  }, []);
+
+  // Timer — pauzeer bij verborgen tab (Page Visibility API)
   useEffect(() => {
     if (startTijd && stap !== 'resultaat') {
-      timerRef.current = setInterval(() => {
-        setVerstrekenTijd(Math.round((Date.now() - startTijd) / 1000));
-      }, 1000);
+      const tick = () => {
+        if (mountedRef.current && !document.hidden) {
+          setVerstrekenTijd(Math.round((Date.now() - startTijd) / 1000));
+        }
+      };
+      timerRef.current = setInterval(tick, 1000);
+
+      const handleVisibility = () => {
+        if (document.hidden && timerRef.current) {
+          clearInterval(timerRef.current);
+          timerRef.current = null;
+        } else if (!document.hidden && mountedRef.current) {
+          timerRef.current = setInterval(tick, 1000);
+        }
+      };
+      document.addEventListener('visibilitychange', handleVisibility);
+
+      return () => {
+        if (timerRef.current) clearInterval(timerRef.current);
+        document.removeEventListener('visibilitychange', handleVisibility);
+      };
     }
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
@@ -77,13 +103,16 @@ export const EscaperoomNulmeting: React.FC<Props> = ({ onComplete, onBack }) => 
   };
 
   const handleKamerComplete = (kamerKey: string, score: KamerScore) => {
+    if (!mountedRef.current) return;
     setScores(prev => ({ ...prev, [kamerKey]: score }));
 
     // Ga naar volgende kamer
     const huidigeIndex = KAMER_VOLGORDE.indexOf(stap);
     const volgende = KAMER_VOLGORDE[huidigeIndex + 1];
     if (volgende) {
-      setTimeout(() => setStap(volgende), 500);
+      setTimeout(() => {
+        if (mountedRef.current) setStap(volgende);
+      }, 500);
     }
   };
 
@@ -200,14 +229,14 @@ export const EscaperoomNulmeting: React.FC<Props> = ({ onComplete, onBack }) => 
               {/* Kamer overzicht */}
               <div className="space-y-2 mb-6">
                 {[
-                  { naam: 'Vergrendelde Laptop', bg: 'bg-indigo-50', tekst: 'text-indigo-600', icon: '1' },
-                  { naam: 'Nepnieuwsfabriek', bg: 'bg-emerald-50', tekst: 'text-emerald-600', icon: '2' },
-                  { naam: 'Codekluis', bg: 'bg-violet-50', tekst: 'text-violet-600', icon: '3' },
-                  { naam: 'Datalek', bg: 'bg-rose-50', tekst: 'text-rose-600', icon: '4' },
-                  { naam: 'Het Dilemma', bg: 'bg-sky-50', tekst: 'text-sky-600', icon: '5' },
+                  { naam: 'Vergrendelde Laptop', bg: 'bg-indigo-50', tekst: 'text-indigo-600', icon: <Monitor size={14} /> },
+                  { naam: 'Nepnieuwsfabriek', bg: 'bg-emerald-50', tekst: 'text-emerald-600', icon: <Newspaper size={14} /> },
+                  { naam: 'Codekluis', bg: 'bg-violet-50', tekst: 'text-violet-600', icon: <Code size={14} /> },
+                  { naam: 'Datalek', bg: 'bg-rose-50', tekst: 'text-rose-600', icon: <Shield size={14} /> },
+                  { naam: 'Het Dilemma', bg: 'bg-sky-50', tekst: 'text-sky-600', icon: <Heart size={14} /> },
                 ].map((kamer, i) => (
                   <div key={i} className="flex items-center gap-3 text-sm">
-                    <span className={`w-7 h-7 rounded-lg ${kamer.bg} ${kamer.tekst} flex items-center justify-center font-bold text-xs`}>
+                    <span className={`w-7 h-7 rounded-lg ${kamer.bg} ${kamer.tekst} flex items-center justify-center`}>
                       {kamer.icon}
                     </span>
                     <span className="text-slate-500 font-medium">{kamer.naam}</span>

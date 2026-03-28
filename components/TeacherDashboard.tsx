@@ -63,8 +63,12 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
     const [showPresentation, setShowPresentation] = useState(false);
     const [gamificationSubTab, setGamificationSubTab] = useState<GamificationTab>('leaderboard');
     const [selectedStudent, setSelectedStudent] = useState<StudentData | null>(null);
-    const [classFilter, setClassFilter] = useState<string>('all');
-    const [yearGroupFilter, setYearGroupFilter] = useState<number>(1);
+    const [classFilter, setClassFilter] = useState<string>(() => {
+        try { return sessionStorage.getItem('dgskills_teacher_classFilter') || 'all'; } catch { return 'all'; }
+    });
+    const [yearGroupFilter, setYearGroupFilter] = useState<number>(() => {
+        try { const v = sessionStorage.getItem('dgskills_teacher_yearGroup'); return v ? Number(v) : 1; } catch { return 1; }
+    });
 
     // Modals
     const [showMessageModal, setShowMessageModal] = useState(false);
@@ -120,6 +124,10 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
 
     const yearMissions = useMemo(() => getMissionsForYear(yearGroupFilter), [yearGroupFilter]);
     const selectedClassId = classFilter === 'all' ? 'MH1A' : classFilter;
+
+    // Persist filter choices across page reloads
+    useEffect(() => { try { sessionStorage.setItem('dgskills_teacher_classFilter', classFilter); } catch { /* noop */ } }, [classFilter]);
+    useEffect(() => { try { sessionStorage.setItem('dgskills_teacher_yearGroup', String(yearGroupFilter)); } catch { /* noop */ } }, [yearGroupFilter]);
 
     const [retryCount, setRetryCount] = useState(0);
     const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
@@ -324,6 +332,14 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
         }
     };
 
+    const openClassMessageDraft = (targetClassId: string, text: string) => {
+        setMessageTarget('class');
+        setMessageTargetClassId(targetClassId);
+        setMessageTargetStudentId('');
+        setMessageText(text);
+        setShowMessageModal(true);
+    };
+
     const handleAwardBadge = async () => {
         if (!selectedStudent || !selectedBadge) return;
         if (await awardBadge(selectedStudent.uid, selectedBadge)) {
@@ -503,7 +519,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                                             setActiveTab('gamification');
                                             setGamificationSubTab(tab);
                                         } else {
-                                            setActiveTab(tab as any);
+                                            setActiveTab(tab as MainTab);
                                         }
                                     }}
                                     loading={loading}
@@ -514,8 +530,16 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                                     selectedStudentId={selectedStudentIdFilter}
                                     onSelectStudentFilter={setSelectedStudentIdFilter}
                                     yearGroup={yearGroupFilter}
+                                    onSendMessage={() => setShowMessageModal(true)}
                                 />
-                                {students.some(s => (s.stats?.xp || 0) < 50) && <AlertsPanel students={students} onSelectStudent={setSelectedStudent} />}
+                                <AlertsPanel
+                                    students={students}
+                                    onSelectStudent={setSelectedStudent}
+                                    yearGroup={yearGroupFilter}
+                                    classFilter={classFilter}
+                                    onNavigateToSlo={() => setActiveTab('slo')}
+                                    onMessageClass={openClassMessageDraft}
+                                />
                             </PageTransition>
                         )}
 
@@ -572,7 +596,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                         {activeTab === 'ai-beleid' && <PageTransition key="ai-beleid"><div className="bg-white rounded-[2rem] border border-slate-100 p-6"><AiBeleidFeedbackPanel classFilter={classFilter !== 'all' ? classFilter : undefined} schoolId={user?.schoolId} /></div></PageTransition>}
                         {activeTab === 'feedback' && <PageTransition key="feedback"><FeedbackPanel schoolId={user?.schoolId} /></PageTransition>}
                         {activeTab === 'progress' && <PageTransition key="progress" className="space-y-6"><MissionProgressPanel students={students} classFilter={classFilter} availableClasses={classGroups} onClassFilterChange={setClassFilter} onSelectStudent={setSelectedStudent} yearGroup={yearGroupFilter} /><HybridAssessmentPanel records={hybridAssessments} classFilter={classFilter} /></PageTransition>}
-                        {activeTab === 'slo' && <PageTransition key="slo"><SLOClassOverview students={students} schoolId={user?.schoolId} /></PageTransition>}
+                        {activeTab === 'slo' && <PageTransition key="slo"><SLOClassOverview students={students} schoolId={user?.schoolId} selectedYear={yearGroupFilter} /></PageTransition>}
                         {activeTab === 'nulmeting' && (
                             <PageTransition key="nulmeting">
                                 <Suspense fallback={<div className="flex items-center justify-center py-12"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600" /></div>}>

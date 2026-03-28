@@ -1,14 +1,17 @@
 import React, { useState, useEffect, useRef, useCallback, lazy, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, GraduationCap, Send, Award, RotateCcw, Star, Zap, Eye, StickyNote, Plus, Trash2, Edit2, Loader2, AlertCircle, Target, Clock } from 'lucide-react';
+import { X, GraduationCap, Send, Award, RotateCcw, Star, Zap, Eye, StickyNote, Plus, Trash2, Edit2, Loader2, AlertCircle, Target, Clock, Shield, CheckCircle2, XCircle } from 'lucide-react';
 import { StudentData } from '../../types';
 import { TeacherNote, StudentMissionScore, getStudentMissionScores } from '../../services/teacherService';
 import { AVAILABLE_BADGES } from '../../config/badges';
 import { AwardXPModal } from './AwardXPModal';
+import { StepOverrideModal } from './StepOverrideModal';
 import { addTeacherNote, getTeacherNotes, updateTeacherNote, deleteTeacherNote } from '../../services/teacherService';
+import { TeacherOverride, getOverridesForStudent } from '../../services/teacherOverrideService';
 import { supabase } from '../../services/supabase';
 import { SLOProgressPanel } from './SLOProgressPanel';
 import { getMissionsForYear } from '../../config/missions';
+import { ROLES } from '../../config/agents';
 
 const LazyDigitaalPaspoort = lazy(() => import('../assessment/escaperoom/DigitaalPaspoort').then(m => ({ default: m.DigitaalPaspoort })));
 
@@ -35,9 +38,12 @@ export const StudentModal: React.FC<StudentModalProps> = ({ student, onClose, on
     const [savingNote, setSavingNote] = useState(false);
     const [deletingNoteId, setDeletingNoteId] = useState<string | null>(null);
 
-    const [activeTab, setActiveTab] = useState<'overview' | 'missions' | 'slo' | 'paspoort'>('overview');
+    const [activeTab, setActiveTab] = useState<'overview' | 'missions' | 'slo' | 'paspoort' | 'overrides'>('overview');
     const [missionScores, setMissionScores] = useState<StudentMissionScore[]>([]);
     const [loadingScores, setLoadingScores] = useState(false);
+    const [allOverrides, setAllOverrides] = useState<TeacherOverride[]>([]);
+    const [loadingOverrides, setLoadingOverrides] = useState(false);
+    const [overrideMission, setOverrideMission] = useState<{ id: string; title: string } | null>(null);
     const modalRef = useRef<HTMLDivElement>(null);
 
     // Focus trap: move focus into modal when opened
@@ -60,15 +66,17 @@ export const StudentModal: React.FC<StudentModalProps> = ({ student, onClose, on
         }
     }, [student, handleKeyDown]);
 
-    // Load notes and mission scores when student changes
+    // Load notes, mission scores, and overrides when student changes
     useEffect(() => {
         if (student) {
             loadNotes();
             loadMissionScores();
+            loadAllOverrides();
             setActiveTab('overview');
         } else {
             setNotes([]);
             setMissionScores([]);
+            setAllOverrides([]);
         }
     }, [student?.uid]);
 
@@ -82,6 +90,19 @@ export const StudentModal: React.FC<StudentModalProps> = ({ student, onClose, on
             console.error('Failed to load mission scores:', error);
         } finally {
             setLoadingScores(false);
+        }
+    };
+
+    const loadAllOverrides = async () => {
+        if (!student) return;
+        setLoadingOverrides(true);
+        try {
+            const data = await getOverridesForStudent(student.uid);
+            setAllOverrides(data);
+        } catch {
+            // Silent fail — RLS may block
+        } finally {
+            setLoadingOverrides(false);
         }
     };
 
@@ -207,6 +228,16 @@ export const StudentModal: React.FC<StudentModalProps> = ({ student, onClose, on
                     >
                         SLO Doelen
                     </button>
+                    <button
+                        onClick={() => setActiveTab('overrides')}
+                        className={`py-3 text-xs font-bold uppercase tracking-wider border-b-2 transition-colors flex items-center gap-1.5 ${activeTab === 'overrides' ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-slate-400 hover:text-slate-600'}`}
+                    >
+                        <Shield size={11} />
+                        Overrides
+                        {allOverrides.length > 0 && (
+                            <span className="bg-indigo-100 text-indigo-600 text-[9px] font-black px-1.5 py-0.5 rounded-full">{allOverrides.length}</span>
+                        )}
+                    </button>
                     {student.stats?.nulmetingResult && (
                         <button
                             onClick={() => setActiveTab('paspoort')}
@@ -223,6 +254,13 @@ export const StudentModal: React.FC<StudentModalProps> = ({ student, onClose, on
                             student={student}
                             missionScores={missionScores}
                             loading={loadingScores}
+                            overrides={allOverrides}
+                            onOverride={(missionId, missionTitle) => setOverrideMission({ id: missionId, title: missionTitle })}
+                        />
+                    ) : activeTab === 'overrides' ? (
+                        <OverrideHistoryView
+                            overrides={allOverrides}
+                            loading={loadingOverrides}
                         />
                     ) : activeTab === 'slo' ? (
                         <SLOProgressPanel student={student} />
@@ -472,6 +510,32 @@ export const StudentModal: React.FC<StudentModalProps> = ({ student, onClose, on
                     // Optionally refresh parent data
                 }}
             />
+
+            {/* Step Override Modal */}
+            {overrideMission && student && (() => {
+                const agent = ROLES.find(r => r.id === overrideMission.id);
+                const steps = (agent?.steps || []).map(s => ({
+                    title: s.title,
+                    description: s.description,
+                }));
+                const missionProgress = student.stats?.missionProgress?.[overrideMission.id];
+                const completedSteps: number[] = missionProgress?.completedSteps || [];
+
+                return (
+                    <StepOverrideModal
+                        studentId={student.uid}
+                        studentName={student.displayName || 'Leerling'}
+                        missionId={overrideMission.id}
+                        missionTitle={overrideMission.title}
+                        steps={steps}
+                        completedSteps={completedSteps}
+                        onClose={() => setOverrideMission(null)}
+                        onSuccess={() => {
+                            loadAllOverrides();
+                        }}
+                    />
+                );
+            })()}
         </div>
     );
 };
@@ -481,13 +545,23 @@ const MissionScoresView: React.FC<{
     student: StudentData;
     missionScores: StudentMissionScore[];
     loading: boolean;
-}> = ({ student, missionScores, loading }) => {
+    overrides: TeacherOverride[];
+    onOverride: (missionId: string, missionTitle: string) => void;
+}> = ({ student, missionScores, loading, overrides, onOverride }) => {
     const yearGroup = student.stats?.yearGroup || 1;
     const allMissions = getMissionsForYear(yearGroup);
     const completedIds = student.stats?.missionsCompleted || [];
 
     const scoreMap = new Map<string, StudentMissionScore>();
     missionScores.forEach(s => scoreMap.set(s.mission_id, s));
+
+    const getOverrideCount = (missionId: string): number => {
+        return overrides.filter(o => o.mission_id === missionId).length;
+    };
+
+    const hasRejections = (missionId: string): boolean => {
+        return overrides.some(o => o.mission_id === missionId && o.override_type === 'reject');
+    };
 
     const getStatus = (missionId: string): 'completed' | 'in_progress' | 'not_started' => {
         if (completedIds.includes(missionId)) return 'completed';
@@ -543,6 +617,10 @@ const MissionScoresView: React.FC<{
                     const scoreEntry = scoreMap.get(mission.id);
                     const score = scoreEntry?.score;
                     const lastActive = scoreEntry?.updated_at;
+                    const overrideCount = getOverrideCount(mission.id);
+                    const rejected = hasRejections(mission.id);
+                    const agent = ROLES.find(r => r.id === mission.id);
+                    const hasSteps = agent?.steps && agent.steps.length > 0;
 
                     return (
                         <div key={mission.id} className="flex items-center gap-3 p-3 bg-slate-50 rounded-xl">
@@ -550,7 +628,17 @@ const MissionScoresView: React.FC<{
                                 {status === 'completed' ? '✓' : mission.short[0]}
                             </div>
                             <div className="flex-1 min-w-0">
-                                <div className="font-bold text-sm text-slate-900 truncate">{mission.name}</div>
+                                <div className="flex items-center gap-2">
+                                    <span className="font-bold text-sm text-slate-900 truncate">{mission.name}</span>
+                                    {overrideCount > 0 && (
+                                        <span className={`inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[9px] font-bold ${
+                                            rejected ? 'bg-red-100 text-red-600' : 'bg-indigo-100 text-indigo-600'
+                                        }`}>
+                                            <Shield size={8} />
+                                            {overrideCount}
+                                        </span>
+                                    )}
+                                </div>
                                 <div className="flex items-center gap-2 mt-0.5">
                                     <span className={`inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-bold ${statusColor(status)}`}>
                                         {statusLabel(status)}
@@ -564,12 +652,22 @@ const MissionScoresView: React.FC<{
                                 </div>
                             </div>
                             {score !== null && score !== undefined && (
-                                <div className="text-right">
+                                <div className="text-right mr-1">
                                     <div className={`text-lg font-black ${score >= 70 ? 'text-emerald-600' : score >= 50 ? 'text-amber-600' : 'text-red-500'}`}>
                                         {score}%
                                     </div>
                                     <div className="text-[8px] font-bold text-slate-400 uppercase">Score</div>
                                 </div>
+                            )}
+                            {hasSteps && (
+                                <button
+                                    onClick={() => onOverride(mission.id, mission.name)}
+                                    className="p-2 text-indigo-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors shrink-0"
+                                    title="Stappen overriden"
+                                    aria-label={`Override stappen voor ${mission.name}`}
+                                >
+                                    <Shield size={16} />
+                                </button>
                             )}
                         </div>
                     );
@@ -581,6 +679,109 @@ const MissionScoresView: React.FC<{
                     Geen missies gevonden voor leerjaar {yearGroup}
                 </div>
             )}
+        </div>
+    );
+};
+
+// --- Override History sub-view ---
+const OverrideHistoryView: React.FC<{
+    overrides: TeacherOverride[];
+    loading: boolean;
+}> = ({ overrides, loading }) => {
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center py-8">
+                <Loader2 size={20} className="animate-spin motion-reduce:animate-none text-slate-400" />
+            </div>
+        );
+    }
+
+    if (overrides.length === 0) {
+        return (
+            <div className="text-center py-8">
+                <div className="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <Shield size={20} className="text-slate-400" />
+                </div>
+                <p className="text-sm font-bold text-slate-500">Geen overrides</p>
+                <p className="text-xs text-slate-400 mt-1">
+                    Ga naar de tab &quot;Missies&quot; om AI-beoordelingen te overrulen.
+                </p>
+            </div>
+        );
+    }
+
+    // Group overrides by mission
+    const byMission = new Map<string, TeacherOverride[]>();
+    for (const o of overrides) {
+        const list = byMission.get(o.mission_id) || [];
+        list.push(o);
+        byMission.set(o.mission_id, list);
+    }
+
+    return (
+        <div className="space-y-4">
+            <div className="flex items-center justify-between">
+                <h3 className="text-[10px] font-black text-slate-500 uppercase flex items-center gap-2">
+                    <Shield size={12} /> Override Geschiedenis ({overrides.length})
+                </h3>
+            </div>
+
+            <div className="bg-indigo-50 rounded-xl p-3 flex items-start gap-3">
+                <AlertCircle size={14} className="text-indigo-600 shrink-0 mt-0.5" />
+                <p className="text-[10px] text-indigo-700">
+                    Alle overrides worden gelogd voor verantwoording conform EU AI Act Art. 14 (menselijk toezicht).
+                </p>
+            </div>
+
+            {Array.from(byMission.entries()).map(([missionId, missionOverrides]) => {
+                const agent = ROLES.find(r => r.id === missionId);
+                const missionTitle = agent?.title || missionId;
+
+                return (
+                    <div key={missionId} className="space-y-2">
+                        <h4 className="text-xs font-black text-slate-700">{missionTitle}</h4>
+                        {missionOverrides.map(o => {
+                            const stepTitle = agent?.steps?.[o.step_number]?.title || `Stap ${o.step_number + 1}`;
+
+                            return (
+                                <div key={o.id} className={`p-3 rounded-xl border ${
+                                    o.override_type === 'approve'
+                                        ? 'bg-emerald-50 border-emerald-100'
+                                        : 'bg-red-50 border-red-100'
+                                }`}>
+                                    <div className="flex items-center gap-2 mb-1">
+                                        {o.override_type === 'approve' ? (
+                                            <CheckCircle2 size={14} className="text-emerald-600" />
+                                        ) : (
+                                            <XCircle size={14} className="text-red-600" />
+                                        )}
+                                        <span className="font-bold text-sm text-slate-900">
+                                            Stap {o.step_number + 1}: {stepTitle}
+                                        </span>
+                                        <span className={`ml-auto text-[9px] font-bold px-1.5 py-0.5 rounded ${
+                                            o.override_type === 'approve'
+                                                ? 'bg-emerald-100 text-emerald-700'
+                                                : 'bg-red-100 text-red-700'
+                                        }`}>
+                                            {o.override_type === 'approve' ? 'Goedgekeurd' : 'Afgewezen'}
+                                        </span>
+                                    </div>
+                                    {o.reason && (
+                                        <p className="text-xs text-slate-600 italic mt-1">&ldquo;{o.reason}&rdquo;</p>
+                                    )}
+                                    <p className="text-[9px] text-slate-400 mt-1 flex items-center gap-1">
+                                        <Clock size={8} />
+                                        {new Date(o.created_at).toLocaleDateString('nl-NL', {
+                                            day: 'numeric', month: 'short', year: 'numeric',
+                                            hour: '2-digit', minute: '2-digit',
+                                        })}
+                                    </p>
+                                </div>
+                            );
+                        })}
+                    </div>
+                );
+            })}
         </div>
     );
 };

@@ -22,8 +22,8 @@ import { checkDurableRateLimit, rateLimitResponse } from "../_shared/rateLimiter
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
-const MAX_REQUEST_BYTES = 20_000;
-const MAX_MESSAGE_LENGTH = 4_000;
+const MAX_REQUEST_BYTES = 200_000;
+const MAX_MESSAGE_LENGTH = 150_000;
 
 Deno.serve(async (req: Request) => {
     const corsHeaders = buildCorsHeaders(req, "POST, OPTIONS", "Content-Type, Authorization");
@@ -75,7 +75,7 @@ Deno.serve(async (req: Request) => {
 
     // 3. Parse request
     // SECURITY: systemInstruction is server-side only — never trust client input
-    let body: { message?: string; roleId?: string; history?: unknown[] };
+    let body: { message?: string; roleId?: string; history?: unknown[]; gameContext?: string };
     try {
         body = await req.json();
     } catch {
@@ -117,10 +117,10 @@ Deno.serve(async (req: Request) => {
     }
 
     const safeHistory = buildSafeHistory(body.history, {
-        maxMessages: 12,
+        maxMessages: 20,
         maxPartsPerMessage: 2,
-        maxPartChars: 1_000,
-        maxTotalChars: 6_000,
+        maxPartChars: 10_000,
+        maxTotalChars: 60_000,
     });
 
     if (safeHistory.blocked) {
@@ -137,12 +137,20 @@ Deno.serve(async (req: Request) => {
     // 4. Forward sanitized message to Gemini via Vertex AI streaming endpoint
     let geminiResponse: Response;
     try {
-        const geminiUrl = getVertexStreamUrl("gemini-2.0-flash");
+        const geminiUrl = getVertexStreamUrl("gemini-2.5-flash");
         const accessToken = await getAccessToken();
+
+        // Build user message parts — include game code context if provided
+        // gameContext bypasses the sanitizer because it's our own application code, not user input
+        const userParts: { text: string }[] = [];
+        if (body.gameContext && typeof body.gameContext === "string") {
+            userParts.push({ text: `[HUIDIGE_GAME_CODE]\n${body.gameContext}\n[/HUIDIGE_GAME_CODE]\n\nBELANGRIJK: Pas ALLEEN de bovenstaande code aan op basis van mijn verzoek. Geef de VOLLEDIGE aangepaste versie terug.` });
+        }
+        userParts.push({ text: validation.sanitized });
 
         const contents = [
             ...safeHistory.history,
-            { role: "user", parts: [{ text: validation.sanitized }] },
+            { role: "user", parts: userParts },
         ];
 
         // 5. Safety settings for minors (12-18 year olds) — EU AI Act + child protection
