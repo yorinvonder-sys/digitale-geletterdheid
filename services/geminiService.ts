@@ -109,12 +109,40 @@ export class Chat {
     return [...this.history];
   }
 
+  /** Check of een token een geldig JWT-format heeft (3 segmenten, base64url). */
+  private static isValidJwt(token: string): boolean {
+    const parts = token.split('.');
+    return parts.length === 3 && parts.every(p => p.length > 0);
+  }
+
   private async getSessionToken(): Promise<string> {
     const { data: { session } } = await supabase.auth.getSession();
-    if (!session?.access_token) {
-      throw new Error('Je sessie is verlopen. Log opnieuw in.');
+
+    if (session?.access_token && Chat.isValidJwt(session.access_token)) {
+      // Proactief refreshen als token binnen 2 minuten verloopt
+      try {
+        const payload = JSON.parse(atob(session.access_token.split('.')[1]));
+        const expiresIn = payload.exp * 1000 - Date.now();
+        if (expiresIn < 2 * 60 * 1000) {
+          const { data: { session: refreshed } } = await supabase.auth.refreshSession();
+          if (refreshed?.access_token && Chat.isValidJwt(refreshed.access_token)) {
+            return refreshed.access_token;
+          }
+        }
+      } catch {
+        // JWT parse mislukt → token is verminkt, forceer refresh hieronder
+      }
+      // Alleen retourneren als het token nog steeds geldig format heeft
+      if (Chat.isValidJwt(session.access_token)) return session.access_token;
     }
-    return session.access_token;
+
+    // Geen sessie of verminkt token → probeer te refreshen
+    const { data: { session: refreshed } } = await supabase.auth.refreshSession();
+    if (refreshed?.access_token && Chat.isValidJwt(refreshed.access_token)) {
+      return refreshed.access_token;
+    }
+
+    throw new Error('Je sessie is verlopen. Log opnieuw in.');
   }
 
   private buildRequestBody(message: string, roleId: string): Record<string, unknown> {
@@ -613,18 +641,115 @@ export const sendMessageToGeminiStream = async (
 // --- Image generation ---
 // C2PA watermarking is lazy-loaded only when image generation is active (EU AI Act Art. 50)
 
-export const generateImage = async (prompt: string, style: 'book' | 'detective' | 'general' = 'book'): Promise<string | null> => {
-  // IMAGE GENERATION DISABLED BY POLICY — C2PA integration ready for re-enablement.
-  // When re-enabled, uncomment the C2PA block below to embed Content Credentials.
-  console.warn('[GeminiService] Image generation disabled by policy', { style, promptPreview: prompt.slice(0, 80) });
+export type ImageGenerationStyle = 'book' | 'branding' | 'general';
+export type ImageAspectRatio = '1:1' | '3:2' | '2:3' | '3:4' | '4:3' | '4:5' | '5:4' | '9:16' | '16:9' | '21:9';
 
-  // ── C2PA WATERMARKING (activate when image generation is re-enabled) ──
-  // const { embedC2paCredentials } = await import('../utils/c2paWatermark');
-  // const imageBlob = new Blob([imageBuffer], { type: 'image/png' });
-  // const { imageData, manifest } = await embedC2paCredentials(imageBlob, 'gemini', prompt.slice(0, 80));
-  // logAiInteraction('image_generation', { model: 'gemini', c2pa_embedded: manifest.embedded }).catch(() => {});
+interface ImageGenerationOptions {
+  style?: ImageGenerationStyle;
+  aspectRatio?: ImageAspectRatio;
+  title?: string;
+}
 
-  return 'error:Afbeeldingen genereren is uitgeschakeld. Gebruik alleen beelden uit de leerlingenomgeving.';
+interface GenerateImageResponse {
+  imageBase64?: string;
+  mimeType?: string;
+  model?: string;
+  error?: string;
+  reason?: string;
+}
+
+const decodeBase64ToBytes = (base64: string): Uint8Array => {
+  const binaryString = atob(base64);
+  const bytes = new Uint8Array(binaryString.length);
+  for (let i = 0; i < binaryString.length; i++) {
+    bytes[i] = binaryString.charCodeAt(i);
+  }
+  return bytes;
+};
+
+const blobToDataUrl = (blob: Blob): Promise<string> =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      if (typeof reader.result === 'string') {
+        resolve(reader.result);
+      } else {
+        reject(new Error('Kon afbeelding niet omzetten naar data-URL.'));
+      }
+    };
+    reader.onerror = () => reject(reader.error || new Error('Kon afbeelding niet lezen.'));
+    reader.readAsDataURL(blob);
+  });
+
+export const generateImage = async (
+  prompt: string,
+  options: ImageGenerationOptions = {}
+): Promise<string | null> => {
+  try {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session?.access_token) {
+      throw new Error('Authenticatie vereist. Log opnieuw in.');
+    }
+
+    const response = await fetchWithRetry(`${EDGE_FUNCTION_URL}/generateImage`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${session.access_token}`,
+      },
+      body: JSON.stringify({
+        prompt,
+        style: options.style || 'general',
+        aspectRatio: options.aspectRatio || '1:1',
+      }),
+    });
+
+    const payload = await response.json().catch(() => ({} as GenerateImageResponse));
+    if (!response.ok) {
+      const message =
+        payload.reason ||
+        payload.error ||
+        (response.status === 401
+          ? 'Je sessie is verlopen. Log opnieuw in.'
+          : 'AI-afbeelding tijdelijk niet beschikbaar.');
+      throw new Error(message);
+    }
+
+    if (!payload.imageBase64) {
+      throw new Error('Geen afbeelding ontvangen van de AI.');
+    }
+
+    const mimeType = payload.mimeType || 'image/png';
+    const imageBlob = new Blob([decodeBase64ToBytes(payload.imageBase64)], { type: mimeType });
+
+    let finalBlob = imageBlob;
+    try {
+      const { embedC2paCredentials } = await import('../utils/c2paWatermark');
+      const { imageData } = await embedC2paCredentials(
+        imageBlob,
+        payload.model || 'gemini-2.5-flash-image',
+        options.title || prompt.slice(0, 80) || 'AI-generated image'
+      );
+
+      if (imageData instanceof Blob) {
+        finalBlob = imageData;
+      }
+    } catch (watermarkError) {
+      console.warn('[GeminiService] C2PA watermarking skipped:', watermarkError);
+    }
+
+    const dataUrl = await blobToDataUrl(finalBlob);
+
+    logAiInteraction('image', {
+      model: payload.model || 'gemini-2.5-flash-image',
+      fallback_used: false,
+    }).catch(() => { });
+
+    return dataUrl;
+  } catch (error: any) {
+    console.error('[GeminiService] Image generation error:', error);
+    return `error:${error?.message || 'AI-afbeelding tijdelijk niet beschikbaar.'}`;
+  }
 };
 
 export const editImage = async (base64DataWithHeader: string, prompt: string): Promise<string | null> => {

@@ -78,22 +78,37 @@ export interface EdgeFunctionOptions<T = any> {
     validate?: (data: unknown) => T;
 }
 
+/** Check of een token een geldig JWT-format heeft (3 base64url-segmenten). */
+function isValidJwt(token: string): boolean {
+    const parts = token.split('.');
+    return parts.length === 3 && parts.every(p => p.length > 0);
+}
+
+async function getValidToken(): Promise<string> {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session?.access_token && isValidJwt(session.access_token)) {
+        return session.access_token;
+    }
+    // Geen geldig token → probeer te refreshen
+    const { data: { session: refreshed } } = await supabase.auth.refreshSession();
+    if (refreshed?.access_token && isValidJwt(refreshed.access_token)) {
+        return refreshed.access_token;
+    }
+    throw new Error('Authenticatie vereist. Log opnieuw in.');
+}
+
 export async function callEdgeFunction<T = any>(
     functionName: string,
     body?: Record<string, unknown>,
     options?: EdgeFunctionOptions<T>
 ): Promise<T> {
-    const { data: { session } } = await supabase.auth.getSession();
-
-    if (!session?.access_token) {
-        throw new Error('Authenticatie vereist. Log opnieuw in.');
-    }
+    const token = await getValidToken();
 
     const response = await fetch(`${EDGE_FUNCTION_URL}/${functionName}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${session.access_token}`,
+            'Authorization': `Bearer ${token}`,
         },
         body: body ? JSON.stringify(body) : undefined,
     });
