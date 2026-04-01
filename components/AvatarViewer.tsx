@@ -182,409 +182,553 @@ const FaceLayer = memo<{
     );
 });
 
-// --- Hair Layer (Minecraft hat-layer approach) ---
-// Hair wraps around the upper head like a shell. The front face sits
-// behind the head surface (z=0.38 < head z=0.40) so it's hidden,
-// while top/back/sides extend slightly beyond the head.
+// --- Hair Layer (voxel panel approach) ---
+// Head = 0.8³ cube, center y=0. Top y=0.40, front z=0.40, sides x=±0.40.
+// Hair is built from thin panels on TOP, SIDES, and BACK only.
+// Front face (z > 0.39) is NEVER covered — the face must stay visible.
+// Each style is unique — no shared "scalp" block.
 
 const HairLayer = memo<{ style: string; color: string }>(({ style, color }) => {
     const mat = <meshStandardMaterial color={color} roughness={0.85} />;
-
-    // Shared scalp: wraps the upper ~60% of the head
-    // y=0.27 h=0.32 → spans y 0.11–0.43 (just above eyelashes at 0.13, 0.03 above head top)
-    // w=0.86 → 0.03 wider each side than head (0.80)
-    // d=0.82 offset z=-0.03 → front z=0.38 (hidden inside head), back z=-0.44 (visible)
-    const scalp = (
-        <mesh position={[0, 0.27, -0.03]}>
-            <boxGeometry args={[0.86, 0.32, 0.82]} />
-            {mat}
-        </mesh>
-    );
+    const matDark = <meshStandardMaterial color={darkenColor(color, 0.8)} roughness={0.85} />;
 
     switch (style) {
+        // === MALE STYLES ===
+
         case 'short':
+            // Rounded short cut: top slab + thin sides + thin back. Like 2D preview dome.
             return (
                 <group>
-                    {scalp}
-                    {/* Back — short, just below scalp */}
-                    <mesh position={[0, 0.05, -0.42]}>
-                        <boxGeometry args={[0.82, 0.25, 0.06]} />
+                    {/* Top slab — overhangs slightly on all sides except front */}
+                    <mesh position={[0, 0.42, -0.06]}>
+                        <boxGeometry args={[0.84, 0.06, 0.72]} />
                         {mat}
                     </mesh>
-                    {/* Front fringe — small strip on forehead */}
-                    <mesh position={[0, 0.28, 0.39]}>
-                        <boxGeometry args={[0.50, 0.12, 0.06]} />
+                    {/* Sides — thin strips hugging left and right */}
+                    <mesh position={[-0.41, 0.20, -0.06]}>
+                        <boxGeometry args={[0.05, 0.36, 0.60]} />
+                        {mat}
+                    </mesh>
+                    <mesh position={[0.41, 0.20, -0.06]}>
+                        <boxGeometry args={[0.05, 0.36, 0.60]} />
+                        {mat}
+                    </mesh>
+                    {/* Back panel */}
+                    <mesh position={[0, 0.15, -0.42]}>
+                        <boxGeometry args={[0.80, 0.50, 0.05]} />
                         {mat}
                     </mesh>
                 </group>
             );
 
         case 'spiky':
+            // Spiky: thin base on top + 5 pointed spikes shooting upward
             return (
                 <group>
-                    {scalp}
-                    {/* Spikes sticking up from scalp */}
-                    <mesh position={[-0.12, 0.50, 0.08]} rotation={[0.2, 0, -0.15]}>
-                        <boxGeometry args={[0.12, 0.22, 0.12]} />
+                    {/* Thin top base */}
+                    <mesh position={[0, 0.42, -0.06]}>
+                        <boxGeometry args={[0.82, 0.05, 0.68]} />
                         {mat}
                     </mesh>
-                    <mesh position={[0.10, 0.55, -0.05]} rotation={[-0.1, 0, 0.1]}>
-                        <boxGeometry args={[0.12, 0.28, 0.12]} />
-                        {mat}
-                    </mesh>
-                    <mesh position={[0, 0.52, 0.05]} rotation={[0.1, 0, 0]}>
-                        <boxGeometry args={[0.14, 0.25, 0.14]} />
-                        {mat}
-                    </mesh>
-                    <mesh position={[-0.22, 0.46, -0.08]} rotation={[-0.15, 0, -0.2]}>
-                        <boxGeometry args={[0.10, 0.18, 0.10]} />
-                        {mat}
-                    </mesh>
-                    <mesh position={[0.22, 0.45, 0.08]} rotation={[0.1, 0, 0.2]}>
-                        <boxGeometry args={[0.10, 0.16, 0.10]} />
-                        {mat}
-                    </mesh>
-                </group>
-            );
-
-        case 'long':
-            return (
-                <group>
-                    {scalp}
-                    {/* Long sides — flowing down past shoulders */}
-                    <mesh position={[-0.42, -0.15, -0.02]}>
-                        <boxGeometry args={[0.08, 0.70, 0.55]} />
-                        {mat}
-                    </mesh>
-                    <mesh position={[0.42, -0.15, -0.02]}>
-                        <boxGeometry args={[0.08, 0.70, 0.55]} />
-                        {mat}
-                    </mesh>
-                    {/* Long back */}
-                    <mesh position={[0, -0.10, -0.42]}>
-                        <boxGeometry args={[0.82, 0.65, 0.06]} />
-                        {mat}
-                    </mesh>
-                </group>
-            );
-
-        case 'ponytail':
-            return (
-                <group>
-                    {scalp}
                     {/* Back panel */}
-                    <mesh position={[0, 0.08, -0.42]}>
-                        <boxGeometry args={[0.82, 0.30, 0.06]} />
+                    <mesh position={[0, 0.20, -0.42]}>
+                        <boxGeometry args={[0.78, 0.40, 0.05]} />
                         {mat}
                     </mesh>
-                    {/* Ponytail tie */}
-                    <mesh position={[0, 0.15, -0.48]}>
-                        <boxGeometry args={[0.14, 0.10, 0.10]} />
+                    {/* Spikes — tall narrow boxes at angles */}
+                    <mesh position={[-0.18, 0.58, 0.05]} rotation={[0.15, 0, -0.15]}>
+                        <boxGeometry args={[0.10, 0.28, 0.10]} />
                         {mat}
                     </mesh>
-                    {/* Ponytail hanging */}
-                    <mesh position={[0, -0.15, -0.48]}>
-                        <boxGeometry args={[0.10, 0.45, 0.08]} />
+                    <mesh position={[0, 0.62, -0.02]} rotation={[0.05, 0, 0]}>
+                        <boxGeometry args={[0.12, 0.32, 0.12]} />
                         {mat}
                     </mesh>
-                </group>
-            );
-
-        case 'pigtails':
-            return (
-                <group>
-                    {scalp}
-                    {/* Back panel */}
-                    <mesh position={[0, 0.08, -0.42]}>
-                        <boxGeometry args={[0.82, 0.28, 0.06]} />
+                    <mesh position={[0.16, 0.56, -0.08]} rotation={[-0.1, 0, 0.12]}>
+                        <boxGeometry args={[0.10, 0.26, 0.10]} />
                         {mat}
                     </mesh>
-                    {/* Left pigtail — tie */}
-                    <mesh position={[-0.44, 0.10, 0.00]}>
-                        <boxGeometry args={[0.12, 0.14, 0.14]} />
+                    <mesh position={[-0.08, 0.54, -0.16]} rotation={[-0.15, 0, -0.1]}>
+                        <boxGeometry args={[0.09, 0.22, 0.09]} />
                         {mat}
                     </mesh>
-                    {/* Left pigtail — hanging */}
-                    <mesh position={[-0.46, -0.20, 0.00]}>
-                        <boxGeometry args={[0.10, 0.45, 0.10]} />
-                        {mat}
-                    </mesh>
-                    {/* Right pigtail — tie */}
-                    <mesh position={[0.44, 0.10, 0.00]}>
-                        <boxGeometry args={[0.12, 0.14, 0.14]} />
-                        {mat}
-                    </mesh>
-                    {/* Right pigtail — hanging */}
-                    <mesh position={[0.46, -0.20, 0.00]}>
-                        <boxGeometry args={[0.10, 0.45, 0.10]} />
+                    <mesh position={[0.10, 0.52, 0.12]} rotation={[0.2, 0, 0.1]}>
+                        <boxGeometry args={[0.08, 0.20, 0.08]} />
                         {mat}
                     </mesh>
                 </group>
             );
 
         case 'messy':
+            // Wild/messy: thicker top + irregular tufts sticking out
             return (
                 <group>
-                    {/* Slightly larger/messier scalp */}
-                    <mesh position={[0.02, 0.28, -0.03]}>
-                        <boxGeometry args={[0.88, 0.34, 0.84]} />
+                    {/* Messy top — slightly tilted */}
+                    <mesh position={[0.02, 0.42, -0.04]} rotation={[0, 0, 0.03]}>
+                        <boxGeometry args={[0.86, 0.08, 0.74]} />
+                        {mat}
+                    </mesh>
+                    {/* Sides */}
+                    <mesh position={[-0.42, 0.18, -0.06]}>
+                        <boxGeometry args={[0.06, 0.42, 0.58]} />
+                        {mat}
+                    </mesh>
+                    <mesh position={[0.42, 0.20, -0.06]}>
+                        <boxGeometry args={[0.06, 0.38, 0.58]} />
                         {mat}
                     </mesh>
                     {/* Back */}
-                    <mesh position={[0, 0.05, -0.42]}>
-                        <boxGeometry args={[0.82, 0.30, 0.06]} />
+                    <mesh position={[0, 0.12, -0.42]}>
+                        <boxGeometry args={[0.80, 0.48, 0.05]} />
                         {mat}
                     </mesh>
-                    {/* Tufts sticking out at angles */}
-                    <mesh position={[-0.20, 0.48, 0.10]} rotation={[0.3, 0, -0.4]}>
-                        <boxGeometry args={[0.12, 0.18, 0.10]} />
+                    {/* Tufts — random sticking-out pieces */}
+                    <mesh position={[-0.22, 0.54, 0.02]} rotation={[0.2, 0, -0.4]}>
+                        <boxGeometry args={[0.10, 0.18, 0.08]} />
                         {mat}
                     </mesh>
-                    <mesh position={[0.18, 0.50, -0.05]} rotation={[-0.2, 0, 0.3]}>
-                        <boxGeometry args={[0.10, 0.20, 0.10]} />
+                    <mesh position={[0.20, 0.52, -0.10]} rotation={[-0.15, 0, 0.35]}>
+                        <boxGeometry args={[0.10, 0.16, 0.08]} />
                         {mat}
                     </mesh>
-                    <mesh position={[0.08, 0.25, 0.40]} rotation={[0.5, 0, 0.1]}>
-                        <boxGeometry args={[0.08, 0.12, 0.06]} />
+                    <mesh position={[0.05, 0.50, -0.22]} rotation={[-0.3, 0.1, 0]}>
+                        <boxGeometry args={[0.08, 0.14, 0.08]} />
                         {mat}
                     </mesh>
-                    <mesh position={[-0.35, 0.42, -0.10]} rotation={[0, 0, -0.3]}>
-                        <boxGeometry args={[0.10, 0.14, 0.10]} />
+                    <mesh position={[-0.46, 0.30, -0.04]} rotation={[0, 0, -0.3]}>
+                        <boxGeometry args={[0.08, 0.12, 0.08]} />
                         {mat}
                     </mesh>
                 </group>
             );
 
         case 'fade':
+            // Fade: dense volume on top, fading to thin transparent sides
             return (
                 <group>
-                    {/* Shorter scalp — only top */}
-                    <mesh position={[0, 0.32, -0.03]}>
-                        <boxGeometry args={[0.82, 0.22, 0.78]} />
+                    {/* Dense top */}
+                    <mesh position={[0, 0.43, -0.04]}>
+                        <boxGeometry args={[0.72, 0.10, 0.64]} />
                         {mat}
                     </mesh>
-                    {/* Faded sides — thinner, transparent */}
-                    <mesh position={[-0.41, 0.10, -0.03]}>
-                        <boxGeometry args={[0.04, 0.30, 0.65]} />
-                        <meshStandardMaterial color={color} roughness={0.9} transparent opacity={0.5} />
+                    {/* Mid sides — semi-transparent */}
+                    <mesh position={[-0.41, 0.18, -0.06]}>
+                        <boxGeometry args={[0.04, 0.35, 0.55]} />
+                        <meshStandardMaterial color={color} roughness={0.9} transparent opacity={0.45} />
                     </mesh>
-                    <mesh position={[0.41, 0.10, -0.03]}>
-                        <boxGeometry args={[0.04, 0.30, 0.65]} />
-                        <meshStandardMaterial color={color} roughness={0.9} transparent opacity={0.5} />
+                    <mesh position={[0.41, 0.18, -0.06]}>
+                        <boxGeometry args={[0.04, 0.35, 0.55]} />
+                        <meshStandardMaterial color={color} roughness={0.9} transparent opacity={0.45} />
                     </mesh>
-                    {/* Faded back */}
-                    <mesh position={[0, 0.10, -0.41]}>
-                        <boxGeometry args={[0.75, 0.28, 0.04]} />
-                        <meshStandardMaterial color={color} roughness={0.9} transparent opacity={0.5} />
+                    {/* Low sides — very transparent */}
+                    <mesh position={[-0.41, -0.02, -0.06]}>
+                        <boxGeometry args={[0.03, 0.12, 0.50]} />
+                        <meshStandardMaterial color={color} roughness={0.9} transparent opacity={0.2} />
+                    </mesh>
+                    <mesh position={[0.41, -0.02, -0.06]}>
+                        <boxGeometry args={[0.03, 0.12, 0.50]} />
+                        <meshStandardMaterial color={color} roughness={0.9} transparent opacity={0.2} />
+                    </mesh>
+                    {/* Back — faded */}
+                    <mesh position={[0, 0.15, -0.42]}>
+                        <boxGeometry args={[0.72, 0.40, 0.04]} />
+                        <meshStandardMaterial color={color} roughness={0.9} transparent opacity={0.45} />
                     </mesh>
                 </group>
             );
 
         case 'curls':
+            // Curls: rounded bumpy top + volume on sides and back
             return (
                 <group>
-                    {/* Slightly larger scalp for volume */}
-                    <mesh position={[0, 0.28, -0.03]}>
-                        <boxGeometry args={[0.90, 0.34, 0.84]} />
-                        {mat}
-                    </mesh>
-                    {/* Back volume */}
-                    <mesh position={[0, 0.02, -0.42]}>
-                        <boxGeometry args={[0.82, 0.45, 0.08]} />
-                        {mat}
-                    </mesh>
-                    {/* Curl bumps — scattered around the scalp */}
-                    {[[-0.22, 0.48, 0.08], [0.18, 0.50, 0.02], [0, 0.52, -0.05],
-                      [-0.10, 0.48, -0.15], [0.12, 0.47, -0.12],
-                      [-0.38, 0.22, 0.10], [0.38, 0.20, 0.08],
-                      [-0.32, 0.12, -0.22], [0.34, 0.14, -0.20]].map((pos, i) => (
-                        <mesh key={i} position={pos as [number, number, number]}>
-                            <boxGeometry args={[0.14, 0.12, 0.14]} />
-                            {mat}
+                    {/* Top cluster of curl bumps */}
+                    {[[-0.18, 0.46, 0.06], [0.06, 0.48, -0.02], [-0.06, 0.46, -0.14],
+                      [0.18, 0.46, -0.10], [0, 0.48, 0.10], [-0.14, 0.46, 0.18],
+                      [0.14, 0.46, 0.14]].map((pos, i) => (
+                        <mesh key={`t${i}`} position={pos as [number, number, number]}>
+                            <boxGeometry args={[0.16, 0.10, 0.16]} />
+                            {i % 2 === 0 ? mat : matDark}
                         </mesh>
                     ))}
+                    {/* Side curls */}
+                    {[[-0.44, 0.24, -0.04], [-0.44, 0.08, -0.04],
+                      [0.44, 0.24, -0.04], [0.44, 0.08, -0.04]].map((pos, i) => (
+                        <mesh key={`s${i}`} position={pos as [number, number, number]}>
+                            <boxGeometry args={[0.10, 0.14, 0.14]} />
+                            {i % 2 === 0 ? mat : matDark}
+                        </mesh>
+                    ))}
+                    {/* Back volume */}
+                    <mesh position={[0, 0.12, -0.44]}>
+                        <boxGeometry args={[0.78, 0.55, 0.08]} />
+                        {mat}
+                    </mesh>
                 </group>
             );
 
         case 'buzzcut':
+            // Buzz cut: ultra-thin layer, almost-shaved look
             return (
                 <group>
-                    {/* Very thin scalp — buzz */}
-                    <mesh position={[0, 0.30, -0.03]}>
-                        <boxGeometry args={[0.82, 0.16, 0.78]} />
+                    {/* Very thin top */}
+                    <mesh position={[0, 0.41, -0.06]}>
+                        <boxGeometry args={[0.78, 0.03, 0.66]} />
                         <meshStandardMaterial color={color} roughness={0.95} />
                     </mesh>
-                    {/* Thin sides */}
-                    <mesh position={[-0.41, 0.10, -0.03]}>
-                        <boxGeometry args={[0.04, 0.24, 0.65]} />
+                    {/* Very thin sides */}
+                    <mesh position={[-0.41, 0.14, -0.06]}>
+                        <boxGeometry args={[0.03, 0.45, 0.60]} />
                         <meshStandardMaterial color={color} roughness={0.95} transparent opacity={0.7} />
                     </mesh>
-                    <mesh position={[0.41, 0.10, -0.03]}>
-                        <boxGeometry args={[0.04, 0.24, 0.65]} />
+                    <mesh position={[0.41, 0.14, -0.06]}>
+                        <boxGeometry args={[0.03, 0.45, 0.60]} />
+                        <meshStandardMaterial color={color} roughness={0.95} transparent opacity={0.7} />
+                    </mesh>
+                    {/* Very thin back */}
+                    <mesh position={[0, 0.14, -0.42]}>
+                        <boxGeometry args={[0.76, 0.45, 0.03]} />
                         <meshStandardMaterial color={color} roughness={0.95} transparent opacity={0.7} />
                     </mesh>
                 </group>
             );
 
         case 'mohawk':
+            // Mohawk: shaved sides + tall center ridge front-to-back
             return (
                 <group>
-                    {/* Shaved base — very thin, semi-transparent */}
-                    <mesh position={[0, 0.28, -0.03]}>
-                        <boxGeometry args={[0.82, 0.12, 0.78]} />
-                        <meshStandardMaterial color={color} roughness={0.95} transparent opacity={0.4} />
+                    {/* Shaved sides — very faint stubble */}
+                    <mesh position={[-0.41, 0.14, -0.06]}>
+                        <boxGeometry args={[0.03, 0.40, 0.55]} />
+                        <meshStandardMaterial color={color} roughness={0.95} transparent opacity={0.25} />
                     </mesh>
-                    {/* Mohawk ridge — tall strip front to back */}
-                    <mesh position={[0, 0.48, 0.10]}>
-                        <boxGeometry args={[0.10, 0.35, 0.14]} />
+                    <mesh position={[0.41, 0.14, -0.06]}>
+                        <boxGeometry args={[0.03, 0.40, 0.55]} />
+                        <meshStandardMaterial color={color} roughness={0.95} transparent opacity={0.25} />
+                    </mesh>
+                    {/* Mohawk ridge — 3 tall segments from front to back */}
+                    <mesh position={[0, 0.56, 0.12]}>
+                        <boxGeometry args={[0.10, 0.30, 0.14]} />
                         {mat}
                     </mesh>
-                    <mesh position={[0, 0.50, -0.05]}>
-                        <boxGeometry args={[0.10, 0.38, 0.14]} />
+                    <mesh position={[0, 0.60, -0.06]}>
+                        <boxGeometry args={[0.10, 0.36, 0.16]} />
                         {mat}
                     </mesh>
-                    <mesh position={[0, 0.45, -0.20]}>
-                        <boxGeometry args={[0.10, 0.28, 0.14]} />
+                    <mesh position={[0, 0.54, -0.22]}>
+                        <boxGeometry args={[0.10, 0.26, 0.14]} />
                         {mat}
                     </mesh>
                 </group>
             );
 
         case 'afro':
+            // Afro: big rounded volume all around (except front face)
             return (
                 <group>
-                    {/* Large volume all around — afro doesn't use standard scalp */}
-                    {/* Back shell */}
-                    <mesh position={[0, 0.10, -0.30]}>
-                        <boxGeometry args={[0.95, 0.85, 0.30]} />
+                    {/* Top dome — widest */}
+                    <mesh position={[0, 0.48, -0.06]}>
+                        <boxGeometry args={[0.92, 0.22, 0.80]} />
                         {mat}
                     </mesh>
-                    {/* Left side */}
-                    <mesh position={[-0.42, 0.10, -0.03]}>
-                        <boxGeometry args={[0.18, 0.85, 0.55]} />
+                    {/* Upper sides */}
+                    <mesh position={[-0.48, 0.22, -0.06]}>
+                        <boxGeometry args={[0.16, 0.65, 0.55]} />
                         {mat}
                     </mesh>
-                    {/* Right side */}
-                    <mesh position={[0.42, 0.10, -0.03]}>
-                        <boxGeometry args={[0.18, 0.85, 0.55]} />
+                    <mesh position={[0.48, 0.22, -0.06]}>
+                        <boxGeometry args={[0.16, 0.65, 0.55]} />
                         {mat}
                     </mesh>
-                    {/* Top puff */}
-                    <mesh position={[0, 0.45, -0.05]}>
-                        <boxGeometry args={[0.90, 0.30, 0.80]} />
+                    {/* Back — thick */}
+                    <mesh position={[0, 0.14, -0.42]}>
+                        <boxGeometry args={[0.88, 0.75, 0.16]} />
                         {mat}
                     </mesh>
-                </group>
-            );
-
-        case 'bob':
-            return (
-                <group>
-                    {scalp}
-                    {/* Bob sides — chin length */}
-                    <mesh position={[-0.42, -0.05, 0.02]}>
-                        <boxGeometry args={[0.08, 0.45, 0.50]} />
+                    {/* Extra top bumps for roundness */}
+                    <mesh position={[-0.20, 0.56, -0.08]}>
+                        <boxGeometry args={[0.24, 0.10, 0.22]} />
                         {mat}
                     </mesh>
-                    <mesh position={[0.42, -0.05, 0.02]}>
-                        <boxGeometry args={[0.08, 0.45, 0.50]} />
-                        {mat}
-                    </mesh>
-                    {/* Back */}
-                    <mesh position={[0, 0.00, -0.42]}>
-                        <boxGeometry args={[0.82, 0.40, 0.06]} />
-                        {mat}
-                    </mesh>
-                    {/* Bangs across forehead */}
-                    <mesh position={[0, 0.28, 0.40]}>
-                        <boxGeometry args={[0.60, 0.10, 0.06]} />
-                        {mat}
-                    </mesh>
-                </group>
-            );
-
-        case 'braids':
-            return (
-                <group>
-                    {scalp}
-                    {/* Back panel */}
-                    <mesh position={[0, 0.06, -0.42]}>
-                        <boxGeometry args={[0.82, 0.30, 0.06]} />
-                        {mat}
-                    </mesh>
-                    {/* Left braid — upper */}
-                    <mesh position={[-0.30, -0.10, -0.18]}>
-                        <boxGeometry args={[0.08, 0.45, 0.08]} />
-                        {mat}
-                    </mesh>
-                    {/* Left braid — lower */}
-                    <mesh position={[-0.28, -0.45, -0.15]}>
-                        <boxGeometry args={[0.06, 0.30, 0.06]} />
-                        {mat}
-                    </mesh>
-                    {/* Right braid — upper */}
-                    <mesh position={[0.30, -0.10, -0.18]}>
-                        <boxGeometry args={[0.08, 0.45, 0.08]} />
-                        {mat}
-                    </mesh>
-                    {/* Right braid — lower */}
-                    <mesh position={[0.28, -0.45, -0.15]}>
-                        <boxGeometry args={[0.06, 0.30, 0.06]} />
-                        {mat}
-                    </mesh>
-                </group>
-            );
-
-        case 'bun':
-            return (
-                <group>
-                    {scalp}
-                    {/* Back panel */}
-                    <mesh position={[0, 0.08, -0.42]}>
-                        <boxGeometry args={[0.82, 0.30, 0.06]} />
-                        {mat}
-                    </mesh>
-                    {/* Bun ball */}
-                    <mesh position={[0, 0.35, -0.46]}>
-                        <boxGeometry args={[0.20, 0.20, 0.18]} />
+                    <mesh position={[0.20, 0.56, -0.08]}>
+                        <boxGeometry args={[0.24, 0.10, 0.22]} />
                         {mat}
                     </mesh>
                 </group>
             );
 
         case 'sidepart':
+            // Side part: swept to one side, asymmetric
             return (
                 <group>
-                    {/* Scalp — slightly offset for part line */}
-                    <mesh position={[0.03, 0.27, -0.03]}>
-                        <boxGeometry args={[0.86, 0.32, 0.82]} />
+                    {/* Top — offset to right for part line */}
+                    <mesh position={[0.06, 0.42, -0.06]}>
+                        <boxGeometry args={[0.76, 0.06, 0.68]} />
                         {mat}
                     </mesh>
-                    {/* Swept side fringe — cascading to the left */}
-                    <mesh position={[-0.22, 0.35, 0.25]}>
-                        <boxGeometry args={[0.30, 0.14, 0.25]} />
+                    {/* Swept fringe — thicker on left side, overlapping top-left */}
+                    <mesh position={[-0.20, 0.44, 0.04]}>
+                        <boxGeometry args={[0.36, 0.10, 0.28]} />
+                        {mat}
+                    </mesh>
+                    {/* Sides */}
+                    <mesh position={[-0.41, 0.18, -0.06]}>
+                        <boxGeometry args={[0.05, 0.40, 0.58]} />
+                        {mat}
+                    </mesh>
+                    <mesh position={[0.41, 0.18, -0.06]}>
+                        <boxGeometry args={[0.05, 0.40, 0.58]} />
                         {mat}
                     </mesh>
                     {/* Back */}
-                    <mesh position={[0, 0.06, -0.42]}>
-                        <boxGeometry args={[0.82, 0.28, 0.06]} />
+                    <mesh position={[0, 0.12, -0.42]}>
+                        <boxGeometry args={[0.78, 0.46, 0.05]} />
                         {mat}
                     </mesh>
                 </group>
             );
 
-        default:
+        // === FEMALE STYLES ===
+
+        case 'long':
+            // Long straight: top + long side panels flowing down + long back
             return (
                 <group>
-                    {scalp}
-                    {/* Back */}
-                    <mesh position={[0, 0.05, -0.42]}>
-                        <boxGeometry args={[0.82, 0.25, 0.06]} />
+                    {/* Top slab */}
+                    <mesh position={[0, 0.42, -0.06]}>
+                        <boxGeometry args={[0.84, 0.06, 0.72]} />
                         {mat}
                     </mesh>
-                    {/* Front fringe */}
-                    <mesh position={[0, 0.28, 0.39]}>
-                        <boxGeometry args={[0.50, 0.12, 0.06]} />
+                    {/* Long sides — flowing down past chin */}
+                    <mesh position={[-0.42, -0.05, -0.02]}>
+                        <boxGeometry args={[0.06, 0.80, 0.55]} />
+                        {mat}
+                    </mesh>
+                    <mesh position={[0.42, -0.05, -0.02]}>
+                        <boxGeometry args={[0.06, 0.80, 0.55]} />
+                        {mat}
+                    </mesh>
+                    {/* Long back */}
+                    <mesh position={[0, -0.05, -0.42]}>
+                        <boxGeometry args={[0.80, 0.80, 0.05]} />
+                        {mat}
+                    </mesh>
+                </group>
+            );
+
+        case 'ponytail':
+            // Ponytail: top + short sides/back + tail hanging from back
+            return (
+                <group>
+                    {/* Top slab */}
+                    <mesh position={[0, 0.42, -0.06]}>
+                        <boxGeometry args={[0.84, 0.06, 0.72]} />
+                        {mat}
+                    </mesh>
+                    {/* Short sides */}
+                    <mesh position={[-0.41, 0.22, -0.06]}>
+                        <boxGeometry args={[0.05, 0.30, 0.58]} />
+                        {mat}
+                    </mesh>
+                    <mesh position={[0.41, 0.22, -0.06]}>
+                        <boxGeometry args={[0.05, 0.30, 0.58]} />
+                        {mat}
+                    </mesh>
+                    {/* Back panel — shorter */}
+                    <mesh position={[0, 0.18, -0.42]}>
+                        <boxGeometry args={[0.78, 0.38, 0.05]} />
+                        {mat}
+                    </mesh>
+                    {/* Ponytail tie */}
+                    <mesh position={[0, 0.22, -0.48]}>
+                        <boxGeometry args={[0.12, 0.08, 0.08]} />
+                        {matDark}
+                    </mesh>
+                    {/* Ponytail — hanging down */}
+                    <mesh position={[0, -0.08, -0.48]}>
+                        <boxGeometry args={[0.10, 0.50, 0.08]} />
+                        {mat}
+                    </mesh>
+                </group>
+            );
+
+        case 'pigtails':
+            // Pigtails: top + two tails hanging from sides
+            return (
+                <group>
+                    {/* Top slab */}
+                    <mesh position={[0, 0.42, -0.06]}>
+                        <boxGeometry args={[0.84, 0.06, 0.72]} />
+                        {mat}
+                    </mesh>
+                    {/* Short sides */}
+                    <mesh position={[-0.41, 0.24, -0.06]}>
+                        <boxGeometry args={[0.05, 0.28, 0.56]} />
+                        {mat}
+                    </mesh>
+                    <mesh position={[0.41, 0.24, -0.06]}>
+                        <boxGeometry args={[0.05, 0.28, 0.56]} />
+                        {mat}
+                    </mesh>
+                    {/* Back panel */}
+                    <mesh position={[0, 0.20, -0.42]}>
+                        <boxGeometry args={[0.78, 0.34, 0.05]} />
+                        {mat}
+                    </mesh>
+                    {/* Left pigtail — tie */}
+                    <mesh position={[-0.45, 0.12, -0.02]}>
+                        <boxGeometry args={[0.10, 0.10, 0.10]} />
+                        {matDark}
+                    </mesh>
+                    {/* Left pigtail — hanging */}
+                    <mesh position={[-0.46, -0.18, -0.02]}>
+                        <boxGeometry args={[0.08, 0.48, 0.08]} />
+                        {mat}
+                    </mesh>
+                    {/* Right pigtail — tie */}
+                    <mesh position={[0.45, 0.12, -0.02]}>
+                        <boxGeometry args={[0.10, 0.10, 0.10]} />
+                        {matDark}
+                    </mesh>
+                    {/* Right pigtail — hanging */}
+                    <mesh position={[0.46, -0.18, -0.02]}>
+                        <boxGeometry args={[0.08, 0.48, 0.08]} />
+                        {mat}
+                    </mesh>
+                </group>
+            );
+
+        case 'bob':
+            // Bob: top + chin-length sides curving inward + back
+            return (
+                <group>
+                    {/* Top slab */}
+                    <mesh position={[0, 0.42, -0.04]}>
+                        <boxGeometry args={[0.84, 0.06, 0.74]} />
+                        {mat}
+                    </mesh>
+                    {/* Bob sides — wider at top, chin length */}
+                    <mesh position={[-0.42, 0.06, 0.00]}>
+                        <boxGeometry args={[0.06, 0.62, 0.52]} />
+                        {mat}
+                    </mesh>
+                    <mesh position={[0.42, 0.06, 0.00]}>
+                        <boxGeometry args={[0.06, 0.62, 0.52]} />
+                        {mat}
+                    </mesh>
+                    {/* Back */}
+                    <mesh position={[0, 0.06, -0.42]}>
+                        <boxGeometry args={[0.80, 0.58, 0.05]} />
+                        {mat}
+                    </mesh>
+                    {/* Inward curve at bottom — sides get narrower */}
+                    <mesh position={[-0.38, -0.22, 0.00]}>
+                        <boxGeometry args={[0.06, 0.14, 0.44]} />
+                        {mat}
+                    </mesh>
+                    <mesh position={[0.38, -0.22, 0.00]}>
+                        <boxGeometry args={[0.06, 0.14, 0.44]} />
+                        {mat}
+                    </mesh>
+                </group>
+            );
+
+        case 'braids':
+            // Braids: top + two braids hanging from behind ears
+            return (
+                <group>
+                    {/* Top slab */}
+                    <mesh position={[0, 0.42, -0.06]}>
+                        <boxGeometry args={[0.84, 0.06, 0.72]} />
+                        {mat}
+                    </mesh>
+                    {/* Sides */}
+                    <mesh position={[-0.41, 0.24, -0.06]}>
+                        <boxGeometry args={[0.05, 0.28, 0.56]} />
+                        {mat}
+                    </mesh>
+                    <mesh position={[0.41, 0.24, -0.06]}>
+                        <boxGeometry args={[0.05, 0.28, 0.56]} />
+                        {mat}
+                    </mesh>
+                    {/* Back panel */}
+                    <mesh position={[0, 0.18, -0.42]}>
+                        <boxGeometry args={[0.78, 0.36, 0.05]} />
+                        {mat}
+                    </mesh>
+                    {/* Left braid — segments */}
+                    <mesh position={[-0.30, -0.05, -0.22]}>
+                        <boxGeometry args={[0.08, 0.50, 0.08]} />
+                        {mat}
+                    </mesh>
+                    <mesh position={[-0.28, -0.42, -0.20]}>
+                        <boxGeometry args={[0.06, 0.28, 0.06]} />
+                        {matDark}
+                    </mesh>
+                    {/* Right braid — segments */}
+                    <mesh position={[0.30, -0.05, -0.22]}>
+                        <boxGeometry args={[0.08, 0.50, 0.08]} />
+                        {mat}
+                    </mesh>
+                    <mesh position={[0.28, -0.42, -0.20]}>
+                        <boxGeometry args={[0.06, 0.28, 0.06]} />
+                        {matDark}
+                    </mesh>
+                </group>
+            );
+
+        case 'bun':
+            // Bun: top + sides + back + round bun on back of head
+            return (
+                <group>
+                    {/* Top slab */}
+                    <mesh position={[0, 0.42, -0.06]}>
+                        <boxGeometry args={[0.84, 0.06, 0.72]} />
+                        {mat}
+                    </mesh>
+                    {/* Sides */}
+                    <mesh position={[-0.41, 0.22, -0.06]}>
+                        <boxGeometry args={[0.05, 0.30, 0.58]} />
+                        {mat}
+                    </mesh>
+                    <mesh position={[0.41, 0.22, -0.06]}>
+                        <boxGeometry args={[0.05, 0.30, 0.58]} />
+                        {mat}
+                    </mesh>
+                    {/* Back panel */}
+                    <mesh position={[0, 0.16, -0.42]}>
+                        <boxGeometry args={[0.78, 0.40, 0.05]} />
+                        {mat}
+                    </mesh>
+                    {/* Bun — cube on back of head */}
+                    <mesh position={[0, 0.32, -0.48]}>
+                        <boxGeometry args={[0.18, 0.18, 0.16]} />
+                        {mat}
+                    </mesh>
+                    <mesh position={[0, 0.32, -0.48]}>
+                        <boxGeometry args={[0.12, 0.12, 0.10]} />
+                        {matDark}
+                    </mesh>
+                </group>
+            );
+
+        default:
+            // Default = same as 'short'
+            return (
+                <group>
+                    <mesh position={[0, 0.42, -0.06]}>
+                        <boxGeometry args={[0.84, 0.06, 0.72]} />
+                        {mat}
+                    </mesh>
+                    <mesh position={[-0.41, 0.20, -0.06]}>
+                        <boxGeometry args={[0.05, 0.36, 0.60]} />
+                        {mat}
+                    </mesh>
+                    <mesh position={[0.41, 0.20, -0.06]}>
+                        <boxGeometry args={[0.05, 0.36, 0.60]} />
+                        {mat}
+                    </mesh>
+                    <mesh position={[0, 0.15, -0.42]}>
+                        <boxGeometry args={[0.80, 0.50, 0.05]} />
                         {mat}
                     </mesh>
                 </group>
