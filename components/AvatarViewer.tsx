@@ -1704,9 +1704,10 @@ const AvatarModel = memo<{
 
     useFrame((state, delta) => {
         const t = state.clock.getElapsedTime();
+        const d = Math.min(delta, 0.1); // Cap delta to prevent animation spikes on tab-switch or frame drops
 
         if (headRef.current && bounceProgressRef.current > 0) {
-            bounceProgressRef.current = Math.max(0, bounceProgressRef.current - delta * 4);
+            bounceProgressRef.current = Math.max(0, bounceProgressRef.current - d * 4);
             const p = bounceProgressRef.current;
             headRef.current.position.y = 2.0 + Math.sin((1 - p) * Math.PI * 3) * p * 0.1;
         }
@@ -1714,8 +1715,8 @@ const AvatarModel = memo<{
         if (headRef.current) {
             const targetRotX = -state.pointer.y * 0.2;
             const targetRotY = state.pointer.x * 0.3;
-            headRef.current.rotation.x = THREE.MathUtils.lerp(headRef.current.rotation.x, targetRotX, delta * 3);
-            headRef.current.rotation.y = THREE.MathUtils.lerp(headRef.current.rotation.y, targetRotY, delta * 3);
+            headRef.current.rotation.x = THREE.MathUtils.lerp(headRef.current.rotation.x, targetRotX, d * 3);
+            headRef.current.rotation.y = THREE.MathUtils.lerp(headRef.current.rotation.y, targetRotY, d * 3);
         }
 
         if (torsoRef.current) {
@@ -1724,13 +1725,13 @@ const AvatarModel = memo<{
             torsoRef.current.scale.z = breath;
         }
 
-        blinkTimerRef.current -= delta;
+        blinkTimerRef.current -= d;
         if (blinkTimerRef.current <= 0) {
             blinkTimerRef.current = 2.5 + Math.random() * 4;
             blinkProgressRef.current = 1;
         }
         if (eyeGroupRef.current && blinkProgressRef.current > 0) {
-            blinkProgressRef.current = Math.max(0, blinkProgressRef.current - delta * 12);
+            blinkProgressRef.current = Math.max(0, blinkProgressRef.current - d * 12);
             const p = blinkProgressRef.current;
             eyeGroupRef.current.scale.y = Math.max(0.05, 1 - Math.sin((1 - p) * Math.PI));
         }
@@ -1739,26 +1740,26 @@ const AvatarModel = memo<{
             const pose = config.pose ?? 'idle';
             if (pose === 'wave') {
                 const waveZ = -1.1 + Math.sin(t * 2) * 0.35;
-                rightArmRef.current.rotation.z = THREE.MathUtils.lerp(rightArmRef.current.rotation.z, waveZ, delta * 8);
-                rightArmRef.current.rotation.x = THREE.MathUtils.lerp(rightArmRef.current.rotation.x, 0, delta * 5);
-                leftArmRef.current.rotation.z = THREE.MathUtils.lerp(leftArmRef.current.rotation.z, 0, delta * 5);
-                leftArmRef.current.rotation.x = THREE.MathUtils.lerp(leftArmRef.current.rotation.x, 0, delta * 5);
+                rightArmRef.current.rotation.z = THREE.MathUtils.lerp(rightArmRef.current.rotation.z, waveZ, d * 8);
+                rightArmRef.current.rotation.x = THREE.MathUtils.lerp(rightArmRef.current.rotation.x, 0, d * 5);
+                leftArmRef.current.rotation.z = THREE.MathUtils.lerp(leftArmRef.current.rotation.z, 0, d * 5);
+                leftArmRef.current.rotation.x = THREE.MathUtils.lerp(leftArmRef.current.rotation.x, 0, d * 5);
             } else if (pose === 'dab') {
-                rightArmRef.current.rotation.z = THREE.MathUtils.lerp(rightArmRef.current.rotation.z, -0.7, delta * 5);
-                rightArmRef.current.rotation.x = THREE.MathUtils.lerp(rightArmRef.current.rotation.x, -0.3, delta * 5);
-                leftArmRef.current.rotation.z = THREE.MathUtils.lerp(leftArmRef.current.rotation.z, 1.0, delta * 5);
-                leftArmRef.current.rotation.x = THREE.MathUtils.lerp(leftArmRef.current.rotation.x, 0.4, delta * 5);
+                rightArmRef.current.rotation.z = THREE.MathUtils.lerp(rightArmRef.current.rotation.z, -0.7, d * 5);
+                rightArmRef.current.rotation.x = THREE.MathUtils.lerp(rightArmRef.current.rotation.x, -0.3, d * 5);
+                leftArmRef.current.rotation.z = THREE.MathUtils.lerp(leftArmRef.current.rotation.z, 1.0, d * 5);
+                leftArmRef.current.rotation.x = THREE.MathUtils.lerp(leftArmRef.current.rotation.x, 0.4, d * 5);
             } else if (pose === 'peace') {
-                rightArmRef.current.rotation.z = THREE.MathUtils.lerp(rightArmRef.current.rotation.z, -0.5, delta * 5);
-                leftArmRef.current.rotation.z = THREE.MathUtils.lerp(leftArmRef.current.rotation.z, 0.5, delta * 5);
-                leftArmRef.current.rotation.x = THREE.MathUtils.lerp(leftArmRef.current.rotation.x, 0, delta * 5);
-                rightArmRef.current.rotation.x = THREE.MathUtils.lerp(rightArmRef.current.rotation.x, 0, delta * 5);
+                rightArmRef.current.rotation.z = THREE.MathUtils.lerp(rightArmRef.current.rotation.z, -0.5, d * 5);
+                leftArmRef.current.rotation.z = THREE.MathUtils.lerp(leftArmRef.current.rotation.z, 0.5, d * 5);
+                leftArmRef.current.rotation.x = THREE.MathUtils.lerp(leftArmRef.current.rotation.x, 0, d * 5);
+                rightArmRef.current.rotation.x = THREE.MathUtils.lerp(rightArmRef.current.rotation.x, 0, d * 5);
             } else {
                 const sway = Math.sin(t * 0.6) * 0.04;
-                leftArmRef.current.rotation.z = THREE.MathUtils.lerp(leftArmRef.current.rotation.z, sway, delta * 2);
-                rightArmRef.current.rotation.z = THREE.MathUtils.lerp(rightArmRef.current.rotation.z, -sway, delta * 2);
-                leftArmRef.current.rotation.x = THREE.MathUtils.lerp(leftArmRef.current.rotation.x, 0, delta * 3);
-                rightArmRef.current.rotation.x = THREE.MathUtils.lerp(rightArmRef.current.rotation.x, 0, delta * 3);
+                leftArmRef.current.rotation.z = THREE.MathUtils.lerp(leftArmRef.current.rotation.z, sway, d * 2);
+                rightArmRef.current.rotation.z = THREE.MathUtils.lerp(rightArmRef.current.rotation.z, -sway, d * 2);
+                leftArmRef.current.rotation.x = THREE.MathUtils.lerp(leftArmRef.current.rotation.x, 0, d * 3);
+                rightArmRef.current.rotation.x = THREE.MathUtils.lerp(rightArmRef.current.rotation.x, 0, d * 3);
             }
         }
     });
