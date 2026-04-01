@@ -637,7 +637,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
                     </div>
                 ) : (
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 h-[calc(100dvh-180px)] min-h-[600px]">
-                        <div className="lg:col-span-5 flex flex-col gap-6 h-full">
+                        <div className="lg:col-span-5 flex flex-col gap-6 h-full max-h-[50vh] lg:max-h-none">
                             <div className="flex-1 bg-gradient-to-b from-slate-200 to-white rounded-[2.5rem] p-1 shadow-xl relative overflow-hidden border border-white">
                                 <div className="w-full h-full relative rounded-[2.3rem] overflow-hidden" style={{ backgroundColor: '#FAF9F0' }}>
                                     <div className="absolute top-0 w-full p-6 z-10 flex justify-between items-start">
