@@ -192,20 +192,14 @@ const HairLayer = memo<{ style: string; color: string }>(({ style, color }) => {
         case 'short':
             return (
                 <group>
+                    {/* Top cap */}
                     <mesh position={[0, 0.32, -0.02]}>
                         <boxGeometry args={[0.86, 0.22, 0.86]} />
                         {mat}
                     </mesh>
+                    {/* Back */}
                     <mesh position={[0, 0.1, -0.38]}>
                         <boxGeometry args={[0.84, 0.35, 0.08]} />
-                        {mat}
-                    </mesh>
-                    <mesh position={[-0.38, 0.05, 0]}>
-                        <boxGeometry args={[0.08, 0.25, 0.7]} />
-                        {mat}
-                    </mesh>
-                    <mesh position={[0.38, 0.05, 0]}>
-                        <boxGeometry args={[0.08, 0.25, 0.7]} />
                         {mat}
                     </mesh>
                     {/* Front fringe */}
@@ -219,16 +213,9 @@ const HairLayer = memo<{ style: string; color: string }>(({ style, color }) => {
         case 'spiky':
             return (
                 <group>
+                    {/* Top cap */}
                     <mesh position={[0, 0.32, -0.02]}>
                         <boxGeometry args={[0.86, 0.22, 0.86]} />
-                        {mat}
-                    </mesh>
-                    <mesh position={[-0.38, 0.05, 0]}>
-                        <boxGeometry args={[0.08, 0.25, 0.7]} />
-                        {mat}
-                    </mesh>
-                    <mesh position={[0.38, 0.05, 0]}>
-                        <boxGeometry args={[0.08, 0.25, 0.7]} />
                         {mat}
                     </mesh>
                     {/* Spikes */}
@@ -337,18 +324,12 @@ const HairLayer = memo<{ style: string; color: string }>(({ style, color }) => {
         case 'messy':
             return (
                 <group>
+                    {/* Top cap */}
                     <mesh position={[0, 0.32, -0.02]}>
                         <boxGeometry args={[0.88, 0.24, 0.88]} />
                         {mat}
                     </mesh>
-                    <mesh position={[-0.38, 0.05, 0]}>
-                        <boxGeometry args={[0.1, 0.3, 0.7]} />
-                        {mat}
-                    </mesh>
-                    <mesh position={[0.38, 0.05, 0]}>
-                        <boxGeometry args={[0.1, 0.3, 0.7]} />
-                        {mat}
-                    </mesh>
+                    {/* Tufts */}
                     <mesh position={[-0.2, 0.38, 0.12]} rotation={[0.3, 0, -0.4]}>
                         <boxGeometry args={[0.12, 0.18, 0.1]} />
                         {mat}
@@ -393,20 +374,18 @@ const HairLayer = memo<{ style: string; color: string }>(({ style, color }) => {
         case 'curls':
             return (
                 <group>
+                    {/* Top cap */}
                     <mesh position={[0, 0.32, -0.02]}>
                         <boxGeometry args={[0.88, 0.24, 0.88]} />
                         {mat}
                     </mesh>
-                    <mesh position={[-0.4, 0.08, 0]}>
-                        <boxGeometry args={[0.12, 0.35, 0.7]} />
-                        {mat}
-                    </mesh>
-                    <mesh position={[0.4, 0.08, 0]}>
-                        <boxGeometry args={[0.12, 0.35, 0.7]} />
+                    {/* Back volume */}
+                    <mesh position={[0, 0.05, -0.38]}>
+                        <boxGeometry args={[0.84, 0.45, 0.1]} />
                         {mat}
                     </mesh>
                     {/* Curl bumps */}
-                    {[[-0.22, 0.38, 0.1], [0.18, 0.4, 0.05], [0, 0.42, 0], [-0.1, 0.38, -0.12], [0.12, 0.37, -0.1]].map((pos, i) => (
+                    {[[-0.22, 0.38, 0.1], [0.18, 0.4, 0.05], [0, 0.42, 0], [-0.1, 0.38, -0.12], [0.12, 0.37, -0.1], [-0.32, 0.2, 0.15], [0.32, 0.18, 0.12], [-0.28, 0.1, -0.2], [0.3, 0.12, -0.18]].map((pos, i) => (
                         <mesh key={i} position={pos as [number, number, number]}>
                             <boxGeometry args={[0.14, 0.12, 0.14]} />
                             {mat}
@@ -559,23 +538,17 @@ const HairLayer = memo<{ style: string; color: string }>(({ style, color }) => {
         case 'sidepart':
             return (
                 <group>
+                    {/* Top cap — slight offset for part */}
                     <mesh position={[0.03, 0.32, -0.02]}>
                         <boxGeometry args={[0.86, 0.22, 0.86]} />
                         {mat}
                     </mesh>
-                    {/* Swept side */}
+                    {/* Swept side fringe */}
                     <mesh position={[-0.18, 0.35, 0.2]}>
                         <boxGeometry args={[0.35, 0.12, 0.35]} />
                         {mat}
                     </mesh>
-                    <mesh position={[-0.38, 0.05, 0]}>
-                        <boxGeometry args={[0.1, 0.28, 0.65]} />
-                        {mat}
-                    </mesh>
-                    <mesh position={[0.38, 0.05, 0]}>
-                        <boxGeometry args={[0.08, 0.2, 0.55]} />
-                        {mat}
-                    </mesh>
+                    {/* Back */}
                     <mesh position={[0, 0.1, -0.38]}>
                         <boxGeometry args={[0.84, 0.3, 0.08]} />
                         {mat}
@@ -586,22 +559,17 @@ const HairLayer = memo<{ style: string; color: string }>(({ style, color }) => {
         default:
             return (
                 <group>
+                    {/* Top cap */}
                     <mesh position={[0, 0.32, -0.02]}>
                         <boxGeometry args={[0.86, 0.22, 0.86]} />
                         {mat}
                     </mesh>
+                    {/* Back */}
                     <mesh position={[0, 0.1, -0.38]}>
                         <boxGeometry args={[0.84, 0.35, 0.08]} />
                         {mat}
                     </mesh>
-                    <mesh position={[-0.38, 0.05, 0]}>
-                        <boxGeometry args={[0.08, 0.25, 0.7]} />
-                        {mat}
-                    </mesh>
-                    <mesh position={[0.38, 0.05, 0]}>
-                        <boxGeometry args={[0.08, 0.25, 0.7]} />
-                        {mat}
-                    </mesh>
+                    {/* Front fringe */}
                     <mesh position={[0, 0.18, 0.36]}>
                         <boxGeometry args={[0.5, 0.10, 0.12]} />
                         {mat}
@@ -2108,14 +2076,14 @@ export const AvatarViewer: React.FC<AvatarViewerProps> = ({
                 />
 
                 {variant === 'full' && (
-                    <mesh position={[0, -0.08, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+                    <mesh position={[0, -0.15, 0]} rotation={[-Math.PI / 2, 0, 0]}>
                         <boxGeometry args={[2.4, 2.4, 0.06]} />
                         <meshStandardMaterial color="#E8E6DF" roughness={0.9} metalness={0} polygonOffset polygonOffsetFactor={4} polygonOffsetUnits={4} />
                     </mesh>
                 )}
 
                 <ContactShadows
-                    position={[0, -0.048, 0]}
+                    position={[0, -0.09, 0]}
                     opacity={0.35}
                     scale={6}
                     blur={2.5}
