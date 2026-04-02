@@ -1,30 +1,64 @@
-# dgskills.app: Van Missie naar Meetbare Digitale Geletterdheid
+# dgskills.app — Digitale Geletterdheid die Werkt
 
-## De Kernbelofte
-**dgskills.app maakt leren over de digitale wereld motiverend voor leerlingen en aantoonbaar voor scholen.** Wij bieden een missiegedreven leeromgeving voor VO en VSO die naadloos aansluit op de nieuwste SLO-kerndoelen.
+**AVG-proof | AI Act-ready | DPIA beschikbaar | SLO-kerndoelen 2025**
 
-## Waarom dgskills.app?
+---
 
-### 1. Voor de Leerling: Motivatie door Succes
-- **Missiegedreven leren:** Geen droge theorie, maar spannende challenges over AI, cybersecurity en digitale tools.
-- **Persoonlijke leerroutes:** Adaptief niveau op basis van uitstroomprofiel (VO/VSO Dagbesteding/Arbeidsmarkt).
-- **Gamification:** Directe feedback, badges en levels zorgen voor een hoge betrokkenheid.
+## Het Probleem
 
-### 2. Voor de School: Grip op Verantwoording
-- **Aantoonbare kerndoeldekking:** Elke activiteit is gekoppeld aan SLO-kerndoelen (18A t/m 23C).
-- **Werkdrukverlaging:** Geautomatiseerde monitoring en rapportage; u bespaart uren aan administratie.
-- **Inspectie-proof:** Exporteer voortgangsrapportages naar Excel voor docenten en inspectie — geen handmatig werk.
+| Feit | Bron |
+|------|------|
+| Gemiddeld digitaal niveau leerlingen: **4,7 / 10** | Monitor Digitale Geletterdheid 2023 |
+| Docenttekort ICT/digitale vaardigheden: **3.800 FTE** | OCW Arbeidsmarkt Leraren 2024 |
+| SLO-kerndoelen digitale geletterdheid worden **verplicht** | SLO Conceptkerndoelen 2025 |
+| EU AI Act hoog-risico deadline: **2 augustus 2026** | EU Verordening 2024/1689 |
 
-## Resultaten binnen 90 dagen
-Met onze **Startversneller Pilot** bent u binnen 30 dagen live. Binnen een kwartaal beschikt u over:
-- Een nulmeting van het digitale niveau van uw leerlingen.
-- Aantoonbare groei op prioritaire kerndoelen.
-- Getrainde docenten die met vertrouwen digitale geletterdheid borgen.
+De meeste scholen hebben geen methode, geen bewijs en geen plan voor digitale geletterdheid.
 
-## Implementatie & Veiligheid
-- **Plug & Play:** Direct inzetbaar met onze bewezen weekstructuur.
-- **Privacy First:** Enterprise AI-koppelingen, 100% compliant met AVG/GDPR en Verwerkersovereenkomst.
-- **VSO-proof:** Specifieke leerpaden voor verschillende uitstroomprofielen.
+---
 
-## Call to Action
-**Vraag een demo van 15 minuten aan** en ontdek hoe dgskills.app de werkdruk verlaagt en de digitale geletterdheid op uw school naar een hoger niveau tilt.
+## De Oplossing
+
+**dgskills.app** is een missiegedreven leeromgeving gebouwd door een docent die het dagelijks in eigen lessen gebruikt.
+
+### Voor leerlingen
+- **Missies, geen werkbladen** — Spannende challenges over AI, cybersecurity en digitale tools
+- **Directe feedback** — AI-coach met oneindige geduld geeft persoonlijke begeleiding
+- **Gamification** — XP, badges, avatars en levels die motiveren
+
+### Voor docenten en school
+- **SLO-kerndoel bewijs in een klik** — Dashboard koppelt elke activiteit aan kerndoelen 21A-23C
+- **Inspectie-klaar** — Exporteer voortgangsrapportages naar Excel, geen handmatig werk
+- **Werkdruk omlaag** — AI geeft feedback, dashboard volgt voortgang, docent coacht
+
+---
+
+## Bewijs
+
+- Elke missie is getest met echte leerlingen in een echte klas
+- 60+ missies verdeeld over 3 leerjaren, gekoppeld aan alle SLO-domeinen
+- Platform draait op EU-datacenters (Nederland), volledig AVG-compliant
+- Enige platform met gedocumenteerde EU AI Act-compliance (DPIA, risicobeoordeling, menselijk toezicht)
+
+---
+
+## Starten: Pilot in 30 Dagen
+
+| | |
+|---|---|
+| **Duur** | 8-12 weken |
+| **Omvang** | Max 60 leerlingen, 2 docenten |
+| **Inclusief** | Kickoff, docententraining, lessenplan, wekelijkse rapportages, eindrapport |
+| **Prijs** | €1.500 excl. btw |
+| **Bij conversie** | 100% verrekend met jaarlicentie |
+
+De school heeft nodig: een contactpersoon, twee docenten, en lesuren.
+
+---
+
+## Volgende Stap
+
+**Plan een demo van 30 minuten** — geen verkooppraatje, gewoon laten zien wat het doet.
+
+Yorin Vonder | Docent & Oprichter
+info@dgskills.app | dgskills.app
