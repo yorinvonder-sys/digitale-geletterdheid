@@ -17,6 +17,8 @@ import {
     buildVertexPayload,
     selectModel,
 } from "../_shared/chatCore.ts";
+import { filterAiOutput } from "../_shared/outputFilter.ts";
+import { detectAndLogStepComplete } from "../_shared/stepCompleteDetector.ts";
 
 Deno.serve(async (req: Request) => {
     const corsHeaders = buildCorsHeaders(req, "POST, OPTIONS", "Content-Type, Authorization");
@@ -70,8 +72,16 @@ Deno.serve(async (req: Request) => {
 
         // Extract text from Vertex AI response format
         console.log("[chat] Step 4: Vertex AI response OK, extracting text...");
-        const text = geminiData?.candidates?.[0]?.content?.parts?.[0]?.text || "";
-        console.log("[chat] Step 5: Success, text length:", text.length);
+        const rawText = geminiData?.candidates?.[0]?.content?.parts?.[0]?.text || "";
+
+        // Post-processing safety filter for minors
+        const filterResult = filterAiOutput(rawText);
+        const text = filterResult.safe ? rawText : (filterResult.filtered || "");
+        console.log("[chat] Step 5: Success, text length:", text.length, filterResult.safe ? "" : `(filtered: ${filterResult.category})`);
+
+        // Server-side STEP_COMPLETE detection (EU AI Act Art. 12)
+        detectAndLogStepComplete(rawText, validated.userId, validated.body.roleId, validated.body.missionId)
+            .catch((err) => console.error("[chat] STEP_COMPLETE log error:", err));
 
         return new Response(JSON.stringify({ text }), {
             headers: { ...corsHeaders, "Content-Type": "application/json", ...rateLimitHeaders(validated.rateCheck) },

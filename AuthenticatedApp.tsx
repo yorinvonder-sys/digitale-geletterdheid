@@ -19,6 +19,7 @@ import { lazyWithRetry } from './utils/lazyWithRetry';
 import { SecureErrorBoundary } from './components/SecureErrorBoundary';
 const AiTransparencyNotice = lazyWithRetry(() => import('./components/consent/AiTransparencyNotice').then(m => ({ default: m.AiTransparencyNotice })));
 import { useTeacherMessages } from './hooks/useTeacherMessages';
+import { useInactivityTimeout } from './hooks/useInactivityTimeout';
 import { TeacherMessagePopup } from './components/TeacherMessagePopup';
 import { ExitConfirmDialog } from './components/ExitConfirmDialog';
 import { Toast } from './components/Toast';
@@ -59,6 +60,7 @@ const AccessControlEngineerMission = lazyWithRetry(() => import('./components/mi
 const DataVoorDataMission = lazyWithRetry(() => import('./components/missions/DataVoorDataMission').then(m => ({ default: m.DataVoorDataMission })));
 const PeerFeedbackPanel = lazyWithRetry(() => import('./components/missions/PeerFeedbackPanel').then(m => ({ default: m.PeerFeedbackPanel })));
 const NulmetingFlow = lazyWithRetry(() => import('./components/assessment/escaperoom/NulmetingFlow').then(m => ({ default: m.NulmetingFlow })));
+const EindmetingFlow = lazyWithRetry(() => import('./components/assessment/escaperoom/EindmetingFlow').then(m => ({ default: m.EindmetingFlow })));
 const TemplateMissionRouter = lazyWithRetry(() => import('./components/missions/templates/TemplateMissionRouter').then(m => ({ default: m.TemplateMissionRouter })));
 
 const LoadingFallback = () => (
@@ -114,6 +116,8 @@ export function AuthenticatedApp() {
         FOCUS_INTENT_KEY,
     } = useFocusMode({ user, activeModule, handleSelectModule });
 
+    const { showWarning: showInactivityWarning, secondsLeft, dismissWarning } = useInactivityTimeout();
+
     // Initialize viewMode based on user role
     useEffect(() => {
         if (user?.role === 'teacher' || user?.role === 'developer') setViewMode('monitoring');
@@ -128,6 +132,7 @@ export function AuthenticatedApp() {
     const [showStudentOnboarding, setShowStudentOnboarding] = useState(false);
     const [showAvatarSetup, setShowAvatarSetup] = useState(false);
     const [showNulmeting, setShowNulmeting] = useState(false);
+    const [showEindmeting, setShowEindmeting] = useState(false);
     const [toast, setToast] = useState<{ message: string; type: 'error' | 'success' | 'info' } | null>(null);
     const [isOnline, setIsOnline] = useState(navigator.onLine);
 
@@ -160,6 +165,57 @@ export function AuthenticatedApp() {
     const studentTutorialSteps = useMemo((): TutorialStep[] =>
         STUDENT_TUTORIAL_STEPS,
     []);
+
+    // Redirect naar login als er geen user is na auth-check.
+    // MOET in useEffect: dispatchEvent triggert setState in AppRouter,
+    // en React 19 gooit een error als setState wordt aangeroepen tijdens render van een ander component.
+    useEffect(() => {
+        if (!loading && !user) {
+            window.history.replaceState({}, '', '/login');
+            window.dispatchEvent(new Event('pathchange'));
+        }
+    }, [loading, user]);
+
+    // Onboarding triggers: useEffect i.p.v. setTimeout-in-render (React 19 compatibiliteit).
+    // Moeten vóór early returns staan om Rules of Hooks te respecteren.
+    useEffect(() => {
+        if (user?.role === 'student' && !user.stats?.hasCompletedAvatarSetup && !showAvatarSetup) {
+            const id = setTimeout(() => setShowAvatarSetup(true), 100);
+            return () => clearTimeout(id);
+        }
+    }, [user?.role, user?.stats?.hasCompletedAvatarSetup, showAvatarSetup]);
+
+    useEffect(() => {
+        if (user?.role === 'student' && !user.stats?.hasCompletedNulmeting && !showNulmeting) {
+            const id = setTimeout(() => setShowNulmeting(true), 100);
+            return () => clearTimeout(id);
+        }
+    }, [user?.role, user?.stats?.hasCompletedNulmeting, showNulmeting]);
+
+    // Eindmeting: check of de docent de eindmeting heeft vrijgegeven voor deze klas
+    useEffect(() => {
+        if (user?.role !== 'student' || !user.stats?.hasCompletedNulmeting || !user.schoolId || !user.stats?.studentClass) return;
+        let cancelled = false;
+        (async () => {
+            try {
+                const { getCurrentSchoolYear, hasCompletedAssessment } = await import('./services/assessmentService');
+                const schoolYear = getCurrentSchoolYear();
+                // Al afgerond? Niet opnieuw tonen
+                const done = await hasCompletedAssessment(user.uid, 'eindmeting', schoolYear);
+                if (done || cancelled) return;
+                // Check of de docent de klas heeft vrijgegeven
+                const { data, error } = await (supabase as any).from('eindmeting_releases')
+                    .select('id')
+                    .eq('school_id', user.schoolId)
+                    .eq('school_year', schoolYear)
+                    .eq('student_class', user.stats.studentClass)
+                    .maybeSingle();
+                if (error || cancelled) return; // Tabel bestaat nog niet of query faalde — stil falen
+                if (data) setShowEindmeting(true);
+            } catch { /* stil falen — tabellen bestaan nog niet */ }
+        })();
+        return () => { cancelled = true; };
+    }, [user?.uid, user?.role, user?.schoolId, user?.stats?.studentClass, user?.stats?.hasCompletedNulmeting]);
 
     const handleSaveProgress = async (stats: UserStats) => {
         if (!user) return;
@@ -214,10 +270,7 @@ export function AuthenticatedApp() {
     }
 
     if (!user) {
-        // Geen user na auth-check: redirect naar login zodat de gebruiker niet
-        // in een eindeloze spinner blijft hangen.
-        window.history.replaceState({}, '', '/login');
-        window.dispatchEvent(new Event('pathchange'));
+        // Redirect wordt afgehandeld door de useEffect hierboven.
         return <LoadingFallback />;
     }
 
@@ -250,12 +303,6 @@ export function AuthenticatedApp() {
 
     const hasCompletedAvatarSetup = user.stats?.hasCompletedAvatarSetup === true;
 
-    // Streamlined onboarding: skip text-heavy StudentOnboarding, go straight to avatar creation.
-    // The dashboard tutorial handles feature discovery interactively.
-    if (user.role === 'student' && !hasCompletedAvatarSetup && !showAvatarSetup) {
-        setTimeout(() => setShowAvatarSetup(true), 100);
-    }
-
     if (showAvatarSetup && user.role === 'student') {
         const handleAvatarComplete = async (avatarConfig: AvatarConfig) => {
             if (user) {
@@ -284,10 +331,6 @@ export function AuthenticatedApp() {
     // Nulmeting escaperoom: na avatar setup, voor het dashboard
     const hasCompletedNulmeting = user.stats?.hasCompletedNulmeting === true;
 
-    if (user.role === 'student' && !hasCompletedNulmeting && !showNulmeting) {
-        setTimeout(() => setShowNulmeting(true), 100);
-    }
-
     if (showNulmeting && user.role === 'student' && !hasCompletedNulmeting) {
         const handleNulmetingComplete = async (result: NulmetingResult) => {
             if (user) {
@@ -306,6 +349,33 @@ export function AuthenticatedApp() {
                 <NulmetingFlow
                     onComplete={handleNulmetingComplete}
                     onBack={handleLogout}
+                />
+            </Suspense>
+        );
+    }
+
+    if (showEindmeting && user?.role === 'student' && user.stats?.nulmetingResult) {
+        const handleEindmetingComplete = async (eindmetingResult: NulmetingResult) => {
+            if (user) {
+                // Save via assessmentService
+                const { saveAssessmentResult, getCurrentSchoolYear } = await import('./services/assessmentService');
+                await saveAssessmentResult(
+                    user.uid,
+                    eindmetingResult,
+                    'eindmeting',
+                    getCurrentSchoolYear(),
+                    user.schoolId
+                );
+                setShowEindmeting(false);
+            }
+        };
+
+        return (
+            <Suspense fallback={<LoadingFallback />}>
+                <EindmetingFlow
+                    nulmetingResult={user.stats.nulmetingResult}
+                    onComplete={handleEindmetingComplete}
+                    onBack={() => setShowEindmeting(false)}
                 />
             </Suspense>
         );
@@ -879,6 +949,25 @@ export function AuthenticatedApp() {
                 onConfirm={handleExitModule}
                 onCancel={() => setShowExitConfirm(false)}
             />
+            {showInactivityWarning && (
+                <div className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4" role="alertdialog" aria-modal="true" aria-label="Inactiviteits-waarschuwing">
+                    <div className="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 text-center">
+                        <div className="w-14 h-14 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <Lock size={28} className="text-amber-600" />
+                        </div>
+                        <h2 className="text-lg font-black text-slate-900 mb-2">Ben je er nog?</h2>
+                        <p className="text-slate-500 text-sm mb-4">
+                            Je wordt automatisch uitgelogd over <span className="font-bold text-amber-600">{Math.ceil(secondsLeft / 60)} min</span> wegens inactiviteit.
+                        </p>
+                        <button
+                            onClick={dismissWarning}
+                            className="w-full px-4 py-3 bg-indigo-600 text-white font-bold rounded-xl hover:bg-indigo-700 transition-colors"
+                        >
+                            Ik ben er nog
+                        </button>
+                    </div>
+                </div>
+            )}
             {toast && (
                 <Toast
                     message={toast.message}

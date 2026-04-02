@@ -19,6 +19,8 @@ import {
     buildVertexPayload,
     selectModel,
 } from "../_shared/chatCore.ts";
+import { filterStreamChunk } from "../_shared/outputFilter.ts";
+import { detectAndLogStepComplete } from "../_shared/stepCompleteDetector.ts";
 
 Deno.serve(async (req: Request) => {
     const corsHeaders = buildCorsHeaders(req, "POST, OPTIONS", "Content-Type, Authorization");
@@ -90,10 +92,13 @@ Deno.serve(async (req: Request) => {
     const stream = new ReadableStream({
         async start(controller) {
             let buffer = "";
+            let accumulatedText = "";
+            let streamBlocked = false;
             try {
                 while (true) {
                     const { done, value } = await reader.read();
                     if (done) break;
+                    if (streamBlocked) continue; // drain remaining chunks silently
 
                     buffer += decoder.decode(value, { stream: true });
                     const lines = buffer.split("\n");
@@ -110,6 +115,21 @@ Deno.serve(async (req: Request) => {
                             // Extract text from Vertex AI response structure
                             const text = chunk?.candidates?.[0]?.content?.parts?.[0]?.text;
                             if (text) {
+                                accumulatedText += text;
+
+                                // Check safety filter every 200 chars to limit overhead
+                                if (accumulatedText.length % 200 < text.length) {
+                                    const filterResult = filterStreamChunk(accumulatedText);
+                                    if (!filterResult.safe) {
+                                        console.warn(`[chatStream] Blocked output — category: ${filterResult.category}`);
+                                        controller.enqueue(
+                                            encoder.encode(`data: ${JSON.stringify({ text: `\n\n${filterResult.filtered}` })}\n\n`)
+                                        );
+                                        streamBlocked = true;
+                                        break;
+                                    }
+                                }
+
                                 controller.enqueue(
                                     encoder.encode(`data: ${JSON.stringify({ text })}\n\n`)
                                 );
@@ -136,6 +156,12 @@ Deno.serve(async (req: Request) => {
                             // Skip
                         }
                     }
+                }
+
+                // Server-side STEP_COMPLETE detection after stream ends (EU AI Act Art. 12)
+                if (accumulatedText) {
+                    detectAndLogStepComplete(accumulatedText, validated.userId, validated.body.roleId, validated.body.missionId)
+                        .catch((err) => console.error("[chatStream] STEP_COMPLETE log error:", err));
                 }
 
                 controller.enqueue(encoder.encode("data: [DONE]\n\n"));

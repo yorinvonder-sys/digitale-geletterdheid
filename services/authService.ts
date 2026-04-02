@@ -273,9 +273,17 @@ export const logout = async () => {
         window.location.href = '/login';
     };
 
-    // Clear mission autosave data (privacy: prevent next user on shared computer from seeing work)
+    // Clear privacy-sensitive localStorage data (shared school computers)
+    const sensitiveKeyPrefixes = [
+        'mission-autosave-',     // missie-voortgang
+        'chat-history-',         // chatgeschiedenis
+        'student-tutorial-',     // tutorial-voortgang
+        'focus-mode-',           // focusmodus-status
+        'game-state-',           // spelstatus
+        'permission-cache-',     // permissie-cache
+    ];
     Object.keys(localStorage).forEach(key => {
-        if (key.startsWith('mission-autosave-')) {
+        if (sensitiveKeyPrefixes.some(prefix => key.startsWith(prefix))) {
             localStorage.removeItem(key);
         }
     });

@@ -29,6 +29,7 @@ export interface ChatRequestBody {
     roleId: string;
     history?: unknown[];
     gameContext?: string;
+    missionId?: string;
 }
 
 export interface SafetySettingEntry {
@@ -143,7 +144,7 @@ export async function validateAndParseRequest(
 
     // 3. Parse request body
     // SECURITY: systemInstruction is server-side only — never trust client input
-    let rawBody: { message?: string; roleId?: string; history?: unknown[]; gameContext?: string };
+    let rawBody: { message?: string; roleId?: string; history?: unknown[]; gameContext?: string; missionId?: string };
     try {
         rawBody = await req.json();
     } catch {
@@ -168,6 +169,13 @@ export async function validateAndParseRequest(
         );
     }
     const systemInstruction = getSystemInstruction(rawBody.roleId)!;
+
+    // Validate optional missionId (max 100 chars, alphanumeric + hyphens only)
+    if (rawBody.missionId !== undefined) {
+        if (typeof rawBody.missionId !== "string" || rawBody.missionId.length > 100 || !/^[a-zA-Z0-9_-]+$/.test(rawBody.missionId)) {
+            rawBody.missionId = undefined; // silently discard invalid missionId
+        }
+    }
 
     // 4. Server-side prompt injection check (defense-in-depth)
     const validation = sanitizePrompt(rawBody.message);
