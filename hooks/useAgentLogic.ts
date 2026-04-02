@@ -7,14 +7,9 @@ import { computeCodeChanges } from '../components/CodeChangeCard';
 import { saveMissionProgress, loadMissionProgress, resetMissionProgress } from '../services/missionService';
 import { stripAiProvenance } from '../utils/aiContentMarker';
 import DOMPurify from 'dompurify';
-
-// ============================================================================
-// MEMORY MANAGEMENT CONSTANTS
-// These limits prevent swap/memory issues on devices with limited RAM
-// ============================================================================
-const MAX_UI_MESSAGES = 30;        // Max messages shown in chat UI
-const MAX_CONTEXT_MESSAGES = 12;   // Messages to keep for context when refreshing session
-const SESSION_REFRESH_THRESHOLD = 15; // Refresh Gemini session after this many exchanges
+import { useChatSession, MAX_UI_MESSAGES } from './useChatSession';
+import { useGameCode, extractGameHtmlDocument, stripGameCodeFromResponse } from './useGameCode';
+import { useStepCompletion } from './useStepCompletion';
 
 // ============================================================================
 // EERSTE BERICHT PARSER
@@ -48,62 +43,7 @@ function extractEersteBericht(systemInstruction: string): string | null {
     return text.length > 10 ? text : null;
 }
 
-const GAME_HTML_DOCUMENT_REGEX = /<!doctype html(?:\s[^>]*)?>[\s\S]*?<\/html>/i;
-const GAME_HTML_ROOT_REGEX = /<html[\s\S]*?<\/html>/i;
-const GAME_HTML_FENCE_REGEX = /```(?:html)?\s*([\s\S]*?)```/i;
 const MODEL_IMAGE_TAG_REGEX = /\[IMG\s+target=["']?\s*([^"'>\]]+)\s*["']?\]([\s\S]*?)\[\/IMG\]/gi;
-
-function extractGameHtmlDocument(rawResponse: string): string | null {
-    const cleaned = stripAiProvenance(rawResponse).trim();
-    if (!cleaned) return null;
-
-    const fullDocumentMatch = cleaned.match(GAME_HTML_DOCUMENT_REGEX);
-    if (fullDocumentMatch) {
-        return fullDocumentMatch[0].trim();
-    }
-
-    const htmlRootMatch = cleaned.match(GAME_HTML_ROOT_REGEX);
-    if (htmlRootMatch) {
-        return `<!DOCTYPE html>\n${htmlRootMatch[0].trim()}`;
-    }
-
-    const fencedCodeMatch = cleaned.match(GAME_HTML_FENCE_REGEX);
-    if (fencedCodeMatch) {
-        return extractGameHtmlDocument(fencedCodeMatch[1]);
-    }
-
-    const looksLikeGameFragment =
-        /<canvas\b/i.test(cleaned) &&
-        /<script\b/i.test(cleaned) &&
-        /<\/script>/i.test(cleaned);
-
-    if (looksLikeGameFragment) {
-        return [
-            '<!DOCTYPE html>',
-            '<html lang="nl">',
-            '<head>',
-            '  <meta charset="UTF-8" />',
-            '  <meta name="viewport" content="width=device-width, initial-scale=1.0" />',
-            '  <title>Game Preview</title>',
-            '</head>',
-            '<body>',
-            cleaned,
-            '</body>',
-            '</html>',
-        ].join('\n');
-    }
-
-    return null;
-}
-
-function stripGameCodeFromResponse(rawResponse: string): string {
-    return stripAiProvenance(rawResponse)
-        .replace(GAME_HTML_DOCUMENT_REGEX, '')
-        .replace(GAME_HTML_ROOT_REGEX, '')
-        .replace(GAME_HTML_FENCE_REGEX, '')
-        .replace(/\n{3,}/g, '\n\n')
-        .trim();
-}
 
 function getImageGenerationOptions(
     roleId: string | undefined,
@@ -275,78 +215,63 @@ interface UseAgentLogicProps {
 }
 
 export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialProgress, skipLoading = false }: UseAgentLogicProps) => {
-    // Initialize state with stored progress if available
-    const [messages, setMessages] = useState<ChatMessage[]>([]);
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [thinkingStep, setThinkingStep] = useState<string>("Analyseren...");
     const [suggestions, setSuggestions] = useState<string[]>([]);
 
+    // --- Sub-hooks ---
+    const {
+        messages,
+        setMessages,
+        chatSessionRef,
+        messageCountRef,
+        refreshChatSession,
+        refreshIfNeeded,
+    } = useChatSession({ selectedRole });
+
+    const {
+        activeGameCode,
+        setActiveGameCode,
+        gameCodeHistory,
+        pushToHistory,
+        previousGameCodeRef,
+        undoGameCode: undoGameCodeBase,
+    } = useGameCode({ initialGameCode: initialProgress?.data?.activeGameCode || null });
+
+    const {
+        completedSteps,
+        setCompletedSteps,
+        parseAndUpdateSteps,
+    } = useStepCompletion({ initialSteps: initialProgress?.completedSteps || [] });
+
+    // Wrap undoGameCode to pass setMessages
+    const undoGameCode = useCallback(() => {
+        undoGameCodeBase(setMessages);
+    }, [undoGameCodeBase, setMessages]);
+
     // Specific Role State - Restore from initialProgress if available
-    const [activeGameCode, setActiveGameCode] = useState<string | null>(initialProgress?.data?.activeGameCode || null);
-    const [gameCodeHistory, setGameCodeHistory] = useState<string[]>([]); // Undo history for game code
     const [activeBookData, setActiveBookData] = useState<BookData>(initialProgress?.data?.activeBookData || { title: "Nieuw Verhaal", pages: [] });
     const [activeLogicCode, setActiveLogicCode] = useState<string | null>(initialProgress?.data?.activeLogicCode || null);
     const [activeTrainerData, setActiveTrainerData] = useState<TrainerData>(initialProgress?.data?.activeTrainerData || { classALabel: 'A', classBLabel: 'B', classAItems: [], classBItems: [] });
     const [activeBonusChallenges, setActiveBonusChallenges] = useState<BonusChallenge[]>(initialProgress?.data?.activeBonusChallenges || []);
 
-    // Step-based mission completion tracking - Restore steps
-    const [completedSteps, setCompletedSteps] = useState<number[]>(initialProgress?.completedSteps || []);
-
-    const chatSessionRef = useRef<Chat | null>(null);
-    const previousGameCodeRef = useRef<string | null>(null); // Track previous code for diff
-    const messageCountRef = useRef<number>(0); // Track exchanges for session refresh
-
     // Helper: Refresh chat session with recent context (prevents memory buildup in Gemini SDK)
-    const refreshChatSession = useCallback((recentMessages: ChatMessage[]) => {
-        if (!selectedRole) return;
-
-        console.log('[Memory] Refreshing chat session to prevent memory buildup');
-
-        // Create fresh session
-        const newSession = createChatSession(selectedRole.id, selectedRole.systemInstruction, {
-            localMissionContext: buildMissionContext(selectedRole),
-        });
-
-        // Re-inject essential context (last N messages)
-        const contextMessages = recentMessages.slice(-MAX_CONTEXT_MESSAGES);
-        const contextSummary = contextMessages
-            .map(m => `${m.role === 'user' ? 'Gebruiker' : 'AI'}: ${m.text.substring(0, 200)}...`)
-            .join('\n');
-
-        // Send summary as context
-        newSession.sendMessage({
-            message: `[CONTEXT SAMENVATTING - Vorige berichten]\n${contextSummary}\n[Ga verder met het gesprek]`
-        }).catch(console.error);
-
-        chatSessionRef.current = newSession;
-        messageCountRef.current = 0;
-    }, [selectedRole]);
+    // (provided by useChatSession, wired here for use in useEffect)
 
     // Initialize Chat
     useEffect(() => {
         if (selectedRole) {
             // RESTORE MESSAGES IF AVAILABLE
-            // We need to convert summary back to full messages if possible, or just use them as context
-            // ideally we would store full messages but let's start fresh with context if only summaries
-
-            // For now, let's keep the welcome message but maybe skip if we have history?
-            // Actually, let's always show welcome message if history is empty, otherwise nothing (UI handles history)
-
             if (initialProgress && initialProgress.chatHistory && initialProgress.chatHistory.length > 0) {
-                // Restore history (mapping summary to message structure)
-                // Note: We don't have timestamps in summary, so we generate new Date
                 const restoredMessages: ChatMessage[] = initialProgress.chatHistory.map(m => ({
                     role: m.role,
                     text: m.text,
-                    timestamp: new Date() // Best approximation
+                    timestamp: new Date()
                 }));
                 setMessages(restoredMessages);
             } else {
-                // Use the EERSTE BERICHT from systemInstruction if available.
-                // If missing, build an actionable welcome from the mission's
-                // problemScenario and first step so the student knows what to do.
                 const eersteBericht = extractEersteBericht(selectedRole.systemInstruction);
                 let welcomeText: string;
                 if (eersteBericht) {
@@ -365,7 +290,6 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
                 }]);
             }
             // --- INITIALIZE STARTER TIPS ---
-            // Show tips immediately when mission starts (before AI responds)
             const starterTips = getStarterTips(selectedRole.id, selectedRole.examplePrompt);
             setSuggestions(starterTips);
 
@@ -377,12 +301,8 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
 
                 // If it's a game programmer, we provide initial code as context
                 if (selectedRole.id === 'game-programmeur' && selectedRole.initialCode) {
-                    // Send hidden context message
-                    // Only send context if we haven't recovered a session (TODO: optimized session recovery)
                     session.sendMessage({ message: `Hier is de start-code van de game: \n\n ${selectedRole.initialCode}` });
                 }
-
-
             } catch (e) {
                 console.error("Failed to init chat", e);
                 setError("Kon AI niet starten. Controleer je sessie of AI-configuratie.");
@@ -391,22 +311,19 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
             // Reset role specific data
             setActiveBookData({ title: "Nieuw Verhaal", pages: [] });
             setActiveLogicCode(null);
-            // setActiveDetectiveCase(null);
             setActiveTrainerData({ classALabel: 'A', classBLabel: 'B', classAItems: [], classBItems: [] });
 
             // --- LOAD SAVED PROGRESS ---
             if (!skipLoading) {
                 console.log(`[CloudLoad] Loading progress for ${selectedRole.id}...`);
 
-                // Timeout promise to prevent infinite loading
                 const timeoutPromise = new Promise<null>((resolve) => {
                     setTimeout(() => {
                         console.warn(`[CloudLoad] Timeout for ${selectedRole.id}, using fallback`);
                         resolve(null);
-                    }, 5000); // 5 second timeout
+                    }, 5000);
                 });
 
-                // Race between load and timeout
                 Promise.race([
                     loadMissionProgress(userIdentifier, selectedRole.id),
                     timeoutPromise
@@ -416,12 +333,10 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
                         if (data.gameCode && selectedRole.id === 'game-programmeur') setActiveGameCode(data.gameCode);
                         if (data.bookData && selectedRole.id === 'verhalen-ontwerper') setActiveBookData(data.bookData);
                         if (data.logicCode && (selectedRole.id as string) === 'logica-legende') setActiveLogicCode(data.logicCode);
-                        // Fix: Support both legacy prompt-trainer and new ai-trainer
                         if (data.trainerData && ((selectedRole.id as string) === 'prompt-trainer' || selectedRole.id === 'ai-trainer')) {
                             setActiveTrainerData(data.trainerData);
                         }
                     } else {
-                        // No save found OR timeout - use initial code
                         console.log(`[CloudLoad] No data or timeout for ${selectedRole.id}, using fallback`);
                         if (selectedRole.id === 'game-programmeur' && selectedRole.initialCode) {
                             setActiveGameCode(selectedRole.initialCode);
@@ -429,13 +344,11 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
                     }
                 }).catch(err => {
                     console.error("[CloudLoad] Error:", err);
-                    // Fallback to init code
                     if (selectedRole.id === 'game-programmeur' && selectedRole.initialCode) {
                         setActiveGameCode(selectedRole.initialCode);
                     }
                 });
             } else {
-                // skipLoading is true - use initialProgress data if available (from library or shared link)
                 if (initialProgress?.data) {
                     console.log(`[CloudLoad] Using initialProgress data for ${selectedRole.id}`);
                     if (initialProgress.data.activeGameCode && selectedRole.id === 'game-programmeur') {
@@ -445,35 +358,30 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
                         setActiveBookData(initialProgress.data.activeBookData);
                     }
                 } else if (selectedRole.id === 'game-programmeur' && selectedRole.initialCode) {
-                    // No initialProgress, fall back to initial code
                     setActiveGameCode(selectedRole.initialCode);
                 }
             }
         }
-    }, [selectedRole, userIdentifier, initialProgress, skipLoading, refreshChatSession]);
+    }, [selectedRole, userIdentifier, initialProgress, skipLoading, refreshChatSession, chatSessionRef, setMessages, setActiveGameCode]);
     // --- AUTO-SAVE LOGIC ---
-    // Save GAME CODE changes
     useEffect(() => {
         if (selectedRole?.id === 'game-programmeur' && activeGameCode) {
             const timer = setTimeout(() => {
                 saveMissionProgress(userIdentifier, 'game-programmeur', { gameCode: activeGameCode, schoolId });
-            }, 1000); // Debounce 1s
+            }, 1000);
             return () => clearTimeout(timer);
         }
     }, [activeGameCode, selectedRole, userIdentifier, schoolId]);
 
-    // Save BOOK DATA changes
     useEffect(() => {
         if (selectedRole?.id === 'verhalen-ontwerper' && activeBookData) {
             const timer = setTimeout(() => {
-                // Save even if pages are empty (e.g. title setup)
                 saveMissionProgress(userIdentifier, 'verhalen-ontwerper', { bookData: activeBookData, schoolId });
             }, 1000);
             return () => clearTimeout(timer);
         }
     }, [activeBookData, selectedRole, userIdentifier, schoolId]);
 
-    // Save TRAINER DATA changes
     useEffect(() => {
         if (((selectedRole?.id as string) === 'prompt-trainer' || selectedRole?.id === 'ai-trainer') && activeTrainerData) {
             const timer = setTimeout(() => {
@@ -483,7 +391,6 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
         }
     }, [activeTrainerData, selectedRole, userIdentifier, schoolId]);
 
-    // Save LOGIC CODE changes
     useEffect(() => {
         if ((selectedRole?.id as string) === 'logica-legende' && activeLogicCode) {
             const timer = setTimeout(() => {
@@ -500,10 +407,8 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
         if (!selectedRole) return;
 
         try {
-            // 1. Wipe Cloud Data
             await resetMissionProgress(userIdentifier, selectedRole.id);
 
-            // 2. Reset Local State based on Role
             if (selectedRole.id === 'game-programmeur') {
                 setActiveGameCode(selectedRole.initialCode || '');
                 setMessages(prev => [...prev, { role: 'model', text: '♻️ **Game gereset!**\nAlle code is hersteld naar het beginpunt.', timestamp: new Date() }]);
@@ -513,15 +418,11 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
             } else {
                 setMessages(prev => [...prev, { role: 'model', text: '♻️ **Missie gereset!**', timestamp: new Date() }]);
             }
-
-            // 3. Clear Chat Context (Optional, but often desired on hard reset)
-            // createChatSession(selectedRole.id, selectedRole.systemInstruction); // Reset Gemini session too if desired
-
         } catch (err) {
             console.error("Reset failed:", err);
             setError("Er ging iets mis bij het resetten.");
         }
-    }, [selectedRole, userIdentifier]);
+    }, [selectedRole, userIdentifier, setActiveGameCode, setMessages]);
 
     const unlockBonusChallenge = (challengeId: string) => {
         if (!selectedRole?.bonusChallenges) return;
@@ -530,7 +431,6 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
         if (challenge && !activeBonusChallenges.some(c => c.id === challenge.id)) {
             setActiveBonusChallenges(prev => [...prev, challenge]);
 
-            // Notify user via chat
             setMessages(prev => [...prev, {
                 role: 'model',
                 text: `🏆 **BONUS UITDAGING ONTGRENDELD:** ${challenge.title}\n\n${challenge.description}\n\nBeloning: **${challenge.xpReward} XP**`,
@@ -538,25 +438,6 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
             }]);
         }
     };
-
-    // --- UNDO GAME CODE ---
-    // Allows students to revert to the previous version of their game code
-    const undoGameCode = useCallback(() => {
-        if (gameCodeHistory.length === 0) return;
-
-        const previousCode = gameCodeHistory[gameCodeHistory.length - 1];
-        setGameCodeHistory(prev => prev.slice(0, -1));
-        setActiveGameCode(previousCode);
-        previousGameCodeRef.current = previousCode;
-
-        setMessages(prev => [...prev, {
-            role: 'model',
-            text: '↩️ **Vorige versie hersteld!**\nDe game is teruggezet naar de vorige werkende versie.',
-            timestamp: new Date()
-        }]);
-    }, [gameCodeHistory]);
-
-
 
     const handleSend = async (textInput: string = input) => {
         if (!chatSessionRef.current) {
@@ -571,21 +452,11 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
         };
 
         // MEMORY MANAGEMENT: Track message count and check if session refresh needed
-        messageCountRef.current++;
-
-        // Check if we need to refresh the session to prevent memory buildup
-        if (messageCountRef.current >= SESSION_REFRESH_THRESHOLD) {
-            // Get current messages before refresh
-            setMessages(prev => {
-                refreshChatSession(prev);
-                return prev;
-            });
-        }
+        refreshIfNeeded();
 
         // 1. Add User Message immediately (with message limit to prevent memory issues)
         setMessages(prev => {
             const newMessages = [...prev, userMsg];
-            // Trim to max UI messages to prevent memory buildup
             return newMessages.slice(-MAX_UI_MESSAGES);
         });
         setInput('');
@@ -608,7 +479,7 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
             } else {
                 setThinkingStep(thinkingSteps[stepIndex]);
             }
-        }, isStoryMission ? 2000 : 1200); // Longer steps for story mission (image generation takes time)
+        }, isStoryMission ? 2000 : 1200);
 
         try {
             // =====================================================================
@@ -622,13 +493,10 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
             let promptForAI = enhancementResult.enhancedPrompt;
 
             // GAME PROGRAMMEUR: Set current game code as context on the chat session
-            // This is sent separately from the message so it bypasses the prompt sanitizer
-            // (it's our own code, not user input)
             if (selectedRole?.id === 'game-programmeur' && activeGameCode) {
                 chatSessionRef.current.setGameContext(activeGameCode);
             }
 
-            // Debug logging (only in development)
             if (enhancementResult.wasEnhanced && process.env.NODE_ENV === 'development') {
                 console.log('[PromptEnhancer] Original:', textInput);
                 console.log('[PromptEnhancer] Enhanced:', promptForAI);
@@ -659,14 +527,12 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
             } else {
                 await sendMessageToGeminiStream(
                     chatSessionRef.current,
-                    promptForAI,  // Send ENHANCED prompt to AI
+                    promptForAI,
                     (chunkText) => {
                         fullTextAccumulated = chunkText;
 
                         // REAL-TIME TRAINER DATA PARSING (ai-trainer mission)
-                        // Parse and add items IMMEDIATELY as they stream in for instant visual feedback
                         if (selectedRole?.id === 'ai-trainer') {
-                            // Parse TRAIN_A tags (plastic/categorie A) in real-time
                             const trainAMatches = [...chunkText.matchAll(/\[TRAIN_A\](.*?)\[\/TRAIN_A\]/g)];
                             for (const match of trainAMatches) {
                                 const item = match[1];
@@ -676,7 +542,6 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
                                 }
                             }
 
-                            // Parse TRAIN_B tags (papier/categorie B) in real-time
                             const trainBMatches = [...chunkText.matchAll(/\[TRAIN_B\](.*?)\[\/TRAIN_B\]/g)];
                             for (const match of trainBMatches) {
                                 const item = match[1];
@@ -696,7 +561,6 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
                             ]);
                             isFirstChunk = false;
                         } else {
-                            // Update the LAST message (which is the model's streaming message)
                             setMessages(prev => {
                                 const newArr = [...prev];
                                 const lastIdx = newArr.length - 1;
@@ -726,18 +590,7 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
             }
 
             // --- PARSE STEP COMPLETION ---
-            const stepMatches = responseText.matchAll(/---STEP_COMPLETE:(\d+)---/g);
-            for (const match of stepMatches) {
-                const stepIndex = parseInt(match[1]) - 1; // Convert 1-based to 0-based
-                setCompletedSteps(prev => {
-                    if (!prev.includes(stepIndex)) {
-                        console.log('[Steps] Step', stepIndex + 1, 'completed!');
-                        return [...prev, stepIndex];
-                    }
-                    return prev;
-                });
-                responseText = responseText.replace(match[0], '');
-            }
+            responseText = parseAndUpdateSteps(responseText);
 
             // --- PARSE ROLE SPECIFIC DATA ---
             const imageGenerationPromises: Promise<void>[] = [];
@@ -748,21 +601,14 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
             if (selectedRole?.id === 'verhalen-ontwerper') {
                 console.log('[DEBUG] Parsing Book Response:', responseText);
 
-                // Cleanup tags from text IMMEDIATELY as we find them
-                // This ensures the chat UI never shows the raw tags, even if image gen takes time
-
-                // TITLE
                 const titleMatch = responseText.match(/\[TITLE\](.*?)\[\/TITLE\]/i);
                 if (titleMatch) {
                     setActiveBookData(prev => ({ ...prev, title: titleMatch[1] }));
                     responseText = responseText.replace(titleMatch[0], '');
                 }
 
-                // PAGES
-                // Improved Regex: Handles optional target with loose spacing and varied quotes
                 const pageRegex = /\[PAGE(?:\s+target=["']?(\d+)["']?)?\]([\s\S]*?)\[\/PAGE\]/gi;
 
-                // We execute a loop to catch ALL page updates in one response
                 let pageMatch;
                 while ((pageMatch = pageRegex.exec(responseText)) !== null) {
                     const targetPage = pageMatch[1] ? parseInt(pageMatch[1]) : null;
@@ -771,19 +617,13 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
                     setActiveBookData(prev => {
                         const newPages = [...prev.pages];
 
-                        // If specific target page is requested (and valid)
                         if (targetPage !== null) {
-                            // Ensure array is large enough (fill gaps)
                             while (newPages.length < targetPage) {
                                 newPages.push({ text: '' });
                             }
-
-                            // Update existing page (targetPage is 1-based index)
                             const actualIndex = targetPage - 1;
                             newPages[actualIndex] = { ...newPages[actualIndex], text: pageText };
-
                         } else {
-                            // No target specified? Just append a new page
                             newPages.push({ text: pageText });
                         }
                         return { ...prev, pages: newPages };
@@ -791,8 +631,6 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
                 }
                 responseText = responseText.replace(pageRegex, '');
 
-                // IMAGES
-                // Improved Regex: Handles target="cover" OR target="1", loose spacing
                 let imgMatch;
                 while ((imgMatch = MODEL_IMAGE_TAG_REGEX.exec(responseText)) !== null) {
                     const rawTarget = imgMatch[1];
@@ -803,7 +641,6 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
                         const prompt = rawPrompt.trim();
                         const imageOptions = getImageGenerationOptions(selectedRole.id, target);
 
-                        // Prepare state for loading
                         setActiveBookData(prev => {
                             const newData = { ...prev };
                             if (target === 'cover') {
@@ -818,7 +655,6 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
                             return newData;
                         });
 
-                        // Add to promises (Background execution)
                         imageGenerationPromises.push(
                             generateImage(prompt, imageOptions).then(imgUrl => {
                                 setActiveBookData(prev => {
@@ -838,7 +674,6 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
                                 });
 
                                 if (!imgUrl) {
-                                    // Optional: notify chat about specific failure, or just let the book show 'Error'
                                     console.warn("Image generation failed silently for", target);
                                 } else if (imgUrl.startsWith('error:') && !imageGenerationError) {
                                     imageGenerationError = imgUrl.slice('error:'.length);
@@ -847,7 +682,6 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
                         );
                     }
                 }
-                // Remove IMG tags
                 responseText = responseText.replace(MODEL_IMAGE_TAG_REGEX, '');
             }
 
@@ -880,7 +714,6 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
             }
 
             // GAME MAKER -> game-programmeur
-
             if (selectedRole?.id === 'game-programmeur') {
                 const newCode = extractGameHtmlDocument(responseText);
                 if (newCode) {
@@ -893,14 +726,12 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
                     let rejectionReason = '';
 
                     if (currentCode && currentCode.length > 500) {
-                        // Check 1: Reject if new code is drastically shorter (50%+ reduction)
                         const lengthRatio = newCode.length / currentCode.length;
                         if (lengthRatio < 0.5) {
                             shouldUpdate = false;
                             rejectionReason = `Code te kort (${Math.round(lengthRatio * 100)}% van origineel)`;
                         }
 
-                        // Check 2: Reject if new code is missing essential game elements
                         const hasCanvas = newCode.includes('<canvas') || newCode.includes('getContext');
                         const hasScript = newCode.includes('<script') && newCode.includes('</script>');
                         const hasGameLoop = newCode.includes('requestAnimationFrame') || newCode.includes('setInterval');
@@ -910,7 +741,6 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
                             rejectionReason = 'Essentiële game elementen ontbreken (canvas/script/loop)';
                         }
 
-                        // Check 3: Reject incomplete HTML (unclosed tags)
                         const openCount = (newCode.match(/<script/gi) || []).length;
                         const closeCount = (newCode.match(/<\/script>/gi) || []).length;
                         if (openCount !== closeCount) {
@@ -922,8 +752,7 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
                     let codeChanges: CodeChange[] = [];
 
                     if (shouldUpdate && currentCode && currentCode !== newCode) {
-                        // Save previous code to history before updating (max 10 versions for extra safety)
-                        setGameCodeHistory(prev => [...prev.slice(-9), currentCode]);
+                        pushToHistory(currentCode);
 
                         codeChanges = computeCodeChanges(currentCode, newCode);
                         if (codeChanges.length > 0) {
@@ -942,7 +771,6 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
                         console.warn('[GameCode Protection] Rejected update:', rejectionReason);
                         responseText = `⚠️ **Code-bescherming actief!**\n\nDe AI probeerde je code te vervangen met iets dat mogelijk kapot was (${rejectionReason}).\n\nJe huidige game is veilig. Probeer je vraag opnieuw te formuleren, of klik op ↩️ **Ongedaan** als je toch iets wilt herstellen.`;
                     } else if (!currentCode) {
-                        // First time code - always accept
                         previousGameCodeRef.current = newCode;
                         setActiveGameCode(newCode);
                     }
@@ -953,8 +781,6 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
             }
 
             // TRAINER -> ai-trainer
-            // NOTE: Items are now added in real-time during streaming (see above)
-            // We only need to clean up the tags from the response text here
             if (selectedRole?.id === 'ai-trainer') {
                 responseText = responseText.replace(/\[TRAIN_A\](.*?)\[\/TRAIN_A\]/g, '');
                 responseText = responseText.replace(/\[TRAIN_B\](.*?)\[\/TRAIN_B\]/g, '');
@@ -964,7 +790,6 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
             // =====================================================================
             // CLEANUP: Final sweep to ensure no tags leak
             // =====================================================================
-            // Redundant check in case regexes missed something
             responseText = responseText.replace(/\[TITLE\][\s\S]*?\[\/TITLE\]/gi, '');
             responseText = responseText.replace(/\[PAGE\][\s\S]*?\[\/PAGE\]/gi, '');
             responseText = responseText.replace(/\[IMG\s+[^\]]*\][\s\S]*?\[\/IMG\]/gi, '');

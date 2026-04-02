@@ -1,115 +1,261 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
+import { AvatarViewer } from './AvatarViewer';
 import { AvatarViewer2D } from './AvatarViewer2D';
-import { LazyAvatarViewer } from './LazyAvatarViewer';
 import { AvatarConfig, DEFAULT_AVATAR_CONFIG } from '../types';
+import { AVATAR_HAIR_CATALOG, AVATAR_PET_CATALOG } from '../config/avatarCatalog';
 
-/** Dev-only preview voor avatar styling. Verwijder voor productie. */
+/** Dev-only preview voor avatar QA. Verwijder voor productie. */
 
-const PRESETS: { label: string; config: AvatarConfig }[] = [
+type PreviewPreset = {
+    key: string;
+    label: string;
+    category: 'hair' | 'pets' | 'headwear';
+    config: AvatarConfig;
+};
+
+const createBaseConfig = (gender: AvatarConfig['gender']): AvatarConfig => {
+    if (gender === 'female') {
+        return {
+            ...DEFAULT_AVATAR_CONFIG,
+            gender: 'female',
+            baseModel: 'slim',
+            hairStyle: 'pigtails',
+            hairColor: '#5D4037',
+            shirtColor: '#EC4899',
+            pantsColor: '#8B5CF6',
+            expression: 'happy',
+            eyeColor: '#2563EB',
+            accessory: 'none',
+            pet: 'none',
+        };
+    }
+
+    return {
+        ...DEFAULT_AVATAR_CONFIG,
+        gender: 'male',
+        baseModel: 'standard',
+        hairStyle: 'short',
+        hairColor: '#3D2314',
+        shirtColor: '#0EA5E9',
+        pantsColor: '#1E293B',
+        expression: 'cool',
+        eyeColor: '#4A3728',
+        accessory: 'none',
+        pet: 'none',
+    };
+};
+
+const getHairColorForStyle = (style: AvatarConfig['hairStyle'], gender: AvatarConfig['gender']): string => {
+    if (style === 'mohawk') return '#F97316';
+    if (style === 'afro' || style === 'curls' || style === 'buzzcut') return '#1A1A1A';
+    if (style === 'fade') return '#20150F';
+    if (style === 'sidepart') return '#4A2A1B';
+    if (gender === 'female' && style === 'bob') return '#C2410C';
+    return gender === 'female' ? '#5D4037' : '#3D2314';
+};
+
+const HAIR_PRESETS: PreviewPreset[] = AVATAR_HAIR_CATALOG.map(item => ({
+    key: item.id,
+    label: `${item.gender === 'male' ? 'Jongen' : 'Meisje'} — ${item.label}`,
+    category: 'hair',
+    config: {
+        ...createBaseConfig(item.gender),
+        hairStyle: item.value,
+        hairColor: getHairColorForStyle(item.value, item.gender),
+        expression: item.gender === 'male' ? 'cool' : 'happy',
+    },
+}));
+
+const PET_PRESETS: PreviewPreset[] = AVATAR_PET_CATALOG
+    .filter(item => item.value !== 'none')
+    .map((item, index) => ({
+        key: `pet-${item.value}`,
+        label: `Pet QA — ${item.label}`,
+        category: 'pets',
+        config: {
+            ...createBaseConfig('male'),
+            hairStyle: index === 0 ? 'spiky' : index === 1 ? 'sidepart' : 'buzzcut',
+            hairColor: index === 2 ? '#1A1A1A' : '#3D2314',
+            shirtColor: index === 0 ? '#22C55E' : index === 1 ? '#D97757' : '#6366F1',
+            pet: item.value,
+            accessory: 'none',
+            expression: 'happy',
+        },
+    }));
+
+const HEADWEAR_PRESETS: PreviewPreset[] = [
     {
-        label: 'Jongen — Spiky',
-        config: { ...DEFAULT_AVATAR_CONFIG, gender: 'male', hairStyle: 'spiky', hairColor: '#3d2314', shirtColor: '#0ea5e9', expression: 'cool', pose: 'idle', eyeColor: '#4a3728' },
+        key: 'headwear-fade-cap',
+        label: 'Headwear QA — Fade + Cap',
+        category: 'headwear',
+        config: {
+            ...createBaseConfig('male'),
+            hairStyle: 'fade',
+            hairColor: '#1A1A1A',
+            accessory: 'cap',
+            shirtColor: '#22C55E',
+            pet: 'pet_dog',
+        },
     },
     {
-        label: 'Meisje — Pigtails',
-        config: { ...DEFAULT_AVATAR_CONFIG, gender: 'female', baseModel: 'slim', hairStyle: 'pigtails', hairColor: '#5D4037', shirtColor: '#ec4899', pantsColor: '#8b5cf6', expression: 'happy', pose: 'peace', eyeColor: '#2563eb' },
-    },
-    {
-        label: 'Jongen — Afro',
-        config: { ...DEFAULT_AVATAR_CONFIG, gender: 'male', skinColor: '#8d5524', hairStyle: 'afro', hairColor: '#1a1a1a', shirtColor: '#ef4444', expression: 'happy', accessory: 'beanie', pose: 'dab', shoeColor: '#ffffff' },
-    },
-    {
-        label: 'Meisje — Bob',
-        config: { ...DEFAULT_AVATAR_CONFIG, gender: 'female', baseModel: 'slim', hairStyle: 'bob', hairColor: '#C41E3A', shirtColor: '#6366f1', pantsColor: '#ec4899', expression: 'neutral', eyeColor: '#22c55e' },
-    },
-    {
-        label: 'Jongen — Fade + Cap',
-        config: { ...DEFAULT_AVATAR_CONFIG, gender: 'male', skinColor: '#a0522d', hairStyle: 'fade', hairColor: '#1a1a1a', shirtColor: '#22c55e', accessory: 'cap', expression: 'cool', shoeColor: '#ef4444' },
-    },
-    {
-        label: 'Meisje — Curls',
-        config: { ...DEFAULT_AVATAR_CONFIG, gender: 'female', baseModel: 'slim', skinColor: '#d18a6a', hairStyle: 'curls', hairColor: '#3E2723', shirtColor: '#f59e0b', pantsColor: '#3b82f6', accessory: 'headphones', expression: 'surprised', pose: 'wave' },
-    },
-    {
-        label: 'Jongen — Messy',
-        config: { ...DEFAULT_AVATAR_CONFIG, gender: 'male', hairStyle: 'messy', hairColor: '#8B4513', shirtColor: '#a855f7', expression: 'happy', accessory: 'glasses' },
-    },
-    {
-        label: 'Meisje — Bun',
-        config: { ...DEFAULT_AVATAR_CONFIG, gender: 'female', baseModel: 'slim', skinColor: '#c68642', hairStyle: 'bun', hairColor: '#1a1a1a', shirtColor: '#10b981', pantsColor: '#1e293b', expression: 'happy', pose: 'wave' },
-    },
-    {
-        label: 'Jongen — Mohawk',
-        config: { ...DEFAULT_AVATAR_CONFIG, gender: 'male', skinColor: '#ffe0bd', hairStyle: 'mohawk', hairColor: '#ef4444', shirtColor: '#1e293b', expression: 'cool', pose: 'dab' },
-    },
-    {
-        label: 'Meisje — Long + Braids',
-        config: { ...DEFAULT_AVATAR_CONFIG, gender: 'female', baseModel: 'slim', hairStyle: 'braids', hairColor: '#5D4037', shirtColor: '#d946ef', expression: 'happy', accessory: 'none' },
-    },
-    {
-        label: 'Head Only',
-        config: { ...DEFAULT_AVATAR_CONFIG, gender: 'male', hairStyle: 'spiky', hairColor: '#FF6B35', expression: 'surprised', eyeColor: '#22c55e' },
-    },
-    {
-        label: 'Jongen — Buzzcut',
-        config: { ...DEFAULT_AVATAR_CONFIG, gender: 'male', skinColor: '#614335', hairStyle: 'buzzcut', hairColor: '#292524', shirtColor: '#0ea5e9', expression: 'happy', shoeColor: '#3b82f6' },
+        key: 'headwear-curls-beanie',
+        label: 'Headwear QA — Krullen + Muts',
+        category: 'headwear',
+        config: {
+            ...createBaseConfig('female'),
+            hairStyle: 'curls',
+            hairColor: '#2F211B',
+            accessory: 'beanie',
+            shirtColor: '#F59E0B',
+            pet: 'pet_cat',
+            expression: 'surprised',
+        },
     },
 ];
 
+const ALL_PRESETS = [...HAIR_PRESETS, ...PET_PRESETS, ...HEADWEAR_PRESETS];
+
+const SECTION_COPY: Record<PreviewPreset['category'], { title: string; description: string }> = {
+    hair: {
+        title: 'Kapsel QA',
+        description: 'Controleer silhouette, haarbanden, clipping en verschillen tussen stijlen.',
+    },
+    pets: {
+        title: 'Pet QA',
+        description: 'Controleer grounding, zichtbare poten en kleurconsistentie los van kleding.',
+    },
+    headwear: {
+        title: 'Headwear QA',
+        description: 'Controleer cap- en beanie-combinaties op flattening, clipping en halo’s.',
+    },
+};
+
+const CARD_HEIGHT = 'h-[220px]';
+
+const PreviewCard = ({
+    preset,
+    selected,
+    onSelect,
+}: {
+    preset: PreviewPreset;
+    selected: boolean;
+    onSelect: () => void;
+}) => (
+    <button
+        type="button"
+        onClick={onSelect}
+        className={`group rounded-[1.75rem] p-3 text-left transition-all ${selected ? 'scale-[1.02]' : 'hover:-translate-y-1'}`}
+        style={{
+            backgroundColor: '#FFFFFF',
+            border: selected ? '3px solid #D97757' : '1px solid #E8E6DF',
+            boxShadow: selected ? '0 18px 36px -18px rgba(217,119,87,0.55)' : '0 10px 28px -20px rgba(26,26,25,0.28)',
+        }}
+    >
+        <div className={`${CARD_HEIGHT} rounded-[1.3rem] overflow-hidden`} style={{ backgroundColor: '#FAF9F0' }}>
+            <AvatarViewer config={preset.config} interactive={false} />
+        </div>
+        <div className="pt-3 px-1">
+            <div className="text-[11px] font-black uppercase tracking-[0.18em]" style={{ color: '#D97757' }}>
+                {SECTION_COPY[preset.category].title}
+            </div>
+            <div className="text-sm font-bold leading-tight mt-1" style={{ color: '#1A1A19' }}>
+                {preset.label}
+            </div>
+        </div>
+    </button>
+);
+
 const DevAvatarPreview: React.FC = () => {
-    const [selected, setSelected] = useState(0);
+    const [selectedKey, setSelectedKey] = useState(ALL_PRESETS[0]?.key ?? '');
+
+    const selectedPreset = useMemo(
+        () => ALL_PRESETS.find(preset => preset.key === selectedKey) ?? ALL_PRESETS[0],
+        [selectedKey]
+    );
+
+    const groupedPresets = useMemo(
+        () => ({
+            hair: HAIR_PRESETS,
+            pets: PET_PRESETS,
+            headwear: HEADWEAR_PRESETS,
+        }),
+        []
+    );
 
     return (
-        <div className="min-h-screen p-6" style={{ backgroundColor: '#FAF9F0', color: '#1A1A19' }}>
-            <h1 className="text-2xl font-bold mb-2 text-center" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Avatar 2D Preview</h1>
-            <p className="text-sm text-center mb-6" style={{ color: '#6B6B66' }}>DEV ONLY — verwijder voor productie</p>
-
-            {/* Full body grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-8">
-                {PRESETS.map((preset, i) => (
-                    <div
-                        key={i}
-                        className={`flex flex-col items-center gap-2 cursor-pointer transition-all ${selected === i ? 'scale-105' : 'opacity-70 hover:opacity-100'}`}
-                        onClick={() => setSelected(i)}
-                    >
-                        <div className="w-full aspect-[2/3] rounded-2xl overflow-hidden transition-all" style={{
-                            border: selected === i ? '4px solid #D97757' : '4px solid transparent',
-                            boxShadow: selected === i ? '0 10px 25px -5px rgba(217, 119, 87, 0.3)' : undefined
-                        }}>
-                            <AvatarViewer2D
-                                config={preset.config}
-                                variant={preset.label === 'Head Only' ? 'head' : 'full'}
-                                interactive={false}
-                            />
-                        </div>
-                        <span className="text-xs font-medium" style={{ color: '#3D3D38' }}>{preset.label}</span>
-                    </div>
-                ))}
-            </div>
-
-            {/* Large selected preview: 3D (left) + 2D (right) */}
-            <div className="grid grid-cols-2 gap-6 max-w-2xl mx-auto">
-                <div>
-                    <div className="h-[500px] rounded-3xl overflow-hidden shadow-2xl bg-[#FAF9F0]" style={{ border: '4px solid rgba(217, 119, 87, 0.3)' }}>
-                        <LazyAvatarViewer
-                            config={PRESETS[selected].config}
-                            variant={PRESETS[selected].label === 'Head Only' ? 'head' : 'full'}
-                            interactive={true}
-                            onPartClick={(part) => console.log('Clicked:', part)}
-                        />
-                    </div>
-                    <p className="text-center mt-3 font-bold" style={{ color: '#D97757' }}>3D Minecraft — {PRESETS[selected].label}</p>
+        <div className="min-h-screen p-6 md:p-8" style={{ backgroundColor: '#FAF9F0', color: '#1A1A19' }}>
+            <div className="max-w-7xl mx-auto space-y-8">
+                <div className="text-center space-y-2">
+                    <h1 className="text-3xl md:text-4xl font-bold" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
+                        Avatar 3D QA Preview
+                    </h1>
+                    <p className="text-sm md:text-base max-w-3xl mx-auto" style={{ color: '#6B6B66' }}>
+                        Dev-only route om alle kapsels, pets en headwear-combinaties visueel te controleren in de echte 3D renderer.
+                    </p>
                 </div>
-                <div>
-                    <div className="h-[500px] rounded-3xl overflow-hidden shadow-2xl" style={{ border: '4px solid #E8E6DF' }}>
-                        <AvatarViewer2D
-                            config={PRESETS[selected].config}
-                            variant={PRESETS[selected].label === 'Head Only' ? 'head' : 'full'}
-                            interactive={true}
-                            onPartClick={(part) => console.log('Clicked:', part)}
-                        />
+
+                <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1.4fr)_minmax(320px,0.9fr)] gap-8 items-start">
+                    <div className="space-y-8">
+                        {(Object.keys(groupedPresets) as Array<keyof typeof groupedPresets>).map(sectionKey => (
+                            <section key={sectionKey} className="space-y-4">
+                                <div>
+                                    <h2 className="text-2xl font-bold" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
+                                        {SECTION_COPY[sectionKey].title}
+                                    </h2>
+                                    <p className="text-sm mt-1" style={{ color: '#6B6B66' }}>
+                                        {SECTION_COPY[sectionKey].description}
+                                    </p>
+                                </div>
+
+                                <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+                                    {groupedPresets[sectionKey].map(preset => (
+                                        <PreviewCard
+                                            key={preset.key}
+                                            preset={preset}
+                                            selected={selectedPreset?.key === preset.key}
+                                            onSelect={() => setSelectedKey(preset.key)}
+                                        />
+                                    ))}
+                                </div>
+                            </section>
+                        ))}
                     </div>
-                    <p className="text-center mt-3 font-bold" style={{ color: '#6B6B66' }}>2D — {PRESETS[selected].label}</p>
+
+                    {selectedPreset && (
+                        <aside className="xl:sticky xl:top-6 rounded-[2rem] p-5 md:p-6" style={{ backgroundColor: '#FFFFFF', boxShadow: '0 18px 40px -24px rgba(26,26,25,0.35)' }}>
+                            <div className="space-y-2 mb-5">
+                                <div className="text-[11px] font-black uppercase tracking-[0.18em]" style={{ color: '#D97757' }}>
+                                    Focus Review
+                                </div>
+                                <h2 className="text-2xl font-bold leading-tight" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
+                                    {selectedPreset.label}
+                                </h2>
+                                <p className="text-sm" style={{ color: '#6B6B66' }}>
+                                    Vergelijk de live 3D-render met de 2D fallback om silhouetteproblemen sneller te spotten.
+                                </p>
+                            </div>
+
+                            <div className="space-y-5">
+                                <div>
+                                    <div className="text-xs font-black uppercase tracking-[0.16em] mb-2" style={{ color: '#D97757' }}>
+                                        3D Renderer
+                                    </div>
+                                    <div className="h-[420px] rounded-[1.5rem] overflow-hidden" style={{ backgroundColor: '#FAF9F0', border: '1px solid #E8E6DF' }}>
+                                        <AvatarViewer config={selectedPreset.config} interactive={true} />
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div className="text-xs font-black uppercase tracking-[0.16em] mb-2" style={{ color: '#6B6B66' }}>
+                                        2D Fallback
+                                    </div>
+                                    <div className="h-[360px] rounded-[1.5rem] overflow-hidden" style={{ backgroundColor: '#FAF9F0', border: '1px solid #E8E6DF' }}>
+                                        <AvatarViewer2D config={selectedPreset.config} interactive={false} />
+                                    </div>
+                                </div>
+                            </div>
+                        </aside>
+                    )}
                 </div>
             </div>
         </div>

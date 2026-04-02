@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Crown, ChevronRight, ChevronLeft, Sparkles, User, Lock } from 'lucide-react';
 import { LazyAvatarViewer } from './LazyAvatarViewer';
 import { AvatarConfig, DEFAULT_AVATAR_CONFIG } from '../types';
+import { AVATAR_PET_CATALOG, getAvatarHairOptionsForGender } from '../config/avatarCatalog';
 
 interface AvatarSetupProps {
     onComplete: (avatarConfig: AvatarConfig) => void;
@@ -17,28 +18,6 @@ const SKIN_COLORS = [
     { id: 'brown', value: '#a0522d', label: 'Bruin' },
     { id: 'dark', value: '#8d5524', label: 'Donker' },
     { id: 'ebony', value: '#614335', label: 'Ebben' },
-];
-
-const HAIR_STYLES_MALE = [
-    { value: 'short', label: 'Kort', locked: false },
-    { value: 'spiky', label: 'Stekeltjes', locked: false },
-    { value: 'messy', label: 'Wild', locked: false },
-    { value: 'fade', label: 'Opscheer', locked: true },
-    { value: 'curls', label: 'Krullen', locked: true },
-    { value: 'buzzcut', label: 'Buzz Cut', locked: true },
-    { value: 'mohawk', label: 'Mohawk', locked: true },
-    { value: 'afro', label: 'Afro', locked: true },
-];
-
-const HAIR_STYLES_FEMALE = [
-    { value: 'pigtails', label: 'Staartjes', locked: false },
-    { value: 'long', label: 'Lang', locked: false },
-    { value: 'bob', label: 'Boblijn', locked: false },
-    { value: 'ponytail', label: 'Paardenstaart', locked: false },
-    { value: 'braids', label: 'Vlechtjes', locked: true },
-    { value: 'bun', label: 'Knotje', locked: true },
-    { value: 'afro', label: 'Afro', locked: true },
-    { value: 'curls', label: 'Krullen', locked: true },
 ];
 
 const SHIRT_COLORS = [
@@ -114,13 +93,6 @@ const ACCESSORIES = [
     { value: 'sword', label: 'Zwaard', locked: true },
 ];
 
-const PETS = [
-    { value: 'none', label: 'Geen', emoji: '🚫', locked: false },
-    { value: 'pet_dog', label: 'Hond', emoji: '🐕', locked: false },
-    { value: 'pet_cat', label: 'Kat', emoji: '🐱', locked: false },
-    { value: 'pet_robo', label: 'Robot', emoji: '🤖', locked: false },
-];
-
 // Poses removed — animations were inaccurate
 
 export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, initialConfig }) => {
@@ -152,7 +124,7 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
         }
     };
 
-    const hairStyles = config.gender === 'female' ? HAIR_STYLES_FEMALE : HAIR_STYLES_MALE;
+    const hairStyles = getAvatarHairOptionsForGender(config.gender);
 
     return (
         <div className="fixed inset-0 z-[200] overflow-hidden" style={{ backgroundColor: '#FAF9F0' }}>
@@ -471,7 +443,7 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
                                     <div>
                                         <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: '#6B6B66' }}>Huisdier</p>
                                         <div className="grid grid-cols-4 gap-2">
-                                            {PETS.map(pet => (
+                                            {AVATAR_PET_CATALOG.map(pet => (
                                                 <button
                                                     key={pet.value}
                                                     onClick={() => setConfig({ ...config, pet: pet.value as any })}

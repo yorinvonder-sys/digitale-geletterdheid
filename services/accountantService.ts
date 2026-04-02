@@ -8,7 +8,7 @@
  * - Instellingen (KvK, bedrijfsnaam, startersaftrek)
  */
 
-import { supabase, EDGE_FUNCTION_URL } from './supabase';
+import { supabase, EDGE_FUNCTION_URL, authenticatedFetch } from './supabase';
 
 // De nieuwe accountant-tabellen zitten nog niet in de auto-gegenereerde database.types.ts.
 // Na het uitvoeren van de migratie kunnen de types gegenereerd worden via:
@@ -508,9 +508,6 @@ export async function uploadAndScanReceipt(
     file: File,
     userId: string,
 ): Promise<ScannedReceiptData> {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session?.access_token) throw new Error('Authenticatie vereist.');
-
     // Converteer naar base64
     const arrayBuffer = await file.arrayBuffer();
     const uint8Array  = new Uint8Array(arrayBuffer);
@@ -523,11 +520,10 @@ export async function uploadAndScanReceipt(
     const mimeType    = file.type || 'image/jpeg';
 
     // Stuur naar Claude edge function (was Gemini, nu Claude Sonnet 4.6)
-    const response = await fetch(`${EDGE_FUNCTION_URL}/scanSubscriptionClaude`, {
+    const response = await authenticatedFetch(`${EDGE_FUNCTION_URL}/scanSubscriptionClaude`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${session.access_token}`,
         },
         body: JSON.stringify({ fileBase64: base64, mimeType, mode: 'receipt' }),
     });
@@ -545,9 +541,6 @@ export async function uploadAndScanReceipt(
 export async function scanSubscriptionScreenshot(
     file: File,
 ): Promise<ScannedSubscriptionData> {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session?.access_token) throw new Error('Authenticatie vereist.');
-
     const arrayBuffer = await file.arrayBuffer();
     const uint8Array  = new Uint8Array(arrayBuffer);
     let binary = '';
@@ -558,11 +551,10 @@ export async function scanSubscriptionScreenshot(
     const base64 = btoa(binary);
     const mimeType    = file.type || 'image/jpeg';
 
-    const response = await fetch(`${EDGE_FUNCTION_URL}/scanReceipt`, {
+    const response = await authenticatedFetch(`${EDGE_FUNCTION_URL}/scanReceipt`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${session.access_token}`,
         },
         body: JSON.stringify({ imageBase64: base64, mimeType, mode: 'subscription' }),
     });
@@ -583,9 +575,6 @@ export async function scanSubscriptionScreenshot(
 export async function scanSubscriptionWithClaude(
     file: File,
 ): Promise<ScannedSubscriptionData> {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session?.access_token) throw new Error('Authenticatie vereist.');
-
     const arrayBuffer = await file.arrayBuffer();
     const uint8Array  = new Uint8Array(arrayBuffer);
     let binary = '';
@@ -596,11 +585,10 @@ export async function scanSubscriptionWithClaude(
     const base64 = btoa(binary);
     const mimeType    = file.type || 'image/jpeg';
 
-    const response = await fetch(`${EDGE_FUNCTION_URL}/scanSubscriptionClaude`, {
+    const response = await authenticatedFetch(`${EDGE_FUNCTION_URL}/scanSubscriptionClaude`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${session.access_token}`,
         },
         body: JSON.stringify({ fileBase64: base64, mimeType }),
     });

@@ -13,6 +13,8 @@ import { SLO_KERNDOELEN, getKerndoelBadgeClasses, SloKerndoelCode } from '../con
 import { CURRICULUM, getYearConfig, getPeriodConfig } from '../config/curriculum';
 import { ROLES } from '../config/agents';
 import { getMissionMeta } from '../config/slo-kerndoelen-mapping';
+import { ContainerConfig } from '@/config/containerTypes';
+import { getContainerTheme, getAutoTheme } from '@/config/containerThemes';
 
 interface DashboardProps {
     onSelectModule: (moduleId: string, libraryItemData?: any) => void;
@@ -31,6 +33,7 @@ interface DashboardProps {
     stats?: UserStats;
     focusMode?: boolean;
     userRole?: 'student' | 'teacher' | 'admin'; // For teacher bypass of restrictions
+    containers?: ContainerConfig[];
 }
 
 interface Mission {
@@ -366,14 +369,19 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
     onGoHome,
     stats,
     focusMode = false,
-    userRole = 'student'
+    userRole = 'student',
+    containers
 }) => {
     // Curriculum-aware variabelen
     const currentYearGroup = activeYearGroup ?? 1;
     const periodNaming = schoolConfig?.periodNaming || CURRICULUM.defaultPeriodNaming;
+    const activeContainer = containers?.find(c => c.sortOrder === activeWeek);
+    const containerLabel = activeContainer?.label || `${periodNaming} ${activeWeek}`;
     const yearConfig = getYearConfig(currentYearGroup);
     const currentPeriodConfig = getPeriodConfig(currentYearGroup, activeWeek);
-    const periodTheme = PERIOD_THEME[activeWeek] || DEFAULT_PERIOD_THEME;
+    const periodTheme = containers?.length
+        ? getContainerTheme(containers.find(c => c.sortOrder === activeWeek)?.colorKey)
+        : (PERIOD_THEME[activeWeek] || DEFAULT_PERIOD_THEME);
     const periodLeerdoel = PERIOD_LEERDOELEN[`${currentYearGroup}-${activeWeek}`];
     const [showXPPopup, setShowXPPopup] = useState(false);
     const [showProfileMenu, setShowProfileMenu] = React.useState(false);
@@ -602,14 +610,18 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
         const isRightSwipe = distance < -minSwipeDistance;
 
         // Find next available week
-        const availableWeeks = [1, 2, 3, 4];
+        const availableWeeks = containers?.length
+            ? containers.map(c => c.sortOrder)
+            : [1, 2, 3, 4];
 
-        if (isLeftSwipe && activeWeek < 4) {
+        const maxWeek = containers?.length ? Math.max(...containers.map(c => c.sortOrder)) : 4;
+        if (isLeftSwipe && activeWeek < maxWeek) {
             // Swipe left = next week
             const nextWeek = availableWeeks.find(w => w > activeWeek);
             if (nextWeek) setActiveWeek(nextWeek);
         }
-        if (isRightSwipe && activeWeek > 1) {
+        const minWeek = containers?.length ? Math.min(...containers.map(c => c.sortOrder)) : 1;
+        if (isRightSwipe && activeWeek > minWeek) {
             // Swipe right = previous week
             const prevWeek = [...availableWeeks].reverse().find(w => w < activeWeek);
             if (prevWeek) setActiveWeek(prevWeek);

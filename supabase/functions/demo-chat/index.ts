@@ -207,6 +207,7 @@ Deno.serve(async (req: Request) => {
                 contents,
                 safetySettings,
                 systemInstruction: { parts: [{ text: DEMO_SYSTEM_INSTRUCTION }] },
+                generationConfig: { maxOutputTokens: 512 },
             }),
         });
 

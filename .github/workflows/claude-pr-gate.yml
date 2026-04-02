@@ -50,7 +50,20 @@ jobs:
         run: npx tsc --noEmit
 
       - name: Security audit
-        run: npm audit --audit-level=high
+        run: npm audit --audit-level=moderate
+
+      - name: Secret scanning (Gitleaks)
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: SAST scan (Semgrep)
+        uses: semgrep/semgrep-action@v1
+        with:
+          config: >-
+            p/owasp-top-ten
+            p/javascript
+            p/typescript
 
       - name: Production build
         run: npm run build:prod

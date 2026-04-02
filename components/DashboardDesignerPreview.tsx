@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { LayoutDashboard, BarChart2, TrendingUp, PieChart, Hash, GripVertical, Check } from 'lucide-react';
 
 type WidgetType = 'kpi' | 'bar' | 'line' | 'pie';
+type GridState = Array<string | null>;
 
 interface Widget {
     id: string;
@@ -33,6 +34,8 @@ const WIDGET_COLORS: Record<WidgetType, string> = {
     line: 'from-violet-500 to-violet-600',
     pie: 'from-amber-500 to-amber-600',
 };
+
+const DRAG_WIDGET_MIME = 'application/x-dashboard-widget';
 
 const MiniBarChart: React.FC = () => (
     <svg viewBox="0 0 80 40" className="w-full h-full">
@@ -73,31 +76,107 @@ const MiniPieChart: React.FC = () => (
 
 const DashboardDesignerPreview: React.FC = () => {
     const [widgets, setWidgets] = useState(INITIAL_WIDGETS);
-    const [grid, setGrid] = useState<(string | null)[]>([null, null, null, null, null, null]);
+    const [grid, setGrid] = useState<GridState>([null, null, null, null, null, null]);
+    const [draggedWidgetId, setDraggedWidgetId] = useState<string | null>(null);
+    const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
+    const [isPaletteDragOver, setIsPaletteDragOver] = useState(false);
 
     const placedCount = grid.filter(Boolean).length;
+    const availableWidgets = widgets.filter(w => !w.placed);
+
+    const syncGrid = (nextGrid: GridState) => {
+        const placedIds = new Set(nextGrid.filter((widgetId): widgetId is string => widgetId !== null));
+        setGrid(nextGrid);
+        setWidgets(prev => prev.map(widget => ({ ...widget, placed: placedIds.has(widget.id) })));
+    };
+
+    const moveWidgetToIndex = (widgetId: string, targetIndex: number) => {
+        const currentIndex = grid.indexOf(widgetId);
+
+        if (currentIndex === targetIndex) return;
+
+        const nextGrid = [...grid];
+        const displacedWidgetId = nextGrid[targetIndex];
+
+        if (currentIndex !== -1) {
+            nextGrid[currentIndex] = displacedWidgetId ?? null;
+        }
+
+        nextGrid[targetIndex] = widgetId;
+        syncGrid(nextGrid);
+    };
 
     const handlePlaceWidget = (widgetId: string) => {
         const firstEmpty = grid.indexOf(null);
         if (firstEmpty === -1) return;
-
-        setGrid(prev => {
-            const next = [...prev];
-            next[firstEmpty] = widgetId;
-            return next;
-        });
-        setWidgets(prev => prev.map(w => w.id === widgetId ? { ...w, placed: true } : w));
+        moveWidgetToIndex(widgetId, firstEmpty);
     };
 
     const handleRemoveFromGrid = (index: number) => {
         const widgetId = grid[index];
         if (!widgetId) return;
-        setGrid(prev => {
-            const next = [...prev];
-            next[index] = null;
-            return next;
-        });
-        setWidgets(prev => prev.map(w => w.id === widgetId ? { ...w, placed: false } : w));
+
+        const nextGrid = [...grid];
+        nextGrid[index] = null;
+        syncGrid(nextGrid);
+    };
+
+    const getDraggedWidgetId = (e: React.DragEvent) =>
+        e.dataTransfer.getData(DRAG_WIDGET_MIME) || e.dataTransfer.getData('text/plain');
+
+    const handleDragStart = (e: React.DragEvent, widgetId: string) => {
+        e.stopPropagation();
+        e.dataTransfer.setData('text/plain', widgetId);
+        e.dataTransfer.setData(DRAG_WIDGET_MIME, widgetId);
+        e.dataTransfer.effectAllowed = 'move';
+        setDraggedWidgetId(widgetId);
+    };
+
+    const handleDragEnd = () => {
+        setDraggedWidgetId(null);
+        setDragOverIndex(null);
+        setIsPaletteDragOver(false);
+    };
+
+    const handleSlotDragOver = (e: React.DragEvent, index: number) => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        if (dragOverIndex !== index) {
+            setDragOverIndex(index);
+        }
+    };
+
+    const handleSlotDrop = (e: React.DragEvent, index: number) => {
+        e.preventDefault();
+        const widgetId = getDraggedWidgetId(e);
+        setDragOverIndex(null);
+
+        if (!widgetId) return;
+
+        moveWidgetToIndex(widgetId, index);
+    };
+
+    const handlePaletteDragOver = (e: React.DragEvent) => {
+        if (!draggedWidgetId || !grid.includes(draggedWidgetId)) return;
+
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        setIsPaletteDragOver(true);
+    };
+
+    const handlePaletteDrop = (e: React.DragEvent) => {
+        e.preventDefault();
+        const widgetId = getDraggedWidgetId(e);
+        setIsPaletteDragOver(false);
+
+        if (!widgetId) return;
+
+        const currentIndex = grid.indexOf(widgetId);
+        if (currentIndex === -1) return;
+
+        const nextGrid = [...grid];
+        nextGrid[currentIndex] = null;
+        syncGrid(nextGrid);
     };
 
     const renderWidget = (widget: Widget, small?: boolean) => {
@@ -135,14 +214,25 @@ const DashboardDesignerPreview: React.FC = () => {
                     <div className="grid grid-cols-3 gap-2">
                         {grid.map((widgetId, i) => {
                             const widget = widgetId ? widgets.find(w => w.id === widgetId) : null;
+                            const isDragTarget = dragOverIndex === i && draggedWidgetId !== null;
                             return (
                                 <div
                                     key={i}
+                                    draggable={Boolean(widget)}
+                                    onDragStart={widget ? (e) => handleDragStart(e, widget.id) : undefined}
+                                    onDragEnd={widget ? handleDragEnd : undefined}
+                                    onDragOver={(e) => handleSlotDragOver(e, i)}
+                                    onDrop={(e) => handleSlotDrop(e, i)}
+                                    onDragEnter={() => setDragOverIndex(i)}
                                     onClick={() => widgetId && handleRemoveFromGrid(i)}
                                     className={`aspect-[4/3] rounded-lg flex items-center justify-center transition-all ${widget
-                                        ? 'bg-white border-2 border-blue-200 shadow-sm cursor-pointer hover:border-red-300 hover:bg-red-50/30 p-2'
+                                        ? 'bg-white border-2 border-blue-200 shadow-sm cursor-grab hover:border-red-300 hover:bg-red-50/30 p-2 active:cursor-grabbing'
                                         : 'bg-blue-50 border-2 border-dashed border-blue-200'
+                                    } ${isDragTarget
+                                        ? 'border-blue-400 bg-blue-100/70 ring-2 ring-blue-200'
+                                        : ''
                                     }`}
+                                    title={widget ? 'Klik om te verwijderen of sleep om te verplaatsen' : 'Sleep hierheen om te plaatsen'}
                                 >
                                     {widget ? (
                                         <div className="w-full h-full flex flex-col items-center justify-center">
@@ -161,14 +251,27 @@ const DashboardDesignerPreview: React.FC = () => {
                 </div>
 
                 {/* Widget palette */}
-                <div className="bg-white rounded-xl border border-blue-100 p-3 shadow-sm">
-                    <div className="text-[10px] font-bold text-slate-700 uppercase mb-2">Beschikbare widgets — klik om te plaatsen</div>
+                <div
+                    onDragOver={handlePaletteDragOver}
+                    onDrop={handlePaletteDrop}
+                    onDragLeave={() => setIsPaletteDragOver(false)}
+                    className={`bg-white rounded-xl border p-3 shadow-sm transition-all ${isPaletteDragOver
+                        ? 'border-blue-300 bg-blue-50/70 ring-2 ring-blue-100'
+                        : 'border-blue-100'
+                    }`}
+                >
+                    <div className="text-[10px] font-bold text-slate-700 uppercase mb-2">Beschikbare widgets — sleep of klik om te plaatsen</div>
                     <div className="grid grid-cols-2 gap-2">
-                        {widgets.filter(w => !w.placed).map((widget) => (
+                        {availableWidgets.map((widget) => (
                             <button
                                 key={widget.id}
+                                type="button"
+                                draggable
                                 onClick={() => handlePlaceWidget(widget.id)}
-                                className="flex items-center gap-2 px-3 py-2 rounded-lg bg-blue-50 hover:bg-blue-100 border border-blue-200 transition-all text-left group"
+                                onDragStart={(e) => handleDragStart(e, widget.id)}
+                                onDragEnd={handleDragEnd}
+                                className={`flex items-center gap-2 px-3 py-2 rounded-lg bg-blue-50 hover:bg-blue-100 border border-blue-200 transition-all text-left group cursor-grab active:cursor-grabbing ${draggedWidgetId === widget.id ? 'opacity-60 scale-[0.98]' : ''}`}
+                                title="Sleep naar een vak of klik om automatisch te plaatsen"
                             >
                                 <div className={`w-6 h-6 rounded bg-gradient-to-br ${WIDGET_COLORS[widget.type]} flex items-center justify-center text-white shrink-0`}>
                                     {WIDGET_ICONS[widget.type]}
@@ -177,11 +280,16 @@ const DashboardDesignerPreview: React.FC = () => {
                                     <div className="text-[11px] font-bold text-slate-700">{widget.label}</div>
                                     <div className="text-[9px] text-slate-400 capitalize">{widget.type === 'kpi' ? 'Getal-kaart' : widget.type === 'bar' ? 'Staafdiagram' : widget.type === 'line' ? 'Lijndiagram' : 'Cirkeldiagram'}</div>
                                 </div>
-                                <GripVertical size={12} className="text-slate-300 ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />
+                                <GripVertical size={12} className={`text-slate-300 ml-auto transition-opacity ${draggedWidgetId === widget.id ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`} />
                             </button>
                         ))}
                     </div>
-                    {widgets.filter(w => !w.placed).length === 0 && (
+                    {availableWidgets.length > 0 && (
+                        <p className="mt-2 text-[10px] text-slate-400">
+                            Sleep naar een vak. Sleep een geplaatste widget terug hierheen om hem weg te halen.
+                        </p>
+                    )}
+                    {availableWidgets.length === 0 && (
                         <div className="text-center py-3">
                             <Check size={20} className="mx-auto text-blue-500 mb-1" />
                             <span className="text-xs text-blue-600 font-bold">Alle widgets geplaatst!</span>

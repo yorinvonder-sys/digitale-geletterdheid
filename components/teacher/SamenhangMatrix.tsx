@@ -4,6 +4,7 @@ import { ChevronDown, Filter } from 'lucide-react';
 import { CURRICULUM } from '@/config/curriculum';
 import { KERNDOEL_MISSIONS } from '@/config/slo-kerndoelen-mapping';
 import { getBasisvaardighedenForMission } from '@/config/basisvaardigheden-mapping';
+import { useSchoolContainers } from '@/hooks/useSchoolContainers';
 import type { BasisvaardigheidTag } from '@/types/slo';
 
 // Data wordt geleverd door config/basisvaardigheden-mapping.ts
@@ -14,6 +15,7 @@ import type { BasisvaardigheidTag } from '@/types/slo';
 
 interface SamenhangMatrixProps {
     selectedYear?: number;
+    schoolId?: string;
 }
 
 // ============================================================================
@@ -52,11 +54,15 @@ function getIntensityClass(count: number): string {
 // Component
 // ============================================================================
 
-export const SamenhangMatrix: React.FC<SamenhangMatrixProps> = ({ selectedYear }) => {
+export const SamenhangMatrix: React.FC<SamenhangMatrixProps> = ({ selectedYear, schoolId }) => {
     const [yearFilter, setYearFilter] = useState<number | 'all'>(selectedYear ?? 'all');
     const [expandedCell, setExpandedCell] = useState<string | null>(null);
 
-    // Bouw de matrix data op basis van curriculum periodes
+    // Haal school-specifieke containers op (als schoolId beschikbaar is)
+    const activeYear = yearFilter === 'all' ? 1 : yearFilter;
+    const { containers } = useSchoolContainers(schoolId, activeYear);
+
+    // Bouw de matrix data op basis van containers (custom) of curriculum periodes (default)
     const matrixData = useMemo(() => {
         const yearGroups = yearFilter === 'all'
             ? Object.keys(CURRICULUM.yearGroups).map(Number)
@@ -72,63 +78,104 @@ export const SamenhangMatrix: React.FC<SamenhangMatrixProps> = ({ selectedYear }
         }[] = [];
 
         for (const yg of yearGroups) {
-            const yearConfig = CURRICULUM.yearGroups[yg];
-            if (!yearConfig) continue;
+            // Gebruik containers als beschikbaar voor het actieve leerjaar
+            const useContainers = containers?.length && yg === activeYear;
 
-            for (const [periodStr, periodConfig] of Object.entries(yearConfig.periods)) {
-                const period = Number(periodStr);
-                const allMissionIds = [
-                    ...periodConfig.missions,
-                    ...(periodConfig.reviewMissions || []),
-                ];
+            if (useContainers) {
+                for (const container of containers) {
+                    const allMissionIds = container.missions.map(m => m.missionId);
 
-                const cells: Record<Categorie, CellData> = {
-                    taal: { count: 0, details: [] },
-                    rekenen: { count: 0, details: [] },
-                    burgerschap: { count: 0, details: [] },
-                };
+                    const cells: Record<Categorie, CellData> = {
+                        taal: { count: 0, details: [] },
+                        rekenen: { count: 0, details: [] },
+                        burgerschap: { count: 0, details: [] },
+                    };
 
-                for (const missionId of allMissionIds) {
-                    const tags = getBasisvaardighedenForMission(missionId);
-                    if (tags.length === 0) continue;
+                    for (const missionId of allMissionIds) {
+                        const tags = getBasisvaardighedenForMission(missionId);
+                        if (tags.length === 0) continue;
 
-                    // Groepeer tags per categorie
-                    const tagsByCategorie: Partial<Record<Categorie, BasisvaardigheidTag[]>> = {};
-                    for (const tag of tags) {
-                        if (!tagsByCategorie[tag.categorie]) tagsByCategorie[tag.categorie] = [];
-                        tagsByCategorie[tag.categorie]!.push(tag);
-                    }
+                        const tagsByCategorie: Partial<Record<Categorie, BasisvaardigheidTag[]>> = {};
+                        for (const tag of tags) {
+                            if (!tagsByCategorie[tag.categorie]) tagsByCategorie[tag.categorie] = [];
+                            tagsByCategorie[tag.categorie]!.push(tag);
+                        }
 
-                    // Zoek missie-titel
-                    const missionMeta = KERNDOEL_MISSIONS.find(m => m.id === missionId);
-                    const missionTitle = missionMeta?.title || missionId;
+                        const missionMeta = KERNDOEL_MISSIONS.find(m => m.id === missionId);
+                        const missionTitle = missionMeta?.title || missionId;
 
-                    for (const cat of CATEGORIEEN) {
-                        const catTags = tagsByCategorie[cat];
-                        if (catTags && catTags.length > 0) {
-                            cells[cat].count += catTags.length;
-                            cells[cat].details.push({
-                                missionId,
-                                missionTitle,
-                                tags: catTags,
-                            });
+                        for (const cat of CATEGORIEEN) {
+                            const catTags = tagsByCategorie[cat];
+                            if (catTags && catTags.length > 0) {
+                                cells[cat].count += catTags.length;
+                                cells[cat].details.push({ missionId, missionTitle, tags: catTags });
+                            }
                         }
                     }
-                }
 
-                rows.push({
-                    key: `j${yg}-p${period}`,
-                    label: yearFilter === 'all' ? `J${yg} P${period}` : `Periode ${period}`,
-                    sublabel: periodConfig.title,
-                    yearGroup: yg,
-                    period,
-                    cells,
-                });
+                    rows.push({
+                        key: `j${yg}-c${container.sortOrder}`,
+                        label: yearFilter === 'all' ? `J${yg} ${container.label}` : container.label,
+                        sublabel: container.subtitle || '',
+                        yearGroup: yg,
+                        period: container.sortOrder,
+                        cells,
+                    });
+                }
+            } else {
+                // Fallback: standaard CURRICULUM periodes
+                const yearConfig = CURRICULUM.yearGroups[yg];
+                if (!yearConfig) continue;
+
+                for (const [periodStr, periodConfig] of Object.entries(yearConfig.periods)) {
+                    const period = Number(periodStr);
+                    const allMissionIds = [
+                        ...periodConfig.missions,
+                        ...(periodConfig.reviewMissions || []),
+                    ];
+
+                    const cells: Record<Categorie, CellData> = {
+                        taal: { count: 0, details: [] },
+                        rekenen: { count: 0, details: [] },
+                        burgerschap: { count: 0, details: [] },
+                    };
+
+                    for (const missionId of allMissionIds) {
+                        const tags = getBasisvaardighedenForMission(missionId);
+                        if (tags.length === 0) continue;
+
+                        const tagsByCategorie: Partial<Record<Categorie, BasisvaardigheidTag[]>> = {};
+                        for (const tag of tags) {
+                            if (!tagsByCategorie[tag.categorie]) tagsByCategorie[tag.categorie] = [];
+                            tagsByCategorie[tag.categorie]!.push(tag);
+                        }
+
+                        const missionMeta = KERNDOEL_MISSIONS.find(m => m.id === missionId);
+                        const missionTitle = missionMeta?.title || missionId;
+
+                        for (const cat of CATEGORIEEN) {
+                            const catTags = tagsByCategorie[cat];
+                            if (catTags && catTags.length > 0) {
+                                cells[cat].count += catTags.length;
+                                cells[cat].details.push({ missionId, missionTitle, tags: catTags });
+                            }
+                        }
+                    }
+
+                    rows.push({
+                        key: `j${yg}-p${period}`,
+                        label: yearFilter === 'all' ? `J${yg} P${period}` : `Periode ${period}`,
+                        sublabel: periodConfig.title,
+                        yearGroup: yg,
+                        period,
+                        cells,
+                    });
+                }
             }
         }
 
         return rows;
-    }, [yearFilter]);
+    }, [yearFilter, containers, activeYear]);
 
     // Samenvatting per categorie
     const summary = useMemo(() => {

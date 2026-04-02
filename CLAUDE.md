@@ -31,6 +31,7 @@
 - When exploring, researching, or fixing multiple files: spin up parallel agents.
 - Background agents for long-running tasks (builds, audits, large searches).
 - Default language: Dutch (Nederlands), unless context is English code/docs.
+- **Model voor implementatie-agents: altijd Sonnet 4.6 (`model: "sonnet"`)** — alle agents die na de planningsfase worden ingezet (code schrijven, configs genereren, bestanden aanmaken) moeten expliciet `model: "sonnet"` meekrijgen. Opus 4.6 is alleen voor de hoofdconversatie (planning, review, beslissingen). Vermeld altijd het model bij het spawnen van agents.
 
 ## Autonome Scoping — VERPLICHT
 

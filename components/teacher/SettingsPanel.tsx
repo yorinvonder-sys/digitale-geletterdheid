@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Shield, Target, Lock, Crown, Zap, Users } from 'lucide-react';
+import { Shield, Target, Lock, Crown, Zap, Users, Layout } from 'lucide-react';
 import { getMissionsForYear } from '../../config/missions';
 import { TeacherGameToggle } from '../games/TeacherGameToggle';
 import { ClassroomConfig } from '../../types';
@@ -14,9 +14,10 @@ interface SettingsPanelProps {
     yearGroup?: number;
     classroomConfig: ClassroomConfig | null;
     onUpdateConfig: (update: Partial<ClassroomConfig>) => void;
+    onOpenSchedulingConfig?: () => void;
 }
 
-export const SettingsPanel: React.FC<SettingsPanelProps> = ({ classFilter, onClassFilterChange, availableClasses, enabledMissions, onToggleMission, onTestGame, yearGroup = 1, classroomConfig, onUpdateConfig }) => {
+export const SettingsPanel: React.FC<SettingsPanelProps> = ({ classFilter, onClassFilterChange, availableClasses, enabledMissions, onToggleMission, onTestGame, yearGroup = 1, classroomConfig, onUpdateConfig, onOpenSchedulingConfig }) => {
     const yearMissions = useMemo(() => getMissionsForYear(yearGroup), [yearGroup]);
     return (
         <div className="space-y-6">
@@ -128,6 +129,25 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({ classFilter, onCla
                     </div>
                 </div>
             </div>
+
+            {onOpenSchedulingConfig && (
+                <div className="mt-8 bg-white rounded-[2rem] shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden p-6">
+                    <h3 className="text-xs font-black text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2">
+                        <Layout size={14} />
+                        Leerlijn Configuratie
+                    </h3>
+                    <p className="text-sm text-slate-500 mb-4">
+                        Bepaal hoe missies worden ingedeeld: periodes, projectweken, weeklessen of een eigen structuur.
+                    </p>
+                    <button
+                        onClick={onOpenSchedulingConfig}
+                        className="px-6 py-3 bg-indigo-600 text-white font-bold text-sm rounded-xl hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-200 flex items-center gap-2"
+                    >
+                        <Layout size={16} />
+                        Leerlijn Inrichten
+                    </button>
+                </div>
+            )}
 
             <div className="mt-8">
                 <TeacherGameToggle onTestGame={onTestGame} yearGroup={yearGroup} />

@@ -1,6 +1,11 @@
-import React, { useState } from 'react';
-import { ArrowLeft, Trophy, ChevronRight, ThumbsUp, ThumbsDown, Scale, Sparkles, Pause } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { ArrowLeft, Trophy, ChevronRight, ThumbsUp, ThumbsDown, Sparkles, Pause } from 'lucide-react';
 import { useMissionAutoSave } from '@/hooks/useMissionAutoSave';
+import {
+    type DataVoorDataRoundStat,
+    getDataVoorDataRoundStats,
+    saveDataVoorDataAnswers,
+} from '@/services/dataVoorDataService';
 
 interface Props {
     onBack: () => void;
@@ -22,7 +27,6 @@ interface AuctionRound {
     dataAsked: string[];
     privacyRisk: 'low' | 'medium' | 'high' | 'extreme';
     explanation: string;
-    avgStat: number; // percentage of people who accept
 }
 
 const ROUNDS: AuctionRound[] = [
@@ -30,36 +34,32 @@ const ROUNDS: AuctionRound[] = [
         emoji: '🎵', service: 'Gratis muziek streamen', benefit: 'Onbeperkt muziek luisteren zonder reclame',
         dataAsked: ['Luistergeschiedenis', 'Leeftijd'],
         privacyRisk: 'low', explanation: 'Luistergeschiedenis delen is relatief onschuldig. Spotify & Apple Music doen dit al. Risico: je profiel wordt gebruikt voor gerichte reclame.',
-        avgStat: 85
     },
     {
         emoji: '🎮', service: 'Premium game account', benefit: 'Alle DLCs, skins en battle passes — gratis',
         dataAsked: ['Speeltijd per dag', 'Vriendenlijst', 'Chatberichten'],
         privacyRisk: 'medium', explanation: 'Chatberichten delen gaat ver! Je privégesprekken kunnen worden geanalyseerd. Speeltijd is minder gevoelig, maar kan gebruikt worden om "verslavingsprofielen" te maken.',
-        avgStat: 62
     },
     {
         emoji: '📱', service: 'Nieuwste iPhone gratis', benefit: 'Elk jaar het nieuwste model, helemaal gratis',
         dataAsked: ['Locatie 24/7', 'Alle foto\'s', 'Contactenlijst', 'Browsegeschiedenis'],
         privacyRisk: 'high', explanation: 'Dit is een ENORME hoeveelheid data. Je locatie 24/7 + foto\'s + contacten = je hele leven is zichtbaar. Bedrijven kunnen weten waar je bent, met wie, en wat je doet.',
-        avgStat: 38
     },
     {
         emoji: '💰', service: '€500 per maand', benefit: 'Elke maand €500 op je rekening — geen vragen',
         dataAsked: ['BSN-nummer', 'Medische gegevens', 'Bankgegevens', 'Biometrische data (vingerafdruk)'],
         privacyRisk: 'extreme', explanation: 'BSN + medische data + biometrisch = je complete identiteit. Dit kan leiden tot identiteitsfraude, verzekeringsdiscriminatie en onherstelbare schade. Biometrische data kun je NIET veranderen als het lekt!',
-        avgStat: 12
     },
     {
         emoji: '🏫', service: 'Altijd een 8+ op school', benefit: 'AI maakt je huiswerk en past je cijfers aan',
         dataAsked: ['Schoolresultaten', 'Leerlingdossier', 'Gedragsrapporten', 'Camera in klaslokaal'],
         privacyRisk: 'extreme', explanation: 'Afgezien van de ethische problemen (fraude!): een camera in het klaslokaal + je complete dossier = totale surveillance. En als dit lekt, is je schoolcarrière voorgoed beschadigd.',
-        avgStat: 8
     }
 ];
 
 const RISK_COLORS = { low: 'bg-[#10B981]', medium: 'bg-[#D97757]', high: 'bg-red-500', extreme: 'bg-red-700' };
 const RISK_LABELS = { low: 'Laag risico', medium: 'Gemiddeld risico', high: 'Hoog risico', extreme: 'Extreem risico' };
+const SCOPE_LABELS = { class: 'jouw klas', school: 'jouw school' } as const;
 
 export const DataVoorDataMission: React.FC<Props> = ({ onBack, onComplete }) => {
     const { state: saved, setState: setSaved, clearSave } = useMissionAutoSave<DataVoorDataState>(
@@ -82,12 +82,59 @@ export const DataVoorDataMission: React.FC<Props> = ({ onBack, onComplete }) => 
     // Transient UI state - niet opgeslagen
     const [showExplanation, setShowExplanation] = useState(false);
     const [hasChosen, setHasChosen] = useState(false);
+    const [roundStats, setRoundStats] = useState<Record<number, DataVoorDataRoundStat>>({});
+    const [hasLoadedStats, setHasLoadedStats] = useState(false);
+
+    useEffect(() => {
+        let cancelled = false;
+
+        const loadStats = async () => {
+            const stats = await getDataVoorDataRoundStats();
+            if (cancelled) return;
+            setRoundStats(stats);
+            setHasLoadedStats(true);
+        };
+
+        void loadStats();
+
+        return () => {
+            cancelled = true;
+        };
+    }, []);
+
+    const refreshRoundStats = async () => {
+        const stats = await getDataVoorDataRoundStats();
+        setRoundStats(stats);
+        setHasLoadedStats(true);
+    };
+
+    const persistAnswers = async (nextChoices: ('deal' | 'no-deal')[]) => {
+        await saveDataVoorDataAnswers(nextChoices, nextChoices.length === ROUNDS.length);
+        await refreshRoundStats();
+    };
+
+    const renderBackButton = (containerClassName = 'max-w-lg mx-auto mb-6') => (
+        <div className={containerClassName}>
+            <button
+                onClick={onBack}
+                className="flex items-center gap-2 text-[#6B6B66] hover:text-[#1A1A19] transition-all duration-300"
+                aria-label="Terug naar dashboard"
+            >
+                <ArrowLeft size={18} />
+                <span className="text-sm font-bold" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                    Terug naar dashboard
+                </span>
+            </button>
+        </div>
+    );
 
     const handleChoice = (choice: 'deal' | 'no-deal') => {
         if (hasChosen) return;
+        const nextChoices = [...choices, choice];
         setHasChosen(true);
-        setChoices(prev => [...prev, choice]);
+        setChoices(nextChoices);
         setShowExplanation(true);
+        void persistAnswers(nextChoices);
     };
 
     const nextRound = () => {
@@ -121,16 +168,29 @@ export const DataVoorDataMission: React.FC<Props> = ({ onBack, onComplete }) => 
         return { emoji: '💸', title: 'Data Verkoper', color: 'from-[#D97757] to-[#C46849]' };
     };
 
+    const getRoundStatText = (roundIndex: number) => {
+        const stat = roundStats[roundIndex];
+        if (!hasLoadedStats) return 'Anonieme statistieken laden...';
+        if (!stat) return 'Nog niet genoeg anonieme antwoorden';
+        return `${stat.dealPercentage}% DEAL (${SCOPE_LABELS[stat.scope]})`;
+    };
+
     if (phase === 'intro') {
         return (
             <div className="min-h-screen bg-[#FAF9F0] text-[#1A1A19] overflow-y-auto p-4 pb-safe">
-                <button onClick={onBack} className="flex items-center gap-2 text-[#6B6B66] hover:text-[#1A1A19] transition-all duration-300 mb-6"><ArrowLeft size={18} /> <span className="text-sm font-bold" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Terug</span></button>
+                {renderBackButton()}
                 <div className="max-w-lg mx-auto text-center space-y-6">
                     <div className="w-20 h-20 bg-[#D97757]/10 rounded-3xl flex items-center justify-center mx-auto border border-[#D97757]/20 animate-bounce"><span className="text-4xl">💰</span></div>
                     <h1 className="text-3xl font-black" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Data voor Data</h1>
                     <p className="text-[#3D3D38] text-sm leading-relaxed max-w-sm mx-auto" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                         Hoeveel van je persoonlijke data zou jij inruilen voor gratis diensten? In deze veiling bepaal jij je prijs — maar elke <span className="text-[#D97757] font-bold">deal heeft een keerzijde</span>.
                     </p>
+                    <div className="bg-white border border-[#E8E6DF] rounded-2xl p-4 max-w-sm mx-auto">
+                        <p className="text-xs text-[#3D3D38]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                            Je vergelijkt je keuzes met <span className="font-bold text-[#1A1A19]">echte, anonieme leerlingantwoorden</span>.
+                            We tonen alleen percentages als er genoeg antwoorden zijn om iedereen anoniem te houden.
+                        </p>
+                    </div>
                     <div className="bg-white border border-[#E8E6DF] rounded-2xl p-4 max-w-xs mx-auto">
                         <div className="flex items-center justify-around">
                             <div className="text-center">
@@ -144,7 +204,7 @@ export const DataVoorDataMission: React.FC<Props> = ({ onBack, onComplete }) => 
                             </div>
                         </div>
                     </div>
-                    <p className="text-[#6B6B66] text-xs" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>5 rondes -- vergelijk je keuzes met anderen</p>
+                    <p className="text-[#6B6B66] text-xs" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>5 rondes -- vergelijk je keuzes met anonieme leerlingdata</p>
                     <button onClick={() => setPhase('auction')} className="px-8 py-4 bg-[#D97757] hover:bg-[#C46849] text-white rounded-full font-black text-lg transition-all duration-300 active:scale-95 shadow-xl shadow-[#D97757]/30 focus-visible:ring-2 focus-visible:ring-[#D97757]">Start de veiling →</button>
                 </div>
             </div>
@@ -155,6 +215,7 @@ export const DataVoorDataMission: React.FC<Props> = ({ onBack, onComplete }) => 
         const dealCount = choices.filter(c => c === 'deal').length;
         return (
             <div className="min-h-screen bg-[#FAF9F0] text-[#1A1A19] overflow-y-auto p-4 pb-safe">
+                {renderBackButton()}
                 <div className="max-w-lg mx-auto space-y-6">
                     <div className="text-center space-y-4">
                         <div className="w-16 h-16 bg-[#8B6F9E]/10 rounded-2xl flex items-center justify-center mx-auto border border-[#8B6F9E]/20">
@@ -214,9 +275,11 @@ export const DataVoorDataMission: React.FC<Props> = ({ onBack, onComplete }) => 
 
     if (phase === 'auction') {
         const round = ROUNDS[currentRound];
+        const currentStat = roundStats[currentRound];
         return (
             <div className="min-h-screen bg-[#FAF9F0] text-[#1A1A19] overflow-y-auto p-4 pb-safe">
                 <div className="max-w-lg mx-auto">
+                    {renderBackButton('mb-4')}
                     <div className="flex items-center justify-between mb-6">
                         <span className="text-[10px] font-black text-[#6B6B66] uppercase tracking-widest" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Ronde {currentRound + 1}/{ROUNDS.length}</span>
                         <div className="flex gap-1.5">{ROUNDS.map((_, i) => (<div key={i} className={`w-8 h-1.5 rounded-full transition-all duration-300 ${i < currentRound ? (choices[i] === 'deal' ? 'bg-[#10B981]' : 'bg-[#D97757]') : i === currentRound ? 'bg-gradient-to-r from-[#D97757] to-[#C46849]' : 'bg-[#E8E6DF]'}`} />))}</div>
@@ -259,13 +322,26 @@ export const DataVoorDataMission: React.FC<Props> = ({ onBack, onComplete }) => 
                             <div className="bg-[#D97757]/5 border border-[#D97757]/20 rounded-2xl p-4">
                                 <div className="flex items-start gap-2"><Sparkles size={16} className="text-[#D97757] mt-0.5 flex-shrink-0" /><p className="text-sm text-[#3D3D38]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{round.explanation}</p></div>
                             </div>
-                            <div className="bg-white rounded-2xl border border-[#E8E6DF] p-3 flex items-center justify-between">
-                                <span className="text-xs text-[#6B6B66]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Anderen die DEAL kozen:</span>
-                                <div className="flex items-center gap-2">
-                                    <div className="w-24 h-2 bg-[#F0EEE8] rounded-full overflow-hidden"><div className="h-full bg-gradient-to-r from-[#D97757] to-[#C46849] rounded-full" style={{ width: `${round.avgStat}%` }} /></div>
-                                    <span className="text-xs font-black text-[#D97757]">{round.avgStat}%</span>
+                            {currentStat ? (
+                                <div className="bg-white rounded-2xl border border-[#E8E6DF] p-3 flex items-center justify-between gap-3">
+                                    <div>
+                                        <span className="text-xs text-[#6B6B66]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Anonieme antwoorden uit {SCOPE_LABELS[currentStat.scope]}:</span>
+                                        <p className="text-[10px] text-[#6B6B66] mt-1" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Gebaseerd op echte leerlingkeuzes</p>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-24 h-2 bg-[#F0EEE8] rounded-full overflow-hidden"><div className="h-full bg-gradient-to-r from-[#D97757] to-[#C46849] rounded-full" style={{ width: `${currentStat.dealPercentage}%` }} /></div>
+                                        <span className="text-xs font-black text-[#D97757]">{currentStat.dealPercentage}%</span>
+                                    </div>
                                 </div>
-                            </div>
+                            ) : (
+                                <div className="bg-white rounded-2xl border border-[#E8E6DF] p-4">
+                                    <p className="text-xs text-[#6B6B66]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                        {hasLoadedStats
+                                            ? 'Nog te weinig anonieme antwoorden van leerlingen om dit percentage veilig te tonen.'
+                                            : 'Anonieme leerlingstatistieken worden geladen...'}
+                                    </p>
+                                </div>
+                            )}
                             <button onClick={nextRound} className="w-full py-3 bg-[#D97757] hover:bg-[#C46849] text-white rounded-full font-black text-sm flex items-center justify-center gap-2 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#D97757]">
                                 {currentRound < ROUNDS.length - 1 ? <>Volgende ronde <ChevronRight size={16} /></> : <>Bekijk resultaat <Trophy size={16} /></>}
                             </button>
@@ -282,6 +358,7 @@ export const DataVoorDataMission: React.FC<Props> = ({ onBack, onComplete }) => 
         <div className="min-h-screen bg-[#FAF9F0] text-[#1A1A19] overflow-y-auto">
             <div className="min-h-full flex items-center justify-center p-4 pb-safe">
             <div className="max-w-sm w-full text-center space-y-6">
+                {renderBackButton('max-w-sm w-full mb-0')}
                 <div className={`w-24 h-24 mx-auto bg-gradient-to-br ${badge.color} rounded-3xl flex items-center justify-center shadow-2xl`}><span className="text-5xl">{badge.emoji}</span></div>
                 <h1 className="text-2xl font-black" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>{badge.title}</h1>
                 <p className="text-[#6B6B66] text-sm" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{dealCount}x DEAL — {ROUNDS.length - dealCount}x NO DEAL</p>
@@ -290,13 +367,13 @@ export const DataVoorDataMission: React.FC<Props> = ({ onBack, onComplete }) => 
                     <p className="text-[#6B6B66] text-xs mt-1" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Privacy Score</p>
                 </div>
                 <div className="bg-white rounded-2xl p-4 text-left space-y-3 border border-[#E8E6DF]">
-                    <p className="text-xs font-bold text-[#3D3D38]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Jouw keuzes vs. het gemiddelde:</p>
+                    <p className="text-xs font-bold text-[#3D3D38]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Jouw keuzes vs. anonieme leerlingantwoorden:</p>
                     {ROUNDS.map((r, i) => (
                         <div key={i} className="flex items-center justify-between">
                             <span className="text-xs text-[#6B6B66]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{r.emoji} {r.service.split(' ').slice(0, 2).join(' ')}</span>
                             <div className="flex items-center gap-2">
                                 <span className={`text-[10px] font-black px-2 py-0.5 rounded-full inline-flex border ${choices[i] === 'deal' ? 'bg-[#10B981]/10 text-[#10B981] border-[#10B981]/20' : 'bg-[#D97757]/10 text-[#D97757] border-[#D97757]/20'}`}>{choices[i] === 'deal' ? 'DEAL' : 'NO DEAL'}</span>
-                                <span className="text-[10px] text-[#6B6B66]">({r.avgStat}% deal)</span>
+                                <span className="text-[10px] text-[#6B6B66]">{getRoundStatText(i)}</span>
                             </div>
                         </div>
                     ))}

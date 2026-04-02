@@ -16,6 +16,7 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { zipSync, strToU8 } from "https://esm.sh/fflate@0.8.2";
 import { buildCorsHeaders, rejectDisallowedBrowserRequest } from "../_shared/cors.ts";
+import { checkDurableRateLimit, rateLimitResponse } from "../_shared/rateLimiter.ts";
 import {
     getValidAccessToken,
     ensureDriveFolder,
@@ -91,6 +92,16 @@ Deno.serve(async (req: Request) => {
             return jsonResponse({ error: "Geen toegang." }, 403, corsHeaders);
         }
         targetUserIds = [user.id];
+
+        // Rate limit: 5 backup requests per hour per user (manual mode only)
+        const rateCheck = await checkDurableRateLimit(
+            `gdrive-backup:${user.id}`,
+            { maxRequests: 5, windowMs: 60 * 60 * 1000 },
+            authHeader,
+        );
+        if (!rateCheck.allowed) {
+            return jsonResponse({ error: "Te veel backup-verzoeken. Wacht even." }, 429, corsHeaders);
+        }
     }
 
     // -----------------------------------------------------------------------

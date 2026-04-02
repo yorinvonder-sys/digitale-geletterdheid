@@ -53,6 +53,7 @@ export const KERNDOEL_MISSIONS: KerndoelMissionMeta[] = [
   { id: 'website-bouwer', title: 'Website Bouwer', week: 2, yearGroup: 1, sloKerndoelen: ['22B', '22A'], sloVsoKerndoelen: ['19A'] },
 
   { id: 'schermtijd-coach', title: 'Schermtijd Coach', week: 2, yearGroup: 1, sloKerndoelen: ['23B', '21D'] },                                                    // digitaal welzijn + AI-bewustzijn (hoe apps je sturen)
+  { id: 'notificatie-ninja', title: 'Notificatie Ninja', week: 2, yearGroup: 1, sloKerndoelen: ['23B', '21B'], sloVsoKerndoelen: ['20A', '18B'] },             // dark patterns in notificaties = welzijn + mediawijsheid
 
   // Periode 2 review
   { id: 'review-week-2', title: 'De Code-Criticus', week: 3, yearGroup: 1, sloKerndoelen: ['21D', '22B'], sloVsoKerndoelen: ['18C'] },                        // 21B→22B: review bevat code-bugs herkennen
@@ -73,6 +74,7 @@ export const KERNDOEL_MISSIONS: KerndoelMissionMeta[] = [
   { id: 'datalekken-rampenplan', title: 'Datalekken Rampenplan', week: 3, yearGroup: 1, sloKerndoelen: ['23A', '21A'], sloVsoKerndoelen: ['20A', '18A'] },      // -23B,-23C,+21A: security incident = veiligheid + systeemdenken
   { id: 'data-voor-data', title: 'Data voor Data', week: 3, yearGroup: 1, sloKerndoelen: ['23A', '23C'], sloVsoKerndoelen: ['20A', '20B'] },                   // 23B→23A: data ruilen voor diensten = privacy + maatschappij
   { id: 'data-speurder', title: 'Data Speurder', week: 3, yearGroup: 1, sloKerndoelen: ['21C'], sloVsoKerndoelen: ['18B'] },                                   // -21B: puur data verzamelen en analyseren
+  { id: 'digitale-balans-coach', title: 'Digitale Balans Coach', week: 3, yearGroup: 1, sloKerndoelen: ['23B', '23A'], sloVsoKerndoelen: ['20A', '20B'] },     // waarden-gebaseerde zelfregulatie + privacy-bewustzijn
 
   // Assessment P3
   { id: 'assessment-j1-p3', title: 'Nulmeting Periode 3', week: 3, yearGroup: 1, sloKerndoelen: ['23A', '23B', '23C', '21B', '21C'] },
@@ -126,6 +128,7 @@ export const KERNDOEL_MISSIONS: KerndoelMissionMeta[] = [
   { id: 'brand-builder', title: 'Brand Builder', week: 3, yearGroup: 2, sloKerndoelen: ['22A'] },                                                             // -21B: merkidentiteit = product, geen mediawijsheid
   { id: 'video-editor', title: 'Video Editor', week: 3, yearGroup: 2, sloKerndoelen: ['22A', '21B'] },
   { id: 'media-review', title: 'Media Review', week: 3, yearGroup: 2, sloKerndoelen: ['22A', '21B', '23B'] },
+  { id: 'online-helden', title: 'Online Helden & Helpers', week: 3, yearGroup: 2, sloKerndoelen: ['23B', '23C'], sloVsoKerndoelen: ['20A', '20B'] },           // cyberpesten + bijstander-training = welzijn + maatschappij
 
   // Assessment P3
   { id: 'assessment-j2-p3', title: 'Nulmeting Periode 3', week: 3, yearGroup: 2, sloKerndoelen: ['22A', '21B', '23B'] },
@@ -174,6 +177,7 @@ export const KERNDOEL_MISSIONS: KerndoelMissionMeta[] = [
   { id: 'digital-divide-researcher', title: 'Digital Divide Researcher', week: 3, yearGroup: 3, sloKerndoelen: ['23C', '21B'] },                                // 23B→21B: onderzoek + bronnen evalueren
   { id: 'tech-impact-analyst', title: 'Tech Impact Analyst', week: 3, yearGroup: 3, sloKerndoelen: ['23C', '21D'] },
   { id: 'impact-review', title: 'Impact Review', week: 3, yearGroup: 3, sloKerndoelen: ['23C'] },                                                              // -23B: review = puur maatschappij
+  { id: 'welzijnsonderzoeker', title: 'Welzijnsonderzoeker', week: 3, yearGroup: 3, sloKerndoelen: ['23B', '21C', '23C'] },                                    // welzijnsonderzoek via data-analyse + maatschappij
 
   // Assessment P3
   { id: 'assessment-j3-p3', title: 'Nulmeting Periode 3', week: 3, yearGroup: 3, sloKerndoelen: ['23C', '21D'] },

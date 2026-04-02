@@ -2,7 +2,7 @@
 // Chat object is maintained client-side; API key stays server-side.
 
 import { logger } from '../utils/logger';
-import { supabase, EDGE_FUNCTION_URL } from './supabase';
+import { EDGE_FUNCTION_URL, authenticatedFetch } from './supabase';
 import { logAiInteraction } from './auditService';
 import { sanitizePrompt } from '../utils/promptSanitizer';
 import { markAiGeneratedText } from '../utils/aiContentMarker';
@@ -109,42 +109,6 @@ export class Chat {
     return [...this.history];
   }
 
-  /** Check of een token een geldig JWT-format heeft (3 segmenten, base64url). */
-  private static isValidJwt(token: string): boolean {
-    const parts = token.split('.');
-    return parts.length === 3 && parts.every(p => p.length > 0);
-  }
-
-  private async getSessionToken(): Promise<string> {
-    const { data: { session } } = await supabase.auth.getSession();
-
-    if (session?.access_token && Chat.isValidJwt(session.access_token)) {
-      // Proactief refreshen als token binnen 2 minuten verloopt
-      try {
-        const payload = JSON.parse(atob(session.access_token.split('.')[1]));
-        const expiresIn = payload.exp * 1000 - Date.now();
-        if (expiresIn < 2 * 60 * 1000) {
-          const { data: { session: refreshed } } = await supabase.auth.refreshSession();
-          if (refreshed?.access_token && Chat.isValidJwt(refreshed.access_token)) {
-            return refreshed.access_token;
-          }
-        }
-      } catch {
-        // JWT parse mislukt → token is verminkt, forceer refresh hieronder
-      }
-      // Alleen retourneren als het token nog steeds geldig format heeft
-      if (Chat.isValidJwt(session.access_token)) return session.access_token;
-    }
-
-    // Geen sessie of verminkt token → probeer te refreshen
-    const { data: { session: refreshed } } = await supabase.auth.refreshSession();
-    if (refreshed?.access_token && Chat.isValidJwt(refreshed.access_token)) {
-      return refreshed.access_token;
-    }
-
-    throw new Error('Je sessie is verlopen. Log opnieuw in.');
-  }
-
   private buildRequestBody(message: string, roleId: string): Record<string, unknown> {
     const requestBody: Record<string, unknown> = {
       message,
@@ -168,17 +132,18 @@ export class Chat {
 
   private async sendEdgeRequest(
     endpoint: 'chat' | 'chatStream',
-    token: string,
     message: string,
     roleId: string
   ): Promise<Response> {
-    return fetchWithRetry(`${EDGE_FUNCTION_URL}/${endpoint}`, {
+    return authenticatedFetch(`${EDGE_FUNCTION_URL}/${endpoint}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify(this.buildRequestBody(message, roleId))
+    }, {
+      fetcher: fetchWithRetry,
+      sessionExpiredMessage: 'Je sessie is verlopen. Log opnieuw in.',
     });
   }
 
@@ -217,17 +182,15 @@ export class Chat {
 
   private async performRequestWithRoleFallback(
     endpoint: 'chat' | 'chatStream',
-    token: string,
     cleanMessage: string
   ): Promise<{ response: Response; usedFallbackRole: boolean }> {
-    let response = await this.sendEdgeRequest(endpoint, token, cleanMessage, this.roleId);
+    let response = await this.sendEdgeRequest(endpoint, cleanMessage, this.roleId);
     let error = response.ok ? undefined : await this.getEdgeErrorPayload(response);
 
     if (!response.ok && this.shouldRetryWithFallbackRole(response.status, error)) {
       console.warn(`[GeminiService] roleId "${this.roleId}" not available server-side, retrying with "${this.fallbackRoleId}"`);
       response = await this.sendEdgeRequest(
         endpoint,
-        token,
         this.buildFallbackRoleMessage(cleanMessage),
         this.fallbackRoleId
       );
@@ -259,8 +222,7 @@ export class Chat {
     });
 
     try {
-      const token = await this.getSessionToken();
-      const { response } = await this.performRequestWithRoleFallback('chat', token, cleanMessage);
+      const { response } = await this.performRequestWithRoleFallback('chat', cleanMessage);
 
       if (!response.ok) {
         const error = await this.getEdgeErrorPayload(response);
@@ -326,8 +288,7 @@ export class Chat {
     });
 
     try {
-      const token = await this.getSessionToken();
-      const { response } = await this.performRequestWithRoleFallback('chatStream', token, cleanMessage);
+      const { response } = await this.performRequestWithRoleFallback('chatStream', cleanMessage);
 
       if (!response.ok) {
         const error = await this.getEdgeErrorPayload(response);
@@ -686,22 +647,19 @@ export const generateImage = async (
   options: ImageGenerationOptions = {}
 ): Promise<string | null> => {
   try {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session?.access_token) {
-      throw new Error('Authenticatie vereist. Log opnieuw in.');
-    }
-
-    const response = await fetchWithRetry(`${EDGE_FUNCTION_URL}/generateImage`, {
+    const response = await authenticatedFetch(`${EDGE_FUNCTION_URL}/generateImage`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${session.access_token}`,
       },
       body: JSON.stringify({
         prompt,
         style: options.style || 'general',
         aspectRatio: options.aspectRatio || '1:1',
       }),
+    }, {
+      fetcher: fetchWithRetry,
+      sessionExpiredMessage: 'Je sessie is verlopen. Log opnieuw in.',
     });
 
     const payload = await response.json().catch(() => ({} as GenerateImageResponse));
@@ -770,12 +728,6 @@ export const analyzeDrawingWithAI = async (
   possibleLabels: string[]
 ): Promise<DrawingAnalysisResult> => {
   try {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session?.access_token) {
-      throw new Error('Authenticatie vereist. Log opnieuw in.');
-    }
-    const token = session.access_token;
-
     const prompt = `Je bent een AI die kindertekeningen analyseert voor een educatief spel.
     
     Het doel was om een van deze objecten te tekenen: ${possibleLabels.join(', ')}.
@@ -801,13 +753,15 @@ export const analyzeDrawingWithAI = async (
     
     De confidence scores moeten optellen tot 100. Geef je top 3 gokken.`;
 
-    const response = await fetchWithRetry(`${EDGE_FUNCTION_URL}/analyzeDrawing`, {
+    const response = await authenticatedFetch(`${EDGE_FUNCTION_URL}/analyzeDrawing`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify({ imageBase64, prompt })
+    }, {
+      fetcher: fetchWithRetry,
+      sessionExpiredMessage: 'Je sessie is verlopen. Log opnieuw in.',
     });
 
     if (!response.ok) {

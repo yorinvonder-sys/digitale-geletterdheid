@@ -182,557 +182,356 @@ const FaceLayer = memo<{
     );
 });
 
-// --- Hair Layer (voxel panel approach) ---
+// --- Hair Layer (grid-aligned voxel system) ---
 // Head = 0.8³ cube, center y=0. Top y=0.40, front z=0.40, sides x=±0.40.
-// Hair is built from thin panels on TOP, SIDES, and BACK only.
-// Front face (z > 0.39) is NEVER covered — the face must stay visible.
-// Each style is unique — no shared "scalp" block.
+// Grid: 1 voxel = 0.10 world units. Head spans -4 to +4 in each axis.
+// Hair sits on/beyond head surface. Front face (z > 0.35) NEVER covered at face level.
+// Shading: top=light, sides/back=dark, crown=base. Consistent across all styles.
+
+type VoxelBlock = [
+    gx: number, gy: number, gz: number, // center position in grid units (×0.10)
+    sx: number, sy: number, sz: number, // size in grid units (×0.10)
+    shade: 'base' | 'dark' | 'light'
+];
+
+const V = 0.10; // voxel unit in world coords
+
+function renderVoxelBlocks(
+    blocks: VoxelBlock[],
+    mat: React.ReactNode,
+    matDark: React.ReactNode,
+    matLight: React.ReactNode
+) {
+    return blocks.map(([gx, gy, gz, sx, sy, sz, shade], i) => (
+        <mesh key={i} position={[gx * V, gy * V, gz * V]}>
+            <boxGeometry args={[sx * V, sy * V, sz * V]} />
+            {shade === 'light' ? matLight : shade === 'dark' ? matDark : mat}
+        </mesh>
+    ));
+}
 
 const HairLayer = memo<{ style: string; color: string }>(({ style, color }) => {
     const mat = <meshStandardMaterial color={color} roughness={0.85} />;
     const matDark = <meshStandardMaterial color={darkenColor(color, 0.8)} roughness={0.85} />;
+    const matLight = <meshStandardMaterial color={darkenColor(color, 1.12)} roughness={0.8} />;
+    const stubble = (opacity: number) => (
+        <meshStandardMaterial color={darkenColor(color, 0.92)} roughness={0.92} transparent opacity={opacity} />
+    );
 
     switch (style) {
         // === MALE STYLES ===
 
-        case 'short':
-            // Rounded short cut: top slab + thin sides + thin back. Like 2D preview dome.
-            return (
-                <group>
-                    {/* Top slab — overhangs slightly on all sides except front */}
-                    <mesh position={[0, 0.42, -0.06]}>
-                        <boxGeometry args={[0.84, 0.06, 0.72]} />
-                        {mat}
-                    </mesh>
-                    {/* Sides — thin strips hugging left and right */}
-                    <mesh position={[-0.41, 0.20, -0.06]}>
-                        <boxGeometry args={[0.05, 0.36, 0.60]} />
-                        {mat}
-                    </mesh>
-                    <mesh position={[0.41, 0.20, -0.06]}>
-                        <boxGeometry args={[0.05, 0.36, 0.60]} />
-                        {mat}
-                    </mesh>
-                    {/* Back panel */}
-                    <mesh position={[0, 0.15, -0.42]}>
-                        <boxGeometry args={[0.80, 0.50, 0.05]} />
-                        {mat}
-                    </mesh>
-                </group>
-            );
+        case 'short': {
+            // Clean crop: full scalp coverage, thin sides, subtle hairline.
+            const blocks: VoxelBlock[] = [
+                [0, 4.5, -0.5, 9, 1, 8, 'base'],      // Top cap
+                [0, 3, 3, 5, 2, 1, 'base'],             // Front hairline
+                [-4.5, 2, 0, 1, 4, 6, 'dark'],          // Left side
+                [4.5, 2, 0, 1, 4, 6, 'dark'],           // Right side
+                [0, 2, -4.5, 8, 5, 1, 'dark'],          // Back
+                [0, 5.2, 0.5, 3, 0.5, 3, 'light'],     // Crown highlight
+            ];
+            return <group>{renderVoxelBlocks(blocks, mat, matDark, matLight)}</group>;
+        }
 
         case 'spiky':
-            // Spiky: thin base on top + 5 pointed spikes shooting upward
+            // Short base with chunky spikes rising from the crown.
             return (
                 <group>
-                    {/* Thin top base */}
-                    <mesh position={[0, 0.42, -0.06]}>
-                        <boxGeometry args={[0.82, 0.05, 0.68]} />
+                    {renderVoxelBlocks([
+                        [0, 4.5, -0.5, 9, 1, 7, 'base'],   // Top cap
+                        [-4.5, 3, 0, 1, 2, 5, 'dark'],      // Left side
+                        [4.5, 3, 0, 1, 2, 5, 'dark'],       // Right side
+                        [0, 2.5, -4.5, 7, 3, 1, 'dark'],    // Back
+                    ], mat, matDark, matLight)}
+                    {/* Chunky spikes — short and thick, not thin sticks */}
+                    <mesh position={[0, 0.55, 0]} rotation={[0.08, 0, 0]}>
+                        <boxGeometry args={[0.15, 0.20, 0.15]} />
+                        {matLight}
+                    </mesh>
+                    <mesh position={[-0.15, 0.50, 0.05]} rotation={[0.05, 0, -0.15]}>
+                        <boxGeometry args={[0.12, 0.15, 0.10]} />
                         {mat}
                     </mesh>
-                    {/* Back panel */}
-                    <mesh position={[0, 0.20, -0.42]}>
-                        <boxGeometry args={[0.78, 0.40, 0.05]} />
+                    <mesh position={[0.15, 0.50, -0.05]} rotation={[-0.05, 0, 0.15]}>
+                        <boxGeometry args={[0.12, 0.15, 0.10]} />
                         {mat}
                     </mesh>
-                    {/* Spikes — tall narrow boxes at angles */}
-                    <mesh position={[-0.18, 0.58, 0.05]} rotation={[0.15, 0, -0.15]}>
-                        <boxGeometry args={[0.10, 0.28, 0.10]} />
-                        {mat}
-                    </mesh>
-                    <mesh position={[0, 0.62, -0.02]} rotation={[0.05, 0, 0]}>
-                        <boxGeometry args={[0.12, 0.32, 0.12]} />
-                        {mat}
-                    </mesh>
-                    <mesh position={[0.16, 0.56, -0.08]} rotation={[-0.1, 0, 0.12]}>
-                        <boxGeometry args={[0.10, 0.26, 0.10]} />
-                        {mat}
-                    </mesh>
-                    <mesh position={[-0.08, 0.54, -0.16]} rotation={[-0.15, 0, -0.1]}>
-                        <boxGeometry args={[0.09, 0.22, 0.09]} />
-                        {mat}
-                    </mesh>
-                    <mesh position={[0.10, 0.52, 0.12]} rotation={[0.2, 0, 0.1]}>
-                        <boxGeometry args={[0.08, 0.20, 0.08]} />
-                        {mat}
+                    <mesh position={[0, 0.48, -0.15]} rotation={[-0.12, 0, 0]}>
+                        <boxGeometry args={[0.10, 0.12, 0.10]} />
+                        {matDark}
                     </mesh>
                 </group>
             );
 
         case 'messy':
-            // Wild/messy: thicker top + irregular tufts sticking out
+            // Same base as short, plus asymmetric tufts sticking out.
             return (
                 <group>
-                    {/* Messy top — slightly tilted */}
-                    <mesh position={[0.02, 0.42, -0.04]} rotation={[0, 0, 0.03]}>
-                        <boxGeometry args={[0.86, 0.08, 0.74]} />
+                    {renderVoxelBlocks([
+                        [0, 4.5, -0.5, 9, 1, 8, 'base'],   // Top cap
+                        [0, 3, 3, 5, 2, 1, 'base'],         // Front hairline
+                        [-4.5, 2, 0, 1, 4, 6, 'dark'],      // Left side
+                        [4.5, 2, 0, 1, 4, 6, 'dark'],       // Right side
+                        [0, 2, -4.5, 8, 5, 1, 'dark'],      // Back
+                    ], mat, matDark, matLight)}
+                    {/* Asymmetric tufts — messy look */}
+                    <mesh position={[-0.15, 0.55, 0.05]} rotation={[0.12, 0, -0.25]}>
+                        <boxGeometry args={[0.12, 0.18, 0.10]} />
                         {mat}
                     </mesh>
-                    {/* Sides */}
-                    <mesh position={[-0.42, 0.18, -0.06]}>
-                        <boxGeometry args={[0.06, 0.42, 0.58]} />
+                    <mesh position={[0.10, 0.52, -0.10]} rotation={[-0.15, 0, 0.20]}>
+                        <boxGeometry args={[0.10, 0.15, 0.10]} />
+                        {matDark}
+                    </mesh>
+                    <mesh position={[0.05, 0.50, 0.10]} rotation={[0.08, 0.10, 0]}>
+                        <boxGeometry args={[0.10, 0.12, 0.10]} />
                         {mat}
                     </mesh>
-                    <mesh position={[0.42, 0.20, -0.06]}>
-                        <boxGeometry args={[0.06, 0.38, 0.58]} />
-                        {mat}
-                    </mesh>
-                    {/* Back */}
-                    <mesh position={[0, 0.12, -0.42]}>
-                        <boxGeometry args={[0.80, 0.48, 0.05]} />
-                        {mat}
-                    </mesh>
-                    {/* Tufts — random sticking-out pieces */}
-                    <mesh position={[-0.22, 0.54, 0.02]} rotation={[0.2, 0, -0.4]}>
-                        <boxGeometry args={[0.10, 0.18, 0.08]} />
-                        {mat}
-                    </mesh>
-                    <mesh position={[0.20, 0.52, -0.10]} rotation={[-0.15, 0, 0.35]}>
-                        <boxGeometry args={[0.10, 0.16, 0.08]} />
-                        {mat}
-                    </mesh>
-                    <mesh position={[0.05, 0.50, -0.22]} rotation={[-0.3, 0.1, 0]}>
-                        <boxGeometry args={[0.08, 0.14, 0.08]} />
-                        {mat}
-                    </mesh>
-                    <mesh position={[-0.46, 0.30, -0.04]} rotation={[0, 0, -0.3]}>
-                        <boxGeometry args={[0.08, 0.12, 0.08]} />
-                        {mat}
+                    <mesh position={[-0.05, 0.30, 0.25]} rotation={[0.10, 0, -0.05]}>
+                        <boxGeometry args={[0.20, 0.10, 0.10]} />
+                        {matLight}
                     </mesh>
                 </group>
             );
 
         case 'fade':
-            // Fade: dense volume on top, fading to thin transparent sides
+            // Thick top volume with graduated stubble fading down the sides.
             return (
                 <group>
-                    {/* Dense top */}
-                    <mesh position={[0, 0.43, -0.04]}>
-                        <boxGeometry args={[0.72, 0.10, 0.64]} />
-                        {mat}
-                    </mesh>
-                    {/* Mid sides — semi-transparent */}
-                    <mesh position={[-0.41, 0.18, -0.06]}>
-                        <boxGeometry args={[0.04, 0.35, 0.55]} />
-                        <meshStandardMaterial color={color} roughness={0.9} transparent opacity={0.45} />
-                    </mesh>
-                    <mesh position={[0.41, 0.18, -0.06]}>
-                        <boxGeometry args={[0.04, 0.35, 0.55]} />
-                        <meshStandardMaterial color={color} roughness={0.9} transparent opacity={0.45} />
-                    </mesh>
-                    {/* Low sides — very transparent */}
-                    <mesh position={[-0.41, -0.02, -0.06]}>
-                        <boxGeometry args={[0.03, 0.12, 0.50]} />
-                        <meshStandardMaterial color={color} roughness={0.9} transparent opacity={0.2} />
-                    </mesh>
-                    <mesh position={[0.41, -0.02, -0.06]}>
-                        <boxGeometry args={[0.03, 0.12, 0.50]} />
-                        <meshStandardMaterial color={color} roughness={0.9} transparent opacity={0.2} />
-                    </mesh>
-                    {/* Back — faded */}
-                    <mesh position={[0, 0.15, -0.42]}>
-                        <boxGeometry args={[0.72, 0.40, 0.04]} />
-                        <meshStandardMaterial color={color} roughness={0.9} transparent opacity={0.45} />
+                    {renderVoxelBlocks([
+                        [0, 5, -0.5, 7, 2, 7, 'base'],      // Thick top slab (2 voxels)
+                        [0, 6.2, 0.5, 3, 0.5, 3, 'light'],  // Crown highlight
+                        [0, 3, -4.5, 6, 2, 1, 'dark'],       // Back upper
+                    ], mat, matDark, matLight)}
+                    {/* Fade stubble — decreasing opacity down the sides */}
+                    {[-1, 1].map((dir) => (
+                        <group key={dir}>
+                            <mesh position={[dir * 0.45, 0.25, 0]}>
+                                <boxGeometry args={[0.10, 0.30, 0.50]} />
+                                {stubble(0.40)}
+                            </mesh>
+                            <mesh position={[dir * 0.45, 0, 0]}>
+                                <boxGeometry args={[0.10, 0.20, 0.40]} />
+                                {stubble(0.20)}
+                            </mesh>
+                        </group>
+                    ))}
+                    <mesh position={[0, 0.10, -0.45]}>
+                        <boxGeometry args={[0.60, 0.20, 0.10]} />
+                        {stubble(0.30)}
                     </mesh>
                 </group>
             );
 
-        case 'curls':
-            // Curls: rounded bumpy top + volume on sides and back
-            return (
-                <group>
-                    {/* Top cluster of curl bumps */}
-                    {[[-0.18, 0.46, 0.06], [0.06, 0.48, -0.02], [-0.06, 0.46, -0.14],
-                      [0.18, 0.46, -0.10], [0, 0.48, 0.10], [-0.14, 0.46, 0.18],
-                      [0.14, 0.46, 0.14]].map((pos, i) => (
-                        <mesh key={`t${i}`} position={pos as [number, number, number]}>
-                            <boxGeometry args={[0.16, 0.10, 0.16]} />
-                            {i % 2 === 0 ? mat : matDark}
-                        </mesh>
-                    ))}
-                    {/* Side curls */}
-                    {[[-0.44, 0.24, -0.04], [-0.44, 0.08, -0.04],
-                      [0.44, 0.24, -0.04], [0.44, 0.08, -0.04]].map((pos, i) => (
-                        <mesh key={`s${i}`} position={pos as [number, number, number]}>
-                            <boxGeometry args={[0.10, 0.14, 0.14]} />
-                            {i % 2 === 0 ? mat : matDark}
-                        </mesh>
-                    ))}
-                    {/* Back volume */}
-                    <mesh position={[0, 0.12, -0.44]}>
-                        <boxGeometry args={[0.78, 0.55, 0.08]} />
-                        {mat}
-                    </mesh>
-                </group>
-            );
+        case 'curls': {
+            // Curly clusters: 2×1.5×2 cube groups forming round volume.
+            const blocks: VoxelBlock[] = [
+                [-2, 5, 1, 2, 1.5, 2, 'base'],          // Crown front-left
+                [1, 5, 0, 2, 1.5, 2, 'dark'],            // Crown center-right
+                [-0.5, 5, -1.5, 2, 1.5, 2, 'base'],     // Crown back-center
+                [2, 4.5, -1, 2, 1.5, 2, 'dark'],         // Crown back-right
+                [-1.5, 4.5, 2, 2, 1, 2, 'base'],         // Front accent
+                [0, 5.5, 0, 2, 1, 2, 'light'],           // Top highlight
+                [-4.5, 2, 0.5, 1.5, 2.5, 2, 'dark'],    // Left temple
+                [4.5, 2, 0.5, 1.5, 2.5, 2, 'dark'],     // Right temple
+                [-4, 1, -1.5, 1.5, 2, 2, 'base'],       // Left back
+                [4, 1, -1.5, 1.5, 2, 2, 'base'],        // Right back
+                [0, 2, -4.5, 7, 4, 1, 'dark'],           // Back panel
+                [-2, 1.5, -4, 2, 2, 1.5, 'base'],       // Back-left cluster
+                [2, 1.5, -4, 2, 2, 1.5, 'base'],        // Back-right cluster
+            ];
+            return <group>{renderVoxelBlocks(blocks, mat, matDark, matLight)}</group>;
+        }
 
         case 'buzzcut':
-            // Buzz cut: ultra-thin layer, almost-shaved look
+            // Ultra-thin stubble layer: barely visible, all transparent.
             return (
                 <group>
-                    {/* Very thin top */}
-                    <mesh position={[0, 0.41, -0.06]}>
-                        <boxGeometry args={[0.78, 0.03, 0.66]} />
-                        <meshStandardMaterial color={color} roughness={0.95} />
+                    <mesh position={[0, 0.42, -0.05]}>
+                        <boxGeometry args={[0.85, 0.05, 0.75]} />
+                        <meshStandardMaterial color={color} roughness={0.95} transparent opacity={0.65} />
                     </mesh>
-                    {/* Very thin sides */}
-                    <mesh position={[-0.41, 0.14, -0.06]}>
-                        <boxGeometry args={[0.03, 0.45, 0.60]} />
-                        <meshStandardMaterial color={color} roughness={0.95} transparent opacity={0.7} />
+                    <mesh position={[0, 0.35, 0.30]}>
+                        <boxGeometry args={[0.40, 0.10, 0.05]} />
+                        <meshStandardMaterial color={color} roughness={0.95} transparent opacity={0.50} />
                     </mesh>
-                    <mesh position={[0.41, 0.14, -0.06]}>
-                        <boxGeometry args={[0.03, 0.45, 0.60]} />
-                        <meshStandardMaterial color={color} roughness={0.95} transparent opacity={0.7} />
-                    </mesh>
-                    {/* Very thin back */}
-                    <mesh position={[0, 0.14, -0.42]}>
-                        <boxGeometry args={[0.76, 0.45, 0.03]} />
-                        <meshStandardMaterial color={color} roughness={0.95} transparent opacity={0.7} />
+                    {[-1, 1].map((dir) => (
+                        <mesh key={dir} position={[dir * 0.43, 0.20, 0]}>
+                            <boxGeometry args={[0.05, 0.40, 0.50]} />
+                            <meshStandardMaterial color={color} roughness={0.95} transparent opacity={0.45} />
+                        </mesh>
+                    ))}
+                    <mesh position={[0, 0.20, -0.43]}>
+                        <boxGeometry args={[0.70, 0.40, 0.05]} />
+                        <meshStandardMaterial color={color} roughness={0.95} transparent opacity={0.50} />
                     </mesh>
                 </group>
             );
 
         case 'mohawk':
-            // Mohawk: shaved sides + tall center ridge front-to-back
+            // Shaved sides (stubble) with a tall center ridge.
             return (
                 <group>
-                    {/* Shaved sides — very faint stubble */}
-                    <mesh position={[-0.41, 0.14, -0.06]}>
-                        <boxGeometry args={[0.03, 0.40, 0.55]} />
-                        <meshStandardMaterial color={color} roughness={0.95} transparent opacity={0.25} />
-                    </mesh>
-                    <mesh position={[0.41, 0.14, -0.06]}>
-                        <boxGeometry args={[0.03, 0.40, 0.55]} />
-                        <meshStandardMaterial color={color} roughness={0.95} transparent opacity={0.25} />
-                    </mesh>
-                    {/* Mohawk ridge — 3 tall segments from front to back */}
-                    <mesh position={[0, 0.56, 0.12]}>
-                        <boxGeometry args={[0.10, 0.30, 0.14]} />
-                        {mat}
-                    </mesh>
-                    <mesh position={[0, 0.60, -0.06]}>
-                        <boxGeometry args={[0.10, 0.36, 0.16]} />
-                        {mat}
-                    </mesh>
-                    <mesh position={[0, 0.54, -0.22]}>
-                        <boxGeometry args={[0.10, 0.26, 0.14]} />
-                        {mat}
-                    </mesh>
+                    {/* Shaved sides — graduated stubble */}
+                    {[-1, 1].map((dir) => (
+                        <group key={dir}>
+                            <mesh position={[dir * 0.45, 0.20, 0]}>
+                                <boxGeometry args={[0.10, 0.30, 0.50]} />
+                                {stubble(0.22)}
+                            </mesh>
+                            <mesh position={[dir * 0.45, 0, 0]}>
+                                <boxGeometry args={[0.10, 0.20, 0.40]} />
+                                {stubble(0.12)}
+                            </mesh>
+                        </group>
+                    ))}
+                    {/* Center ridge — the mohawk strip */}
+                    {renderVoxelBlocks([
+                        [0, 6, 1, 2, 3, 2, 'base'],         // Front ridge
+                        [0, 6, -1.5, 2, 3, 2, 'dark'],      // Back ridge
+                        [0, 7.5, 0, 1.5, 1, 2, 'light'],    // Top highlight
+                        [0, 4.5, -4, 2, 1, 1, 'dark'],      // Back anchor
+                    ], mat, matDark, matLight)}
                 </group>
             );
 
-        case 'afro':
-            // Afro: big rounded volume all around (except front face)
-            return (
-                <group>
-                    {/* Top dome — widest */}
-                    <mesh position={[0, 0.48, -0.06]}>
-                        <boxGeometry args={[0.92, 0.22, 0.80]} />
-                        {mat}
-                    </mesh>
-                    {/* Upper sides */}
-                    <mesh position={[-0.48, 0.22, -0.06]}>
-                        <boxGeometry args={[0.16, 0.65, 0.55]} />
-                        {mat}
-                    </mesh>
-                    <mesh position={[0.48, 0.22, -0.06]}>
-                        <boxGeometry args={[0.16, 0.65, 0.55]} />
-                        {mat}
-                    </mesh>
-                    {/* Back — thick */}
-                    <mesh position={[0, 0.14, -0.42]}>
-                        <boxGeometry args={[0.88, 0.75, 0.16]} />
-                        {mat}
-                    </mesh>
-                    {/* Extra top bumps for roundness */}
-                    <mesh position={[-0.20, 0.56, -0.08]}>
-                        <boxGeometry args={[0.24, 0.10, 0.22]} />
-                        {mat}
-                    </mesh>
-                    <mesh position={[0.20, 0.56, -0.08]}>
-                        <boxGeometry args={[0.24, 0.10, 0.22]} />
-                        {mat}
-                    </mesh>
-                </group>
-            );
+        case 'afro': {
+            // Big rounded volume: head + 2-3 voxels in every direction.
+            const blocks: VoxelBlock[] = [
+                [0, 6, -0.5, 10, 3, 9, 'base'],         // Top dome
+                [-5.5, 2, -0.5, 2, 5, 7, 'dark'],       // Left volume
+                [5.5, 2, -0.5, 2, 5, 7, 'dark'],        // Right volume
+                [0, 1.5, -5, 8, 5, 2, 'dark'],           // Back volume
+                [0, 4, 3, 5, 2, 1, 'base'],              // Front above face
+                [-2, 7.5, 0, 2.5, 1, 2.5, 'light'],     // Left highlight
+                [2, 7.5, 0, 2.5, 1, 2.5, 'light'],      // Right highlight
+                [-5, 0, 1.5, 2, 4, 3, 'dark'],           // Left front volume
+                [5, 0, 1.5, 2, 4, 3, 'dark'],            // Right front volume
+            ];
+            return <group>{renderVoxelBlocks(blocks, mat, matDark, matLight)}</group>;
+        }
 
-        case 'sidepart':
-            // Side part: swept to one side, asymmetric
-            return (
-                <group>
-                    {/* Top — offset to right for part line */}
-                    <mesh position={[0.06, 0.42, -0.06]}>
-                        <boxGeometry args={[0.76, 0.06, 0.68]} />
-                        {mat}
-                    </mesh>
-                    {/* Swept fringe — thicker on left side, overlapping top-left */}
-                    <mesh position={[-0.20, 0.44, 0.04]}>
-                        <boxGeometry args={[0.36, 0.10, 0.28]} />
-                        {mat}
-                    </mesh>
-                    {/* Sides */}
-                    <mesh position={[-0.41, 0.18, -0.06]}>
-                        <boxGeometry args={[0.05, 0.40, 0.58]} />
-                        {mat}
-                    </mesh>
-                    <mesh position={[0.41, 0.18, -0.06]}>
-                        <boxGeometry args={[0.05, 0.40, 0.58]} />
-                        {mat}
-                    </mesh>
-                    {/* Back */}
-                    <mesh position={[0, 0.12, -0.42]}>
-                        <boxGeometry args={[0.78, 0.46, 0.05]} />
-                        {mat}
-                    </mesh>
-                </group>
-            );
+        case 'sidepart': {
+            // Asymmetric part: more volume left, thinner right, visible gap.
+            const blocks: VoxelBlock[] = [
+                [-2, 4.5, -0.5, 5, 1.5, 8, 'base'],    // Left side — more volume
+                [3, 4.5, -0.5, 3, 1, 7, 'base'],        // Right side — thinner
+                [1, 4.2, -0.5, 1, 0.5, 7, 'dark'],      // Part line gap
+                [-1.5, 3, 3, 4, 2, 1, 'base'],           // Front sweep left
+                [-4.5, 2, 0, 1, 4, 6, 'dark'],           // Left side panel
+                [4.5, 2.5, 0, 1, 3, 5, 'dark'],          // Right side panel (thinner)
+                [0, 2, -4.5, 8, 4, 1, 'dark'],           // Back
+                [-2, 5.5, 0.5, 2, 0.5, 2, 'light'],     // Highlight on volume side
+            ];
+            return <group>{renderVoxelBlocks(blocks, mat, matDark, matLight)}</group>;
+        }
 
         // === FEMALE STYLES ===
 
-        case 'long':
-            // Long straight: top + long side panels flowing down + long back
-            return (
-                <group>
-                    {/* Top slab */}
-                    <mesh position={[0, 0.42, -0.06]}>
-                        <boxGeometry args={[0.84, 0.06, 0.72]} />
-                        {mat}
-                    </mesh>
-                    {/* Long sides — flowing down past chin */}
-                    <mesh position={[-0.42, -0.05, -0.02]}>
-                        <boxGeometry args={[0.06, 0.80, 0.55]} />
-                        {mat}
-                    </mesh>
-                    <mesh position={[0.42, -0.05, -0.02]}>
-                        <boxGeometry args={[0.06, 0.80, 0.55]} />
-                        {mat}
-                    </mesh>
-                    {/* Long back */}
-                    <mesh position={[0, -0.05, -0.42]}>
-                        <boxGeometry args={[0.80, 0.80, 0.05]} />
-                        {mat}
-                    </mesh>
-                </group>
-            );
+        case 'long': {
+            // Long straight: top cap + side curtains + back curtain hanging down.
+            const blocks: VoxelBlock[] = [
+                [0, 4.5, -0.5, 9, 1, 8, 'base'],       // Top cap
+                [0, 3, 3, 5, 2, 1, 'light'],            // Bangs/fringe
+                [-4.5, 3, 0, 1, 2, 5, 'base'],          // Left head coverage
+                [4.5, 3, 0, 1, 2, 5, 'base'],           // Right head coverage
+                [-4.5, -1, 1.5, 1, 8, 3, 'base'],       // Left curtain (hanging)
+                [4.5, -1, 1.5, 1, 8, 3, 'base'],        // Right curtain (hanging)
+                [0, -1, -4.5, 8, 10, 1, 'dark'],        // Back curtain (long)
+            ];
+            return <group>{renderVoxelBlocks(blocks, mat, matDark, matLight)}</group>;
+        }
 
-        case 'ponytail':
-            // Ponytail: top + short sides/back + tail hanging from back
-            return (
-                <group>
-                    {/* Top slab */}
-                    <mesh position={[0, 0.42, -0.06]}>
-                        <boxGeometry args={[0.84, 0.06, 0.72]} />
-                        {mat}
-                    </mesh>
-                    {/* Short sides */}
-                    <mesh position={[-0.41, 0.22, -0.06]}>
-                        <boxGeometry args={[0.05, 0.30, 0.58]} />
-                        {mat}
-                    </mesh>
-                    <mesh position={[0.41, 0.22, -0.06]}>
-                        <boxGeometry args={[0.05, 0.30, 0.58]} />
-                        {mat}
-                    </mesh>
-                    {/* Back panel — shorter */}
-                    <mesh position={[0, 0.18, -0.42]}>
-                        <boxGeometry args={[0.78, 0.38, 0.05]} />
-                        {mat}
-                    </mesh>
-                    {/* Ponytail tie */}
-                    <mesh position={[0, 0.22, -0.48]}>
-                        <boxGeometry args={[0.12, 0.08, 0.08]} />
-                        {matDark}
-                    </mesh>
-                    {/* Ponytail — hanging down */}
-                    <mesh position={[0, -0.08, -0.48]}>
-                        <boxGeometry args={[0.10, 0.50, 0.08]} />
-                        {mat}
-                    </mesh>
-                </group>
-            );
+        case 'ponytail': {
+            // Sleek top + tail hanging from the back of the head.
+            const blocks: VoxelBlock[] = [
+                [0, 4.5, -0.5, 9, 1, 8, 'base'],       // Top cap
+                [0, 3, 3, 4, 1, 1, 'light'],            // Bangs
+                [-4.5, 3, 0, 1, 2, 5, 'base'],          // Left side
+                [4.5, 3, 0, 1, 2, 5, 'base'],           // Right side
+                [0, 2.5, -4.5, 7, 3, 1, 'dark'],        // Back
+                [0, 2, -5, 2, 2, 1, 'dark'],            // Tail attachment
+                [0, -2, -5, 1.5, 6, 1, 'base'],         // Hanging tail
+            ];
+            return <group>{renderVoxelBlocks(blocks, mat, matDark, matLight)}</group>;
+        }
 
-        case 'pigtails':
-            // Pigtails: top + two tails hanging from sides
-            return (
-                <group>
-                    {/* Top slab */}
-                    <mesh position={[0, 0.42, -0.06]}>
-                        <boxGeometry args={[0.84, 0.06, 0.72]} />
-                        {mat}
-                    </mesh>
-                    {/* Short sides */}
-                    <mesh position={[-0.41, 0.24, -0.06]}>
-                        <boxGeometry args={[0.05, 0.28, 0.56]} />
-                        {mat}
-                    </mesh>
-                    <mesh position={[0.41, 0.24, -0.06]}>
-                        <boxGeometry args={[0.05, 0.28, 0.56]} />
-                        {mat}
-                    </mesh>
-                    {/* Back panel */}
-                    <mesh position={[0, 0.20, -0.42]}>
-                        <boxGeometry args={[0.78, 0.34, 0.05]} />
-                        {mat}
-                    </mesh>
-                    {/* Left pigtail — tie */}
-                    <mesh position={[-0.45, 0.12, -0.02]}>
-                        <boxGeometry args={[0.10, 0.10, 0.10]} />
-                        {matDark}
-                    </mesh>
-                    {/* Left pigtail — hanging */}
-                    <mesh position={[-0.46, -0.18, -0.02]}>
-                        <boxGeometry args={[0.08, 0.48, 0.08]} />
-                        {mat}
-                    </mesh>
-                    {/* Right pigtail — tie */}
-                    <mesh position={[0.45, 0.12, -0.02]}>
-                        <boxGeometry args={[0.10, 0.10, 0.10]} />
-                        {matDark}
-                    </mesh>
-                    {/* Right pigtail — hanging */}
-                    <mesh position={[0.46, -0.18, -0.02]}>
-                        <boxGeometry args={[0.08, 0.48, 0.08]} />
-                        {mat}
-                    </mesh>
-                </group>
-            );
+        case 'pigtails': {
+            // Top cap + two side tails with tie blocks.
+            const blocks: VoxelBlock[] = [
+                [0, 4.5, -0.5, 9, 1, 8, 'base'],       // Top cap
+                [0, 3, 3, 4, 1, 1, 'light'],            // Bangs
+                [-4.5, 2.5, 0, 1, 3, 5, 'base'],        // Left head coverage
+                [4.5, 2.5, 0, 1, 3, 5, 'base'],         // Right head coverage
+                [0, 2, -4.5, 7, 4, 1, 'dark'],           // Back
+                [-5, 1.5, 0, 2, 1, 2, 'dark'],           // Left tie
+                [5, 1.5, 0, 2, 1, 2, 'dark'],            // Right tie
+                [-5, -2, 0, 1.5, 5, 1.5, 'base'],       // Left tail (hanging)
+                [5, -2, 0, 1.5, 5, 1.5, 'base'],        // Right tail (hanging)
+            ];
+            return <group>{renderVoxelBlocks(blocks, mat, matDark, matLight)}</group>;
+        }
 
-        case 'bob':
-            // Bob: top + chin-length sides curving inward + back
-            return (
-                <group>
-                    {/* Top slab */}
-                    <mesh position={[0, 0.42, -0.04]}>
-                        <boxGeometry args={[0.84, 0.06, 0.74]} />
-                        {mat}
-                    </mesh>
-                    {/* Bob sides — wider at top, chin length */}
-                    <mesh position={[-0.42, 0.06, 0.00]}>
-                        <boxGeometry args={[0.06, 0.62, 0.52]} />
-                        {mat}
-                    </mesh>
-                    <mesh position={[0.42, 0.06, 0.00]}>
-                        <boxGeometry args={[0.06, 0.62, 0.52]} />
-                        {mat}
-                    </mesh>
-                    {/* Back */}
-                    <mesh position={[0, 0.06, -0.42]}>
-                        <boxGeometry args={[0.80, 0.58, 0.05]} />
-                        {mat}
-                    </mesh>
-                    {/* Inward curve at bottom — sides get narrower */}
-                    <mesh position={[-0.38, -0.22, 0.00]}>
-                        <boxGeometry args={[0.06, 0.14, 0.44]} />
-                        {mat}
-                    </mesh>
-                    <mesh position={[0.38, -0.22, 0.00]}>
-                        <boxGeometry args={[0.06, 0.14, 0.44]} />
-                        {mat}
-                    </mesh>
-                </group>
-            );
+        case 'bob': {
+            // Chin-length: top cap + wide side panels + full back.
+            const blocks: VoxelBlock[] = [
+                [0, 4.5, -0.5, 9, 1, 8, 'base'],       // Top cap
+                [0, 3, 3, 5, 2, 1, 'light'],            // Bangs
+                [-4.5, 0, 1, 1.5, 8, 3, 'base'],        // Left side (chin-length)
+                [4.5, 0, 1, 1.5, 8, 3, 'base'],         // Right side (chin-length)
+                [0, 0, -4.5, 8, 8, 1.5, 'dark'],        // Back (full)
+                [-3.5, -3.5, 1.5, 1.5, 1, 2, 'dark'],  // Left bottom curl-in
+                [3.5, -3.5, 1.5, 1.5, 1, 2, 'dark'],   // Right bottom curl-in
+            ];
+            return <group>{renderVoxelBlocks(blocks, mat, matDark, matLight)}</group>;
+        }
 
-        case 'braids':
-            // Braids: top + two braids hanging from behind ears
-            return (
-                <group>
-                    {/* Top slab */}
-                    <mesh position={[0, 0.42, -0.06]}>
-                        <boxGeometry args={[0.84, 0.06, 0.72]} />
-                        {mat}
-                    </mesh>
-                    {/* Sides */}
-                    <mesh position={[-0.41, 0.24, -0.06]}>
-                        <boxGeometry args={[0.05, 0.28, 0.56]} />
-                        {mat}
-                    </mesh>
-                    <mesh position={[0.41, 0.24, -0.06]}>
-                        <boxGeometry args={[0.05, 0.28, 0.56]} />
-                        {mat}
-                    </mesh>
-                    {/* Back panel */}
-                    <mesh position={[0, 0.18, -0.42]}>
-                        <boxGeometry args={[0.78, 0.36, 0.05]} />
-                        {mat}
-                    </mesh>
-                    {/* Left braid — segments */}
-                    <mesh position={[-0.30, -0.05, -0.22]}>
-                        <boxGeometry args={[0.08, 0.50, 0.08]} />
-                        {mat}
-                    </mesh>
-                    <mesh position={[-0.28, -0.42, -0.20]}>
-                        <boxGeometry args={[0.06, 0.28, 0.06]} />
-                        {matDark}
-                    </mesh>
-                    {/* Right braid — segments */}
-                    <mesh position={[0.30, -0.05, -0.22]}>
-                        <boxGeometry args={[0.08, 0.50, 0.08]} />
-                        {mat}
-                    </mesh>
-                    <mesh position={[0.28, -0.42, -0.20]}>
-                        <boxGeometry args={[0.06, 0.28, 0.06]} />
-                        {matDark}
-                    </mesh>
-                </group>
-            );
+        case 'braids': {
+            // Top cap + alternating light/dark braid segments on each side.
+            const blocks: VoxelBlock[] = [
+                [0, 4.5, -0.5, 9, 1, 8, 'base'],       // Top cap
+                [-1.5, 3, 3, 2, 1, 1, 'light'],         // Left bangs
+                [1.5, 3, 3, 2, 1, 1, 'light'],          // Right bangs
+                [-4.5, 2.5, 0, 1, 3, 5, 'base'],        // Left head coverage
+                [4.5, 2.5, 0, 1, 3, 5, 'base'],         // Right head coverage
+                [0, 2, -4.5, 7, 4, 1, 'dark'],           // Back
+                [-4, 0, 0, 1, 2, 1, 'base'],             // Left braid segment 1
+                [-4, -2, 0, 1, 2, 1, 'dark'],            // Left braid segment 2
+                [-4, -4, 0, 0.8, 1.5, 0.8, 'base'],    // Left braid tip
+                [4, 0, 0, 1, 2, 1, 'base'],              // Right braid segment 1
+                [4, -2, 0, 1, 2, 1, 'dark'],             // Right braid segment 2
+                [4, -4, 0, 0.8, 1.5, 0.8, 'base'],     // Right braid tip
+            ];
+            return <group>{renderVoxelBlocks(blocks, mat, matDark, matLight)}</group>;
+        }
 
-        case 'bun':
-            // Bun: top + sides + back + round bun on back of head
-            return (
-                <group>
-                    {/* Top slab */}
-                    <mesh position={[0, 0.42, -0.06]}>
-                        <boxGeometry args={[0.84, 0.06, 0.72]} />
-                        {mat}
-                    </mesh>
-                    {/* Sides */}
-                    <mesh position={[-0.41, 0.22, -0.06]}>
-                        <boxGeometry args={[0.05, 0.30, 0.58]} />
-                        {mat}
-                    </mesh>
-                    <mesh position={[0.41, 0.22, -0.06]}>
-                        <boxGeometry args={[0.05, 0.30, 0.58]} />
-                        {mat}
-                    </mesh>
-                    {/* Back panel */}
-                    <mesh position={[0, 0.16, -0.42]}>
-                        <boxGeometry args={[0.78, 0.40, 0.05]} />
-                        {mat}
-                    </mesh>
-                    {/* Bun — cube on back of head */}
-                    <mesh position={[0, 0.32, -0.48]}>
-                        <boxGeometry args={[0.18, 0.18, 0.16]} />
-                        {mat}
-                    </mesh>
-                    <mesh position={[0, 0.32, -0.48]}>
-                        <boxGeometry args={[0.12, 0.12, 0.10]} />
-                        {matDark}
-                    </mesh>
-                </group>
-            );
+        case 'bun': {
+            // Pulled-back sleek top + round bun block at back of head.
+            const blocks: VoxelBlock[] = [
+                [0, 4.5, -1, 9, 1, 7, 'base'],          // Top cap (pulled back)
+                [0, 3, 3, 4, 1, 1, 'light'],            // Subtle bangs
+                [-4.5, 2.5, -0.5, 1, 3, 5, 'base'],    // Left side
+                [4.5, 2.5, -0.5, 1, 3, 5, 'base'],     // Right side
+                [0, 2, -4.5, 7, 4, 1, 'dark'],           // Back
+                [0, 4, -5.5, 3, 3, 2, 'base'],          // Bun
+                [0, 5, -5, 1.5, 1.5, 1, 'light'],       // Bun highlight
+            ];
+            return <group>{renderVoxelBlocks(blocks, mat, matDark, matLight)}</group>;
+        }
 
-        default:
-            // Default = same as 'short'
-            return (
-                <group>
-                    <mesh position={[0, 0.42, -0.06]}>
-                        <boxGeometry args={[0.84, 0.06, 0.72]} />
-                        {mat}
-                    </mesh>
-                    <mesh position={[-0.41, 0.20, -0.06]}>
-                        <boxGeometry args={[0.05, 0.36, 0.60]} />
-                        {mat}
-                    </mesh>
-                    <mesh position={[0.41, 0.20, -0.06]}>
-                        <boxGeometry args={[0.05, 0.36, 0.60]} />
-                        {mat}
-                    </mesh>
-                    <mesh position={[0, 0.15, -0.42]}>
-                        <boxGeometry args={[0.80, 0.50, 0.05]} />
-                        {mat}
-                    </mesh>
-                </group>
-            );
+        default: {
+            // Fallback: same as short.
+            const blocks: VoxelBlock[] = [
+                [0, 4.5, -0.5, 9, 1, 8, 'base'],
+                [0, 3, 3, 5, 2, 1, 'base'],
+                [-4.5, 2, 0, 1, 4, 6, 'dark'],
+                [4.5, 2, 0, 1, 4, 6, 'dark'],
+                [0, 2, -4.5, 8, 5, 1, 'dark'],
+                [0, 5.2, 0.5, 3, 0.5, 3, 'light'],
+            ];
+            return <group>{renderVoxelBlocks(blocks, mat, matDark, matLight)}</group>;
+        }
     }
 });
 
@@ -1652,45 +1451,95 @@ const AccessoryLayer = memo<{
             );
         case 'pet_cat':
             return (
-                <group position={[0.4, 0.10, 0.25]}>
-                    <mesh><boxGeometry args={[0.12, 0.1, 0.2]} />{matP}</mesh>
-                    <mesh position={[0, 0.08, 0.08]}><boxGeometry args={[0.1, 0.1, 0.1]} />{matP}</mesh>
-                    <mesh position={[-0.04, 0.15, 0.08]}><boxGeometry args={[0.03, 0.05, 0.02]} />{matP}</mesh>
-                    <mesh position={[0.04, 0.15, 0.08]}><boxGeometry args={[0.03, 0.05, 0.02]} />{matP}</mesh>
-                    <mesh position={[-0.02, 0.09, 0.14]}><boxGeometry args={[0.02, 0.02, 0.01]} />{matBlk}</mesh>
-                    <mesh position={[0.02, 0.09, 0.14]}><boxGeometry args={[0.02, 0.02, 0.01]} />{matBlk}</mesh>
-                    <mesh position={[-0.04, 0.04, -0.12]} rotation={[0.6, 0.3, 0]}>
-                        <boxGeometry args={[0.02, 0.15, 0.02]} />{matP}
+                <group position={[0.48, 0.10, 0.26]}>
+                    <mesh position={[0, 0.13, 0]}>
+                        <boxGeometry args={[0.22, 0.10, 0.14]} />
+                        <meshStandardMaterial color="#C96B3B" roughness={0.88} />
                     </mesh>
-                    {/* Legs */}
-                    {[[-0.04, -0.08, 0.06], [0.04, -0.08, 0.06], [-0.04, -0.08, -0.06], [0.04, -0.08, -0.06]].map((pos, i) => (
-                        <mesh key={`leg${i}`} position={pos as [number, number, number]}>
-                            <boxGeometry args={[0.025, 0.06, 0.025]} />{matP}
-                        </mesh>
+                    <mesh position={[0, 0.23, 0.10]}>
+                        <boxGeometry args={[0.12, 0.10, 0.12]} />
+                        <meshStandardMaterial color="#D77A4A" roughness={0.86} />
+                    </mesh>
+                    <mesh position={[0, 0.19, 0.18]}>
+                        <boxGeometry args={[0.06, 0.04, 0.06]} />
+                        <meshStandardMaterial color="#F2D7C6" roughness={0.9} />
+                    </mesh>
+                    <mesh position={[-0.04, 0.29, 0.09]} rotation={[0, 0, -0.3]}>
+                        <boxGeometry args={[0.03, 0.06, 0.03]} />
+                        <meshStandardMaterial color="#8C4A2A" roughness={0.88} />
+                    </mesh>
+                    <mesh position={[0.04, 0.29, 0.09]} rotation={[0, 0, 0.3]}>
+                        <boxGeometry args={[0.03, 0.06, 0.03]} />
+                        <meshStandardMaterial color="#8C4A2A" roughness={0.88} />
+                    </mesh>
+                    <mesh position={[-0.025, 0.23, 0.17]}>
+                        <boxGeometry args={[0.015, 0.015, 0.01]} />
+                        {matBlk}
+                    </mesh>
+                    <mesh position={[0.025, 0.23, 0.17]}>
+                        <boxGeometry args={[0.015, 0.015, 0.01]} />
+                        {matBlk}
+                    </mesh>
+                    <mesh position={[0, 0.20, -0.14]} rotation={[0.75, 0, 0]}>
+                        <boxGeometry args={[0.025, 0.18, 0.025]} />
+                        <meshStandardMaterial color="#8C4A2A" roughness={0.88} />
+                    </mesh>
+                    {[[-0.06, 0.04, 0.05], [0.06, 0.04, 0.05], [-0.06, 0.04, -0.04], [0.06, 0.04, -0.04]].map((pos, i) => (
+                        <group key={`cat-leg-${i}`} position={pos as [number, number, number]}>
+                            <mesh>
+                                <boxGeometry args={[0.03, 0.08, 0.03]} />
+                                <meshStandardMaterial color="#B45E32" roughness={0.9} />
+                            </mesh>
+                            <mesh position={[0, -0.035, 0]}>
+                                <boxGeometry args={[0.04, 0.01, 0.04]} />
+                                <meshStandardMaterial color="#F2D7C6" roughness={0.95} />
+                            </mesh>
+                        </group>
                     ))}
                 </group>
             );
         case 'pet_dog':
             return (
-                <group position={[-0.4, 0.10, 0.3]}>
-                    <mesh><boxGeometry args={[0.14, 0.1, 0.2]} />{matP}</mesh>
-                    <mesh position={[0, 0.08, 0.1]}><boxGeometry args={[0.1, 0.1, 0.1]} />{matP}</mesh>
-                    <mesh position={[0, 0.06, 0.18]}><boxGeometry args={[0.06, 0.04, 0.06]} />{matDk}</mesh>
-                    <mesh position={[0, 0.07, 0.21]}><boxGeometry args={[0.03, 0.03, 0.01]} />{matBlk}</mesh>
-                    <mesh position={[-0.06, 0.12, 0.08]} rotation={[0, 0, -0.4]}>
-                        <boxGeometry args={[0.04, 0.06, 0.02]} />{matDk}
+                <group position={[-0.50, 0.10, 0.30]}>
+                    <mesh position={[0, 0.13, 0]}>
+                        <boxGeometry args={[0.24, 0.12, 0.16]} />
+                        <meshStandardMaterial color="#B07145" roughness={0.86} />
                     </mesh>
-                    <mesh position={[0.06, 0.12, 0.08]} rotation={[0, 0, 0.4]}>
-                        <boxGeometry args={[0.04, 0.06, 0.02]} />{matDk}
+                    <mesh position={[0, 0.23, 0.11]}>
+                        <boxGeometry args={[0.13, 0.11, 0.12]} />
+                        <meshStandardMaterial color="#C48153" roughness={0.84} />
                     </mesh>
-                    <mesh position={[0, 0.08, -0.12]} rotation={[-0.6, 0, 0]}>
-                        <boxGeometry args={[0.02, 0.1, 0.02]} />{matP}
+                    <mesh position={[0, 0.19, 0.19]}>
+                        <boxGeometry args={[0.07, 0.05, 0.08]} />
+                        <meshStandardMaterial color="#F3E2C5" roughness={0.92} />
                     </mesh>
-                    {/* Legs */}
-                    {[[-0.05, -0.08, 0.06], [0.05, -0.08, 0.06], [-0.05, -0.08, -0.06], [0.05, -0.08, -0.06]].map((pos, i) => (
-                        <mesh key={`leg${i}`} position={pos as [number, number, number]}>
-                            <boxGeometry args={[0.03, 0.06, 0.03]} />{matP}
-                        </mesh>
+                    <mesh position={[0, 0.21, 0.24]}>
+                        <boxGeometry args={[0.03, 0.03, 0.01]} />
+                        {matBlk}
+                    </mesh>
+                    <mesh position={[-0.05, 0.27, 0.09]} rotation={[0, 0, -0.5]}>
+                        <boxGeometry args={[0.04, 0.08, 0.03]} />
+                        <meshStandardMaterial color="#5E3820" roughness={0.9} />
+                    </mesh>
+                    <mesh position={[0.05, 0.27, 0.09]} rotation={[0, 0, 0.5]}>
+                        <boxGeometry args={[0.04, 0.08, 0.03]} />
+                        <meshStandardMaterial color="#5E3820" roughness={0.9} />
+                    </mesh>
+                    <mesh position={[0, 0.19, -0.16]} rotation={[-0.75, 0, 0]}>
+                        <boxGeometry args={[0.025, 0.16, 0.025]} />
+                        <meshStandardMaterial color="#8B5A36" roughness={0.88} />
+                    </mesh>
+                    {[[-0.07, 0.04, 0.05], [0.07, 0.04, 0.05], [-0.07, 0.04, -0.04], [0.07, 0.04, -0.04]].map((pos, i) => (
+                        <group key={`dog-leg-${i}`} position={pos as [number, number, number]}>
+                            <mesh>
+                                <boxGeometry args={[0.04, 0.08, 0.04]} />
+                                <meshStandardMaterial color="#8B5A36" roughness={0.9} />
+                            </mesh>
+                            <mesh position={[0, -0.035, 0]}>
+                                <boxGeometry args={[0.05, 0.01, 0.05]} />
+                                <meshStandardMaterial color="#F3E2C5" roughness={0.95} />
+                            </mesh>
+                        </group>
                     ))}
                 </group>
             );
@@ -1802,24 +1651,32 @@ const AccessoryLayer = memo<{
             );
         case 'pet_robo':
             return (
-                <group position={[-0.38, 0.16, 0.3]}>
-                    <mesh><boxGeometry args={[0.16, 0.1, 0.2]} />
-                        <meshStandardMaterial color="#888888" roughness={0.15} metalness={0.8} />
+                <group position={[-0.52, 0.10, 0.28]}>
+                    <mesh position={[0, 0.14, 0]}>
+                        <boxGeometry args={[0.22, 0.12, 0.16]} />
+                        <meshStandardMaterial color="#8B949E" roughness={0.18} metalness={0.82} />
                     </mesh>
-                    <mesh position={[0, 0.08, 0.06]}><boxGeometry args={[0.12, 0.08, 0.1]} />
-                        <meshStandardMaterial color="#999999" roughness={0.15} metalness={0.8} />
+                    <mesh position={[0, 0.25, 0.04]}>
+                        <boxGeometry args={[0.14, 0.10, 0.12]} />
+                        <meshStandardMaterial color="#A6ADB7" roughness={0.18} metalness={0.84} />
                     </mesh>
-                    <mesh position={[-0.03, 0.1, 0.12]}><boxGeometry args={[0.02, 0.02, 0.02]} />{matGlow}</mesh>
-                    <mesh position={[0.03, 0.1, 0.12]}><boxGeometry args={[0.02, 0.02, 0.02]} />{matGlow}</mesh>
-                    <mesh position={[0, 0.15, 0.06]}><boxGeometry args={[0.02, 0.06, 0.02]} />
+                    <mesh position={[-0.03, 0.25, 0.11]}><boxGeometry args={[0.02, 0.02, 0.02]} />{matGlow}</mesh>
+                    <mesh position={[0.03, 0.25, 0.11]}><boxGeometry args={[0.02, 0.02, 0.02]} />{matGlow}</mesh>
+                    <mesh position={[0, 0.31, 0.04]}><boxGeometry args={[0.02, 0.08, 0.02]} />
                         <meshStandardMaterial color="#aaaaaa" roughness={0.1} metalness={0.9} />
                     </mesh>
-                    <mesh position={[0, 0.19, 0.06]}><boxGeometry args={[0.03, 0.03, 0.03]} />{matGlow}</mesh>
-                    {[[-0.05, -0.08, 0.06], [0.05, -0.08, 0.06], [-0.05, -0.08, -0.06], [0.05, -0.08, -0.06]].map((pos, i) => (
-                        <mesh key={i} position={pos as [number, number, number]}>
-                            <boxGeometry args={[0.03, 0.06, 0.03]} />
-                            <meshStandardMaterial color="#666666" roughness={0.2} metalness={0.8} />
-                        </mesh>
+                    <mesh position={[0, 0.36, 0.04]}><boxGeometry args={[0.03, 0.03, 0.03]} />{matGlow}</mesh>
+                    {[[-0.07, 0.05, 0.04], [0.07, 0.05, 0.04], [-0.07, 0.05, -0.04], [0.07, 0.05, -0.04]].map((pos, i) => (
+                        <group key={`robo-leg-${i}`} position={pos as [number, number, number]}>
+                            <mesh>
+                                <boxGeometry args={[0.04, 0.10, 0.04]} />
+                                <meshStandardMaterial color="#67707A" roughness={0.22} metalness={0.78} />
+                            </mesh>
+                            <mesh position={[0, -0.045, 0]}>
+                                <boxGeometry args={[0.06, 0.02, 0.06]} />
+                                <meshStandardMaterial color="#444C56" roughness={0.24} metalness={0.8} />
+                            </mesh>
+                        </group>
                     ))}
                 </group>
             );

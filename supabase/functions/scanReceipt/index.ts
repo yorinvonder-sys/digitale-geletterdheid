@@ -15,7 +15,7 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { getAccessToken, getVertexUrl } from "../_shared/vertexAuth.ts";
 import { buildCorsHeaders, rejectDisallowedBrowserRequest } from "../_shared/cors.ts";
-import { checkRateLimit, rateLimitResponse, rateLimitHeaders } from "../_shared/rateLimiter.ts";
+import { checkDurableRateLimit, rateLimitResponse, rateLimitHeaders } from "../_shared/rateLimiter.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
@@ -70,7 +70,7 @@ Deno.serve(async (req: Request) => {
     }
 
     // Rate limit: 5 requests per minute per user (heavy operation)
-    const rateCheck = checkRateLimit(user.id, { maxRequests: 5, windowMs: 60_000 });
+    const rateCheck = await checkDurableRateLimit(user.id, { maxRequests: 5, windowMs: 60_000 });
     if (!rateCheck.allowed) {
         return rateLimitResponse(rateCheck, corsHeaders);
     }

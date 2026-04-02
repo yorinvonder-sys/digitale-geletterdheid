@@ -57,7 +57,7 @@ serve(async (req: Request) => {
       feedbackRes, activitiesRes, auditRes, surveysRes, surveyFeedbackRes,
       messagesRes, libraryRes, duelsRes, devTasksRes, devMilestonesRes,
       devPlansRes, devSettingsRes, studentConsentsRes, parentalConsentReqRes,
-      peerFeedbackRes,
+      peerFeedbackRes, wellbeingRes, nulmetingRes, overridesRes,
     ] = await Promise.all([
       supabase.from('users').select('*').eq('id', uid).single(),
       supabase.from('mission_progress').select('*').eq('user_id', uid),
@@ -79,6 +79,9 @@ serve(async (req: Request) => {
       supabase.from('student_consents').select('*').eq('student_id', uid),
       supabase.from('parental_consent_requests').select('*').eq('student_id', uid),
       supabase.from('peer_feedback').select('*').or(`from_student_id.eq.${uid},to_student_id.eq.${uid}`),
+      supabase.from('wellbeing_alerts').select('id, category, severity, created_at').eq('student_id', uid),
+      supabase.from('nulmeting_results').select('*').eq('user_id', uid),
+      supabase.from('teacher_step_overrides').select('*').eq('student_id', uid),
     ]);
 
     const exportDate = new Date().toISOString();
@@ -111,6 +114,9 @@ serve(async (req: Request) => {
       student_consents: studentConsentsRes.data ?? [],
       parental_consent_requests: parentalConsentReqRes.data ?? [],
       peer_feedback: peerFeedbackRes.data ?? [],
+      wellbeing_alerts: wellbeingRes.data ?? [],
+      nulmeting_results: nulmetingRes.data ?? [],
+      teacher_step_overrides: overridesRes.data ?? [],
     };
 
     await supabase.from('audit_logs').insert({

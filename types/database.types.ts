@@ -12,31 +12,6 @@ export type Database = {
   __InternalSupabase: {
     PostgrestVersion: "14.1"
   }
-  graphql_public: {
-    Tables: {
-      [_ in never]: never
-    }
-    Views: {
-      [_ in never]: never
-    }
-    Functions: {
-      graphql: {
-        Args: {
-          extensions?: Json
-          operationName?: string
-          query?: string
-          variables?: Json
-        }
-        Returns: Json
-      }
-    }
-    Enums: {
-      [_ in never]: never
-    }
-    CompositeTypes: {
-      [_ in never]: never
-    }
-  }
   public: {
     Tables: {
       accountant_assets: {
@@ -86,6 +61,36 @@ export type Database = {
           purchase_price?: number
           residual_value?: number
           useful_life_years?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
+      accountant_backup_log: {
+        Row: {
+          backup_date: string
+          backup_type: string
+          drive_file_id: string | null
+          file_name: string | null
+          file_size_bytes: number | null
+          id: string
+          user_id: string
+        }
+        Insert: {
+          backup_date?: string
+          backup_type?: string
+          drive_file_id?: string | null
+          file_name?: string | null
+          file_size_bytes?: number | null
+          id?: string
+          user_id: string
+        }
+        Update: {
+          backup_date?: string
+          backup_type?: string
+          drive_file_id?: string | null
+          file_name?: string | null
+          file_size_bytes?: number | null
+          id?: string
           user_id?: string
         }
         Relationships: []
@@ -754,6 +759,36 @@ export type Database = {
         }
         Relationships: []
       }
+      data_for_data_answers: {
+        Row: {
+          answers: Json
+          completed_at: string | null
+          created_at: string
+          id: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          answers?: Json
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          answers?: Json
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       developer_plans: {
         Row: {
           created_at: string | null
@@ -895,6 +930,27 @@ export type Database = {
           status?: string
           student_class?: string | null
           winner_id?: string | null
+        }
+        Relationships: []
+      }
+      edge_request_limits: {
+        Row: {
+          key: string
+          request_count: number
+          updated_at: string
+          window_started_at: string
+        }
+        Insert: {
+          key: string
+          request_count?: number
+          updated_at?: string
+          window_started_at: string
+        }
+        Update: {
+          key?: string
+          request_count?: number
+          updated_at?: string
+          window_started_at?: string
         }
         Relationships: []
       }
@@ -1080,6 +1136,78 @@ export type Database = {
         }
         Relationships: []
       }
+      google_drive_connections: {
+        Row: {
+          access_token: string | null
+          access_token_expires_at: string | null
+          connected_at: string
+          google_email: string | null
+          id: string
+          last_backup_at: string | null
+          last_backup_error: string | null
+          last_backup_status: string | null
+          refresh_token_encrypted: string
+          root_folder_id: string | null
+          user_id: string
+        }
+        Insert: {
+          access_token?: string | null
+          access_token_expires_at?: string | null
+          connected_at?: string
+          google_email?: string | null
+          id?: string
+          last_backup_at?: string | null
+          last_backup_error?: string | null
+          last_backup_status?: string | null
+          refresh_token_encrypted: string
+          root_folder_id?: string | null
+          user_id: string
+        }
+        Update: {
+          access_token?: string | null
+          access_token_expires_at?: string | null
+          connected_at?: string
+          google_email?: string | null
+          id?: string
+          last_backup_at?: string | null
+          last_backup_error?: string | null
+          last_backup_status?: string | null
+          refresh_token_encrypted?: string
+          root_folder_id?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      google_drive_oauth_states: {
+        Row: {
+          consumed_at: string | null
+          created_at: string
+          expires_at: string
+          id: string
+          requested_role: string
+          state_hash: string
+          user_id: string
+        }
+        Insert: {
+          consumed_at?: string | null
+          created_at?: string
+          expires_at: string
+          id?: string
+          requested_role: string
+          state_hash: string
+          user_id: string
+        }
+        Update: {
+          consumed_at?: string | null
+          created_at?: string
+          expires_at?: string
+          id?: string
+          requested_role?: string
+          state_hash?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       highlighted_work: {
         Row: {
           data: Json | null
@@ -1194,6 +1322,141 @@ export type Database = {
           ip_hash?: string
           user_agent_hash?: string | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      nulmeting_results: {
+        Row: {
+          completed_at: string
+          created_at: string
+          details_digitale_systemen: Json | null
+          details_media_en_ai: Json | null
+          details_programmeren: Json | null
+          details_veiligheid_privacy: Json | null
+          details_welzijn_maatschappij: Json | null
+          id: string
+          niveau: string
+          overall_score: number
+          reflectie_dilemma: string | null
+          score_digitale_systemen: number
+          score_media_en_ai: number
+          score_programmeren: number
+          score_veiligheid_privacy: number
+          score_welzijn_maatschappij: number
+          time_digitale_systemen: number | null
+          time_media_en_ai: number | null
+          time_programmeren: number | null
+          time_veiligheid_privacy: number | null
+          time_welzijn_maatschappij: number | null
+          total_time_seconds: number
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string
+          created_at?: string
+          details_digitale_systemen?: Json | null
+          details_media_en_ai?: Json | null
+          details_programmeren?: Json | null
+          details_veiligheid_privacy?: Json | null
+          details_welzijn_maatschappij?: Json | null
+          id?: string
+          niveau: string
+          overall_score: number
+          reflectie_dilemma?: string | null
+          score_digitale_systemen: number
+          score_media_en_ai: number
+          score_programmeren: number
+          score_veiligheid_privacy: number
+          score_welzijn_maatschappij: number
+          time_digitale_systemen?: number | null
+          time_media_en_ai?: number | null
+          time_programmeren?: number | null
+          time_veiligheid_privacy?: number | null
+          time_welzijn_maatschappij?: number | null
+          total_time_seconds: number
+          user_id: string
+        }
+        Update: {
+          completed_at?: string
+          created_at?: string
+          details_digitale_systemen?: Json | null
+          details_media_en_ai?: Json | null
+          details_programmeren?: Json | null
+          details_veiligheid_privacy?: Json | null
+          details_welzijn_maatschappij?: Json | null
+          id?: string
+          niveau?: string
+          overall_score?: number
+          reflectie_dilemma?: string | null
+          score_digitale_systemen?: number
+          score_media_en_ai?: number
+          score_programmeren?: number
+          score_veiligheid_privacy?: number
+          score_welzijn_maatschappij?: number
+          time_digitale_systemen?: number | null
+          time_media_en_ai?: number | null
+          time_programmeren?: number | null
+          time_veiligheid_privacy?: number | null
+          time_welzijn_maatschappij?: number | null
+          total_time_seconds?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
+      parental_consent_requests: {
+        Row: {
+          approved_at: string | null
+          approved_ip_hash: string | null
+          approved_user_agent_hash: string | null
+          consent_types: string[]
+          expires_at: string
+          id: string
+          parent_email: string
+          parent_name: string
+          requested_at: string
+          requested_by: string
+          school_id: string
+          school_name: string
+          status: string
+          student_id: string
+          student_name: string
+          token_hash: string
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_ip_hash?: string | null
+          approved_user_agent_hash?: string | null
+          consent_types: string[]
+          expires_at: string
+          id?: string
+          parent_email: string
+          parent_name: string
+          requested_at?: string
+          requested_by: string
+          school_id: string
+          school_name: string
+          status?: string
+          student_id: string
+          student_name: string
+          token_hash: string
+        }
+        Update: {
+          approved_at?: string | null
+          approved_ip_hash?: string | null
+          approved_user_agent_hash?: string | null
+          consent_types?: string[]
+          expires_at?: string
+          id?: string
+          parent_email?: string
+          parent_name?: string
+          requested_at?: string
+          requested_by?: string
+          school_id?: string
+          school_name?: string
+          status?: string
+          student_id?: string
+          student_name?: string
+          token_hash?: string
         }
         Relationships: []
       }
@@ -1572,6 +1835,7 @@ export type Database = {
           max_year_vwo: number | null
           period_naming: string | null
           periods_per_year: number | null
+          scheduling_model: string | null
           school_id: string
           updated_at: string | null
         }
@@ -1584,6 +1848,7 @@ export type Database = {
           max_year_vwo?: number | null
           period_naming?: string | null
           periods_per_year?: number | null
+          scheduling_model?: string | null
           school_id: string
           updated_at?: string | null
         }
@@ -1596,10 +1861,120 @@ export type Database = {
           max_year_vwo?: number | null
           period_naming?: string | null
           periods_per_year?: number | null
+          scheduling_model?: string | null
           school_id?: string
           updated_at?: string | null
         }
         Relationships: []
+      }
+      school_container_missions: {
+        Row: {
+          container_id: string
+          created_at: string | null
+          id: string
+          is_required: boolean | null
+          is_review: boolean | null
+          mission_id: string
+          sort_order: number
+        }
+        Insert: {
+          container_id: string
+          created_at?: string | null
+          id?: string
+          is_required?: boolean | null
+          is_review?: boolean | null
+          mission_id: string
+          sort_order: number
+        }
+        Update: {
+          container_id?: string
+          created_at?: string | null
+          id?: string
+          is_required?: boolean | null
+          is_review?: boolean | null
+          mission_id?: string
+          sort_order?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "school_container_missions_container_id_fkey"
+            columns: ["container_id"]
+            isOneToOne: false
+            referencedRelation: "school_containers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      school_containers: {
+        Row: {
+          assessment_id: string | null
+          color_key: string | null
+          container_type: string
+          created_at: string | null
+          end_date: string | null
+          icon_key: string | null
+          id: string
+          is_review_gate: boolean | null
+          label: string
+          metadata: Json | null
+          school_id: string
+          slo_focus: string[] | null
+          slo_focus_vso: string[] | null
+          sort_order: number
+          start_date: string | null
+          subtitle: string | null
+          updated_at: string | null
+          year_group: number
+        }
+        Insert: {
+          assessment_id?: string | null
+          color_key?: string | null
+          container_type?: string
+          created_at?: string | null
+          end_date?: string | null
+          icon_key?: string | null
+          id?: string
+          is_review_gate?: boolean | null
+          label: string
+          metadata?: Json | null
+          school_id: string
+          slo_focus?: string[] | null
+          slo_focus_vso?: string[] | null
+          sort_order: number
+          start_date?: string | null
+          subtitle?: string | null
+          updated_at?: string | null
+          year_group: number
+        }
+        Update: {
+          assessment_id?: string | null
+          color_key?: string | null
+          container_type?: string
+          created_at?: string | null
+          end_date?: string | null
+          icon_key?: string | null
+          id?: string
+          is_review_gate?: boolean | null
+          label?: string
+          metadata?: Json | null
+          school_id?: string
+          slo_focus?: string[] | null
+          slo_focus_vso?: string[] | null
+          sort_order?: number
+          start_date?: string | null
+          subtitle?: string | null
+          updated_at?: string | null
+          year_group?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_school_containers_school"
+            columns: ["school_id"]
+            isOneToOne: false
+            referencedRelation: "school_configs"
+            referencedColumns: ["school_id"]
+          },
+        ]
       }
       settings: {
         Row: {
@@ -1968,6 +2343,47 @@ export type Database = {
         }
         Relationships: []
       }
+      teacher_step_overrides: {
+        Row: {
+          created_at: string
+          id: string
+          mission_id: string
+          override_type: string
+          reason: string | null
+          step_number: number
+          student_id: string
+          teacher_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          mission_id: string
+          override_type: string
+          reason?: string | null
+          step_number: number
+          student_id: string
+          teacher_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          mission_id?: string
+          override_type?: string
+          reason?: string | null
+          step_number?: number
+          student_id?: string
+          teacher_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "teacher_step_overrides_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_blocks: {
         Row: {
           blocked_id: string
@@ -2324,6 +2740,15 @@ export type Database = {
         | { Args: { p_amount: number; p_user_id: string }; Returns: Json }
         | { Args: { p_amount: number; p_user_id: string }; Returns: Json }
       cleanup_expired_mfa_sessions: { Args: never; Returns: number }
+      consume_edge_rate_limit: {
+        Args: { p_key: string; p_limit: number; p_window_seconds: number }
+        Returns: {
+          allowed: boolean
+          limit_value: number
+          remaining: number
+          retry_after_seconds: number
+        }[]
+      }
       create_mfa_trust: {
         Args: {
           p_duration_minutes?: number
@@ -2335,12 +2760,27 @@ export type Database = {
       }
       delete_student: { Args: { p_student_id: string }; Returns: boolean }
       get_caller_school_id: { Args: never; Returns: string }
+      get_data_for_data_round_stats: {
+        Args: never
+        Returns: {
+          deal_percentage: number
+          round_index: number
+          scope: string
+        }[]
+      }
       get_my_class: { Args: never; Returns: string }
       get_my_role: { Args: never; Returns: string }
       get_my_school_id: { Args: never; Returns: string }
       get_next_invoice_number: {
         Args: { p_user_id: string; p_year: number }
         Returns: string
+      }
+      get_random_peer_for_review: {
+        Args: { p_mission_id: string }
+        Returns: {
+          display_name: string
+          student_id: string
+        }[]
       }
       get_sos_status_for_user: {
         Args: { p_alert_id: string; p_trip_id: string; p_user_name: string }
@@ -2361,20 +2801,62 @@ export type Database = {
       increment_play_count: { Args: { game_id: string }; Returns: undefined }
       is_admin: { Args: never; Returns: boolean }
       is_belgie_admin: { Args: never; Returns: boolean }
+      is_developer: { Args: never; Returns: boolean }
       is_mfa_aal2: { Args: never; Returns: boolean }
       is_teacher: { Args: never; Returns: boolean }
       is_teacher_in_school: {
         Args: { target_school_id: string }
         Returns: boolean
       }
+      override_student_step: {
+        Args: {
+          p_mission_id: string
+          p_override_type: string
+          p_reason?: string
+          p_step_number: number
+          p_student_id: string
+        }
+        Returns: Json
+      }
       reset_student_progress: {
         Args: { p_student_id: string }
         Returns: boolean
       }
       revoke_all_mfa_trust: { Args: { p_user_id: string }; Returns: undefined }
+      set_own_consent: {
+        Args: {
+          p_consent_type: string
+          p_consent_version?: string
+          p_granted: boolean
+        }
+        Returns: boolean
+      }
+      student_requires_parental_consent: {
+        Args: { p_student_id?: string }
+        Returns: boolean
+      }
+      submit_data_for_data_answers: {
+        Args: { p_answers: Json; p_status?: string }
+        Returns: boolean
+      }
+      submit_peer_feedback: {
+        Args: {
+          p_criteria?: Json
+          p_feedback_text: string
+          p_mission_id: string
+          p_rating: number
+          p_to_student_id: string
+        }
+        Returns: string
+      }
+      trigger_gdrive_backup: { Args: never; Returns: undefined }
       unvote_on_idea: { Args: { p_idea_id: string }; Returns: Json }
       update_student_stats: { Args: { p_stats: Json }; Returns: undefined }
       vote_on_idea: { Args: { p_idea_id: string }; Returns: Json }
+      vote_peer_feedback_helpful: {
+        Args: { p_feedback_id: string; p_helpful: boolean }
+        Returns: boolean
+      }
     }
     Enums: {
       [_ in never]: never
@@ -2503,9 +2985,6 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
-  graphql_public: {
-    Enums: {},
-  },
   public: {
     Enums: {},
   },

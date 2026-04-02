@@ -4,21 +4,17 @@
  * We store a short-lived trusted session after MFA verification so the backend
  * can use it in additional risk checks and revoke it on logout/password changes.
  */
-import { supabase, EDGE_FUNCTION_URL } from './supabase';
+import { EDGE_FUNCTION_URL, authenticatedFetch } from './supabase';
 
 async function callMfaTrust<T = any>(method: 'GET' | 'POST' | 'DELETE'): Promise<T> {
-    const { data: { session } } = await supabase.auth.getSession();
-
-    if (!session?.access_token) {
-        throw new Error('Authenticatie vereist.');
-    }
-
-    const response = await fetch(`${EDGE_FUNCTION_URL}/mfa-trust`, {
+    const response = await authenticatedFetch(`${EDGE_FUNCTION_URL}/mfa-trust`, {
         method,
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${session.access_token}`,
         },
+    }, {
+        onSessionExpired: 'throw',
+        sessionExpiredMessage: 'Authenticatie vereist.',
     });
 
     if (!response.ok) {

@@ -4,25 +4,31 @@ import React, { useState, useEffect, Suspense, useMemo } from 'react';
 import { ParentUser, UserStats, RoleId, AvatarConfig } from './types';
 import type { NulmetingResult } from '@/components/assessment/escaperoom/types';
 import { isAgentRoleId } from './config/agentRoleIds';
-import { subscribeToAuthChanges, logout } from './services/authService';
+import { isTemplateMission } from './config/templateRegistry';
 import { supabase } from './services/supabase';
 import { Rocket, Loader2, ArrowLeft, Lock, GraduationCap, Users, Code2 } from 'lucide-react';
-import { logger } from './utils/logger';
+import { sanitizeForDb } from './utils/sanitizeForDb';
 import { logActivity, updateClassroomConfig } from './services/teacherService';
+import { useAuth } from './hooks/useAuth';
+import { useNavigation } from './hooks/useNavigation';
+import { useFocusMode } from './hooks/useFocusMode';
 import { awardXP } from './services/XPService';
 import { TutorialProvider, STUDENT_TUTORIAL_STEPS, STUDENT_STORAGE_KEY, TutorialStep } from './contexts/TutorialContext';
+import { AccessibilityProvider } from './contexts/AccessibilityContext';
 import { lazyWithRetry } from './utils/lazyWithRetry';
 import { SecureErrorBoundary } from './components/SecureErrorBoundary';
-import { deserializeClassroomConfig } from './utils/classroomConfig';
 const AiTransparencyNotice = lazyWithRetry(() => import('./components/consent/AiTransparencyNotice').then(m => ({ default: m.AiTransparencyNotice })));
 import { useTeacherMessages } from './hooks/useTeacherMessages';
 import { TeacherMessagePopup } from './components/TeacherMessagePopup';
 import { ExitConfirmDialog } from './components/ExitConfirmDialog';
 import { Toast } from './components/Toast';
+import { useSchoolContainers } from './hooks/useSchoolContainers';
+import { ContainerConfig } from './config/containerTypes';
 
 
 import './styles/app.css';
 import './styles/authenticated.css';
+import './styles/accessibility.css';
 
 // Code splitting: Lazy load heavy components with automatic retry on failure
 const ProjectZeroDashboard = lazyWithRetry(() => import('./components/ProjectZeroDashboard').then(m => ({ default: m.ProjectZeroDashboard })));
@@ -53,6 +59,7 @@ const AccessControlEngineerMission = lazyWithRetry(() => import('./components/mi
 const DataVoorDataMission = lazyWithRetry(() => import('./components/missions/DataVoorDataMission').then(m => ({ default: m.DataVoorDataMission })));
 const PeerFeedbackPanel = lazyWithRetry(() => import('./components/missions/PeerFeedbackPanel').then(m => ({ default: m.PeerFeedbackPanel })));
 const NulmetingFlow = lazyWithRetry(() => import('./components/assessment/escaperoom/NulmetingFlow').then(m => ({ default: m.NulmetingFlow })));
+const TemplateMissionRouter = lazyWithRetry(() => import('./components/missions/templates/TemplateMissionRouter').then(m => ({ default: m.TemplateMissionRouter })));
 
 const LoadingFallback = () => (
     <div className="flex-1 flex items-center justify-center bg-slate-50" role="status" aria-live="polite">
@@ -80,38 +87,47 @@ const DEDICATED_MISSIONS = new Set([
 
 /** Authenticated app shell — only loaded for private/authenticated flows. Public routes use AppRouter. */
 export function AuthenticatedApp() {
-    logger.log("AuthenticatedApp Component Mounting...");
-    const [user, setUser] = useState<ParentUser | null>(null);
-    const [activeModule, setActiveModule] = useState<string | null>(null);
-    const [pendingLibraryItem, setPendingLibraryItem] = useState<any | null>(null);
-    const [isProfileOpen, setIsProfileOpen] = useState(false);
-    const [initialProfileTab, setInitialProfileTab] = useState<'profile' | 'shop' | 'trophies' | 'privacy'>('profile');
-    const [loading, setLoading] = useState(true);
-    const [viewMode, setViewMode] = useState<'assignments' | 'monitoring'>('monitoring');
-    const [activeWeek, setActiveWeek] = useState(2);
-    const [showGames, setShowGames] = useState(false);
-    const [initialGameId, setInitialGameId] = useState<string | null>(null);
-    const [gamesEnabled, setGamesEnabled] = useState(true);
-    const [activeYearGroup, setActiveYearGroup] = useState<number>(1);
-    const [devViewOverride, setDevViewOverride] = useState<'developer' | 'student' | 'teacher'>('developer');
-    const [focusMode, setFocusMode] = useState(false);
-    const [focusMissionId, setFocusMissionId] = useState<string | null>(null);
-    const [focusMissionTitle, setFocusMissionTitle] = useState<string | null>(null);
-    const [focusModeAcknowledged, setFocusModeAcknowledged] = useState(false);
-    // NEW: Robust tracking of focus state to prevent reset loops
-    const lastProcessedFocusMissionId = React.useRef<string | null>(null);
-    const lastProcessedFocusMode = React.useRef<boolean>(false);
+    const { user, setUser, loading, handleLogout } = useAuth();
+    const {
+        activeModule, setActiveModule,
+        pendingLibraryItem, setPendingLibraryItem,
+        isProfileOpen, setIsProfileOpen,
+        initialProfileTab, setInitialProfileTab,
+        viewMode, setViewMode,
+        activeWeek, setActiveWeek,
+        showGames, setShowGames,
+        initialGameId, setInitialGameId,
+        gamesEnabled, setGamesEnabled,
+        activeYearGroup, setActiveYearGroup,
+        devViewOverride, setDevViewOverride,
+        showExitConfirm, setShowExitConfirm,
+        peerFeedbackMissionId, setPeerFeedbackMissionId,
+        handleExitModule,
+        handleRequestExitModule,
+        handleSelectModule,
+    } = useNavigation({ user });
+    const {
+        focusMode, setFocusMode,
+        focusMissionId, setFocusMissionId,
+        focusMissionTitle, setFocusMissionTitle,
+        focusModeAcknowledged, setFocusModeAcknowledged,
+        FOCUS_INTENT_KEY,
+    } = useFocusMode({ user, activeModule, handleSelectModule });
+
+    // Initialize viewMode based on user role
+    useEffect(() => {
+        if (user?.role === 'teacher' || user?.role === 'developer') setViewMode('monitoring');
+        else if (user?.role === 'student') setViewMode('assignments');
+    }, [user?.role]);
+
     // Guard against double mission completion (race condition on rapid clicks)
     const completingMissionRef = React.useRef<Set<string>>(new Set());
 
-    // NEW: Session storage key for focus intent persistence
-    const FOCUS_INTENT_KEY = 'dgskills_focus_intent';
-    const FOCUS_INTENT_TTL = 5 * 60 * 1000; // 5 minutes
+    // Flexible scheduling: load containers for the current school + year group
+    const { containers, loading: containersLoading } = useSchoolContainers(user?.schoolId, activeYearGroup);
     const [showStudentOnboarding, setShowStudentOnboarding] = useState(false);
     const [showAvatarSetup, setShowAvatarSetup] = useState(false);
     const [showNulmeting, setShowNulmeting] = useState(false);
-    const [showExitConfirm, setShowExitConfirm] = useState(false);
-    const [peerFeedbackMissionId, setPeerFeedbackMissionId] = useState<string | null>(null);
     const [toast, setToast] = useState<{ message: string; type: 'error' | 'success' | 'info' } | null>(null);
     const [isOnline, setIsOnline] = useState(navigator.onLine);
 
@@ -138,149 +154,6 @@ export function AuthenticatedApp() {
         enabled: !!user && user.role === 'student' && !!studentClass
     });
 
-    useEffect(() => {
-        if (!user || user.role !== 'student') return;
-        const cls = user.stats?.studentClass || user.studentClass;
-        if (!cls) return;
-
-        const channel = supabase
-            .channel(`classroom-config-${cls}`)
-            .on('postgres_changes', {
-                event: '*',
-                schema: 'public',
-                table: 'classroom_configs',
-                filter: `id=eq.${cls}`
-            }, (payload) => {
-                const config = deserializeClassroomConfig(payload.new as any);
-                if (!config) return;
-
-                // Only reset acknowledgement if focus mode changed or mission ID changed
-                const focusModeChanged = config.focusMode !== lastProcessedFocusMode.current;
-                const missionChanged = config.focusMissionId !== lastProcessedFocusMissionId.current;
-
-                if (focusModeChanged || missionChanged) {
-                    // But don't reset if we are RESTORING from session storage
-                    const stored = sessionStorage.getItem(FOCUS_INTENT_KEY);
-                    let isRestoring = false;
-                    if (stored) {
-                        try {
-                            const { missionId } = JSON.parse(stored);
-                            if (missionId === config.focusMissionId) isRestoring = true;
-                        } catch (e) { }
-                    }
-
-                    if (!isRestoring) {
-                        setFocusModeAcknowledged(false);
-                    }
-                }
-
-                lastProcessedFocusMode.current = !!config.focusMode;
-                lastProcessedFocusMissionId.current = config.focusMissionId || null;
-
-                setFocusMode(config.focusMode);
-                setFocusMissionId(config.focusMissionId || null);
-                setFocusMissionTitle(config.focusMissionTitle || null);
-
-                if (config.focusMode) {
-                    logActivity({
-                        uid: user.uid,
-                        schoolId: user.schoolId,
-                        studentName: user.displayName || 'Naamloos',
-                        type: 'focus_lost',
-                        data: config.focusMissionId
-                            ? `Focus Modus: ${config.focusMissionTitle}`
-                            : 'Focus Modus geactiveerd door docent'
-                    });
-                }
-            })
-            .subscribe();
-
-        // Initial fetch
-        supabase
-            .from('classroom_configs')
-            .select('*')
-            .eq('id', cls)
-            .single()
-            .then(({ data }) => {
-                const config = deserializeClassroomConfig(data);
-                if (config) {
-                    lastProcessedFocusMode.current = !!config.focusMode;
-                    lastProcessedFocusMissionId.current = config.focusMissionId || null;
-                    setFocusMode(config.focusMode);
-                    setFocusMissionId(config.focusMissionId || null);
-                    setFocusMissionTitle(config.focusMissionTitle || null);
-                }
-            });
-
-        return () => { supabase.removeChannel(channel); };
-    }, [user]);
-
-    useEffect(() => {
-        if (!user || user.role !== 'student' || activeModule || !focusMode || !focusMissionId) return;
-
-        // Check for pending focus intent after reload
-        try {
-            const stored = sessionStorage.getItem(FOCUS_INTENT_KEY);
-            if (stored) {
-                const { missionId, timestamp } = JSON.parse(stored);
-                const isStillValid = Date.now() - timestamp < FOCUS_INTENT_TTL;
-                const isSameMission = missionId === focusMissionId;
-
-                if (isStillValid && isSameMission) {
-                    logger.log("[FocusPersistence] Restoring focus mission after reload:", missionId);
-                    setFocusModeAcknowledged(true);
-                    handleSelectModule(missionId);
-                } else {
-                    // Stale or different mission, clean up
-                    sessionStorage.removeItem(FOCUS_INTENT_KEY);
-                }
-            }
-        } catch (e) {
-            console.error("Failed to restore focus intent:", e);
-            sessionStorage.removeItem(FOCUS_INTENT_KEY);
-        }
-    }, [user, focusMode, focusMissionId, activeModule]);
-
-    useEffect(() => {
-        let authTimeoutId: ReturnType<typeof setTimeout> | undefined;
-        const unsubscribe = subscribeToAuthChanges((u) => {
-            clearTimeout(authTimeoutId);
-            setUser(u);
-            setLoading(false);
-            if (u?.role === 'teacher') {
-                setViewMode('monitoring');
-            } else if (u?.role === 'developer') {
-                setViewMode('monitoring'); // Developers default to dashboard view
-            } else {
-                setViewMode('assignments');
-            }
-            if (u && u.role === 'student') {
-                logActivity({
-                    uid: u.uid,
-                    schoolId: u.schoolId,
-                    studentName: u.displayName || 'Naamloos',
-                    type: 'login',
-                    data: 'App geopend'
-                });
-            }
-        });
-        // Failsafe: als de auth-callback na 10s niet heeft gevuurd
-        // (corrupt token of trage DB), stop met laden en redirect naar login.
-        authTimeoutId = setTimeout(async () => {
-            // Actief opruimen: signOut stopt Supabase's interne refresh-loop.
-            try {
-                const { supabase: sb } = await import('./services/supabase');
-                await sb.auth.signOut({ scope: 'local' });
-            } catch { /* negeer */ }
-            setUser(null);
-            setLoading(false);
-        }, 10_000);
-        return () => {
-            clearTimeout(authTimeoutId);
-            unsubscribe();
-        };
-    }, []);
-
     // IMPORTANT: useMemo MUST be called before any early returns to satisfy Rules of Hooks.
     // (Moving this after early returns caused React error #310 — "Rendered more hooks than
     // during the previous render" — because the hook count changed between loading/loaded states.)
@@ -288,74 +161,9 @@ export function AuthenticatedApp() {
         STUDENT_TUTORIAL_STEPS,
     []);
 
-    const handleExitModule = () => {
-        setActiveModule(null);
-        setPendingLibraryItem(null);
-        setShowExitConfirm(false);
-
-        // Clear focus intent when explicitly exiting a module
-        sessionStorage.removeItem(FOCUS_INTENT_KEY);
-    };
-
-    const handleRequestExitModule = () => {
-        if (user?.role === 'student' && activeModule) {
-            setShowExitConfirm(true);
-        } else {
-            handleExitModule();
-        }
-    };
-
-    const handleSelectModule = (moduleId: string, libraryItemData?: any) => {
-        setActiveModule(moduleId);
-        setPendingLibraryItem(libraryItemData || null);
-
-        if (user && user.role === 'student') {
-            logActivity({
-                uid: user.uid,
-                schoolId: user.schoolId,
-                studentName: user.displayName || 'Naamloos',
-                type: 'mission_start',
-                data: `Missie gestart: ${moduleId}`,
-                missionId: moduleId
-            });
-        }
-    };
-
     const handleSaveProgress = async (stats: UserStats) => {
         if (!user) return;
         try {
-            const sanitizeForDb = (obj: any): any => {
-                if (obj === null || obj === undefined) return null;
-                if (obj instanceof Date) return obj.toISOString();
-                if (typeof obj === 'number') {
-                    if (Number.isNaN(obj) || !Number.isFinite(obj)) return null;
-                    return obj;
-                }
-                if (typeof obj === 'string') {
-                    if (obj === 'loading') return null;
-                    return obj;
-                }
-                if (typeof obj === 'boolean') return obj;
-                if (Array.isArray(obj)) {
-                    return obj
-                        .map(item => sanitizeForDb(item))
-                        .filter(item => item !== null && item !== undefined);
-                }
-                if (typeof obj === 'object') {
-                    const result: any = {};
-                    for (const [key, value] of Object.entries(obj)) {
-                        if (value === undefined) continue;
-                        if (typeof value === 'function') continue;
-                        if (typeof value === 'symbol') continue;
-                        const sanitizedValue = sanitizeForDb(value);
-                        if (sanitizedValue !== null && sanitizedValue !== undefined) {
-                            result[key] = sanitizedValue;
-                        }
-                    }
-                    return result;
-                }
-                return null;
-            };
             const cleanStats = sanitizeForDb(stats);
             const { error } = await supabase
                 .rpc('update_student_stats', { p_stats: cleanStats });
@@ -371,16 +179,6 @@ export function AuthenticatedApp() {
         try {
             // Stats updates must go through the RPC to bypass protect_stats_column trigger
             if (data.stats) {
-                const sanitizeForDb = (obj: any): any => {
-                    if (obj === undefined) return null;
-                    if (obj === null || typeof obj !== 'object') return obj;
-                    if (Array.isArray(obj)) return obj.map(sanitizeForDb);
-                    const result: any = {};
-                    for (const [key, value] of Object.entries(obj)) {
-                        if (value !== undefined) result[key] = sanitizeForDb(value);
-                    }
-                    return result;
-                };
                 const cleanStats = sanitizeForDb(data.stats);
                 const { error: rpcError } = await supabase
                     .rpc('update_student_stats', { p_stats: cleanStats });
@@ -403,11 +201,6 @@ export function AuthenticatedApp() {
             console.error("Error updating profile:", error);
             setToast({ message: 'Profiel kon niet worden bijgewerkt. Probeer het opnieuw.', type: 'error' });
         }
-    };
-
-    const handleLogout = () => {
-        // logout() garandeert altijd navigatie via finally-blok, ook bij errors.
-        void logout();
     };
 
     if (loading) {
@@ -602,7 +395,7 @@ export function AuthenticatedApp() {
 
     const renderContent = () => {
         const role =
-            activeModule && !DEDICATED_MISSIONS.has(activeModule) && isAgentRoleId(activeModule)
+            activeModule && !DEDICATED_MISSIONS.has(activeModule) && !isTemplateMission(activeModule) && isAgentRoleId(activeModule)
                 ? activeModule as RoleId
                 : undefined;
 
@@ -704,6 +497,25 @@ export function AuthenticatedApp() {
                         </button>
                     </div>
                 </div>
+            );
+        }
+
+        // Template-based missions: route to the unified TemplateMissionRouter
+        if (activeModule && isTemplateMission(activeModule)) {
+            const tmId = activeModule;
+            return (
+                <Suspense fallback={<LoadingFallback />}>
+                    <TemplateMissionRouter
+                        missionId={tmId}
+                        onBack={handleRequestExitModule}
+                        onComplete={(success) => {
+                            if (success) handleMissionComplete(tmId);
+                            else handleExitModule();
+                        }}
+                        stats={user?.stats}
+                        vsoProfile={user?.stats?.vsoProfile}
+                    />
+                </Suspense>
             );
         }
 
@@ -958,6 +770,7 @@ export function AuthenticatedApp() {
                             userRole={'student'}
                             activeYearGroup={activeYearGroup}
                             setActiveYearGroup={setActiveYearGroup}
+                            containers={containers}
                         />
                     </div>
                 );
@@ -991,6 +804,7 @@ export function AuthenticatedApp() {
                 userRole={user?.role}
                 activeYearGroup={activeYearGroup}
                 setActiveYearGroup={setActiveYearGroup}
+                containers={containers}
             />
         );
     };
@@ -1075,7 +889,7 @@ export function AuthenticatedApp() {
         </div>
     );
 
-    return user.role === 'student' ? (
+    const wrapped = user.role === 'student' ? (
         <TutorialProvider
             steps={studentTutorialSteps}
             storageKey={STUDENT_STORAGE_KEY}
@@ -1092,4 +906,10 @@ export function AuthenticatedApp() {
             {appShell}
         </TutorialProvider>
     ) : appShell;
+
+    return (
+        <AccessibilityProvider>
+            {wrapped}
+        </AccessibilityProvider>
+    );
 }

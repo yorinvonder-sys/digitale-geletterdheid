@@ -8,7 +8,8 @@
 import { serve } from 'https://deno.land/std@0.177.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import { buildCorsHeaders, rejectDisallowedBrowserRequest } from '../_shared/cors.ts';
-import { checkRateLimit, rateLimitResponse } from '../_shared/rateLimiter.ts';
+import { checkDurableRateLimit, rateLimitResponse } from '../_shared/rateLimiter.ts';
+import { getClientIp } from '../_shared/getClientIp.ts';
 
 type ConsentType = 'data_processing' | 'ai_interaction' | 'analytics' | 'peer_feedback';
 
@@ -74,9 +75,8 @@ serve(async (req: Request) => {
   }
 
   // Rate limit: 10 requests per minute per IP
-  const forwardedForRL = req.headers.get('x-forwarded-for') || '';
-  const clientIpRL = forwardedForRL.split(',')[0]?.trim() || 'unknown';
-  const rateCheck = checkRateLimit(`consent-ip:${clientIpRL}`, { maxRequests: 10, windowMs: 60_000 });
+  const clientIpRL = getClientIp(req);
+  const rateCheck = await checkDurableRateLimit(`consent-ip:${clientIpRL}`, { maxRequests: 10, windowMs: 60_000 });
   if (!rateCheck.allowed) {
     return rateLimitResponse(rateCheck, corsHeaders);
   }
@@ -123,8 +123,7 @@ serve(async (req: Request) => {
       return jsonResponse(buildPublicPayload(typedRow), 409, corsHeaders);
     }
 
-    const forwardedFor = req.headers.get('x-forwarded-for') || '';
-    const clientIp = forwardedFor.split(',')[0]?.trim() || 'unknown';
+    const clientIp = getClientIp(req);
     const userAgent = req.headers.get('user-agent') || 'unknown';
     const [approvedIpHash, approvedUserAgentHash] = await Promise.all([
       sha256(clientIp),

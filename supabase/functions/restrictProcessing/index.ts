@@ -13,6 +13,7 @@
 import { serve } from 'https://deno.land/std@0.177.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import { buildCorsHeaders, rejectDisallowedBrowserRequest } from '../_shared/cors.ts';
+import { checkDurableRateLimit, rateLimitResponse } from '../_shared/rateLimiter.ts';
 
 serve(async (req: Request) => {
   const corsHeaders = buildCorsHeaders(req, 'POST, OPTIONS');
@@ -52,6 +53,16 @@ serve(async (req: Request) => {
     }
 
     const uid = user.id;
+
+    // Rate limit: 3 requests per hour per user
+    const rateCheck = await checkDurableRateLimit(
+      `restrict-processing:${uid}`,
+      { maxRequests: 3, windowMs: 60 * 60 * 1000 },
+    );
+    if (!rateCheck.allowed) {
+      return rateLimitResponse(rateCheck, corsHeaders);
+    }
+
     const body = await req.json().catch(() => ({}));
     const reason = body?.reason ?? 'requested_via_privacy_modal';
     const restrictedAt = new Date().toISOString();

@@ -33,9 +33,8 @@ try {
             const parsed = JSON.parse(raw);
             const token = parsed?.access_token || parsed?.currentSession?.access_token;
             if (token) {
-                const payload = JSON.parse(atob(token.split('.')[1]));
-                // exp is in seconden, Date.now() in ms
-                if (payload.exp * 1000 < Date.now() + EXPIRY_BUFFER_MS) {
+                const expiryMs = getTokenExpiryMs(token);
+                if (expiryMs === null || expiryMs < Date.now() + EXPIRY_BUFFER_MS) {
                     localStorage.removeItem(activeKey);
                 }
             } else {
@@ -78,23 +77,174 @@ export interface EdgeFunctionOptions<T = any> {
     validate?: (data: unknown) => T;
 }
 
+export interface AuthenticatedFetchOptions {
+    expiryBufferMs?: number;
+    onSessionExpired?: 'redirect' | 'throw';
+    sessionExpiredMessage?: string;
+    fetcher?: (input: string, init: RequestInit) => Promise<Response>;
+}
+
+const DEFAULT_TOKEN_EXPIRY_BUFFER_MS = 2 * 60 * 1000;
+const MIN_ACCEPTABLE_TOKEN_TTL_MS = 5 * 1000;
+const DEFAULT_AUTH_ERROR_MESSAGE = 'Authenticatie vereist. Log opnieuw in.';
+let sessionExpiryHandlingInFlight = false;
+
 /** Check of een token een geldig JWT-format heeft (3 base64url-segmenten). */
 function isValidJwt(token: string): boolean {
     const parts = token.split('.');
     return parts.length === 3 && parts.every(p => p.length > 0);
 }
 
-async function getValidToken(): Promise<string> {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (session?.access_token && isValidJwt(session.access_token)) {
-        return session.access_token;
+function decodeBase64Url(input: string): string {
+    let normalized = input.replace(/-/g, '+').replace(/_/g, '/');
+    const padding = normalized.length % 4;
+    if (padding > 0) {
+        normalized += '='.repeat(4 - padding);
     }
-    // Geen geldig token → probeer te refreshen
-    const { data: { session: refreshed } } = await supabase.auth.refreshSession();
-    if (refreshed?.access_token && isValidJwt(refreshed.access_token)) {
+    return atob(normalized);
+}
+
+function getTokenExpiryMs(token: string): number | null {
+    if (!isValidJwt(token)) return null;
+
+    try {
+        const payload = JSON.parse(decodeBase64Url(token.split('.')[1]));
+        return typeof payload?.exp === 'number' ? payload.exp * 1000 : null;
+    } catch {
+        return null;
+    }
+}
+
+function isTokenFresh(token: string, expiryBufferMs: number): boolean {
+    const expiryMs = getTokenExpiryMs(token);
+    return expiryMs !== null && expiryMs > Date.now() + expiryBufferMs;
+}
+
+function withBearerToken(init: RequestInit, token: string): RequestInit {
+    const headers = new Headers(init.headers ?? undefined);
+    headers.set('Authorization', `Bearer ${token}`);
+    return {
+        ...init,
+        headers,
+    };
+}
+
+export class SessionExpiredError extends Error {
+    constructor(message = DEFAULT_AUTH_ERROR_MESSAGE) {
+        super(message);
+        this.name = 'SessionExpiredError';
+    }
+}
+
+export function isSessionExpiredError(error: unknown): error is SessionExpiredError {
+    return error instanceof SessionExpiredError;
+}
+
+export async function getFreshAccessToken(
+    expiryBufferMs = DEFAULT_TOKEN_EXPIRY_BUFFER_MS,
+    options?: { forceRefresh?: boolean }
+): Promise<string> {
+    if (!options?.forceRefresh) {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session?.access_token && isTokenFresh(session.access_token, expiryBufferMs)) {
+            sessionExpiryHandlingInFlight = false;
+            return session.access_token;
+        }
+    }
+
+    const { data: { session: refreshed }, error } = await supabase.auth.refreshSession();
+    if (error) {
+        throw new SessionExpiredError();
+    }
+
+    if (refreshed?.access_token && isTokenFresh(refreshed.access_token, MIN_ACCEPTABLE_TOKEN_TTL_MS)) {
+        sessionExpiryHandlingInFlight = false;
         return refreshed.access_token;
     }
-    throw new Error('Authenticatie vereist. Log opnieuw in.');
+
+    throw new SessionExpiredError();
+}
+
+export async function handleSessionExpired(
+    message = 'Je sessie is verlopen. Log opnieuw in.'
+): Promise<never> {
+    const error = new SessionExpiredError(message);
+
+    if (typeof window === 'undefined') {
+        throw error;
+    }
+
+    if (!sessionExpiryHandlingInFlight) {
+        sessionExpiryHandlingInFlight = true;
+
+        try {
+            await supabase.auth.signOut({ scope: 'local' });
+        } catch (signOutError) {
+            console.warn('Local signOut failed during session expiry handling:', signOutError);
+        }
+
+        try {
+            cleanupSupabaseAuthStorage({
+                forceClearActiveAuthToken: true,
+                preserveActiveCodeVerifierIfOAuthCallback: true,
+            });
+        } catch (cleanupError) {
+            console.warn('cleanupSupabaseAuthStorage failed during session expiry handling:', cleanupError);
+        }
+
+        const currentPath = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+        const hasSafeRedirectTarget =
+            currentPath.startsWith('/')
+            && !currentPath.startsWith('//')
+            && !currentPath.startsWith('/login');
+        const loginPath = hasSafeRedirectTarget
+            ? `/login?redirect=${encodeURIComponent(currentPath)}`
+            : '/login';
+
+        try {
+            window.history.replaceState({}, '', loginPath);
+            window.dispatchEvent(new Event('pathchange'));
+        } catch {
+            window.location.href = loginPath;
+        }
+    }
+
+    throw error;
+}
+
+export async function authenticatedFetch(
+    input: string,
+    init: RequestInit = {},
+    options?: AuthenticatedFetchOptions
+): Promise<Response> {
+    const expiryBufferMs = options?.expiryBufferMs ?? DEFAULT_TOKEN_EXPIRY_BUFFER_MS;
+    const onSessionExpired = options?.onSessionExpired ?? 'redirect';
+    const sessionExpiredMessage = options?.sessionExpiredMessage ?? DEFAULT_AUTH_ERROR_MESSAGE;
+    const fetcher = options?.fetcher ?? ((url: string, requestInit: RequestInit) => fetch(url, requestInit));
+
+    try {
+        const token = await getFreshAccessToken(expiryBufferMs);
+        let response = await fetcher(input, withBearerToken(init, token));
+        if (response.status !== 401) {
+            return response;
+        }
+
+        const refreshedToken = await getFreshAccessToken(expiryBufferMs, { forceRefresh: true });
+        response = await fetcher(input, withBearerToken(init, refreshedToken));
+        if (response.status !== 401) {
+            return response;
+        }
+    } catch (error) {
+        if (!isSessionExpiredError(error)) {
+            throw error;
+        }
+    }
+
+    if (onSessionExpired === 'redirect') {
+        return handleSessionExpired(sessionExpiredMessage);
+    }
+
+    throw new SessionExpiredError(sessionExpiredMessage);
 }
 
 export async function callEdgeFunction<T = any>(
@@ -102,13 +252,10 @@ export async function callEdgeFunction<T = any>(
     body?: Record<string, unknown>,
     options?: EdgeFunctionOptions<T>
 ): Promise<T> {
-    const token = await getValidToken();
-
-    const response = await fetch(`${EDGE_FUNCTION_URL}/${functionName}`, {
+    const response = await authenticatedFetch(`${EDGE_FUNCTION_URL}/${functionName}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
         },
         body: body ? JSON.stringify(body) : undefined,
     });
@@ -152,17 +299,10 @@ export async function callStreamingEdgeFunction(
     body: Record<string, unknown>,
     onChunk: (text: string) => void
 ): Promise<void> {
-    const { data: { session } } = await supabase.auth.getSession();
-
-    if (!session?.access_token) {
-        throw new Error('Authenticatie vereist. Log opnieuw in.');
-    }
-
-    const response = await fetch(`${EDGE_FUNCTION_URL}/${functionName}`, {
+    const response = await authenticatedFetch(`${EDGE_FUNCTION_URL}/${functionName}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${session.access_token}`,
         },
         body: JSON.stringify(body),
     });

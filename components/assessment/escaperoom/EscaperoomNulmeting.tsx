@@ -10,6 +10,7 @@ import { KamerDatalek } from './KamerDatalek';
 import { KamerDilemma } from './KamerDilemma';
 
 interface Props {
+  variant?: 'nulmeting' | 'eindmeting';
   onComplete: (results: NulmetingResult) => void;
   onBack: () => void;
 }
@@ -43,7 +44,7 @@ const KAMER_STIJLEN: Record<string, { dot: string; dotActive: string; shadow: st
   },
 };
 
-export const EscaperoomNulmeting: React.FC<Props> = ({ onComplete, onBack }) => {
+export const EscaperoomNulmeting: React.FC<Props> = ({ variant = 'nulmeting', onComplete, onBack }) => {
   const [stap, setStap] = useState<EscaperoomStap>('intro');
   const [scores, setScores] = useState<Partial<Record<string, KamerScore>>>({});
   const [startTijd, setStartTijd] = useState<number | null>(null);
@@ -211,18 +212,19 @@ export const EscaperoomNulmeting: React.FC<Props> = ({ onComplete, onBack }) => 
                 Digitale Escaperoom
               </h1>
               <p className="text-slate-400 text-center text-sm mb-6">
-                Nulmeting Digitale Geletterdheid
+                {variant === 'eindmeting' ? 'Eindmeting Digitale Geletterdheid' : 'Nulmeting Digitale Geletterdheid'}
               </p>
 
               <div className="bg-slate-50 rounded-xl p-4 mb-6 space-y-3">
                 <p className="text-slate-600 text-sm leading-relaxed">
-                  Welkom, agent! Je staat voor een reeks digitale kamers.
-                  In elke kamer los je een puzzel op. Zo ontdekken we wat je
-                  al weet over de digitale wereld.
+                  {variant === 'eindmeting'
+                    ? 'Welkom terug! Laten we zien hoeveel je hebt geleerd dit jaar. Dezelfde kamers, maar nu weet je veel meer.'
+                    : 'Welkom, agent! Je staat voor een reeks digitale kamers. In elke kamer los je een puzzel op. Zo ontdekken we wat je al weet over de digitale wereld.'}
                 </p>
                 <p className="text-slate-400 text-xs">
-                  Dit is geen toets — er zijn geen foute antwoorden. We willen alleen
-                  weten waar je staat, zodat we je het beste kunnen helpen.
+                  {variant === 'eindmeting'
+                    ? 'Je resultaten worden vergeleken met je nulmeting, zodat je je groei kunt zien.'
+                    : 'Dit is geen toets — er zijn geen foute antwoorden. We willen alleen weten waar je staat, zodat we je het beste kunnen helpen.'}
                 </p>
               </div>
 
@@ -364,15 +366,15 @@ export const EscaperoomNulmeting: React.FC<Props> = ({ onComplete, onBack }) => 
   const renderKamer = () => {
     switch (stap) {
       case 'kamer1':
-        return <KamerVergrendeldeLaptop onComplete={(s) => handleKamerComplete('kamer1', s)} />;
+        return <KamerVergrendeldeLaptop variant={variant} onComplete={(s) => handleKamerComplete('kamer1', s)} />;
       case 'kamer2':
-        return <KamerNepnieuwsfabriek onComplete={(s) => handleKamerComplete('kamer2', s)} />;
+        return <KamerNepnieuwsfabriek variant={variant} onComplete={(s) => handleKamerComplete('kamer2', s)} />;
       case 'kamer3':
-        return <KamerCodekluis onComplete={(s) => handleKamerComplete('kamer3', s)} />;
+        return <KamerCodekluis variant={variant} onComplete={(s) => handleKamerComplete('kamer3', s)} />;
       case 'kamer4':
-        return <KamerDatalek onComplete={(s) => handleKamerComplete('kamer4', s)} />;
+        return <KamerDatalek variant={variant} onComplete={(s) => handleKamerComplete('kamer4', s)} />;
       case 'kamer5':
-        return <KamerDilemma onComplete={(s) => handleKamerComplete('kamer5', s)} />;
+        return <KamerDilemma variant={variant} onComplete={(s) => handleKamerComplete('kamer5', s)} />;
       default:
         return null;
     }

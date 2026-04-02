@@ -1,8 +1,9 @@
 import React, { useState, lazy, Suspense } from 'react';
-import { User, Shield, Trophy, ChevronLeft, Sparkles, ShoppingBag, Palette, Crown, Headphones, Shirt, Columns as Pants, Smile, Glasses, Bot, Backpack, Zap, Scissors, X, Award, Gamepad2, BookOpen, BrainCircuit, Search, RotateCcw, Calendar, Printer, Projector, FileText, Cloud, Share2, MessageSquare, Scale, Save, Star, Heart, Laugh, Meh, Dumbbell, CheckCircle2, AlertTriangle, ShieldCheck } from 'lucide-react';
+import { User, Shield, Trophy, ChevronLeft, Sparkles, ShoppingBag, Palette, Crown, Headphones, Shirt, Columns as Pants, Smile, Glasses, Bot, Backpack, Zap, Scissors, X, Award, Gamepad2, BookOpen, BrainCircuit, Search, RotateCcw, Calendar, Printer, Projector, FileText, Cloud, Share2, MessageSquare, Scale, Save, Star, Heart, Laugh, Meh, Dumbbell, CheckCircle2, AlertTriangle, ShieldCheck, Lock } from 'lucide-react';
 import { ParentUser, UserStats, AvatarConfig, DEFAULT_AVATAR_CONFIG, EducationLevel } from '../types';
 import { LazyAvatarViewer } from './LazyAvatarViewer';
 import { AvatarViewer2D } from './AvatarViewer2D';
+import { AVATAR_HAIR_CATALOG, getAvatarHairOptionsForGender } from '../config/avatarCatalog';
 
 const ConsentManager = lazy(() => import('./consent/ConsentManager').then(m => ({ default: m.ConsentManager })));
 
@@ -65,10 +66,30 @@ const CircularColorPicker = ({ selectedColor, onSelect, label, size = 'md' }: { 
     );
 };
 
+type ShopItem = {
+    id: string;
+    type: 'gender' | 'baseModel' | 'skinColor' | 'shirtColor' | 'pantsColor' | 'hairStyle' | 'shirtStyle' | 'pantsStyle' | 'accessory' | 'expression' | 'pose';
+    value: string;
+    label: string;
+    price: number;
+    icon: React.ReactNode;
+    gender?: AvatarConfig['gender'];
+};
+
+const HAIR_SHOP_ITEMS: ShopItem[] = AVATAR_HAIR_CATALOG.map(item => ({
+    id: item.id,
+    type: 'hairStyle',
+    value: item.value,
+    label: item.label,
+    price: item.price,
+    icon: <Scissors size={16} />,
+    gender: item.gender,
+}));
+
 // Expanded Shop Catalog
 // BALANCE: Students earn ~5-10 XP per interaction. After 90 min (~40 actions), they should afford 2-3 items.
 // Target: 300-400 XP after 90 min. Cheap items: 75-100 XP. Medium: 150-200 XP. Premium: 300-500+ XP.
-const SHOP_ITEMS = [
+const SHOP_ITEMS: ShopItem[] = [
     // ═══════════════════════════════════════════════════════════════════════════════
     // LICHAAM & BASIS - Gratis basis opties voor iedereen
     // ═══════════════════════════════════════════════════════════════════════════════
@@ -88,29 +109,9 @@ const SHOP_ITEMS = [
     { id: 'skin_ebony', type: 'skinColor', value: '#614335', label: 'Huid: Ebben', price: 0, icon: <Palette size={16} /> },
 
     // ═══════════════════════════════════════════════════════════════════════════════
-    // KAPSELS - JONGENS (15 opties!)
+    // KAPSELS
     // ═══════════════════════════════════════════════════════════════════════════════
-    { id: 'hair_short', type: 'hairStyle', value: 'short', label: 'Kort', price: 0, icon: <Scissors size={16} />, gender: 'male' },
-    { id: 'hair_spiky', type: 'hairStyle', value: 'spiky', label: 'Stekeltjes', price: 0, icon: <Scissors size={16} />, gender: 'male' },
-    { id: 'hair_messy', type: 'hairStyle', value: 'messy', label: 'Wild', price: 75, icon: <Scissors size={16} />, gender: 'male' },
-    { id: 'hair_fade', type: 'hairStyle', value: 'fade', label: 'Opscheer', price: 100, icon: <Scissors size={16} />, gender: 'male' },
-    { id: 'hair_curls', type: 'hairStyle', value: 'curls', label: 'Krullen', price: 75, icon: <Scissors size={16} />, gender: 'male' },
-    { id: 'hair_buzzcut', type: 'hairStyle', value: 'buzzcut', label: 'Buzz Cut', price: 50, icon: <Scissors size={16} />, gender: 'male' },
-    { id: 'hair_mohawk', type: 'hairStyle', value: 'mohawk', label: 'Mohawk', price: 200, icon: <Scissors size={16} />, gender: 'male' },
-    { id: 'hair_afro_m', type: 'hairStyle', value: 'afro', label: 'Afro', price: 125, icon: <Scissors size={16} />, gender: 'male' },
-    { id: 'hair_sidepart', type: 'hairStyle', value: 'sidepart', label: 'Zijscheiding', price: 100, icon: <Scissors size={16} />, gender: 'male' },
-
-    // ═══════════════════════════════════════════════════════════════════════════════
-    // KAPSELS - MEISJES (15 opties!)
-    // ═══════════════════════════════════════════════════════════════════════════════
-    { id: 'hair_pigtails', type: 'hairStyle', value: 'pigtails', label: 'Staartjes', price: 0, icon: <Scissors size={16} />, gender: 'female' },
-    { id: 'hair_long', type: 'hairStyle', value: 'long', label: 'Lang Sluik', price: 0, icon: <Scissors size={16} />, gender: 'female' },
-    { id: 'hair_bob', type: 'hairStyle', value: 'bob', label: 'Boblijn', price: 75, icon: <Scissors size={16} />, gender: 'female' },
-    { id: 'hair_ponytail', type: 'hairStyle', value: 'ponytail', label: 'Paardenstaart', price: 100, icon: <Scissors size={16} />, gender: 'female' },
-    { id: 'hair_braids', type: 'hairStyle', value: 'braids', label: 'Vlechtjes', price: 75, icon: <Scissors size={16} />, gender: 'female' },
-    { id: 'hair_bun', type: 'hairStyle', value: 'bun', label: 'Knotje', price: 125, icon: <Scissors size={16} />, gender: 'female' },
-    { id: 'hair_afro_f', type: 'hairStyle', value: 'afro', label: 'Afro', price: 125, icon: <Scissors size={16} />, gender: 'female' },
-    { id: 'hair_curls_f', type: 'hairStyle', value: 'curls', label: 'Krullen', price: 75, icon: <Scissors size={16} />, gender: 'female' },
+    ...HAIR_SHOP_ITEMS,
 
     // ═══════════════════════════════════════════════════════════════════════════════
     // SHIRTS & BOVENKLEDING (15+ opties!)
@@ -310,6 +311,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
     const [showResetConfirm, setShowResetConfirm] = useState(false);
     const [xpLockInfo, setXpLockInfo] = useState<{ item: typeof SHOP_ITEMS[0]; needed: number } | null>(null);
     const equippedConfigRef = React.useRef<AvatarConfig>(stats.avatarConfig || DEFAULT_AVATAR_CONFIG);
+    const onboardingHairStyles = getAvatarHairOptionsForGender(previewConfig.gender);
 
     const handlePartClick = (part: string) => {
         // Map clicked parts to customizable categories
@@ -524,13 +526,22 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
                                 <div className="space-y-6 animate-in slide-in-from-right-4">
                                     <h3 className="text-2xl font-black text-slate-900">Kies je kapsel</h3>
                                     <div className="grid grid-cols-3 gap-3">
-                                        {SHOP_ITEMS.filter(i => i.type === 'hairStyle' && (!i.gender || i.gender === previewConfig.gender)).map(item => (
+                                        {onboardingHairStyles.map(item => (
                                             <button
                                                 key={item.id}
-                                                onClick={() => setPreviewConfig({ ...previewConfig, hairStyle: item.value as any })}
-                                                className={`p-3 rounded-xl border-2 transition-all ${previewConfig.hairStyle === item.value ? 'border-indigo-600 bg-indigo-50 ring-2 ring-indigo-100' : 'border-slate-100 hover:border-slate-200'}`}
+                                                onClick={() => !item.locked && setPreviewConfig({ ...previewConfig, hairStyle: item.value })}
+                                                disabled={item.locked}
+                                                className={`p-3 rounded-xl border-2 transition-all relative ${item.locked
+                                                    ? 'border-slate-100 bg-slate-50 text-slate-300 cursor-not-allowed'
+                                                    : previewConfig.hairStyle === item.value
+                                                        ? 'border-indigo-600 bg-indigo-50 ring-2 ring-indigo-100'
+                                                        : 'border-slate-100 hover:border-slate-200'
+                                                    }`}
                                             >
-                                                <div className="text-xs font-bold truncate text-slate-700">{item.label}</div>
+                                                <div className={`text-xs font-bold truncate flex items-center justify-center gap-1 ${item.locked ? 'text-slate-400' : 'text-slate-700'}`}>
+                                                    {item.label}
+                                                    {item.locked && <Lock size={11} className="text-indigo-400" />}
+                                                </div>
                                             </button>
                                         ))}
                                     </div>

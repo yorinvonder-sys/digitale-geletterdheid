@@ -3,8 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Users, Zap, Target, Activity, AlertTriangle, Flame, Sparkles, GraduationCap, ChevronRight, Filter, X, Search, ChevronDown, Shield, Cpu, Database, Palette, Bot, Code, Globe, User, MonitorSmartphone, BarChart3, Clock, CheckCircle2, ArrowRight, MessageSquare, Send } from 'lucide-react';
 import { StudentData, GamificationEvent } from '../../types';
 import { getMissionsForYear } from '../../config/missions';
-import { SLO_GOALS, SLO_DOMAINS } from '../../config/slo-goals';
-import { calculateStudentSLOStats } from '../../config/slo-mapping';
+import { SLO_KERNDOELEN, SloKerndoelCode } from '../../config/sloKerndoelen';
+import { calculateStudentKerndoelStats, KERNDOEL_CODES } from '../../config/slo-kerndoelen-mapping';
 import { StatCardSkeleton, Skeleton } from './Skeleton';
 import { buildSpotlightProgress, filterSpotlightsByYear, getTopSpotlightSignal } from './spotlightSignals';
 
@@ -133,54 +133,65 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
 
     // Calculate SLO progress for displayed students
     const sloProgress = useMemo(() => {
-        // Icon mapping for all 9 SLO goals
+        // Icon mapping for all 9 regulier kerndoel codes
         const iconMap: Record<string, React.ElementType> = {
-            // Domein 1: Praktische Kennis
-            'systems': MonitorSmartphone,
-            'media-info': Database,
-            'data': BarChart3,
-            'ai': Bot,
-            // Domein 2: Ontwerpen & Maken
-            'create': Palette,
-            'programming': Code,
-            // Domein 3: Gedigitaliseerde Wereld
-            'safety': Shield,
-            'self-other': User,
-            'society': Globe
+            // Domein 21: Praktische kennis & vaardigheden
+            '21A': MonitorSmartphone,
+            '21B': Database,
+            '21C': BarChart3,
+            '21D': Bot,
+            // Domein 22: Ontwerpen & maken
+            '22A': Palette,
+            '22B': Code,
+            // Domein 23: De gedigitaliseerde wereld
+            '23A': Shield,
+            '23B': User,
+            '23C': Globe
         };
 
-        // Calculate average percentage per SLO goal for displayed students
+        // Domain metadata derived from kerndoel numbers
+        const domainMeta: Record<number, { id: string; color: string }> = {
+            21: { id: 'practical', color: 'indigo' },
+            22: { id: 'creation', color: 'emerald' },
+            23: { id: 'digital-world', color: 'amber' },
+        };
+
+        // Calculate average percentage per kerndoel code for displayed students
+        const regulierCodes = KERNDOEL_CODES.filter(c => ['21A','21B','21C','21D','22A','22B','23A','23B','23C'].includes(c)) as SloKerndoelCode[];
         const sloStats: { id: string; title: string; description: string; score: number; icon: any; domainId: string; domainColor: string }[] = [];
 
-        SLO_DOMAINS.forEach(domain => {
-            domain.goals.forEach(goal => {
-                let totalPercentage = 0;
-                let studentCountWithApplicableGoals = 0;
+        regulierCodes.forEach(code => {
+            const kerndoel = SLO_KERNDOELEN[code];
+            if (!kerndoel) return;
 
-                displayedStudents.forEach(student => {
-                    const studentStats = calculateStudentSLOStats(student);
-                    const stat = studentStats[goal.id];
+            let totalPercentage = 0;
+            let studentCountWithApplicableGoals = 0;
 
-                    // Alleen meetellen als er voor deze leerling een doel gesteld is (totalWeight > 0)
-                    if (stat && stat.totalWeight > 0) {
-                        totalPercentage += stat.percentage;
-                        studentCountWithApplicableGoals++;
-                    }
-                });
+            displayedStudents.forEach(student => {
+                const studentStats = calculateStudentKerndoelStats(student);
+                const stat = studentStats[code];
 
-                const avgPercentage = studentCountWithApplicableGoals > 0
-                    ? Math.round(totalPercentage / studentCountWithApplicableGoals)
-                    : 0;
+                // Alleen meetellen als er voor deze leerling missies zijn voor dit kerndoel
+                if (stat && stat.total > 0) {
+                    totalPercentage += stat.percentage;
+                    studentCountWithApplicableGoals++;
+                }
+            });
 
-                sloStats.push({
-                    id: goal.id,
-                    title: goal.title,
-                    description: goal.description,
-                    score: avgPercentage,
-                    icon: iconMap[goal.id] || Target,
-                    domainId: domain.id,
-                    domainColor: domain.color
-                });
+            const avgPercentage = studentCountWithApplicableGoals > 0
+                ? Math.round(totalPercentage / studentCountWithApplicableGoals)
+                : 0;
+
+            const domain = domainMeta[kerndoel.domeinNummer] || { id: 'practical', color: 'indigo' };
+
+            sloStats.push({
+                id: code,
+                title: kerndoel.label,
+                description: kerndoel.omschrijving,
+                score: avgPercentage,
+                icon: iconMap[code] || Target,
+                domainId: domain.id,
+                domainColor: domain.color
             });
         });
 
@@ -758,7 +769,11 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
 
                             {/* DOMAIN-GROUPED GOALS */}
                             <div className="space-y-6">
-                                {SLO_DOMAINS.map(domain => {
+                                {[
+                                    { id: 'practical', title: 'Praktische kennis & vaardigheden', description: 'Hoe leerlingen digitale technologie en digitale media functioneel inzetten', color: 'indigo' },
+                                    { id: 'creation', title: 'Ontwerpen & maken', description: 'Digitale producten creëren en programmeren', color: 'emerald' },
+                                    { id: 'digital-world', title: 'De gedigitaliseerde wereld', description: 'Participeren in de gedigitaliseerde wereld met kritisch bewustzijn', color: 'amber' },
+                                ].map(domain => {
                                     const domainGoals = sloProgress.filter(g => g.domainId === domain.id);
                                     const avgDomainScore = domainGoals.length > 0
                                         ? Math.round(domainGoals.reduce((sum, g) => sum + g.score, 0) / domainGoals.length)

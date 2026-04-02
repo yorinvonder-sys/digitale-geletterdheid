@@ -36,6 +36,7 @@ import { TeacherHeader } from './teacher/dashboard/TeacherHeader';
 import { TeacherNavigation } from './teacher/dashboard/TeacherNavigation';
 import { TeacherModals } from './teacher/dashboard/TeacherModals';
 import { TeacherDocumentsPanel } from './teacher/TeacherDocumentsPanel';
+import { SchedulingConfigurator } from './coordinator/SchedulingConfigurator';
 
 // Lazy loaded panels
 const LazyDigitaalPaspoortTeacher = lazy(() => import('./assessment/escaperoom/DigitaalPaspoortTeacher').then(m => ({ default: m.DigitaalPaspoortTeacher })));
@@ -82,6 +83,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
     const [conceptFilter, setConceptFilter] = useState<string | null>(null);
     const [selectedStudentIdFilter, setSelectedStudentIdFilter] = useState<string | null>(null);
     const [showLiveModal, setShowLiveModal] = useState(false);
+    const [showSchedulingConfig, setShowSchedulingConfig] = useState(false);
 
     // Focus mode
     const [focusModeRemaining, setFocusModeRemaining] = useState<number>(0);
@@ -591,7 +593,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                             </PageTransition>
                         )}
 
-                        {activeTab === 'settings' && <PageTransition key="settings" className="space-y-6"><SettingsPanel classFilter={classFilter} onClassFilterChange={setClassFilter} availableClasses={classGroups} enabledMissions={enabledMissions} onToggleMission={handleToggleMission} onTestGame={onOpenGames} yearGroup={yearGroupFilter} classroomConfig={classRoomConfig} onUpdateConfig={async u => { await updateClassroomConfig(selectedClassId, { ...u, schoolId: user?.schoolId }); setClassRoomConfig(p => p ? { ...p, ...u } : null); }} />{onLogout && <button onClick={onLogout} className="w-full py-4 border-2 border-red-100 text-red-600 rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-red-50"><RotateCcw size={18} /> Uitloggen</button>}</PageTransition>}
+                        {activeTab === 'settings' && <PageTransition key="settings" className="space-y-6"><SettingsPanel classFilter={classFilter} onClassFilterChange={setClassFilter} availableClasses={classGroups} enabledMissions={enabledMissions} onToggleMission={handleToggleMission} onTestGame={onOpenGames} yearGroup={yearGroupFilter} classroomConfig={classRoomConfig} onUpdateConfig={async u => { await updateClassroomConfig(selectedClassId, { ...u, schoolId: user?.schoolId }); setClassRoomConfig(p => p ? { ...p, ...u } : null); }} onOpenSchedulingConfig={(user?.role === 'admin' || user?.role === 'developer') ? () => setShowSchedulingConfig(true) : undefined} />{onLogout && <button onClick={onLogout} className="w-full py-4 border-2 border-red-100 text-red-600 rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-red-50"><RotateCcw size={18} /> Uitloggen</button>}</PageTransition>}
                         {activeTab === 'games' && <PageTransition key="games"><GamesPanel onOpenGame={onOpenGames || (() => { })} /></PageTransition>}
                         {activeTab === 'ai-beleid' && <PageTransition key="ai-beleid"><div className="bg-white rounded-[2rem] border border-slate-100 p-6"><AiBeleidFeedbackPanel classFilter={classFilter !== 'all' ? classFilter : undefined} schoolId={user?.schoolId} /></div></PageTransition>}
                         {activeTab === 'feedback' && <PageTransition key="feedback"><FeedbackPanel schoolId={user?.schoolId} /></PageTransition>}
@@ -618,7 +620,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                         {activeTab === 'samenhang' && (
                             <PageTransition key="samenhang">
                                 <Suspense fallback={<div className="flex items-center justify-center py-12"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600" /></div>}>
-                                    <LazySamenhangMatrix selectedYear={yearGroupFilter} />
+                                    <LazySamenhangMatrix selectedYear={yearGroupFilter} schoolId={user?.schoolId} />
                                 </Suspense>
                             </PageTransition>
                         )}
@@ -659,6 +661,18 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                 />
 
                 <TutorialRestartButton />
+
+                {showSchedulingConfig && user?.schoolId && (
+                    <div className="fixed inset-0 z-50 bg-black/40 flex items-start justify-center overflow-y-auto p-4 pt-12">
+                        <div className="bg-[#FAF9F0] rounded-[2rem] shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+                            <SchedulingConfigurator
+                                schoolId={user.schoolId}
+                                yearGroup={yearGroupFilter}
+                                onClose={() => setShowSchedulingConfig(false)}
+                            />
+                        </div>
+                    </div>
+                )}
             </div>
         </TutorialProvider>
     );

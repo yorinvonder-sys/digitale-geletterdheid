@@ -11,6 +11,7 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { buildCorsHeaders, rejectDisallowedBrowserRequest } from "../_shared/cors.ts";
 import { buildAuthUrl, generateOAuthState, sha256Hex } from "../_shared/gdriveAuth.ts";
+import { checkDurableRateLimit, rateLimitResponse } from "../_shared/rateLimiter.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
@@ -53,6 +54,16 @@ Deno.serve(async (req: Request) => {
             JSON.stringify({ error: "Geen toegang." }),
             { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } },
         );
+    }
+
+    // 3. Rate limit: 5 requests per 10 minutes per user
+    const rateCheck = await checkDurableRateLimit(
+        `gdrive-auth:${user.id}`,
+        { maxRequests: 5, windowMs: 10 * 60 * 1000 },
+        authHeader,
+    );
+    if (!rateCheck.allowed) {
+        return rateLimitResponse(rateCheck, corsHeaders);
     }
 
     if (!SUPABASE_SERVICE_ROLE_KEY) {
