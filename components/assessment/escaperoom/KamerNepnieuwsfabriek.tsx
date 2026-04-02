@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Newspaper, CheckCircle, XCircle, ChevronRight } from 'lucide-react';
 import { KamerScore } from './types';
+import { BERICHTEN_V2 } from './data/kamer2Data';
 
 interface NieuwsBericht {
   id: string;
@@ -64,16 +65,18 @@ const BERICHTEN: NieuwsBericht[] = [
 
 interface Props {
   onComplete: (score: KamerScore) => void;
+  variant?: 'nulmeting' | 'eindmeting';
 }
 
-export const KamerNepnieuwsfabriek: React.FC<Props> = ({ onComplete }) => {
+export const KamerNepnieuwsfabriek: React.FC<Props> = ({ onComplete, variant }) => {
+  const berichten = variant === 'eindmeting' ? BERICHTEN_V2 : BERICHTEN;
   const [huidigIndex, setHuidigIndex] = useState(0);
   const [antwoorden, setAntwoorden] = useState<Record<string, boolean>>({});
   const [toonUitleg, setToonUitleg] = useState(false);
   const [startTijd] = useState(Date.now());
 
-  const huidigBericht = BERICHTEN[huidigIndex];
-  const isLaatste = huidigIndex === BERICHTEN.length - 1;
+  const huidigBericht = berichten[huidigIndex];
+  const isLaatste = huidigIndex === berichten.length - 1;
   const heeftGeantwoord = antwoorden[huidigBericht?.id] !== undefined;
 
   const geefAntwoord = (isNepGezegd: boolean) => {
@@ -88,17 +91,17 @@ export const KamerNepnieuwsfabriek: React.FC<Props> = ({ onComplete }) => {
     if (isLaatste) {
       // Bereken score
       let correct = 0;
-      BERICHTEN.forEach(b => {
+      berichten.forEach(b => {
         if (antwoorden[b.id] === b.isNep) correct++;
       });
 
-      const score = Math.round((correct / BERICHTEN.length) * 100);
+      const score = Math.round((correct / berichten.length) * 100);
       const tijdSeconds = Math.round((Date.now() - startTijd) / 1000);
 
       onComplete({
         score,
         timeSeconds: tijdSeconds,
-        details: { antwoorden, correcteAntwoorden: BERICHTEN.reduce((acc, b) => ({ ...acc, [b.id]: b.isNep }), {}) },
+        details: { antwoorden, correcteAntwoorden: berichten.reduce((acc, b) => ({ ...acc, [b.id]: b.isNep }), {}) },
       });
     } else {
       setHuidigIndex(prev => prev + 1);
@@ -124,7 +127,7 @@ export const KamerNepnieuwsfabriek: React.FC<Props> = ({ onComplete }) => {
           Je onderschept 5 nieuwsberichten. Welke zijn echt en welke zijn nep?
         </p>
         <div className="flex items-center justify-center gap-1 mt-2">
-          {BERICHTEN.map((_, i) => (
+          {berichten.map((_, i) => (
             <div
               key={i}
               className={`w-2 h-2 rounded-full transition-colors ${
@@ -149,7 +152,7 @@ export const KamerNepnieuwsfabriek: React.FC<Props> = ({ onComplete }) => {
               {/* Bron */}
               <div className="px-4 py-2 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
                 <span className="text-xs font-mono text-slate-400">{huidigBericht.bron}</span>
-                <span className="text-xs text-slate-400">Bericht {huidigIndex + 1}/{BERICHTEN.length}</span>
+                <span className="text-xs text-slate-400">Bericht {huidigIndex + 1}/{berichten.length}</span>
               </div>
 
               {/* Content */}

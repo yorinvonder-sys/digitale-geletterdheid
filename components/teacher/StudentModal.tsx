@@ -10,6 +10,7 @@ import { addTeacherNote, getTeacherNotes, updateTeacherNote, deleteTeacherNote }
 import { TeacherOverride, getOverridesForStudent } from '../../services/teacherOverrideService';
 import { supabase } from '../../services/supabase';
 import { SLOProgressPanel } from './SLOProgressPanel';
+import { GrowthStudentTab } from './GrowthStudentTab';
 import { getMissionsForYear } from '../../config/missions';
 import { ROLES } from '../../config/agents';
 
@@ -38,7 +39,7 @@ export const StudentModal: React.FC<StudentModalProps> = ({ student, onClose, on
     const [savingNote, setSavingNote] = useState(false);
     const [deletingNoteId, setDeletingNoteId] = useState<string | null>(null);
 
-    const [activeTab, setActiveTab] = useState<'overview' | 'missions' | 'slo' | 'paspoort' | 'overrides'>('overview');
+    const [activeTab, setActiveTab] = useState<'overview' | 'missions' | 'slo' | 'paspoort' | 'overrides' | 'groei'>('overview');
     const [missionScores, setMissionScores] = useState<StudentMissionScore[]>([]);
     const [loadingScores, setLoadingScores] = useState(false);
     const [allOverrides, setAllOverrides] = useState<TeacherOverride[]>([]);
@@ -238,6 +239,12 @@ export const StudentModal: React.FC<StudentModalProps> = ({ student, onClose, on
                             <span className="bg-indigo-100 text-indigo-600 text-[9px] font-black px-1.5 py-0.5 rounded-full">{allOverrides.length}</span>
                         )}
                     </button>
+                    <button
+                        onClick={() => setActiveTab('groei')}
+                        className={`py-3 text-xs font-bold uppercase tracking-wider border-b-2 transition-colors ${activeTab === 'groei' ? 'border-emerald-600 text-emerald-600' : 'border-transparent text-slate-400 hover:text-slate-600'}`}
+                    >
+                        Groei
+                    </button>
                     {student.stats?.nulmetingResult && (
                         <button
                             onClick={() => setActiveTab('paspoort')}
@@ -264,6 +271,8 @@ export const StudentModal: React.FC<StudentModalProps> = ({ student, onClose, on
                         />
                     ) : activeTab === 'slo' ? (
                         <SLOProgressPanel student={student} />
+                    ) : activeTab === 'groei' ? (
+                        <GrowthStudentTab studentId={student.uid} />
                     ) : activeTab === 'paspoort' && student.stats?.nulmetingResult ? (
                         <Suspense fallback={<div className="flex items-center justify-center py-8"><div className="animate-spin rounded-full h-6 w-6 border-b-2 border-indigo-600" /></div>}>
                             <div className="rounded-2xl overflow-hidden [&>div]:min-h-0 [&>div]:p-4">

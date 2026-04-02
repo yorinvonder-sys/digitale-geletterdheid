@@ -366,15 +366,15 @@ export const EscaperoomNulmeting: React.FC<Props> = ({ variant = 'nulmeting', on
   const renderKamer = () => {
     switch (stap) {
       case 'kamer1':
-        return <KamerVergrendeldeLaptop variant={variant} onComplete={(s) => handleKamerComplete('kamer1', s)} />;
+        return <KamerVergrendeldeLaptop onComplete={(s) => handleKamerComplete('kamer1', s)} />;
       case 'kamer2':
-        return <KamerNepnieuwsfabriek variant={variant} onComplete={(s) => handleKamerComplete('kamer2', s)} />;
+        return <KamerNepnieuwsfabriek onComplete={(s) => handleKamerComplete('kamer2', s)} />;
       case 'kamer3':
-        return <KamerCodekluis variant={variant} onComplete={(s) => handleKamerComplete('kamer3', s)} />;
+        return <KamerCodekluis onComplete={(s) => handleKamerComplete('kamer3', s)} />;
       case 'kamer4':
-        return <KamerDatalek variant={variant} onComplete={(s) => handleKamerComplete('kamer4', s)} />;
+        return <KamerDatalek onComplete={(s) => handleKamerComplete('kamer4', s)} />;
       case 'kamer5':
-        return <KamerDilemma variant={variant} onComplete={(s) => handleKamerComplete('kamer5', s)} />;
+        return <KamerDilemma onComplete={(s) => handleKamerComplete('kamer5', s)} />;
       default:
         return null;
     }

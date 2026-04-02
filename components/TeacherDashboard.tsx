@@ -28,6 +28,8 @@ import { FeedbackPanel } from './teacher/FeedbackPanel';
 import { MissionProgressPanel } from './teacher/MissionProgressPanel';
 import { SLOClassOverview } from './teacher/SLOClassOverview';
 import { HybridAssessmentPanel } from './teacher/HybridAssessmentPanel';
+import { GrowthOverviewPanel } from './teacher/GrowthOverviewPanel';
+import { EindmetingReleaseButton } from './teacher/EindmetingReleaseButton';
 import { TutorialProvider } from '../contexts/TutorialContext';
 import TutorialSpotlight, { TutorialRestartButton } from './teacher/TutorialSpotlight';
 
@@ -597,10 +599,11 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                         {activeTab === 'games' && <PageTransition key="games"><GamesPanel onOpenGame={onOpenGames || (() => { })} /></PageTransition>}
                         {activeTab === 'ai-beleid' && <PageTransition key="ai-beleid"><div className="bg-white rounded-[2rem] border border-slate-100 p-6"><AiBeleidFeedbackPanel classFilter={classFilter !== 'all' ? classFilter : undefined} schoolId={user?.schoolId} /></div></PageTransition>}
                         {activeTab === 'feedback' && <PageTransition key="feedback"><FeedbackPanel schoolId={user?.schoolId} /></PageTransition>}
-                        {activeTab === 'progress' && <PageTransition key="progress" className="space-y-6"><MissionProgressPanel students={students} classFilter={classFilter} availableClasses={classGroups} onClassFilterChange={setClassFilter} onSelectStudent={setSelectedStudent} yearGroup={yearGroupFilter} /><HybridAssessmentPanel records={hybridAssessments} classFilter={classFilter} /></PageTransition>}
+                        {activeTab === 'progress' && <PageTransition key="progress" className="space-y-6"><MissionProgressPanel students={students} classFilter={classFilter} availableClasses={classGroups} onClassFilterChange={setClassFilter} onSelectStudent={setSelectedStudent} yearGroup={yearGroupFilter} /><HybridAssessmentPanel records={hybridAssessments} classFilter={classFilter} /><GrowthOverviewPanel studentIds={students.filter(s => classFilter === 'all' || s.studentClass === classFilter).map(s => s.uid)} /></PageTransition>}
                         {activeTab === 'slo' && <PageTransition key="slo"><SLOClassOverview students={students} schoolId={user?.schoolId} selectedYear={yearGroupFilter} /></PageTransition>}
                         {activeTab === 'nulmeting' && (
-                            <PageTransition key="nulmeting">
+                            <PageTransition key="nulmeting" className="space-y-6">
+                                <EindmetingReleaseButton classFilter={classFilter} schoolId={user?.schoolId} availableClasses={classGroups} />
                                 <Suspense fallback={<div className="flex items-center justify-center py-12"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600" /></div>}>
                                     <LazyDigitaalPaspoortTeacher
                                         klasResults={students

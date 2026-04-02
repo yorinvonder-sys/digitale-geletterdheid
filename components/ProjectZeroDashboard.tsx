@@ -15,6 +15,7 @@ import { ROLES } from '../config/agents';
 import { getMissionMeta } from '../config/slo-kerndoelen-mapping';
 import { ContainerConfig } from '@/config/containerTypes';
 import { getContainerTheme, getAutoTheme } from '@/config/containerThemes';
+import { AdaptiveMissionSuggestions } from './dashboard/AdaptiveMissionSuggestions';
 
 interface DashboardProps {
     onSelectModule: (moduleId: string, libraryItemData?: any) => void;
@@ -1372,6 +1373,12 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                             </div>
                                         </div>
                                     )}
+
+                                    <AdaptiveMissionSuggestions
+                                        userId={userUid}
+                                        yearGroup={currentYearGroup}
+                                        nulmetingResult={stats?.nulmetingResult}
+                                    />
 
                                     {/* Main Mission Grid */}
                                     <div id="mission-grid-container" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6 pb-28 sm:pb-12" data-tutorial="student-main-missions">

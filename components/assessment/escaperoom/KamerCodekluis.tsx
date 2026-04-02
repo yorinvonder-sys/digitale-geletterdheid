@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Lock, CheckCircle, XCircle, RotateCcw, ArrowRight } from 'lucide-react';
 import { KamerScore } from './types';
+import { BLOKKEN_V2, JUISTE_VOLGORDE_V2 } from './data/kamer3Data';
 
 interface CodeBlok {
   id: string;
@@ -33,10 +34,13 @@ const shuffleArray = <T,>(arr: T[]): T[] => {
 
 interface Props {
   onComplete: (score: KamerScore) => void;
+  variant?: 'nulmeting' | 'eindmeting';
 }
 
-export const KamerCodekluis: React.FC<Props> = ({ onComplete }) => {
-  const [beschikbaar] = useState(() => shuffleArray(BESCHIKBARE_BLOKKEN));
+export const KamerCodekluis: React.FC<Props> = ({ onComplete, variant }) => {
+  const activeBlokken = variant === 'eindmeting' ? BLOKKEN_V2 : BESCHIKBARE_BLOKKEN;
+  const juisteVolgorde = variant === 'eindmeting' ? JUISTE_VOLGORDE_V2 : JUISTE_VOLGORDE;
+  const [beschikbaar] = useState(() => shuffleArray(activeBlokken));
   const [gekozen, setGekozen] = useState<CodeBlok[]>([]);
   const [resultaat, setResultaat] = useState<'success' | 'fail' | null>(null);
   const [startTijd] = useState(Date.now());
@@ -65,12 +69,12 @@ export const KamerCodekluis: React.FC<Props> = ({ onComplete }) => {
 
     // Bereken score op basis van hoeveel blokken op de juiste positie staan
     let correctePosities = 0;
-    JUISTE_VOLGORDE.forEach((id, index) => {
+    juisteVolgorde.forEach((id, index) => {
       if (gekozenIds[index] === id) correctePosities++;
     });
 
-    const score = Math.round((correctePosities / JUISTE_VOLGORDE.length) * 100);
-    const isPerfect = JSON.stringify(gekozenIds) === JSON.stringify(JUISTE_VOLGORDE);
+    const score = Math.round((correctePosities / juisteVolgorde.length) * 100);
+    const isPerfect = JSON.stringify(gekozenIds) === JSON.stringify(juisteVolgorde);
     const tijdSeconds = Math.round((Date.now() - startTijd) / 1000);
     const details = { gekozenVolgorde: gekozenIds, correctePosities };
 
@@ -217,7 +221,7 @@ export const KamerCodekluis: React.FC<Props> = ({ onComplete }) => {
             </button>
             <button
               onClick={controleer}
-              disabled={gekozen.length < BESCHIKBARE_BLOKKEN.length || !!resultaat}
+              disabled={gekozen.length < activeBlokken.length || !!resultaat}
               className="flex-1 py-3 rounded-xl font-bold text-lg transition-all disabled:opacity-40 disabled:cursor-not-allowed bg-violet-600 hover:bg-violet-700 text-white shadow-lg shadow-violet-200 active:scale-[0.98] flex items-center justify-center gap-2"
             >
               <ArrowRight size={18} /> Controleer code

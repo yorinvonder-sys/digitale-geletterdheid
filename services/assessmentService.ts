@@ -151,8 +151,8 @@ export async function getAssessmentResult(
     .single();
 
   if (error) {
-    // PGRST116 = no rows found, dat is geen fout
-    if (error.code === 'PGRST116') return null;
+    // Stil falen bij: geen rij gevonden, tabel bestaat niet (migratie nog niet gedraaid)
+    if (error.code === 'PGRST116' || error.code === '42P01' || error.message?.includes('does not exist')) return null;
     logger.error('[assessmentService] getAssessmentResult error:', error);
     return null;
   }
@@ -171,6 +171,7 @@ export async function getStudentAssessments(
     .eq('school_year', schoolYear);
 
   if (error) {
+    if (error.message?.includes('does not exist')) return {};
     logger.error('[assessmentService] getStudentAssessments error:', error);
     return {};
   }
@@ -201,6 +202,7 @@ export async function getKlasAssessments(
     .eq('school_year', schoolYear);
 
   if (error) {
+    if (error.message?.includes('does not exist')) return [];
     logger.error('[assessmentService] getKlasAssessments error:', error);
     return [];
   }
@@ -224,6 +226,7 @@ export async function getKlasGroeiData(
     .eq('school_year', schoolYear);
 
   if (error) {
+    if (error.message?.includes('does not exist')) return [];
     logger.error('[assessmentService] getKlasGroeiData error:', error);
     return [];
   }

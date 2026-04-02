@@ -348,6 +348,30 @@
 
 ---
 
+#### Verwerking V-16: Groei-assessment & AI-Aanbevelingen
+
+| Veld | Beschrijving |
+|:---|:---|
+| **Verwerkingsnaam** | Groei-assessment en gepersonaliseerde AI-aanbevelingen voor leerroute |
+| **Verwerkingsverantwoordelijke** | School |
+| **Verwerker** | DGSkills B.V. (i.o.) |
+| **Subverwerker** | Google LLC (Gemini 2.0 Flash via Vertex AI, regio `europe-west4` Nederland) |
+| **Doeleinde** | Meten van groei in digitale geletterdheid via nulmeting en eindmeting; genereren van gepersonaliseerde AI-aanbevelingen voor het volgende schooljaar |
+| **Rechtsgrondslag** | Art. 6(1)(e) AVG -- Publieke taak van de school (onderwijs en leerlingbegeleiding) |
+| **Categorieeen betrokkenen** | Leerlingen (12-18 jaar), docenten |
+| **Categorieeen persoonsgegevens** | - Domeinscores (0-100) per digitale geletterdheid domein |
+| | - Schooljaar |
+| | - Assessment-type (nulmeting / eindmeting) |
+| | - AI-gegenereerde aanbevelingstekst |
+| | - Docent-goedkeuring (teacher_approved: boolean) |
+| **Bijzondere categorie** | Niet van toepassing. Geen bijzondere persoonsgegevens. Domeinscores zijn leerresultaten, geen gezondheids- of andere gevoelige data. |
+| **Ontvangers** | Docent (eigen school via RLS); leerling (uitsluitend eigen data, en alleen aanbevelingen die door de docent zijn goedgekeurd) |
+| **Doorgifte buiten EU/EER** | Gedeeltelijk. AI-promptverwerking via Vertex AI (`europe-west4`, Nederland). Geen PII in AI-prompts -- alleen geaggregeerde scores en missie-IDs worden doorgegeven. Google Cloud DPA met SCCs, zero data retention. Geen export van persoonsgegevens buiten de EER. |
+| **Bewaartermijn** | Tot 30 juni van het betreffende schooljaar. Verlengd tot uitschrijving indien docent actief archiveert. ON DELETE CASCADE bij accountverwijdering. |
+| **Technische maatregelen** | RLS op database-niveau; school-scoping (leerling ziet alleen eigen school); ON DELETE CASCADE voor Art. 17; teacher_approved flow voor Art. 14 AI Act; AiDisclosureBadge op alle AI-output; input_context + model_version audit trail |
+
+---
+
 ### 3. Overzicht subverwerkers (Art. 28 lid 2 AVG)
 
 | # | Subverwerker | Dienst | Vestigingsland | Datalocatie | Doorgifte-grondslag | Contactgegevens DPO/privacy |
@@ -472,7 +496,7 @@
 |:---|:---|:---|:---|
 | 2026-02-23 | 1.0 | Initieele versie verwerkingsregister | DGSkills |
 | 2026-02-23 | 1.1 | Migratie van Gemini Developer API naar Vertex AI (regio `europe-west4`, Nederland): endpoint, authenticatie (service account), dataresidentie, zero data retention bijgewerkt in V-02, subverwerkeroverzicht en doorgifte-tabel | DGSkills |
-| | | | |
+| 2026-04-02 | 1.2 | Toevoeging V-16: Groei-assessment & AI-Aanbevelingen (nulmeting, eindmeting, gepersonaliseerde AI-aanbevelingen per schooljaar, teacher_approved flow) | DGSkills |
 
 ---
 

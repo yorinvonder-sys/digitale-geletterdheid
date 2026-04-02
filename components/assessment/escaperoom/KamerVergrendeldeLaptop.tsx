@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Monitor, CheckCircle, XCircle, FolderOpen, FileText, Image, Table, Presentation } from 'lucide-react';
 import { KamerScore } from './types';
+import { BESTANDEN_V2, MAPPEN_V2 } from './data/kamer1Data';
 
 interface BestandItem {
   id: string;
@@ -41,17 +42,24 @@ const MAPPEN: MapTarget[] = [
 
 interface Props {
   onComplete: (score: KamerScore) => void;
+  variant?: 'nulmeting' | 'eindmeting';
 }
 
-export const KamerVergrendeldeLaptop: React.FC<Props> = ({ onComplete }) => {
+export const KamerVergrendeldeLaptop: React.FC<Props> = ({ onComplete, variant }) => {
+  const activeBestanden = variant === 'eindmeting'
+    ? BESTANDEN.map((b, i) => ({ ...b, naam: BESTANDEN_V2[i]?.naam ?? b.naam, type: BESTANDEN_V2[i]?.type ?? b.type }))
+    : BESTANDEN;
+  const activeMappen = variant === 'eindmeting'
+    ? MAPPEN.map((m, i) => ({ ...m, naam: MAPPEN_V2[i]?.naam ?? m.naam, accepteert: MAPPEN_V2[i]?.accepteert ?? m.accepteert }))
+    : MAPPEN;
   const [plaatsingen, setPlaatsingen] = useState<Record<string, string>>({});
   const [dragOverMap, setDragOverMap] = useState<string | null>(null);
   const [feedback, setFeedback] = useState<{ correct: boolean; bericht: string } | null>(null);
   const [ingediend, setIngediend] = useState(false);
   const [startTijd] = useState(Date.now());
 
-  const ongeplaatstebestanden = BESTANDEN.filter(b => !plaatsingen[b.id]);
-  const alleGeplaatst = Object.keys(plaatsingen).length === BESTANDEN.length;
+  const ongeplaatstebestanden = activeBestanden.filter(b => !plaatsingen[b.id]);
+  const alleGeplaatst = Object.keys(plaatsingen).length === activeBestanden.length;
 
   const handleDragStart = (e: React.DragEvent, bestandId: string) => {
     e.dataTransfer.setData('bestandId', bestandId);
@@ -75,9 +83,9 @@ export const KamerVergrendeldeLaptop: React.FC<Props> = ({ onComplete }) => {
   const handleBestandKlik = (bestandId: string) => {
     // Op mobiel: cycle door mappen
     const huidigeMap = plaatsingen[bestandId];
-    const mapIndex = huidigeMap ? MAPPEN.findIndex(m => m.id === huidigeMap) : -1;
-    const volgendeIndex = (mapIndex + 1) % MAPPEN.length;
-    setPlaatsingen(prev => ({ ...prev, [bestandId]: MAPPEN[volgendeIndex].id }));
+    const mapIndex = huidigeMap ? activeMappen.findIndex(m => m.id === huidigeMap) : -1;
+    const volgendeIndex = (mapIndex + 1) % activeMappen.length;
+    setPlaatsingen(prev => ({ ...prev, [bestandId]: activeMappen[volgendeIndex].id }));
   };
 
   const verwijderPlaatsing = (bestandId: string) => {
@@ -92,15 +100,15 @@ export const KamerVergrendeldeLaptop: React.FC<Props> = ({ onComplete }) => {
     let correct = 0;
     const details: Record<string, boolean> = {};
 
-    BESTANDEN.forEach(bestand => {
+    activeBestanden.forEach(bestand => {
       const geplaatsteMap = plaatsingen[bestand.id];
-      const doelMap = MAPPEN.find(m => m.accepteert.includes(bestand.type));
+      const doelMap = activeMappen.find(m => m.accepteert.includes(bestand.type));
       const isCorrect = geplaatsteMap === doelMap?.id;
       details[bestand.id] = isCorrect;
       if (isCorrect) correct++;
     });
 
-    const score = Math.round((correct / BESTANDEN.length) * 100);
+    const score = Math.round((correct / activeBestanden.length) * 100);
     const tijdSeconds = Math.round((Date.now() - startTijd) / 1000);
 
     setIngediend(true);
@@ -109,8 +117,8 @@ export const KamerVergrendeldeLaptop: React.FC<Props> = ({ onComplete }) => {
       bericht: score === 100
         ? 'Alle bestanden staan op de juiste plek!'
         : score >= 75
-          ? `Goed gedaan! ${correct} van de ${BESTANDEN.length} bestanden correct.`
-          : `${correct} van de ${BESTANDEN.length} correct. Oefening baart kunst!`
+          ? `Goed gedaan! ${correct} van de ${activeBestanden.length} bestanden correct.`
+          : `${correct} van de ${activeBestanden.length} correct. Oefening baart kunst!`
     });
 
     setTimeout(() => {
@@ -166,8 +174,8 @@ export const KamerVergrendeldeLaptop: React.FC<Props> = ({ onComplete }) => {
 
         {/* Mappen */}
         <div className="md:w-1/2 space-y-3">
-          {MAPPEN.map(map => {
-            const bestandenInMap = BESTANDEN.filter(b => plaatsingen[b.id] === map.id);
+          {activeMappen.map(map => {
+            const bestandenInMap = activeBestanden.filter(b => plaatsingen[b.id] === map.id);
             const isOver = dragOverMap === map.id;
 
             return (

@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Heart, MessageCircle, Send } from 'lucide-react';
 import { KamerScore } from './types';
+import { DILEMMA_V2, OPTIES_V2 } from './data/kamer5Data';
 
 interface DilemmaOptie {
   id: string;
@@ -40,9 +41,13 @@ const OPTIES: DilemmaOptie[] = [
 
 interface Props {
   onComplete: (score: KamerScore) => void;
+  variant?: 'nulmeting' | 'eindmeting';
 }
 
-export const KamerDilemma: React.FC<Props> = ({ onComplete }) => {
+export const KamerDilemma: React.FC<Props> = ({ onComplete, variant }) => {
+  const opties = variant === 'eindmeting' ? OPTIES_V2 : OPTIES;
+  const scenarioTitel = variant === 'eindmeting' ? DILEMMA_V2.titel : 'Het Dilemma';
+  const scenarioTekst = variant === 'eindmeting' ? DILEMMA_V2.scenario : 'Je vriend wordt online gepest. Iemand stuurt je een screenshot van gemene berichten over je vriend en vraagt: "Stuur dit even door, iedereen moet dit zien!"';
   const [fase, setFase] = useState<'keuze' | 'reflectie' | 'klaar'>('keuze');
   const [gekozenOptie, setGekozenOptie] = useState<string | null>(null);
   const [reflectie, setReflectie] = useState('');
@@ -55,7 +60,7 @@ export const KamerDilemma: React.FC<Props> = ({ onComplete }) => {
   };
 
   const verzendReflectie = () => {
-    const optie = OPTIES.find(o => o.id === gekozenOptie);
+    const optie = opties.find(o => o.id === gekozenOptie);
     const score = optie?.score ?? 0;
     const tijdSeconds = Math.round((Date.now() - startTijd) / 1000);
 
@@ -74,7 +79,7 @@ export const KamerDilemma: React.FC<Props> = ({ onComplete }) => {
     }, 2500);
   };
 
-  const optie = gekozenOptie ? OPTIES.find(o => o.id === gekozenOptie) : null;
+  const optie = gekozenOptie ? opties.find(o => o.id === gekozenOptie) : null;
 
   return (
     <motion.div
@@ -87,7 +92,7 @@ export const KamerDilemma: React.FC<Props> = ({ onComplete }) => {
       <div className="text-center mb-4 md:mb-6">
         <div className="flex items-center justify-center gap-2 mb-2">
           <Heart className="text-sky-600" size={24} />
-          <h2 className="text-xl md:text-2xl font-black text-sky-600">Het Dilemma</h2>
+          <h2 className="text-xl md:text-2xl font-black text-sky-600">{scenarioTitel}</h2>
         </div>
       </div>
 
@@ -102,8 +107,7 @@ export const KamerDilemma: React.FC<Props> = ({ onComplete }) => {
               <div>
                 <p className="text-sm font-bold text-sky-600 mb-1">Situatie</p>
                 <p className="text-slate-600 text-sm leading-relaxed">
-                  Je vriend wordt online gepest. Iemand stuurt je een screenshot van gemene
-                  berichten over je vriend en vraagt: "Stuur dit even door, iedereen moet dit zien!"
+                  {scenarioTekst}
                 </p>
                 <p className="text-slate-400 text-sm mt-2 italic">
                   Wat doe je?
@@ -115,7 +119,7 @@ export const KamerDilemma: React.FC<Props> = ({ onComplete }) => {
           {/* Fase 1: Keuze */}
           {fase === 'keuze' && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-2">
-              {OPTIES.map(optie => (
+              {opties.map(optie => (
                 <button
                   key={optie.id}
                   onClick={() => kiesOptie(optie.id)}

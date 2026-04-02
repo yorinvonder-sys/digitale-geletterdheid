@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ShieldAlert, CheckCircle, ChevronRight } from 'lucide-react';
 import { KamerScore } from './types';
+import { GEGEVENS_V2, ACTIE_OPTIES_V2 } from './data/kamer4Data';
 
 interface GegevensItem {
   id: string;
@@ -37,9 +38,12 @@ const ACTIE_OPTIES: ActieOptie[] = [
 
 interface Props {
   onComplete: (score: KamerScore) => void;
+  variant?: 'nulmeting' | 'eindmeting';
 }
 
-export const KamerDatalek: React.FC<Props> = ({ onComplete }) => {
+export const KamerDatalek: React.FC<Props> = ({ onComplete, variant }) => {
+  const gegevens = variant === 'eindmeting' ? GEGEVENS_V2 : GEGEVENS;
+  const actieOpties = variant === 'eindmeting' ? ACTIE_OPTIES_V2 : ACTIE_OPTIES;
   const [fase, setFase] = useState<'selectie' | 'actie' | 'klaar'>('selectie');
   const [geselecteerd, setGeselecteerd] = useState<Set<string>>(new Set());
   const [gekozenActie, setGekozenActie] = useState<string | null>(null);
@@ -67,12 +71,12 @@ export const KamerDatalek: React.FC<Props> = ({ onComplete }) => {
     setFase('klaar');
 
     // Bereken score
-    const correcteSelecties = GEGEVENS.filter(g => g.isGevoelig).map(g => g.id);
+    const correcteSelecties = gegevens.filter(g => g.isGevoelig).map(g => g.id);
     const juistGeselecteerd = correcteSelecties.filter(id => geselecteerd.has(id)).length;
     const fouteSelecties = [...geselecteerd].filter(id => !correcteSelecties.includes(id)).length;
     const selectieScore = Math.max(0, Math.round(((juistGeselecteerd - fouteSelecties) / correcteSelecties.length) * 100));
 
-    const actie = ACTIE_OPTIES.find(a => a.id === actieId);
+    const actie = actieOpties.find(a => a.id === actieId);
     const actieScore = actie?.score ?? 0;
 
     // Gewogen gemiddelde: 60% selectie, 40% actie
@@ -126,7 +130,7 @@ export const KamerDatalek: React.FC<Props> = ({ onComplete }) => {
                   Selecteer de gevoelige gegevens
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  {GEGEVENS.map(item => (
+                  {gegevens.map(item => (
                     <button
                       key={item.id}
                       onClick={() => toggleSelectie(item.id)}
@@ -167,7 +171,7 @@ export const KamerDatalek: React.FC<Props> = ({ onComplete }) => {
                   Wat is je eerste actie?
                 </h3>
                 <div className="space-y-2">
-                  {ACTIE_OPTIES.map(optie => (
+                  {actieOpties.map(optie => (
                     <button
                       key={optie.id}
                       onClick={() => kiesActie(optie.id)}
@@ -185,7 +189,7 @@ export const KamerDatalek: React.FC<Props> = ({ onComplete }) => {
           {fase === 'klaar' && gekozenActie && (
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
               {(() => {
-                const actie = ACTIE_OPTIES.find(a => a.id === gekozenActie);
+                const actie = actieOpties.find(a => a.id === gekozenActie);
                 return (
                   <div className={`p-5 rounded-xl border ${
                     (actie?.score ?? 0) >= 75

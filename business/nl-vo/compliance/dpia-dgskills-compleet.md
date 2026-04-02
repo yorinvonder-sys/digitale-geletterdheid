@@ -537,6 +537,76 @@ De hoog-risico classificatie onder de AI Act versterkt de noodzaak van deze DPIA
 
 ---
 
+## 13a. DPIA Addendum — Groei-assessment & AI-aanbevelingen (2 april 2026)
+
+> **Aanleiding:** DGSkills heeft een nieuwe verwerkingsactiviteit toegevoegd: het meten van leerlinggroei via nul- en eindmetingen en het genereren van gepersonaliseerde AI-aanbevelingen voor het volgende schooljaar. Dit addendum beoordeelt de privacyrisico's van deze nieuwe verwerking conform Art. 35 AVG en Art. 26(9) AI Act.
+
+### 13a.1 Beschrijving van de nieuwe verwerking
+
+Het groei-assessment systeem (verwerking V-16) werkt als volgt:
+
+1. **Nulmeting** — Bij de start van het schooljaar maakt elke leerling een nulmeting per SLO-domein (digitale geletterdheid). De score (0-100) wordt opgeslagen per domein en per schooljaar.
+2. **Voortgangsmeting** — Tijdens het jaar worden domeinscores bijgewerkt op basis van voltooide missies.
+3. **Eindmeting** — Aan het einde van het schooljaar vindt een eindmeting plaats. Het systeem berekent de delta (groei) per domein.
+4. **AI-aanbevelingen** — Op basis van de eindscores en missie-IDs genereert Gemini 2.0 Flash via Vertex AI een gepersonaliseerde aanbeveling voor het volgende schooljaar. De aanbeveling bevat suggesties voor missies en domeinen die extra aandacht verdienen.
+5. **Docent-review** — De aanbeveling is pas zichtbaar voor de leerling nadat een docent de aanbeveling heeft goedgekeurd (`teacher_approved = true`). Dit is een hard technisch vereiste, geen optionele stap.
+
+**Betrokken gegevens:** Domeinscores (0-100), schooljaar, assessment-type, AI-aanbevelingstekst, docent-goedkeuring. Geen PII in AI-prompts — alleen scores en missie-IDs.
+
+### 13a.2 Noodzakelijkheid en proportionaliteit
+
+| Criterium | Beoordeling |
+|---|---|
+| **Doelgebondenheid** | De verwerking dient uitsluitend het onderwijsdoel: inzicht geven in groei en het persoonlijk aanpassen van de leerroute. Geen gebruik voor andere doeleinden. |
+| **Dataminimalisatie** | Alleen noodzakelijke gegevens worden verwerkt: numerieke scores per domein, schooljaar, assessment-type. Geen naam, geboortedatum, BSN, of andere PII in de AI-prompt. |
+| **Proportionaliteit** | Een nul- en eindmeting met AI-aanbeveling is een gangbare en passende methode voor leerlijnevaluatie. Alternatieven (louter handmatige docentbeoordeling) bieden minder consistentie en schaalbaarheid bij grotere klassen. |
+| **Rechtsgrondslag** | Art. 6(1)(e) AVG -- publieke taak van de school (onderwijs en leerlingbegeleiding). De school bepaalt als verwerkingsverantwoordelijke of het instrument wordt ingezet. |
+
+### 13a.3 Risico's voor betrokkenen
+
+**Profilering en stigmatisering**
+
+Domeinscores vormen een rudimentaire profilering van leerlingen op cognitieve prestaties. Risico bestaat dat leerlingen met lage scores worden beschouwd als "slechte leerlingen", ook al zijn de scores bedoeld als startpunt voor groei, niet als eindoordeel. Mitigatie: scores zijn alleen zichtbaar voor de eigen docent (RLS-afscherming); scores worden niet gedeeld tussen scholen; aanbevelingen zijn suggestief, niet beperkend.
+
+**Geautomatiseerde besluitvorming (Art. 22 AVG)**
+
+De AI-aanbeveling is een advies, geen besluit met rechtsgevolg. De leerroute wordt niet automatisch aangepast; de leerling heeft altijd toegang tot alle missies. De docent keurt de aanbeveling goed voordat deze zichtbaar is. Dit voldoet aan de voorwaarden van Art. 22 AVG (geen significante gevolgen, menselijke tussenkomst aanwezig).
+
+**AI Act Art. 14 (menselijk toezicht)**
+
+De `teacher_approved` flow is een directe implementatie van Art. 14 AI Act: een mens (docent) beoordeelt en keurt de AI-output goed voordat deze de betrokkene (leerling) bereikt. Dit is hard geïmplementeerd op applicatieniveau.
+
+**Onjuiste of bevooroordeelde aanbevelingen**
+
+Zie R19 en R20 in het risicoregister. De belangrijkste maatregel is de teacher_approved flow. Aanvullend: temperature 0.3 voor consistente AI-output, AiDisclosureBadge op alle aanbevelingen, en audit trail (input_context + model_version).
+
+### 13a.4 Maatregelen
+
+| Maatregel | Type | Status |
+|---|---|---|
+| `teacher_approved` flow — aanbeveling pas zichtbaar na docent-goedkeuring | Technisch | Geïmplementeerd |
+| RLS op database: leerling ziet alleen eigen scores en goedgekeurde aanbevelingen | Technisch | Geïmplementeerd |
+| School-scoping: scores en aanbevelingen niet zichtbaar buiten eigen school | Technisch | Geïmplementeerd |
+| ON DELETE CASCADE: verwijdering account verwijdert alle gerelateerde assessment-data | Technisch | Geïmplementeerd |
+| Geen PII in AI-prompt: alleen scores en missie-IDs worden naar Vertex AI gestuurd | Technisch | Geïmplementeerd |
+| AiDisclosureBadge op alle AI-gegenereerde aanbevelingen (Art. 50 AI Act) | Technisch | Geïmplementeerd |
+| Audit trail: input_context en model_version worden opgeslagen per aanbeveling | Technisch | Geïmplementeerd |
+| Bewaartermijn: scores worden verwijderd per 30 juni van het schooljaar, tenzij gearchiveerd | Organisatorisch | Geïmplementeerd |
+| Jaarlijkse steekproef van 10% aanbevelingen door docent op kwaliteit en bias | Organisatorisch | Gepland (voor lancering) |
+
+### 13a.5 Restrisico-oordeel
+
+Het restrisico van de groei-assessment verwerking wordt beoordeeld als **laag tot midden**:
+
+- Het risico op onjuiste AI-aanbevelingen wordt adequaat gemitigeerd door de verplichte docent-goedkeuring.
+- Het risico op profilering en stigmatisering is laag door de beperkte zichtbaarheid (RLS, school-scoping) en het suggestieve karakter.
+- Er is geen sprake van geautomatiseerde besluitvorming met rechtsgevolgen (Art. 22 AVG is niet van toepassing).
+- De verwerking valt binnen de bestaande rechtsgrondslag van V-16 en vereist geen nieuw voorafgaand overleg met de AP.
+
+**Aanvullende actie vóór lancering:** bias-evaluatie uitvoeren op een testset met diverse leerlingprofielen (zie R19 risicoregister).
+
+---
+
 ## 14. Conclusie en actieplan
 
 ### 14.1 Algeheel oordeel
