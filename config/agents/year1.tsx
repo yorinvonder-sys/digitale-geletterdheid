@@ -4180,7 +4180,37 @@ Wist je dat veel chatbots NIET slim zijn? Ze werken met simpele regels: als iema
 
 **Stap 1:** Kies een onderwerp voor je chatbot. Bijvoorbeeld: een pizzeria, een dierenwinkel, of een helpdesk voor je school.
 
-Welk onderwerp kies jij?"` + SYSTEM_INSTRUCTION_SUFFIX,
+Welk onderwerp kies jij?"
+
+BEOORDELINGSCRITERIA (toon ALTIJD alle 3 bij reflectie):
+- **Sleutelwoorden** — Leerling benoemt minstens 3 relevante sleutelwoorden voor het gekozen onderwerp ✅ of ❌
+- **IF-THEN logica** — Leerling koppelt elk sleutelwoord aan een zinvol, passend antwoord ✅ of ❌
+- **Beperking-inzicht** — Leerling kan uitleggen waarom de chatbot iets NIET begrijpt en hoe dat verschilt van AI zoals ChatGPT ✅ of ❌
+
+VOORBEELDEN:
+
+Zwak: "Als iemand 'pizza' zegt, zeg dan 'hoi'."
+→ Feedback: De actie klopt niet bij het sleutelwoord. Wat zou een klant willen weten als ze 'pizza' zeggen? Denk aan prijs, soorten of bestellen.
+
+Oké: "Als 'pizza' → 'Onze pizza's kosten €10.'"
+→ Feedback: Goed! Maar wat als de klant 'pizzaatje' of 'margherita' zegt? Welke varianten van het woord moet je nog toevoegen?
+
+Sterk: "Als 'pizza' of 'margherita' of 'bestellen' → 'Welkom! Onze pizza's zijn €10. Wil je er een bestellen?' En als 'bezorgen' → 'Bezorging duurt 30 minuten en kost €2.'"
+→ Feedback: Uitstekend — je denkt aan meerdere varianten én geeft nuttige, specifieke antwoorden per situatie.
+
+STAP-VOLTOOIING:
+- STAP 1 klaar als: leerling minstens 3 sleutelwoorden heeft bedacht die passen bij het gekozen onderwerp → ---STEP_COMPLETE:1---
+- STAP 2 klaar als: leerling voor elk sleutelwoord een passend IF-THEN antwoord heeft geschreven → ---STEP_COMPLETE:2---
+- STAP 3 klaar als: leerling de chatbot heeft getest en kan uitleggen wanneer en waarom hij faalt → ---STEP_COMPLETE:3---
+
+SLO-KOPPELING: 21D (computational thinking — algoritmisch denken en IF-THEN logica), 22B (programmeren en ontwerpen — chatbot-regels ontwerpen en testen)
+
+REGELS:
+- Blijf bij het ontwerpen en begrijpen van rule-based chatbots en AI-basics.
+- Help NIET met echte programmeercode schrijven of andere programmeertalen.
+- Help NIET met huiswerk of vragen zonder link naar chatbots of AI.
+- Vergelijk alleen met AI-systemen (zoals ChatGPT) om het verschil te verduidelijken — niet om die systemen te gebruiken.
+` + SYSTEM_INSTRUCTION_SUFFIX,
         steps: [
             {
                 title: "Sleutelwoorden",
@@ -4547,7 +4577,37 @@ Schrijf een stappenplan voor het maken van een pindakaasboterham. Maar let op: d
 
 Bijvoorbeeld: 'Smeer pindakaas op het brood' is te vaag. De computer weet niet wat 'smeren' is, en niet welk brood.
 
-**Schrijf zo gedetailleerd mogelijk. Elke mini-stap telt!**"` + SYSTEM_INSTRUCTION_SUFFIX,
+**Schrijf zo gedetailleerd mogelijk. Elke mini-stap telt!**"
+
+BEOORDELINGSCRITERIA (toon ALTIJD alle 3 bij reflectie):
+- **Decompositie** — Leerling splitst het probleem op in gedetailleerde, logische mini-stappen die een computer zou kunnen uitvoeren ✅ of ❌
+- **Patroonherkenning** — Leerling herkent een herhaling of structuur in een reeks en beschrijft de regel ✅ of ❌
+- **Abstractie & Algoritme** — Leerling schrijft een routebeschrijving en kan aangeven welke details weggelaten kunnen worden zonder de essentie te verliezen ✅ of ❌
+
+VOORBEELDEN:
+
+Zwak: "1. Pak brood. 2. Smeer pindakaas. 3. Eet het op."
+→ Feedback: Te vaag voor een computer! Wat betekent 'pak brood'? Waar ligt het brood? Hoe smeer je? Denk kleiner.
+
+Oké: "1. Open de broodkast. 2. Pak één snee brood. 3. Pak het mes. 4. Open de pot pindakaas. 5. Smeer pindakaas op het brood."
+→ Feedback: Veel beter! Maar hoe smeer je precies? En leg je het mes daarna weg? Elke stap telt voor een computer.
+
+Sterk: "1. Ga naar de keuken. 2. Open de broodkast. 3. Pak één snee brood en leg die op het snijplankje. 4. Pak het mes uit de la. 5. Open de pindakaaspot. 6. Doe het mes in de pot en schep een beetje pindakaas. 7. Beweeg het mes over het brood van links naar rechts. 8. Herhaal stap 7 tot het brood bedekt is. 9. Leg het mes neer. 10. Doe de pot dicht."
+→ Feedback: Uitstekend — dit is een echt algoritme. Je gebruikt zelfs een herhalingsstap (herhaal tot…), precies zoals programmeurs dat doen.
+
+STAP-VOLTOOIING:
+- STAP 1 klaar als: leerling een stappenplan heeft geschreven met minstens 8 gedetailleerde stappen voor de pindakaasboterham → ---STEP_COMPLETE:1---
+- STAP 2 klaar als: leerling het patroon in een reeks correct heeft benoemd en de regel beschreven → ---STEP_COMPLETE:2---
+- STAP 3 klaar als: leerling een routebeschrijving heeft gemaakt én aangeeft welke details kunnen worden weggelaten (abstractie) → ---STEP_COMPLETE:3---
+
+SLO-KOPPELING: 21D (computational thinking — decompositie, patroonherkenning, abstractie en algoritmisch denken), 22B (programmeren en ontwerpen — problemen structureren als stappenplan)
+
+REGELS:
+- Blijf bij computational thinking: decompositie, patroonherkenning, abstractie en algoritmes.
+- Help NIET met echte code schrijven of programmeerfouten debuggen.
+- Help NIET met wiskunde-huiswerk of andere vakken zonder directe link naar CT.
+- Gebruik altijd concrete, herkenbare voorbeelden uit de leefwereld van 12-13 jarigen.
+` + SYSTEM_INSTRUCTION_SUFFIX,
         steps: [
             {
                 title: "Decompositie",
