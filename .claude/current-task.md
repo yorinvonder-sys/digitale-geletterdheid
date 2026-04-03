@@ -7,29 +7,30 @@
 
 ## Actieve taak
 
-**Werkstroom:** Infra
-**Sprint:** 4→5 transitie
-**Taak:** Fase A — Projectinfrastructuur (.claude bestanden) aanmaken
-**Status:** ✅ Afgerond (3 april 2026)
+**Werkstroom:** Product
+**Sprint:** 5 — Go-to-Market
+**Taak:** Content-kalibratie — MISSION-STYLE-GUIDE.md + review-workflow
+**Status:** 🔄 In uitvoering
 
 ## Volgende taak
 
-**Werkstroom:** Compliance
+**Werkstroom:** Product
 **Sprint:** 5 — Go-to-Market
-**Taak:** Fase B — Compliance Hub finaliseren
-**Beschrijving:** `ComplianceHub.tsx` updaten met alle 17 compliance-documenten, compliance checklist pagina vullen, SLO-rapport pagina verifiëren.
-**Done wanneer:** ICT-coordinatoren kunnen in 1 klik alle compliance-info vinden.
+**Taak:** Jaar 1 periode 1+2 missies doortesten (E2E)
+**Beschrijving:** Alle missies van jaar 1 periode 1 en 2 doorlopen als leerling. Bugs fixen, content checken tegen style guide.
+**Done wanneer:** Alle missies doorloopbaar zonder blokkerende bugs, content voldoet aan MISSION-STYLE-GUIDE.md.
 
 ## Context
 
 - Sprint 1-4 zijn afgerond (security, missies, UI/UX, homepage, dashboard)
-- De `.claude/` infrastructuur is nu compleet
-- Volgende prioriteit is de website klaarmaken voor go-to-market (Sprint 5)
+- De `.claude/` infrastructuur is compleet
+- MISSION-STYLE-GUIDE.md is aangemaakt om het "net niet goed"-probleem structureel op te lossen
+- Nieuwe review-per-ronde workflow ingevoerd voor missie-iteratie
+- Focus: content-kwaliteit kalibreren, dan pilot-voorbereiding
 - Zie `LAUNCH-PLAN.md` voor het volledige sprintoverzicht
-- Zie `.claude/task-queue.md` voor de volledige wachtrij
 
 ## Laatste sessie
 
 - **Datum:** 3 april 2026
-- **Wat gedaan:** Implementatieplan opgesteld + `.claude/` bestanden aangemaakt
-- **Beslissingen:** 6 fasen geprioriteerd (A-F), focus op A/B/C voor mei-deadline
+- **Wat gedaan:** Content-kalibratieplan opgesteld, MISSION-STYLE-GUIDE.md geschreven, review-workflow ingevoerd
+- **Beslissingen:** Relaxte mentortoon als standaard, review-per-ronde als nieuw werkproces, tekst-maxima vastgelegd

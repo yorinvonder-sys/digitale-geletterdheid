@@ -1,8 +1,11 @@
+> **Lees eerst:** [`MISSION-STYLE-GUIDE.md`](./MISSION-STYLE-GUIDE.md) — toon, tekst-maxima, feedbackregels en anti-patronen voor alle missie-content.
+
 # Mission Work Rules
 
 This subtree contains learner-facing missions. Treat mission work as curriculum work, not just UI work.
 
 ## Read first when editing mission flows
+- `MISSION-STYLE-GUIDE.md`
 - `config/curriculum.ts`
 - `config/agents.tsx`
 - `config/slo-kerndoelen-mapping.ts`

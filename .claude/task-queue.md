@@ -7,6 +7,12 @@
 
 ## Wachtrij (in volgorde van prioriteit)
 
+### 0. Content-kalibratie valideren
+- **Werkstroom:** Product
+- **Sprint:** 5
+- **Beschrijving:** Yorin reviewt MISSION-STYLE-GUIDE.md en test de review-per-ronde workflow op 1 missie. Style guide wordt bijgesteld op basis van feedback.
+- **Done wanneer:** Style guide gevalideerd door Yorin, 1 missie succesvol herschreven met het nieuwe proces.
+
 ### 1. Fase B — Compliance Hub finaliseren
 - **Werkstroom:** Compliance
 - **Sprint:** 5
@@ -44,6 +50,7 @@
 | Taak | Datum | Werkstroom |
 |------|-------|------------|
 | Fase A — Projectinfrastructuur (.claude) | 3 apr 2026 | Infra |
+| Content-kalibratieplan + MISSION-STYLE-GUIDE.md | 3 apr 2026 | Product |
 
 ---
 

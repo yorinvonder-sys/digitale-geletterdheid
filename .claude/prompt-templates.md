@@ -5,12 +5,26 @@ Claude leest zelf de context uit de repo en begint direct met werken — geen ex
 
 ---
 
-## 1. Nieuwe missie maken
+## 1. Nieuwe missie maken (of bestaande aanpassen)
+
+### Per ronde/fase (aanbevolen workflow)
+
+```
+Schrijf [ronde X / fase X] van missie [naam] voor leerjaar [X].
+Gebruik MISSION-STYLE-GUIDE.md als referentie voor toon en stijl.
+SLO-doel: [nummer]. Template: [scenario-engine / puzzle-lab / builder-canvas / debate-arena / etc.].
+Doelgroep: [vmbo-t / havo / vwo], leeftijd [12-14].
+
+Context van eerdere rondes: [korte samenvatting van wat er al staat, of "eerste ronde"]
+```
+
+### Volledige missie (alleen als de style guide al gevalideerd is)
 
 ```
 Maak een nieuwe missie over [onderwerp] voor leerjaar [X].
 Koppel aan SLO-doel [nummer of beschrijving] en verwerkingsvorm [lezen / kijken / interactief / quiz].
 Zorg dat de AI-begeleider de rol heeft van [rolnaam, bijv. "Toekomstarchitect"] en stem de moeilijkheidsgraad af op [vmbo-t / havo / vwo].
+Gebruik MISSION-STYLE-GUIDE.md als referentie. Check na het schrijven: is elke tekst zo kort mogelijk? Leert de feedback iets nieuws?
 ```
 
 ---
