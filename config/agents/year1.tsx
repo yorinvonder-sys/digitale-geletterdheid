@@ -2631,6 +2631,14 @@ AI kan nu foto's, video's en stemmen maken die er ECHT uitzien. Sommige zijn coo
 Ik ga je 5 cases laten zien. Bij elke case moet jij beslissen: ECHT of NEP?
 
 Ben je er klaar voor? Typ 'START' voor Case 1!"
+
+STAP-VOLTOOIING:
+- Stuur ---STEP_COMPLETE:1--- als de leerling Cases 1, 2 en 3 heeft beoordeeld en bij elke case uitgelegd waarom het echt of nep is
+- Stuur ---STEP_COMPLETE:2--- als de leerling Cases 4 en 5 heeft beoordeeld en de deepfake-technieken correct heeft benoemd
+- Stuur ---STEP_COMPLETE:3--- als de leerling een persoonlijk actieplan heeft geformuleerd met minimaal 3 stappen voor wat te doen bij een deepfake
+
+SCOPE GUARD:
+- Blijf bij het herkennen en omgaan met deepfakes. Als de leerling afdwaalt: "Interessant! Maar laten we verder gaan met de volgende deepfake-case — die wacht op jou!"
 ` + SYSTEM_INSTRUCTION_SUFFIX,
         steps: [
             {
@@ -2726,6 +2734,14 @@ Wist je dat jij en je beste vriend waarschijnlijk TOTAAL andere dingen zien op T
 Laten we dat onderzoeken met twee fictieve leerlingen: Sam en Lina.
 
 Typ 'SHOW FEEDS' om hun feeds naast elkaar te zien!"
+
+STAP-VOLTOOIING:
+- Stuur ---STEP_COMPLETE:1--- als de leerling de feeds van Sam en Lina heeft vergeleken en minimaal 2 concrete verschillen heeft benoemd
+- Stuur ---STEP_COMPLETE:2--- als de leerling de quiz heeft voltooid en bij minimaal 3 van de 5 vragen een antwoord heeft gegeven met uitleg
+- Stuur ---STEP_COMPLETE:3--- als de leerling 3 concrete tips heeft gekregen om de filterbubbel te doorbreken en aangeeft hoe ze die zelf kunnen toepassen
+
+SCOPE GUARD:
+- Blijf bij filterbubbels en algoritmes op social media. Als de leerling afdwaalt: "Goed punt! Maar laten we eerst de filterbubbel-missie afmaken — we zijn er bijna!"
 ` + SYSTEM_INSTRUCTION_SUFFIX,
         steps: [
             {
@@ -2743,7 +2759,9 @@ Typ 'SHOW FEEDS' om hun feeds naast elkaar te zien!"
                 description: "Leer 3 concrete tips om je filterbubbel te doorbreken.",
                 example: "Typ: 'Hoe breek ik mijn bubbel?'"
             }
-        ]
+        ],
+        primaryGoal: 'Vergelijk twee feeds, doe de bubbel-quiz en leer 3 tips om je filterbubbel te doorbreken',
+        goalCriteria: { type: 'steps-complete', min: 3 },
     },
     {
         id: 'datalekken-rampenplan',
@@ -2822,6 +2840,14 @@ De school is gehackt. 800 leerlingendossiers zijn openbaar.
 Agent, jij bent aangesteld als crisismanager.
 
 **Fase 1 — Detect:** Welke soorten data zijn er gelekt?"
+
+STAP-VOLTOOIING:
+- Stuur ---STEP_COMPLETE:1--- als de leerling de ernst van het datalek heeft beoordeeld en minimaal 2 soorten gelekte data correct heeft benoemd
+- Stuur ---STEP_COMPLETE:2--- als de leerling de juiste containment-acties heeft gekozen (minimaal 1 correcte actie) en de meldingsplicht bij de Autoriteit Persoonsgegevens heeft benoemd
+- Stuur ---STEP_COMPLETE:3--- als de leerling een persoonlijke security-checklist heeft gemaakt met minimaal 3 concrete maatregelen
+
+SCOPE GUARD:
+- Blijf bij het datalekken-scenario en crisismanagement. Als de leerling afdwaalt: "Goede vraag voor later! Nu is de crisis nog niet onder controle — laten we verder gaan met het rampenplan."
 ` + SYSTEM_INSTRUCTION_SUFFIX,
         steps: [
             {
@@ -2839,7 +2865,9 @@ Agent, jij bent aangesteld als crisismanager.
                 description: "Maak maatregelen om toekomstige incidenten te voorkomen.",
                 example: "Typ: 'Geef mij een security-checklist voor mijn eigen accounts.'"
             }
-        ]
+        ],
+        primaryGoal: 'Doorloop 4 crisismanagementfasen en maak een persoonlijk security-checklist',
+        goalCriteria: { type: 'steps-complete', min: 3 },
     },
     {
         id: 'data-voor-data',
@@ -2927,6 +2955,14 @@ Bedrijven bieden je gratis diensten aan. Maar niets is gratis — jij betaalt me
 8 rondes. 8 keuzes. Na afloop zie je jouw Privacy Profiel.
 
 Klaar? Typ 'START' voor Ronde 1!"
+
+STAP-VOLTOOIING:
+- Stuur ---STEP_COMPLETE:1--- als de leerling Ronde 1 t/m 4 heeft afgerond en bij elke ronde DEAL of NO DEAL heeft gekozen
+- Stuur ---STEP_COMPLETE:2--- als de leerling Ronde 5 t/m 8 heeft afgerond inclusief de meest gevoelige deals (VPN, biometrie, gezondheidsdata)
+- Stuur ---STEP_COMPLETE:3--- als de leerling zijn Privacy Profiel heeft ontvangen en kan uitleggen waarom gratis apps nooit echt gratis zijn
+
+SCOPE GUARD:
+- Blijf bij het data-ruil-spel en privacy-bewustzijn. Als de leerling afdwaalt: "Interessant! Laten we eerst de volgende ronde spelen — je Privacy Profiel wacht!"
 ` + SYSTEM_INSTRUCTION_SUFFIX,
         steps: [
             {
