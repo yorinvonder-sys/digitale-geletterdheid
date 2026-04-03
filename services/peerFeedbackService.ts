@@ -69,7 +69,7 @@ export async function submitPeerFeedback(input: PeerFeedbackInput): Promise<void
     throw new Error('Je kunt jezelf geen feedback geven.');
   }
 
-  const { error } = await (supabase as any).rpc('submit_peer_feedback', {
+  const { error } = await supabase.rpc('submit_peer_feedback' as never, {
     p_mission_id: input.missionId,
     p_to_student_id: input.toStudentId,
     p_feedback_text: safeText,
@@ -87,7 +87,7 @@ export async function getReceivedFeedback(
   studentId: string,
   missionId?: string
 ): Promise<PeerFeedbackRecord[]> {
-  let query = (supabase.from as any)('peer_feedback')
+  let query = supabase.from('peer_feedback' as never)
     .select('*')
     .eq('to_student_id', studentId)
     .order('created_at', { ascending: false })
@@ -110,7 +110,7 @@ export async function getGivenFeedback(
   studentId: string,
   missionId?: string
 ): Promise<PeerFeedbackRecord[]> {
-  let query = (supabase.from as any)('peer_feedback')
+  let query = supabase.from('peer_feedback' as never)
     .select('*')
     .eq('from_student_id', studentId)
     .order('created_at', { ascending: false })

@@ -8,8 +8,9 @@
 import { supabase } from './supabase';
 import { logger } from '../utils/logger';
 
-// Supabase client cast — growth_recommendations tabel nog niet in generated types
-const recommendationsTable = () => (supabase as any).from('growth_recommendations');
+// growth_recommendations is not yet in generated types — use `as never` to suppress the
+// "table does not exist" error while preserving Supabase query-builder return types.
+const recommendationsTable = () => supabase.from('growth_recommendations' as never);
 
 export interface GrowthRecommendation {
   id: string;

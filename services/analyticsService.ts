@@ -127,8 +127,8 @@ const sendAnalyticsEvent = async (event: AnalyticsEvent, data?: AnalyticsPayload
         const buildId = sanitizeToken(data?.build_id, 64) || 'unknown';
         const metricId = sanitizeToken(data?.id, 80) || null;
 
-        const supabaseUrl = (import.meta as any).env?.VITE_SUPABASE_URL as string | undefined;
-        const supabaseAnonKey = (import.meta as any).env?.VITE_SUPABASE_ANON_KEY as string | undefined;
+        const supabaseUrl: string | undefined = import.meta.env.VITE_SUPABASE_URL;
+        const supabaseAnonKey: string | undefined = import.meta.env.VITE_SUPABASE_ANON_KEY;
         if (!supabaseUrl || !supabaseAnonKey) {
             if (isDev) console.warn('[Analytics] Missing VITE_SUPABASE_URL/VITE_SUPABASE_ANON_KEY');
             return;

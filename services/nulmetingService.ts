@@ -9,8 +9,9 @@ import { supabase } from './supabase';
 import { logger } from '../utils/logger';
 import type { NulmetingResult, KamerScore } from '@/components/assessment/escaperoom/types';
 
-// Supabase client cast — nulmeting_results tabel nog niet in generated types
-const nulmetingTable = () => (supabase as any).from('nulmeting_results');
+// nulmeting_results is not yet in generated types — use `as never` to suppress the
+// "table does not exist" error while preserving Supabase query-builder return types.
+const nulmetingTable = () => supabase.from('nulmeting_results' as never);
 
 /** Database rij-type voor nulmeting_results */
 interface NulmetingRow {

@@ -47,7 +47,7 @@ export const logAuditEvent = async (
 
         if (error) throw error;
 
-        if ((import.meta as any).env?.DEV) {
+        if (import.meta.env.DEV) {
             console.log(`[AuditLog] Logged: ${eventType}`, metadata);
         }
     } catch (error) {

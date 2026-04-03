@@ -133,6 +133,6 @@ export async function getXpAbuseSummary(userId: string): Promise<{
 
 /** For development/testing only — no-op in production builds */
 export function resetRateLimit(userId: string): void {
-    if (!(import.meta as any).env?.DEV) return;
+    if (!import.meta.env.DEV) return;
     rateLimitCache.delete(userId);
 }

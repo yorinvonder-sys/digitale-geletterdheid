@@ -1,8 +1,8 @@
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from '../types/database.types';
 
-const supabaseUrl = ((import.meta as any).env.VITE_SUPABASE_URL as string)?.trim();
-const supabaseAnonKey = ((import.meta as any).env.VITE_SUPABASE_ANON_KEY as string)?.trim();
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL?.trim();
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY?.trim();
 
 if (!supabaseUrl || !supabaseAnonKey) {
     throw new Error(
@@ -62,7 +62,7 @@ export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
 
 const isDevEdgeProxy = (() => {
     try {
-        return (import.meta as any).env?.DEV === true && typeof window !== 'undefined';
+        return import.meta.env.DEV === true && typeof window !== 'undefined';
     } catch {
         return false;
     }

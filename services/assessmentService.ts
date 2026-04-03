@@ -9,8 +9,9 @@ import { supabase } from './supabase';
 import { logger } from '../utils/logger';
 import type { NulmetingResult, KamerScore } from '@/components/assessment/escaperoom/types';
 
-// Supabase client cast — assessment_results tabel nog niet in generated types
-const assessmentTable = () => (supabase as any).from('assessment_results');
+// assessment_results is not yet in generated types — use `as never` to suppress the
+// "table does not exist" error while preserving Supabase query-builder return types.
+const assessmentTable = () => supabase.from('assessment_results' as never);
 
 export type AssessmentType = 'nulmeting' | 'eindmeting';
 

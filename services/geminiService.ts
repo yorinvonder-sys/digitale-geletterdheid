@@ -10,7 +10,7 @@ import { markAiGeneratedText } from '../utils/aiContentMarker';
 // ── Fallback guard: local simulation only in DEV (AI Act Art. 50 + NIS2) ──
 const ALLOW_LOCAL_FALLBACK = (() => {
   try {
-    return (import.meta as any).env?.DEV === true;
+    return import.meta.env.DEV === true;
   } catch { return false; }
 })();
 

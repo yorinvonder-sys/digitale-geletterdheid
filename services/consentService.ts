@@ -74,8 +74,9 @@ const CONSENT_META: Record<ConsentType, { label: string; description: string; re
   },
 };
 
-// Supabase client cast — student_consents tabel nog niet in generated types
-const consentTable = () => (supabase as any).from('student_consents');
+// student_consents is not yet in generated types — use `as never` to suppress the
+// "table does not exist" error while preserving Supabase query-builder return types.
+const consentTable = () => supabase.from('student_consents' as never);
 
 /** Alle consents ophalen voor een leerling */
 export async function getStudentConsents(studentId: string): Promise<StudentConsent[]> {
@@ -102,7 +103,7 @@ export async function grantConsent(
     return { success: false, error: 'Ouderlijke toestemming moet via de beveiligde e-maillink worden bevestigd.' };
   }
 
-  const { error } = await (supabase as any).rpc('set_own_consent', {
+  const { error } = await supabase.rpc('set_own_consent' as never, {
     p_consent_type: consentType,
     p_granted: true,
     p_consent_version: CURRENT_CONSENT_VERSION,
@@ -117,7 +118,7 @@ export async function grantConsent(
 
 /** Consent intrekken */
 export async function revokeConsent(consentType: ConsentType): Promise<{ success: boolean; error?: string }> {
-  const { error } = await (supabase as any).rpc('set_own_consent', {
+  const { error } = await supabase.rpc('set_own_consent' as never, {
     p_consent_type: consentType,
     p_granted: false,
     p_consent_version: CURRENT_CONSENT_VERSION,
@@ -139,8 +140,9 @@ export async function hasConsent(studentId: string, consentType: ConsentType): P
     .single();
 
   if (error || !data) return false;
-  if ((data as any).consent_version !== CURRENT_CONSENT_VERSION) return false;
-  return (data as any).granted === true;
+  const row = data as { consent_version: string; granted: boolean };
+  if (row.consent_version !== CURRENT_CONSENT_VERSION) return false;
+  return row.granted === true;
 }
 
 /** Is ouderlijke toestemming nodig? (AVG Art. 8: <16 jaar in NL) */
@@ -169,7 +171,8 @@ export async function sendParentalConsentEmail(
       return { success: false, error: 'Kon e-mail niet versturen.' };
     }
 
-    return { success: (data as any)?.success === true };
+    const responseData = data as { success?: boolean } | null;
+    return { success: responseData?.success === true };
   } catch (err) {
     logger.error('[consentService] sendParentalConsentEmail unexpected error:', err);
     return { success: false, error: 'Er ging iets mis bij het versturen van de e-mail.' };
