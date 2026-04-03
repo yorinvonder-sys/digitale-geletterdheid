@@ -61,6 +61,7 @@ export const DuelGame: React.FC<DuelGameProps> = ({
     const [hasEnded, setHasEnded] = useState(false);
 
     const canvasRef = useRef<HTMLCanvasElement>(null);
+    const canvasContainerRef = useRef<HTMLDivElement>(null);
     const isDrawingRef = useRef(false);
     const lastPosRef = useRef({ x: 0, y: 0 });
 
@@ -115,6 +116,32 @@ export const DuelGame: React.FC<DuelGameProps> = ({
             return () => clearInterval(interval);
         }
     }, [session?.status, session?.round_start_time, hasEnded, isPlayer1, sessionId]);
+
+    // Responsive canvas sizing
+    useEffect(() => {
+        const updateCanvasSize = () => {
+            const canvas = canvasRef.current;
+            const container = canvasContainerRef.current;
+            if (!canvas || !container) return;
+            const containerWidth = container.clientWidth;
+            const size = Math.min(containerWidth, 400);
+            canvas.width = size;
+            canvas.height = size;
+            // Re-fill white after resize
+            const ctx = canvas.getContext('2d');
+            if (ctx) {
+                ctx.fillStyle = 'white';
+                ctx.fillRect(0, 0, size, size);
+                ctx.strokeStyle = '#3D3D38';
+                ctx.lineWidth = 4;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+            }
+        };
+        updateCanvasSize();
+        window.addEventListener('resize', updateCanvasSize);
+        return () => window.removeEventListener('resize', updateCanvasSize);
+    }, [session?.status, currentPromptIndex]);
 
     // Initialize canvas
     useEffect(() => {
@@ -368,22 +395,26 @@ export const DuelGame: React.FC<DuelGameProps> = ({
 
             {/* Canvas Area */}
             <div className="flex-1 flex items-center justify-center p-4 relative">
-                <canvas
-                    ref={canvasRef}
-                    width={350}
-                    height={350}
-                    aria-label="Tekencanvas"
-                    tabIndex={0}
-                    onMouseDown={startDrawingHandler}
-                    onMouseMove={draw}
-                    onMouseUp={stopDrawing}
-                    onMouseLeave={stopDrawing}
-                    onTouchStart={startDrawingHandler}
-                    onTouchMove={draw}
-                    onTouchEnd={stopDrawing}
-                    className="bg-white rounded-2xl shadow-2xl touch-none cursor-crosshair"
-                    style={{ touchAction: 'none', border: '1px solid #E8E6DF' }}
-                />
+                <div
+                    ref={canvasContainerRef}
+                    className="w-full flex items-center justify-center"
+                    style={{ maxWidth: 400 }}
+                >
+                    <canvas
+                        ref={canvasRef}
+                        aria-label="Tekencanvas"
+                        tabIndex={0}
+                        onMouseDown={startDrawingHandler}
+                        onMouseMove={draw}
+                        onMouseUp={stopDrawing}
+                        onMouseLeave={stopDrawing}
+                        onTouchStart={startDrawingHandler}
+                        onTouchMove={draw}
+                        onTouchEnd={stopDrawing}
+                        className="bg-white rounded-2xl shadow-2xl touch-none cursor-crosshair"
+                        style={{ touchAction: 'none', border: '1px solid #E8E6DF', maxWidth: '100%' }}
+                    />
+                </div>
 
                 {/* Result overlay */}
                 {lastResult && (

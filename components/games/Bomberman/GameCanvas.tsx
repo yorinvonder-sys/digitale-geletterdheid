@@ -14,7 +14,8 @@ interface GameCanvasProps {
     onDeath?: () => void;
 }
 
-const TILE_SIZE = 48;
+const MIN_TILE_SIZE = 24;
+const DEFAULT_TILE_SIZE = 48;
 
 // Visual Assets / Constants
 const COLORS = {
@@ -43,8 +44,10 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({
     isSuddenDeath = false,
     onDeath
 }) => {
+    const containerRef = useRef<HTMLDivElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const frameRef = useRef<number>(0);
+    const tileSizeRef = useRef<number>(DEFAULT_TILE_SIZE);
 
     // Inputs are now managed by parent (via inputRef prop)
     const localPosRef = useRef<{ x: number, y: number } | null>(null);
@@ -74,13 +77,14 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({
             if (!prevExplosionsRef.current.has(key)) {
                 // Spawn particles for new explosion
                 const exp = gameState.explosions[key];
+                const ts = tileSizeRef.current;
                 const count = 40;
                 for (let i = 0; i < count; i++) {
                     const angle = Math.random() * Math.PI * 2;
                     const speed = Math.random() * 8;
                     particlesRef.current.push({
-                        x: exp.x * TILE_SIZE + TILE_SIZE / 2,
-                        y: exp.y * TILE_SIZE + TILE_SIZE / 2,
+                        x: exp.x * ts + ts / 2,
+                        y: exp.y * ts + ts / 2,
                         vx: Math.cos(angle) * speed,
                         vy: Math.sin(angle) * speed,
                         life: 1.0,
@@ -101,6 +105,7 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({
         if (!ctx) return;
 
         const render = (time: number) => {
+            const TILE_SIZE = tileSizeRef.current;
             // 1. UPDATE LOGIC
             // Physics / Movement
             const myPlayer = gameState.players[myPlayerId];
@@ -516,8 +521,15 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({
         };
 
         const resize = () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            const container = containerRef.current;
+            const availableWidth = container ? container.clientWidth : window.innerWidth;
+            const availableHeight = container ? container.clientHeight : window.innerHeight;
+            // Compute tile size that fits the grid in the available space, with min/max bounds
+            const tileByWidth = Math.floor(availableWidth / GRID_WIDTH);
+            const tileByHeight = Math.floor(availableHeight / GRID_HEIGHT);
+            tileSizeRef.current = Math.max(MIN_TILE_SIZE, Math.min(DEFAULT_TILE_SIZE, tileByWidth, tileByHeight));
+            canvas.width = availableWidth;
+            canvas.height = availableHeight;
         };
         window.addEventListener('resize', resize);
         resize();
@@ -530,13 +542,19 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({
     }, [gameState, myPlayerId]);
 
     return (
-        <canvas
-            ref={canvasRef}
-            role="img"
-            aria-label="Bomberman spelcanvas"
-            tabIndex={0}
-            className="block w-full h-full"
-            style={{ backgroundColor: '#1A1A19' }}
-        />
+        <div
+            ref={containerRef}
+            className="w-full h-full overflow-hidden"
+            style={{ maxWidth: '100%', backgroundColor: '#1A1A19' }}
+        >
+            <canvas
+                ref={canvasRef}
+                role="img"
+                aria-label="Bomberman spelcanvas"
+                tabIndex={0}
+                className="block"
+                style={{ backgroundColor: '#1A1A19', maxWidth: '100%' }}
+            />
+        </div>
     );
 };
