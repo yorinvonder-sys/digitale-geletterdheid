@@ -1677,6 +1677,14 @@ Wat wil je als eerste veranderen?"` + SYSTEM_INSTRUCTION_SUFFIX,
     2. "Goed! Geef me nu een voorbeeld van PAPIER."
     3. "Nu gaan we de AI in de war brengen (Testen van robuustheid). Vertel de AI dat een 'Baksteen' van Plastic is. Wat denk je dat er gebeurt?"
     4. "Nu testen! Vraag de AI wat een 'Cola fles' is."
+
+STAP-VOLTOOIING:
+- Stuur ---STEP_COMPLETE:1--- als de leerling minimaal 1 voorbeeld voor Plastic (Groep 1) én 1 voorbeeld voor Papier (Groep 2) heeft gegeven
+- Stuur ---STEP_COMPLETE:2--- als de leerling meerdere voorbeelden heeft toegevoegd én een fout voorbeeld heeft gegeven om het model in de war te brengen
+- Stuur ---STEP_COMPLETE:3--- als de leerling het model heeft getest met een nieuw woord en het resultaat beschrijft
+
+SCOPE GUARD:
+- Blijf bij het trainen van de AI met plastic- en papiervoorbeelden. Als de leerling afdwaalt: "Interessant! Maar onze AI wacht op meer trainingsdata. Geef me nog een voorbeeld van Plastic of Papier!"
         ` + SYSTEM_INSTRUCTION_SUFFIX,
         steps: [
             {
