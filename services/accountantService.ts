@@ -10,12 +10,8 @@
 
 import { supabase, EDGE_FUNCTION_URL, authenticatedFetch } from './supabase';
 
-// De nieuwe accountant-tabellen zitten nog niet in de auto-gegenereerde database.types.ts.
-// Na het uitvoeren van de migratie kunnen de types gegenereerd worden via:
-//   supabase gen types typescript --project-id <id>
-// Tot die tijd gebruiken we een untyped helper voor deze tabellen.
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const db = supabase as any;
+// Alias for readability — all accountant_* tables are in database.types.ts
+const db = supabase;
 
 // ===========================================================================
 // Types

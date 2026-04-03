@@ -34,8 +34,8 @@ import {
 } from './accountantHoursService';
 import JSZip from 'jszip';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const db = supabase as any;
+// Alias for readability — accountant tables are in database.types.ts
+const db = supabase;
 
 // ===========================================================================
 // Types

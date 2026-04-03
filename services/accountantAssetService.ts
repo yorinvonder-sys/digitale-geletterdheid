@@ -7,8 +7,8 @@
 
 import { supabase } from './supabase';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const db = supabase as any;
+// Alias for readability — all accountant tables are in database.types.ts
+const db = supabase;
 
 // ===========================================================================
 // Types

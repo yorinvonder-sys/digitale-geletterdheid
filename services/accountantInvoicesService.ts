@@ -11,9 +11,8 @@
 
 import { supabase } from './supabase';
 
-// De nieuwe accountant-tabellen zitten nog niet in de auto-gegenereerde database.types.ts.
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const db = supabase as any;
+// Alias for readability — accountant tables are in database.types.ts
+const db = supabase;
 
 // ============================================================================
 // Types

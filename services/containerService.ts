@@ -9,10 +9,10 @@ import {
 // De tabellen school_containers en school_container_missions zijn nog niet in de
 // gegenereerde database.types.ts (migratie nog niet applied). Cast naar any tot
 // de types geregenereerd zijn na `supabase gen types typescript`.
-/* eslint-disable @typescript-eslint/no-explicit-any */
-const fromContainers = (): any => supabase.from('school_containers' as any);
-const fromContainerMissions = (): any => supabase.from('school_container_missions' as any);
-/* eslint-enable @typescript-eslint/no-explicit-any */
+// school_containers and school_container_missions are not yet in generated types.
+// Using `as never` until `supabase gen types typescript` is re-run after migration.
+const fromContainers = () => supabase.from('school_containers' as never);
+const fromContainerMissions = () => supabase.from('school_container_missions' as never);
 
 // ============================================================================
 // Public API

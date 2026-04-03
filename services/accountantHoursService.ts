@@ -9,9 +9,8 @@
 
 import { supabase } from './supabase';
 
-// De accountant_hours tabel is nieuw en zit nog niet in de gegenereerde types.
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const db = supabase as any;
+// Alias for readability — accountant_hours is in database.types.ts
+const db = supabase;
 
 // ===========================================================================
 // Constanten

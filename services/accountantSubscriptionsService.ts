@@ -8,8 +8,8 @@
 import { supabase } from './supabase';
 import { TransactionCategory, createTransaction } from './accountantService';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const db = supabase as any;
+// Alias for readability — accountant_subscriptions is in database.types.ts
+const db = supabase;
 
 // ===========================================================================
 // Types

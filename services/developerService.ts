@@ -233,7 +233,7 @@ export const addDevTask = async (userId: string, task: Partial<DevTask>): Promis
         user_id: userId,
         title: task.title || 'Untitled',
         description: task.description,
-        status: task.status === 'completed' ? 'done' : task.status === 'pending' ? 'todo' : (task.status as any) || 'todo',
+        status: (task.status === 'completed' ? 'done' : task.status === 'pending' ? 'todo' : task.status) ?? 'todo',
         priority: task.priority || 'medium',
         category: task.category,
     });
@@ -349,7 +349,7 @@ export const updateDevMilestone = async (
     milestoneId: string,
     updates: Partial<DevMilestone>
 ): Promise<void> => {
-    return updateDeveloperMilestone(milestoneId, updates as any);
+    return updateDeveloperMilestone(milestoneId, updates as Partial<DeveloperMilestone>);
 };
 
 export const deleteDevMilestone = async (
