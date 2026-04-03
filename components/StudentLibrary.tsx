@@ -126,6 +126,9 @@ export const StudentLibrary: React.FC<StudentLibraryProps> = ({
                     initial={{ scale: 0.9, opacity: 0, y: 20 }}
                     animate={{ scale: 1, opacity: 1, y: 0 }}
                     exit={{ scale: 0.9, opacity: 0, y: 20 }}
+                    role="dialog"
+                    aria-modal="true"
+                    aria-label="Mijn Bibliotheek"
                     className="w-full max-w-4xl max-h-[85vh] bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col"
                     onClick={(e) => e.stopPropagation()}
                 >
@@ -230,9 +233,10 @@ export const StudentLibrary: React.FC<StudentLibraryProps> = ({
                                                 {onOpenItem && (
                                                     <button
                                                         onClick={() => onOpenItem(item)}
+                                                        aria-label={`${item.name} openen`}
                                                         className="px-4 py-2 bg-white rounded-xl font-bold text-slate-900 text-sm flex items-center gap-2 hover:bg-slate-100 transition-colors"
                                                     >
-                                                        <Play size={16} />
+                                                        <Play size={16} aria-hidden="true" />
                                                         Openen
                                                     </button>
                                                 )}

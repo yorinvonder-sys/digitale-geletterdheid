@@ -120,7 +120,10 @@ export function MfaGate({ onVerified }: MfaGateProps) {
                         {/* Header met logo */}
                         <div className="text-center mb-8">
                             <div className="w-24 h-24 mx-auto mb-4">
-                                <img src="/mascot/pip-2fa.png" alt="Pip met telefoon" className="w-full h-full object-contain" width={96} height={96} decoding="async" />
+                                <picture>
+                                    <source srcSet="/mascot/pip-2fa.webp" type="image/webp" />
+                                    <img src="/mascot/pip-2fa.png" alt="Pip met telefoon" className="w-full h-full object-contain" width={96} height={96} decoding="async" />
+                                </picture>
                             </div>
                             <h1 className="text-2xl font-black text-slate-900 mb-1 tracking-tight">
                                 Verificatie <span className="text-lab-primary">vereist</span>

@@ -28,8 +28,32 @@ export const SloKerndoelen: React.FC = () => {
         
         trackEvent('seo_page_view', { cluster: 'curriculum', page: 'slo-kerndoelen' });
 
+        const breadcrumb = document.createElement('script');
+        breadcrumb.type = 'application/ld+json';
+        breadcrumb.textContent = JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            'itemListElement': [
+                {
+                    '@type': 'ListItem',
+                    'position': 1,
+                    'name': 'Home',
+                    'item': 'https://dgskills.app'
+                },
+                {
+                    '@type': 'ListItem',
+                    'position': 2,
+                    'name': 'SLO Kerndoelen Digitale Geletterdheid',
+                    'item': 'https://dgskills.app/slo-kerndoelen-digitale-geletterdheid'
+                }
+            ]
+        });
+        breadcrumb.id = 'breadcrumb-jsonld';
+        document.head.appendChild(breadcrumb);
+
         return () => {
             document.title = originalTitle;
+            document.getElementById('breadcrumb-jsonld')?.remove();
         };
     }, []);
 

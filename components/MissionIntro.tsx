@@ -75,10 +75,13 @@ export const MissionIntro: React.FC<MissionIntroProps> = ({ weekNumber, projects
                         </div>
 
                         {/* Pagination Dots */}
-                        <div className="absolute bottom-6 flex gap-2">
+                        <div className="absolute bottom-6 flex gap-2" role="tablist" aria-label="Projecten">
                             {projects.map((_, i) => (
                                 <div
                                     key={i}
+                                    role="tab"
+                                    aria-label={`Stap ${i + 1} van ${projects.length}`}
+                                    aria-selected={i === currentIndex}
                                     className={`h-1.5 rounded-full transition-all duration-300 ${i === currentIndex ? 'w-8 bg-[#D97757]' : 'w-2 bg-[#E8E6DF]'}`}
                                 />
                             ))}

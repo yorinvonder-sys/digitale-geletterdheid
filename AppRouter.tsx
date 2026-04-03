@@ -20,6 +20,7 @@ const GuidePage = React.lazy(() => import('./components/seo/GuidePage').then(m =
 const ComplianceChecklist = React.lazy(() => import('./components/seo/ComplianceChecklist').then(m => ({ default: m.ComplianceChecklist })));
 const SloRapport = React.lazy(() => import('./components/seo/SloRapport').then(m => ({ default: m.SloRapport })));
 const ComparisonPage = React.lazy(() => import('./components/seo/ComparisonPage').then(m => ({ default: m.ComparisonPage })));
+const PricingPage = React.lazy(() => import('./components/scholen/PricingPage').then(m => ({ default: m.PricingPage })));
 const NotFound = React.lazy(() => import('./components/NotFound').then(m => ({ default: m.NotFound })));
 const MobileReceiptPage = React.lazy(() => import('./components/MobileReceiptPage').then(m => ({ default: m.MobileReceiptPage })));
 const ParentConsentApproval = React.lazy(() => import('./components/ParentConsentApproval').then(m => ({ default: m.ParentConsentApproval })));
@@ -408,6 +409,16 @@ export function AppRouter() {
         return <BonnetjeRoute />;
     }
 
+    if (normalizedPath === '/pricing') {
+        return (
+            <PublicPageShell>
+                <React.Suspense fallback={<LoadingFallback />}>
+                    <PricingPage />
+                </React.Suspense>
+            </PublicPageShell>
+        );
+    }
+
     if (normalizedPath === '/digitale-geletterdheid-vo' || normalizedPath === '/slo-kerndoelen-digitale-geletterdheid' || normalizedPath === '/ai-geletterdheid-onderwijs-ai-act' || normalizedPath === '/compliance-hub' || normalizedPath === '/compliance/checklist' || normalizedPath === '/compliance/slo-rapport' || normalizedPath.startsWith('/vergelijking/')) {
         return (
             <PublicPageShell>
@@ -437,7 +448,7 @@ export function AppRouter() {
     }
 
     // 404 handler for public routes
-    const isPublicRoute = normalizedPath === '' || normalizedPath === '/' || normalizedPath === '/scholen' || normalizedPath === '/ict' || normalizedPath.startsWith('/ict/') || normalizedPath === '/login' || normalizedPath === '/ouderlijke-toestemming' || normalizedPath === '/digitale-geletterdheid-vo' || normalizedPath === '/slo-kerndoelen-digitale-geletterdheid' || normalizedPath === '/ai-geletterdheid-onderwijs-ai-act' || normalizedPath === '/compliance-hub' || normalizedPath.startsWith('/compliance/') || normalizedPath.startsWith('/vergelijking/') || normalizedPath.startsWith('/gids/');
+    const isPublicRoute = normalizedPath === '' || normalizedPath === '/' || normalizedPath === '/scholen' || normalizedPath === '/ict' || normalizedPath.startsWith('/ict/') || normalizedPath === '/login' || normalizedPath === '/ouderlijke-toestemming' || normalizedPath === '/pricing' || normalizedPath === '/digitale-geletterdheid-vo' || normalizedPath === '/slo-kerndoelen-digitale-geletterdheid' || normalizedPath === '/ai-geletterdheid-onderwijs-ai-act' || normalizedPath === '/compliance-hub' || normalizedPath.startsWith('/compliance/') || normalizedPath.startsWith('/vergelijking/') || normalizedPath.startsWith('/gids/');
 
     if (isPublicRoute) {
         return (

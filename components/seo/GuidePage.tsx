@@ -37,7 +37,40 @@ export const GuidePage: React.FC<{ guideId: string }> = ({ guideId }) => {
         const formattedTitle = guideId.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
         document.title = `${formattedTitle} | DGSkills Gidsen`;
 
+        const breadcrumb = document.createElement('script');
+        breadcrumb.type = 'application/ld+json';
+        breadcrumb.textContent = JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            'itemListElement': [
+                {
+                    '@type': 'ListItem',
+                    'position': 1,
+                    'name': 'Home',
+                    'item': 'https://dgskills.app'
+                },
+                {
+                    '@type': 'ListItem',
+                    'position': 2,
+                    'name': 'Gids',
+                    'item': 'https://dgskills.app/gids'
+                },
+                {
+                    '@type': 'ListItem',
+                    'position': 3,
+                    'name': formattedTitle,
+                    'item': `https://dgskills.app/gids/${guideId}`
+                }
+            ]
+        });
+        breadcrumb.id = 'breadcrumb-jsonld';
+        document.head.appendChild(breadcrumb);
+
         trackEvent('seo_page_view', { cluster: 'gids', page: guideId });
+
+        return () => {
+            document.getElementById('breadcrumb-jsonld')?.remove();
+        };
     }, [guideId]);
 
     if (loading) {

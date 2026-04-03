@@ -114,10 +114,11 @@ export const DuelLobby: React.FC<DuelLobbyProps> = ({
             <div className="p-4 flex items-center gap-4" style={{ borderBottom: '1px solid #E8E6DF' }}>
                 <button
                     onClick={onBack}
+                    aria-label="Terug"
                     className="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#D97757]"
                     style={{ backgroundColor: '#F0EEE8', color: '#3D3D38' }}
                 >
-                    <ArrowLeft size={20} />
+                    <ArrowLeft size={20} aria-hidden="true" />
                 </button>
                 <div>
                     <h1 className="text-xl flex items-center gap-2" style={{ fontFamily: "'Newsreader', Georgia, serif", fontWeight: 700, color: '#1A1A19' }}>

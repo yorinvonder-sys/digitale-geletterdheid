@@ -93,7 +93,7 @@ export const MissionBriefing: React.FC<MissionBriefingProps> = ({ role, onStart,
                                             ) : (
                                                 <img
                                                     src={role.briefingImage}
-                                                    alt="Briefing"
+                                                    alt={`Afbeelding bij de briefing voor de rol: ${role.title}`}
                                                     className="w-full h-full object-cover"
                                                     decoding="async"
                                                     loading="lazy"

@@ -530,6 +530,13 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({
     }, [gameState, myPlayerId]);
 
     return (
-        <canvas ref={canvasRef} className="block w-full h-full" style={{ backgroundColor: '#1A1A19' }} />
+        <canvas
+            ref={canvasRef}
+            role="img"
+            aria-label="Bomberman spelcanvas"
+            tabIndex={0}
+            className="block w-full h-full"
+            style={{ backgroundColor: '#1A1A19' }}
+        />
     );
 };
