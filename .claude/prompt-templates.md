@@ -66,6 +66,35 @@ Check ook: build slaagt, geen console-errors, RLS policies intact, geen [invulle
 
 ---
 
+## 7. Missie-audit leerlingperspectief
+
+```
+Voer een systematische review uit van missie [MISSIE_ID] alsof je een leerling bent
+die deze missie voor het eerst opent.
+
+Beoordeel op 9 dimensies: eerste indruk, visueel, didactische flow, inhoudelijke
+correctheid, AI-coach kwaliteit, interactiviteit, afronding & feedback,
+SLO-aansluiting, en toegankelijkheid.
+
+Gebruik het audit-template in docs/audits/audit-plan-template-leerling.md.
+Schrijf het ingevulde rapport naar docs/audits/leerling-audit/[MISSIE_ID].md
+en update de samenvattingstabel in docs/audits/leerling-audit/README.md.
+
+Referentiemissies: privacy-by-design (goudstandaard), data-verzamelaar, network-navigator.
+```
+
+### Batch-variant
+
+```
+Voer een batch leerling-audit uit voor alle missies in leerjaar [X] periode [Y].
+Gebruik het template in docs/audits/audit-plan-template-leerling.md.
+Schrijf per missie een rapport naar docs/audits/leerling-audit/[MISSIE_ID].md
+en update de samenvattingstabel in docs/audits/leerling-audit/README.md.
+Sorteer de resultaten op score (laagste eerst) zodat de urgentste missies bovenaan staan.
+```
+
+---
+
 ## Tips
 
 - Voeg altijd de naam van het betrokken bestand of component toe als je dat weet — dat bespaart zoektijd.

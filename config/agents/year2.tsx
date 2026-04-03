@@ -597,6 +597,7 @@ Laten we kijken wat er al stevig zit. Vertel me: welk onderwerp van deze periode
                 example: "Zeg: 'Ik heb geleerd hoe je data analyseert, spreadsheets gebruikt, bronnen checkt en bias in AI herkent.'"
             }
         ],
+        goalCriteria: { type: 'steps-complete', min: 3 },
         bonusChallenges: null
     },
     {
@@ -1528,6 +1529,7 @@ Kies een app die je dagelijks gebruikt (TikTok, Instagram, je schoolapp — wat 
                 example: "Zeg: 'Ik zou de zoekbalk prominenter maken en categorieën toevoegen zodat je sneller vindt wat je zoekt.'"
             }
         ],
+        goalCriteria: { type: 'steps-complete', min: 3 },
         bonusChallenges: null
     },
     {
@@ -1891,6 +1893,7 @@ Jij bouwt vandaag een merkidentiteit. Vertel me: wat voor bedrijf of product wil
                 example: "Zeg: 'Groen staat voor natuur, het ronde font voelt vriendelijk aan, en het logo combineert lopen met duurzaamheid.'"
             }
         ],
+        goalCriteria: { type: 'steps-complete', min: 3 },
         bonusChallenges: null
     },
     {
@@ -2106,6 +2109,7 @@ Elke challenge test een ander mediadomein. Klaar? Zeg 'ACTIE' om te starten!"
                 example: "Beschrijf branding, viraliteit en video voor één merk."
             }
         ],
+        goalCriteria: { type: 'steps-complete', min: 3 },
         bonusChallenges: null
     },
     {
@@ -2489,6 +2493,7 @@ Jij gaat vandaag de digitale voetafdruk meten. Kies een apparaat of dienst die j
                 example: "Typ: 'Alternatief 1: Speel offline games die minder energie kosten.'"
             }
         ],
+        goalCriteria: { type: 'steps-complete', min: 3 },
         bonusChallenges: null
     },
     {

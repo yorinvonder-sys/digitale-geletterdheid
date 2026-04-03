@@ -1,24 +1,24 @@
 import type { ReviewArenaConfig } from '../ReviewArena';
 
 export const dataReviewConfig: ReviewArenaConfig = {
-    missionId: 'data-privacy-review',
-    title: 'Data & Privacy Review',
-    introEmoji: '🔐',
-    introTitle: 'Wat weet jij over data en privacy?',
+    missionId: 'data-review',
+    title: 'Data & Informatie Review',
+    introEmoji: '📊',
+    introTitle: 'Wat weet jij over data en informatie?',
     introDescription:
-        'Test je kennis over databronnen, persoonsgegevens en de AVG via vier afwisselende ronden. Elk type opgave vraagt iets anders van je.',
+        'Test je kennis over datasets, spreadsheets, APIs, datavisualisatie, AI-bias en fact-checking — de stof van Periode 1. Vier afwisselende ronden, steeds iets uitdagender.',
     maxScore: 100,
     badges: [
         {
             minScore: 90,
             emoji: '🏆',
-            title: 'Privacy Expert',
+            title: 'Data Expert',
             color: '#F59E0B',
         },
         {
             minScore: 70,
-            emoji: '🎯',
-            title: 'Databewuste leerling',
+            emoji: '📊',
+            title: 'Data-analist',
             color: '#10B981',
         },
         {
@@ -35,156 +35,149 @@ export const dataReviewConfig: ReviewArenaConfig = {
         },
     ],
     takeaways: [
-        'Overheidsdata en wetenschappelijk onderzoek zijn doorgaans betrouwbaarder dan sociale media.',
-        'Persoonsgegevens zijn alle gegevens waarmee je iemand direct of indirect kunt identificeren.',
-        'De AVG geeft burgers rechten: inzage, correctie, verwijdering en bezwaar.',
-        'Encryptie beschermt data in opslag én tijdens transport.',
-        'Geboortedatum op zichzelf is geen persoonsgegeven, maar in combinatie met naam wel.',
+        'Data zijn ruwe feiten of cijfers; informatie is data met betekenis en context.',
+        'Een dataset bestaat uit rijen (observaties) en kolommen (variabelen).',
+        'Een API is een koppeling waarmee programma\'s data met elkaar kunnen uitwisselen via requests en responses.',
+        'AI-bias ontstaat wanneer trainingsdata niet representatief is voor alle groepen.',
+        'De CRAAP-methode (Currency, Relevance, Authority, Accuracy, Purpose) helpt je bronnen beoordelen op betrouwbaarheid.',
     ],
     rounds: [
         {
             id: 'round-drag-sort',
             type: 'drag-sort',
-            title: 'Vertrouwbaarheid van databronnen',
+            title: 'Van ruw naar bruikbaar',
             description:
-                'Sorteer deze databronnen van meest betrouwbaar (boven) naar minst betrouwbaar (onder).',
+                'Zet deze stappen in de juiste volgorde: hoe verwerk je ruwe data tot bruikbare informatie?',
             maxScore: 25,
             items: [
                 {
-                    id: 'cbs',
-                    label: 'CBS (Centraal Bureau voor de Statistiek)',
+                    id: 'collect',
+                    label: 'Ruwe data verzamelen (bijv. meetwaarden, enquêteresultaten)',
                     correctPosition: 0,
                 },
                 {
-                    id: 'peer-reviewed',
-                    label: 'Peer-reviewed wetenschappelijk artikel',
+                    id: 'clean',
+                    label: 'Data opschonen: fouten, duplicaten en lege cellen verwijderen',
                     correctPosition: 1,
                 },
                 {
-                    id: 'krant',
-                    label: 'Landelijk dagblad (NRC, de Volkskrant)',
+                    id: 'analyse',
+                    label: 'Data analyseren: patronen en gemiddelden berekenen',
                     correctPosition: 2,
                 },
                 {
-                    id: 'wiki',
-                    label: 'Wikipedia-pagina',
+                    id: 'visualise',
+                    label: 'Resultaten visualiseren in een grafiek of dashboard',
                     correctPosition: 3,
                 },
                 {
-                    id: 'instagram',
-                    label: 'Bericht op Instagram',
+                    id: 'interpret',
+                    label: 'Conclusies trekken en de informatie communiceren',
                     correctPosition: 4,
-                },
-                {
-                    id: 'tiktok',
-                    label: 'TikTok-video zonder bronvermelding',
-                    correctPosition: 5,
                 },
             ],
         },
         {
             id: 'round-match-pairs',
             type: 'match-pairs',
-            title: 'Datatype & beveiliging',
-            description: 'Koppel elk datatype aan de passende beveiligingsmaatregel.',
+            title: 'Dataconcepten koppelen',
+            description: 'Koppel elk concept aan de juiste beschrijving.',
             maxScore: 25,
             pairs: [
                 {
-                    left: 'Wachtwoorden in een database',
-                    right: 'Hashing (bijv. bcrypt)',
+                    left: 'API',
+                    right: 'Een koppeling waarmee twee applicaties data uitwisselen via requests en responses',
                 },
                 {
-                    left: 'E-mails over het internet',
-                    right: 'Versleuteling (TLS/SSL)',
+                    left: 'Dataset',
+                    right: 'Een gestructureerde verzameling gegevens in rijen en kolommen',
                 },
                 {
-                    left: 'Medisch dossier op een USB-stick',
-                    right: 'Encryptie van het apparaat',
+                    left: 'AI-bias',
+                    right: 'Systematische fout in een AI-model door niet-representatieve trainingsdata',
                 },
                 {
-                    left: 'Gezichtsherkenningsdata',
-                    right: 'Expliciete toestemming (opt-in)',
+                    left: 'Lijndiagram',
+                    right: 'Visualisatie die trends en veranderingen over tijd laat zien',
                 },
                 {
-                    left: 'Inlogpogingen op een systeem',
-                    right: 'Logging & monitoring',
+                    left: 'Fact-checking',
+                    right: 'Het verifiëren van een bewering via meerdere betrouwbare bronnen',
                 },
             ],
         },
         {
             id: 'round-categorize',
             type: 'categorize',
-            title: 'Persoonsgegeven of niet?',
+            title: 'Welk grafiektype past het best?',
             description:
-                'Categoriseer elk item als "Persoonsgegeven" of "Geen persoonsgegeven" volgens de AVG.',
+                'Categoriseer elk scenario als "Lijndiagram" of "Staafdiagram".',
             maxScore: 25,
-            categories: ['Persoonsgegeven', 'Geen persoonsgegeven'],
+            categories: ['Lijndiagram', 'Staafdiagram'],
             items: [
-                { label: 'Naam + geboortedatum', correctCategory: 'Persoonsgegeven' },
-                { label: 'IP-adres', correctCategory: 'Persoonsgegeven' },
-                { label: 'BSN-nummer', correctCategory: 'Persoonsgegeven' },
-                { label: 'E-mailadres', correctCategory: 'Persoonsgegeven' },
-                { label: 'Locatiedata van een telefoon', correctCategory: 'Persoonsgegeven' },
-                { label: 'Anonieme statistische data', correctCategory: 'Geen persoonsgegeven' },
-                { label: 'Geboortejaar (alleen het jaar)', correctCategory: 'Geen persoonsgegeven' },
-                { label: 'Kleur van een willekeurig huis', correctCategory: 'Geen persoonsgegeven' },
+                { label: 'Temperatuurverloop over één week', correctCategory: 'Lijndiagram' },
+                { label: 'Vergelijking van sportscores tussen 5 teams', correctCategory: 'Staafdiagram' },
+                { label: 'Groei van websitebezoekers per maand over een jaar', correctCategory: 'Lijndiagram' },
+                { label: 'Aantal leerlingen per klas in een school', correctCategory: 'Staafdiagram' },
+                { label: 'CO₂-uitstoot per jaar van 2010 tot 2024', correctCategory: 'Lijndiagram' },
+                { label: 'Populariteit van vijf sociale media-platforms vergeleken', correctCategory: 'Staafdiagram' },
             ],
         },
         {
             id: 'round-rapid-fire',
             type: 'rapid-fire',
-            title: 'AVG & Privacy: Waar of Onwaar?',
+            title: 'Data & Informatie: Waar of Onwaar?',
             description: 'Acht snelle vragen. Goed raden telt mee voor je streak-bonus!',
             maxScore: 25,
             timePerQuestion: 12,
             questions: [
                 {
-                    question: 'Een school mag leerlingresultaten delen met adverteerders als de ouders dat hebben ondertekend.',
+                    question: 'Data en informatie betekenen hetzelfde.',
                     answer: false,
                     explanation:
-                        'Schoolresultaten zijn bijzondere persoonsgegevens; voor commercieel gebruik is dit onder de AVG vrijwel nooit toegestaan.',
+                        'Data zijn ruwe feiten; informatie is data met betekenis en context.',
                 },
                 {
-                    question: 'Je hebt het recht om een organisatie te vragen welke gegevens zij over jou hebben.',
+                    question: 'Een API-response bevat meestal data in JSON-formaat.',
                     answer: true,
                     explanation:
-                        'Dit is het recht op inzage (art. 15 AVG). Elke EU-burger kan dit kosteloos opvragen.',
+                        'JSON (JavaScript Object Notation) is het meest gebruikte formaat voor API-responses.',
                 },
                 {
-                    question: 'Een datalek moet altijd binnen 72 uur worden gemeld bij de Autoriteit Persoonsgegevens.',
-                    answer: true,
-                    explanation:
-                        'Art. 33 AVG verplicht dit bij elk lek dat een risico vormt voor betrokkenen.',
-                },
-                {
-                    question: 'Foto\'s op een beveiligde schoolserver zijn nooit persoonsgegevens.',
+                    question: 'Een cirkeldiagram is de beste keuze om een trend over tijd te tonen.',
                     answer: false,
                     explanation:
-                        'Foto\'s waarop personen herkenbaar zijn, zijn biometrische persoonsgegevens.',
+                        'Voor trends over tijd gebruik je een lijndiagram; een cirkeldiagram toont verhoudingen op één moment.',
                 },
                 {
-                    question: 'De AVG geldt alleen voor bedrijven, niet voor scholen.',
-                    answer: false,
-                    explanation:
-                        'De AVG geldt voor alle organisaties die persoonsgegevens verwerken, inclusief scholen en overheden.',
-                },
-                {
-                    question: 'Je mag je eigen persoonsgegevens laten verwijderen ("recht op vergetelheid").',
+                    question: 'AI-bias kan ontstaan doordat vrouwen ondervertegenwoordigd zijn in de trainingsdata.',
                     answer: true,
                     explanation:
-                        'Art. 17 AVG — je kunt verwijdering vragen, tenzij er een wettelijke bewaarverplichting geldt.',
+                        'Niet-representatieve trainingsdata is een veelvoorkomende oorzaak van bias in AI-systemen.',
                 },
                 {
-                    question: 'Een sterk wachtwoord is altijd voldoende beveiliging voor persoonsgegevens.',
+                    question: 'De CRAAP-methode is een techniek om spreadsheetformules te controleren.',
                     answer: false,
                     explanation:
-                        'De AVG vereist passende technische én organisatorische maatregelen — één wachtwoord is niet voldoende.',
+                        'De CRAAP-methode (Currency, Relevance, Authority, Accuracy, Purpose) gebruik je om de betrouwbaarheid van bronnen te beoordelen.',
                 },
                 {
-                    question: 'Data die is geanonimiseerd valt buiten de AVG.',
+                    question: 'Een spreadsheetformule als =GEMIDDELDE(B2:B20) berekent het gemiddelde van een reeks cellen.',
                     answer: true,
                     explanation:
-                        'Echt geanonimiseerde data kan niet worden herleid naar een persoon en valt daarmee buiten de AVG — pseudonimisering is echter niet hetzelfde.',
+                        'Dit is een basisformule in spreadsheetprogramma\'s zoals Excel en Google Sheets.',
+                },
+                {
+                    question: 'Wikipedia is altijd een betrouwbare primaire bron voor een wetenschappelijk onderzoek.',
+                    answer: false,
+                    explanation:
+                        'Wikipedia kan een startpunt zijn, maar is geen primaire bron; controleer altijd de oorspronkelijke bronnen onderaan de pagina.',
+                },
+                {
+                    question: 'Een dashboard combineert meerdere grafieken om snel een overzicht te geven.',
+                    answer: true,
+                    explanation:
+                        'Een dashboard is een verzameling van visualisaties die samen inzicht geven in een onderwerp.',
                 },
             ],
         },
