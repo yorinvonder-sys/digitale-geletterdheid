@@ -195,7 +195,7 @@ const structuredData = {
             "name": "DGSkills",
             "applicationCategory": "EducationalApplication",
             "operatingSystem": "Web",
-            "description": "Interactief platform voor digitale geletterdheid in het voortgezet onderwijs met AI-missies, gamification en SLO Kerndoelen 2025.",
+            "description": "DGSkills maakt digitale geletterdheid een basisvaardigheid in het voortgezet onderwijs. Gamified AI-missies gekoppeld aan de SLO Kerndoelen 2025, met aantoonbare voortgang voor docenten en scholen.",
             "url": "https://dgskills.app/scholen",
             "offers": {
                 "@type": "Offer",
@@ -322,9 +322,9 @@ export const ScholenLanding: React.FC = () => {
             el.setAttribute('content', content);
         };
 
-        setMeta('name', 'description', 'DGSkills is het interactieve platform voor digitale geletterdheid in het voortgezet onderwijs. AI-missies, gamification en SLO Kerndoelen 2025. Start een gratis pilot voor jouw school.');
+        setMeta('name', 'description', 'DGSkills maakt digitale geletterdheid een basisvaardigheid. Gamified AI-missies gekoppeld aan SLO Kerndoelen 2025 — aantoonbaar, motiverend en gebouwd door een docent. Start een gratis pilot.');
         setMeta('property', 'og:title', 'Digitale Geletterdheid voor Scholen \u2014 Gratis Pilot | DGSkills');
-        setMeta('property', 'og:description', 'AI-missies, gamification en SLO Kerndoelen 2025 in \u00e9\u00e9n platform. Start een gratis pilot van 3 maanden.');
+        setMeta('property', 'og:description', 'Digitale geletterdheid als basisvaardigheid. Gamified AI-missies, SLO Kerndoelen 2025 en aantoonbare voortgang. Start een gratis pilot van 3 maanden.');
 
         const scriptRef = { current: null as HTMLScriptElement | null };
         const idleCb = () => {
@@ -486,9 +486,9 @@ export const ScholenLanding: React.FC = () => {
                                 </svg>
 
                                 <p className="text-base leading-relaxed max-w-xl mb-4" style={{ color: C.textMuted }}>
-                                    DGSkills combineert AI-missies, gamification en de
-                                    SLO Kerndoelen 2025 tot een complete lesmethode voor digitale geletterdheid.
-                                    Gebouwd door een docent, voor docenten.
+                                    Digitale geletterdheid is geen bijvak — het is een basisvaardigheid,
+                                    net als lezen en rekenen. DGSkills biedt een complete, gamified lesmethode
+                                    gekoppeld aan de SLO Kerndoelen 2025. Gebouwd door een docent, voor docenten.
                                 </p>
                                 <p className="text-sm font-medium mb-8 px-3 py-1.5 rounded-full inline-flex items-center gap-2" style={{ backgroundColor: `${C.accent}10`, color: C.accent, border: `1px solid ${C.accent}25` }}>
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
@@ -635,6 +635,55 @@ export const ScholenLanding: React.FC = () => {
                                     <p className="text-xs font-bold" style={{ color: C.text }}>Almere College</p>
                                     <p className="text-xs" style={{ color: C.textMuted }}>Pilotschool 2025-2026</p>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                {/* Mission & Vision */}
+                <section className="py-14 md:py-20 lg:py-24 px-6 [content-visibility:auto] [contain-intrinsic-size:auto_350px]" aria-label="Onze missie en visie">
+                    <div className="max-w-5xl mx-auto">
+                        <div className="text-center mb-12">
+                            <p className="text-sm font-medium mb-3 tracking-wide" style={{ color: C.accent }}>Waarom we dit doen</p>
+                            <h2 className="text-2xl md:text-3xl font-medium tracking-tight mb-4" style={{ fontFamily: SERIF, color: C.text }}>
+                                Onze missie
+                            </h2>
+                            <p className="text-base leading-relaxed max-w-2xl mx-auto" style={{ color: C.textMuted }}>
+                                Elke leerling in Nederland verdient het om het voortgezet onderwijs te verlaten
+                                met de digitale vaardigheden om zelfstandig, veilig en kritisch te functioneren
+                                in een wereld die steeds digitaler wordt.
+                            </p>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+                            <div className="text-center">
+                                <div className="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: `${C.accent}12`, color: C.accent }}>
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                                </div>
+                                <h3 className="text-sm font-semibold mb-2" style={{ color: C.text }}>Basisvaardigheid</h3>
+                                <p className="text-sm leading-relaxed" style={{ color: C.textMuted }}>
+                                    Digitale geletterdheid is geen bijvak, maar een basisvaardigheid — net als lezen en rekenen.
+                                    Wij maken het structureel onderdeel van het curriculum.
+                                </p>
+                            </div>
+                            <div className="text-center">
+                                <div className="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: `${C.accent}12`, color: C.accent }}>
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                </div>
+                                <h3 className="text-sm font-semibold mb-2" style={{ color: C.text }}>Aantoonbaar & onderbouwd</h3>
+                                <p className="text-sm leading-relaxed" style={{ color: C.textMuted }}>
+                                    Elke missie is gekoppeld aan SLO-kerndoelen. Docenten hebben grip,
+                                    scholen hebben inspectie-proof verantwoording — zonder extra administratielast.
+                                </p>
+                            </div>
+                            <div className="text-center">
+                                <div className="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: `${C.accent}12`, color: C.accent }}>
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                                </div>
+                                <h3 className="text-sm font-semibold mb-2" style={{ color: C.text }}>Leren door te doen</h3>
+                                <p className="text-sm leading-relaxed" style={{ color: C.textMuted }}>
+                                    Geen droge theorie, maar korte missies waarin leerlingen AI trainen,
+                                    websites bouwen en phishing ontmaskeren. Motiverend en concreet.
+                                </p>
                             </div>
                         </div>
                     </div>
