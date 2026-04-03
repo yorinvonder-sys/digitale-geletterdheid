@@ -32,6 +32,7 @@ import { GrowthOverviewPanel } from './teacher/GrowthOverviewPanel';
 import { EindmetingReleaseButton } from './teacher/EindmetingReleaseButton';
 import { TutorialProvider } from '../contexts/TutorialContext';
 import TutorialSpotlight, { TutorialRestartButton } from './teacher/TutorialSpotlight';
+import { TeacherOnboarding } from './teacher/TeacherOnboarding';
 
 // Sub-components
 import { TeacherHeader } from './teacher/dashboard/TeacherHeader';
@@ -452,9 +453,21 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
         a.click();
     };
 
+    const showOnboarding = user && !user.stats?.hasCompletedTeacherOnboarding;
+
+    const handleOnboardingClose = () => {
+        if (user && onUpdateStats) {
+            onUpdateStats({
+                ...user.stats,
+                hasCompletedTeacherOnboarding: true
+            } as UserStats);
+        }
+    };
+
     return (
         <TutorialProvider
             isCompleted={user?.stats?.hasCompletedTeacherTutorial}
+            autoStart={!!user?.stats?.hasCompletedTeacherOnboarding && !user?.stats?.hasCompletedTeacherTutorial}
             onComplete={() => {
                 if (user && onUpdateStats) {
                     onUpdateStats({
@@ -465,6 +478,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
             }}
         >
             <TutorialSpotlight />
+            {showOnboarding && <TeacherOnboarding onClose={handleOnboardingClose} />}
             <div className="min-h-screen bg-slate-50 p-4 md:p-8">
                 {/* Toasts */}
                 <div className="fixed top-4 right-4 z-[200] flex flex-col gap-2 pointer-events-none">
