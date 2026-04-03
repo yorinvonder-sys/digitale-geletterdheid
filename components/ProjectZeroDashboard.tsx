@@ -20,6 +20,7 @@ import { WeeklyReport } from './WeeklyReport';
 import { StreakBadge } from './StreakBadge';
 import { NotificationCenter } from './NotificationCenter';
 import { useNotifications } from '../hooks/useNotifications';
+import { StudentLeaderboard } from './StudentLeaderboard';
 
 interface DashboardProps {
     onSelectModule: (moduleId: string, libraryItemData?: any) => void;
@@ -39,6 +40,7 @@ interface DashboardProps {
     focusMode?: boolean;
     userRole?: 'student' | 'teacher' | 'admin'; // For teacher bypass of restrictions
     containers?: ContainerConfig[];
+    schoolId?: string;
 }
 
 interface Mission {
@@ -375,7 +377,8 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
     stats,
     focusMode = false,
     userRole = 'student',
-    containers
+    containers,
+    schoolId,
 }) => {
     // Curriculum-aware variabelen
     const currentYearGroup = activeYearGroup ?? 1;
@@ -408,6 +411,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
     // Weekly report modal state
     const [showWeeklyReport, setShowWeeklyReport] = useState(false);
     const [showNotifications, setShowNotifications] = useState(false);
+    const [showLeaderboard, setShowLeaderboard] = useState(false);
 
     const handleSubmitFeedback = async () => {
         if (!feedbackText.trim() || !userUid) return;
@@ -903,6 +907,16 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                     />
                 )}
 
+                {/* STUDENT LEADERBOARD MODAL */}
+                {userUid && schoolId && (
+                    <StudentLeaderboard
+                        userId={userUid}
+                        schoolId={schoolId}
+                        isOpen={showLeaderboard}
+                        onClose={() => setShowLeaderboard(false)}
+                    />
+                )}
+
                 {/* NOTIFICATION CENTER */}
                 <NotificationCenter
                     isOpen={showNotifications}
@@ -934,6 +948,17 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                     </button>
 
                     <div className="flex items-center gap-2 sm:gap-4">
+                        {/* LEADERBOARD TROPHY BUTTON */}
+                        {userUid && schoolId && (
+                            <button
+                                onClick={() => setShowLeaderboard(true)}
+                                aria-label="Klassement"
+                                className="w-10 h-10 flex items-center justify-center rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-500 hover:text-amber-600 border border-amber-200 transition-all hover:scale-105 active:scale-95"
+                            >
+                                <Trophy size={18} />
+                            </button>
+                        )}
+
                         {/* NOTIFICATION BELL */}
                         {userUid && (
                             <button

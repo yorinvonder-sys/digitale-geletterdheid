@@ -844,6 +844,7 @@ export function AuthenticatedApp() {
                             activeYearGroup={activeYearGroup}
                             setActiveYearGroup={setActiveYearGroup}
                             containers={containers}
+                            schoolId={user?.schoolId}
                         />
                     </div>
                 );
@@ -878,6 +879,7 @@ export function AuthenticatedApp() {
                 activeYearGroup={activeYearGroup}
                 setActiveYearGroup={setActiveYearGroup}
                 containers={containers}
+                schoolId={user?.schoolId}
             />
         );
     };
