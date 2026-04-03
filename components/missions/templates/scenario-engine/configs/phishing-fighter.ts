@@ -57,6 +57,7 @@ const config: ScenarioEngineConfig = {
                 'Je ontvangt een e-mail. Welke elementen hieronder zijn rode vlaggen die wijzen op phishing? Selecteer alles wat verdacht is.',
             type: 'select-correct',
             maxScore: 25,
+            showConfidence: true,
             feedbackCorrect:
                 'Scherp! Je ziet de subtiele en de opvallende signalen allebei.',
             feedbackIncorrect:
@@ -101,6 +102,8 @@ const config: ScenarioEngineConfig = {
                     correct: false,
                     explanation:
                         'Als een bericht echt via een vertrouwd intern systeem binnenkomt, is de kans op phishing veel kleiner. Phishers kunnen normaal gesproken geen berichten sturen vanuit beveiligde schoolplatforms.',
+                    wrongFeedback:
+                        'Je denkt misschien: "alles in een e-mail is verdacht". Maar berichten via beveiligde schoolplatforms (Magister, Teams) zijn juist betrouwbaarder. Het kanaal waarlangs het bericht komt, maakt verschil.',
                 },
                 {
                     id: 5,
@@ -121,6 +124,8 @@ const config: ScenarioEngineConfig = {
                     correct: false,
                     explanation:
                         'Logo\'s zijn makkelijk te kopiëren met één rechtsklik. Een correct logo zegt niets over de echtheid van een bericht. Phishers weten dit en kopiëren logo\'s standaard.',
+                    wrongFeedback:
+                        'Goed dat je kritisch kijkt! Maar een logo is juist GEEN rode vlag — het is makkelijk te kopiëren. Een correct logo maakt een phishing-mail niet veiliger, maar het is op zichzelf geen teken van fraude.',
                 },
                 {
                     id: 7,
@@ -141,6 +146,8 @@ const config: ScenarioEngineConfig = {
                     correct: false,
                     explanation:
                         'Tijdstip zegt weinig over phishing. Aanvallers plannen hun berichten bewust op "normale" tijden om argwaan te verminderen. Niet verdacht op zichzelf.',
+                    wrongFeedback:
+                        'Slimme gedachte — maar aanvallers sturen bewust op "normale" tijden om juist niet op te vallen. Het tijdstip van een e-mail is geen betrouwbaar signaal. Focus op de inhoud en de afzender.',
                 },
             ],
         },
@@ -221,6 +228,7 @@ const config: ScenarioEngineConfig = {
                 'Bekijk elk bericht en beslis: is dit een echt bericht of phishing? Vertrouw je instinct — maar controleer ook de details.',
             type: 'binary-choice',
             maxScore: 25,
+            showConfidence: true,
             feedbackCorrect: 'Goed gescoord! Jij laat je niet zo makkelijk vangen.',
             feedbackIncorrect: 'Lastig hè? Phishers worden steeds beter. Lees de uitleg goed.',
             items: [
@@ -233,6 +241,8 @@ const config: ScenarioEngineConfig = {
                     correct: true,
                     explanation:
                         'Dit is een echt bericht. Geen urgentie, geen link, geen verzoek om gegevens. Het vraagt je om zelf via de bekende weg in te loggen. Zo horen legitieme notificaties eruit te zien.',
+                    wrongFeedback:
+                        'Je bent misschien extra voorzichtig — goed instinct! Maar check de signalen: geen link, geen urgentie, geen gegevensverzoek. Dit bericht vraagt je om zelf via de app in te loggen. Dat is juist hoe echte meldingen werken.',
                 },
                 {
                     id: 2,
@@ -263,6 +273,8 @@ const config: ScenarioEngineConfig = {
                     correct: true,
                     explanation:
                         'Dit kan een echt bericht zijn — Google stuurt deze meldingen echt. Maar: zweef over de knop en check of het adres naar accounts.google.com gaat. Bij twijfel: ga zelf naar myaccount.google.com.',
+                    wrongFeedback:
+                        'Begrijpelijk — "inloggen uit Rusland" klinkt alarmerend. Maar Google stuurt dit soort meldingen echt. De afzender (accounts.google.com) is correct. De truc: altijd zelf naar myaccount.google.com gaan in plaats van op de knop te klikken.',
                 },
                 {
                     id: 5,
@@ -300,6 +312,18 @@ const config: ScenarioEngineConfig = {
                 'Goed! Je kent de tools die echt het verschil maken.',
             feedbackIncorrect:
                 'Sommige maatregelen lijken handig maar helpen nauwelijks. Lees de uitleg.',
+            followUp: {
+                question: 'Je klasgenoot stuurt je een WhatsApp: "Ik kreeg een mail van school dat mijn account geblokkeerd is. Er staat een link om in te loggen. Moet ik klikken?" Wat is het beste advies?',
+                options: [
+                    'Ja, als het van school komt is het veilig',
+                    'Nee, verwijder de mail meteen en blokkeer de afzender',
+                    'Nee — log zelf in via Magister of de schoolsite, niet via de link in de mail',
+                    'Stuur de link door naar mij, dan check ik het voor je',
+                ],
+                correctIndex: 2,
+                explanation: 'Het beste advies is altijd: ga ZELF naar de bekende website, nooit via een link in een bericht. De mail verwijderen is te weinig (je klasgenoot begrijpt dan niet waarom), en doorsturen is gevaarlijk.',
+                bonusPoints: 0,
+            },
             items: [
                 {
                     id: 1,
@@ -330,6 +354,8 @@ const config: ScenarioEngineConfig = {
                     correct: false,
                     explanation:
                         'Eén sterk wachtwoord overal is een gevaarlijke fout. Als dat wachtwoord ooit lekt (via phishing of een datalek), zijn ALLE accounts tegelijk kwetsbaar. Gebruik een wachtwoordmanager voor unieke wachtwoorden.',
+                    wrongFeedback:
+                        'Een sterk wachtwoord klinkt goed — maar "sterk" helpt niet als het overal hetzelfde is. Eén lek = alle accounts kwetsbaar. De oplossing: een wachtwoordmanager die unieke wachtwoorden genereert per account.',
                 },
                 {
                     id: 4,
@@ -360,6 +386,8 @@ const config: ScenarioEngineConfig = {
                     correct: false,
                     explanation:
                         'Dit beschermt niet tegen phishing. Phishing werkt via elk apparaat en elke browser. Waar je inlogt is minder belangrijk dan hoe je inlogt en of je de bron vertrouwt.',
+                    wrongFeedback:
+                        'Logisch idee, maar het apparaat maakt niet uit — phishing werkt overal. Een schoolcomputer beschermt je niet tegen een nep-link. WAT je doet (link checken, 2FA gebruiken) is belangrijker dan WAAR je inlogt.',
                 },
                 {
                     id: 7,

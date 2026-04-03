@@ -1,7 +1,7 @@
 import type { ReviewArenaConfig } from '../ReviewArena';
 
 export const dataReviewConfig: ReviewArenaConfig = {
-    missionId: 'data-privacy-review',
+    missionId: 'data-review',
     title: 'Data & Privacy Review',
     introEmoji: '🔐',
     introTitle: 'Wat weet jij over data en privacy?',
@@ -49,6 +49,14 @@ export const dataReviewConfig: ReviewArenaConfig = {
             description:
                 'Sorteer deze databronnen van meest betrouwbaar (boven) naar minst betrouwbaar (onder).',
             maxScore: 25,
+            showConfidence: true,
+            followUp: {
+                question: 'Wat is het verschil tussen persoonsgegevens en bijzondere persoonsgegevens volgens de AVG?',
+                options: ['Bijzondere gegevens zijn geheimer', 'Bijzondere gegevens onthullen gevoelige kenmerken zoals gezondheid of religie', 'Er is geen verschil', 'Bijzondere gegevens zijn alleen van kinderen'],
+                correctIndex: 1,
+                explanation: 'Bijzondere persoonsgegevens (artikel 9 AVG) onthullen gevoelige kenmerken zoals gezondheid, etniciteit, religie of seksuele geaardheid en vereisen extra bescherming.',
+                bonusPoints: 5,
+            },
             items: [
                 {
                     id: 'cbs',
@@ -118,6 +126,7 @@ export const dataReviewConfig: ReviewArenaConfig = {
             description:
                 'Categoriseer elk item als "Persoonsgegeven" of "Geen persoonsgegeven" volgens de AVG.',
             maxScore: 25,
+            showConfidence: true,
             categories: ['Persoonsgegeven', 'Geen persoonsgegeven'],
             items: [
                 { label: 'Naam + geboortedatum', correctCategory: 'Persoonsgegeven' },

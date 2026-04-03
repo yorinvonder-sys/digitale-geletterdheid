@@ -55,7 +55,7 @@ export const sustainabilityScannerConfig: DataViewerConfig = {
                     question:
                         'Als een gemiddelde Nederlander elke dag 1,8 uur HD-video streamt, hoeveel gram CO2 is dat per week?',
                     type: 'number-input',
-                    correctAnswer: 1223.1,
+                    correctAnswer: 1222.2,
                     explanation:
                         '1 uur HD-streaming = 97 gram CO2. 1,8 uur = 1,8 × 97 = 174,6 gram per dag. Per week: 174,6 × 7 = 1.222,2 gram ≈ 1.222 gram (ook 1.223 is correct met afronding). Dat is ruim 1,2 kg CO2 per week alleen van streaming!',
                     points: 20,
