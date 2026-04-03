@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Cloud, FileText, Image as ImageIcon, Folder, ArrowLeft, CheckCircle, AlertCircle, Monitor, Trash2, FileWarning, Sparkles, X } from 'lucide-react';
+import { Cloud, FileText, Image as ImageIcon, Folder, ArrowLeft, CheckCircle, AlertCircle, Monitor, Trash2, FileWarning, Sparkles } from 'lucide-react';
 import type { UserStats, VsoProfile } from '../../../types';
 import { useMissionAutoSave } from '@/hooks/useMissionAutoSave';
 
@@ -129,8 +129,6 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
     const [dragOverFolderId, setDragOverFolderId] = useState<string | null>(null);
     const [shakeFolder, setShakeFolder] = useState<string | null>(null);
     const [lastSuccessFolder, setLastSuccessFolder] = useState<string | null>(null);
-    const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
-
     // "Waarom" reflectie state
     const [whyQuestion, setWhyQuestion] = useState<{ folderId: string; fileName: string } | null>(null);
     const [whyFeedback, setWhyFeedback] = useState<'correct' | 'wrong' | null>(null);
@@ -367,7 +365,7 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
                         initial={{ opacity: 0, y: 50, x: '-50%' }}
                         animate={{ opacity: 1, y: 0, x: '-50%' }}
                         exit={{ opacity: 0, y: 50, x: '-50%' }}
-                        className="fixed bottom-6 left-1/2 z-50 bg-red-500 text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 max-w-md"
+                        className="fixed bottom-28 lg:bottom-6 left-1/2 z-50 bg-red-500 text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 max-w-md"
                     >
                         <AlertCircle size={24} className="flex-shrink-0" />
                         <span className="font-medium">{errorMessage}</span>
@@ -391,6 +389,9 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
                         <Monitor size={16} />
                         <span>Mijn Bestanden</span>
                     </div>
+                    <span className="lg:hidden text-sm font-bold bg-white/20 px-3 py-1 rounded-full">
+                        {score} XP
+                    </span>
                     <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center font-bold">
                         YO
                     </div>
@@ -399,27 +400,8 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
 
             {/* Main Interface */}
             <div className="flex-1 flex overflow-hidden relative">
-                {/* Mobile sidebar toggle */}
-                <button
-                    onClick={() => setMobileSidebarOpen(!mobileSidebarOpen)}
-                    className="lg:hidden fixed bottom-4 left-4 z-40 w-14 h-14 bg-[#D97757] text-white rounded-full shadow-xl flex items-center justify-center hover:bg-[#C46849] transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#D97757]"
-                >
-                    {mobileSidebarOpen ? <X size={24} /> : <Folder size={24} />}
-                </button>
-
-                {/* Mobile sidebar backdrop */}
-                {mobileSidebarOpen && (
-                    <div className="lg:hidden fixed inset-0 z-30 bg-black/30 backdrop-blur-sm" onClick={() => setMobileSidebarOpen(false)} />
-                )}
-
                 {/* Sidebar (Folders) */}
-                <aside className={`
-                    fixed lg:relative z-30 lg:z-auto
-                    w-64 bg-[#FAF9F0] border-r border-[#E8E6DF] p-4 flex flex-col overflow-y-auto
-                    h-[calc(100vh-56px)] lg:h-auto
-                    transition-transform duration-300 lg:transition-none
-                    ${mobileSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
-                `}>
+                <aside className="hidden lg:flex lg:relative w-64 bg-[#FAF9F0] border-r border-[#E8E6DF] p-4 flex-col overflow-y-auto">
                     <h3 className="text-xs font-bold text-[#6B6B66] uppercase tracking-widest mb-4 px-2">Mijn Mappen</h3>
 
                     {/* Instruction hint when dragging */}
@@ -443,7 +425,7 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
                         {FOLDERS.map(folder => (
                             <motion.div
                                 key={folder.id}
-                                ref={(el) => registerFolderRef(folder.id, el)}
+                                ref={(el) => { if (typeof window !== 'undefined' && window.innerWidth >= 1024) registerFolderRef(folder.id, el); }}
                                 onClick={(e) => handleFolderClick(e, folder.id)}
                                 onDragOver={handleDragOver}
                                 onDragEnter={(e) => handleDragEnter(e, folder.id)}
@@ -492,7 +474,7 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
 
                         {/* TRASH BIN */}
                         <motion.div
-                            ref={(el) => registerFolderRef('trash', el)}
+                            ref={(el) => { if (typeof window !== 'undefined' && window.innerWidth >= 1024) registerFolderRef('trash', el); }}
                             onClick={(e) => handleFolderClick(e, 'trash')}
                             onDragOver={handleDragOver}
                             onDragEnter={(e) => handleDragEnter(e, 'trash')}
@@ -568,7 +550,7 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
 
                 {/* Main Content (Files) */}
                 <main
-                    className="flex-1 p-6 bg-white overflow-y-auto relative"
+                    className="flex-1 p-6 pb-28 lg:pb-6 bg-white overflow-y-auto relative"
                     onTouchMove={handleTouchMove}
                     onTouchEnd={handleTouchEnd}
                 >
@@ -580,7 +562,8 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
                                 animate={{ opacity: 1, x: 0 }}
                                 className="text-sm text-[#D97757] bg-[#D97757]/10 px-4 py-2 rounded-full font-bold shadow-sm border border-[#D97757]/20 flex items-center gap-2"
                             >
-                                <span>👈</span>
+                                <span className="hidden lg:inline">👈</span>
+                                <span className="lg:hidden">👇</span>
                                 Tik nu op een map om te plaatsen
                             </motion.div>
                         )}
@@ -666,6 +649,53 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
                         </AnimatePresence>
                     </div>
                 </main>
+
+                {/* Mobile bottom folder strip */}
+                <div className="lg:hidden fixed bottom-0 left-0 right-0 z-30 bg-[#FAF9F0]/95 backdrop-blur-md border-t-2 border-[#E8E6DF] px-2 pt-2 pb-3">
+                    <p className="text-[10px] font-bold text-[#6B6B66] uppercase tracking-widest mb-1.5 px-1">Mijn Mappen</p>
+                    <div className="flex gap-1.5 overflow-x-auto scrollbar-hide">
+                        {[...FOLDERS, { id: 'trash' as const, name: 'Prullenbak', icon: <Trash2 size={18} className="text-[#6B6B66]" /> }].map(folder => (
+                            <motion.div
+                                key={`mobile-${folder.id}`}
+                                ref={(el) => { if (typeof window !== 'undefined' && window.innerWidth < 1024) registerFolderRef(folder.id, el); }}
+                                onClick={(e) => handleFolderClick(e, folder.id)}
+                                onDragOver={handleDragOver}
+                                onDragEnter={(e) => handleDragEnter(e, folder.id)}
+                                onDragLeave={handleDragLeave}
+                                onDrop={(e) => handleDrop(e, folder.id)}
+                                animate={{
+                                    scale: dragOverFolderId === folder.id ? 1.1 : 1,
+                                    x: shakeFolder === folder.id ? [0, -4, 4, -4, 4, 0] : 0,
+                                }}
+                                transition={{
+                                    scale: { type: 'spring', stiffness: 400, damping: 25 },
+                                    x: { duration: 0.4 },
+                                }}
+                                className={`
+                                    flex-shrink-0 flex flex-col items-center gap-0.5 px-3 py-2 rounded-xl border-2 min-w-[4.5rem] transition-all duration-200
+                                    ${dragOverFolderId === folder.id
+                                        ? folder.id === 'trash'
+                                            ? 'border-red-500 bg-red-100 shadow-lg'
+                                            : 'border-[#10B981] bg-[#10B981]/10 shadow-lg'
+                                        : lastSuccessFolder === folder.id
+                                            ? 'border-[#10B981] bg-[#10B981]/10'
+                                            : selectedFile
+                                                ? folder.id === 'trash'
+                                                    ? 'border-red-200 bg-red-50/50 hover:border-red-400'
+                                                    : 'border-[#D97757]/30 bg-white hover:border-[#10B981]'
+                                                : 'border-[#E8E6DF] bg-white'}
+                                `}
+                            >
+                                <div className="w-5 h-5 flex items-center justify-center">
+                                    {folder.icon}
+                                </div>
+                                <span className={`text-[10px] font-medium leading-tight text-center ${folder.id === 'trash' ? 'text-[#6B6B66]' : 'text-[#3D3D38]'}`}>
+                                    {folder.name}
+                                </span>
+                            </motion.div>
+                        ))}
+                    </div>
+                </div>
             </div>
 
             {/* "Waarom" Reflectie Modal */}
