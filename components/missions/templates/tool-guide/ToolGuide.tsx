@@ -500,18 +500,20 @@ const LoadingScreen = () => (
     </div>
 );
 
+const toolGuideConfigModules = import.meta.glob<{ default: ToolGuideConfig }>('./configs/*.ts');
+
 export const ToolGuide: React.FC<TemplateMissionProps> = ({ missionId, onBack, onComplete }) => {
     const [config, setConfig] = useState<ToolGuideConfig | null>(null);
     const [loadError, setLoadError] = useState(false);
 
     useEffect(() => {
-        import(`./configs/${missionId}`)
-            .then((mod) => {
-                const cfg = mod.default ?? Object.values(mod).find((v): v is ToolGuideConfig => v && typeof v === 'object' && 'missionId' in v);
-                if (cfg) setConfig(cfg);
-                else setLoadError(true);
-            })
-            .catch(() => setLoadError(true));
+        const loader = toolGuideConfigModules[`./configs/${missionId}.ts`];
+        if (!loader) { setLoadError(true); return; }
+        loader().then((mod) => {
+            const cfg = mod.default ?? Object.values(mod).find((v): v is ToolGuideConfig => v && typeof v === 'object' && 'missionId' in v);
+            if (cfg) setConfig(cfg);
+            else setLoadError(true);
+        }).catch(() => setLoadError(true));
     }, [missionId]);
 
     if (loadError) return (

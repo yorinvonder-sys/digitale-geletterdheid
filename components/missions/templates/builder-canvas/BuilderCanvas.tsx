@@ -715,18 +715,20 @@ const LoadingScreen = () => (
     </div>
 );
 
+const builderConfigModules = import.meta.glob<{ default: BuilderCanvasConfig }>('./configs/*.ts');
+
 export const BuilderCanvas: React.FC<TemplateMissionProps> = ({ missionId, onBack, onComplete }) => {
     const [config, setConfig] = useState<BuilderCanvasConfig | null>(null);
     const [loadError, setLoadError] = useState(false);
 
     useEffect(() => {
-        import(`./configs/${missionId}`)
-            .then((mod) => {
-                const cfg = mod.default ?? Object.values(mod).find((v): v is BuilderCanvasConfig => v && typeof v === 'object' && 'missionId' in v);
-                if (cfg) setConfig(cfg);
-                else setLoadError(true);
-            })
-            .catch(() => setLoadError(true));
+        const loader = builderConfigModules[`./configs/${missionId}.ts`];
+        if (!loader) { setLoadError(true); return; }
+        loader().then((mod) => {
+            const cfg = mod.default ?? Object.values(mod).find((v): v is BuilderCanvasConfig => v && typeof v === 'object' && 'missionId' in v);
+            if (cfg) setConfig(cfg);
+            else setLoadError(true);
+        }).catch(() => setLoadError(true));
     }, [missionId]);
 
     if (loadError) return (

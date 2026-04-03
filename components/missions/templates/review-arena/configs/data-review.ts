@@ -1,6 +1,6 @@
 import type { ReviewArenaConfig } from '../ReviewArena';
 
-export const dataReviewConfig: ReviewArenaConfig = {
+const dataReviewConfig: ReviewArenaConfig = {
     missionId: 'data-privacy-review',
     title: 'Data & Privacy Review',
     introEmoji: '🔐',
@@ -190,3 +190,5 @@ export const dataReviewConfig: ReviewArenaConfig = {
         },
     ],
 };
+
+export default dataReviewConfig;

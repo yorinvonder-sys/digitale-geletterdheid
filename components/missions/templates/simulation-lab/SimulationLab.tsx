@@ -722,18 +722,20 @@ const LoadingScreen = () => (
     </div>
 );
 
+const simLabConfigModules = import.meta.glob<{ default: SimulationLabConfig }>('./configs/*.ts');
+
 export const SimulationLab: React.FC<TemplateMissionProps> = ({ missionId, onBack, onComplete }) => {
     const [config, setConfig] = useState<SimulationLabConfig | null>(null);
     const [loadError, setLoadError] = useState(false);
 
     useEffect(() => {
-        import(`./configs/${missionId}`)
-            .then((mod) => {
-                const cfg = mod.default ?? Object.values(mod).find((v): v is SimulationLabConfig => v && typeof v === 'object' && 'missionId' in v);
-                if (cfg) setConfig(cfg);
-                else setLoadError(true);
-            })
-            .catch(() => setLoadError(true));
+        const loader = simLabConfigModules[`./configs/${missionId}.ts`];
+        if (!loader) { setLoadError(true); return; }
+        loader().then((mod) => {
+            const cfg = mod.default ?? Object.values(mod).find((v): v is SimulationLabConfig => v && typeof v === 'object' && 'missionId' in v);
+            if (cfg) setConfig(cfg);
+            else setLoadError(true);
+        }).catch(() => setLoadError(true));
     }, [missionId]);
 
     if (loadError) return (

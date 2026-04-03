@@ -906,18 +906,20 @@ const LoadingScreen = () => (
     </div>
 );
 
+const debateConfigModules = import.meta.glob<{ default: DebateArenaConfig }>('./configs/*.ts');
+
 export const DebateArena: React.FC<TemplateMissionProps> = ({ missionId, onBack, onComplete }) => {
     const [config, setConfig] = useState<DebateArenaConfig | null>(null);
     const [loadError, setLoadError] = useState(false);
 
     useEffect(() => {
-        import(`./configs/${missionId}`)
-            .then((mod) => {
-                const cfg = mod.default ?? Object.values(mod).find((v): v is DebateArenaConfig => v && typeof v === 'object' && 'missionId' in v);
-                if (cfg) setConfig(cfg);
-                else setLoadError(true);
-            })
-            .catch(() => setLoadError(true));
+        const loader = debateConfigModules[`./configs/${missionId}.ts`];
+        if (!loader) { setLoadError(true); return; }
+        loader().then((mod) => {
+            const cfg = mod.default ?? Object.values(mod).find((v): v is DebateArenaConfig => v && typeof v === 'object' && 'missionId' in v);
+            if (cfg) setConfig(cfg);
+            else setLoadError(true);
+        }).catch(() => setLoadError(true));
     }, [missionId]);
 
     if (loadError) return (

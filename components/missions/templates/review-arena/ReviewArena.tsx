@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { TemplateMissionProps, BadgeConfig } from '../shared/types';
 import { PhaseHeader } from '../shared/PhaseHeader';
@@ -249,15 +249,35 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
     );
 };
 
-// === Default export: stub-compatible wrapper that loads a config ===
-// When used without a config prop, it falls back to the data-review config.
-// Consumers can also import ReviewArenaWithConfig directly and pass their own config.
-
 export { ReviewArenaWithConfig };
 
-// Lazy-load the default config to keep bundle splits intact
-import { dataReviewConfig } from './configs/data-review';
+const reviewConfigModules = import.meta.glob<{ default: ReviewArenaConfig }>('./configs/*.ts');
 
-export const ReviewArena: React.FC<TemplateMissionProps> = (props) => (
-    <ReviewArenaWithConfig {...props} config={dataReviewConfig} />
-);
+export const ReviewArena: React.FC<TemplateMissionProps> = (props) => {
+    const [config, setConfig] = useState<ReviewArenaConfig | null>(null);
+    const [loadError, setLoadError] = useState(false);
+
+    useEffect(() => {
+        const loader = reviewConfigModules[`./configs/${props.missionId}.ts`];
+        if (!loader) { setLoadError(true); return; }
+        loader().then((mod) => setConfig(mod.default)).catch(() => setLoadError(true));
+    }, [props.missionId]);
+
+    if (loadError) return (
+        <div className="min-h-screen bg-[#FAF9F0] flex items-center justify-center p-4">
+            <div className="text-center">
+                <p className="text-[#6B6B66] mb-4" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                    Config niet gevonden: {props.missionId}
+                </p>
+                <button onClick={props.onBack} className="px-4 py-2 bg-[#D97757] text-white rounded-xl text-sm font-bold">Terug</button>
+            </div>
+        </div>
+    );
+    if (!config) return (
+        <div className="min-h-screen bg-[#FAF9F0] flex items-center justify-center">
+            <div className="w-8 h-8 border-2 border-[#D97757] border-t-transparent rounded-full animate-spin" />
+        </div>
+    );
+
+    return <ReviewArenaWithConfig {...props} config={config} />;
+};

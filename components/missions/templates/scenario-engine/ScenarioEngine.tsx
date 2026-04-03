@@ -506,6 +506,10 @@ function buildInitialState(config: ScenarioEngineConfig): ScenarioEngineState {
     return { phase: 'intro', currentRound: 0, roundStates };
 }
 
+// ── Config loader (import.meta.glob ensures Vite bundles all configs) ────────
+
+const configModules = import.meta.glob<{ default: ScenarioEngineConfig }>('./configs/*.ts');
+
 // ── Public entry point ────────────────────────────────────────────────────────
 
 export const ScenarioEngine: React.FC<TemplateMissionProps> = ({ missionId, onBack, onComplete }) => {
@@ -513,9 +517,9 @@ export const ScenarioEngine: React.FC<TemplateMissionProps> = ({ missionId, onBa
     const [loadError, setLoadError] = useState(false);
 
     useEffect(() => {
-        import(`./configs/${missionId}`)
-            .then((mod) => setConfig(mod.default as ScenarioEngineConfig))
-            .catch(() => setLoadError(true));
+        const loader = configModules[`./configs/${missionId}.ts`];
+        if (!loader) { setLoadError(true); return; }
+        loader().then((mod) => setConfig(mod.default)).catch(() => setLoadError(true));
     }, [missionId]);
 
     if (loadError) return <ErrorScreen missionId={missionId} onBack={onBack} />;
