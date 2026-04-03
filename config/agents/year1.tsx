@@ -943,12 +943,11 @@ Als de leerling een bericht stuurt dat begint met "Start mijn prentenboek!" EN b
 - Gebruik [IMG] tags alleen wanneer de leerling expliciet een illustratie wil
 
 EERSTE BERICHT (alleen bij vrije start, NIET bij formulier-start):
-"Hoi! 📚 Ik ben je Verhalen Coach. Samen gaan we een prachtig prentenboek maken!
+"Een leeg prentenboek. Zes pagina's. Witte bladzijdes, klaar om gevuld te worden.
 
-Eerst een vraag: **Wie is de held van jouw verhaal?**
-Beschrijf je hoofdpersoon. Het kan van alles zijn: een dier, een tovenaar, een robot, of iets heel grappigs!
+Wie staat er op de cover? Een held, een dier, een robot — jij kiest.
 
-💡 Tip: Weet je nog niet wat je wilt? Zeg 'HELP' en ik geef je een handig template om je plot te plannen!"
+💡 Weet je het nog niet? Typ 'HELP' en ik geef je een template om je plot te plannen."
 
 VOORBEELD FORMULIER-START:
 Leerling: "Start mijn prentenboek! Basisgegevens: Hoofdpersoon: Tim (een Beer), Locatie: Bos, Thema: Hij zoekt zijn vader"
@@ -978,17 +977,17 @@ Antwoord altijd in het Nederlands. Wees enthousiast en moedig de leerling aan!` 
         steps: [
             {
                 title: "Karakter",
-                description: "Elk verhaal heeft een held nodig. Bedenk wie de hoofdpersoon is.",
+                description: "Wie staat er op de cover? Geef je held een naam en één eigenschap.",
                 example: "Typ: 'Mijn held is een kleine blauwe draak.'"
             },
             {
                 title: "Verhaal",
-                description: "Laat de AI de eerste pagina schrijven.",
+                description: "Er is een probleem. Wat moet je held oplossen?",
                 example: "Typ: 'Schrijf pagina 1 over Bubbel de draak.'"
             },
             {
                 title: "Afwerken",
-                description: "Maak je verhaal af met een mooi einde.",
+                description: "Pagina 5. Hoe lost het zich op?",
                 example: "Typ: 'Schrijf een mooi einde voor mijn verhaal.'"
             }
         ],
@@ -1079,37 +1078,35 @@ BELANGRIJK:
 - Alle code moet in ÉÉN HTML bestand passen
 
 EERSTE BERICHT:
-"🎮 Yo! Welkom bij Game Programmeur!
+"De game staat klaar. Maar de speler is een saaie rode rechthoek en de vijanden bewegen te traag.
 
-Er staat een game klaar, maar die is nog basic. Jij gaat de code aanpassen om er JOUW game van te maken. Verander kleuren, snelheid, zwaartekracht — jij bepaalt de regels!
+Typ wat je wil veranderen — kleur, snelheid, spronghoogte — en de code past zich aan. Je ziet het resultaat direct.
 
-**Probeer dit:** Typ hieronder iets als 'Maak de speler groen' of 'Maak het springen hoger'. Ik pas de code aan en je ziet het resultaat direct!
-
-Wat wil je als eerste veranderen?"` + SYSTEM_INSTRUCTION_SUFFIX,
+Wat verander je als eerste?"` + SYSTEM_INSTRUCTION_SUFFIX,
         steps: [
             {
                 title: "Kleur",
-                description: "Verander de kleur van de speler in de code (een instelling die je kunt aanpassen).",
+                description: "De speler is een rode rechthoek. Maak er iets van.",
                 example: "Typ: 'Maak de speler groen.'"
             },
             {
                 title: "Fysica",
-                description: "De speler springt te laag. Pas de 'jumpForce' aan.",
+                description: "De sprong voelt traag. Wat verander je?",
                 example: "Typ: 'Spring twee keer zo hoog.'"
             },
             {
                 title: "Snelheid",
-                description: "Verander de snelheid van de vijanden of de speler.",
+                description: "De vijanden zijn makkelijk te ontwijken. Kan dat anders?",
                 example: "Typ: 'Maak de vijanden sneller.'"
             },
             {
                 title: "Geluid",
-                description: "Voeg een geluid toe als je springt of scoort.",
+                description: "Springt er iets? Klinkt het ook ergens naar?",
                 example: "Typ: 'Voeg een spring-geluid toe.'"
             },
             {
                 title: "Uiterlijk",
-                description: "Pas nog iets visueel aan (achtergrond, grootte, score).",
+                description: "Eén ding dat de game er beter uit laat zien.",
                 example: "Typ: 'Verander de achtergrondkleur.'"
             }
         ],
@@ -1524,17 +1521,11 @@ Wat wil je als eerste veranderen?"` + SYSTEM_INSTRUCTION_SUFFIX,
     - Als de gebruiker vraagt om te testen, antwoord met: [PREDICT]Het testwoord[/PREDICT]
     
     EERSTE BERICHT:
-    "🤖 **Welkom bij de AI Trainer!**
+    "Er staat een sorteerrobot bij de containers. Hij weet nog niet wat plastic is en wat papier.
 
-    Jouw opdracht: **Leer de computer om plastic en papier uit elkaar te houden.**
+    Jij geeft de voorbeelden — hij leert ervan. We beginnen met plastic.
 
-    📋 **Zo werkt het:**
-    1. Typ voorbeelden van **plastic afval** (bijv. 'Een cola flesje is plastic')
-    2. Typ voorbeelden van **papier afval** (bijv. 'Een krant is papier')
-    3. De AI leert van jouw voorbeelden!
-    4. Test daarna of de AI het snapt
-
-    👉 **Start nu:** Noem een voorbeeld van iets dat van **PLASTIC** is gemaakt!"
+    Noem iets dat van plastic is gemaakt."
 
     SCENARIO STAPPEN:
     1. "Laten we een AI trainen om afval te scheiden. Geef me een voorbeeld van PLASTIC."
@@ -1545,17 +1536,17 @@ Wat wil je als eerste veranderen?"` + SYSTEM_INSTRUCTION_SUFFIX,
         steps: [
             {
                 title: "Labelen",
-                description: "Geef voorbeelden van Plastic (Groep 1) en Papier (Groep 2).",
+                description: "De robot weet niks. Geef hem plastic-voorbeelden.",
                 example: "Typ: 'Een lege cola fles is Plastic.'"
             },
             {
                 title: "Trainen",
-                description: "Voeg genoeg voorbeelden toe zodat het model patronen herkent.",
+                description: "Nu papier. Meer voorbeelden = beter model.",
                 example: "Typ: 'Hier is nog een voorbeeld: een krant is Papier.'"
             },
             {
                 title: "Testen",
-                description: "Geef het model iets nieuws en kijk of hij het snapt.",
+                description: "Gooi er iets nieuws in. Heeft de robot het door?",
                 example: "Typ: 'Wat is een eierdoos?'"
             }
         ]
@@ -3544,27 +3535,25 @@ REFLECTIE VRAGEN:
 - "Hoe is dit anders dan ChatGPT die ALLES lijkt te begrijpen?"
 
 EERSTE BERICHT:
-"Hoi! 🤖 Welkom bij Chatbot Trainer!
+"Een klant typt: 'Hoe laat zijn jullie open?' De chatbot antwoordt: 'Ik begrijp uw vraag niet.'
 
-Wist je dat veel chatbots NIET slim zijn? Ze werken met simpele regels: als iemand 'hoi' zegt, antwoord dan 'Hallo!'. Jij gaat je eigen chatbot bouwen en ontdekken hoe dat werkt!
+Dat komt omdat niemand die regel heeft geprogrammeerd. Jij gaat dat fixen.
 
-**Stap 1:** Kies een onderwerp voor je chatbot. Bijvoorbeeld: een pizzeria, een dierenwinkel, of een helpdesk voor je school.
-
-Welk onderwerp kies jij?"` + SYSTEM_INSTRUCTION_SUFFIX,
+Kies een onderwerp voor je chatbot — een pizzeria, een dierenwinkel, een helpdesk voor je school. En dan beginnen we."` + SYSTEM_INSTRUCTION_SUFFIX,
         steps: [
             {
                 title: "Sleutelwoorden",
-                description: "Bedenk 3 sleutelwoorden die klanten zouden kunnen zeggen.",
+                description: "Wat zegt een klant als hij iets wil weten? Drie woorden.",
                 example: "Bijv: 'pizza', 'bezorgen', 'prijs'"
             },
             {
                 title: "Responses",
-                description: "Schrijf voor elk sleutelwoord een passend antwoord.",
+                description: "Elk woord krijgt een antwoord. Wat antwoordt de bot?",
                 example: "Bijv: Als 'pizza' → 'Onze pizza's zijn heerlijk!'"
             },
             {
                 title: "Testen",
-                description: "Test je chatbot met echte klantberichten.",
+                description: "Stuur iets wat een klant echt zou zeggen. Wat doet de bot?",
                 example: "Klik op 'Test' en kijk of de bot goed antwoordt!"
             }
         ],

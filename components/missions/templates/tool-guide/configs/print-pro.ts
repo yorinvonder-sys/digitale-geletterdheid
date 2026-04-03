@@ -57,7 +57,7 @@ const config: ToolGuideConfig = {
             title: 'Printinstellingen kiezen',
             instruction:
                 'Voordat je print, controleer je de instellingen. Open het **printvenster** (Ctrl+P, Cmd+P of Deel > Afdrukken). Stel in: **Kleur of zwart-wit** (zwart-wit is goedkoper en spaart inkt), **Enkelzijdig of dubbelzijdig** (dubbelzijdig spaart papier — gebruik dit voor verslagen), en het **aantal kopieën** (normaal: 1). Kijk ook naar het **paginabereik** — wil je alle pagina\'s printen of alleen bepaalde?',
-            tip: 'Eén klik op "Print" zonder te kijken en je staat met 20 kleurenpagina\'s die je in zwart-wit wilde hebben — en je printbudget is weg.',
+            tip: 'Even checken kost 5 seconden. Niet checken kost je 20 kleurenpagina\'s die je in zwart-wit wilde hebben — plus je printbudget.',
             checklistItems: [
                 { id: 'kleur-zwart', label: 'Ik heb gekozen voor kleur of zwart-wit' },
                 { id: 'dubbelzijdig', label: 'Ik heb ingesteld of ik enkelzijdig of dubbelzijdig wil printen' },
@@ -73,7 +73,7 @@ const config: ToolGuideConfig = {
                 ],
                 correctIndex: 2,
                 explanation:
-                    'Goed gedacht! Dubbelzijdig printen gebruik je bij documenten van meerdere pagina\'s — zoals verslagen of samenvattingen. Dat spaart papier en is beter voor het milieu. Voor een losse pagina is het niet nodig.',
+                    'Klopt. Bij een verslag van meerdere pagina\'s spaart dubbelzijdig papier en is het beter voor het milieu — voor een losse pagina maakt het niet uit.',
             },
         },
         {
@@ -123,11 +123,11 @@ const config: ToolGuideConfig = {
         },
     ],
     takeaways: [
-        'Je weet hoe je het printsysteem van je school herkent en instelt',
-        'Je kunt je apparaat verbinden met de schoolprinter',
-        'Je snapt welke printinstellingen je wanneer gebruikt (kleur, dubbelzijdig, aantal)',
-        'Je weet hoe je een printopdracht verstuurt en ophaalt',
-        'Je begrijpt waarom je printopdracht direct ophalen slim en veilig is',
+        'Elk school heeft een eigen printsysteem — één keer uitzoeken, dan weet je het altijd.',
+        'Instellen doe je maar één keer: daarna kost printen je letterlijk 30 seconden.',
+        'Kleur, dubbelzijdig, aantal — drie instellingen die het verschil maken tussen slim en verspillend printen.',
+        'Een FollowMe-systeem houdt je print privé totdat jij hem vrijgeeft bij de printer.',
+        'Print ophalen doe je direct — je werk ligt anders gewoon voor iedereen te lezen.',
     ],
 };
 

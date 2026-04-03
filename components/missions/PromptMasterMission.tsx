@@ -75,7 +75,7 @@ const CHALLENGES: Challenge[] = [
         level: 'beginner',
         type: 'text',
         goal: '✍️ Vraag de AI om een kort verhaal te schrijven',
-        scenario: 'Je hebt een verhaal nodig voor een schoolopdracht over avontuur. Beschrijf zo duidelijk mogelijk wat voor verhaal je wilt: hoe lang moet het zijn, over wie gaat het, en waar speelt het zich af?',
+        scenario: 'Je hebt een verhaal nodig voor een schoolopdracht over avontuur. Schrijf een prompt die de AI precies laat schrijven wat jij wilt.',
         badOutputExample: 'De AI schrijft: "Er was eens iemand. Die deed iets. Het einde." (te kort, geen details)',
         goodOutputExample: 'De AI schrijft een spannend verhaal van 100 woorden over een jonge ontdekker in een magische grot.',
         feedbackCriteria: [
@@ -386,7 +386,7 @@ const ResultVisual: React.FC<{
                                 </p>
                             </div>
                             <div className={`absolute top-2 right-2 text-white text-[10px] uppercase font-bold px-2 py-0.5 rounded-full z-10`} style={{ backgroundColor: isIdeal || isSuccess ? '#10B981' : '#D97757' }}>
-                                {isIdeal ? 'Perfect' : isSuccess ? 'Goed gedaan!' : 'Jouw resultaat'}
+                                {isIdeal ? 'Perfect' : isSuccess ? 'Specifiek genoeg!' : 'Jouw resultaat'}
                             </div>
                         </>
                     ) : (
@@ -409,7 +409,7 @@ const ResultVisual: React.FC<{
                                 </div>
                                 <p className="text-[10px] text-[#6B6B66] italic">Simulatie — zo zou de AI je prompt interpreteren</p>
                             </div>
-                            {isSuccess && <div className="absolute top-2 right-2 text-white text-[10px] uppercase font-bold px-2 py-0.5 rounded-full" style={{ backgroundColor: '#10B981' }}>Goed gedaan!</div>}
+                            {isSuccess && <div className="absolute top-2 right-2 text-white text-[10px] uppercase font-bold px-2 py-0.5 rounded-full" style={{ backgroundColor: '#10B981' }}>Specifiek genoeg!</div>}
                         </>
                     )}
                 </div>
@@ -613,11 +613,11 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                         </div>
 
                         <h2 className="text-3xl md:text-4xl font-black mb-6 text-[#1A1A19]" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
-                            Leer Prompt Engineering door te <span className="text-[#D97757]">DOEN</span>
+                            De AI tekent wat <span className="text-[#D97757]">jij zegt.</span>
                         </h2>
 
                         <p className="text-lg text-[#6B6B66] mb-10 leading-relaxed">
-                            Typ je eigen prompts, zie wat de AI maakt, en ontdek wat er beter kan!
+                            Hoe beter je beschrijft, hoe beter het resultaat — dat ga je nu uitproberen.
                         </p>
 
                         {/* Levels Preview */}
@@ -625,17 +625,17 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                             <div className="bg-white rounded-2xl p-5 border border-[#E8E6DF]">
                                 <div className="text-3xl mb-2">🌱</div>
                                 <h3 className="font-bold mb-1 text-[#2A9D8F]">Beginner</h3>
-                                <p className="text-xs text-[#6B6B66]">Specifiek zijn, context geven</p>
+                                <p className="text-xs text-[#6B6B66]">2 uitdagingen</p>
                             </div>
                             <div className="bg-white rounded-2xl p-5 border border-[#E8E6DF]">
                                 <div className="text-3xl mb-2">⚡</div>
                                 <h3 className="font-bold mb-1 text-[#D97757]">Gevorderd</h3>
-                                <p className="text-xs text-[#6B6B66]">Structuur, format, toon</p>
+                                <p className="text-xs text-[#6B6B66]">2 uitdagingen</p>
                             </div>
                             <div className="bg-white rounded-2xl p-5 border border-[#E8E6DF]">
                                 <div className="text-3xl mb-2">🎯</div>
                                 <h3 className="font-bold mb-1 text-[#8B6F9E]">Expert</h3>
-                                <p className="text-xs text-[#6B6B66]">Persona's, beperkingen</p>
+                                <p className="text-xs text-[#6B6B66]">2 uitdagingen</p>
                             </div>
                         </div>
 
