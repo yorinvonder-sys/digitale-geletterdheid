@@ -3917,6 +3917,8 @@ SCOPE GUARD:
         briefingImage: '/assets/agents/ai_beleid_brainstorm.webp',
         difficulty: 'Easy',
         examplePrompt: 'Start',
+        primaryGoal: '🎯 Deel jouw ideeën over AI-beleid en beoordeel die van anderen',
+        goalCriteria: { type: 'steps-complete', min: 3 },
         visualPreview: (
             <div className="w-full h-full bg-gradient-to-br from-indigo-100 to-violet-100 flex flex-col items-center justify-center relative overflow-hidden p-4">
                 <div className="absolute inset-0 opacity-10">
