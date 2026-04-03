@@ -99,7 +99,7 @@ export const techImpactAnalystConfig: DataViewerConfig = {
                     options: ['VS', 'China', 'EU', 'Japan'],
                     correctAnswer: 'EU',
                     explanation:
-                        'De EU scoort het hoogst met 78 — dat klopt met de werkelijkheid: de EU AI Act (2024) is 's werelds eerste uitgebreide AI-wetgeving. De VS heeft bewust minder strenge regels om innovatie te stimuleren. China heeft eigen strikte regels, maar die zijn meer gericht op inhoudelijke controle dan op mensenrechten.',
+                        'De EU scoort het hoogst met 78 — dat klopt met de werkelijkheid: de EU AI Act (2024) is \'s werelds eerste uitgebreide AI-wetgeving. De VS heeft bewust minder strenge regels om innovatie te stimuleren. China heeft eigen strikte regels, maar die zijn meer gericht op inhoudelijke controle dan op mensenrechten.',
                     points: 10,
                 },
                 {
@@ -221,7 +221,7 @@ export const techImpactAnalystConfig: DataViewerConfig = {
     takeaways: [
         'Elke technologie heeft zowel voordelen als risico\'s — eerlijke analyse erkent beide',
         'Algoritmische bias ontstaat als trainingsdata niet representatief is voor alle groepen',
-        'De EU heeft met de AI Act 's werelds strengste AI-regulering ingevoerd',
+        'De EU heeft met de AI Act \'s werelds strengste AI-regulering ingevoerd',
         'Een impact-analyse beoordeelt ernst én waarschijnlijkheid van risico\'s',
         'Technologie is nooit neutraal: het heeft altijd winnaars en verliezers',
     ],
