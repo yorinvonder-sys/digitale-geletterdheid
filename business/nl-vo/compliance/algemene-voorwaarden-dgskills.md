@@ -1,8 +1,16 @@
 # Algemene Voorwaarden DGSkills
 
-**Versie:** 1.0
+**Versie:** 1.1
 **Datum:** 28 maart 2026
-**Laatst gewijzigd:** 28 maart 2026
+**Laatst gewijzigd:** 3 april 2026
+
+<!-- GEWIJZIGD: Versie 1.1 — Wijzigingen ten opzichte van v1.0:
+     1. Artikel 19 (Klachten) toegevoegd — ontbrak volledig; vereist o.b.v. marktstandaard en redelijkheid bij B2B SaaS
+     2. Artikel 20 (Beroepsprocedure AI-beslissingen) toegevoegd — o.b.v. Art. 22 AVG en Art. 14 EU AI Act; was als open punt gesignaleerd in v1.0 review-notities
+     3. Artikel 21 (Verzekering) toegevoegd — als vertrouwenssignaal naar scholen; was als open punt gesignaleerd in v1.0 review-notities (vul in na afsluiten verzekering)
+     4. Artikelnummering Slotbepalingen, Contactgegevens en bijlage aangepast (was artikel 19, nu artikel 22)
+     5. Redactionele verduidelijking artikel 16.2: exportformaat uitgebreid met CSV
+-->
 
 ---
 
@@ -321,12 +329,55 @@ In deze Algemene Voorwaarden worden de volgende begrippen met een hoofdletter ge
 ### 16.2 Data-export
 
 1. School kan gedurende de exporttermijn alle leerlinggegevens, voortgangsdata en rapportages exporteren via het docentendashboard.
-2. Het exportformaat is JSON. Er zijn geen kosten verbonden aan de data-export.
+2. Het exportformaat is JSON en/of CSV. Er zijn geen kosten verbonden aan de data-export.
 3. Na de exporttermijn worden alle gegevens onherstelbaar verwijderd, inclusief back-ups (uiterlijk 30 dagen na verwijdering uit productie).
+
+<!-- GEWIJZIGD: Artikel 16.2 lid 2 — exportformaat uitgebreid met CSV voor betere interoperabiliteit met schooladministratiesystemen -->
 
 ---
 
-## 17. Wijziging Algemene Voorwaarden
+---
+
+## 17. Klachten
+
+<!-- GEWIJZIGD: Artikel 17 (Klachten) — nieuw; ontbrak in v1.0. Klachtenregeling is marktstandaard voor B2B SaaS en vergroot vertrouwen bij scholen en ICT-coördinatoren. -->
+
+1. DGSkills heeft een klachtenregeling voor klachten van School over de uitvoering van de Overeenkomst.
+2. Klachten worden schriftelijk ingediend bij DGSkills via info@dgskills.app, met een duidelijke omschrijving van de klacht, de datum waarop de klacht is ontstaan en, indien mogelijk, de gewenste oplossing.
+3. DGSkills bevestigt ontvangst van de klacht binnen **3 werkdagen** en streeft naar een inhoudelijke reactie binnen **10 werkdagen** na ontvangst.
+4. Indien een klacht betrekking heeft op een beveiligingsincident of een potentieel datalek, wordt de klacht behandeld conform de incidentresponsprocedure beschreven in de Verwerkersovereenkomst (prioriteit boven de reguliere klachtenregeling).
+5. Klachten over de werking van de AI-componenten — waaronder situaties waarin de AI-output onjuist of schadelijk lijkt — kunnen direct worden gemeld via security@dgskills.app. DGSkills bevestigt dergelijke meldingen binnen **24 uur**.
+6. Het indienen van een klacht laat de rechten van School op grond van de wet of de Overeenkomst onverlet. In het bijzonder kan School een geschil dat niet via de klachtenregeling wordt opgelost, voorleggen aan de rechter conform artikel 18 (Toepasselijk Recht en Geschillenbeslechting).
+
+---
+
+## 18. Beroepsprocedure bij AI-gegenereerde voortgang
+
+<!-- GEWIJZIGD: Artikel 18 (Beroepsprocedure AI-beslissingen) — nieuw; o.b.v. Art. 22 AVG (geautomatiseerde besluitvorming) en Art. 14 EU AI Act (menselijk toezicht). Was gesignaleerd als open punt in v1.0 review-notities. -->
+
+1. DGSkills erkent dat AI-gegenereerde voortgangsmarkeringen het leerproces van individuele leerlingen kunnen beïnvloeden.
+2. Iedere leerling of ouder/wettelijk vertegenwoordiger heeft het recht te verzoeken om menselijke beoordeling van een AI-gegenereerde voortgangsbeoordeling, conform artikel 22 lid 3 AVG en artikel 14 EU AI Act.
+3. De beroepsprocedure verloopt als volgt:
+   - **Stap 1 — Leerling:** de leerling bespreekt bezwaren over de AI-output met de Docent en vraagt om heroverweging.
+   - **Stap 2 — Docent:** de Docent beoordeelt de AI-gegenereerde voortgang zelfstandig via het docentendashboard en kan de output negeren, aanpassen of vervangen door een eigen beoordeling. De Docent informeert de leerling over de uitkomst.
+   - **Stap 3 — School:** indien de leerling of ouder/wettelijk vertegenwoordiger het niet eens is met de beoordeling van de Docent, kan een bezwaar worden ingediend bij de schoolleiding conform het interne klachtenreglement van School.
+4. School is verantwoordelijk voor het beschikbaar stellen van de beroepsprocedure aan leerlingen en ouders.
+5. DGSkills ondersteunt School technisch in het uitvoeren van menselijke herzieningen via het docentendashboard.
+
+---
+
+## 19. Verzekering
+
+<!-- GEWIJZIGD: Artikel 19 (Verzekering) — nieuw; toegevoegd als vertrouwenssignaal naar scholen na afsluiten beroepsaansprakelijkheidsverzekering. Vul in na afsluiten. -->
+
+1. DGSkills beschikt over een beroepsaansprakelijkheidsverzekering ter dekking van schade die voortvloeit uit fouten of nalatigheid in de uitvoering van de dienstverlening.
+2. Op verzoek van School stelt DGSkills een bewijs van verzekering beschikbaar.
+3. **[INVULLEN NA AFSLUITEN VERZEKERING]** DGSkills is voor beroepsaansprakelijkheid verzekerd bij [naam verzekeraar], polisnummer [polisnummer], met een gedekt bedrag van EUR [bedrag] per aanspraak en EUR [bedrag] per jaar.
+
+---
+
+## 20. Wijziging Algemene Voorwaarden
+<!-- GEWIJZIGD: vernummerd van artikel 17 naar 20 i.v.m. invoegen artikelen 17, 18 en 19 -->
 
 1. DGSkills is gerechtigd deze Algemene Voorwaarden te wijzigen.
 2. Wijzigingen worden **30 dagen** voor de ingangsdatum schriftelijk (per e-mail) aan School medegedeeld.
@@ -335,7 +386,8 @@ In deze Algemene Voorwaarden worden de volgende begrippen met een hoofdletter ge
 
 ---
 
-## 18. Toepasselijk Recht en Geschillenbeslechting
+## 21. Toepasselijk Recht en Geschillenbeslechting
+<!-- GEWIJZIGD: vernummerd van artikel 18 naar 21 -->
 
 1. Op de Overeenkomst en deze Algemene Voorwaarden is **Nederlands recht** van toepassing.
 2. Geschillen die voortvloeien uit of verband houden met de Overeenkomst zullen Partijen eerst trachten in onderling overleg op te lossen gedurende een periode van **30 dagen** na schriftelijke kennisgeving van het geschil.
@@ -343,7 +395,8 @@ In deze Algemene Voorwaarden worden de volgende begrippen met een hoofdletter ge
 
 ---
 
-## 19. Slotbepalingen
+## 22. Slotbepalingen
+<!-- GEWIJZIGD: vernummerd van artikel 19 naar 22 -->
 
 1. Indien enige bepaling van deze Algemene Voorwaarden nietig of vernietigbaar blijkt, laat dit de geldigheid van de overige bepalingen onverlet. Partijen zullen in overleg treden om een vervangende bepaling overeen te komen die het doel en de strekking van de nietige bepaling zo dicht mogelijk benadert.
 2. Het nalaten door DGSkills om enig recht uit te oefenen, vormt geen afstand van dat recht.
@@ -371,7 +424,7 @@ In deze Algemene Voorwaarden worden de volgende begrippen met een hoofdletter ge
 
 ## Bijlage: Juridische Review-notities (intern, niet publiceren)
 
-**Versie:** Review 1.0 — 28 maart 2026
+**Versie:** Review 1.1 — 3 april 2026
 **Getoetst aan:** BW Boek 6 Titel 5 Afd. 3, AVG/GDPR, EU AI Act 2024/1689, SIVON Model VWO 4.0, NLdigital Voorwaarden 2025
 
 ### Verwerkte juridische issues
@@ -394,9 +447,9 @@ In deze Algemene Voorwaarden worden de volgende begrippen met een hoofdletter ge
 2. **SIVON Model VWO 5.0** — In ontwikkeling (feb 2026), zal AI Act-bepalingen bevatten. Monitor en update AV/DPA wanneer 5.0 beschikbaar is.
 3. **NLdigital lidmaatschap** — Overweeg als aanvulling (EUR 400-600/jaar) voor modelvoorwaarden die door juristen worden onderhouden inclusief AI Act, NIS2, Data Act updates.
 4. **Conformiteitsbeoordeling** — Art. 43 EU AI Act vereist conformiteitsbeoordeling voor 2 aug 2026. Voor Annex III AI-systemen: self-assessment op basis van Annex VI voldoet (geen notified body nodig).
-5. **Verzekering** — AV noemen geen specifieke verzekeringsverplichting. Overweeg BAV + cyberverzekering (EUR 400-1.200/jaar) en opname in de AV als vertrouwenssignaal naar scholen.
+5. ~~**Verzekering**~~ — **VERWERKT in v1.1 (Art. 19)** als vertrouwenssignaal. Nog in te vullen na afsluiten BAV/cyberverzekering (zie `actiepunten/verzekeringsgids.md`).
 6. **KvK-deponering** — Art. 2 lid 5 verwijst naar deponering bij KvK. Dit moet daadwerkelijk worden uitgevoerd.
-7. **Beroep bij AI-beoordeling** — Art. 22 AVG (geautomatiseerde besluitvorming) en Art. 14 EU AI Act suggereren een beroepsmogelijkheid. Overweeg expliciete beroepsprocedure (leerling → docent → school) op te nemen.
+7. ~~**Beroep bij AI-beoordeling**~~ — **VERWERKT in v1.1 (Art. 18)** als expliciete beroepsprocedure (leerling → docent → school), o.b.v. Art. 22 AVG en Art. 14 EU AI Act.
 
 ### Resterende risico's
 

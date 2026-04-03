@@ -20,9 +20,9 @@
 |:---|:---|
 | **Naam organisatie** | DGSkills (handelsnaam; eenmanszaak, omzetting naar B.V. voorzien) |
 | **Website** | https://dgskills.app |
-| **Vestigingsadres** | [INVULLEN NA KVK-REGISTRATIE] |
-| **KvK-nummer** | [INVULLEN NA KVK-REGISTRATIE] |
-| **Contactpersoon privacy** | Yorin von der Osten (eigenaar/directeur DGSkills) |
+| **Vestigingsadres** | Oldruitenborghstraat 39, 8043TP Zwolle |
+| **KvK-nummer** | 81819889 |
+| **Contactpersoon privacy** | Yorin Vonder (eigenaar/directeur DGSkills) |
 | **E-mail privacy** | privacy@dgskills.app |
 | **Functionaris Gegevensbescherming (FG)** | Niet verplicht (< 250 medewerkers, geen grootschalige verwerking bijzondere gegevens); vrijwillige aanstelling wordt aanbevolen bij opschaling |
 
