@@ -8,6 +8,9 @@ const PRODUCTION_ORIGINS = [
     "https://www.dgskills.app",
 ];
 
+// A5-fix: Vercel preview deployment pattern (matched dynamically below)
+const VERCEL_PREVIEW_PATTERN = /^https:\/\/digitale-geletterdheid[a-z0-9-]*\.vercel\.app$/;
+
 const DEV_ORIGINS = [
     "http://localhost:5173",
     "http://localhost:4173",
@@ -38,7 +41,12 @@ function buildAllowedOrigins(): Set<string> {
 export const ALLOWED_ORIGINS = buildAllowedOrigins();
 
 export function isAllowedOrigin(origin: string | null): boolean {
-    return !!origin && ALLOWED_ORIGINS.has(origin);
+    if (!origin) return false;
+    if (ALLOWED_ORIGINS.has(origin)) return true;
+    // A5-fix: Allow Vercel preview deployments in non-production environments
+    const env = (globalThis as { Deno?: { env?: { get?: (key: string) => string | undefined } } }).Deno?.env;
+    if (env?.get?.("ENVIRONMENT") !== "production" && VERCEL_PREVIEW_PATTERN.test(origin)) return true;
+    return false;
 }
 
 export function isAllowedReferer(referer: string | null): boolean {
@@ -58,7 +66,7 @@ export function getAllowedOrigin(input: Request | string | null): string {
     } else if (input) {
         origin = input.headers.get("Origin") || "";
     }
-    return ALLOWED_ORIGINS.has(origin) ? origin : "https://dgskills.app";
+    return isAllowedOrigin(origin) ? origin : "https://dgskills.app";
 }
 
 export function buildCorsHeaders(

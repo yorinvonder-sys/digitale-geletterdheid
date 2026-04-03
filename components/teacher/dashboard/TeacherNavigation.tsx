@@ -3,7 +3,7 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart3, Users, Sparkles, Settings } from 'lucide-react';
 
-type MainTab = 'overview' | 'students' | 'gamification' | 'games' | 'settings' | 'activity' | 'ai-beleid' | 'feedback' | 'progress' | 'slo' | 'documenten' | 'nulmeting' | 'samenhang';
+type MainTab = 'overview' | 'students' | 'gamification' | 'games' | 'settings' | 'activity' | 'ai-beleid' | 'feedback' | 'progress' | 'slo' | 'documenten' | 'nulmeting' | 'samenhang' | 'step-overrides';
 
 interface TeacherNavigationProps {
     activeTab: MainTab;
@@ -46,6 +46,7 @@ const DASHBOARD_SUBTABS = [
     { id: 'slo', label: 'SLO Doelen', tooltip: 'Kerndoelen Digitale Geletterdheid (SLO 2025)' },
     { id: 'nulmeting', label: 'Nulmeting', tooltip: 'Nulmetingsresultaten en digitaal paspoort per klas' },
     { id: 'samenhang', label: 'Samenhang', tooltip: 'Samenhang basisvaardigheden: taal, rekenen, burgerschap' },
+    { id: 'step-overrides', label: 'AI Overrides', tooltip: 'AI-beoordelingen inzien en handmatig corrigeren (EU AI Act Art. 14)' },
     { id: 'documenten', label: 'Documenten', tooltip: 'Compliance- en beleidsdocumenten' },
 ];
 

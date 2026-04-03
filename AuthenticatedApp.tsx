@@ -15,6 +15,8 @@ import { useFocusMode } from './hooks/useFocusMode';
 import { awardXP } from './services/XPService';
 import { TutorialProvider, STUDENT_TUTORIAL_STEPS, STUDENT_STORAGE_KEY, TutorialStep } from './contexts/TutorialContext';
 import { AccessibilityProvider } from './contexts/AccessibilityContext';
+import { XPNotificationProvider } from './contexts/XPNotificationContext';
+import { XPPopup } from './components/XPPopup';
 import { lazyWithRetry } from './utils/lazyWithRetry';
 import { SecureErrorBoundary } from './components/SecureErrorBoundary';
 const AiTransparencyNotice = lazyWithRetry(() => import('./components/consent/AiTransparencyNotice').then(m => ({ default: m.AiTransparencyNotice })));
@@ -291,7 +293,8 @@ export function AuthenticatedApp() {
     }
 
     // M-05: MFA gate — privileged roles must verify AAL2 before accessing the app
-    if (user.mfaPending) {
+    // A1-fix: Students never need MFA — skip gate even if mfaPending is transiently true (race condition)
+    if (user.mfaPending && user.role !== 'student') {
         return (
             <Suspense fallback={<LoadingFallback />}>
                 <MfaGate onVerified={() => {
@@ -884,6 +887,7 @@ export function AuthenticatedApp() {
     const appShell = (
         <div className="w-full min-h-screen bg-[#FAF9F0] pb-safe flex flex-col relative">
             <a href="#main-content" className="skip-link">Naar hoofdinhoud</a>
+            <a href="#main-navigation" className="skip-link">Spring naar navigatie</a>
 
             {/* Offline indicator */}
             {!isOnline && (
@@ -998,7 +1002,10 @@ export function AuthenticatedApp() {
 
     return (
         <AccessibilityProvider>
-            {wrapped}
+            <XPNotificationProvider>
+                {wrapped}
+                <XPPopup />
+            </XPNotificationProvider>
         </AccessibilityProvider>
     );
 }

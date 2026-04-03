@@ -366,7 +366,8 @@ export const subscribeToAuthChanges = (callback: (user: ParentUser | null) => vo
             identifier,
             // Veilig default: bij een fallback-identity geen verplichte password/MFA bypasses introduceren.
             mustChangePassword: false,
-            mfaPending: requiresMfa(finalRole),
+            // A1-fix: Students never require MFA; prevent race condition setting mfaPending for student role
+            mfaPending: finalRole === 'student' ? false : requiresMfa(finalRole),
         };
     };
 

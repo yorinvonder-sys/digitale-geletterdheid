@@ -34,10 +34,21 @@ export const awardXP = async (
         }
 
         const result = data as Record<string, any> || {};
+        const awarded = !!result.awarded;
+        const newLevel = result.newLevel ?? result.newlevel;
+        const oldLevel = result.oldLevel ?? result.oldlevel;
+
+        // Stuur globaal DOM-event zodat XPNotificationContext de popup kan tonen
+        if (awarded) {
+            window.dispatchEvent(new CustomEvent('dgskills:xp-awarded', {
+                detail: { amount, newLevel, oldLevel },
+            }));
+        }
+
         return {
-            awarded: !!result.awarded,
+            awarded,
             newXP: result.newXP ?? result.newxp,
-            newLevel: result.newLevel ?? result.newlevel,
+            newLevel,
             reason: result.reason,
         };
     } catch (error) {

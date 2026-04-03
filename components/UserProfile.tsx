@@ -4,6 +4,7 @@ import { ParentUser, UserStats, AvatarConfig, DEFAULT_AVATAR_CONFIG, EducationLe
 import { LazyAvatarViewer } from './LazyAvatarViewer';
 import { AvatarViewer2D } from './AvatarViewer2D';
 import { AVATAR_HAIR_CATALOG, getAvatarHairOptionsForGender } from '../config/avatarCatalog';
+import { SkillTree } from './SkillTree';
 
 const ConsentManager = lazy(() => import('./consent/ConsentManager').then(m => ({ default: m.ConsentManager })));
 
@@ -737,6 +738,21 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
                                             <div className="text-slate-400 font-bold text-[10px] uppercase tracking-widest mb-2">XP Totaal</div>
                                             <div className="text-4xl font-black text-slate-900">{stats.xp}</div>
                                         </div>
+                                    </div>
+
+                                    {/* SLO Vaardigheidsboom */}
+                                    <div className="mt-8">
+                                        <div className="flex items-center gap-3 mb-4">
+                                            <div className="p-2.5 bg-slate-100 text-slate-600 rounded-xl"><BrainCircuit size={20} /></div>
+                                            <div>
+                                                <h4 className="font-black text-slate-900 text-sm uppercase tracking-tight">Vaardigheidsboom</h4>
+                                                <p className="text-xs text-slate-500">Voortgang per SLO-domein</p>
+                                            </div>
+                                        </div>
+                                        <SkillTree
+                                            completedMissions={stats.missionsCompleted || []}
+                                            yearGroup={stats.yearGroup || 1}
+                                        />
                                     </div>
 
                                     {/* VSO Profile Selection */}

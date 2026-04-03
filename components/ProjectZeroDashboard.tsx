@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 
-import { Rocket, BrainCircuit, ShieldCheck, Gamepad2, Stars, Info, Play, Feather, Puzzle, Database, ChevronRight, ChevronLeft, Calendar, Pencil, Map, Lightbulb, Trophy, LogOut, User, RotateCcw, Search, Scale, Lock, Settings2, Cloud, FileText, Monitor, Printer, AlertTriangle, Sparkles, MessageSquare, Send, Loader2, BookOpen, BarChart2, Eye, CheckCircle2, MonitorSmartphone } from 'lucide-react';
+import { Rocket, BrainCircuit, ShieldCheck, Gamepad2, Stars, Info, Play, Feather, Puzzle, Database, ChevronRight, ChevronLeft, Calendar, Pencil, Map, Lightbulb, Trophy, LogOut, User, RotateCcw, Search, Scale, Lock, Settings2, Cloud, FileText, Monitor, Printer, AlertTriangle, Sparkles, MessageSquare, Send, Loader2, BookOpen, BarChart2, Eye, CheckCircle2, MonitorSmartphone, TrendingUp, Bell } from 'lucide-react';
 import { getLevelProgress, getXPToNextLevel, LEVEL_THRESHOLDS } from '../utils/xp';
 import { LazyAvatarViewer } from './LazyAvatarViewer';
 import { DEFAULT_AVATAR_CONFIG, UserStats, EducationLevel } from '../types';
@@ -16,6 +16,10 @@ import { getMissionMeta } from '../config/slo-kerndoelen-mapping';
 import { ContainerConfig } from '@/config/containerTypes';
 import { getContainerTheme, getAutoTheme } from '@/config/containerThemes';
 import { AdaptiveMissionSuggestions } from './dashboard/AdaptiveMissionSuggestions';
+import { WeeklyReport } from './WeeklyReport';
+import { StreakBadge } from './StreakBadge';
+import { NotificationCenter } from './NotificationCenter';
+import { useNotifications } from '../hooks/useNotifications';
 
 interface DashboardProps {
     onSelectModule: (moduleId: string, libraryItemData?: any) => void;
@@ -174,9 +178,9 @@ const MISSION_OVERRIDES: Record<string, Partial<Mission>> = {
     'slide-specialist': { isExternal: true, info: 'Doen in app: maak een PowerPoint-presentatie van 3 slides met minimaal 1 afbeelding. Klaar als: je presentatie in OneDrive staat en 3 slides heeft. Tijd: 25 minuten.' },
     'print-pro': { isExternal: true, info: 'Doen in app: print je Word-doc via de print-app en lever je bestanden in. Klaar als: je print klopt en de opdracht op "Ingeleverd" staat. Tijd: 15 minuten.' },
     'ipad-print-instructies': { isHighlighted: true, classRestriction: 'MH1A', info: 'Een complete gids om te printen vanaf je iPad. Je leert de print-app downloaden, inloggen en je eerste document printen.' },
-    'cloud-cleaner': { info: 'Mappenstructuur en bestandsorganisatie herhalen. Zorg voor een opgeruimde Cloud!' },
-    'layout-doctor': { info: 'Test je Word-kennis door problemen te matchen aan oplossingen. Van sneltoetsen tot tekstomloop!' },
-    'pitch-police': { info: 'Slide-design principes herhalen. Maak slides visueel aantrekkelijk en duidelijk.' },
+    'cloud-cleaner': { description: 'Herhaal hoe je bestanden organiseert in de cloud.', info: 'Mappenstructuur en bestandsorganisatie herhalen. Zorg voor een opgeruimde Cloud!' },
+    'layout-doctor': { description: 'Test je Word-kennis met opmaakpuzzels.', info: 'Test je Word-kennis door problemen te matchen aan oplossingen. Van sneltoetsen tot tekstomloop!' },
+    'pitch-police': { description: 'Beoordeel slide-designs en maak ze beter.', info: 'Slide-design principes herhalen. Maak slides visueel aantrekkelijk en duidelijk.' },
     'prompt-master': { info: 'Hoe vraag je AI om precies te doen wat je wilt? Leer het verschil tussen vage, onduidelijke prompts en krachtige, duidelijke prompts die perfecte resultaten opleveren!' },
     'game-programmeur': { info: 'Duik in de code van een kapotte game! Je leert de basis van programmeren door bugs op te lossen en de spelregels aan te passen.' },
     'ai-trainer': { info: 'Hoe leert een computer? Jij gaat een AI-model trainen om verschillende materialen te herkennen door het goede voorbeelden te geven.' },
@@ -219,7 +223,7 @@ function buildMissionsForPeriod(yearGroup: number, period: number): Mission[] {
         missions.push({
             id: missionId,
             title: role?.title || missionId,
-            description: role?.description || '',
+            description: overrides.description || role?.description || '',
             icon: role?.icon ? React.cloneElement(role.icon as React.ReactElement, { size: 40 }) : <RotateCcw size={40} />,
             number: 'Review',
             status: 'available',
@@ -241,7 +245,7 @@ function buildMissionsForPeriod(yearGroup: number, period: number): Mission[] {
         missions.push({
             id: missionId,
             title: role?.title || missionId,
-            description: role?.description || '',
+            description: overrides.description || role?.description || '',
             icon: role?.icon ? React.cloneElement(role.icon as React.ReactElement, { size: 40 }) : <Puzzle size={40} />,
             number: overrides.number || String(missionNum).padStart(2, '0'),
             status: 'available',
@@ -401,6 +405,10 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
     // Library modal state
     const [showLibrary, setShowLibrary] = useState(false);
 
+    // Weekly report modal state
+    const [showWeeklyReport, setShowWeeklyReport] = useState(false);
+    const [showNotifications, setShowNotifications] = useState(false);
+
     const handleSubmitFeedback = async () => {
         if (!feedbackText.trim() || !userUid) return;
         setFeedbackSubmitting(true);
@@ -517,6 +525,9 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
         [xp, level]
     );
 
+    // Notifications
+    const { notifications, loading: notificationsLoading, unreadCount: notificationUnreadCount } = useNotifications(userUid);
+
     // Filter relevant missions and apply locking logic
     const isTeacher = userRole === 'teacher' || userRole === 'admin' || userRole === 'developer';
     const [leerdoelenOpen, setLeerdoelenOpen] = useState(isTeacher);
@@ -561,12 +572,14 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
         }
 
         // 2. Generic review gate: if period has reviewMissions, require them first
+        // A4-fix: Skip the review gate entirely when the student has no completed missions yet
+        //         (new students shouldn't be blocked by reviews they can't have done)
         const pConfig = getPeriodConfig(currentYearGroup, activeWeek);
         const hasReviewGate = pConfig?.reviewMissions && pConfig.reviewMissions.length > 0;
+        const completedMissions = stats?.missionsCompleted || [];
 
-        if (hasReviewGate) {
+        if (hasReviewGate && completedMissions.length > 0) {
             const reviewIds = pConfig!.reviewMissions!;
-            const completedMissions = stats?.missionsCompleted || [];
             const allReviewsDone = reviewIds.every(id => {
                 if (id === 'ipad-print-instructies' && stats?.studentClass !== 'MH1A') return true;
                 return completedMissions.includes(id);
@@ -881,8 +894,25 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                         </div>
                     </div>
                 )}
+                {/* WEEKLY REPORT MODAL */}
+                {userUid && (
+                    <WeeklyReport
+                        userId={userUid}
+                        isOpen={showWeeklyReport}
+                        onClose={() => setShowWeeklyReport(false)}
+                    />
+                )}
+
+                {/* NOTIFICATION CENTER */}
+                <NotificationCenter
+                    isOpen={showNotifications}
+                    onClose={() => setShowNotifications(false)}
+                    notifications={notifications}
+                    loading={notificationsLoading}
+                />
+
                 {/* HEADER */}
-                <header className="bg-white/80 backdrop-blur-md border-b border-slate-200 px-4 py-3 sm:px-8 sm:py-6 flex justify-between items-center sticky top-0 z-50">
+                <header role="banner" className="bg-white/80 backdrop-blur-md border-b border-slate-200 px-4 py-3 sm:px-8 sm:py-6 flex justify-between items-center sticky top-0 z-50">
                     <button
                         onClick={onGoHome}
                         aria-label="Ga naar de startpagina"
@@ -903,7 +933,23 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                         <span className="text-xs font-bold">Feedback</span>
                     </button>
 
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-2 sm:gap-4">
+                        {/* NOTIFICATION BELL */}
+                        {userUid && (
+                            <button
+                                onClick={() => setShowNotifications(true)}
+                                aria-label={`Meldingen${notificationUnreadCount > 0 ? ` (${notificationUnreadCount} ongelezen)` : ''}`}
+                                className="relative w-10 h-10 flex items-center justify-center rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-500 hover:text-slate-700 border border-slate-200 transition-all hover:scale-105 active:scale-95"
+                            >
+                                <Bell size={18} />
+                                {notificationUnreadCount > 0 && (
+                                    <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 flex items-center justify-center rounded-full bg-red-500 text-white text-[10px] font-extrabold leading-none">
+                                        {notificationUnreadCount > 9 ? '9+' : notificationUnreadCount}
+                                    </span>
+                                )}
+                            </button>
+                        )}
+
                         {/* DAILY STREAK BADGE */}
                         {dailyStreak > 0 && (
                             <div className={`flex items-center gap-1 px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs sm:text-sm font-bold
@@ -1063,6 +1109,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                 <p className="text-xs text-slate-400 font-medium truncate mt-0.5">{currentPeriodConfig.subtitle}</p>
                             )}
                         </div>
+                        {userUid && <StreakBadge userId={userUid} />}
                         {totalMissions > 0 && (
                             <div className="flex items-center gap-2.5 flex-shrink-0 px-3 py-2 bg-white rounded-xl border border-slate-100 shadow-sm">
                                 <div className="relative w-9 h-9">
@@ -1080,6 +1127,16 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                     <p className="text-[9px] text-slate-400 font-medium">voltooid</p>
                                 </div>
                             </div>
+                        )}
+                        {userUid && (
+                            <button
+                                onClick={() => setShowWeeklyReport(true)}
+                                className="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-600 border border-indigo-100 shadow-sm transition-all hover:scale-105 active:scale-95"
+                                aria-label="Weekoverzicht bekijken"
+                                title="Weekoverzicht"
+                            >
+                                <TrendingUp size={18} />
+                            </button>
                         )}
                     </div>
 
@@ -1209,7 +1266,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                                 : currentPeriodConfig.sloFocus
                                             ).slice(0, 3).map(code => (
                                                 <span key={code} className={`px-1 py-0.5 rounded text-[8px] font-bold border ${getKerndoelBadgeClasses(code)}`}>
-                                                    {code}
+                                                    {userRole === 'student' ? (SLO_KERNDOELEN[code]?.label || code) : code}
                                                 </span>
                                             ))}
                                             {currentPeriodConfig.sloFocus.length > 3 && (
@@ -1290,9 +1347,10 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                                 return (
                                                     <span
                                                         key={code}
+                                                        title={kerndoel.omschrijving}
                                                         className={`px-1.5 py-0.5 rounded-md text-[9px] font-bold border ${getKerndoelBadgeClasses(code)}`}
                                                     >
-                                                        {code}
+                                                        {userRole === 'student' ? kerndoel.label : code}
                                                     </span>
                                                 );
                                             })}
@@ -1681,7 +1739,7 @@ const MissionCard = React.memo(({ mission, onSelectModule, onInfoClick, isComple
                                     className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md border text-[8px] font-bold uppercase tracking-wider ${getKerndoelBadgeClasses(code)}`}
                                     title={`${kd.label}: ${kd.omschrijving}`}
                                 >
-                                    {code} {!isCompact && kd.label}
+                                    {userRole === 'student' ? kd.label : `${code} ${!isCompact ? kd.label : ''}`}
                                 </span>
                             );
                         })}

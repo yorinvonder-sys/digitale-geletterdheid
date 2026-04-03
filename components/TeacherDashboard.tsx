@@ -38,6 +38,7 @@ import { TeacherHeader } from './teacher/dashboard/TeacherHeader';
 import { TeacherNavigation } from './teacher/dashboard/TeacherNavigation';
 import { TeacherModals } from './teacher/dashboard/TeacherModals';
 import { TeacherDocumentsPanel } from './teacher/TeacherDocumentsPanel';
+import { StepOverridePanel } from './teacher/StepOverridePanel';
 import { SchedulingConfigurator } from './coordinator/SchedulingConfigurator';
 
 // Lazy loaded panels
@@ -45,7 +46,7 @@ const LazyDigitaalPaspoortTeacher = lazy(() => import('./assessment/escaperoom/D
 const LazySamenhangMatrix = lazy(() => import('./teacher/SamenhangMatrix').then(m => ({ default: m.SamenhangMatrix })));
 
 // Tab type definitions
-type MainTab = 'overview' | 'students' | 'gamification' | 'games' | 'settings' | 'activity' | 'ai-beleid' | 'feedback' | 'progress' | 'slo' | 'documenten' | 'nulmeting' | 'samenhang';
+type MainTab = 'overview' | 'students' | 'gamification' | 'games' | 'settings' | 'activity' | 'ai-beleid' | 'feedback' | 'progress' | 'slo' | 'documenten' | 'nulmeting' | 'samenhang' | 'step-overrides';
 type GamificationTab = 'leaderboard' | 'gallery' | 'events';
 type MessageTargetType = 'student' | 'class' | 'all';
 
@@ -625,6 +626,13 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                                 <Suspense fallback={<div className="flex items-center justify-center py-12"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600" /></div>}>
                                     <LazySamenhangMatrix selectedYear={yearGroupFilter} schoolId={user?.schoolId} />
                                 </Suspense>
+                            </PageTransition>
+                        )}
+                        {activeTab === 'step-overrides' && (
+                            <PageTransition key="step-overrides" className="space-y-6">
+                                <div className="bg-white rounded-[2rem] border border-slate-100 p-6">
+                                    <StepOverridePanel teacherId={user?.uid ?? ''} />
+                                </div>
                             </PageTransition>
                         )}
                         {activeTab === 'documenten' && <PageTransition key="documenten"><TeacherDocumentsPanel /></PageTransition>}

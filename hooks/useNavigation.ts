@@ -12,7 +12,7 @@ export function useNavigation({ user }: UseNavigationParams) {
     const [isProfileOpen, setIsProfileOpen] = useState(false);
     const [initialProfileTab, setInitialProfileTab] = useState<'profile' | 'shop' | 'trophies' | 'privacy'>('profile');
     const [viewMode, setViewMode] = useState<'assignments' | 'monitoring'>('monitoring');
-    const [activeWeek, setActiveWeek] = useState(2);
+    const [activeWeek, setActiveWeek] = useState(1);
     const [showGames, setShowGames] = useState(false);
     const [initialGameId, setInitialGameId] = useState<string | null>(null);
     const [gamesEnabled, setGamesEnabled] = useState(true);

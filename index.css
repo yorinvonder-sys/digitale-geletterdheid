@@ -284,9 +284,11 @@ body {
 }
 
 /* Keyboard focus ring - only shows on keyboard navigation */
+/* Accessibility: consistent focus rings for keyboard navigation */
 *:focus-visible {
-  outline: none;
-  box-shadow: var(--focus-ring);
+  outline: 2px solid #6366f1;
+  outline-offset: 2px;
+  border-radius: 4px;
 }
 
 /* Button specific focus */
