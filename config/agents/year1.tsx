@@ -1719,19 +1719,42 @@ SCOPE GUARD:
         briefingImage: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=2670', // Code/Debug
         difficulty: 'Medium',
         examplePrompt: 'START',
+        primaryGoal: '🎯 Spot de fouten in 2 AI-cases en schrijf je foutenrapport',
+        goalCriteria: { type: 'steps-complete', min: 3 },
         steps: [
             {
                 title: "Introductie",
-                description: "Bereid je voor om de code van Week 2 te beoordelen.",
+                description: "Bereid je voor om de AI-generaties van Week 2 te beoordelen.",
                 example: "Zeg: 'Ik ben klaar voor de eerste case!'"
             },
             {
-                title: "Cases Oplossen",
-                description: "Vind de fouten in de AI-generaties.",
-                example: "Zeg: 'Ik zie de fout in Case [nummer]!'"
+                title: "Case 1",
+                description: "Spot de fout in de eerste AI-creatie en leg uit hoe je het oplost.",
+                example: "Zeg: 'De fout is dat het verhaal abrupt stopt. Oplossing: gebruik de Continue-knop.'"
+            },
+            {
+                title: "Case 2",
+                description: "Spot de fout in de tweede AI-creatie en schrijf je foutenrapport.",
+                example: "Zeg: 'De vijand mist rand-detectie. Oplossing: voeg een if-statement toe.'"
             }
         ],
-        visualPreview: null,
+        visualPreview: (
+            <div className="w-full h-full bg-gradient-to-br from-red-500 to-orange-600 flex flex-col items-center justify-center p-4 relative overflow-hidden">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(255,255,255,0.1),transparent)]" />
+                <div className="relative z-10 flex flex-col items-center gap-3">
+                    <div className="w-20 h-20 rounded-full bg-white/20 backdrop-blur-md border-2 border-white/40 flex items-center justify-center">
+                        <span className="text-4xl">🔍</span>
+                    </div>
+                    <div className="bg-white/20 backdrop-blur px-3 py-1 rounded-full border border-white/30">
+                        <span className="text-white text-[8px] font-bold">Spot de fout!</span>
+                    </div>
+                    <div className="flex gap-2">
+                        <span className="bg-white/20 px-2 py-0.5 rounded-full text-[8px] text-white">Case 1 🐉</span>
+                        <span className="bg-white/20 px-2 py-0.5 rounded-full text-[8px] text-white">Case 2 👾</span>
+                    </div>
+                </div>
+            </div>
+        ),
         systemInstruction: `Je bent DE CODE-CRITICUS 🧐, expert in kwaliteitscontrole.
 
 JOUW DOEL:
@@ -1786,6 +1809,23 @@ Wat is hier mis? En hoe lossen we dit op met de 'Continue' functie?"
 AFRONDING:
 "🎉 GOED GESPOT! Je hebt een kritisch oog. Je bent klaar voor Week 3.
 Typ 'AFRONDEN' om je rapport in te dienen."
+
+EERSTE BERICHT:
+"🔍 CODE-CRITICUS HIER.
+
+Ik heb een stapel AI-generaties ontvangen uit Week 2. Ze zien er op het eerste gezicht prima uit — maar ze deugen niet.
+
+Jij hebt geleerd hoe je games en verhalen maakt. Nu ga jij de fouten vinden die ik heb ontdekt.
+
+**Zeg 'START' om te beginnen met Case 1!**"
+
+STAP-VOLTOOIING:
+- Stuur ---STEP_COMPLETE:1--- als de leerling bevestigt klaar te zijn en 'START' of iets vergelijkbaars typt om te beginnen
+- Stuur ---STEP_COMPLETE:2--- als de leerling de fout in Case 1 correct identificeert (verhaal stopt abrupt, AI moet verder sturen)
+- Stuur ---STEP_COMPLETE:3--- als de leerling de fout in Case 2 correct identificeert (rand-detectie ontbreekt / vijand verdwijnt van scherm)
+
+SCOPE GUARD:
+- Blijf bij het analyseren van de twee cases. Als de leerling afdwaalt: "Scherp oog! Maar de Code-Criticus heeft nog een case open staan. Zullen we die eerst afhandelen?"
 
 ` + SYSTEM_INSTRUCTION_SUFFIX,
     },
@@ -3679,6 +3719,8 @@ TIPS VOOR BEGELEIDING:
         briefingImage: '/assets/agents/chatbot_trainer.webp',
         difficulty: 'Medium',
         examplePrompt: 'Ik wil een chatbot maken voor een pizzeria.',
+        primaryGoal: '🎯 Bouw en test een chatbot met IF-THEN regels',
+        goalCriteria: { type: 'steps-complete', min: 3 },
         visualPreview: (
             <div className="w-full h-full bg-gradient-to-br from-indigo-600 to-purple-700 flex flex-col items-center justify-center p-4 relative overflow-hidden">
                 <div className="absolute top-4 left-4 opacity-20">
@@ -3734,7 +3776,15 @@ Wist je dat veel chatbots NIET slim zijn? Ze werken met simpele regels: als iema
 
 **Stap 1:** Kies een onderwerp voor je chatbot. Bijvoorbeeld: een pizzeria, een dierenwinkel, of een helpdesk voor je school.
 
-Welk onderwerp kies jij?"` + SYSTEM_INSTRUCTION_SUFFIX,
+Welk onderwerp kies jij?"
+
+STAP-VOLTOOIING:
+- Stuur ---STEP_COMPLETE:1--- als de leerling een onderwerp heeft gekozen en minimaal 3 sleutelwoorden heeft bedacht
+- Stuur ---STEP_COMPLETE:2--- als de leerling voor elk sleutelwoord een IF-THEN antwoord heeft geschreven
+- Stuur ---STEP_COMPLETE:3--- als de leerling de chatbot heeft getest met een klantbericht en beschrijft wat er goed of mis ging
+
+SCOPE GUARD:
+- Blijf bij het bouwen en testen van de chatbot. Als de leerling afdwaalt: "Interessante vraag! Maar jouw chatbot wacht nog op meer regels. Laten we doorgaan — welke sleutelwoorden heb je al?"` + SYSTEM_INSTRUCTION_SUFFIX,
         steps: [
             {
                 title: "Sleutelwoorden",
@@ -3817,6 +3867,21 @@ BEPERKINGEN BESPREKEN:
 - AI ziet geen ruimtelijke vormen, alleen vlakke lijnen
 - AI begrijpt geen context
 - AI kan te veel getraind zijn op normale voorbeelden en daardoor ongewone tekeningen niet herkennen
+
+EERSTE BERICHT:
+"Hoi! Ik ben je AI Art Analyst. 🎨🤖
+
+Wist je dat AI miljoenen tekeningen heeft gezien om te leren wat een kat, een huis of een fiets is? Jij gaat nu testen hoe goed die herkenning werkt!
+
+**Jouw eerste opdracht:** Teken iets eenvoudigs op het canvas (bijv. een kat of een huis). Beschrijf daarna wat je getekend hebt — raadde de AI het goed?"
+
+STAP-VOLTOOIING:
+- Stuur ---STEP_COMPLETE:1--- als de leerling iets heeft getekend en vertelt of de AI het herkende
+- Stuur ---STEP_COMPLETE:2--- als de leerling een tweede tekening heeft gemaakt en beschrijft waarom de AI het wel of niet herkende
+- Stuur ---STEP_COMPLETE:3--- als de leerling uitlegt hoe patroonherkenning werkt en minimaal 1 beperking van de AI noemt
+
+SCOPE GUARD:
+- Blijf bij de AI-tekengame en patroonherkenning. Als de leerling afdwaalt: "Leuk! Maar de AI wacht op jouw volgende tekening. Wat ga je nu tekenen?"
 ` + SYSTEM_INSTRUCTION_SUFFIX,
         steps: [
             {
