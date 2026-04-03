@@ -309,7 +309,7 @@ export const StudentModal: React.FC<StudentModalProps> = ({ student, onClose, on
                                             ) : null;
                                         })
                                     ) : (
-                                        <span className="text-slate-400 text-xs">Nog geen badges</span>
+                                        <span className="text-slate-400 text-xs">Nog geen badges behaald. Badges worden verdiend door missies te voltooien.</span>
                                     )}
                                 </div>
                             </div>
@@ -399,7 +399,8 @@ export const StudentModal: React.FC<StudentModalProps> = ({ student, onClose, on
                                     </div>
                                 ) : notes.length === 0 ? (
                                     <div className="text-center py-4 text-slate-400 text-xs">
-                                        Nog geen notities voor deze leerling
+                                        <p className="font-medium">Nog geen notities voor deze leerling.</p>
+                                        <p className="mt-0.5">Voeg een notitie toe via de knop hierboven.</p>
                                     </div>
                                 ) : (
                                     <div className="space-y-2 max-h-40 overflow-y-auto">

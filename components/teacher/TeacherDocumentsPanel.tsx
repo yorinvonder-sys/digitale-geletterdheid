@@ -9,6 +9,7 @@ interface SloDocument {
     category: 'slo' | 'compliance' | 'handleiding';
     updatedAt: string;
     tags: string[];
+    type?: 'pdf' | 'link';
 }
 
 const TEACHER_DOCUMENTS: SloDocument[] = [
@@ -20,6 +21,87 @@ const TEACHER_DOCUMENTS: SloDocument[] = [
         category: 'slo',
         updatedAt: '2025-09-01',
         tags: ['SLO', 'Kerndoelen', 'Digitale Geletterdheid', '2025'],
+        type: 'pdf',
+    },
+    {
+        id: 'slo-kerndoelen-overzicht',
+        title: 'SLO Kerndoelen Overzicht',
+        description: 'Interactief overzicht van alle SLO-kerndoelen digitale geletterdheid, inclusief domeinindeling en leerjaarprogressie.',
+        path: '/slo-kerndoelen-digitale-geletterdheid',
+        category: 'slo',
+        updatedAt: '2026-01-01',
+        tags: ['SLO', 'Kerndoelen', 'Overzicht'],
+        type: 'link',
+    },
+    {
+        id: 'slo-dekkingsrapport',
+        title: 'SLO Dekkingsrapport',
+        description: 'Rapport dat toont welke SLO-kerndoelen worden gedekt door de DGSkills-missies, per domein en leerjaar.',
+        path: '/compliance/slo-rapport',
+        category: 'slo',
+        updatedAt: '2026-01-01',
+        tags: ['SLO', 'Dekking', 'Rapport', 'Missies'],
+        type: 'link',
+    },
+    {
+        id: 'dpa-verwerkersovereenkomst-v4',
+        title: 'Verwerkersovereenkomst (DPA) v4.0',
+        description: 'Model verwerkersovereenkomst conform AVG/GDPR voor gebruik van DGSkills op school. Versie 4.0 — gereed voor ondertekening.',
+        path: '/compliance-hub',
+        category: 'compliance',
+        updatedAt: '2026-03-28',
+        tags: ['DPA', 'AVG', 'Privacy', 'Verwerkersovereenkomst'],
+        type: 'link',
+    },
+    {
+        id: 'dpia-support',
+        title: 'DPIA Support Document',
+        description: 'Ondersteuningsdocument voor de Data Protection Impact Assessment (DPIA), inclusief gegevensstromen, risico-analyse en mitigerende maatregelen.',
+        path: '/compliance-hub',
+        category: 'compliance',
+        updatedAt: '2026-03-28',
+        tags: ['DPIA', 'Privacy', 'AVG', 'Risico'],
+        type: 'link',
+    },
+    {
+        id: 'ai-transparantieverklaring',
+        title: 'AI-Transparantieverklaring',
+        description: 'Verklaring over het gebruik van AI in DGSkills: welke modellen worden ingezet, hoe worden leerlingen begeleid, en welke menselijke toetsing is aanwezig.',
+        path: '/ict/privacy/ai',
+        category: 'compliance',
+        updatedAt: '2026-03-28',
+        tags: ['AI', 'Transparantie', 'EU AI Act', 'Leerlingen'],
+        type: 'link',
+    },
+    {
+        id: 'privacyverklaring',
+        title: 'Privacyverklaring',
+        description: 'Volledige privacyverklaring van DGSkills, inclusief gegevensverwerking, bewaartermijnen en rechten van betrokkenen (leerlingen en ouders).',
+        path: '/ict/privacy/policy',
+        category: 'compliance',
+        updatedAt: '2026-03-28',
+        tags: ['Privacy', 'AVG', 'Persoonsgegevens', 'Leerlingen'],
+        type: 'link',
+    },
+    {
+        id: 'implementatiegids-ict',
+        title: 'Implementatiegids voor ICT',
+        description: 'Stap-voor-stap handleiding voor ICT-coördinatoren: van aanmaken van klassen tot koppelen van leerlingen en instellen van rechten.',
+        path: '/ict/implementatiegids',
+        category: 'handleiding',
+        updatedAt: '2026-01-01',
+        tags: ['ICT', 'Implementatie', 'Handleiding', 'Onboarding'],
+        type: 'link',
+    },
+    {
+        id: 'technische-specificaties',
+        title: 'Technische Specificaties',
+        description: 'Overzicht van systeemvereisten, netwerkinstellingen, SSO-mogelijkheden en data-residency voor gebruik van DGSkills op schoolnetwerken.',
+        path: '/ict/technisch',
+        category: 'handleiding',
+        updatedAt: '2026-01-01',
+        tags: ['ICT', 'Technisch', 'SSO', 'Netwerk', 'Data Residency'],
+        type: 'link',
     },
 ];
 
@@ -121,9 +203,16 @@ export const TeacherDocumentsPanel: React.FC = () => {
                                                 <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${colors.bg} ${colors.text}`}>
                                                     {CATEGORY_LABELS[doc.category]}
                                                 </span>
+                                                {(doc.type === 'pdf' || !doc.type) && (
                                                 <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-red-50 text-red-600">
                                                     PDF
                                                 </span>
+                                            )}
+                                            {doc.type === 'link' && (
+                                                <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-sky-50 text-sky-600">
+                                                    Online
+                                                </span>
+                                            )}
                                             </div>
                                             <h3 className="text-base font-bold text-slate-900 leading-tight">
                                                 {doc.title}
@@ -148,21 +237,33 @@ export const TeacherDocumentsPanel: React.FC = () => {
                                             Bijgewerkt: {new Date(doc.updatedAt).toLocaleDateString('nl-NL', { year: 'numeric', month: 'long', day: 'numeric' })}
                                         </span>
                                         <div className="flex gap-2">
-                                            <button
-                                                onClick={() => setPreviewDoc(previewDoc?.id === doc.id ? null : doc)}
-                                                className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-indigo-600 hover:bg-indigo-50 rounded-xl transition-colors"
-                                            >
-                                                <ExternalLink size={14} />
-                                                Bekijken
-                                            </button>
-                                            <a
-                                                href={doc.path}
-                                                download
-                                                className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-slate-600 hover:bg-slate-50 rounded-xl transition-colors"
-                                            >
-                                                <Download size={14} />
-                                                Download
-                                            </a>
+                                            {doc.type === 'link' ? (
+                                                <a
+                                                    href={doc.path}
+                                                    className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-indigo-600 hover:bg-indigo-50 rounded-xl transition-colors"
+                                                >
+                                                    <ExternalLink size={14} />
+                                                    Openen
+                                                </a>
+                                            ) : (
+                                                <>
+                                                    <button
+                                                        onClick={() => setPreviewDoc(previewDoc?.id === doc.id ? null : doc)}
+                                                        className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-indigo-600 hover:bg-indigo-50 rounded-xl transition-colors"
+                                                    >
+                                                        <ExternalLink size={14} />
+                                                        Bekijken
+                                                    </button>
+                                                    <a
+                                                        href={doc.path}
+                                                        download
+                                                        className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-slate-600 hover:bg-slate-50 rounded-xl transition-colors"
+                                                    >
+                                                        <Download size={14} />
+                                                        Download
+                                                    </a>
+                                                </>
+                                            )}
                                         </div>
                                     </div>
                                 </div>

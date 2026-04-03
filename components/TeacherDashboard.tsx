@@ -127,7 +127,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
     }, [students]);
 
     const yearMissions = useMemo(() => getMissionsForYear(yearGroupFilter), [yearGroupFilter]);
-    const selectedClassId = classFilter === 'all' ? 'MH1A' : classFilter;
+    const selectedClassId = classFilter === 'all' ? (classGroups[0] || 'all') : classFilter;
 
     // Persist filter choices across page reloads
     useEffect(() => { try { sessionStorage.setItem('dgskills_teacher_classFilter', classFilter); } catch { /* noop */ } }, [classFilter]);
@@ -255,19 +255,20 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
 
     // Config & Onboarding
     useEffect(() => {
-        getClassroomConfig('MH1A').then(config => {
+        if (!selectedClassId || selectedClassId === 'all') return;
+        getClassroomConfig(selectedClassId).then(config => {
             if (config) {
                 setClassRoomConfig(config);
                 // Force focus mode OFF by default when teacher enters dashboard
                 if (config.focusMode) {
-                    void updateClassroomConfig('MH1A', { focusMode: false, schoolId: user?.schoolId });
+                    void updateClassroomConfig(selectedClassId, { focusMode: false, schoolId: user?.schoolId });
                     setFocusMode(false);
                 } else {
                     setFocusMode(false);
                 }
             }
         });
-    }, [user?.schoolId]);
+    }, [selectedClassId, user?.schoolId]);
 
     // Focus Mode Timer (Hard limit of 1 hour)
     useEffect(() => {
@@ -287,7 +288,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                 focusTimeoutHandledRef.current = true;
                 setFocusMode(false);
                 setFocusModeRemaining(0);
-                await updateClassroomConfig('MH1A', { focusMode: false, schoolId: user?.schoolId });
+                await updateClassroomConfig(selectedClassId, { focusMode: false, schoolId: user?.schoolId });
                 addToast('Focus Modus', 'Automatisch uitgeschakeld na 1 uur.', 'info');
                 return;
             }
@@ -417,7 +418,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
         if (focusMode) {
             setFocusMode(false);
             setFocusModeRemaining(0);
-            await updateClassroomConfig('MH1A', { focusMode: false, schoolId: user?.schoolId });
+            await updateClassroomConfig(selectedClassId, { focusMode: false, schoolId: user?.schoolId });
         } else {
             setShowFocusMissionModal(true);
         }
@@ -426,7 +427,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
     const handleFocusMissionSelect = async (missionId: string, missionTitle: string, selectedClass?: string) => {
         setFocusMode(true);
         focusStartTimeRef.current = Date.now();
-        await updateClassroomConfig(selectedClass || 'MH1A', {
+        await updateClassroomConfig(selectedClass || selectedClassId, {
             focusMode: true,
             focusMissionId: missionId,
             focusMissionTitle: missionTitle,
@@ -596,7 +597,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                         )}
 
                         {activeTab === 'settings' && <PageTransition key="settings" className="space-y-6"><SettingsPanel classFilter={classFilter} onClassFilterChange={setClassFilter} availableClasses={classGroups} enabledMissions={enabledMissions} onToggleMission={handleToggleMission} onTestGame={onOpenGames} yearGroup={yearGroupFilter} classroomConfig={classRoomConfig} onUpdateConfig={async u => { await updateClassroomConfig(selectedClassId, { ...u, schoolId: user?.schoolId }); setClassRoomConfig(p => p ? { ...p, ...u } : null); }} onOpenSchedulingConfig={(user?.role === 'admin' || user?.role === 'developer') ? () => setShowSchedulingConfig(true) : undefined} />{onLogout && <button onClick={onLogout} className="w-full py-4 border-2 border-red-100 text-red-600 rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-red-50"><RotateCcw size={18} /> Uitloggen</button>}</PageTransition>}
-                        {activeTab === 'games' && <PageTransition key="games"><GamesPanel onOpenGame={onOpenGames || (() => { })} /></PageTransition>}
+                        {activeTab === 'games' && <PageTransition key="games"><GamesPanel onOpenGame={onOpenGames || (() => { })} classes={classGroups} /></PageTransition>}
                         {activeTab === 'ai-beleid' && <PageTransition key="ai-beleid"><div className="bg-white rounded-[2rem] border border-slate-100 p-6"><AiBeleidFeedbackPanel classFilter={classFilter !== 'all' ? classFilter : undefined} schoolId={user?.schoolId} /></div></PageTransition>}
                         {activeTab === 'feedback' && <PageTransition key="feedback"><FeedbackPanel schoolId={user?.schoolId} /></PageTransition>}
                         {activeTab === 'progress' && <PageTransition key="progress" className="space-y-6"><MissionProgressPanel students={students} classFilter={classFilter} availableClasses={classGroups} onClassFilterChange={setClassFilter} onSelectStudent={setSelectedStudent} yearGroup={yearGroupFilter} /><HybridAssessmentPanel records={hybridAssessments} classFilter={classFilter} /><GrowthOverviewPanel studentIds={students.filter(s => classFilter === 'all' || s.studentClass === classFilter).map(s => s.uid)} /></PageTransition>}

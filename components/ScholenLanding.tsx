@@ -538,10 +538,27 @@ export const ScholenLanding: React.FC = () => {
                                     </span>
                                     <span className="flex items-center gap-1.5">
                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-                                        EU AI Act ready
+                                        EU AI Act transparant
                                     </span>
                                 </div>
                             </div>
+
+                            {/* Mobile: static screenshot fallback */}
+                            {!isDesktopHero && (
+                                <div className="mt-8 md:hidden" aria-hidden="true">
+                                    <div className="rounded-2xl overflow-hidden" style={{ boxShadow: `0 12px 24px ${C.text}08`, border: `1px solid ${C.border}` }}>
+                                        <img
+                                            src="/screenshots/student-dashboard.webp"
+                                            alt="DGSkills leerling dashboard met interactieve missies"
+                                            className="w-full rounded-2xl"
+                                            width={600}
+                                            height={400}
+                                            loading="eager"
+                                            decoding="async"
+                                        />
+                                    </div>
+                                </div>
+                            )}
 
                             {/* Right: hero video */}
                             {isDesktopHero && (
@@ -982,7 +999,7 @@ export const ScholenLanding: React.FC = () => {
                     </div>
                     <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4" style={{ borderTop: `1px solid ${C.bg}11` }}>
                         <p className="text-xs" style={{ color: `${C.bg}55` }}>
-                            &copy; {new Date().getFullYear()} DGSkills &mdash; Digitale geletterdheid voor het voortgezet onderwijs
+                            &copy; {new Date().getFullYear()} DGSkills &mdash; Eenmanszaak Yorin Vonder &middot; KvK 81819889
                         </p>
                         <div className="flex items-center gap-4">
                             <a href="mailto:info@dgskills.app" className="text-xs font-medium flex items-center gap-1.5 hover:text-white transition-colors" style={{ color: `${C.bg}88` }}>

@@ -73,6 +73,7 @@ export const GoudenPromptGallery: React.FC<GoudenPromptGalleryProps> = ({ school
                             <Star size={32} />
                         </div>
                         <p className="text-slate-400 font-bold uppercase tracking-widest text-xs">Nog geen werk gehighlight</p>
+                        <p className="text-slate-400 text-sm mt-2">Markeer uitstekend leerlingwerk als highlight vanuit het leerlingoverzicht.</p>
                     </div>
                 ) : highlights.map((work) => (
                     <div key={work.id} className="bg-white rounded-[2rem] p-8 shadow-xl shadow-slate-200/50 border border-slate-100 relative group overflow-hidden transition-all hover:shadow-2xl">

@@ -90,7 +90,10 @@ export const ActivityFeed: React.FC<ActivityFeedProps> = ({ schoolId }) => {
 
             <div className="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar">
                 {activities.length === 0 ? (
-                    <div className="text-center py-12 text-slate-400 text-xs italic">Nog geen recente activiteit...</div>
+                    <div className="text-center py-12 text-slate-400 text-xs">
+                        <p className="italic font-medium">Nog geen recente activiteit.</p>
+                        <p className="mt-1">Activiteit verschijnt hier zodra leerlingen inloggen en missies starten.</p>
+                    </div>
                 ) : activities.map((activity) => (
                     <div key={activity.id} className="flex gap-3 group">
                         <div className="mt-1 w-8 h-8 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">

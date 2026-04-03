@@ -231,7 +231,11 @@ export const FeedbackPanel: React.FC<FeedbackPanelProps> = ({ schoolId }) => {
                     <p className="text-slate-400 font-bold">
                         {classFilter === 'all' ? 'Nog geen feedback ontvangen' : `Geen feedback van ${classFilter}`}
                     </p>
-                    <p className="text-slate-300 text-sm mt-1">Leerlingen kunnen feedback geven via de knop in de header</p>
+                    <p className="text-slate-400 text-sm mt-1">
+                        {classFilter === 'all'
+                            ? 'Feedback verschijnt hier zodra leerlingen het feedbackformulier invullen via de knop in de header.'
+                            : `Probeer "Alle klassen" te selecteren of controleer of leerlingen van ${classFilter} al zijn ingelogd.`}
+                    </p>
                 </div>
             ) : (
                 <div className="space-y-3">

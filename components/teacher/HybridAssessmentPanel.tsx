@@ -26,7 +26,10 @@ export const HybridAssessmentPanel: React.FC<HybridAssessmentPanelProps> = ({ re
             </div>
 
             {recent.length === 0 ? (
-                <div className="p-8 text-center text-slate-400 text-sm">Nog geen hybride beoordelingen gevonden.</div>
+                <div className="p-8 text-center text-slate-400 text-sm">
+                    <p className="font-bold">Nog geen hybride beoordelingen gevonden.</p>
+                    <p className="text-xs mt-1">Beoordelingen verschijnen hier zodra leerlingen eindmissies afronden en jij een docentbeoordeling toevoegt.</p>
+                </div>
             ) : (
                 <div className="overflow-x-auto">
                     <table className="w-full text-sm">

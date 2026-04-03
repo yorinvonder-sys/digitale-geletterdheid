@@ -8,6 +8,7 @@ import { subscribeToActiveLobbies, forceStartAllLobbies, forceStartLobbiesByClas
 
 interface GamesPanelProps {
     onOpenGame: (gameId?: string) => void;
+    classes?: string[];
 }
 
 // Define available games - map to permission IDs
@@ -40,10 +41,7 @@ const GAMES = [
     }
 ];
 
-// Available classes for per-class force start
-const CLASSES = ['MH1A', 'MH1B', 'MH1C', 'MH1D', 'MH1E', 'MH2A', 'MH2B', 'MH2C', 'MH2D', 'MH2E'];
-
-export const GamesPanel: React.FC<GamesPanelProps> = ({ onOpenGame }) => {
+export const GamesPanel: React.FC<GamesPanelProps> = ({ onOpenGame, classes = [] }) => {
     const [permissions, setPermissions] = useState<GamePermissions | null>(null);
     const [loading, setLoading] = useState<string | null>(null);
     const [activeLobbies, setActiveLobbies] = useState<BombermanLobby[]>([]);
@@ -176,7 +174,7 @@ export const GamesPanel: React.FC<GamesPanelProps> = ({ onOpenGame }) => {
                                     className="px-3 py-2 bg-white border border-slate-200 rounded-xl text-sm font-medium text-slate-700 focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
                                 >
                                     <option value="">Kies klas...</option>
-                                    {CLASSES.map(c => (
+                                    {classes.map(c => (
                                         <option key={c} value={c}>{c}</option>
                                     ))}
                                 </select>
