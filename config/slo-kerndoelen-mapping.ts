@@ -178,6 +178,7 @@ export const KERNDOEL_MISSIONS: KerndoelMissionMeta[] = [
   { id: 'tech-impact-analyst', title: 'Tech Impact Analyst', week: 3, yearGroup: 3, sloKerndoelen: ['23C', '21D'] },
   { id: 'impact-review', title: 'Impact Review', week: 3, yearGroup: 3, sloKerndoelen: ['23C'] },                                                              // -23B: review = puur maatschappij
   { id: 'welzijnsonderzoeker', title: 'Welzijnsonderzoeker', week: 3, yearGroup: 3, sloKerndoelen: ['23B', '21C', '23C'] },                                    // welzijnsonderzoek via data-analyse + maatschappij
+  { id: 'startup-pitch', title: 'Startup Pitch', week: 3, yearGroup: 3, sloKerndoelen: ['22A', '21D', '23C'] },                                              // AI-startup bedenken + pitchen → creatie + AI + maatschappij
 
   // Assessment P3
   { id: 'assessment-j3-p3', title: 'Nulmeting Periode 3', week: 3, yearGroup: 3, sloKerndoelen: ['23C', '21D'] },

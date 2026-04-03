@@ -1,9 +1,10 @@
 import React, { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import type { TemplateMissionProps, BadgeConfig } from '../shared/types';
+import type { TemplateMissionProps, BadgeConfig, FollowUpQuestion } from '../shared/types';
 import { PhaseHeader } from '../shared/PhaseHeader';
 import { CompletionScreen } from '../shared/CompletionScreen';
 import { IntroScreen } from '../shared/IntroScreen';
+import { FollowUpCard } from '../shared/FollowUpCard';
 import { DragSort } from './sub/DragSort';
 import { MatchPairs } from './sub/MatchPairs';
 import { Categorize } from './sub/Categorize';
@@ -19,6 +20,8 @@ export interface DragSortRound {
     type: 'drag-sort';
     items: Array<{ id: string; label: string; correctPosition: number }>;
     maxScore: number;
+    showConfidence?: boolean;
+    followUp?: FollowUpQuestion;
 }
 
 export interface MatchPairsRound {
@@ -28,6 +31,7 @@ export interface MatchPairsRound {
     type: 'match-pairs';
     pairs: Array<{ left: string; right: string }>;
     maxScore: number;
+    followUp?: FollowUpQuestion;
 }
 
 export interface CategorizeRound {
@@ -38,6 +42,8 @@ export interface CategorizeRound {
     categories: string[];
     items: Array<{ label: string; correctCategory: string }>;
     maxScore: number;
+    showConfidence?: boolean;
+    followUp?: FollowUpQuestion;
 }
 
 export interface RapidFireRound {
@@ -48,6 +54,7 @@ export interface RapidFireRound {
     questions: Array<{ question: string; answer: boolean; explanation: string }>;
     timePerQuestion?: number;
     maxScore: number;
+    followUp?: FollowUpQuestion;
 }
 
 export type ReviewRound = DragSortRound | MatchPairsRound | CategorizeRound | RapidFireRound;
@@ -58,6 +65,7 @@ export interface ReviewArenaConfig {
     introEmoji: string;
     introTitle: string;
     introDescription: string;
+    introFeatures?: string[];
     rounds: ReviewRound[];
     maxScore: number;
     badges: BadgeConfig[];
@@ -70,6 +78,7 @@ interface ReviewArenaState {
     phase: 'intro' | 'round' | 'complete';
     currentRound: number;
     roundScores: number[];
+    followUpResults: Record<string, { answered: boolean; correct: boolean }>;
 }
 
 const ROUND_ICONS: Record<ReviewRound['type'], string> = {
@@ -95,6 +104,7 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
         phase: 'intro',
         currentRound: 0,
         roundScores: [],
+        followUpResults: {},
     };
 
     const { state, setState, clearSave } = useMissionAutoSave<ReviewArenaState>(
@@ -102,13 +112,13 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
         initialState
     );
 
+    // Local (non-persisted) follow-up UI state
+    const [pendingScore, setPendingScore] = useState<number | null>(null);
+    const [showFollowUp, setShowFollowUp] = useState(false);
+
     const totalScore = state.roundScores.reduce((a, b) => a + b, 0);
 
-    const handleStart = useCallback(() => {
-        setState((s) => ({ ...s, phase: 'round' }));
-    }, [setState]);
-
-    const handleRoundComplete = useCallback(
+    const advanceRound = useCallback(
         (score: number) => {
             setState((s) => {
                 const newScores = [...s.roundScores, score];
@@ -125,6 +135,46 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
         [setState, config.rounds.length]
     );
 
+    const handleStart = useCallback(() => {
+        setState((s) => ({ ...s, phase: 'round' }));
+    }, [setState]);
+
+    const handleRoundComplete = useCallback(
+        (score: number) => {
+            const round = config.rounds[state.currentRound];
+            if (round?.followUp && score > round.maxScore * 0.5) {
+                setPendingScore(score);
+                setShowFollowUp(true);
+            } else {
+                advanceRound(score);
+            }
+        },
+        [advanceRound, config.rounds, state.currentRound]
+    );
+
+    const handleFollowUpComplete = useCallback(
+        (correct: boolean) => {
+            const round = config.rounds[state.currentRound];
+            const bonus = correct ? (round?.followUp?.bonusPoints ?? 0) : 0;
+            const base = pendingScore ?? 0;
+            const maxScore = round?.maxScore ?? 0;
+            const finalScore = Math.min(base + bonus, maxScore);
+
+            setState((s) => ({
+                ...s,
+                followUpResults: {
+                    ...s.followUpResults,
+                    [round?.id ?? state.currentRound]: { answered: true, correct },
+                },
+            }));
+
+            setShowFollowUp(false);
+            setPendingScore(null);
+            advanceRound(finalScore);
+        },
+        [advanceRound, config.rounds, pendingScore, setState, state.currentRound]
+    );
+
     const handleComplete = useCallback(() => {
         clearSave();
         onComplete(true);
@@ -132,7 +182,7 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
 
     // === Intro ===
     if (state.phase === 'intro') {
-        const features = config.rounds.map((r) => `${ROUND_ICONS[r.type]} ${r.title}`);
+        const features = config.introFeatures ?? config.rounds.map((r) => `${ROUND_ICONS[r.type]} ${r.title}`);
         return (
             <IntroScreen
                 emoji={config.introEmoji}
@@ -210,6 +260,7 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
                                 description={round.description}
                                 items={round.items}
                                 maxScore={round.maxScore}
+                                showConfidence={round.showConfidence}
                                 onComplete={(score) => handleRoundComplete(score)}
                             />
                         )}
@@ -229,6 +280,7 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
                                 categories={round.categories}
                                 items={round.items}
                                 maxScore={round.maxScore}
+                                showConfidence={round.showConfidence}
                                 onComplete={(score) => handleRoundComplete(score)}
                             />
                         )}
@@ -240,6 +292,13 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
                                 timePerQuestion={round.timePerQuestion}
                                 maxScore={round.maxScore}
                                 onComplete={(score) => handleRoundComplete(score)}
+                            />
+                        )}
+
+                        {showFollowUp && round.followUp && (
+                            <FollowUpCard
+                                followUp={round.followUp}
+                                onComplete={handleFollowUpComplete}
                             />
                         )}
                     </motion.div>

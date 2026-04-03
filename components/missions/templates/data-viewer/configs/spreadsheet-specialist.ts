@@ -45,6 +45,7 @@ export const spreadsheetSpecialistConfig: DataViewerConfig = {
                     id: 'q1-totaal-uitgaven',
                     question: 'Hoeveel euro is de leerlingenraad in totaal kwijtgeraakt aan uitgaven? (Tel alle Uitgave-rijen op)',
                     type: 'number-input',
+                    showConfidence: true,
                     correctAnswer: 513,
                     explanation:
                         'Alle uitgaven: 120 + 85 + 35 + 160 + 18 + 95 = 513 euro. In een spreadsheet gebruik je hiervoor de formule =SOMALS() met als voorwaarde Type = "Uitgave". Filter op "Uitgave" om het snel te controleren.',
@@ -54,6 +55,7 @@ export const spreadsheetSpecialistConfig: DataViewerConfig = {
                     id: 'q2-hoogste-inkomst',
                     question: 'Welke categorie leverde de meeste inkomsten op?',
                     type: 'multiple-choice',
+                    showConfidence: true,
                     options: ['Evenement', 'Subsidie', 'Verkoop', 'Materiaal'],
                     correctAnswer: 'Subsidie',
                     explanation:
@@ -71,6 +73,13 @@ export const spreadsheetSpecialistConfig: DataViewerConfig = {
                     points: 10,
                 },
             ],
+            followUp: {
+                question: 'Wat is het grootste voordeel van formules boven handmatig rekenen in spreadsheets?',
+                options: ['Formules zijn sneller om te typen', 'Formules updaten automatisch bij nieuwe data', 'Formules zien er professioneler uit', 'Formules gebruiken minder geheugen'],
+                correctIndex: 1,
+                explanation: 'Het grootste voordeel is dat formules automatisch herberekenen wanneer brondata verandert. Dit voorkomt fouten en bespaart tijd bij updates.',
+                bonusPoints: 5,
+            },
         },
 
         // ── Dataset 2: Staafgrafiek ───────────────────────────────────────────
@@ -83,28 +92,28 @@ export const spreadsheetSpecialistConfig: DataViewerConfig = {
             chartData: [
                 { label: 'Evenement', value: 460, color: '#0891B2' },
                 { label: 'Materiaal', value: 53, color: '#F59E0B' },
-                { label: 'Vergadering', value: 18, color: '#10B981' },
-                { label: 'Drukwerk', value: 35, color: '#8B5CF6' },
             ],
             questions: [
                 {
                     id: 'q4-grootste-post',
                     question: 'Welke uitgavenpost is veruit het grootst voor de leerlingenraad?',
                     type: 'multiple-choice',
+                    showConfidence: true,
                     options: ['Materiaal', 'Vergadering', 'Evenement', 'Drukwerk'],
                     correctAnswer: 'Evenement',
                     explanation:
-                        'Evenementen kosten 460 euro — bijna 87% van het totale budget. Dit zijn de introductiedag, Halloween, Kerstmarkt en Carnaval bij elkaar opgeteld. Een staafdiagram maakt dit ongelijkwicht in één oogopslag zichtbaar.',
+                        'Evenementen kosten 460 euro — bijna 90% van de totale uitgaven (513 euro). Dit zijn de introductiedag, Halloween, Kerstmarkt en Carnaval bij elkaar opgeteld. Een staafdiagram maakt dit ongelijkwicht in één oogopslag zichtbaar.',
                     points: 10,
                 },
                 {
                     id: 'q5-verschil',
                     question:
-                        'Hoeveel euro meer geeft de leerlingenraad uit aan evenementen dan aan materiaal en drukwerk samen?',
+                        'Hoeveel euro meer geeft de leerlingenraad uit aan evenementen dan aan materiaal?',
                     type: 'number-input',
-                    correctAnswer: 372,
+                    showConfidence: true,
+                    correctAnswer: 407,
                     explanation:
-                        'Evenement: 460 euro. Materiaal + drukwerk: 53 + 35 = 88 euro. Verschil: 460 − 88 = 372 euro. In een spreadsheet: =B2-(B3+B4) als de waarden in kolom B staan.',
+                        'Evenement: 460 euro. Materiaal: 53 euro. Verschil: 460 − 53 = 407 euro. In een spreadsheet: =B2-B3 als de waarden in kolom B staan.',
                     points: 15,
                 },
                 {
@@ -159,6 +168,7 @@ export const spreadsheetSpecialistConfig: DataViewerConfig = {
                     question:
                         'Je wilt weten wat het duurste evenement van het jaar was. Welke formule gebruik je?',
                     type: 'multiple-choice',
+                    showConfidence: true,
                     options: ['=SOM(bereik)', '=GEMIDDELDE(bereik)', '=MAX(bereik)', '=AANTAL(bereik)'],
                     correctAnswer: '=MAX(bereik)',
                     explanation:
