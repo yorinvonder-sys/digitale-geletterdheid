@@ -84,6 +84,7 @@ export const KERNDOEL_MISSIONS: KerndoelMissionMeta[] = [
   { id: 'mission-blueprint', title: 'De Blauwdruk', week: 4, yearGroup: 1, sloKerndoelen: ['22A'], sloVsoKerndoelen: ['19A'] },                                // -21A: projectplan maken = product, niet systeemkennis
   { id: 'mission-vision', title: 'De Visie', week: 4, yearGroup: 1, sloKerndoelen: ['22A', '21B'], sloVsoKerndoelen: ['19A', '18B'] },                         // 21D→21B: moodboard + pitch = product + visuele communicatie
   { id: 'mission-launch', title: 'De Lancering', week: 4, yearGroup: 1, sloKerndoelen: ['22A', '21B'], sloVsoKerndoelen: ['19A', '18B'] },                     // 21A,21C→22A,21B: flyer ontwerpen = product + communicatie
+  { id: 'startup-pitch', title: 'Startup Pitch', week: 4, yearGroup: 1, sloKerndoelen: ['22A', '21D', '23A'], sloVsoKerndoelen: ['19A', '18C', '20A'] },       // AI-startup ontwerpen = product + AI + privacy/ethiek
 
   // Assessment P4
   { id: 'assessment-j1-p4', title: 'Nulmeting Periode 4', week: 4, yearGroup: 1, sloKerndoelen: ['21A', '21B', '21D', '22A', '23C'] },
