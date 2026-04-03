@@ -19,6 +19,7 @@ De volgende drie missies zijn als referentiepunt gebruikt bij het opstellen van 
 
 | Missie ID | Titel | Leerjaar | Score (%) | Verdict | Datum | Link |
 |-----------|-------|----------|-----------|---------|-------|------|
+| `ai-tekengame` | AI Tekengame | J1 P2 | 63,6% | ⚠️ Needs work | 2026-04-03 | [rapport](ai-tekengame.md) |
 <!-- Voeg hier audit-resultaten toe -->
 
 ---
@@ -27,10 +28,10 @@ De volgende drie missies zijn als referentiepunt gebruikt bij het opstellen van 
 
 | Categorie | Aantal |
 |-----------|--------|
-| Totaal geaudit | — |
-| Klaar voor pilot | — |
-| Needs work | — |
-| Niet inzetbaar | — |
+| Totaal geaudit | 1 |
+| Klaar voor pilot | 0 |
+| Needs work | 1 |
+| Niet inzetbaar | 0 |
 
 ---
 
