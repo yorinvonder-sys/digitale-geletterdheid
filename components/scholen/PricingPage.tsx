@@ -185,11 +185,54 @@ export const PricingPage: React.FC = () => {
         });
         document.head.appendChild(breadcrumb);
 
+        const product = document.createElement('script');
+        product.type = 'application/ld+json';
+        product.id = 'pricing-product-jsonld';
+        product.textContent = JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Product',
+            name: 'DGSkills — Digitale Geletterdheid Platform',
+            description: 'AI-gestuurd platform voor digitale geletterdheid in het Nederlandse voortgezet onderwijs. Alle 94 missies, docentendashboard en SLO-rapportages inbegrepen.',
+            brand: { '@type': 'Brand', name: 'DGSkills' },
+            url: 'https://dgskills.app',
+            offers: [
+                {
+                    '@type': 'Offer',
+                    name: 'Pilot Start',
+                    price: '1500',
+                    priceCurrency: 'EUR',
+                    priceSpecification: { '@type': 'UnitPriceSpecification', priceType: 'https://schema.org/InvoicePrice', unitText: 'eenmalig, excl. BTW' },
+                    availability: 'https://schema.org/InStock',
+                    url: 'https://dgskills.app/pricing',
+                },
+                {
+                    '@type': 'Offer',
+                    name: 'Jaarlicentie Start',
+                    price: '4900',
+                    priceCurrency: 'EUR',
+                    priceSpecification: { '@type': 'UnitPriceSpecification', priceType: 'https://schema.org/InvoicePrice', unitText: 'per jaar, excl. BTW' },
+                    availability: 'https://schema.org/InStock',
+                    url: 'https://dgskills.app/pricing',
+                },
+                {
+                    '@type': 'Offer',
+                    name: 'Jaarlicentie School-S',
+                    price: '8900',
+                    priceCurrency: 'EUR',
+                    priceSpecification: { '@type': 'UnitPriceSpecification', priceType: 'https://schema.org/InvoicePrice', unitText: 'per jaar, excl. BTW' },
+                    availability: 'https://schema.org/InStock',
+                    url: 'https://dgskills.app/pricing',
+                },
+            ],
+        });
+        document.head.appendChild(product);
+
         trackEvent('seo_page_view', { cluster: 'pricing', page: 'pricing' });
 
         return () => {
             document.title = originalTitle;
             document.getElementById('pricing-breadcrumb-jsonld')?.remove();
+            document.getElementById('pricing-product-jsonld')?.remove();
         };
     }, []);
 
