@@ -6,12 +6,12 @@ const config: ScenarioEngineConfig = {
     introEmoji: '🛡️',
     introTitle: 'Social Safeguard',
     introDescription:
-        'Online conflicten kunnen snel escaleren: pesten, nepaccounts, doxing, schermafdrukken die worden doorgestuurd. Je wil helpen — maar hoe doe je dat zonder het erger te maken? Jij leert veilig en slim reageren in lastige online situaties.',
+        'Iemand in je klas wordt online gepest — jij ziet het. Weet je wat je moet doen, en wat je beter kunt laten?',
     introFeatures: [
-        'Herken wat er echt aan de hand is in online conflicten',
-        'Kies de veiligste actie in lastige situaties',
-        'Leer het SAFE-ACT protocol: Stop, Save, Share, Secure',
-        'Ontdek wanneer je zelf kunt helpen en wanneer je een volwassene inschakelt',
+        'Zie jij het verschil tussen drama en echt gevaar?',
+        'Kun jij de juiste stappen in de juiste volgorde zetten?',
+        'Wanneer grijp je in — en wanneer maak je het juist erger?',
+        'Ontdek welke privacy-instellingen er écht toe doen.',
     ],
     maxScore: 100,
     badges: [
@@ -41,11 +41,11 @@ const config: ScenarioEngineConfig = {
         },
     ],
     takeaways: [
-        'Reageer nooit impulsief op online conflicten — stop eerst en denk na over de gevolgen.',
-        'Maak bewijs altijd met context: een screenshot zonder datum en gesprekstekst is minder bruikbaar.',
-        'Het omstander-effect: niemand helpt omdat iedereen denkt dat iemand anders het wel doet. Jij kunt het verschil maken.',
-        'Melden bij een platform verwijdert content — melden bij een volwassene brengt hulp op gang. Doe allebei.',
-        'Blokkeren en muten is zelfzorg, geen lafheid. Je hoeft geen online aanvallen te blijven ontvangen.',
+        'Je eerste reactie is bijna nooit de beste — één seconde nadenken verandert de uitkomst.',
+        'Een screenshot zonder namen en datum is waardeloos als bewijs.',
+        'Iedereen dacht dat iemand anders het zou melden — zo werkt het omstander-effect.',
+        'Melden bij een platform haalt content weg; melden bij een volwassene haalt hulp op gang.',
+        'Blokkeren is een grens stellen, geen opgeven.',
     ],
     rounds: [
         // ── RONDE 1: select-correct ───────────────────────────────────────────────
@@ -54,13 +54,13 @@ const config: ScenarioEngineConfig = {
             emoji: '🔎',
             title: 'Wat is er precies aan de hand?',
             description:
-                'In een groepsapp en op sociale media gebeuren verschillende dingen. Welke situaties hieronder zijn gevaarlijk of strafbaar en vragen direct actie? Selecteer ze.',
+                'Welke van deze situaties zijn gevaarlijk of strafbaar en vragen direct actie? Selecteer ze.',
             type: 'select-correct',
             maxScore: 25,
             feedbackCorrect:
-                'Goed. Je herkent het verschil tussen vervelend gedrag en serieuze situaties die actie vragen.',
+                'Scherp — je ziet het verschil tussen vervelend en serieus gevaarlijk.',
             feedbackIncorrect:
-                'Sommige situaties lijken onschuldig maar zijn dat niet. Lees de uitleg goed.',
+                'Sommige situaties zien er onschuldig uit maar zijn dat niet. Kijk wat de situatie concreet mogelijk maakt voor de dader.',
             items: [
                 {
                     id: 1,
@@ -70,7 +70,7 @@ const config: ScenarioEngineConfig = {
                         'Iemand heeft een Instagram-account aangemaakt met de naam, foto en school van een klasgenoot. Ze plaatsen daar berichten die het alsof de klasgenoot ze zelf schrijft.',
                     correct: true,
                     explanation:
-                        'Dit is identiteitsfraude en kan strafbaar zijn. Het beschadigt de reputatie van het slachtoffer en de klasgenoot heeft er geen controle over. Directe actie vereist: melden bij platform + een vertrouwenspersoon inschakelen.',
+                        'Dit is identiteitsfraude — de klasgenoot heeft geen controle over wat er in zijn naam wordt gepost. Kan strafbaar zijn en richt directe reputatieschade aan.',
                 },
                 {
                     id: 2,
@@ -80,7 +80,7 @@ const config: ScenarioEngineConfig = {
                         'Twee leerlingen laten iemand bewust niet antwoorden in de groepsapp. Ze reageren op iedereen behalve op die persoon.',
                     correct: true,
                     explanation:
-                        'Uitsluiting (ook online) is een vorm van pesten. Het is minder zichtbaar dan uitschelden maar kan net zo veel schade aanrichten. Het verdient aandacht van een volwassene als het aanhoudt.',
+                        'Online uitsluiting is een pesttechniek — minder zichtbaar dan uitschelden, maar even schadelijk. Als het aanhoudt, is het geen groepsdynamiek meer maar structureel pesten.',
                 },
                 {
                     id: 3,
@@ -90,7 +90,7 @@ const config: ScenarioEngineConfig = {
                         'Een klasgenoot deelt een foto in de groepsapp waarop een vriend er gek uitziet tijdens gym. De vrienden lachen erom.',
                     correct: false,
                     explanation:
-                        'Vervelend kan het zijn — maar als alle betrokkenen het grappig vinden en er geen druk of schade is, is dit sociale dynamiek, geen gevaarlijke situatie. Wel goed om bewust te zijn van toestemming bij het delen van foto\'s.',
+                        'Als alle betrokkenen het grappig vinden en er geen druk of schade is, is dit sociale dynamiek — geen gevaarlijke situatie. Toestemming voor foto\'s is altijd de moeite waard om over na te denken.',
                 },
                 {
                     id: 4,
@@ -100,7 +100,7 @@ const config: ScenarioEngineConfig = {
                         'Een leerling plaatst het thuisadres van een ander kind in een groepsapp na een ruzie, met de tekst "voor als jullie hem een bezoekje willen brengen".',
                     correct: true,
                     explanation:
-                        'Dit is doxing: het openbaar maken van privéinformatie als wapen. Dit kan in de echte wereld gevaarlijk worden. Dit is een ernstige situatie — direct melden bij een volwassene of de politie.',
+                        'Dit is doxing — privéinformatie als wapen gebruiken. Het thuisadres + een uitnodiging om langs te gaan maakt dit direct een veiligheidsrisico.',
                 },
                 {
                     id: 5,
@@ -110,7 +110,7 @@ const config: ScenarioEngineConfig = {
                         'Twee klasgenoten sturen elkaar boze berichten in privéchat na een conflict op school. Niemand anders is betrokken.',
                     correct: false,
                     explanation:
-                        'Een privéruzie tussen twee personen is niet meteen een gevaarlijke situatie. Zolang er geen bedreigingen zijn en het privé blijft, is dit een interpersoonlijk conflict, geen digitale aanval.',
+                        'Zolang er geen bedreigingen zijn en het privé blijft, is dit een interpersoonlijk conflict — geen digitale aanval. Twee mensen mogen boos op elkaar zijn.',
                 },
                 {
                     id: 6,
@@ -120,7 +120,7 @@ const config: ScenarioEngineConfig = {
                         'Iemand heeft stiekem een video gemaakt in de kleedkamer en stuurt die door in een groepsapp.',
                     correct: true,
                     explanation:
-                        'Dit is een ernstige schending van privacy en kan strafbaar zijn als het om ontkleding gaat (ook als minderjarigen betrokken zijn). Verwijder de video niet zelf — laat een volwassene het bewijs documenteren en meld het bij platform én school.',
+                        'Heimelijk filmen in een kleedkamer is een ernstige privacyschending en strafbaar als er ontkleding in beeld is. Verwijder de video niet zelf — bewijs moet intact blijven voor degene die dit afhandelt.',
                 },
                 {
                     id: 7,
@@ -130,7 +130,7 @@ const config: ScenarioEngineConfig = {
                         'Na een ruzie stuurt iemand via WhatsApp: "Ik wou dat je dood was, je maakt mijn leven kapot."',
                     correct: true,
                     explanation:
-                        'Uitspraken als deze — ook in woede — moeten serieus worden genomen. Het kan een dreigement zijn, of een signaal dat de afzender zelf in nood is. Altijd een volwassene inschakelen.',
+                        'Ook als het in woede gezegd is, kan dit een dreigement zijn — of een signaal dat de afzender zelf in nood is. Beide vragen om een volwassene.',
                 },
                 {
                     id: 8,
@@ -140,7 +140,7 @@ const config: ScenarioEngineConfig = {
                         'Een klasgenoot krijgt in een online game constant scheldwoorden en beledigingen van onbekende spelers.',
                     correct: true,
                     explanation:
-                        'Online pesten in games is even serieus als offline pesten. Scheldwoorden, bedreigingen of doelbewust ruïneren van het spel kunnen worden gemeld bij de game-platform en zijn soms strafbaar.',
+                        'Online pesten in games is net zo serieus als offline pesten. Systematisch iemands spel saboteren of bedreigen is meldbaar bij het platform en soms strafbaar.',
                 },
             ],
         },
@@ -155,9 +155,9 @@ const config: ScenarioEngineConfig = {
             type: 'order-priority',
             maxScore: 25,
             feedbackCorrect:
-                'Perfect! Je weet hoe je bedachtzaam handelt zonder bewijs te vernietigen.',
+                'Klopt — stoppen, bewijzen, melden, dan pas verwijderen. In die volgorde blijft alles bruikbaar.',
             feedbackIncorrect:
-                'De volgorde doet ertoe. Bewijs verzamelen moet eerder dan verwijderen — anders ben je het kwijt.',
+                'De volgorde maakt echt verschil: als je eerst meldt en het platform haalt de content weg, ben je je bewijs kwijt. Screenshot altijd eerst.',
             items: [
                 {
                     id: 1,
@@ -167,7 +167,7 @@ const config: ScenarioEngineConfig = {
                         'Je eerste reactie is misschien boos terugschrijven of de berichten doorsturen. Stop. Adem. Denk na over wat je gaat doen.',
                     correctPosition: 0,
                     explanation:
-                        'Impulsief reageren kan de situatie verergeren, bewijs vernietigen of jou zelf in de problemen brengen. De eerste stap is altijd: pauzeren.',
+                        'Impulsief reageren kan bewijs vernietigen en jou zelf betrekken in de situatie. Pauzeren is geen passiviteit — het is tactiek.',
                 },
                 {
                     id: 2,
@@ -177,7 +177,7 @@ const config: ScenarioEngineConfig = {
                         'Maak een screenshot van de berichten inclusief de namen van afzenders, datum en het gesprek erboven zodat de context duidelijk is.',
                     correctPosition: 1,
                     explanation:
-                        'Bewijs moet bewaard worden voordat het verwijderd wordt. Een screenshot zonder context (wie? wanneer?) is veel minder bruikbaar voor school of politie.',
+                        'Een screenshot zonder context — wie, wanneer, in welk gesprek — is nauwelijks bruikbaar. Namen en datum moeten zichtbaar zijn.',
                 },
                 {
                     id: 3,
@@ -187,7 +187,7 @@ const config: ScenarioEngineConfig = {
                         'Ga naar een vertrouwde volwassene: je eigen ouder, de mentor of de vertrouwenspersoon van de school.',
                     correctPosition: 2,
                     explanation:
-                        'Een volwassene kan ingrijpen op school, contact opnemen met ouders en indien nodig de politie inschakelen. Jij hoeft dit niet alleen op te lossen.',
+                        'Een volwassene kan dingen doen die jij niet kunt: contact opnemen met ouders, ingrijpen op school, eventueel de politie bellen. Je hoeft dit niet alleen te fixen.',
                 },
                 {
                     id: 4,
@@ -197,7 +197,7 @@ const config: ScenarioEngineConfig = {
                         'Gebruik de meldknop van de app of het platform om de pestkopberichten te rapporteren.',
                     correctPosition: 3,
                     explanation:
-                        'Platforms kunnen accounts blokkeren en content verwijderen. Meld nádat je het bewijs hebt — als je eerst meldt en het wordt verwijderd, heb je geen screenshot meer.',
+                        'Meld pas nadat je het bewijs hebt — als het platform de content verwijdert voordat je een screenshot hebt, is het weg.',
                 },
                 {
                     id: 5,
@@ -218,11 +218,11 @@ const config: ScenarioEngineConfig = {
             emoji: '🤔',
             title: 'Ingrijpen of niet?',
             description:
-                'In elk scenario ben jij een omstander. Zou jij ingrijpen — ja of nee? En hoe?',
+                'Jij bent omstander. Zou jij ingrijpen — ja of nee?',
             type: 'binary-choice',
             maxScore: 25,
-            feedbackCorrect: 'Goede keuze! Jij denkt na over effect én veiligheid.',
-            feedbackIncorrect: 'Soms is niet ingrijpen gevaarlijker. Lees de uitleg.',
+            feedbackCorrect: 'Klopt — je ziet wanneer actie nodig is en wanneer ruimte geven het slimmere antwoord is.',
+            feedbackIncorrect: 'Soms is niets doen gevaarlijker dan ingrijpen. Kijk wat het scenario concreet mogelijk maakt.',
             items: [
                 {
                     id: 1,
@@ -299,7 +299,7 @@ const config: ScenarioEngineConfig = {
             feedbackCorrect:
                 'Je weet precies welke instellingen er echt toe doen.',
             feedbackIncorrect:
-                'Sommige maatregelen lijken veilig maar beschermen nauwelijks. Lees de uitleg.',
+                'Sommige maatregelen lijken veilig maar beschermen nauwelijks. Kijk welke instelling of gewoonte het concrete risico niet wegneemt.',
             items: [
                 {
                     id: 1,
