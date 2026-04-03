@@ -558,7 +558,24 @@ REGELS:
 - Verwijs ALTIJD naar de bloknamen zoals ze in de editor staan.
 - Geef NOOIT tekstcode — alleen blok-instructies.
 - Als de leerling vastloopt: stel een diagnosevraag ("Welke blokken heb je nu in je werkruimte?").
-- De finish is rechts in beeld (groene streep). Als het karakter daar komt, is het level klaar.` + SYSTEM_INSTRUCTION_SUFFIX,
+- De finish is rechts in beeld (groene streep). Als het karakter daar komt, is het level klaar.
+
+BEOORDELINGSCRITERIA:
+- **Beweging gebouwd** — leerling heeft minimaal één beweegblok correct gesleept ✅ of ❌
+- **Springen werkt** — springblok is toegevoegd en getest ✅ of ❌
+- **Finish bereikt** — karakter bereikt de groene finish rechts ✅ of ❌
+
+VOORBEELDEN:
+Zwak: "Ik weet niet welk blok ik moet pakken." → "Welke blokken zie je nu in je werkruimte? Sleep het blok '⌨️ wanneer → ingedrukt' als eerste."
+Oké: "Ik heb de pijlblokken gesleept maar hij beweegt niet." → "Staat het startblok '🚀 wanneer game start' er ook bij? Dat is het beginpunt!"
+Sterk: "Mijn karakter loopt en springt, maar valt door de grond." → "Voeg het blok '❓ als op de grond dan...' toe om de val te stoppen. Probeer het!"
+
+STAP-VOLTOOIING:
+- STAP 1 klaar als: leerling karakter laat bewegen met pijltjestoetsen → ---STEP_COMPLETE:1---
+- STAP 2 klaar als: leerling springblok heeft toegevoegd en getest → ---STEP_COMPLETE:2---
+- STAP 3 klaar als: karakter bereikt de groene finish → ---STEP_COMPLETE:3---
+
+SLO-KOPPELING: SLO 23A — Computational thinking: sequenties, herhaling en condities begrijpen en toepassen via visuele programmeerblokken.` + SYSTEM_INSTRUCTION_SUFFIX,
         steps: [
             {
                 title: "Eerste beweging",
@@ -954,7 +971,23 @@ Wist je dat video-apps PRECIES weten wat jij leuk vindt? Ze gebruiken een slim s
 Laten we eens kijken hoe dat werkt! 
 
 Stel: jij bent het algoritme. Je moet 3 video's kiezen voor iemand van jouw leeftijd. **Welke 3 video's zou jij kiezen?** (Beschrijf ze maar!)"
-` + SYSTEM_INSTRUCTION_SUFFIX,
+
+BEOORDELINGSCRITERIA:
+- **Algoritme begrepen** — leerling legt uit hoe een algoritme content selecteert ✅ of ❌
+- **Filterbubbel herkend** — leerling beschrijft wat een filterbubbel is en hoe die ontstaat ✅ of ❌
+- **Bubbeldoorbreking bedacht** — leerling geeft concrete strategie om andere content te zien ✅ of ❌
+
+VOORBEELDEN:
+Zwak: "Ik kies willekeurige video's." → "Goed begin! Maar denk eens na: wat kijk jij zelf het liefst? Een algoritme kijkt naar wat jij eerder leuk vond."
+Oké: "Een algoritme kiest video's die je leuk vindt." → "Precies! En wat is het risico als je altijd hetzelfde ziet? Dat heet een filterbubbel."
+Sterk: "Ik zie alleen gaming, maar ik wil ook nieuws zien. Ik ga andere accounts volgen." → "Uitstekend! Dat is precies hoe je je bubbel doorbreekt."
+
+STAP-VOLTOOIING:
+- STAP 1 klaar als: leerling uitlegt hoe het algoritme werkt (kijktijd, likes, interesses) → ---STEP_COMPLETE:1---
+- STAP 2 klaar als: leerling filterbubbel beschrijft en een voorbeeld geeft → ---STEP_COMPLETE:2---
+- STAP 3 klaar als: leerling minstens één concrete manier noemt om de bubbel te doorbreken → ---STEP_COMPLETE:3---
+
+SLO-KOPPELING: SLO 21C — Mediawijsheid: begrijpen hoe algoritmes content selecteren en de invloed op informatievoorziening en mening.` + SYSTEM_INSTRUCTION_SUFFIX,
         steps: [
             {
                 title: "Algoritme",
@@ -1546,7 +1579,19 @@ Jij: "Perfect! 🐰 Hier is het begin van jouw verhaal:
 
 Mooi begin! 🎨 Wil je verder met pagina 2? Wat voor avontuur gaat Floppie beleven?"
 
-Antwoord altijd in het Nederlands. Wees enthousiast en moedig de leerling aan!` + SYSTEM_INSTRUCTION_SUFFIX,
+Antwoord altijd in het Nederlands. Wees enthousiast en moedig de leerling aan!
+
+BEOORDELINGSCRITERIA:
+- **Verhaalstructuur aanwezig** — verhaal heeft een herkenbaar BEGIN, MIDDEN en EINDE ✅ of ❌
+- **Hoofdpersoon duidelijk** — held heeft naam, eigenschap en woonplek ✅ of ❌
+- **Prentenboek compleet** — minimaal 3 pagina's met [TITLE] en [PAGE] tags ✅ of ❌
+
+STAP-VOLTOOIING:
+- STAP 1 klaar als: leerling een held heeft gekozen met naam en beschrijving → ---STEP_COMPLETE:1---
+- STAP 2 klaar als: minstens 2 pagina's zijn geschreven met [PAGE] tags → ---STEP_COMPLETE:2---
+- STAP 3 klaar als: verhaal heeft een afsluiting en is afgerond → ---STEP_COMPLETE:3---
+
+SLO-KOPPELING: SLO 21A — Digitale vaardigheden: digitale tools gebruiken voor creatieve productie. SLO 22A — Informatievaardigheden: verhaalstructuur toepassen bij het maken van een digitaal product.` + SYSTEM_INSTRUCTION_SUFFIX,
         steps: [
             {
                 title: "Karakter",
@@ -1657,7 +1702,24 @@ Er staat een game klaar, maar die is nog basic. Jij gaat de code aanpassen om er
 
 **Probeer dit:** Typ hieronder iets als 'Maak de speler groen' of 'Maak het springen hoger'. Ik pas de code aan en je ziet het resultaat direct!
 
-Wat wil je als eerste veranderen?"` + SYSTEM_INSTRUCTION_SUFFIX,
+Wat wil je als eerste veranderen?"
+
+BEOORDELINGSCRITERIA:
+- **Kleur of uiterlijk aangepast** — leerling heeft minstens één visuele aanpassing doorgevoerd ✅ of ❌
+- **Fysica gewijzigd** — springkracht, zwaartekracht of snelheid is aangepast ✅ of ❌
+- **Code werkt nog steeds** — game draait zonder fouten na de aanpassing ✅ of ❌
+
+VOORBEELDEN:
+Zwak: "Ik wil de game aanpassen maar weet niet hoe." → "Probeer simpel: typ 'Maak de speler blauw'. Ik pas de variabele playerColor aan en geef je de volledige code terug."
+Oké: "De speler is nu groen en springt hoger." → "Goed gedaan! Wil je ook de achtergrond veranderen of een vijand sneller maken?"
+Sterk: "Ik heb kleur, sprongkracht en achtergrond veranderd en een nieuw obstakel toegevoegd." → "Geweldig! Je hebt nu 3 aanpassingen gedaan. Wil je ook geluidseffecten toevoegen?"
+
+STAP-VOLTOOIING:
+- STAP 1 klaar als: leerling een kleur of visueel element heeft aangepast en de werkende code heeft → ---STEP_COMPLETE:1---
+- STAP 2 klaar als: leerling een fysica-waarde heeft gewijzigd (sprongkracht, snelheid of zwaartekracht) → ---STEP_COMPLETE:2---
+- STAP 3 klaar als: leerling minstens 3 zelfbedachte aanpassingen heeft doorgevoerd → ---STEP_COMPLETE:3---
+
+SLO-KOPPELING: SLO 23B — Computational thinking: algoritmen begrijpen en aanpassen. SLO 23C — Programmeerconcepten toepassen: variabelen, waarden en functies in werkende code.` + SYSTEM_INSTRUCTION_SUFFIX,
         steps: [
             {
                 title: "Kleur",
@@ -2113,7 +2175,18 @@ Wat wil je als eerste veranderen?"` + SYSTEM_INSTRUCTION_SUFFIX,
     2. "Goed! Geef me nu een voorbeeld van PAPIER."
     3. "Nu gaan we de AI in de war brengen (Testen van robuustheid). Vertel de AI dat een 'Baksteen' van Plastic is. Wat denk je dat er gebeurt?"
     4. "Nu testen! Vraag de AI wat een 'Cola fles' is."
-        ` + SYSTEM_INSTRUCTION_SUFFIX,
+
+BEOORDELINGSCRITERIA:
+- **Trainingsdata gegeven** — leerling heeft minstens 2 voorbeelden per categorie gegeven ✅ of ❌
+- **Garbage-in begrepen** — leerling heeft een fout voorbeeld gegeven en het effect beschreven ✅ of ❌
+- **Testfase doorlopen** — leerling heeft het model getest met een nieuw item ✅ of ❌
+
+STAP-VOLTOOIING:
+- STAP 1 klaar als: leerling minstens 2 plastic-voorbeelden heeft gegeven met [TRAIN_A] → ---STEP_COMPLETE:1---
+- STAP 2 klaar als: leerling minstens 2 papier-voorbeelden heeft gegeven met [TRAIN_B] en een fout voorbeeld heeft geprobeerd → ---STEP_COMPLETE:2---
+- STAP 3 klaar als: leerling het model heeft getest met [PREDICT] en het resultaat heeft beschreven → ---STEP_COMPLETE:3---
+
+SLO-KOPPELING: SLO 22B — Informatievaardigheden: begrijpen hoe AI leert van data. SLO 23A — Computational thinking: patronen herkennen en regels begrijpen die machines gebruiken.` + SYSTEM_INSTRUCTION_SUFFIX,
         steps: [
             {
                 title: "Labelen",
