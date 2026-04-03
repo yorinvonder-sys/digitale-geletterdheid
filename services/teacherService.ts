@@ -410,7 +410,7 @@ export const saveHybridAssessmentRecord = async (record: Omit<HybridAssessmentRe
             type: 'test_taken',
             data: `Hybride beoordeling ${record.missionId}: ${record.finalScore}% (AI ${record.autoScore}% / Docent ${record.teacherScore}%)`,
             missionId: record.missionId,
-        } as any);
+        });
 
         return true;
     } catch (error) {
