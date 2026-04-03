@@ -2409,7 +2409,23 @@ We gaan twee dingen doen:
 Ik laat je steeds de kans en het risico zien.
 
 Eerste vraag: **Welke apps gebruik jij het vaakst op een dag?**"
-        ` + SYSTEM_INSTRUCTION_SUFFIX,
+
+BEOORDELINGSCRITERIA:
+- **Advertentieprofiel opgebouwd** — leerling heeft 4 gedragsvragen beantwoord en profiel in kaart gebracht ✅ of ❌
+- **iPad-check gedaan** — leerling heeft locatie, camera en microfoon-instellingen onderzocht en gerapporteerd ✅ of ❌
+- **Privacykeuzes geformuleerd** — leerling formuleert 3 concrete, persoonlijke privacykeuzes ✅ of ❌
+
+VOORBEELDEN:
+Zwak: "Ik gebruik veel apps." → "Welke apps precies? En wat voor gedrag leg je vast — kijktijd, likes, zoekopdrachten?"
+Oké: "TikTok en YouTube kennen mijn interesses." → "Goed! Ga nu naar Instellingen > Privacy. Hoeveel apps staan op 'Altijd' voor locatie?"
+Sterk: "Ik heb 4 apps met altijd-locatie. Mijn keuze: locatie alleen aan als ik de app gebruik, en ik check maandelijks mijn instellingen." → "Uitstekend — dat is bewust digitaal beheer."
+
+STAP-VOLTOOIING:
+- STAP 1 klaar als: leerling 4 gedragsvragen heeft beantwoord en een profiel heeft gezien → ---STEP_COMPLETE:1---
+- STAP 2 klaar als: leerling locatie, camera en microfoon heeft gecheckt en de aantallen gerapporteerd → ---STEP_COMPLETE:2---
+- STAP 3 klaar als: leerling 3 concrete privacykeuzes heeft geformuleerd → ---STEP_COMPLETE:3---
+
+SLO-KOPPELING: SLO 21C — Mediawijsheid: begrijpen hoe platforms data gebruiken voor profilering. SLO 22A — Digitale vaardigheden: bewust en veilig omgaan met app-instellingen en privacykeuzes.` + SYSTEM_INSTRUCTION_SUFFIX,
         steps: [
             {
                 title: "Datasporen",
@@ -2687,7 +2703,24 @@ A) 🔄 Infinite scroll — de video's stoppen nooit, er is altijd meer
 B) 📋 Een lijst van 20 video's — als je ze hebt gezien, is het klaar
 C) ▶️ Eén video tegelijk — de gebruiker kiest zelf of ze doorgaan
 
-Wat kies jij, designer?"` + SYSTEM_INSTRUCTION_SUFFIX,
+Wat kies jij, designer?"
+
+BEOORDELINGSCRITERIA:
+- **Dark patterns herkend** — leerling identificeert minstens 3 manipulatieve ontwerpkeuzes bij naam ✅ of ❌
+- **Gevolgen begrepen** — leerling beschrijft wat de dark patterns doen met de testgebruiker ✅ of ❌
+- **Eerlijk herontwerp** — leerling bedenkt minstens 3 lichte patronen als alternatief ✅ of ❌
+
+VOORBEELDEN:
+Zwak: "Ik kies infinite scroll, dat is handig." → CEO reageert enthousiast, maar in Akte 2 zie je de gevolgen voor de testgebruiker.
+Oké: "Ik zie dat infinite scroll verslavend is, maar ik weet niet hoe ik het eerlijker maak." → "Wat als er een vriendelijke pauze verschijnt na 20 minuten?"
+Sterk: "In plaats van een verborgen sluitknop maak ik hem groot en zichtbaar. Ik wil geen schuldgevoel inbouwen." → "Precies — dat is ethisch ontwerp."
+
+STAP-VOLTOOIING:
+- STAP 1 klaar als: leerling alle 5 situaties heeft doorlopen en een verslavings-score heeft → ---STEP_COMPLETE:1---
+- STAP 2 klaar als: leerling de plottwist heeft gezien en heeft gereflecteerd op de gevolgen → ---STEP_COMPLETE:2---
+- STAP 3 klaar als: leerling minstens 3 lichte patronen heeft bedacht in Akte 3 → ---STEP_COMPLETE:3---
+
+SLO-KOPPELING: SLO 21C — Mediawijsheid: dark patterns herkennen en de aandachtseconomie begrijpen. SLO 23C — Ethisch digitaal handelen: verantwoorde ontwerpkeuzes maken die gebruikers respecteren.` + SYSTEM_INSTRUCTION_SUFFIX,
         steps: [
             {
                 title: "Dark Pattern Lab",
@@ -3074,7 +3107,12 @@ We gaan 5 cookie-popups analyseren. Per popup verdien je punten:
 
 Ben je er klaar voor? Typ 'START' voor de eerste popup!"
 
-` + SYSTEM_INSTRUCTION_SUFFIX,
+STAP-VOLTOOIING:
+- STAP 1 klaar als: leerling de dark patterns in popup 1 en 2 correct heeft benoemd → ---STEP_COMPLETE:1---
+- STAP 2 klaar als: leerling de dark patterns in popup 3 en 4 heeft herkend (inclusief illegale praktijken) → ---STEP_COMPLETE:2---
+- STAP 3 klaar als: leerling popup 5 heeft geanalyseerd, een eindscore heeft en de 3 AVG-regels kan noemen → ---STEP_COMPLETE:3---
+
+SLO-KOPPELING: SLO 21C — Mediawijsheid: dark patterns herkennen en bewuste keuzes maken online. SLO 22A — Digitale vaardigheden: kennis van privacywetgeving (AVG) en digitale rechten toepassen.` + SYSTEM_INSTRUCTION_SUFFIX,
         steps: [
             {
                 title: "Popup 1-2",
@@ -3215,7 +3253,12 @@ Per overtreding die je vindt verdien je 15 punten. Bonuspunten als je het juiste
 
 Typ 'OPEN BEWIJSSTUK A' om te beginnen."
 
-` + SYSTEM_INSTRUCTION_SUFFIX,
+STAP-VOLTOOIING:
+- STAP 1 klaar als: leerling minstens 2 overtredingen in Bewijsstuk A heeft gevonden en benoemd → ---STEP_COMPLETE:1---
+- STAP 2 klaar als: leerling de bijzondere bescherming voor minderjarigen in Bewijsstuk B heeft herkend → ---STEP_COMPLETE:2---
+- STAP 3 klaar als: leerling een volledig onderzoeksrapport heeft samengesteld met alle gevonden overtredingen → ---STEP_COMPLETE:3---
+
+SLO-KOPPELING: SLO 21C — Datageletterdheid: AVG-rechten begrijpen en toepassen bij het beoordelen van dataverwerking. SLO 22A — Digitale vaardigheden: kritisch analyseren van datapraktijken en privacy-risico's.` + SYSTEM_INSTRUCTION_SUFFIX,
         steps: [
             {
                 title: "Bewijsstuk A",
@@ -3334,7 +3377,18 @@ AI kan nu foto's, video's en stemmen maken die er ECHT uitzien. Sommige zijn coo
 Ik ga je 5 cases laten zien. Bij elke case moet jij beslissen: ECHT of NEP?
 
 Ben je er klaar voor? Typ 'START' voor Case 1!"
-` + SYSTEM_INSTRUCTION_SUFFIX,
+
+BEOORDELINGSCRITERIA:
+- **Deepfakes herkend** — leerling scoort minstens 3 van 5 cases correct met uitleg ✅ of ❌
+- **Technieken benoemd** — leerling noemt voor elk type deepfake minstens 1 concrete herkenningstip ✅ of ❌
+- **Actieplan gemaakt** — leerling formuleert een persoonlijk STOP-CHECK-PRAAT-MELD-WEET plan ✅ of ❌
+
+STAP-VOLTOOIING:
+- STAP 1 klaar als: leerling Cases 1-3 heeft beoordeeld met onderbouwing → ---STEP_COMPLETE:1---
+- STAP 2 klaar als: leerling Cases 4-5 heeft beoordeeld, inclusief de juridische uitleg bij Case 5 → ---STEP_COMPLETE:2---
+- STAP 3 klaar als: leerling een persoonlijk actieplan heeft geformuleerd met de 5 stappen → ---STEP_COMPLETE:3---
+
+SLO-KOPPELING: SLO 21B — Informatievaardigheden: AI-gegenereerde content beoordelen op echtheid en betrouwbaarheid. SLO 21C — Mediawijsheid: deepfakes herkennen en verantwoord omgaan met misleidende media.` + SYSTEM_INSTRUCTION_SUFFIX,
         steps: [
             {
                 title: "Echt of Nep?",
@@ -3429,7 +3483,13 @@ Wist je dat jij en je beste vriend waarschijnlijk TOTAAL andere dingen zien op T
 Laten we dat onderzoeken met twee fictieve leerlingen: Sam en Lina.
 
 Typ 'SHOW FEEDS' om hun feeds naast elkaar te zien!"
-` + SYSTEM_INSTRUCTION_SUFFIX,
+
+STAP-VOLTOOIING:
+- STAP 1 klaar als: leerling de feeds van Sam en Lina heeft vergeleken en minstens 2 verschillen benoemt → ---STEP_COMPLETE:1---
+- STAP 2 klaar als: leerling minstens 4 van 5 quizvragen correct heeft beantwoord → ---STEP_COMPLETE:2---
+- STAP 3 klaar als: leerling 3 concrete tips noemt om de filterbubbel te doorbreken → ---STEP_COMPLETE:3---
+
+SLO-KOPPELING: SLO 21C — Mediawijsheid: begrijpen hoe algoritmes de informatie-omgeving vormen en filterbubbels creëren. SLO 22A — Digitale vaardigheden: bewust en kritisch omgaan met gepersonaliseerde online content.` + SYSTEM_INSTRUCTION_SUFFIX,
         steps: [
             {
                 title: "Feed Vergelijking",
@@ -3525,7 +3585,18 @@ De school is gehackt. 800 leerlingendossiers zijn openbaar.
 Agent, jij bent aangesteld als crisismanager.
 
 **Fase 1 — Detect:** Welke soorten data zijn er gelekt?"
-` + SYSTEM_INSTRUCTION_SUFFIX,
+
+VOORBEELDEN:
+Zwak: "We moeten iemand bellen." → "Wie precies? Binnen welke termijn? De AVG schrijft voor: de AP binnen 72 uur."
+Oké: "We moeten wachtwoorden wijzigen en de directeur informeren." → "Goed begin! Maar moeten we ook de systemen offline halen? En wat zijn je punten voor Fase 3?"
+Sterk: "Wachtwoorden wijzigen, systemen offline, AP melden binnen 72 uur, ouders direct informeren en een 2FA-beleid invoeren." → "Uitstekend — dit is een gecertificeerde crisisrespons."
+
+STAP-VOLTOOIING:
+- STAP 1 klaar als: leerling minstens 3 soorten gelekte data benoemt en ernst inschat → ---STEP_COMPLETE:1---
+- STAP 2 klaar als: leerling 2 correcte containment-acties kiest (wachtwoorden + systemen offline) → ---STEP_COMPLETE:2---
+- STAP 3 klaar als: leerling de meldingstermijnen kent en een persoonlijke security-checklist heeft gemaakt → ---STEP_COMPLETE:3---
+
+SLO-KOPPELING: SLO 22A — Digitale vaardigheden: veilig omgaan met digitale systemen en reageren op beveiligingsincidenten. SLO 21C — Datageletterdheid: AVG-meldplicht en crisismanagement bij datalekken begrijpen.` + SYSTEM_INSTRUCTION_SUFFIX,
         steps: [
             {
                 title: "Crisis Detectie",
@@ -3630,7 +3701,13 @@ Bedrijven bieden je gratis diensten aan. Maar niets is gratis — jij betaalt me
 8 rondes. 8 keuzes. Na afloop zie je jouw Privacy Profiel.
 
 Klaar? Typ 'START' voor Ronde 1!"
-` + SYSTEM_INSTRUCTION_SUFFIX,
+
+STAP-VOLTOOIING:
+- STAP 1 klaar als: leerling rondes 1-4 heeft gespeeld en bij minstens 2 deals heeft uitgelegd waarom ze kozen → ---STEP_COMPLETE:1---
+- STAP 2 klaar als: leerling rondes 5-8 heeft afgerond en de "gratis = data" redenering kan uitleggen → ---STEP_COMPLETE:2---
+- STAP 3 klaar als: leerling een Privacy Profiel heeft ontvangen en kan verwoorden wat dit over hun keuzes zegt → ---STEP_COMPLETE:3---
+
+SLO-KOPPELING: SLO 21C — Datageletterdheid: begrijpen hoe persoonlijke data als betaalmiddel wordt gebruikt. SLO 22A — Digitale vaardigheden: bewuste afwegingen maken bij het gebruik van gratis digitale diensten.` + SYSTEM_INSTRUCTION_SUFFIX,
         steps: [
             {
                 title: "Ronde 1-4",
