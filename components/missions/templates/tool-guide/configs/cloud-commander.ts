@@ -6,12 +6,12 @@ export const cloudCommanderConfig: ToolGuideConfig = {
     introEmoji: '☁️',
     introTitle: 'Cloud Commander',
     introDescription:
-        'Leer werken met OneDrive op je school-iPad. Je slaat je bestanden op in de cloud, maakt mappen aan en deelt je werk met klasgenoten — zonder USB-stick of e-mail.',
+        'Je iPad kapot, thuis vergeten, of gewoon een ander apparaat nodig — je bestanden zijn er gewoon, op elk scherm. Dat is wat de cloud doet.',
     introFeatures: [
-        'OneDrive openen en inloggen met je schoolaccount',
-        'Een map aanmaken voor je schoolwerk',
-        'Een bestand uploaden naar de cloud',
-        'Je bestand veilig delen met een klasgenoot',
+        'Inloggen met het juiste account — zodat het jóuw cloud is',
+        'Bestanden organiseren voordat de chaos begint',
+        'Iets uploaden en zien dat het meteen beschikbaar is',
+        'Werk delen zonder bijlagen, zonder gedoe',
     ],
     toolName: 'OneDrive',
     toolIcon: '☁️',
@@ -79,7 +79,7 @@ export const cloudCommanderConfig: ToolGuideConfig = {
                 ],
                 correctIndex: 1,
                 explanation:
-                    'Goed gedacht! Met een deellink open je altijd de meest actuele versie van het bestand. Als je iets aanpast, hoef je de link niet opnieuw te sturen — het wordt automatisch bijgewerkt.',
+                    'Klopt — als je iets aanpast na het versturen, ziet de ontvanger via de link automatisch de nieuwste versie. Een bijlage is altijd een momentopname.',
             },
         },
     ],
@@ -105,10 +105,10 @@ export const cloudCommanderConfig: ToolGuideConfig = {
         },
     ],
     takeaways: [
-        'Je kunt OneDrive openen en inloggen met je schoolaccount',
-        'Je snapt hoe je een map aanmaakt voor je schoolwerk',
-        'Je kunt een foto of bestand uploaden naar de cloud',
-        'Je weet hoe je een bestand veilig deelt via een koppeling',
-        'Je begrijpt het verschil tussen opslaan op je apparaat en in de cloud',
+        'De cloud betekent: je bestanden zitten niet op jouw iPad maar op servers van Microsoft.',
+        'Een goede mappenstructuur aanleggen nu spaart je tien minuten zoeken later.',
+        'Uploaden duurt een paar seconden — en dan is het op elk apparaat beschikbaar.',
+        'Een deellink is slimmer dan een bijlage: de ontvanger ziet altijd de nieuwste versie.',
+        'Je privéaccount en je schoolaccount zijn gescheiden — houd dat zo.',
     ],
 };

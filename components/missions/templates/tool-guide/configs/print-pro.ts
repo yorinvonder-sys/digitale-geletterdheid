@@ -6,12 +6,12 @@ const config: ToolGuideConfig = {
     introEmoji: '🖨️',
     introTitle: 'Print Pro',
     introDescription:
-        'Leer printen op school, stap voor stap. Je ontdekt hoe je je apparaat verbindt met de schoolprinter, de juiste instellingen kiest en je printopdracht verstuurt.',
+        'Vijf minuten voor het inleveren. Je staat bij de printer. En dan blijkt dat je niet weet hoe het werkt. Dit voorkom je nu.',
     introFeatures: [
-        'Het printsysteem van je school herkennen',
-        'Je apparaat verbinden met de schoolprinter',
-        'De juiste printinstellingen kiezen (kleur, dubbelzijdig)',
-        'Een printopdracht versturen en ophalen',
+        'Uitzoeken welk printsysteem jouw school gebruikt',
+        'Je apparaat koppelen zodat de printer je kent',
+        'De instellingen checken voordat je tien pagina\'s verspilt',
+        'Je print ophalen voordat iemand anders hem meeneemt',
     ],
     toolName: 'Schoolprinter',
     toolIcon: '🖨️',
@@ -57,7 +57,7 @@ const config: ToolGuideConfig = {
             title: 'Printinstellingen kiezen',
             instruction:
                 'Voordat je print, controleer je de instellingen. Open het **printvenster** (Ctrl+P, Cmd+P of Deel > Afdrukken). Stel in: **Kleur of zwart-wit** (zwart-wit is goedkoper en spaart inkt), **Enkelzijdig of dubbelzijdig** (dubbelzijdig spaart papier — gebruik dit voor verslagen), en het **aantal kopieën** (normaal: 1). Kijk ook naar het **paginabereik** — wil je alle pagina\'s printen of alleen bepaalde?',
-            tip: 'Druk nooit zomaar op "Print" zonder de instellingen te checken. Een fout printopdracht kost papier en inkt — en soms ook geld van je printbudget op school.',
+            tip: 'Eén klik op "Print" zonder te kijken en je staat met 20 kleurenpagina\'s die je in zwart-wit wilde hebben — en je printbudget is weg.',
             checklistItems: [
                 { id: 'kleur-zwart', label: 'Ik heb gekozen voor kleur of zwart-wit' },
                 { id: 'dubbelzijdig', label: 'Ik heb ingesteld of ik enkelzijdig of dubbelzijdig wil printen' },

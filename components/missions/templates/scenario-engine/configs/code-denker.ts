@@ -6,7 +6,7 @@ const config: ScenarioEngineConfig = {
     introEmoji: '🧠',
     introTitle: 'De Code Denker',
     introDescription:
-        'Programmeurs schrijven niet gewoon code — ze denken EERST na. Ze splitsen problemen op, zoeken patronen, laten onnodige details weg en schrijven stappenplannen. Dat heet computational thinking. En het beste nieuws: je hebt er geen computer voor nodig.',
+        'Elke programmeur denkt op dezelfde manier na voordat ze ook maar één regel code schrijven. Jij gaat die manier van denken zelf uitproberen.',
     introFeatures: [
         'Herken de 4 bouwstenen van computational thinking',
         'Rangschik stappen van een algoritme in de juiste volgorde',
@@ -58,9 +58,9 @@ const config: ScenarioEngineConfig = {
             type: 'select-correct',
             maxScore: 25,
             feedbackCorrect:
-                'Goed! Je herkent wanneer een groot probleem wordt opgeknipt in kleine stappen.',
+                'Klopt — decompositie gaat over opdelen, niet over vereenvoudigen of herhaling herkennen.',
             feedbackIncorrect:
-                'Let op: decompositie gaat specifiek over het opsplitsen van een probleem. Lees de uitleg.',
+                'Let op: decompositie gaat over opsplitsen in kleinere stappen. Patroonherkenning en abstractie lijken er op, maar zijn iets anders.',
             items: [
                 {
                     id: 1,
@@ -221,8 +221,8 @@ const config: ScenarioEngineConfig = {
                 'Abstractie is het weglaten van onnodige details zodat je je kunt concentreren op wat echt belangrijk is. Is het weglaten van dit detail verstandige abstractie — of verlies je iets cruciaals?',
             type: 'binary-choice',
             maxScore: 25,
-            feedbackCorrect: 'Goed! Je weet wanneer details ertoe doen en wanneer niet.',
-            feedbackIncorrect: 'Lastig. Soms is een detail cruciaal, soms leidt het alleen maar af.',
+            feedbackCorrect: 'Je hebt het door — abstractie werkt alleen als de details die je weglaat er écht niet toe doen.',
+            feedbackIncorrect: 'Let op het doel: abstractie weglaten wat irrelevant is voor de taak, niet wat ongemakkelijk is om te noteren.',
             items: [
                 {
                     id: 1,
@@ -297,9 +297,9 @@ const config: ScenarioEngineConfig = {
             type: 'select-correct',
             maxScore: 25,
             feedbackCorrect:
-                'Goed! Je herkent patronen even snel als een algoritme.',
+                'Scherp — je ziet structuur waar anderen willekeur zien. Precies wat een goed algoritme ook doet.',
             feedbackIncorrect:
-                'Sommige reeksen lijken willekeurig maar hebben toch een patroon. Lees de uitleg.',
+                'Sommige reeksen hebben een verborgen patroon in de tussenruimtes, niet in de getallen zelf. Kijk nog eens naar de verschillen.',
             items: [
                 {
                     id: 1,

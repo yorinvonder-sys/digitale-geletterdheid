@@ -6,7 +6,7 @@ export const websiteBouwerConfig: BuilderCanvasConfig = {
     introEmoji: '🌐',
     introTitle: 'Bouw je eerste website',
     introDescription:
-        'In deze missie leer je hoe echte websites worden gemaakt. Je typt je eerste HTML-code, voegt stijl toe met CSS en bouwt een persoonlijke "Over Mij"-pagina — geen drag-and-drop, maar echte code die je zelf schrijft.',
+        'Elke website die je ooit hebt bezocht is gemaakt met HTML en CSS. Jij gaat er nu zelf één bouwen — geen drag-and-drop, gewoon echte code.',
     introFeatures: [
         'Schrijf je eerste HTML-structuur met tags',
         'Voeg kleur en stijl toe met CSS',
@@ -21,7 +21,7 @@ export const websiteBouwerConfig: BuilderCanvasConfig = {
             id: 'html-basis',
             title: 'HTML-structuur opzetten',
             description:
-                'Elke website begint met een HTML-bestand. HTML vertelt de browser wat er op de pagina staat: een titel, tekst, een afbeelding. Zonder HTML bestaat er geen website.',
+                'Je hebt een leeg tekstbestand. Dat gaat de browser straks omzetten naar een echte pagina — maar alleen als je de juiste tags gebruikt.',
             instruction:
                 'Schrijf de basisstructuur van een HTML-pagina. Je hebt nodig: `<!DOCTYPE html>`, `<html>`, `<head>` met een `<title>`, en `<body>`. Voeg in de body een `<h1>` toe met jouw naam als paginatitel en een `<p>` met een zin over jezelf. Schrijf de code uit alsof je hem echt in een bestand zou typen.',
             tip: 'Tags werken in paren: elke `<h1>` heeft een `</h1>`. Vergeet de sluit-tag niet, anders "lekt" je code.',
@@ -37,7 +37,7 @@ export const websiteBouwerConfig: BuilderCanvasConfig = {
             id: 'css-stijl',
             title: 'Stijl toevoegen met CSS',
             description:
-                'CSS (Cascading Style Sheets) bepaalt hoe je pagina eruitziet: kleuren, lettergrootte, achtergrond. Zonder CSS is elke website een kale zwart-witte pagina.',
+                'Je HTML-pagina bestaat, maar ziet er kaal uit. Tijd om kleur en stijl toe te voegen — dat doe je met CSS.',
             instruction:
                 'Voeg een `<style>`-blok toe in je `<head>`. Geef de `body` een achtergrondkleur naar keuze. Maak de `h1` in een andere kleur dan de standaard zwart. Pas de lettergrootte van je `<p>` aan naar 18px. Noteer alle drie de CSS-regels met bijbehorende waarden.',
             tip: 'CSS-regels schrijf je zo: `selector { eigenschap: waarde; }`. Elke regel eindigt met een puntkomma.',
@@ -69,7 +69,7 @@ export const websiteBouwerConfig: BuilderCanvasConfig = {
             id: 'reflectie',
             title: 'Uitleggen wat je hebt gebouwd',
             description:
-                'Een goede developer kan niet alleen code schrijven, maar ook uitleggen hoe het werkt. Dit is een essentiële vaardigheid — in teamprojecten maar ook bij presentaties.',
+                'Je hebt een werkende pagina gebouwd. Leg nu uit wat je hebt gedaan — alsof je het aan iemand vertelt die nog nooit van HTML heeft gehoord.',
             instruction:
                 'Schrijf een korte uitleg (3-5 zinnen) van je pagina. Leg uit: wat doet HTML, wat doet CSS, en wat is het verschil tussen de twee? Geef ook aan welk onderdeel je het lastigst vond en waarom.',
             tip: 'Doe alsof je het uitlegt aan een jongere broer of zus die nog nooit van HTML heeft gehoord. Simpel taalgebruik = echte begrip.',

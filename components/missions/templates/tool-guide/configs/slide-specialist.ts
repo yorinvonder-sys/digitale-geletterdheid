@@ -6,12 +6,12 @@ const config: ToolGuideConfig = {
     introEmoji: '🎨',
     introTitle: 'Slide Specialist',
     introDescription:
-        'Leer presenteren met PowerPoint op je iPad. Je maakt een professionele presentatie met een strak thema, korte tekst, afbeeldingen en animaties — zodat je publiek blijft kijken.',
+        'Iedereen heeft al een presentatie gezien vol tekst die niemand heeft gelezen. Jij gaat het anders doen.',
     introFeatures: [
-        'Een professioneel thema kiezen in PowerPoint',
-        'Slides opbouwen met weinig tekst en sterke beelden',
-        'Animaties toevoegen aan elementen op een slide',
-        'Overgangen instellen tussen slides',
+        'Een thema kiezen dat meteen professioneel oogt',
+        'Uitvinden hoeveel tekst per slide te veel is',
+        'Animaties toevoegen zonder je publiek gek te maken',
+        'Overgangen instellen die je presentatie samenhoudt',
     ],
     toolName: 'Microsoft PowerPoint',
     toolIcon: '🖥️',
@@ -123,11 +123,11 @@ const config: ToolGuideConfig = {
         },
     ],
     takeaways: [
-        'Je kunt een professioneel thema kiezen en aanpassen in PowerPoint',
-        'Je snapt hoe je slides opbouwt met weinig tekst en sterke beelden',
-        'Je kunt animaties toevoegen aan elementen en de timing instellen',
-        'Je weet hoe je overgangen instelt en ze consistent toepast',
-        'Je begrijpt waarom minder tekst en consistente stijl je presentatie sterker maakt',
+        'Een thema geeft consistentie aan alle slides tegelijk — één keuze, niet tien.',
+        'Drie tot vijf korte punten per slide: het publiek luistert naar jou, niet naar de tekst.',
+        'Animaties zijn effectief als je ze spaarzaam gebruikt — één of twee per slide max.',
+        'Eén overgang voor de hele presentatie ziet er professioneler uit dan zeven verschillende.',
+        'De slide is een geheugensteuntje, niet het script.',
     ],
 };
 

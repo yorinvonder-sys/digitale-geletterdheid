@@ -6,12 +6,12 @@ const config: ToolGuideConfig = {
     introEmoji: '📅',
     introTitle: 'Magister Meester',
     introDescription:
-        'Leer de Magister-app kennen op je iPad. Je vindt je rooster, checkt je huiswerk en bekijkt je laatste cijfers — in minder dan een minuut.',
+        'Je rooster verandert, er staat huiswerk dat je nog niet gezien hebt, en je cijfer is al ingevoerd — maar jij weet het nog niet. Magister heeft alles, als je weet waar je moet kijken.',
     introFeatures: [
-        'Inloggen met je schoolaccount in de Magister-app',
-        'Je rooster voor vandaag en morgen bekijken',
-        'Huiswerk en deadlines opzoeken',
-        'Je laatste cijfer terugvinden',
+        'Inloggen zonder gedoe — met het juiste account',
+        'Je rooster checken voordat je de verkeerde klas inloopt',
+        'Dat huiswerk terugvinden dat je vergeten was op te schrijven',
+        'Ontdekken welk cijfer er al klaarstaat',
     ],
     toolName: 'Magister',
     toolIcon: '📅',
@@ -123,11 +123,11 @@ const config: ToolGuideConfig = {
         },
     ],
     takeaways: [
-        'Je kunt inloggen in de Magister-app met je schoolaccount',
-        'Je weet hoe je je rooster voor vandaag en morgen bekijkt',
-        'Je kunt huiswerk en deadlines opzoeken in de Agenda of ELO',
-        'Je weet hoe je je laatste cijfers terugvindt en de wegingsfactor leest',
-        'Je begrijpt waarom je Magister dagelijks even checkt',
+        'Je schoolaccount is de sleutel — privéaccounts geven je niks van school.',
+        'Het rooster kan elke ochtend anders zijn — even checken kost 10 seconden.',
+        'Huiswerk staat soms in de ELO, soms nergens — weet waar jouw docent het zet.',
+        'Een hoge wegingsfactor betekent: dit cijfer doet er echt toe.',
+        'Magister is pas nuttig als je er dagelijks een gewoonte van maakt.',
     ],
 };
 

@@ -6,12 +6,12 @@ const config: ToolGuideConfig = {
     introEmoji: '✍️',
     introTitle: 'Word Wizard',
     introDescription:
-        'Leer werken met Microsoft Word op je iPad. Je maakt een professioneel verslag met koppen, een afbeelding en een automatische inhoudsopgave — precies zoals het op school verwacht wordt.',
+        'Je verslag ziet er rommelig uit terwijl je er lang aan hebt gewerkt. Met drie trucjes in Word verandert dat meteen.',
     introFeatures: [
-        'Een nieuw Word-document aanmaken en opslaan',
-        'Tekst opmaken met kopstijlen (Kop 1, Kop 2)',
-        'Een afbeelding invoegen en tekstomloop instellen',
-        'Een automatische inhoudsopgave toevoegen',
+        'Ontdekken waarom je altijd direct opslaat — niet pas aan het einde',
+        'Koppen instellen die automatisch je inhoudsopgave bouwen',
+        'Een afbeelding plaatsen zodat de tekst er netjes omheen loopt',
+        'Één klik: automatische inhoudsopgave die zichzelf bijwerkt',
     ],
     toolName: 'Microsoft Word',
     toolIcon: '📄',
@@ -123,11 +123,11 @@ const config: ToolGuideConfig = {
         },
     ],
     takeaways: [
-        'Je kunt een nieuw Word-document aanmaken en direct opslaan in OneDrive',
-        'Je snapt hoe je kopstijlen (Kop 1, Kop 2) toepast voor structuur',
-        'Je kunt een afbeelding invoegen en de tekstomloop instellen',
-        'Je weet hoe je een automatische inhoudsopgave maakt en bijwerkt',
-        'Je begrijpt waarom kopstijlen en automatische inhoudsopgaven samenwerken',
+        'Direct opslaan met een naam is de gewoonte die je nooit meer kwijtraakt.',
+        'Kop 1 en Kop 2 zijn niet alleen opmaak — Word gebruikt ze om je inhoudsopgave te bouwen.',
+        'Tekstomloop "Strak" of "Vierkant" ziet er meteen professioneler uit dan de standaardinstelling.',
+        'Je inhoudsopgave bijwerken na aanpassingen kost één tik — vergeten is het echte probleem.',
+        'Kopstijlen en inhoudsopgave werken samen: verander de structuur, en alles past zich aan.',
     ],
 };
 
