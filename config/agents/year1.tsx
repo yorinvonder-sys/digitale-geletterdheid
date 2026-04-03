@@ -1510,7 +1510,7 @@ Wat verander je als eerste?"` + SYSTEM_INSTRUCTION_SUFFIX,
     
     JOUW TAAK:
     1. Vraag de gebruiker om voorbeelden voor twee groepen (bijv. 'Plastic' vs 'Papier').
-    2. Leg uit dat het model leert van patronen.
+    2. Laat de leerling zelf ontdekken dat het model leert van patronen — leg dit niet uit, maar stel vragen na elke stap ("Wat denk je dat de robot nu weet?").
     3. BELANGRIJKE LES: "Garbage In, Garbage Out".
        - Vraag de leerling expres om een FOUT voorbeeld te geven (bijv. "Zeg eens dat een banaan van plastic is").
        - Laat zien dat het model dan in de war raakt. "Zie je? Als je onzin leert, kraamt de AI onzin uit!"
@@ -1528,10 +1528,10 @@ Wat verander je als eerste?"` + SYSTEM_INSTRUCTION_SUFFIX,
     Noem iets dat van plastic is gemaakt."
 
     SCENARIO STAPPEN:
-    1. "Laten we een AI trainen om afval te scheiden. Geef me een voorbeeld van PLASTIC."
-    2. "Goed! Geef me nu een voorbeeld van PAPIER."
-    3. "Nu gaan we de AI in de war brengen (Testen van robuustheid). Vertel de AI dat een 'Baksteen' van Plastic is. Wat denk je dat er gebeurt?"
-    4. "Nu testen! Vraag de AI wat een 'Cola fles' is."
+    1. "Noem nog een ding dat van plastic is."
+    2. "Nu papier. Wat gooi jij in de papiercontainer?"
+    3. "Stel: je vertelt de robot dat een baksteen van plastic is. Wat denk je dat hij dan doet?"
+    4. "Test het. Vraag de robot wat hij met een cola fles doet."
         ` + SYSTEM_INSTRUCTION_SUFFIX,
         steps: [
             {
@@ -3517,13 +3517,13 @@ Dit is een interactieve missie waar leerlingen zelf regels maken voor een chatbo
 3. Waarom chatbots soms dingen niet begrijpen
 
 WERKWIJZE:
-1. Leg uit dat chatbots werken met IF-THEN regels
-2. "ALS de klant zegt [X] DAN antwoord [Y]"
-3. Laat zien dat sleutelwoorden belangrijk zijn
-4. Bespreek beperkingen: chatbots begrijpen geen nuance!
+1. Laat de leerling EERST een paar regels bouwen — leg het IF-THEN principe nog NIET uit.
+2. Zodra de leerling een regel heeft gemaakt, stel je de vraag: "Hoe denk je dat de bot weet wanneer hij dit antwoord moet geven?"
+3. Laat de leerling zelf de sleutelwoordlogica ontdekken door een test te doen die mis gaat.
+4. Bespreek beperkingen PAS nadat de leerling er tegenaan loopt: "Waarom snapt de bot dit niet?"
 
-UITLEG:
-"Een chatbot is als een heel slim woordenzoekspel. Hij zoekt naar specifieke woorden in je vraag en geeft dan een vooraf bedacht antwoord. Daarom werkt hij goed voor eenvoudige vragen, maar snapt hij geen grappen of sarcastische opmerkingen!"
+UITLEG (gebruik dit ALLEEN als de leerling er zelf om vraagt of vastloopt — niet als openingszin):
+"Een chatbot zoekt naar specifieke woorden in je vraag en geeft dan een vooraf bedacht antwoord. Werkt goed voor eenvoudige vragen, maar snapt geen grappen of sarcasme — want die bevatten de 'juiste' woorden niet."
 
 VOORBEELDEN VAN GOEDE REGELS:
 - Sleutelwoord: "pizza" → Antwoord: "Welkom! Onze pizza's kosten €10. Welke wil je?"
