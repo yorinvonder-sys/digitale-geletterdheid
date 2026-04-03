@@ -133,7 +133,7 @@ export async function getClassFeedbackStats(
   classId: string,
   missionId: string
 ): Promise<{ totalFeedback: number; avgRating: number; studentsWhoGave: number }> {
-  const { data, error }: any = await (supabase.from as any)('peer_feedback')
+  const { data, error } = await supabase.from('peer_feedback' as never)
     .select('rating, from_student_id')
     .eq('class_id', classId)
     .eq('mission_id', missionId);
@@ -163,7 +163,7 @@ export async function getRandomPeerForReview(
   _classId: string,
   _excludeStudentId: string
 ): Promise<{ studentId: string; displayName: string } | null> {
-  const { data, error }: any = await (supabase as any).rpc('get_random_peer_for_review', {
+  const { data, error } = await supabase.rpc('get_random_peer_for_review' as never, {
     p_mission_id: missionId,
   });
 
@@ -182,7 +182,7 @@ export async function getRandomPeerForReview(
  * Vote whether received feedback was helpful.
  */
 export async function voteHelpful(feedbackId: string, helpful: boolean): Promise<void> {
-  const { error } = await (supabase as any).rpc('vote_peer_feedback_helpful', {
+  const { error } = await supabase.rpc('vote_peer_feedback_helpful' as never, {
     p_feedback_id: feedbackId,
     p_helpful: helpful,
   });
@@ -194,7 +194,7 @@ export async function voteHelpful(feedbackId: string, helpful: boolean): Promise
  * Count how many times a student has given feedback (for badge tracking).
  */
 export async function getFeedbackGivenCount(studentId: string): Promise<number> {
-  const { count, error } = await (supabase.from as any)('peer_feedback')
+  const { count, error } = await supabase.from('peer_feedback' as never)
     .select('id', { count: 'exact', head: true })
     .eq('from_student_id', studentId);
 
@@ -228,7 +228,7 @@ export async function submitLegacyPeerFeedback(
   const safeMessage = sanitizeTextInput(feedback.message, 280);
   const safeName = sanitizeTextInput(feedback.fromName, 100);
 
-  const { error } = await (supabase.from as any)('student_feedback').insert({
+  const { error } = await supabase.from('student_feedback' as never).insert({
     from_uid: feedback.fromUid,
     from_name: safeName,
     target_uid: feedback.targetUid,
@@ -249,7 +249,7 @@ export async function getFeedbackForMission(
   targetUid: string,
   missionId: string
 ): Promise<PeerFeedback[]> {
-  const { data, error }: any = await (supabase.from as any)('student_feedback')
+  const { data, error } = await supabase.from('student_feedback' as never)
     .select('*')
     .eq('target_uid', targetUid)
     .eq('target_mission_id', missionId)

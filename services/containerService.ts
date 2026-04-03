@@ -28,7 +28,7 @@ export async function getContainersForSchool(
         .eq('school_id', schoolId)
         .single();
 
-    const model = (data as any)?.scheduling_model;
+    const model = (data as Record<string, unknown>)?.scheduling_model;
     if (error || !data || !model || model === 'default') {
         return defaultCurriculumToContainers(schoolId, yearGroup);
     }
@@ -218,7 +218,7 @@ export async function seedDefaultContainersForSchool(
 
     await supabase
         .from('school_configs')
-        .update({ scheduling_model: 'custom' } as any)
+        .update({ scheduling_model: 'custom' } as Record<string, unknown>)
         .eq('school_id', schoolId);
 }
 
@@ -231,7 +231,7 @@ export async function resetToDefaultScheduling(schoolId: string): Promise<void> 
 
     const { error: updateError } = await supabase
         .from('school_configs')
-        .update({ scheduling_model: 'default' } as any)
+        .update({ scheduling_model: 'default' } as Record<string, unknown>)
         .eq('school_id', schoolId);
 
     if (updateError) throw new Error(updateError.message);

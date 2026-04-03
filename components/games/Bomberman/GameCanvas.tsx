@@ -528,8 +528,10 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({
             const tileByWidth = Math.floor(availableWidth / GRID_WIDTH);
             const tileByHeight = Math.floor(availableHeight / GRID_HEIGHT);
             tileSizeRef.current = Math.max(MIN_TILE_SIZE, Math.min(DEFAULT_TILE_SIZE, tileByWidth, tileByHeight));
-            canvas.width = availableWidth;
-            canvas.height = availableHeight;
+            // Size canvas exactly to the grid so it never overflows on small screens
+            const ts = tileSizeRef.current;
+            canvas.width = GRID_WIDTH * ts;
+            canvas.height = GRID_HEIGHT * ts;
         };
         window.addEventListener('resize', resize);
         resize();
@@ -544,8 +546,8 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({
     return (
         <div
             ref={containerRef}
-            className="w-full h-full overflow-hidden"
-            style={{ maxWidth: '100%', backgroundColor: '#1A1A19' }}
+            className="w-full h-full flex items-center justify-center overflow-hidden"
+            style={{ backgroundColor: '#1A1A19' }}
         >
             <canvas
                 ref={canvasRef}
@@ -553,7 +555,7 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({
                 aria-label="Bomberman spelcanvas"
                 tabIndex={0}
                 className="block"
-                style={{ backgroundColor: '#1A1A19', maxWidth: '100%' }}
+                style={{ backgroundColor: '#1A1A19', maxWidth: '100%', maxHeight: '100%' }}
             />
         </div>
     );

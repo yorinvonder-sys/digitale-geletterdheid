@@ -226,7 +226,7 @@ export const endEvent = async (eventId: string): Promise<void> => {
 // --- Student management ---
 export const resetStudentProgress = async (userId: string): Promise<boolean> => {
     try {
-        const { data, error } = await (supabase as any).rpc('reset_student_progress', {
+        const { data, error } = await supabase.rpc('reset_student_progress' as never, {
             p_student_id: userId,
         });
         if (error) throw error;
@@ -239,7 +239,7 @@ export const resetStudentProgress = async (userId: string): Promise<boolean> => 
 
 export const deleteStudent = async (userId: string): Promise<boolean> => {
     try {
-        const { data, error } = await (supabase as any).rpc('delete_student', {
+        const { data, error } = await supabase.rpc('delete_student' as never, {
             p_student_id: userId,
         });
         if (error) throw error;
@@ -259,8 +259,8 @@ export const awardBadge = async (userId: string, badgeId: string): Promise<boole
             .single();
 
         if (fetchError) throw fetchError;
-        const currentStats = (user?.stats as any) || {};
-        const currentBadges = currentStats.badges || [];
+        const currentStats = (user?.stats as Record<string, unknown>) ?? {};
+        const currentBadges = (currentStats.badges as string[]) || [];
 
         if (!currentBadges.includes(badgeId)) {
             const { error } = await supabase
@@ -297,7 +297,7 @@ export const awardXP = async (studentId: string, amount: number, studentName?: s
             return false;
         }
 
-        const currentStats = (user.stats as any) || { xp: 0, level: 1 };
+        const currentStats = (user.stats as Record<string, unknown>) ?? { xp: 0, level: 1 };
         const newXP = Math.max(0, (currentStats.xp || 0) + amount);
 
         let newLevel = 1;
@@ -374,7 +374,7 @@ export const logActivity = async (activity: Omit<StudentActivity, 'id' | 'timest
             .from('student_activities')
             .insert({
                 uid: activity.uid,
-                school_id: (activity as any).schoolId,
+                school_id: activity.schoolId ?? null,
                 student_name: activity.studentName,
                 type: activity.type,
                 data: activity.data,

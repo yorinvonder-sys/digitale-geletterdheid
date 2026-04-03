@@ -22,7 +22,7 @@ export async function saveDataVoorDataAnswers(
     const sanitizedChoices = sanitizeChoices(choices);
 
     try {
-        const { error } = await (supabase as any).rpc('submit_data_for_data_answers', {
+        const { error } = await supabase.rpc('submit_data_for_data_answers' as never, {
             p_answers: sanitizedChoices,
             p_status: isCompleted ? 'completed' : 'in_progress',
         });
@@ -37,7 +37,7 @@ export async function saveDataVoorDataAnswers(
 
 export async function getDataVoorDataRoundStats(): Promise<Record<number, DataVoorDataRoundStat>> {
     try {
-        const { data, error } = await (supabase as any).rpc('get_data_for_data_round_stats');
+        const { data, error } = await supabase.rpc('get_data_for_data_round_stats' as never);
         if (error) throw error;
 
         const stats: Record<number, DataVoorDataRoundStat> = {};

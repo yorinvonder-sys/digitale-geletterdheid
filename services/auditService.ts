@@ -42,7 +42,7 @@ export const logAuditEvent = async (
             action: eventType,
             uid: user.id,
             school_id: schoolId || null,
-            data: metadata ? metadata as any : null,
+            data: metadata ?? null,
         });
 
         if (error) throw error;

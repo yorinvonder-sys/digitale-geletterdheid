@@ -1,5 +1,5 @@
-// Tot de database types opnieuw gegenereerd zijn, gebruiken we `as any` casts
-// voor teacher_step_overrides (tabel en RPC bestaan pas na migration).
+// teacher_step_overrides table and RPC are not yet in generated types.
+// Using `as never` for table names and RPC functions until types are regenerated.
 
 import { supabase } from './supabase';
 
@@ -21,7 +21,7 @@ export async function overrideStudentStep(
     overrideType: 'approve' | 'reject',
     reason?: string
 ): Promise<{ success: boolean; error?: string }> {
-    const { data, error } = await (supabase as any).rpc('override_student_step', {
+    const { data, error } = await supabase.rpc('override_student_step' as never, {
         p_student_id: studentId,
         p_mission_id: missionId,
         p_step_number: stepNumber,
@@ -37,8 +37,7 @@ export async function getOverridesForStudent(
     studentId: string,
     missionId?: string
 ): Promise<TeacherOverride[]> {
-    let query = (supabase as any)
-        .from('teacher_step_overrides')
+    let query = supabase.from('teacher_step_overrides' as never)
         .select('*')
         .eq('student_id', studentId)
         .order('created_at', { ascending: false });
@@ -54,8 +53,7 @@ export async function getOverridesForClass(
     missionId?: string
 ): Promise<TeacherOverride[]> {
     // RLS zorgt automatisch voor school-scoping
-    let query = (supabase as any)
-        .from('teacher_step_overrides')
+    let query = supabase.from('teacher_step_overrides' as never)
         .select('*')
         .order('created_at', { ascending: false })
         .limit(50);

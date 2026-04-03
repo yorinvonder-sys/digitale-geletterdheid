@@ -58,8 +58,7 @@ export const GrowthStudentTab: React.FC<GrowthStudentTabProps> = ({
 
       const [assessments, { data: recData }] = await Promise.all([
         getStudentAssessments(studentId, year),
-        (supabase as any)
-          .from('growth_recommendations')
+        supabase.from('growth_recommendations' as never)
           .select('id, recommendation_text, teacher_approved, teacher_approved_at, teacher_approved_by')
           .eq('user_id', studentId)
           .eq('school_year', year)
@@ -85,8 +84,7 @@ export const GrowthStudentTab: React.FC<GrowthStudentTabProps> = ({
     const { data: { session } } = await supabase.auth.getSession();
     const currentUserId = session?.user?.id ?? null;
 
-    const { error } = await (supabase as any)
-      .from('growth_recommendations')
+    const { error } = await supabase.from('growth_recommendations' as never)
       .update({
         teacher_approved: approved,
         teacher_approved_at: new Date().toISOString(),

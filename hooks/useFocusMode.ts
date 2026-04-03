@@ -37,7 +37,7 @@ export function useFocusMode({ user, activeModule, handleSelectModule }: UseFocu
                 table: 'classroom_configs',
                 filter: `id=eq.${cls}`
             }, (payload) => {
-                const config = deserializeClassroomConfig(payload.new as any);
+                const config = deserializeClassroomConfig(payload.new as Record<string, unknown>);
                 if (!config) return;
 
                 // Only reset acknowledgement if focus mode changed or mission ID changed

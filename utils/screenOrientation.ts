@@ -6,6 +6,29 @@
 
 type OrientationType = 'landscape' | 'portrait' | 'landscape-primary' | 'landscape-secondary' | 'portrait-primary' | 'portrait-secondary';
 
+// Vendor-prefixed fullscreen and orientation APIs not covered by standard TypeScript DOM lib.
+interface FullscreenElement extends HTMLElement {
+    webkitRequestFullscreen?: () => Promise<void>;
+    mozRequestFullScreen?: () => Promise<void>;
+    msRequestFullscreen?: () => Promise<void>;
+}
+
+interface FullscreenDocument extends Document {
+    webkitExitFullscreen?: () => void;
+    mozCancelFullScreen?: () => void;
+    msExitFullscreen?: () => void;
+}
+
+interface OrientationScreen extends Screen {
+    orientation: ScreenOrientation & { lock?: (orientation: string) => Promise<void>; unlock?: () => void };
+    lockOrientation?: (orientation: string) => boolean;
+    mozLockOrientation?: (orientation: string) => boolean;
+    msLockOrientation?: (orientation: string) => boolean;
+    unlockOrientation?: () => void;
+    mozUnlockOrientation?: () => void;
+    msUnlockOrientation?: () => void;
+}
+
 /**
  * Check if we're on a tablet/iPad
  */
@@ -30,20 +53,20 @@ export function isPortrait(): boolean {
  * Request fullscreen mode (required for orientation lock on some browsers)
  */
 export async function requestFullscreen(element?: HTMLElement): Promise<boolean> {
-    const el = element || document.documentElement;
+    const el = (element || document.documentElement) as FullscreenElement;
 
     try {
         if (el.requestFullscreen) {
             await el.requestFullscreen();
             return true;
-        } else if ((el as any).webkitRequestFullscreen) {
-            await (el as any).webkitRequestFullscreen();
+        } else if (el.webkitRequestFullscreen) {
+            await el.webkitRequestFullscreen();
             return true;
-        } else if ((el as any).mozRequestFullScreen) {
-            await (el as any).mozRequestFullScreen();
+        } else if (el.mozRequestFullScreen) {
+            await el.mozRequestFullScreen();
             return true;
-        } else if ((el as any).msRequestFullscreen) {
-            await (el as any).msRequestFullscreen();
+        } else if (el.msRequestFullscreen) {
+            await el.msRequestFullscreen();
             return true;
         }
     } catch (error) {
@@ -56,15 +79,16 @@ export async function requestFullscreen(element?: HTMLElement): Promise<boolean>
  * Exit fullscreen mode
  */
 export async function exitFullscreen(): Promise<void> {
+    const doc = document as FullscreenDocument;
     try {
-        if (document.exitFullscreen) {
-            await document.exitFullscreen();
-        } else if ((document as any).webkitExitFullscreen) {
-            (document as any).webkitExitFullscreen();
-        } else if ((document as any).mozCancelFullScreen) {
-            (document as any).mozCancelFullScreen();
-        } else if ((document as any).msExitFullscreen) {
-            (document as any).msExitFullscreen();
+        if (doc.exitFullscreen) {
+            await doc.exitFullscreen();
+        } else if (doc.webkitExitFullscreen) {
+            doc.webkitExitFullscreen();
+        } else if (doc.mozCancelFullScreen) {
+            doc.mozCancelFullScreen();
+        } else if (doc.msExitFullscreen) {
+            doc.msExitFullscreen();
         }
     } catch (error) {
         console.warn('Exit fullscreen failed:', error);
@@ -77,10 +101,10 @@ export async function exitFullscreen(): Promise<void> {
  */
 export async function lockToLandscape(): Promise<boolean> {
     try {
-        const screen = window.screen as any;
+        const screen = window.screen as OrientationScreen;
 
         // Try the standard Screen Orientation API
-        if (screen.orientation && screen.orientation.lock) {
+        if (screen.orientation?.lock) {
             await screen.orientation.lock('landscape');
             console.log('Screen locked to landscape');
             return true;
@@ -107,9 +131,9 @@ export async function lockToLandscape(): Promise<boolean> {
  */
 export function unlockOrientation(): void {
     try {
-        const screen = window.screen as any;
+        const screen = window.screen as OrientationScreen;
 
-        if (screen.orientation && screen.orientation.unlock) {
+        if (screen.orientation?.unlock) {
             screen.orientation.unlock();
         } else if (screen.unlockOrientation) {
             screen.unlockOrientation();

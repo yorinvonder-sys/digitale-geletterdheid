@@ -72,7 +72,7 @@ export const getUserXP = async (userId: string): Promise<{ xp: number; level: nu
             .single();
 
         if (error) throw error;
-        const stats = (data?.stats as any) || {};
+        const stats = (data?.stats as Record<string, unknown>) ?? {};
         return {
             xp: stats.xp || 0,
             level: stats.level || 1,

@@ -32,8 +32,7 @@ export const EindmetingReleaseButton: React.FC<EindmetingReleaseButtonProps> = (
   }, [schoolId, schoolYear]);
 
   async function fetchReleases() {
-    const query = (supabase as any)
-      .from('eindmeting_releases')
+    const query = supabase.from('eindmeting_releases' as never)
       .select('student_class, released_at')
       .eq('school_year', schoolYear);
 
@@ -65,7 +64,7 @@ export const EindmetingReleaseButton: React.FC<EindmetingReleaseButtonProps> = (
       data: { user },
     } = await supabase.auth.getUser();
 
-    const { error } = await (supabase as any).from('eindmeting_releases').insert({
+    const { error } = await supabase.from('eindmeting_releases' as never).insert({
       school_id: schoolId ?? null,
       school_year: schoolYear,
       student_class: targetClass,

@@ -39,7 +39,7 @@ export const useStudentAssistant = ({ userIdentifier, context, roleId = 'student
     const handleWellbeingAlert = useCallback(async (match: WellbeingMatch) => {
         // Log alert naar Supabase voor docentnotificatie (zonder originele tekst — privacy)
         try {
-            await supabase.rpc('log_wellbeing_alert' as any, {
+            await supabase.rpc('log_wellbeing_alert' as never, {
                 p_student_id: userIdentifier,
                 p_category: match.category,
                 p_detected_at: match.timestamp,
@@ -123,7 +123,7 @@ REGELS VOOR JOU:
                     filter: `id=eq.${userIdentifier}`,
                 },
                 (payload) => {
-                    const newData = payload.new as any;
+                    const newData = payload.new as { chat_locked?: boolean };
                     setIsLocked(!!newData.chat_locked);
                 }
             )
