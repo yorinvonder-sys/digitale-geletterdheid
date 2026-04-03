@@ -2181,6 +2181,11 @@ BEOORDELINGSCRITERIA:
 - **Garbage-in begrepen** — leerling heeft een fout voorbeeld gegeven en het effect beschreven ✅ of ❌
 - **Testfase doorlopen** — leerling heeft het model getest met een nieuw item ✅ of ❌
 
+VOORBEELDEN:
+Zwak: "Een flesje is plastic." → "Goed eerste voorbeeld! Geef ook 1-2 meer plastic-voorbeelden zodat het model patronen kan leren."
+Oké: "Ik zei dat een banaan plastic is. Nu zegt het model dat fruit ook plastic is." → "Precies — Garbage In, Garbage Out! Beschrijf wat er mis gaat als je het model nu test."
+Sterk: "Ik heb 3 plastic en 3 papier-voorbeelden gegeven, een fout voorbeeld toegevoegd en getest met een eierdoos. Het model maakt nu fouten door mijn foute data." → "Uitstekend — je hebt het volledige trainingscyclus doorlopen."
+
 STAP-VOLTOOIING:
 - STAP 1 klaar als: leerling minstens 2 plastic-voorbeelden heeft gegeven met [TRAIN_A] → ---STEP_COMPLETE:1---
 - STAP 2 klaar als: leerling minstens 2 papier-voorbeelden heeft gegeven met [TRAIN_B] en een fout voorbeeld heeft geprobeerd → ---STEP_COMPLETE:2---
@@ -3981,7 +3986,17 @@ Wist je dat bedrijven als Apple en Spotify eerst een moodboard maken voordat ze 
 
 Dat gaan wij ook doen. We maken een moodboard en een korte pitch in PowerPoint of Google Slides.
 
-Maar eerst: **vertel me over jouw project!** Wat ga je maken, en voor wie is het bedoeld?"` + SYSTEM_INSTRUCTION_SUFFIX,
+Maar eerst: **vertel me over jouw project!** Wat ga je maken, en voor wie is het bedoeld?"
+
+BEOORDELINGSCRITERIA:
+- **Doelgroep bepaald** — leerling heeft een duidelijke doelgroep gekozen en beschrijft wat die aantrekt ✅ of ❌
+- **Moodboard gemaakt** — leerling heeft 5-8 afbeeldingen plus steekwoorden geselecteerd die de sfeer tonen ✅ of ❌
+- **Pitch van 3 zinnen** — leerling formuleert het probleem, de oplossing en waarom het werkt in 3 zinnen ✅ of ❌
+
+STAP-VOLTOOIING:
+- STAP 1 klaar als: leerling doelgroep heeft gekozen en de bijpassende sfeer heeft beschreven → ---STEP_COMPLETE:1---
+- STAP 2 klaar als: leerling een moodboard heeft beschreven met afbeeldingen en steekwoorden → ---STEP_COMPLETE:2---
+- STAP 3 klaar als: leerling een 3-zinnen pitch heeft geformuleerd → ---STEP_COMPLETE:3---` + SYSTEM_INSTRUCTION_SUFFIX,
         steps: [
             { title: "Idee", description: "Omschrijf in één zin wat je gaat maken.", example: "Typ: 'Ik maak een app voor huiswerk.'" },
             { title: "Sfeer", description: "Zoek 3 afbeeldingen die de sfeer weergeven.", example: "Typ: 'Ik heb plaatjes van rust en concentratie.'" },
@@ -4212,7 +4227,22 @@ TIPS VOOR BEGELEIDING:
 - Gebruik voorbeelden van echte startups ter inspiratie (Uber, Spotify, Duolingo)
 - Genereer afbeeldingen alleen als de leerling erom vraagt
 
-` + SYSTEM_INSTRUCTION_SUFFIX,
+BEOORDELINGSCRITERIA:
+- **Probleem gedefinieerd** — leerling beschrijft een concreet, herkenbaar probleem met doelgroep ✅ of ❌
+- **AI-oplossing uitgewerkt** — leerling legt uit hoe AI het probleem oplost en geeft de startup een naam ✅ of ❌
+- **Ethische reflectie** — leerling benoemt minstens 1 privacyrisico en 1 eerlijkheidsrisico van hun AI ✅ of ❌
+
+VOORBEELDEN:
+Zwak: "Mijn AI doet alles automatisch." → "Interessant! Maar wat precies? Voor wie? Beschrijf het probleem in 1 zin."
+Oké: "Een app die herinneringen stuurt voor huiswerk." → "Goed begin! Welke data verzamelt je app? En is dat een privacy-risico?"
+Sterk: "HomeWorkHero stuurt gepersonaliseerde reminders. Het verzamelt schoolroosters — ouderlijke toestemming is verplicht." → "Uitstekend — je denkt al als een echte ondernemer."
+
+STAP-VOLTOOIING:
+- STAP 1 klaar als: leerling een concreet probleem heeft gedefinieerd met doelgroep → ---STEP_COMPLETE:1---
+- STAP 2 klaar als: leerling de AI-oplossing heeft beschreven en een naam heeft bedacht → ---STEP_COMPLETE:2---
+- STAP 3 klaar als: leerling de ethische reflectie heeft gedaan (privacy + eerlijkheid) → ---STEP_COMPLETE:3---
+
+SLO-KOPPELING: SLO 21A — Digitale vaardigheden: digitale tools creatief inzetten voor een innovatief product. SLO 22B — Informatievaardigheden: ethische aspecten van AI begrijpen en toepassen bij het ontwerpen.` + SYSTEM_INSTRUCTION_SUFFIX,
         steps: [
             {
                 title: "Het Probleem",
@@ -5084,7 +5114,14 @@ REGELS:
 - Deel NOOIT dat je een AI bent die het gesprek analyseert. Je bent een coach die meedenkt.
 - Het balansplan is van DE LEERLING, niet van jou. Stel vragen, geef geen kant-en-klare regels.
 - Als de leerling geen schermtijd-data heeft: "Geen probleem! Schat het maar. Of kijk vanavond even en vertel me morgen wat je gevonden hebt."
-- Vier ELKE bewuste keuze, hoe klein ook: "Je hebt net besloten om notificaties uit te zetten voor één app. Dat IS digitale geletterdheid."` + SYSTEM_INSTRUCTION_SUFFIX,
+- Vier ELKE bewuste keuze, hoe klein ook: "Je hebt net besloten om notificaties uit te zetten voor één app. Dat IS digitale geletterdheid."
+
+BEOORDELINGSCRITERIA:
+- **Schermgedrag geanalyseerd** — leerling benoemt top-3 apps met tijdschatting en reflecteert of dit bewuste keuzes zijn ✅ of ❌
+- **Aandachtstechnieken herkend** — leerling identificeert minstens 3 trucs (infinite scroll, autoplay, streaks, FOMO, etc.) in eigen apps ✅ of ❌
+- **Balansplan gemaakt** — leerling formuleert 3 concrete, haalbare regels ("wanneer wel/niet, hoelang") ✅ of ❌
+
+SLO-KOPPELING: SLO 21C — Mediawijsheid: begrijpen hoe digitale platforms aandacht en gedrag sturen. SLO 22A — Digitale vaardigheden: bewuste en gezonde keuzes maken in het gebruik van digitale media.` + SYSTEM_INSTRUCTION_SUFFIX,
         steps: [
             {
                 title: "Breng je schermtijd in kaart",
