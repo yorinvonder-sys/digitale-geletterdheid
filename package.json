@@ -16,7 +16,7 @@
     "lint": "echo 'Linting not configured'",
     "preview": "vite preview",
     "clean": "./scripts/cleanup_dev_env.sh",
-    "doctor": "echo '🩺 Checking critical app paths...' && npx tsc -p tsconfig.critical.json --noEmit && echo '✅ Critical TypeScript Check OK'",
+    "doctor": "echo '🩺 Checking critical app paths...' && npx tsc -p tsconfig.critical.json --noEmit && echo '✅ Critical TypeScript Check OK' && npm run validate:missions",
     "doctor:full": "echo '🩺 Checking full repository...' && npx tsc -p tsconfig.json --noEmit && echo '✅ Full TypeScript Check OK' || echo '⚠️ Full TypeScript Issues found'",
     "deploy": "vercel --prod",
     "lighthouse": "bash ./scripts/lighthouse-audit.sh",
@@ -26,7 +26,8 @@
     "perf:bundle:check": "node scripts/check-bundle-budgets.mjs",
     "performance:ci": "npm run lighthouse:median && npm run perf:assert:network && npm run perf:bundle:check",
     "audit:security": "npm audit --audit-level=moderate",
-    "review:handoff": "node scripts/validate-claude-handoff.mjs"
+    "review:handoff": "node scripts/validate-claude-handoff.mjs",
+    "validate:missions": "node scripts/validate-missions.mjs"
   },
   "dependencies": {
     "@google/genai": "^1.34.0",

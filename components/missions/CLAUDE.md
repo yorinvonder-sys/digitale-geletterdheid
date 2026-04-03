@@ -48,6 +48,11 @@ This subtree contains learner-facing missions. Treat mission work as curriculum 
   - learner dashboard visibility and info text when needed
 - Prefer existing mission structure and naming patterns over inventing a new architecture.
 
+## Automated validation
+- Run `npm run validate:missions` after any mission-related change.
+- The script cross-checks templateRegistry, slo-kerndoelen-mapping, curriculum, agentRoleIds, and AuthenticatedApp routing.
+- CI will block PRs that introduce mission inconsistencies.
+
 ## Output expectations
 - Explain what the learner experiences.
 - Explain what the teacher can observe or report later.

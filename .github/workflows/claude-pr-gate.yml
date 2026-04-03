@@ -65,5 +65,8 @@ jobs:
             p/javascript
             p/typescript
 
+      - name: Validate mission consistency
+        run: npm run validate:missions
+
       - name: Production build
         run: npm run build:prod
