@@ -1,7 +1,8 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, Download } from 'lucide-react';
 import { NulmetingResult } from './types';
+import { exportDigitaalPaspoortPDF } from '../../../services/digitaalPaspoortExportService';
 
 interface DigitaalPaspoortProps {
   result: NulmetingResult;
@@ -158,12 +159,22 @@ function getNiveauInfo(niveau: NulmetingResult['niveau']): { label: string; colo
 }
 
 export const DigitaalPaspoort: React.FC<DigitaalPaspoortProps> = ({ result, onContinue }) => {
+  const [isExporting, setIsExporting] = useState(false);
   const scores = useMemo(
     () => DOMEINEN.map(d => result.kamers[d.key].score),
     [result]
   );
   const labels = DOMEINEN.map(d => d.label);
   const niveauInfo = getNiveauInfo(result.niveau);
+
+  async function handleDownloadPDF() {
+    setIsExporting(true);
+    try {
+      await exportDigitaalPaspoortPDF(result);
+    } finally {
+      setIsExporting(false);
+    }
+  }
 
   return (
     <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
@@ -243,16 +254,28 @@ export const DigitaalPaspoort: React.FC<DigitaalPaspoortProps> = ({ result, onCo
         </motion.div>
 
         {/* CTA */}
-        <motion.button
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.5 }}
-          onClick={onContinue}
-          className="w-full flex items-center justify-center gap-2 py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-black rounded-2xl text-sm transition-all shadow-lg shadow-indigo-200 hover:brightness-110 active:scale-[0.98]"
+          className="flex flex-col gap-3"
         >
-          Start je eerste missie
-          <ChevronRight size={18} />
-        </motion.button>
+          <button
+            onClick={onContinue}
+            className="w-full flex items-center justify-center gap-2 py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-black rounded-2xl text-sm transition-all shadow-lg shadow-indigo-200 hover:brightness-110 active:scale-[0.98]"
+          >
+            Start je eerste missie
+            <ChevronRight size={18} />
+          </button>
+          <button
+            onClick={handleDownloadPDF}
+            disabled={isExporting}
+            className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-2xl border-2 border-indigo-200 text-indigo-700 font-bold text-sm hover:bg-indigo-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <Download size={18} />
+            {isExporting ? 'Exporteren...' : 'Download PDF'}
+          </button>
+        </motion.div>
       </motion.div>
     </div>
   );
