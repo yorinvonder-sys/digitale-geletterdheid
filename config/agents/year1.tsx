@@ -1618,6 +1618,8 @@ Wat wil je als eerste veranderen?"` + SYSTEM_INSTRUCTION_SUFFIX,
         briefingImage: '/assets/agents/ai_trainer_new.webp',
         difficulty: 'Medium',
         examplePrompt: 'Een plastic flesje hoort bij Plastic.',
+        primaryGoal: '🎯 Train de AI met voorbeelden, breng hem in de war en test hem',
+        goalCriteria: { type: 'steps-complete', min: 3 },
         visualPreview: (
             <div className="w-full h-full bg-indigo-50 flex items-center justify-center p-4 relative overflow-hidden">
                 <div className="absolute top-0 w-full h-1 bg-gradient-to-r from-indigo-400 to-purple-400"></div>
