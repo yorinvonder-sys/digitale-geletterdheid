@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-
+import { motion } from 'framer-motion';
 import { Rocket, BrainCircuit, ShieldCheck, Gamepad2, Stars, Info, Play, Feather, Puzzle, Database, ChevronRight, ChevronLeft, Calendar, Pencil, Map, Lightbulb, Trophy, LogOut, User, RotateCcw, Search, Scale, Lock, Settings2, Cloud, FileText, Monitor, Printer, AlertTriangle, Sparkles, MessageSquare, Send, Loader2, BookOpen, BarChart2, Eye, CheckCircle2, MonitorSmartphone } from 'lucide-react';
 import { getLevelProgress, getXPToNextLevel, LEVEL_THRESHOLDS } from '../utils/xp';
 import { LazyAvatarViewer } from './LazyAvatarViewer';
@@ -1084,7 +1084,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                     </div>
 
                     {/* LEERJAAR + PERIODE SELECTION */}
-                    <div className="flex items-center gap-2 mb-4">
+                    <div className="flex flex-col md:flex-row md:items-center gap-2 mb-4">
                         {availableYearGroups.length > 1 && (
                             <div ref={yearGroupMenuRef} className="relative flex-shrink-0">
                                 <button
@@ -1161,10 +1161,11 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                 )}
                             </div>
                         )}
-                        <div className="flex items-center gap-2 bg-slate-100 p-1.5 rounded-2xl flex-1 md:flex-initial border border-slate-200 shadow-inner overflow-x-auto no-scrollbar">
+                        <div className="relative flex items-center gap-1 bg-slate-100 p-1.5 rounded-2xl w-full md:w-auto border border-slate-200 shadow-inner">
                         {Object.keys(yearConfig?.periods || {}).map(Number).sort((a, b) => a - b).map((period) => {
                             const pConf = yearConfig?.periods[period];
                             const isLocked = false; // TEMPORARILY: all periods unlocked for review
+                            const theme = PERIOD_THEME[period] || DEFAULT_PERIOD_THEME;
 
                             return (
                                 <button
@@ -1172,17 +1173,31 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                     onClick={() => !isLocked && setActiveWeek(period)}
                                     disabled={isLocked}
                                     title={isLocked ? `${periodNaming} ${period} wordt later vrijgegeven` : pConf?.title}
-                                    className={`flex-shrink-0 px-4 md:px-6 py-4 min-h-[44px] rounded-xl text-xs font-black uppercase tracking-widest transition-all flex items-center gap-1.5
+                                    className={`relative flex-1 min-h-[52px] md:min-h-[44px] rounded-xl text-center transition-colors duration-200 flex flex-col md:flex-row items-center justify-center gap-0.5 md:gap-1.5 px-2 md:px-6 py-2 md:py-4
                                 ${activeWeek === period
-                                            ? 'bg-white text-indigo-600 shadow-md border border-slate-100 translate-y-[-1px]'
+                                            ? 'text-indigo-600'
                                             : isLocked
                                                 ? 'bg-transparent text-slate-300 cursor-not-allowed'
                                                 : 'text-slate-400 hover:text-slate-600'
                                         }`}
                                 >
-                                    {isLocked ? <Lock size={12} /> : (PERIOD_THEME[period]?.icon || null)}
-                                    <span className="hidden sm:inline">{periodNaming}</span>
-                                    <span className="sm:hidden">P</span>{period}
+                                    {activeWeek === period && (
+                                        <motion.div
+                                            layoutId="period-active-pill"
+                                            className="absolute inset-0 bg-white rounded-xl shadow-md border border-slate-100"
+                                            transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                                        />
+                                    )}
+                                    <span className="relative z-10 flex items-center gap-1.5">
+                                        {isLocked ? <Lock size={12} /> : (theme.icon || null)}
+                                        <span className="text-xs font-black uppercase tracking-widest">
+                                            <span className="hidden md:inline">{periodNaming} </span>
+                                            <span className="md:hidden">P</span>{period}
+                                        </span>
+                                    </span>
+                                    <span className="relative z-10 text-[9px] font-bold tracking-wide text-slate-400 md:hidden leading-tight truncate max-w-full">
+                                        {theme.label || pConf?.title || ''}
+                                    </span>
                                 </button>
                             )
                         })}
