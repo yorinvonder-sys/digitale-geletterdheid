@@ -1496,6 +1496,59 @@ const STICKY_COLORS = [
 const STICKY_ROTATIONS = [-1.2, 0.6, -0.4, 1, -0.8, 0.3] as const;
 const SERIF_FONT = "'Newsreader', Georgia, serif";
 
+const ReviewIllustrationCloud: React.FC<{ className?: string }> = ({ className }) => (
+    <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" className={className} stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
+        {/* Cloud body — soft bumpy shape */}
+        <path d="M22.3,72.8 Q18.7,72.4 17.2,68.9 Q15.6,64.8 19.1,61.7 Q16.4,56.2 20.8,52.9 Q24.8,49.8 29.3,52.1 Q31.7,46.3 37.8,44.6 Q44.2,42.8 49.1,47.2 Q52.8,43.1 58.6,43.4 Q65.1,43.7 68.2,49.3 Q73.9,47.8 77.9,51.8 Q81.6,55.5 80.3,61.1 Q84.8,63.7 84.6,69.2 Q84.4,74.3 79.8,76.1 Q79.4,76.3 22.3,72.8 Z" strokeWidth="1.8" />
+        {/* Folder icon below cloud */}
+        <path d="M38.4,83.1 L38.2,91.7 Q38.1,93.2 39.7,93.3 L63.8,93.5 Q65.3,93.6 65.4,92.1 L65.6,83.2 Q65.7,81.7 64.2,81.6 L52.9,81.5 L50.7,79.3 L39.8,79.2 Q38.3,79.1 38.4,80.6 Z" strokeWidth="1.7" />
+        {/* Downward arrow */}
+        <path d="M52.1,60.4 L52.3,73.2" strokeWidth="2.2" />
+        <path d="M46.8,68.1 L52.2,74.3 L57.9,68.4" strokeWidth="2.0" />
+        {/* Small file lines inside folder */}
+        <path d="M43.2,85.8 L60.8,85.9" strokeWidth="1.5" />
+        <path d="M43.1,88.6 L57.3,88.7" strokeWidth="1.5" />
+    </svg>
+);
+
+const ReviewIllustrationLayout: React.FC<{ className?: string }> = ({ className }) => (
+    <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" className={className} stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
+        {/* Document rectangle — slightly wobbly */}
+        <path d="M24.3,18.7 Q24.1,18.6 24.2,94.8 Q24.3,96.4 25.9,96.5 L94.1,96.7 Q95.7,96.8 95.8,95.2 L96.2,19.1 Q96.3,17.5 94.7,17.4 L25.8,17.2 Q24.2,17.1 24.3,18.7 Z" strokeWidth="1.9" />
+        {/* Text cursor / T icon near top */}
+        <path d="M38.2,31.4 L55.7,31.6" strokeWidth="2.4" />
+        <path d="M46.8,31.5 L46.9,41.2" strokeWidth="2.3" />
+        {/* Text lines */}
+        <path d="M32.1,52.3 Q32.0,52.2 87.4,52.5" strokeWidth="1.7" />
+        <path d="M32.2,62.8 Q58.4,62.6 87.3,63.1" strokeWidth="1.6" />
+        <path d="M32.3,73.2 Q32.2,73.1 79.1,73.4" strokeWidth="1.7" />
+        <path d="M32.2,83.6 Q52.7,83.4 66.8,83.8" strokeWidth="1.5" />
+    </svg>
+);
+
+const ReviewIllustrationPitch: React.FC<{ className?: string }> = ({ className }) => (
+    <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" className={className} stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
+        {/* Presentation screen */}
+        <path d="M14.3,18.6 Q14.1,18.4 14.2,78.3 Q14.3,79.9 15.9,80.1 L103.8,80.4 Q105.4,80.5 105.5,78.9 L105.8,19.2 Q105.9,17.6 104.3,17.5 L15.8,17.2 Q14.2,17.1 14.3,18.6 Z" strokeWidth="2.0" />
+        {/* Easel legs */}
+        <path d="M59.8,80.6 L43.2,103.7" strokeWidth="1.9" />
+        <path d="M60.1,80.7 L76.4,103.9" strokeWidth="1.9" />
+        {/* Horizontal bar on easel */}
+        <path d="M48.7,96.2 L71.6,96.4" strokeWidth="1.6" />
+        {/* Sparkle / star inside screen */}
+        <path d="M59.9,38.4 L63.2,47.8 L72.8,48.1 L65.6,54.2 L68.1,63.8 L59.7,58.3 L51.4,63.9 L53.8,54.3 L46.5,48.3 L56.1,47.9 Z" strokeWidth="1.8" />
+        {/* Small decorative dots */}
+        <path d="M32.1,34.3 Q32.0,34.2 32.2,34.4" strokeWidth="2.5" />
+        <path d="M87.8,34.1 Q87.7,34.0 87.9,34.2" strokeWidth="2.5" />
+    </svg>
+);
+
+const REVIEW_ILLUSTRATIONS: Record<string, React.FC<{ className?: string }>> = {
+    'cloud-cleaner': ReviewIllustrationCloud,
+    'layout-doctor': ReviewIllustrationLayout,
+    'pitch-police': ReviewIllustrationPitch,
+};
+
 const MissionCard = React.memo(({ mission, onSelectModule, onInfoClick, isCompleted, isCompact, customHeader, headerColor = 'orange', vsoProfile, cardIndex = 0 }: { mission: Mission, onSelectModule: (id: string) => void, onInfoClick?: (info: string, kerndoelen?: SloKerndoelCode[]) => void, isCompleted?: boolean, isCompact?: boolean, customHeader?: string, headerColor?: 'orange' | 'green', vsoProfile?: string, cardIndex?: number }) => {
     const handleClick = () => mission.status === 'available' && onSelectModule(mission.id);
 
@@ -1596,10 +1649,22 @@ const MissionCard = React.memo(({ mission, onSelectModule, onInfoClick, isComple
                 </div>
             )}
 
-            {/* Background Decorative Icon */}
-            <div className={`absolute top-0 right-0 opacity-[0.04] group-hover:scale-110 transition-transform duration-700 rotate-12 ${isCompact ? 'scale-75' : ''}`} style={{ color: '#8B7355' }}>
-                {mission.icon}
-            </div>
+            {/* Background Decorative Illustration */}
+            {(() => {
+                const ReviewIllustration = REVIEW_ILLUSTRATIONS[mission.id];
+                if (ReviewIllustration) {
+                    return (
+                        <div className={`absolute bottom-2 right-2 opacity-[0.07] group-hover:scale-110 transition-transform duration-700 ${isCompact ? '' : ''}`} style={{ color: '#8B7355' }}>
+                            <ReviewIllustration className={isCompact ? 'w-20 h-20' : 'w-28 h-28'} />
+                        </div>
+                    );
+                }
+                return (
+                    <div className={`absolute top-0 right-0 opacity-[0.04] group-hover:scale-110 transition-transform duration-700 rotate-12 ${isCompact ? 'scale-75' : ''}`} style={{ color: '#8B7355' }}>
+                        {mission.icon}
+                    </div>
+                );
+            })()}
 
             {/* Card content */}
             <div className={`relative z-10 h-full flex flex-col ${customHeader || mission.isBonus || mission.isExternal ? 'pt-4' : ''}`}>
