@@ -17,6 +17,7 @@ interface MissionStats {
     missionId: string;
     missionName: string;
     missionShort: string;
+    estimatedMinutes?: number;
     completed: number;
     inProgress: number;
     notStarted: number;
@@ -73,6 +74,7 @@ export const MissionProgressPanel: React.FC<MissionProgressPanelProps> = ({
                 missionId: mission.id,
                 missionName: mission.name,
                 missionShort: mission.short,
+                estimatedMinutes: mission.estimatedMinutes,
                 completed: completed.length,
                 inProgress: inProgress.length,
                 notStarted: notStarted.length,
@@ -211,7 +213,14 @@ export const MissionProgressPanel: React.FC<MissionProgressPanelProps> = ({
                                 {/* Mission Info */}
                                 <div className="flex-1 min-w-0">
                                     <div className="flex items-center justify-between mb-2">
-                                        <h3 className="font-bold text-slate-900 truncate">{mission.missionName}</h3>
+                                        <h3 className="font-bold text-slate-900 truncate">
+                                            {mission.missionName}
+                                            {mission.estimatedMinutes && (
+                                                <span className="ml-2 inline-flex items-center gap-1 text-[10px] font-semibold text-slate-400 align-middle">
+                                                    <Clock size={10} /> {mission.estimatedMinutes} min
+                                                </span>
+                                            )}
+                                        </h3>
                                         <span className={`text-2xl font-black ${getProgressTextColor(mission.percentage)}`}>
                                             {mission.percentage}%
                                         </span>

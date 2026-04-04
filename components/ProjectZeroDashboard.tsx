@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 
-import { Rocket, BrainCircuit, ShieldCheck, Gamepad2, Stars, Info, Play, Feather, Puzzle, Database, ChevronRight, ChevronLeft, Calendar, Pencil, Map, Lightbulb, Trophy, LogOut, User, RotateCcw, Search, Scale, Lock, Settings2, Cloud, FileText, Monitor, Printer, AlertTriangle, Sparkles, MessageSquare, Send, Loader2, BookOpen, BarChart2, Eye, CheckCircle2, MonitorSmartphone } from 'lucide-react';
+import { Rocket, BrainCircuit, ShieldCheck, Gamepad2, Stars, Info, Play, Feather, Puzzle, Database, ChevronRight, ChevronLeft, Calendar, Pencil, Map, Lightbulb, Trophy, LogOut, User, RotateCcw, Search, Scale, Lock, Settings2, Cloud, FileText, Monitor, Printer, AlertTriangle, Sparkles, MessageSquare, Send, Loader2, BookOpen, BarChart2, Eye, CheckCircle2, MonitorSmartphone, Clock } from 'lucide-react';
 import { getLevelProgress, getXPToNextLevel, LEVEL_THRESHOLDS } from '../utils/xp';
 import { LazyAvatarViewer } from './LazyAvatarViewer';
 import { DEFAULT_AVATAR_CONFIG, UserStats, EducationLevel } from '../types';
@@ -52,6 +52,7 @@ interface Mission {
     isExternal?: boolean; // Execute mission in external app (Microsoft/Magister)
     sloKerndoelen?: SloKerndoelCode[]; // SLO kerndoel codes (e.g. ['21A', '22B'])
     sloVsoKerndoelen?: SloKerndoelCode[]; // NEW: SLO VSO kerndoel codes (e.g. ['18A', '20B'])
+    estimatedMinutes?: number; // Estimated lesson time in minutes
 }
 
 // Periode-kleurthema's per periode-nummer (Tailwind-safe volledige klassen)
@@ -229,6 +230,7 @@ function buildMissionsForPeriod(yearGroup: number, period: number): Mission[] {
             isHighlighted: overrides.isHighlighted,
             sloKerndoelen: meta?.sloKerndoelen || periodConfig.sloFocus,
             sloVsoKerndoelen: meta?.sloVsoKerndoelen,
+            estimatedMinutes: role?.estimatedMinutes,
         });
     }
 
@@ -252,6 +254,7 @@ function buildMissionsForPeriod(yearGroup: number, period: number): Mission[] {
             classRestriction: overrides.classRestriction || meta?.classRestriction,
             sloKerndoelen: meta?.sloKerndoelen || periodConfig.sloFocus,
             sloVsoKerndoelen: meta?.sloVsoKerndoelen,
+            estimatedMinutes: role?.estimatedMinutes,
         });
         missionNum++;
     }
@@ -1638,6 +1641,12 @@ const MissionCard = React.memo(({ mission, onSelectModule, onInfoClick, isComple
                         <span className="px-2 py-0.5 text-[9px] font-bold rounded uppercase tracking-widest" style={{ backgroundColor: 'rgba(139,115,85,0.1)', color: '#8B7355', border: '1px solid rgba(139,115,85,0.15)' }}>
                             Missie {mission.number}
                         </span>
+
+                        {mission.estimatedMinutes && (
+                            <span className="px-2 py-0.5 text-[9px] font-bold rounded uppercase tracking-widest flex items-center gap-1" style={{ backgroundColor: 'rgba(139,115,85,0.06)', color: '#A0937D', border: '1px solid rgba(139,115,85,0.10)' }}>
+                                <Clock size={9} /> {mission.estimatedMinutes} min
+                            </span>
+                        )}
 
                         {/* Status Tags */}
                         {mission.status === 'locked' ? (

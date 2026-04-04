@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Target, Search, Lock, Users, ChevronRight, Wifi } from 'lucide-react';
+import { X, Target, Search, Lock, Users, ChevronRight, Wifi, Clock } from 'lucide-react';
 import { StudentData } from '../../types';
+import { ROLES } from '../../config/agents';
 
 interface Mission {
     id: string;
@@ -273,6 +274,7 @@ export const FocusMissionSelector: React.FC<FocusMissionSelectorProps> = ({
                                                     <div className="flex items-center gap-2">
                                                         <h3 className="font-bold text-slate-900 text-sm truncate">{mission.title}</h3>
                                                         <span className="text-[10px] font-bold text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded uppercase">W{mission.week}</span>
+                                                        {(() => { const mins = ROLES.find(r => r.id === mission.id)?.estimatedMinutes; return mins ? <span className="flex items-center gap-0.5 text-[10px] font-semibold text-slate-400"><Clock size={9} />{mins} min</span> : null; })()}
                                                     </div>
                                                     <p className="text-xs text-slate-500 mt-0.5 line-clamp-2">{mission.description}</p>
                                                 </div>

@@ -125,6 +125,7 @@ export interface AgentRole {
   };
   yearGroup?: number;
   educationLevels?: EducationLevel[];
+  estimatedMinutes?: number;
 }
 
 export interface AvatarConfig {

@@ -5,6 +5,7 @@ export interface MissionInfo {
     id: string;
     name: string;
     short: string;
+    estimatedMinutes?: number;
 }
 
 /**
@@ -36,7 +37,7 @@ export function getMissionsForYear(yearGroup: number = 1): MissionInfo[] {
                 .join('')
                 .slice(0, 2);
 
-            missions.push({ id, name, short });
+            missions.push({ id, name, short, estimatedMinutes: agent?.estimatedMinutes });
         }
     }
 
