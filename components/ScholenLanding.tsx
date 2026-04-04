@@ -176,6 +176,7 @@ const ScholenLandingDashboardDemo = React.lazy(() => import('./scholen/ScholenLa
 const ScholenLandingMissionShowcase = React.lazy(() => import('./scholen/ScholenLandingMissionShowcase').then(m => ({ default: m.ScholenLandingMissionShowcase })));
 const ScholenLandingDidactiek = React.lazy(() => import('./scholen/ScholenLandingDidactiek').then(m => ({ default: m.ScholenLandingDidactiek })));
 const ScholenLandingLiveDemo = React.lazy(() => import('./scholen/ScholenLandingLiveDemo').then(m => ({ default: m.ScholenLandingLiveDemo })));
+const ScholenLandingSocialProof = React.lazy(() => import('./scholen/ScholenLandingSocialProof').then(m => ({ default: m.ScholenLandingSocialProof })));
 
 // Pip the Robin — lazy so it stays out of the landing page's main chunk
 const PipGuideModule = React.lazy(() => import('./scholen/FlyingPip').then(m => ({ default: m.PipGuide })));
@@ -877,6 +878,19 @@ export const ScholenLanding: React.FC = () => {
                             <Suspense fallback={<div className="min-h-[300px]" aria-hidden="true" />}>
                                 <AnimateOnScroll>
                                     <ScholenLandingFaq scrollToContact={() => scrollTo(SECTION_IDS.contact)} />
+                                </AnimateOnScroll>
+                            </Suspense>
+                        </DeferredSection>
+                    </SectionErrorBoundary>
+                </section>
+
+                {/* Social Proof */}
+                <section className="py-14 md:py-20 lg:py-24 px-6 [content-visibility:auto] [contain-intrinsic-size:auto_400px]" aria-label="Social proof">
+                    <SectionErrorBoundary>
+                        <DeferredSection minHeight="min-h-[300px]">
+                            <Suspense fallback={<div className="min-h-[300px]" aria-hidden="true" />}>
+                                <AnimateOnScroll>
+                                    <ScholenLandingSocialProof />
                                 </AnimateOnScroll>
                             </Suspense>
                         </DeferredSection>

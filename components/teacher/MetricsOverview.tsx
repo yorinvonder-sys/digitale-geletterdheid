@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Users, Zap, Target, Activity, AlertTriangle, Flame, Sparkles, GraduationCap, ChevronRight, Filter, X, Search, ChevronDown, Shield, Cpu, Database, Palette, Bot, Code, Globe, User, MonitorSmartphone, BarChart3, Clock, CheckCircle2, ArrowRight, MessageSquare, Send } from 'lucide-react';
+import { Users, Zap, Target, Activity, AlertTriangle, Flame, Sparkles, GraduationCap, ChevronRight, Filter, X, Search, ChevronDown, Shield, Cpu, Database, Palette, Bot, Code, Globe, User, MonitorSmartphone, BarChart3, Clock, CheckCircle2, ArrowRight, MessageSquare, Send, Download } from 'lucide-react';
 import { StudentData, GamificationEvent } from '../../types';
 import { getMissionsForYear } from '../../config/missions';
 import { SLO_KERNDOELEN, SloKerndoelCode } from '../../config/sloKerndoelen';
@@ -355,6 +355,63 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({ students, acti
                         <span className="text-xs font-bold text-indigo-700">Bekijk data van:</span>
                         <span className="text-xs font-black text-indigo-900">{selectedStudent.displayName}</span>
                     </div>
+                )}
+
+                {/* Impact Report Download */}
+                {!selectedStudentId && (
+                    <button
+                        onClick={async () => {
+                            const { generateImpactReport } = await import('../../services/impactReportService');
+                            const missionCounts: Record<string, number> = {};
+                            students.forEach(s => {
+                                (s.stats?.missionsCompleted || []).forEach(m => {
+                                    missionCounts[m] = (missionCounts[m] || 0) + 1;
+                                });
+                            });
+                            const topMissions = Object.entries(missionCounts)
+                                .sort((a, b) => b[1] - a[1])
+                                .slice(0, 5)
+                                .map(([name, count]) => ({ name, completionCount: count, totalStudents: students.length }));
+
+                            const sloProgress = KERNDOEL_CODES.map(code => {
+                                const kd = SLO_KERNDOELEN[code];
+                                const pcts = students.map(s => {
+                                    const stats = calculateStudentKerndoelStats(s);
+                                    const match = stats.find(st => st.code === code);
+                                    return match?.percentage ?? 0;
+                                });
+                                const avg = pcts.length > 0 ? Math.round(pcts.reduce((a, b) => a + b, 0) / pcts.length) : 0;
+                                return { code, label: kd?.title ?? code, percentage: avg };
+                            });
+
+                            const activeCount = students.filter(s => now - (s.lastActive?.toDate().getTime() || 0) < oneWeek).length;
+                            const completionRates = students.map(s => {
+                                const completed = s.stats?.missionsCompleted?.length ?? 0;
+                                const total = yearMissions.length;
+                                return total > 0 ? (completed / total) * 100 : 0;
+                            });
+                            const avgCompletion = completionRates.length > 0 ? Math.round(completionRates.reduce((a, b) => a + b, 0) / completionRates.length) : 0;
+
+                            await generateImpactReport({
+                                schoolName: 'Mijn School',
+                                period: new Date().toLocaleDateString('nl-NL', { month: 'long', year: 'numeric' }),
+                                totalStudents: students.length,
+                                totalTeachers: 1,
+                                yearGroup,
+                                teacherActivation: 100,
+                                weeklyActiveStudents: students.length > 0 ? Math.round((activeCount / students.length) * 100) : 0,
+                                taskCompletionRate: avgCompletion,
+                                sloProgress,
+                                topMissions,
+                            });
+                        }}
+                        className="ml-auto flex items-center gap-2 px-4 py-2.5 rounded-xl border border-amber-300 bg-amber-50 text-amber-700 hover:bg-amber-100 transition-colors text-sm font-bold"
+                        title="Download een impactrapport als PDF"
+                    >
+                        <BarChart3 size={16} />
+                        <span className="hidden sm:inline">Impactrapport</span>
+                        <Download size={14} />
+                    </button>
                 )}
             </div>
             {/* OVERVIEW CARDS */}
