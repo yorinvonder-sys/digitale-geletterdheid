@@ -176,6 +176,7 @@ export const KERNDOEL_MISSIONS: KerndoelMissionMeta[] = [
   { id: 'innovation-lab', title: 'Innovation Lab', week: 3, yearGroup: 3, sloKerndoelen: ['23C', '22A'] },                                                     // 21D→23C: Design Thinking voor maatschappelijke problemen
   { id: 'digital-divide-researcher', title: 'Digital Divide Researcher', week: 3, yearGroup: 3, sloKerndoelen: ['23C', '21B'] },                                // 23B→21B: onderzoek + bronnen evalueren
   { id: 'tech-impact-analyst', title: 'Tech Impact Analyst', week: 3, yearGroup: 3, sloKerndoelen: ['23C', '21D'] },
+  { id: 'startup-pitch', title: 'Startup Pitch', week: 3, yearGroup: 3, sloKerndoelen: ['23C', '22A'] },                                                          // presentatie + business case = maatschappij + product
   { id: 'impact-review', title: 'Impact Review', week: 3, yearGroup: 3, sloKerndoelen: ['23C'] },                                                              // -23B: review = puur maatschappij
   { id: 'welzijnsonderzoeker', title: 'Welzijnsonderzoeker', week: 3, yearGroup: 3, sloKerndoelen: ['23B', '21C', '23C'] },                                    // welzijnsonderzoek via data-analyse + maatschappij
 
