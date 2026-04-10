@@ -404,14 +404,10 @@ export const ScholenLanding: React.FC = () => {
                     <div className="hidden lg:flex items-center gap-7">
                         {[
                             { label: 'Waarom DGSkills', section: SECTION_IDS.features },
-                            { label: 'Op maat', section: SECTION_IDS.customization },
                             { label: 'Kerndoelen', section: SECTION_IDS.slo },
-                            { label: 'Veelgestelde vragen', section: SECTION_IDS.faq },
-                            { label: 'Gratis pilot', section: SECTION_IDS.contact },
                         ].map(item => (
                             <button key={item.label} onClick={() => scrollTo(item.section)} className="text-[13px] font-medium transition-colors focus-visible:ring-2 focus-visible:rounded-md" style={{ color: C.textMuted }} onMouseEnter={e => (e.currentTarget.style.color = C.text)} onMouseLeave={e => (e.currentTarget.style.color = C.textMuted)}>{item.label}</button>
                         ))}
-                        <a href="/compliance-hub" className="text-[13px] font-medium transition-colors" style={{ color: C.textMuted }} onMouseEnter={e => (e.currentTarget.style.color = C.text)} onMouseLeave={e => (e.currentTarget.style.color = C.textMuted)}>Compliance Hub</a>
                         <div className="h-4 w-px mx-1" style={{ backgroundColor: C.border }} aria-hidden="true" />
                         <a href="/login" className="text-[13px] font-medium transition-colors" style={{ color: C.textMuted }} onMouseEnter={e => (e.currentTarget.style.color = C.text)} onMouseLeave={e => (e.currentTarget.style.color = C.textMuted)}>Inloggen</a>
                         <button
@@ -435,14 +431,10 @@ export const ScholenLanding: React.FC = () => {
                         <div className="px-6 py-4 space-y-1">
                             {[
                                 { label: 'Waarom DGSkills', section: SECTION_IDS.features },
-                                { label: 'Op maat', section: SECTION_IDS.customization },
                                 { label: 'Kerndoelen', section: SECTION_IDS.slo },
-                                { label: 'Veelgestelde vragen', section: SECTION_IDS.faq },
-                                { label: 'Gratis pilot', section: SECTION_IDS.contact },
                             ].map(item => (
                                 <button key={item.label} onClick={() => scrollTo(item.section)} className="block w-full text-left px-3 py-3 text-sm rounded-lg transition-colors" style={{ color: C.text }} onMouseEnter={e => (e.currentTarget.style.backgroundColor = C.bgAlt)} onMouseLeave={e => (e.currentTarget.style.backgroundColor = 'transparent')}>{item.label}</button>
                             ))}
-                            <a href="/compliance-hub" className="block w-full text-left px-3 py-3 text-sm rounded-lg" style={{ color: C.text }}>Compliance Hub</a>
                             <div className="pt-4 space-y-2">
                                 <a href="/login" className="block w-full text-center py-3 text-sm font-semibold rounded-full" style={{ color: C.text, border: `1.5px solid ${C.border}` }}>Inloggen</a>
                                 <button onClick={() => scrollTo(SECTION_IDS.contact)} className="block w-full text-center py-3 text-sm font-semibold text-white rounded-full" style={{ backgroundColor: C.accent }}>Pilot aanvragen</button>
@@ -976,6 +968,7 @@ export const ScholenLanding: React.FC = () => {
                             <a href="/ict/privacy/cookies" className="hover:text-white transition-colors">Cookies</a>
                             <a href="/ict/privacy/ai" className="hover:text-white transition-colors">AI Act</a>
                             <a href="/compliance-hub" className="hover:text-white transition-colors">Compliance Hub</a>
+                            <a href="#veelgestelde-vragen" className="hover:text-white transition-colors">Veelgestelde vragen</a>
                             <span style={{ color: `${C.bg}22` }}>&middot;</span>
                             <a href="/login" className="hover:text-white transition-colors">Inloggen</a>
                         </div>
