@@ -33,3 +33,9 @@
 - **Datum:** 3 april 2026
 - **Wat gedaan:** Implementatieplan opgesteld + `.claude/` bestanden aangemaakt
 - **Beslissingen:** 6 fasen geprioriteerd (A-F), focus op A/B/C voor mei-deadline
+
+## Sessie-continuïteit
+
+- **Sessienummer:** 2 (volgende sessie)
+- **Streak:** 1 (actief sinds sessie 1)
+- **Voortgangslog:** `.claude/progress-log.md` — Claude schrijft hier automatisch na elke sessie
