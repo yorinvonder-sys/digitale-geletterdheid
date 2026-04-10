@@ -43,6 +43,8 @@ Je draait een HIGH RISK AI-systeem voor minderjarigen als eenmanszaak. Dit betek
 - Cyberverzekering afsluiten (EUR 500-1.500/jaar)
 - **Totaal: ~EUR 2.000 eenmalig + ~EUR 1.000/jaar**
 
+> **Fiscale nuance:** Het eerdere juridisch rapport (09, feb 2026) adviseerde de eenmanszaak te behouden zolang de omzet onder EUR 80.000 bleef vanwege de startersaftrek en zelfstandigenaftrek. Die fiscale voordelen zijn reeel (meerdere duizenden euro's per jaar). Bij omzet onder EUR 80.000 kan een combinatie van cyber- + beroepsaansprakelijkheidsverzekering als eenmanszaak een aanvaardbaar alternatief zijn voor BV-oprichting in jaar 1. Zodra de omzet groeit of het aantal scholen toeneemt, wordt BV-conversie urgent.
+
 ### 2. EU AI ACT: 20 VAN 36 VEREISTEN NIET VOLDAAN, DEADLINE OVER 4 MAANDEN
 
 **Ernst: KRITIEK**
@@ -67,7 +69,11 @@ De vereisten die volledig ontbreken zijn de zwaarste:
 - Verbod op het aanbieden van het systeem in de EU
 - Scholen zijn als "deployer" medeverantwoordelijk en zullen contracten opzeggen
 
-**Eerlijk oordeel:** 120 dagen is krap maar haalbaar als je NU begint en focust. De documentatie-basis is goed (conformiteitsplan, risicoregister bestaan al als templates). Het is vooral formalisering en implementatie.
+**Eerlijk oordeel:** 120 dagen is krap en risicovol. De documentatie-basis is goed (conformiteitsplan, risicoregister bestaan als templates), maar niet alles is "puur formalisering":
+- **Documentatiewerk** (haalbaar in 120 dagen): Art. 9 formaliseren, Art. 11 Annex IV samenstellen, Art. 47 conformiteitsverklaring, Art. 49 EU-database registratie
+- **Technische implementatie** (krap in 120 dagen): Art. 10 bias-monitoring bouwen, Art. 14 docent-override UI, Art. 15 adversarial security testen, Art. 72 monitoring dashboard
+
+Het onderscheid is belangrijk: de technische onderdelen vergen development-tijd, niet alleen schrijftijd.
 
 ### 3. GEEN GETEKENDE VERWERKERSOVEREENKOMST MET ENIGE SCHOOL
 
@@ -110,6 +116,19 @@ Het Privacyconvenant Onderwijs is de de facto standaard voor EdTech in het Neder
 
 ---
 
+### 6. GEEN FUNCTIONARIS GEGEVENSBESCHERMING (FG/DPO) AANGESTELD
+
+**Ernst: HOOG**
+
+Het FG/DPO-adviesrapport (`fg-dpo-adviesrapport.md`) concludeert dat een externe FG "praktisch onmisbaar" is en adviseerde aanstelling voor februari-maart 2026. Die deadline is verstreken. DGSkills verwerkt als kernactiviteit structureel en stelselmatig leerlinggegevens — dat raakt aan Art. 37 lid 1 sub b AVG (grootschalige stelselmatige monitoring). Scholen die het Privacyconvenant onderschrijven verwachten een geregistreerde FG bij hun verwerkers.
+
+**Oplossing:**
+- Externe FG selecteren en registreren bij de AP
+- Geschatte kosten: EUR 275-550/maand (externe FG-dienst)
+- Doorlooptijd: 2-4 weken
+
+---
+
 ## WAT GOED IS (credit where due)
 
 Voor een solo-founder pre-revenue startup is dit **uitzonderlijk**.
@@ -120,7 +139,8 @@ Voor een solo-founder pre-revenue startup is dit **uitzonderlijk**.
 - Compleet DPA-pakket (A t/m E) op basis van Model 4.0
 - AI Act conformiteitsplan met artikelsgewijze analyse
 - Risicoregister specifiek voor AI Act
-- Privacyverklaring, verwerkingsregister, FG-adviesrapport
+- Privacyverklaring, FG-adviesrapport
+- Verwerkingsregister bestaat (`verwerkingsregister.md`, v1.1, 23 feb 2026) maar de status ten opzichte van Art. 30 AVG moet nog formeel worden vastgesteld -- het eerdere juridisch rapport (09, feb 2026) markeerde dit als "niet voldaan"
 - **Alle `[invullen]` placeholders zijn gevuld** (opgelost 28 maart 2026)
 
 ### Technische beveiliging (7.5/10)
@@ -183,42 +203,44 @@ Voor een solo-founder pre-revenue startup is dit **uitzonderlijk**.
 | 3 | **Cyberverzekering** | EUR 500-1.500/jr | 1 dag | Dekt datalekken |
 | 4 | **DPA's laten tekenen door pilotscholen** | EUR 0 | 1-2 weken | Juridische basis voor verwerking |
 | 5 | **DPIA formeel afronden** (sign-off toevoegen) | EUR 0 | 2 dagen | AVG Art. 35 compliance |
-| **Subtotaal** | | **~EUR 2.500 + ~EUR 1.500/jr** | | |
+| 6 | **Datalekregister + 72-uurs meldprocedure** opstellen | EUR 0 | 1 dag | Verplicht zodra leerlingdata wordt verwerkt |
+| 7 | **Externe FG/DPO** selecteren en registreren bij AP | EUR 275-550/mnd | 2-4 weken | AVG Art. 37, verwacht door scholen |
+| **Subtotaal** | | **~EUR 2.500 + ~EUR 5.000/jr** | | |
 
 ### FASE 2: AI ACT FUNDAMENT (mei -- juni 2026)
 
 | # | Actie | Kosten | Tijd |
 |---|-------|--------|------|
-| 6 | **Risicobeheersysteem formaliseren** (Art. 9) -- register al aanwezig, moet worden gedocumenteerd als levend systeem | EUR 0 (zelf) | 1 week |
-| 7 | **Docent-override voor STEP_COMPLETE** implementeren (Art. 14) -- code structuur bestaat al (`teacher_step_overrides` tabel + RPC) | EUR 0 (zelf) | 2-3 weken |
-| 8 | **Kwaliteitsmanagementsysteem** opzetten (Art. 17) | EUR 0-2.000 | 3-4 weken |
-| 9 | **Post-market monitoring** procedure schrijven (Art. 72) | EUR 0 | 1 week |
-| 10 | **Annex IV technische documentatie** completeren (Art. 11) -- template 40% klaar | EUR 0 | 2-3 weken |
+| 8 | **Risicobeheersysteem formaliseren** (Art. 9) -- register al aanwezig, documentatie-werk | EUR 0 (zelf) | 1 week |
+| 9 | **Docent-override voor STEP_COMPLETE** implementeren (Art. 14) -- technische implementatie, code structuur bestaat al | EUR 0 (zelf) | 2-3 weken |
+| 10 | **Kwaliteitsmanagementsysteem** opzetten (Art. 17) -- documentatie + processen | EUR 0-2.000 | 3-4 weken |
+| 11 | **Post-market monitoring** procedure schrijven (Art. 72) -- documentatie-werk | EUR 0 | 1 week |
+| 12 | **Annex IV technische documentatie** completeren (Art. 11) -- template 40% klaar, documentatie-werk | EUR 0 | 2-3 weken |
+| 13 | **Bias-monitoring** opzetten (Art. 10) -- technische implementatie, vmbo/havo/vwo differentiatie testen | EUR 0 | 2 weken |
 
 ### FASE 3: CONFORMITEIT (juli 2026)
 
 | # | Actie | Kosten | Tijd |
 |---|-------|--------|------|
-| 11 | **Interne conformiteitsbeoordeling** (Art. 43 / Annex VI) | EUR 0-1.000 | 2 weken |
-| 12 | **EU-conformiteitsverklaring** opstellen (Art. 47) | EUR 0 | 1 week |
-| 13 | **Registratie EU AI-database** (Art. 49) | EUR 0 | 1-2 dagen |
-| 14 | **CE-markering** documenteren (Art. 49) | EUR 0 | 1 dag |
+| 14 | **Interne conformiteitsbeoordeling** (Art. 43 / Annex VI) | EUR 0-1.000 | 2 weken |
+| 15 | **EU-conformiteitsverklaring** opstellen (Art. 47) | EUR 0 | 1 week |
+| 16 | **Registratie EU AI-database** (Art. 49) | EUR 0 | 1-2 dagen |
+| 17 | **CE-markering** documenteren (Art. 49) | EUR 0 | 1 dag |
 
 ### FASE 4: PROFESSIONALISERING (augustus -- december 2026)
 
 | # | Actie | Kosten |
 |---|-------|--------|
-| 15 | **Privacyconvenant Onderwijs** aansluiting | EUR 3.000-8.000 |
-| 16 | **Merknaam "DGSkills" registreren** bij BOIP | EUR 271 |
-| 17 | **Externe review door ICT-jurist** van alle documenten | EUR 2.000-5.000 |
-| 18 | **Datalekregister** en incidentprocedure operationeel maken | EUR 0 |
+| 18 | **Privacyconvenant Onderwijs** aansluiting | EUR 3.000-8.000 |
+| 19 | **Merknaam "DGSkills" registreren** bij BOIP | EUR 271 |
+| 20 | **Externe review door ICT-jurist** van alle documenten | EUR 2.000-5.000 |
 
 ### TOTALE GESCHATTE KOSTEN
 
 | Categorie | Bedrag |
 |-----------|--------|
-| Eenmalig (BV + verzekering + juridisch) | EUR 6.000 - 17.000 |
-| Jaarlijks (verzekeringen) | EUR 1.000 - 2.500 |
+| Eenmalig (BV + juridisch + Privacyconvenant + BOIP) | EUR 6.000 - 17.000 |
+| Jaarlijks (verzekeringen + externe FG) | EUR 4.500 - 9.500 |
 
 ---
 
@@ -286,3 +308,17 @@ Dit rapport is gebaseerd op analyse van de volgende documenten en code:
 - `docs/security/security-audit-rapport-dgskills.md` -- Security audit (15 maart 2026)
 - `docs/security/audit-ai-integrations-2026-04.md` -- AI integratie audit (3 april 2026)
 - `Regelgeving/AUDIT_RAPPORT_2026.md` -- Compliance audit (21 feb 2026)
+
+---
+
+## APPENDIX: PEER REVIEW BEVINDINGEN
+
+Dit rapport is na opstelling gereviewd door een onafhankelijke AI-review agent. De volgende 5 verbeterpunten zijn verwerkt:
+
+| # | Bevinding | Status |
+|---|-----------|--------|
+| 1 | **FG/DPO-verplichting volledig weggelaten** -- het FG-adviesrapport adviseerde aanstelling voor feb-mrt 2026, gemiste deadline niet benoemd | VERWERKT -- risico 6 toegevoegd, actie 7 in Fase 1 |
+| 2 | **Art. 30 verwerkingsregister status onduidelijk** -- het register bestaat maar formele status t.o.v. Art. 30 AVG niet vastgesteld | VERWERKT -- nuance toegevoegd in documentatiesectie |
+| 3 | **AI Act framing te optimistisch** -- onderscheid tussen documentatiewerk en technische implementatie ontbrak | VERWERKT -- per actie gelabeld als "documentatie" of "technische implementatie" |
+| 4 | **Datalekregister te laat gepland** -- stond in Fase 4 (aug-dec), maar is verplicht zodra verwerking begint | VERWERKT -- verplaatst naar Fase 1, actie 6 |
+| 5 | **BV-advies mist fiscale nuance** -- startersaftrek/zelfstandigenaftrek niet afgewogen tegen aansprakelijkheidsrisico | VERWERKT -- fiscale nuance als voetnoot toegevoegd |
