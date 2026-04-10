@@ -192,55 +192,76 @@ Voor een solo-founder pre-revenue startup is dit **uitzonderlijk**.
 
 ---
 
-## GEPRIORITEERD ACTIEPLAN
+## GEPRIORITEERD ACTIEPLAN (met marktprijzen april 2026)
+
+> Alle bedragen zijn voor DGSkills (jou), niet voor de school/klant.
+> Prijzen zijn gebaseerd op online marktonderzoek april 2026. Zie bronnen onderaan.
 
 ### FASE 1: BRANDJES BLUSSEN (nu -- 1 mei 2026)
 
-| # | Actie | Kosten | Tijd | Impact |
-|---|-------|--------|------|--------|
-| 1 | **BV oprichten** | EUR 500-1.200 | 1-2 weken | Beperkt persoonlijke aansprakelijkheid |
-| 2 | **Beroepsaansprakelijkheidsverzekering** | EUR 300-800/jr | 1 dag | Dekt professionele fouten |
-| 3 | **Cyberverzekering** | EUR 500-1.500/jr | 1 dag | Dekt datalekken |
-| 4 | **DPA's laten tekenen door pilotscholen** | EUR 0 | 1-2 weken | Juridische basis voor verwerking |
-| 5 | **DPIA formeel afronden** (sign-off toevoegen) | EUR 0 | 2 dagen | AVG Art. 35 compliance |
-| 6 | **Datalekregister + 72-uurs meldprocedure** opstellen | EUR 0 | 1 dag | Verplicht zodra leerlingdata wordt verwerkt |
-| 7 | **Externe FG/DPO** selecteren en registreren bij AP | EUR 275-550/mnd | 2-4 weken | AVG Art. 37, verwacht door scholen |
-| **Subtotaal** | | **~EUR 2.500 + ~EUR 5.000/jr** | | |
+| # | Actie | Kosten | Bron/toelichting | Tijd |
+|---|-------|--------|------------------|------|
+| 1 | **BV oprichten** | EUR 400-800 eenmalig | Online notaris (UwBVoprichten.nl vanaf EUR 399, NOTRS vergelijkbaar). Incl. KvK EUR 82 + UBO-registratie. Traditionele notaris: EUR 700-1.500. | 1-2 weken |
+| 2 | **Beroepsaansprakelijkheidsverzekering (BAV)** | EUR 300-1.200/jr | ICT-ZZP: EUR 25-100/mnd (Hiscox, De Goudse, Unive). Premie hangt af van verzekerd bedrag en dekkingsomvang. Combinatie BAV+AVB vaak voordeliger. | 1 dag |
+| 3 | **Cyberverzekering** | EUR 395-2.000/jr | Klein bedrijf met beperkte data: vanaf EUR 395/jr (VezekerCyber.nl). Met verwerking minderjarigen-data waarschijnlijk EUR 1.000-2.000/jr. Premies stijgen 20-25%/jaar. | 1 dag |
+| 4 | **DPA's laten tekenen door pilotscholen** | EUR 0 | Template is klaar (Model 4.0 basis). Enkel uitvoering. | 1-2 weken |
+| 5 | **DPIA formeel afronden** (sign-off toevoegen) | EUR 0 | Document van 54 pagina's bestaat. Enkel formaliseren met datum + handtekening. | 2 dagen |
+| 6 | **Datalekregister + 72-uurs meldprocedure** | EUR 0 | Zelf op te stellen. Template beschikbaar via AP-website. | 1 dag |
+| 7 | **Externe FG/DPO** selecteren en registreren bij AP | EUR 500-1.000/mnd | Klein MKB (<50 medewerkers): EUR 500-1.000/mnd (DPO Centre, Privacy Direct, FGonline.nl). Goedkoper alternatief: "FG-light" of gedeelde FG via bureau, vanaf ~EUR 300/mnd. Registratie bij AP is gratis. | 2-4 weken |
+| **Subtotaal Fase 1** | | **~EUR 800 eenmalig + EUR 7.000-16.000/jr** | | |
 
 ### FASE 2: AI ACT FUNDAMENT (mei -- juni 2026)
 
-| # | Actie | Kosten | Tijd |
-|---|-------|--------|------|
-| 8 | **Risicobeheersysteem formaliseren** (Art. 9) -- register al aanwezig, documentatie-werk | EUR 0 (zelf) | 1 week |
-| 9 | **Docent-override voor STEP_COMPLETE** implementeren (Art. 14) -- technische implementatie, code structuur bestaat al | EUR 0 (zelf) | 2-3 weken |
-| 10 | **Kwaliteitsmanagementsysteem** opzetten (Art. 17) -- documentatie + processen | EUR 0-2.000 | 3-4 weken |
-| 11 | **Post-market monitoring** procedure schrijven (Art. 72) -- documentatie-werk | EUR 0 | 1 week |
-| 12 | **Annex IV technische documentatie** completeren (Art. 11) -- template 40% klaar, documentatie-werk | EUR 0 | 2-3 weken |
-| 13 | **Bias-monitoring** opzetten (Art. 10) -- technische implementatie, vmbo/havo/vwo differentiatie testen | EUR 0 | 2 weken |
+| # | Actie | Kosten | Toelichting | Tijd |
+|---|-------|--------|-------------|------|
+| 8 | **Risicobeheersysteem formaliseren** (Art. 9) | EUR 0 (zelf) | Documentatie-werk. Register bestaat al, moet worden geformaliseerd als levend systeem. | 1 week |
+| 9 | **Docent-override voor STEP_COMPLETE** (Art. 14) | EUR 0 (zelf) | Technische implementatie. Code-structuur (`teacher_step_overrides` tabel + RPC) bestaat al. | 2-3 weken |
+| 10 | **Kwaliteitsmanagementsysteem** (Art. 17) | EUR 0-2.000 | Documentatie + processen. Evt. template via NEN of consultant. | 3-4 weken |
+| 11 | **Post-market monitoring** (Art. 72) | EUR 0 (zelf) | Documentatie-werk. Incidentlog + escalatieprocedure. | 1 week |
+| 12 | **Annex IV technische documentatie** (Art. 11) | EUR 0 (zelf) | Documentatie-werk. Template 40% klaar. | 2-3 weken |
+| 13 | **Bias-monitoring** (Art. 10) | EUR 0 (zelf) | Technische implementatie. vmbo/havo/vwo differentiatie testen. | 2 weken |
 
 ### FASE 3: CONFORMITEIT (juli 2026)
 
 | # | Actie | Kosten | Tijd |
 |---|-------|--------|------|
 | 14 | **Interne conformiteitsbeoordeling** (Art. 43 / Annex VI) | EUR 0-1.000 | 2 weken |
-| 15 | **EU-conformiteitsverklaring** opstellen (Art. 47) | EUR 0 | 1 week |
+| 15 | **EU-conformiteitsverklaring** (Art. 47) | EUR 0 | 1 week |
 | 16 | **Registratie EU AI-database** (Art. 49) | EUR 0 | 1-2 dagen |
 | 17 | **CE-markering** documenteren (Art. 49) | EUR 0 | 1 dag |
 
 ### FASE 4: PROFESSIONALISERING (augustus -- december 2026)
 
-| # | Actie | Kosten |
-|---|-------|--------|
-| 18 | **Privacyconvenant Onderwijs** aansluiting | EUR 3.000-8.000 |
-| 19 | **Merknaam "DGSkills" registreren** bij BOIP | EUR 271 |
-| 20 | **Externe review door ICT-jurist** van alle documenten | EUR 2.000-5.000 |
+| # | Actie | Kosten | Bron/toelichting |
+|---|-------|--------|------------------|
+| 18 | **Privacyconvenant Onderwijs** aansluiting | Onbekend -- navragen | Kosten niet publiek beschikbaar. Mail info@privacyconvenant.nl. Eerdere schatting EUR 3.000-8.000 is niet geverifieerd. Let op: Model 4.0 deadline is 1 augustus 2026. |
+| 19 | **Merknaam "DGSkills" registreren** bij BOIP | EUR 244 (10 jaar) | 1 klasse = EUR 244, extra klasse EUR 81. Registratieproces duurt 3-4 maanden. |
+| 20 | **Externe review door ICT-jurist** | EUR 1.000-5.000 | AV opstellen via ICTrecht generator: vanaf EUR 45. Maatwerk review DPA+AV+DPIA door kantoor (ICTrecht, Legalz, LAWFOX): EUR 1.000-5.000 afhankelijk van scope. NLdigital-lidmaatschap (incl. standaard AV): Start-IT korting 50% eerste jaar. |
 
-### TOTALE GESCHATTE KOSTEN
+### TOTALE GESCHATTE KOSTEN (marktprijzen april 2026)
 
-| Categorie | Bedrag |
-|-----------|--------|
-| Eenmalig (BV + juridisch + Privacyconvenant + BOIP) | EUR 6.000 - 17.000 |
-| Jaarlijks (verzekeringen + externe FG) | EUR 4.500 - 9.500 |
+| Categorie | Conservatief | Ruim |
+|-----------|-------------|------|
+| **Eenmalig** (BV + BOIP + juridische review) | EUR 1.650 | EUR 6.050 |
+| **Jaarlijks** (BAV + cyber + FG) | EUR 4.300 | EUR 16.200 |
+| **Onbekend** (Privacyconvenant) | Navragen | Navragen |
+
+**Belangrijke correctie t.o.v. eerdere schatting:** De externe FG/DPO is de grootste kostenpost (EUR 6.000-12.000/jaar). Dit was in de eerdere versie onderschat op EUR 3.300-6.600/jaar. Alternatief: een "FG-light" arrangement of gedeelde FG kan goedkoper, maar check of dit voldoet aan Art. 37 AVG eisen.
+
+### Goedkoopste pad (minimaal verantwoord)
+
+Als je de kosten wilt minimaliseren maar juridisch verantwoord wilt starten:
+
+| Actie | Kosten |
+|-------|--------|
+| BV via online notaris | EUR 400 |
+| Combi BAV+AVB verzekering | EUR 750/jr |
+| Cyberverzekering basis | EUR 500/jr |
+| Gedeelde FG ("FG-light") | EUR 300/mnd = EUR 3.600/jr |
+| BOIP merkregistratie | EUR 244 |
+| AV via ICTrecht generator + eigen review | EUR 45 |
+| **Totaal jaar 1** | **~EUR 5.540** |
+| **Totaal jaar 2+** | **~EUR 4.850/jr** |
 
 ---
 
@@ -276,7 +297,7 @@ Voor commerciele lancering (betaalde licenties) is minimaal nodig:
 
 ## SAMENVATTING VOOR IN EEN GESPREK
 
-> "DGSkills heeft uitzonderlijk goede compliance-documentatie voor de fase waarin het zit -- 22 documenten, 350+ pagina's, correcte HIGH RISK classificatie. De technische beveiliging (prompt injection, RLS, data export/verwijdering, EU-dataresidentie) is beter dan veel gevestigde EdTech-bedrijven. Maar er zijn drie dingen die nu moeten: de bedrijfsstructuur beschermt de founder niet (eenmanszaak zonder verzekering), de EU AI Act deadline van 2 augustus vereist nog 4 maanden intensief werk, en er is nog geen enkele getekende verwerkersovereenkomst met een school. Met ~EUR 6.000-17.000 investering en 4 maanden gefocust werk is dit op te lossen."
+> "DGSkills heeft uitzonderlijk goede compliance-documentatie voor de fase waarin het zit -- 22 documenten, 350+ pagina's, correcte HIGH RISK classificatie. De technische beveiliging (prompt injection, RLS, data export/verwijdering, EU-dataresidentie) is beter dan veel gevestigde EdTech-bedrijven. Maar er zijn drie dingen die nu moeten: de bedrijfsstructuur beschermt de founder niet (eenmanszaak zonder verzekering), de EU AI Act deadline van 2 augustus vereist nog 4 maanden intensief werk, en er is nog geen enkele getekende verwerkersovereenkomst met een school. Met ~EUR 5.500 in jaar 1 (goedkoopste pad) tot EUR 22.000 (ruim) en 4 maanden gefocust werk is dit op te lossen."
 
 ---
 
@@ -308,6 +329,23 @@ Dit rapport is gebaseerd op analyse van de volgende documenten en code:
 - `docs/security/security-audit-rapport-dgskills.md` -- Security audit (15 maart 2026)
 - `docs/security/audit-ai-integrations-2026-04.md` -- AI integratie audit (3 april 2026)
 - `Regelgeving/AUDIT_RAPPORT_2026.md` -- Compliance audit (21 feb 2026)
+
+### Online bronnen kostenraming (geraadpleegd april 2026)
+- [BV oprichten kosten](https://www.degoedkoopstenotaris.nl/informatie/kosten-bv-oprichten) -- EUR 500-1.500 (traditioneel), vanaf EUR 399 (online)
+- [BV oprichten 2026 overzicht](https://www.firm24.com/kennisbank/article/kosten-oprichten-bv/) -- Tarieven en startkapitaalvereisten
+- [BAV ICT ZZP - Hiscox](https://www.hiscox.nl/beroepsaansprakelijkheidsverzekering-ICT) -- Vanaf EUR 25-100/mnd
+- [BAV ZZP kosten overzicht](https://www.zzp-nederland.nl/kennisbank/wat-kosten-verzekeringen-voor-zzpers) -- EUR 20-100/mnd afhankelijk van beroep
+- [Cyberverzekering kosten](https://verzekercyber.nl/wat-kost-een-cyberverzekering/) -- EUR 500-5.000/jr voor MKB
+- [Cyberverzekering vergelijken 2026](https://www.beterverzekeren.nl/bedrijfsverzekeringen/cybercrime-verzekering/) -- Vanaf EUR 395/jr
+- [Externe FG/DPO - DPO Centre](https://www.dpocentre.nl/en/diensten/uitbestede-fg-diensten/) -- EUR 500-2.000/mnd
+- [Externe FG - Privacy Direct](https://privacydirect.nl/externe-fg/) -- Flexibele pakketten voor MKB
+- [FG online maandservice](https://www.fgonline.nl/product/15553918/service-externe-functionaris-gegevensbescherming-per-maand) -- Maandelijkse FG-dienst
+- [BOIP merkregistratie](https://www.boip.int/nl/ie-professionals/registratie-onderhoud/registreren) -- EUR 244 per 10 jaar (1 klasse)
+- [Privacyconvenant Onderwijs](https://www.privacyconvenant.nl/) -- Kosten niet publiek, navragen via info@privacyconvenant.nl
+- [Privacyconvenant Model 4.0 deadline](https://www.privacyteam.nl/leveranciers-voor-het-onderwijs-opgelet) -- Deadline 1 augustus 2026
+- [ICTrecht contracten](https://www.ictrecht.nl/ict-contracten) -- AV, DPA, SaaS-overeenkomsten
+- [AV generator ICTrecht/Juridox](https://www.ictrecht.nl/over-ons/visie-werkwijze/ondersteuning-op-maat) -- Vanaf EUR 45 via generator
+- [NLdigital Voorwaarden 2025](https://www.nldigital.nl/kennis-producten/nldigital-voorwaarden-2025/) -- Incl. AI Act, NIS2, privacy hoofdstuk
 
 ---
 
