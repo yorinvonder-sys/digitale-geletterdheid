@@ -36,7 +36,7 @@
     "@types/dompurify": "^3.0.5",
     "@types/three": "^0.182.0",
     "c2pa": "^0.30.17",
-    "dompurify": "3.3.1",
+    "dompurify": "^3.3.3",
     "exceljs": "^4.4.0",
     "framer-motion": "^12.23.26",
     "jspdf": "^4.2.0",
