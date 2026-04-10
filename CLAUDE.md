@@ -7,6 +7,7 @@
 @.claude/adhd-format.md
 @.claude/current-task.md
 @.claude/task-queue.md
+@.claude/progress-log.md
 
 ## Stack
 - React 19 + TypeScript + Vite
@@ -85,6 +86,9 @@ Bij een onvolledige prompt moet Claude meestal niet terugkaatsen met een lijst o
 - Zeg expliciet `Jij hoeft nu niets te doen.` als er geen actie nodig is van de gebruiker.
 - In ELKE nieuwe sessie moet de eerste inhoudelijke reactie direct beginnen met het statusblok uit `.claude/adhd-format.md`.
 - Sla dit niet over, ook niet als de gebruiker alleen een korte opdracht geeft.
+- **Sessie-opening ritueel:** Volg stappen 1-4 uit `.claude/adhd-format.md` (Identiteit → Momentum → Statusblok → Volgende stap).
+- **Sessie-afsluiting:** Schrijf een entry in `.claude/progress-log.md`, update stats en baton. Zie `.claude/adhd-format.md`.
+- **Progress log:** `.claude/progress-log.md` is de bron voor streak-tracking en momentum. Lees de laatste 3 entries bij sessie-start.
 
 ## MCP Servers
 - **Supabase:** database queries, schema, migrations, edge functions, logs
