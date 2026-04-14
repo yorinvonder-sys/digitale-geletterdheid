@@ -1,6 +1,8 @@
-# Claude Code (settings only — project docs are tracked)
+# Claude Code (settings only — project docs and skills are tracked)
 .claude/*
 !.claude/*.md
+!.claude/skills/
+!.claude/skills/**
 
 # Logs
 logs
