@@ -14,7 +14,7 @@
 | **AVG/GDPR** | ORANJE | 6.5/10 |
 | **EU AI Act** | ROOD | 3/10 |
 | **Contractueel** | ORANJE | 6/10 |
-| **Ondernemingsrecht** | ROOD | 4/10 |
+| **Ondernemingsrecht** | ORANJE | 5/10 (met verzekering 6.5/10, zonder 4/10) |
 | **Technische beveiliging** | GROEN | 7.5/10 |
 | **Kinderbescherming** | ORANJE | 6/10 |
 | **TOTAAL** | **ORANJE/ROOD** | **5.5/10** |
@@ -25,25 +25,73 @@
 
 ## DE 5 GROOTSTE JURIDISCHE RISICO'S (eerlijk en ongezoet)
 
-### 1. EENMANSZAAK + AI + MINDERJARIGEN = PERSOONLIJK FAILLISSEMENT-RISICO
+### 1. EENMANSZAAK ZONDER VERZEKERING = ONVERANTWOORD RISICO (maar BV is niet per se urgent)
 
-**Ernst: KRITIEK**
+**Ernst: HOOG (niet KRITIEK als verzekeringen geregeld zijn)**
 
-Je draait een HIGH RISK AI-systeem voor minderjarigen als eenmanszaak. Dit betekent:
-- **Onbeperkte persoonlijke aansprakelijkheid** voor alles wat misgaat
-- Als een leerling schade lijdt door een AI-fout (verkeerde content, datalek, welzijnsfalen) -> jouw privevermogen is aansprakelijk
-- **Geen beroepsaansprakelijkheidsverzekering** en **geen cyberverzekering**
-- Bij een datalek met 1.000+ leerlingen kan de AP een boete opleggen tot 4% van de omzet (Art. 83 AVG), maar belangrijker: de reputatieschade en advocaatkosten zijn als eenmanszaak persoonlijk vernietigend
+> **Nuance na doorvraag:** De eerdere stellingname "je moet direct een BV" was te stellig. De werkelijkheid is genuanceerder.
 
-**Wat een jurist zou zeggen:** "Je bent gek als je dit als eenmanszaak doet. Een incident en je bent persoonlijk failliet."
+**Wat waar is:**
+- Je draait een HIGH RISK AI-systeem voor minderjarigen als eenmanszaak
+- Zonder verzekering is je privevermogen aansprakelijk voor professionele fouten, datalekken, en schade aan leerlingen
+- Bij een ernstig incident (datalek 1.000+ leerlingen, welzijnsfalen) kunnen de kosten je persoonlijk vernietigen
 
-**Oplossing:**
-- BV oprichten (EUR 500-1.200, 1-2 weken) -- liever vandaag dan morgen
-- Beroepsaansprakelijkheidsverzekering afsluiten (EUR 300-800/jaar)
-- Cyberverzekering afsluiten (EUR 500-1.500/jaar)
-- **Totaal: ~EUR 2.000 eenmalig + ~EUR 1.000/jaar**
+**Wat NIET waar is:**
+- "Je moet per se vandaag een BV oprichten" -- overdreven voor een pre-revenue solo founder
+- "BV beschermt je tegen alle aansprakelijkheid" -- ook bestuurdersaansprakelijkheid bestaat
+- "Eenmanszaak is onverantwoord" -- met goede verzekeringen is het in pilotfase verdedigbaar
 
-> **Fiscale nuance:** Het eerdere juridisch rapport (09, feb 2026) adviseerde de eenmanszaak te behouden zolang de omzet onder EUR 80.000 bleef vanwege de startersaftrek en zelfstandigenaftrek. Die fiscale voordelen zijn reeel (meerdere duizenden euro's per jaar). Bij omzet onder EUR 80.000 kan een combinatie van cyber- + beroepsaansprakelijkheidsverzekering als eenmanszaak een aanvaardbaar alternatief zijn voor BV-oprichting in jaar 1. Zodra de omzet groeit of het aantal scholen toeneemt, wordt BV-conversie urgent.
+**Wanneer eenmanszaak voldoende is (met verzekeringen):**
+- Pre-revenue of omzet <EUR 80.000/jaar
+- Geen medewerkers in dienst
+- Geen investeerders
+- Pilots en beperkt aantal scholen (<5-10)
+- Geen bestuurscontracten
+
+**Wanneer BV noodzakelijk wordt (triggers):**
+| Trigger | Waarom |
+|---------|--------|
+| Eerste betaalde school | Commerciele relatie, hoger risico |
+| Bestuurscontract (3+ scholen) | Contractwaarde vaak EUR 30.000+/jaar |
+| Omzet nadert EUR 80.000 | Vpb wordt fiscaal voordeliger dan IB |
+| Investeerder wil instappen | Investering kan niet in eenmanszaak |
+| Je neemt een medewerker aan | Werkgeversrisico |
+| School eist expliciet BV | Zeldzaam, maar komt voor bij grote besturen |
+
+**Fiscaal voordeel eenmanszaak in de eerste jaren:**
+- Startersaftrek: ~EUR 2.123
+- Zelfstandigenaftrek: ~EUR 3.750
+- MKB-winstvrijstelling: 14% van de winst
+- Totaal: **EUR 5.000-10.000/jaar fiscaal voordeel** bij omzet <EUR 80.000
+
+**Wat verzekeringen wel dekken (ook zonder BV):**
+- Professionele fouten in code/advies (BAV)
+- Datalekken + incidentkosten (Cyberverzekering)
+- Civielrechtelijke claims van scholen/ouders (BAV + AVB)
+- Een deel van AP-boetes (check polisvoorwaarden specifiek)
+
+**Wat verzekeringen NIET dekken:**
+- Opzet of grove nalatigheid
+- Boetes voor strafbare feiten
+- Claims boven het verzekerd bedrag (typisch EUR 500K-2.5M)
+- Reputatieschade
+
+**Pragmatisch pad:**
+
+| Fase | Structuur | Verzekering verplicht? |
+|------|-----------|----------------------|
+| **Nu - eerste 3 pilots** | Eenmanszaak | JA -- BAV + Cyber |
+| **Eerste betaalde school** | Eenmanszaak | JA -- BAV + Cyber |
+| **Groei (>EUR 50K omzet OF bestuurscontract)** | BV oprichten | JA -- BAV + Cyber + AVB |
+
+**Harde minimum-eis NU:**
+- Beroepsaansprakelijkheidsverzekering afsluiten (EUR 300-1.200/jaar)
+- Cyberverzekering afsluiten (EUR 395-2.000/jaar)
+- **Totaal: EUR 700-3.200/jaar -- dit kun je niet uitstellen**
+
+De BV kan wachten tot je eerste betaalde klant of bestuurscontract. Niet eerder, tenzij je een specifieke trigger ziet.
+
+> **Disclaimer:** Dit is geen persoonlijk juridisch advies. Overleg deze keuze met een ICT-jurist of accountant (intakegesprek EUR 100-200) om het af te stemmen op jouw concrete situatie.
 
 ### 2. EU AI ACT: 20 VAN 36 VEREISTEN NIET VOLDAAN, DEADLINE OVER 4 MAANDEN
 
@@ -201,9 +249,9 @@ Voor een solo-founder pre-revenue startup is dit **uitzonderlijk**.
 
 | # | Actie | Kosten | Bron/toelichting | Tijd |
 |---|-------|--------|------------------|------|
-| 1 | **BV oprichten** | EUR 400-800 eenmalig | Online notaris (UwBVoprichten.nl vanaf EUR 399, NOTRS vergelijkbaar). Incl. KvK EUR 82 + UBO-registratie. Traditionele notaris: EUR 700-1.500. | 1-2 weken |
-| 2 | **Beroepsaansprakelijkheidsverzekering (BAV)** | EUR 300-1.200/jr | ICT-ZZP: EUR 25-100/mnd (Hiscox, De Goudse, Unive). Premie hangt af van verzekerd bedrag en dekkingsomvang. Combinatie BAV+AVB vaak voordeliger. | 1 dag |
-| 3 | **Cyberverzekering** | EUR 395-2.000/jr | Klein bedrijf met beperkte data: vanaf EUR 395/jr (VezekerCyber.nl). Met verwerking minderjarigen-data waarschijnlijk EUR 1.000-2.000/jr. Premies stijgen 20-25%/jaar. | 1 dag |
+| 1 | **Beroepsaansprakelijkheidsverzekering (BAV)** -- HARDE MINIMUM | EUR 300-1.200/jr | ICT-ZZP: EUR 25-100/mnd (Hiscox, De Goudse, Unive). Premie hangt af van verzekerd bedrag en dekkingsomvang. Combinatie BAV+AVB vaak voordeliger. | 1 dag |
+| 2 | **Cyberverzekering** -- HARDE MINIMUM | EUR 395-2.000/jr | Klein bedrijf met beperkte data: vanaf EUR 395/jr (VezekerCyber.nl). Met verwerking minderjarigen-data waarschijnlijk EUR 1.000-2.000/jr. Premies stijgen 20-25%/jaar. | 1 dag |
+| 3 | **BV oprichten** -- ALLEEN BIJ TRIGGER (eerste betaalde school, bestuurscontract, omzet >EUR 50K, investeerder, medewerker) | EUR 400-800 eenmalig | Online notaris (UwBVoprichten.nl vanaf EUR 399, NOTRS vergelijkbaar). Incl. KvK EUR 82 + UBO-registratie. Traditionele notaris: EUR 700-1.500. Kan wachten tot trigger. | 1-2 weken |
 | 4 | **DPA's laten tekenen door pilotscholen** | EUR 0 | Template is klaar (Model 4.0 basis). Enkel uitvoering. | 1-2 weken |
 | 5 | **DPIA formeel afronden** (sign-off toevoegen) | EUR 0 | Document van 54 pagina's bestaat. Enkel formaliseren met datum + handtekening. | 2 dagen |
 | 6 | **Datalekregister + 72-uurs meldprocedure** | EUR 0 | Zelf op te stellen. Template beschikbaar via AP-website. | 1 dag |
@@ -360,3 +408,4 @@ Dit rapport is na opstelling gereviewd door een onafhankelijke AI-review agent. 
 | 3 | **AI Act framing te optimistisch** -- onderscheid tussen documentatiewerk en technische implementatie ontbrak | VERWERKT -- per actie gelabeld als "documentatie" of "technische implementatie" |
 | 4 | **Datalekregister te laat gepland** -- stond in Fase 4 (aug-dec), maar is verplicht zodra verwerking begint | VERWERKT -- verplaatst naar Fase 1, actie 6 |
 | 5 | **BV-advies mist fiscale nuance** -- startersaftrek/zelfstandigenaftrek niet afgewogen tegen aansprakelijkheidsrisico | VERWERKT -- fiscale nuance als voetnoot toegevoegd |
+| 6 | **BV-advies was te stellig** -- "direct BV oprichten" onderschat wat verzekeringen wel dekken en overschat urgentie voor pre-revenue solo founder | VERWERKT (v3) -- risico 1 volledig herschreven met trigger-gebaseerde beslissingsmatrix, BV verplaatst van harde eis naar "bij trigger", verzekeringen als harde minimum benadrukt |
