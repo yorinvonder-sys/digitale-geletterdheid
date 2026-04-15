@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { MessageCircle } from 'lucide-react';
 import type { TemplateMissionProps, BadgeConfig, FollowUpQuestion } from '../shared/types';
 import { PhaseHeader } from '../shared/PhaseHeader';
 import { CompletionScreen } from '../shared/CompletionScreen';
@@ -10,6 +11,7 @@ import { MatchPairs } from './sub/MatchPairs';
 import { Categorize } from './sub/Categorize';
 import { RapidFire } from './sub/RapidFire';
 import { useMissionAutoSave } from '@/hooks/useMissionAutoSave';
+import { StudentAIChat } from '@/components/StudentAIChat';
 
 // === Config types (exported for test configs) ===
 
@@ -70,6 +72,8 @@ export interface ReviewArenaConfig {
     maxScore: number;
     badges: BadgeConfig[];
     takeaways: string[];
+    enableChat?: boolean;
+    chatRoleId?: string;
 }
 
 // === State ===
@@ -111,6 +115,21 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
         missionId,
         initialState
     );
+
+    const [isChatOpen, setIsChatOpen] = useState(false);
+
+    const userId = (() => {
+        try {
+            const key = Object.keys(localStorage).find((k) =>
+                /^sb-[a-z0-9_-]+-auth-token$/i.test(k)
+            );
+            if (!key) return null;
+            const raw = localStorage.getItem(key);
+            return raw ? JSON.parse(raw)?.user?.id : null;
+        } catch {
+            return null;
+        }
+    })();
 
     // Local (non-persisted) follow-up UI state
     const [pendingScore, setPendingScore] = useState<number | null>(null);
@@ -304,6 +323,40 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
                     </motion.div>
                 </AnimatePresence>
             </div>
+
+            {/* AI Chat overlay */}
+            {config.enableChat && (
+                <>
+                    <StudentAIChat
+                        roleId={config.chatRoleId ?? 'student-assistant'}
+                        userIdentifier={userId ?? 'anonymous'}
+                        isOpen={isChatOpen}
+                        onOpenChange={setIsChatOpen}
+                        context={{
+                            currentRound: {
+                                title: round.title,
+                                description: round.description,
+                                type: round.type,
+                            },
+                            progress: {
+                                round: state.currentRound + 1,
+                                total: config.rounds.length,
+                                score: totalScore,
+                                maxScore: config.maxScore,
+                            },
+                        }}
+                    />
+                    {!isChatOpen && (
+                        <button
+                            onClick={() => setIsChatOpen(true)}
+                            className="fixed bottom-6 right-6 z-40 w-13 h-13 bg-gradient-to-br from-[#D97757] to-[#C46849] hover:from-[#C46849] hover:to-[#B05A3C] text-white rounded-full shadow-lg flex items-center justify-center transition-all duration-200 active:scale-95"
+                            aria-label="Open AI-assistent"
+                        >
+                            <MessageCircle size={22} />
+                        </button>
+                    )}
+                </>
+            )}
         </div>
     );
 };

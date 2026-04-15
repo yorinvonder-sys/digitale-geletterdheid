@@ -46,6 +46,13 @@ export const brandBuilderConfig: BuilderCanvasConfig = {
                 { id: 'kleur-rollen', label: 'Ik heb primaire, secundaire en accentkleur benoemd' },
             ],
             textPrompt: 'Beschrijf je kleurenpalet hier',
+            reflectionQuestion: {
+                question: 'Waarom is kleurcontrast belangrijk voor je merk?',
+                options: ['Het maakt je logo groter', 'Het verbetert leesbaarheid en toegankelijkheid', 'Het maakt de website sneller', 'Het is alleen belangrijk voor print'],
+                correctIndex: 1,
+                explanation: 'Goed kleurcontrast zorgt dat tekst leesbaar is voor iedereen, inclusief mensen met een visuele beperking. Dit is ook een wettelijke vereiste (WCAG).',
+                bonusPoints: 5,
+            },
         },
         {
             id: 'logo-concept',
@@ -84,6 +91,7 @@ export const brandBuilderConfig: BuilderCanvasConfig = {
         { minScore: 90, emoji: '🏆', title: 'Merkarchitect', color: '#F59E0B' },
         { minScore: 70, emoji: '🎨', title: 'Brand Designer', color: '#10B981' },
         { minScore: 50, emoji: '🖌️', title: 'Kleurenkenner', color: '#D97757' },
+        { minScore: 25, emoji: '💡', title: 'Beginnende Merkbouwer', color: '#8B5CF6' },
         { minScore: 0, emoji: '🌱', title: 'Op weg', color: '#6B6B66' },
     ],
     takeaways: [

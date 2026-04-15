@@ -87,6 +87,7 @@ export const innovationLabConfig: BuilderCanvasConfig = {
         { minScore: 90, emoji: '🏆', title: 'VN Innovator', color: '#F59E0B' },
         { minScore: 70, emoji: '🔬', title: 'Innovation Lab', color: '#10B981' },
         { minScore: 50, emoji: '💡', title: 'Probleemoplosser', color: '#D97757' },
+        { minScore: 25, emoji: '🔬', title: 'Beginnende Innovator', color: '#8B5CF6' },
         { minScore: 0, emoji: '🌱', title: 'Op weg', color: '#6B6B66' },
     ],
     takeaways: [

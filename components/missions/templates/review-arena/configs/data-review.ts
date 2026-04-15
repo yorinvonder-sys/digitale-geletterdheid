@@ -28,6 +28,12 @@ export const dataReviewConfig: ReviewArenaConfig = {
             color: '#6366F1',
         },
         {
+            minScore: 25,
+            emoji: '💡',
+            title: 'Kennis in opbouw',
+            color: '#8B5CF6',
+        },
+        {
             minScore: 0,
             emoji: '💪',
             title: 'Goede poging',

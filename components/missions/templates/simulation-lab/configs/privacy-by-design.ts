@@ -170,6 +170,13 @@ export const privacyByDesignConfig: SimulationLabConfig = {
                 'Stel de privacyinstellingen van je profiel in. Pas de schuifjes aan en kijk hoe jouw Privacy Score verandert.',
             visualType: 'meter',
             maxScore: 30,
+            followUp: {
+                question: 'Welk Privacy by Design-principe houdt in dat privacy de standaardinstelling moet zijn?',
+                options: ['Privacy als preventie', 'Privacy als standaard (default)', 'Privacy ingebouwd in ontwerp', 'End-to-end beveiliging'],
+                correctIndex: 1,
+                explanation: 'Privacy als standaard (Privacy by Default) betekent dat de meest privacyvriendelijke instelling automatisch actief is, zonder dat de gebruiker iets hoeft te doen.',
+                bonusPoints: 5,
+            },
             parameters: [
                 {
                     id: 'profielfoto',
@@ -388,6 +395,12 @@ export const privacyByDesignConfig: SimulationLabConfig = {
             emoji: '🛡️',
             title: 'Privacy Beginner',
             color: '#6B6B66',
+        },
+        {
+            minScore: 25,
+            emoji: '💡',
+            title: 'Startende Privacy Ontwerper',
+            color: '#8B5CF6',
         },
         {
             minScore: 0,

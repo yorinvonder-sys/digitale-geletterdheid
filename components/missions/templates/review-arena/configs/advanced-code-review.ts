@@ -28,6 +28,12 @@ const config: ReviewArenaConfig = {
             color: '#6366F1',
         },
         {
+            minScore: 25,
+            emoji: '💡',
+            title: 'Kennis in opbouw',
+            color: '#8B5CF6',
+        },
+        {
             minScore: 0,
             emoji: '💪',
             title: 'Goede poging',
@@ -94,6 +100,18 @@ const config: ReviewArenaConfig = {
             description:
                 'Bepaal bij elk scenario of het supervised learning (gelabelde data) of unsupervised learning (geen labels) betreft.',
             maxScore: 25,
+            followUp: {
+                question: 'Een streamingdienst wil films aanbevelen zonder dat gebruikers hun voorkeuren hebben aangegeven. Het model groepeert gebruikers automatisch op basis van kijkgedrag. Welk type ML is dit, en waarom?',
+                options: [
+                    'Supervised learning — het model leert van historische kijkdata met bekende uitkomsten',
+                    'Unsupervised learning — het model ontdekt zelf patronen zonder vooraf bepaalde labels',
+                    'Supervised learning — de streamingdienst heeft zelf de categorieën bepaald',
+                    'Unsupervised learning — er wordt geen data gebruikt, alleen algoritmes',
+                ],
+                correctIndex: 1,
+                explanation: 'Omdat er geen vooraf gelabelde categorieën zijn (de groepen bestaan niet eerder) ontdekt het model zelf structuur in de data: dat is unsupervised learning. Supervised learning vereist trainingsdata met bekende labels, zoals "kijker die actie-films leuk vindt". Historische data gebruiken maakt het nog niet supervised — het gaat om of er labels zijn.',
+                bonusPoints: 5,
+            },
             categories: ['Supervised learning', 'Unsupervised learning'],
             items: [
                 { label: 'E-mails classificeren als spam of niet-spam op basis van voorbeelden', correctCategory: 'Supervised learning' },
@@ -112,6 +130,18 @@ const config: ReviewArenaConfig = {
             title: 'AI & Geavanceerd Programmeren: Waar of Onwaar?',
             description: 'Acht snelle vragen over ML, neurale netwerken en API\'s.',
             maxScore: 25,
+            followUp: {
+                question: 'Een AI-model herkent honden en katten foutloos op alle 10.000 trainingsfoto\'s, maar scoort slechts 55% op nieuwe foto\'s. Wat is hier het meest waarschijnlijke probleem?',
+                options: [
+                    'Het model heeft te weinig epochs getraind',
+                    'Het model heeft overfitting — het heeft de trainingsdata gememoriseerd in plaats van patronen geleerd',
+                    'De testset bevat foto\'s van een verkeerde kwaliteit',
+                    'Het neuraal netwerk heeft te veel lagen voor dit probleem',
+                ],
+                correctIndex: 1,
+                explanation: 'Een model dat perfect scoort op trainingsdata maar slecht op nieuwe data is het klassieke teken van overfitting: het heeft de voorbeelden uit het hoofd geleerd zonder te generaliseren. Meer epochs verergert overfitting juist. Testset-kwaliteit is mogelijk, maar de beschreven patroon wijst direct op overfitting. Te veel lagen kan bijdragen, maar de diagnose op basis van deze uitkomst is overfitting.',
+                bonusPoints: 5,
+            },
             timePerQuestion: 12,
             questions: [
                 {
