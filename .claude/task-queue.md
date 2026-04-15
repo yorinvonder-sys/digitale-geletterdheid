@@ -7,31 +7,25 @@
 
 ## Wachtrij (in volgorde van prioriteit)
 
-### 1. Fase B — Compliance Hub finaliseren
-- **Werkstroom:** Compliance
-- **Sprint:** 5
-- **Beschrijving:** ComplianceHub.tsx updaten met alle 17 compliance-documenten. Compliance checklist pagina vullen. SLO-rapport pagina verifiëren.
-- **Done wanneer:** ICT-coördinatoren kunnen in 1 klik alle compliance-info vinden.
-
-### 2. Fase C — Onboarding & Trial Flow
+### 1. Fase C — Onboarding & Trial Flow
 - **Werkstroom:** Product
 - **Sprint:** 5
 - **Beschrijving:** Pilot-aanmeldformulier bouwen, docent-onboarding flow afronden, welkomstmail template, eerste-inlog wizard.
 - **Done wanneer:** Een docent kan zich aanmelden voor de pilot en direct aan de slag.
 
-### 3. Fase D — Assessment & Rapportage
+### 2. Fase D — Assessment & Rapportage
 - **Werkstroom:** Product
 - **Sprint:** 5-6
 - **Beschrijving:** Leerlingrapportages, docentdashboard met voortgangsoverzicht, SLO-koppeling in rapportages.
 - **Done wanneer:** Docenten zien per leerling welke SLO-doelen behaald zijn.
 
-### 4. Fase E — AI Act Compliance Code
+### 3. Fase E — AI Act Compliance Code
 - **Werkstroom:** Compliance
 - **Sprint:** 6
 - **Beschrijving:** Art. 9 risk management in code, Art. 12 logging implementatie, Art. 14 human oversight dashboard, conformiteitsverklaring genereren.
 - **Done wanneer:** Alle HIGH RISK verplichtingen zijn in code geïmplementeerd.
 
-### 5. Fase F — Pilot Operatie
+### 4. Fase F — Pilot Operatie
 - **Werkstroom:** Pilot
 - **Sprint:** 6+
 - **Beschrijving:** Feedback-loop inrichten, KPI tracking, wekelijkse iteratie-cyclus, docent support kanaal.
@@ -43,6 +37,7 @@
 
 | Taak | Datum | Werkstroom |
 |------|-------|------------|
+| Fase B — Compliance Hub finaliseren | 15 apr 2026 | Compliance |
 | Fase A — Projectinfrastructuur (.claude) | 3 apr 2026 | Infra |
 
 ---
