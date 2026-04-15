@@ -5,15 +5,27 @@ import { supabase } from '../../services/supabase';
 import { sanitizeForDb } from '../../utils/sanitizeForDb';
 
 const DISPLAY_NAME_MAX = 80;
+const EMPTY_NAME_ERROR = 'Vul je naam in zodat leerlingen weten met wie ze werken.';
+
+export interface TeacherOnboardingUpdates {
+    displayName: string;
+    stats: UserStats;
+}
 
 interface TeacherFirstLoginWizardProps {
     user: ParentUser;
-    onComplete: (updatedUser: ParentUser) => void;
+    onComplete: (updates: TeacherOnboardingUpdates) => void;
 }
 
 type Step = 'welcome' | 'profile' | 'done';
 
 const STEP_ORDER: Step[] = ['welcome', 'profile', 'done'];
+
+const STEP_TITLES: Record<Step, string> = {
+    welcome: 'Welkom bij DGSkills',
+    profile: 'Hoe heet je voor je leerlingen?',
+    done: 'Klaar om te starten',
+};
 
 const ProgressDots: React.FC<{ activeIndex: number }> = ({ activeIndex }) => (
     <div className="flex items-center gap-2" aria-label={`Stap ${activeIndex + 1} van ${STEP_ORDER.length}`}>
@@ -42,17 +54,21 @@ export const TeacherFirstLoginWizard: React.FC<TeacherFirstLoginWizardProps> = (
     const [isSaving, setIsSaving] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-    const trimmedName = displayName.trim();
-    const sanitizedName = trimmedName.slice(0, DISPLAY_NAME_MAX);
+    const sanitizedName = displayName.trim().slice(0, DISPLAY_NAME_MAX);
     const stepIndex = STEP_ORDER.indexOf(step);
 
-    const handleSave = async () => {
+    const validateName = (): boolean => {
         if (!sanitizedName) {
-            setErrorMessage('Vul je naam in zodat leerlingen weten met wie ze werken.');
-            return;
+            setErrorMessage(EMPTY_NAME_ERROR);
+            return false;
         }
-        setIsSaving(true);
         setErrorMessage(null);
+        return true;
+    };
+
+    const handleSave = async () => {
+        if (!validateName()) return;
+        setIsSaving(true);
         try {
             const newStats: UserStats = {
                 ...(user.stats ?? { xp: 0, level: 1, missionsCompleted: [], inventory: [] }),
@@ -69,11 +85,7 @@ export const TeacherFirstLoginWizard: React.FC<TeacherFirstLoginWizardProps> = (
 
             if (error) throw error;
 
-            onComplete({
-                ...user,
-                displayName: sanitizedName,
-                stats: newStats,
-            });
+            onComplete({ displayName: sanitizedName, stats: newStats });
         } catch (err) {
             const message =
                 err instanceof Error && err.message
@@ -100,14 +112,15 @@ export const TeacherFirstLoginWizard: React.FC<TeacherFirstLoginWizardProps> = (
                     <ProgressDots activeIndex={stepIndex} />
                 </div>
 
+                <h1
+                    id="teacher-wizard-title"
+                    className="px-8 text-2xl md:text-3xl font-bold text-slate-900 mb-3"
+                >
+                    {STEP_TITLES[step]}
+                </h1>
+
                 {step === 'welcome' && (
                     <div className="px-8 pb-8">
-                        <h1
-                            id="teacher-wizard-title"
-                            className="text-2xl md:text-3xl font-bold text-slate-900 mb-3"
-                        >
-                            Welkom bij DGSkills
-                        </h1>
                         <p className="text-slate-600 mb-6">
                             Fijn dat je de pilot start. We hebben een paar dingen nodig voordat je
                             naar je dashboard gaat. Het kost minder dan een minuut.
@@ -150,9 +163,6 @@ export const TeacherFirstLoginWizard: React.FC<TeacherFirstLoginWizardProps> = (
 
                 {step === 'profile' && (
                     <div className="px-8 pb-8">
-                        <h1 id="teacher-wizard-title" className="text-2xl font-bold text-slate-900 mb-2">
-                            Hoe heet je voor je leerlingen?
-                        </h1>
                         <p className="text-slate-500 text-sm mb-6">
                             Dit is de naam die in het leerling-dashboard verschijnt bij berichten
                             en feedback. Je kunt deze later aanpassen via je profiel.
@@ -193,12 +203,7 @@ export const TeacherFirstLoginWizard: React.FC<TeacherFirstLoginWizardProps> = (
                             <button
                                 type="button"
                                 onClick={() => {
-                                    if (!sanitizedName) {
-                                        setErrorMessage('Vul je naam in zodat leerlingen weten met wie ze werken.');
-                                        return;
-                                    }
-                                    setErrorMessage(null);
-                                    setStep('done');
+                                    if (validateName()) setStep('done');
                                 }}
                                 className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg text-sm transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-500"
                             >
@@ -218,9 +223,6 @@ export const TeacherFirstLoginWizard: React.FC<TeacherFirstLoginWizardProps> = (
 
                 {step === 'done' && (
                     <div className="px-8 pb-8">
-                        <h1 id="teacher-wizard-title" className="text-2xl font-bold text-slate-900 mb-2">
-                            Klaar om te starten
-                        </h1>
                         <p className="text-slate-600 mb-6">
                             Hieronder zie je hoe leerlingen je naam zullen zien. Klopt het? Dan
                             ben je klaar om je dashboard te openen.

@@ -303,14 +303,14 @@ export function AuthenticatedApp() {
     }
 
     // Teacher first-login gate — verplichte mini-wizard voor docenten die voor het eerst inloggen.
-    // Zet `stats.hasCompletedTeacherOnboarding` op true. Geldt niet voor developers die als teacher
-    // previewen via devViewOverride.
+    // Zet `stats.hasCompletedTeacherOnboarding` op true. Developers die via devViewOverride als
+    // teacher previewen blijven user.role === 'developer', dus die slaan we hier automatisch over.
     if (user.role === 'teacher' && !user.stats?.hasCompletedTeacherOnboarding) {
         return (
             <Suspense fallback={<LoadingFallback />}>
                 <TeacherFirstLoginWizard
                     user={user}
-                    onComplete={(updatedUser) => setUser(updatedUser)}
+                    onComplete={(updates) => setUser({ ...user, ...updates })}
                 />
             </Suspense>
         );

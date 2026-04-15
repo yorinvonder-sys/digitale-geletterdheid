@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { trackEvent } from '../../services/analyticsService';
+import { EDGE_FUNCTION_URL } from '../../services/supabase';
 
-const PILOT_ENDPOINT =
-    typeof window !== 'undefined' &&
-    (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-        ? 'http://127.0.0.1:54321/functions/v1/submitPilotRequest'
-        : `${(import.meta as any).env.VITE_SUPABASE_URL ?? ''}/functions/v1/submitPilotRequest`;
+const PILOT_ENDPOINT = `${EDGE_FUNCTION_URL}/submitPilotRequest`;
 
 interface PilotFormData {
     schoolNaam: string;
@@ -108,18 +105,16 @@ export const PilotAanmelden: React.FC = () => {
         const originalTitle = document.title;
         document.title = 'Start een gratis pilot | DGSkills';
 
-        const description = document.querySelector(
+        const existingDescription = document.querySelector(
             'meta[name="description"]',
         ) as HTMLMetaElement | null;
-        const originalDescription = description?.getAttribute('content') ?? null;
-        const descriptionEl =
-            description ??
-            (() => {
-                const el = document.createElement('meta');
-                el.setAttribute('name', 'description');
-                document.head.appendChild(el);
-                return el;
-            })();
+        const originalDescription = existingDescription?.getAttribute('content') ?? null;
+        const wasCreated = existingDescription === null;
+        const descriptionEl = existingDescription ?? document.createElement('meta');
+        if (wasCreated) {
+            descriptionEl.setAttribute('name', 'description');
+            document.head.appendChild(descriptionEl);
+        }
         descriptionEl.setAttribute(
             'content',
             'Vraag een gratis pilot aan voor je school. 3 maanden volledige toegang tot DGSkills, AVG-compliant, live binnen 10 werkdagen. Reactie binnen 2 werkdagen.',
@@ -129,7 +124,9 @@ export const PilotAanmelden: React.FC = () => {
 
         return () => {
             document.title = originalTitle;
-            if (originalDescription !== null) {
+            if (wasCreated) {
+                descriptionEl.remove();
+            } else if (originalDescription !== null) {
                 descriptionEl.setAttribute('content', originalDescription);
             }
         };

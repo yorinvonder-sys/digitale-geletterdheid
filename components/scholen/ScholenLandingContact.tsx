@@ -4,6 +4,7 @@
  */
 import React, { useState } from 'react';
 import { trackEvent } from '../../services/analyticsService';
+import { EDGE_FUNCTION_URL } from '../../services/supabase';
 
 const IconCheckCircle = ({ className = '' }: { className?: string }) => (
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden="true">
@@ -28,11 +29,7 @@ interface PilotFormData {
     website: string;
 }
 
-const PILOT_ENDPOINT =
-    typeof window !== 'undefined' &&
-    (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-        ? 'http://127.0.0.1:54321/functions/v1/submitPilotRequest'
-        : `${(import.meta as any).env.VITE_SUPABASE_URL ?? ''}/functions/v1/submitPilotRequest`;
+const PILOT_ENDPOINT = `${EDGE_FUNCTION_URL}/submitPilotRequest`;
 
 export const ScholenLandingContact: React.FC = () => {
     const [formData, setFormData] = useState<PilotFormData>({
