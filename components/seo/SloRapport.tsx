@@ -1,51 +1,53 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect } from 'react';
 import { trackEvent } from '../../services/analyticsService';
 import { SLO_KERNDOELEN, SloKerndoelCode } from '../../config/sloKerndoelen';
-import { KERNDOEL_MISSIONS } from '../../config/slo-kerndoelen-mapping';
+import { getMissionsForKerndoel } from '../../config/slo-kerndoelen-mapping';
 
 // Reguliere VO kerndoelen (domeinen 21-23) per officiële SLO september 2025 codes.
 const REGULIER_VO_CODES: SloKerndoelCode[] = [
     '21A', '21B', '21C', '21D', '22A', '22B', '23A', '23B', '23C',
 ];
 
+type DomeinKleur = 'blue' | 'purple' | 'amber';
+
 interface SloRow {
     code: SloKerndoelCode;
     label: string;
     domein: string;
+    kleur: DomeinKleur;
     missionCount: number;
 }
 
-const DOMEIN_COLORS: Record<'blue' | 'purple' | 'amber', string> = {
+const DOMEIN_COLORS: Record<DomeinKleur, string> = {
     blue: 'bg-blue-50 text-blue-700',
     purple: 'bg-purple-50 text-purple-700',
     amber: 'bg-amber-50 text-amber-700',
 };
 
+const ROWS: SloRow[] = REGULIER_VO_CODES.map((code) => {
+    const kerndoel = SLO_KERNDOELEN[code];
+    return {
+        code,
+        label: kerndoel.label,
+        domein: kerndoel.domein,
+        kleur: kerndoel.kleur,
+        missionCount: getMissionsForKerndoel(code).length,
+    };
+});
+
+const DEKKING_COUNT = ROWS.filter((r) => r.missionCount > 0).length;
+const TOTAL_MISSIONS = ROWS.reduce((acc, r) => acc + r.missionCount, 0);
+
 export const SloRapport: React.FC = () => {
     useEffect(() => {
+        const originalTitle = document.title;
         document.title = 'Voorbeeld SLO-Dekkingsrapport | DGSkills';
         trackEvent('seo_asset_view', { page: 'slo-rapport-voorbeeld' });
+
+        return () => {
+            document.title = originalTitle;
+        };
     }, []);
-
-    const rows: SloRow[] = useMemo(
-        () =>
-            REGULIER_VO_CODES.map((code) => {
-                const kerndoel = SLO_KERNDOELEN[code];
-                const missionCount = KERNDOEL_MISSIONS.filter((m) =>
-                    m.sloKerndoelen.includes(code),
-                ).length;
-                return {
-                    code,
-                    label: kerndoel.label,
-                    domein: kerndoel.domein,
-                    missionCount,
-                };
-            }),
-        [],
-    );
-
-    const dekkingCount = rows.filter((r) => r.missionCount > 0).length;
-    const totalMissions = rows.reduce((acc, r) => acc + r.missionCount, 0);
 
     return (
         <div className="min-h-screen bg-slate-50 py-20 px-6">
@@ -91,7 +93,7 @@ export const SloRapport: React.FC = () => {
                             Kerndoelen gedekt
                         </div>
                         <div className="text-xl font-bold text-slate-900">
-                            {dekkingCount} / {rows.length}
+                            {DEKKING_COUNT} / {ROWS.length}
                         </div>
                         <div className="text-[10px] text-slate-400 mt-1">regulier VO</div>
                     </div>
@@ -99,7 +101,7 @@ export const SloRapport: React.FC = () => {
                         <div className="text-xs text-slate-400 uppercase font-bold mb-1">
                             Missies in catalogus
                         </div>
-                        <div className="text-xl font-bold text-slate-900">{totalMissions}</div>
+                        <div className="text-xl font-bold text-slate-900">{TOTAL_MISSIONS}</div>
                         <div className="text-[10px] text-slate-400 mt-1">koppelingen totaal</div>
                     </div>
                     <div className="bg-slate-50 p-4 rounded-2xl">
@@ -122,9 +124,8 @@ export const SloRapport: React.FC = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {rows.map((row) => {
-                            const kerndoel = SLO_KERNDOELEN[row.code];
-                            const colorClass = DOMEIN_COLORS[kerndoel.kleur];
+                        {ROWS.map((row) => {
+                            const colorClass = DOMEIN_COLORS[row.kleur];
                             const isCovered = row.missionCount > 0;
                             return (
                                 <tr

@@ -309,8 +309,13 @@ export const ComplianceChecklist: React.FC = () => {
     const [checkedIds, setCheckedIds] = useState<Set<string>>(() => new Set());
 
     useEffect(() => {
+        const originalTitle = document.title;
         document.title = 'AI-Compliance Checklist voor VO Scholen | DGSkills';
         trackEvent('seo_asset_view', { page: 'compliance-checklist' });
+
+        return () => {
+            document.title = originalTitle;
+        };
     }, []);
 
     const toggle = (id: string) => {

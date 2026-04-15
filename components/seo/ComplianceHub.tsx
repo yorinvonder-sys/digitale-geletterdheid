@@ -239,6 +239,8 @@ const SECTIONS: ComplianceSection[] = [
 const buildRequestHref = (subject: string): string =>
     `mailto:${PRIVACY_EMAIL}?subject=${encodeURIComponent(subject)}`;
 
+const TOTAL_DOCS = SECTIONS.reduce((acc, s) => acc + s.docs.length, 0);
+
 const DocRow: React.FC<{ doc: ComplianceDoc; sectionId: string }> = ({ doc, sectionId }) => {
     const handleClick = () => {
         trackEvent('ict_document_download', {
@@ -254,16 +256,23 @@ const DocRow: React.FC<{ doc: ComplianceDoc; sectionId: string }> = ({ doc, sect
     const baseButtonClasses =
         'inline-flex items-center justify-center px-5 py-2.5 bg-white border border-slate-200 text-slate-600 font-semibold text-sm rounded-lg hover:bg-slate-50 transition-colors whitespace-nowrap';
 
-    const link = doc.access.type === 'link' ? doc.access : null;
-    const request = doc.access.type === 'request' ? doc.access : null;
+    let href: string;
+    let cta: string;
+    let externalProps: { target?: '_blank'; rel?: 'noopener noreferrer' } = {};
 
-    const href = link ? link.href : request ? buildRequestHref(request.subject) : '#';
-    const cta = link ? (link.cta ?? 'Bekijk document') : 'Vraag aan via e-mail';
-
-    const externalProps =
-        link && link.external
-            ? { target: '_blank' as const, rel: 'noopener noreferrer' as const }
-            : {};
+    switch (doc.access.type) {
+        case 'link':
+            href = doc.access.href;
+            cta = doc.access.cta ?? 'Bekijk document';
+            if (doc.access.external) {
+                externalProps = { target: '_blank', rel: 'noopener noreferrer' };
+            }
+            break;
+        case 'request':
+            href = buildRequestHref(doc.access.subject);
+            cta = 'Vraag aan via e-mail';
+            break;
+    }
 
     return (
         <div className={baseWrapperClasses}>
@@ -308,19 +317,20 @@ export const ComplianceHub: React.FC = () => {
         const originalTitle = document.title;
         document.title = 'Compliance Hub & Privacy Dossier | DGSkills';
 
-        const setMeta = (attr: string, key: string, content: string) => {
-            let el = document.querySelector(`meta[${attr}="${key}"]`) as HTMLMetaElement;
-            if (!el) {
-                el = document.createElement('meta');
-                el.setAttribute(attr, key);
+        const description = document.querySelector(
+            'meta[name="description"]',
+        ) as HTMLMetaElement | null;
+        const originalDescription = description?.getAttribute('content') ?? null;
+        const descriptionEl =
+            description ??
+            (() => {
+                const el = document.createElement('meta');
+                el.setAttribute('name', 'description');
                 document.head.appendChild(el);
-            }
-            el.setAttribute('content', content);
-        };
-
-        setMeta(
-            'name',
-            'description',
+                return el;
+            })();
+        descriptionEl.setAttribute(
+            'content',
             'Centrale hub voor alle compliance-assets van DGSkills. Privacyverklaring, Verwerkersovereenkomst, AI Act transparantie, DPIA ondersteuning en documenten op aanvraag voor ICT-coördinatoren.',
         );
 
@@ -328,10 +338,11 @@ export const ComplianceHub: React.FC = () => {
 
         return () => {
             document.title = originalTitle;
+            if (originalDescription !== null) {
+                descriptionEl.setAttribute('content', originalDescription);
+            }
         };
     }, []);
-
-    const totalDocs = SECTIONS.reduce((acc, s) => acc + s.docs.length, 0);
 
     return (
         <div className="min-h-screen bg-slate-50">
@@ -354,7 +365,7 @@ export const ComplianceHub: React.FC = () => {
                 <div className="max-w-4xl mx-auto">
                     <div className="mb-10">
                         <span className="inline-block px-3 py-1 bg-indigo-50 text-indigo-600 text-xs font-bold rounded-full uppercase tracking-wide mb-4">
-                            {totalDocs} documenten · bijgewerkt {new Date().getFullYear()}
+                            {TOTAL_DOCS} documenten · bijgewerkt {new Date().getFullYear()}
                         </span>
                         <h1 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
                             Compliance Hub
