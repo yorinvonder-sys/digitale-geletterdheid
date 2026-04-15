@@ -8,47 +8,48 @@
 ## Actieve taak
 
 **Werkstroom:** Product
-**Sprint:** 5 — Go-to-Market
-**Taak:** Fase C — Onboarding & Trial Flow
+**Sprint:** 5-6 — Rapportage
+**Taak:** Fase D — Assessment & Rapportage
 **Status:** ✅ Afgerond (15 april 2026)
 
 ## Volgende taak
 
-**Werkstroom:** Product
-**Sprint:** 5-6 — Go-to-Market
-**Taak:** Fase D — Assessment & Rapportage
-**Beschrijving:** Leerlingrapportages, docentdashboard met voortgangsoverzicht per leerling, SLO-koppeling in rapportages (21A–23C + VSO 18A–20B), export/print voor docenten.
-**Done wanneer:** Docenten zien per leerling welke SLO-doelen behaald zijn en kunnen dit exporteren.
+**Werkstroom:** Compliance
+**Sprint:** 6 — AI Act Deadline
+**Taak:** Fase E — AI Act Compliance Code
+**Beschrijving:** Art. 9 risk management in code (risicoregister koppelen aan live systeem), Art. 12 logging implementatie (audit-log voor elke AI-beoordeling en SLO-bepaling), Art. 14 human oversight dashboard (docent kan AI-gegenereerde beoordelingen corrigeren/overrulen met log), conformiteitsverklaring genereren (automatisch pdf op basis van Annex IV).
+**Done wanneer:** Alle HIGH RISK verplichtingen zijn in code geïmplementeerd en een conformiteitsverklaring kan on-demand worden gegenereerd.
 
 ## Context
 
 - Sprint 1-4 zijn afgerond (security, missies, UI/UX, homepage, dashboard)
 - Sprint 5 loopt: Go-to-Market
-- Fase A (Infra), B (Compliance Hub), C (Onboarding) zijn klaar
+- Fase A (Infra), B (Compliance Hub), C (Onboarding) en D (Rapportage) zijn klaar
 - Drie DGSkills-skills zijn live: `dgskills-mission-author`, `dgskills-compliance-check`, `dgskills-supabase-edge`
-- Zie `LAUNCH-PLAN.md` en `.claude/task-queue.md` voor de volledige wachtrij
+- Deadline hoog-risico AI Act: 2 augustus 2026 (~108 dagen vanaf vandaag)
 
 ## Laatste sessie
 
 - **Datum:** 15 april 2026
 - **Wat gedaan:**
-  - PilotRequestForm geëxtraheerd en gedeeld tussen ScholenLandingContact en nieuwe pagina
-  - Dedicated `/pilot-aanmelden` landing page gebouwd (benefits, FAQ, compliance-link, sticky form)
-  - Welkomstmail-template uitgebreid met tijdlijn, Compliance Hub CTA, FAQ en KvK-referentie
-  - TeacherSetupChecklist component gebouwd: 6 functionele first-login taken met localStorage-progress, integratie in Overview-tab
-  - Sitemap bijgewerkt voor SEO-indexering
+  - `StudentSloReport` modal gebouwd — printbaar + CSV-export per individuele leerling
+  - Portal via `createPortal` naar `document.body` om bestaande print-section CSS te gebruiken
+  - Integratie in `SLOClassOverview`: leerlingrij klikbaar + keyboard-toegankelijk (Enter/Space)
+  - VSO-profielen correct: 18A-20B voor VSO-leerlingen, 21A-23C voor regulier
+  - Per kerndoel: voltooide + open missies zichtbaar (titels via `getMissionMeta`)
+  - CSV-export veilig: `csvEscape`, UTF-8 BOM voor Excel, gesanitizede filename
 - **Beslissingen:**
-  - localStorage ipv DB voor checklist-progress (MVP, scoped per user.uid)
-  - Whitelist van item-IDs voor XSS/drift-bescherming
-  - Bestaande TeacherOnboarding slideshow + TutorialSpotlight onaangeroerd (checklist is complementair, niet vervanging)
+  - Modal via `createPortal` i.p.v. inline (volgt bestaand pattern in `BookPreview.tsx`)
+  - Print-gedrag via bestaande `print-section` CSS-klasse en Tailwind `print:*` prefixes — geen nieuwe CSS nodig
+  - CSV i.p.v. PDF (client-side genereerbaar, geen lib nodig; school-compatibel)
 
 ## Branch
 
 - Huidige werk-branch: `claude/research-claude-skills-oF860`
-- 4 commits ahead van main: `d6f6806` (skills), `13f4773` (compliance hub), `9345a27` (docs), `ed5a285` (fase C)
+- 7 commits ahead van main: skills, compliance hub, baton-B, pilot-flow, baton-C, student-rapport
 
 ## Sessie-continuïteit
 
-- **Sessienummer:** 3 (afgerond)
-- **Streak:** 3 (sessies op rij met output)
+- **Sessienummer:** 4 (afgerond)
+- **Streak:** 4 (sessies op rij met output)
 - **Voortgangslog:** `.claude/progress-log.md`
