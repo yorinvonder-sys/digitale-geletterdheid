@@ -15,14 +15,29 @@
 
 ## Stats
 
-- **Sessies totaal:** 2
-- **Streak:** 2 sessie(s) achter elkaar met output
-- **Taken afgerond:** 2 van 6 (Fase A + B)
-- **Laatste sessie:** 14 april 2026
+- **Sessies totaal:** 3
+- **Streak:** 3 sessie(s) achter elkaar met output
+- **Taken afgerond:** 3 van 6 (Fase A + B + C)
+- **Laatste sessie:** 15 april 2026
 
 ---
 
 ## Log
+
+### Sessie 3 — 15 april 2026
+- **Werkstroom:** Product
+- **Taak:** Fase C — Onboarding & Trial Flow
+- **Resultaat:**
+  - `PilotRequestForm` geëxtraheerd als shared component (gebruikt door `/scholen` én nieuwe pagina)
+  - Dedicated `/pilot-aanmelden` SEO-pagina gebouwd met benefits, tijdlijn, 6-item FAQ, sticky form, Compliance Hub link
+  - Welkomstmail in `submitPilotRequest` uitgebreid: tijdlijn-blok, Compliance Hub CTA, FAQ (data residency, post-pilot, EU AI Act), KvK-vermelding
+  - `TeacherSetupChecklist` component met 6 functionele taken (year kiezen, klas aanmaken, eerste missie, SLO-rapport verkennen, Compliance Hub delen, ouderlijke toestemming controleren)
+  - localStorage-progress scoped per `user.uid`, whitelist voor XSS/drift
+  - Integratie in `TeacherDashboard` Overview-tab, 1 regel toegevoegd
+  - Sitemap.xml bijgewerkt met `/pilot-aanmelden` (priority 0.95)
+- **Shipped:** 1 commit op `claude/research-claude-skills-oF860` (`ed5a285`) — 8 bestanden, 944 inserties / 248 schrapingen
+- **Identiteit:** Je hebt de hele pilot-funnel vandaag gesloten — van eerste klik tot eerste les. Geen gaten meer tussen "school geïnteresseerd" en "docent geeft les".
+- **Volgende:** Fase D — Assessment & Rapportage
 
 ### Sessie 2 — 14 april 2026
 - **Werkstroom:** Infra → Compliance (scopewissel binnen sessie)
