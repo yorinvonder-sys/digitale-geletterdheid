@@ -20,6 +20,7 @@ const GuidePage = React.lazy(() => import('./components/seo/GuidePage').then(m =
 const ComplianceChecklist = React.lazy(() => import('./components/seo/ComplianceChecklist').then(m => ({ default: m.ComplianceChecklist })));
 const SloRapport = React.lazy(() => import('./components/seo/SloRapport').then(m => ({ default: m.SloRapport })));
 const ComparisonPage = React.lazy(() => import('./components/seo/ComparisonPage').then(m => ({ default: m.ComparisonPage })));
+const PilotAanmelden = React.lazy(() => import('./components/scholen/PilotAanmelden').then(m => ({ default: m.PilotAanmelden })));
 const NotFound = React.lazy(() => import('./components/NotFound').then(m => ({ default: m.NotFound })));
 const MobileReceiptPage = React.lazy(() => import('./components/MobileReceiptPage').then(m => ({ default: m.MobileReceiptPage })));
 const ParentConsentApproval = React.lazy(() => import('./components/ParentConsentApproval').then(m => ({ default: m.ParentConsentApproval })));
@@ -408,7 +409,7 @@ export function AppRouter() {
         return <BonnetjeRoute />;
     }
 
-    if (normalizedPath === '/digitale-geletterdheid-vo' || normalizedPath === '/slo-kerndoelen-digitale-geletterdheid' || normalizedPath === '/ai-geletterdheid-onderwijs-ai-act' || normalizedPath === '/compliance-hub' || normalizedPath === '/compliance/checklist' || normalizedPath === '/compliance/slo-rapport' || normalizedPath.startsWith('/vergelijking/')) {
+    if (normalizedPath === '/digitale-geletterdheid-vo' || normalizedPath === '/slo-kerndoelen-digitale-geletterdheid' || normalizedPath === '/ai-geletterdheid-onderwijs-ai-act' || normalizedPath === '/compliance-hub' || normalizedPath === '/compliance/checklist' || normalizedPath === '/compliance/slo-rapport' || normalizedPath === '/pilot' || normalizedPath.startsWith('/vergelijking/')) {
         return (
             <PublicPageShell>
                 <React.Suspense fallback={<LoadingFallback />}>
@@ -418,6 +419,7 @@ export function AppRouter() {
                     {normalizedPath === '/compliance-hub' && <ComplianceHub />}
                     {normalizedPath === '/compliance/checklist' && <ComplianceChecklist />}
                     {normalizedPath === '/compliance/slo-rapport' && <SloRapport />}
+                    {normalizedPath === '/pilot' && <PilotAanmelden />}
                     {normalizedPath === '/vergelijking/dgskills-vs-digit-vo' && <ComparisonPage competitor="digit-vo" />}
                     {normalizedPath === '/vergelijking/dgskills-vs-basicly' && <ComparisonPage competitor="basicly" />}
                 </React.Suspense>
@@ -437,7 +439,7 @@ export function AppRouter() {
     }
 
     // 404 handler for public routes
-    const isPublicRoute = normalizedPath === '' || normalizedPath === '/' || normalizedPath === '/scholen' || normalizedPath === '/ict' || normalizedPath.startsWith('/ict/') || normalizedPath === '/login' || normalizedPath === '/ouderlijke-toestemming' || normalizedPath === '/digitale-geletterdheid-vo' || normalizedPath === '/slo-kerndoelen-digitale-geletterdheid' || normalizedPath === '/ai-geletterdheid-onderwijs-ai-act' || normalizedPath === '/compliance-hub' || normalizedPath.startsWith('/compliance/') || normalizedPath.startsWith('/vergelijking/') || normalizedPath.startsWith('/gids/');
+    const isPublicRoute = normalizedPath === '' || normalizedPath === '/' || normalizedPath === '/scholen' || normalizedPath === '/ict' || normalizedPath.startsWith('/ict/') || normalizedPath === '/login' || normalizedPath === '/ouderlijke-toestemming' || normalizedPath === '/digitale-geletterdheid-vo' || normalizedPath === '/slo-kerndoelen-digitale-geletterdheid' || normalizedPath === '/ai-geletterdheid-onderwijs-ai-act' || normalizedPath === '/compliance-hub' || normalizedPath.startsWith('/compliance/') || normalizedPath === '/pilot' || normalizedPath.startsWith('/vergelijking/') || normalizedPath.startsWith('/gids/');
 
     if (isPublicRoute) {
         return (
