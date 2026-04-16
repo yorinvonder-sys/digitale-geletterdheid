@@ -11,6 +11,7 @@ interface SLOClassOverviewProps {
     students: StudentData[];
     schoolId?: string;
     selectedYear?: number;
+    onSelectStudent?: (student: StudentData) => void;
 }
 
 function parseMissionIdFromActivityData(data: unknown): string | null {
@@ -19,7 +20,7 @@ function parseMissionIdFromActivityData(data: unknown): string | null {
     return m?.[1] || null;
 }
 
-export const SLOClassOverview: React.FC<SLOClassOverviewProps> = ({ students, schoolId, selectedYear }) => {
+export const SLOClassOverview: React.FC<SLOClassOverviewProps> = ({ students, schoolId, selectedYear, onSelectStudent }) => {
     const [expandedClasses, setExpandedClasses] = useState<Set<string>>(new Set());
     const [exporting, setExporting] = useState(false);
     const [exportError, setExportError] = useState<string | null>(null);
@@ -634,10 +635,10 @@ export const SLOClassOverview: React.FC<SLOClassOverviewProps> = ({ students, sc
                                             {classStudents.map(student => {
                                                 const st = calculateStudentKerndoelStats(student);
                                                 return (
-                                                    <tr key={student.uid} className="hover:bg-slate-50">
+                                                    <tr key={student.uid} className={`hover:bg-slate-50 ${onSelectStudent ? 'cursor-pointer' : ''}`} onClick={() => onSelectStudent?.(student)} role={onSelectStudent ? 'button' : undefined} tabIndex={onSelectStudent ? 0 : undefined} onKeyDown={(e) => { if (onSelectStudent && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); onSelectStudent(student); } }}>
                                                         <td className="px-4 py-3">
                                                             <div className="flex items-center gap-2">
-                                                                <p className="font-medium text-slate-900">{student.displayName}</p>
+                                                                <p className={`font-medium text-slate-900 ${onSelectStudent ? 'underline decoration-slate-300 hover:decoration-indigo-400' : ''}`}>{student.displayName}</p>
                                                                 {student.stats?.vsoProfile && (
                                                                     <span className="text-[8px] bg-emerald-50 text-emerald-600 px-1 rounded border border-emerald-100 font-bold uppercase">
                                                                         VSO
@@ -652,12 +653,13 @@ export const SLOClassOverview: React.FC<SLOClassOverviewProps> = ({ students, sc
                                                             const isVso = SLO_KERNDOELEN[code].isVso;
                                                             return (
                                                                 <td key={code} className="text-center px-2 py-3">
-                                                                    <span className={`inline-block px-2 py-1 rounded text-xs font-bold ${percentage >= 75 ? (isVso ? 'bg-emerald-100 text-emerald-700' : 'bg-indigo-100 text-indigo-700') :
+                                                                    <span className={`inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-bold ${percentage >= 75 ? (isVso ? 'bg-emerald-100 text-emerald-700' : 'bg-indigo-100 text-indigo-700') :
                                                                         percentage >= 50 ? 'bg-amber-100 text-amber-700' :
                                                                             percentage >= 25 ? 'bg-orange-100 text-orange-700' :
                                                                                 'bg-slate-100 text-slate-500'
                                                                         }`}>
                                                                         {percentage}%
+                                                                        {percentage >= 75 && <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-label="Ruim gedekt"><polyline points="20 6 9 17 4 12" /></svg>}
                                                                     </span>
                                                                 </td>
                                                             );

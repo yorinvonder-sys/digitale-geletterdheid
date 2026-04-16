@@ -27,6 +27,8 @@ import { GamesPanel } from './teacher/GamesPanel';
 import { FeedbackPanel } from './teacher/FeedbackPanel';
 import { MissionProgressPanel } from './teacher/MissionProgressPanel';
 import { SLOClassOverview } from './teacher/SLOClassOverview';
+import { calculateStudentKerndoelStats, KERNDOEL_CODES } from '../config/slo-kerndoelen-mapping';
+import { SLO_KERNDOELEN } from '../config/sloKerndoelen';
 import { HybridAssessmentPanel } from './teacher/HybridAssessmentPanel';
 import { GrowthOverviewPanel } from './teacher/GrowthOverviewPanel';
 import { EindmetingReleaseButton } from './teacher/EindmetingReleaseButton';
@@ -437,18 +439,40 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
     };
 
     const exportCSV = () => {
-        const headers = ['Naam', 'Leerlingnummer', 'XP', 'Level', 'Missies', 'Laatst'];
+        const voKerndoelen = KERNDOEL_CODES.filter(c => !SLO_KERNDOELEN[c]?.isVso);
+        const sloHeaders = voKerndoelen.map(c => `SLO ${c} (${SLO_KERNDOELEN[c]?.label || c})`);
+        const headers = ['Naam', 'Leerlingnummer', 'Klas', 'XP', 'Level', 'Missies', 'Laatst', ...sloHeaders];
         const filtered = students.filter(s => {
             const matchesSearch = (s.displayName?.toLowerCase() || '').includes(searchTerm.toLowerCase());
             const matchesClass = classFilter === 'all' || s.studentClass === classFilter || s.identifier?.startsWith(classFilter);
             return matchesSearch && matchesClass;
         });
-        const rows = filtered.map(s => [s.displayName || '?', s.identifier, s.stats?.xp || 0, s.stats?.level || 1, s.stats?.missionsCompleted?.length || 0, (s as any).last_active ? new Date((s as any).last_active).toLocaleString() : '-']);
-        const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
-        const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
+        const escapeField = (v: string | number) => {
+            const str = String(v);
+            return str.includes(',') || str.includes('"') || str.includes('\n')
+                ? `"${str.replace(/"/g, '""')}"`
+                : str;
+        };
+        const rows = filtered.map(s => {
+            const sloStats = calculateStudentKerndoelStats(s, yearGroupFilter !== undefined ? yearGroupFilter : undefined);
+            const sloCols = voKerndoelen.map(c => `${sloStats[c]?.percentage ?? 0}%`);
+            return [
+                escapeField(s.displayName || '?'),
+                escapeField(s.identifier),
+                escapeField(s.studentClass || '-'),
+                s.stats?.xp || 0,
+                s.stats?.level || 1,
+                s.stats?.missionsCompleted?.length || 0,
+                (s as any).last_active ? new Date((s as any).last_active).toLocaleString() : '-',
+                ...sloCols,
+            ];
+        });
+        const csv = [headers.map(escapeField).join(','), ...rows.map(r => r.map(escapeField).join(','))].join('\n');
+        const bom = '\uFEFF';
+        const url = URL.createObjectURL(new Blob([bom + csv], { type: 'text/csv;charset=utf-8' }));
         const a = document.createElement('a');
         a.href = url;
-        a.download = `export-${new Date().toISOString().split('T')[0]}.csv`;
+        a.download = `export-slo-${new Date().toISOString().split('T')[0]}.csv`;
         a.click();
     };
 
@@ -600,7 +624,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                         {activeTab === 'ai-beleid' && <PageTransition key="ai-beleid"><div className="bg-white rounded-[2rem] border border-slate-100 p-6"><AiBeleidFeedbackPanel classFilter={classFilter !== 'all' ? classFilter : undefined} schoolId={user?.schoolId} /></div></PageTransition>}
                         {activeTab === 'feedback' && <PageTransition key="feedback"><FeedbackPanel schoolId={user?.schoolId} /></PageTransition>}
                         {activeTab === 'progress' && <PageTransition key="progress" className="space-y-6"><MissionProgressPanel students={students} classFilter={classFilter} availableClasses={classGroups} onClassFilterChange={setClassFilter} onSelectStudent={setSelectedStudent} yearGroup={yearGroupFilter} /><HybridAssessmentPanel records={hybridAssessments} classFilter={classFilter} /><GrowthOverviewPanel studentIds={students.filter(s => classFilter === 'all' || s.studentClass === classFilter).map(s => s.uid)} /></PageTransition>}
-                        {activeTab === 'slo' && <PageTransition key="slo"><SLOClassOverview students={students} schoolId={user?.schoolId} selectedYear={yearGroupFilter} /></PageTransition>}
+                        {activeTab === 'slo' && <PageTransition key="slo"><SLOClassOverview students={students} schoolId={user?.schoolId} selectedYear={yearGroupFilter} onSelectStudent={setSelectedStudent} /></PageTransition>}
                         {activeTab === 'nulmeting' && (
                             <PageTransition key="nulmeting" className="space-y-6">
                                 <EindmetingReleaseButton classFilter={classFilter} schoolId={user?.schoolId} availableClasses={classGroups} />
