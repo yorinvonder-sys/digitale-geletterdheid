@@ -143,6 +143,7 @@ export class Chat {
       body: JSON.stringify(this.buildRequestBody(message, roleId))
     }, {
       fetcher: fetchWithRetry,
+      onSessionExpired: 'throw',
       sessionExpiredMessage: 'Je sessie is verlopen. Log opnieuw in.',
     });
   }
@@ -659,6 +660,7 @@ export const generateImage = async (
       }),
     }, {
       fetcher: fetchWithRetry,
+      onSessionExpired: 'throw',
       sessionExpiredMessage: 'Je sessie is verlopen. Log opnieuw in.',
     });
 
@@ -761,6 +763,7 @@ export const analyzeDrawingWithAI = async (
       body: JSON.stringify({ imageBase64, prompt })
     }, {
       fetcher: fetchWithRetry,
+      onSessionExpired: 'throw',
       sessionExpiredMessage: 'Je sessie is verlopen. Log opnieuw in.',
     });
 

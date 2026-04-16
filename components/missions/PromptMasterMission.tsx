@@ -13,7 +13,7 @@
 import React, { useState } from 'react';
 import { ArrowLeft, Sparkles, ArrowRight, Trophy, RotateCcw, Lightbulb, Zap, Target, Send, Bot, ThumbsUp, ThumbsDown, Star, Image, FileText, HelpCircle, Code, ChevronRight, Loader2, Brain, Eye, Palette } from 'lucide-react';
 import { UserStats, VsoProfile } from '../../types';
-import { createChatSession, sendMessageToGemini } from '../../services/geminiService';
+import { createChatSession, generateImage, sendMessageToGemini } from '../../services/geminiService';
 import { useMissionAutoSave } from '@/hooks/useMissionAutoSave';
 
 interface PromptMasterProgress {
@@ -167,6 +167,16 @@ const CHALLENGES: Challenge[] = [
 ];
 
 // Analyseer prompt met echte AI (Gemini)
+const withTimeout = <T,>(promise: Promise<T>, timeoutMs: number, errorMessage: string): Promise<T> =>
+    Promise.race([
+        promise,
+        new Promise<T>((_, reject) => {
+            setTimeout(() => reject(new Error(errorMessage)), timeoutMs);
+        })
+    ]);
+
+const escapeRegex = (value: string): string => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
 async function analyzePromptWithAI(
     prompt: string,
     challenge: Challenge,
@@ -269,11 +279,29 @@ ${challenge.feedbackCriteria.slice(1).map((c, i) => `${i + 2}. ${c.label}: [GEVO
     try {
         // Create a chat session for analysis
         const chatSession = createChatSession('prompt-master');
+        const imageGenerationPromise = challenge.type === 'image'
+            ? withTimeout(
+                generateImage(sanitizedPrompt, {
+                    style: 'general',
+                    aspectRatio: '4:3',
+                    title: challenge.goal,
+                }),
+                20_000,
+                'Afbeelding genereren duurde te lang.'
+            ).catch((error) => {
+                console.warn('AI image generation failed:', error);
+                return null;
+            })
+            : Promise.resolve<string | null>(null);
 
         await new Promise(r => setTimeout(r, 800)); // Small delay for UX
         onThinkingStep('🧠 AI denkt na...');
 
-        const response = await sendMessageToGemini(chatSession, analysisPrompt);
+        const response = await withTimeout(
+            sendMessageToGemini(chatSession, analysisPrompt),
+            15_000,
+            'AI-analyse duurde te lang.'
+        );
 
         onThinkingStep('📊 Resultaat verwerken...');
         await new Promise(r => setTimeout(r, 500));
@@ -289,7 +317,7 @@ ${challenge.feedbackCriteria.slice(1).map((c, i) => `${i + 2}. ${c.label}: [GEVO
         const feedback: { label: string; found: boolean; hint: string; explanation?: string }[] = [];
 
         for (const criterion of challenge.feedbackCriteria) {
-            const criterionRegex = new RegExp(`${criterion.label}:\s*(GEVONDEN|NIET_GEVONDEN)\s*-?\s*(.*)`, 'i');
+            const criterionRegex = new RegExp(`${escapeRegex(criterion.label)}:\\s*(GEVONDEN|NIET_GEVONDEN)\\s*-?\\s*(.*)`, 'i');
             const match = response.match(criterionRegex);
 
             if (match) {
@@ -320,7 +348,16 @@ ${challenge.feedbackCriteria.slice(1).map((c, i) => `${i + 2}. ${c.label}: [GEVO
             output = summary || challenge.badOutputExample;
         }
 
-        return { output, score, feedback };
+        let generatedImageUrl: string | undefined;
+        if (challenge.type === 'image') {
+            onThinkingStep('🎨 Afbeelding klaarzetten...');
+            const generatedImageResult = await imageGenerationPromise;
+            if (typeof generatedImageResult === 'string' && !generatedImageResult.startsWith('error:')) {
+                generatedImageUrl = generatedImageResult;
+            }
+        }
+
+        return { output, score, feedback, generatedImageUrl };
 
     } catch (error) {
         console.error('AI analysis failed:', error);
@@ -534,9 +571,10 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
             }
         } catch (error) {
             console.error('AI analysis error:', error);
+            const message = error instanceof Error ? error.message : 'Er ging iets mis bij het analyseren. Probeer het opnieuw.';
             // Show a simple error feedback
             setAiResponse({
-                output: 'Er ging iets mis bij het analyseren. Probeer het opnieuw.',
+                output: message,
                 score: 0,
                 feedback: []
             });
@@ -992,7 +1030,7 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                                 )}
                                 <button
                                     onClick={handleNext}
-                                    disabled={aiResponse.score < 2}
+                                    disabled={!passed}
                                     className="flex-1 py-4 rounded-full font-bold flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed text-white transition-all duration-300 shadow-lg"
                                     style={{ background: passed ? 'linear-gradient(to right, #10B981, #2A9D8F)' : 'linear-gradient(to right, #D97757, #C46849)' }}
                                 >
