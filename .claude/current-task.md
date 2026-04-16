@@ -7,35 +7,38 @@
 
 ## Actieve taak
 
-**Werkstroom:** Infra
-**Sprint:** 4→5 transitie
-**Taak:** Fase A — Projectinfrastructuur (.claude bestanden) aanmaken
-**Status:** ✅ Afgerond (3 april 2026)
-
-## Volgende taak
-
 **Werkstroom:** Compliance
 **Sprint:** 5 — Go-to-Market
 **Taak:** Fase B — Compliance Hub finaliseren
-**Beschrijving:** `ComplianceHub.tsx` updaten met alle 17 compliance-documenten, compliance checklist pagina vullen, SLO-rapport pagina verifiëren.
-**Done wanneer:** ICT-coordinatoren kunnen in 1 klik alle compliance-info vinden.
+**Status:** ✅ Afgerond (15 april 2026)
+
+## Volgende taak
+
+**Werkstroom:** Product
+**Sprint:** 5 — Go-to-Market
+**Taak:** Fase C — Onboarding & Trial Flow
+**Beschrijving:** Pilot-aanmeldformulier bouwen, docent-onboarding flow afronden, welkomstmail template, eerste-inlog wizard.
+**Done wanneer:** Een docent kan zich aanmelden voor de pilot en direct aan de slag.
 
 ## Context
 
-- Sprint 1-4 zijn afgerond (security, missies, UI/UX, homepage, dashboard)
-- De `.claude/` infrastructuur is nu compleet
-- Volgende prioriteit is de website klaarmaken voor go-to-market (Sprint 5)
-- Zie `LAUNCH-PLAN.md` voor het volledige sprintoverzicht
-- Zie `.claude/task-queue.md` voor de volledige wachtrij
+- Sprint 1-4 (security, missies, UI/UX, homepage, dashboard) en Fase A + B zijn klaar.
+- Fase B leverde 3 commits op branch `claude/compliance-hub-finaliseren`
+  (a2f8d05, e8f292e, 760b010) — nog niet gemerged naar main. Bij de start
+  van sessie 3: eerst even beslissen of deze branch gereviewed/gemerged
+  moet worden vóór we verder bouwen op main.
+- Volgende prioriteit is inkomende pilot-scholen soepel ontvangen (Sprint 5).
+- Zie `LAUNCH-PLAN.md` voor het volledige sprintoverzicht.
+- Zie `.claude/task-queue.md` voor de volledige wachtrij.
 
 ## Laatste sessie
 
-- **Datum:** 3 april 2026
-- **Wat gedaan:** Implementatieplan opgesteld + `.claude/` bestanden aangemaakt
-- **Beslissingen:** 6 fasen geprioriteerd (A-F), focus op A/B/C voor mei-deadline
+- **Datum:** 15 april 2026
+- **Wat gedaan:** Fase B volledig afgerond — ComplianceHub data-driven met 23 docs, checklist uitgebreid naar 30 items met verantwoordelijkheidslabels, SLO-rapport gefixed tegen echte SLO-config en overstated "Inspectie-proof"-claim verwijderd.
+- **Beslissingen:** Hybride doc-strategie (publiek + op aanvraag), geen nieuwe markdown-viewer routes voor nu, checklist en SLO-rapport eerlijk over deadlines (2 aug 2026) en demo-karakter.
 
 ## Sessie-continuïteit
 
-- **Sessienummer:** 2 (volgende sessie)
-- **Streak:** 1 (actief sinds sessie 1)
+- **Sessienummer:** 3 (volgende sessie)
+- **Streak:** 2 (actief sinds sessie 1)
 - **Voortgangslog:** `.claude/progress-log.md` — Claude schrijft hier automatisch na elke sessie

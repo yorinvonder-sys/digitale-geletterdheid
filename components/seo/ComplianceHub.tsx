@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { trackEvent } from '../../services/analyticsService';
 
+const PRIVACY_EMAIL = 'privacy@dgskills.app';
+
 const IconFileText = () => (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-indigo-600">
         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
@@ -11,50 +13,334 @@ const IconFileText = () => (
     </svg>
 );
 
-const ResourceItem = ({ title, description, link, badge }: { title: string; description: string; link: string; badge: string }) => (
-    <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 p-6 rounded-2xl border border-slate-100 hover:border-indigo-200 transition-colors bg-white">
-        <div className="flex gap-5 items-start">
-            <div className="mt-1 p-3 bg-indigo-50 rounded-xl">
-                <IconFileText />
-            </div>
-            <div>
-                <div className="flex items-center gap-3 mb-1">
-                    <h3 className="font-bold text-slate-900">{title}</h3>
-                    <span className="px-2 py-0.5 bg-slate-100 text-slate-500 text-[10px] font-bold rounded uppercase">{badge}</span>
+const IconMail = () => (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-slate-500">
+        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+        <polyline points="22,6 12,13 2,6" />
+    </svg>
+);
+
+type DocAccess =
+    | { type: 'link'; href: string; cta?: string; external?: boolean }
+    | { type: 'request'; subject: string };
+
+interface ComplianceDoc {
+    id: string;
+    title: string;
+    description: string;
+    badge: string;
+    access: DocAccess;
+}
+
+interface ComplianceSection {
+    id: string;
+    title: string;
+    intro: string;
+    icon: React.ReactNode;
+    docs: ComplianceDoc[];
+}
+
+const SECTIONS: ComplianceSection[] = [
+    {
+        id: 'juridisch',
+        title: 'Juridisch & Privacy',
+        intro: 'Documenten die voor elke school beschikbaar moeten zijn voor DPIA-processen en inkoop.',
+        icon: <IconFileText />,
+        docs: [
+            {
+                id: 'privacyverklaring',
+                title: 'Privacyverklaring',
+                description: 'Hoe DGSkills persoonsgegevens van leerlingen en docenten verwerkt, op welke grondslag en hoe lang.',
+                badge: 'Actueel',
+                access: { type: 'link', href: '/ict/privacy/policy' },
+            },
+            {
+                id: 'cookies',
+                title: 'Cookiestatement',
+                description: 'Welke cookies en vergelijkbare technieken DGSkills gebruikt en waarom.',
+                badge: 'Actueel',
+                access: { type: 'link', href: '/ict/privacy/cookies' },
+            },
+            {
+                id: 'ai-transparantie',
+                title: 'AI Act Transparantieverklaring',
+                description: 'Uitleg over AI-gebruik, datastromen, menselijke controle en logging (Art. 50 + Art. 13 EU AI Act).',
+                badge: 'Nieuw',
+                access: { type: 'link', href: '/ict/privacy/ai' },
+            },
+            {
+                id: 'dpa',
+                title: 'Model Verwerkersovereenkomst (DPA)',
+                description: 'Standaardmodel 4.0 voor het funderend onderwijs, specifiek ingevuld voor DGSkills.',
+                badge: 'v4.0',
+                access: { type: 'link', href: '/compliance/dpa-dgskills-v4.html', external: true },
+            },
+            {
+                id: 'algemene-voorwaarden',
+                title: 'Algemene Voorwaarden',
+                description: 'Algemene leveringsvoorwaarden DGSkills. Concept — wordt momenteel door jurist beoordeeld voordat hij publiek gepubliceerd wordt.',
+                badge: 'Concept',
+                access: { type: 'request', subject: 'Aanvraag: Algemene Voorwaarden (concept)' },
+            },
+        ],
+    },
+    {
+        id: 'technisch',
+        title: 'Technisch & Security',
+        intro: 'Architectuur, databeveiliging, DPIA-ondersteuning en SLA voor ICT-beheer en FG.',
+        icon: <IconFileText />,
+        docs: [
+            {
+                id: 'technische-whitepaper',
+                title: 'Technische Whitepaper',
+                description: 'Architectuur, SSO-integraties, data-opslag in europe-west4 en beveiligingsprotocollen.',
+                badge: 'v1.0',
+                access: { type: 'link', href: '/ict/technisch' },
+            },
+            {
+                id: 'sla',
+                title: 'SLA & Support Overzicht',
+                description: 'Gegarandeerde responstijden, uptime-doelen en escalatieprocedures.',
+                badge: 'SLA',
+                access: { type: 'link', href: '/ict/support' },
+            },
+            {
+                id: 'school-compliance-guide',
+                title: 'Compliance-gids voor scholen',
+                description: 'Praktische gids die stap voor stap uitlegt wat een school zelf moet regelen bij ingebruikname van DGSkills.',
+                badge: 'Gids',
+                access: { type: 'link', href: '/compliance/school-compliance-guide.html', external: true },
+            },
+            {
+                id: 'dpia-support',
+                title: 'DPIA Support Document',
+                description: 'Ondersteunende informatie voor de school-DPIA: datacategorieën, verwerkingsdoelen en risico-inschattingen.',
+                badge: 'PDF',
+                access: { type: 'link', href: '/compliance/dpia-support-dgskills-v1.html', external: true },
+            },
+        ],
+    },
+    {
+        id: 'onderwijs',
+        title: 'Onderwijs & Verantwoording',
+        intro: 'Middelen voor curriculumverantwoording en compliance-zelfcontrole.',
+        icon: <IconFileText />,
+        docs: [
+            {
+                id: 'checklist',
+                title: 'AI-Compliance Checklist',
+                description: 'Praktische checklist om te controleren of jouw school voldoet aan de AVG en EU AI Act bij gebruik van DGSkills.',
+                badge: 'Handig',
+                access: { type: 'link', href: '/compliance/checklist' },
+            },
+            {
+                id: 'slo-rapport',
+                title: 'SLO-Dekkingsrapport (voorbeeld)',
+                description: 'Hoe een geautomatiseerd curriculumrapport eruit ziet voor verantwoording aan inspectie en schoolleiding.',
+                badge: 'Demo',
+                access: { type: 'link', href: '/compliance/slo-rapport' },
+            },
+        ],
+    },
+    {
+        id: 'op-aanvraag',
+        title: 'Op aanvraag voor ICT-coördinatoren & FG',
+        intro: 'Deze documenten bevatten interne beoordelingen of gedetailleerde risico-informatie. Ze worden op aanvraag gedeeld met ICT-coördinatoren, FG’s en schoolbestuurders, onder geheimhouding.',
+        icon: <IconMail />,
+        docs: [
+            {
+                id: 'legal-matrix',
+                title: 'Legal Matrix (AVG + AI Act)',
+                description: 'Toetsmatrix per verplichting uit de AVG en EU AI Act, met de invulling die DGSkills daaraan geeft.',
+                badge: 'Matrix',
+                access: { type: 'request', subject: 'Aanvraag: Legal Matrix (AVG + AI Act)' },
+            },
+            {
+                id: 'conformiteitsplan',
+                title: 'EU AI Act Conformiteitsplan',
+                description: 'Plan hoe DGSkills toewerkt naar volledige naleving van de hoog-risico verplichtingen per 2 augustus 2026.',
+                badge: 'AI Act',
+                access: { type: 'request', subject: 'Aanvraag: EU AI Act Conformiteitsplan' },
+            },
+            {
+                id: 'annex-iv',
+                title: 'Annex IV — Technische Documentatie',
+                description: 'Technische documentatie zoals vereist door EU AI Act Annex IV voor hoog-risico AI-systemen in het onderwijs.',
+                badge: 'Annex IV',
+                access: { type: 'request', subject: 'Aanvraag: Annex IV technische documentatie' },
+            },
+            {
+                id: 'verwerkingsregister',
+                title: 'Verwerkingsregister (Art. 30 AVG)',
+                description: 'Register van verwerkingsactiviteiten: welke gegevens, waarvoor, hoe lang, met welke subverwerkers.',
+                badge: 'Art. 30',
+                access: { type: 'request', subject: 'Aanvraag: Verwerkingsregister' },
+            },
+            {
+                id: 'risicoregister',
+                title: 'Risicoregister EU AI Act (Art. 9)',
+                description: 'Geïdentificeerde risico’s voor leerlingen, de genomen maatregelen en het proces voor periodieke herbeoordeling.',
+                badge: 'Risk',
+                access: { type: 'request', subject: 'Aanvraag: Risicoregister AI Act' },
+            },
+            {
+                id: 'beveiligingsbijlage',
+                title: 'Beveiligingsbijlage bij DPA',
+                description: 'Bijlage B bij de Verwerkersovereenkomst met concrete technische en organisatorische maatregelen.',
+                badge: 'Annex B',
+                access: { type: 'request', subject: 'Aanvraag: Beveiligingsbijlage DPA' },
+            },
+            {
+                id: 'subverwerkers',
+                title: 'Sub-verwerkerslijst',
+                description: 'Actueel overzicht van subverwerkers die DGSkills inzet, inclusief doel en vestigingsland.',
+                badge: 'Annex C',
+                access: { type: 'request', subject: 'Aanvraag: Sub-verwerkerslijst' },
+            },
+            {
+                id: 'dpa-handleiding',
+                title: 'Handleiding Verwerkersovereenkomst',
+                description: 'Toelichting voor scholen bij het ondertekenen van de DPA: welke keuzes je maakt en wat ze betekenen.',
+                badge: 'Gids',
+                access: { type: 'request', subject: 'Aanvraag: DPA-handleiding' },
+            },
+            {
+                id: 'privacybijsluiter',
+                title: 'Privacybijsluiter',
+                description: 'Beknopte bijsluiter met alle PII-categorieën en bewaartermijnen voor ouders en leerlingen.',
+                badge: 'Bijsluiter',
+                access: { type: 'request', subject: 'Aanvraag: Privacybijsluiter' },
+            },
+            {
+                id: 'fg-dpo-advies',
+                title: 'FG/DPO Adviesrapport',
+                description: 'Advies vanuit de functionaris gegevensbescherming met aanbevelingen en opvolging.',
+                badge: 'Advies',
+                access: { type: 'request', subject: 'Aanvraag: FG/DPO Adviesrapport' },
+            },
+            {
+                id: 'audit-rapport',
+                title: 'Compliance Audit Rapport',
+                description: 'Meest recente interne audit van het platform op AVG- en AI Act-naleving, inclusief actiepunten.',
+                badge: '2026',
+                access: { type: 'request', subject: 'Aanvraag: Audit Rapport 2026' },
+            },
+            {
+                id: 'dpia-compleet',
+                title: 'DPIA DGSkills (volledig)',
+                description: 'Volledige Data Protection Impact Assessment voor het DGSkills-platform.',
+                badge: 'DPIA',
+                access: { type: 'request', subject: 'Aanvraag: Volledige DPIA DGSkills' },
+            },
+        ],
+    },
+];
+
+const buildRequestHref = (subject: string): string =>
+    `mailto:${PRIVACY_EMAIL}?subject=${encodeURIComponent(subject)}`;
+
+const TOTAL_DOCS = SECTIONS.reduce((acc, s) => acc + s.docs.length, 0);
+
+const DocRow: React.FC<{ doc: ComplianceDoc; sectionId: string }> = ({ doc, sectionId }) => {
+    const handleClick = () => {
+        trackEvent('ict_document_download', {
+            page: 'compliance-hub',
+            cta: `${sectionId}:${doc.id}`,
+            type: doc.access.type,
+        });
+    };
+
+    const baseWrapperClasses =
+        'flex flex-col md:flex-row md:items-center justify-between gap-6 p-6 rounded-2xl border border-slate-100 hover:border-indigo-200 transition-colors bg-white';
+
+    const baseButtonClasses =
+        'inline-flex items-center justify-center px-5 py-2.5 bg-white border border-slate-200 text-slate-600 font-semibold text-sm rounded-lg hover:bg-slate-50 transition-colors whitespace-nowrap';
+
+    let href: string;
+    let cta: string;
+    let externalProps: { target?: '_blank'; rel?: 'noopener noreferrer' } = {};
+
+    switch (doc.access.type) {
+        case 'link':
+            href = doc.access.href;
+            cta = doc.access.cta ?? 'Bekijk document';
+            if (doc.access.external) {
+                externalProps = { target: '_blank', rel: 'noopener noreferrer' };
+            }
+            break;
+        case 'request':
+            href = buildRequestHref(doc.access.subject);
+            cta = 'Vraag aan via e-mail';
+            break;
+    }
+
+    return (
+        <div className={baseWrapperClasses}>
+            <div className="flex gap-5 items-start">
+                <div className="mt-1 p-3 bg-indigo-50 rounded-xl">
+                    <IconFileText />
                 </div>
-                <p className="text-sm text-slate-500 max-w-md">{description}</p>
+                <div>
+                    <div className="flex flex-wrap items-center gap-3 mb-1">
+                        <h3 className="font-bold text-slate-900">{doc.title}</h3>
+                        <span className="px-2 py-0.5 bg-slate-100 text-slate-500 text-[10px] font-bold rounded uppercase">
+                            {doc.badge}
+                        </span>
+                    </div>
+                    <p className="text-sm text-slate-500 max-w-xl">{doc.description}</p>
+                </div>
             </div>
+            <a href={href} className={baseButtonClasses} onClick={handleClick} {...externalProps}>
+                {cta}
+            </a>
         </div>
-        <a 
-            href={link}
-            className="inline-flex items-center justify-center px-5 py-2.5 bg-white border border-slate-200 text-slate-600 font-semibold text-sm rounded-lg hover:bg-slate-50 transition-colors"
-        >
-            Bekijk Document
-        </a>
-    </div>
+    );
+};
+
+const Section: React.FC<{ section: ComplianceSection }> = ({ section }) => (
+    <section id={section.id} className="mb-14">
+        <div className="flex items-center gap-3 mb-2">
+            <div className="p-2 bg-slate-100 rounded-lg">{section.icon}</div>
+            <h2 className="text-xl font-bold text-slate-900">{section.title}</h2>
+        </div>
+        <p className="text-sm text-slate-500 mb-5 max-w-2xl">{section.intro}</p>
+        <div className="grid gap-4">
+            {section.docs.map((doc) => (
+                <DocRow key={doc.id} doc={doc} sectionId={section.id} />
+            ))}
+        </div>
+    </section>
 );
 
 export const ComplianceHub: React.FC = () => {
     useEffect(() => {
         const originalTitle = document.title;
         document.title = 'Compliance Hub & Privacy Dossier | DGSkills';
-        
-        const setMeta = (attr: string, key: string, content: string) => {
-            let el = document.querySelector(`meta[${attr}="${key}"]`) as HTMLMetaElement;
-            if (!el) {
-                el = document.createElement('meta');
-                el.setAttribute(attr, key);
-                document.head.appendChild(el);
-            }
-            el.setAttribute('content', content);
-        };
 
-        setMeta('name', 'description', 'Centrale hub voor alle compliance-assets van DGSkills. Download de Verwerkersovereenkomst (DPA), DPIA Support documenten en AI Act transparantie-rapporten.');
-        
+        const description = document.querySelector(
+            'meta[name="description"]',
+        ) as HTMLMetaElement | null;
+        const originalDescription = description?.getAttribute('content') ?? null;
+        const descriptionEl =
+            description ??
+            (() => {
+                const el = document.createElement('meta');
+                el.setAttribute('name', 'description');
+                document.head.appendChild(el);
+                return el;
+            })();
+        descriptionEl.setAttribute(
+            'content',
+            'Centrale hub voor alle compliance-assets van DGSkills. Privacyverklaring, Verwerkersovereenkomst, AI Act transparantie, DPIA ondersteuning en documenten op aanvraag voor ICT-coördinatoren.',
+        );
+
         trackEvent('seo_page_view', { cluster: 'compliance', page: 'compliance-hub' });
 
         return () => {
             document.title = originalTitle;
+            if (originalDescription !== null) {
+                descriptionEl.setAttribute('content', originalDescription);
+            }
         };
     }, []);
 
@@ -66,66 +352,65 @@ export const ComplianceHub: React.FC = () => {
                         <img src="/mascot/pip-logo.webp" alt="DGSkills logo" className="w-8 h-8 object-contain" />
                         <span className="font-bold text-slate-900">DGSkills</span>
                     </a>
-                    <a href="/ict" className="text-sm font-medium text-slate-500 hover:text-indigo-600 transition-colors">ICT Dashboard</a>
+                    <a
+                        href="/ict"
+                        className="text-sm font-medium text-slate-500 hover:text-indigo-600 transition-colors"
+                    >
+                        ICT Dashboard
+                    </a>
                 </div>
             </nav>
 
             <main className="pt-32 pb-24 px-6">
                 <div className="max-w-4xl mx-auto">
-                    <div className="mb-12">
-                        <h1 className="text-3xl font-bold text-slate-900 mb-4">Compliance Hub</h1>
-                        <p className="text-slate-600">Alle juridische en technische documentatie voor schoolbesturen, FG's en ICT-managers op één plek.</p>
+                    <div className="mb-10">
+                        <span className="inline-block px-3 py-1 bg-indigo-50 text-indigo-600 text-xs font-bold rounded-full uppercase tracking-wide mb-4">
+                            {TOTAL_DOCS} documenten · bijgewerkt {new Date().getFullYear()}
+                        </span>
+                        <h1 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
+                            Compliance Hub
+                        </h1>
+                        <p className="text-slate-600 max-w-2xl">
+                            Alle juridische, technische en didactische documentatie voor
+                            schoolbesturen, functionarissen gegevensbescherming en ICT-coördinatoren
+                            op één plek. Publieke documenten zijn direct beschikbaar; gevoelige
+                            interne rapporten delen we op aanvraag onder geheimhouding.
+                        </p>
                     </div>
 
-                    <div className="grid gap-4 mb-16">
-                        <ResourceItem 
-                            title="AI-Compliance Checklist"
-                            description="Een praktische checklist om te controleren of jouw school voldoet aan de AI Act en AVG."
-                            link="/compliance/checklist"
-                            badge="Handig"
-                        />
-                        <ResourceItem 
-                            title="SLO-Dekkingsrapport (Voorbeeld)"
-                            description="Bekijk hoe een geautomatiseerd rapport eruit ziet voor verantwoording aan de inspectie."
-                            link="/compliance/slo-rapport"
-                            badge="Demo"
-                        />
-                        <ResourceItem 
-                            title="Verwerkersovereenkomst (DPA)"
-                            description="Het standaardmodel 4.0 voor het funderend onderwijs, specifiek ingevuld voor DGSkills."
-                            link="/ict/privacy/policy"
-                            badge="v4.1"
-                        />
-                        <ResourceItem 
-                            title="DPIA Support Document"
-                            description="Ondersteuning bij het uitvoeren van een Data Protection Impact Assessment voor jouw school."
-                            link="/ict/privacy"
-                            badge="PDF"
-                        />
-                        <ResourceItem 
-                            title="AI Act Transparantie Rapport"
-                            description="Gedetailleerde uitleg over AI-gebruik, datastromen en menselijke controle (Art. 50 compliance)."
-                            link="/ict/privacy/ai"
-                            badge="Nieuw"
-                        />
-                        <ResourceItem 
-                            title="Technische Whitepaper"
-                            description="Inzicht in architectuur, SSO-integraties, data-opslag en beveiligingsprotocollen."
-                            link="/ict/technisch"
-                            badge="v1.0"
-                        />
-                        <ResourceItem 
-                            title="SLA & Support Overzicht"
-                            description="Gegarandeerde responstijden, uptime-garanties en escalatie-procedures."
-                            link="/ict/support"
-                            badge="SLA"
-                        />
-                    </div>
+                    <nav aria-label="Snelnavigatie compliance" className="mb-12 p-4 bg-white rounded-2xl border border-slate-100">
+                        <p className="text-[11px] font-bold uppercase text-slate-400 mb-3">Snel naar</p>
+                        <ul className="flex flex-wrap gap-x-5 gap-y-2 text-sm">
+                            {SECTIONS.map((s) => (
+                                <li key={s.id}>
+                                    <a
+                                        href={`#${s.id}`}
+                                        className="text-slate-600 hover:text-indigo-600 font-medium"
+                                    >
+                                        {s.title}
+                                    </a>
+                                </li>
+                            ))}
+                        </ul>
+                    </nav>
+
+                    {SECTIONS.map((section) => (
+                        <Section key={section.id} section={section} />
+                    ))}
 
                     <div className="bg-white p-8 rounded-2xl border border-slate-100 text-center">
                         <h2 className="text-xl font-bold mb-4">Vragen voor onze Privacy Officer?</h2>
-                        <p className="text-slate-500 text-sm mb-6">Heb je specifieke vragen over de AVG, AI Act of integratie met jouw school-LVS? Ons team staat klaar om te helpen.</p>
-                        <a href="mailto:privacy@dgskills.app" className="text-indigo-600 font-bold hover:underline">privacy@dgskills.app</a>
+                        <p className="text-slate-500 text-sm mb-6 max-w-xl mx-auto">
+                            Heb je specifieke vragen over de AVG, de EU AI Act of integratie met
+                            jouw school-LVS? Onze FG/privacy officer reageert binnen twee
+                            werkdagen.
+                        </p>
+                        <a
+                            href={`mailto:${PRIVACY_EMAIL}`}
+                            className="text-indigo-600 font-bold hover:underline"
+                        >
+                            {PRIVACY_EMAIL}
+                        </a>
                     </div>
                 </div>
             </main>

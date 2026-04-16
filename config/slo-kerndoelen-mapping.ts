@@ -213,6 +213,10 @@ export function getKerndoelenForMission(missionId: string): SloKerndoelCode[] {
   return missionById[missionId]?.sloKerndoelen || [];
 }
 
+export function getMissionsForKerndoel(code: SloKerndoelCode): KerndoelMissionMeta[] {
+  return KERNDOEL_MISSIONS.filter((m) => m.sloKerndoelen.includes(code));
+}
+
 export function isMissionApplicableToStudent(mission: KerndoelMissionMeta, studentClass?: string): boolean {
   if (!mission.classRestriction) return true;
   return String(studentClass || '').toUpperCase() === String(mission.classRestriction).toUpperCase();
