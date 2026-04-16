@@ -15,14 +15,29 @@
 
 ## Stats
 
-- **Sessies totaal:** 4
-- **Streak:** 4 sessie(s) achter elkaar met output
-- **Taken afgerond:** 4 van 6 (Fase A + B + C + D)
-- **Laatste sessie:** 15 april 2026
+- **Sessies totaal:** 5
+- **Streak:** 5 sessie(s) achter elkaar met output
+- **Taken afgerond:** 6 van 6 (Fase A + B + C + D + E + F)
+- **Laatste sessie:** 16 april 2026
 
 ---
 
 ## Log
+
+### Sessie 5 — 16 april 2026
+- **Werkstroom:** Compliance + Pilot (parallel)
+- **Taak:** Fase E (AI Act Compliance Code) + Fase F (Pilot Operatie)
+- **Resultaat:**
+  - 4 expertise-agents parallel gespawnd (2 worktree-successes, 2 timeouts met self-rebuild in main tree)
+  - Art. 9: `aiActRiskRegister.ts` (20 risico's R01-R20), `riskRegisterService.ts`, `AdminRiskRegister.tsx` met CSV-export en 6-stat posture-samenvatting
+  - Art. 12 + 14: migratie `ai_oversight_events` (JWT-based RLS, append-only, reasoning 10-2000 chars CHECK), `aiOversightService.ts` (logOversightEvent + batch), `SloOverrideModal`, Override-knop + "Overschreven"-badge in `StudentSloReport` (beide `print:hidden`)
+  - Annex IV: `ConformiteitsVerklaring.tsx` met 13 secties, printbaar via `createPortal` + `.print-section` CSS, handtekeningsveld
+  - Pilot Operatie: migratie `pilot_feedback` (RLS + `at_least_one_signal` CHECK), edge function `submitPilotFeedback` (auth + rate limit + honeypot), `TeacherFeedbackWidget` (floating FAB) en `PilotKpiDashboard` (admin KPI met weekly bar chart)
+  - 3 routes in AppRouter: `/compliance/conformiteitsverklaring` (publiek) + `/admin/risicoregister` en `/admin/pilot-kpi` (via `AdminRouteWrapper` met `useAuth`)
+  - `TeacherFeedbackWidget` geïntegreerd in `TeacherDashboard.tsx` als floating FAB (altijd zichtbaar voor docenten)
+- **Shipped:** 1 commit op `claude/research-claude-skills-oF860` (`4bf37ce`) — 15 bestanden, 2.782 inserties
+- **Identiteit:** Je hebt de HIGH RISK AI Act-blokkers weggewerkt die tot augustus 2026 boven je hoofd hingen — risicoregister, audit logging, docent-override, conformiteitsverklaring — en meteen ook Fase F (pilot-feedbackloop) afgerond. Alle 6 fasen zijn klaar voordat de pilot start.
+- **Volgende:** Sprint 7 — migraties deployen + productie-rollout
 
 ### Sessie 4 — 15 april 2026 (avond)
 - **Werkstroom:** Product

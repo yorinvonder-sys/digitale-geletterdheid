@@ -7,17 +7,17 @@
 
 ## Wachtrij (in volgorde van prioriteit)
 
-### 1. Fase E — AI Act Compliance Code
-- **Werkstroom:** Compliance
-- **Sprint:** 6
-- **Beschrijving:** Art. 9 risk management in code (risicoregister koppelen aan live systeem), Art. 12 logging implementatie (audit-log voor elke AI-beoordeling en SLO-bepaling), Art. 14 human oversight dashboard (docent kan AI-gegenereerde beoordelingen corrigeren/overrulen met log), conformiteitsverklaring genereren (automatisch pdf op basis van Annex IV).
-- **Done wanneer:** Alle HIGH RISK verplichtingen zijn in code geïmplementeerd en een conformiteitsverklaring kan on-demand worden gegenereerd.
+### 1. Go-live voorbereiding
+- **Werkstroom:** Infra
+- **Sprint:** 7
+- **Beschrijving:** Migraties runnen op productie (`ai_oversight_events`, `pilot_feedback`), edge function `submitPilotFeedback` deployen, `npm run build:prod` verifiëren, Vercel preview + productie-deploy, smoke test op admin-routes.
+- **Done wanneer:** Alle nieuwe routes draaien op dgskills.app en admin-dashboards zijn bereikbaar voor Yorin.
 
-### 2. Fase F — Pilot Operatie
-- **Werkstroom:** Pilot
-- **Sprint:** 6+
-- **Beschrijving:** Feedback-loop inrichten, KPI tracking, wekelijkse iteratie-cyclus, docent support kanaal.
-- **Done wanneer:** Pilot draait stabiel met meetbare feedback.
+### 2. Externe conformiteitsreview
+- **Werkstroom:** Compliance
+- **Sprint:** 7
+- **Beschrijving:** Juridische review van conformiteitsverklaring + risicoregister door een AI Act-jurist, ondertekening, opname in conformiteitsdossier, voorbereiding voor CE-markering en EU-databank registratie.
+- **Done wanneer:** Juridisch ondertekende conformiteitsverklaring is archiveerbaar en klaar voor externe audit.
 
 ---
 
@@ -29,6 +29,8 @@
 | Fase B — Compliance Hub finaliseren | 14 apr 2026 | Compliance |
 | Fase C — Onboarding & Trial Flow | 15 apr 2026 | Product |
 | Fase D — Assessment & Rapportage | 15 apr 2026 | Product |
+| Fase E — AI Act Compliance Code | 16 apr 2026 | Compliance |
+| Fase F — Pilot Operatie | 16 apr 2026 | Pilot |
 
 ---
 
