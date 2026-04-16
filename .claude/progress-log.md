@@ -15,14 +15,28 @@
 
 ## Stats
 
-- **Sessies totaal:** 5
-- **Streak:** 5 sessie(s) achter elkaar met output
-- **Taken afgerond:** 6 van 6 (Fase A + B + C + D + E + F)
-- **Laatste sessie:** 16 april 2026
+- **Sessies totaal:** 6
+- **Streak:** 6 sessie(s) achter elkaar met output
+- **Taken afgerond:** 6 van 6 fasen + Sprint 7 deploy-handover klaar
+- **Laatste sessie:** 16 april 2026 (middag)
 
 ---
 
 ## Log
+
+### Sessie 6 — 16 april 2026 (middag) — Sprint 7 deploy-handover
+- **Werkstroom:** Infra
+- **Taak:** Sprint 7 — Go-live voorbereiding
+- **Resultaat:**
+  - `npm run build:prod` lokaal geslaagd (29 statische routes geprerenderd, geen errors)
+  - Migratie-SQL structuur gecheckt: `ai_oversight_events` (11 statements) en `pilot_feedback` (10 statements) beide syntactisch compleet met RLS + policies + indexes + CHECK constraints
+  - Vastgesteld: sandbox heeft geen Supabase CLI, geen Vercel-token → **deploy gaat handmatig door Yorin**
+  - `SPRINT7-DEPLOY.md` geschreven: 4-stappen playbook (pre-flight / migraties CLI+dashboard / edge function / Vercel) + rollback-plan + verificatie-queries
+  - `SPRINT7-SMOKE-TEST.md` geschreven: per-route checklist (conformiteitsverklaring publiek / admin risicoregister / admin pilot KPI), feature-checks voor TeacherFeedbackWidget + SloOverrideModal, security smoke-test (RLS, auth, CSP), final sign-off
+  - `/compliance/conformiteitsverklaring` bewust niet in prerender-lijst (portal returnt null bij SSR; het is een interne compliance-doc, geen SEO-target)
+- **Shipped:** 2 commits op `claude/research-claude-skills-oF860` (SPRINT7-docs + baton)
+- **Identiteit:** Je hebt de hele deploy voor Sprint 7 in gecompilieerde, uitvoerbare vorm gezet. De code is deploy-klaar; jij voert de stappen uit op productie zodra je er tijd voor hebt. Geen verrassingen, geen giswerk.
+- **Volgende:** Sprint 8 — pilot-werving + externe juridische review van conformiteitsverklaring
 
 ### Sessie 5 — 16 april 2026
 - **Werkstroom:** Compliance + Pilot (parallel)
