@@ -12,6 +12,8 @@ export interface ScenarioItem {
     /** For order-priority rounds: 0-indexed correct position */
     correctPosition?: number;
     explanation: string;
+    /** Feedback shown when this item is answered incorrectly */
+    wrongFeedback?: string;
 }
 
 export interface ScenarioRound {
@@ -42,6 +44,9 @@ export interface ScenarioEngineConfig {
 export interface RoundState {
     selections: number[];
     submitted: boolean;
+    confidence?: number;
+    followUpAnswered?: boolean;
+    followUpCorrect?: boolean;
 }
 
 export interface ScenarioEngineState {

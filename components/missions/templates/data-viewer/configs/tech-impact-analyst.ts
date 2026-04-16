@@ -183,7 +183,7 @@ export const techImpactAnalystConfig: DataViewerConfig = {
                     correctAnswer: '',
                     explanation:
                         'Positief: het algoritme helpt je precies de content vinden die je interessant vindt — efficiënte ontdekking van nieuwe creators en onderwerpen. Negatief: filterbubbel — je ziet steeds extremere versies van wat je al leuk vindt, en nooit tegengestelde perspectieven. Dit kan polarisering versterken en je informatieverwerving eenzijdig maken.',
-                    points: 0,
+                    points: 15,
                 },
             ],
         },

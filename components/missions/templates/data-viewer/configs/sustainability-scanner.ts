@@ -181,7 +181,7 @@ export const sustainabilityScannerConfig: DataViewerConfig = {
                     correctAnswer: '',
                     explanation:
                         'Goede aanpassingen zijn: SD in plaats van HD (besparing: 60,4g CO2 per uur streaming). Bijlagen vervangen door links (besparing: 152g per 8 bijlagen per dag). Telefoon één jaar langer gebruiken (besparing: ≈25.000g CO2 gespreid over het extra jaar). De beste antwoorden koppelen een concrete gewoonte aan een berekening.',
-                    points: 0,
+                    points: 10,
                 },
             ],
         },

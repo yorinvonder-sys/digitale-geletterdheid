@@ -83,10 +83,10 @@ export const cloudCommanderConfig: ToolGuideConfig = {
             },
         },
     ],
-    maxScore: 60,
+    maxScore: 50,
     badges: [
         {
-            minScore: 55,
+            minScore: 45,
             emoji: '🏆',
             title: 'Cloud Expert',
             color: '#D97757',

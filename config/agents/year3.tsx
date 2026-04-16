@@ -2311,4 +2311,14 @@ Beschrijf je eerste idee — hoe vaag ook."` + SYSTEM_INSTRUCTION_SUFFIX,
     ],
     bonusChallenges: null
 },
+{
+    id: 'welzijnsonderzoeker',
+    yearGroup: 3,
+    educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
+    title: 'Welzijnsonderzoeker',
+    description: 'Onderzoek digitaal welzijn',
+    icon: <Search size={28} />,
+    systemInstruction: '',
+    steps: [],
+},
 ];

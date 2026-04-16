@@ -4189,4 +4189,24 @@ REGELS:
             }
         ],
     },
+    {
+        id: 'notificatie-ninja',
+        yearGroup: 1,
+        educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
+        title: 'Notificatie Ninja',
+        description: 'Leer omgaan met notificaties en afleidingen',
+        icon: <Smartphone size={28} />,
+        systemInstruction: '',
+        steps: [],
+    },
+    {
+        id: 'digitale-balans-coach',
+        yearGroup: 1,
+        educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
+        title: 'Digitale Balans Coach',
+        description: 'Vind je digitale balans',
+        icon: <Scale size={28} />,
+        systemInstruction: '',
+        steps: [],
+    },
 ];

@@ -148,15 +148,16 @@ export async function getAssessmentResult(
     .eq('user_id', userId)
     .eq('assessment_type', type)
     .eq('school_year', schoolYear)
-    .single();
+    .maybeSingle();
 
   if (error) {
-    // Stil falen bij: geen rij gevonden, tabel bestaat niet (migratie nog niet gedraaid)
-    if (error.code === 'PGRST116' || error.code === '42P01' || error.message?.includes('does not exist')) return null;
+    // Stil falen bij: tabel bestaat niet (migratie nog niet gedraaid)
+    if (error.code === '42P01' || error.message?.includes('does not exist')) return null;
     logger.error('[assessmentService] getAssessmentResult error:', error);
     return null;
   }
 
+  if (!data) return null;
   return fromRow(data as AssessmentRow);
 }
 
@@ -257,7 +258,7 @@ export async function hasCompletedAssessment(
     .eq('user_id', userId)
     .eq('assessment_type', type)
     .eq('school_year', schoolYear)
-    .single();
+    .maybeSingle();
 
   if (error) return false;
   return !!data;

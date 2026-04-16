@@ -181,7 +181,7 @@ export const digitalDivideResearcherConfig: DataViewerConfig = {
                     correctAnswer: '',
                     explanation:
                         'Goede aanbevelingen koppelen de aanpak aan de specifieke barrière voor 75-plussers. Typisch: (1) Uitbreiding DigiSterker met meer vrijwilligers en gemeentelijke financiering — gericht op vaardigen, laagdrempelig. (2) Verplichting voor banken om altijd een fysiek loket te houden — vermindert de afhankelijkheid van digitale vaardigheden voor essentiële diensten. De aanbeveling is sterker als ze ingaat op waarom de kloof voor ouderen specifiek bestaat (geen opgegroeid-met-internet).',
-                    points: 0,
+                    points: 10,
                 },
             ],
         },

@@ -28,7 +28,7 @@ export type RoleId =
   // Leerjaar 1 - Periode 4
   'review-week-3' | 'mission-blueprint' | 'mission-vision' | 'mission-launch' | 'startup-pitch' |
   // Leerjaar 1 - Speciaal
-  'ai-beleid-brainstorm' |
+  'ai-beleid-brainstorm' | 'notificatie-ninja' | 'digitale-balans-coach' |
   // Leerjaar 1 - Reviews
   'cloud-cleaner' | 'pitch-police' |
   // Leerjaar 2 - Periode 1: Data & Informatie
@@ -36,7 +36,7 @@ export type RoleId =
   // Leerjaar 2 - Periode 2: Programmeren & CT
   'algorithm-architect' | 'web-developer' | 'network-navigator' | 'app-prototyper' | 'bug-hunter' | 'automation-engineer' | 'code-reviewer' | 'code-review-2' | 'privacy-by-design' | 'wachtwoord-warrior' | 'access-control-engineer' |
   // Leerjaar 2 - Periode 3: Digitale Media & Creatie
-  'ux-detective' | 'podcast-producer' | 'meme-machine' | 'digital-storyteller' | 'brand-builder' | 'video-editor' | 'media-review' |
+  'ux-detective' | 'podcast-producer' | 'meme-machine' | 'digital-storyteller' | 'brand-builder' | 'video-editor' | 'media-review' | 'online-helden' |
   // Leerjaar 2 - Periode 4: Ethiek & Eindproject
   'ai-ethicus' | 'digital-rights-defender' | 'tech-court' | 'future-forecaster' | 'sustainability-scanner' | 'eindproject-j2' |
   // Leerjaar 3 - Periode 1: Geavanceerd Programmeren & AI
@@ -44,7 +44,7 @@ export type RoleId =
   // Leerjaar 3 - Periode 2: Cybersecurity & Privacy
   'cyber-detective' | 'encryption-expert' | 'phishing-fighter' | 'security-auditor' | 'digital-forensics' | 'security-review' |
   // Leerjaar 3 - Periode 3: Maatschappelijke Impact
-  'startup-simulator' | 'policy-maker' | 'innovation-lab' | 'digital-divide-researcher' | 'tech-impact-analyst' | 'impact-review' |
+  'startup-simulator' | 'policy-maker' | 'innovation-lab' | 'digital-divide-researcher' | 'tech-impact-analyst' | 'impact-review' | 'welzijnsonderzoeker' |
   // Leerjaar 3 - Periode 4: Meesterproef
   'portfolio-builder' | 'research-project' | 'prototype-developer' | 'pitch-perfect' | 'reflection-report' | 'meesterproef';
 

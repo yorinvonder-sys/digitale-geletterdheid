@@ -3,6 +3,8 @@ import type { DataViewerConfig } from '../DataViewer';
 export const eindprojectJ2Config: DataViewerConfig = {
     missionId: 'eindproject-j2',
     title: 'Eindproject Jaar 2',
+    enableChat: true,
+    chatRoleId: 'eindproject-j2',
     introEmoji: '🏆',
     introTitle: 'Jouw eindproject: laat het zien',
     introDescription:
@@ -200,7 +202,7 @@ export const eindprojectJ2Config: DataViewerConfig = {
                     correctAnswer: '',
                     explanation:
                         'Een goed antwoord benoemt (1) het probleem dat de leerling ervaart, (2) wie er baat bij heeft, en (3) wat voor soort project het wordt (app, website, onderzoek, spel). Voorbeelden: "Ik merk dat klasgenoten nooit weten wanneer de bibliotheek open is. Ik wil een simpele website maken met actuele openingstijden en een agenda." Of: "Ik wil onderzoeken hoeveel schermtijd leerlingen in mijn klas hebben en of dat met hun concentratie samenhangt."',
-                    points: 0,
+                    points: 15,
                 },
             ],
         },

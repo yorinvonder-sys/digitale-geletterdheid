@@ -182,7 +182,7 @@ export const researchProjectConfig: DataViewerConfig = {
                     correctAnswer: '',
                     explanation:
                         'Beperkingen: n=200 is relatief klein — resultaten kunnen toeval zijn. Alleen havo/vwo — niet representatief voor alle Nederlandse jongeren. Eenmalige meting — geen longitudinaal beeld. Verbetering: grotere steekproef (n>1000), inclusief mavo-leerlingen, meerdere meetmomenten in de tijd, en objectieve schermtijdmeting (bijv. via telefoondata) in plaats van zelfrapportage.',
-                    points: 0,
+                    points: 10,
                 },
             ],
         },

@@ -186,7 +186,7 @@ export const uxDetectiveConfig: DataViewerConfig = {
                     correctAnswer: '',
                     explanation:
                         'Een goede verbetering past een UX-principe toe: bijv. "Voeg een "Huiswerk"-knop direct op de startpagina toe (Affordance — zichtbaar en toegankelijk)." Of: "Gebruik consistente navigatie zodat huiswerk altijd op dezelfde plek staat (Consistentie)." Of: "Voeg een zoekfunctie toe die snel huiswerk vindt (Foutpreventie — de gebruiker hoeft niet te zoeken in het menu)."',
-                    points: 0,
+                    points: 10,
                 },
             ],
         },

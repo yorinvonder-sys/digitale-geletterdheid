@@ -101,7 +101,7 @@ const config: ToolGuideConfig = {
             },
         },
     ],
-    maxScore: 60,
+    maxScore: 55,
     badges: [
         {
             minScore: 55,

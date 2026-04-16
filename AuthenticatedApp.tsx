@@ -503,7 +503,10 @@ export function AuthenticatedApp() {
             return (
                 <GameDirectorMission
                     onBack={handleRequestExitModule}
-                    onComplete={() => handleExitModule()}
+                    onComplete={(success) => {
+                        if (success) handleMissionComplete('game-director');
+                        else handleExitModule();
+                    }}
                     stats={user?.stats}
                 />
             );
@@ -684,6 +687,22 @@ export function AuthenticatedApp() {
         }
 
         if (activeModule === 'ipad-print-instructies') {
+            const studentClass = user?.stats?.studentClass || user?.studentClass || '';
+            if (studentClass !== 'MH1A') {
+                return (
+                    <div className="min-h-screen bg-[#FAFAF8] flex flex-col items-center justify-center p-4">
+                        <div className="w-full max-w-md text-center space-y-4">
+                            <p className="text-[#3D3D38] font-semibold">Deze missie is voor jouw klas niet beschikbaar.</p>
+                            <button
+                                onClick={handleExitModule}
+                                className="py-3 px-6 bg-[#3D3D38] hover:bg-[#2A2A26] text-white rounded-xl font-bold text-sm transition-all duration-200"
+                            >
+                                Terug naar dashboard
+                            </button>
+                        </div>
+                    </div>
+                );
+            }
             return (
                 <PrintInstructiesMission
                     onBack={handleRequestExitModule}

@@ -82,7 +82,7 @@ function computeScore(state: ToolGuideState, steps: ToolStep[]): number {
 function RichText({ text, className }: { text: string; className?: string }) {
     const parts = text.split(/(\*\*[^*]+\*\*)/g);
     return (
-        <span className={className}>
+        <span className={`whitespace-pre-line${className ? ` ${className}` : ''}`}>
             {parts.map((part, i) => {
                 if (part.startsWith('**') && part.endsWith('**')) {
                     return (

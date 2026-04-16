@@ -189,7 +189,7 @@ export const dataPipelineConfig: DataViewerConfig = {
                     correctAnswer: '',
                     explanation:
                         'Nadeel van imputatie: je voegt verzonnen data toe aan je dataset. Als je later precies wilt weten wat er om 09:00 is gemeten, bestaat dat getal niet echt. Je zou liever verwijderen als: de omliggende metingen ook ontbreken (je kunt geen gemiddelde maken), of als de meting over een crisissituatie ging waarbij je géén geschatte waarden wilt invoegen.',
-                    points: 0,
+                    points: 10,
                 },
             ],
         },

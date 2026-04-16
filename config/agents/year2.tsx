@@ -2799,4 +2799,14 @@ REGELS:
             }
         ],
     },
+    {
+        id: 'online-helden',
+        yearGroup: 2,
+        educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
+        title: 'Online Helden',
+        description: 'Wees een held online',
+        icon: <Shield size={28} />,
+        systemInstruction: '',
+        steps: [],
+    },
 ];

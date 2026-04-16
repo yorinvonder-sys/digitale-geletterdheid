@@ -48,9 +48,9 @@ export const mlTrainerConfig: DataViewerConfig = {
                     id: 'q1-spam-percentage',
                     question: 'Hoeveel procent van de e-mails in deze dataset is gelabeld als "Spam"?',
                     type: 'number-input',
-                    correctAnswer: 50,
+                    correctAnswer: 42,
                     explanation:
-                        'Er zijn 6 spam-mails (ID 1, 3, 5, 7, 10 en één extra) en 6 geen-spam-mails. 6 ÷ 12 × 100 = 50%. Filter op "Label" = "Spam" om te tellen. Een gebalanceerde dataset (50/50) is ideaal voor training — anders leert het model een voorkeur voor de meest voorkomende klasse.',
+                        'Er zijn 5 spam-mails (ID 1, 3, 5, 7, 10) en 7 geen-spam-mails. 5 ÷ 12 × 100 ≈ 42%. Filter op "Label" = "Spam" om te tellen. Deze dataset is licht onevenwichtig — een ideale trainingsdataset is vaker ongeveer 50/50.',
                     points: 15,
                 },
                 {
@@ -192,7 +192,7 @@ export const mlTrainerConfig: DataViewerConfig = {
                     correctAnswer: '',
                     explanation:
                         'Dit is regressie: de uitkomst is een getal (bijv. 3,5 uur), geen categorie. Als je zou willen voorspellen of een leerling "veel" of "weinig" telefoongebruik heeft, wordt het classificatie. Het verschil zit in de uitkomstvariabele: getal = regressie, categorie = classificatie.',
-                    points: 0,
+                    points: 10,
                 },
             ],
         },

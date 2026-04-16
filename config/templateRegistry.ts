@@ -80,15 +80,15 @@ export const TEMPLATE_MISSIONS: Record<string, TemplateMissionEntry> = {
     'eindproject-j2':       { missionId: 'eindproject-j2',       templateType: 'data-viewer', enableChat: true, chatRoleId: 'eindproject-j2' },
 
     // === DebateArena (10) ===
-    'schermtijd-coach':     { missionId: 'schermtijd-coach',     templateType: 'debate-arena', enableChat: true, chatRoleId: 'schermtijd-coach' },
+    'schermtijd-coach':     { missionId: 'schermtijd-coach',     templateType: 'debate-arena' },
     'digitale-balans-coach': { missionId: 'digitale-balans-coach', templateType: 'debate-arena' },
-    'scroll-stopper':       { missionId: 'scroll-stopper',       templateType: 'debate-arena', enableChat: true, chatRoleId: 'scroll-stopper' },
-    'ai-ethicus':           { missionId: 'ai-ethicus',           templateType: 'debate-arena', enableChat: true, chatRoleId: 'ai-ethicus' },
-    'digital-rights-defender': { missionId: 'digital-rights-defender', templateType: 'debate-arena', enableChat: true, chatRoleId: 'digital-rights-defender' },
-    'tech-court':           { missionId: 'tech-court',           templateType: 'debate-arena', enableChat: true, chatRoleId: 'tech-court' },
-    'future-forecaster':    { missionId: 'future-forecaster',    templateType: 'debate-arena', enableChat: true, chatRoleId: 'future-forecaster' },
-    'policy-maker':         { missionId: 'policy-maker',         templateType: 'debate-arena', enableChat: true, chatRoleId: 'policy-maker' },
-    'reflection-report':    { missionId: 'reflection-report',    templateType: 'debate-arena', enableChat: true, chatRoleId: 'reflection-report' },
+    'scroll-stopper':       { missionId: 'scroll-stopper',       templateType: 'debate-arena' },
+    'ai-ethicus':           { missionId: 'ai-ethicus',           templateType: 'debate-arena' },
+    'digital-rights-defender': { missionId: 'digital-rights-defender', templateType: 'debate-arena' },
+    'tech-court':           { missionId: 'tech-court',           templateType: 'debate-arena' },
+    'future-forecaster':    { missionId: 'future-forecaster',    templateType: 'debate-arena' },
+    'policy-maker':         { missionId: 'policy-maker',         templateType: 'debate-arena' },
+    'reflection-report':    { missionId: 'reflection-report',    templateType: 'debate-arena' },
     'review-week-3':        { missionId: 'review-week-3',        templateType: 'debate-arena' },
 
     // === ToolGuide (7) ===

@@ -175,7 +175,7 @@ export const dashboardDesignerConfig: DataViewerConfig = {
                     correctAnswer: '',
                     explanation:
                         'Een effectief antwoord benoemt 2-3 relevante KPI\'s (bijv. aanwezigheid, gemiddeld cijfer, aantal onvoldoendes), legt uit waarom die het belangrijkst zijn voor 2C, en koppelt ze aan een actie voor de docent. Een goed dashboard triggert een gesprek: "Wat doen we nu met deze informatie?"',
-                    points: 0,
+                    points: 10,
                 },
             ],
         },
