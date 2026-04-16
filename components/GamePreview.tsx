@@ -20,6 +20,7 @@ interface GamePreviewProps {
   };
   onUndo?: () => void; // Callback to undo the last code change
   canUndo?: boolean; // Whether undo is available
+  onReset?: () => void; // Callback to reset game to default initialCode
 }
 
 // Loading state with timeout - shows retry option after 8 seconds
@@ -61,7 +62,7 @@ const LoadingStateWithTimeout: React.FC = () => {
   );
 };
 
-export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = false, isGenerating = false, onLoad, missionId, user, onUndo, canUndo = false }) => {
+export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = false, isGenerating = false, onLoad, missionId, user, onUndo, canUndo = false, onReset }) => {
   const [blobUrl, setBlobUrl] = useState<string | null>(null);
   const [gameStarted, setGameStarted] = useState(autoStart);
   const [iframeLoaded, setIframeLoaded] = useState(false);
@@ -407,6 +408,19 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
             >
               <Undo2 size={16} />
               <span className="text-xs font-bold hidden md:inline">Ongedaan</span>
+            </button>
+          )}
+
+          {/* Reset to Default Button */}
+          {onReset && gameStarted && (
+            <button
+              onClick={onReset}
+              className="transition-all p-1.5 rounded-lg active:scale-95 flex items-center gap-1.5"
+              style={{ color: '#EF4444' }}
+              title="Herstel originele game"
+            >
+              <RefreshCw size={16} />
+              <span className="text-xs font-bold hidden md:inline">Reset</span>
             </button>
           )}
 
