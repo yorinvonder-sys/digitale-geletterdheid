@@ -17,6 +17,7 @@ import {
 import { getMissionsForYear } from '../config/missions';
 import { CURRICULUM } from '../config/curriculum';
 import { MetricsOverview } from './teacher/MetricsOverview';
+import { TeacherSetupChecklist } from './teacher/TeacherSetupChecklist';
 import { StudentList } from './teacher/StudentList';
 import { EventsPanel } from './teacher/EventsPanel';
 import { Leaderboard } from './teacher/Leaderboard';
@@ -515,6 +516,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                     <AnimatePresence mode="wait">
                         {activeTab === 'overview' && (
                             <PageTransition key="overview" className="space-y-6">
+                                <TeacherSetupChecklist storageKeySuffix={user?.uid} />
                                 <MetricsOverview
                                     students={students}
                                     activeEvents={activeEvents}

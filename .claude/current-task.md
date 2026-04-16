@@ -8,47 +8,48 @@
 ## Actieve taak
 
 **Werkstroom:** Product
-**Sprint:** 5 — Go-to-Market
-**Taak:** Fase C — Onboarding & Trial Flow (deels)
-**Status:** C1 (/pilot route) ✅ + C2 (first-login wizard) ✅ + C3 (welkomstmail) ⬜
+**Sprint:** 5-6 — Rapportage
+**Taak:** Fase D — Assessment & Rapportage
+**Status:** ✅ Afgerond (15 april 2026)
 
 ## Volgende taak
 
-**Werkstroom:** Product OF Compliance
-**Sprint:** 5-6
-**Taak:** Keuze uit drie opties (zie hieronder)
-**Done wanneer:** afhankelijk van keuze
-
-### Opties voor sessie 3:
-1. **Fase C C3 — Welkomstmail docenten** (Product, klein): nieuwe edge function `sendTeacherWelcomeEmail` die Yorin handmatig stuurt na invite. Past op `claude/onboarding-trial-flow`.
-2. **Security follow-up — Column-level RLS** (Compliance, medium): SECURITY DEFINER RPC + column-protection trigger op `role`/`school_id`. Nieuwe branch. Belangrijk voor 2 aug 2026 deadline.
-3. **Fase D — Assessment & Rapportage** (Product, groot): leerlingrapportages, docentdashboard voortgangsoverzicht, SLO-koppeling.
+**Werkstroom:** Compliance
+**Sprint:** 6 — AI Act Deadline
+**Taak:** Fase E — AI Act Compliance Code
+**Beschrijving:** Art. 9 risk management in code (risicoregister koppelen aan live systeem), Art. 12 logging implementatie (audit-log voor elke AI-beoordeling en SLO-bepaling), Art. 14 human oversight dashboard (docent kan AI-gegenereerde beoordelingen corrigeren/overrulen met log), conformiteitsverklaring genereren (automatisch pdf op basis van Annex IV).
+**Done wanneer:** Alle HIGH RISK verplichtingen zijn in code geïmplementeerd en een conformiteitsverklaring kan on-demand worden gegenereerd.
 
 ## Context
 
-- Fase A (infra) + B (compliance hub) zijn compleet.
-- Fase C is 2/3 af: `/pilot` route + teacher first-login wizard zijn gebouwd en gepusht.
-- **Drie branches wachten op review/merge:**
-  - `claude/simplify-header-nav-XtaiN` — header simplificatie
-  - `claude/compliance-hub-finaliseren` — 5 commits (Hub, Checklist, SLO-rapport, review, housekeeping)
-  - `claude/onboarding-trial-flow` — 3 commits (/pilot, wizard, review + migratie)
-- **Pre-existing security gap** in `users_update_own_or_teacher` RLS: teacher kan `role` en `school_id` self-updaten. Zie migratie `20260301170000` regels 103-114. Gedocumenteerd in commit `21e32a4`.
-- Productbeslissingen genomen in deze sessie: handmatige invite door Yorin, verplichte wizard, eigen `/pilot` route.
+- Sprint 1-4 zijn afgerond (security, missies, UI/UX, homepage, dashboard)
+- Sprint 5 loopt: Go-to-Market
+- Fase A (Infra), B (Compliance Hub), C (Onboarding) en D (Rapportage) zijn klaar
+- Drie DGSkills-skills zijn live: `dgskills-mission-author`, `dgskills-compliance-check`, `dgskills-supabase-edge`
+- Deadline hoog-risico AI Act: 2 augustus 2026 (~108 dagen vanaf vandaag)
 
 ## Laatste sessie
 
 - **Datum:** 15 april 2026
-- **Wat gedaan:** Fase B volledig afgerond + Fase C C1 + C2 + twee zelf-review rondes met simplify skill
+- **Wat gedaan:**
+  - `StudentSloReport` modal gebouwd — printbaar + CSV-export per individuele leerling
+  - Portal via `createPortal` naar `document.body` om bestaande print-section CSS te gebruiken
+  - Integratie in `SLOClassOverview`: leerlingrij klikbaar + keyboard-toegankelijk (Enter/Space)
+  - VSO-profielen correct: 18A-20B voor VSO-leerlingen, 21A-23C voor regulier
+  - Per kerndoel: voltooide + open missies zichtbaar (titels via `getMissionMeta`)
+  - CSV-export veilig: `csvEscape`, UTF-8 BOM voor Excel, gesanitizede filename
 - **Beslissingen:**
-  - Hybride doc-strategie (publiek + op aanvraag) voor Compliance Hub
-  - Geen nieuwe markdown-viewer routes
-  - Handmatige invite flow voor docenten (niet automatisch na pilot-aanvraag)
-  - Verplichte wizard (geen optionele carrousel)
-  - Eigen `/pilot` route (geen modal)
-  - `display_name` server-side gecapped op 200 chars via DB CHECK constraint
+  - Modal via `createPortal` i.p.v. inline (volgt bestaand pattern in `BookPreview.tsx`)
+  - Print-gedrag via bestaande `print-section` CSS-klasse en Tailwind `print:*` prefixes — geen nieuwe CSS nodig
+  - CSV i.p.v. PDF (client-side genereerbaar, geen lib nodig; school-compatibel)
+
+## Branch
+
+- Huidige werk-branch: `claude/research-claude-skills-oF860`
+- 7 commits ahead van main: skills, compliance hub, baton-B, pilot-flow, baton-C, student-rapport
 
 ## Sessie-continuïteit
 
-- **Sessienummer:** 3 (volgende sessie)
-- **Streak:** 2 (actief sinds sessie 1)
-- **Voortgangslog:** `.claude/progress-log.md` — Claude schrijft hier automatisch na elke sessie
+- **Sessienummer:** 4 (afgerond)
+- **Streak:** 4 (sessies op rij met output)
+- **Voortgangslog:** `.claude/progress-log.md`
