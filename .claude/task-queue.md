@@ -7,17 +7,17 @@
 
 ## Wachtrij (in volgorde van prioriteit)
 
-### 1. Fase B — Compliance Hub finaliseren
-- **Werkstroom:** Compliance
-- **Sprint:** 5
-- **Beschrijving:** ComplianceHub.tsx updaten met alle 17 compliance-documenten. Compliance checklist pagina vullen. SLO-rapport pagina verifiëren.
-- **Done wanneer:** ICT-coördinatoren kunnen in 1 klik alle compliance-info vinden.
-
-### 2. Fase C — Onboarding & Trial Flow
+### 1. Fase C C3 — Welkomstmail docenten
 - **Werkstroom:** Product
 - **Sprint:** 5
-- **Beschrijving:** Pilot-aanmeldformulier bouwen, docent-onboarding flow afronden, welkomstmail template, eerste-inlog wizard.
-- **Done wanneer:** Een docent kan zich aanmelden voor de pilot en direct aan de slag.
+- **Beschrijving:** Edge function `sendTeacherWelcomeEmail` bouwen (Zoho SMTP template hergebruiken). Yorin stuurt handmatig na invite. Branch: `claude/onboarding-trial-flow`.
+- **Done wanneer:** Yorin kan met 1 actie een welkomstmail naar een nieuw uitgenodigde docent sturen.
+
+### 2. SECURITY — Column-level RLS op users-tabel
+- **Werkstroom:** Compliance (security)
+- **Sprint:** 5-6
+- **Beschrijving:** De RLS policy `users_update_own_or_teacher` (migratie `20260301170000`:103-114) heeft geen column-restricties. Een geauthenticeerde teacher kan via een raw Supabase-call `role` of `school_id` zelf wijzigen (self-promote). Oplossing: SECURITY DEFINER RPC voor teacher-self-update + column-protection trigger op `role` en `school_id`. Of: restrictievere RLS policy. Pre-existing gap, ontdekt tijdens C2 review.
+- **Done wanneer:** Teachers kunnen alleen `display_name`, `stats`, `student_class` en `year_group` op hun eigen rij updaten. `role`, `school_id`, `email` zijn beschermd.
 
 ### 3. Fase D — Assessment & Rapportage
 - **Werkstroom:** Product
@@ -43,6 +43,8 @@
 
 | Taak | Datum | Werkstroom |
 |------|-------|------------|
+| Fase C C1+C2 — /pilot route + wizard | 15 apr 2026 | Product |
+| Fase B — Compliance Hub finaliseren | 15 apr 2026 | Compliance |
 | Fase A — Projectinfrastructuur (.claude) | 3 apr 2026 | Infra |
 
 ---
