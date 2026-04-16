@@ -19,7 +19,8 @@ import {
     Calculator,
     Rocket,
     GraduationCap,
-    Users
+    Users,
+    NotebookPen
 } from 'lucide-react';
 import { DeveloperSprintPlan } from './DeveloperSprintPlan';
 import { PWAInstallPrompt } from '../PWAInstallPrompt';
@@ -29,6 +30,7 @@ const DeveloperTimeline = React.lazy(() => import('./DeveloperTimeline').then(m 
 const DeveloperDocsViewer = React.lazy(() => import('./DeveloperDocsViewer').then(m => ({ default: m.DeveloperDocsViewer })));
 const DeveloperAnalyticsPanel = React.lazy(() => import('./DeveloperAnalyticsPanel').then(m => ({ default: m.DeveloperAnalyticsPanel })));
 const AccountantDashboard = React.lazy(() => import('./AccountantDashboard').then(m => ({ default: m.AccountantDashboard })));
+const DeveloperNotesPanel = React.lazy(() => import('./DeveloperNotesPanel').then(m => ({ default: m.DeveloperNotesPanel })));
 import {
     subscribeToDeveloperTasks,
     DeveloperTask,
@@ -50,7 +52,7 @@ interface DeveloperDashboardProps {
     onSwitchView?: (view: 'developer' | 'student' | 'teacher') => void;
 }
 
-type TabId = 'overview' | 'tasks' | 'timeline' | 'docs' | 'analytics' | 'boekhouding' | 'sprintplan';
+type TabId = 'overview' | 'tasks' | 'timeline' | 'docs' | 'analytics' | 'boekhouding' | 'sprintplan' | 'notities';
 
 export function DeveloperDashboard({ user, onLogout, onSwitchView }: DeveloperDashboardProps) {
     const [activeTab, setActiveTab] = useState<TabId>('sprintplan');
@@ -88,6 +90,7 @@ export function DeveloperDashboard({ user, onLogout, onSwitchView }: DeveloperDa
     const tabs = [
         { id: 'sprintplan',   label: 'Sprint Plan',   icon: Rocket },
         { id: 'overview',     label: 'Overzicht',     icon: LayoutDashboard },
+        { id: 'notities',     label: 'Notities',      icon: NotebookPen },
         { id: 'tasks',        label: 'Takenlijst',    icon: CheckSquare },
         { id: 'timeline',     label: 'Tijdpaden',     icon: Calendar },
         { id: 'docs',         label: 'Documenten',    icon: FileText },
@@ -308,6 +311,8 @@ export function DeveloperDashboard({ user, onLogout, onSwitchView }: DeveloperDa
                 return <Suspense fallback={<TabLoader />}><DeveloperAnalyticsPanel /></Suspense>;
             case 'boekhouding':
                 return <Suspense fallback={<TabLoader />}><AccountantDashboard userId={user.uid} /></Suspense>;
+            case 'notities':
+                return <Suspense fallback={<TabLoader />}><DeveloperNotesPanel /></Suspense>;
             default:
                 return null;
         }
