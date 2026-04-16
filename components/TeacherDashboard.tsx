@@ -40,6 +40,7 @@ import { TeacherNavigation } from './teacher/dashboard/TeacherNavigation';
 import { TeacherModals } from './teacher/dashboard/TeacherModals';
 import { TeacherDocumentsPanel } from './teacher/TeacherDocumentsPanel';
 import { SchedulingConfigurator } from './coordinator/SchedulingConfigurator';
+import { TeacherFeedbackWidget } from './teacher/TeacherFeedbackWidget';
 
 // Lazy loaded panels
 const LazyDigitaalPaspoortTeacher = lazy(() => import('./assessment/escaperoom/DigitaalPaspoortTeacher').then(m => ({ default: m.DigitaalPaspoortTeacher })));
@@ -677,6 +678,14 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                             />
                         </div>
                     </div>
+                )}
+                {/* Pilot-feedback FAB (Fase F) — floating, ongeacht actieve tab */}
+                {user && (
+                    <TeacherFeedbackWidget
+                        teacherUid={user.uid}
+                        schoolId={user.schoolId ?? null}
+                        role={user.role}
+                    />
                 )}
             </div>
         </TutorialProvider>

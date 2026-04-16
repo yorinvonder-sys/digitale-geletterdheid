@@ -702,6 +702,7 @@ export const SLOClassOverview: React.FC<SLOClassOverviewProps> = ({ students, sc
                 <StudentSloReport
                     student={reportStudent}
                     yearGroup={selectedYear}
+                    schoolId={schoolId ?? null}
                     onClose={() => setReportStudent(null)}
                 />
             )}

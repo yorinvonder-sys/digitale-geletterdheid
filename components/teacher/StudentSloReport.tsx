@@ -10,23 +10,30 @@
  * Ondersteunt:
  *  - Print/opslaan-als-PDF via `window.print()` (print-CSS verbergt header + buttons)
  *  - CSV-export per leerling (één rij per SLO-kerndoel)
+ *  - EU AI Act Art. 14 override-knop per kerndoel (alleen zichtbaar on-screen,
+ *    verborgen bij printen via `print:hidden`).
  *
  * Data-veiligheid:
  *  - Leest uitsluitend uit de meegegeven `student`-prop (RLS geldt al op
  *    `students`-fetch niveau in parent component).
- *  - Geen netwerkcalls, geen nieuwe PII, geen localStorage.
+ *  - Override-acties worden gelogd via `aiOversightService` (Art. 14 audit log).
+ *  - Geen herberekening van `calculateStudentKerndoelStats` na override —
+ *    de override is audit-only; het rapport blijft op missie-voltooiingen.
  */
-import React, { useMemo, useCallback } from 'react';
+import React, { useMemo, useCallback, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { X, Printer, FileDown, GraduationCap } from 'lucide-react';
+import { X, Printer, FileDown, GraduationCap, Pencil } from 'lucide-react';
 import { StudentData } from '../../types';
 import { SLO_KERNDOELEN, type SloKerndoelCode } from '../../config/sloKerndoelen';
 import { calculateStudentKerndoelStats, getMissionMeta, KERNDOEL_CODES } from '../../config/slo-kerndoelen-mapping';
+import { SloOverrideModal } from './SloOverrideModal';
 
 export interface StudentSloReportProps {
     student: StudentData;
     /** Beperk de rapportage tot één leerjaar. Als `undefined` worden alle leerjaren meegenomen. */
     yearGroup?: number;
+    /** School-ID voor Art. 14 override logging (RLS-scoping). */
+    schoolId?: string | null;
     onClose: () => void;
 }
 
@@ -60,7 +67,7 @@ function sanitizeFilenameFragment(input: string): string {
         .slice(0, 64) || 'leerling';
 }
 
-export const StudentSloReport: React.FC<StudentSloReportProps> = ({ student, yearGroup, onClose }) => {
+export const StudentSloReport: React.FC<StudentSloReportProps> = ({ student, yearGroup, schoolId = null, onClose }) => {
     const stats = useMemo(() => calculateStudentKerndoelStats(student, yearGroup), [student, yearGroup]);
 
     const displayName = student.displayName || 'Onbekend';
@@ -68,6 +75,10 @@ export const StudentSloReport: React.FC<StudentSloReportProps> = ({ student, yea
     const studentClass = student.studentClass || student.stats?.studentClass || '—';
     const vsoProfile = student.stats?.vsoProfile || null;
     const isVsoStudent = !!vsoProfile;
+
+    // Art. 14: override-modal state + bijgehouden overridden codes voor badge
+    const [overrideModalCode, setOverrideModalCode] = useState<SloKerndoelCode | null>(null);
+    const [overriddenCodes, setOverriddenCodes] = useState<Set<SloKerndoelCode>>(new Set());
 
     // Codes die voor deze leerling relevant zijn (minimaal 1 toepasbare missie).
     const applicableCodes = useMemo(
@@ -159,9 +170,20 @@ export const StudentSloReport: React.FC<StudentSloReportProps> = ({ student, yea
         triggerDownload(`SLO_leerlingrapport_${nameFragment}_${date}.csv`, csv);
     }, [applicableCodes, stats, displayName, identifier, studentClass, vsoProfile, yearGroup]);
 
+    const handleOverrideSaved = useCallback((code: SloKerndoelCode) => {
+        setOverriddenCodes((prev) => {
+            const next = new Set(prev);
+            next.add(code);
+            return next;
+        });
+        setOverrideModalCode(null);
+    }, []);
+
     if (typeof document === 'undefined') return null;
 
-    return createPortal(
+    return (
+        <>
+            {createPortal(
         <div
             className="print-section fixed inset-0 z-[90] bg-slate-900/60 backdrop-blur-sm flex items-start justify-center p-0 md:p-6 overflow-y-auto print:static print:inset-auto print:bg-white print:backdrop-blur-none print:p-0 print:overflow-visible"
             role="dialog"
@@ -272,6 +294,8 @@ export const StudentSloReport: React.FC<StudentSloReportProps> = ({ student, yea
                                         percentage={stats[code].percentage}
                                         completedMissions={stats[code].completedMissions}
                                         totalMissions={stats[code].totalMissions}
+                                        isOverridden={overriddenCodes.has(code)}
+                                        onOverrideClick={() => setOverrideModalCode(code)}
                                     />
                                 ))}
                             </ul>
@@ -296,6 +320,21 @@ export const StudentSloReport: React.FC<StudentSloReportProps> = ({ student, yea
             </div>
         </div>,
         document.body,
+            )}
+
+            {/* Art. 14 override-modal — niet in de print-section */}
+            {overrideModalCode !== null && (
+                <SloOverrideModal
+                    open={true}
+                    onClose={() => setOverrideModalCode(null)}
+                    student={student}
+                    schoolId={schoolId}
+                    sloCode={overrideModalCode}
+                    currentAiPercentage={stats[overrideModalCode].percentage}
+                    onOverrideSaved={() => handleOverrideSaved(overrideModalCode)}
+                />
+            )}
+        </>
     );
 };
 
@@ -332,9 +371,14 @@ interface KerndoelRowProps {
     percentage: number;
     completedMissions: string[];
     totalMissions: string[];
+    isOverridden: boolean;
+    onOverrideClick: () => void;
 }
 
-const KerndoelRow: React.FC<KerndoelRowProps> = ({ code, completed, total, percentage, completedMissions, totalMissions }) => {
+const KerndoelRow: React.FC<KerndoelRowProps> = ({
+    code, completed, total, percentage, completedMissions, totalMissions,
+    isOverridden, onOverrideClick,
+}) => {
     const kd = SLO_KERNDOELEN[code];
     const openMissions = totalMissions.filter((m) => !completedMissions.includes(m));
 
@@ -366,14 +410,30 @@ const KerndoelRow: React.FC<KerndoelRowProps> = ({ code, completed, total, perce
                         {kd.isVso && (
                             <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 border border-emerald-200 px-1.5 py-0.5 rounded uppercase tracking-wider">VSO</span>
                         )}
+                        {/* Art. 14: badge "Overschreven door docent" — alleen on-screen */}
+                        {isOverridden && (
+                            <span className="print:hidden inline-flex items-center gap-1 text-[10px] font-bold text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full uppercase tracking-wider">
+                                Overschreven door docent
+                            </span>
+                        )}
                     </div>
                     <p className="text-xs text-slate-500 max-w-xl">{kd.omschrijving}</p>
                     <p className="text-[11px] text-slate-400 mt-1">Domein: {kd.domein}</p>
                 </div>
-                <div className="text-right flex-shrink-0">
+                <div className="text-right flex-shrink-0 flex flex-col items-end gap-1">
                     <p className="text-2xl font-bold text-slate-900">{percentage}%</p>
                     <p className="text-[11px] text-slate-500">{completed} van {total} missies</p>
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mt-1">{statusLabel}</p>
+                    <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">{statusLabel}</p>
+                    {/* Art. 14: Override-knop — verborgen bij print */}
+                    <button
+                        type="button"
+                        onClick={onOverrideClick}
+                        className="print:hidden mt-1 inline-flex items-center gap-1 px-2.5 py-1 bg-white border border-slate-200 text-slate-600 hover:border-indigo-300 hover:text-indigo-600 rounded-md text-[11px] font-semibold transition-colors"
+                        aria-label={`AI-percentage voor ${code} overschrijven met docent-beoordeling`}
+                    >
+                        <Pencil size={11} />
+                        Override
+                    </button>
                 </div>
             </div>
 

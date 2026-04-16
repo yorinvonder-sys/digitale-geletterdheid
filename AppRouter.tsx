@@ -21,11 +21,15 @@ const ComplianceChecklist = React.lazy(() => import('./components/seo/Compliance
 const SloRapport = React.lazy(() => import('./components/seo/SloRapport').then(m => ({ default: m.SloRapport })));
 const ComparisonPage = React.lazy(() => import('./components/seo/ComparisonPage').then(m => ({ default: m.ComparisonPage })));
 const PilotAanmelden = React.lazy(() => import('./components/seo/PilotAanmelden').then(m => ({ default: m.PilotAanmelden })));
+const ConformiteitsVerklaring = React.lazy(() => import('./components/compliance/ConformiteitsVerklaring').then(m => ({ default: m.ConformiteitsVerklaring })));
+const AdminRiskRegister = React.lazy(() => import('./components/compliance/AdminRiskRegister').then(m => ({ default: m.AdminRiskRegister })));
+const PilotKpiDashboard = React.lazy(() => import('./components/admin/PilotKpiDashboard').then(m => ({ default: m.PilotKpiDashboard })));
 const NotFound = React.lazy(() => import('./components/NotFound').then(m => ({ default: m.NotFound })));
 const MobileReceiptPage = React.lazy(() => import('./components/MobileReceiptPage').then(m => ({ default: m.MobileReceiptPage })));
 const ParentConsentApproval = React.lazy(() => import('./components/ParentConsentApproval').then(m => ({ default: m.ParentConsentApproval })));
 
 import { ParentUser } from './types';
+import { useAuth } from './hooks/useAuth';
 const CookieConsent = React.lazy(() => import('./components/CookieConsent').then(m => ({ default: m.CookieConsent })));
 
 const AuthenticatedApp = React.lazy(() => import('./AuthenticatedApp').then(m => ({ default: m.AuthenticatedApp })));
@@ -225,6 +229,27 @@ function PublicPageShell({ children }: { children: React.ReactNode }) {
 }
 
 /** Public routes: / and /scholen. Render shell immediately; defer auth to avoid blocking LCP. */
+/**
+ * AdminRoute — Wrapper dat useAuth resolvt en vervolgens de child rendert
+ * met `user` als prop. Toont loading state of login-prompt.
+ */
+function AdminRouteWrapper({ render }: { render: (user: ParentUser) => React.ReactNode }) {
+    const { user, loading } = useAuth();
+    if (loading) return <LoadingFallback />;
+    if (!user) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-slate-50">
+                <div className="max-w-md p-6 bg-white border border-slate-200 rounded-xl shadow-sm text-center">
+                    <h1 className="text-lg font-bold text-slate-900 mb-2">Inloggen vereist</h1>
+                    <p className="text-sm text-slate-600 mb-4">Deze admin-pagina is alleen beschikbaar na inloggen.</p>
+                    <a href="/login" className="inline-block px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-semibold hover:bg-indigo-700">Naar inloggen</a>
+                </div>
+            </div>
+        );
+    }
+    return <>{render(user)}</>;
+}
+
 function PublicRoute() {
     const shouldProbeAuth = React.useMemo(() => hasLikelySupabaseSession(), []);
     const { user, loading } = useAuthUser({
@@ -409,7 +434,7 @@ export function AppRouter() {
         return <BonnetjeRoute />;
     }
 
-    if (normalizedPath === '/digitale-geletterdheid-vo' || normalizedPath === '/slo-kerndoelen-digitale-geletterdheid' || normalizedPath === '/ai-geletterdheid-onderwijs-ai-act' || normalizedPath === '/compliance-hub' || normalizedPath === '/compliance/checklist' || normalizedPath === '/compliance/slo-rapport' || normalizedPath === '/pilot-aanmelden' || normalizedPath.startsWith('/vergelijking/')) {
+    if (normalizedPath === '/digitale-geletterdheid-vo' || normalizedPath === '/slo-kerndoelen-digitale-geletterdheid' || normalizedPath === '/ai-geletterdheid-onderwijs-ai-act' || normalizedPath === '/compliance-hub' || normalizedPath === '/compliance/checklist' || normalizedPath === '/compliance/slo-rapport' || normalizedPath === '/compliance/conformiteitsverklaring' || normalizedPath === '/pilot-aanmelden' || normalizedPath.startsWith('/vergelijking/')) {
         return (
             <PublicPageShell>
                 <React.Suspense fallback={<LoadingFallback />}>
@@ -419,11 +444,26 @@ export function AppRouter() {
                     {normalizedPath === '/compliance-hub' && <ComplianceHub />}
                     {normalizedPath === '/compliance/checklist' && <ComplianceChecklist />}
                     {normalizedPath === '/compliance/slo-rapport' && <SloRapport />}
+                    {normalizedPath === '/compliance/conformiteitsverklaring' && <ConformiteitsVerklaring />}
                     {normalizedPath === '/pilot-aanmelden' && <PilotAanmelden />}
                     {normalizedPath === '/vergelijking/dgskills-vs-digit-vo' && <ComparisonPage competitor="digit-vo" />}
                     {normalizedPath === '/vergelijking/dgskills-vs-basicly' && <ComparisonPage competitor="basicly" />}
                 </React.Suspense>
             </PublicPageShell>
+        );
+    }
+
+    if (normalizedPath === '/admin/risicoregister' || normalizedPath === '/admin/pilot-kpi') {
+        return (
+            <React.Suspense fallback={<LoadingFallback />}>
+                <AdminRouteWrapper
+                    render={(u) =>
+                        normalizedPath === '/admin/risicoregister'
+                            ? <AdminRiskRegister user={u} onBack={() => { window.location.href = '/compliance-hub'; }} />
+                            : <PilotKpiDashboard user={u} />
+                    }
+                />
+            </React.Suspense>
         );
     }
 
@@ -439,7 +479,7 @@ export function AppRouter() {
     }
 
     // 404 handler for public routes
-    const isPublicRoute = normalizedPath === '' || normalizedPath === '/' || normalizedPath === '/scholen' || normalizedPath === '/ict' || normalizedPath.startsWith('/ict/') || normalizedPath === '/login' || normalizedPath === '/ouderlijke-toestemming' || normalizedPath === '/digitale-geletterdheid-vo' || normalizedPath === '/slo-kerndoelen-digitale-geletterdheid' || normalizedPath === '/ai-geletterdheid-onderwijs-ai-act' || normalizedPath === '/compliance-hub' || normalizedPath.startsWith('/compliance/') || normalizedPath === '/pilot-aanmelden' || normalizedPath.startsWith('/vergelijking/') || normalizedPath.startsWith('/gids/');
+    const isPublicRoute = normalizedPath === '' || normalizedPath === '/' || normalizedPath === '/scholen' || normalizedPath === '/ict' || normalizedPath.startsWith('/ict/') || normalizedPath === '/login' || normalizedPath === '/ouderlijke-toestemming' || normalizedPath === '/digitale-geletterdheid-vo' || normalizedPath === '/slo-kerndoelen-digitale-geletterdheid' || normalizedPath === '/ai-geletterdheid-onderwijs-ai-act' || normalizedPath === '/compliance-hub' || normalizedPath.startsWith('/compliance/') || normalizedPath === '/pilot-aanmelden' || normalizedPath.startsWith('/vergelijking/') || normalizedPath.startsWith('/gids/') || normalizedPath.startsWith('/admin/');
 
     if (isPublicRoute) {
         return (
