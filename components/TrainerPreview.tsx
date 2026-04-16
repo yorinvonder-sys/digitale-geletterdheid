@@ -99,7 +99,7 @@ export const TrainerPreview: React.FC<TrainerPreviewProps> = ({ data }) => {
         return (
             <div className="w-full h-full flex flex-col relative overflow-hidden" style={{ backgroundColor: '#FAF9F0' }}>
                 {/* Content — fits in one viewport without scrolling */}
-                <div className="flex-1 flex flex-col items-center justify-center p-5 md:p-8 relative z-10">
+                <div className="flex-1 flex flex-col items-center justify-start p-5 md:p-8 relative z-10 overflow-y-auto">
                     {/* Pip mascot + Title inline */}
                     <div className="flex items-center gap-3 mb-3">
                         <img
@@ -246,7 +246,7 @@ export const TrainerPreview: React.FC<TrainerPreviewProps> = ({ data }) => {
             )}
 
             {/* Main Content */}
-            <div className="flex-1 flex flex-col p-4 md:p-6 gap-6 overflow-y-auto">
+            <div className="flex-1 flex flex-col p-4 md:p-6 gap-6 overflow-y-auto min-h-0">
 
                 {/* Visualisation of the Brain/Model */}
                 <div className="flex justify-center py-2">

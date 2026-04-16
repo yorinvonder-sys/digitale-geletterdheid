@@ -857,7 +857,7 @@ Maak nu de titel met [TITLE] tags en de tekst van de eerste pagina met [PAGE] ta
 
     if (isEmptyBook && !hasStarted) {
         return (
-            <div className="w-full h-full flex items-center justify-center p-4 relative overflow-hidden" style={{ backgroundColor: '#FAF9F0' }}>
+            <div className="w-full h-full flex items-center justify-start overflow-y-auto p-4 relative" style={{ backgroundColor: '#FAF9F0' }}>
                 <div className="absolute inset-0 bg-[radial-gradient(#D9775720_1px,transparent_1px)] [background-size:20px_20px] opacity-50"></div>
                 <div className="z-10 w-full max-w-md">
                     {showForm ? (

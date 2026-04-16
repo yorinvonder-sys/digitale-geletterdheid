@@ -509,7 +509,7 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
 
             {/* INTRO OVERLAY */}
             {showIntroOverlay && (
-              <div className="absolute inset-0 z-20 flex flex-col items-center justify-center p-4 md:p-8" style={{ backgroundColor: 'rgba(250, 249, 240, 0.98)' }}>
+              <div className="absolute inset-0 z-20 flex flex-col items-center justify-start p-4 md:p-8 overflow-y-auto" style={{ backgroundColor: 'rgba(250, 249, 240, 0.98)' }}>
                 {/* Content */}
                 <div className="text-center max-w-sm md:max-w-md w-full">
                   {/* Pip mascot */}
