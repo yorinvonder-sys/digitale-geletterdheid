@@ -1118,14 +1118,14 @@ Wat wil je als eerste veranderen?"` + SYSTEM_INSTRUCTION_SUFFIX,
 <head>
     <meta charset="UTF-8">
     <style>
-        body { margin: 0; overflow: hidden; font-family: 'Arial', sans-serif; }
+        body { margin: 0; overflow: hidden; font-family: 'Arial', sans-serif; background: #64b5f6; }
         canvas { display: block; }
         #ui { position: absolute; top: 20px; left: 20px; font-weight: bold; font-family: 'Courier New', monospace; color: white; font-size: 24px; text-shadow: 3px 3px 0 #222; }
     </style>
 </head>
 <body>
     <div id="ui">SCORE: 0</div>
-    <canvas id="gameCanvas"></canvas>
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
@@ -1262,47 +1262,60 @@ Wat wil je als eerste veranderen?"` + SYSTEM_INSTRUCTION_SUFFIX,
         function update() {
             if (!gameActive) return;
 
-            player.dy += gravity;
-            player.y += player.dy;
+            try {
+                player.dy += gravity;
+                player.y += player.dy;
 
-            if (player.y > groundY - player.height) {
-                player.y = groundY - player.height;
-                player.dy = 0;
-                player.onGround = true;
-            }
+                if (player.y > groundY - player.height) {
+                    player.y = groundY - player.height;
+                    player.dy = 0;
+                    player.onGround = true;
+                }
 
-            // Move clouds
-            clouds.forEach(c => {
-                c.x -= 0.5;
-                if (c.x < -c.size * 2) c.x = canvas.width + c.size;
-            });
+                // Move clouds
+                clouds.forEach(c => {
+                    c.x -= 0.5;
+                    if (c.x < -c.size * 2) c.x = canvas.width + c.size;
+                });
 
-            for (let i = obstacles.length - 1; i >= 0; i--) {
-                let obs = obstacles[i];
-                obs.x -= obstacleSpeed;
-                
-                if (obs.x + obs.width < 0) {
-                    obstacles.splice(i, 1);
-                    score += 10;
-                    ui.innerText = 'SCORE: ' + score;
-                    // Report score to parent for creator XP system
-                    if (window.parent) {
-                        window.parent.postMessage({ type: 'gameScore', score: score }, '*');
+                for (let i = obstacles.length - 1; i >= 0; i--) {
+                    let obs = obstacles[i];
+                    obs.x -= obstacleSpeed;
+
+                    if (obs.x + obs.width < 0) {
+                        obstacles.splice(i, 1);
+                        score += 10;
+                        ui.innerText = 'SCORE: ' + score;
+                        // Report score to parent for creator XP system
+                        if (window.parent) {
+                            window.parent.postMessage({ type: 'gameScore', score: score }, '*');
+                        }
+                    }
+
+                    // Collision
+                    if (player.x < obs.x + obs.width - 10 &&
+                        player.x + player.width > obs.x + 10 &&
+                        player.y < obs.y + obs.height &&
+                        player.y + player.height > obs.y) {
+                        gameActive = false;
                     }
                 }
 
-                // Collision
-                if (player.x < obs.x + obs.width - 10 &&
-                    player.x + player.width > obs.x + 10 &&
-                    player.y < obs.y + obs.height &&
-                    player.y + player.height > obs.y) {
-                    gameActive = false;
-                }
+                if (Math.random() < 0.012) spawnObstacle();
+
+                draw();
+            } catch(e) {
+                console.error('Game error:', e);
+                try {
+                    ctx.fillStyle = '#64b5f6';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    ctx.fillStyle = '#fff';
+                    ctx.font = 'bold 24px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('Game fout - klik Reset', canvas.width/2, canvas.height/2);
+                    ctx.textAlign = 'left';
+                } catch(e2) {}
             }
-
-            if (Math.random() < 0.012) spawnObstacle();
-
-            draw();
             if (gameActive) requestAnimationFrame(update);
             else {
                 // Report final score to parent on game over
@@ -1314,12 +1327,14 @@ Wat wil je als eerste veranderen?"` + SYSTEM_INSTRUCTION_SUFFIX,
         }
 
         function draw() {
-            // Guard clause: don't draw if canvas dimensions are invalid
+            // Fix dimensions if invalid — but continue drawing instead of returning
             if (canvas.width < 100 || canvas.height < 100) {
-                resize();
-                return;
+                canvas.width = 800;
+                canvas.height = 600;
+                groundY = canvas.height - 80;
+                if (player) player.y = groundY - player.height;
             }
-            
+
             // Sky Gradient
             const skyGradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
             skyGradient.addColorStop(0, skyColor1);

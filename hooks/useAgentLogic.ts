@@ -836,6 +836,19 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
         }
     };
 
+    // Reset game to default initialCode
+    const resetGameToDefault = useCallback(() => {
+        if (selectedRole?.id === 'game-programmeur' && selectedRole.initialCode) {
+            setActiveGameCode(selectedRole.initialCode);
+            previousGameCodeRef.current = selectedRole.initialCode;
+            setMessages(prev => [...prev, {
+                role: 'model',
+                text: '🔄 **Game gereset!** De originele game is hersteld. Je kunt opnieuw beginnen met aanpassen.',
+                timestamp: new Date()
+            }]);
+        }
+    }, [selectedRole, setActiveGameCode, setMessages]);
+
     return {
         messages,
         input,
@@ -863,6 +876,8 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
         setCompletedSteps,
         // Undo feature for game-programmeur
         undoGameCode,
-        canUndoGameCode: gameCodeHistory.length > 0
+        canUndoGameCode: gameCodeHistory.length > 0,
+        // Reset game to default
+        resetGameToDefault,
     };
 };
