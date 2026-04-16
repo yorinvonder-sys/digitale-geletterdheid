@@ -580,7 +580,7 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
     // INTRO SCREEN
     if (phase === 'intro') {
         return (
-            <div className="min-h-screen overflow-y-auto bg-[#FAF9F0] text-[#1A1A19] flex flex-col" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+            <div className="h-dvh overflow-y-auto bg-[#FAF9F0] text-[#1A1A19] flex flex-col" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                 {/* Header */}
                 <header className="bg-white border-b border-[#E8E6DF] px-6 py-4 flex items-center justify-between">
                     <button
@@ -606,34 +606,34 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                 </header>
 
                 {/* Content */}
-                <div className="flex-1 flex items-center justify-center p-6 md:p-12">
+                <div className="flex-1 flex items-center justify-center p-6 md:p-8 lg:p-6">
                     <div className="max-w-2xl mx-auto text-center">
-                        <div className="w-24 h-24 rounded-[2rem] flex items-center justify-center mx-auto mb-8 shadow-2xl text-white" style={{ background: 'linear-gradient(135deg, #D97757, #C46849)', boxShadow: '0 25px 50px -12px rgba(217,119,87,0.3)' }}>
-                            <Sparkles size={48} />
+                        <div className="w-16 h-16 md:w-20 md:h-20 rounded-[1.5rem] md:rounded-[2rem] flex items-center justify-center mx-auto mb-4 md:mb-6 shadow-2xl text-white" style={{ background: 'linear-gradient(135deg, #D97757, #C46849)', boxShadow: '0 25px 50px -12px rgba(217,119,87,0.3)' }}>
+                            <Sparkles size={36} />
                         </div>
 
-                        <h2 className="text-3xl md:text-4xl font-black mb-6 text-[#1A1A19]" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
+                        <h2 className="text-2xl md:text-3xl font-black mb-3 md:mb-4 text-[#1A1A19]" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
                             Leer Prompt Engineering door te <span className="text-[#D97757]">DOEN</span>
                         </h2>
 
-                        <p className="text-lg text-[#6B6B66] mb-10 leading-relaxed">
+                        <p className="text-base md:text-lg text-[#6B6B66] mb-6 md:mb-8 leading-relaxed">
                             Typ je eigen prompts, zie wat de AI maakt, en ontdek wat er beter kan!
                         </p>
 
                         {/* Levels Preview */}
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
-                            <div className="bg-white rounded-2xl p-5 border border-[#E8E6DF]">
-                                <div className="text-3xl mb-2">🌱</div>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 mb-6 md:mb-8">
+                            <div className="bg-white rounded-2xl p-3 md:p-4 border border-[#E8E6DF]">
+                                <div className="text-2xl mb-1">🌱</div>
                                 <h3 className="font-bold mb-1 text-[#2A9D8F]">Beginner</h3>
                                 <p className="text-xs text-[#6B6B66]">Specifiek zijn, context geven</p>
                             </div>
-                            <div className="bg-white rounded-2xl p-5 border border-[#E8E6DF]">
-                                <div className="text-3xl mb-2">⚡</div>
+                            <div className="bg-white rounded-2xl p-3 md:p-4 border border-[#E8E6DF]">
+                                <div className="text-2xl mb-1">⚡</div>
                                 <h3 className="font-bold mb-1 text-[#D97757]">Gevorderd</h3>
                                 <p className="text-xs text-[#6B6B66]">Structuur, format, toon</p>
                             </div>
-                            <div className="bg-white rounded-2xl p-5 border border-[#E8E6DF]">
-                                <div className="text-3xl mb-2">🎯</div>
+                            <div className="bg-white rounded-2xl p-3 md:p-4 border border-[#E8E6DF]">
+                                <div className="text-2xl mb-1">🎯</div>
                                 <h3 className="font-bold mb-1 text-[#8B6F9E]">Expert</h3>
                                 <p className="text-xs text-[#6B6B66]">Persona's, beperkingen</p>
                             </div>
@@ -641,7 +641,7 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
 
                         <button
                             onClick={() => setPhase('challenge')}
-                            className="text-white px-12 py-4 rounded-full font-bold text-lg transition-all duration-300 shadow-lg hover:shadow-xl"
+                            className="text-white px-10 py-3 md:py-4 rounded-full font-bold text-base md:text-lg transition-all duration-300 shadow-lg hover:shadow-xl"
                             style={{ backgroundColor: '#D97757' }}
                             onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#C46849')}
                             onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#D97757')}
@@ -659,7 +659,7 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
         const passed = aiResponse && aiResponse.score >= effectiveMinScore;
 
         return (
-            <div className="min-h-screen overflow-y-auto bg-[#FAF9F0] text-[#1A1A19] flex flex-col" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+            <div className="h-dvh overflow-y-auto bg-[#FAF9F0] text-[#1A1A19] flex flex-col" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                 {/* Header */}
                 <header className="bg-white border-b border-[#E8E6DF] px-6 py-4 sticky top-0 z-10">
                     <div className="max-w-4xl mx-auto flex items-center justify-between">
@@ -716,9 +716,9 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                     </div>
                 </header>
 
-                <div className="max-w-4xl mx-auto p-4 md:p-8">
+                <div className="max-w-4xl mx-auto p-4 md:p-6">
                     {/* Goal Card */}
-                    <div className="bg-white rounded-2xl p-6 border border-[#E8E6DF] mb-6">
+                    <div className="bg-white rounded-2xl p-4 md:p-5 border border-[#E8E6DF] mb-4 md:mb-5">
                         {/* Level Progress Bar */}
                         <div className="flex items-center gap-2 mb-4">
                             <div className="flex-1 flex items-center gap-1">
@@ -786,13 +786,13 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                                 value={userPrompt}
                                 onChange={e => setUserPrompt(e.target.value)}
                                 placeholder="Typ hier je opdracht voor de AI..."
-                                className="w-full bg-white border-2 border-[#E8E6DF] rounded-2xl p-4 text-[#1A1A19] placeholder-[#6B6B66] min-h-[120px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D97757] transition-all duration-300 resize-none"
+                                className="w-full bg-white border-2 border-[#E8E6DF] rounded-2xl p-4 text-[#1A1A19] placeholder-[#6B6B66] min-h-[80px] md:min-h-[100px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D97757] transition-all duration-300 resize-none"
                                 disabled={isAnalyzing}
                             />
                             <button
                                 onClick={handleSubmitPrompt}
                                 disabled={userPrompt.trim().length < 5 || isAnalyzing}
-                                className="mt-4 w-full py-4 rounded-full font-bold flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-lg text-white"
+                                className="mt-3 w-full py-3 md:py-4 rounded-full font-bold flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-lg text-white"
                                 style={{ backgroundColor: '#D97757' }}
                                 onMouseEnter={e => { if (!e.currentTarget.disabled) e.currentTarget.style.backgroundColor = '#C46849'; }}
                                 onMouseLeave={e => { if (!e.currentTarget.disabled) e.currentTarget.style.backgroundColor = '#D97757'; }}
@@ -1002,26 +1002,26 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
         const passed = percentage >= 60;
 
         return (
-            <div className="min-h-screen overflow-y-auto bg-[#FAF9F0] text-[#1A1A19] p-4 md:p-8 flex items-center justify-center" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+            <div className="h-dvh overflow-y-auto bg-[#FAF9F0] text-[#1A1A19] p-4 md:p-6 flex items-center justify-center" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                 <div className="max-w-lg w-full text-center">
-                    <div className="w-28 h-28 rounded-full flex items-center justify-center mx-auto mb-8 text-white"
+                    <div className="w-20 h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center mx-auto mb-4 md:mb-6 text-white"
                         style={{ backgroundColor: passed ? '#10B981' : '#D97757', boxShadow: passed ? '0 25px 50px -12px rgba(16,185,129,0.3)' : '0 25px 50px -12px rgba(217,119,87,0.3)' }}>
-                        <Trophy size={56} />
+                        <Trophy size={40} />
                     </div>
 
-                    <h1 className="text-4xl font-black mb-4" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
+                    <h1 className="text-3xl font-black mb-3" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
                         {passed ? 'Prompt Master!' : 'Goed bezig!'}
                     </h1>
 
-                    <p className="text-xl text-[#6B6B66] mb-8">
+                    <p className="text-lg text-[#6B6B66] mb-4 md:mb-6">
                         {passed
                             ? 'Je beheerst nu de kunst van prompt engineering!'
                             : 'Je hebt veel geleerd over hoe je effectieve prompts schrijft.'
                         }
                     </p>
 
-                    <div className="bg-white rounded-2xl p-8 mb-8 border border-[#E8E6DF]">
-                        <div className="text-6xl font-black mb-2 text-[#D97757]">
+                    <div className="bg-white rounded-2xl p-5 md:p-6 mb-4 md:mb-6 border border-[#E8E6DF]">
+                        <div className="text-4xl md:text-5xl font-black mb-2 text-[#D97757]">
                             {progress.totalScore} pts
                         </div>
                         <p className="text-[#6B6B66] font-bold mb-4">{progress.completedChallenges.length}/{CHALLENGES.length} uitdagingen voltooid</p>
@@ -1043,7 +1043,7 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                     </div>
 
                     {/* Key Learnings */}
-                    <div className="bg-white rounded-2xl p-6 mb-8 text-left border border-[#E8E6DF]">
+                    <div className="bg-white rounded-2xl p-4 md:p-5 mb-4 md:mb-6 text-left border border-[#E8E6DF]">
                         <h4 className="font-bold mb-3 flex items-center gap-2 text-[#1A1A19]">
                             <Lightbulb size={18} className="text-[#D97757]" /> Wat je geleerd hebt:
                         </h4>
@@ -1065,7 +1065,7 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
 
                     <button
                         onClick={() => { clearSave(); onComplete(passed); }}
-                        className="w-full py-5 rounded-full font-bold transition-all duration-300 text-white shadow-lg hover:shadow-xl"
+                        className="w-full py-3 md:py-4 rounded-full font-bold transition-all duration-300 text-white shadow-lg hover:shadow-xl"
                         style={{ backgroundColor: '#D97757' }}
                         onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#C46849')}
                         onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#D97757')}
