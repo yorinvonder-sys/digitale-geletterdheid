@@ -85,6 +85,7 @@ export const memeMachineConfig: BuilderCanvasConfig = {
         { minScore: 90, emoji: '🏆', title: 'Viral Mastermind', color: '#F59E0B' },
         { minScore: 70, emoji: '😂', title: 'Meme Maker', color: '#10B981' },
         { minScore: 50, emoji: '👍', title: 'Content Creator', color: '#D97757' },
+        { minScore: 25, emoji: '💡', title: 'Beginnende Content Maker', color: '#8B5CF6' },
         { minScore: 0, emoji: '🌱', title: 'Op weg', color: '#6B6B66' },
     ],
     takeaways: [

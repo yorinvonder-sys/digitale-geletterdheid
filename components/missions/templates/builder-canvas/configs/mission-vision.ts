@@ -86,6 +86,7 @@ export const missionVisionConfig: BuilderCanvasConfig = {
         { minScore: 90, emoji: '🏆', title: 'Visionair', color: '#F59E0B' },
         { minScore: 70, emoji: '💡', title: 'Ideeënspreker', color: '#10B981' },
         { minScore: 50, emoji: '🎨', title: 'Moodboard Maker', color: '#D97757' },
+        { minScore: 25, emoji: '💡', title: 'Beginnende Visionair', color: '#8B5CF6' },
         { minScore: 0, emoji: '🌱', title: 'Op weg', color: '#6B6B66' },
     ],
     takeaways: [

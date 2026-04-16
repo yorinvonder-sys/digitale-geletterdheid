@@ -86,6 +86,7 @@ export const apiArchitectConfig: BuilderCanvasConfig = {
         { minScore: 90, emoji: '🏆', title: 'API Master', color: '#F59E0B' },
         { minScore: 70, emoji: '🔌', title: 'Backend Architect', color: '#10B981' },
         { minScore: 50, emoji: '📡', title: 'Endpoint Builder', color: '#D97757' },
+        { minScore: 25, emoji: '💡', title: 'Beginnende API Bouwer', color: '#8B5CF6' },
         { minScore: 0, emoji: '🌱', title: 'Op weg', color: '#6B6B66' },
     ],
     takeaways: [

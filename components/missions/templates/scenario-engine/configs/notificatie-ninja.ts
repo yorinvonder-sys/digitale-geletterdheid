@@ -56,7 +56,7 @@ const config: ScenarioEngineConfig = {
             description:
                 'Hieronder zie je acht app-features. Welke zijn specifiek ontworpen om jouw aandacht vast te houden? Selecteer alle aandachtstrekkers.',
             type: 'select-correct',
-            maxScore: 34,
+            maxScore: 25,
             feedbackCorrect:
                 'Scherp! Je herkent de technieken die app-ontwerpers gebruiken om je terug te laten komen.',
             feedbackIncorrect:
@@ -153,7 +153,7 @@ const config: ScenarioEngineConfig = {
             description:
                 'Deze acht notificaties komen allemaal van echte apps. Rangschik ze van meest manipulatief (1e) naar minst manipulatief (8e). Klik ze in die volgorde aan.',
             type: 'order-priority',
-            maxScore: 33,
+            maxScore: 25,
             feedbackCorrect:
                 'Sterke analyse! Je begrijpt welke meldingen bewust op je zwakste momenten inspelen.',
             feedbackIncorrect:
@@ -250,7 +250,7 @@ const config: ScenarioEngineConfig = {
             description:
                 'Voor elke notificatie: is dit vooral nuttig voor jou, of vooral nuttig voor de app? Analyseer het doel achter de melding.',
             type: 'binary-choice',
-            maxScore: 33,
+            maxScore: 25,
             feedbackCorrect: 'Goed gezien! Je kijkt verder dan de tekst van de melding.',
             feedbackIncorrect:
                 'Interessant. Vraag je af: wie heeft er het meest voordeel als jij op deze melding tikt?',
@@ -334,6 +334,103 @@ const config: ScenarioEngineConfig = {
                     correct: false,
                     explanation:
                         'Nuttig voor de app. "Misschien" zegt al genoeg: er is geen echte reactie. Dit is een speculatieve melding bedoeld om je de app in te lokken. Als Luca echt had gereageerd, hadden ze het gewoon gezegd.',
+                },
+            ],
+        },
+
+        // ── RONDE 4: select-correct ───────────────────────────────────────────────
+        {
+            id: 'jouw-schermtijd-reflectie',
+            emoji: '⏱️',
+            title: 'Welke aanpak helpt echt?',
+            description:
+                'Je weet nu hoe apps je aandacht vangen. Maar wat helpt écht om bewuster met je schermtijd om te gaan? Selecteer alle aanpakken die daadwerkelijk werken.',
+            type: 'select-correct',
+            maxScore: 25,
+            feedbackCorrect:
+                'Goed gedaan! Je weet nu niet alleen hoe manipulatie werkt, maar ook hoe je er bewust mee om kunt gaan.',
+            feedbackIncorrect:
+                'Sommige aanpakken klinken logisch maar werken in de praktijk minder goed. Lees de uitleg om te begrijpen waarom.',
+            items: [
+                {
+                    id: 1,
+                    icon: '🔕',
+                    title: 'Alle notificaties van sociale media uitzetten',
+                    description:
+                        'In de instellingen van je telefoon schakel je pushmeldingen uit voor Instagram, TikTok en Snapchat.',
+                    correct: true,
+                    explanation:
+                        'Dit is een van de meest effectieve stappen. Zonder externe triggers open je de app alleen als jij dat wilt — niet omdat een melding je aandacht oproept. Onderzoek toont aan dat dit gemiddeld 30-40 minuten per dag scheelt.',
+                },
+                {
+                    id: 2,
+                    icon: '📲',
+                    title: 'Apps van je startscherm verwijderen',
+                    description:
+                        'Je verwijdert de app-iconen van je startscherm, maar laat de apps zelf geïnstalleerd. Je moet nu actief zoeken om ze te openen.',
+                    correct: true,
+                    explanation:
+                        'Dit verhoogt de "wrijving" om een app te openen. Kleine drempels hebben een groot effect: als je twee extra stappen moet zetten, open je de app minder impulsief. Het automatische gedrag wordt doorbroken.',
+                },
+                {
+                    id: 3,
+                    icon: '🙅',
+                    title: '"Ik ga gewoon minder scrollen" zeggen',
+                    description:
+                        'Je neemt jezelf voor om minder te scrollen, maar verandert verder niets aan je instellingen of gewoontes.',
+                    correct: false,
+                    explanation:
+                        'Goede bedoelingen werken zelden tegen systemen die speciaal zijn ontworpen om ze te omzeilen. Zonder concrete veranderingen in je omgeving of gewoontes val je na een paar dagen terug in hetzelfde patroon.',
+                },
+                {
+                    id: 4,
+                    icon: '⏰',
+                    title: 'Schermtijdlimieten instellen per app',
+                    description:
+                        'Via Schermtijd (iPhone) of Digitaal Welzijn (Android) stel je een dagelijkse tijdslimiet in voor specifieke apps.',
+                    correct: true,
+                    explanation:
+                        'Limieten werken het best als jij ze zelf kiest en begrijpt waarom. Ze zijn geen magische oplossing — je kunt ze negeren — maar ze maken je gebruik zichtbaar en zorgen voor een bewust keuzemomenten.',
+                },
+                {
+                    id: 5,
+                    icon: '🌑',
+                    title: 'Je scherm in grijstinten zetten',
+                    description:
+                        'Kleur speelt een grote rol in hoe aantrekkelijk apps zijn. Zonder kleur zien feeds er minder verleidelijk uit.',
+                    correct: true,
+                    explanation:
+                        'Grijstinten verminderen de visuele beloning van scrollen. Apps investeren miljoenen in kleurpsychologie. Door die kleur weg te halen, verlaag je de prikkel — zonder iets te verwijderen.',
+                },
+                {
+                    id: 6,
+                    icon: '🗑️',
+                    title: 'Apps volledig verwijderen voor altijd',
+                    description:
+                        'Je verwijdert TikTok, Instagram en Snapchat permanent van je telefoon.',
+                    correct: false,
+                    explanation:
+                        'Radicale maatregelen werken zelden lang. De meeste mensen installeren de app daarna opnieuw — en gebruiken hem dan juist meer omdat ze "iets hebben gemist". Bewust gebruik leer je niet door iets weg te gooien.',
+                },
+                {
+                    id: 7,
+                    icon: '📵',
+                    title: 'Telefoon buiten de slaapkamer leggen',
+                    description:
+                        'Je laadt je telefoon \'s nachts op in een andere kamer en koopt een gewone wekker.',
+                    correct: true,
+                    explanation:
+                        'Het eerste wat je \'s ochtends doet, bepaalt hoe je dag begint. Wie direct zijn telefoon pakt, begint de dag al in reactiemodus. Telefoon buiten de slaapkamer verlaagt ook blauwlicht-blootstelling voor het slapen.',
+                },
+                {
+                    id: 8,
+                    icon: '📊',
+                    title: 'Bijhouden hoeveel tijd je echt gebruikt',
+                    description:
+                        'Je controleert één week lang elke dag hoeveel uur je per app op je scherm zit, zonder iets te veranderen.',
+                    correct: true,
+                    explanation:
+                        'Bewustwording is de eerste stap. De meeste mensen schatten hun schermtijd 40-50% te laag in. Pas als je de werkelijke cijfers ziet, kun je een bewuste keuze maken of dat overeenkomt met hoe jij je tijd wilt besteden.',
                 },
             ],
         },

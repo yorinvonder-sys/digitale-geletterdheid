@@ -87,6 +87,7 @@ export const portfolioBuilderConfig: BuilderCanvasConfig = {
         { minScore: 90, emoji: '🏆', title: 'Portfolio Perfectionist', color: '#F59E0B' },
         { minScore: 70, emoji: '✨', title: 'Digital Maker', color: '#10B981' },
         { minScore: 50, emoji: '📁', title: 'Portfolio Starter', color: '#D97757' },
+        { minScore: 25, emoji: '💡', title: 'Beginnende Portfolio Bouwer', color: '#8B5CF6' },
         { minScore: 0, emoji: '🌱', title: 'Op weg', color: '#6B6B66' },
     ],
     takeaways: [

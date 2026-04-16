@@ -28,6 +28,12 @@ const config: ReviewArenaConfig = {
             color: '#6366F1',
         },
         {
+            minScore: 25,
+            emoji: '💡',
+            title: 'Kennis in opbouw',
+            color: '#8B5CF6',
+        },
+        {
             minScore: 0,
             emoji: '💪',
             title: 'Goede poging',
@@ -94,6 +100,18 @@ const config: ReviewArenaConfig = {
             description:
                 'Bepaal bij elke mediakeuze of die bewust is gemaakt (strategisch) of het resultaat van toeval is.',
             maxScore: 25,
+            followUp: {
+                question: 'Een sportmerk wil een nieuwe sneaker promoten bij jongeren van 13-17 jaar. Ze kiezen voor korte vertical video\'s met energieke muziek en geen gesproken tekst. Wat is de meest waarschijnlijke reden voor die keuze?',
+                options: [
+                    'Gesproken tekst kost meer geld om te produceren',
+                    'Het format past bij hoe de doelgroep op platforms zoals TikTok en Instagram Reels consumeert',
+                    'Jongeren begrijpen gesproken tekst minder goed dan beelden',
+                    'Het algoritme blokkeert video\'s met geluid op sociale media',
+                ],
+                correctIndex: 1,
+                explanation: 'Dit is een bewuste mediakeuze gebaseerd op de doelgroep en het platform. Korte vertical video zonder voiceover sluit aan bij het scrollen-gedrag en de aandachtsspanne op short-form platforms. De andere opties zijn feitelijk onjuist — kosten zijn niet de reden, jongeren begrijpen tekst prima, en algoritmes blokkeren geluid niet.',
+                bonusPoints: 5,
+            },
             categories: ['Bewuste mediakeuze', 'Geen mediakeuze'],
             items: [
                 { label: 'Groen in een logo om duurzaamheid uit te stralen', correctCategory: 'Bewuste mediakeuze' },

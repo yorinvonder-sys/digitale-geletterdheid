@@ -28,7 +28,7 @@ export const encryptionExpertConfig: PuzzleLabConfig = {
             ],
             extraClues: [
                 'Verschuif elke letter 3 posities TERUG: V−3=S, H−3=E, I−3=F... Maar let op: I=9e letter, 9−3=6=F, niet E. Gebruik de volgorde A=1, B=2, C=3 ... Z=26.',
-                'Het antwoord is een Nederlands woord dat te maken heeft met zicht.',
+                'Het antwoord is een Nederlands woord dat te maken heeft met bescherming.',
             ],
             revealExtraAfterAttempts: 3,
             answer: ['veilig', 'VEILIG'],

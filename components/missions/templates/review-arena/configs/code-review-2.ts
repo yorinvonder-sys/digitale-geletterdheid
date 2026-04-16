@@ -28,6 +28,12 @@ const config: ReviewArenaConfig = {
             color: '#6366F1',
         },
         {
+            minScore: 25,
+            emoji: '💡',
+            title: 'Kennis in opbouw',
+            color: '#8B5CF6',
+        },
+        {
             minScore: 0,
             emoji: '💪',
             title: 'Goede poging',
@@ -92,6 +98,18 @@ const config: ReviewArenaConfig = {
             title: 'HTML, CSS of JavaScript?',
             description: 'Geef aan welke webtechnologie elk fragment of begrip bij hoort.',
             maxScore: 25,
+            followUp: {
+                question: 'Een klasgenoot klaagt: "Mijn knop ziet er goed uit maar doet niks als ik erop klik." Welke laag van de website moet worden aangepast?',
+                options: [
+                    'HTML — de knop-tag ontbreekt of is verkeerd geplaatst',
+                    'CSS — de stijl zorgt ervoor dat klikken geblokkeerd wordt',
+                    'JavaScript — er ontbreekt een event listener die reageert op de klik',
+                    'De API — de server geeft geen antwoord terug',
+                ],
+                correctIndex: 2,
+                explanation: 'Als een knop zichtbaar is (HTML aanwezig) en er goed uitziet (CSS correct), maar niet reageert, is de interactielogica het probleem. Dat zit in JavaScript: een onclick-handler of addEventListener ontbreekt. CSS kan in zeldzame gevallen klikken blokkeren (pointer-events: none), maar dat is hier niet de meest logische diagnose.',
+                bonusPoints: 5,
+            },
             categories: ['HTML', 'CSS', 'JavaScript'],
             items: [
                 { label: '<h1>Welkom op mijn site</h1>', correctCategory: 'HTML' },
@@ -110,6 +128,18 @@ const config: ReviewArenaConfig = {
             title: 'Programmeren: Waar of Onwaar?',
             description: 'Acht snelle vragen over algoritmes, webdev en automatisering.',
             maxScore: 25,
+            followUp: {
+                question: 'Je schoolagenda-app werkt alleen op een grote laptop maar ziet er gebroken uit op je telefoon. Welk concept helpt dit op te lossen?',
+                options: [
+                    'Algorithme — de sorteervolgorde van afspraken aanpassen',
+                    'Responsive design — de layout past zich aan aan de schermgrootte',
+                    'Debuggen — de logische fout in de agendacode opsporen',
+                    'Automatisering — een script dat de lay-out elke nacht herstart',
+                ],
+                correctIndex: 1,
+                explanation: 'Responsive design zorgt dat een interface werkt op verschillende schermformaten, via CSS media queries of flexibele layouts. Debuggen lost logische fouten op, maar het probleem hier is geen bug — de opmaak is simpelweg niet ontworpen voor kleine schermen. Automatisering en algoritmes zijn hier niet relevant.',
+                bonusPoints: 5,
+            },
             timePerQuestion: 12,
             questions: [
                 {

@@ -52,7 +52,7 @@ export const KERNDOEL_MISSIONS: KerndoelMissionMeta[] = [
   { id: 'code-denker', title: 'Code Denker', week: 2, yearGroup: 1, sloKerndoelen: ['22B'], sloVsoKerndoelen: ['19A'] },                                      // -21D: puur computational thinking, geen AI
   { id: 'website-bouwer', title: 'Website Bouwer', week: 2, yearGroup: 1, sloKerndoelen: ['22B', '22A'], sloVsoKerndoelen: ['19A'] },
 
-  { id: 'schermtijd-coach', title: 'Schermtijd Coach', week: 2, yearGroup: 1, sloKerndoelen: ['23B', '21D'] },                                                    // digitaal welzijn + AI-bewustzijn (hoe apps je sturen)
+  { id: 'schermtijd-coach', title: 'Schermtijd Coach', week: 2, yearGroup: 1, sloKerndoelen: ['23B', '21D'], sloVsoKerndoelen: ['20A', '18C'] },                  // digitaal welzijn + AI-bewustzijn (hoe apps je sturen)
   { id: 'notificatie-ninja', title: 'Notificatie Ninja', week: 2, yearGroup: 1, sloKerndoelen: ['23B', '21B'], sloVsoKerndoelen: ['20A', '18B'] },             // dark patterns in notificaties = welzijn + mediawijsheid
 
   // Periode 2 review
@@ -93,56 +93,56 @@ export const KERNDOEL_MISSIONS: KerndoelMissionMeta[] = [
   // ============================================================
 
   // Periode 1: Data & Informatie
-  { id: 'data-journalist', title: 'Data Journalist', week: 1, yearGroup: 2, sloKerndoelen: ['21C', '22A'] },                                                  // 21B→22A: data-analyse + infographic maken = data + product
-  { id: 'spreadsheet-specialist', title: 'Spreadsheet Specialist', week: 1, yearGroup: 2, sloKerndoelen: ['21C', '22A'] },
-  { id: 'factchecker', title: 'Factchecker', week: 1, yearGroup: 2, sloKerndoelen: ['21B', '23C'] },
-  { id: 'api-verkenner', title: 'API Verkenner', week: 1, yearGroup: 2, sloKerndoelen: ['21A', '21C'] },                                                      // 21D→21A: APIs begrijpen = systeemkennis, geen AI
-  { id: 'dashboard-designer', title: 'Dashboard Designer', week: 1, yearGroup: 2, sloKerndoelen: ['21C', '22A'] },
-  { id: 'ai-bias-detective', title: 'AI Bias Detective', week: 1, yearGroup: 2, sloKerndoelen: ['21D', '23C'] },
-  { id: 'data-review', title: 'Data Review', week: 1, yearGroup: 2, sloKerndoelen: ['21B', '21C', '21D'] },
+  { id: 'data-journalist', title: 'Data Journalist', week: 1, yearGroup: 2, sloKerndoelen: ['21C', '22A'], sloVsoKerndoelen: ['18B', '19A'] },                  // 21B→22A: data-analyse + infographic maken = data + product
+  { id: 'spreadsheet-specialist', title: 'Spreadsheet Specialist', week: 1, yearGroup: 2, sloKerndoelen: ['21C', '22A'], sloVsoKerndoelen: ['18B', '19A'] },
+  { id: 'factchecker', title: 'Factchecker', week: 1, yearGroup: 2, sloKerndoelen: ['21B', '23C'], sloVsoKerndoelen: ['18B', '20B'] },
+  { id: 'api-verkenner', title: 'API Verkenner', week: 1, yearGroup: 2, sloKerndoelen: ['21A', '21C'], sloVsoKerndoelen: ['18A', '18B'] },                      // 21D→21A: APIs begrijpen = systeemkennis, geen AI
+  { id: 'dashboard-designer', title: 'Dashboard Designer', week: 1, yearGroup: 2, sloKerndoelen: ['21C', '22A'], sloVsoKerndoelen: ['18B', '19A'] },
+  { id: 'ai-bias-detective', title: 'AI Bias Detective', week: 1, yearGroup: 2, sloKerndoelen: ['21D', '23C'], sloVsoKerndoelen: ['18C', '20B'] },
+  { id: 'data-review', title: 'Data Review', week: 1, yearGroup: 2, sloKerndoelen: ['21B', '21C', '21D'], sloVsoKerndoelen: ['18B', '18C'] },
 
   // Assessment P1
-  { id: 'assessment-j2-p1', title: 'Nulmeting Periode 1', week: 1, yearGroup: 2, sloKerndoelen: ['21B', '21C', '21D'] },
+  { id: 'assessment-j2-p1', title: 'Nulmeting Periode 1', week: 1, yearGroup: 2, sloKerndoelen: ['21B', '21C', '21D'], sloVsoKerndoelen: ['18B', '18C'] },
 
   // Periode 2: Programmeren & Computational Thinking
-  { id: 'algorithm-architect', title: 'Algorithm Architect', week: 2, yearGroup: 2, sloKerndoelen: ['22B'] },
-  { id: 'web-developer', title: 'Web Developer', week: 2, yearGroup: 2, sloKerndoelen: ['22A', '22B'] },
-  { id: 'app-prototyper', title: 'App Prototyper', week: 2, yearGroup: 2, sloKerndoelen: ['22A'] },                                                           // -22B: prototype ontwerpen zonder code
-  { id: 'bug-hunter', title: 'Bug Hunter', week: 2, yearGroup: 2, sloKerndoelen: ['22B'] },
-  { id: 'automation-engineer', title: 'Automation Engineer', week: 2, yearGroup: 2, sloKerndoelen: ['22B', '21A'] },                                           // 22A→21A: scripts schrijven + systeemautomatisering
-  { id: 'code-reviewer', title: 'Code Reviewer', week: 2, yearGroup: 2, sloKerndoelen: ['22A', '22B'] },                                                      // 23B→22A: codekwaliteit + productkwaliteit
-  { id: 'network-navigator', title: 'Network Navigator', week: 2, yearGroup: 2, sloKerndoelen: ['21A'] },                                                     // -22B: netwerken begrijpen, geen programmeren
-  { id: 'privacy-by-design', title: 'Privacy by Design', week: 2, yearGroup: 2, sloKerndoelen: ['23A', '23C'] },                                              // 22B→23C: GDPR + privacy-redesign, geen programmeren
-  { id: 'wachtwoord-warrior', title: 'Wachtwoord Warrior', week: 2, yearGroup: 2, sloKerndoelen: ['23A'] },                                                   // -21A: wachtwoordbeveiliging = puur veiligheid
-  { id: 'access-control-engineer', title: 'Access Control Engineer', week: 2, yearGroup: 2, sloKerndoelen: ['21A', '23A', '22B'] },
-  { id: 'code-review-2', title: 'Code Review', week: 2, yearGroup: 2, sloKerndoelen: ['22A', '22B'] },
+  { id: 'algorithm-architect', title: 'Algorithm Architect', week: 2, yearGroup: 2, sloKerndoelen: ['22B'], sloVsoKerndoelen: ['19A'] },
+  { id: 'web-developer', title: 'Web Developer', week: 2, yearGroup: 2, sloKerndoelen: ['22A', '22B'], sloVsoKerndoelen: ['19A'] },
+  { id: 'app-prototyper', title: 'App Prototyper', week: 2, yearGroup: 2, sloKerndoelen: ['22A'], sloVsoKerndoelen: ['19A'] },                                 // -22B: prototype ontwerpen zonder code
+  { id: 'bug-hunter', title: 'Bug Hunter', week: 2, yearGroup: 2, sloKerndoelen: ['22B'], sloVsoKerndoelen: ['19A'] },
+  { id: 'automation-engineer', title: 'Automation Engineer', week: 2, yearGroup: 2, sloKerndoelen: ['22B', '21A'], sloVsoKerndoelen: ['19A', '18A'] },         // 22A→21A: scripts schrijven + systeemautomatisering
+  { id: 'code-reviewer', title: 'Code Reviewer', week: 2, yearGroup: 2, sloKerndoelen: ['22A', '22B'], sloVsoKerndoelen: ['19A'] },                            // 23B→22A: codekwaliteit + productkwaliteit
+  { id: 'network-navigator', title: 'Network Navigator', week: 2, yearGroup: 2, sloKerndoelen: ['21A'], sloVsoKerndoelen: ['18A'] },                           // -22B: netwerken begrijpen, geen programmeren
+  { id: 'privacy-by-design', title: 'Privacy by Design', week: 2, yearGroup: 2, sloKerndoelen: ['23A', '23C'], sloVsoKerndoelen: ['20A', '20B'] },             // 22B→23C: GDPR + privacy-redesign, geen programmeren
+  { id: 'wachtwoord-warrior', title: 'Wachtwoord Warrior', week: 2, yearGroup: 2, sloKerndoelen: ['23A'], sloVsoKerndoelen: ['20A'] },                         // -21A: wachtwoordbeveiliging = puur veiligheid
+  { id: 'access-control-engineer', title: 'Access Control Engineer', week: 2, yearGroup: 2, sloKerndoelen: ['21A', '23A', '22B'], sloVsoKerndoelen: ['18A', '20A', '19A'] },
+  { id: 'code-review-2', title: 'Code Review', week: 2, yearGroup: 2, sloKerndoelen: ['22A', '22B'], sloVsoKerndoelen: ['19A'] },
 
   // Assessment P2
-  { id: 'assessment-j2-p2', title: 'Nulmeting Periode 2', week: 2, yearGroup: 2, sloKerndoelen: ['21A', '22A', '22B', '23A'] },
+  { id: 'assessment-j2-p2', title: 'Nulmeting Periode 2', week: 2, yearGroup: 2, sloKerndoelen: ['21A', '22A', '22B', '23A'], sloVsoKerndoelen: ['18A', '19A', '20A'] },
 
   // Periode 3: Digitale Media & Creatie
-  { id: 'ux-detective', title: 'UX Detective', week: 3, yearGroup: 2, sloKerndoelen: ['22A', '21B'] },
-  { id: 'podcast-producer', title: 'Podcast Producer', week: 3, yearGroup: 2, sloKerndoelen: ['22A', '21B'] },
-  { id: 'meme-machine', title: 'Meme Machine', week: 3, yearGroup: 2, sloKerndoelen: ['21B', '23B'] },
-  { id: 'digital-storyteller', title: 'Digital Storyteller', week: 3, yearGroup: 2, sloKerndoelen: ['22A', '21B'] },
-  { id: 'brand-builder', title: 'Brand Builder', week: 3, yearGroup: 2, sloKerndoelen: ['22A'] },                                                             // -21B: merkidentiteit = product, geen mediawijsheid
-  { id: 'video-editor', title: 'Video Editor', week: 3, yearGroup: 2, sloKerndoelen: ['22A', '21B'] },
-  { id: 'media-review', title: 'Media Review', week: 3, yearGroup: 2, sloKerndoelen: ['22A', '21B', '23B'] },
+  { id: 'ux-detective', title: 'UX Detective', week: 3, yearGroup: 2, sloKerndoelen: ['22A', '21B'], sloVsoKerndoelen: ['19A', '18B'] },
+  { id: 'podcast-producer', title: 'Podcast Producer', week: 3, yearGroup: 2, sloKerndoelen: ['22A', '21B'], sloVsoKerndoelen: ['19A', '18B'] },
+  { id: 'meme-machine', title: 'Meme Machine', week: 3, yearGroup: 2, sloKerndoelen: ['21B', '23B'], sloVsoKerndoelen: ['18B', '20B'] },
+  { id: 'digital-storyteller', title: 'Digital Storyteller', week: 3, yearGroup: 2, sloKerndoelen: ['22A', '21B'], sloVsoKerndoelen: ['19A', '18B'] },
+  { id: 'brand-builder', title: 'Brand Builder', week: 3, yearGroup: 2, sloKerndoelen: ['22A'], sloVsoKerndoelen: ['19A'] },                                   // -21B: merkidentiteit = product, geen mediawijsheid
+  { id: 'video-editor', title: 'Video Editor', week: 3, yearGroup: 2, sloKerndoelen: ['22A', '21B'], sloVsoKerndoelen: ['19A', '18B'] },
+  { id: 'media-review', title: 'Media Review', week: 3, yearGroup: 2, sloKerndoelen: ['22A', '21B', '23B'], sloVsoKerndoelen: ['19A', '18B', '20B'] },
   { id: 'online-helden', title: 'Online Helden & Helpers', week: 3, yearGroup: 2, sloKerndoelen: ['23B', '23C'], sloVsoKerndoelen: ['20A', '20B'] },           // cyberpesten + bijstander-training = welzijn + maatschappij
 
   // Assessment P3
-  { id: 'assessment-j2-p3', title: 'Nulmeting Periode 3', week: 3, yearGroup: 2, sloKerndoelen: ['22A', '21B', '23B'] },
+  { id: 'assessment-j2-p3', title: 'Nulmeting Periode 3', week: 3, yearGroup: 2, sloKerndoelen: ['22A', '21B', '23B'], sloVsoKerndoelen: ['19A', '18B', '20B'] },
 
   // Periode 4: Ethiek, Maatschappij & Eindproject
-  { id: 'ai-ethicus', title: 'AI Ethicus', week: 4, yearGroup: 2, sloKerndoelen: ['21D', '23C'] },
-  { id: 'digital-rights-defender', title: 'Digital Rights Defender', week: 4, yearGroup: 2, sloKerndoelen: ['23A', '23C'] },                                   // 23B→23C: GDPR-rechten = privacy + regelgeving
-  { id: 'tech-court', title: 'Tech Court', week: 4, yearGroup: 2, sloKerndoelen: ['23C'] },                                                                   // -23B: rechtszaak = puur maatschappij/ethiek
-  { id: 'future-forecaster', title: 'Future Forecaster', week: 4, yearGroup: 2, sloKerndoelen: ['21D', '23C'] },
-  { id: 'sustainability-scanner', title: 'Sustainability Scanner', week: 4, yearGroup: 2, sloKerndoelen: ['23C'] },                                            // -23B: milieu-impact = maatschappij
-  { id: 'eindproject-j2', title: 'Eindproject Jaar 2', week: 4, yearGroup: 2, sloKerndoelen: ['21A', '21B', '21C', '21D', '22A', '22B', '23A', '23B', '23C'] }, // capstone: alle kerndoelen
+  { id: 'ai-ethicus', title: 'AI Ethicus', week: 4, yearGroup: 2, sloKerndoelen: ['21D', '23C'], sloVsoKerndoelen: ['18C', '20B'] },
+  { id: 'digital-rights-defender', title: 'Digital Rights Defender', week: 4, yearGroup: 2, sloKerndoelen: ['23A', '23C'], sloVsoKerndoelen: ['20A', '20B'] }, // 23B→23C: GDPR-rechten = privacy + regelgeving
+  { id: 'tech-court', title: 'Tech Court', week: 4, yearGroup: 2, sloKerndoelen: ['23C'], sloVsoKerndoelen: ['20B'] },                                         // -23B: rechtszaak = puur maatschappij/ethiek
+  { id: 'future-forecaster', title: 'Future Forecaster', week: 4, yearGroup: 2, sloKerndoelen: ['21D', '23C'], sloVsoKerndoelen: ['18C', '20B'] },
+  { id: 'sustainability-scanner', title: 'Sustainability Scanner', week: 4, yearGroup: 2, sloKerndoelen: ['23C'], sloVsoKerndoelen: ['20B'] },                  // -23B: milieu-impact = maatschappij
+  { id: 'eindproject-j2', title: 'Eindproject Jaar 2', week: 4, yearGroup: 2, sloKerndoelen: ['21A', '21B', '21C', '21D', '22A', '22B', '23A', '23B', '23C'], sloVsoKerndoelen: ['18A', '18B', '18C', '19A', '20A', '20B'] }, // capstone: alle kerndoelen
 
   // Assessment P4
-  { id: 'assessment-j2-p4', title: 'Nulmeting Periode 4', week: 4, yearGroup: 2, sloKerndoelen: ['23A', '23B', '23C', '21D'] },
+  { id: 'assessment-j2-p4', title: 'Nulmeting Periode 4', week: 4, yearGroup: 2, sloKerndoelen: ['23A', '23B', '23C', '21D'], sloVsoKerndoelen: ['20A', '20B', '18C'] },
 
   // ============================================================
   // LEERJAAR 3 (alleen havo + vwo)
@@ -178,6 +178,7 @@ export const KERNDOEL_MISSIONS: KerndoelMissionMeta[] = [
   { id: 'tech-impact-analyst', title: 'Tech Impact Analyst', week: 3, yearGroup: 3, sloKerndoelen: ['23C', '21D'] },
   { id: 'impact-review', title: 'Impact Review', week: 3, yearGroup: 3, sloKerndoelen: ['23C'] },                                                              // -23B: review = puur maatschappij
   { id: 'welzijnsonderzoeker', title: 'Welzijnsonderzoeker', week: 3, yearGroup: 3, sloKerndoelen: ['23B', '21C', '23C'] },                                    // welzijnsonderzoek via data-analyse + maatschappij
+  { id: 'startup-pitch', title: 'Startup Pitch', week: 3, yearGroup: 3, sloKerndoelen: ['22A', '21D', '23C'] },                                              // AI-startup bedenken + pitchen → creatie + AI + maatschappij
 
   // Assessment P3
   { id: 'assessment-j3-p3', title: 'Nulmeting Periode 3', week: 3, yearGroup: 3, sloKerndoelen: ['23C', '21D'] },

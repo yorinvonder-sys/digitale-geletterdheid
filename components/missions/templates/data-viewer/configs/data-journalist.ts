@@ -47,6 +47,7 @@ export const dataJournalistConfig: DataViewerConfig = {
                     id: 'q1-platform',
                     question: 'Welk platform wordt door de meeste leerlingen in deze enquête gebruikt?',
                     type: 'multiple-choice',
+                    showConfidence: true,
                     options: ['Instagram', 'TikTok', 'YouTube', 'Snapchat'],
                     correctAnswer: 'TikTok',
                     explanation:
@@ -58,7 +59,8 @@ export const dataJournalistConfig: DataViewerConfig = {
                     question:
                         'Hoeveel uur besteden 14-jarigen in deze enquête gemiddeld per dag aan social media? (Rond af op 1 decimaal)',
                     type: 'number-input',
-                    correctAnswer: 2.6,
+                    showConfidence: true,
+                    correctAnswer: 2.5,
                     explanation:
                         'De 14-jarigen zijn: Daan (4.0), Liam (2.0), Noor (1.5), Fleur (1.0), Milan (3.0), Tim (3.5), Ravi (2.5). Totaal: 17.5 ÷ 7 = 2.5 uur. Filter op leeftijd 14 om alle rijen te zien.',
                     points: 20,
@@ -74,6 +76,13 @@ export const dataJournalistConfig: DataViewerConfig = {
                     points: 10,
                 },
             ],
+            followUp: {
+                question: 'Welk aspect is het belangrijkst bij het beoordelen van de betrouwbaarheid van een dataset?',
+                options: ['De grootte van de dataset', 'De bron en methode van dataverzameling', 'Hoe recent de data is', 'Of de data je hypothese bevestigt'],
+                correctIndex: 1,
+                explanation: 'De bron en methode bepalen de validiteit. Grote of recente datasets kunnen alsnog onbetrouwbaar zijn als de verzamelmethode gebrekkig is.',
+                bonusPoints: 5,
+            },
         },
 
         // ── Dataset 2: Staafgrafiek ───────────────────────────────────────────
@@ -96,6 +105,7 @@ export const dataJournalistConfig: DataViewerConfig = {
                     id: 'q4-hoogste-schermtijd',
                     question: 'Welk land heeft de hoogste gemiddelde schermtijd per dag voor jongeren van 13-15 jaar?',
                     type: 'multiple-choice',
+                    showConfidence: true,
                     options: ['Brazilië', 'Nederland', 'VS', 'Japan'],
                     correctAnswer: 'VS',
                     explanation:
@@ -107,6 +117,7 @@ export const dataJournalistConfig: DataViewerConfig = {
                     question:
                         'Hoeveel uur meer zitten Nederlandse jongeren per dag achter een scherm dan Japanse jongeren? (Geef het exacte getal)',
                     type: 'number-input',
+                    showConfidence: true,
                     correctAnswer: 1.3,
                     explanation:
                         'Nederland: 4,2 uur − Japan: 2,9 uur = 1,3 uur verschil per dag. Dat is ruim een uur extra schermtijd per dag in Nederland.',
@@ -164,6 +175,7 @@ export const dataJournalistConfig: DataViewerConfig = {
                     question:
                         'Welk nieuwsbericht is het meest betrouwbaar als bewijs voor een wetenschappelijke claim over social media en welzijn?',
                     type: 'multiple-choice',
+                    showConfidence: true,
                     options: [
                         'NOS Nieuws — RIVM onderzoek',
                         'Instagram Blog — intern onderzoek',

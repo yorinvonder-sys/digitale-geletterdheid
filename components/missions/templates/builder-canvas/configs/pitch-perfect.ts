@@ -86,6 +86,7 @@ export const pitchPerfectConfig: BuilderCanvasConfig = {
         { minScore: 90, emoji: '🏆', title: 'Pitch Perfect', color: '#F59E0B' },
         { minScore: 70, emoji: '🎤', title: 'Overtuigend Spreker', color: '#10B981' },
         { minScore: 50, emoji: '🗣️', title: 'Pitch Beginner', color: '#D97757' },
+        { minScore: 25, emoji: '💡', title: 'Beginnende Pitcher', color: '#8B5CF6' },
         { minScore: 0, emoji: '🌱', title: 'Op weg', color: '#6B6B66' },
     ],
     takeaways: [

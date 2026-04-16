@@ -94,6 +94,7 @@ export const CURRICULUM: CurriculumConfig = {
                         'code-denker',
                         'website-bouwer',
                         'schermtijd-coach',
+                        'notificatie-ninja',
                     ],
                     reviewMissions: [
                         'review-week-2',
@@ -118,6 +119,7 @@ export const CURRICULUM: CurriculumConfig = {
                         'datalekken-rampenplan',
                         'data-voor-data',
                         'data-speurder',
+                        'digitale-balans-coach',
                     ],
                     assessmentId: 'assessment-j1-p3',
                 },
@@ -203,6 +205,7 @@ export const CURRICULUM: CurriculumConfig = {
                         'digital-storyteller',
                         'brand-builder',
                         'video-editor',
+                        'online-helden',
                     ],
                     reviewMissions: [
                         'media-review',
@@ -285,6 +288,8 @@ export const CURRICULUM: CurriculumConfig = {
                         'innovation-lab',
                         'digital-divide-researcher',
                         'tech-impact-analyst',
+                        'welzijnsonderzoeker',
+                        'startup-pitch',
                     ],
                     reviewMissions: [
                         'impact-review',

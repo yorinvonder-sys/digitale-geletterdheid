@@ -60,6 +60,13 @@ export const podcastProducerConfig: BuilderCanvasConfig = {
                 { id: 'onderwerp-geintroduceerd', label: 'Ik heb kort verteld wat er vandaag besproken wordt' },
             ],
             textPrompt: 'Schrijf je intro-tekst',
+            reflectionQuestion: {
+                question: 'Wat is het verschil tussen een intro en een hook in een podcast?',
+                options: ['Een hook is altijd langer dan een intro', 'Een hook trekt aandacht, een intro geeft context', 'Er is geen verschil', 'Een intro komt altijd na de hook'],
+                correctIndex: 1,
+                explanation: 'De hook is een kort, pakkend fragment dat de luisteraar direct boeit (vaak de eerste 15 seconden). De intro geeft daarna context: wie je bent, wat het onderwerp is.',
+                bonusPoints: 5,
+            },
         },
         {
             id: 'vragen',
@@ -96,6 +103,12 @@ export const podcastProducerConfig: BuilderCanvasConfig = {
             emoji: '🎧',
             title: 'Podcast Beginner',
             color: '#D97757',
+        },
+        {
+            minScore: 25,
+            emoji: '💡',
+            title: 'Beginnende Podcast Maker',
+            color: '#8B5CF6',
         },
         {
             minScore: 0,

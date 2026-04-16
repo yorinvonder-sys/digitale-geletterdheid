@@ -221,6 +221,7 @@ export async function authenticatedFetch(
     const onSessionExpired = options?.onSessionExpired ?? 'redirect';
     const sessionExpiredMessage = options?.sessionExpiredMessage ?? DEFAULT_AUTH_ERROR_MESSAGE;
     const fetcher = options?.fetcher ?? ((url: string, requestInit: RequestInit) => fetch(url, requestInit));
+    let authFailureSource: 'local-session' | 'remote-401' = 'local-session';
 
     try {
         const token = await getFreshAccessToken(expiryBufferMs);
@@ -229,15 +230,31 @@ export async function authenticatedFetch(
             return response;
         }
 
-        const refreshedToken = await getFreshAccessToken(expiryBufferMs, { forceRefresh: true });
-        response = await fetcher(input, withBearerToken(init, refreshedToken));
-        if (response.status !== 401) {
-            return response;
+        const { data: { session: currentSession } } = await supabase.auth.getSession();
+        if (currentSession?.access_token && isTokenFresh(currentSession.access_token, MIN_ACCEPTABLE_TOKEN_TTL_MS)) {
+            authFailureSource = 'remote-401';
+            console.warn('[authenticatedFetch] Edge function rejected a valid fresh token. Skipping refresh to preserve local session.', { input });
+        } else {
+            const refreshedToken = await getFreshAccessToken(expiryBufferMs, { forceRefresh: true });
+            authFailureSource = 'remote-401';
+            response = await fetcher(input, withBearerToken(init, refreshedToken));
+            if (response.status !== 401) {
+                return response;
+            }
+            console.warn(
+                '[authenticatedFetch] Edge function rejected a freshly refreshed session with 401. ' +
+                'Keeping local session intact and surfacing an auth error instead.',
+                { input }
+            );
         }
     } catch (error) {
         if (!isSessionExpiredError(error)) {
             throw error;
         }
+    }
+
+    if (authFailureSource === 'remote-401') {
+        throw new Error('AI-backend gaf een ongeldige-tokenfout terug. Probeer het opnieuw.');
     }
 
     if (onSessionExpired === 'redirect') {

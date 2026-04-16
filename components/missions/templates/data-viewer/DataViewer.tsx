@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronRight, ChevronLeft, CheckCircle, XCircle, BookOpen } from 'lucide-react';
-import type { TemplateMissionProps } from '../shared/types';
+import { ChevronRight, ChevronLeft, CheckCircle, XCircle, BookOpen, MessageCircle } from 'lucide-react';
+import type { TemplateMissionProps, FollowUpQuestion } from '../shared/types';
 import type { BadgeConfig } from '../shared/types';
 import { PhaseHeader } from '../shared/PhaseHeader';
 import { IntroScreen } from '../shared/IntroScreen';
@@ -8,6 +8,9 @@ import { CompletionScreen } from '../shared/CompletionScreen';
 import { useMissionAutoSave } from '@/hooks/useMissionAutoSave';
 import { InteractiveTable } from './sub/InteractiveTable';
 import { SimpleChart } from './sub/SimpleChart';
+import { ConfidenceRating, confidenceMultiplier } from '../shared/ConfidenceRating';
+import { FollowUpCard } from '../shared/FollowUpCard';
+import { StudentAIChat } from '@/components/StudentAIChat';
 
 // ── Config types ──────────────────────────────────────────────────────────────
 
@@ -19,6 +22,7 @@ export interface DataQuestion {
     correctAnswer: string | number;
     explanation: string;
     points: number;
+    showConfidence?: boolean;
 }
 
 export interface Dataset {
@@ -34,6 +38,7 @@ export interface Dataset {
     // document-cards
     cards?: Array<{ title: string; icon: string; content: string }>;
     questions: DataQuestion[];
+    followUp?: FollowUpQuestion;
 }
 
 export interface DataViewerConfig {
@@ -47,6 +52,8 @@ export interface DataViewerConfig {
     maxScore: number;
     badges: BadgeConfig[];
     takeaways: string[];
+    enableChat?: boolean;
+    chatRoleId?: string;
 }
 
 // ── State ─────────────────────────────────────────────────────────────────────
@@ -57,25 +64,31 @@ interface DataViewerState {
     answers: Record<string, string | number>;
     submitted: Record<string, boolean>;
     textObservations: Record<string, string>;
+    confidences: Record<string, 1 | 2 | 3>;
+    followUpAnswered: Record<string, boolean>;
+    followUpCorrect: Record<string, boolean>;
 }
 
 // ── Helper ────────────────────────────────────────────────────────────────────
 
-function scoreQuestion(q: DataQuestion, answers: Record<string, string | number>): number {
+function scoreQuestion(q: DataQuestion, answers: Record<string, string | number>, confidence?: 1 | 2 | 3): number {
     if (q.type === 'text-observation') return q.points; // always participation points
     const raw = answers[q.id];
     if (raw === undefined || raw === '') return 0;
+    let base: number;
     if (q.type === 'number-input') {
         const num = Number(raw);
         const correct = Number(q.correctAnswer);
         if (isNaN(num)) return 0;
         const tolerance = Math.abs(correct) * 0.05;
-        return Math.abs(num - correct) <= tolerance ? q.points : 0;
+        base = Math.abs(num - correct) <= tolerance ? q.points : 0;
+    } else {
+        // multiple-choice
+        base = String(raw).trim().toLowerCase() === String(q.correctAnswer).trim().toLowerCase()
+            ? q.points
+            : 0;
     }
-    // multiple-choice
-    return String(raw).trim().toLowerCase() === String(q.correctAnswer).trim().toLowerCase()
-        ? q.points
-        : 0;
+    return Math.round(base * confidenceMultiplier(confidence, base > 0));
 }
 
 function isCorrect(q: DataQuestion, answers: Record<string, string | number>): boolean | null {
@@ -98,8 +111,10 @@ interface QuestionCardProps {
     answers: Record<string, string | number>;
     submitted: Record<string, boolean>;
     textObservations: Record<string, string>;
+    confidences: Record<string, 1 | 2 | 3>;
     onAnswer: (id: string, value: string | number) => void;
     onTextObservation: (id: string, value: string) => void;
+    onConfidence: (id: string, level: 1 | 2 | 3) => void;
     onSubmit: (id: string) => void;
 }
 
@@ -108,14 +123,26 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
     answers,
     submitted,
     textObservations,
+    confidences,
     onAnswer,
     onTextObservation,
+    onConfidence,
     onSubmit,
 }) => {
     const isSubmitted = submitted[q.id];
     const correct = isSubmitted ? isCorrect(q, answers) : null;
     const answer = answers[q.id];
     const observation = textObservations[q.id] ?? '';
+    const confidence = confidences[q.id];
+    const showConfidenceWidget =
+        q.showConfidence === true &&
+        q.type !== 'text-observation' &&
+        !isSubmitted &&
+        answer !== undefined &&
+        answer !== '';
+    const submitDisabled = q.type === 'text-observation'
+        ? observation.trim().length < 10
+        : answer === undefined || answer === '' || (q.showConfidence === true && confidence === undefined);
 
     return (
         <div className="bg-white rounded-2xl border border-[#E8E6DF] p-4 mb-3">
@@ -190,13 +217,15 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                         />
                     )}
 
+                    {showConfidenceWidget && (
+                        <div className="mb-3">
+                            <ConfidenceRating onSelect={(level) => onConfidence(q.id, level)} />
+                        </div>
+                    )}
+
                     <button
                         onClick={() => onSubmit(q.id)}
-                        disabled={
-                            q.type === 'text-observation'
-                                ? observation.trim().length < 10
-                                : answer === undefined || answer === ''
-                        }
+                        disabled={submitDisabled}
                         className="w-full py-2 bg-gradient-to-r from-[#D97757] to-[#C46849] hover:from-[#C46849] hover:to-[#B05A3C] disabled:opacity-40 disabled:cursor-not-allowed text-white rounded-xl font-bold text-sm transition-all duration-200"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
@@ -262,9 +291,13 @@ interface DatasetViewProps {
     answers: Record<string, string | number>;
     submitted: Record<string, boolean>;
     textObservations: Record<string, string>;
+    confidences: Record<string, 1 | 2 | 3>;
+    followUpAnswered: Record<string, boolean>;
     onAnswer: (id: string, value: string | number) => void;
     onTextObservation: (id: string, value: string) => void;
+    onConfidence: (id: string, level: 1 | 2 | 3) => void;
     onSubmit: (id: string) => void;
+    onFollowUpComplete: (datasetId: string, correct: boolean) => void;
     allSubmitted: boolean;
     onNext: () => void;
     isLast: boolean;
@@ -277,15 +310,23 @@ const DatasetView: React.FC<DatasetViewProps> = ({
     answers,
     submitted,
     textObservations,
+    confidences,
+    followUpAnswered,
     onAnswer,
     onTextObservation,
+    onConfidence,
     onSubmit,
+    onFollowUpComplete,
     allSubmitted,
     onNext,
     isLast,
     datasetIndex,
     totalDatasets,
-}) => (
+}) => {
+    const showFollowUp = allSubmitted && dataset.followUp !== undefined && !followUpAnswered[dataset.id];
+    const canGoNext = allSubmitted && (dataset.followUp === undefined || followUpAnswered[dataset.id]);
+
+    return (
     <div>
         {/* Dataset header */}
         <div className="mb-4">
@@ -374,15 +415,26 @@ const DatasetView: React.FC<DatasetViewProps> = ({
                     answers={answers}
                     submitted={submitted}
                     textObservations={textObservations}
+                    confidences={confidences}
                     onAnswer={onAnswer}
                     onTextObservation={onTextObservation}
+                    onConfidence={onConfidence}
                     onSubmit={onSubmit}
                 />
             ))}
         </div>
 
+        {/* FollowUp card — shown after all questions, before next dataset */}
+        {showFollowUp && (
+            <FollowUpCard
+                followUp={dataset.followUp!}
+                onComplete={(correct) => onFollowUpComplete(dataset.id, correct)}
+                theme="light"
+            />
+        )}
+
         {/* Next button */}
-        {allSubmitted && (
+        {canGoNext && (
             <button
                 onClick={onNext}
                 className="w-full mt-4 py-3.5 bg-gradient-to-r from-[#D97757] to-[#C46849] hover:from-[#C46849] hover:to-[#B05A3C] text-white rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2"
@@ -393,7 +445,8 @@ const DatasetView: React.FC<DatasetViewProps> = ({
             </button>
         )}
     </div>
-);
+    );
+};
 
 // ── Main component ────────────────────────────────────────────────────────────
 
@@ -413,6 +466,9 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
         answers: {},
         submitted: {},
         textObservations: {},
+        confidences: {},
+        followUpAnswered: {},
+        followUpCorrect: {},
     };
 
     const { state, setState, clearSave } = useMissionAutoSave<DataViewerState>(
@@ -420,15 +476,49 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
         INITIAL_STATE
     );
 
-    const { phase, currentDataset, answers, submitted, textObservations } = state;
+    const [isChatOpen, setIsChatOpen] = useState(false);
 
-    const totalScore = config.datasets.flatMap(ds => ds.questions).reduce((sum, q) => {
+    const userId = (() => {
+        try {
+            const key = Object.keys(localStorage).find((k) =>
+                /^sb-[a-z0-9_-]+-auth-token$/i.test(k)
+            );
+            if (!key) return null;
+            const raw = localStorage.getItem(key);
+            return raw ? JSON.parse(raw)?.user?.id : null;
+        } catch {
+            return null;
+        }
+    })();
+
+    const { phase, currentDataset, answers, submitted, textObservations, confidences, followUpAnswered, followUpCorrect } = state;
+
+    const questionScore = config.datasets.flatMap(ds => ds.questions).reduce((sum, q) => {
         if (!submitted[q.id]) return sum;
-        return sum + scoreQuestion(q, answers);
+        return sum + scoreQuestion(q, answers, confidences[q.id]);
     }, 0);
+
+    const followUpBonusScore = config.datasets.reduce((sum, ds) => {
+        if (!ds.followUp || !followUpAnswered[ds.id] || !followUpCorrect[ds.id]) return sum;
+        return sum + ds.followUp.bonusPoints;
+    }, 0);
+
+    const totalScore = questionScore + followUpBonusScore;
 
     const handleAnswer = (id: string, value: string | number) => {
         setState(prev => ({ ...prev, answers: { ...prev.answers, [id]: value } }));
+    };
+
+    const handleConfidence = (id: string, level: 1 | 2 | 3) => {
+        setState(prev => ({ ...prev, confidences: { ...prev.confidences, [id]: level } }));
+    };
+
+    const handleFollowUpComplete = (datasetId: string, correct: boolean) => {
+        setState(prev => ({
+            ...prev,
+            followUpAnswered: { ...prev.followUpAnswered, [datasetId]: true },
+            followUpCorrect: { ...prev.followUpCorrect, [datasetId]: correct },
+        }));
     };
 
     const handleTextObservation = (id: string, value: string) => {
@@ -484,8 +574,9 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
     const phaseScores = config.datasets.map(ds => ({
         icon: ds.type === 'table' ? '📊' : ds.type === 'document-cards' ? '📰' : '📈',
         title: ds.title,
-        score: ds.questions.reduce((s, q) => (submitted[q.id] ? s + scoreQuestion(q, answers) : s), 0),
-        max: ds.questions.reduce((s, q) => s + q.points, 0),
+        score: ds.questions.reduce((s, q) => (submitted[q.id] ? s + scoreQuestion(q, answers, confidences[q.id]) : s), 0)
+            + (followUpAnswered[ds.id] && followUpCorrect[ds.id] && ds.followUp ? ds.followUp.bonusPoints : 0),
+        max: ds.questions.reduce((s, q) => s + q.points, 0) + (ds.followUp?.bonusPoints ?? 0),
     }));
 
     if (phase === 'intro') {
@@ -531,9 +622,13 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
                     answers={answers}
                     submitted={submitted}
                     textObservations={textObservations}
+                    confidences={confidences}
+                    followUpAnswered={followUpAnswered}
                     onAnswer={handleAnswer}
                     onTextObservation={handleTextObservation}
+                    onConfidence={handleConfidence}
                     onSubmit={handleSubmitQuestion}
+                    onFollowUpComplete={handleFollowUpComplete}
                     allSubmitted={allQuestionsSubmitted}
                     onNext={handleNextDataset}
                     isLast={currentDataset === config.datasets.length - 1}
@@ -553,6 +648,39 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
                     </button>
                 )}
             </div>
+
+            {/* AI Chat overlay */}
+            {config.enableChat && (
+                <>
+                    <StudentAIChat
+                        roleId={config.chatRoleId ?? 'student-assistant'}
+                        userIdentifier={userId ?? 'anonymous'}
+                        isOpen={isChatOpen}
+                        onOpenChange={setIsChatOpen}
+                        context={{
+                            currentDataset: {
+                                title: currentDs?.title,
+                                description: currentDs?.description,
+                            },
+                            progress: {
+                                dataset: currentDataset + 1,
+                                total: config.datasets.length,
+                                score: totalScore,
+                                maxScore: config.maxScore,
+                            },
+                        }}
+                    />
+                    {!isChatOpen && (
+                        <button
+                            onClick={() => setIsChatOpen(true)}
+                            className="fixed bottom-6 right-6 z-40 w-13 h-13 bg-gradient-to-br from-[#D97757] to-[#C46849] hover:from-[#C46849] hover:to-[#B05A3C] text-white rounded-full shadow-lg flex items-center justify-center transition-all duration-200 active:scale-95"
+                            aria-label="Open AI-assistent"
+                        >
+                            <MessageCircle size={22} />
+                        </button>
+                    )}
+                </>
+            )}
         </div>
     );
 };

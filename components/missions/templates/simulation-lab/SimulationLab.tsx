@@ -1,10 +1,15 @@
 import React, { useMemo, useCallback, useState, useEffect } from 'react';
-import { ChevronRight, ChevronLeft, Lightbulb, CheckCircle, XCircle } from 'lucide-react';
+import { ChevronRight, ChevronLeft } from 'lucide-react';
 import { useMissionAutoSave } from '@/hooks/useMissionAutoSave';
 import { IntroScreen } from '../shared/IntroScreen';
 import { CompletionScreen } from '../shared/CompletionScreen';
 import { PhaseHeader } from '../shared/PhaseHeader';
-import type { TemplateMissionProps, BadgeConfig } from '../shared/types';
+import { confidenceMultiplier } from '../shared/ConfidenceRating';
+import { FollowUpCard } from '../shared/FollowUpCard';
+import type { TemplateMissionProps, BadgeConfig, FollowUpQuestion } from '../shared/types';
+import { SimulationVisual } from './sub/SimulationVisuals';
+import { ParameterControl } from './sub/ParameterControl';
+import { QuestionCard } from './sub/QuestionCard';
 
 // ─── Config types ─────────────────────────────────────────────────────────────
 
@@ -32,6 +37,7 @@ export interface SimQuestion {
     correctAnswer: string | number;
     explanation: string;
     points: number;
+    showConfidence?: boolean;
 }
 
 export interface Simulation {
@@ -42,6 +48,7 @@ export interface Simulation {
     visualType: 'bar-chart' | 'meter' | 'comparison';
     questions: SimQuestion[];
     maxScore: number;
+    followUp?: FollowUpQuestion;
 }
 
 export interface SimulationLabConfig {
@@ -82,335 +89,10 @@ interface SimulationLabState {
     questionAnswers: Record<string, string | number>;
     questionSubmitted: Record<string, boolean>;
     interacted: Record<string, boolean>;
+    confidences: Record<string, 1 | 2 | 3>;
+    followUpAnswered: Record<string, boolean>;
+    followUpCorrect: Record<string, boolean>;
 }
-
-// ─── Inline visual components ─────────────────────────────────────────────────
-
-const BarChartVis: React.FC<{ data: BarChartData }> = ({ data }) => {
-    const max = Math.max(...data.map((d) => d.value), 1);
-    return (
-        <div className="flex items-end gap-2 h-36 w-full px-2">
-            {data.map((bar) => {
-                const heightPct = Math.max((bar.value / max) * 100, 2);
-                return (
-                    <div key={bar.label} className="flex-1 flex flex-col items-center gap-1">
-                        <span
-                            className="text-xs font-bold"
-                            style={{ color: bar.color, fontFamily: "'Outfit', system-ui, sans-serif" }}
-                        >
-                            {bar.value}
-                        </span>
-                        <div
-                            className="w-full rounded-t-lg transition-all duration-500"
-                            style={{
-                                height: `${heightPct}%`,
-                                backgroundColor: bar.color,
-                                minHeight: 4,
-                            }}
-                        />
-                        <span
-                            className="text-[10px] text-[#6B6B66] text-center leading-tight"
-                            style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
-                        >
-                            {bar.label}
-                        </span>
-                    </div>
-                );
-            })}
-        </div>
-    );
-};
-
-const MeterVis: React.FC<{ data: MeterData }> = ({ data }) => {
-    const clamped = Math.max(0, Math.min(100, data.value));
-    // HSL: 0 = red, 120 = green — but we want red = low privacy (0), green = high privacy (100)
-    const hue = Math.round((clamped / 100) * 120);
-    const color = `hsl(${hue}, 70%, 45%)`;
-    const circumference = 2 * Math.PI * 45;
-    const offset = circumference - (clamped / 100) * circumference;
-
-    return (
-        <div className="flex flex-col items-center justify-center gap-2 py-4">
-            <svg width="120" height="120" viewBox="0 0 120 120">
-                <circle cx="60" cy="60" r="45" fill="none" stroke="#E8E6DF" strokeWidth="10" />
-                <circle
-                    cx="60"
-                    cy="60"
-                    r="45"
-                    fill="none"
-                    stroke={color}
-                    strokeWidth="10"
-                    strokeDasharray={circumference}
-                    strokeDashoffset={offset}
-                    strokeLinecap="round"
-                    transform="rotate(-90 60 60)"
-                    style={{ transition: 'stroke-dashoffset 0.5s ease, stroke 0.5s ease' }}
-                />
-                <text
-                    x="60"
-                    y="64"
-                    textAnchor="middle"
-                    fontSize="22"
-                    fontWeight="900"
-                    fill="#1A1A19"
-                    style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
-                >
-                    {clamped}
-                </text>
-            </svg>
-            <span
-                className="text-sm font-bold text-[#1A1A19]"
-                style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
-            >
-                {data.label}
-            </span>
-            {data.sublabel && (
-                <span
-                    className="text-xs text-[#6B6B66] text-center"
-                    style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
-                >
-                    {data.sublabel}
-                </span>
-            )}
-        </div>
-    );
-};
-
-const ComparisonVis: React.FC<{ data: ComparisonData }> = ({ data }) => (
-    <div className="flex gap-2 w-full">
-        {[
-            { title: data.leftTitle, items: data.leftItems, accent: '#D97757' },
-            { title: data.rightTitle, items: data.rightItems, accent: '#10B981' },
-        ].map((panel) => (
-            <div
-                key={panel.title}
-                className="flex-1 rounded-xl border border-[#E8E6DF] overflow-hidden"
-            >
-                <div
-                    className="px-3 py-2 text-center text-xs font-black uppercase tracking-wide text-white"
-                    style={{
-                        background: panel.accent,
-                        fontFamily: "'Outfit', system-ui, sans-serif",
-                    }}
-                >
-                    {panel.title}
-                </div>
-                <div className="p-2 space-y-1.5 bg-white">
-                    {panel.items.map((item, i) => (
-                        <div key={i} className="flex items-center gap-2">
-                            <span className="text-sm">{item.icon}</span>
-                            <span
-                                className="text-xs text-[#3D3D38] leading-tight"
-                                style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
-                            >
-                                {item.label}
-                            </span>
-                        </div>
-                    ))}
-                </div>
-            </div>
-        ))}
-    </div>
-);
-
-// ─── Parameter controls ───────────────────────────────────────────────────────
-
-const ParameterControl: React.FC<{
-    param: Parameter;
-    value: number | string | boolean;
-    onChange: (val: number | string | boolean) => void;
-}> = ({ param, value, onChange }) => {
-    if (param.type === 'slider') {
-        const v = value as number;
-        return (
-            <div className="space-y-1">
-                <div className="flex justify-between items-center">
-                    <label
-                        className="text-xs font-bold text-[#3D3D38]"
-                        style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
-                    >
-                        {param.label}
-                    </label>
-                    <span
-                        className="text-xs font-black text-[#D97757] bg-[#D97757]/10 px-2 py-0.5 rounded-full"
-                        style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
-                    >
-                        {v}
-                    </span>
-                </div>
-                <input
-                    type="range"
-                    min={param.min ?? 0}
-                    max={param.max ?? 100}
-                    step={param.step ?? 1}
-                    value={v}
-                    onChange={(e) => onChange(Number(e.target.value))}
-                    className="w-full accent-[#D97757]"
-                />
-                <div className="flex justify-between text-[10px] text-[#6B6B66]">
-                    <span>{param.min ?? 0}</span>
-                    <span>{param.max ?? 100}</span>
-                </div>
-            </div>
-        );
-    }
-
-    if (param.type === 'toggle') {
-        const v = value as boolean;
-        return (
-            <div className="flex items-center justify-between">
-                <label
-                    className="text-xs font-bold text-[#3D3D38]"
-                    style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
-                >
-                    {param.label}
-                </label>
-                <button
-                    onClick={() => onChange(!v)}
-                    className={`relative w-11 h-6 rounded-full transition-colors duration-300 ${
-                        v ? 'bg-[#D97757]' : 'bg-[#E8E6DF]'
-                    }`}
-                >
-                    <div
-                        className={`absolute top-1 w-4 h-4 bg-white rounded-full shadow transition-transform duration-300 ${
-                            v ? 'translate-x-6' : 'translate-x-1'
-                        }`}
-                    />
-                </button>
-            </div>
-        );
-    }
-
-    if (param.type === 'select') {
-        const v = value as string;
-        return (
-            <div className="space-y-1">
-                <label
-                    className="text-xs font-bold text-[#3D3D38] block"
-                    style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
-                >
-                    {param.label}
-                </label>
-                <div className="flex flex-col gap-1">
-                    {(param.options ?? []).map((opt) => (
-                        <button
-                            key={opt}
-                            onClick={() => onChange(opt)}
-                            className={`text-left px-3 py-2 rounded-lg text-xs font-medium transition-all duration-200 border ${
-                                v === opt
-                                    ? 'bg-[#D97757]/10 border-[#D97757] text-[#D97757] font-bold'
-                                    : 'bg-white border-[#E8E6DF] text-[#3D3D38] hover:border-[#D97757]/50'
-                            }`}
-                            style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
-                        >
-                            {opt}
-                        </button>
-                    ))}
-                </div>
-            </div>
-        );
-    }
-
-    return null;
-};
-
-// ─── Question component ───────────────────────────────────────────────────────
-
-const QuestionCard: React.FC<{
-    question: SimQuestion;
-    answer: string | number | undefined;
-    submitted: boolean;
-    onAnswer: (val: string | number) => void;
-    onSubmit: () => void;
-}> = ({ question, answer, submitted, onAnswer, onSubmit }) => {
-    const isCorrect = submitted && answer === question.correctAnswer;
-    const isWrong = submitted && answer !== question.correctAnswer;
-
-    return (
-        <div
-            className={`rounded-2xl border p-4 transition-all duration-300 ${
-                isCorrect
-                    ? 'border-[#10B981] bg-[#10B981]/5'
-                    : isWrong
-                    ? 'border-[#D97757] bg-[#D97757]/5'
-                    : 'border-[#E8E6DF] bg-white'
-            }`}
-        >
-            <div className="flex items-start gap-2 mb-3">
-                <Lightbulb size={14} className="text-[#D97757] mt-0.5 flex-shrink-0" />
-                <p
-                    className="text-sm font-bold text-[#1A1A19]"
-                    style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
-                >
-                    {question.question}
-                </p>
-            </div>
-
-            {/* Options */}
-            {question.options && (
-                <div className="space-y-1.5 mb-3">
-                    {question.options.map((opt) => {
-                        const isSelected = answer === opt;
-                        const isThisCorrect = submitted && opt === question.correctAnswer;
-                        const isThisWrong = submitted && isSelected && opt !== question.correctAnswer;
-                        return (
-                            <button
-                                key={opt}
-                                disabled={submitted}
-                                onClick={() => onAnswer(opt)}
-                                className={`w-full text-left px-3 py-2 rounded-lg text-xs transition-all duration-200 border flex items-center gap-2 ${
-                                    isThisCorrect
-                                        ? 'bg-[#10B981]/10 border-[#10B981] text-[#10B981] font-bold'
-                                        : isThisWrong
-                                        ? 'bg-[#D97757]/10 border-[#D97757] text-[#D97757] font-bold'
-                                        : isSelected
-                                        ? 'bg-[#D97757]/10 border-[#D97757] text-[#D97757] font-bold'
-                                        : 'bg-white border-[#E8E6DF] text-[#3D3D38] hover:border-[#D97757]/40 disabled:opacity-70'
-                                }`}
-                                style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
-                            >
-                                {isThisCorrect && <CheckCircle size={12} />}
-                                {isThisWrong && <XCircle size={12} />}
-                                {opt}
-                            </button>
-                        );
-                    })}
-                </div>
-            )}
-
-            {/* Submit button */}
-            {!submitted && answer !== undefined && (
-                <button
-                    onClick={onSubmit}
-                    className="w-full py-2 bg-gradient-to-r from-[#D97757] to-[#C46849] text-white rounded-lg text-xs font-bold transition-all duration-200 active:scale-[0.98]"
-                    style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
-                >
-                    Controleer antwoord
-                </button>
-            )}
-
-            {/* Feedback */}
-            {submitted && (
-                <div
-                    className={`flex items-start gap-2 mt-2 p-2 rounded-lg text-xs ${
-                        isCorrect ? 'bg-[#10B981]/10 text-[#10B981]' : 'bg-[#D97757]/10 text-[#D97757]'
-                    }`}
-                    style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
-                >
-                    {isCorrect ? (
-                        <CheckCircle size={12} className="mt-0.5 flex-shrink-0" />
-                    ) : (
-                        <XCircle size={12} className="mt-0.5 flex-shrink-0" />
-                    )}
-                    <div>
-                        <span className="font-bold">{isCorrect ? 'Goed! ' : 'Niet helemaal. '}</span>
-                        {question.explanation}
-                    </div>
-                </div>
-            )}
-        </div>
-    );
-};
 
 // ─── Main component ───────────────────────────────────────────────────────────
 
@@ -439,6 +121,9 @@ const SimulationLabInner: React.FC<SimulationLabProps> = ({ onBack, onComplete, 
         questionAnswers: {},
         questionSubmitted: {},
         interacted: {},
+        confidences: {},
+        followUpAnswered: {},
+        followUpCorrect: {},
     };
 
     const { state, setState, clearSave } = useMissionAutoSave<SimulationLabState>(
@@ -460,13 +145,23 @@ const SimulationLabInner: React.FC<SimulationLabProps> = ({ onBack, onComplete, 
         let score = 0;
         for (const sim of config.simulations) {
             for (const q of sim.questions) {
-                if (state.questionSubmitted[q.id] && state.questionAnswers[q.id] === q.correctAnswer) {
-                    score += q.points;
+                if (state.questionSubmitted[q.id]) {
+                    const correct = state.questionAnswers[q.id] === q.correctAnswer;
+                    if (correct || (q.showConfidence && state.confidences[q.id])) {
+                        const base = correct ? q.points : 0;
+                        const multiplier = q.showConfidence
+                            ? confidenceMultiplier(state.confidences[q.id], correct)
+                            : 1;
+                        score += Math.round(base * multiplier);
+                    }
                 }
+            }
+            if (state.followUpAnswered[sim.id] && state.followUpCorrect[sim.id] && sim.followUp) {
+                score += sim.followUp.bonusPoints;
             }
         }
         return score;
-    }, [config.simulations, state.questionAnswers, state.questionSubmitted]);
+    }, [config.simulations, state.questionAnswers, state.questionSubmitted, state.confidences, state.followUpAnswered, state.followUpCorrect]);
 
     // Check if all questions in current sim are submitted
     const allQuestionsSubmitted = currentSimData?.questions.every(
@@ -499,6 +194,21 @@ const SimulationLabInner: React.FC<SimulationLabProps> = ({ onBack, onComplete, 
         setState((prev) => ({
             ...prev,
             questionSubmitted: { ...prev.questionSubmitted, [questionId]: true },
+        }));
+    };
+
+    const handleSetConfidence = (questionId: string, level: 1 | 2 | 3) => {
+        setState((prev) => ({
+            ...prev,
+            confidences: { ...prev.confidences, [questionId]: level },
+        }));
+    };
+
+    const handleFollowUpComplete = (simId: string, correct: boolean) => {
+        setState((prev) => ({
+            ...prev,
+            followUpAnswered: { ...prev.followUpAnswered, [simId]: true },
+            followUpCorrect: { ...prev.followUpCorrect, [simId]: correct },
         }));
     };
 
@@ -556,6 +266,8 @@ const SimulationLabInner: React.FC<SimulationLabProps> = ({ onBack, onComplete, 
     // ─── Simulate phase ───────────────────────────────────────────────────────
 
     const hasInteracted = !!state.interacted[currentSimData.id];
+    const followUpPending = allQuestionsSubmitted && !!currentSimData.followUp && !state.followUpAnswered[currentSimData.id];
+    const canAdvance = allQuestionsSubmitted && !followUpPending;
 
     return (
         <div className="min-h-screen bg-[#FAF9F0] p-4">
@@ -636,9 +348,7 @@ const SimulationLabInner: React.FC<SimulationLabProps> = ({ onBack, onComplete, 
                         >
                             Live resultaat
                         </span>
-                        {visualData?.type === 'bar-chart' && <BarChartVis data={visualData.data} />}
-                        {visualData?.type === 'meter' && <MeterVis data={visualData.data} />}
-                        {visualData?.type === 'comparison' && <ComparisonVis data={visualData.data} />}
+                        {visualData && <SimulationVisual visualData={visualData} />}
                     </div>
                 </div>
 
@@ -656,14 +366,25 @@ const SimulationLabInner: React.FC<SimulationLabProps> = ({ onBack, onComplete, 
                             question={q}
                             answer={state.questionAnswers[q.id]}
                             submitted={!!state.questionSubmitted[q.id]}
+                            confidence={state.confidences[q.id]}
                             onAnswer={(val) => handleAnswer(q.id, val)}
+                            onSetConfidence={(level) => handleSetConfidence(q.id, level)}
                             onSubmit={() => handleSubmitQuestion(q.id)}
                         />
                     ))}
                 </div>
 
+                {/* Follow-up card after all questions are answered */}
+                {allQuestionsSubmitted && currentSimData.followUp && !state.followUpAnswered[currentSimData.id] && (
+                    <FollowUpCard
+                        followUp={currentSimData.followUp}
+                        onComplete={(correct) => handleFollowUpComplete(currentSimData.id, correct)}
+                        theme="light"
+                    />
+                )}
+
                 {/* Navigation */}
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between items-center mt-6">
                     {state.currentSim > 0 ? (
                         <button
                             onClick={() => setState((prev) => ({ ...prev, currentSim: prev.currentSim - 1 }))}
@@ -678,10 +399,10 @@ const SimulationLabInner: React.FC<SimulationLabProps> = ({ onBack, onComplete, 
                     )}
 
                     <button
-                        disabled={!allQuestionsSubmitted}
+                        disabled={!canAdvance}
                         onClick={handleNextSim}
                         className={`flex items-center gap-1.5 px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-200 active:scale-[0.98] ${
-                            allQuestionsSubmitted
+                            canAdvance
                                 ? 'bg-gradient-to-r from-[#D97757] to-[#C46849] text-white hover:from-[#C46849] hover:to-[#B05A3C]'
                                 : 'bg-[#E8E6DF] text-[#6B6B66] cursor-not-allowed'
                         }`}

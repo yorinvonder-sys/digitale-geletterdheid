@@ -84,6 +84,7 @@ export const webDeveloperConfig: BuilderCanvasConfig = {
         { minScore: 90, emoji: '🏆', title: 'Full Stack Hero', color: '#F59E0B' },
         { minScore: 70, emoji: '🖥️', title: 'Web Developer', color: '#10B981' },
         { minScore: 50, emoji: '🔧', title: 'Code Knutselaar', color: '#D97757' },
+        { minScore: 25, emoji: '💡', title: 'Beginnende Webdeveloper', color: '#8B5CF6' },
         { minScore: 0, emoji: '🌱', title: 'Op weg', color: '#6B6B66' },
     ],
     takeaways: [

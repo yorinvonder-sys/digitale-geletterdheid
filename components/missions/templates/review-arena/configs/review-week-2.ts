@@ -28,6 +28,12 @@ const config: ReviewArenaConfig = {
             color: '#6366F1',
         },
         {
+            minScore: 25,
+            emoji: '💡',
+            title: 'Kennis in opbouw',
+            color: '#8B5CF6',
+        },
+        {
             minScore: 0,
             emoji: '💪',
             title: 'Goede poging',
@@ -93,6 +99,18 @@ const config: ReviewArenaConfig = {
             title: 'AI-fout of programmeer-bug?',
             description: 'Bepaal of elk probleem een AI-fout (hallucinatie/stopsignaal) of een programmeer-bug is.',
             maxScore: 25,
+            followUp: {
+                question: 'Je vraagt een AI-chatbot om uitleg over een wetenschappelijk onderzoek. De AI geeft een gedetailleerd antwoord met een overtuigende bronvermelding. Wat is de meest verstandige volgende stap?',
+                options: [
+                    'De bronvermelding opzoeken om te controleren of het onderzoek echt bestaat',
+                    'Het antwoord direct kopiëren — de AI klinkt zelfverzekerd',
+                    'Dezelfde vraag opnieuw stellen om te kijken of het antwoord verandert',
+                    'De AI vragen of hij zeker weet dat de bron klopt',
+                ],
+                correctIndex: 0,
+                explanation: 'AI-modellen kunnen geloofwaardige maar verzonnen bronnen produceren (hallucinaties). Het zelfverzekerde taalgebruik zegt niets over de juistheid. Zelf de bron opzoeken is de enige betrouwbare check. De AI opnieuw vragen werkt niet — hij herhaalt zijn fout of verzint een andere.',
+                bonusPoints: 5,
+            },
             categories: ['AI-fout', 'Programmeer-bug'],
             items: [
                 { label: 'AI verzint een boek dat niet bestaat', correctCategory: 'AI-fout' },
@@ -111,6 +129,18 @@ const config: ReviewArenaConfig = {
             title: 'AI & Games: Waar of Onwaar?',
             description: 'Acht snelle vragen over AI-beperkingen en programmeren.',
             maxScore: 25,
+            followUp: {
+                question: 'Je bouwt een spel waarbij vijanden van links naar rechts lopen. Na een tijdje verdwijnen ze van het scherm. Welke aanpak lost dit het meest duurzaam op?',
+                options: [
+                    'De bewegingssnelheid verlagen zodat ze minder snel het scherm uit lopen',
+                    'Randdetectie toevoegen die de vijand terugstuitert of verwijdert als hij de grens raakt',
+                    'Het scherm breder maken zodat de vijanden er later uitlopen',
+                    'Een timer instellen die elke 5 seconden nieuwe vijanden spawnt',
+                ],
+                correctIndex: 1,
+                explanation: 'Randdetectie is de structurele oplossing: je code reageert op de positie van het object en handelt dat af. Snelheid verlagen of het scherm verbreden pakt de oorzaak niet aan — het probleem verschuift alleen. Een timer maakt nieuwe vijanden aan maar lost het verdwijnen niet op.',
+                bonusPoints: 5,
+            },
             timePerQuestion: 12,
             questions: [
                 {

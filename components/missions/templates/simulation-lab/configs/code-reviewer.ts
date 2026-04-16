@@ -392,6 +392,12 @@ export const codeReviewerConfig: SimulationLabConfig = {
             color: '#6B6B66',
         },
         {
+            minScore: 25,
+            emoji: '💡',
+            title: 'Startende Code Reviewer',
+            color: '#8B5CF6',
+        },
+        {
             minScore: 0,
             emoji: '📖',
             title: 'Aan het leren',

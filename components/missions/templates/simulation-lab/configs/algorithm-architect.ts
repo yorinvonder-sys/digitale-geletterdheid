@@ -177,6 +177,13 @@ export const algorithmArchitectConfig: SimulationLabConfig = {
                 'Pas de lijstgrootte en het algoritme aan. Zie hoeveel stappen het algoritme nodig heeft.',
             visualType: 'meter',
             maxScore: 30,
+            followUp: {
+                question: 'Waarom schaalt een O(n²) algoritme slecht bij grote datasets?',
+                options: ['Omdat het meer geheugen gebruikt', 'Omdat het aantal bewerkingen kwadratisch groeit met de invoergrootte', 'Omdat het alleen op snelle computers werkt', 'Omdat het niet parallel kan draaien'],
+                correctIndex: 1,
+                explanation: 'Bij O(n²) verdubbelt de invoer → verviervoudigt de rekentijd. Bij 1000 items: 1.000.000 bewerkingen. Bij 10.000 items: 100.000.000. Daarom zijn efficiëntere algoritmes cruciaal voor grote datasets.',
+                bonusPoints: 5,
+            },
             parameters: [
                 {
                     id: 'lijstgrootte',
@@ -402,6 +409,12 @@ export const algorithmArchitectConfig: SimulationLabConfig = {
             emoji: '🔧',
             title: 'Codebouwer',
             color: '#6B6B66',
+        },
+        {
+            minScore: 25,
+            emoji: '💡',
+            title: 'Startende Algoritme Ontwerper',
+            color: '#8B5CF6',
         },
         {
             minScore: 0,

@@ -28,6 +28,12 @@ const config: ReviewArenaConfig = {
             color: '#6366F1',
         },
         {
+            minScore: 25,
+            emoji: '💡',
+            title: 'Kennis in opbouw',
+            color: '#8B5CF6',
+        },
+        {
             minScore: 0,
             emoji: '💪',
             title: 'Goede poging',
@@ -94,6 +100,18 @@ const config: ReviewArenaConfig = {
             description:
                 'Bepaal bij elk maatschappelijk effect van digitale technologie of het primair een kans of een risico is.',
             maxScore: 25,
+            followUp: {
+                question: 'Een gemeente wil gezichtsherkenning inzetten bij ingangen van scholen om de veiligheid te verhogen. Welk argument weegt het zwaarst bij de ethische beoordeling?',
+                options: [
+                    'Het systeem is duur, dus de gemeente kan dat geld beter anders besteden',
+                    'Het verzamelt biometrische data van minderjarigen zonder expliciete toestemming, wat privacyrechten schendt',
+                    'Gezichtsherkenning werkt niet goed genoeg om veiligheid echt te verbeteren',
+                    'Leraren kunnen zelf ook bijhouden wie er binnenkomt',
+                ],
+                correctIndex: 1,
+                explanation: 'Biometrische data van minderjarigen valt onder bijzondere persoonsgegevens die extra bescherming vereisen (AVG). Inzet zonder toestemming schendt fundamentele privacyrechten — ongeacht of het systeem effectief is. Kosten en effectiviteit zijn relevante factoren, maar privacyrechten zijn een harde juridische en ethische grens. Alternatieve methoden (optie 4) doen niet af aan de rechtsvraag.',
+                bonusPoints: 5,
+            },
             categories: ['Kans', 'Risico'],
             items: [
                 { label: 'AI-diagnose helpt artsen in landen met weinig dokters', correctCategory: 'Kans' },
@@ -112,6 +130,18 @@ const config: ReviewArenaConfig = {
             title: 'Maatschappij & technologie: Waar of Onwaar?',
             description: 'Acht snelle vragen over digitale kloof, AI Act en ethiek.',
             maxScore: 25,
+            followUp: {
+                question: 'Je ontwerpt een AI-systeem dat sollicitanten beoordeelt voor een baan. Je gebruikt historische aanstellingsdata als trainingsdata. Welk risico is het meest urgent om te onderzoeken voordat je het systeem inzet?',
+                options: [
+                    'Het systeem is te traag voor grote aantallen sollicitaties',
+                    'De historische data bevat mogelijk bestaande discriminatiepatronen die het model overneemt',
+                    'Sollicitanten zullen het systeem niet vertrouwen omdat het een computer is',
+                    'Het systeem kost meer dan een HR-medewerker',
+                ],
+                correctIndex: 1,
+                explanation: 'Historische aanstellingsdata weerspiegelt vaak bestaande vooroordelen (bijv. minder vrouwen of mensen met een migratieachtergrond in bepaalde functies). Een model dat hierop traint leert die bias over — en versterkt deze op schaal. Dit is het kernprobleem van algoritmische discriminatie en een harde eis onder de EU AI Act voor hoog-risico systemen. Snelheid, vertrouwen en kosten zijn reële overwegingen, maar de bias-vraag is ethisch en juridisch het meest urgent.',
+                bonusPoints: 5,
+            },
             timePerQuestion: 12,
             questions: [
                 {

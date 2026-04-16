@@ -86,6 +86,7 @@ export const meesterproefConfig: BuilderCanvasConfig = {
         { minScore: 90, emoji: '🏆', title: 'Meesterproef Geslaagd', color: '#F59E0B' },
         { minScore: 70, emoji: '🎓', title: 'Digital Professional', color: '#10B981' },
         { minScore: 50, emoji: '💪', title: 'Doorzetters Medaille', color: '#D97757' },
+        { minScore: 25, emoji: '💡', title: 'Beginnende Meesterproef', color: '#8B5CF6' },
         { minScore: 0, emoji: '🌱', title: 'Op weg', color: '#6B6B66' },
     ],
     takeaways: [
@@ -93,7 +94,7 @@ export const meesterproefConfig: BuilderCanvasConfig = {
         'Je hebt je ontwikkelproces gedocumenteerd zodat je keuzes verantwoord zijn',
         'Je hebt je eindproduct eerlijk en volledig beschreven, inclusief verbeterpunten',
         'Je bent voorbereid op de jury-verdediging met antwoorden op de moeilijkste vragen',
-        'Je hebt bewezen dat je van begin tot eind een complex digitaal project kunt doorlopen',
+        'Je kunt een complex digitaal project zelfstandig plannen, uitvoeren en evalueren volgens eigen succescriteria',
     ],
 };
 

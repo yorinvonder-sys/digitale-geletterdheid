@@ -46,6 +46,13 @@ export const appPrototyperConfig: BuilderCanvasConfig = {
                 { id: 'startscherm', label: 'Ik heb aangegeven welk scherm de gebruiker als eerste ziet' },
             ],
             textPrompt: 'Beschrijf je wireframes hier',
+            reflectionQuestion: {
+                question: 'Wat is het belangrijkste doel van een wireframe?',
+                options: ['De app er mooi laten uitzien', 'De structuur en gebruikersflow testen voor je gaat bouwen', 'De app sneller laten laden', 'De klant overtuigen met kleur en animatie'],
+                correctIndex: 1,
+                explanation: 'Een wireframe test de structuur en navigatie zonder afleiding van visuele details. Zo ontdek je problemen vroeg, wanneer aanpassingen nog goedkoop zijn.',
+                bonusPoints: 5,
+            },
         },
         {
             id: 'gebruikersflow',
@@ -84,6 +91,7 @@ export const appPrototyperConfig: BuilderCanvasConfig = {
         { minScore: 90, emoji: '🏆', title: 'UX Maestro', color: '#F59E0B' },
         { minScore: 70, emoji: '📱', title: 'App Designer', color: '#10B981' },
         { minScore: 50, emoji: '✏️', title: 'Wireframe Maker', color: '#D97757' },
+        { minScore: 25, emoji: '💡', title: 'Beginnende App Ontwerper', color: '#8B5CF6' },
         { minScore: 0, emoji: '🌱', title: 'Op weg', color: '#6B6B66' },
     ],
     takeaways: [
