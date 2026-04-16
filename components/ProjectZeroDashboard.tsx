@@ -10,7 +10,7 @@ import { submitFeedback } from '../services/feedbackService';
 import { StudentLibrary } from './StudentLibrary';
 import { BottomNav } from './BottomNav';
 import { SLO_KERNDOELEN, getKerndoelBadgeClasses, SloKerndoelCode } from '../config/sloKerndoelen';
-import { CURRICULUM, getYearConfig, getPeriodConfig } from '../config/curriculum';
+import { CURRICULUM, getAllMissionIds, getYearConfig, getPeriodConfig } from '../config/curriculum';
 import { ROLES } from '../config/agents';
 import { getMissionMeta } from '../config/slo-kerndoelen-mapping';
 import { ContainerConfig } from '@/config/containerTypes';
@@ -168,41 +168,150 @@ const PERIOD_LEERDOELEN: Record<string, PeriodLeerdoel> = {
 
 // Missie-specifieke metadata die niet in curriculum.ts of agents.tsx staat
 const MISSION_OVERRIDES: Record<string, Partial<Mission>> = {
-    'magister-master': { isExternal: true, info: 'Doen in app: open Magister en log in. Ga naar Rooster en Huiswerk. Bewijs: typ in de chat de naam van je eerste les van vandaag en 1 huiswerkopdracht die je ziet staan. Klaar als: je zelfstandig rooster, opdrachten en berichten kunt vinden. Tijd: 15 minuten.' },
-    'cloud-commander': { isExternal: true, info: 'Doen in app: maak in de OneDrive app de mappen School > Periode 1 > Opdrachten. Bewijs: typ in de chat de volledige naam van het testbestand dat je hebt opgeslagen. Klaar als: je bestand op de juiste plek in OneDrive staat. Tijd: 15 minuten.' },
-    'word-wizard': { isExternal: true, info: 'Doen in app: maak in Word een document met titel (Kop 1), 2 tussenkoppen, een opsomming en een afbeelding. Klaar als: je document is opgeslagen in OneDrive. Tijd: 35 minuten.' },
-    'slide-specialist': { isExternal: true, info: 'Doen in app: maak een PowerPoint-presentatie van 3 slides met minimaal 1 afbeelding. Klaar als: je presentatie in OneDrive staat en 3 slides heeft. Tijd: 25 minuten.' },
-    'print-pro': { isExternal: true, info: 'Doen in app: print je Word-doc via de print-app en lever je bestanden in. Klaar als: je print klopt en de opdracht op "Ingeleverd" staat. Tijd: 15 minuten.' },
-    'ipad-print-instructies': { isHighlighted: true, classRestriction: 'MH1A', info: 'Een complete gids om te printen vanaf je iPad. Je leert de print-app downloaden, inloggen en je eerste document printen.' },
-    'cloud-cleaner': { info: 'Mappenstructuur en bestandsorganisatie herhalen. Zorg voor een opgeruimde Cloud!' },
-    'layout-doctor': { info: 'Test je Word-kennis door problemen te matchen aan oplossingen. Van sneltoetsen tot tekstomloop!' },
-    'pitch-police': { info: 'Slide-design principes herhalen. Maak slides visueel aantrekkelijk en duidelijk.' },
-    'prompt-master': { info: 'Hoe vraag je AI om precies te doen wat je wilt? Leer het verschil tussen vage, onduidelijke prompts en krachtige, duidelijke prompts die perfecte resultaten opleveren!' },
-    'game-programmeur': { info: 'Duik in de code van een kapotte game! Je leert de basis van programmeren door bugs op te lossen en de spelregels aan te passen.' },
-    'ai-trainer': { info: 'Hoe leert een computer? Jij gaat een AI-model trainen om verschillende materialen te herkennen door het goede voorbeelden te geven.' },
-    'chatbot-trainer': { info: 'Hoe weet een chatbot wat hij moet antwoorden? Maak regels en test je eigen chatbot!' },
-    'ai-tekengame': { info: 'Test hoe goed AI patronen herkent. Teken een object en kijk of de AI het kan raden!' },
-    'game-director': { number: 'Vrije Keuze', info: 'In deze Vrije Keuze missie krijg je de volledige controle. Pas zwaartekracht, snelheid en uiterlijk aan om jouw perfecte game te maken.' },
-    'verhalen-ontwerper': { info: 'Leer hoe je met Artificial Intelligence verhalen tot leven brengt. Je gaat werken met image-generation tools om scenes uit je verhaal te visualiseren.' },
-    'ai-beleid-brainstorm': { info: 'Jouw mening telt! Help de school met het vormgeven van AI-beleid door ideeën te delen en te stemmen op de beste voorstellen.' },
-    'review-week-2': { info: 'Controleer je kennis van de vorige periode. Heb je alles onthouden over AI en programmeren?' },
-    'data-detective': { info: 'Onderzoek hoe bedrijven data verzamelen en inzetten. Je leert kansen afwegen tegen gevaren en maakt bewustere internetkeuzes.' },
-    'deepfake-detector': { info: 'Kun jij AI-gegenereerde content herkennen? Leer de tekenen te spotten die verraden of iets door een mens of door AI is gemaakt!' },
-    'ai-spiegel': { info: 'Onderzoek hoe likes, kijktijd en zoekgedrag worden gebruikt door platforms. Je ontdekt kansen en gevaren en maakt je eigen privacyregels.' },
-    'social-safeguard': { info: 'Oefen met realistische scenario\'s zoals nepaccounts, shaming en ongewenst delen. Leer hoe je bewijs bewaart en slim meldt.' },
-    'cookie-crusher': { info: 'Websites gebruiken trucs om je op "Accepteer alles" te laten klikken. Leer deze dark patterns herkennen! Speed-game met scores en badges.' },
-    'data-handelaar': { info: 'Je bent undercover bij DataDeal BV! Onderzoek 3 verdachte bewijsstukken, vind de AVG-overtredingen. Escape room-stijl missie!' },
-    'privacy-profiel-spiegel': { info: 'Controleer de echte privacy-instellingen van apps op je iPad. Krijg een persoonlijke Privacy Score en maak een actieplan.' },
-    'filter-bubble-breaker': { info: 'Vergelijk twee social media feeds, beantwoord quizvragen en leer hoe algoritmes jouw wereld vormen.' },
-    'datalekken-rampenplan': { info: 'De school is gehackt! 800 leerlinggegevens liggen op straat. Manage de crisis en maak een noodplan.' },
-    'data-voor-data': { info: 'Ethische veiling: kies DEAL of NO DEAL bij steeds grotere data-verzoeken. Ontdek je persoonlijke privacy-principes.' },
-    'social-media-psychologist': { isBonus: true, info: 'Bonusmissie! Ontdek waarom je blijft scrollen en hoe algoritmes je aandacht vangen.' },
-    'review-week-3': { info: 'Tijd voor de balans. Wat heb je geleerd over veiligheid en ethiek? Test je kennis.' },
-    'mission-blueprint': { info: 'Elk groot project begint met een plan. Gebruik je digitale skills om je eindwerk te organiseren.' },
-    'mission-vision': { info: 'Verbeeld je idee. Gebruik AI en design tools om je concept tot leven te wekken in een pitch.' },
-    'mission-launch': { info: 'Showtime! Presenteer je werk aan de klas en laat zien wat je hebt geleerd als Digitale Expert.' },
-    'access-control-engineer': { info: 'Het inlogportaal van school is lek! Gasten komen overal bij, leerlingen zien elkaars cijfers. Analyseer de beveiligingsregels, stel de juiste rechten in per rol en test of alles klopt.' },
-    'schermtijd-coach': { info: 'De gemiddelde tiener zit 7 uur per dag op een scherm. Maar kies jij dat zelf, of kiezen de apps dat voor jou? Analyseer je schermgedrag, herken de trucs van apps, en maak een persoonlijk balansplan.' },
+    // Leerjaar 1 — Periode 1
+    'magister-master': { isExternal: true, info: 'Ik open Magister, bekijk mijn rooster en controleer mijn huiswerk. Klaar als: ik zelfstandig rooster, opdrachten en berichten kan vinden. Tijd: 15 minuten.' },
+    'cloud-commander': { isExternal: true, info: 'Ik maak in OneDrive de mapstructuur van school en sla een testbestand op. Klaar als: mijn bestand op de juiste plek in OneDrive staat. Tijd: 15 minuten.' },
+    'word-wizard': { isExternal: true, info: 'Ik maak in Word een document met koppen, een opsomming en een afbeelding. Klaar als: mijn document is opgeslagen in OneDrive. Tijd: 35 minuten.' },
+    'slide-specialist': { isExternal: true, info: 'Ik maak in PowerPoint een presentatie van 3 slides met minimaal 1 afbeelding. Klaar als: mijn presentatie in OneDrive staat en 3 slides heeft. Tijd: 25 minuten.' },
+    'print-pro': { isExternal: true, info: 'Ik print mijn Word-bestand via de print-app en lever mijn bestanden in via Magister. Klaar als: mijn print klopt en de opdracht op "Ingeleverd" staat. Tijd: 15 minuten.' },
+    'ipad-print-instructies': { isHighlighted: true, classRestriction: 'MH1A', info: 'Ik leer stap voor stap hoe ik vanaf mijn iPad print. Ik download de print-app, log in en verstuur mijn eerste printopdracht.' },
+    'cloud-cleaner': { info: 'Ik herhaal hoe ik bestanden logisch orden. Ik sleep losse bestanden naar de juiste map en maak mijn cloud overzichtelijk.' },
+    'layout-doctor': { info: 'Ik test mijn Word-kennis door problemen aan oplossingen te koppelen. Ik herken sneller welke functie ik nodig heb.' },
+    'pitch-police': { info: 'Ik herhaal de basis van goed slide-ontwerp. Ik verbeter een saaie slide zodat die duidelijker en aantrekkelijker wordt.' },
+
+    // Leerjaar 1 — Periode 2
+    'prompt-master': { info: 'Ik ontdek hoe ik AI duidelijker aanstuur met sterke prompts. Ik leer het verschil tussen vaag vragen en precies formuleren.' },
+    'game-programmeur': { info: 'Ik pas code aan in een game en zie direct wat mijn wijziging doet. Ik leer bugs oplossen en spelregels veranderen.' },
+    'ai-trainer': { info: 'Ik train een AI met voorbeelden en test wat het model daarvan leert. Ik ontdek hoe trainingsdata de uitkomst beïnvloedt.' },
+    'chatbot-trainer': { info: 'Ik bouw een chatbot met eigen regels en test of de antwoorden kloppen. Ik ontdek hoe een eenvoudig chatsysteem beslissingen neemt.' },
+    'ai-tekengame': { info: 'Ik teken objecten en test of AI mijn patronen herkent. Ik ontdek waar een herkenningsmodel goed en minder goed in is.' },
+    'game-director': { number: 'Vrije Keuze', info: 'Ik ontwerp mijn eigen game-regels met codeblokken. Ik pas beweging, zwaartekracht en gedrag aan tot mijn game werkt zoals ik wil.' },
+    'verhalen-ontwerper': { info: 'Ik zet een verhaal om in beelden met AI. Ik oefen met prompts en visualiseer scènes uit mijn eigen verhaal.' },
+    'ai-beleid-brainstorm': { info: 'Ik denk mee over regels voor AI op school. Ik geef ideeën, weeg keuzes af en stem op de beste voorstellen.' },
+    'code-denker': { info: 'Ik los puzzels op met computational thinking. Ik oefen met opdelen, patronen herkennen en stappenplannen maken.' },
+    'website-bouwer': { info: 'Ik bouw een eenvoudige webpagina met echte HTML en CSS. Ik leer hoe tekst, vormgeving en structuur samen een website maken.' },
+    'schermtijd-coach': { info: 'Ik analyseer mijn schermgedrag en herken trucs die apps gebruiken om aandacht vast te houden. Ik maak een balansplan dat ik echt kan volhouden.' },
+    'notificatie-ninja': { info: 'Ik onderzoek hoe notificaties mijn aandacht sturen. Ik bepaal welke meldingen helpen en welke mij vooral afleiden.' },
+    'review-week-2': { info: 'Ik herhaal wat ik heb geleerd over AI en programmeren. Ik test of ik fouten en zwakke plekken in AI-output herken.' },
+
+    // Leerjaar 1 — Periode 3
+    'data-detective': { info: 'Ik onderzoek welke data bedrijven verzamelen en wat ze ermee doen. Ik weeg voordelen af tegen risico\'s en maak bewustere internetkeuzes.' },
+    'data-verzamelaar': { info: 'Ik verzamel data over mijn schermtijd of appgebruik en zet die om in een overzicht. Ik leer wat cijfers zeggen over mijn digitale gewoonten.' },
+    'deepfake-detector': { info: 'Ik analyseer beelden en berichten om te bepalen wat echt is en wat door AI is gemaakt. Ik leer signalen van deepfakes en nepcontent herkennen.' },
+    'ai-spiegel': { info: 'Ik onderzoek hoe platforms mijn likes, kijktijd en zoekgedrag gebruiken. Ik ontdek wat dat oplevert, welke risico\'s erbij horen en welke privacyregels ik zelf kies.' },
+    'social-safeguard': { info: 'Ik oefen met scenario\'s rond online druk, pesten en misbruik van data. Ik leer veilig reageren, bewijs bewaren en verstandig melden.' },
+    'scroll-stopper': { info: 'Ik onderzoek hoe eindeloos scrollen mijn aandacht stuurt. Ik bespreek welke ontwerpkeuzes helpen en welke juist verslavend werken.' },
+    'cookie-crusher': { info: 'Ik herken dark patterns in cookie-popups en oefen met privacyvriendelijke keuzes. Ik zie hoe websites mij proberen te sturen.' },
+    'data-handelaar': { info: 'Ik onderzoek verdachte bewijsstukken en ontdek waar illegale datahandel misgaat. Ik herken AVG-overtredingen en zet mijn bevindingen op een rij.' },
+    'privacy-profiel-spiegel': { info: 'Ik controleer mijn echte privacy-instellingen in apps en ontdek wat ik deel. Ik maak op basis daarvan een persoonlijk actieplan.' },
+    'filter-bubble-breaker': { info: 'Ik vergelijk verschillende feeds en ontdek hoe algoritmes mijn online wereld vormen. Ik leer hoe ik mijn filterbubbel kan doorbreken.' },
+    'datalekken-rampenplan': { info: 'Ik pak een datalek stap voor stap aan. Ik maak keuzes over communicatie, melding en herstel tijdens een digitale crisis.' },
+    'data-voor-data': { info: 'Ik bepaal hoeveel persoonlijke data ik wil inruilen voor gemak. Ik vergelijk keuzes en ontdek mijn eigen privacygrenzen.' },
+    'data-speurder': { info: 'Ik speur naar sporen van datagebruik in apps en online diensten. Ik ontdek welke gegevens worden verzameld en wat dat voor mij betekent.' },
+    'digitale-balans-coach': { info: 'Ik onderzoek hoe technologie mijn rust, aandacht en welzijn beïnvloedt. Ik maak afgewogen keuzes voor een gezondere digitale balans.' },
+    'social-media-psychologist': { isBonus: true, info: 'Ik verdiep me in de psychologie achter scrollen, likes en filterbubbels. Ik ontdek hoe platforms mijn aandacht sturen en welke keuzes ik zelf kan maken.' },
+
+    // Leerjaar 1 — Periode 4
+    'review-week-3': { info: 'Ik herhaal wat ik heb geleerd over veiligheid, privacy en ethiek. Ik test of ik slimme en verantwoorde digitale keuzes kan onderbouwen.' },
+    'mission-blueprint': { info: 'Ik organiseer mijn eindproject en maak een duidelijk plan. Ik zet mijn ideeën, taken en bestanden overzichtelijk klaar.' },
+    'mission-vision': { info: 'Ik werk mijn idee visueel uit met AI en design. Ik maak een moodboard of pitch waarmee mijn concept direct duidelijk wordt.' },
+    'mission-launch': { info: 'Ik werk mijn presentatie en eindproducten af en maak ze klaar om te delen. Ik laat zien wat ik dit jaar heb geleerd.' },
+
+    // Leerjaar 2 — Periode 1
+    'data-journalist': { info: 'Ik analyseer een dataset en haal er een duidelijk verhaal uit. Ik presenteer mijn inzichten in een infographic of visuele samenvatting.' },
+    'spreadsheet-specialist': { info: 'Ik gebruik formules, grafieken en overzicht om data te ordenen. Ik maak van losse cellen een spreadsheet waar ik echt iets uit kan aflezen.' },
+    'factchecker': { info: 'Ik controleer of een online bewering klopt. Ik vergelijk bronnen, beoordeel betrouwbaarheid en trek een onderbouwde conclusie.' },
+    'api-verkenner': { info: 'Ik ontdek hoe apps en websites data uitwisselen via API\'s. Ik lees antwoorden uit een API en begrijp wat de velden betekenen.' },
+    'dashboard-designer': { info: 'Ik kies passende grafieken en ontwerp een dashboard dat belangrijke data snel zichtbaar maakt. Ik leer hoe ik informatie helder presenteer.' },
+    'ai-bias-detective': { info: 'Ik onderzoek of een AI-systeem groepen oneerlijk behandelt. Ik herken bias in de output en bedenk hoe het eerlijker kan.' },
+    'data-review': { info: 'Ik herhaal de belangrijkste dataconcepten uit deze periode. Ik test of ik patronen, visualisaties en bronkritiek goed kan toepassen.' },
+
+    // Leerjaar 2 — Periode 2
+    'algorithm-architect': { info: 'Ik ontwerp een algoritme dat een probleem stap voor stap oplost. Ik denk na over logica, efficiëntie en de beste aanpak.' },
+    'web-developer': { info: 'Ik bouw een interactieve webpagina met HTML, CSS en JavaScript. Ik laat code, vormgeving en gedrag samenwerken.' },
+    'network-navigator': { info: 'Ik volg hoe data van apparaat naar server reist. Ik begrijp beter hoe netwerken werken en waar vertraging of fouten kunnen ontstaan.' },
+    'app-prototyper': { info: 'Ik ontwerp een app-prototype met schermen, navigatie en gebruikersflow. Ik laat zien hoe een idee werkt voordat het wordt gebouwd.' },
+    'bug-hunter': { info: 'Ik spoor fouten in code systematisch op en los ze op. Ik test mijn aannames en verbeter stap voor stap het programma.' },
+    'automation-engineer': { info: 'Ik automatiseer een terugkerende taak met code of logica. Ik ontwerp een oplossing die tijd bespaart en betrouwbaar werkt.' },
+    'code-reviewer': { info: 'Ik beoordeel code kritisch en zoek naar onduidelijkheden, fouten en verbeterpunten. Ik leer hoe goede code leesbaar en onderhoudbaar blijft.' },
+    'privacy-by-design': { info: 'Ik analyseer een app op privacyrisico\'s en ontwerp veiligere keuzes vanaf het begin. Ik vertaal privacyregels naar concrete ontwerpbeslissingen.' },
+    'wachtwoord-warrior': { info: 'Ik test hoe sterk of zwak wachtwoorden zijn en leer waarom sommige wachtwoorden snel te kraken zijn. Ik formuleer regels voor betere beveiliging.' },
+    'access-control-engineer': { info: 'Ik stel rollen en rechten zo in dat alleen de juiste mensen toegang krijgen. Ik test of gevoelige informatie goed is afgeschermd.' },
+    'code-review-2': { info: 'Ik herhaal programmeerconcepten en test of ik codeproblemen kan herkennen en uitleggen. Ik laat zien dat ik kritisch naar software kan kijken.' },
+
+    // Leerjaar 2 — Periode 3
+    'ux-detective': { info: 'Ik onderzoek waarom gebruikers vastlopen in een interface. Ik herken UX-problemen en ontwerp verbeteringen die de app duidelijker maken.' },
+    'podcast-producer': { info: 'Ik ontwikkel een podcastconcept en werk een aflevering uit van intro tot outro. Ik combineer inhoud, structuur en doelgroepgericht vertellen.' },
+    'meme-machine': { info: 'Ik analyseer waarom memes werken en ontwerp mijn eigen deelbare content. Ik let op timing, beeldtaal en online impact.' },
+    'digital-storyteller': { info: 'Ik ontwerp een digitaal verhaal met keuzes of vertakkingen. Ik bouw een ervaring waarin structuur en verhaal elkaar versterken.' },
+    'brand-builder': { info: 'Ik ontwerp een visuele identiteit met kleur, vorm en stijl. Ik zorg dat merkkeuzes passen bij doelgroep en boodschap.' },
+    'video-editor': { info: 'Ik plan een video met storyboard, shots en montagekeuzes. Ik zet losse beelden om in een duidelijk verhaal.' },
+    'online-helden': { info: 'Ik oefen met situaties waarin ik online voor mezelf of anderen moet opkomen. Ik kies acties die veilig, behulpzaam en respectvol zijn.' },
+    'media-review': { info: 'Ik herhaal de mediaconcepten uit deze periode. Ik test of ik sterke keuzes in content, ontwerp en vormgeving herken.' },
+
+    // Leerjaar 2 — Periode 4
+    'ai-ethicus': { info: 'Ik beoordeel AI-dilemma\'s vanuit privacy, eerlijkheid en verantwoordelijkheid. Ik leer mijn standpunt onderbouwen met argumenten.' },
+    'digital-rights-defender': { info: 'Ik onderzoek welke digitale rechten gebruikers hebben en vertaal die naar concrete afspraken. Ik schrijf een manifest dat privacy en keuzevrijheid beschermt.' },
+    'tech-court': { info: 'Ik voer een debat over een technologisch dilemma en weeg verschillende standpunten af. Ik leer argumenteren vanuit feiten en waarden.' },
+    'future-forecaster': { info: 'Ik maak een onderbouwde toekomstvisie op technologie en samenleving. Ik denk na over kansen, risico\'s en gevolgen op langere termijn.' },
+    'sustainability-scanner': { info: 'Ik bereken de milieu-impact van digitale keuzes en vergelijk duurzamere alternatieven. Ik ontdek wat technologie kost aan energie en uitstoot.' },
+    'eindproject-j2': { info: 'Ik combineer mijn vaardigheden uit dit leerjaar in één groter eindproject. Ik onderzoek, ontwerp en presenteer een eigen digitale oplossing.' },
+
+    // Leerjaar 3 — Periode 1
+    'ml-trainer': { info: 'Ik train een eenvoudig machine-learningmodel en meet hoe goed het presteert. Ik leer waarom data, features en evaluatie het verschil maken.' },
+    'api-architect': { info: 'Ik ontwerp een REST API met logische endpoints en duidelijke documentatie. Ik leer hoe frontend en backend via vaste afspraken samenwerken.' },
+    'neural-navigator': { info: 'Ik onderzoek hoe neuronen, lagen en backpropagation samenwerken in een neuraal netwerk. Ik maak abstracte AI-stappen concreet en begrijpelijk.' },
+    'data-pipeline': { info: 'Ik volg hoe data door een systeem stroomt: van bron tot verwerking tot dashboard. Ik leer waar fouten, vertraging en kwaliteitsproblemen kunnen ontstaan.' },
+    'open-source-contributor': { info: 'Ik verbeter een bestaand softwareproject en werk samen volgens open-source werkwijzen. Ik leer hoe ik wijzigingen voorstel, documenteer en verantwoord.' },
+    'advanced-code-review': { info: 'Ik herhaal geavanceerde programmeerconcepten en test of ik complexe code kan beoordelen. Ik let op kwaliteit, structuur en risico\'s.' },
+
+    // Leerjaar 3 — Periode 2
+    'cyber-detective': { info: 'Ik onderzoek digitale sporen om een cyberincident te ontrafelen. Ik combineer aanwijzingen en trek een technisch onderbouwde conclusie.' },
+    'encryption-expert': { info: 'Ik los puzzels op rond versleuteling en begrijp hoe berichten veilig worden beschermd. Ik ontdek hoe sleutels, codes en encryptie samenwerken.' },
+    'phishing-fighter': { info: 'Ik herken phishing-signalen in berichten, links en websites. Ik oefen hoe ik veilig reageer op digitale misleiding.' },
+    'security-auditor': { info: 'Ik controleer een systeem op beveiligingsrisico\'s en herken veelvoorkomende kwetsbaarheden. Ik onderbouw welke maatregelen het meest dringend zijn.' },
+    'digital-forensics': { info: 'Ik analyseer digitale sporen na een incident en reconstrueer wat er is gebeurd. Ik leer bewijs zorgvuldig lezen en interpreteren.' },
+    'security-review': { info: 'Ik herhaal de belangrijkste cybersecurityconcepten en test of ik risico\'s en aanvallen correct kan beoordelen.' },
+
+    // Leerjaar 3 — Periode 3
+    'startup-simulator': { info: 'Ik ontwikkel een tech-idee van probleem tot businessconcept. Ik weeg niet alleen kansen, maar ook de impact op gebruikers en samenleving.' },
+    'policy-maker': { info: 'Ik schrijf beleid voor een digitaal vraagstuk en onderbouw welke regels verstandig zijn. Ik weeg belangen, risico\'s en uitvoerbaarheid tegen elkaar af.' },
+    'innovation-lab': { info: 'Ik werk een vernieuwend techconcept uit en test hoe haalbaar het is. Ik combineer creativiteit met kritische afwegingen.' },
+    'digital-divide-researcher': { info: 'Ik onderzoek hoe toegang tot technologie ongelijk verdeeld is. Ik analyseer gevolgen en bedenk hoe digitale kansen eerlijker kunnen worden verdeeld.' },
+    'tech-impact-analyst': { info: 'Ik analyseer hoe een technologie mensen, werk of samenleving beïnvloedt. Ik kijk naar voordelen, risico\'s en onverwachte bijwerkingen.' },
+    'welzijnsonderzoeker': { info: 'Ik onderzoek data over welzijn en digitaal gedrag. Ik trek conclusies uit patronen en vertaal die naar praktische aanbevelingen.' },
+    'startup-pitch': { info: 'Ik werk een pitch uit waarmee ik een tech-idee overtuigend presenteer. Ik combineer probleem, oplossing, bewijs en impact in één helder verhaal.' },
+    'impact-review': { info: 'Ik herhaal wat ik heb geleerd over innovatie, maatschappelijke impact en digitale keuzes. Ik test of ik technologische gevolgen scherp kan beoordelen.' },
+
+    // Leerjaar 3 — Periode 4
+    'portfolio-builder': { info: 'Ik verzamel mijn beste werk en maak een portfolio dat mijn ontwikkeling laat zien. Ik kies bewijs, structuur en presentatie bewust.' },
+    'research-project': { info: 'Ik voer een onderzoek uit rond een digitale vraag en werk mijn bevindingen helder uit. Ik verzamel, analyseer en interpreteer informatie zelfstandig.' },
+    'prototype-developer': { info: 'Ik bouw een prototype dat een idee tastbaar maakt. Ik test of mijn oplossing werkt en verbeter op basis van feedback.' },
+    'pitch-perfect': { info: 'Ik maak een sterke eindpitch waarin inhoud, vorm en overtuigingskracht samenkomen. Ik laat zien waarom mijn project relevant en haalbaar is.' },
+    'reflection-report': { info: 'Ik kijk kritisch terug op mijn keuzes, leerproces en resultaat. Ik onderbouw wat goed werkte en wat ik een volgende keer anders doe.' },
+    'meesterproef': { info: 'Ik breng al mijn digitale vaardigheden samen in één meesterproef. Ik lever een project op waarin onderzoek, ontwerp, techniek en reflectie samenkomen.' },
+};
+
+const CURRICULUM_MISSION_IDS = new Set(getAllMissionIds());
+const warnedMissingMissionInfo = new Set<string>();
+
+const getMissionOverride = (missionId: string): Partial<Mission> =>
+    MISSION_OVERRIDES[missionId] || {};
+
+const getMissionTooltipInfo = (
+    missionId: string,
+    role?: { problemScenario?: string; missionObjective?: string },
+): string | undefined => {
+    const explicitInfo = getMissionOverride(missionId).info?.trim();
+    if (explicitInfo) return explicitInfo;
+
+    if (import.meta.env.DEV && CURRICULUM_MISSION_IDS.has(missionId) && !warnedMissingMissionInfo.has(missionId)) {
+        warnedMissingMissionInfo.add(missionId);
+        console.warn(`[ProjectZeroDashboard] Missing explicit tooltip info for mission "${missionId}"`);
+    }
+
+    const fallback = [role?.problemScenario, role?.missionObjective].filter(Boolean).join(' ').trim();
+    return fallback || undefined;
 };
 
 // Bouw missies dynamisch op basis van curriculum config + agent definities
@@ -215,7 +324,7 @@ function buildMissionsForPeriod(yearGroup: number, period: number): Mission[] {
     for (const missionId of (periodConfig.reviewMissions || [])) {
         const role = ROLES.find(r => r.id === missionId);
         const meta = getMissionMeta(missionId);
-        const overrides = MISSION_OVERRIDES[missionId] || {};
+        const overrides = getMissionOverride(missionId);
         missions.push({
             id: missionId,
             title: role?.title || missionId,
@@ -223,7 +332,7 @@ function buildMissionsForPeriod(yearGroup: number, period: number): Mission[] {
             icon: role?.icon ? React.cloneElement(role.icon as React.ReactElement, { size: 40 }) : <RotateCcw size={40} />,
             number: 'Review',
             status: 'available',
-            info: overrides.info || role?.problemScenario,
+            info: getMissionTooltipInfo(missionId, role),
             isReview: true,
             classRestriction: overrides.classRestriction || meta?.classRestriction,
             isHighlighted: overrides.isHighlighted,
@@ -237,7 +346,7 @@ function buildMissionsForPeriod(yearGroup: number, period: number): Mission[] {
     for (const missionId of periodConfig.missions) {
         const role = ROLES.find(r => r.id === missionId);
         const meta = getMissionMeta(missionId);
-        const overrides = MISSION_OVERRIDES[missionId] || {};
+        const overrides = getMissionOverride(missionId);
         missions.push({
             id: missionId,
             title: role?.title || missionId,
@@ -245,7 +354,7 @@ function buildMissionsForPeriod(yearGroup: number, period: number): Mission[] {
             icon: role?.icon ? React.cloneElement(role.icon as React.ReactElement, { size: 40 }) : <Puzzle size={40} />,
             number: overrides.number || String(missionNum).padStart(2, '0'),
             status: 'available',
-            info: overrides.info || (role ? `${role.problemScenario || ''} ${role.missionObjective || ''}`.trim() : undefined),
+            info: getMissionTooltipInfo(missionId, role),
             isReview: false,
             isExternal: overrides.isExternal,
             isBonus: overrides.isBonus,
@@ -269,7 +378,7 @@ const WEEK_MISSIONS: Record<number, Mission[]> = {
             number: '01',
             status: 'available',
             isExternal: true,
-            info: 'Doen in app: open Magister en log in. Ga naar Rooster en Huiswerk. Bewijs: typ in de chat de naam van je eerste les van vandaag en 1 huiswerkopdracht die je ziet staan. Klaar als: je zelfstandig rooster, opdrachten en berichten kunt vinden. Tijd: 15 minuten.',
+            info: getMissionTooltipInfo('magister-master'),
             sloKerndoelen: ['21A', '21C']
         },
         {
@@ -280,7 +389,7 @@ const WEEK_MISSIONS: Record<number, Mission[]> = {
             number: '02',
             status: 'available',
             isExternal: true,
-            info: 'Doen in app: maak in de OneDrive app de mappen School > Periode 1 > Opdrachten. Bewijs: typ in de chat de volledige naam van het testbestand dat je hebt opgeslagen (bijv. klas_voornaam_testbestand.docx). Klaar als: je bestand op de juiste plek in OneDrive staat. Tijd: 15 minuten.',
+            info: getMissionTooltipInfo('cloud-commander'),
             sloKerndoelen: ['21A', '23A']
         },
         {
@@ -291,7 +400,7 @@ const WEEK_MISSIONS: Record<number, Mission[]> = {
             number: '03',
             status: 'available',
             isExternal: true,
-            info: 'Doen in app: maak in Word een document met titel (Kop 1), 2 tussenkoppen, een opsomming en een afbeelding. Bewijs: typ in de chat hoeveel koppen je in je automatische inhoudsopgave hebt staan. Klaar als: je document is opgeslagen in OneDrive. Tijd: 35 minuten. ⭐ Bonus Challenge: voeg een automatische inhoudsopgave en een kop-/voettekst toe.',
+            info: getMissionTooltipInfo('word-wizard'),
             sloKerndoelen: ['21A', '22A']
         },
         {
@@ -302,7 +411,7 @@ const WEEK_MISSIONS: Record<number, Mission[]> = {
             number: '04',
             status: 'available',
             isExternal: true,
-            info: 'Doen in app: maak een PowerPoint-presentatie van 3 slides (titel, tips, Magister/printen) met minimaal 1 afbeelding. Bewijs: typ in de chat het onderwerp van je tweede slide. Klaar als: je presentatie in OneDrive staat en 3 slides heeft. Tijd: 25 minuten. ⭐ Bonus Challenge: voeg overgangen tussen slides toe en gebruik een animatie op minstens 1 element.',
+            info: getMissionTooltipInfo('slide-specialist'),
             sloKerndoelen: ['21A', '21C', '22A']
         },
         {
@@ -313,44 +422,44 @@ const WEEK_MISSIONS: Record<number, Mission[]> = {
             number: '05',
             status: 'available',
             isExternal: true,
-            info: 'Doen in app: print je Word-doc via de RICOH app en lever je Word + PowerPoint bestanden in via de Magister app. Bewijs: typ in de chat de status die bij je opdracht in Magister staat (bijv. "Ingeleverd"). Klaar als: je print klopt en Magister op "Ingeleverd" staat. Tijd: 15 minuten.',
+            info: getMissionTooltipInfo('print-pro'),
             sloKerndoelen: ['21A']
         },
     ],
     2: [
-        { id: 'ipad-print-instructies', title: 'iPad Print Instructies', description: 'Leer stap-voor-stap printen vanaf je iPad met de RICOH myPrint app.', icon: <Printer size={40} />, number: 'MH1A', status: 'available', info: 'Een complete gids om te printen vanaf je iPad. Je leert de RICOH myPrint app downloaden, inloggen en je eerste document printen.', isHighlighted: true, isReview: true, sloKerndoelen: ['21A'] },
-        { id: 'cloud-cleaner', title: 'Cloud Schoonmaker', description: 'Sleep de rondslingerende bestanden naar de juiste mappen.', icon: <Cloud size={40} />, number: 'Review', status: 'available', info: 'Mappenstructuur en bestandsorganisatie herhalen. Zorg voor een opgeruimde Cloud!', isReview: true, sloKerndoelen: ['21A'] },
-        { id: 'layout-doctor', title: 'Word Match', description: 'Koppel Word-problemen aan de juiste oplossing!', icon: <FileText size={40} />, number: 'Review', status: 'available', info: 'Test je Word-kennis door problemen te matchen aan oplossingen. Van sneltoetsen tot tekstomloop!', isReview: true, sloKerndoelen: ['21A'] },
-        { id: 'pitch-police', title: 'Pitch Politie', description: 'Geef deze saaie slide een makeover zodat het publiek niet in slaap valt.', icon: <Monitor size={40} />, number: 'Review', status: 'available', info: 'Slide-design principes herhalen. Maak slides visueel aantrekkelijk en duidelijk.', isReview: true, sloKerndoelen: ['21A', '22B'] },
+        { id: 'ipad-print-instructies', title: 'iPad Print Instructies', description: 'Leer stap-voor-stap printen vanaf je iPad met de RICOH myPrint app.', icon: <Printer size={40} />, number: 'MH1A', status: 'available', info: getMissionTooltipInfo('ipad-print-instructies'), isHighlighted: true, isReview: true, sloKerndoelen: ['21A'] },
+        { id: 'cloud-cleaner', title: 'Cloud Schoonmaker', description: 'Sleep de rondslingerende bestanden naar de juiste mappen.', icon: <Cloud size={40} />, number: 'Review', status: 'available', info: getMissionTooltipInfo('cloud-cleaner'), isReview: true, sloKerndoelen: ['21A'] },
+        { id: 'layout-doctor', title: 'Word Match', description: 'Koppel Word-problemen aan de juiste oplossing!', icon: <FileText size={40} />, number: 'Review', status: 'available', info: getMissionTooltipInfo('layout-doctor'), isReview: true, sloKerndoelen: ['21A'] },
+        { id: 'pitch-police', title: 'Pitch Politie', description: 'Geef deze saaie slide een makeover zodat het publiek niet in slaap valt.', icon: <Monitor size={40} />, number: 'Review', status: 'available', info: getMissionTooltipInfo('pitch-police'), isReview: true, sloKerndoelen: ['21A', '22B'] },
 
-        { id: 'prompt-master', title: 'Prompt Perfectionist', description: 'Leer het verschil tussen goede en slechte prompts.', icon: <Sparkles size={40} />, number: '01', status: 'available', info: 'Hoe vraag je AI om precies te doen wat je wilt? Leer het verschil tussen vage, onduidelijke prompts en krachtige, duidelijke prompts die perfecte resultaten opleveren!', sloKerndoelen: ['21B', '22A'], sloVsoKerndoelen: ['18C', '19A', '20B'] },
-        { id: 'game-programmeur', title: 'Game Programmeur', description: 'Repareer games met code. Bepaal zelf de regels van het spel.', icon: <Gamepad2 size={40} />, number: '02', status: 'available', info: 'Duik in de code van een kapotte game! Je leert de basis van programmeren door bugs op te lossen en de spelregels aan te passen.', sloKerndoelen: ['22A', '22B'], sloVsoKerndoelen: ['19A'] },
-        { id: 'ai-trainer', title: 'AI Trainer', description: 'Leer een robot het verschil tussen materialen met supervised learning.', icon: <Database size={40} />, number: '04', status: 'available', info: 'Hoe leert een computer? Jij gaat een AI-model trainen om verschillende materialen te herkennen door het goede voorbeelden te geven.', sloKerndoelen: ['21D'], sloVsoKerndoelen: ['18C'] },
-        { id: 'chatbot-trainer', title: 'Chatbot Trainer', description: 'Bouw je eigen chatbot en leer hoe AI gesprekken voert.', icon: <BrainCircuit size={40} />, number: '05', status: 'available', info: 'Hoe weet een chatbot wat hij moet antwoorden? Maak regels en test je eigen chatbot!', sloKerndoelen: ['21D', '22A'], sloVsoKerndoelen: ['18C', '19A'] },
-        { id: 'ai-tekengame', title: 'AI Tekengame', description: 'Teken en laat de AI raden wat het is!', icon: <Pencil size={40} />, number: '06', status: 'available', info: 'Test hoe goed AI patronen herkent. Teken een object en kijk of de AI het kan raden!', sloKerndoelen: ['21B'], sloVsoKerndoelen: ['18C'] },
-        { id: 'game-director', title: 'De Game Director', description: 'Word de architect. Herschrijf de natuurwetten en ontwerp je eigen game-regelset.', icon: <Settings2 size={40} />, number: 'Vrije Keuze', status: 'available', info: 'Ben jij creatief en technisch? In deze Vrije Keuze missie krijg je de volledige controle. Pas zwaartekracht, snelheid en uiterlijk aan om jouw perfecte game te maken. Geschikt voor leerlingen die graag experimenteren!', sloKerndoelen: ['22A', '22B'], sloVsoKerndoelen: ['19A'] },
-        { id: 'verhalen-ontwerper', title: 'Verhalen Ontwerper', description: 'Visualiseer verhalen met AI. Leer prompts schrijven en beelden maken.', icon: <Feather size={40} />, number: '07', status: 'available', info: 'In deze missie leer je hoe je met Artificial Intelligence verhalen tot leven brengt. Je gaat werken met image-generation tools om scenes uit je verhaal te visualiseren.', sloKerndoelen: ['21B', '22A'], sloVsoKerndoelen: ['18C', '19A'] },
-        { id: 'ai-beleid-brainstorm', title: 'AI Beleid Brainstorm', description: 'Denk mee over AI-regels op school.', icon: <Scale size={40} />, number: '08', status: 'available', info: 'Jouw mening telt! Help de school met het vormgeven van AI-beleid door ideeën te delen en te stemmen op de beste voorstellen.', sloKerndoelen: ['23B', '23C'], sloVsoKerndoelen: ['20B'] },
+        { id: 'prompt-master', title: 'Prompt Perfectionist', description: 'Leer het verschil tussen goede en slechte prompts.', icon: <Sparkles size={40} />, number: '01', status: 'available', info: getMissionTooltipInfo('prompt-master'), sloKerndoelen: ['21B', '22A'], sloVsoKerndoelen: ['18C', '19A', '20B'] },
+        { id: 'game-programmeur', title: 'Game Programmeur', description: 'Repareer games met code. Bepaal zelf de regels van het spel.', icon: <Gamepad2 size={40} />, number: '02', status: 'available', info: getMissionTooltipInfo('game-programmeur'), sloKerndoelen: ['22A', '22B'], sloVsoKerndoelen: ['19A'] },
+        { id: 'ai-trainer', title: 'AI Trainer', description: 'Leer een robot het verschil tussen materialen met supervised learning.', icon: <Database size={40} />, number: '04', status: 'available', info: getMissionTooltipInfo('ai-trainer'), sloKerndoelen: ['21D'], sloVsoKerndoelen: ['18C'] },
+        { id: 'chatbot-trainer', title: 'Chatbot Trainer', description: 'Bouw je eigen chatbot en leer hoe AI gesprekken voert.', icon: <BrainCircuit size={40} />, number: '05', status: 'available', info: getMissionTooltipInfo('chatbot-trainer'), sloKerndoelen: ['21D', '22A'], sloVsoKerndoelen: ['18C', '19A'] },
+        { id: 'ai-tekengame', title: 'AI Tekengame', description: 'Teken en laat de AI raden wat het is!', icon: <Pencil size={40} />, number: '06', status: 'available', info: getMissionTooltipInfo('ai-tekengame'), sloKerndoelen: ['21B'], sloVsoKerndoelen: ['18C'] },
+        { id: 'game-director', title: 'De Game Director', description: 'Word de architect. Herschrijf de natuurwetten en ontwerp je eigen game-regelset.', icon: <Settings2 size={40} />, number: 'Vrije Keuze', status: 'available', info: getMissionTooltipInfo('game-director'), sloKerndoelen: ['22A', '22B'], sloVsoKerndoelen: ['19A'] },
+        { id: 'verhalen-ontwerper', title: 'Verhalen Ontwerper', description: 'Visualiseer verhalen met AI. Leer prompts schrijven en beelden maken.', icon: <Feather size={40} />, number: '07', status: 'available', info: getMissionTooltipInfo('verhalen-ontwerper'), sloKerndoelen: ['21B', '22A'], sloVsoKerndoelen: ['18C', '19A'] },
+        { id: 'ai-beleid-brainstorm', title: 'AI Beleid Brainstorm', description: 'Denk mee over AI-regels op school.', icon: <Scale size={40} />, number: '08', status: 'available', info: getMissionTooltipInfo('ai-beleid-brainstorm'), sloKerndoelen: ['23B', '23C'], sloVsoKerndoelen: ['20B'] },
     ],
     3: [
-        { id: 'review-week-2', title: 'De Code-Criticus', description: 'Vind fouten in AI-content uit Week 2.', icon: <Search size={40} />, number: 'Review', status: 'available', info: 'Controleer je kennis van Week 2. Heb je alles onthouden over AI en programmeren?', sloKerndoelen: ['21B', '22B'], sloVsoKerndoelen: ['18C'] },
-        { id: 'data-detective', title: 'Data Detective', description: 'Ontdek wat bedrijven met data doen: risico’s en kansen.', icon: <BarChart2 size={40} />, number: '01', status: 'available', info: 'Onderzoek hoe bedrijven data verzamelen en inzetten. Je leert kansen (persoonlijke aanbevelingen, veiligheid) afwegen tegen gevaren (tracking, dark patterns, data delen met derden) en maakt bewustere internetkeuzes. Duur: ca. 25 minuten. ⭐ Bonus Challenge: probeer alle 6 challenges met een perfecte score af te ronden.', sloKerndoelen: ['21B', '23C'], sloVsoKerndoelen: ['18B', '20A'] },
-        { id: 'deepfake-detector', title: 'Deepfake Detector', description: 'Spot AI-gegenereerde content en nepnieuws.', icon: <Eye size={40} />, number: '02', status: 'available', info: 'Kun jij AI-gegenereerde content herkennen? Leer de tekenen te spotten die verraden of iets door een mens of door AI is gemaakt!', sloKerndoelen: ['21B', '23A', '23C'], sloVsoKerndoelen: ['18B', '18C', '20A'] },
-        { id: 'ai-spiegel', title: 'De AI Spiegel', description: 'Zie hoe jouw online gedrag een advertentieprofiel vormt.', icon: <BrainCircuit size={40} />, number: '03', status: 'available', info: 'Onderzoek hoe likes, kijktijd en zoekgedrag worden gebruikt door platforms. Je ontdekt zowel kansen (relevante content) als gevaren (sturing en filterbubbels) en maakt je eigen privacyregels. ⭐ Bonus Challenge: schrijf 3 privacyregels op die je vanaf vandaag toepast en deel ze met een klasgenoot.', sloKerndoelen: ['23B', '23C'], sloVsoKerndoelen: ['20A', '20B'] },
-        { id: 'social-safeguard', title: 'Social Safeguard', description: 'Train veilig handelen bij online druk, pesten en datamisbruik.', icon: <ShieldCheck size={40} />, number: '04', status: 'available', info: 'Oefen met realistische scenario\'s zoals nepaccounts, shaming en ongewenst delen. Je leert hoe je bewijs bewaart, slim meldt en jezelf en anderen online beschermt.', sloKerndoelen: ['23A', '23B'], sloVsoKerndoelen: ['20A', '20B'] },
-        { id: 'cookie-crusher', title: 'Cookie Crusher', description: 'Herken dark patterns in cookie-popups en bescherm je privacy.', icon: <ShieldCheck size={40} />, number: '05', status: 'available', info: 'Websites gebruiken trucs om je op "Accepteer alles" te laten klikken. Leer deze dark patterns herkennen en bescherm je privacy! Speed-game met scores en badges.', sloKerndoelen: ['23C', '21B'], sloVsoKerndoelen: ['18B', '20A'] },
-        { id: 'data-handelaar', title: 'De Data Handelaar', description: 'Ga undercover en ontmasker illegale datahandel.', icon: <Search size={40} />, number: '06', status: 'available', info: 'Je bent undercover bij DataDeal BV! Onderzoek 3 verdachte bewijsstukken, vind de AVG-overtredingen en stel een rapport op. Escape room-stijl missie!', sloKerndoelen: ['23C', '23B'], sloVsoKerndoelen: ['20A', '20B'] },
-        { id: 'privacy-profiel-spiegel', title: 'Privacy Profiel Spiegel', description: 'Check je eigen app-instellingen en ontdek wat je deelt.', icon: <Eye size={40} />, number: '07', status: 'available', info: 'Controleer de echte privacy-instellingen van apps op je iPad: locatie, camera en microfoon. Krijg een persoonlijke Privacy Score en maak een actieplan.', sloKerndoelen: ['23A', '23B'], sloVsoKerndoelen: ['20A', '20B'] },
-        { id: 'filter-bubble-breaker', title: 'Filter Bubble Breaker', description: 'Vergelijk twee social media feeds en ontdek filterbubbels.', icon: <BrainCircuit size={40} />, number: '08', status: 'available', info: 'Twee mensen openen dezelfde app maar zien totaal andere content. Vergelijk de feeds, beantwoord quizvragen en leer hoe algoritmes jouw wereld vormen.', sloKerndoelen: ['23B', '23C', '21B'], sloVsoKerndoelen: ['20A', '20B'] },
-        { id: 'datalekken-rampenplan', title: 'Datalekken Rampenplan', description: 'Los een school datalek-crisis op!', icon: <AlertTriangle size={40} />, number: '09', status: 'available', info: 'De school is gehackt! 800 leerlinggegevens liggen op straat. Manage de crisis: dicht het lek, informeer de AP, communiceer met ouders en maak een noodplan.', sloKerndoelen: ['23A', '23B', '23C'], sloVsoKerndoelen: ['20A', '20B'] },
-        { id: 'data-voor-data', title: 'Data voor Data', description: 'Hoeveel persoonlijke data zou jij inruilen?', icon: <Scale size={40} />, number: '10', status: 'available', info: 'Ethische veiling: kies DEAL of NO DEAL bij steeds grotere data-verzoeken. Vergelijk je keuzes met het gemiddelde en ontdek je persoonlijke privacy-principes.', sloKerndoelen: ['23C', '23B'], sloVsoKerndoelen: ['20A', '20B'] },
-        { id: 'social-media-psychologist', title: 'Social Media Psycholoog', description: 'Begrijp de psychologie achter scrollen, likes en filterbubbels.', icon: <BrainCircuit size={40} />, number: 'Bonus', status: 'available', info: 'Bonusmissie voor snelle afmakers! Ontdek waarom je blijft scrollen, hoe algoritmes je aandacht vangen en wat dopamine met je online gedrag doet. Ontwerp je eigen "For You"-pagina en doorbreek je filterbubbel.', isBonus: true, sloKerndoelen: ['21B', '23B', '23C'], sloVsoKerndoelen: ['20B'] },
+        { id: 'review-week-2', title: 'De Code-Criticus', description: 'Vind fouten in AI-content uit Week 2.', icon: <Search size={40} />, number: 'Review', status: 'available', info: getMissionTooltipInfo('review-week-2'), sloKerndoelen: ['21B', '22B'], sloVsoKerndoelen: ['18C'] },
+        { id: 'data-detective', title: 'Data Detective', description: 'Ontdek wat bedrijven met data doen: risico’s en kansen.', icon: <BarChart2 size={40} />, number: '01', status: 'available', info: getMissionTooltipInfo('data-detective'), sloKerndoelen: ['21B', '23C'], sloVsoKerndoelen: ['18B', '20A'] },
+        { id: 'deepfake-detector', title: 'Deepfake Detector', description: 'Spot AI-gegenereerde content en nepnieuws.', icon: <Eye size={40} />, number: '02', status: 'available', info: getMissionTooltipInfo('deepfake-detector'), sloKerndoelen: ['21B', '23A', '23C'], sloVsoKerndoelen: ['18B', '18C', '20A'] },
+        { id: 'ai-spiegel', title: 'De AI Spiegel', description: 'Zie hoe jouw online gedrag een advertentieprofiel vormt.', icon: <BrainCircuit size={40} />, number: '03', status: 'available', info: getMissionTooltipInfo('ai-spiegel'), sloKerndoelen: ['23B', '23C'], sloVsoKerndoelen: ['20A', '20B'] },
+        { id: 'social-safeguard', title: 'Social Safeguard', description: 'Train veilig handelen bij online druk, pesten en datamisbruik.', icon: <ShieldCheck size={40} />, number: '04', status: 'available', info: getMissionTooltipInfo('social-safeguard'), sloKerndoelen: ['23A', '23B'], sloVsoKerndoelen: ['20A', '20B'] },
+        { id: 'cookie-crusher', title: 'Cookie Crusher', description: 'Herken dark patterns in cookie-popups en bescherm je privacy.', icon: <ShieldCheck size={40} />, number: '05', status: 'available', info: getMissionTooltipInfo('cookie-crusher'), sloKerndoelen: ['23C', '21B'], sloVsoKerndoelen: ['18B', '20A'] },
+        { id: 'data-handelaar', title: 'De Data Handelaar', description: 'Ga undercover en ontmasker illegale datahandel.', icon: <Search size={40} />, number: '06', status: 'available', info: getMissionTooltipInfo('data-handelaar'), sloKerndoelen: ['23C', '23B'], sloVsoKerndoelen: ['20A', '20B'] },
+        { id: 'privacy-profiel-spiegel', title: 'Privacy Profiel Spiegel', description: 'Check je eigen app-instellingen en ontdek wat je deelt.', icon: <Eye size={40} />, number: '07', status: 'available', info: getMissionTooltipInfo('privacy-profiel-spiegel'), sloKerndoelen: ['23A', '23B'], sloVsoKerndoelen: ['20A', '20B'] },
+        { id: 'filter-bubble-breaker', title: 'Filter Bubble Breaker', description: 'Vergelijk twee social media feeds en ontdek filterbubbels.', icon: <BrainCircuit size={40} />, number: '08', status: 'available', info: getMissionTooltipInfo('filter-bubble-breaker'), sloKerndoelen: ['23B', '23C', '21B'], sloVsoKerndoelen: ['20A', '20B'] },
+        { id: 'datalekken-rampenplan', title: 'Datalekken Rampenplan', description: 'Los een school datalek-crisis op!', icon: <AlertTriangle size={40} />, number: '09', status: 'available', info: getMissionTooltipInfo('datalekken-rampenplan'), sloKerndoelen: ['23A', '23B', '23C'], sloVsoKerndoelen: ['20A', '20B'] },
+        { id: 'data-voor-data', title: 'Data voor Data', description: 'Hoeveel persoonlijke data zou jij inruilen?', icon: <Scale size={40} />, number: '10', status: 'available', info: getMissionTooltipInfo('data-voor-data'), sloKerndoelen: ['23C', '23B'], sloVsoKerndoelen: ['20A', '20B'] },
+        { id: 'social-media-psychologist', title: 'Social Media Psycholoog', description: 'Begrijp de psychologie achter scrollen, likes en filterbubbels.', icon: <BrainCircuit size={40} />, number: 'Bonus', status: 'available', info: getMissionTooltipInfo('social-media-psychologist'), isBonus: true, sloKerndoelen: ['21B', '23B', '23C'], sloVsoKerndoelen: ['20B'] },
     ],
     4: [
-        { id: 'review-week-3', title: 'De Ethische Raad', description: 'Adviseer over ethische dilemma\'s.', icon: <Scale size={40} />, number: 'Review', status: 'available', info: 'Tijd voor de balans. Wat heb je geleerd over veiligheid en ethiek? Test je kennis.', sloKerndoelen: ['22B', '23C'] },
-        { id: 'mission-blueprint', title: 'De Blauwdruk', description: 'Organiseer je meesterwerk. Gebruik Magister, OneDrive en Word om je plan te smeden.', icon: <Map size={40} />, number: '02', status: 'available', info: 'Elk groot project begint met een plan. Gebruik je digitale skills om je eindwerk te organiseren.', sloKerndoelen: ['21A', '22A'] },
-        { id: 'mission-vision', title: 'De Visie', description: 'Visualiseer je droom. Combineer AI-beelden met een strakke PowerPoint pitch.', icon: <Lightbulb size={40} />, number: '03', status: 'available', info: 'Verbeeld je idee. Gebruik AI en design tools om je concept tot leven te wekken in een pitch.', sloKerndoelen: ['21B', '22A'] },
-        { id: 'mission-launch', title: 'De Lancering', description: 'Breng het naar buiten. Print je designs en communiceer als een pro.', icon: <Rocket size={40} />, number: '04', status: 'available', info: 'Showtime! Presenteer je werk aan de klas en laat zien wat je hebt geleerd als Digitale Expert.', sloKerndoelen: ['21A', '21C'] },
+        { id: 'review-week-3', title: 'De Ethische Raad', description: 'Adviseer over ethische dilemma\'s.', icon: <Scale size={40} />, number: 'Review', status: 'available', info: getMissionTooltipInfo('review-week-3'), sloKerndoelen: ['22B', '23C'] },
+        { id: 'mission-blueprint', title: 'De Blauwdruk', description: 'Organiseer je meesterwerk. Gebruik Magister, OneDrive en Word om je plan te smeden.', icon: <Map size={40} />, number: '02', status: 'available', info: getMissionTooltipInfo('mission-blueprint'), sloKerndoelen: ['21A', '22A'] },
+        { id: 'mission-vision', title: 'De Visie', description: 'Visualiseer je droom. Combineer AI-beelden met een strakke PowerPoint pitch.', icon: <Lightbulb size={40} />, number: '03', status: 'available', info: getMissionTooltipInfo('mission-vision'), sloKerndoelen: ['21B', '22A'] },
+        { id: 'mission-launch', title: 'De Lancering', description: 'Breng het naar buiten. Print je designs en communiceer als een pro.', icon: <Rocket size={40} />, number: '04', status: 'available', info: getMissionTooltipInfo('mission-launch'), sloKerndoelen: ['21A', '21C'] },
     ]
 };
 
