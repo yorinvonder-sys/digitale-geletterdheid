@@ -513,7 +513,7 @@ export const ScenarioEngine: React.FC<TemplateMissionProps> = ({ missionId, onBa
     const [loadError, setLoadError] = useState(false);
 
     useEffect(() => {
-        import(`./configs/${missionId}`)
+        import(`./configs/${missionId}.ts`)
             .then((mod) => setConfig(mod.default as ScenarioEngineConfig))
             .catch(() => setLoadError(true));
     }, [missionId]);
