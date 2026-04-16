@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { BookData } from '../types';
-import { ChevronLeft, ChevronRight, BookOpen, Image as ImageIcon, Sparkles, Star, Compass, Map, Printer, Loader2, X, Edit3, Wand2, Download, CheckCircle, AlertCircle, Share2, Check } from 'lucide-react';
+import { ChevronLeft, ChevronRight, BookOpen, Image as ImageIcon, Sparkles, Star, Compass, Map, Printer, Loader2, X, Edit3, Wand2, Download, CheckCircle, AlertCircle, Share2, Check, PenTool, Palette, Target, CheckCircle2, Lightbulb, Send, RotateCcw } from 'lucide-react';
 import { MissionConclusion } from './MissionConclusion';
 import { publishGame } from '../services/gameGalleryService';
 import { saveToLibrary } from '../services/libraryService';
@@ -19,6 +19,17 @@ interface BookPreviewProps {
         schoolId?: string;
         studentClass?: string;
     };
+    // Unified interface props (when chat is merged into book)
+    isLoading?: boolean;
+    thinkingStep?: string;
+    suggestions?: string[];
+    onSuggestionSend?: (text: string) => void;
+    onReset?: () => void;
+    goalAchieved?: boolean;
+    missionGoal?: string;
+    completedSteps?: number[];
+    totalSteps?: number;
+    error?: string;
 }
 
 // Internal component for the Setup Form
@@ -483,7 +494,10 @@ const PageContent = ({
     );
 };
 
-export const BookPreview: React.FC<BookPreviewProps> = ({ data, onStart, onSendPrompt, hasStarted: externalHasStarted = false, readOnly = false, user }) => {
+export const BookPreview: React.FC<BookPreviewProps> = ({
+    data, onStart, onSendPrompt, hasStarted: externalHasStarted = false, readOnly = false, user,
+    isLoading, thinkingStep, suggestions, onSuggestionSend, onReset, goalAchieved, missionGoal, completedSteps, totalSteps, error
+}) => {
     const [internalHasStarted, setInternalHasStarted] = useState(false);
     const [showForm, setShowForm] = useState(false);
     const hasStarted = externalHasStarted || internalHasStarted;
@@ -493,6 +507,28 @@ export const BookPreview: React.FC<BookPreviewProps> = ({ data, onStart, onSendP
     const [flipDirection, setFlipDirection] = useState<'next' | 'prev' | null>(null);
     const [displayPage, setDisplayPage] = useState(0);
     const totalPages = data.pages.length;
+
+    // Unified interface state
+    const [instructionInput, setInstructionInput] = useState('');
+
+    // Auto-navigate to new pages when AI adds content
+    const prevPagesLengthRef = useRef(data.pages.length);
+    useEffect(() => {
+        if (data.pages.length > prevPagesLengthRef.current) {
+            setCurrentPage(data.pages.length);
+            prevPagesLengthRef.current = data.pages.length;
+        }
+    }, [data.pages.length]);
+
+    // Show error as toast
+    useEffect(() => {
+        if (error) {
+            setToastMessage(error);
+            setShowToast(true);
+            const timer = setTimeout(() => setShowToast(false), 5000);
+            return () => clearTimeout(timer);
+        }
+    }, [error]);
 
     // New state for start button delay
     const [startTimer, setStartTimer] = useState(0);
@@ -1096,6 +1132,69 @@ Maak nu de titel met [TITLE] tags en de tekst van de eerste pagina met [PAGE] ta
         <>
             {createPortal(<PrintView />, document.body)}
             <div className="w-full h-full flex flex-col bg-stone-100 relative overflow-hidden">
+                {/* Mission Header Bar — only in unified mode */}
+                {missionGoal && (
+                    <div className={`shrink-0 px-4 py-2 flex items-center gap-2 border-b transition-all ${goalAchieved ? 'bg-emerald-50 border-emerald-200' : 'bg-stone-50 border-stone-200'}`}>
+                        <div className={`p-1.5 rounded-lg ${goalAchieved ? 'bg-emerald-500 text-white' : 'bg-amber-100 text-[#D97757]'}`}>
+                            {goalAchieved ? <CheckCircle2 size={14} /> : <Target size={14} />}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                            <p className={`text-[10px] font-bold uppercase tracking-wider ${goalAchieved ? 'text-emerald-600' : 'text-stone-400'}`}>
+                                {goalAchieved ? 'Doel Behaald!' : 'Missie'}
+                            </p>
+                            <p className={`text-xs font-bold truncate ${goalAchieved ? 'text-emerald-700' : 'text-stone-700'}`}>
+                                {missionGoal}
+                            </p>
+                        </div>
+                        {completedSteps && totalSteps && totalSteps > 0 && (
+                            <div className="flex gap-1 items-center">
+                                {[...Array(totalSteps)].map((_, idx) => (
+                                    <div key={idx} className={`w-2 h-2 rounded-full transition-all ${completedSteps.includes(idx) ? 'bg-emerald-500' : 'bg-stone-300'}`} />
+                                ))}
+                                <span className="text-[9px] font-bold text-stone-400 ml-1">{completedSteps.length}/{totalSteps}</span>
+                            </div>
+                        )}
+                        {onReset && (
+                            <button onClick={onReset} className="p-2 text-stone-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors" aria-label="Verhaal resetten">
+                                <RotateCcw size={14} />
+                            </button>
+                        )}
+                    </div>
+                )}
+
+                {/* AI Loading Overlay — shown during generation in unified mode */}
+                {isLoading && onSuggestionSend && (
+                    <div className="absolute inset-0 z-40 bg-stone-100/75 backdrop-blur-sm flex items-center justify-center animate-in fade-in duration-300 pointer-events-none">
+                        <div className="bg-white/95 rounded-2xl shadow-xl px-6 py-5 flex items-center gap-4 border border-stone-200">
+                            {thinkingStep?.includes("schrijven") || thinkingStep?.includes("bedenken") ? (
+                                <PenTool className="text-[#D97757]" size={24} />
+                            ) : thinkingStep?.includes("Illustratie") || thinkingStep?.includes("tekenen") ? (
+                                <Palette className="animate-pulse text-purple-500" size={24} />
+                            ) : thinkingStep?.includes("Magie") ? (
+                                <Sparkles className="animate-spin text-amber-500" size={24} />
+                            ) : (
+                                <Loader2 className="animate-spin text-[#D97757]" size={24} />
+                            )}
+                            <div>
+                                <span className="text-sm font-bold text-stone-700 animate-pulse block">
+                                    {thinkingStep || "AI denkt na..."}
+                                </span>
+                                <div className="flex gap-1 mt-1.5">
+                                    <div className="h-1 w-4 rounded-full bg-[#D97757]" />
+                                    <div className={`h-1 w-4 rounded-full transition-colors duration-500 ${
+                                        thinkingStep?.includes("schrijven") || thinkingStep?.includes("Redeneren") || thinkingStep?.includes("Genereren")
+                                            ? 'bg-[#D97757]' : 'bg-stone-200'
+                                    }`} />
+                                    <div className={`h-1 w-4 rounded-full transition-colors duration-500 ${
+                                        thinkingStep?.includes("Magie") || thinkingStep?.includes("Illustratie") || thinkingStep?.includes("Genereren")
+                                            ? 'bg-amber-400' : 'bg-stone-200'
+                                    }`} />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
                 {/* Book Container - Centered and Scaled to Fit - Added padding to prevent edge touching */}
                 <div className="flex-1 flex items-center justify-center p-8 z-10 perspective-2000 overflow-hidden">
                     {/* ... Book Structure Wrappers ... */}
@@ -1259,86 +1358,128 @@ Maak nu de titel met [TITLE] tags en de tekst van de eerste pagina met [PAGE] ta
                     </div>
                 </div>
 
-                {/* Controls - Compact & Less Intrusive */}
-                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-3 z-50 bg-white/95 backdrop-blur-md px-4 py-2 rounded-full shadow-lg border border-slate-200/50 scale-90 origin-bottom hover:scale-100 transition-transform duration-300">
-                    <button
-                        onClick={() => handlePageTurn('prev')}
-                        disabled={currentPage === 0 || isFlipping}
-                        className={`p-2 rounded-full transition-all ${currentPage === 0
-                            ? 'text-slate-300 cursor-not-allowed'
-                            : 'bg-slate-50 text-slate-600 hover:bg-[#D97757]/10 hover:text-[#D97757] hover:scale-110 active:scale-95'
-                            }`}
-                    >
-                        <ChevronLeft size={18} />
-                    </button>
-
-                    <div className="flex flex-col items-center min-w-[80px]">
-                        <span className="font-bold text-slate-600 font-mono text-[10px] tracking-wide">
-                            {currentPage === 0 ? 'KAFT' : `PAG ${currentPage} / ${totalPages}`}
-                        </span>
-                        <div className="flex gap-1 mt-0.5">
-                            {[...Array(totalPages + 1)].map((_, i) => (
-                                <div
-                                    key={i}
-                                    className={`w-1 h-1 rounded-full transition-all ${i === currentPage ? 'bg-[#D97757] scale-125' : 'bg-slate-300'}`}
-                                />
-                            ))}
+                {/* Controls - Compact & Less Intrusive — absolute in standalone, flow in unified */}
+                {!onSuggestionSend && (
+                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-3 z-50 bg-white/95 backdrop-blur-md px-4 py-2 rounded-full shadow-lg border border-slate-200/50 scale-90 origin-bottom hover:scale-100 transition-transform duration-300">
+                        <button onClick={() => handlePageTurn('prev')} disabled={currentPage === 0 || isFlipping} className={`p-2 rounded-full transition-all ${currentPage === 0 ? 'text-slate-300 cursor-not-allowed' : 'bg-slate-50 text-slate-600 hover:bg-[#D97757]/10 hover:text-[#D97757] hover:scale-110 active:scale-95'}`}>
+                            <ChevronLeft size={18} />
+                        </button>
+                        <div className="flex flex-col items-center min-w-[80px]">
+                            <span className="font-bold text-slate-600 font-mono text-[10px] tracking-wide">{currentPage === 0 ? 'KAFT' : `PAG ${currentPage} / ${totalPages}`}</span>
+                            <div className="flex gap-1 mt-0.5">
+                                {[...Array(totalPages + 1)].map((_, i) => (
+                                    <div key={i} className={`w-1 h-1 rounded-full transition-all ${i === currentPage ? 'bg-[#D97757] scale-125' : 'bg-slate-300'}`} />
+                                ))}
+                            </div>
                         </div>
+                        <button onClick={() => handlePageTurn('next')} disabled={currentPage >= totalPages || isFlipping} className={`p-2 rounded-full transition-all ${currentPage >= totalPages ? 'text-slate-300 cursor-not-allowed' : 'bg-slate-50 text-slate-600 hover:bg-[#D97757]/10 hover:text-[#D97757] hover:scale-110 active:scale-95'}`}>
+                            <ChevronRight size={18} />
+                        </button>
+                        <div className="w-[1px] h-4 bg-slate-200 mx-1"></div>
+                        <button onClick={() => window.print()} className="p-2 rounded-full text-slate-400 hover:bg-blue-50 hover:text-blue-500 transition-all hover:scale-105 active:scale-95" title="Print Boekje">
+                            <Printer size={16} />
+                        </button>
+                        <button onClick={handleDownloadBooklet} className="p-2 rounded-full text-slate-400 hover:bg-green-50 hover:text-green-500 transition-all hover:scale-105 active:scale-95" title="Download PDF">
+                            <Download size={16} />
+                        </button>
+                        {user && (
+                            <button onClick={handleSaveToLibrary} disabled={isSavingToLibrary} className={`p-2 rounded-full transition-all hover:scale-105 active:scale-95 ${librarySaveSuccess ? 'text-green-500 bg-green-50' : 'text-slate-400 hover:bg-purple-50 hover:text-purple-500'}`} title={librarySaveSuccess ? 'Opgeslagen!' : 'Opslaan in Bibliotheek'}>
+                                {isSavingToLibrary ? <Loader2 size={16} className="animate-spin" /> : librarySaveSuccess ? <Check size={16} /> : <BookOpen size={16} />}
+                            </button>
+                        )}
+                    </div>
+                )}
+            </div>
+
+            {/* Unified Instruction Footer — controls + suggestions + input */}
+            {onSuggestionSend && hasStarted && (
+                <div className="shrink-0 border-t border-stone-200 bg-white/95 backdrop-blur-sm px-3 py-2 space-y-2 print:hidden">
+                    {/* Page controls row */}
+                    <div className="flex items-center justify-center gap-2">
+                        <button onClick={() => handlePageTurn('prev')} disabled={currentPage === 0 || isFlipping} className={`p-1.5 rounded-full transition-all ${currentPage === 0 ? 'text-stone-300 cursor-not-allowed' : 'text-stone-500 hover:bg-[#D97757]/10 hover:text-[#D97757] active:scale-95'}`}>
+                            <ChevronLeft size={16} />
+                        </button>
+                        <div className="flex flex-col items-center min-w-[70px]">
+                            <span className="font-bold text-stone-500 font-mono text-[10px] tracking-wide">{currentPage === 0 ? 'KAFT' : `PAG ${currentPage} / ${totalPages}`}</span>
+                            <div className="flex gap-0.5 mt-0.5">
+                                {[...Array(totalPages + 1)].map((_, i) => (
+                                    <div key={i} className={`w-1 h-1 rounded-full transition-all ${i === currentPage ? 'bg-[#D97757] scale-125' : 'bg-stone-300'}`} />
+                                ))}
+                            </div>
+                        </div>
+                        <button onClick={() => handlePageTurn('next')} disabled={currentPage >= totalPages || isFlipping} className={`p-1.5 rounded-full transition-all ${currentPage >= totalPages ? 'text-stone-300 cursor-not-allowed' : 'text-stone-500 hover:bg-[#D97757]/10 hover:text-[#D97757] active:scale-95'}`}>
+                            <ChevronRight size={16} />
+                        </button>
+                        <div className="w-[1px] h-3 bg-stone-200 mx-1"></div>
+                        <button onClick={() => window.print()} className="p-1.5 rounded-full text-stone-400 hover:bg-blue-50 hover:text-blue-500 transition-all" title="Print Boekje">
+                            <Printer size={14} />
+                        </button>
+                        <button onClick={handleDownloadBooklet} className="p-1.5 rounded-full text-stone-400 hover:bg-green-50 hover:text-green-500 transition-all" title="Download PDF">
+                            <Download size={14} />
+                        </button>
+                        {user && (
+                            <button onClick={handleSaveToLibrary} disabled={isSavingToLibrary} className={`p-1.5 rounded-full transition-all ${librarySaveSuccess ? 'text-green-500 bg-green-50' : 'text-stone-400 hover:bg-purple-50 hover:text-purple-500'}`} title={librarySaveSuccess ? 'Opgeslagen!' : 'Opslaan in Bibliotheek'}>
+                                {isSavingToLibrary ? <Loader2 size={14} className="animate-spin" /> : librarySaveSuccess ? <Check size={14} /> : <BookOpen size={14} />}
+                            </button>
+                        )}
                     </div>
 
-                    <button
-                        onClick={() => handlePageTurn('next')}
-                        disabled={currentPage >= totalPages || isFlipping}
-                        className={`p-2 rounded-full transition-all ${currentPage >= totalPages
-                            ? 'text-slate-300 cursor-not-allowed'
-                            : 'bg-slate-50 text-slate-600 hover:bg-[#D97757]/10 hover:text-[#D97757] hover:scale-110 active:scale-95'
-                            }`}
-                    >
-                        <ChevronRight size={18} />
-                    </button>
-
-                    <div className="w-[1px] h-4 bg-slate-200 mx-1"></div>
-
-                    <button
-                        onClick={() => window.print()}
-                        className="p-2 rounded-full text-slate-400 hover:bg-blue-50 hover:text-blue-500 transition-all hover:scale-105 active:scale-95"
-                        title="Print Boekje"
-                    >
-                        <Printer size={16} />
-                    </button>
-
-                    <button
-                        onClick={handleDownloadBooklet}
-                        className="p-2 rounded-full text-slate-400 hover:bg-green-50 hover:text-green-500 transition-all hover:scale-105 active:scale-95"
-                        title="Download PDF"
-                    >
-                        <Download size={16} />
-                    </button>
-
-                    {/* Save to Library Button */}
-                    {user && (
-                        <button
-                            onClick={handleSaveToLibrary}
-                            disabled={isSavingToLibrary}
-                            className={`p-2 rounded-full transition-all hover:scale-105 active:scale-95 ${librarySaveSuccess
-                                ? 'text-green-500 bg-green-50'
-                                : 'text-slate-400 hover:bg-purple-50 hover:text-purple-500'
-                                }`}
-                            title={librarySaveSuccess ? 'Opgeslagen!' : 'Opslaan in Bibliotheek'}
-                        >
-                            {isSavingToLibrary ? (
-                                <Loader2 size={16} className="animate-spin" />
-                            ) : librarySaveSuccess ? (
-                                <Check size={16} />
-                            ) : (
-                                <BookOpen size={16} />
-                            )}
-                        </button>
+                    {/* Suggestion chips */}
+                    {suggestions && suggestions.length > 0 && !isLoading && (
+                        <div className="flex flex-wrap gap-1.5 items-center">
+                            <span className="text-[10px] font-bold text-[#D97757] bg-amber-50 px-2 py-1 rounded-lg flex items-center gap-1">
+                                <Lightbulb size={10} fill="currentColor" /> Tips:
+                            </span>
+                            {suggestions.slice(0, 3).map((s, i) => (
+                                <button key={i} onClick={() => onSuggestionSend(s)}
+                                    className="text-[11px] font-medium px-3 py-1.5 bg-white border border-stone-200 hover:border-[#D97757] text-stone-600 hover:text-stone-800 rounded-xl shadow-sm transition-all active:scale-95">
+                                    {s}
+                                </button>
+                            ))}
+                        </div>
                     )}
 
-                    {/* Publish Button - DISABLED: Students should not share books */}
+                    {/* Instruction input row */}
+                    <div className="flex items-center gap-2">
+                        <input
+                            type="text"
+                            value={instructionInput}
+                            onChange={(e) => setInstructionInput(e.target.value)}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter' && instructionInput.trim()) {
+                                    onSuggestionSend(instructionInput.trim());
+                                    setInstructionInput('');
+                                }
+                            }}
+                            placeholder={totalPages >= 1 ? "Vertel wat er daarna gebeurt..." : "Beschrijf je verhaalidee..."}
+                            disabled={isLoading}
+                            className="flex-1 h-11 text-sm bg-stone-50 border border-stone-200 rounded-xl px-3 outline-none focus:ring-2 focus:ring-[#D97757]/20 focus:border-[#D97757]/40 transition-all disabled:opacity-50"
+                        />
+                        {totalPages >= 3 && (
+                            <button
+                                onClick={() => onSuggestionSend("Schrijf nu een mooi slot voor het verhaal. Rond het af met een fijne afsluiting.")}
+                                disabled={isLoading}
+                                className="h-11 px-3 bg-emerald-50 text-emerald-600 border border-emerald-200 rounded-xl text-xs font-bold hover:bg-emerald-100 transition-all disabled:opacity-50 shrink-0 whitespace-nowrap"
+                            >
+                                Afronden
+                            </button>
+                        )}
+                        <button
+                            onClick={() => {
+                                if (instructionInput.trim()) {
+                                    onSuggestionSend(instructionInput.trim());
+                                    setInstructionInput('');
+                                }
+                            }}
+                            disabled={!instructionInput.trim() || isLoading}
+                            className="h-11 w-11 bg-stone-900 text-white rounded-xl flex items-center justify-center disabled:opacity-30 transition-all active:scale-90 shrink-0"
+                            aria-label="Verstuur"
+                        >
+                            <Send size={16} />
+                        </button>
+                    </div>
                 </div>
-            </div>
+            )}
 
             {/* Publish Modal */}
             {showPublishModal && (

@@ -1077,9 +1077,10 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
             </div>
           ) : (
             // Standard Split View for other missions
-            <div className={`flex-1 flex flex-col ${showRightPanel ? 'md:flex-row ipad-stack' : ''} gap-3 h-full min-h-0 pb-1 animate-in fade-in slide-in-from-right-4 duration-500`}>
+            <div className={`flex-1 flex flex-col ${showRightPanel && selectedRole?.id !== 'verhalen-ontwerper' ? 'md:flex-row ipad-stack' : ''} gap-3 h-full min-h-0 pb-1 animate-in fade-in slide-in-from-right-4 duration-500`}>
 
-              {/* Chat Column */}
+              {/* Chat Column — hidden for verhalen-ontwerper (merged into BookPreview) */}
+              {selectedRole?.id !== 'verhalen-ontwerper' && (
               <section className={`chat-column flex flex-col bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden min-h-0 h-full max-h-full ${showRightPanel ? 'w-full md:w-[40%]' : 'w-full flex-1'} print:hidden`}>
                 {/* Goal Banner - Show primaryGoal prominently */}
                 <div className={`px-4 py-3 backdrop-blur border-b flex items-center gap-3 shrink-0 transition-all ${goalAchieved ? 'bg-emerald-50/90 border-emerald-200' : 'bg-slate-50/80 border-slate-100'}`}>
@@ -1245,10 +1246,11 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
                   </div>
                 </div>
               </section>
+              )}
 
               {/* Preview Column */}
               {showRightPanel && (
-                <section className="preview-column flex-1 h-full min-h-0 min-w-0 flex flex-col animate-in slide-in-from-right-8 duration-500">
+                <section className={`preview-column ${selectedRole?.id === 'verhalen-ontwerper' ? 'w-full' : 'flex-1'} h-full min-h-0 min-w-0 flex flex-col animate-in slide-in-from-right-8 duration-500`}>
                   <div className={`flex-1 rounded-2xl overflow-hidden relative h-full w-full ${selectedRole?.id === 'verhalen-ontwerper' ? 'ambient-glow border-4 border-amber-100/50 shadow-inner' : 'bg-slate-900 border-4 border-slate-800 shadow-2xl'}`}>
                     {selectedRole?.id === 'word-wizard' && (
                       <WordWizardPreview
@@ -1317,6 +1319,16 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
                         } : undefined}
                         onStart={(prompt) => handleSend(prompt || "Start mijn prentenboek! Schrijf de eerste pagina van een spannend verhaal.")}
                         onSendPrompt={(prompt) => handleSend(prompt)}
+                        isLoading={isLoading}
+                        thinkingStep={thinkingStep}
+                        suggestions={suggestions}
+                        onSuggestionSend={(text) => handleSendWithTipCheck(text)}
+                        onReset={() => setShowResetConfirm(true)}
+                        goalAchieved={goalAchieved}
+                        missionGoal={selectedRole.primaryGoal || selectedRole.missionObjective}
+                        completedSteps={completedSteps}
+                        totalSteps={selectedRole.steps?.length}
+                        error={error}
                       />
 
                     ) : selectedRole?.id === 'ai-trainer' ? (
