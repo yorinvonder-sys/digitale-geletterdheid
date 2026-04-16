@@ -1,7 +1,7 @@
 import type { ReviewArenaConfig } from '../ReviewArena';
 
 export const dataReviewConfig: ReviewArenaConfig = {
-    missionId: 'data-privacy-review',
+    missionId: 'data-review',
     title: 'Data & Privacy Review',
     introEmoji: '🔐',
     introTitle: 'Wat weet jij over data en privacy?',
