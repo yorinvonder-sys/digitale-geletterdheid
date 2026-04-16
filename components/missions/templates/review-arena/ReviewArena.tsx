@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { TemplateMissionProps, BadgeConfig } from '../shared/types';
 import { PhaseHeader } from '../shared/PhaseHeader';
@@ -249,15 +249,36 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
     );
 };
 
-// === Default export: stub-compatible wrapper that loads a config ===
-// When used without a config prop, it falls back to the data-review config.
-// Consumers can also import ReviewArenaWithConfig directly and pass their own config.
+// ── Public entry point — loads config dynamically ────────────────────────────
 
 export { ReviewArenaWithConfig };
 
-// Lazy-load the default config to keep bundle splits intact
-import { dataReviewConfig } from './configs/data-review';
-
-export const ReviewArena: React.FC<TemplateMissionProps> = (props) => (
-    <ReviewArenaWithConfig {...props} config={dataReviewConfig} />
+const LoadingScreen = () => (
+    <div className="min-h-screen bg-[#FAF9F0] flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-2 border-[#D97757] border-t-transparent" />
+    </div>
 );
+
+export const ReviewArena: React.FC<TemplateMissionProps> = ({ missionId, onBack, onComplete }) => {
+    const [config, setConfig] = useState<ReviewArenaConfig | null>(null);
+    const [loadError, setLoadError] = useState(false);
+
+    useEffect(() => {
+        import(`./configs/${missionId}.ts`)
+            .then((mod) => {
+                const cfg = mod.default ?? Object.values(mod).find((v): v is ReviewArenaConfig => v !== null && typeof v === 'object' && 'missionId' in (v as object));
+                if (cfg) setConfig(cfg as ReviewArenaConfig);
+                else setLoadError(true);
+            })
+            .catch(() => setLoadError(true));
+    }, [missionId]);
+
+    if (loadError) return (
+        <div className="min-h-screen bg-[#FAF9F0] flex items-center justify-center p-4">
+            <p className="text-[#6B6B66]">Config niet gevonden: {missionId}</p>
+        </div>
+    );
+    if (!config) return <LoadingScreen />;
+
+    return <ReviewArenaWithConfig config={config} missionId={missionId} onBack={onBack} onComplete={onComplete} />;
+};

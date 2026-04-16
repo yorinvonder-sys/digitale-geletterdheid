@@ -190,3 +190,5 @@ export const dataReviewConfig: ReviewArenaConfig = {
         },
     ],
 };
+
+export default dataReviewConfig;
