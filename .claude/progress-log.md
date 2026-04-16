@@ -17,7 +17,7 @@
 
 - **Sessies totaal:** 2
 - **Streak:** 2 sessie(s) achter elkaar met output
-- **Taken afgerond:** 2 van 6 (Fase A + B)
+- **Taken afgerond:** 2,67 van 6 (Fase A + B compleet, C voor 2/3 done)
 - **Laatste sessie:** 15 april 2026
 
 ---
@@ -25,12 +25,19 @@
 ## Log
 
 ### Sessie 2 — 15 april 2026
-- **Werkstroom:** Compliance
-- **Taak:** Fase B — Compliance Hub finaliseren (B1+B2+B3)
-- **Resultaat:** ComplianceHub data-driven met 23 docs (was 7) in 4 categorieën; checklist uitgebreid van 12 naar 30 items in 6 categorieën met verantwoordelijkheidslabels en wettelijke referenties; SLO-rapport gerefactord met echte SLO-data uit `config/sloKerndoelen.ts` en de "Inspectie-proof"-claim verwijderd (overstated).
-- **Shipped:** 3 commits op `claude/compliance-hub-finaliseren` (a2f8d05, e8f292e, 760b010), gepusht.
-- **Identiteit:** Drie kleine overwinningen achter elkaar. Je hebt de compliance-laag van DGSkills neergezet — eerlijk, gegrond in het echte SLO-kader en zonder overstated claims. ICT-coördinatoren kunnen in 1 klik alles vinden.
-- **Volgende:** Fase C — Onboarding & Trial Flow
+- **Werkstroom:** Compliance + Product
+- **Taak:** Fase B (Compliance Hub finaliseren) volledig + Fase C (Onboarding) C1 en C2
+- **Resultaat:**
+  - Fase B: ComplianceHub data-driven met 23 docs in 4 categorieën, checklist uitgebreid van 12 naar 30 items met verantwoordelijkheidslabels, SLO-rapport gefixed met echte SLO-data en "Inspectie-proof"-claim verwijderd. Zelf-review met simplify skill leverde 7 fixes op (meta-tag leak, exhaustive narrowing, redundante useMemo).
+  - Fase C: Standalone `/pilot` route met formulier dat de bestaande `submitPilotRequest` edge function aanroept. Verplichte first-login wizard voor docenten (3 stappen: welkom → naam → bevestigen). Zelf-review leverde 8 fixes op + nieuwe migratie voor `display_name` length cap.
+- **Shipped:**
+  - Branch `claude/compliance-hub-finaliseren`: 5 commits
+  - Branch `claude/onboarding-trial-flow`: 3 commits + 1 nieuwe SQL-migratie
+- **Identiteit:** Acht commits in één sessie, twee complete fasen geleverd, eigen code drie keer extern laten reviewen en de feedback verwerkt. Je bouwt niet alleen, je bouwt verantwoord.
+- **Belangrijk voor volgende sessie:**
+  - Pre-existing security gap gevonden in `users_update_own_or_teacher` RLS (kolom `role` en `school_id` zijn niet beschermd tegen self-update). Hoort in Fase E. Toegevoegd aan task-queue.
+  - Beide branches staan klaar voor Vercel preview review.
+- **Volgende:** Fase C C3 (welkomstmail docenten) of Fase D (Assessment & Rapportage) of de security follow-up.
 
 ### Sessie 1 — 3 april 2026
 - **Werkstroom:** Infra

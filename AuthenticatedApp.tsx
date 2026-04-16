@@ -40,6 +40,7 @@ const TutorialRestartButton = lazyWithRetry(() => import('./components/teacher/T
 const MfaGate = lazyWithRetry(() => import('./components/MfaGate').then(m => ({ default: m.MfaGate })));
 const AiLab = lazyWithRetry(() => import('./components/AiLab').then(m => ({ default: m.AiLab })));
 const TeacherDashboard = lazyWithRetry(() => import('./components/TeacherDashboard').then(m => ({ default: m.TeacherDashboard })));
+const TeacherFirstLoginWizard = lazyWithRetry(() => import('./components/teacher/TeacherFirstLoginWizard').then(m => ({ default: m.TeacherFirstLoginWizard })));
 const UserProfile = lazyWithRetry(() => import('./components/UserProfile').then(m => ({ default: m.UserProfile })));
 const GamesSection = lazyWithRetry(() => import('./components/GamesSection').then(m => ({ default: m.GamesSection })));
 const GameDirectorMission = lazyWithRetry(() => import('./components/missions/GameDirectorMission').then(m => ({ default: m.GameDirectorMission })));
@@ -297,6 +298,20 @@ export function AuthenticatedApp() {
                 <MfaGate onVerified={() => {
                     setUser({ ...user, mfaPending: false });
                 }} />
+            </Suspense>
+        );
+    }
+
+    // Teacher first-login gate — verplichte mini-wizard voor docenten die voor het eerst inloggen.
+    // Zet `stats.hasCompletedTeacherOnboarding` op true. Developers die via devViewOverride als
+    // teacher previewen blijven user.role === 'developer', dus die slaan we hier automatisch over.
+    if (user.role === 'teacher' && !user.stats?.hasCompletedTeacherOnboarding) {
+        return (
+            <Suspense fallback={<LoadingFallback />}>
+                <TeacherFirstLoginWizard
+                    user={user}
+                    onComplete={(updates) => setUser({ ...user, ...updates })}
+                />
             </Suspense>
         );
     }
