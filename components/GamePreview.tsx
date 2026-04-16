@@ -20,6 +20,7 @@ interface GamePreviewProps {
   };
   onUndo?: () => void; // Callback to undo the last code change
   canUndo?: boolean; // Whether undo is available
+  onReset?: () => void; // Callback to reset game to default initialCode
 }
 
 // Loading state with timeout - shows retry option after 8 seconds
@@ -61,7 +62,7 @@ const LoadingStateWithTimeout: React.FC = () => {
   );
 };
 
-export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = false, isGenerating = false, onLoad, missionId, user, onUndo, canUndo = false }) => {
+export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = false, isGenerating = false, onLoad, missionId, user, onUndo, canUndo = false, onReset }) => {
   const [blobUrl, setBlobUrl] = useState<string | null>(null);
   const [gameStarted, setGameStarted] = useState(autoStart);
   const [iframeLoaded, setIframeLoaded] = useState(false);
@@ -410,6 +411,19 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
             </button>
           )}
 
+          {/* Reset to Default Button */}
+          {onReset && gameStarted && (
+            <button
+              onClick={onReset}
+              className="transition-all p-1.5 rounded-lg active:scale-95 flex items-center gap-1.5"
+              style={{ color: '#EF4444' }}
+              title="Herstel originele game"
+            >
+              <RefreshCw size={16} />
+              <span className="text-xs font-bold hidden md:inline">Reset</span>
+            </button>
+          )}
+
           <button
             onClick={handleReload}
             className="transition-all p-1.5 rounded-lg active:scale-95"
@@ -509,7 +523,7 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
 
             {/* INTRO OVERLAY */}
             {showIntroOverlay && (
-              <div className="absolute inset-0 z-20 flex flex-col items-center justify-center p-4 md:p-8" style={{ backgroundColor: 'rgba(250, 249, 240, 0.98)' }}>
+              <div className="absolute inset-0 z-20 flex flex-col items-center justify-start p-4 md:p-8 overflow-y-auto" style={{ backgroundColor: 'rgba(250, 249, 240, 0.98)' }}>
                 {/* Content */}
                 <div className="text-center max-w-sm md:max-w-md w-full">
                   {/* Pip mascot */}

@@ -505,7 +505,7 @@ export const ToolGuide: React.FC<TemplateMissionProps> = ({ missionId, onBack, o
     const [loadError, setLoadError] = useState(false);
 
     useEffect(() => {
-        import(`./configs/${missionId}`)
+        import(`./configs/${missionId}.ts`)
             .then((mod) => {
                 const cfg = mod.default ?? Object.values(mod).find((v): v is ToolGuideConfig => v && typeof v === 'object' && 'missionId' in v);
                 if (cfg) setConfig(cfg);

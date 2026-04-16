@@ -679,7 +679,7 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
         return (
             <div className="w-full h-full flex flex-col relative overflow-hidden" style={{ backgroundColor: '#FAF9F0' }}>
                 {challengeToast}
-                <div className="flex-1 flex flex-col items-center justify-center p-6 relative z-10">
+                <div className="flex-1 flex flex-col items-center justify-start p-6 relative z-10 overflow-y-auto">
                     <div className="relative mb-6">
                         <img src="/mascot/pip-excited.webp" alt="Pip" className="w-20 h-20 object-contain" loading="lazy" />
                     </div>

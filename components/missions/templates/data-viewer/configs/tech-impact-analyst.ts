@@ -221,7 +221,7 @@ export const techImpactAnalystConfig: DataViewerConfig = {
     takeaways: [
         'Elke technologie heeft zowel voordelen als risico\'s — eerlijke analyse erkent beide',
         'Algoritmische bias ontstaat als trainingsdata niet representatief is voor alle groepen',
-        "De EU heeft met de AI Act 's werelds strengste AI-regulering ingevoerd",
+        'De EU heeft met de AI Act \'s werelds strengste AI-regulering ingevoerd',
         'Een impact-analyse beoordeelt ernst én waarschijnlijkheid van risico\'s',
         'Technologie is nooit neutraal: het heeft altijd winnaars en verliezers',
     ],

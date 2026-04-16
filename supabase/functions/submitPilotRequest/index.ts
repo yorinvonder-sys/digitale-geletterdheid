@@ -313,36 +313,90 @@ serve(async (req: Request) => {
         await client.send({
           from: smtpUser,
           to: sanitized.email,
-          subject: 'Bedankt voor je pilot aanvraag — DGSkills',
+          subject: `Welkom bij DGSkills — volgende stappen voor ${sanitized.school_naam}`,
           html: `
-            <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 600px;">
-              <div style="background: linear-gradient(135deg, #D97757, #C46849); padding: 24px 32px; border-radius: 12px 12px 0 0;">
-                <h1 style="color: white; margin: 0; font-size: 20px;">Bedankt, ${escaped.contact_persoon}!</h1>
+            <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 600px; margin: 0 auto;">
+              <div style="background: linear-gradient(135deg, #D97757, #C46849); padding: 28px 32px; border-radius: 12px 12px 0 0;">
+                <h1 style="color: white; margin: 0 0 6px; font-size: 22px;">Welkom, ${escaped.contact_persoon}!</h1>
+                <p style="color: rgba(255,255,255,0.9); margin: 0; font-size: 14px;">Je pilot-aanvraag voor <strong>${escaped.school_naam}</strong> is binnen.</p>
               </div>
-              <div style="background: white; padding: 24px 32px; border: 1px solid #E8E6DF; border-top: none; border-radius: 0 0 12px 12px;">
-                <p style="font-size: 15px; color: #3D3D38; line-height: 1.6;">
-                  We hebben je pilot aanvraag voor <strong>${escaped.school_naam}</strong> ontvangen.
+              <div style="background: white; padding: 28px 32px; border: 1px solid #E8E6DF; border-top: none; border-radius: 0 0 12px 12px;">
+                <p style="font-size: 15px; color: #3D3D38; line-height: 1.6; margin: 0 0 20px;">
+                  We nemen binnen 2 werkdagen persoonlijk contact op om de pilot in te plannen. In de tussentijd kun je alvast het volgende doen:
                 </p>
-                <p style="font-size: 15px; color: #3D3D38; line-height: 1.6;">
-                  Dit zijn de volgende stappen:
+
+                <div style="background: #FAF9F0; border: 1px solid #E8E6DF; border-radius: 10px; padding: 20px; margin-bottom: 24px;">
+                  <p style="margin: 0 0 14px; font-size: 11px; color: #9C9C95; text-transform: uppercase; letter-spacing: 0.08em; font-weight: bold;">De tijdlijn</p>
+                  <table style="width: 100%; border-collapse: collapse;">
+                    <tr>
+                      <td style="padding: 8px 0; width: 28px; vertical-align: top; font-size: 14px; font-weight: bold; color: #D97757;">1.</td>
+                      <td style="padding: 8px 0; font-size: 14px; color: #3D3D38;">
+                        <strong>Kennismakingsgesprek</strong> — 15 minuten, binnen 2 werkdagen
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 8px 0; vertical-align: top; font-size: 14px; font-weight: bold; color: #D97757;">2.</td>
+                      <td style="padding: 8px 0; font-size: 14px; color: #3D3D38;">
+                        <strong>Onboarding voor docenten</strong> — 30 minuten, ingepland na akkoord
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 8px 0; vertical-align: top; font-size: 14px; font-weight: bold; color: #D97757;">3.</td>
+                      <td style="padding: 8px 0; font-size: 14px; color: #3D3D38;">
+                        <strong>Leerlingen starten</strong> — binnen 10 werkdagen na akkoord
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+
+                <p style="margin: 0 0 10px; font-size: 11px; color: #9C9C95; text-transform: uppercase; letter-spacing: 0.08em; font-weight: bold;">Voor je schoolbestuur en FG</p>
+                <p style="font-size: 14px; color: #52524D; line-height: 1.6; margin: 0 0 14px;">
+                  Onze Compliance Hub bevat alle 21 juridische en technische documenten — DPA Model 4.0, DPIA, EU AI Act Annex IV, risicoregister en verwerkingsregister. Direct te bekijken of op aanvraag.
                 </p>
-                <ol style="font-size: 14px; color: #52524D; line-height: 1.8; padding-left: 20px;">
-                  <li>Kennismakingsgesprek (15 min) — binnen 2 werkdagen</li>
-                  <li>Onboarding voor docenten (30 min)</li>
-                  <li>Leerlingen starten binnen 10 werkdagen na akkoord</li>
-                </ol>
-                <p style="font-size: 14px; color: #6B6B66; margin-top: 20px;">
-                  Vragen? Mail ons op <a href="mailto:info@dgskills.app" style="color: #D97757;">info@dgskills.app</a>
+                <p style="margin: 0 0 24px;">
+                  <a href="https://dgskills.app/compliance-hub" style="display: inline-block; padding: 10px 20px; background: #1A1A19; color: white; text-decoration: none; font-weight: 600; font-size: 13px; border-radius: 8px;">Naar Compliance Hub →</a>
                 </p>
-                <hr style="border: none; border-top: 1px solid #E8E6DF; margin: 20px 0;" />
-                <p style="font-size: 12px; color: #9C9C95;">
+
+                <p style="margin: 0 0 10px; font-size: 11px; color: #9C9C95; text-transform: uppercase; letter-spacing: 0.08em; font-weight: bold;">Veelgestelde vragen</p>
+                <div style="font-size: 13px; color: #52524D; line-height: 1.6;">
+                  <p style="margin: 0 0 10px;"><strong style="color: #3D3D38;">Waar staat onze data?</strong><br />Binnen de Europese Economische Ruimte (europe-west4, Nederland). AI-verwerking via Google Vertex AI in dezelfde regio. Geen data wordt gebruikt voor het trainen van AI-modellen.</p>
+                  <p style="margin: 0 0 10px;"><strong style="color: #3D3D38;">Wat gebeurt er na de pilot?</strong><br />Stoppen (alle data wordt binnen 30 dagen verwijderd), verlengen, of overstappen naar een licentie vanaf €2.000 per schoollocatie per jaar.</p>
+                  <p style="margin: 0 0 10px;"><strong style="color: #3D3D38;">Is DGSkills compliant met de EU AI Act?</strong><br />Ja. We zijn geclassificeerd als hoog-risico onder Annex III punt 3(b) en werken naar volledige conformiteit voor 2 augustus 2026. Het volledige conformiteitsbeoordelingsplan is opvraagbaar.</p>
+                </div>
+
+                <p style="font-size: 14px; color: #6B6B66; margin: 24px 0 0;">
+                  Heb je direct vragen? Mail ons op <a href="mailto:info@dgskills.app" style="color: #D97757;">info@dgskills.app</a> of specifiek voor privacy op <a href="mailto:privacy@dgskills.app" style="color: #D97757;">privacy@dgskills.app</a>.
+                </p>
+
+                <hr style="border: none; border-top: 1px solid #E8E6DF; margin: 24px 0 18px;" />
+                <p style="font-size: 12px; color: #9C9C95; margin: 0;">
                   DGSkills — Digitale Geletterdheid voor het Voortgezet Onderwijs<br />
                   <a href="https://dgskills.app" style="color: #D97757;">dgskills.app</a>
+                  &nbsp;·&nbsp;
+                  <a href="https://dgskills.app/compliance-hub" style="color: #D97757;">Compliance</a>
+                  &nbsp;·&nbsp;
+                  KvK 81819889
                 </p>
               </div>
             </div>
           `,
-          content: `Bedankt ${sanitized.contact_persoon}!\n\nWe hebben je pilot aanvraag voor ${sanitized.school_naam} ontvangen.\n\nVolgende stappen:\n1. Kennismakingsgesprek (15 min) — binnen 2 werkdagen\n2. Onboarding voor docenten (30 min)\n3. Leerlingen starten binnen 10 werkdagen na akkoord\n\nVragen? Mail ons op info@dgskills.app\n\nDGSkills — dgskills.app`,
+          content: `Welkom, ${sanitized.contact_persoon}!\n\n`
+            + `Je pilot-aanvraag voor ${sanitized.school_naam} is binnen.\n\n`
+            + `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`
+            + `DE TIJDLIJN\n`
+            + `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`
+            + `1. Kennismakingsgesprek — 15 min, binnen 2 werkdagen\n`
+            + `2. Onboarding voor docenten — 30 min, ingepland na akkoord\n`
+            + `3. Leerlingen starten — binnen 10 werkdagen na akkoord\n\n`
+            + `VOOR JE SCHOOLBESTUUR EN FG\n`
+            + `Onze Compliance Hub bevat alle 21 juridische en technische documenten — DPA Model 4.0, DPIA, EU AI Act Annex IV, risicoregister en verwerkingsregister.\n`
+            + `→ https://dgskills.app/compliance-hub\n\n`
+            + `VEELGESTELDE VRAGEN\n`
+            + `• Waar staat onze data? Binnen de EER (europe-west4, Nederland). Geen training op jouw data.\n`
+            + `• Wat na de pilot? Stoppen (data verwijderd binnen 30 dagen), verlengen, of licentie vanaf €2.000 per locatie/jaar.\n`
+            + `• EU AI Act? Ja — hoog-risico conform Annex III 3(b), conformiteit voor 2 augustus 2026.\n\n`
+            + `Vragen? info@dgskills.app of privacy@dgskills.app\n\n`
+            + `DGSkills — dgskills.app — KvK 81819889`,
         });
 
         await client.close();

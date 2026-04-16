@@ -546,10 +546,10 @@ export const subscribeToAuthChanges = (callback: (user: ParentUser | null) => vo
 
 // --- MFA (Cbw/NIS2 Art. 21) ---
 
-/** Privileged roles must use MFA (Cbw/NIS2 compliance). Disabled in dev for testing convenience. */
+/** Only teachers must use MFA (Cbw/NIS2 compliance). Disabled in dev for testing convenience. */
 export const requiresMfa = (role: UserRole | null): boolean => {
     if ((import.meta as any).env.DEV) return false;
-    return role !== null && ['teacher', 'admin', 'developer'].includes(role);
+    return role === 'teacher';
 };
 
 

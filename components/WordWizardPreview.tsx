@@ -97,7 +97,7 @@ export const WordWizardPreview: React.FC<WordWizardPreviewProps> = ({ onTaskComp
 
     if (showIntro) {
         return (
-            <div className="w-full h-full flex flex-col items-center justify-center bg-slate-100 font-sans p-6">
+            <div className="w-full h-full flex flex-col items-center justify-start overflow-y-auto bg-slate-100 font-sans p-6">
                 <div className="bg-white rounded-2xl shadow-xl max-w-md w-full p-8 flex flex-col gap-6">
                     <div className="flex items-center gap-3">
                         <div className="bg-[#2b579a] p-3 rounded-xl">

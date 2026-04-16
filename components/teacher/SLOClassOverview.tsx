@@ -6,6 +6,7 @@ import { StudentData } from '../../types';
 import { SLO_KERNDOELEN } from '../../config/sloKerndoelen';
 import { calculateStudentKerndoelStats, getMissionMeta, KERNDOEL_CODES } from '../../config/slo-kerndoelen-mapping';
 import { MISSION_SPOTLIGHTS, buildSpotlightProgress, filterSpotlightsByYear } from './spotlightSignals';
+import { StudentSloReport } from './StudentSloReport';
 
 interface SLOClassOverviewProps {
     students: StudentData[];
@@ -23,6 +24,7 @@ export const SLOClassOverview: React.FC<SLOClassOverviewProps> = ({ students, sc
     const [expandedClasses, setExpandedClasses] = useState<Set<string>>(new Set());
     const [exporting, setExporting] = useState(false);
     const [exportError, setExportError] = useState<string | null>(null);
+    const [reportStudent, setReportStudent] = useState<StudentData | null>(null);
 
     const studentsByClass = useMemo(() => {
         const grouped: Record<string, StudentData[]> = {};
@@ -354,7 +356,7 @@ export const SLOClassOverview: React.FC<SLOClassOverviewProps> = ({ students, sc
                         SLO Kerndoelen per Klas
                     </h2>
                     <p className="text-sm text-slate-500 mt-1">
-                        Inclusief export voor data-analyse (activiteiten: laatste 90 dagen).
+                        Klik op een leerling om het individuele SLO-rapport te openen — printbaar en als CSV te exporteren.
                     </p>
                     {exportError && (
                         <p className="text-sm text-red-600 mt-2">{exportError}</p>
@@ -634,10 +636,25 @@ export const SLOClassOverview: React.FC<SLOClassOverviewProps> = ({ students, sc
                                             {classStudents.map(student => {
                                                 const st = calculateStudentKerndoelStats(student);
                                                 return (
-                                                    <tr key={student.uid} className="hover:bg-slate-50">
+                                                    <tr
+                                                        key={student.uid}
+                                                        className="hover:bg-indigo-50/60 cursor-pointer transition-colors"
+                                                        onClick={() => setReportStudent(student)}
+                                                        role="button"
+                                                        tabIndex={0}
+                                                        aria-label={`Open SLO-rapport voor ${student.displayName || 'leerling'}`}
+                                                        onKeyDown={(e) => {
+                                                            if (e.key === 'Enter' || e.key === ' ') {
+                                                                e.preventDefault();
+                                                                setReportStudent(student);
+                                                            }
+                                                        }}
+                                                    >
                                                         <td className="px-4 py-3">
                                                             <div className="flex items-center gap-2">
-                                                                <p className="font-medium text-slate-900">{student.displayName}</p>
+                                                                <p className="font-medium text-slate-900 underline decoration-slate-300 underline-offset-2">
+                                                                    {student.displayName}
+                                                                </p>
                                                                 {student.stats?.vsoProfile && (
                                                                     <span className="text-[8px] bg-emerald-50 text-emerald-600 px-1 rounded border border-emerald-100 font-bold uppercase">
                                                                         VSO
@@ -679,6 +696,14 @@ export const SLOClassOverview: React.FC<SLOClassOverviewProps> = ({ students, sc
                     <Users size={48} className="mx-auto mb-4 opacity-50" />
                     <p>Geen leerlingen gevonden</p>
                 </div>
+            )}
+
+            {reportStudent && (
+                <StudentSloReport
+                    student={reportStudent}
+                    yearGroup={selectedYear}
+                    onClose={() => setReportStudent(null)}
+                />
             )}
         </div>
     );

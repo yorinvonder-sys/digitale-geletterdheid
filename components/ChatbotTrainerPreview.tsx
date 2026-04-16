@@ -593,7 +593,7 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
     if (mode === 'intro') {
         return (
             <div className="w-full h-full flex flex-col relative overflow-hidden" style={{ backgroundColor: '#FAF9F0', color: '#1A1A19' }}>
-                <div className="flex-1 flex flex-col items-center justify-center p-6 relative z-10">
+                <div className="flex-1 flex flex-col items-center justify-start p-6 relative z-10 overflow-y-auto">
                     <img src="/mascot/pip-excited.webp" alt="Pip" className="w-20 h-20 object-contain mb-6" loading="lazy" />
 
                     <h2 className="text-3xl font-black mb-2 text-center" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#1A1A19' }}>AI Chatbot Trainer</h2>

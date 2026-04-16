@@ -187,6 +187,7 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
     setCompletedSteps,
     undoGameCode,
     canUndoGameCode,
+    resetGameToDefault,
   } = useAgentLogic({
     selectedRole,
     userIdentifier: user?.uid || '', // IMPORTANT: Must use Supabase UID, not identifier (student number)
@@ -1274,6 +1275,7 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
                         } : undefined}
                         onUndo={undoGameCode}
                         canUndo={canUndoGameCode}
+                        onReset={resetGameToDefault}
                       />
                     ) : selectedRole?.id === 'layout-doctor' ? (
                       <WordSimulator
