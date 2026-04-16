@@ -405,13 +405,10 @@ export const ScholenLanding: React.FC = () => {
                         {[
                             { label: 'Waarom DGSkills', section: SECTION_IDS.features },
                             { label: 'Jouw school', section: SECTION_IDS.customization },
-                            { label: 'SLO-kerndoelen', section: SECTION_IDS.slo },
                             { label: 'Veelgestelde vragen', section: SECTION_IDS.faq },
-                            { label: 'Gratis pilot', section: SECTION_IDS.contact },
                         ].map(item => (
                             <button key={item.label} onClick={() => scrollTo(item.section)} className="text-[13px] font-medium transition-colors focus-visible:ring-2 focus-visible:rounded-md" style={{ color: C.textMuted }} onMouseEnter={e => (e.currentTarget.style.color = C.text)} onMouseLeave={e => (e.currentTarget.style.color = C.textMuted)}>{item.label}</button>
                         ))}
-                        <a href="/compliance-hub" className="text-[13px] font-medium transition-colors" style={{ color: C.textMuted }} onMouseEnter={e => (e.currentTarget.style.color = C.text)} onMouseLeave={e => (e.currentTarget.style.color = C.textMuted)}>Privacy &amp; documenten</a>
                         <div className="h-4 w-px mx-1" style={{ backgroundColor: C.border }} aria-hidden="true" />
                         <a href="/login" className="text-[13px] font-medium transition-colors" style={{ color: C.textMuted }} onMouseEnter={e => (e.currentTarget.style.color = C.text)} onMouseLeave={e => (e.currentTarget.style.color = C.textMuted)}>Inloggen</a>
                         <button
@@ -436,13 +433,10 @@ export const ScholenLanding: React.FC = () => {
                             {[
                                 { label: 'Waarom DGSkills', section: SECTION_IDS.features },
                                 { label: 'Jouw school', section: SECTION_IDS.customization },
-                                { label: 'SLO-kerndoelen', section: SECTION_IDS.slo },
                                 { label: 'Veelgestelde vragen', section: SECTION_IDS.faq },
-                                { label: 'Gratis pilot', section: SECTION_IDS.contact },
                             ].map(item => (
                                 <button key={item.label} onClick={() => scrollTo(item.section)} className="block w-full text-left px-3 py-3 text-sm rounded-lg transition-colors" style={{ color: C.text }} onMouseEnter={e => (e.currentTarget.style.backgroundColor = C.bgAlt)} onMouseLeave={e => (e.currentTarget.style.backgroundColor = 'transparent')}>{item.label}</button>
                             ))}
-                            <a href="/compliance-hub" className="block w-full text-left px-3 py-3 text-sm rounded-lg" style={{ color: C.text }}>Privacy &amp; documenten</a>
                             <div className="pt-4 space-y-2">
                                 <a href="/login" className="block w-full text-center py-3 text-sm font-semibold rounded-full" style={{ color: C.text, border: `1.5px solid ${C.border}` }}>Inloggen</a>
                                 <button onClick={() => scrollTo(SECTION_IDS.contact)} className="block w-full text-center py-3 text-sm font-semibold text-white rounded-full" style={{ backgroundColor: C.accent }}>Pilot aanvragen</button>
