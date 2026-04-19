@@ -1,0 +1,24 @@
+# Build artifacts & dependencies
+node_modules/
+dist/
+.vercel/
+package-lock.json
+
+# Documentation archives (read on demand, not every session)
+business/
+Regelgeving/
+Printinstructies/
+SLO-doelen/
+docs/
+guides/
+seo/
+
+# Static assets
+assets/
+public/
+
+# Non-autoloaded .claude reference files
+.claude/MCP_SETUP.md
+.claude/feature-handover-template.md
+.claude/operator-sessions.md
+.claude/prompt-templates.md
