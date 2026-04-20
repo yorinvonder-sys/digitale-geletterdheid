@@ -29,7 +29,7 @@
     "review:handoff": "node scripts/validate-claude-handoff.mjs"
   },
   "dependencies": {
-    "@google/genai": "^1.34.0",
+    "@google/genai": "^1.50.1",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.5.0",
     "@supabase/supabase-js": "2.95.3",
