@@ -32,7 +32,7 @@ export const PrivacyPolicy: React.FC = () => {
                             <div className="grid sm:grid-cols-2 gap-4 text-sm">
                                 <div>
                                     <p className="font-bold text-slate-900">Future Architect</p>
-                                    <p className="text-slate-600">De exacte KvK-nummer, adres en vestigingsgegevens staan vermeld in de ondertekende verwerkersovereenkomst (DPA) en/of het contract met uw school. Indien deze niet openbaar beschikbaar zijn, vindt u ze in die documenten.</p>
+                                    <p className="text-slate-600">KvK 81819889. Adres en aanvullende vestigingsgegevens staan in de ondertekende verwerkersovereenkomst (DPA) of zijn opvraagbaar via privacy@dgskills.app.</p>
                                 </div>
                                 <div>
                                     <p className="font-bold text-slate-900">Functionaris Gegevensbescherming (FG)</p>

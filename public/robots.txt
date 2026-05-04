@@ -6,6 +6,18 @@ Allow: /
 Allow: /scholen
 Allow: /login
 
+# Authenticated routes (require login — should not be indexed)
+Disallow: /dashboard
+Disallow: /teacher
+Disallow: /student
+Disallow: /admin
+Disallow: /developer
+Disallow: /developer-notitieboek
+
+# Internal/dev tools
+Disallow: /dev/
+Disallow: /bonnetje
+
 # Specific crawlers
 User-agent: Googlebot
 Allow: /

@@ -186,92 +186,6 @@ const PipGuide: React.FC<{ pose: string; tooltip: string; side: string; children
     </Suspense>
 );
 
-// JSON-LD structured data for Google rich results
-const structuredData = {
-    "@context": "https://schema.org",
-    "@graph": [
-        {
-            "@type": "SoftwareApplication",
-            "name": "DGSkills",
-            "applicationCategory": "EducationalApplication",
-            "operatingSystem": "Web",
-            "description": "Interactief platform voor digitale geletterdheid in het voortgezet onderwijs met AI-missies, gamification en SLO Kerndoelen 2025.",
-            "url": "https://dgskills.app/scholen",
-            "offers": {
-                "@type": "Offer",
-                "price": "0",
-                "priceCurrency": "EUR",
-                "description": "Gratis pilot van 3 maanden voor scholen"
-            },
-            "audience": {
-                "@type": "EducationalAudience",
-                "educationalRole": "student",
-                "audienceType": "Voortgezet onderwijs (MAVO, HAVO, VWO)"
-            }
-        },
-        {
-            "@type": "FAQPage",
-            "mainEntity": [
-                {
-                    "@type": "Question",
-                    "name": "Wat is digitale geletterdheid en waarom wordt het verplicht?",
-                    "acceptedAnswer": {
-                        "@type": "Answer",
-                        "text": "Kennis en vaardigheden om veilig en effectief te functioneren in een digitale samenleving. SLO-kerndoelen worden per 2027 wettelijk verplicht; scholen kunnen al vanaf 2025/2026 starten."
-                    }
-                },
-                {
-                    "@type": "Question",
-                    "name": "Hoe verschilt DGSkills van DIGIT-vo of Basicly?",
-                    "acceptedAnswer": {
-                        "@type": "Answer",
-                        "text": "DGSkills combineert AI-missies, gamification (XP, badges, leaderboards) en volledige SLO-koppeling. Leerlingen leren door te doen — geen werkbladen."
-                    }
-                },
-                {
-                    "@type": "Question",
-                    "name": "Welke SLO Kerndoelen dekt DGSkills af?",
-                    "acceptedAnswer": {
-                        "@type": "Answer",
-                        "text": "Alle vier domeinen: Digitale vaardigheden, Informatievaardigheden, Mediawijsheid en Computational Thinking. Elke missie is gekoppeld aan specifieke kerndoelen."
-                    }
-                },
-                {
-                    "@type": "Question",
-                    "name": "Is DGSkills AVG-compliant en veilig?",
-                    "acceptedAnswer": {
-                        "@type": "Answer",
-                        "text": "Ja. Data wordt opgeslagen in een beveiligde Europese database. Verwerkersovereenkomst en DPIA beschikbaar. Voldoet aan AVG en onderwijseisen."
-                    }
-                },
-                {
-                    "@type": "Question",
-                    "name": "Op welke apparaten werkt DGSkills?",
-                    "acceptedAnswer": {
-                        "@type": "Answer",
-                        "text": "Elk apparaat met browser: iPad, Chromebook, laptop, telefoon. Geen installatie, geen IT-configuratie."
-                    }
-                },
-                {
-                    "@type": "Question",
-                    "name": "Wat kost DGSkills en is er een gratis proefperiode?",
-                    "acceptedAnswer": {
-                        "@type": "Answer",
-                        "text": "Gratis pilot van 3 maanden met volledige toegang. Daarna schoollicentie vanaf \u20ac2.000 per jaar."
-                    }
-                }
-            ]
-        },
-        {
-            "@type": "WebPage",
-            "name": "Digitale Geletterdheid voor Scholen \u2014 DGSkills",
-            "url": "https://dgskills.app/scholen",
-            "description": "DGSkills: interactief platform met AI-missies en gamification voor digitale geletterdheid in het voortgezet onderwijs. Gratis pilot voor scholen.",
-            "inLanguage": "nl"
-        }
-    ]
-};
-
 const SECTION_IDS = {
     painPoints: 'de-uitdaging',
     features: 'waarom-dgskills',
@@ -326,7 +240,6 @@ export const ScholenLanding: React.FC = () => {
         setMeta('property', 'og:title', 'Digitale Geletterdheid voor Scholen \u2014 Gratis Pilot | DGSkills');
         setMeta('property', 'og:description', 'AI-missies, gamification en SLO Kerndoelen 2025 in \u00e9\u00e9n platform. Start een gratis pilot van 3 maanden.');
 
-        const scriptRef = { current: null as HTMLScriptElement | null };
         const idleCb = () => {
             setMeta('property', 'og:url', 'https://dgskills.app/scholen');
             let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
@@ -335,13 +248,6 @@ export const ScholenLanding: React.FC = () => {
             } else if (canonical && window.location.pathname === '/') {
                 canonical.href = 'https://dgskills.app/';
             }
-            try {
-                const script = document.createElement('script');
-                script.type = 'application/ld+json';
-                script.textContent = JSON.stringify(structuredData);
-                document.head.appendChild(script);
-                scriptRef.current = script;
-            } catch { /* CSP Trusted Types may block textContent on <script> */ }
         };
         const useIdle = typeof requestIdleCallback !== 'undefined';
         const idleId = useIdle ? requestIdleCallback(idleCb, { timeout: 2000 }) : setTimeout(idleCb, 0);
@@ -351,7 +257,6 @@ export const ScholenLanding: React.FC = () => {
             useIdle && typeof cancelIdleCallback !== 'undefined'
                 ? cancelIdleCallback(idleId as number)
                 : clearTimeout(idleId as ReturnType<typeof setTimeout>);
-            scriptRef.current?.remove();
         };
     }, []);
 
@@ -396,7 +301,7 @@ export const ScholenLanding: React.FC = () => {
                 : 'bg-transparent'
                 }`} style={scrolled ? { backgroundColor: `${C.bg}ee` } : undefined}>
                 <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
-                    <a href="/" className="flex items-center gap-2.5">
+                    <a href="/" className="flex items-center gap-2.5 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#D97757]">
                         <img src="/mascot/pip-logo.webp" alt="DGSkills" className="w-9 h-9 object-contain" width={36} height={36} decoding="async" />
                         <span className="font-semibold text-[15px] tracking-tight" style={{ color: C.text }}>DGSkills</span>
                     </a>
@@ -407,22 +312,23 @@ export const ScholenLanding: React.FC = () => {
                             { label: 'Jouw school', section: SECTION_IDS.customization },
                             { label: 'Veelgestelde vragen', section: SECTION_IDS.faq },
                         ].map(item => (
-                            <button key={item.label} onClick={() => scrollTo(item.section)} className="text-[13px] font-medium transition-colors focus-visible:ring-2 focus-visible:rounded-md" style={{ color: C.textMuted }} onMouseEnter={e => (e.currentTarget.style.color = C.text)} onMouseLeave={e => (e.currentTarget.style.color = C.textMuted)}>{item.label}</button>
+                            <button key={item.label} onClick={() => scrollTo(item.section)} className="text-[13px] font-medium transition-colors rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#D97757]" style={{ color: C.textMuted }} onMouseEnter={e => (e.currentTarget.style.color = C.text)} onMouseLeave={e => (e.currentTarget.style.color = C.textMuted)}>{item.label}</button>
                         ))}
                         <div className="h-4 w-px mx-1" style={{ backgroundColor: C.border }} aria-hidden="true" />
-                        <a href="/login" className="text-[13px] font-medium transition-colors" style={{ color: C.textMuted }} onMouseEnter={e => (e.currentTarget.style.color = C.text)} onMouseLeave={e => (e.currentTarget.style.color = C.textMuted)}>Inloggen</a>
-                        <button
-                            onClick={() => scrollTo(SECTION_IDS.contact)}
-                            className="text-[12px] font-semibold text-white px-3.5 py-1.5 rounded-full transition-colors whitespace-nowrap"
+                        <a href="/login" className="text-[13px] font-medium transition-colors rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#D97757]" style={{ color: C.textMuted }} onMouseEnter={e => (e.currentTarget.style.color = C.text)} onMouseLeave={e => (e.currentTarget.style.color = C.textMuted)}>Inloggen</a>
+                        <a
+                            href={`#${SECTION_IDS.contact}`}
+                            onClick={(e) => { e.preventDefault(); scrollTo(SECTION_IDS.contact); }}
+                            className="text-[12px] font-semibold text-white px-3.5 py-1.5 rounded-full transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#D97757]"
                             style={{ backgroundColor: C.accent }}
                             onMouseEnter={e => (e.currentTarget.style.backgroundColor = C.accentHover)}
                             onMouseLeave={e => (e.currentTarget.style.backgroundColor = C.accent)}
                         >
                             Pilot aanvragen
-                        </button>
+                        </a>
                     </div>
 
-                    <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="lg:hidden p-3 -mr-2 min-w-[44px] min-h-[44px] flex items-center justify-center" aria-label={mobileMenuOpen ? 'Menu sluiten' : 'Menu openen'} aria-expanded={mobileMenuOpen}>
+                    <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="lg:hidden p-3 -mr-2 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#D97757]" aria-label={mobileMenuOpen ? 'Menu sluiten' : 'Menu openen'} aria-expanded={mobileMenuOpen}>
                         {mobileMenuOpen ? <IconX /> : <IconMenu />}
                     </button>
                 </div>
@@ -435,11 +341,18 @@ export const ScholenLanding: React.FC = () => {
                                 { label: 'Jouw school', section: SECTION_IDS.customization },
                                 { label: 'Veelgestelde vragen', section: SECTION_IDS.faq },
                             ].map(item => (
-                                <button key={item.label} onClick={() => scrollTo(item.section)} className="block w-full text-left px-3 py-3 text-sm rounded-lg transition-colors" style={{ color: C.text }} onMouseEnter={e => (e.currentTarget.style.backgroundColor = C.bgAlt)} onMouseLeave={e => (e.currentTarget.style.backgroundColor = 'transparent')}>{item.label}</button>
+                                <button key={item.label} onClick={() => scrollTo(item.section)} className="block w-full text-left px-3 py-3 text-sm rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D97757]" style={{ color: C.text }} onMouseEnter={e => (e.currentTarget.style.backgroundColor = C.bgAlt)} onMouseLeave={e => (e.currentTarget.style.backgroundColor = 'transparent')}>{item.label}</button>
                             ))}
                             <div className="pt-4 space-y-2">
-                                <a href="/login" className="block w-full text-center py-3 text-sm font-semibold rounded-full" style={{ color: C.text, border: `1.5px solid ${C.border}` }}>Inloggen</a>
-                                <button onClick={() => scrollTo(SECTION_IDS.contact)} className="block w-full text-center py-3 text-sm font-semibold text-white rounded-full" style={{ backgroundColor: C.accent }}>Pilot aanvragen</button>
+                                <a href="/login" className="block w-full text-center py-3 text-sm font-semibold rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#D97757]" style={{ color: C.text, border: `1.5px solid ${C.border}` }}>Inloggen</a>
+                                <a
+                                    href={`#${SECTION_IDS.contact}`}
+                                    onClick={(e) => { e.preventDefault(); scrollTo(SECTION_IDS.contact); }}
+                                    className="block w-full text-center py-3 text-sm font-semibold text-white rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#D97757]"
+                                    style={{ backgroundColor: C.accent }}
+                                >
+                                    Pilot aanvragen
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -490,30 +403,34 @@ export const ScholenLanding: React.FC = () => {
                                 </p>
 
                                 <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                                    <button
-                                        onClick={() => {
+                                    <a
+                                        href={`#${SECTION_IDS.contact}`}
+                                        onClick={(e) => {
+                                            e.preventDefault();
                                             scrollTo(SECTION_IDS.contact);
                                             trackLandingEvent('dual_cta_click', { type: 'pilot' });
                                         }}
-                                        className="group text-white px-4 py-2 rounded-full text-xs font-medium transition-all flex items-center justify-center gap-2 hover:-translate-y-0.5"
+                                        className="group text-white px-4 py-2 rounded-full text-xs font-medium transition-all flex items-center justify-center gap-2 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#D97757]"
                                         style={{ backgroundColor: C.accent, boxShadow: `0 8px 24px ${C.accent}33` }}
                                         onMouseEnter={e => (e.currentTarget.style.backgroundColor = C.accentHover)}
                                         onMouseLeave={e => (e.currentTarget.style.backgroundColor = C.accent)}
                                     >
                                         Gratis pilot aanvragen
                                         <span className="group-hover:translate-x-0.5 transition-transform inline-block"><IconArrowRight /></span>
-                                    </button>
-                                    <button
-                                        onClick={() => {
+                                    </a>
+                                    <a
+                                        href={`#${SECTION_IDS.features}`}
+                                        onClick={(e) => {
+                                            e.preventDefault();
                                             scrollTo(SECTION_IDS.features);
                                             trackLandingEvent('dual_cta_click', { type: 'demo' });
                                         }}
-                                        className="group px-4 py-2 rounded-full text-xs font-medium transition-all flex items-center justify-center gap-2 hover:-translate-y-0.5"
+                                        className="group px-4 py-2 rounded-full text-xs font-medium transition-all flex items-center justify-center gap-2 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#D97757]"
                                         style={{ border: `1.5px solid ${C.border}`, color: C.text }}
                                     >
                                         Bekijk de demo
                                         <span style={{ color: C.textLight }}><IconArrowRight /></span>
-                                    </button>
+                                    </a>
                                 </div>
 
                                 {/* Trust badges */}
@@ -591,7 +508,7 @@ export const ScholenLanding: React.FC = () => {
                             />
                             <button
                                 onClick={() => scrollTo(SECTION_IDS.painPoints)}
-                                className="transition-colors p-2"
+                                className="transition-colors p-2 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#D97757]"
                                 style={{ color: C.textLight }}
                                 aria-label="Scroll naar beneden"
                             >
@@ -671,15 +588,16 @@ export const ScholenLanding: React.FC = () => {
                             Klaar om digitale geletterdheid concreet te maken?
                         </p>
                         <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-                            <button
-                                onClick={() => scrollTo(SECTION_IDS.contact)}
-                                className="text-white px-6 py-3 rounded-full text-sm font-semibold transition-all hover:-translate-y-0.5"
+                            <a
+                                href={`#${SECTION_IDS.contact}`}
+                                onClick={(e) => { e.preventDefault(); scrollTo(SECTION_IDS.contact); }}
+                                className="text-white px-6 py-3 rounded-full text-sm font-semibold transition-all hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#D97757]"
                                 style={{ backgroundColor: C.accent, boxShadow: `0 8px 24px ${C.accent}33` }}
                                 onMouseEnter={e => (e.currentTarget.style.backgroundColor = C.accentHover)}
                                 onMouseLeave={e => (e.currentTarget.style.backgroundColor = C.accent)}
                             >
                                 Start een gratis pilot
-                            </button>
+                            </a>
                             <span className="text-xs" style={{ color: C.textLight }}>Geen verplichtingen, live binnen 10 werkdagen</span>
                         </div>
                     </div>
@@ -889,7 +807,7 @@ export const ScholenLanding: React.FC = () => {
                             </p>
                             <a
                                 href="/ict"
-                                className="inline-flex items-center gap-2 text-white px-8 py-4 rounded-full font-medium hover:-translate-y-0.5 transition-all"
+                                className="inline-flex items-center gap-2 text-white px-8 py-4 rounded-full font-medium hover:-translate-y-0.5 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#D97757]"
                                 style={{ backgroundColor: C.dark, boxShadow: `0 8px 24px ${C.text}15` }}
                             >
                                 Bekijk technische details
@@ -930,14 +848,15 @@ export const ScholenLanding: React.FC = () => {
                     showFloatingCta ? 'translate-y-0 opacity-100' : 'translate-y-16 opacity-0 pointer-events-none'
                 }`}
             >
-                <button
-                    onClick={() => scrollTo(SECTION_IDS.contact)}
-                    className="text-white px-6 py-3.5 rounded-full font-medium flex items-center gap-2 text-sm"
+                <a
+                    href={`#${SECTION_IDS.contact}`}
+                    onClick={(e) => { e.preventDefault(); scrollTo(SECTION_IDS.contact); }}
+                    className="text-white px-6 py-3.5 rounded-full font-medium flex items-center gap-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#D97757]"
                     style={{ backgroundColor: C.accent, boxShadow: `0 8px 24px ${C.accent}40` }}
                 >
                     Pilot aanvragen
                     <IconArrowRight />
-                </button>
+                </a>
             </div>
 
             {/* Floating CTA — Desktop */}
@@ -946,15 +865,16 @@ export const ScholenLanding: React.FC = () => {
                     showFloatingCta ? 'translate-y-0 opacity-100' : 'translate-y-16 opacity-0 pointer-events-none'
                 }`}
             >
-                <button
-                    onClick={() => scrollTo(SECTION_IDS.contact)}
-                    className="text-white px-5 py-3 rounded-full text-sm font-medium transition-colors"
+                <a
+                    href={`#${SECTION_IDS.contact}`}
+                    onClick={(e) => { e.preventDefault(); scrollTo(SECTION_IDS.contact); }}
+                    className="text-white px-5 py-3 rounded-full text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#D97757]"
                     style={{ backgroundColor: C.accent, boxShadow: `0 4px 16px ${C.accent}30` }}
                     onMouseEnter={e => (e.currentTarget.style.backgroundColor = C.accentHover)}
                     onMouseLeave={e => (e.currentTarget.style.backgroundColor = C.accent)}
                 >
                     Gratis pilot starten &rarr;
-                </button>
+                </a>
             </div>
 
             {/* Footer */}
@@ -966,20 +886,20 @@ export const ScholenLanding: React.FC = () => {
                             <span className="text-sm font-semibold" style={{ color: `${C.bg}cc` }}>DGSkills</span>
                         </div>
                         <div className="flex flex-wrap items-center gap-5 text-xs" style={{ color: `${C.bg}88` }}>
-                            <a href="/ict/privacy/policy" className="hover:text-white transition-colors">Privacy</a>
-                            <a href="/ict/privacy/cookies" className="hover:text-white transition-colors">Cookies</a>
-                            <a href="/ict/privacy/ai" className="hover:text-white transition-colors">AI Act</a>
-                            <a href="/compliance-hub" className="hover:text-white transition-colors">Compliance Hub</a>
+                            <a href="/ict/privacy/policy" className="hover:text-white transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#141413]">Privacy</a>
+                            <a href="/ict/privacy/cookies" className="hover:text-white transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#141413]">Cookies</a>
+                            <a href="/ict/privacy/ai" className="hover:text-white transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#141413]">AI Act</a>
+                            <a href="/compliance-hub" className="hover:text-white transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#141413]">Compliance Hub</a>
                             <span style={{ color: `${C.bg}22` }}>&middot;</span>
-                            <a href="/login" className="hover:text-white transition-colors">Inloggen</a>
+                            <a href="/login" className="hover:text-white transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#141413]">Inloggen</a>
                         </div>
                     </div>
                     <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4" style={{ borderTop: `1px solid ${C.bg}11` }}>
                         <p className="text-xs" style={{ color: `${C.bg}55` }}>
-                            &copy; {new Date().getFullYear()} DGSkills &mdash; Digitale geletterdheid voor het voortgezet onderwijs
+                            &copy; {new Date().getFullYear()} DGSkills &middot; KvK 81819889 &mdash; Digitale geletterdheid voor het voortgezet onderwijs
                         </p>
                         <div className="flex items-center gap-4">
-                            <a href="mailto:info@dgskills.app" className="text-xs font-medium flex items-center gap-1.5 hover:text-white transition-colors" style={{ color: `${C.bg}88` }}>
+                            <a href="mailto:info@dgskills.app" className="text-xs font-medium flex items-center gap-1.5 hover:text-white transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#141413]" style={{ color: `${C.bg}88` }}>
                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                                     <rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
                                 </svg>
