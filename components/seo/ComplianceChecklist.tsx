@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { trackEvent } from '../../services/analyticsService';
 
 type Responsibility = 'school' | 'leverancier' | 'samen';
@@ -24,6 +24,7 @@ const RESPONSIBILITY_LABEL: Record<Responsibility, string> = {
     samen: 'Samen',
 };
 
+// Semantic responsibility colors — preserved as-is per spec
 const RESPONSIBILITY_CLASSES: Record<Responsibility, string> = {
     school: 'bg-emerald-50 text-emerald-700',
     leverancier: 'bg-indigo-50 text-indigo-700',
@@ -131,7 +132,7 @@ const SECTIONS: ChecklistSection[] = [
             },
             {
                 id: 'minderjarigen',
-                label: 'De DPIA bevat een specifieke paragraaf over risico’s voor minderjarigen.',
+                label: 'De DPIA bevat een specifieke paragraaf over risico\'s voor minderjarigen.',
                 responsibility: 'school',
                 reference: 'AVG Art. 8 · AI Act Art. 9(9)',
             },
@@ -278,8 +279,8 @@ const CheckBox: React.FC<{ checked: boolean; onToggle: () => void; id: string }>
         onClick={onToggle}
         className={`mt-0.5 w-5 h-5 border-2 rounded flex items-center justify-center shrink-0 transition-colors no-print ${
             checked
-                ? 'border-indigo-600 bg-indigo-600 text-white'
-                : 'border-indigo-200 text-transparent hover:border-indigo-400'
+                ? 'border-lab-coral bg-lab-coral text-lab-paper'
+                : 'border-lab-line text-transparent hover:border-lab-coral/50'
         }`}
     >
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
@@ -291,8 +292,8 @@ const CheckBox: React.FC<{ checked: boolean; onToggle: () => void; id: string }>
 const PrintBox: React.FC<{ checked: boolean }> = ({ checked }) => (
     <span
         aria-hidden="true"
-        className={`hidden print:inline-block w-4 h-4 border border-slate-400 mr-2 align-middle ${
-            checked ? 'bg-slate-900' : ''
+        className={`hidden print:inline-block w-4 h-4 border border-lab-muted mr-2 align-middle ${
+            checked ? 'bg-lab-ink' : ''
         }`}
     />
 );
@@ -333,132 +334,234 @@ export const ComplianceChecklist: React.FC = () => {
     }, [checkedIds]);
 
     return (
-        <div className="min-h-screen bg-slate-50 py-20 px-6">
-            <div className="max-w-3xl mx-auto bg-white p-10 rounded-3xl shadow-sm border border-slate-100">
-                <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4 mb-6">
-                    <div>
-                        <h1 className="text-2xl md:text-3xl font-bold text-slate-900 mb-2">
-                            AI-Compliance Checklist VO
-                        </h1>
-                        <p className="text-slate-500 text-sm">
-                            Versie 2026.2 — gebaseerd op AVG, EU AI Act en Privacyconvenant Onderwijs
-                        </p>
-                    </div>
-                    <button
-                        onClick={() => window.print()}
-                        className="px-4 py-2 bg-slate-900 text-white text-xs font-bold rounded-lg hover:bg-slate-800 transition-colors no-print self-start"
-                    >
-                        Print / Opslaan als PDF
-                    </button>
-                </div>
-
-                <div className="mb-8 p-5 bg-slate-50 rounded-2xl border border-slate-100">
-                    <p className="text-sm text-slate-700 mb-3">
-                        Gebruik deze checklist bij inkoop, ingebruikname en de periodieke review van
-                        een AI-leermiddel in het voortgezet onderwijs. DGSkills valt onder{' '}
-                        <strong>hoog risico</strong> volgens de EU AI Act (Annex III, punt 3(b)) —
-                        deadline 2 augustus 2026.
-                    </p>
-                    <div className="flex flex-wrap gap-2 items-center text-xs">
-                        <span className="text-slate-500">Verantwoordelijkheid:</span>
-                        <Badge responsibility="school" />
-                        <Badge responsibility="leverancier" />
-                        <Badge responsibility="samen" />
-                    </div>
-                </div>
-
-                <div className="mb-8 no-print">
-                    <div className="flex justify-between items-center mb-2 text-sm">
-                        <span className="font-semibold text-slate-700">
-                            Voortgang: {progress.done} / {progress.total} gecontroleerd
-                        </span>
-                        <span className="text-slate-500">{progress.pct}%</span>
-                    </div>
-                    <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
-                        <div
-                            className="h-full bg-indigo-600 transition-all"
-                            style={{ width: `${progress.pct}%` }}
-                        />
-                    </div>
-                    <p className="text-xs text-slate-400 mt-2 italic">
-                        Voortgang wordt niet bewaard — print of exporteer je versie.
-                    </p>
-                </div>
-
-                <div className="space-y-10">
-                    {SECTIONS.map((section) => (
-                        <section key={section.id} id={section.id}>
-                            <h2 className="text-sm font-bold text-indigo-600 uppercase tracking-widest mb-2">
-                                {section.title}
-                            </h2>
-                            {section.intro && (
-                                <p className="text-sm text-slate-500 mb-4">{section.intro}</p>
-                            )}
-                            <ul className="list-none p-0 space-y-1">
-                                {section.items.map((item) => {
-                                    const isChecked = checkedIds.has(item.id);
-                                    return (
-                                        <li
-                                            key={item.id}
-                                            className="flex items-start gap-3 py-3 border-b border-slate-100 last:border-0"
-                                        >
-                                            <CheckBox
-                                                id={item.id}
-                                                checked={isChecked}
-                                                onToggle={() => toggle(item.id)}
-                                            />
-                                            <div className="flex-1">
-                                                <div className="flex flex-wrap items-start gap-2 mb-1">
-                                                    <PrintBox checked={isChecked} />
-                                                    <span
-                                                        id={`${item.id}-label`}
-                                                        className="text-slate-700 text-sm flex-1"
-                                                    >
-                                                        {item.label}
-                                                    </span>
-                                                    <Badge responsibility={item.responsibility} />
-                                                </div>
-                                                {(item.reference || item.note) && (
-                                                    <div className="text-xs text-slate-400 mt-1 space-x-2">
-                                                        {item.reference && (
-                                                            <span className="font-mono">
-                                                                {item.reference}
-                                                            </span>
-                                                        )}
-                                                        {item.note && (
-                                                            <span className="italic">
-                                                                · {item.note}
-                                                            </span>
-                                                        )}
-                                                    </div>
-                                                )}
-                                            </div>
-                                        </li>
-                                    );
-                                })}
-                            </ul>
-                        </section>
-                    ))}
-                </div>
-
-                <div className="mt-12 pt-8 border-t border-slate-100 text-center">
-                    <p className="text-xs text-slate-400 mb-4 italic max-w-lg mx-auto">
-                        Deze checklist is een hulpmiddel en vervangt geen juridisch advies van je
-                        functionaris gegevensbescherming. Voor een compleet compliance-dossier: zie
-                        de{' '}
-                        <a
-                            href="/compliance-hub"
-                            className="text-indigo-500 hover:text-indigo-700 underline"
-                        >
-                            Compliance Hub
-                        </a>
-                        .
-                    </p>
-                    <a href="/" className="text-indigo-600 font-bold text-sm">
-                        dgskills.app
+        <div className="min-h-screen bg-lab-cream text-lab-ink font-sans">
+            {/* Nav */}
+            <nav className="fixed top-0 left-0 right-0 z-50 bg-lab-paper/95 backdrop-blur border-b border-lab-line">
+                <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+                    <a href="/" className="flex items-center" aria-label="DGSkills homepage">
+                        <img src="/logo-lockup.svg" alt="DGSkills" className="h-10 w-auto max-w-[180px] sm:h-12 sm:max-w-[200px] object-contain" />
                     </a>
+                    <div className="flex items-center gap-5 text-sm">
+                        <a href="/scholen" className="text-lab-muted hover:text-lab-coral transition-colors hidden sm:inline">Voor scholen</a>
+                        <a href="/pilot" className="text-lab-muted hover:text-lab-coral transition-colors hidden sm:inline">Pilot</a>
+                        <a href="mailto:info@dgskills.app" className="text-lab-muted hover:text-lab-coral transition-colors">Contact</a>
+                    </div>
                 </div>
-            </div>
+            </nav>
+
+            <main className="pt-28 pb-24 px-6">
+                <div className="max-w-3xl mx-auto">
+                    <Reveal delay={0}>
+                        <div className="bg-lab-paper p-10 rounded-3xl shadow-[0_24px_60px_-30px_rgba(8,40,59,0.10)] border border-lab-line">
+                            <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4 mb-6">
+                                <div>
+                                    <h1 className="font-black text-2xl md:text-3xl text-lab-ink mb-2">
+                                        AI-Compliance Checklist VO
+                                    </h1>
+                                    <p className="text-lab-muted text-sm">
+                                        Versie 2026.2 — gebaseerd op AVG, EU AI Act en Privacyconvenant Onderwijs
+                                    </p>
+                                </div>
+                                <button
+                                    onClick={() => window.print()}
+                                    className="px-4 py-2 bg-lab-ink text-lab-paper text-xs font-bold rounded-lg hover:bg-lab-tealDark transition-colors no-print self-start"
+                                >
+                                    Print / Opslaan als PDF
+                                </button>
+                            </div>
+
+                            <div className="mb-8 p-5 bg-lab-creamWarm border border-lab-line rounded-2xl">
+                                <p className="text-sm text-lab-muted mb-3">
+                                    Gebruik deze checklist bij inkoop, ingebruikname en de periodieke review van
+                                    een AI-leermiddel in het voortgezet onderwijs. DGSkills valt onder{' '}
+                                    <strong className="text-lab-ink">hoog risico</strong> volgens de EU AI Act (Annex III, punt 3(b)) —
+                                    deadline 2 augustus 2026.
+                                </p>
+                                <div className="flex flex-wrap gap-2 items-center text-xs">
+                                    <span className="text-lab-mutedSoft">Verantwoordelijkheid:</span>
+                                    <Badge responsibility="school" />
+                                    <Badge responsibility="leverancier" />
+                                    <Badge responsibility="samen" />
+                                </div>
+                            </div>
+
+                            <div className="mb-8 no-print">
+                                <div className="flex justify-between items-center mb-2 text-sm">
+                                    <span className="font-semibold text-lab-muted">
+                                        Voortgang: {progress.done} / {progress.total} gecontroleerd
+                                    </span>
+                                    <span className="text-lab-mutedSoft">{progress.pct}%</span>
+                                </div>
+                                <div className="w-full h-2 bg-lab-creamDeep rounded-full overflow-hidden">
+                                    <div
+                                        className="h-full bg-lab-coral transition-all"
+                                        style={{ width: `${progress.pct}%` }}
+                                    />
+                                </div>
+                                <p className="text-xs text-lab-mutedSoft mt-2 italic">
+                                    Voortgang wordt niet bewaard — print of exporteer je versie.
+                                </p>
+                            </div>
+
+                            <div className="space-y-10">
+                                {SECTIONS.map((section) => (
+                                    <section key={section.id} id={section.id}>
+                                        <h2 className="text-sm font-bold text-lab-coral uppercase tracking-widest mb-2">
+                                            {section.title}
+                                        </h2>
+                                        {section.intro && (
+                                            <p className="text-sm text-lab-muted mb-4">{section.intro}</p>
+                                        )}
+                                        <ul className="list-none p-0 space-y-1">
+                                            {section.items.map((item) => {
+                                                const isChecked = checkedIds.has(item.id);
+                                                return (
+                                                    <li
+                                                        key={item.id}
+                                                        className="flex items-start gap-3 py-3 border-b border-lab-line last:border-0"
+                                                    >
+                                                        <CheckBox
+                                                            id={item.id}
+                                                            checked={isChecked}
+                                                            onToggle={() => toggle(item.id)}
+                                                        />
+                                                        <div className="flex-1">
+                                                            <div className="flex flex-wrap items-start gap-2 mb-1">
+                                                                <PrintBox checked={isChecked} />
+                                                                <span
+                                                                    id={`${item.id}-label`}
+                                                                    className="text-lab-muted text-sm flex-1"
+                                                                >
+                                                                    {item.label}
+                                                                </span>
+                                                                <Badge responsibility={item.responsibility} />
+                                                            </div>
+                                                            {(item.reference || item.note) && (
+                                                                <div className="text-xs text-lab-mutedSoft mt-1 space-x-2">
+                                                                    {item.reference && (
+                                                                        <span className="font-mono">
+                                                                            {item.reference}
+                                                                        </span>
+                                                                    )}
+                                                                    {item.note && (
+                                                                        <span className="italic">
+                                                                            · {item.note}
+                                                                        </span>
+                                                                    )}
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    </li>
+                                                );
+                                            })}
+                                        </ul>
+                                    </section>
+                                ))}
+                            </div>
+
+                            <div className="mt-12 pt-8 border-t border-lab-line text-center">
+                                <p className="text-xs text-lab-mutedSoft mb-4 italic max-w-lg mx-auto">
+                                    Deze checklist is een hulpmiddel en vervangt geen juridisch advies van je
+                                    functionaris gegevensbescherming. Voor een compleet compliance-dossier: zie
+                                    de{' '}
+                                    <a
+                                        href="/compliance-hub"
+                                        className="text-lab-coral hover:text-lab-coral/80 underline"
+                                    >
+                                        Compliance Hub
+                                    </a>
+                                    .
+                                </p>
+                                <a href="/" className="text-lab-coral hover:text-lab-coral/80 font-bold text-sm">
+                                    dgskills.app
+                                </a>
+                            </div>
+                        </div>
+                    </Reveal>
+                </div>
+            </main>
+
+            <footer className="py-12 text-lab-mutedSoft text-center text-xs">
+                <p>© {new Date().getFullYear()} DGSkills — Privacy &amp; Compliance</p>
+            </footer>
         </div>
     );
 };
+
+// ─── Inline animation utilities ───────────────────────────────────────────────
+
+function usePrefersReducedMotion() {
+    const [reduced, setReduced] = useState(false);
+
+    useEffect(() => {
+        if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return;
+        const media = window.matchMedia('(prefers-reduced-motion: reduce)');
+        const update = () => setReduced(media.matches);
+        update();
+        media.addEventListener?.('change', update);
+        return () => media.removeEventListener?.('change', update);
+    }, []);
+
+    return reduced;
+}
+
+function Reveal({
+    children,
+    className,
+    delay = 0,
+    y = 24,
+    style,
+}: {
+    children: React.ReactNode;
+    className?: string;
+    delay?: number;
+    y?: number;
+    style?: React.CSSProperties;
+}) {
+    const reduceMotion = usePrefersReducedMotion();
+    const [inView, setInView] = useState(false);
+    const ref = useRef<HTMLDivElement | null>(null);
+
+    useEffect(() => {
+        if (reduceMotion) {
+            setInView(true);
+            return;
+        }
+
+        const element = ref.current;
+        if (!element) return;
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setInView(true);
+                    observer.disconnect();
+                }
+            },
+            { rootMargin: '0px 0px -10% 0px', threshold: 0.16 }
+        );
+
+        observer.observe(element);
+        return () => observer.disconnect();
+    }, [reduceMotion]);
+
+    if (reduceMotion) {
+        return <div className={className} style={style}>{children}</div>;
+    }
+
+    return (
+        <div
+            ref={ref}
+            className={className}
+            style={{
+                ...style,
+                opacity: inView ? 1 : 0.92,
+                transform: inView ? 'translate3d(0,0,0)' : `translate3d(0,${y}px,0)`,
+                transition: `opacity 680ms cubic-bezier(.22,1,.36,1) ${delay}s, transform 680ms cubic-bezier(.22,1,.36,1) ${delay}s`,
+                willChange: inView ? 'auto' : 'opacity, transform',
+            }}
+        >
+            {children}
+        </div>
+    );
+}

@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { trackEvent } from '../../services/analyticsService';
 
 const PRIVACY_EMAIL = 'privacy@dgskills.app';
 
 const IconFileText = () => (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-indigo-600">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-lab-coral">
         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
         <polyline points="14 2 14 8 20 8" />
         <line x1="16" y1="13" x2="8" y2="13" />
@@ -14,7 +14,7 @@ const IconFileText = () => (
 );
 
 const IconMail = () => (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-slate-500">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-lab-muted">
         <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
         <polyline points="22,6 12,13 2,6" />
     </svg>
@@ -251,10 +251,10 @@ const DocRow: React.FC<{ doc: ComplianceDoc; sectionId: string }> = ({ doc, sect
     };
 
     const baseWrapperClasses =
-        'flex flex-col md:flex-row md:items-center justify-between gap-6 p-6 rounded-2xl border border-slate-100 hover:border-indigo-200 transition-colors bg-white';
+        'flex flex-col md:flex-row md:items-center justify-between gap-6 p-6 rounded-2xl border border-lab-line hover:border-lab-coral/30 transition-colors bg-lab-paper';
 
     const baseButtonClasses =
-        'inline-flex items-center justify-center px-5 py-2.5 bg-white border border-slate-200 text-slate-600 font-semibold text-sm rounded-lg hover:bg-slate-50 transition-colors whitespace-nowrap';
+        'inline-flex items-center justify-center px-5 py-2.5 bg-lab-paper border border-lab-line text-lab-muted font-semibold text-sm rounded-lg hover:bg-lab-cream transition-colors whitespace-nowrap';
 
     let href: string;
     let cta: string;
@@ -277,17 +277,17 @@ const DocRow: React.FC<{ doc: ComplianceDoc; sectionId: string }> = ({ doc, sect
     return (
         <div className={baseWrapperClasses}>
             <div className="flex gap-5 items-start">
-                <div className="mt-1 p-3 bg-indigo-50 rounded-xl">
+                <div className="mt-1 p-3 bg-lab-coral/10 rounded-xl">
                     <IconFileText />
                 </div>
                 <div>
                     <div className="flex flex-wrap items-center gap-3 mb-1">
-                        <h3 className="font-bold text-slate-900">{doc.title}</h3>
-                        <span className="px-2 py-0.5 bg-slate-100 text-slate-500 text-[10px] font-bold rounded uppercase">
+                        <h3 className="font-bold text-lab-ink">{doc.title}</h3>
+                        <span className="px-2 py-0.5 bg-lab-coral/10 text-lab-coral text-[10px] font-bold rounded uppercase">
                             {doc.badge}
                         </span>
                     </div>
-                    <p className="text-sm text-slate-500 max-w-xl">{doc.description}</p>
+                    <p className="text-sm text-lab-muted max-w-xl">{doc.description}</p>
                 </div>
             </div>
             <a href={href} className={baseButtonClasses} onClick={handleClick} {...externalProps}>
@@ -297,19 +297,21 @@ const DocRow: React.FC<{ doc: ComplianceDoc; sectionId: string }> = ({ doc, sect
     );
 };
 
-const Section: React.FC<{ section: ComplianceSection }> = ({ section }) => (
-    <section id={section.id} className="mb-14">
-        <div className="flex items-center gap-3 mb-2">
-            <div className="p-2 bg-slate-100 rounded-lg">{section.icon}</div>
-            <h2 className="text-xl font-bold text-slate-900">{section.title}</h2>
-        </div>
-        <p className="text-sm text-slate-500 mb-5 max-w-2xl">{section.intro}</p>
-        <div className="grid gap-4">
-            {section.docs.map((doc) => (
-                <DocRow key={doc.id} doc={doc} sectionId={section.id} />
-            ))}
-        </div>
-    </section>
+const Section: React.FC<{ section: ComplianceSection; index: number }> = ({ section, index }) => (
+    <Reveal delay={index * 0.05}>
+        <section id={section.id} className="mb-14">
+            <div className="flex items-center gap-3 mb-2">
+                <div className="p-2 bg-lab-coral/10 rounded-lg">{section.icon}</div>
+                <h2 className="text-xl font-black text-lab-ink">{section.title}</h2>
+            </div>
+            <p className="text-sm text-lab-muted mb-5 max-w-2xl">{section.intro}</p>
+            <div className="grid gap-4">
+                {section.docs.map((doc) => (
+                    <DocRow key={doc.id} doc={doc} sectionId={section.id} />
+                ))}
+            </div>
+        </section>
+    </Reveal>
 );
 
 export const ComplianceHub: React.FC = () => {
@@ -345,79 +347,162 @@ export const ComplianceHub: React.FC = () => {
     }, []);
 
     return (
-        <div className="min-h-screen bg-slate-50">
-            <nav className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-slate-100">
-                <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
-                    <a href="/" className="flex items-center gap-2.5">
-                        <img src="/mascot/pip-logo.webp" alt="DGSkills logo" className="w-8 h-8 object-contain" />
-                        <span className="font-bold text-slate-900">DGSkills</span>
+        <div className="min-h-screen bg-lab-cream text-lab-ink font-sans">
+            {/* Nav */}
+            <nav className="fixed top-0 left-0 right-0 z-50 bg-lab-paper/95 backdrop-blur border-b border-lab-line">
+                <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+                    <a href="/" className="flex items-center" aria-label="DGSkills homepage">
+                        <img src="/logo-lockup.svg" alt="DGSkills" className="h-10 w-auto max-w-[180px] sm:h-12 sm:max-w-[200px] object-contain" />
                     </a>
-                    <a
-                        href="/ict"
-                        className="text-sm font-medium text-slate-500 hover:text-indigo-600 transition-colors"
-                    >
-                        ICT Dashboard
-                    </a>
+                    <div className="flex items-center gap-5 text-sm">
+                        <a href="/scholen" className="text-lab-muted hover:text-lab-coral transition-colors hidden sm:inline">Voor scholen</a>
+                        <a href="/pilot" className="text-lab-muted hover:text-lab-coral transition-colors hidden sm:inline">Pilot</a>
+                        <a href="mailto:info@dgskills.app" className="text-lab-muted hover:text-lab-coral transition-colors">Contact</a>
+                    </div>
                 </div>
             </nav>
 
-            <main className="pt-32 pb-24 px-6">
+            <main className="pt-28 pb-24 px-6">
                 <div className="max-w-4xl mx-auto">
-                    <div className="mb-10">
-                        <span className="inline-block px-3 py-1 bg-indigo-50 text-indigo-600 text-xs font-bold rounded-full uppercase tracking-wide mb-4">
-                            {TOTAL_DOCS} documenten · bijgewerkt {new Date().getFullYear()}
-                        </span>
-                        <h1 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
-                            Compliance Hub
-                        </h1>
-                        <p className="text-slate-600 max-w-2xl">
-                            Alle juridische, technische en didactische documentatie voor
-                            schoolbesturen, functionarissen gegevensbescherming en ICT-coördinatoren
-                            op één plek. Publieke documenten zijn direct beschikbaar; gevoelige
-                            interne rapporten delen we op aanvraag onder geheimhouding.
-                        </p>
-                    </div>
+                    <Reveal delay={0}>
+                        <div className="mb-10">
+                            <span className="inline-block px-3 py-1 bg-lab-coral/10 text-lab-coral text-[11px] font-bold rounded-full uppercase tracking-[0.14em] mb-4">
+                                {TOTAL_DOCS} documenten · bijgewerkt {new Date().getFullYear()}
+                            </span>
+                            <h1 className="font-black text-balance text-3xl sm:text-4xl md:text-5xl text-lab-ink mb-4">
+                                Compliance Hub
+                            </h1>
+                            <p className="text-lab-muted max-w-2xl font-sans text-base leading-relaxed">
+                                Alle juridische, technische en didactische documentatie voor
+                                schoolbesturen, functionarissen gegevensbescherming en ICT-coördinatoren
+                                op één plek. Publieke documenten zijn direct beschikbaar; gevoelige
+                                interne rapporten delen we op aanvraag onder geheimhouding.
+                            </p>
+                        </div>
+                    </Reveal>
 
-                    <nav aria-label="Snelnavigatie compliance" className="mb-12 p-4 bg-white rounded-2xl border border-slate-100">
-                        <p className="text-[11px] font-bold uppercase text-slate-400 mb-3">Snel naar</p>
-                        <ul className="flex flex-wrap gap-x-5 gap-y-2 text-sm">
-                            {SECTIONS.map((s) => (
-                                <li key={s.id}>
-                                    <a
-                                        href={`#${s.id}`}
-                                        className="text-slate-600 hover:text-indigo-600 font-medium"
-                                    >
-                                        {s.title}
-                                    </a>
-                                </li>
-                            ))}
-                        </ul>
-                    </nav>
+                    <Reveal delay={0.04}>
+                        <nav aria-label="Snelnavigatie compliance" className="mb-12 p-4 bg-lab-paper rounded-2xl border border-lab-line">
+                            <p className="text-[11px] font-bold uppercase text-lab-mutedSoft mb-3">Snel naar</p>
+                            <ul className="flex flex-wrap gap-x-5 gap-y-2 text-sm">
+                                {SECTIONS.map((s) => (
+                                    <li key={s.id}>
+                                        <a
+                                            href={`#${s.id}`}
+                                            className="text-lab-muted hover:text-lab-coral font-medium transition-colors"
+                                        >
+                                            {s.title}
+                                        </a>
+                                    </li>
+                                ))}
+                            </ul>
+                        </nav>
+                    </Reveal>
 
-                    {SECTIONS.map((section) => (
-                        <Section key={section.id} section={section} />
+                    {SECTIONS.map((section, index) => (
+                        <Section key={section.id} section={section} index={index} />
                     ))}
 
-                    <div className="bg-white p-8 rounded-2xl border border-slate-100 text-center">
-                        <h2 className="text-xl font-bold mb-4">Vragen voor onze Privacy Officer?</h2>
-                        <p className="text-slate-500 text-sm mb-6 max-w-xl mx-auto">
-                            Heb je specifieke vragen over de AVG, de EU AI Act of integratie met
-                            jouw school-LVS? Onze FG/privacy officer reageert binnen twee
-                            werkdagen.
-                        </p>
-                        <a
-                            href={`mailto:${PRIVACY_EMAIL}`}
-                            className="text-indigo-600 font-bold hover:underline"
-                        >
-                            {PRIVACY_EMAIL}
-                        </a>
-                    </div>
+                    <Reveal delay={0.05}>
+                        <div className="bg-lab-paper p-8 rounded-2xl border border-lab-line shadow-[0_24px_60px_-30px_rgba(8,40,59,0.10)] text-center">
+                            <h2 className="font-black text-2xl md:text-3xl text-lab-ink mb-4">Vragen voor onze Privacy Officer?</h2>
+                            <p className="text-lab-muted text-sm mb-6 max-w-xl mx-auto leading-relaxed">
+                                Heb je specifieke vragen over de AVG, de EU AI Act of integratie met
+                                jouw school-LVS? Onze FG/privacy officer reageert binnen twee
+                                werkdagen.
+                            </p>
+                            <a
+                                href={`mailto:${PRIVACY_EMAIL}`}
+                                className="text-lab-coral hover:text-lab-coral/80 font-bold"
+                            >
+                                {PRIVACY_EMAIL}
+                            </a>
+                        </div>
+                    </Reveal>
                 </div>
             </main>
 
-            <footer className="py-12 text-slate-400 text-center text-xs">
-                <p>© {new Date().getFullYear()} DGSkills — Privacy & Compliance</p>
+            <footer className="py-12 text-lab-mutedSoft text-center text-xs">
+                <p>© {new Date().getFullYear()} DGSkills — Privacy &amp; Compliance</p>
             </footer>
         </div>
     );
 };
+
+// ─── Inline animation utilities ───────────────────────────────────────────────
+
+function usePrefersReducedMotion() {
+    const [reduced, setReduced] = useState(false);
+
+    useEffect(() => {
+        if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return;
+        const media = window.matchMedia('(prefers-reduced-motion: reduce)');
+        const update = () => setReduced(media.matches);
+        update();
+        media.addEventListener?.('change', update);
+        return () => media.removeEventListener?.('change', update);
+    }, []);
+
+    return reduced;
+}
+
+function Reveal({
+    children,
+    className,
+    delay = 0,
+    y = 24,
+    style,
+}: {
+    children: React.ReactNode;
+    className?: string;
+    delay?: number;
+    y?: number;
+    style?: React.CSSProperties;
+}) {
+    const reduceMotion = usePrefersReducedMotion();
+    const [inView, setInView] = useState(false);
+    const ref = useRef<HTMLDivElement | null>(null);
+
+    useEffect(() => {
+        if (reduceMotion) {
+            setInView(true);
+            return;
+        }
+
+        const element = ref.current;
+        if (!element) return;
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setInView(true);
+                    observer.disconnect();
+                }
+            },
+            { rootMargin: '0px 0px -10% 0px', threshold: 0.16 }
+        );
+
+        observer.observe(element);
+        return () => observer.disconnect();
+    }, [reduceMotion]);
+
+    if (reduceMotion) {
+        return <div className={className} style={style}>{children}</div>;
+    }
+
+    return (
+        <div
+            ref={ref}
+            className={className}
+            style={{
+                ...style,
+                opacity: inView ? 1 : 0.92,
+                transform: inView ? 'translate3d(0,0,0)' : `translate3d(0,${y}px,0)`,
+                transition: `opacity 680ms cubic-bezier(.22,1,.36,1) ${delay}s, transform 680ms cubic-bezier(.22,1,.36,1) ${delay}s`,
+                willChange: inView ? 'auto' : 'opacity, transform',
+            }}
+        >
+            {children}
+        </div>
+    );
+}
