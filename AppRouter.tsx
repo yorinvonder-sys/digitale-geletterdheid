@@ -42,6 +42,77 @@ const LoadingFallback = () => (
     </div>
 );
 
+const PUBLIC_SCROLL_OFFSET = 96;
+
+function findHashTarget(hash: string): HTMLElement | null {
+    const rawId = hash.startsWith('#') ? hash.slice(1) : hash;
+    if (!rawId) return null;
+
+    try {
+        return document.getElementById(decodeURIComponent(rawId));
+    } catch {
+        return document.getElementById(rawId);
+    }
+}
+
+function scrollTargetIntoPublicView(target: HTMLElement, behavior: ScrollBehavior) {
+    const top = target.getBoundingClientRect().top + window.scrollY - PUBLIC_SCROLL_OFFSET;
+    window.scrollTo({ top: Math.max(0, top), behavior });
+}
+
+function usePublicHashScroll() {
+    useEffect(() => {
+        let frameId: number | undefined;
+        let timeoutIds: number[] = [];
+
+        const clearPending = () => {
+            if (frameId !== undefined) {
+                window.cancelAnimationFrame(frameId);
+                frameId = undefined;
+            }
+            timeoutIds.forEach((id) => window.clearTimeout(id));
+            timeoutIds = [];
+        };
+
+        const scrollToCurrentHash = (behavior: ScrollBehavior) => {
+            const hash = window.location.hash;
+            if (!hash) return;
+
+            clearPending();
+            let attempts = 0;
+
+            const attempt = () => {
+                attempts += 1;
+                const target = findHashTarget(hash);
+
+                if (target) {
+                    scrollTargetIntoPublicView(target, behavior);
+                    return;
+                }
+
+                if (attempts < 16) {
+                    timeoutIds.push(window.setTimeout(attempt, attempts < 5 ? 75 : 180));
+                }
+            };
+
+            frameId = window.requestAnimationFrame(attempt);
+        };
+
+        scrollToCurrentHash('auto');
+
+        const handleHashChange = () => scrollToCurrentHash('smooth');
+        const handlePathChange = () => scrollToCurrentHash('auto');
+
+        window.addEventListener('hashchange', handleHashChange);
+        window.addEventListener('pathchange', handlePathChange);
+        return () => {
+            clearPending();
+            window.removeEventListener('hashchange', handleHashChange);
+            window.removeEventListener('pathchange', handlePathChange);
+        };
+    }, []);
+}
+
 /** Sync path with history; re-render on popstate or programmatic navigation */
 function usePath() {
     const [path, setPath] = useState(() => window.location.pathname);
@@ -208,6 +279,7 @@ function useAuthUser(options?: { enabled?: boolean; deferUntilIdle?: boolean }) 
 /** Public routes: / and /scholen. Render shell immediately; defer auth to avoid blocking LCP. */
 function PublicPageShell({ children }: { children: React.ReactNode }) {
     const showCookieBanner = useIdleMount(2600);
+    usePublicHashScroll();
 
     return (
         <div className="w-full min-h-screen relative">

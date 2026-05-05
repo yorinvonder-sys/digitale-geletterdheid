@@ -1,8 +1,182 @@
-import React, { useState, useEffect, Suspense, useRef, useCallback, Component } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import {
+    DEFAULT_GAME_CONFIG,
+    applyDelta,
+    tweakGameDemo,
+    type GameConfig,
+} from '@/services/gameDemoService';
 
-type LandingAnalyticsEvent = 'dual_cta_click' | 'contact_click';
+type NavItem = { label: string; target: string };
+type Skill = {
+    title: string;
+    icon: React.ReactNode;
+    color: string;
+    bullets: string[];
+    projects: string;
+    image: string;
+    alt: string;
+};
+type CinematicChapter = {
+    step: string;
+    title: string;
+    eyebrow: string;
+    copy: string;
+    image: string;
+    alt: string;
+    accent: string;
+    icon: React.ReactNode;
+    stat: string;
+    statLabel: string;
+};
 
-function trackLandingEvent(event: LandingAnalyticsEvent, data?: Record<string, unknown>) {
+const C = {
+    cream: '#FCF6EA',
+    creamDeep: '#F3E4CB',
+    paper: '#FFFDF7',
+    ink: '#08283B',
+    muted: '#445865',
+    olive: '#99984D',
+    gold: '#D7C95F',
+    sage: '#5F947D',
+    sageSoft: '#DCE9DD',
+    coral: '#D97848',
+    peach: '#D97848',
+    teal: '#0B453F',
+    line: '#E7D8BD',
+} as const;
+
+const NAV_ITEMS: NavItem[] = [
+    { label: 'Hoe het werkt', target: 'journey' },
+    { label: 'Skills', target: 'skills' },
+    { label: 'Game demo', target: 'projecten' },
+    { label: 'Portfolio', target: 'portfolio' },
+];
+
+const skills: Skill[] = [
+    {
+        title: 'AI & Data',
+        icon: <BrainIcon />,
+        color: '#7EAD94',
+        bullets: ['AI-tools gebruiken', 'Data analyseren', 'Slimme apps bouwen'],
+        projects: '12 projecten',
+        image: '/screenshots/missions/ml-trainer.webp',
+        alt: 'AI en data missievoorbeeld in DGSkills',
+    },
+    {
+        title: 'Design & Create',
+        icon: <PencilIcon />,
+        color: '#E49A73',
+        bullets: ['Grafisch ontwerp', 'UI/UX design', 'Animatie & video'],
+        projects: '18 projecten',
+        image: '/screenshots/missions/brand-builder.webp',
+        alt: 'Design en creatie missievoorbeeld in DGSkills',
+    },
+    {
+        title: 'Code & Bouw',
+        icon: <CodeIcon />,
+        color: '#9DCBBC',
+        bullets: ['Web development', 'App development', 'Games maken'],
+        projects: '24 projecten',
+        image: '/screenshots/mission-game-programmeur.webp',
+        alt: 'Game Programmeur missievoorbeeld in DGSkills',
+    },
+    {
+        title: 'Media & Verhaal',
+        icon: <CameraIcon />,
+        color: '#C996A7',
+        bullets: ['Video editen', 'Podcast maken', 'Storytelling'],
+        projects: '16 projecten',
+        image: '/screenshots/missions/digital-storyteller.webp',
+        alt: 'Media en verhaal missievoorbeeld in DGSkills',
+    },
+    {
+        title: 'Online veiligheid',
+        icon: <LockIcon />,
+        color: '#DBC95D',
+        bullets: ['Privacy & security', 'Cyber awareness', 'Verantwoord online'],
+        projects: '8 projecten',
+        image: '/screenshots/ict-privacy.webp',
+        alt: 'Online veiligheid en privacy voorbeeld in DGSkills',
+    },
+];
+
+const HOMEPAGE_SEO = {
+    title: 'Digitale Geletterdheid voor VO en VSO | DGSkills schoolpilot',
+    description: 'DGSkills maakt digitale geletterdheid tastbaar voor VO en VSO. AI-missies, SLO-rapportage, docentdashboard, AVG-bewuste AI en een schoolpilot op maat.',
+    image: 'https://dgskills.app/og-image.png',
+};
+
+const heroProofItems = [
+    { label: 'SLO-ready', value: 'Kerndoelen zichtbaar per missie' },
+    { label: 'Docentproof', value: 'Dashboard voor voortgang en signalen' },
+    { label: 'Samen ingericht', value: 'Schoolpilot op maat met je team' },
+    { label: 'Veilig', value: 'AVG-bewust en AI Act-bewust' },
+] as const;
+
+const cinematicChapters: CinematicChapter[] = [
+    {
+        step: '01',
+        title: 'Ontdek',
+        eyebrow: 'Start je route',
+        copy: 'Leerlingen kiezen een leerlijn, zien direct de AI-missies en starten vanuit hun eigen niveau.',
+        image: '/screenshots/new-dashboard-missions.png',
+        alt: 'DGSkills dashboard met leerlijn, periodes, leerdoelen en missiekaarten',
+        accent: '#D7C95F',
+        icon: <SearchIcon />,
+        stat: '20+',
+        statLabel: 'AI-missies klaar',
+    },
+    {
+        step: '02',
+        title: 'Leer',
+        eyebrow: 'Korte challenges',
+        copy: 'Elke opdracht gebruikt echte DGSkills-schermen, zodat leerlingen leren door te doen in plaats van alleen te lezen.',
+        image: '/screenshots/prompt-master.webp',
+        alt: 'DGSkills Prompt Perfectionist opdracht met invoerveld voor een AI-prompt',
+        accent: '#5F947D',
+        icon: <BookIcon />,
+        stat: 'SLO',
+        statLabel: 'gekoppeld',
+    },
+    {
+        step: '03',
+        title: 'Maak',
+        eyebrow: 'Projectmodus',
+        copy: 'Bouw een platformer, ontwerp een robotroute, laat AI je tekening raden en remix challenges tot iets eigens.',
+        image: '/screenshots/mission-game-programmeur.webp',
+        alt: 'DGSkills game studio met platformgame, robotroute, AI tekengame en prompt challenge voorbeelden',
+        accent: '#D97848',
+        icon: <PencilIcon />,
+        stat: '24',
+        statLabel: 'bouwprojecten',
+    },
+    {
+        step: '04',
+        title: 'Bewijs',
+        eyebrow: 'Trofeeën en XP',
+        copy: 'Voortgang wordt zichtbaar met levels, trofeeën en XP, zonder dat het voelt als een saai leerlingvolgsysteem.',
+        image: '/screenshots/student-progress-xp.webp',
+        alt: 'DGSkills voortgangsscherm met XP, level en trofeeën',
+        accent: '#5F947D',
+        icon: <BadgeIcon />,
+        stat: 'XP',
+        statLabel: 'groeit mee',
+    },
+    {
+        step: '05',
+        title: 'Deel',
+        eyebrow: 'Portfolio verhaal',
+        copy: 'Aan het einde staat er geen losse score, maar een portfolio waarmee leerlingen laten zien wat ze kunnen.',
+        image: '/screenshots/student-dashboard.webp',
+        alt: 'DGSkills student dashboard als portfolio-overzicht',
+        accent: '#08283B',
+        icon: <SendIcon />,
+        stat: '1',
+        statLabel: 'eigen portfolio',
+    },
+];
+
+function trackLandingEvent(event: string, data?: Record<string, unknown>) {
     void import('../services/analyticsService')
         .then(({ trackEvent }) => trackEvent(event, data))
         .catch(() => {
@@ -10,310 +184,18 @@ function trackLandingEvent(event: LandingAnalyticsEvent, data?: Record<string, u
         });
 }
 
-// Warm earth-tone palette (Anthropic-inspired)
-const C = {
-    bg: '#FAF9F0',
-    bgAlt: '#F5F3EC',
-    text: '#1A1A19',
-    textMuted: '#6B6B66',
-    textLight: '#9C9C95',
-    accent: '#D97757',
-    accentHover: '#C46849',
-    border: '#E8E6DF',
-    borderLight: '#F0EEE8',
-    dark: '#1A1A19',
-    darkDeep: '#141413',
-} as const;
-
-const SERIF = "Georgia, 'Times New Roman', serif";
-const SANS = "'Outfit', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
-
-/** Prevents a single lazy section crash from killing the whole page */
-class SectionErrorBoundary extends Component<{ children: React.ReactNode }, { hasError: boolean }> {
-    constructor(props: { children: React.ReactNode }) {
-        super(props);
-        this.state = { hasError: false };
-    }
-    static getDerivedStateFromError() { return { hasError: true }; }
-    componentDidCatch(error: Error) { console.error('[ScholenLanding] Section error:', error.message); }
-    render() {
-        if (this.state.hasError) {
-            return (
-                <div className="py-12 text-center">
-                    <p className="text-sm" style={{ color: C.textLight }}>Dit onderdeel kon niet worden geladen.</p>
-                    <button
-                        onClick={() => this.setState({ hasError: false })}
-                        className="mt-3 text-sm font-medium hover:underline focus-visible:ring-2 focus-visible:rounded-md"
-                        style={{ color: C.accent }}
-                    >
-                        Opnieuw proberen
-                    </button>
-                </div>
-            );
-        }
-        return this.props.children;
-    }
-}
-
-/** Renders children only when section enters viewport — defers chunk load until scroll */
-function DeferredSection({ children, minHeight }: { children: React.ReactNode; minHeight: string }) {
-    const [visible, setVisible] = useState(false);
-    const ref = useRef<HTMLDivElement>(null);
-    useEffect(() => {
-        const el = ref.current;
-        if (!el) return;
-        const io = new IntersectionObserver(
-            ([e]) => { if (e.isIntersecting) setVisible(true); },
-            { rootMargin: '80px', threshold: 0 }
-        );
-        io.observe(el);
-        return () => io.disconnect();
-    }, []);
-    if (!visible) return <div ref={ref} className={minHeight} aria-hidden="true" />;
-    return <>{children}</>;
-}
-
-/** Animate-in-on-scroll wrapper */
-function AnimateOnScroll({ children, className = '', delay = '' }: { children: React.ReactNode; className?: string; delay?: string }) {
-    const [isVisible, setIsVisible] = useState(false);
-    const ref = useRef<HTMLDivElement>(null);
-    useEffect(() => {
-        const el = ref.current;
-        if (!el) return;
-        const io = new IntersectionObserver(
-            ([e]) => { if (e.isIntersecting) { setIsVisible(true); io.disconnect(); } },
-            { rootMargin: '0px', threshold: 0.1 }
-        );
-        io.observe(el);
-        return () => io.disconnect();
-    }, []);
-    return (
-        <div
-            ref={ref}
-            className={`transition-[opacity,transform] duration-700 ${delay} ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'} ${className}`}
-        >
-            {children}
-        </div>
-    );
-}
-
-/** Animated counter that counts up from 0 when in view */
-function AnimatedCounter({ value, suffix = '', prefix = '' }: { value: string; suffix?: string; prefix?: string }) {
-    const [displayValue, setDisplayValue] = useState('0');
-    const [hasAnimated, setHasAnimated] = useState(false);
-    const ref = useRef<HTMLSpanElement>(null);
-
-    useEffect(() => {
-        const el = ref.current;
-        if (!el || hasAnimated) return;
-        const io = new IntersectionObserver(
-            ([e]) => {
-                if (e.isIntersecting) {
-                    setHasAnimated(true);
-                    io.disconnect();
-                    const numericValue = parseInt(value.replace(/\D/g, ''), 10);
-                    if (isNaN(numericValue)) { setDisplayValue(value); return; }
-                    const duration = 1200;
-                    const start = performance.now();
-                    const animate = (now: number) => {
-                        const elapsed = now - start;
-                        const progress = Math.min(elapsed / duration, 1);
-                        const eased = 1 - Math.pow(1 - progress, 3);
-                        const current = Math.round(numericValue * eased);
-                        setDisplayValue(value.includes('.') ? current.toLocaleString('nl-NL') : String(current));
-                        if (progress < 1) requestAnimationFrame(animate);
-                        else setDisplayValue(value);
-                    };
-                    requestAnimationFrame(animate);
-                }
-            },
-            { threshold: 0.5 }
-        );
-        io.observe(el);
-        return () => io.disconnect();
-    }, [value, hasAnimated]);
-
-    return <span ref={ref}>{prefix}{displayValue}{suffix}</span>;
-}
-
-/** Inline SVGs for critical path — avoids loading lucide (65kb) for LCP */
-const IconMenu = () => (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        <line x1="4" y1="12" x2="20" y2="12" /><line x1="4" y1="6" x2="20" y2="6" /><line x1="4" y1="18" x2="20" y2="18" />
-    </svg>
-);
-const IconX = () => (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        <path d="M18 6L6 18M6 6l12 12" />
-    </svg>
-);
-const IconArrowRight = () => (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        <path d="M5 12h14M12 5l7 7-7 7" />
-    </svg>
-);
-const IconChevronDown = () => {
-    const noMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    return (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={noMotion ? undefined : { animation: 'bounce 1s ease 3' }} aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-        </svg>
-    );
-};
-
-// Lazy load below-the-fold sections
-const ScholenLandingPainPoints = React.lazy(() => import('./scholen/ScholenLandingPainPoints').then(m => ({ default: m.ScholenLandingPainPoints })));
-const ScholenLandingFeatures = React.lazy(() => import('./scholen/ScholenLandingFeatures').then(m => ({ default: m.ScholenLandingFeatures })));
-const ScholenLandingSlo = React.lazy(() => import('./scholen/ScholenLandingSlo').then(m => ({ default: m.ScholenLandingSlo })));
-const ScholenLandingFaq = React.lazy(() => import('./scholen/ScholenLandingFaq').then(m => ({ default: m.ScholenLandingFaq })));
-const ScholenLandingIct = React.lazy(() => import('./scholen/ScholenLandingIct').then(m => ({ default: m.ScholenLandingIct })));
-const ScholenLandingContact = React.lazy(() => import('./scholen/ScholenLandingContact').then(m => ({ default: m.ScholenLandingContact })));
-const ScholenLandingExpertise = React.lazy(() => import('./scholen/ScholenLandingExpertise').then(m => ({ default: m.ScholenLandingExpertise })));
-const ScholenLandingPlatformPreview = React.lazy(() => import('./scholen/ScholenLandingPlatformPreview').then(m => ({ default: m.ScholenLandingPlatformPreview })));
-const ScholenLandingCustomization = React.lazy(() => import('./scholen/ScholenLandingCustomization').then(m => ({ default: m.ScholenLandingCustomization })));
-const ScholenLandingGameDemo = React.lazy(() => import('./scholen/ScholenLandingGameDemo').then(m => ({ default: m.ScholenLandingGameDemo })));
-const ScholenLandingDashboardDemo = React.lazy(() => import('./scholen/ScholenLandingDashboardDemo').then(m => ({ default: m.ScholenLandingDashboardDemo })));
-const ScholenLandingMissionShowcase = React.lazy(() => import('./scholen/ScholenLandingMissionShowcase').then(m => ({ default: m.ScholenLandingMissionShowcase })));
-const ScholenLandingDidactiek = React.lazy(() => import('./scholen/ScholenLandingDidactiek').then(m => ({ default: m.ScholenLandingDidactiek })));
-const ScholenLandingLiveDemo = React.lazy(() => import('./scholen/ScholenLandingLiveDemo').then(m => ({ default: m.ScholenLandingLiveDemo })));
-
-// Pip the Robin — lazy so it stays out of the landing page's main chunk
-const PipGuideModule = React.lazy(() => import('./scholen/FlyingPip').then(m => ({ default: m.PipGuide })));
-/** Wrapper that renders PipGuide only after idle, with Suspense fallback */
-const PipGuide: React.FC<{ pose: string; tooltip: string; side: string; children: React.ReactNode }> = (props) => (
-    <Suspense fallback={<>{props.children}</>}>
-        <PipGuideModule {...props as any} />
-    </Suspense>
-);
-
-// JSON-LD structured data for Google rich results
-const structuredData = {
-    "@context": "https://schema.org",
-    "@graph": [
-        {
-            "@type": "SoftwareApplication",
-            "name": "DGSkills",
-            "applicationCategory": "EducationalApplication",
-            "operatingSystem": "Web",
-            "description": "Interactief platform voor digitale geletterdheid in het voortgezet onderwijs met AI-missies, gamification en SLO Kerndoelen 2025.",
-            "url": "https://dgskills.app/scholen",
-            "offers": {
-                "@type": "Offer",
-                "price": "0",
-                "priceCurrency": "EUR",
-                "description": "Gratis pilot van 3 maanden voor scholen"
-            },
-            "audience": {
-                "@type": "EducationalAudience",
-                "educationalRole": "student",
-                "audienceType": "Voortgezet onderwijs (MAVO, HAVO, VWO)"
-            }
-        },
-        {
-            "@type": "FAQPage",
-            "mainEntity": [
-                {
-                    "@type": "Question",
-                    "name": "Wat is digitale geletterdheid en waarom wordt het verplicht?",
-                    "acceptedAnswer": {
-                        "@type": "Answer",
-                        "text": "Kennis en vaardigheden om veilig en effectief te functioneren in een digitale samenleving. SLO-kerndoelen worden per 2027 wettelijk verplicht; scholen kunnen al vanaf 2025/2026 starten."
-                    }
-                },
-                {
-                    "@type": "Question",
-                    "name": "Hoe verschilt DGSkills van DIGIT-vo of Basicly?",
-                    "acceptedAnswer": {
-                        "@type": "Answer",
-                        "text": "DGSkills combineert AI-missies, gamification (XP, badges, leaderboards) en volledige SLO-koppeling. Leerlingen leren door te doen — geen werkbladen."
-                    }
-                },
-                {
-                    "@type": "Question",
-                    "name": "Welke SLO Kerndoelen dekt DGSkills af?",
-                    "acceptedAnswer": {
-                        "@type": "Answer",
-                        "text": "Alle vier domeinen: Digitale vaardigheden, Informatievaardigheden, Mediawijsheid en Computational Thinking. Elke missie is gekoppeld aan specifieke kerndoelen."
-                    }
-                },
-                {
-                    "@type": "Question",
-                    "name": "Is DGSkills AVG-compliant en veilig?",
-                    "acceptedAnswer": {
-                        "@type": "Answer",
-                        "text": "Ja. Data wordt opgeslagen in een beveiligde Europese database. Verwerkersovereenkomst en DPIA beschikbaar. Voldoet aan AVG en onderwijseisen."
-                    }
-                },
-                {
-                    "@type": "Question",
-                    "name": "Op welke apparaten werkt DGSkills?",
-                    "acceptedAnswer": {
-                        "@type": "Answer",
-                        "text": "Elk apparaat met browser: iPad, Chromebook, laptop, telefoon. Geen installatie, geen IT-configuratie."
-                    }
-                },
-                {
-                    "@type": "Question",
-                    "name": "Wat kost DGSkills en is er een gratis proefperiode?",
-                    "acceptedAnswer": {
-                        "@type": "Answer",
-                        "text": "Gratis pilot van 3 maanden met volledige toegang. Daarna schoollicentie vanaf \u20ac2.000 per jaar."
-                    }
-                }
-            ]
-        },
-        {
-            "@type": "WebPage",
-            "name": "Digitale Geletterdheid voor Scholen \u2014 DGSkills",
-            "url": "https://dgskills.app/scholen",
-            "description": "DGSkills: interactief platform met AI-missies en gamification voor digitale geletterdheid in het voortgezet onderwijs. Gratis pilot voor scholen.",
-            "inLanguage": "nl"
-        }
-    ]
-};
-
-const SECTION_IDS = {
-    painPoints: 'de-uitdaging',
-    features: 'waarom-dgskills',
-    customization: 'op-maat',
-    howItWorks: 'hoe-het-werkt',
-    platform: 'platform-preview',
-    slo: 'slo-kerndoelen',
-    ict: 'voor-ict',
-    faq: 'veelgestelde-vragen',
-    contact: 'gratis-pilot'
-} as const;
-
 export const ScholenLanding: React.FC = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-    const [scrolled, setScrolled] = useState(false);
-    const [showFloatingCta, setShowFloatingCta] = useState(false);
-    const [isDesktopHero, setIsDesktopHero] = useState(() => {
-        if (typeof window === 'undefined') return true;
-        return window.matchMedia('(min-width: 768px)').matches;
-    });
+    const reduceMotion = usePrefersReducedMotion();
 
-    useEffect(() => {
-        if (typeof window === 'undefined') return;
-        const mediaQuery = window.matchMedia('(min-width: 768px)');
-        const update = () => setIsDesktopHero(mediaQuery.matches);
-        update();
-
-        if (typeof mediaQuery.addEventListener === 'function') {
-            mediaQuery.addEventListener('change', update);
-            return () => mediaQuery.removeEventListener('change', update);
-        }
-
-        mediaQuery.addListener(update);
-        return () => mediaQuery.removeListener(update);
-    }, []);
+    useHomepageGsapEffects(reduceMotion);
 
     useEffect(() => {
         const originalTitle = document.title;
-        document.title = 'Digitale Geletterdheid voor Scholen \u2014 Gratis Pilot | DGSkills';
+        document.title = HOMEPAGE_SEO.title;
 
         const setMeta = (attr: string, key: string, content: string) => {
-            let el = document.querySelector(`meta[${attr}="${key}"]`) as HTMLMetaElement;
+            let el = document.querySelector(`meta[${attr}="${key}"]`) as HTMLMetaElement | null;
             if (!el) {
                 el = document.createElement('meta');
                 el.setAttribute(attr, key);
@@ -322,673 +204,1595 @@ export const ScholenLanding: React.FC = () => {
             el.setAttribute('content', content);
         };
 
-        setMeta('name', 'description', 'DGSkills is het interactieve platform voor digitale geletterdheid in het voortgezet onderwijs. AI-missies, gamification en SLO Kerndoelen 2025. Start een gratis pilot voor jouw school.');
-        setMeta('property', 'og:title', 'Digitale Geletterdheid voor Scholen \u2014 Gratis Pilot | DGSkills');
-        setMeta('property', 'og:description', 'AI-missies, gamification en SLO Kerndoelen 2025 in \u00e9\u00e9n platform. Start een gratis pilot van 3 maanden.');
+        const path = window.location.pathname === '/scholen' ? '/scholen' : '/';
+        const canonicalUrl = `https://dgskills.app${path === '/' ? '/' : path}`;
+        let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
+        if (!canonical) {
+            canonical = document.createElement('link');
+            canonical.rel = 'canonical';
+            document.head.appendChild(canonical);
+        }
+        canonical.href = canonicalUrl;
 
-        const scriptRef = { current: null as HTMLScriptElement | null };
-        const idleCb = () => {
-            setMeta('property', 'og:url', 'https://dgskills.app/scholen');
-            let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
-            if (canonical && window.location.pathname === '/scholen') {
-                canonical.href = 'https://dgskills.app/scholen';
-            } else if (canonical && window.location.pathname === '/') {
-                canonical.href = 'https://dgskills.app/';
-            }
-            try {
-                const script = document.createElement('script');
-                script.type = 'application/ld+json';
-                script.textContent = JSON.stringify(structuredData);
-                document.head.appendChild(script);
-                scriptRef.current = script;
-            } catch { /* CSP Trusted Types may block textContent on <script> */ }
-        };
-        const useIdle = typeof requestIdleCallback !== 'undefined';
-        const idleId = useIdle ? requestIdleCallback(idleCb, { timeout: 2000 }) : setTimeout(idleCb, 0);
+        setMeta('name', 'description', HOMEPAGE_SEO.description);
+        setMeta('name', 'robots', 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1');
+        setMeta('property', 'og:title', HOMEPAGE_SEO.title);
+        setMeta('property', 'og:description', HOMEPAGE_SEO.description);
+        setMeta('property', 'og:url', canonicalUrl);
+        setMeta('property', 'og:image', HOMEPAGE_SEO.image);
+        setMeta('name', 'twitter:title', HOMEPAGE_SEO.title);
+        setMeta('name', 'twitter:description', HOMEPAGE_SEO.description);
+        setMeta('name', 'twitter:image', HOMEPAGE_SEO.image);
 
         return () => {
             document.title = originalTitle;
-            useIdle && typeof cancelIdleCallback !== 'undefined'
-                ? cancelIdleCallback(idleId as number)
-                : clearTimeout(idleId as ReturnType<typeof setTimeout>);
-            scriptRef.current?.remove();
         };
     }, []);
 
-    // Scroll listener for nav shadow + floating CTA
-    useEffect(() => {
-        let rafId: number;
-        let mounted = true;
-        const handleScroll = () => {
-            if (!mounted) return;
-            if (rafId) cancelAnimationFrame(rafId);
-            rafId = requestAnimationFrame(() => {
-                setScrolled(window.scrollY > 20);
-                setShowFloatingCta(window.scrollY > 600);
-            });
-        };
-        const schedule = typeof requestIdleCallback !== 'undefined'
-            ? (cb: () => void) => requestIdleCallback(cb, { timeout: 1500 })
-            : (cb: () => void) => setTimeout(cb, 0);
-        const idleId = schedule(() => {
-            if (mounted) window.addEventListener('scroll', handleScroll, { passive: true });
-        });
-        return () => {
-            mounted = false;
-            typeof cancelIdleCallback !== 'undefined' ? cancelIdleCallback(idleId as number) : clearTimeout(idleId as ReturnType<typeof setTimeout>);
-            window.removeEventListener('scroll', handleScroll);
-            if (rafId) cancelAnimationFrame(rafId);
-        };
-    }, []);
-
-    const scrollTo = (sectionId: string) => {
-        document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const scrollTo = (target: string) => {
         setMobileMenuOpen(false);
+        window.requestAnimationFrame(() => {
+            const element = document.getElementById(target);
+            if (!element) return;
+            const top = element.getBoundingClientRect().top + window.scrollY - 96;
+            window.scrollTo({
+                top: Math.max(0, top),
+                behavior: reduceMotion ? 'auto' : 'smooth',
+            });
+        });
+    };
+
+    const startPilot = () => {
+        trackLandingEvent('dual_cta_click', { type: 'plan_schoolpilot' });
     };
 
     return (
-        <div className="min-h-screen antialiased" style={{ backgroundColor: C.bg, fontFamily: SANS, color: C.text }}>
-            <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:text-white focus:rounded-lg focus:font-semibold text-sm" style={{ backgroundColor: C.accent }}>Skip naar inhoud</a>
-
-            {/* Nav */}
-            <nav aria-label="Hoofdnavigatie" className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled
-                ? 'backdrop-blur-md shadow-[0_1px_0_0_rgba(0,0,0,0.04)]'
-                : 'bg-transparent'
-                }`} style={scrolled ? { backgroundColor: `${C.bg}ee` } : undefined}>
-                <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
-                    <a href="/" className="flex items-center gap-2.5">
-                        <img src="/mascot/pip-logo.webp" alt="DGSkills" className="w-9 h-9 object-contain" width={36} height={36} decoding="async" />
-                        <span className="font-semibold text-[15px] tracking-tight" style={{ color: C.text }}>DGSkills</span>
+        <div className="min-h-screen overflow-x-clip antialiased" style={{ background: C.cream, color: C.ink, fontFamily: "'Outfit', system-ui, sans-serif" }}>
+            <nav className="sticky top-0 z-50 border-b border-lab-line/50 bg-lab-cream/92 backdrop-blur-md" aria-label="Hoofdnavigatie">
+                <div className="mx-auto flex h-20 max-w-5xl items-center justify-between px-5 md:px-10">
+                    <a href="/" className="flex min-h-[44px] items-center rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink" aria-label="DGSkills homepage">
+                        <img src="/logo-lockup.svg" alt="" className="h-11 w-auto max-w-[180px] object-contain sm:h-12 sm:max-w-[220px]" width={320} height={96} />
                     </a>
 
-                    <div className="hidden lg:flex items-center gap-7">
-                        {[
-                            { label: 'Waarom DGSkills', section: SECTION_IDS.features },
-                            { label: 'Jouw school', section: SECTION_IDS.customization },
-                            { label: 'Veelgestelde vragen', section: SECTION_IDS.faq },
-                        ].map(item => (
-                            <button key={item.label} onClick={() => scrollTo(item.section)} className="text-[13px] font-medium transition-colors focus-visible:ring-2 focus-visible:rounded-md" style={{ color: C.textMuted }} onMouseEnter={e => (e.currentTarget.style.color = C.text)} onMouseLeave={e => (e.currentTarget.style.color = C.textMuted)}>{item.label}</button>
+                    <div className="hidden items-center gap-9 lg:flex">
+                        {NAV_ITEMS.map((item) => (
+                            <button key={item.target} onClick={() => scrollTo(item.target)} className="min-h-[44px] rounded-full px-2 text-sm font-bold text-lab-ink transition-colors hover:text-lab-sage focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink">
+                                {item.label}
+                            </button>
                         ))}
-                        <div className="h-4 w-px mx-1" style={{ backgroundColor: C.border }} aria-hidden="true" />
-                        <a href="/login" className="text-[13px] font-medium transition-colors" style={{ color: C.textMuted }} onMouseEnter={e => (e.currentTarget.style.color = C.text)} onMouseLeave={e => (e.currentTarget.style.color = C.textMuted)}>Inloggen</a>
-                        <button
-                            onClick={() => scrollTo(SECTION_IDS.contact)}
-                            className="text-[12px] font-semibold text-white px-3.5 py-1.5 rounded-full transition-colors whitespace-nowrap"
-                            style={{ backgroundColor: C.accent }}
-                            onMouseEnter={e => (e.currentTarget.style.backgroundColor = C.accentHover)}
-                            onMouseLeave={e => (e.currentTarget.style.backgroundColor = C.accent)}
-                        >
-                            Pilot aanvragen
-                        </button>
                     </div>
 
-                    <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="lg:hidden p-3 -mr-2 min-w-[44px] min-h-[44px] flex items-center justify-center" aria-label={mobileMenuOpen ? 'Menu sluiten' : 'Menu openen'} aria-expanded={mobileMenuOpen}>
-                        {mobileMenuOpen ? <IconX /> : <IconMenu />}
+                    <div className="hidden items-center gap-3 lg:flex">
+                        <a href="/login" className="inline-flex min-h-[44px] items-center rounded-full px-4 py-3 text-sm font-bold text-lab-ink transition-colors hover:text-lab-sage focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink">
+                            Inloggen
+                        </a>
+                        <a href="/pilot" onClick={startPilot} className="group inline-flex min-h-[44px] items-center gap-3 rounded-full bg-lab-gold px-5 py-2 text-sm font-black text-lab-ink shadow-md shadow-lab-ink/10 transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink">
+                            Plan schoolpilot
+                            <span className="grid size-8 place-items-center rounded-full bg-lab-oliveDeep text-white transition-transform group-hover:translate-x-0.5">
+                                <ArrowRightIcon />
+                            </span>
+                        </a>
+                    </div>
+
+                    <button
+                        type="button"
+                        onClick={() => setMobileMenuOpen((open) => !open)}
+                        className="grid size-11 place-items-center rounded-full border border-lab-line bg-white lg:hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink"
+                        aria-label={mobileMenuOpen ? 'Menu sluiten' : 'Menu openen'}
+                        aria-expanded={mobileMenuOpen}
+                    >
+                        {mobileMenuOpen ? <XIcon /> : <MenuIcon />}
                     </button>
                 </div>
 
                 {mobileMenuOpen && (
-                    <div className="lg:hidden backdrop-blur-md animate-fade-in-up" style={{ backgroundColor: `${C.bg}f5`, borderTop: `1px solid ${C.borderLight}` }}>
-                        <div className="px-6 py-4 space-y-1">
-                            {[
-                                { label: 'Waarom DGSkills', section: SECTION_IDS.features },
-                                { label: 'Jouw school', section: SECTION_IDS.customization },
-                                { label: 'Veelgestelde vragen', section: SECTION_IDS.faq },
-                            ].map(item => (
-                                <button key={item.label} onClick={() => scrollTo(item.section)} className="block w-full text-left px-3 py-3 text-sm rounded-lg transition-colors" style={{ color: C.text }} onMouseEnter={e => (e.currentTarget.style.backgroundColor = C.bgAlt)} onMouseLeave={e => (e.currentTarget.style.backgroundColor = 'transparent')}>{item.label}</button>
+                    <div className="border-t border-lab-line bg-lab-cream px-5 py-4 lg:hidden">
+                        <div className="space-y-1">
+                            {NAV_ITEMS.map((item) => (
+                                <button key={item.target} onClick={() => scrollTo(item.target)} className="block w-full rounded-lg px-3 py-3 text-left text-sm font-bold text-lab-ink hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink">
+                                    {item.label}
+                                </button>
                             ))}
-                            <div className="pt-4 space-y-2">
-                                <a href="/login" className="block w-full text-center py-3 text-sm font-semibold rounded-full" style={{ color: C.text, border: `1.5px solid ${C.border}` }}>Inloggen</a>
-                                <button onClick={() => scrollTo(SECTION_IDS.contact)} className="block w-full text-center py-3 text-sm font-semibold text-white rounded-full" style={{ backgroundColor: C.accent }}>Pilot aanvragen</button>
-                            </div>
+                        </div>
+                        <div className="mt-4 grid grid-cols-2 gap-3">
+                            <a href="/login" className="grid min-h-[44px] place-items-center rounded-full border border-lab-line bg-white text-sm font-black text-lab-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink">
+                                Inloggen
+                            </a>
+                            <a href="/pilot" onClick={startPilot} className="grid min-h-[44px] place-items-center rounded-full bg-lab-gold text-sm font-black text-lab-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink">
+                                Plan pilot
+                            </a>
                         </div>
                     </div>
                 )}
             </nav>
 
-
-            <main id="main-content">
-                {/* Hero */}
-                <section className="pt-32 pb-12 md:pt-40 md:pb-20 px-6 overflow-hidden" aria-labelledby="hero-heading">
-                    <div className="max-w-5xl mx-auto">
-                        {/* Heading — full width above grid so it never wraps */}
-                        <p className="text-sm font-medium mb-4 tracking-wide" style={{ color: C.accent }}>
-                            Voor het voortgezet onderwijs
-                        </p>
-
-                        <h1 id="hero-heading" className="text-2xl sm:text-3xl md:text-4xl leading-snug font-medium tracking-tight mb-8" style={{ fontFamily: SERIF }}>
-                            Digitale geletterdheid waar leerlingen <em className="not-italic" style={{ color: C.accent }}>wel</em> enthousiast van worden
-                        </h1>
-
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-                            {/* Left: text */}
-                            <div className="relative">
-                                {/* Decorative pencil sketch — subtle background element */}
-                                <svg className="absolute -top-8 -left-10 w-[320px] h-[320px] opacity-[0.06] pointer-events-none select-none hidden md:block" viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                    {/* Compass rose */}
-                                    <circle cx="150" cy="150" r="120" stroke={C.text} strokeWidth="1.5"/>
-                                    <circle cx="150" cy="150" r="105" stroke={C.text} strokeWidth="0.8"/>
-                                    <polygon points="150,35 145,150 150,160 155,150" fill={C.text}/>
-                                    <polygon points="150,265 145,150 150,140 155,150" fill={C.text} opacity="0.3"/>
-                                    <polygon points="35,150 150,145 160,150 150,155" fill={C.text} opacity="0.3"/>
-                                    <polygon points="265,150 150,145 140,150 150,155" fill={C.text} opacity="0.3"/>
-                                    {/* Degree marks */}
-                                    {[0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330].map(deg => (
-                                        <line key={deg} x1="150" y1="32" x2="150" y2="40" stroke={C.text} strokeWidth="1" transform={`rotate(${deg} 150 150)`}/>
-                                    ))}
-                                    <circle cx="150" cy="150" r="6" fill={C.text}/>
-                                </svg>
-
-                                <p className="text-base leading-relaxed max-w-xl mb-4" style={{ color: C.textMuted }}>
-                                    DGSkills combineert AI-missies, gamification en de
-                                    SLO Kerndoelen 2025 tot een complete lesmethode voor digitale geletterdheid.
-                                    Gebouwd door een docent, voor docenten.
-                                </p>
-                                <p className="text-sm font-medium mb-8 px-3 py-1.5 rounded-full inline-flex items-center gap-2" style={{ backgroundColor: `${C.accent}10`, color: C.accent, border: `1px solid ${C.accent}25` }}>
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                                    Kerndoelen verplicht per 2027 — start nu met de gratis pilot
-                                </p>
-
-                                <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                                    <button
-                                        onClick={() => {
-                                            scrollTo(SECTION_IDS.contact);
-                                            trackLandingEvent('dual_cta_click', { type: 'pilot' });
-                                        }}
-                                        className="group text-white px-4 py-2 rounded-full text-xs font-medium transition-all flex items-center justify-center gap-2 hover:-translate-y-0.5"
-                                        style={{ backgroundColor: C.accent, boxShadow: `0 8px 24px ${C.accent}33` }}
-                                        onMouseEnter={e => (e.currentTarget.style.backgroundColor = C.accentHover)}
-                                        onMouseLeave={e => (e.currentTarget.style.backgroundColor = C.accent)}
-                                    >
-                                        Gratis pilot aanvragen
-                                        <span className="group-hover:translate-x-0.5 transition-transform inline-block"><IconArrowRight /></span>
-                                    </button>
-                                    <button
-                                        onClick={() => {
-                                            scrollTo(SECTION_IDS.features);
-                                            trackLandingEvent('dual_cta_click', { type: 'demo' });
-                                        }}
-                                        className="group px-4 py-2 rounded-full text-xs font-medium transition-all flex items-center justify-center gap-2 hover:-translate-y-0.5"
-                                        style={{ border: `1.5px solid ${C.border}`, color: C.text }}
-                                    >
-                                        Bekijk de demo
-                                        <span style={{ color: C.textLight }}><IconArrowRight /></span>
-                                    </button>
-                                </div>
-
-                                {/* Trust badges */}
-                                <div className="flex flex-wrap items-center gap-x-3 gap-y-2 sm:gap-4 mt-8 text-xs font-medium" style={{ color: C.textMuted }}>
-                                    <span className="flex items-center gap-1.5">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                                        AVG-compliant
-                                    </span>
-                                    <span className="flex items-center gap-1.5">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-                                        SLO Kerndoelen 2025
-                                    </span>
-                                    <span className="flex items-center gap-1.5">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-                                        Geen installatie
-                                    </span>
-                                    <span className="flex items-center gap-1.5">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-                                        EU AI Act ready
-                                    </span>
-                                </div>
-                            </div>
-
-                            {/* Right: hero video */}
-                            {isDesktopHero && (
-                                <div className="relative hidden md:block" aria-hidden="true">
-                                {/* Background glow — warm */}
-                                <div
-                                    className="absolute -inset-4 rounded-[2.5rem] opacity-80"
-                                    style={{ background: `radial-gradient(circle at 30% 30%, ${C.accent}18, transparent 58%), linear-gradient(135deg, ${C.bgAlt}85, transparent)` }}
-                                />
-
-                                {/* Video container */}
-                                <div className="relative">
-                                    <div className="rounded-2xl overflow-hidden" style={{ boxShadow: `0 18px 34px ${C.text}12`, border: `1px solid ${C.border}` }}>
-                                        <video
-                                            autoPlay
-                                            loop
-                                            muted
-                                            playsInline
-                                            preload="metadata"
-                                            className="w-full rounded-2xl"
-                                            src="/videos/hero-hybrid.mp4"
-                                        />
-                                    </div>
-                                </div>
-
-                                {/* Pip — floating near the video */}
-                                <div className="absolute -top-7 left-16 z-20">
-                                    <img
-                                        src="/mascot/pip-headset.webp"
-                                        alt="Pip — DGSkills mascotte"
-                                        className="w-10 h-10 object-contain"
-                                        width={40}
-                                        height={40}
-                                        loading="lazy"
-                                        fetchPriority="low"
-                                        decoding="async"
-                                    />
-                                </div>
-                                </div>
-                            )}
-                        </div>
-
-                        {/* Scroll indicator with Pip */}
-                        <div className="flex items-center justify-center gap-2 mt-12 md:mt-16">
-                            <img
-                                src="/mascot/pip-excited.webp"
-                                alt=""
-                                className="w-7 h-7 object-contain opacity-50 hidden sm:block"
-                                width={28}
-                                height={28}
-                                loading="lazy"
-                                aria-hidden="true"
-                            />
-                            <button
-                                onClick={() => scrollTo(SECTION_IDS.painPoints)}
-                                className="transition-colors p-2"
-                                style={{ color: C.textLight }}
-                                aria-label="Scroll naar beneden"
-                            >
-                                <IconChevronDown />
-                            </button>
-                        </div>
-                    </div>
-                </section>
-
-                {/* Social proof strip */}
-                <section className="py-10 px-6 [content-visibility:auto] [contain-intrinsic-size:auto_120px]" style={{ borderTop: `1px solid ${C.border}`, borderBottom: `1px solid ${C.border}`, backgroundColor: `${C.bgAlt}80` }} aria-label="Feiten en cijfers">
-                    <div className="max-w-5xl mx-auto">
-                        <div className="grid grid-cols-2 md:grid-cols-5 gap-5 md:gap-6 items-center">
-                            <div>
-                                <p className="text-2xl font-semibold tabular-nums" style={{ color: C.text, fontFamily: SERIF }}><AnimatedCounter value="20" suffix="+" /></p>
-                                <p className="text-sm mt-0.5" style={{ color: C.textMuted }}>Interactieve AI-missies</p>
-                            </div>
-                            <div>
-                                <p className="text-2xl font-semibold tabular-nums" style={{ color: C.text, fontFamily: SERIF }}><AnimatedCounter value="9" /></p>
-                                <p className="text-sm mt-0.5" style={{ color: C.textMuted }}>SLO Kerndoelen gedekt</p>
-                            </div>
-                            <div>
-                                <p className="text-2xl font-semibold tabular-nums" style={{ color: C.text, fontFamily: SERIF }}><AnimatedCounter value="10" /></p>
-                                <p className="text-sm mt-0.5" style={{ color: C.textMuted }}>Werkdagen tot livegang</p>
-                            </div>
-                            <div>
-                                <p className="text-2xl font-semibold" style={{ color: C.text, fontFamily: SERIF }}><AnimatedCounter prefix="€" value="0" /></p>
-                                <p className="text-sm mt-0.5" style={{ color: C.textMuted }}>Gratis pilot, 3 maanden</p>
-                            </div>
-                            <div className="col-span-2 md:col-span-1 flex items-center gap-3 md:justify-end">
-                                <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${C.accent}18`, color: C.accent }}>
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-                                </div>
-                                <div>
-                                    <p className="text-xs font-bold" style={{ color: C.text }}>Almere College</p>
-                                    <p className="text-xs" style={{ color: C.textMuted }}>Pilotschool 2025-2026</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                {/* Pain Points */}
-                <PipGuide pose="concerned" tooltip="Leerlingen scoren een 4,7 voor digitale geletterdheid..." side="left">
-                <section id={SECTION_IDS.painPoints} className="py-14 md:py-20 lg:py-24 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_400px]" aria-label="De uitdaging">
-                    <SectionErrorBoundary>
-                        <DeferredSection minHeight="min-h-[300px]">
-                            <Suspense fallback={<div className="min-h-[300px]" aria-hidden="true" />}>
-                                <AnimateOnScroll>
-                                    <ScholenLandingPainPoints />
-                                </AnimateOnScroll>
-                            </Suspense>
-                        </DeferredSection>
-                    </SectionErrorBoundary>
-                </section>
-                </PipGuide>
-
-                {/* Features */}
-                <PipGuide pose="excited" tooltip="AI-missies die echt werken!" side="right">
-                <section id={SECTION_IDS.features} className="py-14 md:py-20 lg:py-24 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_500px]" style={{ backgroundColor: C.bgAlt, borderTop: `1px solid ${C.border}`, borderBottom: `1px solid ${C.border}` }}>
-                    <SectionErrorBoundary>
-                        <DeferredSection minHeight="min-h-[400px]">
-                            <Suspense fallback={<div className="min-h-[400px]" aria-hidden="true" />}>
-                                <AnimateOnScroll>
-                                    <ScholenLandingFeatures />
-                                </AnimateOnScroll>
-                            </Suspense>
-                        </DeferredSection>
-                    </SectionErrorBoundary>
-                </section>
-                </PipGuide>
-
-                {/* Mid-page CTA */}
-                <section className="py-10 px-6" aria-label="Pilot aanvragen">
-                    <div className="max-w-3xl mx-auto text-center">
-                        <p className="text-lg font-medium mb-4" style={{ fontFamily: SERIF, color: C.text }}>
-                            Klaar om digitale geletterdheid concreet te maken?
-                        </p>
-                        <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-                            <button
-                                onClick={() => scrollTo(SECTION_IDS.contact)}
-                                className="text-white px-6 py-3 rounded-full text-sm font-semibold transition-all hover:-translate-y-0.5"
-                                style={{ backgroundColor: C.accent, boxShadow: `0 8px 24px ${C.accent}33` }}
-                                onMouseEnter={e => (e.currentTarget.style.backgroundColor = C.accentHover)}
-                                onMouseLeave={e => (e.currentTarget.style.backgroundColor = C.accent)}
-                            >
-                                Start een gratis pilot
-                            </button>
-                            <span className="text-xs" style={{ color: C.textLight }}>Geen verplichtingen, live binnen 10 werkdagen</span>
-                        </div>
-                    </div>
-                </section>
-
-                {/* Customization USP */}
-                <PipGuide pose="waving" tooltip="Jullie school, jullie regels!" side="left">
-                <section id={SECTION_IDS.customization} className="py-14 md:py-20 lg:py-24 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_500px]" aria-label="Aanpasbaar aan jouw school">
-                    <SectionErrorBoundary>
-                        <DeferredSection minHeight="min-h-[400px]">
-                            <Suspense fallback={<div className="min-h-[400px]" aria-hidden="true" />}>
-                                <AnimateOnScroll>
-                                    <ScholenLandingCustomization />
-                                </AnimateOnScroll>
-                            </Suspense>
-                        </DeferredSection>
-                    </SectionErrorBoundary>
-                </section>
-                </PipGuide>
-
-                {/* How it works - 3-step */}
-                <PipGuide pose="thinking" tooltip="Makkelijker dan het lijkt!" side="left">
-                <section id={SECTION_IDS.howItWorks} className="py-14 md:py-20 lg:py-24 px-6 [content-visibility:auto] [contain-intrinsic-size:auto_400px]" style={{ backgroundColor: C.bgAlt, borderTop: `1px solid ${C.border}`, borderBottom: `1px solid ${C.border}` }} aria-label="Hoe het werkt">
-                    <DeferredSection minHeight="min-h-[400px]">
-                        <AnimateOnScroll>
-                            <div className="max-w-5xl mx-auto">
-                                <div className="text-center mb-16">
-                                    <p className="text-sm font-medium mb-3 tracking-wide" style={{ color: C.accent }}>Eenvoudig starten</p>
-                                    <h2 className="text-2xl md:text-3xl font-medium tracking-tight mb-4" style={{ fontFamily: SERIF, color: C.text }}>
-                                        In 3 stappen aan de slag
-                                    </h2>
-                                    <p className="text-base leading-relaxed max-w-xl mx-auto" style={{ color: C.textMuted }}>
-                                        Van aanvraag tot actieve leerlingen in minder dan 10 werkdagen.
-                                        Geen technische installatie, geen gedoe.
-                                    </p>
-                                </div>
-
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
-                                    {/* Connector line */}
-                                    <div className="hidden md:block absolute top-[180px] left-[20%] right-[20%] h-px" style={{ background: `linear-gradient(to right, ${C.border}, ${C.accent}40, ${C.border})` }} aria-hidden="true" />
-
-                                    {[
-                                        {
-                                            step: '01',
-                                            title: 'Pilot aanvragen',
-                                            description: 'Vul het formulier in. Wij nemen binnen 2 werkdagen contact op voor een korte kennismaking.',
-                                            illustration: '/illustrations/how-it-works-pilot.webp',
-                                            bgColor: '#F0D5D0',
-                                        },
-                                        {
-                                            step: '02',
-                                            title: 'Onboarding (30 min)',
-                                            description: 'Een korte sessie met docenten: account aanmaken, dashboard uitleg en eerste missies klaarzetten.',
-                                            illustration: '/illustrations/how-it-works-onboarding.webp',
-                                            bgColor: '#EDE0C8',
-                                        },
-                                        {
-                                            step: '03',
-                                            title: 'Leerlingen starten',
-                                            description: 'Leerlingen loggen in en beginnen direct met hun eerste AI-missie. Jij volgt de voortgang live.',
-                                            illustration: '/illustrations/how-it-works-students.webp',
-                                            bgColor: '#D0E0D4',
-                                        },
-                                    ].map((item, i) => (
-                                        <AnimateOnScroll key={item.step} delay={`delay-${(i + 1) * 100}`}>
-                                            <div className="relative bg-white rounded-2xl overflow-hidden hover:shadow-lg transition-all group" style={{ border: `1px solid ${C.border}` }}>
-                                                <div className="flex items-center justify-center py-8 px-6" style={{ backgroundColor: item.bgColor }}>
-                                                    <img
-                                                        src={item.illustration}
-                                                        alt={item.title}
-                                                        className="w-24 h-24 md:w-28 md:h-28 object-contain transition-transform duration-300 group-hover:scale-[1.05]"
-                                                        loading="lazy"
-                                                        decoding="async"
-                                                    />
-                                                </div>
-                                                <div className="p-6 text-center">
-                                                    <p className="text-[11px] font-black uppercase tracking-widest mb-2" style={{ color: C.accent }}>Stap {item.step}</p>
-                                                    <h3 className="text-lg font-medium mb-3" style={{ color: C.text, fontFamily: SERIF }}>{item.title}</h3>
-                                                    <p className="text-sm leading-relaxed" style={{ color: C.textMuted }}>{item.description}</p>
-                                                </div>
-                                            </div>
-                                        </AnimateOnScroll>
-                                    ))}
-                                </div>
-                            </div>
-                        </AnimateOnScroll>
-                    </DeferredSection>
-                </section>
-                </PipGuide>
-
-                {/* Game Demo */}
-                <PipGuide pose="excited" tooltip="Dit vinden leerlingen het leukst!" side="left">
-                <section className="py-14 md:py-20 lg:py-24 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_500px]" style={{ backgroundColor: C.bgAlt, borderTop: `1px solid ${C.border}`, borderBottom: `1px solid ${C.border}` }} aria-label="Game Programmeur demo">
-                    <DeferredSection minHeight="min-h-[400px]">
-                        <Suspense fallback={<div className="min-h-[400px]" aria-hidden="true" />}>
-                            <AnimateOnScroll>
-                                <ScholenLandingGameDemo />
-                            </AnimateOnScroll>
-                        </Suspense>
-                    </DeferredSection>
-                </section>
-                </PipGuide>
-
-
-                {/* Live Interactive Demo — real AI chat + game builder */}
-                <PipGuide pose="excited" tooltip="Probeer het zelf!" side="right">
-                <section id="probeer-het" className="py-14 md:py-20 lg:py-24 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_600px]" aria-label="Interactieve AI demo">
-                    <SectionErrorBoundary>
-                        <DeferredSection minHeight="min-h-[400px]">
-                            <Suspense fallback={<div className="min-h-[400px]" aria-hidden="true" />}>
-                                <AnimateOnScroll>
-                                    <ScholenLandingLiveDemo />
-                                </AnimateOnScroll>
-                            </Suspense>
-                        </DeferredSection>
-                    </SectionErrorBoundary>
-                </section>
-                </PipGuide>
-
-                {/* Dashboard Demo */}
-                <PipGuide pose="waving" tooltip="Altijd weten waar je leerlingen staan" side="left">
-                <section className="py-14 md:py-20 lg:py-24 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_500px]" style={{ backgroundColor: C.bgAlt, borderTop: `1px solid ${C.border}`, borderBottom: `1px solid ${C.border}` }} aria-label="Docenten dashboard demo">
-                    <DeferredSection minHeight="min-h-[400px]">
-                        <Suspense fallback={<div className="min-h-[400px]" aria-hidden="true" />}>
-                            <AnimateOnScroll>
-                                <ScholenLandingDashboardDemo />
-                            </AnimateOnScroll>
-                        </Suspense>
-                    </DeferredSection>
-                </section>
-                </PipGuide>
-
-                {/* Platform preview */}
-                <section id={SECTION_IDS.platform} className="py-14 md:py-20 lg:py-24 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_500px]" style={{ borderBottom: `1px solid ${C.border}` }} aria-label="Platform preview">
-                    <SectionErrorBoundary>
-                        <DeferredSection minHeight="min-h-[400px]">
-                            <Suspense fallback={<div className="min-h-[400px]" aria-hidden="true" />}>
-                                <AnimateOnScroll>
-                                    <ScholenLandingPlatformPreview />
-                                </AnimateOnScroll>
-                            </Suspense>
-                        </DeferredSection>
-                    </SectionErrorBoundary>
-                </section>
-
-                {/* Mission Showcase */}
-                <section className="py-14 md:py-20 lg:py-24 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_600px]" style={{ backgroundColor: C.bgAlt, borderTop: `1px solid ${C.border}`, borderBottom: `1px solid ${C.border}` }} aria-label="Missie overzicht">
-                    <SectionErrorBoundary>
-                        <DeferredSection minHeight="min-h-[400px]">
-                            <Suspense fallback={<div className="min-h-[400px]" aria-hidden="true" />}>
-                                <AnimateOnScroll>
-                                    <ScholenLandingMissionShowcase />
-                                </AnimateOnScroll>
-                            </Suspense>
-                        </DeferredSection>
-                    </SectionErrorBoundary>
-                </section>
-
-                {/* Didactische Onderbouwing */}
-                <section className="py-14 md:py-20 lg:py-24 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_500px]" aria-label="Didactische onderbouwing">
-                    <SectionErrorBoundary>
-                        <DeferredSection minHeight="min-h-[400px]">
-                            <Suspense fallback={<div className="min-h-[400px]" aria-hidden="true" />}>
-                                <AnimateOnScroll>
-                                    <ScholenLandingDidactiek />
-                                </AnimateOnScroll>
-                            </Suspense>
-                        </DeferredSection>
-                    </SectionErrorBoundary>
-                </section>
-
-                {/* SLO Kerndoelen */}
-                <section id={SECTION_IDS.slo} className="py-14 md:py-20 lg:py-24 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_400px]" style={{ backgroundColor: C.bgAlt, borderTop: `1px solid ${C.border}`, borderBottom: `1px solid ${C.border}` }}>
-                    <SectionErrorBoundary>
-                        <DeferredSection minHeight="min-h-[300px]">
-                            <Suspense fallback={<div className="min-h-[300px]" aria-hidden="true" />}>
-                                <AnimateOnScroll>
-                                    <ScholenLandingSlo />
-                                </AnimateOnScroll>
-                            </Suspense>
-                        </DeferredSection>
-                    </SectionErrorBoundary>
-                </section>
-
-                {/* FAQ */}
-                <section id={SECTION_IDS.faq} className="py-14 md:py-20 lg:py-24 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_400px]" style={{ backgroundColor: C.bgAlt, borderTop: `1px solid ${C.border}`, borderBottom: `1px solid ${C.border}` }}>
-                    <SectionErrorBoundary>
-                        <DeferredSection minHeight="min-h-[300px]">
-                            <Suspense fallback={<div className="min-h-[300px]" aria-hidden="true" />}>
-                                <AnimateOnScroll>
-                                    <ScholenLandingFaq scrollToContact={() => scrollTo(SECTION_IDS.contact)} />
-                                </AnimateOnScroll>
-                            </Suspense>
-                        </DeferredSection>
-                    </SectionErrorBoundary>
-                </section>
-
-                {/* ICT Section */}
-                <section id={SECTION_IDS.ict} className="py-14 md:py-20 lg:py-24 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_300px]">
-                    <AnimateOnScroll>
-                        <div className="max-w-5xl mx-auto text-center">
-                            <p className="text-sm font-medium mb-3 tracking-wide" style={{ color: C.accent }}>Technisch</p>
-                            <h2 className="text-3xl font-medium mb-6" style={{ fontFamily: SERIF, color: C.text }}>Voor ICT & Informatiemanagers</h2>
-                            <p className="text-lg max-w-2xl mx-auto mb-10 leading-relaxed" style={{ color: C.textMuted }}>
-                                DGSkills is ontworpen voor beheersbaarheid, veiligheid en snelle adoptie.
-                                Ontdek alles over onze SSO-integraties, AVG-compliance en technische architectuur.
+            <main>
+                <section data-home-hero className="relative overflow-hidden px-5 pb-16 pt-14 md:px-10 md:pb-20 md:pt-20">
+                    <div className="relative z-10 mx-auto grid min-w-0 max-w-5xl items-center gap-10 lg:grid-cols-[minmax(0,60fr)_minmax(0,40fr)] lg:gap-6 xl:grid-cols-[minmax(0,58fr)_minmax(0,42fr)]">
+                        <Reveal className="relative z-10 min-w-0" style={{ maxWidth: 'calc(100vw - 40px)' }}>
+                            <h1 className="w-full max-w-[22rem] text-[2.1rem] font-black leading-[1.06] text-lab-ink sm:max-w-[780px] sm:text-6xl lg:text-[4.45rem]">
+                                <span className="block sm:hidden"><span className="relative inline-block"><TitleSpark />M</span>aak digitale</span>
+                                <span className="block sm:hidden">geletterdheid</span>
+                                <span className="hidden sm:block"><span className="relative inline-block"><TitleSpark />M</span>aak digitale geletterdheid</span>
+                                <span className="block sm:hidden">tastbaar,</span>
+                                <span className="block sm:hidden">motiverend</span>
+                                <span className="block sm:hidden">en <span className="relative inline-block text-lab-oliveDeep">aantoonbaar<Underline /></span>.</span>
+                                <span className="hidden sm:block">tastbaar, motiverend</span>
+                                <span className="hidden sm:block">en <span className="relative inline-block text-lab-oliveDeep">aantoonbaar<Underline /></span>.</span>
+                            </h1>
+                            <p className="mt-7 w-full max-w-[22rem] break-words text-pretty text-base font-semibold leading-7 text-lab-mutedDeep sm:mt-8 sm:max-w-md sm:text-lg sm:leading-8 md:max-w-[640px]">
+                                De missiegedreven leeromgeving voor VO en VSO die aansluit op de nieuwste SLO-kerndoelen. Van AI-geletterdheid tot online veiligheid — leerlingen leren door te doen, docenten zien voortgang per kerndoel.
                             </p>
-                            <a
-                                href="/ict"
-                                className="inline-flex items-center gap-2 text-white px-8 py-4 rounded-full font-medium hover:-translate-y-0.5 transition-all"
-                                style={{ backgroundColor: C.dark, boxShadow: `0 8px 24px ${C.text}15` }}
-                            >
-                                Bekijk technische details
-                                <IconArrowRight />
-                            </a>
+                            <div className="mt-8 flex w-full max-w-[340px] flex-col gap-3 sm:max-w-full sm:flex-row">
+                                <a href="/pilot" onClick={startPilot} className="group inline-flex min-h-[48px] w-full items-center justify-center gap-3 rounded-full bg-lab-gold px-6 py-3 text-sm font-black text-lab-ink shadow-lg shadow-lab-ink/10 transition-transform hover:-translate-y-0.5 sm:w-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink">
+                                    Plan schoolpilot
+                                    <ArrowRightIcon />
+                                </a>
+                                <button onClick={() => scrollTo('projecten')} className="group inline-flex min-h-[48px] w-full items-center justify-center gap-3 rounded-full border border-lab-mutedSoft bg-white/70 px-6 py-3 text-sm font-black text-lab-ink transition-transform hover:-translate-y-0.5 sm:w-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink">
+                                    Bekijk leerlingdemo
+                                    <ArrowRightIcon />
+                                </button>
+                            </div>
+                            <div className="mt-8 flex max-w-[420px] flex-wrap items-center gap-2 text-xs font-black text-lab-tealDark sm:max-w-none">
+                                {['20+ AI-missies', 'SLO-proof', 'AVG-bewust', 'AI Act-bewust'].map((label) => (
+                                    <span key={label} className="rounded-full border border-[#D7C95F] bg-white/72 px-3 py-2 shadow-sm shadow-lab-ink/5">
+                                        {label}
+                                    </span>
+                                ))}
+                            </div>
+                            <dl className="mt-7 grid max-w-[760px] gap-3 sm:grid-cols-2 xl:grid-cols-4">
+                                {heroProofItems.map((item) => (
+                                    <div key={item.label} className="rounded-2xl border border-lab-line bg-lab-paper/82 px-4 py-3 shadow-sm shadow-lab-ink/5">
+                                        <dt className="text-[11px] font-black uppercase tracking-[0.14em] text-lab-sage">{item.label}</dt>
+                                        <dd className="mt-1 text-sm font-bold leading-snug text-lab-ink">{item.value}</dd>
+                                    </div>
+                                ))}
+                            </dl>
+                        </Reveal>
+
+                        <Reveal delay={0.12} y={34} className="relative flex min-h-[340px] min-w-0 items-center sm:min-h-[460px] lg:min-h-[600px] lg:justify-end" style={{ maxWidth: 'calc(100vw - 40px)' }}>
+                            <div className="absolute -left-8 bottom-8 right-0 top-20 rounded-[42%_58%_45%_55%/50%_42%_58%_50%] bg-lab-creamWarm/70" aria-hidden="true" />
+                            <ProductHeroMockup />
+                            <Doodle className="-bottom-4 left-12 text-lab-oliveDeep" variant="dot" />
+                        </Reveal>
+                    </div>
+                    <HeroJourneyBridge />
+                </section>
+
+                <CinematicSkillJourney reduceMotion={reduceMotion} />
+
+                <section id="skills" className="relative scroll-mt-24 overflow-hidden bg-lab-paper px-5 py-20 md:px-10">
+                    <Doodle className="right-4 top-8 hidden text-lab-sage/70 lg:block" variant="leaf" />
+
+                    <div className="pointer-events-none absolute right-36 top-10 z-10 hidden lg:block xl:right-52">
+                        <img
+                            src="/assets/storytelling/beaver-storyteller.webp"
+                            alt="Bevermentor wijst naar de skillvoorbeelden"
+                            className="w-20 -rotate-6 opacity-90 drop-shadow-md xl:w-24"
+                            loading="lazy"
+                            decoding="async"
+                        />
+                    </div>
+
+                    <div className="mx-auto max-w-5xl">
+                        <div className="relative mb-10">
+                            <Reveal>
+                                <h2 className="text-balance text-4xl font-black leading-tight text-lab-ink md:text-5xl">Ontdek jouw favoriete skills</h2>
+                                <Squiggle color={C.coral} />
+                                <p className="mt-5 max-w-2xl text-pretty text-base font-semibold leading-7 text-lab-muted">
+                                    Elke skill krijgt een zichtbaar voorbeeld: van een AI-tool bouwen tot een game ontwerpen of veilig online werken.
+                                </p>
+                            </Reveal>
                         </div>
-                    </AnimateOnScroll>
+                        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-5">
+                            {skills.map((skill, index) => (
+                                <Reveal key={skill.title} delay={index * 0.06} y={30} className="skill-card-motion overflow-hidden rounded-[28px] bg-white shadow-lg shadow-lab-ink/8 ring-1 ring-lab-line/80">
+                                    <div className="relative aspect-[1.35] overflow-hidden bg-lab-cream">
+                                        <img src={skill.image} alt={skill.alt} className="h-full w-full object-cover transition-transform duration-500 hover:scale-[1.04]" loading="lazy" decoding="async" />
+                                    </div>
+                                    <div className="p-6">
+                                        <div className="mb-5 grid size-16 place-items-center rounded-full text-lab-ink" style={{ backgroundColor: skill.color }}>
+                                            {skill.icon}
+                                        </div>
+                                        <h3 className="text-lg font-black text-lab-ink">{skill.title}</h3>
+                                        <ul className="mt-4 space-y-2">
+                                            {skill.bullets.map((bullet) => (
+                                                <li key={bullet} className="flex gap-2 text-sm font-semibold text-lab-bodyDark">
+                                                    <CheckIcon />
+                                                    <span>{bullet}</span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                        <p className="mt-6 text-sm font-black text-lab-ink">{skill.projects}</p>
+                                    </div>
+                                </Reveal>
+                            ))}
+                        </div>
+                        <div className="mt-8 flex justify-center">
+                            <button onClick={() => scrollTo('projecten')} className="inline-flex min-h-[48px] items-center gap-3 rounded-full bg-lab-tealDark px-7 py-3 text-sm font-black text-white shadow-lg shadow-lab-ink/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink">
+                                Bekijk hoe leerlingen bouwen
+                                <ArrowRightIcon />
+                            </button>
+                        </div>
+                    </div>
                 </section>
 
-                {/* Expertise */}
-                <section className="py-14 md:py-20 px-6 [content-visibility:auto] [contain-intrinsic-size:auto_200px]" aria-label="Expertise">
-                    <SectionErrorBoundary>
-                        <DeferredSection minHeight="min-h-[200px]">
-                            <Suspense fallback={<div className="min-h-[200px]" aria-hidden="true" />}>
-                                <AnimateOnScroll>
-                                    <ScholenLandingExpertise />
-                                </AnimateOnScroll>
-                            </Suspense>
-                        </DeferredSection>
-                    </SectionErrorBoundary>
+                <section id="projecten" className="relative scroll-mt-24 px-5 py-20 md:px-10">
+                    <div className="absolute inset-0 -z-10 bg-lab-creamWarm" aria-hidden="true" />
+                    <WaveTop color={C.cream} />
+                    <WaveBottom color={C.cream} />
+                    <div className="relative z-10 mx-auto max-w-5xl">
+                        <div className="mb-8 flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
+                            <Reveal>
+                                <h2 className="max-w-xl text-balance text-4xl font-black leading-tight text-lab-ink md:text-5xl">Laat AI een game mee bouwen</h2>
+                                <Squiggle color={C.ink} />
+                            </Reveal>
+                            <Reveal delay={0.1} className="max-w-lg text-pretty text-base font-semibold leading-7 text-lab-muted">
+                                Leerlingen schrijven zelf een prompt en zien meteen hoe hun mini-game verandert. De demo stopt na vijf prompts.
+                            </Reveal>
+                        </div>
+                        <AiGameBuilderDemo reduceMotion={reduceMotion} />
+                    </div>
                 </section>
 
-                {/* Contact / Pricing */}
-                <section id={SECTION_IDS.contact} className="py-14 md:py-20 lg:py-24 px-6 text-white scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_500px]" style={{ backgroundColor: C.dark }}>
-                    <SectionErrorBoundary>
-                        <DeferredSection minHeight="min-h-[400px]">
-                            <Suspense fallback={<div className="min-h-[400px]" aria-hidden="true" />}>
-                                <ScholenLandingContact />
-                            </Suspense>
-                        </DeferredSection>
-                    </SectionErrorBoundary>
+                <PortfolioStorySection startPilot={startPilot} />
+
+                <section className="relative bg-lab-tealDark px-5 pb-12 pt-20 text-white md:px-10 md:pt-24">
+                    <WaveTop color={C.cream} dark />
+                    <Reveal className="footer-cta-motion relative z-10 mx-auto flex max-w-5xl flex-col gap-8 md:flex-row md:items-center md:justify-between">
+                        <div className="hidden h-40 w-32 flex-none items-center justify-center md:flex" aria-hidden="true">
+                            <img src="/assets/storytelling/beaver-storyteller.webp" alt="" className="max-h-36 w-auto object-contain opacity-90 drop-shadow-2xl" loading="lazy" decoding="async" />
+                        </div>
+                        <div className="relative">
+                            <div>
+                                <h2 className="text-balance text-4xl font-black leading-tight md:text-5xl">Klaar om iets <span className="text-lab-gold">tofs</span> te maken?</h2>
+                                <p className="mt-3 text-sm font-semibold text-white/78">Plan een schoolpilot en ontdek welke route past bij jouw leerlingen.</p>
+                            </div>
+                        </div>
+                        <a href="/pilot" onClick={startPilot} className="inline-flex min-h-[52px] items-center justify-center gap-3 rounded-full bg-lab-gold px-8 py-4 text-sm font-black text-lab-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-gold focus-visible:ring-offset-lab-tealDark">
+                            Plan mijn pilot
+                            <ArrowRightIcon />
+                        </a>
+                    </Reveal>
+                    <footer className="relative z-10 mx-auto mt-12 flex max-w-5xl flex-col gap-6 border-t border-white/10 pt-7 text-sm font-semibold text-white/75">
+                        <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+                            <a href="/" className="inline-flex min-h-[44px] items-center rounded px-1 py-2 font-black text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-gold focus-visible:ring-offset-lab-tealDark">dgskills.app</a>
+                            <div className="flex flex-wrap gap-6">
+                                <button onClick={() => scrollTo('journey')} className="rounded min-h-[44px] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-gold focus-visible:ring-offset-lab-tealDark">Hoe het werkt</button>
+                                <a href="/ict/privacy/cookies" className="inline-flex min-h-[44px] items-center rounded hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-gold focus-visible:ring-offset-lab-tealDark">Cookies</a>
+                                <a href="/ict/privacy/policy" className="inline-flex min-h-[44px] items-center rounded hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-gold focus-visible:ring-offset-lab-tealDark">Privacy</a>
+                                <a href="/ict/privacy/ai" className="inline-flex min-h-[44px] items-center rounded hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-gold focus-visible:ring-offset-lab-tealDark">AI-transparantie</a>
+                                <a href="mailto:info@dgskills.app" className="inline-flex min-h-[44px] items-center rounded hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-gold focus-visible:ring-offset-lab-tealDark">Contact</a>
+                            </div>
+                            <p>Zin om samen te werken?</p>
+                        </div>
+                        <p className="text-sm text-white/70">Eenmanszaak Yorin Vonder · KvK 81819889 · info@dgskills.app</p>
+                    </footer>
                 </section>
             </main>
-
-            {/* Floating CTA — Mobile */}
-            <div
-                className={`fixed bottom-6 right-6 z-40 transition-all duration-300 lg:hidden ${
-                    showFloatingCta ? 'translate-y-0 opacity-100' : 'translate-y-16 opacity-0 pointer-events-none'
-                }`}
-            >
-                <button
-                    onClick={() => scrollTo(SECTION_IDS.contact)}
-                    className="text-white px-6 py-3.5 rounded-full font-medium flex items-center gap-2 text-sm"
-                    style={{ backgroundColor: C.accent, boxShadow: `0 8px 24px ${C.accent}40` }}
-                >
-                    Pilot aanvragen
-                    <IconArrowRight />
-                </button>
-            </div>
-
-            {/* Floating CTA — Desktop */}
-            <div
-                className={`fixed bottom-6 right-6 z-40 transition-all duration-300 hidden lg:block ${
-                    showFloatingCta ? 'translate-y-0 opacity-100' : 'translate-y-16 opacity-0 pointer-events-none'
-                }`}
-            >
-                <button
-                    onClick={() => scrollTo(SECTION_IDS.contact)}
-                    className="text-white px-5 py-3 rounded-full text-sm font-medium transition-colors"
-                    style={{ backgroundColor: C.accent, boxShadow: `0 4px 16px ${C.accent}30` }}
-                    onMouseEnter={e => (e.currentTarget.style.backgroundColor = C.accentHover)}
-                    onMouseLeave={e => (e.currentTarget.style.backgroundColor = C.accent)}
-                >
-                    Gratis pilot starten &rarr;
-                </button>
-            </div>
-
-            {/* Footer */}
-            <footer style={{ backgroundColor: C.darkDeep }}>
-                <div className="max-w-5xl mx-auto px-6 py-12">
-                    <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-8">
-                        <div className="flex items-center gap-2.5">
-                            <img src="/favicon.svg" alt="" className="w-7 h-7 object-contain opacity-60 brightness-200" width={28} height={28} loading="lazy" decoding="async" />
-                            <span className="text-sm font-semibold" style={{ color: `${C.bg}cc` }}>DGSkills</span>
-                        </div>
-                        <div className="flex flex-wrap items-center gap-5 text-xs" style={{ color: `${C.bg}88` }}>
-                            <a href="/ict/privacy/policy" className="hover:text-white transition-colors">Privacy</a>
-                            <a href="/ict/privacy/cookies" className="hover:text-white transition-colors">Cookies</a>
-                            <a href="/ict/privacy/ai" className="hover:text-white transition-colors">AI Act</a>
-                            <a href="/compliance-hub" className="hover:text-white transition-colors">Compliance Hub</a>
-                            <span style={{ color: `${C.bg}22` }}>&middot;</span>
-                            <a href="/login" className="hover:text-white transition-colors">Inloggen</a>
-                        </div>
-                    </div>
-                    <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4" style={{ borderTop: `1px solid ${C.bg}11` }}>
-                        <p className="text-xs" style={{ color: `${C.bg}55` }}>
-                            &copy; {new Date().getFullYear()} DGSkills &mdash; Digitale geletterdheid voor het voortgezet onderwijs
-                        </p>
-                        <div className="flex items-center gap-4">
-                            <a href="mailto:info@dgskills.app" className="text-xs font-medium flex items-center gap-1.5 hover:text-white transition-colors" style={{ color: `${C.bg}88` }}>
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                                    <rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
-                                </svg>
-                                info@dgskills.app
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </footer>
         </div>
     );
 };
+
+function useHomepageGsapEffects(reduceMotion: boolean) {
+    useEffect(() => {
+        if (reduceMotion || typeof window === 'undefined') return;
+
+        let cancelled = false;
+        let ctx: { revert: () => void } | undefined;
+
+        void Promise.all([import('gsap'), import('gsap/ScrollTrigger')])
+            .then(([gsapModule, scrollTriggerModule]) => {
+                if (cancelled) return;
+                const { gsap } = gsapModule;
+                const { ScrollTrigger } = scrollTriggerModule;
+                gsap.registerPlugin(ScrollTrigger);
+
+                ctx = gsap.context(() => {
+                    gsap.to('[data-hero-mockup]', {
+                        yPercent: -7,
+                        rotation: -1.2,
+                        ease: 'none',
+                        scrollTrigger: {
+                            trigger: '[data-home-hero]',
+                            start: 'top top',
+                            end: 'bottom top',
+                            scrub: 0.8,
+                        },
+                    });
+
+                    gsap.fromTo(
+                        '.skill-card-motion',
+                        {
+                            autoAlpha: 0,
+                            y: 92,
+                            scale: 0.9,
+                            rotation: (index: number) => [-5, 4, -3, 5, -4][index] ?? 0,
+                        },
+                        {
+                            autoAlpha: 1,
+                            y: 0,
+                            scale: 1,
+                            rotation: 0,
+                            duration: 0.85,
+                            stagger: 0.08,
+                            ease: 'back.out(1.35)',
+                            scrollTrigger: {
+                                trigger: '#skills',
+                                start: 'top 72%',
+                            },
+                        }
+                    );
+
+                    gsap.fromTo(
+                        '.project-card-motion',
+                        {
+                            autoAlpha: 0,
+                            xPercent: (index: number) => [-36, -14, 14, 36][index] ?? 0,
+                            y: 70,
+                            scale: 0.9,
+                            rotation: (index: number) => [-6, 3, -2, 6][index] ?? 0,
+                        },
+                        {
+                            autoAlpha: 1,
+                            xPercent: 0,
+                            y: 0,
+                            scale: 1,
+                            rotation: 0,
+                            duration: 0.9,
+                            stagger: 0.08,
+                            ease: 'power3.out',
+                            scrollTrigger: {
+                                trigger: '#projecten',
+                                start: 'top 68%',
+                            },
+                        }
+                    );
+
+                    gsap.fromTo(
+                        '.footer-cta-motion',
+                        { y: 42, scale: 0.98 },
+                        {
+                            y: 0,
+                            scale: 1,
+                            duration: 0.9,
+                            ease: 'power3.out',
+                            scrollTrigger: {
+                                trigger: '.footer-cta-motion',
+                                start: 'top 78%',
+                            },
+                        }
+                    );
+
+                }, document.body);
+
+                window.setTimeout(() => ScrollTrigger.refresh(), 150);
+            })
+            .catch(() => {
+                // Motion enhancement should never block the landing page.
+            });
+
+        return () => {
+            cancelled = true;
+            ctx?.revert();
+        };
+    }, [reduceMotion]);
+}
+
+function CinematicSkillJourney({ reduceMotion }: { reduceMotion: boolean }) {
+    const [active, setActive] = useState(0);
+    const [isLgMotion, setIsLgMotion] = useState(false);
+    const sectionRef = useRef<HTMLElement | null>(null);
+    const pinRef = useRef<HTMLDivElement | null>(null);
+    const mockupRef = useRef<HTMLDivElement | null>(null);
+    const orbitRef = useRef<HTMLDivElement | null>(null);
+    const progressRef = useRef<HTMLDivElement | null>(null);
+    const chapterRefs = useRef<Array<HTMLLIElement | null>>([]);
+    const screenRefs = useRef<Array<HTMLElement | null>>([]);
+    const floatRefs = useRef<Array<HTMLDivElement | null>>([]);
+    const activeRef = useRef(0);
+
+    const setActiveChapter = (index: number) => {
+        const next = Math.max(0, Math.min(cinematicChapters.length - 1, index));
+        if (activeRef.current === next) return;
+        activeRef.current = next;
+        setActive(next);
+    };
+
+    useEffect(() => {
+        const mql = window.matchMedia('(min-width: 1024px)');
+        const update = () => setIsLgMotion(!reduceMotion && mql.matches);
+        update();
+        mql.addEventListener('change', update);
+        return () => mql.removeEventListener('change', update);
+    }, [reduceMotion]);
+
+    useEffect(() => {
+        if (!reduceMotion && typeof window !== 'undefined' && window.matchMedia('(min-width: 1024px)').matches) return;
+
+        const elements = chapterRefs.current.filter(Boolean) as HTMLLIElement[];
+        if (!elements.length) return;
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                const visible = entries
+                    .filter((entry) => entry.isIntersecting)
+                    .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+                if (!visible) return;
+                const index = Number((visible.target as HTMLElement).dataset.chapterIndex ?? 0);
+                setActiveChapter(index);
+            },
+            { rootMargin: '-34% 0px -42% 0px', threshold: [0.28, 0.5, 0.72] }
+        );
+
+        elements.forEach((element) => observer.observe(element));
+        return () => observer.disconnect();
+    }, [reduceMotion]);
+
+    useEffect(() => {
+        if (reduceMotion || typeof window === 'undefined') return;
+
+        let cancelled = false;
+        let ctx: { revert: () => void } | undefined;
+
+        void Promise.all([import('gsap'), import('gsap/ScrollTrigger')])
+            .then(([gsapModule, scrollTriggerModule]) => {
+                if (cancelled || !sectionRef.current || !pinRef.current || !mockupRef.current) return;
+                if (!window.matchMedia('(min-width: 1024px)').matches) return;
+
+                const { gsap } = gsapModule;
+                const { ScrollTrigger } = scrollTriggerModule;
+                gsap.registerPlugin(ScrollTrigger);
+
+                ctx = gsap.context(() => {
+                    const screens = screenRefs.current.filter(Boolean) as HTMLElement[];
+                    const floaters = floatRefs.current.filter(Boolean) as HTMLDivElement[];
+                    const lastIndex = cinematicChapters.length - 1;
+
+                    gsap.set(screens, {
+                        autoAlpha: 0,
+                        y: 46,
+                        scale: 0.92,
+                        rotation: 4,
+                        transformOrigin: '50% 50%',
+                    });
+                    gsap.set(screens[0], { autoAlpha: 1, y: 0, scale: 1, rotation: 0 });
+                    gsap.set(progressRef.current, { scaleY: 0.08, transformOrigin: 'center top' });
+                    gsap.set(orbitRef.current, { rotation: -10, transformOrigin: '50% 50%' });
+                    gsap.set(floaters, { transformOrigin: '50% 50%' });
+
+                    const tl = gsap.timeline({
+                        defaults: { ease: 'none' },
+                        scrollTrigger: {
+                            trigger: sectionRef.current,
+                            start: 'top top',
+                            end: 'bottom bottom',
+                            scrub: 0.85,
+                            pin: pinRef.current,
+                            pinSpacing: true,
+                            anticipatePin: 1,
+                            invalidateOnRefresh: true,
+                            onUpdate: (self) => {
+                                setActiveChapter(Math.round(self.progress * lastIndex));
+                            },
+                        },
+                    });
+
+                    tl.to(progressRef.current, { scaleY: 1, duration: lastIndex }, 0)
+                        .to(orbitRef.current, { rotation: 48, duration: lastIndex }, 0)
+                        .to(mockupRef.current, { y: -6, scale: 1.008, rotation: -0.5, duration: 0.75 }, 0);
+
+                    for (let index = 1; index < cinematicChapters.length; index += 1) {
+                        const position = index;
+                        tl.to(screens[index - 1], { autoAlpha: 0, y: -42, scale: 0.94, rotation: -4, duration: 0.55, ease: 'power1.inOut' }, position - 0.28)
+                            .fromTo(screens[index], { autoAlpha: 0, y: 48, scale: 0.92, rotation: 5 }, { autoAlpha: 1, y: 0, scale: 1, rotation: 0, duration: 0.62, ease: 'power2.out' }, position - 0.18)
+                            .to(mockupRef.current, { x: [-8, 10, -9, 11][index - 1] ?? 0, y: [-6, -2, -8, -4][index - 1] ?? 0, rotation: [-0.8, 0.7, -0.6, 0.7][index - 1] ?? 0, scale: [1.014, 1.008, 1.016, 1.01][index - 1] ?? 1, duration: 0.7, ease: 'power1.inOut' }, position - 0.28)
+                            .to(floaters, { x: (floatIndex: number) => [18, -16, 10][floatIndex] ?? 0, y: (floatIndex: number) => [-18, 14, -10][floatIndex] ?? 0, rotation: (floatIndex: number) => [2.5, -2, 1.4][floatIndex] ?? 0, duration: 0.7, ease: 'power1.inOut' }, position - 0.25);
+                    }
+                }, sectionRef.current);
+
+                window.setTimeout(() => ScrollTrigger.refresh(), 200);
+            })
+            .catch(() => {
+                // Keep the static journey usable if the animation layer cannot load.
+            });
+
+        return () => {
+            cancelled = true;
+            ctx?.revert();
+        };
+    }, [reduceMotion]);
+
+    return (
+        <section
+            id="journey"
+            ref={sectionRef}
+            className={`relative scroll-mt-24 overflow-x-clip bg-lab-paper px-5 md:px-10 ${reduceMotion ? 'py-20' : 'py-16 lg:min-h-[520vh] lg:py-0'}`}
+        >
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(215,201,95,0.16),transparent_30%),radial-gradient(circle_at_82%_30%,rgba(95,148,125,0.16),transparent_28%),linear-gradient(180deg,#FFFDF7_0%,#FCF6EA_100%)]" aria-hidden="true" />
+            <div ref={pinRef} className={`relative z-10 mx-auto grid max-w-5xl gap-10 lg:grid-cols-[430px_minmax(0,1fr)] lg:items-center ${reduceMotion ? '' : 'lg:h-[100svh] lg:py-[clamp(24px,4svh,48px)]'}`}>
+                <div className="order-2 lg:order-1 lg:grid lg:h-[calc(100svh-96px)] lg:grid-rows-[auto_minmax(0,1fr)] lg:self-center">
+                    <Reveal>
+                        <div className="relative max-w-[430px] pr-24">
+                            <h2 className="text-balance text-4xl font-black leading-tight text-lab-ink md:text-5xl lg:text-[3.35rem]">
+                                Jouw skill journey
+                            </h2>
+                            <img
+                                src="/assets/storytelling/beaver-storyteller.webp"
+                                alt="Bevermentor wijst naar de route"
+                                className="hidden w-20 -rotate-6 drop-shadow-md lg:absolute lg:right-0 lg:top-1/2 lg:block lg:-translate-y-1/2"
+                                loading="lazy"
+                                decoding="async"
+                            />
+                            <div className="mt-3">
+                                <Squiggle color={C.ink} />
+                            </div>
+                        </div>
+                    </Reveal>
+
+                    <ol className="relative mt-8 space-y-4 lg:mt-0 lg:h-full lg:min-h-[520px] lg:space-y-0">
+                        <div className="absolute bottom-8 left-7 top-8 w-0.5 rounded-full bg-lab-line" aria-hidden="true" />
+                        <div ref={progressRef} className="absolute bottom-8 left-7 top-8 w-0.5 rounded-full bg-lab-coral" aria-hidden="true" />
+                        {cinematicChapters.map((chapter, index) => {
+                            const isActive = active === index;
+                            const iconIsLight = chapter.accent === C.ink;
+                            const chapterOffset = index - active;
+                            const absoluteChapterOffset = Math.abs(chapterOffset);
+                            const isUpcomingPreview = chapterOffset === 1;
+                            return (
+                                <li
+                                    key={chapter.title}
+                                    ref={(node) => {
+                                        chapterRefs.current[index] = node;
+                                    }}
+                                    data-chapter-index={index}
+                                    aria-current={isActive ? 'step' : undefined}
+                                    className={`relative grid grid-cols-[3.5rem_1fr] gap-4 rounded-[28px] p-3 transition-[background-color,box-shadow,opacity] duration-500 md:p-4 lg:absolute lg:left-0 lg:right-0 lg:top-1/2 lg:origin-center lg:[transform:translate3d(0,var(--journey-card-y),0)_translateY(-50%)_scale(var(--journey-card-scale))] lg:will-change-transform ${isActive ? 'z-20 bg-white shadow-xl shadow-lab-ink/10 ring-1 ring-lab-line' : isUpcomingPreview ? 'z-10 bg-white/45 lg:opacity-[0.5]' : 'z-0 bg-white/25 lg:pointer-events-none lg:opacity-0'}`}
+                                    style={{
+                                        '--journey-card-y': `calc(${chapterOffset * 176}px - clamp(72px, 7svh, 96px))`,
+                                        '--journey-card-scale': isActive ? '1' : absoluteChapterOffset === 1 ? '0.94' : '0.88',
+                                    } as React.CSSProperties}
+                                >
+                                    <div
+                                        className="relative z-10 grid size-14 place-items-center rounded-full border-4 border-lab-paper shadow-md shadow-lab-ink/10 transition-transform duration-300"
+                                        style={{ backgroundColor: isActive ? chapter.accent : '#FCF6EA', color: isActive && iconIsLight ? '#FFFFFF' : '#08283B', transform: isActive ? 'scale(1.06)' : 'scale(1)' }}
+                                    >
+                                        {chapter.icon}
+                                    </div>
+                                    <div className="min-w-0">
+                                        <div className="flex flex-wrap items-center gap-3">
+                                            <span className="text-xs font-black text-lab-oliveDeep">{chapter.step}</span>
+                                            <span className="rounded-full bg-lab-cream px-3 py-1 text-xs font-black uppercase tracking-wide text-lab-sage">{chapter.eyebrow}</span>
+                                        </div>
+                                        <h3 className={`mt-2 font-black leading-tight text-lab-ink ${isActive ? 'text-2xl' : 'text-xl'}`}>{chapter.title}</h3>
+                                        <p className={`mt-2 max-w-[460px] text-pretty text-sm font-semibold leading-6 text-lab-muted md:text-base md:leading-7 ${isActive ? 'lg:block' : 'lg:line-clamp-3'}`}>{chapter.copy}</p>
+                                    </div>
+                                </li>
+                            );
+                        })}
+                    </ol>
+                </div>
+
+                <div className="order-1 lg:order-2 lg:flex lg:h-[calc(100svh-96px)] lg:items-center lg:justify-center">
+                    <div ref={mockupRef} data-cinematic-mockup className="relative mx-auto w-full max-w-[720px] lg:w-full lg:max-w-[820px] xl:max-w-[880px] 2xl:max-w-[930px]">
+                        <div ref={orbitRef} className="absolute -inset-8 rounded-[38%_62%_46%_54%/52%_43%_57%_48%] border border-dashed border-lab-oliveDeep/45" aria-hidden="true" />
+                        <div className="absolute -left-4 top-10 size-16 rounded-full bg-lab-gold/75 shadow-xl shadow-lab-ink/10" aria-hidden="true" />
+                        <div className="absolute -right-3 bottom-12 size-20 rounded-[42%_58%_44%_56%] bg-[#5F947D]/70 shadow-xl shadow-lab-ink/10" aria-hidden="true" />
+                        <div className="relative overflow-hidden rounded-[34px] bg-lab-ink p-3 shadow-2xl shadow-lab-ink/20">
+                            <div className="overflow-hidden rounded-[24px] bg-lab-paper">
+                                <div className="flex h-11 items-center gap-2 border-b border-lab-line bg-white px-4">
+                                    <span className="size-3 rounded-full bg-lab-coral" />
+                                    <span className="size-3 rounded-full bg-lab-gold" />
+                                    <span className="size-3 rounded-full bg-lab-sage" />
+                                    <span className="ml-4 rounded-full bg-lab-cream px-4 py-1 text-xs font-black text-lab-muted">dgskills.app/journey</span>
+                                </div>
+                                <div className="relative h-[250px] bg-[#FCF6EA] sm:h-[330px] lg:h-[42svh] lg:max-h-[460px] lg:min-h-[320px]">
+                                    {cinematicChapters.map((chapter, index) => {
+                                        const isGameStudio = chapter.title === 'Maak';
+                                        return (
+                                            <div
+                                                key={chapter.title}
+                                                ref={(node) => {
+                                                    screenRefs.current[index] = node;
+                                                }}
+                                                aria-hidden={active !== index}
+                                                className={`absolute inset-0 h-full w-full ${isLgMotion ? '' : `transition-opacity duration-300 ${active === index ? 'opacity-100' : 'opacity-0'}`}`}
+                                            >
+                                                {isGameStudio ? (
+                                                    <GameStudioScreen reduceMotion={reduceMotion} ariaLabel={chapter.alt} />
+                                                ) : (
+                                                    <img
+                                                        src={chapter.image}
+                                                        alt={chapter.alt}
+                                                        className="h-full w-full object-contain"
+                                                        loading={index === 0 ? 'eager' : 'lazy'}
+                                                        decoding="async"
+                                                    />
+                                                )}
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div
+                            ref={(node) => {
+                                floatRefs.current[0] = node;
+                            }}
+                            className="absolute -left-2 bottom-8 rounded-3xl bg-white/95 p-4 shadow-xl shadow-lab-ink/14 ring-1 ring-lab-line sm:-left-7 sm:p-5"
+                        >
+                            <p className="text-xs font-black uppercase text-lab-sage">Nu actief</p>
+                            <p className="mt-1 text-2xl font-black text-lab-ink">{cinematicChapters[active].title}</p>
+                        </div>
+                        <div
+                            ref={(node) => {
+                                floatRefs.current[1] = node;
+                            }}
+                            className="absolute -right-2 top-12 hidden rounded-3xl bg-white/95 p-5 shadow-xl shadow-lab-ink/14 ring-1 ring-lab-line sm:block"
+                        >
+                            <p className="text-xs font-black text-lab-muted">{cinematicChapters[active].statLabel}</p>
+                            <p className="mt-1 text-3xl font-black text-lab-ink">{cinematicChapters[active].stat}</p>
+                        </div>
+                        <div
+                            ref={(node) => {
+                                floatRefs.current[2] = node;
+                            }}
+                            className="absolute bottom-[-22px] right-10 rounded-full px-5 py-3 text-sm font-black text-white shadow-xl shadow-lab-ink/15"
+                            style={{ backgroundColor: cinematicChapters[active].accent }}
+                        >
+                            {cinematicChapters[active].eyebrow}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    );
+}
+
+function GameStudioScreen({ reduceMotion, ariaLabel }: { reduceMotion: boolean; ariaLabel: string }) {
+    const floatAnimation = reduceMotion ? undefined : 'dg-game-float 6s ease-in-out infinite';
+    const pulseAnimation = reduceMotion ? undefined : 'dg-game-pulse 2.8s ease-in-out infinite';
+    const driftAnimation = reduceMotion ? undefined : 'dg-game-drift 7s ease-in-out infinite';
+
+    return (
+        <div
+            role="img"
+            aria-label={ariaLabel}
+            className="relative h-full w-full overflow-hidden bg-[#08283B] text-white"
+        >
+            <style>
+                {`
+                    @keyframes dg-game-float {
+                        0%, 100% { transform: translate3d(0, 0, 0); }
+                        50% { transform: translate3d(0, -8px, 0); }
+                    }
+                    @keyframes dg-game-pulse {
+                        0%, 100% { opacity: .68; transform: scale(1); }
+                        50% { opacity: 1; transform: scale(1.08); }
+                    }
+                    @keyframes dg-game-drift {
+                        0%, 100% { transform: translate3d(-4px, 0, 0); }
+                        50% { transform: translate3d(8px, -4px, 0); }
+                    }
+                `}
+            </style>
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_16%,rgba(217,120,72,0.45),transparent_26%),radial-gradient(circle_at_82%_22%,rgba(215,201,95,0.34),transparent_24%),radial-gradient(circle_at_58%_88%,rgba(95,148,125,0.46),transparent_34%),linear-gradient(135deg,#102D43_0%,#081C2A_56%,#163D37_100%)]" />
+            <div className="absolute inset-x-0 top-0 h-20 bg-[linear-gradient(180deg,rgba(255,255,255,0.14),transparent)]" />
+            <div className="absolute left-5 top-4 hidden items-center gap-2 rounded-full bg-white/12 px-3 py-2 text-[10px] font-black uppercase tracking-wide text-[#F3E4CB] ring-1 ring-white/14 sm:flex">
+                <span className="size-2 rounded-full bg-lab-gold" style={{ animation: pulseAnimation }} />
+                Live maker lab
+            </div>
+            <div className="absolute right-4 top-4 rounded-full bg-lab-coral px-3 py-2 text-[10px] font-black uppercase tracking-wide text-white shadow-lg shadow-lab-coral/30 sm:right-5">
+                +180 XP
+            </div>
+
+            <div className="relative z-10 grid h-full grid-cols-1 gap-3 p-4 sm:grid-cols-[1.04fr_0.96fr] sm:gap-4 sm:p-5 lg:p-6">
+                <div className="flex min-w-0 flex-col gap-3 sm:gap-4">
+                    <div className="relative min-h-0 flex-1 overflow-hidden rounded-[18px] bg-[#F9F4E8] text-lab-ink shadow-2xl shadow-black/25 ring-1 ring-white/20" style={{ animation: floatAnimation }}>
+                        <div className="flex items-center justify-between border-b border-lab-line bg-white/82 px-4 py-2">
+                            <div>
+                                <p className="text-[10px] font-black uppercase tracking-wide text-lab-coral">Platformer</p>
+                                <p className="text-sm font-black leading-tight sm:text-base">Maak je eigen game</p>
+                            </div>
+                            <div className="rounded-full bg-lab-ink px-2.5 py-1 text-[10px] font-black text-white">Score 420</div>
+                        </div>
+                        <div className="relative h-[calc(100%-54px)] overflow-hidden bg-[linear-gradient(180deg,#8ED5F2_0%,#DDF5F2_56%,#86C66B_57%,#5F947D_100%)]">
+                            <div className="absolute left-5 top-7 h-6 w-16 rounded-full bg-white/72 blur-[1px]" style={{ animation: driftAnimation }} />
+                            <div className="absolute right-10 top-10 h-5 w-20 rounded-full bg-white/58 blur-[1px]" />
+                            <div className="absolute bottom-[30%] left-[44%] h-4 w-16 rounded-md bg-lab-oliveDeep shadow-md shadow-lab-ink/15" />
+                            <div className="absolute bottom-[48%] right-[16%] h-4 w-20 rounded-md bg-lab-gold shadow-md shadow-lab-ink/15" />
+                            <div className="absolute bottom-[20%] left-[13%] grid size-9 place-items-center rounded-lg bg-lab-coral shadow-xl shadow-lab-ink/20">
+                                <span className="size-4 rounded-full bg-white" />
+                            </div>
+                            <div className="absolute bottom-[22%] right-[22%] size-8 rounded-md bg-lab-ink shadow-lg shadow-lab-ink/20">
+                                <span className="absolute left-2 top-2 size-1.5 rounded-full bg-white" />
+                                <span className="absolute right-2 top-2 size-1.5 rounded-full bg-white" />
+                            </div>
+                            <div className="absolute bottom-0 left-0 h-[18%] w-full bg-[#7A5A3D]" />
+                            <div className="absolute bottom-[18%] left-0 h-3 w-full bg-lab-sage" />
+                            <div className="absolute bottom-3 left-3 w-[42%] rounded-xl bg-white/94 p-2 shadow-xl shadow-lab-ink/18 ring-1 ring-lab-ink/10">
+                                <div className="mb-1 flex items-center gap-1.5">
+                                    <span className="size-2 rounded-full bg-lab-gold" />
+                                    <p className="truncate text-[11px] font-black uppercase tracking-wide text-lab-ink">AI Tekengame</p>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <svg viewBox="0 0 48 34" className="h-8 w-11 flex-none" aria-hidden="true">
+                                        <rect x="13" y="12" width="20" height="16" rx="6" fill="#5F947D" stroke="#08283B" strokeWidth="2.4" />
+                                        <circle cx="20" cy="21" r="1.8" fill="#08283B" />
+                                        <circle cx="27" cy="21" r="1.8" fill="#08283B" />
+                                        <path d="M23 12V5" stroke="#08283B" strokeWidth="2.4" strokeLinecap="round" />
+                                        <circle cx="23" cy="4" r="3" fill="#D97848" />
+                                    </svg>
+                                    <p className="min-w-0 text-[10px] font-black leading-tight text-lab-muted">AI raadt je tekening</p>
+                                </div>
+                            </div>
+                            <div className="absolute bottom-3 right-3 w-[39%] rounded-xl bg-[#08283B]/94 p-2 text-white shadow-xl shadow-lab-ink/22 ring-1 ring-white/15">
+                                <div className="mb-2 flex items-center gap-1.5">
+                                    <span className="size-2 rounded-full bg-[#D97848]" />
+                                    <p className="truncate text-[11px] font-black uppercase tracking-wide">Prompt Boss</p>
+                                </div>
+                                <div className="space-y-1">
+                                    <div className="h-1.5 w-full rounded-full bg-lab-gold" />
+                                    <div className="h-1.5 w-4/5 rounded-full bg-white/35" />
+                                    <div className="h-1.5 w-3/5 rounded-full bg-[#5F947D]" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="flex min-w-0 flex-col gap-3 sm:gap-4">
+                    <div className="min-h-0 flex-[0.95] rounded-[18px] bg-white/12 p-3 shadow-xl shadow-black/20 ring-1 ring-white/14 backdrop-blur" style={{ animation: reduceMotion ? undefined : 'dg-game-float 7s ease-in-out infinite 0.7s' }}>
+                        <div className="mb-2 flex items-center justify-between">
+                            <p className="text-[10px] font-black uppercase tracking-wide text-[#F3E4CB]">Robot route</p>
+                            <span className="rounded-full bg-[#5F947D] px-2 py-1 text-[10px] font-black text-lab-ink">Level 3</span>
+                        </div>
+                        <div className="grid h-[calc(100%-30px)] grid-cols-5 gap-1 rounded-xl bg-[#071A26] p-2">
+                            {Array.from({ length: 20 }).map((_, index) => {
+                                const isPath = [0, 1, 6, 11, 12, 13, 18, 19].includes(index);
+                                const isBot = index === 11;
+                                const isGoal = index === 19;
+                                return (
+                                    <div key={index} className={`relative rounded-md ${isPath ? 'bg-lab-gold/80' : 'bg-white/10'}`}>
+                                        {isBot && <span className="absolute inset-1 rounded-md bg-lab-coral shadow-lg shadow-lab-coral/40" />}
+                                        {isGoal && <span className="absolute inset-1 rounded-full bg-[#5F947D] shadow-lg shadow-[#5F947D]/40" />}
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+
+                    <div className="relative min-h-0 flex-1 overflow-hidden rounded-[18px] bg-lab-paper p-3 text-lab-ink shadow-2xl shadow-black/20 ring-1 ring-white/20">
+                        <div className="mb-2 flex items-center justify-between">
+                            <div>
+                                <p className="text-[10px] font-black uppercase tracking-wide text-lab-sage">Game gallery</p>
+                                <p className="text-sm font-black leading-tight sm:text-base">Remix je missie</p>
+                            </div>
+                            <span className="rounded-full bg-lab-cream px-2.5 py-1 text-[10px] font-black text-lab-coral">4 klaar</span>
+                        </div>
+                        <div className="grid h-[calc(100%-48px)] grid-cols-2 gap-2">
+                            {[
+                                ['Race', '#D97848'],
+                                ['Maze', '#5F947D'],
+                                ['Quiz', '#D7C95F'],
+                                ['Story', '#C996A7'],
+                            ].map(([name, color], index) => (
+                                <div key={name} className="relative overflow-hidden rounded-xl bg-lab-creamDeep p-2">
+                                    <div className="absolute -right-3 -top-3 size-10 rounded-full opacity-75" style={{ backgroundColor: color }} />
+                                    <div className="relative flex h-full flex-col justify-end">
+                                        <div className="mb-auto h-2 w-10 rounded-full bg-lab-ink/15" />
+                                        <p className="text-xs font-black leading-none">{name}</p>
+                                        <p className="mt-1 text-[9px] font-black uppercase tracking-wide text-lab-muted">playtest 0{index + 1}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+const gamePrompts = [
+    {
+        name: 'Stroomroute 01',
+        sky: '#A8D8C8',
+        pipe: '#6B4A2A',
+        bird: '#D97848',
+        accent: '#D7C95F',
+    },
+    {
+        name: 'Snelle stroom',
+        sky: '#8BCFBE',
+        pipe: '#5A3E1C',
+        bird: '#C9895B',
+        accent: '#A7E8D4',
+    },
+    {
+        name: 'Avondrivier',
+        sky: '#173B55',
+        pipe: '#2E1A08',
+        bird: '#D7C95F',
+        accent: '#D7C95F',
+    },
+    {
+        name: 'Leerdoel-stroom',
+        sky: '#C8E8D8',
+        pipe: '#7B5234',
+        bird: '#D97848',
+        accent: '#0B453F',
+    },
+    {
+        name: 'Eindbaas: rapids',
+        sky: '#08283B',
+        pipe: '#4A3010',
+        bird: '#C9895B',
+        accent: '#D7C95F',
+    },
+];
+
+function AiGameBuilderDemo({ reduceMotion }: { reduceMotion: boolean }) {
+    const [promptsUsed, setPromptsUsed] = useState(0);
+    const [customPrompt, setCustomPrompt] = useState('');
+    const [lastPrompt, setLastPrompt] = useState<string>('Nog geen prompt geschreven. Begin makkelijk: "maak het gat groter" of "maak de bever sneller".');
+    const [gameConfig, setGameConfig] = useState<GameConfig>(DEFAULT_GAME_CONFIG);
+    const [isLoading, setIsLoading] = useState(false);
+    const [errorText, setErrorText] = useState<string | null>(null);
+    const [honeypot, setHoneypot] = useState('');
+    const active = gamePrompts[1]; // Vaste 'Snelle stroom' theme als basis-palet
+    const promptLimitReached = promptsUsed >= 5;
+    const inputDisabled = promptLimitReached || isLoading;
+
+    const submitCustomPrompt = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const trimmed = customPrompt.trim();
+        if (!trimmed || inputDisabled) return;
+
+        setIsLoading(true);
+        setErrorText(null);
+        setLastPrompt('Gemini denkt na…');
+
+        const result = await tweakGameDemo(trimmed, gameConfig, honeypot);
+
+        if (result.ok) {
+            setGameConfig((prev) => applyDelta(prev, result.delta));
+            setLastPrompt(result.reply);
+            setPromptsUsed((count) => Math.min(5, count + 1));
+            setCustomPrompt('');
+            if (typeof result.remaining === 'number' && result.remaining <= 0) {
+                setPromptsUsed(5);
+            }
+        } else {
+            setLastPrompt('Probeer het nog eens met een ander verzoek.');
+            setErrorText(result.error.message);
+            if (result.error.code === 'rate_limit') {
+                setPromptsUsed(5);
+            }
+        }
+        setIsLoading(false);
+    };
+
+    return (
+        <Reveal y={34} className="project-card-motion grid gap-5 rounded-[36px] bg-lab-paper p-4 shadow-2xl shadow-lab-ink/12 ring-1 ring-lab-line lg:grid-cols-[0.82fr_1.18fr] lg:p-6">
+            <div className="flex min-h-[430px] flex-col rounded-[28px] bg-lab-ink p-5 text-white shadow-xl shadow-lab-ink/18">
+                <div className="flex items-start justify-between gap-4">
+                    <div>
+                        <p className="text-xs font-black uppercase tracking-wide text-lab-gold">Gemini coach</p>
+                        <h3 className="mt-1 text-2xl font-black">Schrijf je eigen prompt</h3>
+                    </div>
+                    <span className="rounded-full bg-white/10 px-3 py-2 text-xs font-black">{promptsUsed}/5 prompts</span>
+                </div>
+
+                <div className="mt-7 rounded-3xl bg-white/10 p-4">
+                    <p className="text-xs font-black uppercase tracking-wide text-white/56">Laatste idee</p>
+                    <p className="mt-2 text-base font-bold leading-7 text-white">{lastPrompt}</p>
+                    {errorText && (
+                        <p className="mt-2 text-xs font-bold text-lab-coral" role="alert">{errorText}</p>
+                    )}
+                </div>
+
+                <form onSubmit={submitCustomPrompt} className="mt-auto pt-6">
+                    <label htmlFor="game-prompt" className="text-sm font-black text-white">Wat moet de game doen?</label>
+                    <textarea
+                        id="game-prompt"
+                        value={customPrompt}
+                        onChange={(event) => setCustomPrompt(event.target.value)}
+                        disabled={inputDisabled}
+                        maxLength={500}
+                        placeholder={promptLimitReached ? 'Promptlimiet bereikt' : 'Bijvoorbeeld: maak de bever sneller en het gat groter.'}
+                        className="mt-3 min-h-[112px] w-full resize-none rounded-3xl border border-white/10 bg-white/10 px-4 py-3 text-sm font-semibold leading-6 text-white outline-none placeholder:text-white/50 focus:border-lab-gold disabled:opacity-50"
+                    />
+                    {/* Honeypot — visually hidden, only bots fill this in */}
+                    <input
+                        type="text"
+                        name="hp_field"
+                        value={honeypot}
+                        onChange={(event) => setHoneypot(event.target.value)}
+                        tabIndex={-1}
+                        autoComplete="off"
+                        aria-hidden="true"
+                        style={{ position: 'absolute', left: '-9999px', width: '1px', height: '1px', opacity: 0 }}
+                    />
+                    <div className="mt-3 flex items-center justify-between gap-3">
+                        <p className="text-xs font-semibold text-white/58">Maximaal vijf prompts per demo.</p>
+                        <button
+                            type="submit"
+                            disabled={inputDisabled || !customPrompt.trim()}
+                            className="inline-flex min-h-[46px] items-center gap-2 rounded-full bg-lab-gold px-5 py-2 text-sm font-black text-lab-ink disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-gold focus-visible:ring-offset-lab-ink"
+                        >
+                            {isLoading ? 'Bezig…' : 'Pas aan'}
+                            {!isLoading && <ArrowRightIcon />}
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div className="relative min-h-[430px] overflow-hidden rounded-[28px] bg-[#08283B] p-4 shadow-xl shadow-lab-ink/18">
+                <div className="mb-4 flex items-center justify-between rounded-2xl bg-white/95 px-4 py-3 text-lab-ink">
+                    <div>
+                        <p className="text-xs font-black uppercase text-lab-sage">Live preview</p>
+                        <h3 className="text-lg font-black">{active.name}</h3>
+                    </div>
+                    <span className="rounded-full bg-lab-cream px-3 py-1 text-xs font-black">Game Programmeur</span>
+                </div>
+                <FlappyGamePreview active={active} reduceMotion={reduceMotion} config={gameConfig} />
+            </div>
+        </Reveal>
+    );
+}
+
+function BeaverGlider({ color, reduceMotion, yPercent, domRef }: { color: string; reduceMotion: boolean; yPercent?: number; domRef?: React.Ref<HTMLDivElement> }) {
+    const tailColor = '#8B5A3C';
+    return (
+        <div
+            ref={domRef}
+            className="absolute left-[8%] z-30"
+            style={{
+                top: yPercent !== undefined ? `${yPercent}%` : '41%',
+                animation: yPercent === undefined && !reduceMotion ? 'dg-glider-bob 1.8s ease-in-out infinite' : undefined,
+            }}
+            aria-hidden="true"
+        >
+            {!reduceMotion && (
+                <div className="absolute -left-10 top-[39%] flex flex-col gap-[4px]">
+                    <span className="block h-[3px] w-8 rounded-full bg-white/60" />
+                    <span className="block h-[3px] w-5 rounded-full bg-white/38" />
+                    <span className="block h-[3px] w-3 rounded-full bg-white/22" />
+                </div>
+            )}
+            <svg
+                viewBox="0 0 92 64"
+                width="86"
+                height="60"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+            >
+                <path d="M24 41 C10 37 8 25 21 20 C33 18 41 26 38 38 Z" fill="#FCF6EA" opacity="0.82" />
+                <ellipse cx="15" cy="43" rx="14" ry="9" fill={tailColor} style={{ transform: 'rotate(-12deg)', transformOrigin: '18px 38px' }} />
+                <ellipse cx="14" cy="44" rx="10" ry="6" fill="#6B3C1E" style={{ transform: 'rotate(-12deg)', transformOrigin: '18px 38px' }} />
+                <ellipse cx="48" cy="37" rx="27" ry="17" fill={color} />
+                <path d="M31 35 C42 24 57 22 69 32 C57 34 45 40 35 50 Z" fill="#F3E4CB" opacity="0.8" />
+                <ellipse cx="69" cy="27" rx="14" ry="12" fill={color} />
+                <ellipse cx="62" cy="17" rx="4.2" ry="5.2" fill={tailColor} />
+                <ellipse cx="74" cy="16" rx="4.2" ry="5.2" fill={tailColor} />
+                <circle cx="75" cy="23" r="4.1" fill="white" />
+                <circle cx="76" cy="24" r="2" fill="#08283B" />
+                <circle cx="77" cy="23" r="0.8" fill="white" />
+                <ellipse cx="82" cy="30" rx="5.5" ry="3.7" fill={tailColor} />
+                <ellipse cx="54" cy="51" rx="6" ry="3.5" fill={tailColor} />
+                <ellipse cx="39" cy="52" rx="6" ry="3.5" fill={tailColor} />
+            </svg>
+        </div>
+    );
+}
+
+// Static physical sprite sizes (tuning happens via GameConfig)
+const BEAVER_W = 8;
+const BEAVER_H = 10;
+
+type GameState = 'idle' | 'playing' | 'over';
+interface Gate { id: number; x: number; gapTop: number; passed: boolean; }
+
+function PlayableBeaverStream({ active, reduceMotion, config }: { active: typeof gamePrompts[number]; reduceMotion: boolean; config: GameConfig }) {
+    const gateColor = config.pipeColor ?? active.pipe;
+    const beaverColor = config.beaverColor ?? active.bird;
+    const skyColor = config.skyColor ?? active.sky;
+    const [gameState, setGameState] = useState<GameState>('idle');
+    const [displayScore, setDisplayScore] = useState(0);
+    const [renderTick, setRenderTick] = useState(0);
+
+    const beaverY = useRef(50);
+    const velocity = useRef(0);
+    const gatesRef = useRef<Gate[]>([]);
+    const scoreRef = useRef(0);
+    const beaverDomRef = useRef<HTMLDivElement>(null);
+    const animId = useRef<number>(0);
+    const lastTime = useRef<number>(0);
+    const frameCount = useRef(0);
+    const gameStateRef = useRef<GameState>('idle');
+    const configRef = useRef(config);
+
+    useEffect(() => { gameStateRef.current = gameState; }, [gameState]);
+    useEffect(() => { configRef.current = config; }, [config]);
+
+    const handleFlap = useCallback(() => {
+        if (gameStateRef.current === 'idle') {
+            beaverY.current = 50;
+            velocity.current = configRef.current.flapVelocity;
+            gatesRef.current = [];
+            scoreRef.current = 0;
+            frameCount.current = 0;
+            setDisplayScore(0);
+            setRenderTick(t => t + 1);
+            setGameState('playing');
+        } else if (gameStateRef.current === 'playing') {
+            velocity.current = configRef.current.flapVelocity;
+        } else if (gameStateRef.current === 'over') {
+            setGameState('idle');
+        }
+    }, []);
+
+    useEffect(() => {
+        const onKey = (e: KeyboardEvent) => {
+            if (e.code !== 'Space' && e.code !== 'Enter') return;
+            const target = e.target as HTMLElement;
+            if (target && (target.tagName === 'TEXTAREA' || target.tagName === 'INPUT' || target.tagName === 'BUTTON')) return;
+            e.preventDefault();
+            handleFlap();
+        };
+        window.addEventListener('keydown', onKey);
+        return () => window.removeEventListener('keydown', onKey);
+    }, [handleFlap]);
+
+    useEffect(() => {
+        if (reduceMotion) return;
+        if (gameState !== 'playing') {
+            cancelAnimationFrame(animId.current);
+            lastTime.current = 0;
+            return;
+        }
+
+        const tick = (now: number) => {
+            const dt = lastTime.current ? Math.min(2, (now - lastTime.current) / 16.67) : 1;
+            lastTime.current = now;
+            frameCount.current += 1;
+
+            const cfg = configRef.current;
+
+            velocity.current += cfg.gravity * dt;
+            beaverY.current += velocity.current * dt;
+
+            if (beaverY.current < 0 || beaverY.current > 88) {
+                setGameState('over');
+                return;
+            }
+
+            gatesRef.current = gatesRef.current
+                .map(g => ({ ...g, x: g.x - cfg.scrollSpeed * dt }))
+                .filter(g => g.x > -12);
+
+            const last = gatesRef.current[gatesRef.current.length - 1];
+            if (!last || last.x < 100 - cfg.gateInterval) {
+                // Vary the gap-top within bounds that respect the configured gap size
+                // so the gate always fits inside the playable area (0–88%).
+                const maxGapTop = Math.max(8, 88 - cfg.gateGap - BEAVER_H);
+                const minGapTop = 8;
+                gatesRef.current.push({
+                    id: Date.now() + Math.random(),
+                    x: Math.max(110, (last?.x ?? 100) + cfg.gateInterval),
+                    gapTop: minGapTop + Math.random() * Math.max(0, maxGapTop - minGapTop),
+                    passed: false,
+                });
+            }
+
+            const bL = 8;
+            const bR = 8 + BEAVER_W;
+            for (const g of gatesRef.current) {
+                const gR = g.x + 10;
+                if (g.x < bR && gR > bL) {
+                    if (beaverY.current < g.gapTop || beaverY.current > g.gapTop + cfg.gateGap - BEAVER_H) {
+                        setGameState('over');
+                        return;
+                    }
+                }
+                if (!g.passed && gR < bL) {
+                    g.passed = true;
+                    scoreRef.current += 1;
+                    setDisplayScore(scoreRef.current);
+                }
+            }
+
+            if (beaverDomRef.current) {
+                beaverDomRef.current.style.top = `${beaverY.current}%`;
+            }
+
+            if (frameCount.current % 3 === 0) {
+                setRenderTick(t => t + 1);
+            }
+
+            animId.current = requestAnimationFrame(tick);
+        };
+
+        animId.current = requestAnimationFrame(tick);
+        return () => cancelAnimationFrame(animId.current);
+    }, [gameState, reduceMotion]);
+
+    const staticGates: Gate[] = [
+        { id: 1, x: 35, gapTop: 28, passed: false },
+        { id: 2, x: 65, gapTop: 20, passed: false },
+    ];
+    const visibleGates = reduceMotion ? staticGates : gatesRef.current;
+
+    void renderTick;
+
+    return (
+        <div
+            role="button"
+            tabIndex={0}
+            aria-label="Speel mini-game — klik of druk op spatie om te starten"
+            onClick={handleFlap}
+            onTouchStart={(e) => { e.preventDefault(); handleFlap(); }}
+            className="relative h-[390px] cursor-pointer overflow-hidden rounded-[24px] shadow-2xl shadow-black/24 ring-1 ring-white/15 select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink"
+            style={{ background: `linear-gradient(180deg, ${skyColor} 0%, #9FDAF2 42%, #B8E3CF 72%, #5F947D 100%)` }}
+        >
+            <div className="absolute left-0 right-0 top-[30%] h-14 bg-white/16 blur-[8px]" />
+            <div className="absolute left-8 top-8 h-7 w-32 rounded-full bg-white/48 blur-[2px]" />
+            <div className="absolute right-16 top-14 h-6 w-28 rounded-full bg-white/36 blur-[2px]" />
+            <div className="absolute left-[45%] top-12 h-4 w-20 rounded-full bg-white/30 blur-[1px]" />
+
+            <div className="absolute bottom-0 left-0 right-0 h-[82px] bg-gradient-to-b from-[#6CA47E] to-[#0B453F]">
+                <div className="absolute left-0 right-0 top-0 h-3 bg-lab-gold/65" />
+                <div className="absolute left-0 right-0 top-5 h-[2px] rounded-full bg-white/18" />
+                <div className="absolute left-0 right-0 top-11 h-[1.5px] rounded-full bg-white/12" />
+            </div>
+
+            {visibleGates.map((gate) => (
+                <div
+                    key={gate.id}
+                    className="absolute top-0 z-20 w-[10%]"
+                    style={{ left: `${gate.x}%`, height: '100%' }}
+                >
+                    <div
+                        className="absolute inset-x-0 top-0 rounded-b-[16px] shadow-xl shadow-lab-ink/20"
+                        style={{ height: `${gate.gapTop}%`, backgroundColor: gateColor }}
+                    >
+                        <div className="absolute bottom-4 left-1/2 h-[70%] w-[3px] -translate-x-1/2 rounded-full bg-white/13" />
+                    </div>
+                    <div
+                        className="absolute inset-x-0 bottom-[82px] rounded-t-[16px] shadow-xl shadow-lab-ink/20"
+                        style={{ height: `${Math.max(0, 100 - gate.gapTop - config.gateGap)}%`, backgroundColor: gateColor }}
+                    >
+                        <div className="absolute left-1/2 top-4 h-[70%] w-[3px] -translate-x-1/2 rounded-full bg-white/13" />
+                    </div>
+                </div>
+            ))}
+
+            <BeaverGlider
+                color={beaverColor}
+                reduceMotion={reduceMotion}
+                yPercent={gameState === 'idle' && !reduceMotion ? undefined : beaverY.current}
+                domRef={beaverDomRef}
+            />
+
+            {gameState !== 'idle' && (
+                <div className="absolute left-5 top-5 flex items-center gap-2 rounded-full bg-lab-paper/95 px-4 py-2 shadow-lg shadow-lab-ink/10">
+                    <span className="size-2 rounded-full bg-lab-sage" />
+                    <span className="text-xs font-black text-lab-ink">{displayScore} poorten</span>
+                </div>
+            )}
+
+            <div className="absolute right-5 top-5 rounded-full bg-lab-cream/90 px-3 py-1.5 text-xs font-black uppercase tracking-wide text-lab-tealDark shadow-md shadow-lab-ink/8">
+                Eigen side-scroller
+            </div>
+
+            <div className="absolute bottom-5 left-5 right-5 flex items-start gap-3 rounded-3xl bg-lab-paper/96 p-3 shadow-xl shadow-lab-ink/18">
+                <div className="mt-0.5 flex size-7 flex-none items-center justify-center rounded-full bg-lab-coral/15">
+                    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                        <circle cx="8" cy="8" r="7" stroke="#D97848" strokeWidth="2" />
+                        <circle cx="8" cy="8" r="3" fill="#D97848" />
+                    </svg>
+                </div>
+                <div>
+                    <p className="text-[10px] font-black uppercase tracking-wide text-lab-coral">Leerdoel</p>
+                    <p className="mt-0.5 text-xs font-black leading-snug text-lab-ink">Testen, aanpassen en uitleggen waarom de game beter wordt.</p>
+                </div>
+            </div>
+
+            {gameState === 'over' && (
+                <div className="absolute inset-0 z-40 flex items-center justify-center bg-lab-ink/40 backdrop-blur-[2px]">
+                    <div className="rounded-2xl bg-lab-paper px-6 py-5 text-center shadow-2xl">
+                        <p className="text-xs font-black uppercase tracking-wide text-lab-coral">Game over</p>
+                        <p className="mt-1 text-3xl font-black text-lab-ink">{displayScore}</p>
+                        <p className="text-xs font-semibold text-lab-muted">poorten gehaald</p>
+                        <button
+                            onClick={(e) => { e.stopPropagation(); handleFlap(); }}
+                            className="mt-3 inline-flex min-h-[44px] items-center gap-2 rounded-full bg-lab-gold px-5 py-2 text-sm font-black text-lab-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink"
+                        >
+                            Opnieuw
+                        </button>
+                    </div>
+                </div>
+            )}
+
+            <style>{`
+                @keyframes dg-glider-bob {
+                    0%, 100% { transform: translate3d(0, 0, 0) rotate(-4deg); }
+                    50% { transform: translate3d(0, -14px, 0) rotate(3deg); }
+                }
+            `}</style>
+        </div>
+    );
+}
+
+function FlappyGamePreview({ active, reduceMotion, config }: { active: typeof gamePrompts[number]; reduceMotion: boolean; config: GameConfig }) {
+    return <PlayableBeaverStream active={active} reduceMotion={reduceMotion} config={config} />;
+}
+
+function promptsUsedLabel(name: string) {
+    return name.length * 17;
+}
+
+function PortfolioStorySection({ startPilot }: { startPilot: () => void }) {
+    const reduceMotion = usePrefersReducedMotion();
+    const sectionRef = useRef<HTMLElement | null>(null);
+    const [progress, setProgress] = useState(0);
+    const panels = [
+        {
+            kicker: 'Avatar',
+            title: 'Een leerling bouwt een herkenbare identiteit.',
+            copy: 'Niet alleen punten, maar een profiel dat laat zien welke rol iemand pakt: maker, onderzoeker, ontwerper of programmeur.',
+            image: '/screenshots/avatar-customization-1200.webp',
+            alt: 'DGSkills avatar-aanpassing voor het leerlingportfolio',
+        },
+        {
+            kicker: 'Trofeeën',
+            title: 'Trofeeën maken groei zichtbaar.',
+            copy: 'Leerlingen zien wat ze al beheersen en welke volgende stap logisch is.',
+            image: '/screenshots/student-progress-xp-1200.webp',
+            alt: 'DGSkills voortgangsscherm met XP, level en trofeeën',
+        },
+        {
+            kicker: 'Portfolio',
+            title: 'Projecten worden bewijsstukken.',
+            copy: 'Een portfolio vertelt wat iemand gemaakt heeft, welke keuzes zijn gemaakt en welke skills daarbij horen.',
+            image: '/screenshots/student-dashboard.webp',
+            alt: 'DGSkills leerlingdashboard als portfolio-overzicht',
+        },
+        {
+            kicker: 'Docent',
+            title: 'De docent ziet waar groei zit.',
+            copy: 'Voor scholen wordt zichtbaar waar een leerling sterk op scoort, waar extra uitleg nodig is en welke SLO-doelen geraakt worden.',
+            image: '/screenshots/ict-privacy.webp',
+            alt: 'DGSkills school- en privacydashboard voor verantwoord gebruik',
+        },
+    ];
+
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+        let frame = 0;
+        let last = 0;
+        const update = () => {
+            frame = 0;
+            const el = sectionRef.current;
+            if (!el) return;
+            const rect = el.getBoundingClientRect();
+            const travel = Math.max(1, rect.height - window.innerHeight);
+            const next = Math.min(1, Math.max(0, -rect.top / travel));
+            if (Math.abs(next - last) > 0.005) {
+                last = next;
+                setProgress(next);
+            }
+        };
+        const onScroll = () => { if (!frame) frame = requestAnimationFrame(update); };
+        update();
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', onScroll);
+        return () => {
+            if (frame) cancelAnimationFrame(frame);
+            window.removeEventListener('scroll', onScroll);
+            window.removeEventListener('resize', onScroll);
+        };
+    }, []);
+
+    const easeOutCubic = (x: number) => 1 - Math.pow(1 - x, 3);
+    const easeInCubic = (x: number) => x * x * x;
+    const clamp01 = (x: number) => Math.min(1, Math.max(0, x));
+    const segmentProgress = (offset: number, start: number, end: number) => clamp01((offset - start) / (end - start));
+
+    const getCardStyle = (index: number): React.CSSProperties => {
+        const N = panels.length;
+        const t = progress * (N - 1);
+
+        if (reduceMotion) {
+            const active = Math.round(t) === index;
+            return {
+                opacity: active ? 1 : 0,
+                transform: 'none',
+                zIndex: active ? N : 0,
+                pointerEvents: active ? 'auto' : 'none',
+                transition: 'opacity 240ms ease',
+            };
+        }
+
+        const offset = t - index; // <0 = nog in dek, 0 = actief, >0 = aan het wegvliegen
+        let txValue: number, txUnit: 'px' | '%';
+        let ty: number, rot: number, sc: number, op: number;
+        let shakeX = 0;
+        let shakeY = 0;
+        let shakeRot = 0;
+
+        if (offset <= 0) {
+            // incoming: kaart staat in het dek erachter, fan-stack zichtbaar
+            const depth = Math.min(-offset, 3);
+            const pull = easeOutCubic(clamp01(1 + offset));
+            txValue = depth * -10 + pull * 10;
+            txUnit = 'px';
+            ty = depth * 16 - pull * 10;
+            rot = depth * -2.6 + pull * 2.4;
+            sc = Math.max(0.8, 1 - depth * 0.055 + pull * 0.035);
+            op = -offset > 3.1 ? 0 : 1;
+        } else {
+            const settle = segmentProgress(offset, 0, 0.16);
+            const shuffle = segmentProgress(offset, 0.16, 0.58);
+            const leave = segmentProgress(offset, 0.58, 1);
+            const shuffleWave = Math.sin(shuffle * Math.PI * 3);
+            const leaveEase = easeInCubic(leave);
+
+            shakeX = shuffleWave * 10 * (1 - shuffle * 0.35);
+            shakeY = Math.sin(shuffle * Math.PI * 2) * 6 * (1 - shuffle * 0.45);
+            shakeRot = shuffleWave * 3.2 * (1 - shuffle * 0.35);
+
+            txValue = shakeX - 118 * leaveEase;
+            txUnit = '%';
+            ty = -6 * settle + shakeY - 46 * leaveEase;
+            rot = shakeRot - 19 * leaveEase;
+            sc = 1 + 0.012 * (1 - settle) - 0.075 * leaveEase;
+            op = clamp01(1 - leave * 1.25);
+        }
+
+        const distFromActive = Math.abs(offset);
+        return {
+            zIndex: N - Math.round(distFromActive * 2),
+            opacity: op,
+            transform: `translate3d(${txValue}${txUnit}, ${ty}px, 0) rotate(${rot}deg) scale(${sc})`,
+            transition: 'transform 90ms linear, opacity 160ms ease',
+            pointerEvents: distFromActive < 0.5 ? 'auto' : 'none',
+            willChange: 'transform, opacity',
+        };
+    };
+
+    return (
+        <section
+            id="portfolio"
+            ref={sectionRef}
+            className={`relative scroll-mt-24 px-5 py-20 md:px-10 ${reduceMotion ? '' : 'lg:min-h-[420svh] lg:py-0'}`}
+        >
+            <div className={`mx-auto grid max-w-5xl gap-10 lg:grid-cols-[0.72fr_1.28fr] ${reduceMotion ? 'lg:items-start' : 'lg:sticky lg:top-20 lg:h-[calc(100svh-80px)] lg:items-center'}`}>
+                <Reveal className="lg:h-fit lg:self-center">
+                    <h2 className="text-balance text-4xl font-black leading-tight text-lab-ink md:text-5xl">Jouw portfolio. Jouw verhaal.</h2>
+                    <p className="mt-5 max-w-md text-pretty text-base font-semibold leading-7 text-lab-muted">
+                        Scroll door een portfolio dat echt iets vertelt: wie je bent, wat je maakt, welke trofeeën je haalt en waar je nog in groeit.
+                    </p>
+                    <a href="/pilot" onClick={startPilot} className="mt-7 inline-flex min-h-[48px] items-center gap-3 rounded-full bg-lab-gold px-7 py-3 text-sm font-black text-lab-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink">
+                        Plan pilot met portfolio-route
+                        <ArrowRightIcon />
+                    </a>
+                </Reveal>
+
+                <div className={`${reduceMotion ? 'hidden' : 'relative hidden h-[min(68svh,560px)] min-h-[440px] overflow-visible lg:block'}`}>
+                    <div className="absolute inset-0 translate-x-9 translate-y-10 rotate-3 rounded-[34px] bg-lab-creamDeep/80 shadow-xl shadow-lab-ink/8 ring-1 ring-lab-line" aria-hidden="true" />
+                    <div className="absolute inset-0 translate-x-5 translate-y-5 -rotate-2 rounded-[34px] bg-white/75 shadow-xl shadow-lab-ink/8 ring-1 ring-lab-line" aria-hidden="true" />
+                    {panels.map((panel, index) => (
+                        <article
+                            key={panel.title}
+                            className="portfolio-story-motion absolute inset-0 grid overflow-hidden rounded-[34px] bg-white shadow-2xl shadow-lab-ink/12 ring-1 ring-lab-line md:grid-cols-[0.8fr_1.2fr]"
+                            style={getCardStyle(index)}
+                            aria-hidden={Math.abs(progress * (panels.length - 1) - index) >= 0.5}
+                        >
+                            <div className="flex flex-col justify-center p-7 md:p-9">
+                                <p className="text-sm font-black uppercase text-lab-sage">{panel.kicker}</p>
+                                <h3 className="mt-3 text-2xl font-black leading-tight text-lab-ink">{panel.title}</h3>
+                                <p className="mt-4 text-sm font-semibold leading-7 text-lab-muted">{panel.copy}</p>
+                            </div>
+                            <div className="relative grid min-h-0 place-items-center overflow-hidden bg-lab-cream p-5">
+                                <img src={panel.image} alt={panel.alt} className="max-h-full w-full object-contain" loading="lazy" decoding="async" />
+                                <div className="absolute bottom-4 left-4 rounded-full bg-white/92 px-4 py-2 text-xs font-black text-lab-ink shadow-lg shadow-lab-ink/12">
+                                    Stap {String(index + 1).padStart(2, '0')}
+                                </div>
+                            </div>
+                        </article>
+                    ))}
+                </div>
+
+                <div className={`space-y-5 ${reduceMotion ? '' : 'lg:hidden'}`}>
+                    {panels.map((panel, index) => (
+                        <Reveal key={panel.title} delay={index * 0.05} y={34} className="portfolio-story-motion overflow-hidden rounded-[28px] bg-white shadow-xl shadow-lab-ink/8 ring-1 ring-lab-line">
+                            <div className="p-6">
+                                <p className="text-sm font-black uppercase text-lab-sage">{panel.kicker}</p>
+                                <h3 className="mt-3 text-2xl font-black leading-tight text-lab-ink">{panel.title}</h3>
+                                <p className="mt-4 text-sm font-semibold leading-7 text-lab-muted">{panel.copy}</p>
+                            </div>
+                            <div className="relative grid min-h-[220px] place-items-center bg-lab-cream p-4">
+                                <img src={panel.image} alt={panel.alt} className="max-h-[280px] w-full object-contain" loading="lazy" decoding="async" />
+                            </div>
+                        </Reveal>
+                    ))}
+                </div>
+            </div>
+        </section>
+    );
+}
+
+function Reveal({
+    children,
+    className,
+    delay = 0,
+    y = 24,
+    style,
+}: {
+    children: React.ReactNode;
+    className?: string;
+    delay?: number;
+    y?: number;
+    style?: React.CSSProperties;
+}) {
+    const reduceMotion = usePrefersReducedMotion();
+    const [inView, setInView] = useState(false);
+    const ref = useRef<HTMLDivElement | null>(null);
+
+    useEffect(() => {
+        if (reduceMotion) {
+            setInView(true);
+            return;
+        }
+
+        const element = ref.current;
+        if (!element) return;
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setInView(true);
+                    observer.disconnect();
+                }
+            },
+            { rootMargin: '0px 0px -10% 0px', threshold: 0.16 }
+        );
+
+        observer.observe(element);
+        return () => observer.disconnect();
+    }, [reduceMotion]);
+
+    if (reduceMotion) {
+        return <div className={className} style={style}>{children}</div>;
+    }
+
+    return (
+        <div
+            ref={ref}
+            className={className}
+            style={{
+                ...style,
+                opacity: inView ? 1 : 0.92,
+                transform: inView ? 'translate3d(0,0,0)' : `translate3d(0,${y}px,0)`,
+                transition: `opacity 680ms cubic-bezier(.22,1,.36,1) ${delay}s, transform 680ms cubic-bezier(.22,1,.36,1) ${delay}s`,
+                willChange: inView ? 'auto' : 'opacity, transform',
+            }}
+        >
+            {children}
+        </div>
+    );
+}
+
+function usePrefersReducedMotion() {
+    const [reduced, setReduced] = useState(false);
+
+    useEffect(() => {
+        if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return;
+        const media = window.matchMedia('(prefers-reduced-motion: reduce)');
+        const update = () => setReduced(media.matches);
+        update();
+        media.addEventListener?.('change', update);
+        return () => media.removeEventListener?.('change', update);
+    }, []);
+
+    return reduced;
+}
+
+function HeroJourneyBridge() {
+    return (
+        <div className="pointer-events-none absolute inset-x-0 bottom-[-1px] z-0 h-52 bg-gradient-to-b from-transparent via-lab-paper/72 to-lab-paper md:h-64" aria-hidden="true">
+            <div className="absolute inset-x-0 bottom-0 h-20 bg-lab-paper" />
+        </div>
+    );
+}
+
+function ProductHeroMockup() {
+    return (
+        <div data-hero-mockup className="relative z-10 mx-auto w-full max-w-[720px] pt-4 sm:pt-6 lg:ml-auto lg:mr-0 lg:w-[min(44vw,760px)] lg:max-w-none xl:w-[min(48vw,980px)]">
+            <div className="absolute inset-x-[18%] bottom-3 h-20 rounded-full bg-lab-ink/10 blur-2xl" aria-hidden="true" />
+            <img
+                src="/assets/storytelling/hero-students-gameprogrammeur-v3-transparent.webp"
+                alt="Twee leerlingen werken achter een laptop aan Game Programmeur in DGSkills"
+                className="mx-auto w-full object-contain drop-shadow-[0_30px_48px_rgba(6,31,45,0.16)]"
+                loading="eager"
+                decoding="async"
+                fetchPriority="high"
+            />
+        </div>
+    );
+}
+
+function WaveTop({ color, dark = false }: { color: string; dark?: boolean }) {
+    return (
+        <svg className={`pointer-events-none absolute left-0 top-0 h-16 w-full -translate-y-[1px] ${dark ? 'text-lab-tealDark' : ''}`} viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
+            <path fill={color} d="M0,44 C180,92 318,88 488,56 C680,20 812,16 992,54 C1164,90 1294,88 1440,40 L1440,0 L0,0 Z" />
+        </svg>
+    );
+}
+
+function WaveBottom({ color }: { color: string }) {
+    return (
+        <svg className="pointer-events-none absolute bottom-0 left-0 h-16 w-full translate-y-[1px]" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
+            <path fill={color} d="M0,76 C154,34 310,32 474,66 C660,104 812,102 1000,64 C1176,28 1306,30 1440,78 L1440,120 L0,120 Z" />
+        </svg>
+    );
+}
+
+function Underline() {
+    return (
+        <svg className="absolute -bottom-2 left-0 h-3 w-full" viewBox="0 0 220 16" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M3 11 C52 4 121 3 217 10" fill="none" stroke="#8F9148" strokeWidth="4" strokeLinecap="round" />
+        </svg>
+    );
+}
+
+function TitleSpark() {
+    return (
+        <svg className="pointer-events-none absolute -top-5 left-[18%] h-7 w-12 -translate-x-1/2 -rotate-[22deg] sm:-top-7 sm:h-9 sm:w-16" viewBox="0 0 64 42" fill="none" aria-hidden="true">
+            <path d="M32 4v22M4 12l16 18M60 12 44 30" stroke="#D97848" strokeWidth="6" strokeLinecap="round" />
+        </svg>
+    );
+}
+
+function Squiggle({ color }: { color: string }) {
+    return (
+        <svg className="mt-4 h-6 w-28" viewBox="0 0 120 24" aria-hidden="true">
+            <path d="M2 15 C16 2 27 25 41 12 C54 0 65 24 80 11 C94 -1 105 19 118 8" fill="none" stroke={color} strokeWidth="3" strokeLinecap="round" />
+        </svg>
+    );
+}
+
+function Doodle({ variant, className }: { variant: 'spark' | 'arrow' | 'dot' | 'leaf'; className?: string }) {
+    const common = `pointer-events-none absolute z-0 ${className ?? ''}`;
+    if (variant === 'spark') {
+        return <svg className={`${common} h-16 w-16`} viewBox="0 0 64 64" fill="none" aria-hidden="true"><path d="M31 6v18M12 16l12 13M52 16 40 29" stroke="currentColor" strokeWidth="4" strokeLinecap="round" /></svg>;
+    }
+    if (variant === 'arrow') {
+        return <svg className={`${common} h-28 w-28`} viewBox="0 0 112 112" fill="none" aria-hidden="true"><path d="M100 8C68 14 42 35 28 72" stroke="currentColor" strokeWidth="3" strokeDasharray="7 7" /><path d="m28 72 18-10M28 72l8-19" stroke="currentColor" strokeWidth="3" strokeLinecap="round" /></svg>;
+    }
+    if (variant === 'leaf') {
+        return <svg className={`${common} h-32 w-32`} viewBox="0 0 120 120" fill="none" aria-hidden="true"><path d="M14 100C40 72 55 37 103 20C97 62 76 91 38 101" stroke="currentColor" strokeWidth="3" /><path d="M31 92C47 70 64 51 88 33" stroke="currentColor" strokeWidth="2" /></svg>;
+    }
+    return <span className={`${common} size-10 rounded-full bg-lab-oliveDeep/80`} aria-hidden="true" />;
+}
+
+function IconBase({ children }: { children: React.ReactNode }) {
+    return <svg className="size-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{children}</svg>;
+}
+
+function ArrowRightIcon() { return <IconBase><path d="M5 12h14M13 5l7 7-7 7" /></IconBase>; }
+function MenuIcon() { return <IconBase><path d="M4 7h16M4 12h16M4 17h16" /></IconBase>; }
+function XIcon() { return <IconBase><path d="M18 6 6 18M6 6l12 12" /></IconBase>; }
+function SearchIcon() { return <IconBase><circle cx="11" cy="11" r="7" /><path d="m20 20-4-4" /></IconBase>; }
+function BookIcon() { return <IconBase><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /><path d="M6.5 3H20v18H6.5A2.5 2.5 0 0 1 4 18.5v-13A2.5 2.5 0 0 1 6.5 3Z" /></IconBase>; }
+function PencilIcon() { return <IconBase><path d="m18 2 4 4-13 13-5 1 1-5Z" /><path d="M15 5 19 9" /></IconBase>; }
+function BadgeIcon() { return <IconBase><path d="M12 3 15 9l6 1-4.5 4.5 1 6.5L12 18l-5.5 3 1-6.5L3 10l6-1Z" /></IconBase>; }
+function SendIcon() { return <IconBase><path d="M22 2 11 13" /><path d="m22 2-7 20-4-9-9-4Z" /></IconBase>; }
+function BrainIcon() { return <IconBase><path d="M9 9a3 3 0 1 1 3-3v12a3 3 0 1 1-3-3" /><path d="M15 9a3 3 0 1 0-3-3v12a3 3 0 1 0 3-3" /></IconBase>; }
+function CodeIcon() { return <IconBase><path d="m8 9-4 3 4 3M16 9l4 3-4 3M14 5l-4 14" /></IconBase>; }
+function CameraIcon() { return <IconBase><path d="M15 10 20 7v10l-5-3Z" /><rect x="3" y="6" width="12" height="12" rx="2" /></IconBase>; }
+function LockIcon() { return <IconBase><rect x="4" y="10" width="16" height="10" rx="2" /><path d="M8 10V7a4 4 0 0 1 8 0v3" /></IconBase>; }
+function CheckIcon() { return <svg className="mt-1 size-4 flex-none" viewBox="0 0 20 20" fill="none" stroke="#0B453F" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m4 10 4 4 8-8" /></svg>; }

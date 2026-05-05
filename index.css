@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  scroll-padding-top: 6rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
 /* ============================================
    PREFERS-REDUCED-MOTION - Accessibility
    ============================================ */
@@ -19,30 +29,50 @@
    DESIGN SYSTEM - Variables & Tokens
    ============================================ */
 :root {
+  /* Colors - DGSkills redesign tokens */
+  --color-cream: #FCF6EA;
+  --color-paper: #FFFDF7;
+  --color-cream-deep: #F3E4CB;
+  --color-ink: #08283B;
+  --color-muted: #445865;
+  --color-olive: #99984D;
+  --color-gold: #D7C95F;
+  --color-sage: #5F947D;
+  --color-coral: #D97848;
+  --color-teal-dark: #0B453F;
+  --color-line: #E7D8BD;
+
   /* Colors - Primary Palette */
-  --color-primary: #D97757;
+  --color-primary: #D97848;
   --color-primary-light: #E8956F;
   --color-primary-dark: #C46849;
   --color-primary-50: #FDF5F0;
   --color-primary-100: #FAE8DE;
+  --color-otter-brown: #8B5A3C;
+  --color-otter-light: #C9895B;
+  --color-teal: #0B453F;
+  --color-mint: #A7E8D4;
+  --color-cobalt: #3F6FCE;
+  --color-soft-gold: #D7C95F;
+  --color-warm-line: #E7D8BD;
 
   /* Colors - Semantic */
-  --color-success: #10b981;
-  --color-warning: #f59e0b;
+  --color-success: #5F947D;
+  --color-warning: #D7C95F;
   --color-error: #ef4444;
-  --color-info: #3b82f6;
+  --color-info: #3F6FCE;
 
   /* Colors - Neutral (warm) */
-  --color-slate-50: #FAF9F0;
+  --color-slate-50: #FCF6EA;
   --color-slate-100: #F5F3EC;
-  --color-slate-200: #E8E6DF;
+  --color-slate-200: #E7D8BD;
   --color-slate-300: #D5D3CC;
   --color-slate-400: #9C9C95;
-  --color-slate-500: #6B6B66;
+  --color-slate-500: #445865;
   --color-slate-600: #52524D;
-  --color-slate-700: #3D3D38;
+  --color-slate-700: #445865;
   --color-slate-800: #2A2A26;
-  --color-slate-900: #1A1A19;
+  --color-slate-900: #08283B;
 
   /* Spacing Scale (based on 4px grid) */
   --space-1: 0.25rem;
