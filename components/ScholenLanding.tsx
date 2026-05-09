@@ -123,7 +123,7 @@ const heroProofItems = [
     { label: 'SLO-ready', value: 'Kerndoelen zichtbaar per missie' },
     { label: 'Docentproof', value: 'Dashboard voor voortgang en signalen' },
     { label: 'Samen ingericht', value: 'Schoolpilot op maat met je team' },
-    { label: 'Veilig', value: 'AVG-bewust en AI Act-bewust' },
+    { label: 'Veilig', value: 'AVG-bewust en AI Act-roadmap 2026' },
 ] as const;
 
 const trustChips = [
