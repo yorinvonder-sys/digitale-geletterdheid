@@ -157,7 +157,8 @@ body {
 
 /* 3D Book Animations */
 .perspective-2000 {
-  perspective: 2000px;
+  perspective: 2200px;
+  perspective-origin: center 48%;
 }
 
 .preserve-3d {
@@ -170,23 +171,41 @@ body {
 }
 
 @keyframes pageFlip {
-  from {
-    transform: rotateY(0deg);
-  }
-
-  to {
-    transform: rotateY(-180deg);
-  }
+  0% { transform: rotateY(0deg) translateZ(2px); filter: drop-shadow(0 16px 18px rgba(8, 40, 59, 0.16)); }
+  22% { transform: rotateY(-35deg) translateX(-0.6%) translateZ(14px) skewY(-1.5deg); filter: drop-shadow(-8px 18px 22px rgba(8, 40, 59, 0.22)); }
+  38% { transform: rotateY(-75deg) translateX(-2%) translateZ(24px) skewY(-3deg); filter: drop-shadow(-18px 20px 24px rgba(8, 40, 59, 0.28)); }
+  46% { transform: rotateY(-95deg) translateX(-2.5%) translateZ(28px) skewY(-3.5deg); filter: drop-shadow(-22px 22px 28px rgba(8, 40, 59, 0.32)); }
+  54% { transform: rotateY(-108deg) translateX(-2%) translateZ(24px) skewY(-2.5deg); filter: drop-shadow(-16px 20px 24px rgba(8, 40, 59, 0.26)); }
+  76% { transform: rotateY(-155deg) translateX(-0.8%) translateZ(8px) skewY(-0.8deg); filter: drop-shadow(-6px 14px 16px rgba(8, 40, 59, 0.16)); }
+  100% { transform: rotateY(-180deg) translateZ(1px); filter: drop-shadow(0 8px 12px rgba(8, 40, 59, 0.12)); }
 }
 
 @keyframes pageFlipBack {
-  from {
-    transform: rotateY(0deg);
-  }
+  0% { transform: rotateY(0deg) translateZ(2px); filter: drop-shadow(0 16px 18px rgba(8, 40, 59, 0.16)); }
+  22% { transform: rotateY(35deg) translateX(0.6%) translateZ(14px) skewY(1.5deg); filter: drop-shadow(8px 18px 22px rgba(8, 40, 59, 0.22)); }
+  38% { transform: rotateY(75deg) translateX(2%) translateZ(24px) skewY(3deg); filter: drop-shadow(18px 20px 24px rgba(8, 40, 59, 0.28)); }
+  46% { transform: rotateY(95deg) translateX(2.5%) translateZ(28px) skewY(3.5deg); filter: drop-shadow(22px 22px 28px rgba(8, 40, 59, 0.32)); }
+  54% { transform: rotateY(108deg) translateX(2%) translateZ(24px) skewY(2.5deg); filter: drop-shadow(16px 20px 24px rgba(8, 40, 59, 0.26)); }
+  76% { transform: rotateY(155deg) translateX(0.8%) translateZ(8px) skewY(0.8deg); filter: drop-shadow(6px 14px 16px rgba(8, 40, 59, 0.16)); }
+  100% { transform: rotateY(180deg) translateZ(1px); filter: drop-shadow(0 8px 12px rgba(8, 40, 59, 0.12)); }
+}
 
-  to {
-    transform: rotateY(180deg);
-  }
+@keyframes pageTurnShade {
+  0% { opacity: 0.06; }
+  32% { opacity: 0.15; }
+  42% { opacity: 0.85; }
+  52% { opacity: 0.8; }
+  65% { opacity: 0.12; }
+  100% { opacity: 0.06; }
+}
+
+@keyframes foldShadow {
+  0% { opacity: 0; }
+  30% { opacity: 0.05; }
+  46% { opacity: 0.35; }
+  54% { opacity: 0.3; }
+  70% { opacity: 0.08; }
+  100% { opacity: 0; }
 }
 
 .rotate-y-180 {
@@ -194,11 +213,19 @@ body {
 }
 
 .animate-page-flip {
-  animation: pageFlip 0.8s cubic-bezier(0.645, 0.045, 0.355, 1) forwards;
+  animation: pageFlip 0.85s cubic-bezier(0.18, 0.74, 0.2, 1) forwards;
 }
 
 .animate-page-flip-reverse {
-  animation: pageFlipBack 0.8s cubic-bezier(0.645, 0.045, 0.355, 1) forwards;
+  animation: pageFlipBack 0.85s cubic-bezier(0.18, 0.74, 0.2, 1) forwards;
+}
+
+.book-fold-shadow-left {
+  animation: foldShadow 0.85s cubic-bezier(0.18, 0.74, 0.2, 1) forwards;
+}
+
+.book-fold-shadow-right {
+  animation: foldShadow 0.85s cubic-bezier(0.18, 0.74, 0.2, 1) forwards;
 }
 
 /* Ambient Glow for Lab */

@@ -1089,7 +1089,7 @@ Maak nu de titel met [TITLE] tags en de tekst van de eerste pagina met [PAGE] ta
         setTimeout(() => {
             setIsFlipping(false);
             setFlipDirection(null);
-        }, 800); // Matches CSS animation duration
+        }, 860); // Matches CSS animation duration
     };
 
     return (
@@ -1123,11 +1123,21 @@ Maak nu de titel met [TITLE] tags en de tekst van de eerste pagina met [PAGE] ta
                                     onTextClick={handleTextClick}
                                     isInteractive={!readOnly}
                                 />
+                                {isFlipping && flipDirection === 'next' && (
+                                    <div className="absolute inset-0 pointer-events-none z-40 book-fold-shadow-left"
+                                        style={{ background: 'linear-gradient(to left, rgba(8,40,59,0.45) 0%, rgba(8,40,59,0.08) 35%, transparent 70%)' }}
+                                    />
+                                )}
                             </div>
                         )}
 
                         {/* --- RIGHT PAGE (Current Page) --- */}
                         <div className={`flex-1 h-full relative z-10 overflow-hidden bg-white origin-left ${currentPage === 0 ? 'rounded-lg' : 'rounded-r-lg'}`}>
+                            {isFlipping && flipDirection === 'prev' && (
+                                <div className="absolute inset-0 pointer-events-none z-40 book-fold-shadow-right"
+                                    style={{ background: 'linear-gradient(to right, rgba(8,40,59,0.45) 0%, rgba(8,40,59,0.08) 35%, transparent 70%)' }}
+                                />
+                            )}
                             {currentPage < totalPages ? (
                                 <PageContent
                                     pageIndex={currentPage}
@@ -1190,13 +1200,13 @@ Maak nu de titel met [TITLE] tags en de tekst van de eerste pagina met [PAGE] ta
 
                         {/* --- FLIPPING OVERLAY --- */}
                         {isFlipping && flipDirection && (
-                            <div className={`absolute inset-y-0 w-1/2 z-50 backface-hidden shadow-xl
+                            <div className={`absolute inset-y-0 w-1/2 z-50 preserve-3d
                                 ${flipDirection === 'next'
-                                    ? 'left-1/2 origin-left animate-page-flip' // Flipping from Right to Left
-                                    : 'left-0 origin-right animate-page-flip-reverse' // Flipping from Left to Right
+                                    ? 'left-1/2 origin-left animate-page-flip'
+                                    : 'left-0 origin-right animate-page-flip-reverse'
                                 }`}
                             >
-                                <div className="w-full h-full bg-white backface-hidden">
+                                <div className="w-full h-full bg-white backface-hidden relative overflow-hidden">
                                     {/* Front of flipping page (The page LEAVING) */}
                                     {flipDirection === 'next' ? (
                                         // Next: Showing OLD Right Page
@@ -1236,6 +1246,9 @@ Maak nu de titel met [TITLE] tags en de tekst van de eerste pagina met [PAGE] ta
                                             isBack={true}
                                         />
                                     )}
+                                    <div className="absolute inset-0 bg-black/60 pointer-events-none"
+                                        style={{ animation: 'pageTurnShade 0.85s cubic-bezier(0.18, 0.74, 0.2, 1) forwards' }}
+                                    />
                                 </div>
                                 <div className="w-full h-full bg-stone-50 shadow-xl absolute inset-0 rotate-y-180 backface-hidden">
                                     {/* Back of flipping page (The page ARRIVING on the other side) */}
