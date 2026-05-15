@@ -360,10 +360,10 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
     // ---------------------------------------------------------------------------
 
     return (
-        <div className="min-h-screen bg-lab-cream flex flex-col">
+        <div className="flex h-screen min-h-screen flex-col overflow-hidden bg-lab-cream">
             {/* Header */}
-            <div className="bg-white border-b border-lab-line px-4 py-3 flex items-center gap-3 sticky top-0 z-20">
-                <button onClick={onBack} className="p-2 hover:bg-lab-cream rounded-lg transition-colors" aria-label="Terug">
+            <div className="sticky top-0 z-20 flex shrink-0 items-center gap-3 border-b border-lab-line bg-white px-4 py-3">
+                <button onClick={onBack} className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg transition-colors hover:bg-lab-cream focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lab-coral" aria-label="Terug">
                     <ArrowLeft size={20} className="text-lab-muted" />
                 </button>
                 <div className="flex items-center gap-2 flex-1">
@@ -381,7 +381,7 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                         <button
                             key={s}
                             onClick={() => naarStap(s)}
-                            className={`w-8 h-8 rounded-full text-xs font-bold transition-all ${
+                            className={`min-h-[44px] min-w-[44px] rounded-full text-xs font-bold transition-all ${
                                 state.currentStep === s
                                     ? 'bg-lab-coral text-white'
                                     : (s === 0 && stap1Klaar) || (s === 1 && stap2Klaar) || (s === 2 && stap3Klaar)
@@ -399,7 +399,7 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
             </div>
 
             {/* Content */}
-            <div className="flex-1 overflow-auto p-4 pb-24 max-w-2xl mx-auto w-full">
+            <div className="mx-auto min-h-0 w-full max-w-2xl flex-1 overflow-y-auto p-4 pb-24">
                 {/* Introductie */}
                 {state.currentStep === 0 && (
                     <div className="space-y-4">
@@ -469,7 +469,7 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                                             <div className="px-3 pb-3">
                                                 <button
                                                     onClick={() => setShowUitleg(toonUitleg ? null : regel.id)}
-                                                    className="text-xs text-lab-coral hover:underline"
+                                                    className="flex min-h-[44px] items-center rounded-lg px-2 text-xs text-lab-coral hover:underline"
                                                 >
                                                     {toonUitleg ? 'Verberg uitleg' : 'Bekijk uitleg'}
                                                 </button>
@@ -495,7 +495,7 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                             {stap1Klaar && (
                                 <button
                                     onClick={() => naarStap(1)}
-                                    className="flex items-center gap-1 bg-lab-coral text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-lab-coral hover:text-white transition-colors"
+                                    className="flex min-h-[44px] items-center gap-1 rounded-lg bg-lab-coral px-4 text-sm font-medium text-white transition-colors hover:bg-lab-coral hover:text-white"
                                 >
                                     Volgende <ArrowRight size={16} />
                                 </button>
@@ -539,7 +539,7 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                                                                 : [...huidigeRollen, rol];
                                                             updateToegangsRegel(resource.id, nieuw);
                                                         }}
-                                                        className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+                                                        className={`min-h-[44px] rounded-full px-3 text-xs font-medium transition-all ${
                                                             actief
                                                                 ? ROLLEN_KLEUREN[rol] + ' ring-2 ring-offset-1 ring-lab-coral'
                                                                 : 'bg-lab-cream text-lab-muted hover:bg-lab-creamDeep'
@@ -563,14 +563,14 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                             <div className="flex gap-2">
                                 <button
                                     onClick={() => naarStap(0)}
-                                    className="flex items-center gap-1 text-lab-muted px-3 py-2 rounded-lg text-sm hover:bg-lab-creamDeep transition-colors"
+                                    className="flex min-h-[44px] items-center gap-1 rounded-lg px-3 text-sm text-lab-muted transition-colors hover:bg-lab-creamDeep"
                                 >
                                     <ArrowLeft size={16} /> Terug
                                 </button>
                                 {stap2Klaar && (
                                     <button
                                         onClick={() => naarStap(2)}
-                                        className="flex items-center gap-1 bg-lab-coral text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-lab-coral hover:text-white transition-colors"
+                                        className="flex min-h-[44px] items-center gap-1 rounded-lg bg-lab-coral px-4 text-sm font-medium text-white transition-colors hover:bg-lab-coral hover:text-white"
                                     >
                                         Volgende <ArrowRight size={16} />
                                     </button>
@@ -615,7 +615,7 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                                                 {resultaat === null || resultaat === undefined ? (
                                                     <button
                                                         onClick={() => voerTestUit(scenario.id)}
-                                                        className="bg-lab-coral text-white px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-lab-coral hover:text-white transition-colors"
+                                                        className="min-h-[44px] rounded-lg bg-lab-coral px-3 text-xs font-medium text-white transition-colors hover:bg-lab-coral hover:text-white"
                                                     >
                                                         Test uitvoeren
                                                     </button>
@@ -636,7 +636,7 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                                                                     testResultaten: { ...state.testResultaten, [scenario.id]: null },
                                                                 });
                                                             }}
-                                                            className="text-xs text-lab-muted hover:text-lab-muted flex items-center gap-1"
+                                                            className="flex min-h-[44px] items-center gap-1 rounded-lg px-3 text-xs text-lab-muted hover:text-lab-muted"
                                                         >
                                                             <RotateCcw size={12} /> Opnieuw
                                                         </button>
@@ -644,7 +644,7 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                                                 )}
                                                 <button
                                                     onClick={() => setShowTestResult(toonDetail ? null : scenario.id)}
-                                                    className="ml-auto text-xs text-lab-coral hover:underline"
+                                                    className="ml-auto flex min-h-[44px] items-center rounded-lg px-3 text-xs text-lab-coral hover:underline"
                                                 >
                                                     {toonDetail ? 'Verberg' : 'Uitleg'}
                                                 </button>
@@ -670,7 +670,7 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                                 </p>
                                 <button
                                     onClick={() => naarStap(1)}
-                                    className="flex items-center gap-1 text-lab-muted px-3 py-2 rounded-lg text-sm hover:bg-lab-creamDeep transition-colors"
+                                    className="flex min-h-[44px] items-center gap-1 rounded-lg px-3 text-sm text-lab-muted transition-colors hover:bg-lab-creamDeep"
                                 >
                                     <ArrowLeft size={16} /> Terug
                                 </button>
@@ -678,7 +678,7 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                             {stap3Klaar && (
                                 <button
                                     onClick={handleVoltooi}
-                                    className="w-full bg-lab-sage text-white py-3 rounded-xl font-bold text-sm hover:bg-lab-sage hover:text-white transition-colors flex items-center justify-center gap-2"
+                                    className="flex min-h-[44px] w-full items-center justify-center gap-2 rounded-xl bg-lab-sage px-4 text-sm font-bold text-white transition-colors hover:bg-lab-sage hover:text-white"
                                 >
                                     <Shield size={18} />
                                     Missie afronden — systeem beveiligd!
@@ -710,7 +710,7 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                         </div>
                         <button
                             onClick={() => setCoachMessage(null)}
-                            className="text-lab-coral hover:text-lab-coral shrink-0 p-1"
+                            className="flex min-h-[44px] min-w-[44px] shrink-0 items-center justify-center rounded-full text-lab-coral hover:text-lab-coral"
                             aria-label="Sluit hint"
                         >
                             <XCircle size={16} />

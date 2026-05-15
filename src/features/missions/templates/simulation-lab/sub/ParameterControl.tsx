@@ -31,7 +31,7 @@ export const ParameterControl: React.FC<{
                     step={param.step ?? 1}
                     value={v}
                     onChange={(e) => onChange(Number(e.target.value))}
-                    className="w-full accent-[#D97848]"
+                    className="min-h-[44px] w-full accent-[#D97848]"
                 />
                 <div className="flex justify-between text-[10px] text-[#445865]">
                     <span>{param.min ?? 0}</span>
@@ -53,13 +53,14 @@ export const ParameterControl: React.FC<{
                 </label>
                 <button
                     onClick={() => onChange(!v)}
-                    className={`relative w-11 h-6 rounded-full transition-colors duration-300 ${
+                    className={`relative min-h-[44px] min-w-14 rounded-full transition-colors duration-300 ${
                         v ? 'bg-[#D97848]' : 'bg-[#E7D8BD]'
                     }`}
+                    aria-pressed={v}
                 >
                     <div
-                        className={`absolute top-1 w-4 h-4 bg-white rounded-full shadow transition-transform duration-300 ${
-                            v ? 'translate-x-6' : 'translate-x-1'
+                        className={`absolute left-1 top-1/2 h-5 w-5 -translate-y-1/2 rounded-full bg-white shadow transition-transform duration-300 ${
+                            v ? 'translate-x-7' : 'translate-x-0'
                         }`}
                     />
                 </button>

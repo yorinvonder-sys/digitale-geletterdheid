@@ -17,6 +17,7 @@ const DeepfakeDetectorMission = lazy(() => import('@/features/missions/DeepfakeD
 const FilterBubbleBreakerMission = lazy(() => import('@/features/missions/FilterBubbleBreakerMission').then(m => ({ default: m.FilterBubbleBreakerMission })));
 const DatalekkenRampenplanMission = lazy(() => import('@/features/missions/DatalekkenRampenplanMission').then(m => ({ default: m.DatalekkenRampenplanMission })));
 const DataVoorDataMission = lazy(() => import('@/features/missions/DataVoorDataMission').then(m => ({ default: m.DataVoorDataMission })));
+const AccessControlEngineerMission = lazy(() => import('@/features/missions/AccessControlEngineerMission').then(m => ({ default: m.AccessControlEngineerMission })));
 const PrintInstructiesMission = lazy(() => import('@/features/missions/PrintInstructiesMission').then(m => ({ default: m.PrintInstructiesMission })));
 const CloudCleanerMission = lazy(() => import('@/features/missions/review/CloudCleanerMission').then(m => ({ default: m.CloudCleanerMission })));
 const PitchPoliceMission = lazy(() => import('@/features/missions/review/PitchPoliceMission').then(m => ({ default: m.PitchPoliceMission })));
@@ -117,6 +118,10 @@ const DevMissionPreview: React.FC = () => {
 
     if (missionId === 'data-voor-data') {
         return <Suspense fallback={<PreviewLoading />}><DataVoorDataMission onBack={() => undefined} onComplete={completionHandler} stats={previewUser.stats} /></Suspense>;
+    }
+
+    if (missionId === 'access-control-engineer') {
+        return <Suspense fallback={<PreviewLoading />}><AccessControlEngineerMission onBack={() => undefined} onComplete={completionHandler} stats={previewUser.stats} /></Suspense>;
     }
 
     if (missionId === 'ipad-print-instructies') {

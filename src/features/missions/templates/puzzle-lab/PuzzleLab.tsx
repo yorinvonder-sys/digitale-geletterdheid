@@ -83,6 +83,18 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
 }) => {
     const config = PUZZLE_LAB_CONFIGS[missionId];
 
+    const { state, setState, clearSave } = useMissionAutoSave<PuzzleLabState>(
+        config?.missionId ?? missionId,
+        makeInitialState()
+    );
+
+    const [inputValue, setInputValue] = useState('');
+    const [feedback, setFeedback] = useState<FeedbackType>(null);
+    const [feedbackMessage, setFeedbackMessage] = useState<string>('');
+    const [shake, setShake] = useState(false);
+    const [celebrating, setCelebrating] = useState(false);
+    const inputRef = useRef<HTMLInputElement>(null);
+
     // Config not found — show fallback
     if (!config) {
         return (
@@ -96,18 +108,6 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
     }
 
     const missionGoal = config.missionGoal ?? getMissionGoal(config.missionId);
-
-    const { state, setState, clearSave } = useMissionAutoSave<PuzzleLabState>(
-        config.missionId,
-        makeInitialState()
-    );
-
-    const [inputValue, setInputValue] = useState('');
-    const [feedback, setFeedback] = useState<FeedbackType>(null);
-    const [feedbackMessage, setFeedbackMessage] = useState<string>('');
-    const [shake, setShake] = useState(false);
-    const [celebrating, setCelebrating] = useState(false);
-    const inputRef = useRef<HTMLInputElement>(null);
 
     const puzzle = config.puzzles[state.currentPuzzle];
     const puzzleId = puzzle?.id ?? '';
@@ -241,7 +241,7 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
     // === INTRO ===
     if (state.phase === 'intro') {
         return (
-            <div className="min-h-screen bg-[#08283B] flex items-center justify-center p-4">
+            <div className="min-h-screen bg-[#08283B] flex items-center justify-center p-4 pb-24 sm:pb-4">
                 <div className="w-full max-w-md">
                     {/* Terminal header bar */}
                     <div className="bg-[#0B453F] rounded-t-2xl border border-[#E7D8BD]/30 px-4 py-2.5 flex items-center gap-2">
@@ -295,7 +295,7 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
 
                         <button
                             onClick={() => setState(prev => ({ ...prev, phase: 'puzzle' }))}
-                            className="w-full py-3 bg-lab-sage hover:bg-lab-coral hover:text-white text-[#08283B] font-mono font-bold text-sm rounded-xl transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2"
+                            className="fixed inset-x-4 bottom-4 z-30 py-3 bg-lab-sage hover:bg-lab-coral hover:text-white text-[#08283B] font-mono font-bold text-sm rounded-xl shadow-2xl transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2 sm:static sm:w-full sm:shadow-none"
                         >
                             $ START_MISSION
                             <ChevronRight size={15} />
@@ -358,7 +358,7 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
                     </span>
                     <button
                         onClick={onBack}
-                        className="text-[#E7D8BD] hover:text-[#FCF6EA] transition-colors"
+                        className="-mr-2 flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full text-[#E7D8BD] transition-colors hover:bg-[#E7D8BD]/10 hover:text-[#FCF6EA] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E7D8BD] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0B453F]"
                         aria-label="Terug"
                     >
                         <ArrowLeft size={14} />

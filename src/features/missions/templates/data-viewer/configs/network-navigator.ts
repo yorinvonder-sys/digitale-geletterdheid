@@ -186,8 +186,8 @@ export const networkNavigatorConfig: DataViewerConfig = {
                     type: 'text-observation',
                     correctAnswer: '',
                     explanation:
-                        'Bij een 404-fout ligt het probleem aan de kant van de aanvraag: de URL bestaat niet. Bij een 500-fout ligt het probleem aan de kant van de server: er is iets intern misgegaan. Als gebruiker kun je bij een 404 de URL controleren; bij een 500 kun je niets doen — je moet wachten tot de beheerder het repareet.',
-                    points: 0,
+                        'Bij een 404-fout ligt het probleem aan de kant van de aanvraag: de URL bestaat niet. Bij een 500-fout ligt het probleem aan de kant van de server: er is iets intern misgegaan. Als gebruiker kun je bij een 404 de URL controleren; bij een 500 kun je niets doen — je moet wachten tot de beheerder het repareert.',
+                    points: 10,
                 },
             ],
         },

@@ -102,6 +102,10 @@ interface SimulationLabProps extends TemplateMissionProps {
     config: SimulationLabConfig;
 }
 
+function clampScore(score: number, maxScore: number): number {
+    return Math.min(Math.max(score, 0), maxScore);
+}
+
 const SimulationLabInner: React.FC<SimulationLabProps> = ({ onBack, onComplete, config }) => {
     const buildInitialParams = useCallback((): Record<string, Record<string, number | string | boolean>> => {
         const out: Record<string, Record<string, number | string | boolean>> = {};
@@ -142,28 +146,36 @@ const SimulationLabInner: React.FC<SimulationLabProps> = ({ onBack, onComplete, 
         return config.computeVisuals(currentSimData.id, currentParams);
     }, [config, currentSimData, currentParams]);
 
+    const scoreQuestion = useCallback(
+        (q: SimQuestion): number => {
+            if (!state.questionSubmitted[q.id]) return 0;
+
+            const correct = state.questionAnswers[q.id] === q.correctAnswer;
+            if (!correct && !(q.showConfidence && state.confidences[q.id])) return 0;
+
+            const base = correct ? q.points : 0;
+            const multiplier = q.showConfidence
+                ? confidenceMultiplier(state.confidences[q.id], correct)
+                : 1;
+
+            return clampScore(Math.round(base * multiplier), q.points);
+        },
+        [state.questionAnswers, state.questionSubmitted, state.confidences]
+    );
+
     // Compute total score
     const totalScore = useMemo(() => {
         let score = 0;
         for (const sim of config.simulations) {
             for (const q of sim.questions) {
-                if (state.questionSubmitted[q.id]) {
-                    const correct = state.questionAnswers[q.id] === q.correctAnswer;
-                    if (correct || (q.showConfidence && state.confidences[q.id])) {
-                        const base = correct ? q.points : 0;
-                        const multiplier = q.showConfidence
-                            ? confidenceMultiplier(state.confidences[q.id], correct)
-                            : 1;
-                        score += Math.round(base * multiplier);
-                    }
-                }
+                score += scoreQuestion(q);
             }
             if (state.followUpAnswered[sim.id] && state.followUpCorrect[sim.id] && sim.followUp) {
                 score += sim.followUp.bonusPoints;
             }
         }
-        return score;
-    }, [config.simulations, state.questionAnswers, state.questionSubmitted, state.confidences, state.followUpAnswered, state.followUpCorrect]);
+        return clampScore(score, config.maxScore);
+    }, [config.simulations, config.maxScore, scoreQuestion, state.followUpAnswered, state.followUpCorrect]);
 
     // Check if all questions in current sim are submitted
     const allQuestionsSubmitted = currentSimData?.questions.every(
@@ -245,12 +257,11 @@ const SimulationLabInner: React.FC<SimulationLabProps> = ({ onBack, onComplete, 
 
     if (state.phase === 'results') {
         const phases = config.simulations.map((sim) => {
-            const simScore = sim.questions.reduce((acc, q) => {
-                if (state.questionSubmitted[q.id] && state.questionAnswers[q.id] === q.correctAnswer) {
-                    return acc + q.points;
-                }
-                return acc;
-            }, 0);
+            const questionScore = sim.questions.reduce((acc, q) => acc + scoreQuestion(q), 0);
+            const followUpBonus = state.followUpAnswered[sim.id] && state.followUpCorrect[sim.id] && sim.followUp
+                ? sim.followUp.bonusPoints
+                : 0;
+            const simScore = clampScore(questionScore + followUpBonus, sim.maxScore);
             return { icon: '🧪', title: sim.title, score: simScore, max: sim.maxScore };
         });
 

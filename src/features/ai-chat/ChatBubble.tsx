@@ -52,6 +52,9 @@ const cleanInstructionText = (text: string): string => {
   // Remove [IMG target="X"]...[/IMG] tags
   cleaned = cleaned.replace(/\[IMG target="?[^"]*"?\][^\[]*\[\/IMG\]/gi, '');
 
+  // Remove internal step-completion markers before rendering model output
+  cleaned = cleaned.replace(/---STEP_COMPLETE:\d+---/g, '');
+
   // Remove "Inhoud:" prefix lines
   cleaned = cleaned.replace(/^Inhoud:[^\n]*(?:\n|$)/gim, '');
 
