@@ -732,18 +732,11 @@ function useHomepageGsapEffects(reduceMotion: boolean) {
 
 function CinematicSkillJourney({ reduceMotion }: { reduceMotion: boolean }) {
     const [active, setActive] = useState(0);
-    const [isLgMotion, setIsLgMotion] = useState(false);
-    const [journeyMotionReady, setJourneyMotionReady] = useState(false);
-    const desktopHeaderOffset = 'clamp(96px, 12svh, 132px)';
     const sectionRef = useRef<HTMLElement | null>(null);
-    const pinRef = useRef<HTMLDivElement | null>(null);
-    const mockupRef = useRef<HTMLDivElement | null>(null);
-    const orbitRef = useRef<HTMLDivElement | null>(null);
-    const progressRef = useRef<HTMLSpanElement | null>(null);
     const chapterRefs = useRef<Array<HTMLLIElement | null>>([]);
-    const screenRefs = useRef<Array<HTMLElement | null>>([]);
-    const floatRefs = useRef<Array<HTMLDivElement | null>>([]);
     const activeRef = useRef(0);
+    const lastChapterIndex = Math.max(cinematicChapters.length - 1, 1);
+    const progressScale = Math.max(0.08, active / lastChapterIndex);
 
     const setActiveChapter = (index: number) => {
         const next = Math.max(0, Math.min(cinematicChapters.length - 1, index));
@@ -753,20 +746,6 @@ function CinematicSkillJourney({ reduceMotion }: { reduceMotion: boolean }) {
     };
 
     useEffect(() => {
-        const mql = window.matchMedia('(min-width: 1024px)');
-        const update = () => {
-            const next = !reduceMotion && mql.matches;
-            setIsLgMotion(next);
-            if (!next) setJourneyMotionReady(false);
-        };
-        update();
-        mql.addEventListener('change', update);
-        return () => mql.removeEventListener('change', update);
-    }, [reduceMotion]);
-
-    useEffect(() => {
-        if (!reduceMotion && typeof window !== 'undefined' && window.matchMedia('(min-width: 1024px)').matches) return;
-
         const elements = chapterRefs.current.filter(Boolean) as HTMLLIElement[];
         if (!elements.length) return;
 
@@ -784,138 +763,19 @@ function CinematicSkillJourney({ reduceMotion }: { reduceMotion: boolean }) {
 
         elements.forEach((element) => observer.observe(element));
         return () => observer.disconnect();
-    }, [reduceMotion]);
-
-    useEffect(() => {
-        setJourneyMotionReady(false);
-        if (reduceMotion || !isLgMotion || typeof window === 'undefined') return;
-
-        let cancelled = false;
-        let ctx: { revert: () => void } | undefined;
-        let refreshTimers: number[] = [];
-
-        void Promise.all([import('gsap'), import('gsap/ScrollTrigger')])
-            .then(([gsapModule, scrollTriggerModule]) => {
-                if (cancelled || !sectionRef.current || !pinRef.current || !mockupRef.current) return;
-
-                const { gsap } = gsapModule;
-                const { ScrollTrigger } = scrollTriggerModule;
-                gsap.registerPlugin(ScrollTrigger);
-
-                ctx = gsap.context(() => {
-                    const screens = screenRefs.current.filter(Boolean) as HTMLElement[];
-                    const floaters = floatRefs.current.filter(Boolean) as HTMLDivElement[];
-                    const lastIndex = cinematicChapters.length - 1;
-
-                    gsap.set(pinRef.current, { willChange: 'transform' });
-                    gsap.set([mockupRef.current, orbitRef.current, progressRef.current, ...screens, ...floaters], {
-                        force3D: true,
-                    });
-
-                    gsap.set(screens, {
-                        autoAlpha: 0,
-                        y: 36,
-                        scale: 0.94,
-                        rotation: 2.5,
-                        transformOrigin: '50% 50%',
-                    });
-                    gsap.set(screens[0], { autoAlpha: 1, y: 0, scale: 1, rotation: 0 });
-                    gsap.set(progressRef.current, { scaleY: 0.08, transformOrigin: 'center top' });
-                    gsap.set(orbitRef.current, { rotation: -10, transformOrigin: '50% 50%' });
-                    gsap.set(floaters, { transformOrigin: '50% 50%' });
-
-                    const tl = gsap.timeline({
-                        defaults: { ease: 'none' },
-                        scrollTrigger: {
-                            trigger: sectionRef.current,
-                            start: 'top top',
-                            end: 'bottom bottom',
-                            scrub: 1.25,
-                            pin: pinRef.current,
-                            pinSpacing: true,
-                            anticipatePin: 1,
-                            invalidateOnRefresh: true,
-                            onUpdate: (self) => {
-                                setActiveChapter(Math.round(self.progress * lastIndex));
-                            },
-                        },
-                    });
-
-                    tl.to(progressRef.current, { scaleY: 1, duration: lastIndex, ease: 'none' }, 0)
-                        .to(orbitRef.current, { rotation: 40, duration: lastIndex, ease: 'none' }, 0)
-                        .to(mockupRef.current, { y: -4, scale: 1.006, rotation: -0.35, duration: 0.9, ease: 'power2.inOut' }, 0);
-
-                    for (let index = 1; index < cinematicChapters.length; index += 1) {
-                        const position = index;
-                        tl.to(screens[index - 1], { autoAlpha: 0, y: -28, scale: 0.965, rotation: -2.2, duration: 0.72, ease: 'power2.inOut' }, position - 0.38)
-                            .fromTo(screens[index], { autoAlpha: 0, y: 32, scale: 0.95, rotation: 2.8 }, { autoAlpha: 1, y: 0, scale: 1, rotation: 0, duration: 0.82, ease: 'power3.out' }, position - 0.28)
-                            .to(mockupRef.current, { x: [-5, 6, -5, 6][index - 1] ?? 0, y: [-4, -2, -5, -3][index - 1] ?? 0, rotation: [-0.45, 0.4, -0.35, 0.35][index - 1] ?? 0, scale: [1.008, 1.006, 1.01, 1.006][index - 1] ?? 1, duration: 0.9, ease: 'power2.inOut' }, position - 0.38)
-                            .to(floaters, { x: (floatIndex: number) => [10, -9, 7][floatIndex] ?? 0, y: (floatIndex: number) => [-10, 9, -6][floatIndex] ?? 0, rotation: (floatIndex: number) => [1.4, -1.2, 0.9][floatIndex] ?? 0, duration: 0.9, ease: 'power2.inOut' }, position - 0.34);
-                    }
-
-                    const cards = chapterRefs.current.filter(Boolean) as HTMLLIElement[];
-                    const cardStateFor = (offset: number) => {
-                        if (offset === 0) return { y: 0, scale: 1, rotation: 0, opacity: 1, zIndex: 30 };
-                        const abs = Math.abs(offset);
-                        return {
-                            y: 12 + (abs - 1) * 18,
-                            scale: 1 - 0.035 * Math.min(abs, 4),
-                            rotation: (offset < 0 ? -1 : 1) * Math.min(abs, 3) * 0.45,
-                            opacity: Math.max(0, 0.62 - 0.2 * (abs - 1)),
-                            zIndex: Math.max(1, 25 - abs * 5),
-                        };
-                    };
-
-                    cards.forEach((cardEl, cardIdx) => {
-                        gsap.set(cardEl, {
-                            ...cardStateFor(cardIdx),
-                            yPercent: -50,
-                            transformOrigin: '50% 50%',
-                        });
-                        for (let step = 1; step <= lastIndex; step += 1) {
-                            tl.to(cardEl, {
-                                ...cardStateFor(cardIdx - step),
-                                duration: 1.12,
-                                ease: 'power3.inOut',
-                            }, step - 1);
-                        }
-                    });
-                }, sectionRef.current);
-
-                const refresh = () => ScrollTrigger.refresh();
-                setJourneyMotionReady(true);
-                refreshTimers = [
-                    window.setTimeout(refresh, 120),
-                    window.setTimeout(refresh, 450),
-                ];
-            })
-            .catch(() => {
-                if (!cancelled) setJourneyMotionReady(false);
-                // Keep the static journey usable if the animation layer cannot load.
-            });
-
-        return () => {
-            cancelled = true;
-            refreshTimers.forEach((timer) => window.clearTimeout(timer));
-            ctx?.revert();
-        };
-    }, [isLgMotion, reduceMotion]);
-
-    const hasEnhancedMotion = isLgMotion && journeyMotionReady;
+    }, []);
 
     return (
         <section
             id="journey"
             ref={sectionRef}
-            className={`relative scroll-mt-24 overflow-x-clip bg-lab-paper px-5 md:px-10 ${reduceMotion ? 'py-20' : 'py-16 lg:min-h-[520vh] lg:py-0'}`}
+            className="relative scroll-mt-24 overflow-x-clip bg-lab-paper px-5 py-20 md:px-10 lg:py-24"
         >
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(215,201,95,0.16),transparent_30%),radial-gradient(circle_at_82%_30%,rgba(95,148,125,0.16),transparent_28%),linear-gradient(180deg,#FFFDF7_0%,#FCF6EA_100%)]" aria-hidden="true" />
             <div
-                ref={pinRef}
-                className={`relative z-10 mx-auto grid max-w-5xl gap-10 lg:grid-cols-[430px_minmax(0,1fr)] lg:items-center ${reduceMotion ? '' : 'lg:h-[100svh] lg:pb-[clamp(24px,4svh,44px)]'}`}
-                style={reduceMotion ? undefined : { paddingTop: desktopHeaderOffset } as React.CSSProperties}
+                className="relative z-10 mx-auto grid max-w-5xl gap-10 lg:grid-cols-[430px_minmax(0,1fr)] lg:items-center"
             >
-                <div className="order-2 lg:order-1 lg:grid lg:h-[calc(100svh-clamp(148px,16svh,188px))] lg:grid-rows-[auto_minmax(0,1fr)] lg:self-center">
+                <div className="order-2 lg:order-1">
                     <Reveal>
                         <div className="relative max-w-[430px]">
                             <h2 className="text-balance text-4xl font-black leading-tight text-lab-ink md:text-5xl lg:text-[3.35rem]">
@@ -927,18 +787,19 @@ function CinematicSkillJourney({ reduceMotion }: { reduceMotion: boolean }) {
                         </div>
                     </Reveal>
 
-                    <ol className="relative mt-8 space-y-4 lg:mt-0 lg:h-full lg:min-h-[500px] lg:space-y-0">
+                    <ol className="relative mt-8 space-y-4 lg:mt-0 lg:h-full lg:min-h-[500px] lg:space-y-4">
                         <span className="absolute bottom-8 left-7 top-8 w-0.5 rounded-full bg-lab-line" aria-hidden="true" />
-                        <span ref={progressRef} className="absolute bottom-8 left-7 top-8 w-0.5 rounded-full bg-lab-coral" aria-hidden="true" />
+                        <span
+                            className="absolute bottom-8 left-7 top-8 w-0.5 origin-top rounded-full bg-lab-coral transition-transform duration-500"
+                            style={{ transform: `scaleY(${progressScale})` }}
+                            aria-hidden="true"
+                        />
                         {cinematicChapters.map((chapter, index) => {
                             const isActive = active === index;
                             const iconIsLight = chapter.accent === C.ink;
                             const chapterOffset = index - active;
                             const isUpcomingPreview = chapterOffset === 1;
-                            const showRouteCoach = isActive || hasEnhancedMotion;
-                            const desktopCardMotionClass = hasEnhancedMotion
-                                ? 'lg:absolute lg:left-0 lg:right-0 lg:top-1/2 lg:min-h-[310px] lg:will-change-transform'
-                                : 'lg:relative lg:min-h-0';
+                            const showRouteCoach = isActive;
                             return (
                                 <li
                                     key={chapter.title}
@@ -947,7 +808,7 @@ function CinematicSkillJourney({ reduceMotion }: { reduceMotion: boolean }) {
                                     }}
                                     data-chapter-index={index}
                                     aria-current={isActive ? 'step' : undefined}
-                                    className={`relative grid grid-cols-[3.5rem_1fr] gap-4 rounded-[28px] p-3 transition-[background-color,box-shadow] duration-500 md:p-4 ${desktopCardMotionClass} ${isActive ? 'bg-white shadow-xl shadow-lab-ink/10 ring-1 ring-lab-line' : isUpcomingPreview ? 'bg-white/50' : 'bg-white/30 lg:pointer-events-none'}`}
+                                    className={`relative grid grid-cols-[3.5rem_1fr] gap-4 rounded-[28px] p-3 transition-[background-color,box-shadow] duration-500 md:p-4 lg:min-h-0 ${isActive ? 'bg-white shadow-xl shadow-lab-ink/10 ring-1 ring-lab-line' : isUpcomingPreview ? 'bg-white/50' : 'bg-white/30 lg:pointer-events-none'}`}
                                 >
                                     <div
                                         className="relative z-10 grid size-14 place-items-center rounded-full border-4 border-lab-paper shadow-md shadow-lab-ink/10 transition-transform duration-300"
@@ -985,9 +846,9 @@ function CinematicSkillJourney({ reduceMotion }: { reduceMotion: boolean }) {
                     </ol>
                 </div>
 
-                <div className="order-1 lg:order-2 lg:flex lg:h-[calc(100svh-clamp(148px,16svh,188px))] lg:items-center lg:justify-center">
-                    <div ref={mockupRef} data-cinematic-mockup className="relative mx-auto w-full max-w-[720px] lg:w-full lg:max-w-[820px] xl:max-w-[880px] 2xl:max-w-[930px]">
-                        <div ref={orbitRef} className="absolute -inset-8 rounded-[38%_62%_46%_54%/52%_43%_57%_48%] border border-dashed border-lab-oliveDeep/45" aria-hidden="true" />
+                <div className="order-1 lg:order-2 lg:flex lg:items-center lg:justify-center">
+                    <div data-cinematic-mockup className="relative mx-auto w-full max-w-[720px] lg:w-full lg:max-w-[820px] xl:max-w-[880px] 2xl:max-w-[930px]">
+                        <div className="absolute -inset-8 rounded-[38%_62%_46%_54%/52%_43%_57%_48%] border border-dashed border-lab-oliveDeep/45" aria-hidden="true" />
                         <div className="absolute -left-4 top-10 size-16 rounded-full bg-lab-gold/75 shadow-xl shadow-lab-ink/10" aria-hidden="true" />
                         <div className="absolute -right-3 bottom-12 size-20 rounded-[42%_58%_44%_56%] bg-[#5F947D]/70 shadow-xl shadow-lab-ink/10" aria-hidden="true" />
                         <div className="relative overflow-hidden rounded-[34px] bg-lab-ink p-3 shadow-2xl shadow-lab-ink/20">
@@ -1004,11 +865,8 @@ function CinematicSkillJourney({ reduceMotion }: { reduceMotion: boolean }) {
                                         return (
                                             <div
                                                 key={chapter.title}
-                                                ref={(node) => {
-                                                    screenRefs.current[index] = node;
-                                                }}
                                                 aria-hidden={active !== index}
-                                                className={`absolute inset-0 h-full w-full ${hasEnhancedMotion ? '' : `transition-opacity duration-300 ${active === index ? 'opacity-100' : 'opacity-0'}`}`}
+                                                className={`absolute inset-0 h-full w-full transition-opacity duration-300 ${active === index ? 'opacity-100' : 'opacity-0'}`}
                                             >
                                                 {isGameStudio ? (
                                                     <GameStudioScreen reduceMotion={reduceMotion} ariaLabel={chapter.alt} />
@@ -1029,27 +887,18 @@ function CinematicSkillJourney({ reduceMotion }: { reduceMotion: boolean }) {
                         </div>
 
                         <div
-                            ref={(node) => {
-                                floatRefs.current[0] = node;
-                            }}
                             className="absolute -left-2 bottom-8 rounded-3xl bg-white/95 p-4 shadow-xl shadow-lab-ink/14 ring-1 ring-lab-line sm:-left-7 sm:p-5"
                         >
                             <p className="text-xs font-black uppercase text-lab-sage">Nu actief</p>
                             <p className="mt-1 text-2xl font-black text-lab-ink">{cinematicChapters[active].title}</p>
                         </div>
                         <div
-                            ref={(node) => {
-                                floatRefs.current[1] = node;
-                            }}
                             className="absolute -right-2 top-12 hidden rounded-3xl bg-white/95 p-5 shadow-xl shadow-lab-ink/14 ring-1 ring-lab-line sm:block"
                         >
                             <p className="text-xs font-black text-lab-muted">{cinematicChapters[active].statLabel}</p>
                             <p className="mt-1 text-3xl font-black text-lab-ink">{cinematicChapters[active].stat}</p>
                         </div>
                         <div
-                            ref={(node) => {
-                                floatRefs.current[2] = node;
-                            }}
                             className="absolute bottom-[-22px] right-10 rounded-full px-5 py-3 text-sm font-black text-white shadow-xl shadow-lab-ink/15"
                             style={{ backgroundColor: cinematicChapters[active].accent }}
                         >
