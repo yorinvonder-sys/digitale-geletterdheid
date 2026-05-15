@@ -89,11 +89,28 @@ function buildInitialState(config: ScenarioEngineConfig): ScenarioEngineState {
 
 // ── Public entry point ────────────────────────────────────────────────────────
 
+const VALID_SCENARIO_ENGINE_IDS: ReadonlySet<string> = new Set([
+    'ai-bias-detective',
+    'code-denker',
+    'cookie-crusher',
+    'data-speurder',
+    'digital-forensics',
+    'factchecker',
+    'notificatie-ninja',
+    'online-helden',
+    'phishing-fighter',
+    'social-safeguard',
+]);
+
 export const ScenarioEngine: React.FC<TemplateMissionProps> = ({ missionId, onBack, onComplete }) => {
     const [config, setConfig] = useState<ScenarioEngineConfig | null>(null);
     const [loadError, setLoadError] = useState(false);
 
     useEffect(() => {
+        if (!VALID_SCENARIO_ENGINE_IDS.has(missionId)) {
+            setLoadError(true);
+            return;
+        }
         import(`./configs/${missionId}.ts`)
             .then((mod) => setConfig(mod.default as ScenarioEngineConfig))
             .catch(() => setLoadError(true));
