@@ -5,6 +5,11 @@ import {
     tweakGameDemo,
     type GameConfig,
 } from '@/services/gameDemoService';
+import { PersonaProvider, usePersona, type Persona } from './scholen/PersonaContext';
+import { PersonaSwitcher } from './scholen/PersonaSwitcher';
+import { DocentenBewijs } from './scholen/DocentenBewijs';
+import { IctBewijs } from './scholen/IctBewijs';
+import { DirecteurBewijs } from './scholen/DirecteurBewijs';
 
 type NavItem = { label: string; target: string };
 type Skill = {
@@ -312,6 +317,128 @@ function trackLandingEvent(event: string, data?: Record<string, unknown>) {
         });
 }
 
+// ─── Persona-aware hero helpers ───────────────────────────────────────────────
+
+const HERO_COPY: Record<Persona, { h1: string; sub: string; sub2: string; primary: string; secondary: string; secondaryTarget: string }> = {
+    teacher: {
+        h1: 'Lessen waar leerlingen voor in de rij staan.',
+        sub: 'Klikbare AI-missies die ze zelfstandig draaien. Jij ziet direct wie het snapt en wie nog hulp nodig heeft.',
+        sub2: 'Voor VO en VSO: 20+ AI-missies, badges en een eigen portfolio per leerling.',
+        primary: 'Probeer een missie',
+        secondary: 'Plan een belletje',
+        secondaryTarget: 'contact',
+    },
+    ict: {
+        h1: 'Veilig in gebruik. Klaar voor jouw goedkeuring.',
+        sub: 'Alle data blijft in Nederland. Privacy- en security-papieren klaar voor procurement.',
+        sub2: 'Voor VO en VSO: AVG-bewust, AI-wet 2026 op tijd geregeld, geen installatie nodig.',
+        primary: 'Bekijk security & architectuur',
+        secondary: 'Vraag privacy-pakket aan',
+        secondaryTarget: 'contact',
+    },
+    director: {
+        h1: 'Maak digitale geletterdheid tastbaar, motiverend en aantoonbaar.',
+        sub: 'De missiegedreven leeromgeving voor VO en VSO met volledige SLO-voortgang en gratis pilot.',
+        sub2: 'Voor VO en VSO: AI-missies, SLO-voortgang en portfolio-bewijs in een veilige leeromgeving.',
+        primary: 'Plan schoolpilot',
+        secondary: 'Bekijk leerlingdemo',
+        secondaryTarget: 'projecten',
+    },
+};
+
+interface PersonaHeroProps {
+    startPilot: () => void;
+    scrollTo: (target: string) => void;
+}
+
+function PersonaHero({ startPilot, scrollTo }: PersonaHeroProps) {
+    const { persona } = usePersona();
+    const copy = HERO_COPY[persona];
+
+    const handlePrimary = () => {
+        if (persona === 'director') {
+            startPilot();
+        } else if (persona === 'teacher') {
+            scrollTo('projecten');
+        } else {
+            // ict — scroll to ict-section or anchor
+            scrollTo('persona-bewijs');
+        }
+    };
+
+    return (
+        <section data-home-hero className="relative overflow-hidden px-5 pb-16 pt-14 md:px-10 md:pb-20 md:pt-20">
+            <div className="relative z-10 mx-auto grid min-w-0 max-w-5xl items-center gap-10 lg:grid-cols-[minmax(0,60fr)_minmax(0,40fr)] lg:gap-6 xl:grid-cols-[minmax(0,58fr)_minmax(0,42fr)]">
+                <Reveal className="relative z-10 min-w-0" style={{ maxWidth: 'calc(100vw - 40px)' }}>
+                    <PersonaSwitcher />
+                    <h1
+                        aria-label={copy.h1}
+                        className="w-full max-w-[22rem] text-balance text-[2.1rem] font-black leading-[1.06] text-lab-ink sm:max-w-[780px] sm:text-6xl lg:text-[4.45rem]"
+                    >
+                        <span className="relative inline-block"><TitleSpark />{copy.h1.charAt(0)}</span>{copy.h1.slice(1)}
+                    </h1>
+                    <p className="mt-7 w-full max-w-[22rem] break-words text-pretty text-base font-semibold leading-7 text-lab-mutedDeep sm:mt-8 sm:max-w-md sm:text-lg sm:leading-8 md:max-w-[640px]">
+                        {copy.sub}
+                    </p>
+                    <p className="mt-4 w-full max-w-[22rem] text-pretty text-sm font-black leading-6 text-lab-tealDark sm:max-w-[620px] sm:text-base">
+                        {copy.sub2}
+                    </p>
+                    <div className="mt-8 flex w-full max-w-[340px] flex-col gap-3 sm:max-w-full sm:flex-row">
+                        {persona === 'director' ? (
+                            <a href="/pilot" onClick={startPilot} className="group inline-flex min-h-[48px] w-full items-center justify-center gap-3 rounded-full bg-lab-gold px-6 py-3 text-sm font-black text-lab-ink shadow-lg shadow-lab-ink/10 transition-transform hover:-translate-y-0.5 sm:w-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink">
+                                {copy.primary}
+                                <ArrowRightIcon />
+                            </a>
+                        ) : (
+                            <button onClick={handlePrimary} className="group inline-flex min-h-[48px] w-full items-center justify-center gap-3 rounded-full bg-lab-gold px-6 py-3 text-sm font-black text-lab-ink shadow-lg shadow-lab-ink/10 transition-transform hover:-translate-y-0.5 sm:w-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink">
+                                {copy.primary}
+                                <ArrowRightIcon />
+                            </button>
+                        )}
+                        <button onClick={() => scrollTo(copy.secondaryTarget)} className="group inline-flex min-h-[48px] w-full items-center justify-center gap-3 rounded-full border border-lab-mutedSoft bg-white/70 px-6 py-3 text-sm font-black text-lab-ink transition-transform hover:-translate-y-0.5 sm:w-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink">
+                            {copy.secondary}
+                            <ArrowRightIcon />
+                        </button>
+                    </div>
+                    <div className="mt-8 flex max-w-[620px] flex-wrap items-center gap-2 text-xs font-black text-lab-tealDark sm:max-w-none">
+                        {trustChips.map((label) => (
+                            <span key={label} className="rounded-full border border-[#D7C95F] bg-white/72 px-3 py-2 shadow-sm shadow-lab-ink/5">
+                                {label}
+                            </span>
+                        ))}
+                    </div>
+                    <dl className="mt-7 grid max-w-[760px] gap-3 sm:grid-cols-2 xl:grid-cols-4">
+                        {heroProofItems.map((item) => (
+                            <div key={item.label} className="rounded-2xl border border-lab-line bg-lab-paper/82 px-4 py-3 shadow-sm shadow-lab-ink/5">
+                                <dt className="text-[11px] font-black uppercase tracking-[0.14em] text-lab-sage">{item.label}</dt>
+                                <dd className="mt-1 text-sm font-bold leading-snug text-lab-ink">{item.value}</dd>
+                            </div>
+                        ))}
+                    </dl>
+                </Reveal>
+
+                <Reveal delay={0.12} y={34} className="relative flex min-h-[340px] min-w-0 items-center sm:min-h-[460px] lg:min-h-[600px] lg:justify-end" style={{ maxWidth: 'calc(100vw - 40px)' }}>
+                    <div className="absolute -left-8 bottom-8 right-0 top-20 rounded-[42%_58%_45%_55%/50%_42%_58%_50%] bg-lab-creamWarm/70" aria-hidden="true" />
+                    <ProductHeroMockup />
+                    <Doodle className="-bottom-4 left-12 text-lab-oliveDeep" variant="dot" />
+                </Reveal>
+            </div>
+            <HeroJourneyBridge />
+        </section>
+    );
+}
+
+function PersonaBewijsSwitch() {
+    const { persona } = usePersona();
+    return (
+        <div id="persona-bewijs">
+            {persona === 'teacher' && <DocentenBewijs />}
+            {persona === 'ict' && <IctBewijs />}
+            {persona === 'director' && <DirecteurBewijs />}
+        </div>
+    );
+}
+
 export const ScholenLanding: React.FC = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [activeSkillIndex, setActiveSkillIndex] = useState(0);
@@ -377,6 +504,7 @@ export const ScholenLanding: React.FC = () => {
     };
 
     return (
+        <PersonaProvider>
         <div className="min-h-screen overflow-x-clip antialiased" style={{ background: C.cream, color: C.ink, fontFamily: "'Outfit', system-ui, sans-serif" }}>
             <nav className="sticky top-0 z-50 border-b border-lab-line/50 bg-lab-cream/92 backdrop-blur-md" aria-label="Hoofdnavigatie">
                 <div className="mx-auto flex h-20 max-w-5xl items-center justify-between px-5 md:px-10">
@@ -437,56 +565,9 @@ export const ScholenLanding: React.FC = () => {
             </nav>
 
             <main>
-                <section data-home-hero className="relative overflow-hidden px-5 pb-16 pt-14 md:px-10 md:pb-20 md:pt-20">
-                    <div className="relative z-10 mx-auto grid min-w-0 max-w-5xl items-center gap-10 lg:grid-cols-[minmax(0,60fr)_minmax(0,40fr)] lg:gap-6 xl:grid-cols-[minmax(0,58fr)_minmax(0,42fr)]">
-                        <Reveal className="relative z-10 min-w-0" style={{ maxWidth: 'calc(100vw - 40px)' }}>
-                            <h1
-                                aria-label="Maak digitale geletterdheid tastbaar, motiverend en aantoonbaar."
-                                className="w-full max-w-[22rem] text-balance text-[2.1rem] font-black leading-[1.06] text-lab-ink sm:max-w-[780px] sm:text-6xl lg:text-[4.45rem]"
-                            >
-                                <span className="relative inline-block"><TitleSpark />M</span>aak digitale geletterdheid tastbaar, motiverend en <span className="relative inline-block text-lab-oliveDeep">aantoonbaar<Underline /></span>.
-                            </h1>
-                            <p className="mt-7 w-full max-w-[22rem] break-words text-pretty text-base font-semibold leading-7 text-lab-mutedDeep sm:mt-8 sm:max-w-md sm:text-lg sm:leading-8 md:max-w-[640px]">
-                                De missiegedreven leeromgeving voor VO en VSO die aansluit op de nieuwste SLO-kerndoelen. Van AI-geletterdheid tot online veiligheid — leerlingen leren door te doen, docenten zien voortgang per kerndoel.
-                            </p>
-                            <p className="mt-4 w-full max-w-[22rem] text-pretty text-sm font-black leading-6 text-lab-tealDark sm:max-w-[620px] sm:text-base">
-                                Voor VO en VSO: AI-missies, SLO-voortgang en portfolio-bewijs in een veilige leeromgeving.
-                            </p>
-                            <div className="mt-8 flex w-full max-w-[340px] flex-col gap-3 sm:max-w-full sm:flex-row">
-                                <a href="/pilot" onClick={startPilot} className="group inline-flex min-h-[48px] w-full items-center justify-center gap-3 rounded-full bg-lab-gold px-6 py-3 text-sm font-black text-lab-ink shadow-lg shadow-lab-ink/10 transition-transform hover:-translate-y-0.5 sm:w-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink">
-                                    Plan schoolpilot
-                                    <ArrowRightIcon />
-                                </a>
-                                <button onClick={() => scrollTo('projecten')} className="group inline-flex min-h-[48px] w-full items-center justify-center gap-3 rounded-full border border-lab-mutedSoft bg-white/70 px-6 py-3 text-sm font-black text-lab-ink transition-transform hover:-translate-y-0.5 sm:w-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink">
-                                    Bekijk leerlingdemo
-                                    <ArrowRightIcon />
-                                </button>
-                            </div>
-                            <div className="mt-8 flex max-w-[620px] flex-wrap items-center gap-2 text-xs font-black text-lab-tealDark sm:max-w-none">
-                                {trustChips.map((label) => (
-                                    <span key={label} className="rounded-full border border-[#D7C95F] bg-white/72 px-3 py-2 shadow-sm shadow-lab-ink/5">
-                                        {label}
-                                    </span>
-                                ))}
-                            </div>
-                            <dl className="mt-7 grid max-w-[760px] gap-3 sm:grid-cols-2 xl:grid-cols-4">
-                                {heroProofItems.map((item) => (
-                                    <div key={item.label} className="rounded-2xl border border-lab-line bg-lab-paper/82 px-4 py-3 shadow-sm shadow-lab-ink/5">
-                                        <dt className="text-[11px] font-black uppercase tracking-[0.14em] text-lab-sage">{item.label}</dt>
-                                        <dd className="mt-1 text-sm font-bold leading-snug text-lab-ink">{item.value}</dd>
-                                    </div>
-                                ))}
-                            </dl>
-                        </Reveal>
+                <PersonaHero startPilot={startPilot} scrollTo={scrollTo} />
 
-                        <Reveal delay={0.12} y={34} className="relative flex min-h-[340px] min-w-0 items-center sm:min-h-[460px] lg:min-h-[600px] lg:justify-end" style={{ maxWidth: 'calc(100vw - 40px)' }}>
-                            <div className="absolute -left-8 bottom-8 right-0 top-20 rounded-[42%_58%_45%_55%/50%_42%_58%_50%] bg-lab-creamWarm/70" aria-hidden="true" />
-                            <ProductHeroMockup />
-                            <Doodle className="-bottom-4 left-12 text-lab-oliveDeep" variant="dot" />
-                        </Reveal>
-                    </div>
-                    <HeroJourneyBridge />
-                </section>
+                <PersonaBewijsSwitch />
 
                 <CinematicSkillJourney reduceMotion={reduceMotion} />
 
@@ -622,6 +703,7 @@ export const ScholenLanding: React.FC = () => {
                 </section>
             </main>
         </div>
+        </PersonaProvider>
     );
 };
 

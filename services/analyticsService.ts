@@ -10,6 +10,7 @@ export type AnalyticsEvent =
     | 'seo_page_view'
     | 'seo_asset_view'
     | 'dual_cta_click'
+    | 'persona_switch'
     | 'auth_success'
     | 'auth_error'
     | 'api_retry'
