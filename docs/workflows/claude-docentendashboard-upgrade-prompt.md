@@ -43,8 +43,8 @@ Lees en begrijp minimaal deze bestanden voordat je iets wijzigt:
 
 ### Docentervaring
 - `components/TeacherDashboard.tsx`
-- alle relevante bestanden in `components/teacher/`
-- `components/teacher/CLAUDE.md`
+- alle relevante bestanden in `src/features/teacher/`
+- `src/features/teacher/CLAUDE.md`
 - `services/teacherService.ts`
 - `services/nulmetingService.ts`
 
@@ -53,7 +53,7 @@ Lees en begrijp minimaal deze bestanden voordat je iets wijzigt:
 - `components/StudentAIChat.tsx`
 - `components/StudentLibrary.tsx`
 - `components/StudentOnboarding.tsx`
-- relevante missiecomponenten in `components/missions/`
+- relevante missiecomponenten in `src/features/missions/`
 - `services/missionService.ts`
 
 ### Curriculum en reporting
@@ -61,8 +61,8 @@ Lees en begrijp minimaal deze bestanden voordat je iets wijzigt:
 - `config/missions.ts`
 - `config/sloKerndoelen.ts`
 - `config/slo-kerndoelen-mapping.ts`
-- `components/teacher/MissionProgressPanel.tsx`
-- `components/teacher/SLOClassOverview.tsx`
+- `src/features/teacher/MissionProgressPanel.tsx`
+- `src/features/teacher/SLOClassOverview.tsx`
 
 ### Security en auth
 - `services/authService.ts`

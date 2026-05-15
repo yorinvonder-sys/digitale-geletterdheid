@@ -1,0 +1,860 @@
+import React, { useState, useEffect } from 'react';
+import { ParentUser } from '@/types';
+import { 
+    Plus, 
+    Trash2, 
+    CheckCircle2, 
+    Circle, 
+    AlertCircle, 
+    Clock, 
+    BookOpen,
+    X,
+    ChevronRight,
+    Search,
+    Filter,
+    Loader2,
+    CheckSquare,
+    Flag,
+    ExternalLink,
+    Shield
+} from 'lucide-react';
+import { 
+    subscribeToDevTasks, 
+    addDevTask, 
+    updateDevTask, 
+    deleteDevTask, 
+    DevTask,
+    addDevMilestone,
+    addDevPlanHistory,
+    subscribeToDevSettings,
+    updateDevSettings
+} from '@/services/developerService';
+import { 
+    validateDeveloperTasks, 
+    generateDeveloperPlan, 
+    AIPlanProposal 
+} from '@/services/developerAiService';
+
+interface DeveloperTaskListProps {
+    user: ParentUser;
+}
+
+export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
+    const [tasks, setTasks] = useState<DevTask[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [isAdding, setIsAdding] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [filter, setFilter] = useState<'all' | 'pending' | 'completed'>('all');
+
+    // Form state
+    const [newTitle, setNewTitle] = useState('');
+    const [newDesc, setNewDesc] = useState('');
+    const [newPriority, setNewPriority] = useState<'low' | 'medium' | 'high'>('medium');
+    const [newStatus, setNewStatus] = useState<DevTask['status']>('pending');
+    const [newDueDate, setNewDueDate] = useState('');
+    const [newLearning, setNewLearning] = useState('');
+    const [newEvidenceUrl, setNewEvidenceUrl] = useState('');
+    const [newReflection, setNewReflection] = useState('');
+    const [newDependencies, setNewDependencies] = useState<string>('');
+
+    // AI Flow state
+    const [isValidating, setIsValidating] = useState(false);
+    const [isPlanning, setIsPlanning] = useState(false);
+    const [aiProposal, setAiProposal] = useState<AIPlanProposal | null>(null);
+    const [tweakPrompt, setTweakPrompt] = useState('');
+    const [globalPolicy, setGlobalPolicy] = useState('');
+    const [showSettings, setShowSettings] = useState(false);
+    const [isAutoPlanning, setIsAutoPlanning] = useState(false);
+
+    useEffect(() => {
+        const unsubscribe = subscribeToDevSettings(user.uid, (settings) => {
+            if (settings?.globalPolicy) {
+                setGlobalPolicy(settings.globalPolicy);
+            }
+        });
+        return () => unsubscribe();
+    }, [user.uid]);
+
+    const autoPlanTriggered = React.useRef(false);
+
+    useEffect(() => {
+        const unsubscribe = subscribeToDevTasks(user.uid, (fetchedTasks) => {
+            setTasks(fetchedTasks);
+            setLoading(false);
+
+            // Trigger A: Init if empty and not already planning (only once per mount)
+            if (fetchedTasks.length === 0 && !autoPlanTriggered.current && !isPlanning && !isAutoPlanning) {
+                autoPlanTriggered.current = true;
+                console.log("Trigger A: Empty task list detected, starting auto-planning...");
+                handleAIPlanning(true);
+            }
+        });
+        return () => unsubscribe();
+    }, [user.uid]);
+
+    useEffect(() => {
+        localStorage.removeItem(`dev-docs-hash-${user.uid}`);
+    }, [user.uid]);
+
+    const getDocumentContext = async () => {
+        return [];
+    };
+
+    const handleAIPlanning = async (isAuto = false) => {
+        if (isPlanning || isAutoPlanning) return;
+        
+        if (isAuto) setIsAutoPlanning(true);
+        else setIsPlanning(true);
+
+        try {
+            const documentContext = await getDocumentContext();
+            const context = {
+                currentTasks: tasks.map(t => ({ title: t.title, status: t.status, description: t.description })),
+                recentLearnings: tasks.filter(t => t.learningNote).map(t => t.learningNote),
+                documentContext,
+                tweakPrompt,
+                globalPolicy
+            };
+            
+            console.log(`[DeveloperAI] Generating plan for user ${user.uid}`, { taskCount: tasks.length });
+            const proposal = await generateDeveloperPlan(context);
+            
+            await addDevPlanHistory(user.uid, {
+                proposal,
+                status: 'proposed'
+            });
+
+                if (isAuto && tasks.length === 0 && proposal.tasks.length > 0) {
+                    console.log("[DeveloperAI] Auto-applying initial plan for empty list...");
+                    // Direct application for a smooth first-time experience
+                    for (const task of proposal.tasks) {
+                        await addDevTask(user.uid, { checked: false, ...task });
+                    }
+                    for (const milestone of proposal.milestones) {
+                        await addDevMilestone(user.uid, milestone);
+                    }
+                    setAiProposal(null);
+                
+                await addDevPlanHistory(user.uid, {
+                    proposal,
+                    status: 'approved',
+                    note: 'Auto-approved initial plan'
+                });
+            } else {
+                setAiProposal(proposal);
+                if (isAuto) {
+                    console.log("[DeveloperAI] Auto-plan generated and ready for review.");
+                }
+            }
+        } catch (error: any) {
+            console.error("[DeveloperAI] Planning failure:", {
+                uid: user.uid,
+                status: error.status,
+                message: error.message,
+                details: error.details,
+                isAuto
+            });
+            
+            if (!isAuto) {
+                const displayMessage = error.message || 'AI Planning mislukt door een onbekende fout.';
+                alert(`AI Planning Fout\n\n${displayMessage}`);
+            }
+        } finally {
+            setIsPlanning(false);
+            setIsAutoPlanning(false);
+        }
+    };
+
+    const handleAddTask = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!newTitle.trim()) return;
+
+        try {
+            await addDevTask(user.uid, {
+                title: newTitle,
+                description: newDesc,
+                checked: false,
+                priority: newPriority,
+                status: newStatus,
+                dueDate: newDueDate || undefined,
+                learningNote: newLearning || undefined,
+                dependencies: newDependencies ? newDependencies.split(',').map(s => s.trim()) : undefined,
+                evidence: (newEvidenceUrl || newReflection) ? {
+                    url: newEvidenceUrl || undefined,
+                    reflection: newReflection || undefined,
+                    aiValidationStatus: 'none'
+                } : undefined
+            });
+            // Reset form
+            setNewTitle('');
+            setNewDesc('');
+            setNewPriority('medium');
+            setNewStatus('pending');
+            setNewDueDate('');
+            setNewLearning('');
+            setNewEvidenceUrl('');
+            setNewReflection('');
+            setIsAdding(false);
+        } catch (error) {
+            console.error("Error adding task:", error);
+        }
+    };
+
+    const toggleTask = async (task: DevTask) => {
+        if (!task.id) return;
+        try {
+            await updateDevTask(user.uid, task.id, { checked: !task.checked });
+        } catch (error) {
+            console.error("Error toggling task:", error);
+        }
+    };
+
+    const deleteTask = async (taskId?: string) => {
+        if (!taskId) return;
+        if (!window.confirm('Weet je zeker dat je deze taak wilt verwijderen?')) return;
+        try {
+            await deleteDevTask(user.uid, taskId);
+        } catch (error) {
+            console.error("Error deleting task:", error);
+        }
+    };
+
+    const updateTaskStatus = async (taskId: string, status: DevTask['status']) => {
+        try {
+            await updateDevTask(user.uid, taskId, { 
+                status,
+                checked: status === 'completed'
+            });
+        } catch (error) {
+            console.error("Error updating status:", error);
+        }
+    };
+
+    const updateTaskEvidence = async (taskId: string, evidence: DevTask['evidence']) => {
+        try {
+            await updateDevTask(user.uid, taskId, { evidence });
+        } catch (error) {
+            console.error("Error updating evidence:", error);
+        }
+    };
+
+    const filteredTasks = tasks
+        .filter(t => {
+            if (filter === 'pending') return !t.checked;
+            if (filter === 'completed') return t.checked;
+            return true;
+        })
+        .filter(t => 
+            t.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+            t.description.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+
+    const handleAIValidation = async () => {
+        const completedTasks = tasks.filter(t => t.status === 'completed' && t.evidence);
+        if (completedTasks.length === 0) {
+            alert('Geen voltooide taken met bewijsmateriaal gevonden om te valideren.');
+            return;
+        }
+
+        setIsValidating(true);
+        try {
+            const results = await validateDeveloperTasks(completedTasks);
+            for (const result of results) {
+                const task = tasks.find(t => t.id === result.taskId);
+                if (task && task.evidence) {
+                    await updateTaskEvidence(task.id!, {
+                        ...task.evidence,
+                        aiValidationStatus: result.status,
+                        aiFeedback: result.feedback
+                    });
+                }
+            }
+            alert('AI Validatie voltooid!');
+        } catch (error) {
+            console.error("AI Validation error:", error);
+            alert('AI Validatie mislukt.');
+        } finally {
+            setIsValidating(false);
+        }
+    };
+
+    const rejectAIPlan = async () => {
+        if (!aiProposal) return;
+        try {
+            await addDevPlanHistory(user.uid, {
+                proposal: aiProposal,
+                status: 'rejected'
+            });
+            setAiProposal(null);
+            setTweakPrompt('');
+        } catch (error) {
+            console.error("Plan rejection error:", error);
+        }
+    };
+
+    const approveAIPlan = async () => {
+        if (!aiProposal) return;
+        try {
+            for (const task of aiProposal.tasks) {
+                await addDevTask(user.uid, { checked: false, ...task });
+            }
+            for (const milestone of aiProposal.milestones) {
+                await addDevMilestone(user.uid, milestone);
+            }
+            
+            await addDevPlanHistory(user.uid, {
+                proposal: aiProposal,
+                status: 'approved'
+            });
+
+            setAiProposal(null);
+            alert('AI Plan succesvol toegepast!');
+        } catch (error) {
+            console.error("Plan approval error:", error);
+            alert('Fout bij toepassen van plan.');
+        }
+    };
+
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center p-20">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-lab-coral"></div>
+            </div>
+        );
+    }
+
+    return (
+        <div className="space-y-6 max-w-5xl">
+            {/* Header / Controls */}
+            <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
+                <div className="flex items-center gap-3 w-full md:w-auto">
+                    <div className="relative flex-1 md:w-64">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-lab-muted" size={18} />
+                        <input 
+                            type="text" 
+                            placeholder="Zoek taken..."
+                            className="w-full pl-10 pr-4 py-2 bg-white border border-lab-line rounded-xl text-sm focus:ring-2 focus:ring-lab-coral outline-none"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                        />
+                    </div>
+                    <select 
+                        className="px-4 py-2 bg-white border border-lab-line rounded-xl text-sm focus:ring-2 focus:ring-lab-coral outline-none"
+                        value={filter}
+                        onChange={(e) => setFilter(e.target.value as any)}
+                    >
+                        <option value="all">Alle</option>
+                        <option value="pending">Openstaand</option>
+                        <option value="completed">Voltooid</option>
+                    </select>
+                </div>
+
+                <div className="flex gap-2 w-full md:w-auto">
+                    <button 
+                        onClick={() => setShowSettings(!showSettings)}
+                        className={`flex-1 md:w-auto flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-bold transition-all ${
+                            showSettings ? 'bg-lab-creamDeep text-lab-ink' : 'bg-lab-cream text-lab-muted hover:bg-lab-creamDeep'
+                        }`}
+                        title="AI Beleid Instellingen"
+                    >
+                        <Filter size={18} />
+                        Beleid
+                    </button>
+                    <button 
+                        onClick={handleAIValidation}
+                        disabled={isValidating}
+                        className="flex-1 md:w-auto flex items-center justify-center gap-2 px-4 py-2.5 bg-lab-coral text-white rounded-xl font-bold hover:bg-lab-coral hover:text-white transition-all disabled:opacity-50"
+                    >
+                        {isValidating ? <Loader2 className="animate-spin" size={18} /> : <Shield size={18} />}
+                        AI Check
+                    </button>
+                    <button 
+                        onClick={() => handleAIPlanning(false)}
+                        disabled={isPlanning || isAutoPlanning}
+                        className="flex-1 md:w-auto flex items-center justify-center gap-2 px-4 py-2.5 bg-lab-coral text-white rounded-xl font-bold hover:bg-lab-coral hover:text-white transition-all shadow-lg shadow-lab-coral disabled:opacity-50"
+                    >
+                        {isPlanning || isAutoPlanning ? <Loader2 className="animate-spin" size={18} /> : <BookOpen size={18} />}
+                        AI Plan
+                    </button>
+                    <div className="w-px h-10 bg-lab-creamDeep mx-1 hidden md:block" />
+                    <button 
+                        onClick={() => setIsAdding(true)}
+                        className="flex-1 md:w-auto flex items-center justify-center gap-2 px-4 py-2.5 bg-lab-ink text-white rounded-xl font-bold hover:bg-lab-ink transition-all shadow-lg shadow-lab-line"
+                    >
+                        <Plus size={18} />
+                        Taak
+                    </button>
+                </div>
+            </div>
+
+            {/* AI Policy & Tweak Prompt Settings */}
+            {showSettings && (
+                <div className="bg-white border border-lab-line rounded-3xl p-6 shadow-sm space-y-4 animate-in slide-in-from-top-4 duration-300">
+                    <div className="flex items-center justify-between">
+                        <h4 className="text-sm font-black text-lab-ink uppercase tracking-tight flex items-center gap-2">
+                            <BookOpen size={16} className="text-lab-muted" />
+                            AI Takenbeleid Instellingen
+                        </h4>
+                        <button onClick={() => setShowSettings(false)} className="text-lab-muted hover:text-lab-muted">
+                            <X size={18} />
+                        </button>
+                    </div>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-2">
+                            <label className="text-[10px] font-black text-lab-muted uppercase tracking-widest flex items-center justify-between">
+                                <span>Globaal Beleid (Permanent)</span>
+                                <span className="text-lab-coral text-[8px] border border-lab-coral px-1.5 rounded-full lowercase font-medium">Blijft gelden</span>
+                            </label>
+                            <textarea 
+                                className="w-full px-4 py-3 bg-lab-cream border border-lab-line rounded-xl text-xs focus:ring-2 focus:ring-lab-coral outline-none min-h-[80px]"
+                                placeholder="Bijv: Focus op security en GDPR in alle taken. Gebruik altijd Typescript voor codevoorbeelden."
+                                value={globalPolicy}
+                                onChange={e => setGlobalPolicy(e.target.value)}
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-[10px] font-black text-lab-muted uppercase tracking-widest flex items-center justify-between">
+                                <span>Huidige Tweak Prompt (Eenmalig)</span>
+                                <span className="text-lab-gold text-[8px] border border-lab-gold px-1.5 rounded-full lowercase font-medium">Alleen volgend plan</span>
+                            </label>
+                            <textarea 
+                                className="w-full px-4 py-3 bg-lab-gold/30 border border-lab-gold/50 rounded-xl text-xs focus:ring-2 focus:ring-lab-coral outline-none min-h-[80px]"
+                                placeholder="Bijv: Maak dit plan specifiek voor de Almere College pilot. Voeg een extra taak toe voor data migratie."
+                                value={tweakPrompt}
+                                onChange={e => setTweakPrompt(e.target.value)}
+                            />
+                        </div>
+                    </div>
+                    
+                    <div className="flex justify-end">
+                        <button 
+                            onClick={async () => {
+                                try {
+                                    await updateDevSettings(user.uid, { globalPolicy });
+                                    setShowSettings(false);
+                                } catch (err) {
+                                    console.error("Failed to save settings:", err);
+                                    alert("Opslaan mislukt.");
+                                }
+                            }}
+                            className="text-xs font-bold text-white bg-lab-coral px-4 py-2 rounded-lg hover:bg-lab-coral hover:text-white transition-all"
+                        >
+                            Beleid opslaan
+                        </button>
+                    </div>
+                </div>
+            )}
+
+            {/* Tasks Grid */}
+            <div className="grid grid-cols-1 gap-4">
+                {filteredTasks.length === 0 ? (
+                    <div className="text-center py-20 bg-white rounded-3xl border-2 border-dashed border-lab-line">
+                        <div className="w-16 h-16 bg-lab-cream rounded-full flex items-center justify-center mx-auto mb-4 text-lab-muted">
+                            <CheckSquare size={32} />
+                        </div>
+                        <h3 className="text-lg font-bold text-lab-ink">Geen taken gevonden</h3>
+                        <p className="text-lab-muted mb-6">Begin met het toevoegen van je eerste developer taak.</p>
+                        
+                        {aiProposal ? (
+                            <button 
+                                onClick={() => approveAIPlan()}
+                                className="px-6 py-3 bg-lab-coral text-white rounded-xl font-bold hover:bg-lab-coral hover:text-white transition-all shadow-lg shadow-lab-coral"
+                            >
+                                Gebruik AI Voorstel
+                            </button>
+                        ) : (
+                            <button 
+                                onClick={() => handleAIPlanning(false)}
+                                disabled={isPlanning || isAutoPlanning}
+                                className="px-6 py-3 bg-lab-coral text-white rounded-xl font-bold hover:bg-lab-coral hover:text-white transition-all"
+                            >
+                                {isPlanning || isAutoPlanning ? <Loader2 className="animate-spin" size={18} /> : 'Genereer Plan met AI'}
+                            </button>
+                        )}
+                    </div>
+                ) : (
+                    filteredTasks.map((task) => (
+                        <div 
+                            key={task.id}
+                            className={`group bg-white p-5 rounded-2xl border transition-all duration-300 flex gap-4 ${
+                                task.checked ? 'border-lab-line opacity-75' : 'border-lab-line hover:border-lab-coral hover:shadow-md'
+                            }`}
+                        >
+                            <button 
+                                onClick={() => toggleTask(task)}
+                                className={`mt-1 transition-colors ${task.checked ? 'text-lab-muted' : 'text-lab-muted hover:text-lab-muted'}`}
+                            >
+                                {task.checked ? <CheckCircle2 size={24} /> : <Circle size={24} />}
+                            </button>
+
+                            <div className="flex-1 min-w-0">
+                                <div className="flex items-start justify-between gap-4 mb-2">
+                                    <h4 className={`font-bold text-lg truncate ${task.checked ? 'text-lab-muted line-through' : 'text-lab-ink'}`}>
+                                        {task.title}
+                                    </h4>
+                                    <div className="flex items-center gap-2 shrink-0">
+                                        <select 
+                                            value={task.status}
+                                            onChange={(e) => updateTaskStatus(task.id!, e.target.value as any)}
+                                            className={`text-[10px] font-black uppercase tracking-widest px-2 py-1 rounded-full border transition-all outline-none ${
+                                                task.status === 'completed' ? 'bg-lab-sage text-white border-lab-sage' :
+                                                task.status === 'in_progress' ? 'bg-lab-coral text-white border-lab-coral' :
+                                                task.status === 'blocked' ? 'bg-lab-coral text-white border-lab-coral' :
+                                                task.status === 'waiting_external' ? 'bg-lab-teal text-white border-lab-teal' :
+                                                'bg-lab-cream text-lab-muted border-lab-line'
+                                            }`}
+                                        >
+                                            <option value="pending">Wachten</option>
+                                            <option value="in_progress">Bezig</option>
+                                            <option value="blocked">Geblokkeerd</option>
+                                            <option value="waiting_external">Extern</option>
+                                            <option value="completed">Gereed</option>
+                                        </select>
+                                        <span className={`px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${
+                                            task.priority === 'high' ? 'bg-lab-coral text-white' :
+                                            task.priority === 'medium' ? 'bg-lab-gold text-lab-ink' :
+                                            'bg-lab-cream text-lab-muted'
+                                        }`}>
+                                            {task.priority}
+                                        </span>
+                                        <button 
+                                            onClick={() => deleteTask(task.id)}
+                                            className="p-1.5 text-lab-muted hover:text-lab-muted transition-colors opacity-0 group-hover:opacity-100"
+                                        >
+                                            <Trash2 size={16} />
+                                        </button>
+                                    </div>
+                                </div>
+                                <p className={`text-sm mb-4 leading-relaxed ${task.checked ? 'text-lab-muted' : 'text-lab-muted'}`}>
+                                    {task.description}
+                                </p>
+
+                                <div className="flex flex-wrap gap-4 items-center">
+                                    {task.dueDate && (
+                                        <div className="flex items-center gap-1.5 text-xs font-medium text-lab-muted">
+                                            <Clock size={14} className="text-lab-coral" />
+                                            Deadline: {new Date(task.dueDate).toLocaleDateString('nl-NL')}
+                                        </div>
+                                    )}
+                                    {task.learningNote && (
+                                        <div className="flex items-center gap-1.5 text-xs font-medium text-white bg-lab-coral px-3 py-1 rounded-full">
+                                            <BookOpen size={14} />
+                                            <span>Leerdoel: {task.learningNote}</span>
+                                        </div>
+                                    )}
+                                </div>
+
+                                {task.evidence && (
+                                    <div className="mt-4 p-4 bg-lab-cream rounded-xl border border-lab-line space-y-3">
+                                        <div className="flex items-center justify-between">
+                                            <span className="text-[10px] font-black text-lab-muted uppercase tracking-widest">Bewijs & Reflectie</span>
+                                            {task.evidence.aiValidationStatus && task.evidence.aiValidationStatus !== 'none' && (
+                                                <div className={`flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase ${
+                                                    task.evidence.aiValidationStatus === 'validated' ? 'bg-lab-sage text-white' :
+                                                    task.evidence.aiValidationStatus === 'rejected' ? 'bg-lab-coral text-white' :
+                                                    'bg-lab-gold text-lab-ink'
+                                                }`}>
+                                                    {task.evidence.aiValidationStatus === 'validated' ? <CheckCircle2 size={10} /> : <AlertCircle size={10} />}
+                                                    AI {task.evidence.aiValidationStatus}
+                                                </div>
+                                            )}
+                                        </div>
+                                        {task.evidence.url && (
+                                            <a 
+                                                href={task.evidence.url} 
+                                                target="_blank" 
+                                                rel="noopener noreferrer"
+                                                className="flex items-center gap-2 text-xs font-bold text-lab-coral hover:text-lab-coral transition-colors"
+                                            >
+                                                <ExternalLink size={14} />
+                                                Bekijk resultaat
+                                            </a>
+                                        )}
+                                        {task.evidence.reflection && (
+                                            <p className="text-xs text-lab-muted italic leading-relaxed">
+                                                "{task.evidence.reflection}"
+                                            </p>
+                                        )}
+                                        {task.evidence.aiFeedback && (
+                                            <div className="pt-2 border-t border-lab-line mt-2">
+                                                <p className="text-[10px] text-lab-coral font-bold mb-1 uppercase">AI Feedback</p>
+                                                <p className="text-[11px] text-lab-muted">{task.evidence.aiFeedback}</p>
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
+
+                                {!task.evidence && task.status === 'completed' && (
+                                    <button 
+                                        onClick={() => {
+                                            const url = window.prompt('URL naar bewijs (optioneel):');
+                                            const reflection = window.prompt('Korte reflectie (wat heb je gedaan/geleerd?):');
+                                            if (url || reflection) {
+                                                updateTaskEvidence(task.id!, {
+                                                    url: url || undefined,
+                                                    reflection: reflection || undefined,
+                                                    aiValidationStatus: 'none'
+                                                });
+                                            }
+                                        }}
+                                        className="mt-4 flex items-center gap-2 text-[10px] font-black text-lab-muted uppercase tracking-widest hover:text-lab-coral transition-colors"
+                                    >
+                                        <Plus size={12} />
+                                        Voeg bewijs toe voor AI-check
+                                    </button>
+                                )}
+                            </div>
+                        </div>
+                    ))
+                )}
+            </div>
+
+            {/* AI Proposal Modal */}
+            {aiProposal && (
+                <div className="fixed inset-0 bg-lab-ink/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                    <div className="bg-white w-full max-w-2xl rounded-3xl shadow-2xl animate-in zoom-in-95 duration-200 flex flex-col max-h-[90vh]">
+                        <div className="p-6 border-b border-lab-line flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 bg-lab-coral rounded-xl flex items-center justify-center text-white">
+                                    <BookOpen size={24} />
+                                </div>
+                                <div>
+                                    <h3 className="text-xl font-black text-lab-ink uppercase tracking-tight">AI Voorstel: Volgende Stap</h3>
+                                    <p className="text-xs text-lab-muted font-bold uppercase tracking-widest">Nieuwe taken en mijlpalen</p>
+                                </div>
+                            </div>
+                            <button onClick={() => setAiProposal(null)} className="text-lab-muted hover:text-lab-muted p-2">
+                                <X size={24} />
+                            </button>
+                        </div>
+                        
+                        <div className="flex-1 overflow-y-auto p-6 space-y-8">
+                            {aiProposal.rationale && (
+                                <div className="p-4 bg-lab-gold rounded-2xl border border-lab-gold">
+                                    <p className="text-[10px] font-black text-lab-ink uppercase tracking-widest mb-1 flex items-center gap-1.5">
+                                        <AlertCircle size={12} />
+                                        AI Rationale
+                                    </p>
+                                    <p className="text-xs text-lab-ink/80 leading-relaxed italic">{aiProposal.rationale}</p>
+                                </div>
+                            )}
+
+                            <div>
+                                <h4 className="text-xs font-black text-lab-muted uppercase tracking-widest mb-4 border-b border-lab-line pb-2">Nieuwe Taken</h4>
+                                <div className="space-y-3">
+                                    {aiProposal.tasks.map((task, i) => (
+                                        <div key={i} className="p-4 bg-lab-cream rounded-2xl border border-lab-line">
+                                            <div className="flex items-start justify-between gap-4 mb-1">
+                                                <input 
+                                                    className="font-bold text-lab-ink bg-transparent border-none p-0 focus:ring-0 w-full"
+                                                    value={task.title}
+                                                    onChange={e => {
+                                                        const newTasks = [...aiProposal.tasks];
+                                                        newTasks[i].title = e.target.value;
+                                                        setAiProposal({...aiProposal, tasks: newTasks});
+                                                    }}
+                                                />
+                                                <span className="px-2 py-0.5 bg-white border border-lab-line rounded-full text-[9px] font-black text-lab-muted uppercase">{task.priority}</span>
+                                            </div>
+                                            <textarea 
+                                                className="text-xs text-lab-muted bg-transparent border-none p-0 focus:ring-0 w-full min-h-[40px] resize-none"
+                                                value={task.description}
+                                                onChange={e => {
+                                                    const newTasks = [...aiProposal.tasks];
+                                                    newTasks[i].description = e.target.value;
+                                                    setAiProposal({...aiProposal, tasks: newTasks});
+                                                }}
+                                            />
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div>
+                                <h4 className="text-xs font-black text-lab-muted uppercase tracking-widest mb-4 border-b border-lab-line pb-2">Nieuwe Mijlpalen</h4>
+                                <div className="space-y-3">
+                                    {aiProposal.milestones.map((ms, i) => (
+                                        <div key={i} className="p-4 bg-lab-coral/50 rounded-2xl border border-lab-coral/50 flex gap-4">
+                                            <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-lab-muted shrink-0 border border-lab-coral shadow-sm">
+                                                <Flag size={20} />
+                                            </div>
+                                            <div className="flex-1">
+                                                <input 
+                                                    className="font-bold text-lab-ink text-sm bg-transparent border-none p-0 focus:ring-0 w-full"
+                                                    value={ms.title}
+                                                    onChange={e => {
+                                                        const newMilestones = [...aiProposal.milestones];
+                                                        newMilestones[i].title = e.target.value;
+                                                        setAiProposal({...aiProposal, milestones: newMilestones});
+                                                    }}
+                                                />
+                                                <div className="flex items-center gap-3 mt-1">
+                                                    <span className="text-[10px] font-black text-lab-coral uppercase tracking-widest">{ms.phase}</span>
+                                                    <span className="text-[10px] font-medium text-lab-muted italic">{new Date(ms.startDate).toLocaleDateString('nl-NL')} - {new Date(ms.endDate).toLocaleDateString('nl-NL')}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="p-6 bg-lab-cream border-t border-lab-line flex gap-3">
+                            <button 
+                                onClick={rejectAIPlan}
+                                className="flex-1 py-3 border border-lab-line bg-white rounded-xl font-bold text-lab-muted hover:bg-lab-cream transition-colors"
+                            >
+                                Nee, verwerpen
+                            </button>
+                            <button 
+                                onClick={approveAIPlan}
+                                className="flex-1 py-3 bg-lab-coral text-white rounded-xl font-bold hover:bg-lab-coral hover:text-white transition-all shadow-lg shadow-lab-coral"
+                            >
+                                Ja, toevoegen
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Add Task Modal */}
+            {isAdding && (
+                <div className="fixed inset-0 bg-lab-ink/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                    <div className="bg-white w-full max-w-lg rounded-3xl shadow-2xl animate-in zoom-in-95 duration-200">
+                        <div className="p-6 border-b border-lab-line flex items-center justify-between">
+                            <h3 className="text-xl font-black text-lab-ink uppercase tracking-tight">Nieuwe Taak</h3>
+                            <button onClick={() => setIsAdding(false)} className="text-lab-muted hover:text-lab-muted p-2">
+                                <X size={24} />
+                            </button>
+                        </div>
+                        <form onSubmit={handleAddTask} className="p-6 space-y-5">
+                            <div className="space-y-2">
+                                <label className="text-xs font-black text-lab-muted uppercase tracking-widest">Titel</label>
+                                <input 
+                                    autoFocus
+                                    required
+                                    type="text" 
+                                    className="w-full px-4 py-3 bg-lab-cream border border-lab-line rounded-xl focus:ring-2 focus:ring-lab-coral outline-none"
+                                    placeholder="Bijv: Pitch deck voor scholen afmaken"
+                                    value={newTitle}
+                                    onChange={e => setNewTitle(e.target.value)}
+                                />
+                            </div>
+
+                            <div className="space-y-2">
+                                <label className="text-xs font-black text-lab-muted uppercase tracking-widest">Omschrijving</label>
+                                <textarea 
+                                    className="w-full px-4 py-3 bg-lab-cream border border-lab-line rounded-xl focus:ring-2 focus:ring-lab-coral outline-none min-h-[100px]"
+                                    placeholder="Wat moet er precies gebeuren?"
+                                    value={newDesc}
+                                    onChange={e => setNewDesc(e.target.value)}
+                                />
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="space-y-2">
+                                    <label className="text-xs font-black text-lab-muted uppercase tracking-widest">Prioriteit</label>
+                                    <select 
+                                        className="w-full px-4 py-3 bg-lab-cream border border-lab-line rounded-xl focus:ring-2 focus:ring-lab-coral outline-none"
+                                        value={newPriority}
+                                        onChange={e => setNewPriority(e.target.value as any)}
+                                    >
+                                        <option value="low">Laag</option>
+                                        <option value="medium">Medium</option>
+                                        <option value="high">Hoog</option>
+                                    </select>
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-xs font-black text-lab-muted uppercase tracking-widest">Status</label>
+                                    <select 
+                                        className="w-full px-4 py-3 bg-lab-cream border border-lab-line rounded-xl focus:ring-2 focus:ring-lab-coral outline-none"
+                                        value={newStatus}
+                                        onChange={e => setNewStatus(e.target.value as any)}
+                                    >
+                                        <option value="pending">Wachten</option>
+                                        <option value="in_progress">Bezig</option>
+                                        <option value="blocked">Geblokkeerd</option>
+                                        <option value="waiting_external">Extern</option>
+                                        <option value="completed">Gereed</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="space-y-2">
+                                    <label className="text-xs font-black text-lab-muted uppercase tracking-widest">Deadline</label>
+                                    <input 
+                                        type="date" 
+                                        className="w-full px-4 py-3 bg-lab-cream border border-lab-line rounded-xl focus:ring-2 focus:ring-lab-coral outline-none"
+                                        value={newDueDate}
+                                        onChange={e => setNewDueDate(e.target.value)}
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-xs font-black text-lab-muted uppercase tracking-widest flex items-center gap-2">
+                                        <BookOpen size={14} />
+                                        Leerdoel
+                                    </label>
+                                    <input 
+                                        type="text" 
+                                        className="w-full px-4 py-3 bg-lab-coral/50 border border-lab-coral rounded-xl focus:ring-2 focus:ring-lab-coral outline-none"
+                                        placeholder="Wat leer je?"
+                                        value={newLearning}
+                                        onChange={e => setNewLearning(e.target.value)}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="space-y-2">
+                                <label className="text-xs font-black text-lab-muted uppercase tracking-widest">Afhankelijkheden (Task IDs, komma-gescheiden)</label>
+                                <input 
+                                    type="text" 
+                                    className="w-full px-4 py-3 bg-lab-cream border border-lab-line rounded-xl focus:ring-2 focus:ring-lab-coral outline-none"
+                                    placeholder="Bijv: id1, id2"
+                                    value={newDependencies}
+                                    onChange={e => setNewDependencies(e.target.value)}
+                                />
+                            </div>
+
+                            <div className="space-y-4 pt-2 border-t border-lab-line">
+                                <p className="text-[10px] font-black text-lab-muted uppercase tracking-widest">Bewijs (Optioneel)</p>
+                                <div className="space-y-2">
+                                    <input 
+                                        type="url" 
+                                        className="w-full px-4 py-3 bg-lab-cream border border-lab-line rounded-xl focus:ring-2 focus:ring-lab-coral outline-none"
+                                        placeholder="URL naar resultaat (bijv. GitHub, Doc)"
+                                        value={newEvidenceUrl}
+                                        onChange={e => setNewEvidenceUrl(e.target.value)}
+                                    />
+                                    <textarea 
+                                        className="w-full px-4 py-3 bg-lab-cream border border-lab-line rounded-xl focus:ring-2 focus:ring-lab-coral outline-none min-h-[60px]"
+                                        placeholder="Korte reflectie..."
+                                        value={newReflection}
+                                        onChange={e => setNewReflection(e.target.value)}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="pt-4 flex gap-3">
+                                <button 
+                                    type="button"
+                                    onClick={() => setIsAdding(false)}
+                                    className="flex-1 py-3 border border-lab-line rounded-xl font-bold text-lab-muted hover:bg-lab-cream transition-colors"
+                                >
+                                    Annuleren
+                                </button>
+                                <button 
+                                    type="submit"
+                                    className="flex-1 py-3 bg-lab-coral text-white rounded-xl font-bold hover:bg-lab-coral hover:text-white transition-all shadow-lg shadow-lab-coral"
+                                >
+                                    Opslaan
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+}

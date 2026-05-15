@@ -3,11 +3,7 @@ dist
 .firebase
 lighthouse-reports
 business
-Regelgeving
-guides
 .claude
-Printinstructies
-SLO-doelen
 *.zip
 *.log
 .env

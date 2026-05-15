@@ -5,6 +5,17 @@ Doel: geen regressions, geen security-gaten, geen stijlafwijkingen.
 
 ---
 
+## 0. Beginner-safe AI-workflow
+
+- [ ] Vooraf uitgelegd in gewone taal: plan, risico, waarschijnlijke bestanden, bewijs/testplan
+- [ ] Taak is klein genoeg gehouden; grote verzoeken zijn opgesplitst in één duidelijke stap
+- [ ] Risico gelabeld als Groen / Geel / Rood
+- [ ] Rood werk? Expliciet benoemd: wat kan misgaan, welke data/geldstroom raakt dit, welke review is nodig
+- [ ] Achteraf teach-back gegeven: wat veranderde, waarom, bestanden, checks, resterend risico
+- [ ] Geen claim "klaar/veilig/productie-klaar" zonder uitgevoerde verificatie of expliciete beperking
+
+---
+
 ## 1. Codekwaliteit
 
 - [ ] TypeScript strict: geen `any`, geen impliciete `any`

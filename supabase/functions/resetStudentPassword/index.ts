@@ -8,6 +8,7 @@ const SUPABASE_ANON_KEY = Deno.env.get('SUPABASE_ANON_KEY')!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
 
 const PRIVILEGED_ROLES = new Set(['teacher', 'admin', 'developer']);
+const TRUSTED_ROLES = new Set(['student', 'teacher', 'admin', 'developer']);
 const COMMON_PASSWORDS = new Set([
   'welkom123456',
   'wachtwoord12',
@@ -45,6 +46,17 @@ function decodeJwtClaims(authHeader: string | null): Record<string, unknown> | n
   } catch {
     return null;
   }
+}
+
+function getTrustedRole(appMetadata: Record<string, unknown> | undefined): string | null {
+  const role = appMetadata?.role;
+  if (typeof role === 'string' && TRUSTED_ROLES.has(role)) {
+    return role;
+  }
+  if (appMetadata?.admin === true) {
+    return 'admin';
+  }
+  return null;
 }
 
 function validatePassword(password: string | undefined): string | null {
@@ -163,9 +175,8 @@ serve(async (req: Request) => {
       });
     }
 
-    const targetRole = targetUserData.user.app_metadata?.role;
-    if (targetRole && targetRole !== 'student') {
-      return new Response(JSON.stringify({ error: 'Alleen leerlingaccounts mogen via dit scherm worden gereset.' }), {
+    if (getTrustedRole(targetUserData.user.app_metadata) !== 'student') {
+      return new Response(JSON.stringify({ error: 'Alleen leerlingaccounts met een vertrouwde leerlingrol mogen via dit scherm worden gereset.' }), {
         status: 403,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });

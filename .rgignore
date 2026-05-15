@@ -1,0 +1,24 @@
+# Keep agent searches focused. These paths are large, generated, or binary-heavy
+# and should be opened explicitly only when the task truly requires them.
+.claude/worktrees/
+.playwright-mcp/
+node_modules/
+dist/
+dist-ssr/
+.vercel/
+.firebase/
+lighthouse-reports/
+playwright-report/
+test-results/
+screenshots/
+.tmp-context/
+
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.gif
+*.mp4
+*.mov
+*.zip
+*.pdf

@@ -1,0 +1,54 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$(git rev-parse --show-toplevel)/scripts/agent-hooks/policy.mjs\" user-prompt",
+            "timeout": 10,
+            "statusMessage": "Loading DGSkills safety workflow"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash|Edit|Write|apply_patch",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$(git rev-parse --show-toplevel)/scripts/agent-hooks/policy.mjs\" pre-tool",
+            "timeout": 10,
+            "statusMessage": "Checking DGSkills safety policy"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|apply_patch",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$(git rev-parse --show-toplevel)/scripts/agent-hooks/policy.mjs\" post-tool",
+            "timeout": 20,
+            "statusMessage": "Recording DGSkills verification needs"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$(git rev-parse --show-toplevel)/scripts/agent-hooks/policy.mjs\" stop",
+            "timeout": 140,
+            "statusMessage": "Running DGSkills verification hook"
+          }
+        ]
+      }
+    ]
+  }
+}

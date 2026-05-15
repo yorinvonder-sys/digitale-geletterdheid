@@ -30,16 +30,16 @@ Minimaal:
 - `docs/workflows/claude-codex-review.md`
 - `AuthenticatedApp.tsx`
 - `components/TeacherDashboard.tsx`
-- relevante bestanden in `components/teacher/`
+- relevante bestanden in `src/features/teacher/`
 - `components/ProjectZeroDashboard.tsx`
 - `services/teacherService.ts`
 - `services/missionService.ts`
 - `types.ts`
 - `config/missions.ts`
 - `config/curriculum.ts`
-- `components/teacher/MissionProgressPanel.tsx`
-- `components/teacher/SLOClassOverview.tsx`
-- `components/teacher/CLAUDE.md`
+- `src/features/teacher/MissionProgressPanel.tsx`
+- `src/features/teacher/SLOClassOverview.tsx`
+- `src/features/teacher/CLAUDE.md`
 
 ## Werkwijze
 

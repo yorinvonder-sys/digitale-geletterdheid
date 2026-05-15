@@ -101,7 +101,7 @@ serve(async (req: Request) => {
       .eq('token_hash', tokenHash)
       .single();
 
-    const typedRow = (row as ConsentRequestRow | null) ?? null;
+    const typedRow = (row as unknown as ConsentRequestRow | null) ?? null;
 
     if (error || !typedRow) {
       return jsonResponse({ error: 'Deze toestemmingsaanvraag is niet gevonden of niet meer geldig.' }, 404, corsHeaders);

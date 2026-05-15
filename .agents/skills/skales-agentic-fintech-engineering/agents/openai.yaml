@@ -1,0 +1,6 @@
+interface:
+  display_name: "Skales Agentic Fintech Engineering"
+  short_description: "Safer AI coding for Skales fintech"
+  default_prompt: "Use $skales-agentic-fintech-engineering to plan a small, testable Skales fintech change and explain the risk in plain language."
+policy:
+  allow_implicit_invocation: true

@@ -17,6 +17,7 @@ import { getAccessToken, getVertexUrl } from "../_shared/vertexAuth.ts";
 import { buildCorsHeaders, rejectDisallowedBrowserRequest } from "../_shared/cors.ts";
 import { buildSafeHistory } from "../_shared/chatHistory.ts";
 import { checkDurableRateLimit, rateLimitHeaders } from "../_shared/rateLimiter.ts";
+import { countTextChars, logAiUsageEvent, resolveAiRequestId } from "../_shared/aiUsageLogger.ts";
 
 const MAX_REQUEST_BYTES = 8_000;
 
@@ -43,7 +44,7 @@ function getClientIp(req: Request): string {
  * The AI acts as a friendly game builder mentor that helps visitors
  * customize a mini platformer game through conversation.
  */
-const DEMO_SYSTEM_INSTRUCTION = `Je bent Pip, de vrolijke AI-mentor van DGSkills. Je helpt bezoekers een mini-platformer game te bouwen op de landingspagina.
+const DEMO_SYSTEM_INSTRUCTION = `Je bent de vrolijke AI-mentor van DGSkills. Je helpt bezoekers een mini-platformer game te bouwen op de landingspagina.
 
 REGELS:
 - Antwoord ALTIJD in het Nederlands
@@ -64,9 +65,9 @@ NA ELK ANTWOORD voeg je een JSON-blok toe met de huidige game-staat. Dit blok wo
 
 <GAME_STATE>
 {
-  "sky": "#1a1a2e",
-  "ground": "#16a34a",
-  "character": "#f59e0b",
+  "sky": "#08283B",
+  "ground": "#5F947D",
+  "character": "#D7C95F",
   "characterType": "robot",
   "obstacles": 2,
   "clouds": true,
@@ -104,35 +105,8 @@ Deno.serve(async (req: Request) => {
         );
     }
 
-    // 1. IP-based rate limiting: 5 messages per 24 hours
-    const clientIp = getClientIp(req);
-    const userAgent = req.headers.get("User-Agent") || "unknown";
-    const rateFingerprint = await sha256(`${clientIp}|${userAgent}`);
-    const rateCheck = await checkDurableRateLimit(`demo-chat:${rateFingerprint}`, {
-        maxRequests: 5,
-        windowMs: 24 * 60 * 60 * 1000, // 24 hours
-    });
-
-    if (!rateCheck.allowed) {
-        return new Response(
-            JSON.stringify({
-                error: "demo_limit",
-                reason: "Je hebt het maximum van 5 berichten bereikt. Maak een gratis account om verder te gaan!",
-                remaining: 0,
-            }),
-            {
-                status: 429,
-                headers: {
-                    ...corsHeaders,
-                    "Content-Type": "application/json",
-                    ...rateLimitHeaders(rateCheck),
-                },
-            }
-        );
-    }
-
-    // 2. Parse request
-    let body: { message?: string; history?: Array<{ role: string; parts: Array<{ text: string }> }> };
+    // 1. Parse request
+    let body: { message?: string; history?: Array<{ role: string; parts: Array<{ text: string }> }>; clientRequestId?: unknown };
     try {
         body = await req.json();
     } catch {
@@ -142,10 +116,48 @@ Deno.serve(async (req: Request) => {
         );
     }
 
+    const requestId = resolveAiRequestId(body.clientRequestId);
+    const responseHeaders = { ...corsHeaders, "Content-Type": "application/json", "X-AI-Request-Id": requestId };
+
     if (!body.message || typeof body.message !== "string" || body.message.length > 500) {
         return new Response(
             JSON.stringify({ error: "Bericht ontbreekt of is te lang (max 500 tekens)." }),
-            { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+            { status: 400, headers: responseHeaders }
+        );
+    }
+
+    // 2. IP-based rate limiting: 5 messages per 24 hours
+    const clientIp = getClientIp(req);
+    const userAgent = req.headers.get("User-Agent") || "unknown";
+    const rateFingerprint = await sha256(`${clientIp}|${userAgent}`);
+    const rateCheck = await checkDurableRateLimit(`demo-chat:${rateFingerprint}`, {
+        maxRequests: 5,
+        windowMs: 24 * 60 * 60 * 1000, // 24 hours
+    });
+
+    if (!rateCheck.allowed) {
+        logAiUsageEvent({
+            requestId,
+            endpoint: "demo-chat",
+            model: "gemini-3-flash-preview",
+            status: "rate_limited",
+            inputChars: body.message.length,
+            metadata: { limit: rateCheck.limit, retry_after_ms: rateCheck.retryAfterMs },
+        }).catch((err) => console.error("[demo-chat] Usage log error:", err));
+
+        return new Response(
+            JSON.stringify({
+                error: "demo_limit",
+                reason: "Je hebt het maximum van 5 berichten bereikt. Maak een gratis account om verder te gaan!",
+                remaining: 0,
+            }),
+            {
+                status: 429,
+                headers: {
+                    ...responseHeaders,
+                    ...rateLimitHeaders(rateCheck),
+                },
+            }
         );
     }
 
@@ -153,12 +165,21 @@ Deno.serve(async (req: Request) => {
     const validation = sanitizePrompt(body.message);
     if (validation.wasBlocked) {
         console.warn(`[DEMO_INJECTION_BLOCKED] ip=${clientIp} label=${validation.detectionLabel}`);
+        logAiUsageEvent({
+            requestId,
+            endpoint: "demo-chat",
+            model: "gemini-3-flash-preview",
+            status: "blocked",
+            inputChars: body.message.length,
+            metadata: { reason: "input_sanitizer", detection_label: validation.detectionLabel ?? "unknown" },
+        }).catch((err) => console.error("[demo-chat] Usage log error:", err));
+
         return new Response(
             JSON.stringify({
                 error: "blocked",
                 reason: "Je bericht bevat een patroon dat niet is toegestaan.",
             }),
-            { status: 422, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+            { status: 422, headers: responseHeaders }
         );
     }
 
@@ -171,12 +192,22 @@ Deno.serve(async (req: Request) => {
 
     if (safeHistory.blocked) {
         console.warn(`[DEMO_HISTORY_BLOCKED] ip=${clientIp} label=${safeHistory.detectionLabel}`);
+        logAiUsageEvent({
+            requestId,
+            endpoint: "demo-chat",
+            model: "gemini-3-flash-preview",
+            status: "blocked",
+            inputChars: validation.sanitized.length,
+            historyChars: countTextChars(safeHistory.history),
+            metadata: { reason: "history_sanitizer", detection_label: safeHistory.detectionLabel ?? "unknown" },
+        }).catch((err) => console.error("[demo-chat] Usage log error:", err));
+
         return new Response(
             JSON.stringify({
                 error: "blocked",
                 reason: "De gesprekshistorie bevat een patroon dat niet is toegestaan.",
             }),
-            { status: 422, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+            { status: 422, headers: responseHeaders }
         );
     }
 
@@ -215,14 +246,36 @@ Deno.serve(async (req: Request) => {
             const status = geminiResponse.status;
             const errBody = await geminiResponse.text().catch(() => "");
             console.error(`[demo-chat] Vertex AI error (${status}):`, errBody);
+            logAiUsageEvent({
+                requestId,
+                endpoint: "demo-chat",
+                model: "gemini-3-flash-preview",
+                status: status === 429 ? "rate_limited" : "error",
+                inputChars: countTextChars(contents) + DEMO_SYSTEM_INSTRUCTION.length,
+                historyChars: countTextChars(safeHistory.history),
+                metadata: { http_status: status },
+            }).catch((err) => console.error("[demo-chat] Usage log error:", err));
+
             return new Response(
                 JSON.stringify({ error: "AI tijdelijk niet beschikbaar. Probeer het later opnieuw." }),
-                { status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+                { status: 502, headers: responseHeaders }
             );
         }
 
         const geminiData = await geminiResponse.json();
         const text = geminiData?.candidates?.[0]?.content?.parts?.[0]?.text || "";
+
+        logAiUsageEvent({
+            requestId,
+            endpoint: "demo-chat",
+            model: "gemini-3-flash-preview",
+            status: "ok",
+            inputChars: countTextChars(contents) + DEMO_SYSTEM_INSTRUCTION.length,
+            historyChars: countTextChars(safeHistory.history),
+            outputChars: text.length,
+            usagePayload: geminiData,
+            metadata: { remaining: Math.max(rateCheck.remaining, 0) },
+        }).catch((err) => console.error("[demo-chat] Usage log error:", err));
 
         return new Response(
             JSON.stringify({
@@ -231,8 +284,7 @@ Deno.serve(async (req: Request) => {
             }),
             {
                 headers: {
-                    ...corsHeaders,
-                    "Content-Type": "application/json",
+                    ...responseHeaders,
                     ...rateLimitHeaders(rateCheck),
                 },
             }
@@ -240,9 +292,17 @@ Deno.serve(async (req: Request) => {
     } catch (err: unknown) {
         const message = err instanceof Error ? err.message : String(err);
         console.error("[demo-chat] Unhandled error:", message);
+        logAiUsageEvent({
+            requestId,
+            endpoint: "demo-chat",
+            model: "gemini-3-flash-preview",
+            status: "error",
+            inputChars: body.message.length,
+            metadata: { error_stage: "unhandled" },
+        }).catch((logErr) => console.error("[demo-chat] Usage log error:", logErr));
         return new Response(
             JSON.stringify({ error: "AI tijdelijk niet beschikbaar." }),
-            { status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+            { status: 502, headers: responseHeaders }
         );
     }
 });

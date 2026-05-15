@@ -57,7 +57,7 @@ export default defineConfig(({ mode }) => {
     // SECURITY: API keys removed from client bundle - all AI calls go through Supabase Edge Functions proxy
     resolve: {
       alias: {
-        '@': path.resolve(__dirname, '.'),
+        '@': path.resolve(__dirname, 'src'),
       }
     },
     build: {

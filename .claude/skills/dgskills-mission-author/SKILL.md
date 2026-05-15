@@ -1,6 +1,6 @@
 ---
 name: dgskills-mission-author
-description: Use this skill when creating, adding, or substantially editing a DGSkills learner mission — including adding a new mission to the template registry, wiring up the agent role, mapping SLO kerndoelen, placing the mission in the curriculum (leerjaar + periode), or registering it in the learner dashboard. Trigger phrases include "voeg missie toe", "nieuwe missie", "missie maken", "mission author", "SLO-koppeling", or when files under `components/missions/`, `config/templateRegistry.ts`, `config/slo-kerndoelen-mapping.ts`, `config/curriculum.ts`, or `config/agents.tsx` are being added/modified.
+description: Use this skill when creating, adding, or substantially editing a DGSkills learner mission — including adding a new mission to the template registry, wiring up the agent role, mapping SLO kerndoelen, placing the mission in the curriculum (leerjaar + periode), or registering it in the learner dashboard. Trigger phrases include "voeg missie toe", "nieuwe missie", "missie maken", "mission author", "SLO-koppeling", or when files under `components/missions/`, `config/templateRegistry.ts`, `config/slo-kerndoelen-mapping.ts`, `config/curriculum.ts`, or `config/agents/year{N}.tsx` are being added/modified.
 ---
 
 # DGSkills Mission Author — Playbook
@@ -18,7 +18,7 @@ Lees in deze volgorde, anders mis je invarianten:
 
 1. `components/missions/CLAUDE.md` — missie-invarianten en didactische regels
 2. `config/curriculum.ts` — leerjaar + periode + week-structuur
-3. `config/agents.tsx` — agentrollen (ROLES), `systemInstruction` per rol
+3. `config/agents/year{N}.tsx` — agentrollen (ROLES), `systemInstruction` per rol
 4. `config/slo-kerndoelen-mapping.ts` — mission → SLO-codes (21A…23C) + VSO-mapping (18A…20B)
 5. `config/templateRegistry.ts` — templateType routing (scenario-engine, puzzle-lab, simulation-lab, review-arena, builder-canvas, data-viewer, debate-arena, tool-guide)
 6. `types/slo.ts` — SLO_VSO_GOALS + basisvaardigheden-tags
@@ -31,7 +31,7 @@ Lees in deze volgorde, anders mis je invarianten:
 Een missie is pas compleet als **alle** onderstaande kloppen:
 
 - [ ] **Curriculum-plaats**: missie-ID staat in `config/curriculum.ts` onder een bestaand `yearGroups[n].periods[p].missions` array.
-- [ ] **Agentrol**: er is een matching ROLE in `config/agents.tsx` met identieke `id`, een passende `title`, emoji en `systemInstruction`.
+- [ ] **Agentrol**: er is een matching ROLE in `config/agents/year{N}.tsx` met identieke `id`, een passende `title`, emoji en `systemInstruction`.
 - [ ] **Template-routing**: missie-ID is geregistreerd in `config/templateRegistry.ts` met het juiste `templateType`.
 - [ ] **Template-config**: er is een config-bestand onder `components/missions/templates/<templateType>/configs/<missionId>.ts`.
 - [ ] **SLO-mapping**: entry in `KERNDOEL_MISSIONS` (`config/slo-kerndoelen-mapping.ts`) met minimaal één `sloKerndoelen` code én `sloVsoKerndoelen` voor VSO-profielen.
@@ -84,7 +84,7 @@ Gebruik **kebab-case**, Nederlands of Engels consistent met bestaande missies in
 
 ### Stap 3 — Bestanden aanmaken/bewerken (in deze volgorde)
 
-1. `config/agents.tsx` — voeg ROLE toe (id, title, emoji, systemInstruction, beschrijving)
+1. `config/agents/year{N}.tsx` — voeg ROLE toe (id, title, emoji, systemInstruction, beschrijving)
 2. `components/missions/templates/<templateType>/configs/<missionId>.ts` — template-specifieke config (opdrachten, scenario's, testvragen, badges)
 3. `config/templateRegistry.ts` — registreer missie met `templateType`, optioneel `enableChat` + `chatRoleId`
 4. `config/slo-kerndoelen-mapping.ts` — voeg entry toe aan `KERNDOEL_MISSIONS`

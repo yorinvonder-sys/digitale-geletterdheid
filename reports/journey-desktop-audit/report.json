@@ -1,0 +1,452 @@
+{
+  "url": "http://127.0.0.1:3000/",
+  "outDir": "/Users/yorinvonder/Downloads/ai-lab---future-architect/reports/journey-desktop-audit",
+  "generatedAt": "2026-05-05T17:15:23.367Z",
+  "results": [
+    {
+      "type": "skills",
+      "viewport": "desktop-1440x900",
+      "file": "desktop-1440x900-skills-coach.png",
+      "headingVisible": true,
+      "coachVisible": true,
+      "beaverVisible": true,
+      "coachUpdated": true,
+      "metrics": {
+        "headingText": "Ontdek jouw favoriete skills",
+        "coachText": "Perfect voor leerlingen die willen snappen hoe apps, games en logica werken.",
+        "heading": {
+          "top": 220.0234375,
+          "bottom": 268.0234375,
+          "left": 208,
+          "right": 868
+        },
+        "coach": {
+          "top": 237.31692504882812,
+          "bottom": 297.3169250488281,
+          "left": 1001,
+          "right": 1211
+        },
+        "beaver": {
+          "top": 259.5010986328125,
+          "bottom": 338.6327209472656,
+          "left": 909.4342041015625,
+          "right": 988.5657958984375
+        },
+        "headerBottom": 81,
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "scrollY": 5594
+        }
+      }
+    },
+    {
+      "type": "journey",
+      "viewport": "desktop-1440x900",
+      "step": 1,
+      "file": "desktop-1440x900-step-01.png",
+      "activeText": "01Start je routeOntdekLeerlingen kiezen een leerlijn, zien direct de AI-missies en starten vanuit hun eigen niveau.RoutecoachKies een leerlijn en zie meteen waar je klas start.",
+      "headingVisible": true,
+      "cardVisible": true,
+      "tipInsideCard": true,
+      "metrics": {
+        "activeText": "01Start je routeOntdekLeerlingen kiezen een leerlijn, zien direct de AI-missies en starten vanuit hun eigen niveau.RoutecoachKies een leerlijn en zie meteen waar je klas start.",
+        "heading": {
+          "top": 109.76590728759766,
+          "bottom": 216.95339965820312,
+          "left": 208,
+          "right": 638
+        },
+        "card": {
+          "top": 404.36016845703125,
+          "bottom": 714.3601684570312,
+          "left": 208,
+          "right": 638
+        },
+        "tip": {
+          "top": 590.3601684570312,
+          "bottom": 678.3601684570312,
+          "left": 296,
+          "right": 622
+        },
+        "headerBottom": 81,
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "scrollY": 1026
+        }
+      }
+    },
+    {
+      "type": "journey",
+      "viewport": "desktop-1440x900",
+      "step": 2,
+      "file": "desktop-1440x900-step-02.png",
+      "activeText": "02Korte challengesLeerElke opdracht gebruikt echte DGSkills-schermen, zodat leerlingen leren door te doen in plaats van alleen te lezen.RoutecoachElke missie geeft directe feedback, dus leerlingen blijven bezig.",
+      "headingVisible": true,
+      "cardVisible": true,
+      "tipInsideCard": true,
+      "metrics": {
+        "activeText": "02Korte challengesLeerElke opdracht gebruikt echte DGSkills-schermen, zodat leerlingen leren door te doen in plaats van alleen te lezen.RoutecoachElke missie geeft directe feedback, dus leerlingen blijven bezig.",
+        "heading": {
+          "top": 109.765625,
+          "bottom": 216.953125,
+          "left": 208,
+          "right": 638
+        },
+        "card": {
+          "top": 404.3724365234375,
+          "bottom": 714.376953125,
+          "left": 207.99838256835938,
+          "right": 638.0015869140625
+        },
+        "tip": {
+          "top": 590.37255859375,
+          "bottom": 678.3759765625,
+          "left": 296.0003356933594,
+          "right": 622.001220703125
+        },
+        "headerBottom": 81,
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "scrollY": 1971
+        }
+      }
+    },
+    {
+      "type": "journey",
+      "viewport": "desktop-1440x900",
+      "step": 3,
+      "file": "desktop-1440x900-step-03.png",
+      "activeText": "03ProjectmodusMaakBouw een platformer, ontwerp een robotroute, laat AI je tekening raden en remix challenges tot iets eigens.RoutecoachHier wordt het concreet: games, robots, prompts, projecten.",
+      "headingVisible": true,
+      "cardVisible": true,
+      "tipInsideCard": true,
+      "metrics": {
+        "activeText": "03ProjectmodusMaakBouw een platformer, ontwerp een robotroute, laat AI je tekening raden en remix challenges tot iets eigens.RoutecoachHier wordt het concreet: games, robots, prompts, projecten.",
+        "heading": {
+          "top": 109.765625,
+          "bottom": 216.953125,
+          "left": 208,
+          "right": 638
+        },
+        "card": {
+          "top": 404.76507568359375,
+          "bottom": 714.5730590820312,
+          "left": 208.16213989257812,
+          "right": 637.837890625
+        },
+        "tip": {
+          "top": 590.6009521484375,
+          "bottom": 678.587646484375,
+          "left": 296.1205749511719,
+          "right": 621.844970703125
+        },
+        "headerBottom": 81,
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "scrollY": 2916
+        }
+      }
+    },
+    {
+      "type": "journey",
+      "viewport": "desktop-1440x900",
+      "step": 4,
+      "file": "desktop-1440x900-step-04.png",
+      "activeText": "04Trofeeën en XPBewijsVoortgang wordt zichtbaar met levels, trofeeën en XP, zonder dat het voelt als een saai leerlingvolgsysteem.RoutecoachAlles eindigt in zichtbaar portfolio- of voortgangsbewijs.",
+      "headingVisible": true,
+      "cardVisible": true,
+      "tipInsideCard": true,
+      "metrics": {
+        "activeText": "04Trofeeën en XPBewijsVoortgang wordt zichtbaar met levels, trofeeën en XP, zonder dat het voelt als een saai leerlingvolgsysteem.RoutecoachAlles eindigt in zichtbaar portfolio- of voortgangsbewijs.",
+        "heading": {
+          "top": 109.765625,
+          "bottom": 216.953125,
+          "left": 208,
+          "right": 638
+        },
+        "card": {
+          "top": 406.5578308105469,
+          "bottom": 715.5068969726562,
+          "left": 208.8848419189453,
+          "right": 637.1151885986328
+        },
+        "tip": {
+          "top": 591.6637573242188,
+          "bottom": 679.5875244140625,
+          "left": 296.6561279296875,
+          "right": 621.1543579101562
+        },
+        "headerBottom": 81,
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "scrollY": 3861
+        }
+      }
+    },
+    {
+      "type": "journey",
+      "viewport": "desktop-1440x900",
+      "step": 5,
+      "file": "desktop-1440x900-step-05.png",
+      "activeText": "05Portfolio verhaalDeelAan het einde staat er geen losse score, maar een portfolio waarmee leerlingen laten zien wat ze kunnen.RoutecoachBespreek het portfolio en maak groei zichtbaar voor leerling en docent.",
+      "headingVisible": true,
+      "cardVisible": true,
+      "tipInsideCard": true,
+      "metrics": {
+        "activeText": "05Portfolio verhaalDeelAan het einde staat er geen losse score, maar een portfolio waarmee leerlingen laten zien wat ze kunnen.RoutecoachBespreek het portfolio en maak groei zichtbaar voor leerling en docent.",
+        "heading": {
+          "top": 109.765625,
+          "bottom": 216.953125,
+          "left": 208,
+          "right": 638
+        },
+        "card": {
+          "top": 404.359375,
+          "bottom": 714.359375,
+          "left": 208,
+          "right": 638
+        },
+        "tip": {
+          "top": 590.359375,
+          "bottom": 696.859375,
+          "left": 296,
+          "right": 622
+        },
+        "headerBottom": 81,
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "scrollY": 4806
+        }
+      }
+    },
+    {
+      "type": "skills",
+      "viewport": "wide-1920x1080",
+      "file": "wide-1920x1080-skills-coach.png",
+      "headingVisible": true,
+      "coachVisible": true,
+      "beaverVisible": true,
+      "coachUpdated": true,
+      "metrics": {
+        "headingText": "Ontdek jouw favoriete skills",
+        "coachText": "Perfect voor leerlingen die willen snappen hoe apps, games en logica werken.",
+        "heading": {
+          "top": 220.0260009765625,
+          "bottom": 268.0260009765625,
+          "left": 448,
+          "right": 1108
+        },
+        "coach": {
+          "top": 237.3223876953125,
+          "bottom": 297.3223876953125,
+          "left": 1241,
+          "right": 1451
+        },
+        "beaver": {
+          "top": 259.5065612792969,
+          "bottom": 338.63818359375,
+          "left": 1149.4342041015625,
+          "right": 1228.5657958984375
+        },
+        "headerBottom": 81,
+        "viewport": {
+          "width": 1920,
+          "height": 1080,
+          "scrollY": 6530
+        }
+      }
+    },
+    {
+      "type": "journey",
+      "viewport": "wide-1920x1080",
+      "step": 1,
+      "file": "wide-1920x1080-step-01.png",
+      "activeText": "01Start je routeOntdekLeerlingen kiezen een leerlijn, zien direct de AI-missies en starten vanuit hun eigen niveau.RoutecoachKies een leerlijn en zie meteen waar je klas start.",
+      "headingVisible": true,
+      "cardVisible": true,
+      "tipInsideCard": true,
+      "metrics": {
+        "activeText": "01Start je routeOntdekLeerlingen kiezen een leerlijn, zien direct de AI-missies en starten vanuit hun eigen niveau.RoutecoachKies een leerlijn en zie meteen waar je klas start.",
+        "heading": {
+          "top": 129.37503051757812,
+          "bottom": 236.56253051757812,
+          "left": 448,
+          "right": 878
+        },
+        "card": {
+          "top": 501.56298828125,
+          "bottom": 811.56298828125,
+          "left": 448,
+          "right": 878
+        },
+        "tip": {
+          "top": 687.56298828125,
+          "bottom": 775.56298828125,
+          "left": 536,
+          "right": 862
+        },
+        "headerBottom": 81,
+        "viewport": {
+          "width": 1920,
+          "height": 1080,
+          "scrollY": 1026
+        }
+      }
+    },
+    {
+      "type": "journey",
+      "viewport": "wide-1920x1080",
+      "step": 2,
+      "file": "wide-1920x1080-step-02.png",
+      "activeText": "02Korte challengesLeerElke opdracht gebruikt echte DGSkills-schermen, zodat leerlingen leren door te doen in plaats van alleen te lezen.RoutecoachElke missie geeft directe feedback, dus leerlingen blijven bezig.",
+      "headingVisible": true,
+      "cardVisible": true,
+      "tipInsideCard": true,
+      "metrics": {
+        "activeText": "02Korte challengesLeerElke opdracht gebruikt echte DGSkills-schermen, zodat leerlingen leren door te doen in plaats van alleen te lezen.RoutecoachElke missie geeft directe feedback, dus leerlingen blijven bezig.",
+        "heading": {
+          "top": 129.375,
+          "bottom": 236.5625,
+          "left": 448,
+          "right": 878
+        },
+        "card": {
+          "top": 501.57513427734375,
+          "bottom": 811.5796508789062,
+          "left": 447.9983825683594,
+          "right": 878.0015869140625
+        },
+        "tip": {
+          "top": 687.5753173828125,
+          "bottom": 775.5787353515625,
+          "left": 536.0003051757812,
+          "right": 862.001220703125
+        },
+        "headerBottom": 81,
+        "viewport": {
+          "width": 1920,
+          "height": 1080,
+          "scrollY": 2160
+        }
+      }
+    },
+    {
+      "type": "journey",
+      "viewport": "wide-1920x1080",
+      "step": 3,
+      "file": "wide-1920x1080-step-03.png",
+      "activeText": "03ProjectmodusMaakBouw een platformer, ontwerp een robotroute, laat AI je tekening raden en remix challenges tot iets eigens.RoutecoachHier wordt het concreet: games, robots, prompts, projecten.",
+      "headingVisible": true,
+      "cardVisible": true,
+      "tipInsideCard": true,
+      "metrics": {
+        "activeText": "03ProjectmodusMaakBouw een platformer, ontwerp een robotroute, laat AI je tekening raden en remix challenges tot iets eigens.RoutecoachHier wordt het concreet: games, robots, prompts, projecten.",
+        "heading": {
+          "top": 129.375,
+          "bottom": 236.5625,
+          "left": 448,
+          "right": 878
+        },
+        "card": {
+          "top": 501.9678039550781,
+          "bottom": 811.7758178710938,
+          "left": 448.1621398925781,
+          "right": 877.837890625
+        },
+        "tip": {
+          "top": 687.8036499023438,
+          "bottom": 775.7904052734375,
+          "left": 536.1205444335938,
+          "right": 861.844970703125
+        },
+        "headerBottom": 81,
+        "viewport": {
+          "width": 1920,
+          "height": 1080,
+          "scrollY": 3294
+        }
+      }
+    },
+    {
+      "type": "journey",
+      "viewport": "wide-1920x1080",
+      "step": 4,
+      "file": "wide-1920x1080-step-04.png",
+      "activeText": "04Trofeeën en XPBewijsVoortgang wordt zichtbaar met levels, trofeeën en XP, zonder dat het voelt als een saai leerlingvolgsysteem.RoutecoachAlles eindigt in zichtbaar portfolio- of voortgangsbewijs.",
+      "headingVisible": true,
+      "cardVisible": true,
+      "tipInsideCard": true,
+      "metrics": {
+        "activeText": "04Trofeeën en XPBewijsVoortgang wordt zichtbaar met levels, trofeeën en XP, zonder dat het voelt als een saai leerlingvolgsysteem.RoutecoachAlles eindigt in zichtbaar portfolio- of voortgangsbewijs.",
+        "heading": {
+          "top": 129.375,
+          "bottom": 236.5625,
+          "left": 448,
+          "right": 878
+        },
+        "card": {
+          "top": 503.7180480957031,
+          "bottom": 812.68994140625,
+          "left": 448.86627197265625,
+          "right": 877.1337280273438
+        },
+        "tip": {
+          "top": 688.84228515625,
+          "bottom": 776.7686157226562,
+          "left": 536.642822265625,
+          "right": 861.1719970703125
+        },
+        "headerBottom": 81,
+        "viewport": {
+          "width": 1920,
+          "height": 1080,
+          "scrollY": 4428
+        }
+      }
+    },
+    {
+      "type": "journey",
+      "viewport": "wide-1920x1080",
+      "step": 5,
+      "file": "wide-1920x1080-step-05.png",
+      "activeText": "05Portfolio verhaalDeelAan het einde staat er geen losse score, maar een portfolio waarmee leerlingen laten zien wat ze kunnen.RoutecoachBespreek het portfolio en maak groei zichtbaar voor leerling en docent.",
+      "headingVisible": true,
+      "cardVisible": true,
+      "tipInsideCard": true,
+      "metrics": {
+        "activeText": "05Portfolio verhaalDeelAan het einde staat er geen losse score, maar een portfolio waarmee leerlingen laten zien wat ze kunnen.RoutecoachBespreek het portfolio en maak groei zichtbaar voor leerling en docent.",
+        "heading": {
+          "top": 129.375,
+          "bottom": 236.5625,
+          "left": 448,
+          "right": 878
+        },
+        "card": {
+          "top": 501.5625,
+          "bottom": 811.5625,
+          "left": 448,
+          "right": 878
+        },
+        "tip": {
+          "top": 687.5625,
+          "bottom": 794.0625,
+          "left": 536,
+          "right": 862
+        },
+        "headerBottom": 81,
+        "viewport": {
+          "width": 1920,
+          "height": 1080,
+          "scrollY": 5562
+        }
+      }
+    }
+  ],
+  "failures": []
+}

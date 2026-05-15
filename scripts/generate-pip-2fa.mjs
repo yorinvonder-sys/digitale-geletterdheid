@@ -1,6 +1,6 @@
 /**
- * Generate a new Pip 2FA image using Gemini image generation.
- * Sends reference Pip images to maintain style consistency.
+ * Generate a new DGSkills beaver 2FA image using Gemini image generation.
+ * Sends reference beaver images to maintain style consistency.
  */
 import { readFileSync, writeFileSync } from 'fs';
 import { join, dirname } from 'path';
@@ -22,9 +22,9 @@ function loadImage(relativePath) {
 }
 
 const references = [
-  { path: 'public/mascot/pip-waving.png', label: 'Pip waving (main design)' },
-  { path: 'public/mascot/pip-checkmark.png', label: 'Pip with checkmark' },
-  { path: 'public/mascot/pip-logo.png', label: 'Pip logo (side view)' },
+  { path: 'public/brand-redesign/otter/dgskills-beaver-phone-logo-transparent.png', label: 'DGSkills beaver with phone logo' },
+  { path: 'public/brand-redesign/otter/dgskills-beaver-phone-favicon-512.png', label: 'DGSkills beaver favicon' },
+  { path: 'public/assets/storytelling/beaver-storyteller.webp', label: 'DGSkills beaver storyteller illustration' },
 ];
 
 const imageParts = references.map(ref => ({
@@ -44,24 +44,23 @@ const referenceParts = references.flatMap((ref, i) => [
   { inline_data: { mime_type: 'image/png', data: loadImage(ref.path) } },
 ]);
 
-const prompt = `You are a professional illustrator. I need you to generate a NEW illustration of this bird character "Pip" (a European robin) in a specific pose.
+const prompt = `You are a professional illustrator. I need you to generate a NEW illustration of this DGSkills beaver mascot in a specific pose.
 
 CRITICAL STYLE REQUIREMENTS — match these EXACTLY from the reference images:
 - Flat 2D line-art style with clean BLACK OUTLINES
-- White body with a warm brown/orange breast patch
-- Digital pixel sparkles/particles emanating from the tail feathers
+- Warm brown beaver fur with a teal hoodie and coral accent
+- Digital pixel sparkles/particles emanating from the flat tail or phone edge
 - Simple round black eye with a small white highlight
-- Small orange/brown beak
-- Thin stick-like legs
+- Friendly buck teeth, rounded ears, and a flat beaver tail
 - Clean, minimalist, graphic illustration style
 - NO 3D shading, NO chibi/kawaii style, NO soft gradients
 - The style is closer to a clean vector illustration with hand-drawn charm
 
 POSE FOR THIS IMAGE:
-- Pip is holding a smartphone in one wing, showing a 2FA/authenticator app on the screen
+- The beaver is holding a smartphone in one paw, showing a 2FA/authenticator app on the screen
 - The phone screen shows a 6-digit code or a shield icon
-- Pip looks confident and helpful, slightly turned toward the viewer
-- The other wing could be giving a thumbs-up or pointing at the phone
+- The beaver looks confident and helpful, slightly turned toward the viewer
+- The other paw could be giving a thumbs-up or pointing at the phone
 - Standing on both feet
 
 COMPOSITION:
@@ -121,7 +120,7 @@ async function generate() {
     if (imgData) {
       const mime = imgData.mime_type || imgData.mimeType || 'image/png';
       const ext = mime.includes('png') ? 'png' : 'webp';
-      const outPath = join(ROOT, `public/mascot/pip-2fa-new-${attempt}.${ext}`);
+      const outPath = join(ROOT, `public/brand-redesign/otter/dgskills-beaver-phone-2fa-new-${attempt}.${ext}`);
       writeFileSync(outPath, Buffer.from(imgData.data, 'base64'));
       console.log(`Image saved to: ${outPath}`);
       imageFound = true;

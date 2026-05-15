@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Generate hero video via Veo 3 — IMAGE-TO-VIDEO approach
- * Uses a real screenshot as first frame, Pip animated over it.
+ * Uses a real screenshot as first frame, with the DGSkills beaver animated over it.
  *
  * Usage: node scripts/generate-hero-image-to-video.mjs
  */
@@ -29,21 +29,21 @@ function loadImage(relativePath) {
     return readFileSync(fullPath).toString('base64');
 }
 
-const VIDEO_PROMPT = `Animate this screenshot of a Dutch educational platform. A small European robin bird (Pip) with a matte terracotta-orange breast, white belly, and charcoal-gray wings flies INTO this exact screen from the left side.
+const VIDEO_PROMPT = `Animate this screenshot of a Dutch educational platform. The friendly DGSkills beaver mascot with warm brown fur, a teal hoodie, coral accents, expressive black eyes, and a smartphone moves INTO this exact screen from the left side.
 
-Pip is a 2D cartoon bird with clean black outlines, large expressive black eyes, and a small orange beak. Its tail feathers dissolve into tiny square digital pixels. Style: Ghibli companion character — confident, curious, NOT babyish.
+The beaver is a 2D cartoon mascot with clean ink outlines, rounded ears, buck teeth, and a flat tail. Small coral and teal square pixels dissolve from the tail and phone edge. Style: Ghibli companion character — confident, curious, NOT babyish.
 
 ANIMATION:
 - The screenshot/UI stays exactly as shown — it is the background. Do NOT alter the UI.
-- Pip flies in from the left (0-1s), swoops across the mission cards, briefly hovers over one card as if inspecting it (1-3s).
-- Pip then flies to the right side, circles around the progress/XP area (3-5s).
-- Pip flies upward and does a playful loop (5-7s), then turns to face the camera with a confident look before darting off-screen to the right (7-8s), leaving a small trail of terracotta pixel-particles.
+- The beaver moves in from the left (0-1s), swoops across the mission cards, briefly hovers over one card as if inspecting it (1-3s).
+- The beaver then moves to the right side, circles around the progress/XP area (3-5s).
+- The beaver moves upward and does a playful loop (5-7s), then turns to face the camera with a confident look before darting off-screen to the right (7-8s), leaving a small trail of coral and teal pixel-particles.
 
 CRITICAL RULES:
 - The UI/screenshot background must remain STATIC and UNCHANGED — this is a real app screenshot, not generated art.
-- Only Pip moves. The UI is the stage.
+- Only the beaver moves. The UI is the stage.
 - Warm, natural lighting. No dark backgrounds.
-- Pip should feel alive: wing flaps, head turns, personality in movement.
+- The beaver should feel alive: head turns, confident gestures, personality in movement.
 - No text overlays, no other characters.`;
 
 async function uploadFile(apiKey, filePath, mimeType) {

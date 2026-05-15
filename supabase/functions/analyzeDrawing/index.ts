@@ -25,6 +25,8 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { getAccessToken, getVertexUrl } from "../_shared/vertexAuth.ts";
 import { buildCorsHeaders, rejectDisallowedBrowserRequest } from "../_shared/cors.ts";
 import { checkDurableRateLimit, rateLimitResponse, rateLimitHeaders } from "../_shared/rateLimiter.ts";
+import { ensureAiInteractionConsent } from "../_shared/consent.ts";
+import { getUserSchoolId, logAiUsageEvent, resolveAiRequestId } from "../_shared/aiUsageLogger.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
@@ -34,6 +36,7 @@ const MAX_BASE64_LENGTH = 7_000_000;
 
 /** Rate limit: 10 requests per minute per authenticated user. */
 const RATE_LIMIT = { maxRequests: 10, windowMs: 60_000 };
+const MODEL = "gemini-3-flash-preview";
 
 /**
  * Base server-side prompt for drawing analysis.
@@ -120,18 +123,17 @@ Deno.serve(async (req: Request) => {
         );
     }
 
-    // 4. Rate limiting: 10 req/min per user
-    const rateKey = `analyzeDrawing:${user.id}`;
-    const rateCheck = await checkDurableRateLimit(rateKey, RATE_LIMIT, authHeader);
-    if (!rateCheck.allowed) {
-        return rateLimitResponse(rateCheck, corsHeaders);
-    }
+    const consentRejection = await ensureAiInteractionConsent(supabase, user, corsHeaders);
+    if (consentRejection) return consentRejection;
 
-    // 5. Parse and validate request body
+    const schoolId = getUserSchoolId(user);
+
+    // 4. Parse and validate request body
     let body: {
         imageBase64?: unknown;
         prompt?: unknown;       // received but intentionally ignored
         possibleLabels?: unknown;
+        clientRequestId?: unknown;
     };
 
     try {
@@ -143,11 +145,31 @@ Deno.serve(async (req: Request) => {
         );
     }
 
+    const requestId = resolveAiRequestId(body.clientRequestId);
+    const responseHeaders = { ...corsHeaders, "Content-Type": "application/json", "X-AI-Request-Id": requestId };
+
     if (!body.imageBase64 || typeof body.imageBase64 !== "string") {
         return new Response(
             JSON.stringify({ error: "Ongeldige invoer." }),
-            { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+            { status: 400, headers: responseHeaders },
         );
+    }
+
+    // 5. Rate limiting: 10 req/min per user
+    const rateKey = `analyzeDrawing:${user.id}`;
+    const rateCheck = await checkDurableRateLimit(rateKey, RATE_LIMIT, authHeader);
+    if (!rateCheck.allowed) {
+        logAiUsageEvent({
+            requestId,
+            endpoint: "analyzeDrawing",
+            model: MODEL,
+            status: "rate_limited",
+            userId: user.id,
+            schoolId,
+            imageCount: 1,
+            metadata: { limit: rateCheck.limit, retry_after_ms: rateCheck.retryAfterMs },
+        }).catch((err) => console.error("[analyzeDrawing] Usage log error:", err));
+        return rateLimitResponse(rateCheck, { ...corsHeaders, "X-AI-Request-Id": requestId });
     }
 
     // Strip data URL prefix if present (e.g. "data:image/png;base64,...")
@@ -159,7 +181,7 @@ Deno.serve(async (req: Request) => {
         if (commaIndex === -1) {
             return new Response(
                 JSON.stringify({ error: "Ongeldige invoer." }),
-                { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+                { status: 400, headers: responseHeaders },
             );
         }
         // Extract mime type from "data:image/png;base64"
@@ -172,7 +194,7 @@ Deno.serve(async (req: Request) => {
     if (imageBase64.length > MAX_BASE64_LENGTH) {
         return new Response(
             JSON.stringify({ error: "Ongeldige invoer." }),
-            { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+            { status: 400, headers: responseHeaders },
         );
     }
 
@@ -194,15 +216,26 @@ Deno.serve(async (req: Request) => {
     }
 
     // 7. Call Vertex AI (europe-west4) with vision payload
-    const vertexUrl = getVertexUrl("gemini-3-flash-preview");
+    const vertexUrl = getVertexUrl(MODEL);
     let accessToken: string;
     try {
         accessToken = await getAccessToken();
     } catch (err) {
         console.error("[analyzeDrawing] Vertex auth error:", err);
+        logAiUsageEvent({
+            requestId,
+            endpoint: "analyzeDrawing",
+            model: MODEL,
+            status: "error",
+            userId: user.id,
+            schoolId,
+            inputChars: serverPrompt.length,
+            imageCount: 1,
+            metadata: { error_stage: "auth" },
+        }).catch((logErr) => console.error("[analyzeDrawing] Usage log error:", logErr));
         return new Response(
             JSON.stringify({ error: "AI-service tijdelijk niet beschikbaar." }),
-            { status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+            { status: 502, headers: responseHeaders },
         );
     }
 
@@ -242,24 +275,46 @@ Deno.serve(async (req: Request) => {
         });
     } catch (err) {
         console.error("[analyzeDrawing] Vertex fetch error:", err);
+        logAiUsageEvent({
+            requestId,
+            endpoint: "analyzeDrawing",
+            model: MODEL,
+            status: "error",
+            userId: user.id,
+            schoolId,
+            inputChars: serverPrompt.length,
+            imageCount: 1,
+            metadata: { error_stage: "fetch" },
+        }).catch((logErr) => console.error("[analyzeDrawing] Usage log error:", logErr));
         return new Response(
             JSON.stringify({ error: "AI-service tijdelijk niet beschikbaar." }),
-            { status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+            { status: 502, headers: responseHeaders },
         );
     }
 
     if (!vertexResponse.ok) {
         const status = vertexResponse.status;
+        logAiUsageEvent({
+            requestId,
+            endpoint: "analyzeDrawing",
+            model: MODEL,
+            status: status === 429 ? "rate_limited" : "error",
+            userId: user.id,
+            schoolId,
+            inputChars: serverPrompt.length,
+            imageCount: 1,
+            metadata: { http_status: status },
+        }).catch((err) => console.error("[analyzeDrawing] Usage log error:", err));
         if (status === 429) {
             return new Response(
                 JSON.stringify({ error: "Te veel verzoeken. Wacht even." }),
-                { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+                { status: 429, headers: responseHeaders },
             );
         }
         console.error("[analyzeDrawing] Vertex error:", status);
         return new Response(
             JSON.stringify({ error: "AI-service tijdelijk niet beschikbaar." }),
-            { status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+            { status: 502, headers: responseHeaders },
         );
     }
 
@@ -286,11 +341,41 @@ Deno.serve(async (req: Request) => {
         analysis = parsed;
     } catch (err) {
         console.error("[analyzeDrawing] Parse/validation error:", err, "raw:", rawText.slice(0, 200));
+        logAiUsageEvent({
+            requestId,
+            endpoint: "analyzeDrawing",
+            model: MODEL,
+            status: "error",
+            userId: user.id,
+            schoolId,
+            inputChars: serverPrompt.length,
+            outputChars: rawText.length,
+            imageCount: 1,
+            usagePayload: vertexData,
+            metadata: { error_stage: "parse", possible_label_count: Array.isArray(body.possibleLabels) ? body.possibleLabels.length : 0 },
+        }).catch((logErr) => console.error("[analyzeDrawing] Usage log error:", logErr));
         return new Response(
             JSON.stringify({ error: "Tekening kon niet worden geanalyseerd." }),
-            { status: 422, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+            { status: 422, headers: responseHeaders },
         );
     }
+
+    logAiUsageEvent({
+        requestId,
+        endpoint: "analyzeDrawing",
+        model: MODEL,
+        status: "ok",
+        userId: user.id,
+        schoolId,
+        inputChars: serverPrompt.length,
+        outputChars: rawText.length,
+        imageCount: 1,
+        usagePayload: vertexData,
+        metadata: {
+            mime_type: mimeType,
+            possible_label_count: Array.isArray(body.possibleLabels) ? body.possibleLabels.length : 0,
+        },
+    }).catch((err) => console.error("[analyzeDrawing] Usage log error:", err));
 
     // Return validated response with rate limit headers
     return new Response(
@@ -300,6 +385,7 @@ Deno.serve(async (req: Request) => {
             headers: {
                 ...corsHeaders,
                 "Content-Type": "application/json",
+                "X-AI-Request-Id": requestId,
                 ...rateLimitHeaders(rateCheck),
             },
         },

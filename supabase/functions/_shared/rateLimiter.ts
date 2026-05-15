@@ -52,18 +52,16 @@ export function checkRateLimit(userId: string, config: RateLimitConfig): RateLim
 export async function checkDurableRateLimit(
   key: string,
   config: RateLimitConfig,
-  authHeader?: string | null,
+  _authHeader?: string | null,
 ): Promise<RateLimitResult> {
   const supabaseUrl = Deno.env.get("SUPABASE_URL");
-  const supabaseAnonKey = Deno.env.get("SUPABASE_ANON_KEY");
+  const supabaseServiceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
 
-  if (!supabaseUrl || !supabaseAnonKey) {
+  if (!supabaseUrl || !supabaseServiceRoleKey) {
     return checkRateLimit(key, config);
   }
 
-  const client = createClient(supabaseUrl, supabaseAnonKey, authHeader?.startsWith("Bearer ")
-    ? { global: { headers: { Authorization: authHeader } } }
-    : undefined);
+  const client = createClient(supabaseUrl, supabaseServiceRoleKey);
 
   const { data, error } = await client
     .rpc("consume_edge_rate_limit", {
@@ -78,7 +76,7 @@ export async function checkDurableRateLimit(
     return checkRateLimit(key, config);
   }
 
-  const row = data as DurableRateLimitRow;
+  const row = data as unknown as DurableRateLimitRow;
   return {
     allowed: Boolean(row.allowed),
     remaining: Math.max(0, row.remaining ?? 0),

@@ -11,16 +11,21 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { sanitizePrompt } from "./promptSanitizer.ts";
 import { getSystemInstruction, isValidRoleId } from "./systemInstructions.ts";
 import { buildSafeHistory } from "./chatHistory.ts";
-import { checkDurableRateLimit, rateLimitResponse, RateLimitConfig, RateLimitResult } from "./rateLimiter.ts";
+import { checkDurableRateLimit, rateLimitHeaders, RateLimitConfig, RateLimitResult } from "./rateLimiter.ts";
+import { ensureAiInteractionConsent } from "./consent.ts";
+import { getUserSchoolId, logAiUsageEvent, resolveAiRequestId } from "./aiUsageLogger.ts";
 
 // ── Constants ────────────────────────────────────────────────────────────────
 
-export const MAX_REQUEST_BYTES = 500_000;
-export const MAX_MESSAGE_LENGTH = 150_000;
+export const MAX_REQUEST_BYTES = 160_000;
+export const MAX_MESSAGE_LENGTH = 4_000;
+export const MAX_GAME_CONTEXT_LENGTH = 40_000;
 export const DEFAULT_MODEL = "gemini-3-flash-preview";
 export const CODE_MODEL = "gemini-2.5-pro";
 export const DEFAULT_TEMPERATURE = 0.7;
 export const CODE_TEMPERATURE = 0.2;
+export const DEFAULT_MAX_OUTPUT_TOKENS = 768;
+export const CODE_MAX_OUTPUT_TOKENS = 4096;
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
@@ -30,6 +35,7 @@ export interface ChatRequestBody {
     history?: unknown[];
     gameContext?: string;
     missionId?: string;
+    clientRequestId?: string;
 }
 
 export interface SafetySettingEntry {
@@ -56,6 +62,8 @@ export interface VertexPayload {
 export interface ValidatedRequest {
     body: ChatRequestBody;
     userId: string;
+    schoolId: string | null;
+    requestId: string;
     systemInstruction: string;
     rateCheck: RateLimitResult;
     sanitized: string;
@@ -65,7 +73,7 @@ export interface ValidatedRequest {
 // ── Model selection ──────────────────────────────────────────────────────────
 
 export function selectModel(roleId: string, hasGameContext: boolean): string {
-    if (roleId === "game-programmeur" || hasGameContext) {
+    if (roleId === "game-programmeur" && hasGameContext) {
         return CODE_MODEL;
     }
     return DEFAULT_MODEL;
@@ -74,9 +82,9 @@ export function selectModel(roleId: string, hasGameContext: boolean): string {
 // ── Generation config ────────────────────────────────────────────────────────
 
 export function buildGenerationConfig(roleId: string, hasGameContext: boolean): { maxOutputTokens: number; temperature: number } {
-    const isCodeMode = roleId === "game-programmeur" || hasGameContext;
+    const isCodeMode = roleId === "game-programmeur" && hasGameContext;
     return {
-        maxOutputTokens: isCodeMode ? 50_000 : 1024,
+        maxOutputTokens: isCodeMode ? CODE_MAX_OUTPUT_TOKENS : DEFAULT_MAX_OUTPUT_TOKENS,
         temperature: isCodeMode ? CODE_TEMPERATURE : DEFAULT_TEMPERATURE,
     };
 }
@@ -131,20 +139,14 @@ export async function validateAndParseRequest(
         );
     }
 
-    // 2. Rate limit: 15 requests per minute per user
-    const rateLimitConfig: RateLimitConfig = { maxRequests: 15, windowMs: 60_000 };
-    const rateCheck = await checkDurableRateLimit(
-        `${rateLimitKey}:${user.id}`,
-        rateLimitConfig,
-        authHeader,
-    );
-    if (!rateCheck.allowed) {
-        return rateLimitResponse(rateCheck, corsHeaders);
-    }
+    const consentRejection = await ensureAiInteractionConsent(supabase, user, corsHeaders);
+    if (consentRejection) return consentRejection;
 
-    // 3. Parse request body
+    const schoolId = getUserSchoolId(user);
+
+    // 2. Parse request body
     // SECURITY: systemInstruction is server-side only — never trust client input
-    let rawBody: { message?: string; roleId?: string; history?: unknown[]; gameContext?: string; missionId?: string };
+    let rawBody: { message?: string; roleId?: string; history?: unknown[]; gameContext?: string; missionId?: string; clientRequestId?: unknown };
     try {
         rawBody = await req.json();
     } catch {
@@ -154,10 +156,14 @@ export async function validateAndParseRequest(
         );
     }
 
+    const requestId = resolveAiRequestId(rawBody.clientRequestId);
+    rawBody.clientRequestId = requestId;
+    const requestHeaders = { ...corsHeaders, "Content-Type": "application/json", "X-AI-Request-Id": requestId };
+
     if (!rawBody.message || typeof rawBody.message !== "string" || rawBody.message.length > MAX_MESSAGE_LENGTH) {
         return new Response(
             JSON.stringify({ error: "Bericht ontbreekt of is te lang." }),
-            { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+            { status: 400, headers: requestHeaders },
         );
     }
 
@@ -165,7 +171,7 @@ export async function validateAndParseRequest(
     if (!rawBody.roleId || typeof rawBody.roleId !== "string" || !isValidRoleId(rawBody.roleId)) {
         return new Response(
             JSON.stringify({ error: "Ongeldige of ontbrekende roleId." }),
-            { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+            { status: 400, headers: requestHeaders },
         );
     }
     const systemInstruction = getSystemInstruction(rawBody.roleId)!;
@@ -177,40 +183,115 @@ export async function validateAndParseRequest(
         }
     }
 
+    if (rawBody.gameContext !== undefined) {
+        if (typeof rawBody.gameContext !== "string" || rawBody.roleId !== "game-programmeur") {
+            rawBody.gameContext = undefined;
+        } else if (rawBody.gameContext.length > MAX_GAME_CONTEXT_LENGTH) {
+            return new Response(
+                JSON.stringify({ error: "Game-context is te groot." }),
+                { status: 413, headers: requestHeaders },
+            );
+        }
+    }
+
+    const hasGameContext = !!(rawBody.gameContext && typeof rawBody.gameContext === "string");
+    const selectedModel = selectModel(rawBody.roleId, hasGameContext);
+
+    // 3. Rate limit: 15 requests per minute per user
+    const rateLimitConfig: RateLimitConfig = { maxRequests: 15, windowMs: 60_000 };
+    const rateCheck = await checkDurableRateLimit(
+        `${rateLimitKey}:${user.id}`,
+        rateLimitConfig,
+        authHeader,
+    );
+    if (!rateCheck.allowed) {
+        logAiUsageEvent({
+            requestId,
+            endpoint: rateLimitKey,
+            model: selectedModel,
+            status: "rate_limited",
+            userId: user.id,
+            schoolId,
+            metadata: {
+                limit: rateCheck.limit,
+                retry_after_ms: rateCheck.retryAfterMs,
+            },
+        }).catch((err) => console.error("[chatCore] Usage log error:", err));
+
+        return new Response(
+            JSON.stringify({
+                error: "rate_limit",
+                reason: "Te veel verzoeken. Wacht even.",
+                retryAfterMs: rateCheck.retryAfterMs,
+            }),
+            {
+                status: 429,
+                headers: {
+                    ...requestHeaders,
+                    ...rateLimitHeaders(rateCheck),
+                },
+            },
+        );
+    }
+
     // 4. Server-side prompt injection check (defense-in-depth)
     const validation = sanitizePrompt(rawBody.message);
     if (validation.wasBlocked) {
         console.warn(`[INJECTION_BLOCKED] user=${user.id} label=${validation.detectionLabel}`);
+        logAiUsageEvent({
+            requestId,
+            endpoint: rateLimitKey,
+            model: selectedModel,
+            status: "blocked",
+            userId: user.id,
+            schoolId,
+            inputChars: rawBody.message.length,
+            metadata: { reason: "input_sanitizer", detection_label: validation.detectionLabel ?? "unknown" },
+        }).catch((err) => console.error("[chatCore] Usage log error:", err));
+
         return new Response(
             JSON.stringify({
                 error: "blocked",
                 reason: "Je bericht bevat een patroon dat niet is toegestaan.",
             }),
-            { status: 422, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+            { status: 422, headers: requestHeaders },
         );
     }
 
     const safeHistory = buildSafeHistory(rawBody.history, {
-        maxMessages: 20,
+        maxMessages: 12,
         maxPartsPerMessage: 2,
-        maxPartChars: 50_000,
-        maxTotalChars: 120_000,
+        maxPartChars: 2_000,
+        maxTotalChars: 12_000,
     });
 
     if (safeHistory.blocked) {
         console.warn(`[HISTORY_BLOCKED] user=${user.id} label=${safeHistory.detectionLabel}`);
+        logAiUsageEvent({
+            requestId,
+            endpoint: rateLimitKey,
+            model: selectedModel,
+            status: "blocked",
+            userId: user.id,
+            schoolId,
+            inputChars: validation.sanitized.length,
+            metadata: { reason: "history_sanitizer", detection_label: safeHistory.detectionLabel ?? "unknown" },
+        }).catch((err) => console.error("[chatCore] Usage log error:", err));
+
         return new Response(
             JSON.stringify({
                 error: "blocked",
                 reason: "De gesprekshistorie bevat een patroon dat niet is toegestaan.",
             }),
-            { status: 422, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+            { status: 422, headers: requestHeaders },
         );
     }
 
     return {
         body: rawBody as ChatRequestBody,
         userId: user.id,
+        schoolId,
+        requestId,
         systemInstruction,
         rateCheck,
         sanitized: validation.sanitized,

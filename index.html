@@ -7,7 +7,7 @@
   <script defer src="/csp-bootstrap.js?v=2"></script>
   <!-- PWA Meta Tags - mobile-web-app-capable is the standard, apple- prefix is legacy -->
   <meta name="mobile-web-app-capable" content="yes">
-  <meta name="theme-color" content="#D97757">
+  <meta name="theme-color" content="#D97848">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="DGSkills">
@@ -63,13 +63,13 @@
   <div id="root">
     <!-- Inline loading skeleton: painted immediately, replaced by React on first render.
          Ensures FCP fires in headless Chrome before JS modules execute. -->
-    <div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#FAF9F0" aria-hidden="true">
-      <div style="width:3rem;height:3rem;border:2px solid #c7d2fe;border-top-color:#4f46e5;border-radius:50%;animation:spin 1s linear infinite"></div>
-      <p style="margin-top:1rem;font-family:system-ui,-apple-system,sans-serif;color:#64748b;font-size:0.875rem">Laden...</p>
+    <div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#FCF6EA" aria-hidden="true">
+      <div style="width:3rem;height:3rem;border:2px solid #E7D8BD;border-top-color:#0B453F;border-radius:50%;animation:spin 1s linear infinite"></div>
+      <p style="margin-top:1rem;font-family:system-ui,-apple-system,sans-serif;color:#445865;font-size:0.875rem">Laden...</p>
     </div>
     <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
   </div>
-  <script type="module" src="/index.tsx"></script>
+  <script type="module" src="/src/main.tsx"></script>
 
   <!-- Static JSON-LD structured data — visible to all crawlers without JS execution -->
   <script type="application/ld+json">
@@ -172,7 +172,7 @@
 
   <!-- Noscript fallback for crawlers and users without JavaScript -->
   <noscript>
-    <div style="max-width:800px;margin:40px auto;padding:20px;font-family:system-ui,sans-serif;color:#1A1A19">
+    <div style="max-width:800px;margin:40px auto;padding:20px;font-family:system-ui,sans-serif;color:#08283B">
       <h1>DGSkills — Digitale Geletterdheid voor het Onderwijs</h1>
       <p>DGSkills is het interactieve platform voor digitale geletterdheid in het voortgezet onderwijs. Met AI-missies, gamification en de SLO Kerndoelen 2025 bieden we een complete lesmethode voor MAVO, HAVO en VWO.</p>
       <h2>Waarom DGSkills?</h2>

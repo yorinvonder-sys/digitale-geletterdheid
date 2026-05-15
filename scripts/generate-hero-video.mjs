@@ -32,36 +32,36 @@ function loadImage(relativePath) {
 }
 
 // ─── The prompt ───────────────────────────────────────────────────────
-const VIDEO_PROMPT = `Create a cinematic 8-second teaser animation. The star is Pip — a small European robin bird (Erithacus rubecula) with a matte terracotta-orange breast (#D97757), white belly, charcoal-gray wings and back, large round expressive black eyes, and a small orange beak. Pip's tail feathers subtly dissolve into tiny square digital pixels in terracotta and charcoal. Clean black outlines, friendly but NOT babyish — think Ghibli companion character, confident and curious.
+const VIDEO_PROMPT = `Create a cinematic 8-second teaser animation. The star is the DGSkills beaver mascot — a friendly beaver with warm brown fur, rounded ears, a flat tail, expressive black eyes, a teal hoodie (#0B453F), coral accents (#D97848), and a smartphone. Small square digital pixels subtly dissolve from the tail and phone edge in coral and teal. Clean ink outlines (#08283B), friendly but NOT babyish — confident and curious.
 
 THE CONCEPT — "Platform Teaser":
-Pip flies through real-looking UI screens of a modern edtech platform, giving the viewer a rapid, exciting preview of what's inside. The screens look like actual web app interfaces (clean, modern, rounded cards with shadows) floating in a warm, softly lit 3D space with depth-of-field blur.
+The beaver moves through real-looking UI screens of a modern edtech platform, giving the viewer a rapid, exciting preview of what's inside. The screens look like actual web app interfaces (clean, modern, rounded cards with shadows) floating in a warm, softly lit 3D space with depth-of-field blur.
 
 SEQUENCE:
 
-BEAT 1 (0-2s): Pip swoops into frame from the left, flying fast and determined. The camera tracks Pip as it dives toward a floating screen showing a MISSION OVERVIEW — a grid of mission cards with icons, progress indicators, and category labels. Pip banks sharply around the screen, wings spread wide. The screen glows softly as Pip passes.
+BEAT 1 (0-2s): The beaver zips into frame from the left on a subtle digital hover path, fast and determined. The camera tracks the beaver as it dives toward a floating screen showing a MISSION OVERVIEW — a grid of mission cards with icons, progress indicators, and category labels. The screen glows softly as the beaver passes.
 
-BEAT 2 (2-4s): Quick cut — Pip weaves between two more floating screens: one shows an AVATAR CUSTOMIZATION panel (a character with clothing/accessory options around it), the other shows an AI CHAT INTERFACE (chat bubbles in a clean conversation UI). Pip's digital tail-pixels scatter and trail behind like a comet. The screens tilt slightly as Pip flies past, creating parallax depth.
+BEAT 2 (2-4s): Quick cut — the beaver weaves between two more floating screens: one shows an AVATAR CUSTOMIZATION panel (a character with clothing/accessory options around it), the other shows an AI CHAT INTERFACE (chat bubbles in a clean conversation UI). Digital tail-pixels scatter and trail behind like a comet. The screens tilt slightly as the beaver passes, creating parallax depth.
 
-BEAT 3 (4-6s): Pip spirals upward past a screen showing a PROGRESS DASHBOARD with XP bars, achievement badges, and a level indicator. A "+250 XP" notification pops onto the screen as Pip flies past. The camera follows Pip's ascent, revealing more screens stretching into the distance — dozens of features yet to explore.
+BEAT 3 (4-6s): The beaver spirals upward past a screen showing a PROGRESS DASHBOARD with XP bars, achievement badges, and a level indicator. A "+250 XP" notification pops onto the screen as the beaver passes. The camera follows the ascent, revealing more screens stretching into the distance — dozens of features yet to explore.
 
-BEAT 4 (6-8s): Pip slows down, turns to face the camera, and gives a confident, knowing look — one eyebrow raised, slight head tilt — as if saying "Want to see more?" The background screens blur into warm bokeh. Pip hovers in center frame for a beat, then darts off-screen downward (toward the rest of the page), leaving a trail of terracotta pixel-particles that linger and fade.
+BEAT 4 (6-8s): The beaver slows down, turns to face the camera, and gives a confident, knowing look — one eyebrow raised, slight head tilt — as if saying "Want to see more?" The background screens blur into warm bokeh. The beaver hovers in center frame for a beat, then darts off-screen downward (toward the rest of the page), leaving a trail of coral and teal pixel-particles that linger and fade.
 
 STYLE REQUIREMENTS:
-- Color palette: warm cream backgrounds (#FAF9F0), terracotta orange (#D97757) accents, soft charcoal, touches of muted purple for UI elements. NEVER dark/black backgrounds.
+- Color palette: warm cream backgrounds (#FCF6EA), paper cards (#FFFDF7), ink text (#08283B), line borders (#E7D8BD), coral (#D97848), teal (#0B453F), sage (#5F947D), and gold (#D7C95F). NEVER dark/black backgrounds.
 - UI screens: realistic modern web design — white cards, subtle shadows, rounded corners, clean typography placeholders. They should look like actual app screenshots rendered in 3D space.
 - Lighting: warm diffused light from above-right, soft volumetric glow behind screens, gentle lens flare.
 - Camera: dynamic and cinematic — tracking shots, smooth whip-pans between beats, shallow depth of field.
-- Pip's animation: fluid, athletic bird flight — NOT floaty or dreamy. Quick, purposeful movements with personality. Wing physics should feel real but stylized.
+- Beaver animation: quick, purposeful, playful movement with personality, driven by digital hover motion rather than wings.
 - Mood: exciting, fast-paced, confident, aspirational. This is a TEASER — it should create urgency to see more.
-- Absolutely NO other characters — only Pip. No humans, no 3D avatars, no cartoon children.
+- Absolutely NO other characters — only the beaver mascot. No humans, no 3D avatars, no cartoon children.
 - No text overlays or titles.
-- The overall feeling should be: a confident robin guiding you through a platform that's clearly impressive and worth exploring.`;
+- The overall feeling should be: a confident beaver guiding you through a platform that's clearly impressive and worth exploring.`;
 
 // ─── Generate video ───────────────────────────────────────────────────
 async function generateVideo(apiKey) {
     console.log('📸 Loading reference images...');
-    const pipImage = loadImage('public/mascot/pip-excited.png');
+    const beaverImage = loadImage('public/assets/storytelling/beaver-storyteller.webp');
     const avatarImage = loadImage('public/screenshots/avatar-customization.png');
     const missionImage = loadImage('public/screenshots/student-mission-overview.png');
 
@@ -136,7 +136,7 @@ async function pollOperation(apiKey, operationName) {
 
 // ─── Download and save video ──────────────────────────────────────────
 async function saveVideo(apiKey, response) {
-    const outputPath = resolve(ROOT, 'public/videos/hero-pip-adventure.mp4');
+    const outputPath = resolve(ROOT, 'public/videos/hero-beaver-adventure.mp4');
 
     // Navigate the response structure
     const videoResponse = response.generateVideoResponse || response;

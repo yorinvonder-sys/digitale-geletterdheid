@@ -15,7 +15,7 @@
 CREATE TABLE IF NOT EXISTS public.ai_oversight_events (
     id          uuid        PRIMARY KEY DEFAULT gen_random_uuid(),
     created_at  timestamptz NOT NULL DEFAULT now(),
-    school_id   uuid,
+    school_id   text,
     teacher_uid uuid        NOT NULL,
     student_uid uuid,
     event_type  text        NOT NULL CHECK (event_type IN (

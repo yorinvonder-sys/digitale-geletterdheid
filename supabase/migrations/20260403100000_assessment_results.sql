@@ -12,7 +12,9 @@ CREATE TABLE IF NOT EXISTS public.assessment_results (
   user_id uuid NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   school_year smallint NOT NULL,
   assessment_type text NOT NULL CHECK (assessment_type IN ('nulmeting', 'eindmeting')),
-  school_id uuid REFERENCES public.schools(id),
+  -- The app uses text school_id values from public.users/school_configs.
+  -- Keep this text-scoped so local and production migrations match app writes.
+  school_id text,
   overall_score smallint NOT NULL CHECK (overall_score BETWEEN 0 AND 100),
   niveau text NOT NULL CHECK (niveau IN ('starter', 'basis', 'gevorderd')),
   total_time_seconds integer NOT NULL,

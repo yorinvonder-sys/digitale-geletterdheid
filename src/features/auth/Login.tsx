@@ -1,0 +1,616 @@
+import React, { useState, useEffect, useCallback } from 'react';
+import { validateEmail } from '@/utils/emailValidator';
+
+/** Inline SVGs for critical path — avoids loading lucide (65kb) for LCP */
+const IconMail = (props: { size?: number; className?: string }) => (
+    <svg width={props.size ?? 18} height={props.size ?? 18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={props.className} aria-hidden="true">
+        <rect x="2" y="4" width="20" height="16" rx="2" /><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+    </svg>
+);
+const IconLock = (props: { size?: number; className?: string }) => (
+    <svg width={props.size ?? 18} height={props.size ?? 18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={props.className} aria-hidden="true">
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" />
+    </svg>
+);
+const IconUser = (props: { size?: number; className?: string }) => (
+    <svg width={props.size ?? 18} height={props.size ?? 18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={props.className} aria-hidden="true">
+        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" />
+    </svg>
+);
+const IconArrowRight = (props: { size?: number; className?: string }) => (
+    <svg width={props.size ?? 18} height={props.size ?? 18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={props.className} aria-hidden="true">
+        <path d="M5 12h14M12 5l7 7-7 7" />
+    </svg>
+);
+const IconEye = (props: { size?: number; className?: string }) => (
+    <svg width={props.size ?? 18} height={props.size ?? 18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={props.className} aria-hidden="true">
+        <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" /><circle cx="12" cy="12" r="3" />
+    </svg>
+);
+const IconEyeOff = (props: { size?: number; className?: string }) => (
+    <svg width={props.size ?? 18} height={props.size ?? 18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={props.className} aria-hidden="true">
+        <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24" /><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68" /><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61" /><line x1="2" y1="2" x2="22" y2="22" />
+    </svg>
+);
+const IconGraduationCap = (props: { size?: number; className?: string }) => (
+    <svg width={props.size ?? 18} height={props.size ?? 18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={props.className} aria-hidden="true">
+        <path d="M22 10v6M2 10l10-5 10 5-10 5z" /><path d="M6 12v5c3 3 9 3 12 0v-5" />
+    </svg>
+);
+const IconMicrosoft = (props: { size?: number; className?: string }) => (
+    <svg width={props.size ?? 18} height={props.size ?? 18} viewBox="0 0 24 24" fill="none" className={props.className} aria-hidden="true">
+        <rect x="2" y="2" width="9" height="9" fill="#F25022" />
+        <rect x="13" y="2" width="9" height="9" fill="#7FBA00" />
+        <rect x="2" y="13" width="9" height="9" fill="#00A4EF" />
+        <rect x="13" y="13" width="9" height="9" fill="#FFB900" />
+    </svg>
+);
+
+interface LoginProps {
+    onLoginSuccess: (user: any) => void;
+}
+
+type AuthMode = 'login' | 'register' | 'forgot-password';
+
+// Rate limiting constants
+const LOCK_THRESHOLD_1 = 10; // First lock after 10 attempts
+const LOCK_DURATION_1 = 30; // 30 seconds
+const LOCK_THRESHOLD_2 = 15; // Second lock after 15 attempts
+const LOCK_DURATION_2 = 300; // 5 minutes (300 seconds)
+
+export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
+    const [mode, setMode] = useState<AuthMode>('login');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [displayName, setDisplayName] = useState('');
+    const [studentClass, setStudentClass] = useState('Kies je klas...');
+    const [error, setError] = useState<string | null>(null);
+    const [successMessage, setSuccessMessage] = useState<string | null>(null);
+    const [loading, setLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [emailHint, setEmailHint] = useState<string | null>(null);
+    const [emailSuggestion, setEmailSuggestion] = useState<string | null>(null);
+
+    // Validate email on blur (when user leaves the field)
+    const handleEmailBlur = useCallback(() => {
+        if (!email.trim()) {
+            setEmailHint(null);
+            setEmailSuggestion(null);
+            return;
+        }
+        const result = validateEmail(email);
+        if (!result.valid) {
+            setEmailHint(result.error ?? null);
+            setEmailSuggestion(result.suggestion ?? null);
+        } else {
+            setEmailHint(null);
+            setEmailSuggestion(null);
+        }
+    }, [email]);
+
+    // Accept email suggestion
+    const acceptEmailSuggestion = useCallback(() => {
+        if (!emailSuggestion) return;
+        // Extract email from suggestion text like "Bedoelde je user@gmail.com?"
+        const match = emailSuggestion.match(/(\S+@\S+)\?/);
+        if (match) {
+            setEmail(match[1]);
+            setEmailHint(null);
+            setEmailSuggestion(null);
+        }
+    }, [emailSuggestion]);
+
+    // Rate limiting state
+    const [failedAttempts, setFailedAttempts] = useState(() => {
+        const stored = localStorage.getItem('loginFailedAttempts');
+        return stored ? parseInt(stored, 10) : 0;
+    });
+    const [lockUntil, setLockUntil] = useState(() => {
+        const stored = localStorage.getItem('loginLockUntil');
+        return stored ? parseInt(stored, 10) : 0;
+    });
+    const [lockCountdown, setLockCountdown] = useState(0);
+
+    // Initial check for mode in URL and handle redirect result
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        const urlMode = params.get('mode');
+        if (urlMode === 'register') {
+            setMode('register');
+        }
+
+        const hasOAuthParams = (searchParams: URLSearchParams) =>
+            searchParams.has('code')
+            || searchParams.has('access_token')
+            || searchParams.has('refresh_token')
+            || searchParams.has('error')
+            || searchParams.has('error_description');
+
+        const hash = window.location.hash.startsWith('#')
+            ? window.location.hash.slice(1)
+            : window.location.hash;
+        const hashParams = new URLSearchParams(hash);
+
+        if (!hasOAuthParams(params) && !hasOAuthParams(hashParams)) {
+            return;
+        }
+
+        // Handle redirect result if returning from Microsoft SSO
+        const processRedirect = async () => {
+            try {
+                const { handleRedirectResult } = await import('@/services/authService');
+                const user = await handleRedirectResult();
+                if (user) {
+                    onLoginSuccess(user);
+                }
+            } catch (err: any) {
+                // AbortError is een race condition met onAuthStateChange, geen echte fout.
+                if (err?.name === 'AbortError') return;
+                console.error("Redirect auth error:", err);
+                setError(err.message || 'Er is een fout opgetreden bij het inloggen met Microsoft.');
+            }
+        };
+        processRedirect();
+    }, [onLoginSuccess]);
+
+    // Check and update lock countdown
+    useEffect(() => {
+        const checkLock = () => {
+            const now = Date.now();
+            if (lockUntil > now) {
+                setLockCountdown(Math.ceil((lockUntil - now) / 1000));
+            } else {
+                setLockCountdown(0);
+            }
+        };
+
+        checkLock();
+        const interval = setInterval(checkLock, 1000);
+        return () => clearInterval(interval);
+    }, [lockUntil]);
+
+    // Generic class options for VO schools
+    const CLASS_OPTIONS = [
+        'Kies je klas...',
+        'Klas 1',
+        'Klas 2',
+        'Klas 3',
+        'Klas 4',
+        'Klas 5',
+        'Klas 6',
+        'Anders'
+    ];
+
+    const handleEmailAuth = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        // Check if currently locked
+        if (lockCountdown > 0) {
+            const minutes = Math.floor(lockCountdown / 60);
+            const seconds = lockCountdown % 60;
+            setError(`Te veel pogingen. Wacht nog ${minutes > 0 ? `${minutes}m ` : ''}${seconds}s.`);
+            return;
+        }
+
+        setError(null);
+        setSuccessMessage(null);
+        setLoading(true);
+
+        try {
+            // Stale tokens worden al opgeruimd in supabase.ts bij client-init.
+            // Geen signOut() meer hier — dat veroorzaakte een race condition
+            // (SIGNED_OUT → SIGNED_IN in snelle successie) waardoor
+            // AuthenticatedApp de sessie niet op tijd oppakte.
+
+            const { registerWithEmail, signInWithEmail } = await import('@/services/authService');
+            let user;
+            if (mode === 'register') {
+                if (!displayName.trim()) throw new Error("Vul je voor- en achternaam in");
+                if (!studentClass || studentClass === 'Kies je klas...') throw new Error("Selecteer je klas uit het menu");
+                user = await registerWithEmail(email, password, displayName, studentClass);
+            } else {
+                user = await signInWithEmail(email, password);
+            }
+
+            // Success - reset attempts
+            localStorage.removeItem('loginFailedAttempts');
+            localStorage.removeItem('loginLockUntil');
+            setFailedAttempts(0);
+            setLockUntil(0);
+
+            onLoginSuccess(user);
+        } catch (err: any) {
+            console.error(err);
+
+            // Only count failed attempts for login mode (not registration)
+            if (mode === 'login') {
+                const newAttempts = failedAttempts + 1;
+                setFailedAttempts(newAttempts);
+                localStorage.setItem('loginFailedAttempts', newAttempts.toString());
+
+                // Check if we need to apply a lock
+                if (newAttempts >= LOCK_THRESHOLD_2) {
+                    // 5 minute lock
+                    const until = Date.now() + (LOCK_DURATION_2 * 1000);
+                    setLockUntil(until);
+                    localStorage.setItem('loginLockUntil', until.toString());
+                    setError(`Te veel pogingen (${newAttempts}x). Account tijdelijk geblokkeerd voor 5 minuten.`);
+                } else if (newAttempts >= LOCK_THRESHOLD_1) {
+                    // 30 second lock
+                    const until = Date.now() + (LOCK_DURATION_1 * 1000);
+                    setLockUntil(until);
+                    localStorage.setItem('loginLockUntil', until.toString());
+                    setError(`Te veel pogingen (${newAttempts}x). Wacht 30 seconden en probeer opnieuw.`);
+                } else {
+                    // Normal error message
+                    setError(err.message || 'Authenticatie mislukt. Probeer het opnieuw.');
+                }
+            } else {
+                // Registration error - show as-is
+                setError(err.message || 'Authenticatie mislukt. Probeer het opnieuw.');
+            }
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handlePasswordReset = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setError(null);
+        setSuccessMessage(null);
+        setLoading(true);
+
+        try {
+            const { resetPassword } = await import('@/services/authService');
+            await resetPassword(email);
+            setSuccessMessage("Resetlink verstuurd. Controleer je inbox.");
+            setTimeout(() => setMode('login'), 2500);
+        } catch (err: any) {
+            console.error(err);
+            setError(err.message || 'Kon wachtwoord reset mail niet versturen.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleMicrosoftAuth = async () => {
+        setError(null);
+        setSuccessMessage(null);
+        setLoading(true);
+
+        try {
+            const { signInWithMicrosoft } = await import('@/services/authService');
+            const user = await signInWithMicrosoft();
+
+            // Success - reset attempts
+            localStorage.removeItem('loginFailedAttempts');
+            localStorage.removeItem('loginLockUntil');
+            setFailedAttempts(0);
+            setLockUntil(0);
+
+            onLoginSuccess(user);
+        } catch (err: any) {
+            console.error(err);
+            setError(err.message || 'Microsoft 365 inloggen mislukt. Probeer het opnieuw.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <div className="fixed inset-0 overflow-hidden bg-[#FCF6EA] font-sans text-[#08283B]">
+            <div className="absolute inset-0 pointer-events-none">
+                <img
+                    src="/brand-redesign/otter/login-background-calm.png"
+                    alt=""
+                    className="h-full w-full object-cover opacity-90"
+                    width={1536}
+                    height={864}
+                    aria-hidden="true"
+                    decoding="async"
+                />
+                <div className="absolute inset-0 bg-[#FCF6EA]/20" />
+            </div>
+
+            <div className="absolute inset-0 overflow-y-auto overflow-x-hidden">
+                <main className="relative z-10 flex min-h-full items-center justify-center px-4 py-2 sm:px-6 lg:px-8">
+                        <div className="relative mx-auto w-full max-w-[28rem]">
+                            <div className="rounded-[1.5rem] border border-[#E7D8BD] bg-[#FFFDF7]/95 p-4 shadow-[0_20px_60px_rgba(8,40,59,0.12)]">
+
+                        <div className="mb-3 text-center">
+                            <div className="mx-auto mb-2 flex w-full max-w-[150px] justify-center">
+                                <img src="/logo-lockup.svg" alt="DGSkills.app" className="h-auto w-full object-contain" width={320} height={96} fetchPriority="high" decoding="async" />
+                            </div>
+                            <h1 className="mb-1 text-xl font-black leading-tight tracking-tight text-[#08283B]">
+                                {mode === 'register' ? 'Maak je account aan' : mode === 'forgot-password' ? 'Reset je wachtwoord' : 'Welkom terug'}
+                            </h1>
+                            <p className="text-xs font-semibold leading-5 text-[#445865]">
+                                {mode === 'register' ? 'Start met je klas, missies en portfolio.' : mode === 'forgot-password' ? 'We sturen je een resetlink per e-mail.' : 'Ga verder met je digitale skill journey.'}
+                            </p>
+                        </div>
+
+                        <div className="mb-3 flex rounded-2xl border border-[#E7D8BD] bg-[#F3E4CB]/55 p-1">
+                            <button
+                                onClick={() => { setMode('login'); setError(null); setSuccessMessage(null); }}
+                                className={`min-h-[40px] flex-1 rounded-xl py-1.5 text-[10px] font-black uppercase tracking-[0.1em] transition-all sm:text-xs ${mode === 'login' ? 'border border-[#E7D8BD] bg-[#FFFDF7] text-[#08283B] shadow-sm' : 'text-[#445865] hover:text-[#08283B]'}`}
+                            >
+                                Inloggen
+                            </button>
+                            <button
+                                onClick={() => { 
+                                    setMode('register'); 
+                                    setError(null); 
+                                    setSuccessMessage(null);
+                                }}
+                                className={`min-h-[40px] flex-1 rounded-xl py-1.5 text-[10px] font-black uppercase tracking-[0.1em] transition-all sm:text-xs ${mode === 'register' ? 'border border-[#E7D8BD] bg-[#FFFDF7] text-[#08283B] shadow-sm' : 'text-[#445865] hover:text-[#08283B]'}`}
+                            >
+                                <span className="hidden sm:inline">Account aanmaken</span>
+                                <span className="sm:hidden">Account maken</span>
+                            </button>
+                        </div>
+
+                        {/* Form */}
+                        {mode === 'forgot-password' ? (
+                            <form onSubmit={handlePasswordReset} className="space-y-3">
+                                <div className="mb-4 text-center">
+                                    <h2 className="text-sm font-black text-[#08283B]">Wachtwoord vergeten?</h2>
+                                    <p className="mt-1 text-xs font-semibold text-[#445865]">
+                                        Vul het e-mailadres van je account in. We sturen je een link om je wachtwoord opnieuw in te stellen.
+                                    </p>
+                                </div>
+
+                                <div className="relative">
+                                    <label htmlFor="login-forgot-email" className="sr-only">E-mailadres</label>
+                                    <IconMail className="absolute left-4 top-1/2 -translate-y-1/2 text-[#5F947D]" size={18} />
+                                    <input
+                                        id="login-forgot-email"
+                                        type="email"
+                                        placeholder="E-mailadres"
+                                        value={email}
+                                        onChange={(e) => { setEmail(e.target.value); setEmailHint(null); setEmailSuggestion(null); }}
+                                        onBlur={handleEmailBlur}
+                                        aria-invalid={!!emailHint || (!!error && !error.includes('verstuurd'))}
+                                        aria-describedby={emailHint ? 'login-forgot-email-hint' : error ? 'login-forgot-error' : undefined}
+                                        className={`min-h-[46px] w-full rounded-xl border bg-[#FCF6EA] py-2.5 pl-12 pr-4 text-sm font-bold text-[#08283B] outline-none transition-all placeholder:text-[#445865]/55 focus:border-[#5F947D] focus:ring-2 focus:ring-[#5F947D]/20 ${emailHint ? 'border-[#D7C95F]' : 'border-[#E7D8BD]'}`}
+                                        required
+                                    />
+                                    {emailHint && (
+                                        <div id="login-forgot-email-hint" className="mt-1.5 rounded-lg border border-[#D7C95F]/60 bg-[#D7C95F]/18 px-3 py-2 text-xs font-bold text-[#08283B]">
+                                            {emailHint}
+                                            {emailSuggestion && (
+                                                <button
+                                                    type="button"
+                                                    onClick={acceptEmailSuggestion}
+                                                    className="ml-1 text-[#D97848] underline hover:text-[#0B453F]"
+                                                >
+                                                    {emailSuggestion}
+                                                </button>
+                                            )}
+                                        </div>
+                                    )}
+                                </div>
+
+                                {successMessage && (
+                                    <div role="status" className="rounded-xl border border-[#5F947D]/35 bg-[#5F947D]/12 p-3 text-xs font-bold text-[#0B453F]">
+                                        {successMessage}
+                                    </div>
+                                )}
+
+                                {error && (
+                                    <div id="login-forgot-error" role="alert" className={`animate-in shake rounded-xl border p-3 text-xs font-bold ${error.includes('verstuurd') ? 'border-[#5F947D]/35 bg-[#5F947D]/12 text-[#0B453F]' : 'border-lab-coral bg-lab-coral text-white'}`}>
+                                        {error}
+                                    </div>
+                                )}
+
+                                <button
+                                    type="submit"
+                                    disabled={loading}
+                                    aria-busy={loading}
+                                    aria-live="polite"
+                                    className="flex min-h-[48px] w-full items-center justify-center gap-2 rounded-xl bg-[#D7C95F] py-3 font-black text-[#08283B] shadow-[0_14px_28px_rgba(215,201,95,0.24)] transition-all hover:-translate-y-0.5 hover:bg-[#C9BB52] disabled:cursor-not-allowed disabled:opacity-70"
+                                >
+                                    {loading ? (
+                                        <>
+                                            <span className="sr-only">Bezig met versturen...</span>
+                                            <div className="w-5 h-5 border-2 border-[#08283B]/25 border-t-[#08283B] rounded-full animate-spin" aria-hidden="true"></div>
+                                        </>
+                                    ) : (
+                                        <span>Reset Wachtwoord</span>
+                                    )}
+                                </button>
+
+                                <button
+                                    type="button"
+                                    onClick={() => { setMode('login'); setError(null); setSuccessMessage(null); }}
+                                    className="w-full py-2 text-xs font-black text-[#445865] transition-colors hover:text-[#D97848]"
+                                >
+                                    Terug naar inloggen
+                                </button>
+                            </form>
+                        ) : (
+                            <form onSubmit={handleEmailAuth} className="space-y-2">
+                                {mode === 'register' && (
+                                    <div className="relative animate-in slide-in-from-top-2 duration-300">
+                                        <label htmlFor="login-display-name" className="sr-only">Je voor- en achternaam</label>
+                                        <IconUser className="absolute left-4 top-1/2 -translate-y-1/2 text-[#5F947D]" size={18} />
+                                        <input
+                                            id="login-display-name"
+                                            type="text"
+                                            placeholder="Voor- en achternaam"
+                                            value={displayName}
+                                            onChange={(e) => setDisplayName(e.target.value)}
+                                            aria-invalid={!!error}
+                                            aria-describedby={error ? 'login-auth-error' : undefined}
+                                            className="min-h-[46px] w-full rounded-xl border border-[#E7D8BD] bg-[#FCF6EA] py-2.5 pl-12 pr-4 text-sm font-bold text-[#08283B] outline-none transition-all placeholder:text-[#445865]/55 focus:border-[#5F947D] focus:ring-2 focus:ring-[#5F947D]/20"
+                                            required
+                                        />
+                                    </div>
+                                )}
+                                <div className="relative">
+                                    <label htmlFor="login-email" className="sr-only">{mode === 'register' ? "Je e-mailadres" : "E-mailadres"}</label>
+                                    <IconMail className="absolute left-4 top-1/2 -translate-y-1/2 text-[#5F947D]" size={18} />
+                                    <input
+                                        id="login-email"
+                                        type="email"
+                                        placeholder={mode === 'register' ? "Je e-mailadres" : "E-mailadres"}
+                                        value={email}
+                                        onChange={(e) => { setEmail(e.target.value); setEmailHint(null); setEmailSuggestion(null); }}
+                                        onBlur={handleEmailBlur}
+                                        aria-invalid={!!error || !!emailHint}
+                                        aria-describedby={emailHint ? 'login-email-hint' : error ? 'login-auth-error' : undefined}
+                                        className={`min-h-[42px] w-full rounded-xl border bg-[#FCF6EA] py-2 pl-12 pr-4 text-sm font-bold text-[#08283B] outline-none transition-all placeholder:text-[#445865]/55 focus:border-[#5F947D] focus:ring-2 focus:ring-[#5F947D]/20 ${emailHint ? 'border-[#D7C95F]' : 'border-[#E7D8BD]'}`}
+                                        required
+                                    />
+                                    {emailHint && (
+                                        <div id="login-email-hint" className="mt-1.5 rounded-lg border border-[#D7C95F]/60 bg-[#D7C95F]/18 px-3 py-2 text-xs font-bold text-[#08283B]">
+                                            {emailHint}
+                                            {emailSuggestion && (
+                                                <button
+                                                    type="button"
+                                                    onClick={acceptEmailSuggestion}
+                                                    className="ml-1 text-[#D97848] underline hover:text-[#0B453F]"
+                                                >
+                                                    {emailSuggestion}
+                                                </button>
+                                            )}
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* Class Selection - Only for registration */}
+                                {mode === 'register' && (
+                                    <div className="relative animate-in slide-in-from-top-2 duration-300" style={{ animationDelay: '50ms' }}>
+                                        <label htmlFor="login-student-class" className="sr-only">Kies je klas</label>
+                                        <IconGraduationCap className="absolute left-4 top-1/2 -translate-y-1/2 text-[#5F947D]" size={18} />
+                                        <select
+                                            id="login-student-class"
+                                            value={studentClass}
+                                            onChange={(e) => setStudentClass(e.target.value)}
+                                            aria-invalid={!!error}
+                                            aria-describedby={error ? 'login-auth-error' : undefined}
+                                            className="min-h-[46px] w-full cursor-pointer appearance-none rounded-xl border border-[#E7D8BD] bg-[#FCF6EA] py-2.5 pl-12 pr-4 text-sm font-bold text-[#08283B] outline-none transition-all focus:border-[#5F947D] focus:ring-2 focus:ring-[#5F947D]/20"
+                                            required
+                                        >
+                                            {CLASS_OPTIONS.map((cls) => (
+                                                <option key={cls} value={cls} disabled={cls === 'Kies je klas...'} className="py-2">
+                                                    {cls}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        {/* Custom dropdown arrow */}
+                                        <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                                            <svg className="h-4 w-4 text-[#445865]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                )}
+                                <div className="relative">
+                                    <label htmlFor="login-password" className="sr-only">Wachtwoord</label>
+                                    <IconLock className="absolute left-4 top-1/2 -translate-y-1/2 text-[#5F947D]" size={18} />
+                                    <input
+                                        id="login-password"
+                                        type={showPassword ? "text" : "password"}
+                                        placeholder="Wachtwoord"
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        aria-invalid={!!error}
+                                        aria-describedby={error ? 'login-auth-error' : undefined}
+                                        className="min-h-[42px] w-full rounded-xl border border-[#E7D8BD] bg-[#FCF6EA] py-2 pl-12 pr-12 text-sm font-bold text-[#08283B] outline-none transition-all placeholder:text-[#445865]/55 focus:border-[#5F947D] focus:ring-2 focus:ring-[#5F947D]/20"
+                                        required
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowPassword(!showPassword)}
+                                        aria-label={showPassword ? 'Verberg wachtwoord' : 'Toon wachtwoord'}
+                                        className="absolute right-2 top-1/2 flex min-h-[44px] min-w-[44px] -translate-y-1/2 items-center justify-center rounded-lg p-2.5 text-[#445865] transition-colors hover:bg-[#F3E4CB] hover:text-[#08283B]"
+                                    >
+                                        {showPassword ? <IconEyeOff size={18} /> : <IconEye size={18} />}
+                                    </button>
+                                </div>
+
+                                {mode === 'login' && (
+                                    <>
+                                        <button
+                                            type="button"
+                                            onClick={handleMicrosoftAuth}
+                                            disabled={loading}
+                                            className="flex min-h-[42px] w-full items-center justify-center gap-2 rounded-xl border border-[#E7D8BD] bg-white py-2 font-black text-[#08283B] transition-all hover:bg-[#FCF6EA] disabled:cursor-not-allowed disabled:opacity-70"
+                                        >
+                                            <IconMicrosoft size={18} />
+                                            <span>Inloggen met Microsoft 365</span>
+                                        </button>
+                                        <div className="relative">
+                                            <div className="absolute inset-0 flex items-center" aria-hidden="true">
+                                                <div className="w-full border-t border-[#E7D8BD]"></div>
+                                            </div>
+                                            <div className="relative flex justify-center">
+                                                <span className="bg-[#FFFDF7] px-2 text-[10px] font-black uppercase tracking-widest text-[#445865]">of</span>
+                                            </div>
+                                        </div>
+                                    </>
+                                )}
+
+                                {mode === 'login' && (
+                                    <div className="flex justify-center">
+                                        <button
+                                            type="button"
+                                            onClick={() => { setMode('forgot-password'); setError(null); setSuccessMessage(null); }}
+                                            className="inline-flex min-h-[36px] items-center justify-center px-3 py-1 text-xs font-black text-[#0B453F] transition-colors hover:text-[#08283B]"
+                                        >
+                                            Wachtwoord vergeten? Stuur resetlink
+                                        </button>
+                                    </div>
+                                )}
+
+                                {error && (
+                                    <div id="login-auth-error" role="alert" className="animate-in shake rounded-xl border border-lab-coral bg-lab-coral p-3 text-xs font-bold text-lab-coral">
+                                        {error}
+                                    </div>
+                                )}
+
+                                <button
+                                    type="submit"
+                                    disabled={loading}
+                                    aria-busy={loading}
+                                    aria-live="polite"
+                                    className="flex min-h-[44px] w-full items-center justify-center gap-2 rounded-xl bg-[#D7C95F] py-2.5 font-black text-[#08283B] shadow-[0_10px_22px_rgba(215,201,95,0.22)] transition-all hover:-translate-y-0.5 hover:bg-[#C9BB52] disabled:cursor-not-allowed disabled:opacity-70"
+                                >
+                                    {loading ? (
+                                        <>
+                                            <span className="sr-only">{mode === 'register' ? 'Bezig met account aanmaken...' : 'Bezig met inloggen...'}</span>
+                                            <div className="w-5 h-5 border-2 border-[#08283B]/25 border-t-[#08283B] rounded-full animate-spin" aria-hidden="true"></div>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <span>{mode === 'register' ? 'Account aanmaken' : 'Inloggen'}</span>
+                                            <IconArrowRight size={18} />
+                                        </>
+                                    )}
+                                </button>
+
+                                <p className="flex flex-wrap items-center justify-center gap-x-1 text-xs text-[#445865] text-center">
+                                    <a href="/ict/privacy/policy" className="inline-flex min-h-[32px] items-center px-2 font-bold text-[#0B453F] underline hover:text-[#08283B]">Privacy</a>
+                                    {' · '}
+                                    <a href="/ict/privacy/cookies" className="inline-flex min-h-[32px] items-center px-2 font-bold text-[#0B453F] underline hover:text-[#08283B]">Cookies</a>
+                                </p>
+                            </form>
+                        )}
+
+
+                            </div>
+
+                            <div className="mt-2 flex flex-col items-center gap-1">
+                        <a href="/" className="inline-flex min-h-[32px] items-center justify-center px-3 text-xs font-black text-[#0B453F] transition-colors hover:text-[#D97848]">
+                            Voor scholen — Digitale geletterdheid
+                        </a>
+                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#445865] opacity-45">
+                            &copy; 2026 Future Architect
+                        </span>
+                            </div>
+                        </div>
+                </main>
+            </div>
+        </div>
+    );
+};

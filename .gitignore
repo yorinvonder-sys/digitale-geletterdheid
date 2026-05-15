@@ -1,6 +1,7 @@
-# Claude Code (settings only — project docs and skills are tracked)
+# Claude Code (shared settings, project docs, and skills are tracked)
 .claude/*
 !.claude/*.md
+!.claude/settings.json
 !.claude/skills/
 !.claude/skills/**
 
@@ -26,6 +27,7 @@ firebase-service-account.json
 **/firebase-service-account.json
 migration-report.json
 supabase/.temp/
+supabase/.branches/
 .mcp.json
 
 node_modules
@@ -48,6 +50,14 @@ dist-ssr
 # Lighthouse reports (contain captured API keys in network traces)
 lighthouse-reports/
 lighthouse-report.json
+
+# Agent/browser artifacts (large and noisy for LLM context)
+.playwright-mcp/
+playwright-report/
+test-results/
+screenshots/
+.tmp-context/
+.superpowers/
 
 # Firebase (legacy - migrated to Supabase)
 .firebase/

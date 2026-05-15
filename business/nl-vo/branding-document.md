@@ -88,20 +88,20 @@ DGSkills gebruikt een warm, aards kleurenpalet dat professioneel oogt maar niet 
 
 | Token | Hex | Toepassing |
 |:---|:---|:---|
-| `lab-bg` | `#FAF9F0` | Achtergrond — warm off-white, rustgevend |
+| `lab-bg` | `#FCF6EA` | Achtergrond — warm off-white, rustgevend |
 | `lab-surface` | `#FFFFFF` | Kaarten en panelen |
-| `lab-primary` | `#D97757` | Primaire accentkleur — CTA's, links, highlights |
-| `lab-primaryDark` | `#C46849` | Hover-states van primaire kleur |
-| `lab-accent` | `#2A9D8F` | Secundair accent — teal/groen, voor succes en variatie |
-| `lab-secondary` | `#8B6F9E` | Tertiair accent — paars, voor badges en speciale elementen |
-| `lab-dark` | `#1A1A19` | Donkere tekst en headers |
-| `lab-text` | `#3D3D38` | Standaard bodytekst |
-| `lab-textLight` | `#6B6B66` | Secundaire tekst, labels |
+| `lab-primary` | `#D97848` | Primaire accentkleur — CTA's, links, highlights |
+| `lab-primaryDark` | `#D97848` | Hover-states van primaire kleur |
+| `lab-accent` | `#5F947D` | Secundair accent — teal/groen, voor succes en variatie |
+| `lab-secondary` | `#0B453F` | Tertiair accent — paars, voor badges en speciale elementen |
+| `lab-dark` | `#08283B` | Donkere tekst en headers |
+| `lab-text` | `#445865` | Standaard bodytekst |
+| `lab-textLight` | `#445865` | Secundaire tekst, labels |
 
 **Leerjaar-kleuren** worden gebruikt om visueel onderscheid te maken tussen jaarlagen in het platform:
-- **Indigo** (`#6366F1`) — Leerjaar 1: Digitale Basis
-- **Emerald** (`#10B981`) — Leerjaar 2: Digitale Verdieping
-- **Violet** (`#8B5CF6`) — Leerjaar 3: Digitaal Meesterschap
+- **Indigo** (`#0B453F`) — Leerjaar 1: Digitale Basis
+- **Emerald** (`#5F947D`) — Leerjaar 2: Digitale Verdieping
+- **Violet** (`#0B453F`) — Leerjaar 3: Digitaal Meesterschap
 
 ### Typografie
 

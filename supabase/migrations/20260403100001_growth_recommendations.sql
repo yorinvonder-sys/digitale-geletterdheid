@@ -17,7 +17,8 @@ CREATE TABLE public.growth_recommendations (
   id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
   user_id uuid NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   school_year smallint NOT NULL,
-  school_id uuid REFERENCES public.schools(id),
+  -- The app uses text school_id values from public.users/school_configs.
+  school_id text,
 
   -- AI-gegenereerde aanbeveling
   recommendation_text text NOT NULL,

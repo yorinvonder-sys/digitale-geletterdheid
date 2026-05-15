@@ -1,0 +1,579 @@
+import React, { useState, useEffect } from 'react';
+import {
+    FileText, Download, CheckCircle, AlertCircle, Settings, Save,
+    Copy, Check, ExternalLink,
+} from 'lucide-react';
+import {
+    YearSummary,
+    TaxCalculation,
+    AccountantSettings,
+    saveSettings,
+    formatEuro,
+    getTaxConfig,
+    getTaxConfigStatus,
+} from '@/services/accountantService';
+
+interface TaxReportPanelProps {
+    summary: YearSummary;
+    tax: TaxCalculation;
+    settings: AccountantSettings | null;
+    userId: string;
+    onSettingsChange: (s: AccountantSettings) => void;
+}
+
+export function TaxReportPanel({ summary, tax, settings, userId, onSettingsChange }: TaxReportPanelProps) {
+    const [showSettings, setShowSettings] = useState(false);
+    const [savingSettings, setSavingSettings] = useState(false);
+    const [saveError, setSaveError] = useState('');
+    // Defaults voor DGSkills.app — worden alleen gebruikt als er nog geen settings zijn opgeslagen
+    const DEFAULT_BUSINESS_NAME = 'DGSkills.app';
+    const DEFAULT_KVK_NUMBER = '81819889';
+
+    const [localSettings, setLocalSettings] = useState({
+        business_name:  settings?.business_name  || DEFAULT_BUSINESS_NAME,
+        kvk_number:     settings?.kvk_number     || DEFAULT_KVK_NUMBER,
+        starter_aftrek: settings?.starter_aftrek || false,
+        tax_year:       settings?.tax_year        || 2025,
+    });
+    const [autoSaved, setAutoSaved] = useState(false);
+
+    // Sync localSettings als de settings-prop van buiten verandert (bijv. na eerste load)
+    useEffect(() => {
+        setLocalSettings({
+            business_name:  settings?.business_name  || DEFAULT_BUSINESS_NAME,
+            kvk_number:     settings?.kvk_number     || DEFAULT_KVK_NUMBER,
+            starter_aftrek: settings?.starter_aftrek || false,
+            tax_year:       settings?.tax_year        || 2025,
+        });
+        // Toon formulier direct als bedrijfsnaam nog leeg is
+        setShowSettings(!settings?.business_name);
+    }, [settings]);
+
+    // Auto-save defaults als er nog geen settings zijn opgeslagen
+    useEffect(() => {
+        if (!settings?.business_name && !autoSaved && userId) {
+            setAutoSaved(true);
+            saveSettings({
+                user_id:       userId,
+                business_name: DEFAULT_BUSINESS_NAME,
+                kvk_number:    DEFAULT_KVK_NUMBER,
+                starter_aftrek: false,
+                tax_year:      new Date().getFullYear(),
+            }).then(saved => {
+                onSettingsChange(saved);
+            }).catch(() => {
+                // Stille fout — gebruiker kan handmatig opslaan
+            });
+        }
+    }, [settings, userId, autoSaved]); // eslint-disable-line react-hooks/exhaustive-deps
+
+    async function handleSaveSettings() {
+        setSavingSettings(true);
+        setSaveError('');
+        try {
+            const saved = await saveSettings({
+                user_id:       userId,
+                business_name: localSettings.business_name || undefined,
+                kvk_number:    localSettings.kvk_number    || undefined,
+                starter_aftrek: localSettings.starter_aftrek,
+                tax_year:      localSettings.tax_year,
+            });
+            onSettingsChange(saved);
+            setShowSettings(false);
+        } catch (e: any) {
+            setSaveError(e.message || 'Opslaan mislukt.');
+        } finally {
+            setSavingSettings(false);
+        }
+    }
+
+    async function exportPDF() {
+        const [{ jsPDF }, { createBrandedPdf, sectionTitle: brandedSection, labelValueRow, divider: brandedDivider, spacer, paragraph: brandedParagraph, finalizePdf, BRAND }] = await Promise.all([
+            import('jspdf'),
+            import('@/services/pdfBrandingService'),
+        ]);
+
+        const year = summary.year;
+        const name = settings?.business_name || 'ZZP-er';
+        const kvk  = settings?.kvk_number ? `KvK: ${settings.kvk_number}` : '';
+
+        const ctx = createBrandedPdf(jsPDF, {
+            title: `Belastingoverzicht ${year}`,
+            subtitle: name + (kvk ? ` — ${kvk}` : ''),
+            date: `Gegenereerd op: ${new Date().toLocaleDateString('nl-NL')}`,
+        });
+
+        const euro = (v: number) => `€ ${v.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`;
+        const row = (label: string, value: number | string, bold = false) => {
+            const displayValue = typeof value === 'number' ? euro(value) : value;
+            labelValueRow(ctx, label, displayValue, { bold });
+        };
+
+        brandedSection(ctx, 'Winst- en verliesrekening');
+        row('Bruto-omzet', summary.totalIncome);
+        row('Zakelijke kosten', -summary.totalExpenses);
+        brandedDivider(ctx);
+        row('Winst uit onderneming', summary.profit, true);
+        spacer(ctx, 4);
+
+        brandedSection(ctx, 'Aftrekposten (ZZP)');
+        row('Zelfstandigenaftrek', -tax.zelfstandigenaftrek);
+        if (tax.startersaftrek > 0) row('Startersaftrek', -tax.startersaftrek);
+        const tc = getTaxConfig(year);
+        row(`MKB-winstvrijstelling (${(tc.mkbWinstvrijstelling * 100).toFixed(1)}%)`, -tax.mkbWinstvrijstelling);
+        brandedDivider(ctx);
+        row('Belastbaar inkomen Box 1', tax.taxableIncome, true);
+        spacer(ctx, 4);
+
+        brandedSection(ctx, `Inkomstenbelasting ${year}`);
+        const in1 = Math.min(tax.taxableIncome, tc.bracket1Limit);
+        const in2 = Math.max(0, tax.taxableIncome - tc.bracket1Limit);
+        row(`Schijf 1 (t/m € ${tc.bracket1Limit.toLocaleString('nl-NL')} × ${(tc.bracket1Rate * 100).toFixed(2)}%)`, in1 * tc.bracket1Rate);
+        if (in2 > 0) row(`Schijf 2 (boven € ${tc.bracket1Limit.toLocaleString('nl-NL')} × ${(tc.bracket2Rate * 100).toFixed(2)}%)`, in2 * tc.bracket2Rate);
+        brandedDivider(ctx);
+        row('Geschatte inkomstenbelasting', tax.estimatedTax, true);
+        brandedParagraph(ctx, `Effectief tarief: ${tax.effectiveRate.toFixed(1)}%`, { fontSize: 8, color: BRAND.muted });
+        spacer(ctx, 4);
+
+        brandedSection(ctx, 'BTW-opgave');
+        row('BTW ontvangen (omzet)', summary.vatCollected);
+        row('BTW betaald (inkoop)', -summary.vatPaid);
+        brandedDivider(ctx);
+        row(summary.vatBalance >= 0 ? 'BTW af te dragen' : 'BTW te vorderen', Math.abs(summary.vatBalance), true);
+        spacer(ctx, 6);
+
+        brandedParagraph(ctx, 'Dit overzicht is indicatief. Raadpleeg een belastingadviseur voor definitieve aangifte.', { fontSize: 8, italic: true, color: BRAND.muted });
+
+        finalizePdf(ctx, `belastingoverzicht_${year}.pdf`);
+    }
+
+    // Belastingconfiguratie-status
+    const taxStatus = getTaxConfigStatus();
+    const currentTaxConfig = getTaxConfig(summary.year);
+
+    // Checklist items voor aangifte
+    const checklistItems = [
+        { label: 'Bedrijfsnaam ingevuld', done: !!settings?.business_name },
+        { label: 'KvK-nummer ingevuld',   done: !!settings?.kvk_number },
+        { label: 'Omzet geboekt',          done: summary.totalIncome > 0 },
+        { label: 'Kosten gecategoriseerd', done: summary.totalExpenses > 0 },
+        { label: 'Bonnetjes opgeslagen',   done: true },
+        { label: `Belastingtarieven ${summary.year} actueel`, done: !taxStatus.isOutdated },
+    ];
+    const allDone = checklistItems.every(i => i.done);
+
+    return (
+        <div className="space-y-8">
+            {/* Instellingen */}
+            <div className="bg-white rounded-[2rem] border border-lab-line shadow-sm p-8">
+                <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 bg-lab-cream rounded-xl flex items-center justify-center">
+                            <Settings size={20} className="text-lab-muted" />
+                        </div>
+                        <h3 className="text-lg font-black text-lab-ink uppercase tracking-tight">Bedrijfsgegevens</h3>
+                    </div>
+                    <button
+                        onClick={() => setShowSettings(!showSettings)}
+                        className="text-xs font-bold text-lab-coral hover:text-lab-coral uppercase tracking-widest"
+                    >
+                        {showSettings ? 'Sluiten' : 'Bewerken'}
+                    </button>
+                </div>
+
+                {showSettings ? (
+                    <div className="space-y-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label className="block text-[10px] font-black text-lab-muted uppercase tracking-widest mb-1">Bedrijfsnaam</label>
+                                <input
+                                    type="text"
+                                    value={localSettings.business_name}
+                                    onChange={e => setLocalSettings(s => ({ ...s, business_name: e.target.value }))}
+                                    placeholder="Jouw Bedrijf"
+                                    className="w-full px-4 py-2.5 border border-lab-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-lab-coral"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-[10px] font-black text-lab-muted uppercase tracking-widest mb-1">KvK-nummer</label>
+                                <input
+                                    type="text"
+                                    value={localSettings.kvk_number}
+                                    onChange={e => setLocalSettings(s => ({ ...s, kvk_number: e.target.value }))}
+                                    placeholder="12345678"
+                                    className="w-full px-4 py-2.5 border border-lab-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-lab-coral"
+                                />
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-3">
+                            <input
+                                type="checkbox"
+                                id="starter"
+                                checked={localSettings.starter_aftrek}
+                                onChange={e => setLocalSettings(s => ({ ...s, starter_aftrek: e.target.checked }))}
+                                className="w-4 h-4 text-lab-coral rounded"
+                            />
+                            <label htmlFor="starter" className="text-sm font-medium text-lab-muted">
+                                Startersaftrek (eerste 3 jaar als ZZP-er) — extra €2.123 aftrek
+                            </label>
+                        </div>
+                        <button
+                            onClick={handleSaveSettings}
+                            disabled={savingSettings}
+                            className="flex items-center gap-2 px-5 py-2.5 bg-lab-coral text-white rounded-xl text-sm font-bold hover:bg-lab-coral hover:text-white disabled:opacity-50 transition-colors"
+                        >
+                            <Save size={16} />
+                            {savingSettings ? 'Opslaan...' : 'Opslaan'}
+                        </button>
+                    </div>
+                ) : (
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                        <div>
+                            <p className="text-[10px] text-lab-muted font-black uppercase tracking-widest mb-1">Bedrijfsnaam</p>
+                            <p className="font-bold text-lab-ink">{settings?.business_name || '—'}</p>
+                        </div>
+                        <div>
+                            <p className="text-[10px] text-lab-muted font-black uppercase tracking-widest mb-1">KvK-nummer</p>
+                            <p className="font-bold text-lab-ink">{settings?.kvk_number || '—'}</p>
+                        </div>
+                        <div>
+                            <p className="text-[10px] text-lab-muted font-black uppercase tracking-widest mb-1">Startersaftrek</p>
+                            <p className="font-bold text-lab-ink">{settings?.starter_aftrek ? 'Ja' : 'Nee'}</p>
+                        </div>
+                    </div>
+                )}
+            </div>
+
+            {/* IB-aangifte overzicht */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Berekening */}
+                <div className="bg-lab-ink rounded-[2rem] p-8 text-white space-y-1">
+                    <h3 className="text-sm font-black uppercase tracking-widest text-lab-muted mb-6">
+                        IB Berekening {summary.year} — ZZP Box 1
+                    </h3>
+
+                    <Row label="Bruto-omzet"         value={tax.grossIncome}         color="text-lab-sage" />
+                    <Row label="Zakelijke kosten"     value={-tax.totalExpenses}       color="text-lab-coral" />
+                    <Divider />
+                    <Row label="Winst onderneming"    value={tax.profit}               bold color="text-white" />
+
+                    <div className="h-3" />
+                    <p className="text-[10px] text-lab-muted font-black uppercase tracking-widest">Aftrekposten</p>
+
+                    <Row label="Zelfstandigenaftrek"   value={-tax.zelfstandigenaftrek}  color="text-lab-teal" />
+                    {tax.startersaftrek > 0 && (
+                        <Row label="Startersaftrek"    value={-tax.startersaftrek}        color="text-lab-teal" />
+                    )}
+                    <Row label="MKB-winstvrijstelling" value={-tax.mkbWinstvrijstelling}  color="text-lab-teal" />
+                    <Divider />
+                    <Row label="Belastbaar inkomen"    value={tax.taxableIncome}          bold color="text-white" />
+
+                    <div className="h-3" />
+                    <p className="text-[10px] text-lab-muted font-black uppercase tracking-widest">Inkomstenbelasting</p>
+
+                    <Row label={`Schijf 1 (t/m €${currentTaxConfig.bracket1Limit.toLocaleString('nl-NL')} × ${(currentTaxConfig.bracket1Rate * 100).toFixed(2)}%)`}
+                        value={Math.min(tax.taxableIncome, currentTaxConfig.bracket1Limit) * currentTaxConfig.bracket1Rate} color="text-lab-muted" />
+                    {tax.taxableIncome > currentTaxConfig.bracket1Limit && (
+                        <Row label={`Schijf 2 (boven €${currentTaxConfig.bracket1Limit.toLocaleString('nl-NL')} × ${(currentTaxConfig.bracket2Rate * 100).toFixed(2)}%)`}
+                            value={(tax.taxableIncome - currentTaxConfig.bracket1Limit) * currentTaxConfig.bracket2Rate} color="text-lab-muted" />
+                    )}
+                    <Divider />
+                    <Row label="Geschatte belasting" value={tax.estimatedTax} bold color="text-lab-gold" />
+
+                    <p className="text-[10px] text-lab-muted pt-2">
+                        Effectief tarief: {tax.effectiveRate.toFixed(1)}%
+                    </p>
+                </div>
+
+                {/* Checklist + Export */}
+                <div className="space-y-4">
+                    {/* Aangifte checklist */}
+                    <div className="bg-white rounded-[2rem] border border-lab-line shadow-sm p-8">
+                        <h3 className="text-lg font-black text-lab-ink uppercase tracking-tight mb-6">
+                            Aangifte Checklist
+                        </h3>
+                        <div className="space-y-3">
+                            {checklistItems.map((item, i) => (
+                                <div key={i} className="flex items-center gap-3">
+                                    {item.done ? (
+                                        <CheckCircle size={18} className="text-lab-muted shrink-0" />
+                                    ) : (
+                                        <AlertCircle size={18} className="text-lab-gold shrink-0" />
+                                    )}
+                                    <span className={`text-sm font-medium ${item.done ? 'text-lab-muted' : 'text-lab-gold'}`}>
+                                        {item.label}
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
+                        {!allDone && (
+                            <p className="text-xs text-lab-ink bg-lab-gold rounded-xl px-4 py-3 mt-4 font-medium">
+                                Vul alle ontbrekende gegevens in voor een compleet overzicht.
+                            </p>
+                        )}
+                    </div>
+
+                    {/* Export */}
+                    <div className="bg-lab-coral rounded-[2rem] border border-lab-coral p-8">
+                        <div className="flex items-center gap-3 mb-4">
+                            <div className="w-10 h-10 bg-lab-coral rounded-xl flex items-center justify-center">
+                                <FileText size={20} className="text-lab-coral" />
+                            </div>
+                            <div>
+                                <h3 className="font-black text-lab-coral uppercase tracking-tight">PDF Exporteren</h3>
+                                <p className="text-[10px] text-lab-coral font-bold uppercase tracking-widest">Belastingoverzicht {summary.year}</p>
+                            </div>
+                        </div>
+                        <p className="text-xs text-lab-coral mb-5 leading-relaxed">
+                            Genereer een volledig belastingoverzicht inclusief winst- en verliesrekening, BTW-saldo en IB-berekening.
+                        </p>
+                        <button
+                            onClick={exportPDF}
+                            className="w-full flex items-center justify-center gap-2 py-3 bg-lab-coral text-white rounded-xl font-bold text-sm hover:bg-lab-coral hover:text-white transition-colors shadow-sm"
+                        >
+                            <Download size={16} />
+                            Download PDF
+                        </button>
+                    </div>
+
+                    {/* Disclaimer */}
+                    <div className="bg-lab-cream border border-lab-line rounded-2xl px-5 py-4">
+                        <p className="text-xs text-lab-muted leading-relaxed">
+                            <strong className="text-lab-muted">Let op:</strong> Dit overzicht is indicatief en dient als voorbereiding op je aangifte.
+                            De definitieve aangifte doe je via <strong className="text-lab-muted">Mijn Belastingdienst</strong>.
+                            Raadpleeg bij twijfel een belastingadviseur.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {/* Belastingdienst Invulhulp */}
+            <BelastingdienstInvulhulp tax={tax} summary={summary} />
+        </div>
+    );
+}
+
+// ============================================================================
+// Belastingdienst Invulhulp — exacte IB-aangifte velden met kopieerknop
+// ============================================================================
+
+function CopyField({ label, rugnummer, value, hint }: {
+    label: string;
+    rugnummer?: string;
+    value: string;
+    hint?: string;
+}) {
+    const [copied, setCopied] = useState(false);
+
+    function handleCopy() {
+        navigator.clipboard.writeText(value).then(() => {
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000);
+        });
+    }
+
+    return (
+        <div className="flex items-center gap-3 p-3 bg-white border border-lab-line rounded-xl hover:border-lab-coral transition-colors group">
+            <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 flex-wrap">
+                    {rugnummer && (
+                        <span className="text-[9px] font-black bg-lab-coral text-white px-1.5 py-0.5 rounded uppercase tracking-widest shrink-0">
+                            {rugnummer}
+                        </span>
+                    )}
+                    <span className="text-xs text-lab-muted font-medium truncate">{label}</span>
+                </div>
+                <p className="text-sm font-black text-lab-ink mt-0.5 tabular-nums">{value}</p>
+                {hint && <p className="text-[10px] text-lab-muted mt-0.5">{hint}</p>}
+            </div>
+            <button
+                onClick={handleCopy}
+                className="shrink-0 w-8 h-8 flex items-center justify-center rounded-lg bg-lab-cream group-hover:bg-lab-coral hover:text-white transition-colors"
+                title="Kopiëren"
+            >
+                {copied
+                    ? <Check size={14} className="text-lab-muted" />
+                    : <Copy size={14} className="text-lab-muted group-hover:text-lab-muted" />
+                }
+            </button>
+        </div>
+    );
+}
+
+function BelastingdienstInvulhulp({ tax, summary }: { tax: TaxCalculation; summary: YearSummary }) {
+    const currentTaxConfig = getTaxConfig(summary.year);
+
+    const fmt = (v: number) => new Intl.NumberFormat('nl-NL', {
+        minimumFractionDigits: 0, maximumFractionDigits: 0
+    }).format(Math.round(v));
+
+    const euro = (v: number) => new Intl.NumberFormat('nl-NL', {
+        style: 'currency', currency: 'EUR', maximumFractionDigits: 0,
+    }).format(Math.round(Math.abs(v)));
+
+    return (
+        <div className="bg-white rounded-[2rem] border border-lab-line shadow-sm p-8">
+            <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-lab-sage rounded-xl flex items-center justify-center">
+                        <FileText size={20} className="text-lab-sage" />
+                    </div>
+                    <div>
+                        <h3 className="text-lg font-black text-lab-ink uppercase tracking-tight">Invulhulp Belastingdienst</h3>
+                        <p className="text-[10px] text-lab-muted font-bold uppercase tracking-widest">Kopieer waarden direct naar Mijn Belastingdienst</p>
+                    </div>
+                </div>
+                <a
+                    href="https://mijn.belastingdienst.nl"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1.5 px-4 py-2 bg-lab-sage text-white rounded-xl text-xs font-bold hover:bg-lab-sage hover:text-white transition-colors"
+                >
+                    <ExternalLink size={13} />
+                    Naar Belastingdienst
+                </a>
+            </div>
+
+            <div className="space-y-6">
+                {/* Stap 1: Inkomsten */}
+                <div>
+                    <p className="text-[10px] font-black text-lab-muted uppercase tracking-widest mb-3">
+                        Stap 1 — Winst uit onderneming (Box 1)
+                    </p>
+                    <div className="space-y-2">
+                        <CopyField
+                            rugnummer="1a"
+                            label="Omzet / opbrengst uit onderneming"
+                            value={fmt(tax.grossIncome)}
+                            hint="Totale omzet exclusief BTW"
+                        />
+                        <CopyField
+                            rugnummer="1b"
+                            label="Zakelijke kosten"
+                            value={fmt(tax.totalExpenses)}
+                            hint="Alle aftrekbare bedrijfskosten"
+                        />
+                        <CopyField
+                            rugnummer="1c"
+                            label="Winst uit onderneming"
+                            value={fmt(tax.profit)}
+                            hint="Omzet minus kosten"
+                        />
+                    </div>
+                </div>
+
+                {/* Stap 2: Ondernemersaftrek */}
+                <div>
+                    <p className="text-[10px] font-black text-lab-muted uppercase tracking-widest mb-3">
+                        Stap 2 — Ondernemersaftrek
+                    </p>
+                    <div className="space-y-2">
+                        <CopyField
+                            rugnummer="2a"
+                            label="Zelfstandigenaftrek"
+                            value={fmt(tax.zelfstandigenaftrek)}
+                            hint={`Maximaal €${currentTaxConfig.zelfstandigenaftrek.toLocaleString('nl-NL')} voor belastingjaar ${summary.year}`}
+                        />
+                        {tax.startersaftrek > 0 && (
+                            <CopyField
+                                rugnummer="2b"
+                                label="Startersaftrek"
+                                value={fmt(tax.startersaftrek)}
+                                hint="Extra €2.123 voor de eerste 3 jaar als ZZP-er"
+                            />
+                        )}
+                        <CopyField
+                            rugnummer="2c"
+                            label={`MKB-winstvrijstelling (${(currentTaxConfig.mkbWinstvrijstelling * 100).toFixed(1)}%)`}
+                            value={fmt(tax.mkbWinstvrijstelling)}
+                            hint="Automatisch berekend na ondernemersaftrek"
+                        />
+                    </div>
+                </div>
+
+                {/* Stap 3: Belastbaar inkomen */}
+                <div>
+                    <p className="text-[10px] font-black text-lab-muted uppercase tracking-widest mb-3">
+                        Stap 3 — Belastbaar inkomen
+                    </p>
+                    <div className="space-y-2">
+                        <CopyField
+                            rugnummer="3a"
+                            label="Belastbaar inkomen Box 1"
+                            value={fmt(tax.taxableIncome)}
+                            hint="Winst minus alle aftrekposten"
+                        />
+                        <CopyField
+                            rugnummer="3b"
+                            label="Geschatte inkomstenbelasting"
+                            value={euro(tax.estimatedTax)}
+                            hint={`Effectief tarief: ${tax.effectiveRate.toFixed(1)}%`}
+                        />
+                    </div>
+                </div>
+
+                {/* BTW */}
+                <div>
+                    <p className="text-[10px] font-black text-lab-muted uppercase tracking-widest mb-3">
+                        BTW-aangifte (kwartaal / jaar)
+                    </p>
+                    <div className="space-y-2">
+                        <CopyField
+                            label="BTW ontvangen (rubriek 1a)"
+                            value={fmt(summary.vatCollected)}
+                            hint="Invullen bij BTW-aangifte veld 1a"
+                        />
+                        <CopyField
+                            label="Voorbelasting (rubriek 5b)"
+                            value={fmt(summary.vatPaid)}
+                            hint="BTW betaald op inkopen — veld 5b"
+                        />
+                        <CopyField
+                            label={summary.vatBalance >= 0 ? 'Te betalen BTW (rubriek 5g)' : 'Terug te vragen BTW (rubriek 5g)'}
+                            value={euro(summary.vatBalance)}
+                            hint={summary.vatBalance >= 0 ? 'Afdragen aan Belastingdienst' : 'Terugvragen van Belastingdienst'}
+                        />
+                    </div>
+                </div>
+
+                {/* Stappenplan */}
+                <div className="bg-lab-cream rounded-2xl p-5 space-y-3 border border-lab-line">
+                    <p className="text-xs font-black text-lab-muted uppercase tracking-widest">Stappenplan aangifte</p>
+                    {[
+                        'Ga naar mijn.belastingdienst.nl en log in met DigiD',
+                        'Kies "Inkomstenbelasting" → "Aangifte ' + summary.year + '"',
+                        'Vul bij "Winst uit onderneming" de waarden van stap 1 in',
+                        'Bij "Aftrekposten": voer zelfstandigenaftrek en startersaftrek in',
+                        'Controleer het belastbaar inkomen (stap 3) — dit berekent de Belastingdienst zelf',
+                        'BTW doe je apart via "Omzetbelasting" → "Kwartaalaangifte"',
+                    ].map((step, i) => (
+                        <div key={i} className="flex items-start gap-3">
+                            <span className="shrink-0 w-5 h-5 rounded-full bg-lab-coral text-white text-[10px] font-black flex items-center justify-center mt-0.5">
+                                {i + 1}
+                            </span>
+                            <p className="text-xs text-lab-muted leading-relaxed">{step}</p>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
+}
+
+function Row({ label, value, bold = false, color = 'text-lab-muted' }: {
+    label: string; value: number; bold?: boolean; color?: string
+}) {
+    const formatted = new Intl.NumberFormat('nl-NL', {
+        style: 'currency', currency: 'EUR'
+    }).format(value);
+
+    return (
+        <div className="flex justify-between items-center py-0.5">
+            <span className={`text-xs ${bold ? 'font-black text-white' : 'text-lab-muted'}`}>{label}</span>
+            <span className={`text-xs font-bold tabular-nums ${bold ? 'font-black ' + color : color}`}>{formatted}</span>
+        </div>
+    );
+}
+
+function Divider() {
+    return <div className="border-t border-white/10 my-2" />;
+}

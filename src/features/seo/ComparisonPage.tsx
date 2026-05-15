@@ -1,0 +1,81 @@
+import React, { useEffect } from 'react';
+import { trackEvent } from '@/services/analyticsService';
+
+const FeatureRow = ({ feature, dgskills, other }: { feature: string; dgskills: boolean; other: boolean }) => (
+    <tr className="border-b border-lab-line">
+        <td className="py-4 text-sm font-medium text-lab-muted">{feature}</td>
+        <td className="py-4 text-center">
+            {dgskills ? <span className="text-lab-muted font-bold">✓</span> : <span className="text-lab-muted">—</span>}
+        </td>
+        <td className="py-4 text-center">
+            {other ? <span className="text-lab-muted font-bold">✓</span> : <span className="text-lab-muted">—</span>}
+        </td>
+    </tr>
+);
+
+export const ComparisonPage: React.FC<{ competitor: 'digit-vo' | 'basicly' }> = ({ competitor }) => {
+    const competitorName = competitor === 'digit-vo' ? 'DIGIT-vo' : 'Basicly';
+
+    useEffect(() => {
+        document.title = `DGSkills vs ${competitorName} | Vergelijking Digitale Geletterdheid`;
+        trackEvent('seo_page_view', { cluster: 'vergelijking', page: competitorName });
+    }, [competitorName]);
+
+    return (
+        <div className="min-h-screen bg-white pt-32 pb-24 px-6">
+            <div className="max-w-4xl mx-auto">
+                <div className="text-center mb-16">
+                    <h1 className="text-3xl md:text-4xl font-bold text-lab-ink mb-4">DGSkills vs {competitorName}</h1>
+                    <p className="text-lab-muted max-w-2xl mx-auto">
+                        Een vergelijking tussen twee methodes voor digitale geletterdheid in het voortgezet onderwijs.
+                    </p>
+                </div>
+
+                <div className="bg-white rounded-3xl border border-lab-line shadow-sm overflow-hidden mb-16">
+                    <p className="text-xs text-lab-muted mb-4 px-6 pt-4">Vergelijking op basis van publiek beschikbare informatie per februari 2026. Kenmerken van andere platforms kunnen gewijzigd zijn.</p>
+                    <table className="w-full">
+                        <thead className="bg-lab-cream">
+                            <tr className="text-left text-[10px] font-bold text-lab-muted uppercase tracking-widest">
+                                <th className="p-6">Feature</th>
+                                <th className="p-6 text-center text-lab-coral">DGSkills</th>
+                                <th className="p-6 text-center">{competitorName}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <FeatureRow feature="Interactieve AI-Missies" dgskills={true} other={false} />
+                            <FeatureRow feature="SLO Kerndoelen 2025 Dekking" dgskills={true} other={true} />
+                            <FeatureRow feature="Gamification (XP, Badges, Avatars)" dgskills={true} other={competitor === 'basicly'} />
+                            <FeatureRow feature="Real-time Docenten Dashboard" dgskills={true} other={true} />
+                            <FeatureRow feature="AVG-compliant & EU Data Opslag" dgskills={true} other={true} />
+                            <FeatureRow feature="Geen Installatie Nodig (Web-only)" dgskills={true} other={true} />
+                            <FeatureRow feature="Focus op Praktijkonderwijs & VSO" dgskills={true} other={false} />
+                            <FeatureRow feature="Geautomatiseerde Inspectie-Rapporten (in ontwikkeling)" dgskills={true} other={false} />
+                        </tbody>
+                    </table>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-8 mb-16">
+                    <div className="p-8 rounded-2xl bg-lab-coral border border-lab-coral">
+                        <h3 className="font-bold text-lab-coral mb-4">Wanneer kiezen voor DGSkills?</h3>
+                        <p className="text-lab-coral text-sm leading-relaxed">
+                            DGSkills is een sterke keuze als je een methode zoekt die leerlingen écht boeit door gamification en AI. Het is specifiek ontworpen om de werkdruk van docenten te verlagen door automatisering.
+                        </p>
+                    </div>
+                    <div className="p-8 rounded-2xl bg-lab-cream border border-lab-line">
+                        <h3 className="font-bold text-lab-ink mb-4">Wanneer kiezen voor {competitorName}?</h3>
+                        <p className="text-lab-muted text-sm leading-relaxed">
+                            {competitorName} is een gevestigde naam met een brede basis. Als je school al jarenlang gebruikmaakt van hun ecosysteem en geen behoefte heeft aan nieuwe AI-gedreven didactiek, kan het een geschikte keuze zijn.
+                        </p>
+                    </div>
+                </div>
+
+                <div className="text-center">
+                    <h4 className="text-xl font-bold mb-6">Zelf het verschil ervaren?</h4>
+                    <a href="/digitale-geletterdheid-vo" className="inline-flex items-center justify-center px-8 py-4 bg-lab-coral text-white font-bold rounded-xl hover:bg-lab-coral hover:text-white transition-colors shadow-lg shadow-lab-coral/20">
+                        Start een Gratis Pilot
+                    </a>
+                </div>
+            </div>
+        </div>
+    );
+};

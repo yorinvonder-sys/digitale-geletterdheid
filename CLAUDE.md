@@ -1,13 +1,18 @@
 # Project: AI Lab - Future Architect (DGSkills)
 
-@.claude/project-context.md
-@.claude/skill-router.md
-@.claude/acceptance-checklist.md
-@.claude/workstreams.md
-@.claude/adhd-format.md
-@.claude/current-task.md
-@.claude/task-queue.md
-@.claude/progress-log.md
+## Lean Context Mode
+
+Do not auto-load the `.claude/*.md` baton/reference files at session start.
+Open only the specific file needed for the current request:
+
+- Project context: `.claude/project-context.md`
+- Skill routing: `.claude/skill-router.md`
+- Acceptance checks: `.claude/acceptance-checklist.md`
+- Workstreams/ADHD format: `.claude/workstreams.md`, `.claude/adhd-format.md`
+- Previous-work continuation only: `.claude/current-task.md`, `.claude/task-queue.md`, `.claude/progress-log.md`
+
+Start broad investigations with `npm run context:budget`, then inspect only
+the few paths that matter.
 
 ## Stack
 - React 19 + TypeScript + Vite
@@ -28,11 +33,65 @@
 - **Entry point:** `App.tsx` → `AppRouter.tsx` → `AuthenticatedApp.tsx`
 
 ## Agent Preferences
-- Be aggressive with parallel subagents. Use Task tool liberally for independent work streams.
-- When exploring, researching, or fixing multiple files: spin up parallel agents.
-- Background agents for long-running tasks (builds, audits, large searches).
+- Use parallel subagents only for narrow, independent work streams.
+- Keep each agent prompt scoped to a few files or one concrete question.
+- Avoid background agents for broad repo searches; use path-scoped commands first.
 - Default language: Dutch (Nederlands), unless context is English code/docs.
 - **Model voor implementatie-agents: altijd Sonnet 4.6 (`model: "sonnet"`)** — alle agents die na de planningsfase worden ingezet (code schrijven, configs genereren, bestanden aanmaken) moeten expliciet `model: "sonnet"` meekrijgen. Opus 4.6 is alleen voor de hoofdconversatie (planning, review, beslissingen). Vermeld altijd het model bij het spawnen van agents.
+
+## Context Budget Rules
+
+Deze repo bevat veel gegenereerde assets, screenshots, werkbomen en grote diffs.
+Bescherm de context window actief:
+
+- Gebruik geen brede `git diff`, `git show`, `git status` of `rg` zonder padfilter.
+- Gebruik bij voorkeur `git status --short -- <paths>` en `git diff -- <paths>`.
+- Zoek niet in `.claude/worktrees/`, `.playwright-mcp/`, `dist/`, `node_modules/`, `public/video/` of binary assets tenzij expliciet nodig.
+- Lees `systemInstructions.ts` alleen met gerichte `rg`/line ranges; het bestand is groot.
+- Plak geen lange terminaloutput in de conversatie; vat samen met aantallen en exacte paden.
+
+## Beginner-Safe AI Coding Workflow — Skales/Fintech
+
+**Doel:** Yorin kan het product sturen zonder code-ervaring. Claude moet daarom elke code-taak begrijpelijk, klein, toetsbaar en controleerbaar maken.
+
+Gebruik ook de project-skill `.agents/skills/skales-agentic-fintech-engineering/SKILL.md` bij Skales/fintech-werk, betalingen, abonnementen, ledgers, KYC, compliance, auth, admin-toegang, gebruikersdata, facturen, bank-imports, webhooks, of wanneer de gebruiker om beginner-vriendelijke uitleg vraagt.
+
+### Voor code-wijzigingen: Plan-Risk-Proof
+
+Voor elke code-wijziging geeft Claude eerst kort:
+
+```text
+Plan: wat ik ga aanpassen in gewone taal.
+Risico: Groen / Geel / Rood, met 1 zin waarom.
+Waarschijnlijke bestanden: welke bestanden of onderdelen ik verwacht te raken.
+Bewijs: welke test, build, browsercheck of handmatige check laat zien dat het werkt.
+```
+
+Werk daarna in de kleinste nuttige stap. Als de vraag groot is, splits hem op en benoem expliciet wat later komt.
+
+### Risico-labels
+
+- **Groen:** tekst, visuele polish, statische content, onschuldige UI.
+- **Geel:** formulieren, dashboards, API-reads, normale productlogica, niet-gevoelige data.
+- **Rood:** betalingen, abonnementen, ledgers, KYC, facturen, auth, admin, bankdata, persoonsgegevens, webhooks, secrets, database-migraties, RLS, AI-endpoints.
+
+Bij Rood werk:
+- vertraag en benoem expliciet wat mis kan gaan;
+- schrijf of identificeer tests voordat je implementeert;
+- controleer privacy, permissies, dubbele verwerking en financiele invarianten;
+- claim geen productie-gereedheid zonder bewijs.
+
+### Na code-wijzigingen: Changed-Files Teach-Back
+
+Elke eindreactie na code-wijzigingen bevat:
+
+- wat er veranderde in gewone taal;
+- waarom het veranderde;
+- welke bestanden veranderden en wat elk bestand doet;
+- welke tests/checks zijn uitgevoerd;
+- wat nog risicovol, onbewezen of review-waardig is.
+
+Zeg nooit "klaar", "opgelost", "veilig" of "productie-klaar" zonder uitgevoerde verificatie of expliciet benoemde rest-onzekerheid.
 
 ## Autonome Scoping — VERPLICHT
 

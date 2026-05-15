@@ -284,24 +284,24 @@ serve(async (req: Request) => {
             + `IP: ${sanitized.ip_address}\n`,
           html: `
             <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 600px;">
-              <div style="background: linear-gradient(135deg, #D97757, #C46849); padding: 24px 32px; border-radius: 12px 12px 0 0;">
+              <div style="background: linear-gradient(135deg, #D97848, #D97848); padding: 24px 32px; border-radius: 12px 12px 0 0;">
                 <h1 style="color: white; margin: 0; font-size: 20px;">Nieuwe pilot aanvraag</h1>
                 <p style="color: rgba(255,255,255,0.8); margin: 4px 0 0; font-size: 14px;">${escaped.school_naam}</p>
               </div>
-              <div style="background: #FAF9F0; padding: 24px 32px; border: 1px solid #E8E6DF; border-top: none; border-radius: 0 0 12px 12px;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 14px; color: #3D3D38;">
-                  <tr><td style="padding: 8px 0; color: #9C9C95; width: 120px;">School</td><td style="padding: 8px 0; font-weight: 600;">${escaped.school_naam}</td></tr>
-                  <tr><td style="padding: 8px 0; color: #9C9C95;">Contact</td><td style="padding: 8px 0; font-weight: 600;">${escaped.contact_persoon}</td></tr>
-                  <tr><td style="padding: 8px 0; color: #9C9C95;">E-mail</td><td style="padding: 8px 0;"><a href="mailto:${encodeURIComponent(sanitized.email)}" style="color: #D97757;">${escaped.email}</a></td></tr>
-                  <tr><td style="padding: 8px 0; color: #9C9C95;">Rol</td><td style="padding: 8px 0;">${escaped.rol}</td></tr>
-                  <tr><td style="padding: 8px 0; color: #9C9C95;">Leerlingen</td><td style="padding: 8px 0;">${escaped.aantal_leerlingen}</td></tr>
+              <div style="background: #FCF6EA; padding: 24px 32px; border: 1px solid #E7D8BD; border-top: none; border-radius: 0 0 12px 12px;">
+                <table style="width: 100%; border-collapse: collapse; font-size: 14px; color: #445865;">
+                  <tr><td style="padding: 8px 0; color: #445865; width: 120px;">School</td><td style="padding: 8px 0; font-weight: 600;">${escaped.school_naam}</td></tr>
+                  <tr><td style="padding: 8px 0; color: #445865;">Contact</td><td style="padding: 8px 0; font-weight: 600;">${escaped.contact_persoon}</td></tr>
+                  <tr><td style="padding: 8px 0; color: #445865;">E-mail</td><td style="padding: 8px 0;"><a href="mailto:${encodeURIComponent(sanitized.email)}" style="color: #D97848;">${escaped.email}</a></td></tr>
+                  <tr><td style="padding: 8px 0; color: #445865;">Rol</td><td style="padding: 8px 0;">${escaped.rol}</td></tr>
+                  <tr><td style="padding: 8px 0; color: #445865;">Leerlingen</td><td style="padding: 8px 0;">${escaped.aantal_leerlingen}</td></tr>
                 </table>
                 ${escaped.bericht ? `
-                <div style="margin-top: 16px; padding: 16px; background: white; border-radius: 8px; border: 1px solid #E8E6DF;">
-                  <p style="margin: 0 0 4px; font-size: 12px; color: #9C9C95; text-transform: uppercase; letter-spacing: 0.05em;">Bericht</p>
-                  <p style="margin: 0; font-size: 14px; color: #3D3D38; white-space: pre-wrap;">${escaped.bericht}</p>
+                <div style="margin-top: 16px; padding: 16px; background: white; border-radius: 8px; border: 1px solid #E7D8BD;">
+                  <p style="margin: 0 0 4px; font-size: 12px; color: #445865; text-transform: uppercase; letter-spacing: 0.05em;">Bericht</p>
+                  <p style="margin: 0; font-size: 14px; color: #445865; white-space: pre-wrap;">${escaped.bericht}</p>
                 </div>` : ''}
-                <p style="margin-top: 20px; font-size: 12px; color: #9C9C95;">
+                <p style="margin-top: 20px; font-size: 12px; color: #445865;">
                   ${escapeHtml(formattedDate)}<br/>
                   IP: ${escaped.ip_address}
                 </p>
@@ -316,64 +316,64 @@ serve(async (req: Request) => {
           subject: `Welkom bij DGSkills — volgende stappen voor ${sanitized.school_naam}`,
           html: `
             <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 600px; margin: 0 auto;">
-              <div style="background: linear-gradient(135deg, #D97757, #C46849); padding: 28px 32px; border-radius: 12px 12px 0 0;">
+              <div style="background: linear-gradient(135deg, #D97848, #D97848); padding: 28px 32px; border-radius: 12px 12px 0 0;">
                 <h1 style="color: white; margin: 0 0 6px; font-size: 22px;">Welkom, ${escaped.contact_persoon}!</h1>
                 <p style="color: rgba(255,255,255,0.9); margin: 0; font-size: 14px;">Je pilot-aanvraag voor <strong>${escaped.school_naam}</strong> is binnen.</p>
               </div>
-              <div style="background: white; padding: 28px 32px; border: 1px solid #E8E6DF; border-top: none; border-radius: 0 0 12px 12px;">
-                <p style="font-size: 15px; color: #3D3D38; line-height: 1.6; margin: 0 0 20px;">
+              <div style="background: white; padding: 28px 32px; border: 1px solid #E7D8BD; border-top: none; border-radius: 0 0 12px 12px;">
+                <p style="font-size: 15px; color: #445865; line-height: 1.6; margin: 0 0 20px;">
                   We nemen binnen 2 werkdagen persoonlijk contact op om de pilot in te plannen. In de tussentijd kun je alvast het volgende doen:
                 </p>
 
-                <div style="background: #FAF9F0; border: 1px solid #E8E6DF; border-radius: 10px; padding: 20px; margin-bottom: 24px;">
-                  <p style="margin: 0 0 14px; font-size: 11px; color: #9C9C95; text-transform: uppercase; letter-spacing: 0.08em; font-weight: bold;">De tijdlijn</p>
+                <div style="background: #FCF6EA; border: 1px solid #E7D8BD; border-radius: 10px; padding: 20px; margin-bottom: 24px;">
+                  <p style="margin: 0 0 14px; font-size: 11px; color: #445865; text-transform: uppercase; letter-spacing: 0.08em; font-weight: bold;">De tijdlijn</p>
                   <table style="width: 100%; border-collapse: collapse;">
                     <tr>
-                      <td style="padding: 8px 0; width: 28px; vertical-align: top; font-size: 14px; font-weight: bold; color: #D97757;">1.</td>
-                      <td style="padding: 8px 0; font-size: 14px; color: #3D3D38;">
+                      <td style="padding: 8px 0; width: 28px; vertical-align: top; font-size: 14px; font-weight: bold; color: #D97848;">1.</td>
+                      <td style="padding: 8px 0; font-size: 14px; color: #445865;">
                         <strong>Kennismakingsgesprek</strong> — 15 minuten, binnen 2 werkdagen
                       </td>
                     </tr>
                     <tr>
-                      <td style="padding: 8px 0; vertical-align: top; font-size: 14px; font-weight: bold; color: #D97757;">2.</td>
-                      <td style="padding: 8px 0; font-size: 14px; color: #3D3D38;">
+                      <td style="padding: 8px 0; vertical-align: top; font-size: 14px; font-weight: bold; color: #D97848;">2.</td>
+                      <td style="padding: 8px 0; font-size: 14px; color: #445865;">
                         <strong>Onboarding voor docenten</strong> — 30 minuten, ingepland na akkoord
                       </td>
                     </tr>
                     <tr>
-                      <td style="padding: 8px 0; vertical-align: top; font-size: 14px; font-weight: bold; color: #D97757;">3.</td>
-                      <td style="padding: 8px 0; font-size: 14px; color: #3D3D38;">
+                      <td style="padding: 8px 0; vertical-align: top; font-size: 14px; font-weight: bold; color: #D97848;">3.</td>
+                      <td style="padding: 8px 0; font-size: 14px; color: #445865;">
                         <strong>Leerlingen starten</strong> — binnen 10 werkdagen na akkoord
                       </td>
                     </tr>
                   </table>
                 </div>
 
-                <p style="margin: 0 0 10px; font-size: 11px; color: #9C9C95; text-transform: uppercase; letter-spacing: 0.08em; font-weight: bold;">Voor je schoolbestuur en FG</p>
-                <p style="font-size: 14px; color: #52524D; line-height: 1.6; margin: 0 0 14px;">
+                <p style="margin: 0 0 10px; font-size: 11px; color: #445865; text-transform: uppercase; letter-spacing: 0.08em; font-weight: bold;">Voor je schoolbestuur en FG</p>
+                <p style="font-size: 14px; color: #445865; line-height: 1.6; margin: 0 0 14px;">
                   Onze Compliance Hub bevat alle 21 juridische en technische documenten — DPA Model 4.0, DPIA, EU AI Act Annex IV, risicoregister en verwerkingsregister. Direct te bekijken of op aanvraag.
                 </p>
                 <p style="margin: 0 0 24px;">
-                  <a href="https://dgskills.app/compliance-hub" style="display: inline-block; padding: 10px 20px; background: #1A1A19; color: white; text-decoration: none; font-weight: 600; font-size: 13px; border-radius: 8px;">Naar Compliance Hub →</a>
+                  <a href="https://dgskills.app/compliance-hub" style="display: inline-block; padding: 10px 20px; background: #08283B; color: white; text-decoration: none; font-weight: 600; font-size: 13px; border-radius: 8px;">Naar Compliance Hub →</a>
                 </p>
 
-                <p style="margin: 0 0 10px; font-size: 11px; color: #9C9C95; text-transform: uppercase; letter-spacing: 0.08em; font-weight: bold;">Veelgestelde vragen</p>
-                <div style="font-size: 13px; color: #52524D; line-height: 1.6;">
-                  <p style="margin: 0 0 10px;"><strong style="color: #3D3D38;">Waar staat onze data?</strong><br />Binnen de Europese Economische Ruimte (europe-west4, Nederland). AI-verwerking via Google Vertex AI in dezelfde regio. Geen data wordt gebruikt voor het trainen van AI-modellen.</p>
-                  <p style="margin: 0 0 10px;"><strong style="color: #3D3D38;">Wat gebeurt er na de pilot?</strong><br />Stoppen (alle data wordt binnen 30 dagen verwijderd), verlengen, of overstappen naar een licentie vanaf €2.000 per schoollocatie per jaar.</p>
-                  <p style="margin: 0 0 10px;"><strong style="color: #3D3D38;">Is DGSkills compliant met de EU AI Act?</strong><br />Ja. We zijn geclassificeerd als hoog-risico onder Annex III punt 3(b) en werken naar volledige conformiteit voor 2 augustus 2026. Het volledige conformiteitsbeoordelingsplan is opvraagbaar.</p>
+                <p style="margin: 0 0 10px; font-size: 11px; color: #445865; text-transform: uppercase; letter-spacing: 0.08em; font-weight: bold;">Veelgestelde vragen</p>
+                <div style="font-size: 13px; color: #445865; line-height: 1.6;">
+                  <p style="margin: 0 0 10px;"><strong style="color: #445865;">Waar staat onze data?</strong><br />Binnen de Europese Economische Ruimte (europe-west4, Nederland). AI-verwerking via Google Vertex AI in dezelfde regio. Geen data wordt gebruikt voor het trainen van AI-modellen.</p>
+                  <p style="margin: 0 0 10px;"><strong style="color: #445865;">Wat gebeurt er na de pilot?</strong><br />Stoppen (alle data wordt binnen 30 dagen verwijderd), verlengen, of overstappen naar een licentie vanaf €2.000 per schoollocatie per jaar.</p>
+                  <p style="margin: 0 0 10px;"><strong style="color: #445865;">Is DGSkills compliant met de EU AI Act?</strong><br />Ja. We zijn geclassificeerd als hoog-risico onder Annex III punt 3(b) en werken naar volledige conformiteit voor 2 augustus 2026. Het volledige conformiteitsbeoordelingsplan is opvraagbaar.</p>
                 </div>
 
-                <p style="font-size: 14px; color: #6B6B66; margin: 24px 0 0;">
-                  Heb je direct vragen? Mail ons op <a href="mailto:info@dgskills.app" style="color: #D97757;">info@dgskills.app</a> of specifiek voor privacy op <a href="mailto:privacy@dgskills.app" style="color: #D97757;">privacy@dgskills.app</a>.
+                <p style="font-size: 14px; color: #445865; margin: 24px 0 0;">
+                  Heb je direct vragen? Mail ons op <a href="mailto:info@dgskills.app" style="color: #D97848;">info@dgskills.app</a> of specifiek voor privacy op <a href="mailto:privacy@dgskills.app" style="color: #D97848;">privacy@dgskills.app</a>.
                 </p>
 
-                <hr style="border: none; border-top: 1px solid #E8E6DF; margin: 24px 0 18px;" />
-                <p style="font-size: 12px; color: #9C9C95; margin: 0;">
+                <hr style="border: none; border-top: 1px solid #E7D8BD; margin: 24px 0 18px;" />
+                <p style="font-size: 12px; color: #445865; margin: 0;">
                   DGSkills — Digitale Geletterdheid voor het Voortgezet Onderwijs<br />
-                  <a href="https://dgskills.app" style="color: #D97757;">dgskills.app</a>
+                  <a href="https://dgskills.app" style="color: #D97848;">dgskills.app</a>
                   &nbsp;·&nbsp;
-                  <a href="https://dgskills.app/compliance-hub" style="color: #D97757;">Compliance</a>
+                  <a href="https://dgskills.app/compliance-hub" style="color: #D97848;">Compliance</a>
                   &nbsp;·&nbsp;
                   KvK 81819889
                 </p>

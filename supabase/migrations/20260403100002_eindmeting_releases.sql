@@ -6,7 +6,8 @@
 
 CREATE TABLE IF NOT EXISTS public.eindmeting_releases (
   id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
-  school_id uuid NOT NULL REFERENCES public.schools(id) ON DELETE CASCADE,
+  -- The app uses text school_id values from public.users/school_configs.
+  school_id text NOT NULL,
   school_year smallint NOT NULL,
   student_class text NOT NULL,           -- bijv. 'MH1A', 'V2B'
   released_by uuid NOT NULL REFERENCES auth.users(id),  -- docent die vrijgaf

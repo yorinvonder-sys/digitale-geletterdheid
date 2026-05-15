@@ -1,0 +1,2252 @@
+{
+  "generatedAt": "2026-05-03T12:51:34.207Z",
+  "baseUrl": "http://127.0.0.1:3000",
+  "designPath": "/Users/yorinvonder/Downloads/ai-lab---future-architect/design.md",
+  "chromePath": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+  "discover": false,
+  "threshold": 80,
+  "routesSeeded": [
+    "/"
+  ],
+  "results": [
+    {
+      "route": "/",
+      "viewport": "desktop",
+      "url": "http://127.0.0.1:3000/",
+      "metrics": {
+        "url": "http://127.0.0.1:3000/",
+        "path": "/",
+        "viewportName": "desktop",
+        "title": "DGSkills - Ontdek skills. Maak projecten.",
+        "h1": "Ontdek skills. Maak projecten. Laat zien wat je kunt .",
+        "fontFamilies": {
+          "html": "Outfit, system-ui, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "body": "Outfit, system-ui, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "main": "Outfit, system-ui, sans-serif",
+          "h1": "Outfit, system-ui, sans-serif",
+          "button": "Outfit, system-ui, sans-serif"
+        },
+        "bodyBackground": "#faf9f0",
+        "appRootBackground": "#000000",
+        "mainBackground": "#000000",
+        "h1Color": "#08283b",
+        "h1Weight": 900,
+        "tokenUsage": {
+          "#08283b": 269,
+          "#fcf6ea": 20,
+          "#e7d8bd": 5,
+          "#d7c95f": 23,
+          "#0b453f": 9,
+          "#fffdf7": 12,
+          "#d97848": 15,
+          "#5f947d": 20,
+          "#445865": 30,
+          "#f3e4cb": 4
+        },
+        "colorSample": [
+          [
+            "#e5e7eb",
+            399
+          ],
+          [
+            "#000000",
+            282
+          ],
+          [
+            "#08283b",
+            269
+          ],
+          [
+            "#ffffff",
+            98
+          ],
+          [
+            "#445865",
+            30
+          ],
+          [
+            "#d7c95f",
+            23
+          ],
+          [
+            "#fcf6ea",
+            20
+          ],
+          [
+            "#5f947d",
+            20
+          ],
+          [
+            "#d97848",
+            15
+          ],
+          [
+            "#8f9148",
+            13
+          ],
+          [
+            "#314956",
+            13
+          ],
+          [
+            "#fffdf7",
+            12
+          ],
+          [
+            "#0b453f",
+            9
+          ],
+          [
+            "#e7d8bd",
+            5
+          ],
+          [
+            "#f7f3ea",
+            5
+          ],
+          [
+            "#f6e9d5",
+            5
+          ],
+          [
+            "#d8ce99",
+            4
+          ],
+          [
+            "#9bc4a8",
+            4
+          ],
+          [
+            "#f3e4cb",
+            4
+          ],
+          [
+            "#1a1a19",
+            3
+          ]
+        ],
+        "oldClassMatches": [],
+        "oldClassCount": 0,
+        "imageSources": [
+          {
+            "src": "http://127.0.0.1:3000/logo.svg",
+            "alt": "",
+            "width": 72,
+            "height": 72
+          },
+          {
+            "src": "http://127.0.0.1:3000/screenshots/student-dashboard.webp",
+            "alt": "DGSkills leerlingdashboard met portfolio en voortgang",
+            "width": 303,
+            "height": 221
+          },
+          {
+            "src": "http://127.0.0.1:3000/screenshots/mission-game-programmeur.webp",
+            "alt": "DGSkills Game Programmeur missie",
+            "width": 228,
+            "height": 228
+          },
+          {
+            "src": "http://127.0.0.1:3000/assets/storytelling/beaver-journey-guide.png",
+            "alt": "Bevermentor wijst de skill journey aan",
+            "width": 406,
+            "height": 333
+          },
+          {
+            "src": "http://127.0.0.1:3000/screenshots/new-dashboard-missions.png",
+            "alt": "DGSkills dashboard met leerlijn, periodes, leerdoelen en missiekaarten",
+            "width": 856,
+            "height": 420
+          },
+          {
+            "src": "http://127.0.0.1:3000/assets/storytelling/beaver-skills-guide.png",
+            "alt": "Bevermentor ontdekt verschillende digitale skills",
+            "width": 296,
+            "height": 264
+          },
+          {
+            "src": "http://127.0.0.1:3000/screenshots/avatar-customization-1200.webp",
+            "alt": "DGSkills avatar-aanpassing voor het leerlingportfolio",
+            "width": 417,
+            "height": 256
+          },
+          {
+            "src": "http://127.0.0.1:3000/screenshots/student-progress-xp-1200.webp",
+            "alt": "DGSkills voortgangsscherm met XP, level en trofeeën",
+            "width": 417,
+            "height": 230
+          },
+          {
+            "src": "http://127.0.0.1:3000/screenshots/student-dashboard.webp",
+            "alt": "DGSkills leerlingdashboard als portfolio-overzicht",
+            "width": 417,
+            "height": 289
+          },
+          {
+            "src": "http://127.0.0.1:3000/screenshots/ict-privacy.webp",
+            "alt": "DGSkills school- en privacydashboard voor verantwoord gebruik",
+            "width": 417,
+            "height": 256
+          },
+          {
+            "src": "http://127.0.0.1:3000/screenshots/student-dashboard.webp",
+            "alt": "DGSkills leerlingdashboard met portfolio, voortgang en activiteiten",
+            "width": 424,
+            "height": 302
+          },
+          {
+            "src": "http://127.0.0.1:3000/screenshots/ict-privacy.webp",
+            "alt": "DGSkills privacy- en veiligheidsinterface voor scholen",
+            "width": 314,
+            "height": 16
+          },
+          {
+            "src": "http://127.0.0.1:3000/assets/storytelling/beaver-footer-guide.png",
+            "alt": "Bevermentor wijst scholen vooruit op hun digitale leerreis",
+            "width": 110,
+            "height": 110
+          }
+        ],
+        "approvedImageCount": 5,
+        "approvedImages": [
+          {
+            "src": "http://127.0.0.1:3000/screenshots/student-dashboard.webp",
+            "alt": "DGSkills leerlingdashboard met portfolio en voortgang",
+            "width": 303,
+            "height": 221
+          },
+          {
+            "src": "http://127.0.0.1:3000/screenshots/mission-game-programmeur.webp",
+            "alt": "DGSkills Game Programmeur missie",
+            "width": 228,
+            "height": 228
+          },
+          {
+            "src": "http://127.0.0.1:3000/screenshots/new-dashboard-missions.png",
+            "alt": "DGSkills dashboard met leerlijn, periodes, leerdoelen en missiekaarten",
+            "width": 856,
+            "height": 420
+          },
+          {
+            "src": "http://127.0.0.1:3000/screenshots/student-dashboard.webp",
+            "alt": "DGSkills leerlingdashboard als portfolio-overzicht",
+            "width": 417,
+            "height": 289
+          },
+          {
+            "src": "http://127.0.0.1:3000/screenshots/student-dashboard.webp",
+            "alt": "DGSkills leerlingdashboard met portfolio, voortgang en activiteiten",
+            "width": 424,
+            "height": 302
+          }
+        ],
+        "logoImages": [
+          {
+            "src": "http://127.0.0.1:3000/logo.svg",
+            "alt": "",
+            "width": 72,
+            "height": 72
+          }
+        ],
+        "lockupLogo": false,
+        "compactLogo": true,
+        "interactiveCount": 21,
+        "undersizedTargets": [
+          {
+            "tag": "a",
+            "id": "",
+            "classes": "font-black.text-white",
+            "text": "dgskills.app",
+            "width": 78,
+            "height": 20,
+            "href": "/",
+            "ariaLabel": "",
+            "type": "",
+            "className": "font-black text-white",
+            "inNav": false,
+            "inFooter": true,
+            "isSrOnly": false
+          }
+        ],
+        "ctas": [
+          {
+            "tag": "button",
+            "id": "",
+            "classes": "min-h-[44px].rounded-full.px-2.text-sm",
+            "text": "Game demo",
+            "width": 94,
+            "height": 44,
+            "href": "",
+            "ariaLabel": "",
+            "type": "",
+            "className": "min-h-[44px] rounded-full px-2 text-sm font-bold text-[#08283B] transition-colors hover:text-[#5F947D]",
+            "inNav": true,
+            "inFooter": false,
+            "isSrOnly": false
+          },
+          {
+            "tag": "a",
+            "id": "",
+            "classes": "rounded-full.px-4.py-3.text-sm",
+            "text": "Inloggen",
+            "width": 88,
+            "height": 44,
+            "href": "/login",
+            "ariaLabel": "",
+            "type": "",
+            "className": "rounded-full px-4 py-3 text-sm font-bold text-[#08283B] transition-colors hover:text-[#5F947D]",
+            "inNav": true,
+            "inFooter": false,
+            "isSrOnly": false
+          },
+          {
+            "tag": "button",
+            "id": "",
+            "classes": "group.inline-flex.min-h-[44px].items-center",
+            "text": "Plan schoolpilot",
+            "width": 188,
+            "height": 48,
+            "href": "",
+            "ariaLabel": "",
+            "type": "",
+            "className": "group inline-flex min-h-[44px] items-center gap-3 rounded-full bg-[#D7C95F] px-5 py-2 text-sm font-black text-[#08283B] shadow-md shadow-[#08283B]/10 transition-transform hover:-translate-y-0.5",
+            "inNav": true,
+            "inFooter": false,
+            "isSrOnly": false
+          },
+          {
+            "tag": "button",
+            "id": "",
+            "classes": "group.inline-flex.min-h-[48px].w-full",
+            "text": "Plan schoolpilot",
+            "width": 192,
+            "height": 54,
+            "href": "",
+            "ariaLabel": "",
+            "type": "",
+            "className": "group inline-flex min-h-[48px] w-full items-center justify-center gap-3 rounded-full bg-[#D7C95F] px-6 py-3 text-sm font-black text-[#08283B] shadow-lg shadow-[#08283B]/10 transition-transform hover:-translate-y-0.5 sm:w-auto",
+            "inNav": false,
+            "inFooter": false,
+            "isSrOnly": false
+          },
+          {
+            "tag": "button",
+            "id": "",
+            "classes": "group.inline-flex.min-h-[48px].w-full",
+            "text": "Bekijk de game demo",
+            "width": 228,
+            "height": 54,
+            "href": "",
+            "ariaLabel": "",
+            "type": "",
+            "className": "group inline-flex min-h-[48px] w-full items-center justify-center gap-3 rounded-full border border-[#87909A] bg-white/70 px-6 py-3 text-sm font-black text-[#08283B] transition-transform hover:-translate-y-0.5 sm:w-auto",
+            "inNav": false,
+            "inFooter": false,
+            "isSrOnly": false
+          },
+          {
+            "tag": "button",
+            "id": "",
+            "classes": "inline-flex.min-h-[48px].items-center.gap-3",
+            "text": "Bekijk hoe leerlingen bouwen",
+            "width": 285,
+            "height": 52,
+            "href": "",
+            "ariaLabel": "",
+            "type": "",
+            "className": "inline-flex min-h-[48px] items-center gap-3 rounded-full bg-[#0B453F] px-7 py-3 text-sm font-black text-white shadow-lg shadow-[#08283B]/10",
+            "inNav": false,
+            "inFooter": false,
+            "isSrOnly": false
+          },
+          {
+            "tag": "button",
+            "id": "",
+            "classes": "mt-7.inline-flex.min-h-[48px].items-center",
+            "text": "Bekijk portfolio-route",
+            "width": 239,
+            "height": 52,
+            "href": "",
+            "ariaLabel": "",
+            "type": "",
+            "className": "mt-7 inline-flex min-h-[48px] items-center gap-3 rounded-full bg-[#D7C95F] px-7 py-3 text-sm font-black text-[#08283B]",
+            "inNav": false,
+            "inFooter": false,
+            "isSrOnly": false
+          },
+          {
+            "tag": "button",
+            "id": "",
+            "classes": "inline-flex.min-h-[52px].items-center.justify-center",
+            "text": "Plan mijn pilot",
+            "width": 193,
+            "height": 59,
+            "href": "",
+            "ariaLabel": "",
+            "type": "",
+            "className": "inline-flex min-h-[52px] items-center justify-center gap-3 rounded-full bg-[#D7C95F] px-8 py-4 text-sm font-black text-[#08283B]",
+            "inNav": false,
+            "inFooter": false,
+            "isSrOnly": false
+          },
+          {
+            "tag": "a",
+            "id": "",
+            "classes": "inline-flex.min-h-[44px].items-center.hover:text-white",
+            "text": "Contact",
+            "width": 51,
+            "height": 44,
+            "href": "mailto:info@dgskills.app",
+            "ariaLabel": "",
+            "type": "",
+            "className": "inline-flex min-h-[44px] items-center hover:text-white",
+            "inNav": false,
+            "inFooter": true,
+            "isSrOnly": false
+          }
+        ],
+        "nestedCards": [
+          {
+            "parent": {
+              "tag": "div",
+              "id": "",
+              "classes": "rounded-[34px].bg-[#08283B].p-3.shadow-2xl",
+              "text": "dgskills.app/game-programmeur LIVE MAKER LAB +180 XP PLATFORMER Maak j"
+            },
+            "child": {
+              "tag": "div",
+              "id": "",
+              "classes": "overflow-hidden.rounded-[24px].bg-[#FFFDF7]",
+              "text": "dgskills.app/game-programmeur LIVE MAKER LAB +180 XP PLATFORMER Maak j"
+            }
+          },
+          {
+            "parent": {
+              "tag": "div",
+              "id": "",
+              "classes": "rounded-[34px].bg-[#08283B].p-3.shadow-2xl",
+              "text": "dgskills.app/game-programmeur LIVE MAKER LAB +180 XP PLATFORMER Maak j"
+            },
+            "child": {
+              "tag": "div",
+              "id": "",
+              "classes": "relative.min-h-0.flex-1.overflow-hidden",
+              "text": "PLATFORMER Maak je eigen game Score 420 AI TEKENGAME AI raadt je teken"
+            }
+          },
+          {
+            "parent": {
+              "tag": "div",
+              "id": "",
+              "classes": "rounded-[34px].bg-[#08283B].p-3.shadow-2xl",
+              "text": "dgskills.app/game-programmeur LIVE MAKER LAB +180 XP PLATFORMER Maak j"
+            },
+            "child": {
+              "tag": "div",
+              "id": "",
+              "classes": "absolute.bottom-3.left-3.w-[42%]",
+              "text": "AI TEKENGAME AI raadt je tekening"
+            }
+          },
+          {
+            "parent": {
+              "tag": "div",
+              "id": "",
+              "classes": "rounded-[34px].bg-[#08283B].p-3.shadow-2xl",
+              "text": "dgskills.app/game-programmeur LIVE MAKER LAB +180 XP PLATFORMER Maak j"
+            },
+            "child": {
+              "tag": "div",
+              "id": "",
+              "classes": "absolute.bottom-3.right-3.w-[39%]",
+              "text": "PROMPT BOSS"
+            }
+          },
+          {
+            "parent": {
+              "tag": "div",
+              "id": "",
+              "classes": "rounded-[34px].bg-[#08283B].p-3.shadow-2xl",
+              "text": "dgskills.app/game-programmeur LIVE MAKER LAB +180 XP PLATFORMER Maak j"
+            },
+            "child": {
+              "tag": "div",
+              "id": "",
+              "classes": "min-h-0.flex-[0.95].rounded-[18px].bg-white/12",
+              "text": "ROBOT ROUTE Level 3"
+            }
+          },
+          {
+            "parent": {
+              "tag": "div",
+              "id": "",
+              "classes": "rounded-[34px].bg-[#08283B].p-3.shadow-2xl",
+              "text": "dgskills.app/game-programmeur LIVE MAKER LAB +180 XP PLATFORMER Maak j"
+            },
+            "child": {
+              "tag": "div",
+              "id": "",
+              "classes": "relative.min-h-0.flex-1.overflow-hidden",
+              "text": "GAME GALLERY Remix je missie 4 klaar Race PLAYTEST 01 Maze PLAYTEST 02"
+            }
+          },
+          {
+            "parent": {
+              "tag": "div",
+              "id": "",
+              "classes": "mt-6.hidden.overflow-hidden.rounded-[30px]",
+              "text": ""
+            },
+            "child": {
+              "tag": "img",
+              "id": "",
+              "classes": "aspect-[1.22].w-full.rounded-[22px].object-cover",
+              "text": ""
+            }
+          },
+          {
+            "parent": {
+              "tag": "div",
+              "id": "",
+              "classes": "relative.overflow-hidden.rounded-[34px].bg-[#08283B]",
+              "text": "dgskills.app/journey"
+            },
+            "child": {
+              "tag": "div",
+              "id": "",
+              "classes": "overflow-hidden.rounded-[24px].bg-[#FFFDF7]",
+              "text": "dgskills.app/journey"
+            }
+          }
+        ],
+        "clippedText": [
+          {
+            "tag": "a",
+            "id": "",
+            "classes": "sr-only.focus:not-sr-only.focus:fixed.focus:left-4",
+            "text": "Naar hoofdinhoud"
+          },
+          {
+            "tag": "div",
+            "id": "",
+            "classes": "relative.overflow-hidden.rounded-xl.bg-[#F3E4CB]",
+            "text": "Race PLAYTEST 01"
+          },
+          {
+            "tag": "div",
+            "id": "",
+            "classes": "relative.overflow-hidden.rounded-xl.bg-[#F3E4CB]",
+            "text": "Maze PLAYTEST 02"
+          },
+          {
+            "tag": "div",
+            "id": "",
+            "classes": "relative.overflow-hidden.rounded-xl.bg-[#F3E4CB]",
+            "text": "Quiz PLAYTEST 03"
+          },
+          {
+            "tag": "div",
+            "id": "",
+            "classes": "relative.overflow-hidden.rounded-xl.bg-[#F3E4CB]",
+            "text": "Story PLAYTEST 04"
+          },
+          {
+            "tag": "p",
+            "id": "",
+            "classes": "mt-2.max-w-[460px].text-pretty.text-sm",
+            "text": "Elke opdracht gebruikt echte DGSkills-schermen, zodat leerlingen leren"
+          },
+          {
+            "tag": "p",
+            "id": "",
+            "classes": "mt-2.max-w-[460px].text-pretty.text-sm",
+            "text": "Bouw een platformer, ontwerp een robotroute, laat AI je tekening raden"
+          },
+          {
+            "tag": "p",
+            "id": "",
+            "classes": "mt-2.max-w-[460px].text-pretty.text-sm",
+            "text": "Voortgang wordt zichtbaar met levels, trofeeën en XP, zonder dat het v"
+          }
+        ],
+        "headings": [
+          {
+            "tag": "h1",
+            "id": "",
+            "classes": "w-full.max-w-[620px].text-[2.1rem].font-black",
+            "text": "Ontdek skills. Maak projecten. Laat zien wat je kunt .",
+            "color": "#08283b",
+            "fontFamily": "Outfit, system-ui, sans-serif",
+            "fontWeight": 900
+          },
+          {
+            "tag": "h2",
+            "id": "",
+            "classes": "max-w-[520px].text-balance.text-4xl.font-black",
+            "text": "Jouw skill journey",
+            "color": "#08283b",
+            "fontFamily": "Outfit, system-ui, sans-serif",
+            "fontWeight": 900
+          },
+          {
+            "tag": "h3",
+            "id": "",
+            "classes": "mt-2.font-black.leading-tight.text-[#08283B]",
+            "text": "Ontdek",
+            "color": "#08283b",
+            "fontFamily": "Outfit, system-ui, sans-serif",
+            "fontWeight": 900
+          },
+          {
+            "tag": "h3",
+            "id": "",
+            "classes": "mt-2.font-black.leading-tight.text-[#08283B]",
+            "text": "Leer",
+            "color": "#08283b",
+            "fontFamily": "Outfit, system-ui, sans-serif",
+            "fontWeight": 900
+          },
+          {
+            "tag": "h3",
+            "id": "",
+            "classes": "mt-2.font-black.leading-tight.text-[#08283B]",
+            "text": "Maak",
+            "color": "#08283b",
+            "fontFamily": "Outfit, system-ui, sans-serif",
+            "fontWeight": 900
+          },
+          {
+            "tag": "h3",
+            "id": "",
+            "classes": "mt-2.font-black.leading-tight.text-[#08283B]",
+            "text": "Bewijs",
+            "color": "#08283b",
+            "fontFamily": "Outfit, system-ui, sans-serif",
+            "fontWeight": 900
+          },
+          {
+            "tag": "h3",
+            "id": "",
+            "classes": "mt-2.font-black.leading-tight.text-[#08283B]",
+            "text": "Deel",
+            "color": "#08283b",
+            "fontFamily": "Outfit, system-ui, sans-serif",
+            "fontWeight": 900
+          },
+          {
+            "tag": "h2",
+            "id": "",
+            "classes": "text-balance.text-4xl.font-black.leading-tight",
+            "text": "Ontdek jouw favoriete skills",
+            "color": "#08283b",
+            "fontFamily": "Outfit, system-ui, sans-serif",
+            "fontWeight": 900
+          },
+          {
+            "tag": "h2",
+            "id": "",
+            "classes": "max-w-xl.text-balance.text-4xl.font-black",
+            "text": "Laat AI een game mee bouwen",
+            "color": "#08283b",
+            "fontFamily": "Outfit, system-ui, sans-serif",
+            "fontWeight": 900
+          },
+          {
+            "tag": "h2",
+            "id": "",
+            "classes": "text-balance.text-4xl.font-black.leading-tight",
+            "text": "Jouw portfolio. Jouw verhaal.",
+            "color": "#08283b",
+            "fontFamily": "Outfit, system-ui, sans-serif",
+            "fontWeight": 900
+          },
+          {
+            "tag": "h3",
+            "id": "",
+            "classes": "mt-3.text-2xl.font-black.leading-tight",
+            "text": "Een leerling bouwt een herkenbare identiteit.",
+            "color": "#08283b",
+            "fontFamily": "Outfit, system-ui, sans-serif",
+            "fontWeight": 900
+          },
+          {
+            "tag": "h3",
+            "id": "",
+            "classes": "mt-3.text-2xl.font-black.leading-tight",
+            "text": "Trofeeën maken groei zichtbaar.",
+            "color": "#08283b",
+            "fontFamily": "Outfit, system-ui, sans-serif",
+            "fontWeight": 900
+          },
+          {
+            "tag": "h3",
+            "id": "",
+            "classes": "mt-3.text-2xl.font-black.leading-tight",
+            "text": "Projecten worden bewijsstukken.",
+            "color": "#08283b",
+            "fontFamily": "Outfit, system-ui, sans-serif",
+            "fontWeight": 900
+          },
+          {
+            "tag": "h3",
+            "id": "",
+            "classes": "mt-3.text-2xl.font-black.leading-tight",
+            "text": "De docent ziet waar groei zit.",
+            "color": "#08283b",
+            "fontFamily": "Outfit, system-ui, sans-serif",
+            "fontWeight": 900
+          },
+          {
+            "tag": "h2",
+            "id": "",
+            "classes": "mt-3.max-w-xl.text-balance.text-4xl",
+            "text": "Samen bouwen we aan digitale toekomst.",
+            "color": "#08283b",
+            "fontFamily": "Outfit, system-ui, sans-serif",
+            "fontWeight": 900
+          },
+          {
+            "tag": "h2",
+            "id": "",
+            "classes": "text-balance.text-4xl.font-black.leading-tight",
+            "text": "Klaar om iets tofs te maken?",
+            "color": "#ffffff",
+            "fontFamily": "Outfit, system-ui, sans-serif",
+            "fontWeight": 900
+          }
+        ],
+        "links": [
+          "http://127.0.0.1:3000/#main-content",
+          "http://127.0.0.1:3000/#main-content",
+          "http://127.0.0.1:3000/",
+          "http://127.0.0.1:3000/login",
+          "http://127.0.0.1:3000/",
+          "http://127.0.0.1:3000/ict/privacy/cookies",
+          "http://127.0.0.1:3000/ict/privacy/policy",
+          "http://127.0.0.1:3000/ict/privacy/ai",
+          "mailto:info@dgskills.app"
+        ],
+        "hasHeaderNav": true,
+        "hasMain": true,
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "bodyClass": "",
+        "mainClass": "",
+        "sections": 7,
+        "cardWordCount": 2
+      },
+      "analysis": {
+        "score": 76,
+        "status": "partial",
+        "issues": [
+          "Homepage gebruikt niet zichtbaar de lockup volgens design.md."
+        ],
+        "warnings": [
+          "Globale bodykleur #faf9f0 wijkt af, maar de pagina gebruikt wel nieuwe designtokens.",
+          "Kleine nav/footer-links gevonden (1); check handmatig of de klikruimte minimaal 44px is.",
+          "Mogelijk afgekapt tekstblok gevonden (8 voorbeelden)."
+        ],
+        "signals": {
+          "hasOutfit": true,
+          "bodyBackgroundGood": false,
+          "tokenUsageCount": 407,
+          "oldClassCount": 0,
+          "usesLogo": true,
+          "hasApprovedVisuals": true,
+          "interactiveCount": 21
+        }
+      },
+      "console": [
+        {
+          "type": "warning",
+          "text": "GSAP target .portfolio-badge-motion not found. https://gsap.com"
+        },
+        {
+          "type": "warning",
+          "text": "GSAP target  not found. https://gsap.com"
+        },
+        {
+          "type": "warning",
+          "text": "GSAP target  not found. https://gsap.com"
+        },
+        {
+          "type": "warning",
+          "text": "GSAP target .portfolio-stat-motion not found. https://gsap.com"
+        },
+        {
+          "type": "warning",
+          "text": "GSAP target  not found. https://gsap.com"
+        },
+        {
+          "type": "warning",
+          "text": "GSAP target  not found. https://gsap.com"
+        }
+      ],
+      "exceptions": [],
+      "screenshot": "screenshots/home-desktop.png"
+    },
+    {
+      "route": "/",
+      "viewport": "mobile",
+      "url": "http://127.0.0.1:3000/",
+      "metrics": {
+        "url": "http://127.0.0.1:3000/",
+        "path": "/",
+        "viewportName": "mobile",
+        "title": "DGSkills - Ontdek skills. Maak projecten.",
+        "h1": "Ontdek skills. Maak projecten. Laat zien wat je kunt .",
+        "fontFamilies": {
+          "html": "Outfit, system-ui, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "body": "Outfit, system-ui, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "main": "Outfit, system-ui, sans-serif",
+          "h1": "Outfit, system-ui, sans-serif",
+          "button": "Outfit, system-ui, sans-serif"
+        },
+        "bodyBackground": "#faf9f0",
+        "appRootBackground": "#000000",
+        "mainBackground": "#000000",
+        "h1Color": "#08283b",
+        "h1Weight": 900,
+        "tokenUsage": {
+          "#08283b": 294,
+          "#fcf6ea": 19,
+          "#e7d8bd": 7,
+          "#d7c95f": 33,
+          "#0b453f": 9,
+          "#fffdf7": 13,
+          "#d97848": 18,
+          "#5f947d": 20,
+          "#445865": 28,
+          "#f3e4cb": 8
+        },
+        "colorSample": [
+          [
+            "#e5e7eb",
+            455
+          ],
+          [
+            "#000000",
+            299
+          ],
+          [
+            "#08283b",
+            294
+          ],
+          [
+            "#ffffff",
+            151
+          ],
+          [
+            "#d7c95f",
+            33
+          ],
+          [
+            "#445865",
+            28
+          ],
+          [
+            "#5f947d",
+            20
+          ],
+          [
+            "#fcf6ea",
+            19
+          ],
+          [
+            "#d97848",
+            18
+          ],
+          [
+            "#8f9148",
+            13
+          ],
+          [
+            "#314956",
+            13
+          ],
+          [
+            "#fffdf7",
+            13
+          ],
+          [
+            "#0b453f",
+            9
+          ],
+          [
+            "#f3e4cb",
+            8
+          ],
+          [
+            "#e7d8bd",
+            7
+          ],
+          [
+            "#9bc4a8",
+            7
+          ],
+          [
+            "#f6e9d5",
+            5
+          ],
+          [
+            "#d8ce99",
+            4
+          ],
+          [
+            "#f7f3ea",
+            4
+          ],
+          [
+            "#1a1a19",
+            3
+          ]
+        ],
+        "oldClassMatches": [],
+        "oldClassCount": 0,
+        "imageSources": [
+          {
+            "src": "http://127.0.0.1:3000/logo.svg",
+            "alt": "",
+            "width": 64,
+            "height": 64
+          },
+          {
+            "src": "http://127.0.0.1:3000/screenshots/student-dashboard.webp",
+            "alt": "DGSkills leerlingdashboard met portfolio en voortgang",
+            "width": 196,
+            "height": 143
+          },
+          {
+            "src": "http://127.0.0.1:3000/screenshots/new-dashboard-missions.png",
+            "alt": "DGSkills dashboard met leerlijn, periodes, leerdoelen en missiekaarten",
+            "width": 326,
+            "height": 250
+          },
+          {
+            "src": "http://127.0.0.1:3000/screenshots/prompt-master.webp",
+            "alt": "DGSkills Prompt Perfectionist opdracht met invoerveld voor een AI-prompt",
+            "width": 326,
+            "height": 250
+          },
+          {
+            "src": "http://127.0.0.1:3000/screenshots/student-progress-xp.webp",
+            "alt": "DGSkills voortgangsscherm met XP, level en trofeeën",
+            "width": 326,
+            "height": 250
+          },
+          {
+            "src": "http://127.0.0.1:3000/screenshots/student-dashboard.webp",
+            "alt": "DGSkills student dashboard als portfolio-overzicht",
+            "width": 326,
+            "height": 250
+          },
+          {
+            "src": "http://127.0.0.1:3000/screenshots/avatar-customization-1200.webp",
+            "alt": "DGSkills avatar-aanpassing voor het leerlingportfolio",
+            "width": 350,
+            "height": 230
+          },
+          {
+            "src": "http://127.0.0.1:3000/screenshots/student-progress-xp-1200.webp",
+            "alt": "DGSkills voortgangsscherm met XP, level en trofeeën",
+            "width": 350,
+            "height": 230
+          },
+          {
+            "src": "http://127.0.0.1:3000/screenshots/student-dashboard.webp",
+            "alt": "DGSkills leerlingdashboard als portfolio-overzicht",
+            "width": 350,
+            "height": 243
+          },
+          {
+            "src": "http://127.0.0.1:3000/screenshots/ict-privacy.webp",
+            "alt": "DGSkills school- en privacydashboard voor verantwoord gebruik",
+            "width": 350,
+            "height": 230
+          },
+          {
+            "src": "http://127.0.0.1:3000/screenshots/student-dashboard.webp",
+            "alt": "DGSkills leerlingdashboard met portfolio, voortgang en activiteiten",
+            "width": 225,
+            "height": 160
+          },
+          {
+            "src": "http://127.0.0.1:3000/screenshots/ict-privacy.webp",
+            "alt": "DGSkills privacy- en veiligheidsinterface voor scholen",
+            "width": 165,
+            "height": 9
+          }
+        ],
+        "approvedImageCount": 7,
+        "approvedImages": [
+          {
+            "src": "http://127.0.0.1:3000/screenshots/student-dashboard.webp",
+            "alt": "DGSkills leerlingdashboard met portfolio en voortgang",
+            "width": 196,
+            "height": 143
+          },
+          {
+            "src": "http://127.0.0.1:3000/screenshots/new-dashboard-missions.png",
+            "alt": "DGSkills dashboard met leerlijn, periodes, leerdoelen en missiekaarten",
+            "width": 326,
+            "height": 250
+          },
+          {
+            "src": "http://127.0.0.1:3000/screenshots/prompt-master.webp",
+            "alt": "DGSkills Prompt Perfectionist opdracht met invoerveld voor een AI-prompt",
+            "width": 326,
+            "height": 250
+          },
+          {
+            "src": "http://127.0.0.1:3000/screenshots/student-progress-xp.webp",
+            "alt": "DGSkills voortgangsscherm met XP, level en trofeeën",
+            "width": 326,
+            "height": 250
+          },
+          {
+            "src": "http://127.0.0.1:3000/screenshots/student-dashboard.webp",
+            "alt": "DGSkills student dashboard als portfolio-overzicht",
+            "width": 326,
+            "height": 250
+          },
+          {
+            "src": "http://127.0.0.1:3000/screenshots/student-dashboard.webp",
+            "alt": "DGSkills leerlingdashboard als portfolio-overzicht",
+            "width": 350,
+            "height": 243
+          },
+          {
+            "src": "http://127.0.0.1:3000/screenshots/student-dashboard.webp",
+            "alt": "DGSkills leerlingdashboard met portfolio, voortgang en activiteiten",
+            "width": 225,
+            "height": 160
+          }
+        ],
+        "logoImages": [
+          {
+            "src": "http://127.0.0.1:3000/logo.svg",
+            "alt": "",
+            "width": 64,
+            "height": 64
+          }
+        ],
+        "lockupLogo": false,
+        "compactLogo": true,
+        "interactiveCount": 15,
+        "undersizedTargets": [
+          {
+            "tag": "a",
+            "id": "",
+            "classes": "font-black.text-white",
+            "text": "dgskills.app",
+            "width": 350,
+            "height": 20,
+            "href": "/",
+            "ariaLabel": "",
+            "type": "",
+            "className": "font-black text-white",
+            "inNav": false,
+            "inFooter": true,
+            "isSrOnly": false
+          }
+        ],
+        "ctas": [
+          {
+            "tag": "button",
+            "id": "",
+            "classes": "group.inline-flex.min-h-[48px].w-full",
+            "text": "Plan schoolpilot",
+            "width": 340,
+            "height": 52,
+            "href": "",
+            "ariaLabel": "",
+            "type": "",
+            "className": "group inline-flex min-h-[48px] w-full items-center justify-center gap-3 rounded-full bg-[#D7C95F] px-6 py-3 text-sm font-black text-[#08283B] shadow-lg shadow-[#08283B]/10 transition-transform hover:-translate-y-0.5 sm:w-auto",
+            "inNav": false,
+            "inFooter": false,
+            "isSrOnly": false
+          },
+          {
+            "tag": "button",
+            "id": "",
+            "classes": "group.inline-flex.min-h-[48px].w-full",
+            "text": "Bekijk de game demo",
+            "width": 340,
+            "height": 54,
+            "href": "",
+            "ariaLabel": "",
+            "type": "",
+            "className": "group inline-flex min-h-[48px] w-full items-center justify-center gap-3 rounded-full border border-[#87909A] bg-white/70 px-6 py-3 text-sm font-black text-[#08283B] transition-transform hover:-translate-y-0.5 sm:w-auto",
+            "inNav": false,
+            "inFooter": false,
+            "isSrOnly": false
+          },
+          {
+            "tag": "button",
+            "id": "",
+            "classes": "inline-flex.min-h-[48px].items-center.gap-3",
+            "text": "Bekijk hoe leerlingen bouwen",
+            "width": 285,
+            "height": 52,
+            "href": "",
+            "ariaLabel": "",
+            "type": "",
+            "className": "inline-flex min-h-[48px] items-center gap-3 rounded-full bg-[#0B453F] px-7 py-3 text-sm font-black text-white shadow-lg shadow-[#08283B]/10",
+            "inNav": false,
+            "inFooter": false,
+            "isSrOnly": false
+          },
+          {
+            "tag": "button",
+            "id": "",
+            "classes": "mt-7.inline-flex.min-h-[48px].items-center",
+            "text": "Bekijk portfolio-route",
+            "width": 239,
+            "height": 52,
+            "href": "",
+            "ariaLabel": "",
+            "type": "",
+            "className": "mt-7 inline-flex min-h-[48px] items-center gap-3 rounded-full bg-[#D7C95F] px-7 py-3 text-sm font-black text-[#08283B]",
+            "inNav": false,
+            "inFooter": false,
+            "isSrOnly": false
+          },
+          {
+            "tag": "button",
+            "id": "",
+            "classes": "inline-flex.min-h-[52px].items-center.justify-center",
+            "text": "Plan mijn pilot",
+            "width": 343,
+            "height": 59,
+            "href": "",
+            "ariaLabel": "",
+            "type": "",
+            "className": "inline-flex min-h-[52px] items-center justify-center gap-3 rounded-full bg-[#D7C95F] px-8 py-4 text-sm font-black text-[#08283B]",
+            "inNav": false,
+            "inFooter": false,
+            "isSrOnly": false
+          },
+          {
+            "tag": "a",
+            "id": "",
+            "classes": "inline-flex.min-h-[44px].items-center.hover:text-white",
+            "text": "Contact",
+            "width": 51,
+            "height": 44,
+            "href": "mailto:info@dgskills.app",
+            "ariaLabel": "",
+            "type": "",
+            "className": "inline-flex min-h-[44px] items-center hover:text-white",
+            "inNav": false,
+            "inFooter": true,
+            "isSrOnly": false
+          }
+        ],
+        "nestedCards": [
+          {
+            "parent": {
+              "tag": "div",
+              "id": "",
+              "classes": "rounded-[34px].bg-[#08283B].p-3.shadow-2xl",
+              "text": "dgskills.app/game-programmeur +180 XP PLATFORMER Maak je eigen game Sc"
+            },
+            "child": {
+              "tag": "div",
+              "id": "",
+              "classes": "overflow-hidden.rounded-[24px].bg-[#FFFDF7]",
+              "text": "dgskills.app/game-programmeur +180 XP PLATFORMER Maak je eigen game Sc"
+            }
+          },
+          {
+            "parent": {
+              "tag": "div",
+              "id": "",
+              "classes": "rounded-[34px].bg-[#08283B].p-3.shadow-2xl",
+              "text": "dgskills.app/game-programmeur +180 XP PLATFORMER Maak je eigen game Sc"
+            },
+            "child": {
+              "tag": "div",
+              "id": "",
+              "classes": "relative.min-h-0.flex-1.overflow-hidden",
+              "text": "PLATFORMER Maak je eigen game Score 420 AI TEKENGAME AI raadt je teken"
+            }
+          },
+          {
+            "parent": {
+              "tag": "div",
+              "id": "",
+              "classes": "rounded-[34px].bg-[#08283B].p-3.shadow-2xl",
+              "text": "dgskills.app/game-programmeur +180 XP PLATFORMER Maak je eigen game Sc"
+            },
+            "child": {
+              "tag": "div",
+              "id": "",
+              "classes": "min-h-0.flex-[0.95].rounded-[18px].bg-white/12",
+              "text": "ROBOT ROUTE Level 3"
+            }
+          },
+          {
+            "parent": {
+              "tag": "div",
+              "id": "",
+              "classes": "rounded-[34px].bg-[#08283B].p-3.shadow-2xl",
+              "text": "dgskills.app/game-programmeur +180 XP PLATFORMER Maak je eigen game Sc"
+            },
+            "child": {
+              "tag": "div",
+              "id": "",
+              "classes": "relative.min-h-0.flex-1.overflow-hidden",
+              "text": "GAME GALLERY Remix je missie 4 klaar Race PLAYTEST 01 Maze PLAYTEST 02"
+            }
+          },
+          {
+            "parent": {
+              "tag": "div",
+              "id": "",
+              "classes": "relative.overflow-hidden.rounded-[34px].bg-[#08283B]",
+              "text": "dgskills.app/journey +180 XP PLATFORMER Maak je eigen game Score 420 A"
+            },
+            "child": {
+              "tag": "div",
+              "id": "",
+              "classes": "overflow-hidden.rounded-[24px].bg-[#FFFDF7]",
+              "text": "dgskills.app/journey +180 XP PLATFORMER Maak je eigen game Score 420 A"
+            }
+          },
+          {
+            "parent": {
+              "tag": "div",
+              "id": "",
+              "classes": "relative.overflow-hidden.rounded-[34px].bg-[#08283B]",
+              "text": "dgskills.app/journey +180 XP PLATFORMER Maak je eigen game Score 420 A"
+            },
+            "child": {
+              "tag": "div",
+              "id": "",
+              "classes": "relative.min-h-0.flex-1.overflow-hidden",
+              "text": "PLATFORMER Maak je eigen game Score 420 AI TEKENGAME AI raadt je teken"
+            }
+          },
+          {
+            "parent": {
+              "tag": "div",
+              "id": "",
+              "classes": "relative.overflow-hidden.rounded-[34px].bg-[#08283B]",
+              "text": "dgskills.app/journey +180 XP PLATFORMER Maak je eigen game Score 420 A"
+            },
+            "child": {
+              "tag": "div",
+              "id": "",
+              "classes": "min-h-0.flex-[0.95].rounded-[18px].bg-white/12",
+              "text": "ROBOT ROUTE Level 3"
+            }
+          },
+          {
+            "parent": {
+              "tag": "div",
+              "id": "",
+              "classes": "relative.overflow-hidden.rounded-[34px].bg-[#08283B]",
+              "text": "dgskills.app/journey +180 XP PLATFORMER Maak je eigen game Score 420 A"
+            },
+            "child": {
+              "tag": "div",
+              "id": "",
+              "classes": "relative.min-h-0.flex-1.overflow-hidden",
+              "text": "GAME GALLERY Remix je missie 4 klaar Race PLAYTEST 01 Maze PLAYTEST 02"
+            }
+          }
+        ],
+        "clippedText": [
+          {
+            "tag": "a",
+            "id": "",
+            "classes": "sr-only.focus:not-sr-only.focus:fixed.focus:left-4",
+            "text": "Naar hoofdinhoud"
+          },
+          {
+            "tag": "div",
+            "id": "",
+            "classes": "relative.h-full.w-full.overflow-hidden",
+            "text": "+180 XP PLATFORMER Maak je eigen game Score 420 AI TEKENGAME AI raadt "
+          },
+          {
+            "tag": "div",
+            "id": "",
+            "classes": "relative.min-h-0.flex-1.overflow-hidden",
+            "text": "PLATFORMER Maak je eigen game Score 420 AI TEKENGAME AI raadt je teken"
+          },
+          {
+            "tag": "p",
+            "id": "",
+            "classes": "truncate.text-[9px].font-black.uppercase",
+            "text": "AI TEKENGAME"
+          },
+          {
+            "tag": "div",
+            "id": "",
+            "classes": "relative.min-h-0.flex-1.overflow-hidden",
+            "text": "GAME GALLERY Remix je missie 4 klaar Race PLAYTEST 01 Maze PLAYTEST 02"
+          },
+          {
+            "tag": "div",
+            "id": "",
+            "classes": "relative.overflow-hidden.rounded-xl.bg-[#F3E4CB]",
+            "text": "Race PLAYTEST 01"
+          },
+          {
+            "tag": "div",
+            "id": "",
+            "classes": "relative.overflow-hidden.rounded-xl.bg-[#F3E4CB]",
+            "text": "Maze PLAYTEST 02"
+          },
+          {
+            "tag": "div",
+            "id": "",
+            "classes": "relative.overflow-hidden.rounded-xl.bg-[#F3E4CB]",
+            "text": "Quiz PLAYTEST 03"
+          }
+        ],
+        "headings": [
+          {
+            "tag": "h1",
+            "id": "",
+            "classes": "w-full.max-w-[620px].text-[2.1rem].font-black",
+            "text": "Ontdek skills. Maak projecten. Laat zien wat je kunt .",
+            "color": "#08283b",
+            "fontFamily": "Outfit, system-ui, sans-serif",
+            "fontWeight": 900
+          },
+          {
+            "tag": "h2",
+            "id": "",
+            "classes": "max-w-[520px].text-balance.text-4xl.font-black",
+            "text": "Jouw skill journey",
+            "color": "#08283b",
+            "fontFamily": "Outfit, system-ui, sans-serif",
+            "fontWeight": 900
+          },
+          {
+            "tag": "h3",
+            "id": "",
+            "classes": "mt-2.font-black.leading-tight.text-[#08283B]",
+            "text": "Ontdek",
+            "color": "#08283b",
+            "fontFamily": "Outfit, system-ui, sans-serif",
+            "fontWeight": 900
+          },
+          {
+            "tag": "h3",
+            "id": "",
+            "classes": "mt-2.font-black.leading-tight.text-[#08283B]",
+            "text": "Leer",
+            "color": "#08283b",
+            "fontFamily": "Outfit, system-ui, sans-serif",
+            "fontWeight": 900
+          },
+          {
+            "tag": "h3",
+            "id": "",
+            "classes": "mt-2.font-black.leading-tight.text-[#08283B]",
+            "text": "Maak",
+            "color": "#08283b",
+            "fontFamily": "Outfit, system-ui, sans-serif",
+            "fontWeight": 900
+          },
+          {
+            "tag": "h3",
+            "id": "",
+            "classes": "mt-2.font-black.leading-tight.text-[#08283B]",
+            "text": "Bewijs",
+            "color": "#08283b",
+            "fontFamily": "Outfit, system-ui, sans-serif",
+            "fontWeight": 900
+          },
+          {
+            "tag": "h3",
+            "id": "",
+            "classes": "mt-2.font-black.leading-tight.text-[#08283B]",
+            "text": "Deel",
+            "color": "#08283b",
+            "fontFamily": "Outfit, system-ui, sans-serif",
+            "fontWeight": 900
+          },
+          {
+            "tag": "h2",
+            "id": "",
+            "classes": "text-balance.text-4xl.font-black.leading-tight",
+            "text": "Ontdek jouw favoriete skills",
+            "color": "#08283b",
+            "fontFamily": "Outfit, system-ui, sans-serif",
+            "fontWeight": 900
+          },
+          {
+            "tag": "h2",
+            "id": "",
+            "classes": "max-w-xl.text-balance.text-4xl.font-black",
+            "text": "Laat AI een game mee bouwen",
+            "color": "#08283b",
+            "fontFamily": "Outfit, system-ui, sans-serif",
+            "fontWeight": 900
+          },
+          {
+            "tag": "h2",
+            "id": "",
+            "classes": "text-balance.text-4xl.font-black.leading-tight",
+            "text": "Jouw portfolio. Jouw verhaal.",
+            "color": "#08283b",
+            "fontFamily": "Outfit, system-ui, sans-serif",
+            "fontWeight": 900
+          },
+          {
+            "tag": "h3",
+            "id": "",
+            "classes": "mt-3.text-2xl.font-black.leading-tight",
+            "text": "Een leerling bouwt een herkenbare identiteit.",
+            "color": "#08283b",
+            "fontFamily": "Outfit, system-ui, sans-serif",
+            "fontWeight": 900
+          },
+          {
+            "tag": "h3",
+            "id": "",
+            "classes": "mt-3.text-2xl.font-black.leading-tight",
+            "text": "Trofeeën maken groei zichtbaar.",
+            "color": "#08283b",
+            "fontFamily": "Outfit, system-ui, sans-serif",
+            "fontWeight": 900
+          },
+          {
+            "tag": "h3",
+            "id": "",
+            "classes": "mt-3.text-2xl.font-black.leading-tight",
+            "text": "Projecten worden bewijsstukken.",
+            "color": "#08283b",
+            "fontFamily": "Outfit, system-ui, sans-serif",
+            "fontWeight": 900
+          },
+          {
+            "tag": "h3",
+            "id": "",
+            "classes": "mt-3.text-2xl.font-black.leading-tight",
+            "text": "De docent ziet waar groei zit.",
+            "color": "#08283b",
+            "fontFamily": "Outfit, system-ui, sans-serif",
+            "fontWeight": 900
+          },
+          {
+            "tag": "h2",
+            "id": "",
+            "classes": "mt-3.max-w-xl.text-balance.text-4xl",
+            "text": "Samen bouwen we aan digitale toekomst.",
+            "color": "#08283b",
+            "fontFamily": "Outfit, system-ui, sans-serif",
+            "fontWeight": 900
+          },
+          {
+            "tag": "h2",
+            "id": "",
+            "classes": "text-balance.text-4xl.font-black.leading-tight",
+            "text": "Klaar om iets tofs te maken?",
+            "color": "#ffffff",
+            "fontFamily": "Outfit, system-ui, sans-serif",
+            "fontWeight": 900
+          }
+        ],
+        "links": [
+          "http://127.0.0.1:3000/#main-content",
+          "http://127.0.0.1:3000/#main-content",
+          "http://127.0.0.1:3000/",
+          "http://127.0.0.1:3000/login",
+          "http://127.0.0.1:3000/",
+          "http://127.0.0.1:3000/ict/privacy/cookies",
+          "http://127.0.0.1:3000/ict/privacy/policy",
+          "http://127.0.0.1:3000/ict/privacy/ai",
+          "mailto:info@dgskills.app"
+        ],
+        "hasHeaderNav": true,
+        "hasMain": true,
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "bodyClass": "",
+        "mainClass": "",
+        "sections": 7,
+        "cardWordCount": 5
+      },
+      "analysis": {
+        "score": 76,
+        "status": "partial",
+        "issues": [
+          "Homepage gebruikt niet zichtbaar de lockup volgens design.md."
+        ],
+        "warnings": [
+          "Globale bodykleur #faf9f0 wijkt af, maar de pagina gebruikt wel nieuwe designtokens.",
+          "Kleine nav/footer-links gevonden (1); check handmatig of de klikruimte minimaal 44px is.",
+          "Mogelijk afgekapt tekstblok gevonden (8 voorbeelden)."
+        ],
+        "signals": {
+          "hasOutfit": true,
+          "bodyBackgroundGood": false,
+          "tokenUsageCount": 449,
+          "oldClassCount": 0,
+          "usesLogo": true,
+          "hasApprovedVisuals": true,
+          "interactiveCount": 15
+        }
+      },
+      "console": [
+        {
+          "type": "warning",
+          "text": "GSAP target .portfolio-badge-motion not found. https://gsap.com"
+        },
+        {
+          "type": "warning",
+          "text": "GSAP target  not found. https://gsap.com"
+        },
+        {
+          "type": "warning",
+          "text": "GSAP target  not found. https://gsap.com"
+        },
+        {
+          "type": "warning",
+          "text": "GSAP target .portfolio-stat-motion not found. https://gsap.com"
+        },
+        {
+          "type": "warning",
+          "text": "GSAP target  not found. https://gsap.com"
+        },
+        {
+          "type": "warning",
+          "text": "GSAP target  not found. https://gsap.com"
+        }
+      ],
+      "exceptions": [],
+      "screenshot": "screenshots/home-mobile.png"
+    }
+  ],
+  "errors": [],
+  "baseline": {
+    "url": "http://127.0.0.1:3000/",
+    "path": "/",
+    "viewportName": "desktop",
+    "title": "DGSkills - Ontdek skills. Maak projecten.",
+    "h1": "Ontdek skills. Maak projecten. Laat zien wat je kunt .",
+    "fontFamilies": {
+      "html": "Outfit, system-ui, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+      "body": "Outfit, system-ui, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+      "main": "Outfit, system-ui, sans-serif",
+      "h1": "Outfit, system-ui, sans-serif",
+      "button": "Outfit, system-ui, sans-serif"
+    },
+    "bodyBackground": "#faf9f0",
+    "appRootBackground": "#000000",
+    "mainBackground": "#000000",
+    "h1Color": "#08283b",
+    "h1Weight": 900,
+    "tokenUsage": {
+      "#08283b": 269,
+      "#fcf6ea": 20,
+      "#e7d8bd": 5,
+      "#d7c95f": 23,
+      "#0b453f": 9,
+      "#fffdf7": 12,
+      "#d97848": 15,
+      "#5f947d": 20,
+      "#445865": 30,
+      "#f3e4cb": 4
+    },
+    "colorSample": [
+      [
+        "#e5e7eb",
+        399
+      ],
+      [
+        "#000000",
+        282
+      ],
+      [
+        "#08283b",
+        269
+      ],
+      [
+        "#ffffff",
+        98
+      ],
+      [
+        "#445865",
+        30
+      ],
+      [
+        "#d7c95f",
+        23
+      ],
+      [
+        "#fcf6ea",
+        20
+      ],
+      [
+        "#5f947d",
+        20
+      ],
+      [
+        "#d97848",
+        15
+      ],
+      [
+        "#8f9148",
+        13
+      ],
+      [
+        "#314956",
+        13
+      ],
+      [
+        "#fffdf7",
+        12
+      ],
+      [
+        "#0b453f",
+        9
+      ],
+      [
+        "#e7d8bd",
+        5
+      ],
+      [
+        "#f7f3ea",
+        5
+      ],
+      [
+        "#f6e9d5",
+        5
+      ],
+      [
+        "#d8ce99",
+        4
+      ],
+      [
+        "#9bc4a8",
+        4
+      ],
+      [
+        "#f3e4cb",
+        4
+      ],
+      [
+        "#1a1a19",
+        3
+      ]
+    ],
+    "oldClassMatches": [],
+    "oldClassCount": 0,
+    "imageSources": [
+      {
+        "src": "http://127.0.0.1:3000/logo.svg",
+        "alt": "",
+        "width": 72,
+        "height": 72
+      },
+      {
+        "src": "http://127.0.0.1:3000/screenshots/student-dashboard.webp",
+        "alt": "DGSkills leerlingdashboard met portfolio en voortgang",
+        "width": 303,
+        "height": 221
+      },
+      {
+        "src": "http://127.0.0.1:3000/screenshots/mission-game-programmeur.webp",
+        "alt": "DGSkills Game Programmeur missie",
+        "width": 228,
+        "height": 228
+      },
+      {
+        "src": "http://127.0.0.1:3000/assets/storytelling/beaver-journey-guide.png",
+        "alt": "Bevermentor wijst de skill journey aan",
+        "width": 406,
+        "height": 333
+      },
+      {
+        "src": "http://127.0.0.1:3000/screenshots/new-dashboard-missions.png",
+        "alt": "DGSkills dashboard met leerlijn, periodes, leerdoelen en missiekaarten",
+        "width": 856,
+        "height": 420
+      },
+      {
+        "src": "http://127.0.0.1:3000/assets/storytelling/beaver-skills-guide.png",
+        "alt": "Bevermentor ontdekt verschillende digitale skills",
+        "width": 296,
+        "height": 264
+      },
+      {
+        "src": "http://127.0.0.1:3000/screenshots/avatar-customization-1200.webp",
+        "alt": "DGSkills avatar-aanpassing voor het leerlingportfolio",
+        "width": 417,
+        "height": 256
+      },
+      {
+        "src": "http://127.0.0.1:3000/screenshots/student-progress-xp-1200.webp",
+        "alt": "DGSkills voortgangsscherm met XP, level en trofeeën",
+        "width": 417,
+        "height": 230
+      },
+      {
+        "src": "http://127.0.0.1:3000/screenshots/student-dashboard.webp",
+        "alt": "DGSkills leerlingdashboard als portfolio-overzicht",
+        "width": 417,
+        "height": 289
+      },
+      {
+        "src": "http://127.0.0.1:3000/screenshots/ict-privacy.webp",
+        "alt": "DGSkills school- en privacydashboard voor verantwoord gebruik",
+        "width": 417,
+        "height": 256
+      },
+      {
+        "src": "http://127.0.0.1:3000/screenshots/student-dashboard.webp",
+        "alt": "DGSkills leerlingdashboard met portfolio, voortgang en activiteiten",
+        "width": 424,
+        "height": 302
+      },
+      {
+        "src": "http://127.0.0.1:3000/screenshots/ict-privacy.webp",
+        "alt": "DGSkills privacy- en veiligheidsinterface voor scholen",
+        "width": 314,
+        "height": 16
+      },
+      {
+        "src": "http://127.0.0.1:3000/assets/storytelling/beaver-footer-guide.png",
+        "alt": "Bevermentor wijst scholen vooruit op hun digitale leerreis",
+        "width": 110,
+        "height": 110
+      }
+    ],
+    "approvedImageCount": 5,
+    "approvedImages": [
+      {
+        "src": "http://127.0.0.1:3000/screenshots/student-dashboard.webp",
+        "alt": "DGSkills leerlingdashboard met portfolio en voortgang",
+        "width": 303,
+        "height": 221
+      },
+      {
+        "src": "http://127.0.0.1:3000/screenshots/mission-game-programmeur.webp",
+        "alt": "DGSkills Game Programmeur missie",
+        "width": 228,
+        "height": 228
+      },
+      {
+        "src": "http://127.0.0.1:3000/screenshots/new-dashboard-missions.png",
+        "alt": "DGSkills dashboard met leerlijn, periodes, leerdoelen en missiekaarten",
+        "width": 856,
+        "height": 420
+      },
+      {
+        "src": "http://127.0.0.1:3000/screenshots/student-dashboard.webp",
+        "alt": "DGSkills leerlingdashboard als portfolio-overzicht",
+        "width": 417,
+        "height": 289
+      },
+      {
+        "src": "http://127.0.0.1:3000/screenshots/student-dashboard.webp",
+        "alt": "DGSkills leerlingdashboard met portfolio, voortgang en activiteiten",
+        "width": 424,
+        "height": 302
+      }
+    ],
+    "logoImages": [
+      {
+        "src": "http://127.0.0.1:3000/logo.svg",
+        "alt": "",
+        "width": 72,
+        "height": 72
+      }
+    ],
+    "lockupLogo": false,
+    "compactLogo": true,
+    "interactiveCount": 21,
+    "undersizedTargets": [
+      {
+        "tag": "a",
+        "id": "",
+        "classes": "font-black.text-white",
+        "text": "dgskills.app",
+        "width": 78,
+        "height": 20,
+        "href": "/",
+        "ariaLabel": "",
+        "type": "",
+        "className": "font-black text-white",
+        "inNav": false,
+        "inFooter": true,
+        "isSrOnly": false
+      }
+    ],
+    "ctas": [
+      {
+        "tag": "button",
+        "id": "",
+        "classes": "min-h-[44px].rounded-full.px-2.text-sm",
+        "text": "Game demo",
+        "width": 94,
+        "height": 44,
+        "href": "",
+        "ariaLabel": "",
+        "type": "",
+        "className": "min-h-[44px] rounded-full px-2 text-sm font-bold text-[#08283B] transition-colors hover:text-[#5F947D]",
+        "inNav": true,
+        "inFooter": false,
+        "isSrOnly": false
+      },
+      {
+        "tag": "a",
+        "id": "",
+        "classes": "rounded-full.px-4.py-3.text-sm",
+        "text": "Inloggen",
+        "width": 88,
+        "height": 44,
+        "href": "/login",
+        "ariaLabel": "",
+        "type": "",
+        "className": "rounded-full px-4 py-3 text-sm font-bold text-[#08283B] transition-colors hover:text-[#5F947D]",
+        "inNav": true,
+        "inFooter": false,
+        "isSrOnly": false
+      },
+      {
+        "tag": "button",
+        "id": "",
+        "classes": "group.inline-flex.min-h-[44px].items-center",
+        "text": "Plan schoolpilot",
+        "width": 188,
+        "height": 48,
+        "href": "",
+        "ariaLabel": "",
+        "type": "",
+        "className": "group inline-flex min-h-[44px] items-center gap-3 rounded-full bg-[#D7C95F] px-5 py-2 text-sm font-black text-[#08283B] shadow-md shadow-[#08283B]/10 transition-transform hover:-translate-y-0.5",
+        "inNav": true,
+        "inFooter": false,
+        "isSrOnly": false
+      },
+      {
+        "tag": "button",
+        "id": "",
+        "classes": "group.inline-flex.min-h-[48px].w-full",
+        "text": "Plan schoolpilot",
+        "width": 192,
+        "height": 54,
+        "href": "",
+        "ariaLabel": "",
+        "type": "",
+        "className": "group inline-flex min-h-[48px] w-full items-center justify-center gap-3 rounded-full bg-[#D7C95F] px-6 py-3 text-sm font-black text-[#08283B] shadow-lg shadow-[#08283B]/10 transition-transform hover:-translate-y-0.5 sm:w-auto",
+        "inNav": false,
+        "inFooter": false,
+        "isSrOnly": false
+      },
+      {
+        "tag": "button",
+        "id": "",
+        "classes": "group.inline-flex.min-h-[48px].w-full",
+        "text": "Bekijk de game demo",
+        "width": 228,
+        "height": 54,
+        "href": "",
+        "ariaLabel": "",
+        "type": "",
+        "className": "group inline-flex min-h-[48px] w-full items-center justify-center gap-3 rounded-full border border-[#87909A] bg-white/70 px-6 py-3 text-sm font-black text-[#08283B] transition-transform hover:-translate-y-0.5 sm:w-auto",
+        "inNav": false,
+        "inFooter": false,
+        "isSrOnly": false
+      },
+      {
+        "tag": "button",
+        "id": "",
+        "classes": "inline-flex.min-h-[48px].items-center.gap-3",
+        "text": "Bekijk hoe leerlingen bouwen",
+        "width": 285,
+        "height": 52,
+        "href": "",
+        "ariaLabel": "",
+        "type": "",
+        "className": "inline-flex min-h-[48px] items-center gap-3 rounded-full bg-[#0B453F] px-7 py-3 text-sm font-black text-white shadow-lg shadow-[#08283B]/10",
+        "inNav": false,
+        "inFooter": false,
+        "isSrOnly": false
+      },
+      {
+        "tag": "button",
+        "id": "",
+        "classes": "mt-7.inline-flex.min-h-[48px].items-center",
+        "text": "Bekijk portfolio-route",
+        "width": 239,
+        "height": 52,
+        "href": "",
+        "ariaLabel": "",
+        "type": "",
+        "className": "mt-7 inline-flex min-h-[48px] items-center gap-3 rounded-full bg-[#D7C95F] px-7 py-3 text-sm font-black text-[#08283B]",
+        "inNav": false,
+        "inFooter": false,
+        "isSrOnly": false
+      },
+      {
+        "tag": "button",
+        "id": "",
+        "classes": "inline-flex.min-h-[52px].items-center.justify-center",
+        "text": "Plan mijn pilot",
+        "width": 193,
+        "height": 59,
+        "href": "",
+        "ariaLabel": "",
+        "type": "",
+        "className": "inline-flex min-h-[52px] items-center justify-center gap-3 rounded-full bg-[#D7C95F] px-8 py-4 text-sm font-black text-[#08283B]",
+        "inNav": false,
+        "inFooter": false,
+        "isSrOnly": false
+      },
+      {
+        "tag": "a",
+        "id": "",
+        "classes": "inline-flex.min-h-[44px].items-center.hover:text-white",
+        "text": "Contact",
+        "width": 51,
+        "height": 44,
+        "href": "mailto:info@dgskills.app",
+        "ariaLabel": "",
+        "type": "",
+        "className": "inline-flex min-h-[44px] items-center hover:text-white",
+        "inNav": false,
+        "inFooter": true,
+        "isSrOnly": false
+      }
+    ],
+    "nestedCards": [
+      {
+        "parent": {
+          "tag": "div",
+          "id": "",
+          "classes": "rounded-[34px].bg-[#08283B].p-3.shadow-2xl",
+          "text": "dgskills.app/game-programmeur LIVE MAKER LAB +180 XP PLATFORMER Maak j"
+        },
+        "child": {
+          "tag": "div",
+          "id": "",
+          "classes": "overflow-hidden.rounded-[24px].bg-[#FFFDF7]",
+          "text": "dgskills.app/game-programmeur LIVE MAKER LAB +180 XP PLATFORMER Maak j"
+        }
+      },
+      {
+        "parent": {
+          "tag": "div",
+          "id": "",
+          "classes": "rounded-[34px].bg-[#08283B].p-3.shadow-2xl",
+          "text": "dgskills.app/game-programmeur LIVE MAKER LAB +180 XP PLATFORMER Maak j"
+        },
+        "child": {
+          "tag": "div",
+          "id": "",
+          "classes": "relative.min-h-0.flex-1.overflow-hidden",
+          "text": "PLATFORMER Maak je eigen game Score 420 AI TEKENGAME AI raadt je teken"
+        }
+      },
+      {
+        "parent": {
+          "tag": "div",
+          "id": "",
+          "classes": "rounded-[34px].bg-[#08283B].p-3.shadow-2xl",
+          "text": "dgskills.app/game-programmeur LIVE MAKER LAB +180 XP PLATFORMER Maak j"
+        },
+        "child": {
+          "tag": "div",
+          "id": "",
+          "classes": "absolute.bottom-3.left-3.w-[42%]",
+          "text": "AI TEKENGAME AI raadt je tekening"
+        }
+      },
+      {
+        "parent": {
+          "tag": "div",
+          "id": "",
+          "classes": "rounded-[34px].bg-[#08283B].p-3.shadow-2xl",
+          "text": "dgskills.app/game-programmeur LIVE MAKER LAB +180 XP PLATFORMER Maak j"
+        },
+        "child": {
+          "tag": "div",
+          "id": "",
+          "classes": "absolute.bottom-3.right-3.w-[39%]",
+          "text": "PROMPT BOSS"
+        }
+      },
+      {
+        "parent": {
+          "tag": "div",
+          "id": "",
+          "classes": "rounded-[34px].bg-[#08283B].p-3.shadow-2xl",
+          "text": "dgskills.app/game-programmeur LIVE MAKER LAB +180 XP PLATFORMER Maak j"
+        },
+        "child": {
+          "tag": "div",
+          "id": "",
+          "classes": "min-h-0.flex-[0.95].rounded-[18px].bg-white/12",
+          "text": "ROBOT ROUTE Level 3"
+        }
+      },
+      {
+        "parent": {
+          "tag": "div",
+          "id": "",
+          "classes": "rounded-[34px].bg-[#08283B].p-3.shadow-2xl",
+          "text": "dgskills.app/game-programmeur LIVE MAKER LAB +180 XP PLATFORMER Maak j"
+        },
+        "child": {
+          "tag": "div",
+          "id": "",
+          "classes": "relative.min-h-0.flex-1.overflow-hidden",
+          "text": "GAME GALLERY Remix je missie 4 klaar Race PLAYTEST 01 Maze PLAYTEST 02"
+        }
+      },
+      {
+        "parent": {
+          "tag": "div",
+          "id": "",
+          "classes": "mt-6.hidden.overflow-hidden.rounded-[30px]",
+          "text": ""
+        },
+        "child": {
+          "tag": "img",
+          "id": "",
+          "classes": "aspect-[1.22].w-full.rounded-[22px].object-cover",
+          "text": ""
+        }
+      },
+      {
+        "parent": {
+          "tag": "div",
+          "id": "",
+          "classes": "relative.overflow-hidden.rounded-[34px].bg-[#08283B]",
+          "text": "dgskills.app/journey"
+        },
+        "child": {
+          "tag": "div",
+          "id": "",
+          "classes": "overflow-hidden.rounded-[24px].bg-[#FFFDF7]",
+          "text": "dgskills.app/journey"
+        }
+      }
+    ],
+    "clippedText": [
+      {
+        "tag": "a",
+        "id": "",
+        "classes": "sr-only.focus:not-sr-only.focus:fixed.focus:left-4",
+        "text": "Naar hoofdinhoud"
+      },
+      {
+        "tag": "div",
+        "id": "",
+        "classes": "relative.overflow-hidden.rounded-xl.bg-[#F3E4CB]",
+        "text": "Race PLAYTEST 01"
+      },
+      {
+        "tag": "div",
+        "id": "",
+        "classes": "relative.overflow-hidden.rounded-xl.bg-[#F3E4CB]",
+        "text": "Maze PLAYTEST 02"
+      },
+      {
+        "tag": "div",
+        "id": "",
+        "classes": "relative.overflow-hidden.rounded-xl.bg-[#F3E4CB]",
+        "text": "Quiz PLAYTEST 03"
+      },
+      {
+        "tag": "div",
+        "id": "",
+        "classes": "relative.overflow-hidden.rounded-xl.bg-[#F3E4CB]",
+        "text": "Story PLAYTEST 04"
+      },
+      {
+        "tag": "p",
+        "id": "",
+        "classes": "mt-2.max-w-[460px].text-pretty.text-sm",
+        "text": "Elke opdracht gebruikt echte DGSkills-schermen, zodat leerlingen leren"
+      },
+      {
+        "tag": "p",
+        "id": "",
+        "classes": "mt-2.max-w-[460px].text-pretty.text-sm",
+        "text": "Bouw een platformer, ontwerp een robotroute, laat AI je tekening raden"
+      },
+      {
+        "tag": "p",
+        "id": "",
+        "classes": "mt-2.max-w-[460px].text-pretty.text-sm",
+        "text": "Voortgang wordt zichtbaar met levels, trofeeën en XP, zonder dat het v"
+      }
+    ],
+    "headings": [
+      {
+        "tag": "h1",
+        "id": "",
+        "classes": "w-full.max-w-[620px].text-[2.1rem].font-black",
+        "text": "Ontdek skills. Maak projecten. Laat zien wat je kunt .",
+        "color": "#08283b",
+        "fontFamily": "Outfit, system-ui, sans-serif",
+        "fontWeight": 900
+      },
+      {
+        "tag": "h2",
+        "id": "",
+        "classes": "max-w-[520px].text-balance.text-4xl.font-black",
+        "text": "Jouw skill journey",
+        "color": "#08283b",
+        "fontFamily": "Outfit, system-ui, sans-serif",
+        "fontWeight": 900
+      },
+      {
+        "tag": "h3",
+        "id": "",
+        "classes": "mt-2.font-black.leading-tight.text-[#08283B]",
+        "text": "Ontdek",
+        "color": "#08283b",
+        "fontFamily": "Outfit, system-ui, sans-serif",
+        "fontWeight": 900
+      },
+      {
+        "tag": "h3",
+        "id": "",
+        "classes": "mt-2.font-black.leading-tight.text-[#08283B]",
+        "text": "Leer",
+        "color": "#08283b",
+        "fontFamily": "Outfit, system-ui, sans-serif",
+        "fontWeight": 900
+      },
+      {
+        "tag": "h3",
+        "id": "",
+        "classes": "mt-2.font-black.leading-tight.text-[#08283B]",
+        "text": "Maak",
+        "color": "#08283b",
+        "fontFamily": "Outfit, system-ui, sans-serif",
+        "fontWeight": 900
+      },
+      {
+        "tag": "h3",
+        "id": "",
+        "classes": "mt-2.font-black.leading-tight.text-[#08283B]",
+        "text": "Bewijs",
+        "color": "#08283b",
+        "fontFamily": "Outfit, system-ui, sans-serif",
+        "fontWeight": 900
+      },
+      {
+        "tag": "h3",
+        "id": "",
+        "classes": "mt-2.font-black.leading-tight.text-[#08283B]",
+        "text": "Deel",
+        "color": "#08283b",
+        "fontFamily": "Outfit, system-ui, sans-serif",
+        "fontWeight": 900
+      },
+      {
+        "tag": "h2",
+        "id": "",
+        "classes": "text-balance.text-4xl.font-black.leading-tight",
+        "text": "Ontdek jouw favoriete skills",
+        "color": "#08283b",
+        "fontFamily": "Outfit, system-ui, sans-serif",
+        "fontWeight": 900
+      },
+      {
+        "tag": "h2",
+        "id": "",
+        "classes": "max-w-xl.text-balance.text-4xl.font-black",
+        "text": "Laat AI een game mee bouwen",
+        "color": "#08283b",
+        "fontFamily": "Outfit, system-ui, sans-serif",
+        "fontWeight": 900
+      },
+      {
+        "tag": "h2",
+        "id": "",
+        "classes": "text-balance.text-4xl.font-black.leading-tight",
+        "text": "Jouw portfolio. Jouw verhaal.",
+        "color": "#08283b",
+        "fontFamily": "Outfit, system-ui, sans-serif",
+        "fontWeight": 900
+      },
+      {
+        "tag": "h3",
+        "id": "",
+        "classes": "mt-3.text-2xl.font-black.leading-tight",
+        "text": "Een leerling bouwt een herkenbare identiteit.",
+        "color": "#08283b",
+        "fontFamily": "Outfit, system-ui, sans-serif",
+        "fontWeight": 900
+      },
+      {
+        "tag": "h3",
+        "id": "",
+        "classes": "mt-3.text-2xl.font-black.leading-tight",
+        "text": "Trofeeën maken groei zichtbaar.",
+        "color": "#08283b",
+        "fontFamily": "Outfit, system-ui, sans-serif",
+        "fontWeight": 900
+      },
+      {
+        "tag": "h3",
+        "id": "",
+        "classes": "mt-3.text-2xl.font-black.leading-tight",
+        "text": "Projecten worden bewijsstukken.",
+        "color": "#08283b",
+        "fontFamily": "Outfit, system-ui, sans-serif",
+        "fontWeight": 900
+      },
+      {
+        "tag": "h3",
+        "id": "",
+        "classes": "mt-3.text-2xl.font-black.leading-tight",
+        "text": "De docent ziet waar groei zit.",
+        "color": "#08283b",
+        "fontFamily": "Outfit, system-ui, sans-serif",
+        "fontWeight": 900
+      },
+      {
+        "tag": "h2",
+        "id": "",
+        "classes": "mt-3.max-w-xl.text-balance.text-4xl",
+        "text": "Samen bouwen we aan digitale toekomst.",
+        "color": "#08283b",
+        "fontFamily": "Outfit, system-ui, sans-serif",
+        "fontWeight": 900
+      },
+      {
+        "tag": "h2",
+        "id": "",
+        "classes": "text-balance.text-4xl.font-black.leading-tight",
+        "text": "Klaar om iets tofs te maken?",
+        "color": "#ffffff",
+        "fontFamily": "Outfit, system-ui, sans-serif",
+        "fontWeight": 900
+      }
+    ],
+    "links": [
+      "http://127.0.0.1:3000/#main-content",
+      "http://127.0.0.1:3000/#main-content",
+      "http://127.0.0.1:3000/",
+      "http://127.0.0.1:3000/login",
+      "http://127.0.0.1:3000/",
+      "http://127.0.0.1:3000/ict/privacy/cookies",
+      "http://127.0.0.1:3000/ict/privacy/policy",
+      "http://127.0.0.1:3000/ict/privacy/ai",
+      "mailto:info@dgskills.app"
+    ],
+    "hasHeaderNav": true,
+    "hasMain": true,
+    "hasHorizontalOverflow": false,
+    "scrollWidth": 1440,
+    "clientWidth": 1440,
+    "bodyClass": "",
+    "mainClass": "",
+    "sections": 7,
+    "cardWordCount": 2
+  }
+}

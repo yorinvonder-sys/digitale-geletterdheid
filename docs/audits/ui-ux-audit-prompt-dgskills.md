@@ -72,14 +72,14 @@ Lees minimaal deze bestanden/gebieden:
 
 ### Publieke experience / scholen
 - `components/ScholenLanding.tsx`
-- alle relevante bestanden in `components/scholen/`
+- alle relevante bestanden in `src/features/public-site/`
 - `components/Login.tsx`
 - `components/Footer.tsx`
 - `components/CookieConsent.tsx`
 - `components/PrivacyModal.tsx`
 - `components/ParentConsentApproval.tsx`
-- `components/consent/`
-- `components/seo/`
+- `src/features/consent/`
+- `src/features/seo/`
 
 ### Leerlingervaring
 - `components/ProjectZeroDashboard.tsx`
@@ -92,17 +92,17 @@ Lees minimaal deze bestanden/gebieden:
 - `components/MissionConclusion.tsx`
 - `components/StudentAIChat.tsx`
 - `components/ChatBubble.tsx`
-- relevante missiecomponenten in `components/missions/`
+- relevante missiecomponenten in `src/features/missions/`
 
 ### Docentervaring
 - `components/TeacherDashboard.tsx`
-- alle relevante bestanden in `components/teacher/`
+- alle relevante bestanden in `src/features/teacher/`
 - focus mode, monitoring, leaderboard, voortgangspanels, instellingen
 
 ### Feedback, status en resilience
 - `components/Toast.tsx`
 - `components/Skeleton.tsx`
-- `components/teacher/Skeleton.tsx`
+- `src/features/teacher/Skeleton.tsx`
 - `components/RotateDevicePrompt.tsx`
 - `components/PWAInstallPrompt.tsx`
 - schermen met loading/error/empty-state gedrag

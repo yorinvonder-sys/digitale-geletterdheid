@@ -12,7 +12,7 @@ This subtree contains school-facing business, pilot, sales, didactic, and compli
 - product truth in:
   - `config/curriculum.ts`
   - `config/slo-kerndoelen-mapping.ts`
-  - `components/teacher/SLOClassOverview.tsx`
+  - `src/features/teacher/SLOClassOverview.tsx`
   - `components/ProjectZeroDashboard.tsx`
 
 ## Security & compliance rules

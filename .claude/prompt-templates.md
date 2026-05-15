@@ -5,6 +5,17 @@ Claude leest zelf de context uit de repo en begint direct met werken — geen ex
 
 ---
 
+## 0. Beginner-safe AI coding
+
+```
+Gebruik de Skales beginner-safe workflow.
+Voordat je code schrijft: leg het plan uit in normale taal, classificeer het risico als Groen/Geel/Rood, noem de waarschijnlijke bestanden, en vertel hoe we bewijzen dat het werkt.
+Werk in één kleine stap.
+Na afloop: leg uit wat er veranderde, waarom, welke bestanden zijn aangepast, welke checks zijn uitgevoerd, en wat nog onzeker is.
+```
+
+---
+
 ## 1. Nieuwe missie maken
 
 ```

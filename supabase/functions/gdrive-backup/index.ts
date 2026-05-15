@@ -71,10 +71,11 @@ Deno.serve(async (req: Request) => {
             .from("google_drive_connections")
             .select("user_id");
 
-        if (!connections || connections.length === 0) {
+        const driveConnections = (connections ?? []) as unknown as Array<{ user_id: string }>;
+        if (driveConnections.length === 0) {
             return jsonResponse({ message: "Geen actieve Drive-koppelingen." }, 200, corsHeaders);
         }
-        targetUserIds = connections.map((c: { user_id: string }) => c.user_id);
+        targetUserIds = driveConnections.map((c) => c.user_id);
     } else {
         // Manual mode: browser request with origin check
         const rejected = rejectDisallowedBrowserRequest(req, corsHeaders);
@@ -158,7 +159,7 @@ async function backupUserToDrive(
         throw new Error("Geen Drive-koppeling gevonden");
     }
 
-    const conn = connection as DriveConnection & { root_folder_id: string };
+    const conn = connection as unknown as DriveConnection & { root_folder_id: string };
 
     // 2. Get valid access token
     const { accessToken, refreshed, expiresAt } = await getValidAccessToken(conn);
@@ -196,7 +197,8 @@ async function backupUserToDrive(
 
     // 4. Download receipt images (with timeout protection)
     const receiptImages: Record<string, Uint8Array> = {};
-    const receiptsWithImages = (receipts || []).filter((r: { image_url?: string }) => r.image_url);
+    const typedReceipts = (receipts ?? []) as unknown as Array<{ id?: string; image_url?: string }>;
+    const receiptsWithImages = typedReceipts.filter((r) => r.image_url);
 
     // Limit to prevent timeout: max 20 images per backup
     const imageSlice = receiptsWithImages.slice(0, 20);
@@ -220,7 +222,8 @@ async function backupUserToDrive(
     }
 
     // 5. Build CSV
-    const csvContent = transactiesToCSV(transactions || []);
+    const typedTransactions = (transactions ?? []) as unknown as Parameters<typeof transactiesToCSV>[0];
+    const csvContent = transactiesToCSV(typedTransactions);
 
     // 6. Build ZIP
     const backupData = {
@@ -303,8 +306,15 @@ function extractStoragePath(imageUrl: string): string | null {
 
 function escapeCSV(value: string | number | undefined | null): string {
     if (value === undefined || value === null) return "";
-    const str = String(value);
-    if (str.includes(";") || str.includes('"') || str.includes("\n")) {
+    const raw = String(value);
+    const str = typeof value === "string" && (
+        /^[\t\r\n]/.test(raw) ||
+        /^[ \t\r\n]*[=+\-@]/.test(raw) ||
+        /[\r\n]/.test(raw)
+    )
+        ? `'${raw}`
+        : raw;
+    if (str.includes(";") || str.includes('"') || str.includes("\n") || str.includes("\r")) {
         return `"${str.replace(/"/g, '""')}"`;
     }
     return str;

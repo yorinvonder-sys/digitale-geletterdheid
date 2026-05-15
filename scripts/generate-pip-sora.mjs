@@ -1,5 +1,5 @@
 /**
- * Pip Intro — Scene 3 + 4 via OpenAI Sora 2
+ * Beaver Intro — Scene 3 + 4 via OpenAI Sora 2
  * Genereert de ontbrekende scenes terwijl Gemini quota gereset wordt.
  *
  * Gebruik:
@@ -24,18 +24,18 @@ if (!API_KEY) {
 
 const openai = new OpenAI({ apiKey: API_KEY });
 
-// ─── Pip karakter-beschrijving ─────────────────────────────────────────────
+// ─── DGSkills bever karakter-beschrijving ──────────────────────────────────
 
-const PIP_DESC = `a small cute European robin bird (Erithacus rubecula) with a matte terracotta-orange breast (NOT gold, NOT yellow, NOT shiny — strictly matte warm orange-brown like #D97757), a clean white belly, dark charcoal-gray wings and back, small thin black legs, large round expressive black eyes, a small orange beak, and tail feathers that dissolve into small square digital pixels in terracotta and charcoal colors. Clean black outlines, friendly 2D cartoon illustration style.`;
+const BEAVER_DESC = `a friendly DGSkills beaver mascot with warm brown fur, rounded ears, buck teeth, a flat tail, large round expressive black eyes, a teal hoodie (#0B453F), coral accents (#D97848), and small square digital pixels dissolving from the tail and phone edge in coral and teal. Clean ink outlines (#08283B), friendly 2D cartoon illustration style.`;
 
 const SCENES = [
   {
     id: "03-de-digitale-wereld",
-    prompt: `A bright, warm-toned abstract digital landscape with a cream and soft terracotta color palette. Background must NEVER be black or dark — use warm cream (#FAF9F0), soft blues, warm sunlit tones. ${PIP_DESC} IMPORTANT: the bird's breast must remain strictly matte terracotta-orange throughout the entire shot, never changing to gold or yellow or glowing. The robin flies through this warm digital space. Around it float soft translucent icons: a shield symbol, a lightbulb, floating binary code, a brain icon labeled AI, and a magnifying glass. Small square pixels in terracotta and charcoal trail behind the bird like a comet tail. Smooth cinematic camera following the bird. A warm, friendly, young male Dutch narrator voice says clearly: "Ik leerde over AI, data en digitale veiligheid. En nu wil ik jou meenemen op avontuur!" Uplifting orchestral background music with gentle strings.`,
+    prompt: `A bright, warm-toned abstract digital landscape with a cream, coral, and teal color palette. Background must NEVER be black or dark — use warm cream (#FCF6EA), paper (#FFFDF7), ink (#08283B), coral (#D97848), teal (#0B453F), sage (#5F947D), and gold (#D7C95F). ${BEAVER_DESC} IMPORTANT: the hoodie stays deep teal and accents stay coral throughout the entire shot. The beaver moves through this warm digital space. Around it float soft translucent icons: a shield symbol, a lightbulb, floating binary code, a brain icon labeled AI, and a magnifying glass. Small square pixels in coral and teal trail behind the beaver like a comet tail. Smooth cinematic camera following the beaver. A warm, friendly, young male Dutch narrator voice says clearly: "Ik leerde over AI, data en digitale veiligheid. En nu wil ik jou meenemen op avontuur!" Uplifting orchestral background music with gentle strings.`,
   },
   {
     id: "04-de-uitnodiging",
-    prompt: `A cozy, warm indoor scene with soft cream-colored background (#FAF9F0) and warm lighting. Background must NEVER be black or dark. ${PIP_DESC} The robin sits in a small cozy nest made of brown twigs and colorful autumn leaves on a wooden desk. Next to the nest sits a small tablet device showing a bright colorful app interface with terracotta-orange accent colors. The bird raises one wing in a friendly wave toward the camera, with a warm inviting smile. Small square pixels in terracotta and charcoal float gently around like fireflies. Soft warm bokeh lights in the cream background. A warm, friendly, young male Dutch narrator voice says warmly: "Klaar om een Future Architect te worden? Laten we beginnen!" The bird winks playfully. Gentle, hopeful closing music with soft chimes.`,
+    prompt: `A cozy, warm indoor scene with soft cream-colored background (#FCF6EA) and warm lighting. Background must NEVER be black or dark. ${BEAVER_DESC} The beaver sits at a wooden desk. Next to it sits a small tablet device showing a bright colorful app interface with coral and teal accent colors. The beaver raises one paw in a friendly wave toward the camera, with a warm inviting smile. Small square pixels in coral and teal float gently around like fireflies. Soft warm bokeh lights in the cream background. A warm, friendly, young male Dutch narrator voice says warmly: "Klaar om een Future Architect te worden? Laten we beginnen!" The beaver winks playfully. Gentle, hopeful closing music with soft chimes.`,
   },
 ];
 
@@ -92,7 +92,7 @@ async function generateScene(scene, index) {
     if (!result) return null;
 
     // Download video
-    const outputPath = path.join(OUTPUT_DIR, `pip-intro-${scene.id}.mp4`);
+    const outputPath = path.join(OUTPUT_DIR, `beaver-intro-${scene.id}.mp4`);
     const response = await openai.videos.download(video.id);
 
     // response is a readable stream
@@ -113,7 +113,7 @@ async function generateScene(scene, index) {
 
 async function main() {
   console.log("╔══════════════════════════════════════════════════════╗");
-  console.log("║   Pip Intro — Scene 3+4 via OpenAI Sora 2          ║");
+  console.log("║   Beaver Intro — Scene 3+4 via OpenAI Sora 2       ║");
   console.log("╚══════════════════════════════════════════════════════╝");
 
   if (!fs.existsSync(OUTPUT_DIR)) {

@@ -31,7 +31,7 @@ Deze drie missies vullen de top-3 SLO-kerndoel-gaten zoals geidentificeerd in de
 | **educationLevels** | `['mavo', 'havo', 'vwo']` |
 | **sloKerndoelen** | `['21C', '21B']` |
 | **period** | 3 (Digitaal Burgerschap) |
-| **color** | `#3B82F6` |
+| **color** | `#0B453F` |
 | **icon** | `BarChart3` (lucide-react) |
 | **difficulty** | `Easy` |
 | **primaryGoal** | Verzamel data over je schermtijd en presenteer je bevindingen |
@@ -143,7 +143,7 @@ REGELS:
 | **educationLevels** | `['mavo', 'havo', 'vwo']` |
 | **sloKerndoelen** | `['22B', '22A']` |
 | **period** | 2 (AI & Creatie) |
-| **color** | `#10B981` |
+| **color** | `#5F947D` |
 | **icon** | `Code2` (lucide-react) |
 | **difficulty** | `Medium` |
 | **primaryGoal** | Bouw een werkende 'Over Mij'-webpagina met echte HTML en CSS |
@@ -273,7 +273,7 @@ REGELS:
 | **educationLevels** | `['mavo', 'havo', 'vwo']` |
 | **sloKerndoelen** | `['23A', '21A']` |
 | **period** | 2 (Programmeren & CT) |
-| **color** | `#EF4444` |
+| **color** | `#D97848` |
 | **icon** | `Shield` (lucide-react) |
 | **difficulty** | `Medium` |
 | **primaryGoal** | Begrijp hoe wachtwoorden worden gekraakt en schrijf een wachtwoordbeleid voor je school |

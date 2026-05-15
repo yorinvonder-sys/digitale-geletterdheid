@@ -23,12 +23,12 @@ Dit is geen puur cosmetische opdracht. Verbeter de UX, informatiearchitectuur en
 Minimaal:
 - `CLAUDE.md`
 - `components/TeacherDashboard.tsx`
-- alle relevante bestanden in `components/teacher/`
-- `components/teacher/dashboard/TeacherHeader.tsx`
-- `components/teacher/dashboard/TeacherNavigation.tsx`
-- `components/teacher/MissionProgressPanel.tsx`
-- `components/teacher/SLOClassOverview.tsx`
-- `components/teacher/CLAUDE.md`
+- alle relevante bestanden in `src/features/teacher/`
+- `src/features/teacher/dashboard/TeacherHeader.tsx`
+- `src/features/teacher/dashboard/TeacherNavigation.tsx`
+- `src/features/teacher/MissionProgressPanel.tsx`
+- `src/features/teacher/SLOClassOverview.tsx`
+- `src/features/teacher/CLAUDE.md`
 - `AuthenticatedApp.tsx`
 - `components/ProjectZeroDashboard.tsx`
 

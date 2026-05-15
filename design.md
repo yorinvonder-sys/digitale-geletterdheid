@@ -29,9 +29,9 @@ De homepage voelt als een digitale skill journey voor leerlingen: warm, speels, 
 ## Logo
 
 - Gebruik de bever/otter-mascotte als merkbasis: speels en herkenbaar voor 12-16 jaar, maar niet kinderachtig.
-- Bronassets: `public/brand-redesign/otter/dgskills-beaver-phone-logo.png` voor de gekozen compacte mark en `public/brand-redesign/otter/dgskills-beaver-phone-favicon-512.png` voor favicon/app-icon varianten.
-- Productie-assets: `public/logo.svg` voor compacte mark en `public/logo-lockup.svg` voor de homepage-header.
-- Het compacte logo moet op 32px en 48px leesbaar blijven: groot silhouet, duidelijke kop/telefoon, geen extra woordmerkfragmenten.
+- Bronassets: `public/assets/brand/dgskills-beaver-laptop.webp` voor de gekozen compacte dashboardmark en `public/brand-redesign/otter/dgskills-beaver-phone-favicon-512.png` voor favicon/app-icon varianten.
+- Productie-assets: `public/assets/brand/dgskills-beaver-laptop.webp` voor compacte dashboardmark en `public/logo-lockup.svg` voor de homepage-header.
+- Het compacte logo moet op 32px en 48px leesbaar blijven: groot silhouet, duidelijke kop/laptop, geen extra woordmerkfragmenten.
 - De lockup gebruikt de bever/otter-mark plus `DGSkills` met `ink` voor `DG` en teal voor `Skills`.
 - Het logo moet werken op de cream navbar en later ook als basis voor donkere footer/app-icon toepassingen.
 

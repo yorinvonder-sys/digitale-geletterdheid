@@ -69,19 +69,21 @@ npm run dev
 
 ```
 digitale-geletterdheid/
-├── App.tsx                  # Entry point
-├── AppRouter.tsx            # Route configuratie
-├── AuthenticatedApp.tsx     # Authenticated routes
-├── components/              # React componenten
-├── contexts/                # React contexts
-├── hooks/                   # Custom hooks
-├── services/                # API services
-├── types/                   # TypeScript types
-├── utils/                   # Utility functies
+├── src/                     # React/Vite app-code
+│   ├── main.tsx             # Browser entry point
+│   ├── AppRouter.tsx        # Route configuratie
+│   ├── AuthenticatedApp.tsx # Authenticated app shell
+│   ├── components/          # React componenten per feature
+│   ├── contexts/            # React contexts
+│   ├── hooks/               # Custom hooks
+│   ├── services/            # API en productservices
+│   ├── types/               # TypeScript types
+│   └── utils/               # Utility functies
 ├── supabase/                # Supabase Edge Functions & migraties
-├── public/                  # Statische bestanden
+├── public/                  # Runtime-statische bestanden en gidsen
+├── docs/                    # Agent-, audit- en workflowdocumentatie
 ├── business/                # Zakelijke documentatie
-└── guides/                  # Handleidingen
+└── bridge/                  # GitHub-agent-bridge workflow
 ```
 
 ## Problemen?

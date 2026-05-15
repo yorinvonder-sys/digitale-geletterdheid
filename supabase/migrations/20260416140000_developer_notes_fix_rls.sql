@@ -9,16 +9,36 @@
 --   iedere INSERT/SELECT/UPDATE/DELETE. De tab Notities kon niets opslaan.
 --
 -- Fix:
---   Hergebruik de bestaande helper-functie public.is_developer() die
---   SECURITY DEFINER gebruikt en daardoor wél onder owner-rechten op
---   auth.users mag lezen. Identiek patroon aan is_branding_admin(),
---   is_teacher(), is_mfa_aal2() elders in het project.
+--   Definieer public.is_developer() als SECURITY DEFINER helper en gebruik die
+--   in de policies. De helper leest de server-side app metadata uit auth.users
+--   en vereist AAL2/MFA, zodat developer-notes niet de tijdelijke admin/dev
+--   MFA-uitzondering uit een eerdere migration overnemen.
 --
 -- Impact:
 --   - Geen data-migratie, geen nieuwe kolommen.
 --   - Alleen 4 policies opnieuw gedefinieerd.
 --   - Security model ongewijzigd: user_id = auth.uid() AND developer-rol.
 -- ===========================================================================
+
+CREATE OR REPLACE FUNCTION public.is_developer()
+RETURNS boolean
+LANGUAGE plpgsql
+STABLE
+SECURITY DEFINER
+SET search_path = public
+AS $$
+BEGIN
+  RETURN EXISTS (
+    SELECT 1
+    FROM auth.users
+    WHERE id = auth.uid()
+      AND raw_app_meta_data->>'role' = 'developer'
+  )
+  AND public.is_mfa_aal2();
+END;
+$$;
+
+GRANT EXECUTE ON FUNCTION public.is_developer() TO authenticated;
 
 DROP POLICY IF EXISTS "developer_notes_select_own" ON public.developer_notes;
 CREATE POLICY "developer_notes_select_own"
