@@ -291,16 +291,16 @@ const cinematicChapters: CinematicChapter[] = [
     },
     {
         step: '05',
-        title: 'Deel',
-        eyebrow: 'Portfolio verhaal',
-        copy: 'Aan het einde staat er geen losse score, maar een portfolio waarmee leerlingen laten zien wat ze kunnen.',
-        routeCoachTip: 'Bespreek het portfolio en maak groei zichtbaar voor leerling en docent.',
+        title: 'Groei',
+        eyebrow: 'Portfolio groei',
+        copy: 'Leerlingen krijgen feedback, bouwen bewijs op en zien hun groei terug in een portfolio dat met ze meegroeit.',
+        routeCoachTip: 'Maak groei zichtbaar per leerling, klas en route.',
         image: '/screenshots/student-dashboard.webp',
         alt: 'DGSkills student dashboard als portfolio-overzicht',
         accent: '#08283B',
-        icon: <SendIcon />,
+        icon: <GrowthIcon />,
         stat: '1',
-        statLabel: 'eigen portfolio',
+        statLabel: 'groeiroute',
     },
 ];
 
@@ -488,7 +488,7 @@ export const ScholenLanding: React.FC = () => {
                     <HeroJourneyBridge />
                 </section>
 
-                <CinematicSkillJourney reduceMotion={reduceMotion} />
+                <CinematicSkillJourney />
 
                 <section id="skills" className="relative scroll-mt-24 overflow-hidden bg-lab-paper px-5 py-20 md:px-10">
                     <Doodle className="right-4 top-8 hidden text-lab-sage/70 lg:block" variant="leaf" />
@@ -730,19 +730,23 @@ function useHomepageGsapEffects(reduceMotion: boolean) {
     }, [reduceMotion]);
 }
 
-function CinematicSkillJourney({ reduceMotion }: { reduceMotion: boolean }) {
+function CinematicSkillJourney() {
     const [active, setActive] = useState(0);
-    const sectionRef = useRef<HTMLElement | null>(null);
     const chapterRefs = useRef<Array<HTMLLIElement | null>>([]);
     const activeRef = useRef(0);
-    const lastChapterIndex = Math.max(cinematicChapters.length - 1, 1);
-    const progressScale = Math.max(0.08, active / lastChapterIndex);
+    const manualActiveUntilRef = useRef(0);
+    const progressScale = Math.max(0.12, (active + 1) / cinematicChapters.length);
 
-    const setActiveChapter = (index: number) => {
+    const setActiveChapter = (index: number, fromUser = false) => {
         const next = Math.max(0, Math.min(cinematicChapters.length - 1, index));
+        if (fromUser) manualActiveUntilRef.current = Date.now() + 1600;
         if (activeRef.current === next) return;
         activeRef.current = next;
         setActive(next);
+    };
+
+    const handleUserSelectChapter = (index: number) => {
+        setActiveChapter(index, true);
     };
 
     useEffect(() => {
@@ -755,6 +759,7 @@ function CinematicSkillJourney({ reduceMotion }: { reduceMotion: boolean }) {
                     .filter((entry) => entry.isIntersecting)
                     .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
                 if (!visible) return;
+                if (Date.now() < manualActiveUntilRef.current) return;
                 const index = Number((visible.target as HTMLElement).dataset.chapterIndex ?? 0);
                 setActiveChapter(index);
             },
@@ -768,29 +773,36 @@ function CinematicSkillJourney({ reduceMotion }: { reduceMotion: boolean }) {
     return (
         <section
             id="journey"
-            ref={sectionRef}
             className="relative scroll-mt-24 overflow-x-clip bg-lab-paper px-5 py-20 md:px-10 lg:py-24"
         >
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(215,201,95,0.16),transparent_30%),radial-gradient(circle_at_82%_30%,rgba(95,148,125,0.16),transparent_28%),linear-gradient(180deg,#FFFDF7_0%,#FCF6EA_100%)]" aria-hidden="true" />
-            <div
-                className="relative z-10 mx-auto grid max-w-5xl gap-10 lg:grid-cols-[430px_minmax(0,1fr)] lg:items-center"
-            >
-                <div className="order-2 lg:order-1">
+            <div className="absolute inset-0 bg-[linear-gradient(180deg,#FFFDF7_0%,#FCF6EA_100%)]" aria-hidden="true" />
+            <div className="absolute inset-x-0 top-0 h-px bg-lab-line" aria-hidden="true" />
+            <div className="absolute inset-x-0 bottom-0 h-px bg-lab-line" aria-hidden="true" />
+
+            <div className="relative z-10 mx-auto grid max-w-6xl gap-10 lg:grid-cols-[minmax(0,470px)_minmax(0,1fr)] lg:items-center xl:gap-14">
+                <div className="min-w-0">
                     <Reveal>
-                        <div className="relative max-w-[430px]">
+                        <div className="relative max-w-[470px]">
                             <h2 className="text-balance text-4xl font-black leading-tight text-lab-ink md:text-5xl lg:text-[3.35rem]">
                                 Jouw skill journey
                             </h2>
                             <div className="mt-3">
                                 <Squiggle color={C.ink} />
                             </div>
+                            <p className="mt-5 text-pretty text-base font-semibold leading-7 text-lab-muted md:text-lg">
+                                Van startniveau naar zichtbaar portfolio. Leerlingen zien steeds waar ze staan, wat de volgende stap is en welk bewijs ze opbouwen.
+                            </p>
+                            <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-lab-line bg-white px-4 py-2 text-sm font-black text-lab-teal shadow-sm shadow-lab-ink/5">
+                                <span className="size-2 rounded-full bg-lab-sage" aria-hidden="true" />
+                                Heldere route, zichtbare groei
+                            </div>
                         </div>
                     </Reveal>
 
-                    <ol className="relative mt-8 space-y-4 lg:mt-0 lg:h-full lg:min-h-[500px] lg:space-y-4">
-                        <span className="absolute bottom-8 left-7 top-8 w-0.5 rounded-full bg-lab-line" aria-hidden="true" />
+                    <ol className="relative mt-8 space-y-3 md:space-y-4">
+                        <span className="absolute bottom-7 left-6 top-7 w-0.5 rounded-full bg-lab-line" aria-hidden="true" />
                         <span
-                            className="absolute bottom-8 left-7 top-8 w-0.5 origin-top rounded-full bg-lab-coral transition-transform duration-500"
+                            className="absolute bottom-7 left-6 top-7 w-0.5 origin-top rounded-full bg-lab-coral transition-transform duration-500"
                             style={{ transform: `scaleY(${progressScale})` }}
                             aria-hidden="true"
                         />
@@ -799,7 +811,6 @@ function CinematicSkillJourney({ reduceMotion }: { reduceMotion: boolean }) {
                             const iconIsLight = chapter.accent === C.ink;
                             const chapterOffset = index - active;
                             const isUpcomingPreview = chapterOffset === 1;
-                            const showRouteCoach = isActive;
                             return (
                                 <li
                                     key={chapter.title}
@@ -807,107 +818,188 @@ function CinematicSkillJourney({ reduceMotion }: { reduceMotion: boolean }) {
                                         chapterRefs.current[index] = node;
                                     }}
                                     data-chapter-index={index}
-                                    aria-current={isActive ? 'step' : undefined}
-                                    className={`relative grid grid-cols-[3.5rem_1fr] gap-4 rounded-[28px] p-3 transition-[background-color,box-shadow] duration-500 md:p-4 lg:min-h-0 ${isActive ? 'bg-white shadow-xl shadow-lab-ink/10 ring-1 ring-lab-line' : isUpcomingPreview ? 'bg-white/50' : 'bg-white/30 lg:pointer-events-none'}`}
+                                    className="relative"
                                 >
-                                    <div
-                                        className="relative z-10 grid size-14 place-items-center rounded-full border-4 border-lab-paper shadow-md shadow-lab-ink/10 transition-transform duration-300"
-                                        style={{ backgroundColor: isActive ? chapter.accent : '#FCF6EA', color: isActive && iconIsLight ? '#FFFFFF' : '#08283B', transform: isActive ? 'scale(1.06)' : 'scale(1)' }}
+                                    <button
+                                        type="button"
+                                        aria-current={isActive ? 'step' : undefined}
+                                        onClick={() => handleUserSelectChapter(index)}
+                                        onFocus={() => handleUserSelectChapter(index)}
+                                        className={`group grid w-full grid-cols-[3rem_1fr_1.75rem] items-center gap-4 rounded-[22px] border p-3 text-left transition-[background-color,border-color,box-shadow,transform] duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lab-gold focus-visible:ring-offset-2 focus-visible:ring-offset-lab-paper md:p-4 ${isActive ? 'border-lab-gold bg-white shadow-xl shadow-lab-ink/10' : isUpcomingPreview ? 'border-lab-line bg-white/72 shadow-sm shadow-lab-ink/5 hover:-translate-y-0.5 hover:bg-white' : 'border-lab-line/75 bg-white/48 hover:-translate-y-0.5 hover:bg-white/82'}`}
                                     >
-                                        {chapter.icon}
-                                    </div>
-                                    <div className="min-w-0">
-                                        <div className="flex flex-wrap items-center gap-3">
-                                            <span className="text-xs font-black text-lab-oliveDeep">{chapter.step}</span>
-                                            <span className="rounded-full bg-lab-cream px-3 py-1 text-xs font-black uppercase tracking-wide text-lab-sage">{chapter.eyebrow}</span>
+                                        <div
+                                            className="relative z-10 grid size-12 place-items-center rounded-full border-4 border-lab-paper shadow-md shadow-lab-ink/10 transition-transform duration-300"
+                                            style={{ backgroundColor: isActive ? chapter.accent : '#FFFDF7', color: isActive && iconIsLight ? '#FFFFFF' : '#08283B', transform: isActive ? 'scale(1.05)' : 'scale(1)' }}
+                                        >
+                                            {chapter.icon}
                                         </div>
-                                        <h3 className={`mt-2 font-black leading-tight text-lab-ink ${isActive ? 'text-2xl' : 'text-xl'}`}>{chapter.title}</h3>
-                                        <p className={`mt-2 max-w-[460px] text-pretty text-sm font-semibold leading-6 text-lab-muted md:text-base md:leading-7 ${isActive ? 'lg:block' : 'lg:line-clamp-3'}`}>{chapter.copy}</p>
-                                        {showRouteCoach && (
-                                            <div data-inline-routecoach-tip="true" className={`mt-4 flex min-h-[88px] items-start gap-3 rounded-2xl border border-lab-line/80 bg-lab-paper/90 px-3 py-3 transition-opacity duration-500 lg:border-lab-line/70 lg:bg-lab-cream/70 ${isActive ? 'opacity-100' : 'opacity-0'}`}>
-                                                <img
-                                                    src="/assets/storytelling/beaver-storyteller.webp"
-                                                    alt=""
-                                                    aria-hidden="true"
-                                                    className="mt-0.5 size-10 shrink-0 -rotate-6 object-contain drop-shadow-sm lg:size-12"
-                                                    loading="lazy"
-                                                    decoding="async"
-                                                />
-                                                <div className="min-w-0">
-                                                    <p className="text-[11px] font-black uppercase tracking-wide text-lab-sage">Routecoach</p>
-                                                    <p className="mt-1 text-sm font-black leading-5 text-lab-ink">{chapter.routeCoachTip}</p>
-                                                </div>
+                                        <div className="min-w-0">
+                                            <div className="flex flex-wrap items-center gap-2">
+                                                <span className="text-xs font-black text-lab-oliveDeep">{chapter.step}</span>
+                                                <span className="rounded-full bg-lab-cream px-3 py-1 text-[11px] font-black uppercase text-lab-sage">{chapter.eyebrow}</span>
                                             </div>
-                                        )}
-                                    </div>
+                                            <h3 className={`mt-2 font-black leading-tight text-lab-ink ${isActive ? 'text-2xl' : 'text-xl'}`}>{chapter.title}</h3>
+                                            <p className="mt-1 max-w-[420px] text-pretty text-sm font-semibold leading-6 text-lab-muted md:text-base md:leading-7">{chapter.copy}</p>
+                                            {isActive && (
+                                                <p className="mt-3 rounded-xl bg-lab-cream px-3 py-2 text-sm font-black leading-5 text-lab-teal">
+                                                    {chapter.routeCoachTip}
+                                                </p>
+                                            )}
+                                        </div>
+                                        <span className={`grid size-9 place-items-center rounded-full transition-colors duration-300 ${isActive ? 'bg-lab-ink text-white' : 'bg-lab-paper text-lab-ink group-hover:bg-lab-gold'}`} aria-hidden="true">
+                                            <ArrowRightIcon />
+                                        </span>
+                                    </button>
                                 </li>
                             );
                         })}
                     </ol>
                 </div>
 
-                <div className="order-1 lg:order-2 lg:flex lg:items-center lg:justify-center">
-                    <div data-cinematic-mockup className="relative mx-auto w-full max-w-[720px] lg:w-full lg:max-w-[820px] xl:max-w-[880px] 2xl:max-w-[930px]">
-                        <div className="absolute -inset-8 rounded-[38%_62%_46%_54%/52%_43%_57%_48%] border border-dashed border-lab-oliveDeep/45" aria-hidden="true" />
-                        <div className="absolute -left-4 top-10 size-16 rounded-full bg-lab-gold/75 shadow-xl shadow-lab-ink/10" aria-hidden="true" />
-                        <div className="absolute -right-3 bottom-12 size-20 rounded-[42%_58%_44%_56%] bg-[#5F947D]/70 shadow-xl shadow-lab-ink/10" aria-hidden="true" />
-                        <div className="relative overflow-hidden rounded-[34px] bg-lab-ink p-3 shadow-2xl shadow-lab-ink/20">
-                            <div className="overflow-hidden rounded-[24px] bg-lab-paper">
-                                <div className="flex h-11 items-center gap-2 border-b border-lab-line bg-white px-4">
-                                    <span className="size-3 rounded-full bg-lab-coral" />
-                                    <span className="size-3 rounded-full bg-lab-gold" />
-                                    <span className="size-3 rounded-full bg-lab-sage" />
-                                    <span className="ml-4 rounded-full bg-lab-cream px-4 py-1 text-xs font-black text-lab-muted">dgskills.app/journey</span>
+                <div className="min-w-0 lg:flex lg:items-center lg:justify-center">
+                    <JourneyDashboardPreview active={active} onSelect={handleUserSelectChapter} />
+                </div>
+            </div>
+        </section>
+    );
+}
+
+function JourneyDashboardPreview({ active, onSelect }: { active: number; onSelect: (index: number) => void }) {
+    const chapter = cinematicChapters[active];
+    const completion = Math.round(((active + 1) / cinematicChapters.length) * 100);
+    const sidebarItems = ['Overzicht', 'Mijn missies', 'Portfolio', 'Badges', 'Voortgang'];
+    const badgeItems = [
+        { title: 'Doorzetter', meta: 'Level 1', color: C.gold },
+        { title: 'Samenwerker', meta: 'Level 2', color: C.coral },
+        { title: 'Routebouwer', meta: chapter.statLabel, color: chapter.accent },
+    ];
+
+    return (
+        <div className="relative mx-auto w-full max-w-[760px]">
+            <div className="overflow-hidden rounded-[28px] border border-lab-line bg-white shadow-2xl shadow-lab-ink/14">
+                <div className="flex h-12 items-center gap-2 bg-lab-ink px-4 text-white">
+                    <span className="size-3 rounded-full bg-lab-coral" aria-hidden="true" />
+                    <span className="size-3 rounded-full bg-lab-gold" aria-hidden="true" />
+                    <span className="size-3 rounded-full bg-lab-sage" aria-hidden="true" />
+                    <span className="ml-3 truncate rounded-full bg-white/12 px-4 py-1 text-xs font-black text-white/82">dgskills.app/journey</span>
+                </div>
+
+                <div className="grid min-h-[430px] bg-lab-paper sm:grid-cols-[132px_minmax(0,1fr)]">
+                    <aside className="hidden border-r border-lab-line bg-white/76 p-4 sm:block" aria-hidden="true">
+                        <div className="text-lg font-black text-lab-ink">DGSkills</div>
+                        <div className="mt-6 space-y-2">
+                            {sidebarItems.map((item, index) => (
+                                <div
+                                    key={item}
+                                    className={`rounded-xl px-3 py-2 text-[11px] font-black ${index === 0 ? 'bg-lab-gold/18 text-lab-ink' : 'text-lab-muted'}`}
+                                >
+                                    {item}
                                 </div>
-                                <div className="relative h-[250px] bg-[#FCF6EA] sm:h-[330px] lg:h-[42svh] lg:max-h-[460px] lg:min-h-[320px]">
-                                    {cinematicChapters.map((chapter, index) => {
-                                        const isGameStudio = chapter.title === 'Maak';
-                                        return (
-                                            <div
-                                                key={chapter.title}
-                                                aria-hidden={active !== index}
-                                                className={`absolute inset-0 h-full w-full transition-opacity duration-300 ${active === index ? 'opacity-100' : 'opacity-0'}`}
+                            ))}
+                        </div>
+                    </aside>
+
+                    <div className="min-w-0 p-4 sm:p-5 lg:p-6">
+                        <div className="flex flex-wrap items-center justify-between gap-3">
+                            <div>
+                                <p className="text-[11px] font-black uppercase text-lab-sage">Mijn route</p>
+                                <h3 className="mt-1 text-xl font-black leading-tight text-lab-ink md:text-2xl">Goedemorgen Jamie</h3>
+                            </div>
+                            <div className="flex items-center gap-2 rounded-full border border-lab-line bg-white px-3 py-2 text-xs font-black text-lab-muted">
+                                <span className="size-2 rounded-full bg-lab-gold" aria-hidden="true" />
+                                {completion}% zichtbaar
+                            </div>
+                        </div>
+
+                        <div className="mt-5 rounded-2xl border border-lab-line bg-white p-4 shadow-sm shadow-lab-ink/5">
+                            <div className="flex items-center justify-between gap-3">
+                                <p className="text-sm font-black text-lab-ink">Jouw leerlijn</p>
+                                <span className="rounded-full bg-lab-cream px-3 py-1 text-[11px] font-black uppercase text-lab-sage">{chapter.eyebrow}</span>
+                            </div>
+                            <div className="mt-4 grid grid-cols-5 gap-2">
+                                {cinematicChapters.map((item, index) => {
+                                    const isActive = active === index;
+                                    const isComplete = index < active;
+                                    return (
+                                        <button
+                                            key={item.title}
+                                            type="button"
+                                            onClick={() => onSelect(index)}
+                                            onFocus={() => onSelect(index)}
+                                            className="group min-w-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lab-gold focus-visible:ring-offset-2"
+                                            aria-label={`Toon stap ${item.step}: ${item.title}`}
+                                            aria-current={isActive ? 'step' : undefined}
+                                        >
+                                            <span
+                                                className={`mx-auto grid size-11 place-items-center rounded-full border text-lab-ink shadow-sm transition-transform duration-300 group-hover:-translate-y-0.5 ${isActive ? 'border-transparent text-white' : isComplete ? 'border-lab-sage bg-lab-sageSoft' : 'border-lab-line bg-lab-paper'}`}
+                                                style={isActive ? { backgroundColor: item.accent } : undefined}
                                             >
-                                                {isGameStudio ? (
-                                                    <GameStudioScreen reduceMotion={reduceMotion} ariaLabel={chapter.alt} />
-                                                ) : (
-                                                    <img
-                                                        src={chapter.image}
-                                                        alt={chapter.alt}
-                                                        className="h-full w-full object-contain"
-                                                        loading={index === 0 ? 'eager' : 'lazy'}
-                                                        decoding="async"
-                                                    />
-                                                )}
+                                                {item.icon}
+                                            </span>
+                                            <span className={`mt-2 block truncate text-[10px] font-black ${isActive ? 'text-lab-ink' : 'text-lab-muted'}`}>
+                                                {index + 1} {item.title}
+                                            </span>
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                        </div>
+
+                        <div className="mt-4 grid gap-4 lg:grid-cols-[minmax(0,1fr)_220px]">
+                            <div className="rounded-2xl border border-lab-line bg-white p-4 shadow-sm shadow-lab-ink/5">
+                                <div className="flex items-start justify-between gap-4">
+                                    <div className="min-w-0">
+                                        <p className="text-[11px] font-black uppercase text-lab-sage">Ga verder met</p>
+                                        <h4 className="mt-1 text-xl font-black leading-tight text-lab-ink">{chapter.title}</h4>
+                                        <p className="mt-2 text-sm font-semibold leading-6 text-lab-muted">{chapter.copy}</p>
+                                    </div>
+                                    <div
+                                        className="grid size-12 flex-none place-items-center rounded-2xl text-white shadow-md shadow-lab-ink/10"
+                                        style={{ backgroundColor: chapter.accent }}
+                                        aria-hidden="true"
+                                    >
+                                        {chapter.icon}
+                                    </div>
+                                </div>
+                                <div className="mt-4 h-2 rounded-full bg-lab-cream">
+                                    <div
+                                        className="h-full rounded-full transition-[width] duration-500"
+                                        style={{ width: `${completion}%`, backgroundColor: chapter.accent }}
+                                    />
+                                </div>
+                                <div className="mt-4 inline-flex rounded-full bg-lab-ink px-4 py-2 text-xs font-black text-white">
+                                    Ga verder
+                                </div>
+                            </div>
+
+                            <div className="rounded-2xl border border-lab-line bg-white p-4 shadow-sm shadow-lab-ink/5">
+                                <p className="text-[11px] font-black uppercase text-lab-sage">Recente badges</p>
+                                <div className="mt-3 grid grid-cols-3 gap-2 lg:grid-cols-1">
+                                    {badgeItems.map((badge) => (
+                                        <div key={badge.title} className="min-w-0 rounded-xl bg-lab-paper px-3 py-2">
+                                            <div className="flex items-center gap-2">
+                                                <span className="grid size-8 place-items-center rounded-full border border-lab-line bg-white">
+                                                    <span className="size-3 rounded-full" style={{ backgroundColor: badge.color }} aria-hidden="true" />
+                                                </span>
+                                                <div className="min-w-0">
+                                                    <p className="truncate text-[11px] font-black text-lab-ink">{badge.title}</p>
+                                                    <p className="truncate text-[10px] font-bold text-lab-muted">{badge.meta}</p>
+                                                </div>
                                             </div>
-                                        );
-                                    })}
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
                         </div>
 
-                        <div
-                            className="absolute -left-2 bottom-8 rounded-3xl bg-white/95 p-4 shadow-xl shadow-lab-ink/14 ring-1 ring-lab-line sm:-left-7 sm:p-5"
-                        >
-                            <p className="text-xs font-black uppercase text-lab-sage">Nu actief</p>
-                            <p className="mt-1 text-2xl font-black text-lab-ink">{cinematicChapters[active].title}</p>
-                        </div>
-                        <div
-                            className="absolute -right-2 top-12 hidden rounded-3xl bg-white/95 p-5 shadow-xl shadow-lab-ink/14 ring-1 ring-lab-line sm:block"
-                        >
-                            <p className="text-xs font-black text-lab-muted">{cinematicChapters[active].statLabel}</p>
-                            <p className="mt-1 text-3xl font-black text-lab-ink">{cinematicChapters[active].stat}</p>
-                        </div>
-                        <div
-                            className="absolute bottom-[-22px] right-10 rounded-full px-5 py-3 text-sm font-black text-white shadow-xl shadow-lab-ink/15"
-                            style={{ backgroundColor: cinematicChapters[active].accent }}
-                        >
-                            {cinematicChapters[active].eyebrow}
+                        <div className="mt-4 rounded-2xl border border-lab-sage/20 bg-lab-sageSoft px-4 py-3">
+                            <p className="text-sm font-black text-lab-teal">Tip voor vandaag</p>
+                            <p className="mt-1 text-sm font-semibold leading-6 text-lab-muted">{chapter.routeCoachTip}</p>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
     );
 }
 
@@ -1130,151 +1222,6 @@ function ProductProofFrame({
                 </div>
             </div>
         </article>
-    );
-}
-
-function GameStudioScreen({ reduceMotion, ariaLabel }: { reduceMotion: boolean; ariaLabel: string }) {
-    const floatAnimation = reduceMotion ? undefined : 'dg-game-float 6s ease-in-out infinite';
-    const pulseAnimation = reduceMotion ? undefined : 'dg-game-pulse 2.8s ease-in-out infinite';
-    const driftAnimation = reduceMotion ? undefined : 'dg-game-drift 7s ease-in-out infinite';
-
-    return (
-        <div
-            role="img"
-            aria-label={ariaLabel}
-            className="relative h-full w-full overflow-hidden bg-[#08283B] text-white"
-        >
-            <style>
-                {`
-                    @keyframes dg-game-float {
-                        0%, 100% { transform: translate3d(0, 0, 0); }
-                        50% { transform: translate3d(0, -8px, 0); }
-                    }
-                    @keyframes dg-game-pulse {
-                        0%, 100% { opacity: .68; transform: scale(1); }
-                        50% { opacity: 1; transform: scale(1.08); }
-                    }
-                    @keyframes dg-game-drift {
-                        0%, 100% { transform: translate3d(-4px, 0, 0); }
-                        50% { transform: translate3d(8px, -4px, 0); }
-                    }
-                `}
-            </style>
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_16%,rgba(217,120,72,0.45),transparent_26%),radial-gradient(circle_at_82%_22%,rgba(215,201,95,0.34),transparent_24%),radial-gradient(circle_at_58%_88%,rgba(95,148,125,0.46),transparent_34%),linear-gradient(135deg,#102D43_0%,#081C2A_56%,#163D37_100%)]" />
-            <div className="absolute inset-x-0 top-0 h-20 bg-[linear-gradient(180deg,rgba(255,255,255,0.14),transparent)]" />
-            <div className="absolute left-5 top-4 hidden items-center gap-2 rounded-full bg-white/12 px-3 py-2 text-[10px] font-black uppercase tracking-wide text-[#F3E4CB] ring-1 ring-white/14 sm:flex">
-                <span className="size-2 rounded-full bg-lab-gold" style={{ animation: pulseAnimation }} />
-                Live maker lab
-            </div>
-            <div className="absolute right-4 top-4 rounded-full bg-lab-coral px-3 py-2 text-[10px] font-black uppercase tracking-wide text-white shadow-lg shadow-lab-coral/30 sm:right-5">
-                +180 XP
-            </div>
-
-            <div className="relative z-10 grid h-full grid-cols-1 gap-3 p-4 sm:grid-cols-[1.04fr_0.96fr] sm:gap-4 sm:p-5 lg:p-6">
-                <div className="flex min-w-0 flex-col gap-3 sm:gap-4">
-                    <div className="relative min-h-0 flex-1 overflow-hidden rounded-[18px] bg-[#F9F4E8] text-lab-ink shadow-2xl shadow-black/25 ring-1 ring-white/20" style={{ animation: floatAnimation }}>
-                        <div className="flex items-center justify-between border-b border-lab-line bg-white/82 px-4 py-2">
-                            <div>
-                                <p className="text-[10px] font-black uppercase tracking-wide text-lab-coral">Platformer</p>
-                                <p className="text-sm font-black leading-tight sm:text-base">Maak je eigen game</p>
-                            </div>
-                            <div className="rounded-full bg-lab-ink px-2.5 py-1 text-[10px] font-black text-white">Score 420</div>
-                        </div>
-                        <div className="relative h-[calc(100%-54px)] overflow-hidden bg-[linear-gradient(180deg,#8ED5F2_0%,#DDF5F2_56%,#86C66B_57%,#5F947D_100%)]">
-                            <div className="absolute left-5 top-7 h-6 w-16 rounded-full bg-white/72 blur-[1px]" style={{ animation: driftAnimation }} />
-                            <div className="absolute right-10 top-10 h-5 w-20 rounded-full bg-white/58 blur-[1px]" />
-                            <div className="absolute bottom-[30%] left-[44%] h-4 w-16 rounded-md bg-lab-oliveDeep shadow-md shadow-lab-ink/15" />
-                            <div className="absolute bottom-[48%] right-[16%] h-4 w-20 rounded-md bg-lab-gold shadow-md shadow-lab-ink/15" />
-                            <div className="absolute bottom-[20%] left-[13%] grid size-9 place-items-center rounded-lg bg-lab-coral shadow-xl shadow-lab-ink/20">
-                                <span className="size-4 rounded-full bg-white" />
-                            </div>
-                            <div className="absolute bottom-[22%] right-[22%] size-8 rounded-md bg-lab-ink shadow-lg shadow-lab-ink/20">
-                                <span className="absolute left-2 top-2 size-1.5 rounded-full bg-white" />
-                                <span className="absolute right-2 top-2 size-1.5 rounded-full bg-white" />
-                            </div>
-                            <div className="absolute bottom-0 left-0 h-[18%] w-full bg-[#7A5A3D]" />
-                            <div className="absolute bottom-[18%] left-0 h-3 w-full bg-lab-sage" />
-                            <div className="absolute bottom-3 left-3 w-[42%] rounded-xl bg-white/94 p-2 shadow-xl shadow-lab-ink/18 ring-1 ring-lab-ink/10">
-                                <div className="mb-1 flex items-center gap-1.5">
-                                    <span className="size-2 rounded-full bg-lab-gold" />
-                                    <p className="truncate text-[11px] font-black uppercase tracking-wide text-lab-ink">AI Tekengame</p>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <svg viewBox="0 0 48 34" className="h-8 w-11 flex-none" aria-hidden="true">
-                                        <rect x="13" y="12" width="20" height="16" rx="6" fill="#5F947D" stroke="#08283B" strokeWidth="2.4" />
-                                        <circle cx="20" cy="21" r="1.8" fill="#08283B" />
-                                        <circle cx="27" cy="21" r="1.8" fill="#08283B" />
-                                        <path d="M23 12V5" stroke="#08283B" strokeWidth="2.4" strokeLinecap="round" />
-                                        <circle cx="23" cy="4" r="3" fill="#D97848" />
-                                    </svg>
-                                    <p className="min-w-0 text-[10px] font-black leading-tight text-lab-muted">AI raadt je tekening</p>
-                                </div>
-                            </div>
-                            <div className="absolute bottom-3 right-3 w-[39%] rounded-xl bg-[#08283B]/94 p-2 text-white shadow-xl shadow-lab-ink/22 ring-1 ring-white/15">
-                                <div className="mb-2 flex items-center gap-1.5">
-                                    <span className="size-2 rounded-full bg-[#D97848]" />
-                                    <p className="truncate text-[11px] font-black uppercase tracking-wide">Prompt Boss</p>
-                                </div>
-                                <div className="space-y-1">
-                                    <div className="h-1.5 w-full rounded-full bg-lab-gold" />
-                                    <div className="h-1.5 w-4/5 rounded-full bg-white/35" />
-                                    <div className="h-1.5 w-3/5 rounded-full bg-[#5F947D]" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="flex min-w-0 flex-col gap-3 sm:gap-4">
-                    <div className="min-h-0 flex-[0.95] rounded-[18px] bg-white/12 p-3 shadow-xl shadow-black/20 ring-1 ring-white/14 backdrop-blur" style={{ animation: reduceMotion ? undefined : 'dg-game-float 7s ease-in-out infinite 0.7s' }}>
-                        <div className="mb-2 flex items-center justify-between">
-                            <p className="text-[10px] font-black uppercase tracking-wide text-[#F3E4CB]">Robot route</p>
-                            <span className="rounded-full bg-[#5F947D] px-2 py-1 text-[10px] font-black text-lab-ink">Level 3</span>
-                        </div>
-                        <div className="grid h-[calc(100%-30px)] grid-cols-5 gap-1 rounded-xl bg-[#071A26] p-2">
-                            {Array.from({ length: 20 }).map((_, index) => {
-                                const isPath = [0, 1, 6, 11, 12, 13, 18, 19].includes(index);
-                                const isBot = index === 11;
-                                const isGoal = index === 19;
-                                return (
-                                    <div key={index} className={`relative rounded-md ${isPath ? 'bg-lab-gold/80' : 'bg-white/10'}`}>
-                                        {isBot && <span className="absolute inset-1 rounded-md bg-lab-coral shadow-lg shadow-lab-coral/40" />}
-                                        {isGoal && <span className="absolute inset-1 rounded-full bg-[#5F947D] shadow-lg shadow-[#5F947D]/40" />}
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    </div>
-
-                    <div className="relative min-h-0 flex-1 overflow-hidden rounded-[18px] bg-lab-paper p-3 text-lab-ink shadow-2xl shadow-black/20 ring-1 ring-white/20">
-                        <div className="mb-2 flex items-center justify-between">
-                            <div>
-                                <p className="text-[10px] font-black uppercase tracking-wide text-lab-sage">Game gallery</p>
-                                <p className="text-sm font-black leading-tight sm:text-base">Remix je missie</p>
-                            </div>
-                            <span className="rounded-full bg-lab-cream px-2.5 py-1 text-[10px] font-black text-lab-coral">4 klaar</span>
-                        </div>
-                        <div className="grid h-[calc(100%-48px)] grid-cols-2 gap-2">
-                            {[
-                                ['Race', '#D97848'],
-                                ['Maze', '#5F947D'],
-                                ['Quiz', '#D7C95F'],
-                                ['Story', '#0B453F'],
-                            ].map(([name, color], index) => (
-                                <div key={name} className="relative overflow-hidden rounded-xl bg-lab-creamDeep p-2">
-                                    <div className="absolute -right-3 -top-3 size-10 rounded-full opacity-75" style={{ backgroundColor: color }} />
-                                    <div className="relative flex h-full flex-col justify-end">
-                                        <div className="mb-auto h-2 w-10 rounded-full bg-lab-ink/15" />
-                                        <p className="text-xs font-black leading-none">{name}</p>
-                                        <p className="mt-1 text-[9px] font-black uppercase tracking-wide text-lab-muted">playtest 0{index + 1}</p>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     );
 }
 
@@ -2144,7 +2091,7 @@ function SearchIcon() { return <IconBase><circle cx="11" cy="11" r="7" /><path d
 function BookIcon() { return <IconBase><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /><path d="M6.5 3H20v18H6.5A2.5 2.5 0 0 1 4 18.5v-13A2.5 2.5 0 0 1 6.5 3Z" /></IconBase>; }
 function PencilIcon() { return <IconBase><path d="m18 2 4 4-13 13-5 1 1-5Z" /><path d="M15 5 19 9" /></IconBase>; }
 function BadgeIcon() { return <IconBase><path d="M12 3 15 9l6 1-4.5 4.5 1 6.5L12 18l-5.5 3 1-6.5L3 10l6-1Z" /></IconBase>; }
-function SendIcon() { return <IconBase><path d="M22 2 11 13" /><path d="m22 2-7 20-4-9-9-4Z" /></IconBase>; }
+function GrowthIcon() { return <IconBase><path d="M4 16 9 11l4 4 7-8" /><path d="M15 7h5v5" /></IconBase>; }
 function BrainIcon() { return <IconBase><path d="M9 9a3 3 0 1 1 3-3v12a3 3 0 1 1-3-3" /><path d="M15 9a3 3 0 1 0-3-3v12a3 3 0 1 0 3-3" /></IconBase>; }
 function CodeIcon() { return <IconBase><path d="m8 9-4 3 4 3M16 9l4 3-4 3M14 5l-4 14" /></IconBase>; }
 function CameraIcon() { return <IconBase><path d="M15 10 20 7v10l-5-3Z" /><rect x="3" y="6" width="12" height="12" rx="2" /></IconBase>; }
