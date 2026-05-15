@@ -223,7 +223,7 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
     const totalSteps = config.steps.length;
 
     return (
-        <div className="min-h-screen bg-[#FCF6EA] flex flex-col">
+        <div className="flex h-screen min-h-screen flex-col overflow-hidden bg-[#FCF6EA]">
             <MilestoneToast
                 show={state.showMilestone}
                 completedCount={completedStepIndex}
@@ -243,10 +243,10 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
             <MobileTabBar activeTab={mobileTab} onTabChange={setMobileTab} />
 
             {/* Main split layout */}
-            <div className="flex-1 flex flex-col md:flex-row overflow-hidden">
+            <div className="min-h-0 flex-1 flex flex-col overflow-hidden md:flex-row">
                 {/* Left panel — instructions */}
                 <div
-                    className={`md:w-[45%] border-r border-[#E7D8BD] overflow-y-auto flex flex-col ${
+                    className={`min-h-0 border-r border-[#E7D8BD] flex flex-col overflow-y-auto md:w-[45%] ${
                         mobileTab !== 'instructies' ? 'hidden md:flex' : 'flex'
                     }`}
                 >
@@ -265,7 +265,7 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
 
                 {/* Right panel — preview */}
                 <div
-                    className={`md:w-[55%] overflow-hidden bg-white ${
+                    className={`min-h-0 overflow-hidden bg-white md:w-[55%] ${
                         mobileTab !== 'preview' ? 'hidden md:block' : 'block'
                     }`}
                 >
@@ -302,7 +302,7 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
                     {!isChatOpen && (
                         <button
                             onClick={() => setIsChatOpen(true)}
-                            className="fixed bottom-6 right-6 z-40 w-13 h-13 bg-gradient-to-br from-[#D97848] to-[#D97848] hover:from-[#D97848] hover:to-[#D97848] text-white rounded-full shadow-lg flex items-center justify-center transition-all duration-200 active:scale-95"
+                            className="fixed bottom-6 right-6 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-[#D97848] to-[#D97848] text-white shadow-lg transition-all duration-200 hover:brightness-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0B453F] focus-visible:ring-offset-2 active:scale-95"
                             aria-label="Open AI-assistent"
                         >
                             <MessageCircle size={22} />
@@ -316,7 +316,7 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
                 <div className="md:hidden fixed bottom-20 left-4 z-30">
                     <button
                         onClick={() => setMobileTab('instructies')}
-                        className="flex items-center gap-2 bg-white border border-[#E7D8BD] rounded-full px-4 py-2 shadow-sm text-sm font-bold text-[#445865]"
+                        className="flex min-h-[44px] items-center gap-2 rounded-full border border-[#E7D8BD] bg-white px-4 text-sm font-bold text-[#445865] shadow-sm"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         <ArrowLeft size={14} />

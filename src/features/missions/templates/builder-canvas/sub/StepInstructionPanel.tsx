@@ -38,7 +38,7 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
     const textRequirementMet = !requiredTextLength || currentTextLength >= requiredTextLength;
 
     return (
-        <div className="p-5 flex-1 flex flex-col">
+        <div className="flex min-h-full flex-col p-5">
             {/* Step indicator */}
             <div className="flex items-center gap-2 mb-4">
                 <div className="w-7 h-7 rounded-xl bg-gradient-to-br from-[#D97848] to-[#D97848] flex items-center justify-center">
@@ -114,7 +114,7 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
 
             {/* Optional text area */}
             {stepData.textPrompt && (
-                <div className="mb-4 flex-1 flex flex-col">
+                <div className="mb-4 flex min-h-[160px] flex-1 flex-col">
                     <label
                         className="text-[10px] font-black text-[#445865] uppercase tracking-widest mb-2 block"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
@@ -128,7 +128,7 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
                         onChange={(e) => onTextChange(stepData.id, e.target.value)}
                         placeholder="Schrijf hier jouw antwoord…"
                         rows={5}
-                        className="w-full flex-1 resize-none rounded-xl border border-[#E7D8BD] bg-white px-4 py-3 text-sm text-[#445865] placeholder:text-[#445865] focus:outline-none focus:ring-2 focus:ring-[#D97848]/30 focus:border-[#D97848]/50 transition-all duration-200 leading-relaxed"
+                        className="w-full min-h-[120px] flex-1 resize-none rounded-xl border border-[#E7D8BD] bg-white px-4 py-3 text-sm leading-relaxed text-[#445865] placeholder:text-[#445865] transition-all duration-200 focus:border-[#D97848]/50 focus:outline-none focus:ring-2 focus:ring-[#D97848]/30"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     />
                 </div>
@@ -147,7 +147,7 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
             <button
                 onClick={onNextStep}
                 disabled={!canProceed}
-                className={`w-full py-3.5 rounded-xl font-bold text-sm transition-all duration-200 flex items-center justify-center gap-2 mt-auto ${
+                className={`mt-auto flex min-h-[44px] w-full items-center justify-center gap-2 rounded-xl text-sm font-bold transition-all duration-200 ${
                     canProceed
                         ? 'bg-gradient-to-r from-[#D97848] to-[#D97848] hover:from-[#D97848] hover:to-[#D97848] text-white active:scale-[0.98]'
                         : 'bg-[#E7D8BD] text-[#445865] cursor-not-allowed'
