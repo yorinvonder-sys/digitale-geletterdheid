@@ -17,7 +17,7 @@ export const dashboardDesignerConfig: DataViewerConfig = {
         // ── Dataset 1: Tabel ──────────────────────────────────────────────────
         {
             id: 'schooldata-klassen',
-            title: 'Schooldata leerjaar 2 — periode 3 (2025)',
+            title: 'Schooldata leerjaar 2 — periode 1 (2025)',
             description:
                 'De schooldirecteur wil een dashboard over de prestaties van de vier klassen in leerjaar 2. Bekijk de ruwe data en beantwoord de vragen.',
             type: 'table',

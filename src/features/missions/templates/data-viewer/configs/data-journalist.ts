@@ -21,7 +21,7 @@ export const dataJournalistConfig: DataViewerConfig = {
             id: 'enquete-social-media',
             title: 'Leerlingenquête: Social media gebruik',
             description:
-                'In april 2025 vulden 12 leerlingen van groep 2B een enquête in over hun social media gebruik. Bekijk de tabel en beantwoord de vragen.',
+                'In deze fictieve oefendataset vulden 12 leerlingen van groep 2B een enquête in over hun social media gebruik. Bekijk de tabel en beantwoord de vragen.',
             type: 'table',
             columns: [
                 { key: 'naam', label: 'Naam', sortable: true },
@@ -92,7 +92,7 @@ export const dataJournalistConfig: DataViewerConfig = {
             id: 'schermtijd-landen',
             title: 'Schermtijd per land: internationaal vergelijk',
             description:
-                'Onderzoekers van de Universiteit van Utrecht (2024) vergeleken de gemiddelde dagelijkse schermtijd van 13-15 jarigen in zes landen. Bekijk de grafiek en beantwoord de vragen.',
+                'In deze fictieve oefencasus vergelijk je de gemiddelde dagelijkse schermtijd van 13-15 jarigen in zes landen. Bekijk de grafiek en beantwoord de vragen.',
             type: 'bar-chart',
             chartData: [
                 { label: 'VS', value: 7.7, color: '#D97848' },
@@ -143,23 +143,23 @@ export const dataJournalistConfig: DataViewerConfig = {
             id: 'nieuwsberichten-social-media',
             title: 'Nieuwsberichten over social media en jongeren',
             description:
-                'Hieronder staan vier nieuwsberichten over social media en jongeren. Lees ze zorgvuldig — let op de bron, de datum en hoe stellig de uitspraken zijn.',
+                'Hieronder staan vier fictieve voorbeeldberichten over social media en jongeren. Lees ze zorgvuldig — let op de bron, de datum en hoe stellig de uitspraken zijn.',
             type: 'document-cards',
             cards: [
                 {
-                    title: 'NOS Nieuws — 14 februari 2025',
+                    title: 'NOS-stijl voorbeeldbericht — 14 februari 2025',
                     icon: '📺',
                     content:
-                        'Onderzoek van het RIVM toont aan dat 1 op de 5 jongeren tussen 12 en 18 jaar aangeeft zich "regelmatig eenzaam" te voelen na intensief social media gebruik. Het onderzoek volgde 2.400 jongeren gedurende twee jaar. Onderzoekers benadrukken dat een oorzakelijk verband nog niet bewezen is.',
+                        'Een fictief RIVM-achtig onderzoeksbericht stelt dat 1 op de 5 jongeren tussen 12 en 18 jaar aangeeft zich "regelmatig eenzaam" te voelen na intensief social media gebruik. Het onderzoek volgde 2.400 jongeren gedurende twee jaar. Onderzoekers benadrukken dat een oorzakelijk verband nog niet bewezen is.',
                 },
                 {
-                    title: 'Instagram Blog — 3 januari 2025',
+                    title: 'Instagram-stijl voorbeeldbericht — 3 januari 2025',
                     icon: '📸',
                     content:
                         '"Uit ons interne onderzoek blijkt dat 85% van de tieners zich positief voelt na het gebruik van Instagram Reels. We investeren fors in tools voor digitaal welzijn." Het onderzoek werd uitgevoerd door Instagram zelf en is niet onafhankelijk geverifieerd.',
                 },
                 {
-                    title: 'De Volkskrant — 28 november 2024',
+                    title: 'Volkskrant-stijl voorbeeldbericht — 28 november 2024',
                     icon: '📰',
                     content:
                         'Een meta-analyse van 47 internationale studies concludeert dat er een "matig negatief verband" bestaat tussen intensief social media gebruik (meer dan 3 uur per dag) en zelfgerapporteerd welzijn bij meisjes van 11-14 jaar. Bij jongens was het verband zwakker en minder consistent.',
@@ -179,14 +179,14 @@ export const dataJournalistConfig: DataViewerConfig = {
                     type: 'multiple-choice',
                     showConfidence: true,
                     options: [
-                        'NOS Nieuws — RIVM onderzoek',
-                        'Instagram Blog — intern onderzoek',
-                        'De Volkskrant — meta-analyse 47 studies',
+                        'NOS-stijl bericht — RIVM-achtig onderzoek',
+                        'Instagram-stijl blog — intern onderzoek',
+                        'Volkskrant-stijl bericht — meta-analyse 47 studies',
                         'Schoolkrant 2B — opiniestuk Jayden',
                     ],
-                    correctAnswer: 'De Volkskrant — meta-analyse 47 studies',
+                    correctAnswer: 'Volkskrant-stijl bericht — meta-analyse 47 studies',
                     explanation:
-                        'De meta-analyse in de Volkskrant is gebaseerd op 47 onafhankelijke studies — dat is de sterkste vorm van wetenschappelijk bewijs. Het RIVM-onderzoek is ook goed, maar één studie. Het Instagram-onderzoek is niet onafhankelijk. De schoolkrant is een mening.',
+                        'Het Volkskrant-stijl voorbeeldbericht is gebaseerd op 47 onafhankelijke studies — dat is de sterkste vorm van wetenschappelijk bewijs. Het RIVM-achtige bericht is ook goed, maar één studie. Het Instagram-onderzoek is niet onafhankelijk. De schoolkrant is een mening.',
                     points: 15,
                 },
                 {

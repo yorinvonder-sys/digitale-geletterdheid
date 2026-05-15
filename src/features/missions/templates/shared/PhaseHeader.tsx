@@ -19,7 +19,7 @@ export const PhaseHeader: React.FC<PhaseHeaderProps> = ({
     <div className="flex items-center justify-between mb-6">
         <button
             onClick={onBack}
-            className="text-[#445865] hover:text-[#08283B] transition-all duration-300"
+            className="-ml-2 flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full text-[#445865] transition-all duration-300 hover:bg-[#E7D8BD]/60 hover:text-[#08283B] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0B453F] focus-visible:ring-offset-2"
             aria-label="Terug"
         >
             <ArrowLeft size={18} />

@@ -147,7 +147,7 @@ export const apiVerkennerConfig: DataViewerConfig = {
                     title: 'Nieuws-API: technologie nieuws',
                     icon: '📰',
                     content:
-                        'URL: https://newsapi.org/v2/top-headlines?category=technology&country=nl&apiKey=abc123\n\nHier zie je een "apiKey" — een unieke code die bewijst wie jij bent. Sommige API\'s zijn gratis maar vereisen registratie. De apiKey voorkomt misbruik. "category=technology" filtert alleen tech-nieuws. "country=nl" toont alleen Nederlandse bronnen.',
+                        'URL: https://newsapi.org/v2/top-headlines?category=technology&country=nl&apiKey=DEMO_SLEUTEL\n\nHier zie je een "apiKey" — een unieke code die bewijst wie jij bent. Dit is een demo-sleutel; een echte API-key deel je nooit in screenshots, chats of openbare code. "category=technology" filtert alleen tech-nieuws. "country=nl" toont alleen Nederlandse bronnen.',
                 },
                 {
                     title: 'Valuta-API: euro naar dollar',
@@ -170,7 +170,7 @@ export const apiVerkennerConfig: DataViewerConfig = {
                     ],
                     correctAnswer: 'Het identificeert wie het verzoek stuurt en voorkomt misbruik',
                     explanation:
-                        'Een apiKey is als een pasje: het bewijst wie jij bent. Zo kan de API-aanbieder bijhouden wie de API gebruikt, misbruik blokkeren en kosten doorberekenen aan zware gebruikers. Het heeft niets met versleuteling of snelheid te maken.',
+                        'Een apiKey is als een pasje: het bewijst wie jij bent. Zo kan de API-aanbieder bijhouden wie de API gebruikt en misbruik blokkeren. Omdat een echte sleutel toegang kan geven tot jouw account of tegoed, houd je die altijd privé.',
                     points: 15,
                 },
                 {

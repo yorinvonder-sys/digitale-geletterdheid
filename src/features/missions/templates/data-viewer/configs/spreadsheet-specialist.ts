@@ -48,7 +48,7 @@ export const spreadsheetSpecialistConfig: DataViewerConfig = {
                     showConfidence: true,
                     correctAnswer: 513,
                     explanation:
-                        'Alle uitgaven: 120 + 85 + 35 + 160 + 18 + 95 = 513 euro. In een spreadsheet gebruik je hiervoor de formule =SOMALS() met als voorwaarde Type = "Uitgave". Filter op "Uitgave" om het snel te controleren.',
+                        'Alle uitgaven: 120 + 85 + 35 + 160 + 18 + 95 = 513 euro. In een Nederlandse spreadsheet gebruik je bijvoorbeeld =SOM.ALS(E2:E11;"Uitgave";D2:D11). Filter op "Uitgave" om het snel te controleren.',
                     points: 20,
                 },
                 {
@@ -69,7 +69,7 @@ export const spreadsheetSpecialistConfig: DataViewerConfig = {
                     type: 'text-observation',
                     correctAnswer: '',
                     explanation:
-                        '=GEMIDDELDE() gebruik je als je wilt weten wat een "typische" waarde is in een reeks. =SOM() gebruik je als je het totaal wilt weten. Het gemiddelde van de 6 uitgaven is 513 ÷ 6 = 85,50 euro. In een spreadsheet: =GEMIDDELDE(D2:D11) als alle bedragen in kolom D staan.',
+                        '=GEMIDDELDE() gebruik je als je wilt weten wat een "typische" waarde is in een reeks. Hier wil je alleen uitgaven meenemen: =GEMIDDELDE.ALS(E2:E11;"Uitgave";D2:D11). Het gemiddelde van de 6 uitgaven is 513 ÷ 6 = 85,50 euro.',
                     points: 10,
                 },
             ],
