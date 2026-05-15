@@ -687,6 +687,24 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
 
 // ── Public entry point — loads config dynamically ────────────────────────────
 
+const VALID_DATA_VIEWER_IDS: ReadonlySet<string> = new Set([
+    'api-verkenner',
+    'dashboard-designer',
+    'data-journalist',
+    'data-pipeline',
+    'digital-divide-researcher',
+    'eindproject-j2',
+    'ml-trainer',
+    'network-navigator',
+    'neural-navigator',
+    'research-project',
+    'spreadsheet-specialist',
+    'sustainability-scanner',
+    'tech-impact-analyst',
+    'ux-detective',
+    'welzijnsonderzoeker',
+]);
+
 const LoadingScreen = () => (
     <div className="min-h-screen bg-[#FAF9F0] flex items-center justify-center">
         <div className="animate-spin rounded-full h-8 w-8 border-2 border-[#D97757] border-t-transparent" />
@@ -698,6 +716,10 @@ export const DataViewer: React.FC<TemplateMissionProps> = ({ missionId, onBack, 
     const [loadError, setLoadError] = useState(false);
 
     useEffect(() => {
+        if (!VALID_DATA_VIEWER_IDS.has(missionId)) {
+            setLoadError(true);
+            return;
+        }
         import(`./configs/${missionId}.ts`)
             .then((mod) => {
                 const cfg = mod.default ?? Object.values(mod).find((v): v is DataViewerConfig => v && typeof v === 'object' && 'missionId' in v);

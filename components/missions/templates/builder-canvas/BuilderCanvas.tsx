@@ -323,6 +323,28 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
 
 // ── Public entry point — loads config dynamically ────────────────────────────
 
+const VALID_BUILDER_CANVAS_IDS: ReadonlySet<string> = new Set([
+    'api-architect',
+    'app-prototyper',
+    'automation-engineer',
+    'brand-builder',
+    'digital-storyteller',
+    'innovation-lab',
+    'meesterproef',
+    'meme-machine',
+    'mission-blueprint',
+    'mission-vision',
+    'open-source-contributor',
+    'pitch-perfect',
+    'podcast-producer',
+    'portfolio-builder',
+    'prototype-developer',
+    'startup-simulator',
+    'video-editor',
+    'web-developer',
+    'website-bouwer',
+]);
+
 const LoadingScreen = () => (
     <div className="min-h-screen bg-[#FAF9F0] flex items-center justify-center">
         <div className="animate-spin rounded-full h-8 w-8 border-2 border-[#D97757] border-t-transparent" />
@@ -334,6 +356,10 @@ export const BuilderCanvas: React.FC<TemplateMissionProps> = ({ missionId, onBac
     const [loadError, setLoadError] = useState(false);
 
     useEffect(() => {
+        if (!VALID_BUILDER_CANVAS_IDS.has(missionId)) {
+            setLoadError(true);
+            return;
+        }
         import(`./configs/${missionId}.ts`)
             .then((mod) => {
                 const cfg = mod.default ?? Object.values(mod).find((v): v is BuilderCanvasConfig => v && typeof v === 'object' && 'missionId' in v);

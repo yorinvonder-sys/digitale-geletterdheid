@@ -343,6 +343,19 @@ const DebateArenaInner: React.FC<DebateArenaProps> = ({ config, onBack, onComple
 
 // ── Public entry point — loads config dynamically ────────────────────────────
 
+const VALID_DEBATE_ARENA_IDS: ReadonlySet<string> = new Set([
+    'ai-ethicus',
+    'digital-rights-defender',
+    'digitale-balans-coach',
+    'future-forecaster',
+    'policy-maker',
+    'reflection-report',
+    'review-week-3',
+    'schermtijd-coach',
+    'scroll-stopper',
+    'tech-court',
+]);
+
 const LoadingScreen = () => (
     <div className="min-h-screen bg-[#FAF9F0] flex items-center justify-center">
         <div className="animate-spin rounded-full h-8 w-8 border-2 border-[#D97757] border-t-transparent" />
@@ -354,6 +367,10 @@ export const DebateArena: React.FC<TemplateMissionProps> = ({ missionId, onBack,
     const [loadError, setLoadError] = useState(false);
 
     useEffect(() => {
+        if (!VALID_DEBATE_ARENA_IDS.has(missionId)) {
+            setLoadError(true);
+            return;
+        }
         import(`./configs/${missionId}.ts`)
             .then((mod) => {
                 const cfg = mod.default ?? Object.values(mod).find((v): v is DebateArenaConfig => v && typeof v === 'object' && 'missionId' in v);
