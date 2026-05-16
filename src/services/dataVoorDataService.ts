@@ -15,11 +15,21 @@ const VALID_CHOICES = new Set<DataVoorDataChoice>(['deal', 'no-deal']);
 const sanitizeChoices = (choices: DataVoorDataChoice[]): DataVoorDataChoice[] =>
     choices.filter((choice): choice is DataVoorDataChoice => VALID_CHOICES.has(choice)).slice(0, MAX_ROUNDS);
 
+const hasAuthenticatedSession = async (): Promise<boolean> => {
+    try {
+        const { data } = await supabase.auth.getSession();
+        return Boolean(data.session?.user?.id);
+    } catch {
+        return false;
+    }
+};
+
 export async function saveDataVoorDataAnswers(
     choices: DataVoorDataChoice[],
     isCompleted: boolean
 ): Promise<boolean> {
     const sanitizedChoices = sanitizeChoices(choices);
+    if (!(await hasAuthenticatedSession())) return false;
 
     try {
         const { error } = await (supabase as any).rpc('submit_data_for_data_answers', {
@@ -36,6 +46,8 @@ export async function saveDataVoorDataAnswers(
 }
 
 export async function getDataVoorDataRoundStats(): Promise<Record<number, DataVoorDataRoundStat>> {
+    if (!(await hasAuthenticatedSession())) return {};
+
     try {
         const { data, error } = await (supabase as any).rpc('get_data_for_data_round_stats');
         if (error) throw error;

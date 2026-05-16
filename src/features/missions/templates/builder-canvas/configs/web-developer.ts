@@ -7,6 +7,15 @@ export const webDeveloperConfig: BuilderCanvasConfig = {
     introTitle: 'Bouw een interactieve webpagina',
     introDescription:
         'In deze missie ga je een stap verder dan HTML en CSS. Je bouwt een interactieve webpagina voor een dierenasiel — met navigatie, een galerij en JavaScript-functies die reageren op klikken. Zo werk je als een echte webdeveloper.',
+    missionGoal: {
+        primaryGoal: 'Ontwerp, beschrijf en test een interactieve webpagina met HTML-structuur, CSS-layout en JavaScript-gedrag.',
+        criteria: {
+            type: 'steps-complete',
+            min: 4,
+            description: 'Alle vier bouwstappen zijn afgerond met checklist en geschreven uitwerking.',
+        },
+        evidence: 'HTML-structuur, CSS-layout, JavaScript-interactie en een testplan voor de webpagina.',
+    },
     introFeatures: [
         'Ontwerp een navigatiemenu met HTML en CSS',
         'Maak een responsive galerij voor dierenfoto\'s',

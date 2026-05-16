@@ -13,6 +13,68 @@ Across all tasks and projects:
 
 Goal: reduce token and capacity usage where safe, without degrading engineering quality.
 
+# Default Token-Saving Operating Mode
+
+Treat token efficiency as a default operating constraint, not as an optional
+follow-up. This section is standing user authorization to use cheaper routing
+and narrower execution whenever it is safe.
+
+## Reasoning & Model Defaults
+
+- Use the lowest reasoning effort that can safely handle the current slice.
+- Reserve `xhigh` for architecture, security-sensitive changes, ambiguous
+  debugging, high-risk data/auth/payment work, or final integration decisions.
+- Use `medium` or `high` for ordinary implementation, UI polish, SEO/content,
+  browser QA, file moves, and straightforward bug fixes unless risk increases.
+- Prefer `gpt-5.3-codex-spark` sub-agents for narrow, low-risk sidecar work
+  such as targeted file discovery, log reading, one-route QA, one-file review,
+  or summarizing command output.
+- Do not use sub-agents for architecture, security decisions, database/RLS,
+  auth, payments, release decisions, or final validation.
+
+## Prompt Intake Guardrails
+
+When the user gives a broad prompt like "audit everything", "review the whole
+site", "fix all issues", or "make it better":
+
+- First turn it into the smallest useful slice in plain language.
+- State the assumed slice and proceed only with that slice when low-risk.
+- Ask one clarification before proceeding if the wrong slice would waste a lot
+  of tokens or create user-visible risk.
+- Prefer "top 3 highest-impact pages/files/flows first" over whole-repo scans.
+- Do not expand into a full audit unless the user explicitly confirms the scope.
+
+## Context Budget Rules
+
+- Before context-heavy work, run `npm run context:budget`.
+- Use path-scoped `rg`, `git status`, `git diff`, and file reads.
+- Never read broad generated or historical folders for context unless the task
+  is specifically about those artifacts.
+- Summarize large outputs as counts, top paths, and exact next actions.
+- If a thread is getting large or repetitive, create a short handoff summary and
+  recommend starting a narrower follow-up thread.
+
+## Tool & Verification Economy
+
+- Batch independent read-only shell calls with `multi_tool_use.parallel`.
+- Prefer the smallest proof that matches the risk: targeted typecheck, focused
+  script, one browser route, or one SQL read before full build/audit.
+- Run expensive browser, build, Lighthouse, visual, or security checks only when
+  they are required by the task or by project rules.
+- For image generation, generate the minimum useful set first; ask before
+  producing many alternatives.
+
+## Token Tripwires
+
+Pause and narrow the task when any of these are true:
+
+- The work would inspect more than about 10 unrelated files before a hypothesis.
+- The task would touch more than 3 feature areas in one pass.
+- The answer is becoming a long report but the user asked for a decision or fix.
+- The same command/check has failed twice without new evidence.
+- A subtask can be answered by a narrow Spark sidecar while the main model keeps
+  working on integration.
+
 # Plan Mode Prompt Structuring Policy
 
 When the user asks for planning, research, exploration, or uses Plan mode, do not require the user to provide a structured prompt. The user may describe the task informally, briefly, or with partial context.

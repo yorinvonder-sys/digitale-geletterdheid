@@ -210,14 +210,14 @@ const BarChart: React.FC<{ data: DataChallenge['data'], isMisleading?: boolean }
     const minForMisleading = isMisleading ? Math.min(...data.values) * 0.95 : 0;
 
     return (
-        <div className="rounded-2xl p-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
-            <div className="flex items-end justify-around gap-2 h-48">
+        <div className="rounded-2xl p-3 sm:p-4 overflow-hidden" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
+            <div className="flex items-end justify-around gap-1 sm:gap-2 h-48">
                 {data.labels.map((label, i) => {
                     const height = isMisleading
                         ? ((data.values[i] - minForMisleading) / (maxValue - minForMisleading)) * 100
                         : (data.values[i] / maxValue) * 100;
                     return (
-                        <div key={i} className="flex flex-col items-center gap-2 flex-1">
+                        <div key={i} className="min-w-0 flex flex-col items-center gap-2 flex-1">
                             <span className="font-bold text-sm" style={{ color: '#08283B' }}>{data.values[i]}</span>
                             <div
                                 className="w-full rounded-t-lg transition-all duration-500"
@@ -227,7 +227,7 @@ const BarChart: React.FC<{ data: DataChallenge['data'], isMisleading?: boolean }
                                     minHeight: '20px'
                                 }}
                             />
-                            <span className="text-xs font-medium text-center" style={{ color: '#445865' }}>{label}</span>
+                            <span className="max-w-full break-words text-center text-[10px] font-medium leading-tight sm:text-xs" style={{ color: '#445865' }}>{label}</span>
                         </div>
                     );
                 })}
@@ -406,18 +406,18 @@ export const DataDetectiveMission: React.FC<Props> = ({ onBack, onComplete, vsoP
     if (showIntro) {
         return (
             <div className="min-h-screen overflow-y-auto" style={{ backgroundColor: '#FCF6EA' }}>
-            <div className="min-h-full flex items-center justify-center p-4">
-                <div className="max-w-lg w-full text-center space-y-8">
+            <div className="min-h-full flex items-center justify-center p-4 pb-24 sm:pb-4">
+                <div className="max-w-lg w-full text-center space-y-5 sm:space-y-8">
                     <div className="relative inline-block">
                         <div className="absolute inset-0 blur-3xl rounded-full animate-pulse" style={{ backgroundColor: 'rgba(11, 69, 63, 0.22)' }} />
-                        <div className="relative w-32 h-32 rounded-3xl flex items-center justify-center shadow-2xl" style={{ background: 'linear-gradient(to bottom right, #0B453F, #0B453F)' }}>
-                            <BarChart3 size={64} className="text-white" />
+                        <div className="relative w-24 h-24 rounded-3xl flex items-center justify-center shadow-2xl sm:w-32 sm:h-32" style={{ background: 'linear-gradient(to bottom right, #0B453F, #0B453F)' }}>
+                            <BarChart3 size={56} className="text-white" />
                         </div>
                     </div>
 
-                    <div className="space-y-4">
-                        <h1 className="text-4xl font-black" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#08283B' }}>Data Detective</h1>
-                        <p className="text-lg" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#445865' }}>
+                    <div className="space-y-3 sm:space-y-4">
+                        <h1 className="text-3xl font-black sm:text-4xl" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#08283B' }}>Data Detective</h1>
+                        <p className="text-base sm:text-lg" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#445865' }}>
                             Onderzoek hoe bedrijven data gebruiken, ontdek gevaren en kansen,
                             en train jezelf om online slimme keuzes te maken.
                         </p>
@@ -428,24 +428,24 @@ export const DataDetectiveMission: React.FC<Props> = ({ onBack, onComplete, vsoP
 
                     <MissionGoalBanner goal={MISSION_GOAL} />
 
-                    <div className="grid grid-cols-3 gap-4 text-center">
-                        <div className="rounded-2xl p-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
-                            <Eye className="w-8 h-8 mx-auto mb-2" style={{ color: '#5F947D' }} />
-                            <p className="font-bold text-sm" style={{ color: '#08283B' }}>Patronen Zien</p>
+                    <div className="grid grid-cols-3 gap-2 text-center sm:gap-4">
+                        <div className="rounded-2xl p-3 sm:p-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
+                            <Eye className="w-7 h-7 mx-auto mb-2 sm:w-8 sm:h-8" style={{ color: '#5F947D' }} />
+                            <p className="font-bold text-xs sm:text-sm" style={{ color: '#08283B' }}>Patronen Zien</p>
                         </div>
-                        <div className="rounded-2xl p-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
-                            <AlertTriangle className="w-8 h-8 mx-auto mb-2" style={{ color: '#D97848' }} />
-                            <p className="font-bold text-sm" style={{ color: '#08283B' }}>Misleiding Spotten</p>
+                        <div className="rounded-2xl p-3 sm:p-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
+                            <AlertTriangle className="w-7 h-7 mx-auto mb-2 sm:w-8 sm:h-8" style={{ color: '#D97848' }} />
+                            <p className="font-bold text-xs sm:text-sm" style={{ color: '#08283B' }}>Misleiding Spotten</p>
                         </div>
-                        <div className="rounded-2xl p-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
-                            <Brain className="w-8 h-8 mx-auto mb-2" style={{ color: '#0B453F' }} />
-                            <p className="font-bold text-sm" style={{ color: '#08283B' }}>Kritisch Denken</p>
+                        <div className="rounded-2xl p-3 sm:p-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
+                            <Brain className="w-7 h-7 mx-auto mb-2 sm:w-8 sm:h-8" style={{ color: '#0B453F' }} />
+                            <p className="font-bold text-xs sm:text-sm" style={{ color: '#08283B' }}>Kritisch Denken</p>
                         </div>
                     </div>
 
                     <button
                         onClick={() => setState(prev => ({ ...prev, showIntro: false }))}
-                        className="w-full py-4 text-white rounded-full font-black uppercase tracking-wide transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#0B453F]"
+                        className="fixed inset-x-4 bottom-4 z-30 py-4 text-white rounded-full font-black uppercase tracking-wide shadow-2xl transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#0B453F] sm:static sm:w-full sm:shadow-none"
                         style={{ backgroundColor: '#0B453F' }}
                         onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#0B453F')}
                         onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#0B453F')}

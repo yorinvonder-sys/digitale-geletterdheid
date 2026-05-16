@@ -178,6 +178,7 @@ CREATE UNIQUE INDEX IF NOT EXISTS class_settings_class_id_key
 ALTER TABLE public.teacher_messages
   ADD COLUMN IF NOT EXISTS sender_name text,
   ADD COLUMN IF NOT EXISTS text text,
+  ADD COLUMN IF NOT EXISTS read boolean NOT NULL DEFAULT false,
   ADD COLUMN IF NOT EXISTS created_at timestamptz NOT NULL DEFAULT now(),
   ADD COLUMN IF NOT EXISTS timestamp timestamptz NOT NULL DEFAULT now();
 
@@ -185,6 +186,32 @@ UPDATE public.teacher_messages
 SET text = content
 WHERE text IS NULL
   AND content IS NOT NULL;
+
+UPDATE public.teacher_messages
+SET read = false
+WHERE read IS NULL;
+
+ALTER TABLE public.teacher_messages
+  ALTER COLUMN read SET DEFAULT false,
+  ALTER COLUMN read SET NOT NULL;
+
+CREATE TABLE IF NOT EXISTS public.teacher_message_reads (
+  message_id uuid NOT NULL REFERENCES public.teacher_messages(id) ON DELETE CASCADE,
+  user_id uuid NOT NULL REFERENCES public.users(id) ON DELETE CASCADE,
+  read_at timestamptz NOT NULL DEFAULT now(),
+  PRIMARY KEY (message_id, user_id)
+);
+
+INSERT INTO public.teacher_message_reads (message_id, user_id, read_at)
+SELECT
+  id,
+  target_id::uuid,
+  COALESCE(timestamp, created_at, now())
+FROM public.teacher_messages
+WHERE read = true
+  AND target_type = 'student'
+  AND target_id ~* '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
+ON CONFLICT (message_id, user_id) DO NOTHING;
 
 ALTER TABLE public.gamification_events
   ADD COLUMN IF NOT EXISTS type text,
@@ -235,6 +262,8 @@ CREATE INDEX IF NOT EXISTS idx_feedback_school_created
   ON public.feedback(school_id, created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_xp_abuse_logs_user_created
   ON public.xp_abuse_logs(user_id, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_teacher_message_reads_user_read_at
+  ON public.teacher_message_reads(user_id, read_at DESC);
 
 DO $$
 BEGIN
@@ -299,16 +328,16 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE
   public.user_blocks,
   public.class_settings,
   public.teacher_messages,
+  public.teacher_message_reads,
   public.gamification_events,
   public.highlighted_work,
   public.teacher_notes,
   public.student_groups
 TO authenticated, service_role;
 
--- Recipients may only flip the read flag. Message content/target edits remain
--- server-side/teacher insert-only until a per-recipient read table exists.
+-- Read state is tracked per recipient in teacher_message_reads. Keep message
+-- rows insert/read-only for authenticated clients; content edits stay server-side.
 REVOKE UPDATE ON TABLE public.teacher_messages FROM authenticated;
-GRANT UPDATE (read) ON TABLE public.teacher_messages TO authenticated;
 
 ALTER TABLE public.developer_tasks ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.developer_plans ENABLE ROW LEVEL SECURITY;
@@ -323,6 +352,7 @@ ALTER TABLE public.xp_abuse_logs ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.user_blocks ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.class_settings ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.teacher_messages ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.teacher_message_reads ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.gamification_events ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.highlighted_work ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.teacher_notes ENABLE ROW LEVEL SECURITY;
@@ -500,11 +530,11 @@ CREATE POLICY "School users read teacher messages"
   FOR SELECT
   TO authenticated
   USING (
-    (target_type = 'student' AND target_id = auth.uid()::text)
+    (target_type = 'student' AND target_id = (SELECT auth.uid())::text)
     OR (
       target_type IN ('class', 'all')
       AND school_id IS NOT NULL
-      AND school_id = public.get_caller_school_id()
+      AND school_id = (SELECT public.get_caller_school_id())
     )
   );
 
@@ -514,29 +544,61 @@ CREATE POLICY "Privileged users send teacher messages"
   FOR INSERT
   TO authenticated
   WITH CHECK (
-    public.get_caller_app_role() = 'developer'
+    (SELECT public.get_caller_app_role()) = 'developer'
     OR public.is_teacher_in_school(teacher_messages.school_id::text)
   );
 
 DROP POLICY IF EXISTS "Recipients mark teacher messages read" ON public.teacher_messages;
-CREATE POLICY "Recipients mark teacher messages read"
-  ON public.teacher_messages
+
+DROP POLICY IF EXISTS "Users read own teacher message receipts" ON public.teacher_message_reads;
+CREATE POLICY "Users read own teacher message receipts"
+  ON public.teacher_message_reads
+  FOR SELECT
+  TO authenticated
+  USING (user_id = (SELECT auth.uid()));
+
+DROP POLICY IF EXISTS "Users insert own teacher message receipts" ON public.teacher_message_reads;
+CREATE POLICY "Users insert own teacher message receipts"
+  ON public.teacher_message_reads
+  FOR INSERT
+  TO authenticated
+  WITH CHECK (
+    user_id = (SELECT auth.uid())
+    AND EXISTS (
+      SELECT 1
+      FROM public.teacher_messages tm
+      WHERE tm.id = teacher_message_reads.message_id
+        AND (
+          (tm.target_type = 'student' AND tm.target_id = (SELECT auth.uid())::text)
+          OR (
+            tm.target_type IN ('class', 'all')
+            AND tm.school_id IS NOT NULL
+            AND tm.school_id = (SELECT public.get_caller_school_id())
+          )
+        )
+    )
+  );
+
+DROP POLICY IF EXISTS "Users update own teacher message receipts" ON public.teacher_message_reads;
+CREATE POLICY "Users update own teacher message receipts"
+  ON public.teacher_message_reads
   FOR UPDATE
   TO authenticated
-  USING (
-    (target_type = 'student' AND target_id = auth.uid()::text)
-    OR (
-      target_type IN ('class', 'all')
-      AND school_id IS NOT NULL
-      AND school_id = public.get_caller_school_id()
-    )
-  )
+  USING (user_id = (SELECT auth.uid()))
   WITH CHECK (
-    (target_type = 'student' AND target_id = auth.uid()::text)
-    OR (
-      target_type IN ('class', 'all')
-      AND school_id IS NOT NULL
-      AND school_id = public.get_caller_school_id()
+    user_id = (SELECT auth.uid())
+    AND EXISTS (
+      SELECT 1
+      FROM public.teacher_messages tm
+      WHERE tm.id = teacher_message_reads.message_id
+        AND (
+          (tm.target_type = 'student' AND tm.target_id = (SELECT auth.uid())::text)
+          OR (
+            tm.target_type IN ('class', 'all')
+            AND tm.school_id IS NOT NULL
+            AND tm.school_id = (SELECT public.get_caller_school_id())
+          )
+        )
     )
   );
 

@@ -7,6 +7,15 @@ export const automationEngineerConfig: BuilderCanvasConfig = {
     introTitle: 'Automatiseer saaie taken',
     introDescription:
         'In deze missie leer je hoe je met scripts repetitieve taken kunt automatiseren. Je analyseert een probleem, ontwerpt een algoritme en schrijft pseudocode — precies zoals een echte software-engineer.',
+    missionGoal: {
+        primaryGoal: 'Ontwerp een veilige automatisering door een herhaaltaak te analyseren, in stappen te zetten en te testen.',
+        criteria: {
+            type: 'steps-complete',
+            min: 4,
+            description: 'Alle vier automatiseringsstappen zijn afgerond met checklist en geschreven uitwerking.',
+        },
+        evidence: 'Taakanalyse, pseudocode, scriptstructuur en een testplan met dry-run of veilige testaanpak.',
+    },
     introFeatures: [
         'Analyseer welke taken geschikt zijn voor automatisering',
         'Ontwerp een algoritme in pseudocode',

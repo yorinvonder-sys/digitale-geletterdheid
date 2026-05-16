@@ -325,6 +325,23 @@ type PendingTables = {
       timestamp?: string | null;
     }
   >;
+  teacher_message_reads: TableDefinition<
+    {
+      message_id: string;
+      user_id: string;
+      read_at: string;
+    },
+    {
+      message_id: string;
+      user_id: string;
+      read_at?: string;
+    },
+    {
+      message_id?: string;
+      user_id?: string;
+      read_at?: string;
+    }
+  >;
   gamification_events: TableDefinition<
     {
       id: string;

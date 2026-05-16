@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/services/supabase';
-import { TeacherMessage, markMessageRead } from '@/services/teacherService';
+import { TeacherMessage, getMessagesForUser, markMessageRead } from '@/services/teacherService';
 
 interface UseTeacherMessagesOptions {
     userId: string;
@@ -18,26 +18,8 @@ export const useTeacherMessages = ({ userId, classId, enabled = true }: UseTeach
 
         // Initial fetch of unread messages
         const fetchMessages = async () => {
-            const orFilter = [`target_type.eq.all`, `and(target_type.eq.student,target_id.eq.${userId})`];
-
-            // P2-5 FIX: Sanitize classId before interpolation to prevent PostgREST filter injection.
-            // Only allow UUIDs / alphanumeric class identifiers — reject metacharacters.
-            if (classId && /^[a-zA-Z0-9_-]+$/.test(classId)) {
-                orFilter.push(`and(target_type.eq.class,target_id.eq.${classId})`);
-            }
-
-            const { data, error } = await supabase
-                .from('teacher_messages')
-                .select('*')
-                .eq('read', false)
-                .or(orFilter.join(','))
-                .order('timestamp', { ascending: false })
-                .limit(15);
-
-            if (!error && data) {
-                const msgs = data as TeacherMessage[];
-                checkForNewMessages(msgs);
-            }
+            const messages = await getMessagesForUser(userId, classId);
+            checkForNewMessages(messages.filter((message) => !message.read).slice(0, 15));
         };
 
         fetchMessages();
@@ -53,7 +35,7 @@ export const useTeacherMessages = ({ userId, classId, enabled = true }: UseTeach
                     table: 'teacher_messages',
                 },
                 (payload) => {
-                    const msg = payload.new as TeacherMessage;
+                    const msg = { ...(payload.new as TeacherMessage), read: false };
                     // Filter client-side for this user's messages
                     if (
                         msg.target_type === 'all' ||
@@ -74,9 +56,11 @@ export const useTeacherMessages = ({ userId, classId, enabled = true }: UseTeach
     }, [userId, classId, enabled]);
 
     const checkForNewMessages = (newMessages: TeacherMessage[]) => {
-        if (newMessages.length > 0) {
+        const unread = newMessages.filter((message) => !message.read);
+
+        if (unread.length > 0) {
             // Find the newest message
-            const newest = newMessages.sort((a, b) =>
+            const newest = [...unread].sort((a, b) =>
                 new Date(b.timestamp || 0).getTime() - new Date(a.timestamp || 0).getTime()
             )[0];
 
@@ -88,7 +72,7 @@ export const useTeacherMessages = ({ userId, classId, enabled = true }: UseTeach
                     // Merge without duplicates
                     const ids = new Set(prev.map(m => m.id));
                     const unique = [...prev];
-                    newMessages.forEach(m => {
+                    unread.forEach(m => {
                         if (!ids.has(m.id)) {
                             unique.push(m);
                             ids.add(m.id);
@@ -103,7 +87,7 @@ export const useTeacherMessages = ({ userId, classId, enabled = true }: UseTeach
     };
 
     const dismissMessage = async (messageId: string) => {
-        await markMessageRead(messageId);
+        await markMessageRead(messageId, userId);
         setUnreadMessages(prev => prev.filter(m => m.id !== messageId));
         if (latestMessage?.id === messageId) {
             setShowPopup(false);

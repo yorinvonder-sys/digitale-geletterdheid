@@ -34,9 +34,14 @@ export const useStudentAssistant = ({ userIdentifier, context, roleId = 'student
     const [abuseCount, setAbuseCount] = useState(0);
     const chatSessionRef = useRef<any>(null);
     const [isOpen, setIsOpen] = useState(false); // Controls UI visibility
+    const shouldUseRemoteStudentControls = Boolean(userIdentifier)
+        && userIdentifier !== 'anonymous'
+        && !((import.meta as any).env?.DEV === true && userIdentifier.startsWith('dev-'));
 
     // Welzijnsdetectie — scant berichten op zorgwekkende taal voordat ze naar AI gaan
     const handleWellbeingAlert = useCallback(async (match: WellbeingMatch) => {
+        if (!shouldUseRemoteStudentControls) return;
+
         // Log alert naar Supabase voor docentnotificatie (zonder originele tekst — privacy)
         try {
             await supabase.rpc('log_wellbeing_alert' as any, {
@@ -48,7 +53,7 @@ export const useStudentAssistant = ({ userIdentifier, context, roleId = 'student
             // Tabel/RPC bestaat mogelijk nog niet — fail silently in dev, log in prod
             console.error('Wellbeing alert logging failed:', err);
         }
-    }, [userIdentifier]);
+    }, [shouldUseRemoteStudentControls, userIdentifier]);
 
     const { scanText: scanWellbeing, showHulplijn, lastMatch: wellbeingMatch, dismissHulplijn } = useWellbeingMonitor({
         onAlert: handleWellbeingAlert,
@@ -94,7 +99,7 @@ REGELS VOOR JOU:
 
     // 1. Check lock status on mount/change — use Supabase Realtime
     useEffect(() => {
-        if (!userIdentifier) return;
+        if (!shouldUseRemoteStudentControls) return;
 
         // Initial fetch
         const fetchLockStatus = async () => {
@@ -132,7 +137,7 @@ REGELS VOOR JOU:
         return () => {
             supabase.removeChannel(channel);
         };
-    }, [userIdentifier]);
+    }, [shouldUseRemoteStudentControls, userIdentifier]);
 
     // 2. Initialize Chat
     useEffect(() => {
@@ -253,6 +258,8 @@ REGELS VOOR JOU:
             text: "⛔ **CHAT GEBLOKKEERD**\nJe hebt te vaak niet-relevante vragen gesteld. De docent heeft een melding ontvangen. Je kunt voorlopig niet meer chatten.",
             timestamp: new Date()
         }]);
+
+        if (!shouldUseRemoteStudentControls) return;
 
         try {
             const { error } = await supabase

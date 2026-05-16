@@ -22,6 +22,5 @@
 ALTER TABLE public.users
   ADD CONSTRAINT users_display_name_max_length
   CHECK (display_name IS NULL OR char_length(display_name) <= 200);
-
 COMMENT ON CONSTRAINT users_display_name_max_length ON public.users IS
   'Server-side length cap. Client-side TeacherFirstLoginWizard caps at 80 chars; this prevents direct API bypass.';

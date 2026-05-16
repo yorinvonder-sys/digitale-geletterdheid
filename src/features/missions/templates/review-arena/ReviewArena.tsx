@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageCircle } from 'lucide-react';
-import type { TemplateMissionProps, BadgeConfig, FollowUpQuestion } from '../shared/types';
+import type { TemplateMissionProps, BadgeConfig, FollowUpQuestion, MissionGoal } from '../shared/types';
 import { PhaseHeader } from '../shared/PhaseHeader';
 import { CompletionScreen } from '../shared/CompletionScreen';
 import { IntroScreen } from '../shared/IntroScreen';
@@ -12,6 +12,7 @@ import { Categorize } from './sub/Categorize';
 import { RapidFire } from './sub/RapidFire';
 import { useMissionAutoSave } from '@/hooks/useMissionAutoSave';
 import { StudentAIChat } from '@/features/ai-chat/StudentAIChat';
+import { getMissionGoal } from '@/config/missionGoals';
 
 // === Config types (exported for test configs) ===
 
@@ -67,6 +68,7 @@ export interface ReviewArenaConfig {
     introEmoji: string;
     introTitle: string;
     introDescription: string;
+    missionGoal?: MissionGoal;
     introFeatures?: string[];
     rounds: ReviewRound[];
     maxScore: number;
@@ -221,6 +223,7 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
                 title={config.introTitle}
                 description={config.introDescription}
                 onStart={handleStart}
+                goal={config.missionGoal ?? getMissionGoal(config.missionId)}
                 features={features}
             />
         );

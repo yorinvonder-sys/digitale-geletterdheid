@@ -64,8 +64,8 @@ const skills: Skill[] = [
         projects: '12 projecten',
         coachTip: 'Start hier als je klas AI wil gebruiken en kritisch wil leren kijken.',
         bestFor: 'brugklas, onderzoeksopdrachten en AI-basis',
-        image: '/screenshots/missions/ml-trainer.webp',
-        alt: 'AI en data missievoorbeeld in DGSkills',
+        image: '/assets/skill-cards/skill-ai-data.webp',
+        alt: 'Dynamische AI en data opdrachtwereld met grafieken, datablocks en een AI-assistent',
     },
     {
         title: 'Design & Create',
@@ -75,8 +75,8 @@ const skills: Skill[] = [
         projects: '18 projecten',
         coachTip: 'Goed voor makers: ontwerpen, testen en verbeteren met zichtbaar resultaat.',
         bestFor: 'projectweek, kunstvakken en creatieve keuzeuren',
-        image: '/screenshots/missions/brand-builder.webp',
-        alt: 'Design en creatie missievoorbeeld in DGSkills',
+        image: '/assets/skill-cards/skill-design-create.webp',
+        alt: 'Dynamische designstudio met prototypes, kleurstalen en animatieframes',
     },
     {
         title: 'Code & Bouw',
@@ -86,8 +86,8 @@ const skills: Skill[] = [
         projects: '24 projecten',
         coachTip: 'Perfect voor leerlingen die willen snappen hoe apps, games en logica werken.',
         bestFor: 'programmeren, technologie en plusopdrachten',
-        image: '/screenshots/mission-game-programmeur.webp',
-        alt: 'Game Programmeur missievoorbeeld in DGSkills',
+        image: '/assets/skill-cards/skill-code-bouw.webp',
+        alt: 'Dynamische codewerkplaats met appblokken, game-elementen en bouwmodules',
     },
     {
         title: 'Media & Verhaal',
@@ -97,8 +97,8 @@ const skills: Skill[] = [
         projects: '16 projecten',
         coachTip: 'Sterk voor creatievelingen: video, verhaal, presentatie en digitale identiteit.',
         bestFor: 'Nederlands, mediawijsheid en presentaties',
-        image: '/screenshots/missions/digital-storyteller.webp',
-        alt: 'Media en verhaal missievoorbeeld in DGSkills',
+        image: '/assets/skill-cards/skill-media-verhaal.webp',
+        alt: 'Dynamische mediastudio met camera, podcastmicrofoon en verhaaltijdlijn',
     },
     {
         title: 'Online veiligheid',
@@ -108,8 +108,8 @@ const skills: Skill[] = [
         projects: '8 projecten',
         coachTip: 'Ideaal als startpunt voor mentoraat, privacy, phishing en veilig gedrag.',
         bestFor: 'mentorles, burgerschap en schoolbrede veiligheid',
-        image: '/screenshots/ict-privacy.webp',
-        alt: 'Online veiligheid en privacy voorbeeld in DGSkills',
+        image: '/assets/skill-cards/skill-online-veiligheid.webp',
+        alt: 'Dynamische online veiligheid opdrachtwereld met schild, sloten en privacykaarten',
     },
 ];
 

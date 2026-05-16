@@ -7,6 +7,15 @@ const config: ReviewArenaConfig = {
     introTitle: 'Bewijs dat je programmeren beheerst!',
     introDescription:
         'Je hebt algoritmes, webdevelopment, debugging en automatisering geleerd. In vier ronden test je of je de kernconcepten echt begrijpt.',
+    missionGoal: {
+        primaryGoal: 'Bewijs dat je de programmeerconcepten uit periode 2 kunt herkennen, koppelen en uitleggen.',
+        criteria: {
+            type: 'rounds-complete',
+            min: 4,
+            description: 'Alle vier reviewrondes zijn afgerond met programmeer- en webdev-antwoorden.',
+        },
+        evidence: 'Scores en antwoorden uit sorteren, koppelen, categoriseren en snelle programmeervragen.',
+    },
     maxScore: 100,
     badges: [
         {

@@ -12,6 +12,13 @@ const expectIncludes = (path, needle, label) => {
 };
 
 const templateGoals = [
+  ['algorithm-architect', 'src/features/missions/templates/simulation-lab/configs/algorithm-architect.ts'],
+  ['web-developer', 'src/features/missions/templates/builder-canvas/configs/web-developer.ts'],
+  ['app-prototyper', 'src/features/missions/templates/builder-canvas/configs/app-prototyper.ts'],
+  ['bug-hunter', 'src/features/missions/templates/simulation-lab/configs/bug-hunter.ts'],
+  ['automation-engineer', 'src/features/missions/templates/builder-canvas/configs/automation-engineer.ts'],
+  ['code-reviewer', 'src/features/missions/templates/simulation-lab/configs/code-reviewer.ts'],
+  ['code-review-2', 'src/features/missions/templates/review-arena/configs/code-review-2.ts'],
   ['privacy-by-design', 'src/features/missions/templates/simulation-lab/configs/privacy-by-design.ts'],
   ['network-navigator', 'src/features/missions/templates/data-viewer/configs/network-navigator.ts'],
   ['wachtwoord-warrior', 'src/features/missions/templates/puzzle-lab/configs/wachtwoord-warrior.ts'],

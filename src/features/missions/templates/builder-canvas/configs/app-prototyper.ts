@@ -7,6 +7,15 @@ export const appPrototyperConfig: BuilderCanvasConfig = {
     introTitle: 'Ontwerp een app van idee tot prototype',
     introDescription:
         'In deze missie leer je hoe professionele designers apps bouwen: van het ontdekken van het probleem, via schetsen en wireframes, naar een klikbaar prototype. Je ontwerpt een app die een echt probleem op school oplost.',
+    missionGoal: {
+        primaryGoal: 'Werk een app-idee uit tot een toetsbaar prototype met probleem, schermen, flow en testplan.',
+        criteria: {
+            type: 'steps-complete',
+            min: 4,
+            description: 'Alle vier ontwerpstappen zijn afgerond met checklist en geschreven uitwerking.',
+        },
+        evidence: 'Probleemanalyse, drie wireframes, gebruikersflows en een prototype-testplan.',
+    },
     introFeatures: [
         'Analyseer een gebruiksprobleem met de 5 W\'s',
         'Schets wireframes voor de belangrijkste schermen',

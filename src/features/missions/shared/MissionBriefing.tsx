@@ -63,7 +63,7 @@ export const MissionBriefing: React.FC<MissionBriefingProps> = ({ role, onStart,
             <div className="w-full bg-white rounded-2xl shadow-xl border border-lab-line overflow-hidden flex flex-col h-auto max-h-[90vh]">
 
                 {/* Content Area */}
-                <div className="relative flex-1 p-6 md:p-10 flex flex-col justify-between overflow-y-auto custom-scrollbar">
+                <div className="relative flex-1 p-6 pb-28 md:p-10 md:pb-10 flex flex-col justify-between overflow-y-auto custom-scrollbar">
                     {/* Scroll fade hint at bottom */}
                     <div className="pointer-events-none sticky bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-white to-transparent -mb-8 z-10" />
 
@@ -158,7 +158,7 @@ export const MissionBriefing: React.FC<MissionBriefingProps> = ({ role, onStart,
                     </div>
 
                     {/* Navigation Controls */}
-                    <div className="mt-8 flex items-center gap-4 pt-6 border-t border-lab-line shrink-0">
+                    <div className="fixed inset-x-4 bottom-4 z-30 flex items-center gap-4 rounded-2xl border border-lab-line bg-white/95 px-4 py-3 shadow-2xl backdrop-blur md:static md:mt-8 md:rounded-none md:border-x-0 md:border-b-0 md:bg-transparent md:px-0 md:pt-6 md:shadow-none md:backdrop-blur-0 border-t md:border-t">
                         <button
                             onClick={handlePrev}
                             className="p-3 rounded-xl hover:bg-lab-bg text-lab-textLight transition-all duration-300 focus-visible:ring-2 focus-visible:ring-lab-primary min-h-[44px] min-w-[44px] flex items-center justify-center"

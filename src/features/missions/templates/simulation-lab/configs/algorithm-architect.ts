@@ -163,6 +163,15 @@ export const algorithmArchitectConfig: SimulationLabConfig = {
     introTitle: 'Algorithm Architect',
     introDescription:
         'Een algoritme is een recept voor computers: stap-voor-stap instructies om een probleem op te lossen. Ontdek hoe zoek- en sorteeralgoritmes werken en waarom het ene sneller is dan het andere.',
+    missionGoal: {
+        primaryGoal: 'Vergelijk algoritmes en leg uit wanneer een zoek-, sorteer- of pseudocode-aanpak efficient is.',
+        criteria: {
+            type: 'rounds-complete',
+            min: 3,
+            description: 'Alle drie simulaties zijn doorlopen met antwoorden over zoeken, sorteren en pseudocode.',
+        },
+        evidence: 'Ingevulde simulatievragen, scores per algoritme-onderdeel en een uitleg van de gekozen aanpak.',
+    },
     introFeatures: [
         'Sim 1 — Vergelijk lineair en binair zoeken',
         'Sim 2 — Ontdek de kosten van sorteeralgoritmes',

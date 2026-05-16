@@ -29,21 +29,17 @@ CREATE TABLE IF NOT EXISTS public.ai_oversight_events (
     reasoning      text       CHECK (reasoning IS NULL OR (char_length(reasoning) >= 10 AND char_length(reasoning) <= 2000)),
     mission_id     text
 );
-
 COMMENT ON TABLE public.ai_oversight_events IS
     'EU AI Act Art. 12 + 14 — Audit log voor AI-gegenereerde SLO-beoordelingen en teacher overrides. Append-only via RLS (geen UPDATE/DELETE policies).';
-
 COMMENT ON COLUMN public.ai_oversight_events.event_type IS
     'ai_assessment_generated = Art. 12 traceability; teacher_override = Art. 14 human oversight; teacher_review_acknowledged = docent heeft AI-beoordeling bekeken en akkoord gegeven.';
-
 COMMENT ON COLUMN public.ai_oversight_events.reasoning IS
     'Verplicht bij teacher_override (min 10, max 2000 tekens). Vrije tekst door de docent.';
-
 ALTER TABLE public.ai_oversight_events ENABLE ROW LEVEL SECURITY;
-
 -- ── SELECT: docenten zien alleen events van hun eigen school ────────────────
 -- Gebruikt public.users (bevestigd via 20260402200000_harden_audit_logs.sql).
 -- Developerrol heeft volledig inzicht (school_id-onafhankelijk).
+DROP POLICY IF EXISTS "teachers_read_own_school_oversight" ON public.ai_oversight_events;
 CREATE POLICY "teachers_read_own_school_oversight"
     ON public.ai_oversight_events FOR SELECT
     USING (
@@ -57,8 +53,8 @@ CREATE POLICY "teachers_read_own_school_oversight"
               )
         )
     );
-
 -- ── INSERT: docenten mogen alleen inserts voor hun eigen school + zichzelf als teacher_uid ──
+DROP POLICY IF EXISTS "teachers_insert_own_school_oversight" ON public.ai_oversight_events;
 CREATE POLICY "teachers_insert_own_school_oversight"
     ON public.ai_oversight_events FOR INSERT
     WITH CHECK (
@@ -73,7 +69,6 @@ CREATE POLICY "teachers_insert_own_school_oversight"
               )
         )
     );
-
 -- Geen UPDATE of DELETE policies → tabel is de facto append-only via RLS.
 -- (Een aparte immutable trigger kan later worden toegevoegd als hardening,
 --  analoog aan 20260402200000_harden_audit_logs.sql.)
@@ -81,9 +76,7 @@ CREATE POLICY "teachers_insert_own_school_oversight"
 -- ── Indexes ─────────────────────────────────────────────────────────────────
 CREATE INDEX IF NOT EXISTS ai_oversight_events_school_idx
     ON public.ai_oversight_events (school_id, created_at DESC);
-
 CREATE INDEX IF NOT EXISTS ai_oversight_events_student_idx
     ON public.ai_oversight_events (student_uid, created_at DESC);
-
 CREATE INDEX IF NOT EXISTS ai_oversight_events_event_type_idx
     ON public.ai_oversight_events (event_type);

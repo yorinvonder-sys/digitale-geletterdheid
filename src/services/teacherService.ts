@@ -1,5 +1,6 @@
 import { supabase } from './supabase';
 import type { Database } from '@/types/database.types';
+import type { DatabaseWithPendingMigrations } from '@/types/database.pending-migrations';
 import { GamificationEvent, StudentActivity, HighlightedWork, ClassroomConfig, HybridAssessmentRecord } from '@/types';
 import { AVAILABLE_BADGES } from '@/config/badges';
 import { AiBeleidIdee } from '@/types';
@@ -65,6 +66,7 @@ export interface AiBeleidSurveyData {
 
 type AiBeleidFeedbackRow = Database['public']['Tables']['ai_beleid_feedback']['Row'];
 type AiBeleidCategory = AiBeleidIdee['categorie'];
+type TeacherMessageRow = DatabaseWithPendingMigrations['public']['Tables']['teacher_messages']['Row'];
 
 const AI_BELEID_CATEGORIES: AiBeleidCategory[] = ['regels', 'mogelijkheden', 'zorgen', 'suggesties'];
 
@@ -142,6 +144,40 @@ export const updateClassSettings = async (
 };
 
 // --- Messages ---
+function mapTeacherMessage(row: TeacherMessageRow, readMessageIds: Set<string>): TeacherMessage {
+    return {
+        id: row.id,
+        school_id: row.school_id ?? undefined,
+        target_type: row.target_type,
+        target_id: row.target_id,
+        sender_name: row.sender_name ?? 'Docent',
+        sender_id: row.sender_id ?? undefined,
+        text: row.text ?? row.content ?? '',
+        content: row.content ?? undefined,
+        created_at: row.created_at ?? undefined,
+        timestamp: row.timestamp ?? row.created_at ?? undefined,
+        read: readMessageIds.has(row.id),
+    };
+}
+
+async function getReadTeacherMessageIds(userId: string, messageIds: string[]): Promise<Set<string>> {
+    if (messageIds.length === 0) return new Set();
+
+    const { data, error } = await supabase
+        .from('teacher_message_reads')
+        .select('message_id')
+        .eq('user_id', userId)
+        .in('message_id', messageIds);
+
+    if (error) throw error;
+
+    return new Set(
+        (data || [])
+            .map((row) => row.message_id)
+            .filter((id): id is string => typeof id === 'string')
+    );
+}
+
 export const sendMessage = async (message: Omit<TeacherMessage, 'id' | 'created_at' | 'read'>): Promise<boolean> => {
     try {
         const { error } = await supabase
@@ -174,7 +210,7 @@ export const getMessagesForUser = async (userId: string, classId?: string): Prom
         if (e1) throw e1;
 
         // Get class messages
-        let classMessages: any[] = [];
+        let classMessages: TeacherMessageRow[] = [];
         if (classId) {
             const { data, error } = await supabase
                 .from('teacher_messages')
@@ -198,22 +234,33 @@ export const getMessagesForUser = async (userId: string, classId?: string): Prom
             ...(broadcastMessages || []),
         ];
 
+        const messageIds = allMessages.map((message) => message.id);
+        const readMessageIds = await getReadTeacherMessageIds(userId, messageIds);
+
         // Sort by created_at descending
-        return allMessages.sort((a, b) =>
-            new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-        ) as TeacherMessage[];
+        return allMessages
+            .map((message) => mapTeacherMessage(message, readMessageIds))
+            .sort((a, b) =>
+                new Date(b.timestamp || b.created_at || 0).getTime() -
+                new Date(a.timestamp || a.created_at || 0).getTime()
+            );
     } catch (error) {
         console.error('Error getting messages:', error);
         return [];
     }
 };
 
-export const markMessageRead = async (messageId: string): Promise<void> => {
+export const markMessageRead = async (messageId: string, userId: string): Promise<void> => {
+    if (!messageId || !userId) return;
+
     try {
         const { error } = await supabase
-            .from('teacher_messages')
-            .update({ read: true })
-            .eq('id', messageId);
+            .from('teacher_message_reads')
+            .upsert({
+                message_id: messageId,
+                user_id: userId,
+                read_at: new Date().toISOString(),
+            }, { onConflict: 'message_id,user_id' });
         if (error) throw error;
     } catch (error) {
         console.error('Error marking message read:', error);

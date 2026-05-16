@@ -155,6 +155,15 @@ export const bugHunterConfig: SimulationLabConfig = {
     introTitle: 'Bug Hunter',
     introDescription:
         'Een bug opsporen is een echte vaardigheid. Oefen met debuggen: leer foutmeldingen lezen, soorten bugs herkennen en een slimme strategie kiezen.',
+    missionGoal: {
+        primaryGoal: 'Spoor bugs systematisch op door foutmeldingen, bugtypen en debugstrategieen te analyseren.',
+        criteria: {
+            type: 'rounds-complete',
+            min: 3,
+            description: 'Alle drie debug-simulaties zijn afgerond met keuzes en antwoorden over foutanalyse.',
+        },
+        evidence: 'Antwoorden over foutmeldingen, bugtypen, debugstrategieen en de behaalde debugscore.',
+    },
     introFeatures: [
         'Sim 1 — Lees foutmeldingen en stel je debug-score in',
         'Sim 2 — Ontdek welke bugs het gevaarlijkst zijn',

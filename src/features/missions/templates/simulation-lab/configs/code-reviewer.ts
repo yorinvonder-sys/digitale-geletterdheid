@@ -153,6 +153,15 @@ export const codeReviewerConfig: SimulationLabConfig = {
     introTitle: 'Code Reviewer',
     introDescription:
         'Goede code is niet alleen code die werkt — het is code die anderen kunnen begrijpen. Ontdek wat leesbaarheid, het DRY-principe en constructieve feedback betekenen.',
+    missionGoal: {
+        primaryGoal: 'Beoordeel codekwaliteit en geef concrete verbeterfeedback op leesbaarheid, herhaling en samenwerking.',
+        criteria: {
+            type: 'rounds-complete',
+            min: 3,
+            description: 'Alle drie code-review simulaties zijn doorlopen met antwoorden over kwaliteit en feedback.',
+        },
+        evidence: 'Keuzes over leesbaarheid, DRY, feedbackmethode en de bijbehorende code-review score.',
+    },
     introFeatures: [
         'Sim 1 — Stel leesbaarheid in en zie je kwaliteitsscore',
         'Sim 2 — Ontdek hoeveel herhaling te veel is',

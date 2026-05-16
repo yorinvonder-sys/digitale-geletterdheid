@@ -19,6 +19,7 @@
     "clean": "./scripts/cleanup_dev_env.sh",
     "check:prompt-master": "node scripts/check-prompt-master.mjs",
     "check:mission-goals": "node scripts/check-mission-goals.mjs",
+    "check:j2p2-workability": "node scripts/check-j2p2-workability-contract.mjs",
     "check:prompt-master:visual": "node scripts/chrome-prompt-master-qa.mjs",
     "check:gemini-image": "node scripts/check-gemini-image.mjs",
     "check:ai-usage": "node scripts/check-ai-usage-telemetry.mjs",

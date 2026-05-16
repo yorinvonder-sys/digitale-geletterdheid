@@ -13,14 +13,18 @@ CREATE TABLE IF NOT EXISTS public.wellbeing_alerts (
 );
 
 -- Index voor snel opvragen per student en chronologisch
-CREATE INDEX idx_wellbeing_alerts_student ON public.wellbeing_alerts(student_id, detected_at DESC);
-CREATE INDEX idx_wellbeing_alerts_unreviewed ON public.wellbeing_alerts(reviewed_at) WHERE reviewed_at IS NULL;
+CREATE INDEX IF NOT EXISTS idx_wellbeing_alerts_student
+    ON public.wellbeing_alerts(student_id, detected_at DESC);
+CREATE INDEX IF NOT EXISTS idx_wellbeing_alerts_unreviewed
+    ON public.wellbeing_alerts(reviewed_at)
+    WHERE reviewed_at IS NULL;
 
 -- RLS: alleen docenten en admins mogen alerts lezen
 ALTER TABLE public.wellbeing_alerts ENABLE ROW LEVEL SECURITY;
 
 -- Studenten mogen NIETS zien van deze tabel
 -- Docenten mogen alerts lezen en reviewen
+DROP POLICY IF EXISTS "Docenten kunnen wellbeing alerts lezen" ON public.wellbeing_alerts;
 CREATE POLICY "Docenten kunnen wellbeing alerts lezen"
     ON public.wellbeing_alerts FOR SELECT
     USING (
@@ -31,6 +35,7 @@ CREATE POLICY "Docenten kunnen wellbeing alerts lezen"
         )
     );
 
+DROP POLICY IF EXISTS "Docenten kunnen wellbeing alerts reviewen" ON public.wellbeing_alerts;
 CREATE POLICY "Docenten kunnen wellbeing alerts reviewen"
     ON public.wellbeing_alerts FOR UPDATE
     USING (
@@ -56,6 +61,7 @@ CREATE OR REPLACE FUNCTION public.log_wellbeing_alert(
 ) RETURNS VOID
 LANGUAGE plpgsql
 SECURITY DEFINER
+SET search_path = public
 AS $$
 BEGIN
     INSERT INTO public.wellbeing_alerts (student_id, category, detected_at)

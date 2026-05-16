@@ -334,18 +334,18 @@ export const DeepfakeDetectorMission: React.FC<Props> = ({ onBack, onComplete, v
     // Intro screen
     if (showIntro) {
         return (
-            <div className="min-h-screen bg-[#FCF6EA] flex items-center justify-center p-4" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
-                <div className="max-w-lg w-full text-center space-y-8">
+            <div className="min-h-screen bg-[#FCF6EA] flex items-center justify-center p-4 pb-24 sm:pb-4" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                <div className="max-w-lg w-full text-center space-y-5 sm:space-y-8">
                     <div className="relative inline-block">
                         <div className="absolute inset-0 bg-[#D97848]/20 blur-3xl rounded-full animate-pulse" />
-                        <div className="relative bg-gradient-to-br from-[#D97848] to-[#D97848] w-32 h-32 rounded-3xl flex items-center justify-center shadow-2xl">
-                            <Eye size={64} className="text-white" />
+                        <div className="relative bg-gradient-to-br from-[#D97848] to-[#D97848] w-24 h-24 rounded-3xl flex items-center justify-center shadow-2xl sm:w-32 sm:h-32">
+                            <Eye size={56} className="text-white" />
                         </div>
                     </div>
 
-                    <div className="space-y-4">
-                        <h1 className="text-4xl font-black text-[#08283B]" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Deepfake Detector</h1>
-                        <p className="text-[#445865] text-lg">
+                    <div className="space-y-3 sm:space-y-4">
+                        <h1 className="text-3xl font-black text-[#08283B] sm:text-4xl" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Deepfake Detector</h1>
+                        <p className="text-[#445865] text-base sm:text-lg">
                             Kun jij AI-gegenereerde content herkennen? Leer de tekenen te spotten
                             die verraden of iets door een mens of door AI is gemaakt!
                         </p>
@@ -353,18 +353,18 @@ export const DeepfakeDetectorMission: React.FC<Props> = ({ onBack, onComplete, v
 
                     <MissionGoalBanner goal={MISSION_GOAL} />
 
-                    <div className="grid grid-cols-3 gap-4 text-center">
-                        <div className="bg-white rounded-xl p-4 border border-[#E7D8BD]">
-                            <Camera className="w-8 h-8 text-[#0B453F] mx-auto mb-2" />
-                            <p className="text-[#08283B] font-bold text-sm">AI Afbeeldingen</p>
+                    <div className="grid grid-cols-3 gap-2 text-center sm:gap-4">
+                        <div className="bg-white rounded-xl p-3 border border-[#E7D8BD] sm:p-4">
+                            <Camera className="w-7 h-7 text-[#0B453F] mx-auto mb-2 sm:w-8 sm:h-8" />
+                            <p className="text-[#08283B] font-bold text-xs sm:text-sm">AI Afbeeldingen</p>
                         </div>
-                        <div className="bg-white rounded-xl p-4 border border-[#E7D8BD]">
-                            <FileText className="w-8 h-8 text-[#5F947D] mx-auto mb-2" />
-                            <p className="text-[#08283B] font-bold text-sm">AI Teksten</p>
+                        <div className="bg-white rounded-xl p-3 border border-[#E7D8BD] sm:p-4">
+                            <FileText className="w-7 h-7 text-[#5F947D] mx-auto mb-2 sm:w-8 sm:h-8" />
+                            <p className="text-[#08283B] font-bold text-xs sm:text-sm">AI Teksten</p>
                         </div>
-                        <div className="bg-white rounded-xl p-4 border border-[#E7D8BD]">
-                            <Shield className="w-8 h-8 text-[#5F947D] mx-auto mb-2" />
-                            <p className="text-[#08283B] font-bold text-sm">Nepnieuws</p>
+                        <div className="bg-white rounded-xl p-3 border border-[#E7D8BD] sm:p-4">
+                            <Shield className="w-7 h-7 text-[#5F947D] mx-auto mb-2 sm:w-8 sm:h-8" />
+                            <p className="text-[#08283B] font-bold text-xs sm:text-sm">Nepnieuws</p>
                         </div>
                     </div>
 
@@ -377,7 +377,7 @@ export const DeepfakeDetectorMission: React.FC<Props> = ({ onBack, onComplete, v
 
                     <button
                         onClick={() => setState(prev => ({ ...prev, showIntro: false }))}
-                        className="w-full py-4 bg-[#D97848] hover:bg-[#D97848] text-white rounded-full font-black uppercase tracking-wide hover:shadow-lg hover:shadow-[#D97848]/30 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#D97848]"
+                        className="fixed inset-x-4 bottom-4 z-30 py-4 bg-[#D97848] hover:bg-[#D97848] text-white rounded-full font-black uppercase tracking-wide shadow-2xl transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#D97848] sm:static sm:w-full sm:hover:shadow-lg sm:hover:shadow-[#D97848]/30"
                     >
                         Start Detectie
                     </button>
