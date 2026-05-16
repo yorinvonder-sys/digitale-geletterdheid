@@ -38,7 +38,7 @@ export type RoleId =
   // Leerjaar 2 - Periode 3: Digitale Media & Creatie
   'ux-detective' | 'podcast-producer' | 'meme-machine' | 'digital-storyteller' | 'brand-builder' | 'video-editor' | 'media-review' |
   // Leerjaar 2 - Periode 4: Ethiek & Eindproject
-  'ai-ethicus' | 'digital-rights-defender' | 'tech-court' | 'future-forecaster' | 'sustainability-scanner' | 'eindproject-j2' |
+  'ai-ethicus' | 'digital-rights-defender' | 'tech-court' | 'future-forecaster' | 'eindproject-j2' |
   // Leerjaar 3 - Periode 1: Geavanceerd Programmeren & AI
   'ml-trainer' | 'api-architect' | 'neural-navigator' | 'data-pipeline' | 'open-source-contributor' | 'advanced-code-review' |
   // Leerjaar 3 - Periode 2: Cybersecurity & Privacy

@@ -30,7 +30,7 @@ const REVIEW_GROUPS: ReviewGroup[] = [
     { id: 'j2-p1', label: 'J2 P1', assignments: ['data-journalist', 'spreadsheet-specialist', 'factchecker', 'api-verkenner', 'dashboard-designer', 'ai-bias-detective', 'data-review'] },
     { id: 'j2-p2', label: 'J2 P2', assignments: ['algorithm-architect', 'web-developer', 'app-prototyper', 'bug-hunter', 'automation-engineer', 'code-reviewer', 'wachtwoord-warrior', 'access-control-engineer', 'code-review-2'] },
     { id: 'j2-p3', label: 'J2 P3', assignments: ['ux-detective', 'podcast-producer', 'meme-machine', 'digital-storyteller', 'brand-builder', 'video-editor', 'online-helden', 'media-review'] },
-    { id: 'j2-p4', label: 'J2 P4', assignments: ['ai-ethicus', 'digital-rights-defender', 'tech-court', 'future-forecaster', 'sustainability-scanner', 'eindproject-j2'] },
+    { id: 'j2-p4', label: 'J2 P4', assignments: ['ai-ethicus', 'digital-rights-defender', 'tech-court', 'future-forecaster', 'eindproject-j2'] },
     { id: 'j3-p1', label: 'J3 P1', assignments: ['ml-trainer', 'api-architect', 'neural-navigator', 'data-pipeline', 'open-source-contributor', 'advanced-code-review'] },
     { id: 'j3-p2', label: 'J3 P2', assignments: ['cyber-detective', 'encryption-expert', 'phishing-fighter', 'security-auditor', 'digital-forensics', 'security-review'] },
     { id: 'j3-p3', label: 'J3 P3', assignments: ['startup-simulator', 'policy-maker', 'innovation-lab', 'digital-divide-researcher', 'tech-impact-analyst', 'welzijnsonderzoeker', 'startup-pitch', 'impact-review'] },

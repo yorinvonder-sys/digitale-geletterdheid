@@ -70,7 +70,6 @@ export const AGENT_ROLE_IDS = [
   'digital-rights-defender',
   'tech-court',
   'future-forecaster',
-  'sustainability-scanner',
   'eindproject-j2',
   'ml-trainer',
   'api-architect',

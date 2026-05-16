@@ -102,7 +102,6 @@ export const MISSION_OVERRIDES: Record<string, Partial<Mission>> = {
     'digital-rights-defender': { info: 'Ik onderzoek welke digitale rechten gebruikers hebben en vertaal die naar concrete afspraken. Ik schrijf een manifest dat privacy en keuzevrijheid beschermt.' },
     'tech-court': { info: 'Ik voer een debat over een technologisch dilemma en weeg verschillende standpunten af. Ik leer argumenteren vanuit feiten en waarden.' },
     'future-forecaster': { info: 'Ik maak een onderbouwde toekomstvisie op technologie en samenleving. Ik denk na over kansen, risico\'s en gevolgen op langere termijn.' },
-    'sustainability-scanner': { info: 'Ik bereken de milieu-impact van digitale keuzes en vergelijk duurzamere alternatieven. Ik ontdek wat technologie kost aan energie en uitstoot.' },
     'eindproject-j2': { info: 'Ik combineer mijn vaardigheden uit dit leerjaar in één groter eindproject. Ik onderzoek, ontwerp en presenteer een eigen digitale oplossing.' },
     // Leerjaar 3 — Periode 1
     'ml-trainer': { info: 'Ik train een eenvoudig machine-learningmodel en meet hoe goed het presteert. Ik leer waarom data, features en evaluatie het verschil maken.' },

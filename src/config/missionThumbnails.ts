@@ -71,7 +71,6 @@ export const MISSION_SCREENSHOTS: Record<string, string> = {
     'digital-rights-defender': '/assets/previews/project_digital_rights_defender.webp',
     'tech-court': '/assets/previews/project_tech_court.webp',
     'future-forecaster': '/assets/previews/project_future_forecaster.webp',
-    'sustainability-scanner': '/assets/previews/project_sustainability_scanner.webp',
     'eindproject-j2': '/assets/previews/project_eindproject_j2.webp',
     'ml-trainer': '/assets/previews/project_ml_trainer.webp',
     'api-architect': '/assets/previews/project_api_architect.webp',

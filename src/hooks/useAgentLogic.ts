@@ -272,7 +272,6 @@ const getStarterTips = (roleId: string, examplePrompt?: string): string[] => {
         'digital-rights-defender': ['Welke rechten heb ik online?', 'Mag de school dit verzamelen?', 'Schrijf een privacycheck'],
         'tech-court': ['Bereid mijn zaak voor', 'Wat zijn de argumenten voor?', 'Wat zijn de argumenten tegen?'],
         'future-forecaster': ['Hoe ziet 2040 eruit?', 'Welke technologie verandert alles?', 'Wat zijn de risicos?'],
-        'sustainability-scanner': ['Hoeveel energie kost streamen?', 'Hoe verduurzaam ik mijn digitale gedrag?', 'Wat is de CO2-voetafdruk?'],
         'eindproject-j2': ['Help me een onderwerp kiezen', 'Maak een projectplan', 'Welke vaardigheden gebruik ik?'],
         // === J3P1: Geavanceerd Programmeren & AI ===
         'ml-trainer': ['Hoe herken ik spam automatisch?', 'Wat is een trainingsset?', 'Hoe test ik mijn model?'],

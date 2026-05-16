@@ -530,13 +530,6 @@ export const MISSIE_BASISVAARDIGHEDEN: MissieBasisvaardigheden[] = [
     ],
   },
   {
-    missionId: 'sustainability-scanner',
-    basisvaardigheden: [
-      STATISTIEK('Leerling analyseert data over de ecologische voetafdruk van technologie.'),
-      ETHIEK('Leerling weegt de milieukosten van digitale technologie tegen de voordelen.'),
-    ],
-  },
-  {
     missionId: 'eindproject-j2',
     basisvaardigheden: [
       SCHRIJFVAARDIGHEID('Leerling schrijft een projectverslag en reflectierapport.'),

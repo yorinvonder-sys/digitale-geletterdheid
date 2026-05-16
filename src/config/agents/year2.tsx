@@ -1,6 +1,6 @@
 import React from 'react';
 import { AgentRole, EducationLevel } from '@/types';
-import { Image as ImageIcon, Code2, Search, ShieldCheck, Map, RotateCcw, Scale, BarChart2, Table2, Globe, LayoutDashboard, Bug, Zap, FileCode, Smartphone, Eye, Mic, BookOpen, Palette, Video, Shield, Telescope, Leaf, Trophy, Hammer, Network, FileSearch } from 'lucide-react';
+import { Image as ImageIcon, Code2, Search, ShieldCheck, Map, RotateCcw, Scale, BarChart2, Table2, Globe, LayoutDashboard, Bug, Zap, FileCode, Smartphone, Eye, Mic, BookOpen, Palette, Video, Shield, Telescope, Trophy, Hammer, Network, FileSearch } from 'lucide-react';
 import { SYSTEM_INSTRUCTION_SUFFIX } from './shared';
 
 export const YEAR2_ROLES: AgentRole[] = [
@@ -2414,79 +2414,6 @@ We beginnen met trends: noem 3 technologieën of ontwikkelingen die je de afgelo
                 title: "Presenteren",
                 description: "Vat je toekomstvisie samen en benoem de voor- en nadelen van jouw voorspelling.",
                 example: "Typ: 'Het voordeel is dat onderwijs persoonlijker wordt, maar het nadeel is dat je minder sociale contacten hebt.'"
-            }
-        ],
-        bonusChallenges: null
-    },
-    {
-        id: 'sustainability-scanner',
-        yearGroup: 2,
-        educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
-        title: 'Sustainability Scanner',
-        icon: <Leaf size={28} />,
-        color: '#5F947D',
-        description: 'Bereken de verborgen milieu-impact van jouw favoriete technologie.',
-        problemScenario: 'Elke keer dat je een video streamt, een zoekopdracht doet of een bericht stuurt, kost dat energie. Datacenters draaien 24/7 en verbruiken evenveel stroom als kleine landen. Hoe groot is jouw digitale voetafdruk?',
-        missionObjective: 'Analyseer de milieu-impact van een technologie en stel duurzame alternatieven voor.',
-        briefingImage: '/assets/agents/sustainability-scanner.webp',
-        difficulty: 'Medium',
-        examplePrompt: 'Hoeveel CO2 kost het om een uur Netflix te kijken?',
-        visualPreview: (
-            <div className="w-full h-full bg-gradient-to-br from-lab-coral to-lab-sage flex items-center justify-center relative overflow-hidden">
-                <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-lab-sage/30"></div>
-                <div className="absolute top-6 right-6 w-8 h-8 bg-lab-gold/30 rounded-full blur-sm"></div>
-                <Leaf size={64} className="text-white/80 drop-shadow-lg" />
-            </div>
-        ),
-        systemInstruction: `Je bent een duurzaamheidsexpert die gespecialiseerd is in de milieu-impact van digitale technologie. Je helpt leerlingen begrijpen hoeveel energie en grondstoffen technologie kost.
-
-JOUW ROL:
-- Je legt uit hoe technologie het milieu belast: datacenters, e-waste, mineralen, energieverbruik.
-- Je helpt de leerling de milieu-impact van een specifieke technologie te onderzoeken en te berekenen (in begrijpelijke eenheden).
-- Je bespreekt duurzame alternatieven en oplossingen.
-- Je maakt abstracte getallen concreet: "Dat is evenveel als 10 keer met de auto naar school rijden."
-
-SLO KERNDOELEN: 23C (Ethische en maatschappelijke aspecten van technologie bespreken), 23B (Standpunt innemen over digitale vraagstukken).
-
-WERKWIJZE:
-1. Laat de leerling een technologie kiezen (streaming, gaming, social media, AI, etc.).
-2. Onderzoek samen het energieverbruik en de milieu-impact.
-3. Reken de impact om naar begrijpelijke vergelijkingen.
-4. Bedenk samen minstens drie duurzame alternatieven of verbeteringen.
-
-BELANGRIJK: Gebruik realistische maar vereenvoudigde getallen. Het doel is bewustwording, niet exacte wetenschap.
-KERNIDEE:
-Leerlingen leren de milieu-impact van digitale technologie kwantificeren en vergelijken. Ze ontdekken dat het internet en onze apparaten een grote ecologische voetafdruk hebben, en denken na over duurzame alternatieven.
-
-STAP-VOLTOOIING:
-- Stuur ---STEP_COMPLETE:1--- als de leerling het energieverbruik van een specifiek digitaal apparaat of dienst heeft onderzocht en omgezet naar een begrijpelijke vergelijking (bijv. uren autorijden of lampen branden).
-- Stuur ---STEP_COMPLETE:2--- als de leerling de totale impact heeft berekend over een jaar en de resultaten heeft uitgelegd in termen die iedereen begrijpt.
-- Stuur ---STEP_COMPLETE:3--- als de leerling minimaal 3 concrete, haalbare alternatieven of verbeteringen heeft beschreven die de impact verminderen.
-
-SCOPE GUARD:
-- Blijf bij digitale duurzaamheid en energie-impact. Als de leerling afdwaalt naar klimaatpolitiek, stuur ze terug: "Goede achtergrond! Maar laten we focussen op wat wij als digitale gebruikers concreet kunnen doen. Welk alternatief wil je uitwerken?"
-- Gebruik realistische getallen, geen sciencefiction-scenarios.
-
-EERSTE BERICHT:
-"🌱 Sustainability Scanner — online gaan voor het klimaat!
-Wist je dat één Google-zoekopdracht CO₂ uitstoot? Of dat streaming van 1 uur video net zoveel energie kost als een gloeilamp die een uur brandt?
-Jij gaat vandaag de digitale voetafdruk meten. Kies een apparaat of dienst die jij veel gebruikt. Wat wil jij onderzoeken?"
-` + SYSTEM_INSTRUCTION_SUFFIX,
-        steps: [
-            {
-                title: "Energieverbruik onderzoeken",
-                description: "Kies een technologie en onderzoek hoeveel energie en grondstoffen het kost.",
-                example: "Typ: 'Ik wil onderzoeken hoeveel energie online gamen kost per dag.'"
-            },
-            {
-                title: "Impact berekenen",
-                description: "Reken de milieu-impact om naar begrijpelijke vergelijkingen.",
-                example: "Typ: 'Mijn dagelijks gamegebruik kost evenveel stroom als 5 uur een lamp laten branden.'"
-            },
-            {
-                title: "Alternatieven voorstellen",
-                description: "Bedenk minstens drie manieren om de milieu-impact te verminderen.",
-                example: "Typ: 'Alternatief 1: Speel offline games die minder energie kosten.'"
             }
         ],
         bonusChallenges: null

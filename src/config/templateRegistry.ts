@@ -63,7 +63,7 @@ export const TEMPLATE_MISSIONS: Record<string, TemplateMissionEntry> = {
     'mission-blueprint':    { missionId: 'mission-blueprint',    templateType: 'builder-canvas', enableChat: true, chatRoleId: 'mission-blueprint' },
     'mission-vision':       { missionId: 'mission-vision',       templateType: 'builder-canvas', enableChat: true, chatRoleId: 'mission-vision' },
 
-    // === DataViewer (15) ===
+    // === DataViewer (14) ===
     'data-journalist':      { missionId: 'data-journalist',      templateType: 'data-viewer', enableChat: true, chatRoleId: 'data-journalist' },
     'welzijnsonderzoeker':  { missionId: 'welzijnsonderzoeker',  templateType: 'data-viewer' },
     'spreadsheet-specialist': { missionId: 'spreadsheet-specialist', templateType: 'data-viewer' },
@@ -76,7 +76,6 @@ export const TEMPLATE_MISSIONS: Record<string, TemplateMissionEntry> = {
     'ux-detective':         { missionId: 'ux-detective',         templateType: 'data-viewer' },
     'digital-divide-researcher': { missionId: 'digital-divide-researcher', templateType: 'data-viewer' },
     'tech-impact-analyst':  { missionId: 'tech-impact-analyst',  templateType: 'data-viewer' },
-    'sustainability-scanner': { missionId: 'sustainability-scanner', templateType: 'data-viewer' },
     'research-project':     { missionId: 'research-project',     templateType: 'data-viewer' },
     'eindproject-j2':       { missionId: 'eindproject-j2',       templateType: 'data-viewer', enableChat: true, chatRoleId: 'eindproject-j2' },
 

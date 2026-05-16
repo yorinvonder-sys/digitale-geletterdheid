@@ -220,7 +220,6 @@ export const CURRICULUM: CurriculumConfig = {
                         'digital-rights-defender',
                         'tech-court',
                         'future-forecaster',
-                        'sustainability-scanner',
                         'eindproject-j2',
                     ],
                     assessmentId: 'assessment-j2-p4',
