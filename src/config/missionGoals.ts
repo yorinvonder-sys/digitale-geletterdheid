@@ -279,6 +279,76 @@ export const MISSION_GOALS: Record<string, MissionGoal> = {
         },
         evidence: 'Je conclusie verwijst naar een getal, patroon of grafiek.',
     },
+    'ux-detective': {
+        primaryGoal: 'Onderzoek UX-data, herken de grootste gebruiksproblemen en onderbouw welke verbetering prioriteit heeft.',
+        criteria: {
+            type: 'component-complete',
+            description: 'Je analyseert de datasets, beantwoordt de vragen en kiest een UX-verbetering met data-onderbouwing.',
+        },
+        evidence: 'Je antwoorden verwijzen naar gebruikersonderzoek, usability-scores en een prioriteit op basis van impact.',
+    },
+    'podcast-producer': {
+        primaryGoal: 'Ontwerp een podcastconcept met doelgroep, structuur, sterke intro en open interviewvragen.',
+        criteria: {
+            type: 'steps-complete',
+            min: 4,
+            description: 'Je werkt onderwerp, structuur, intro en interviewvragen uit.',
+        },
+        evidence: 'Je podcastplan bevat een doelgroep, segmenten, hook en minimaal vijf interviewvragen.',
+    },
+    'meme-machine': {
+        primaryGoal: 'Analyseer waarom content gedeeld wordt en ontwerp een meme of post met bewuste boodschap en verantwoordelijkheid.',
+        criteria: {
+            type: 'steps-complete',
+            min: 4,
+            description: 'Je analyseert formats, viraliteit en impact voordat je eigen content ontwerpt.',
+        },
+        evidence: 'Je meme-ontwerp benoemt format, doelgroep, deelreden en grens tussen humor en schadelijke content.',
+    },
+    'digital-storyteller': {
+        primaryGoal: 'Ontwerp een interactief verhaal waarin keuzes, structuur en digitale presentatie logisch samenwerken.',
+        criteria: {
+            type: 'steps-complete',
+            min: 4,
+            description: 'Je werkt setting, flowchart, scenes en presentatievorm uit.',
+        },
+        evidence: 'Je verhaal heeft een hoofdpersoon, keuzemomenten, minimaal drie eindes en een digitale presentatiekeuze.',
+    },
+    'brand-builder': {
+        primaryGoal: 'Ontwerp een merkidentiteit die doelgroep, merkwaarden, kleur, logo en huisstijl bewust verbindt.',
+        criteria: {
+            type: 'steps-complete',
+            min: 4,
+            description: 'Je bepaalt merk, kleurenpalet, logo-concept en huisstijlgids.',
+        },
+        evidence: 'Je merkpresentatie bevat doelgroep, merkwoorden, kleurkeuzes, logo-uitleg en consistente huisstijlregels.',
+    },
+    'video-editor': {
+        primaryGoal: 'Plan een korte video met doel, storyboard, shotlist en montagekeuzes voordat je gaat produceren.',
+        criteria: {
+            type: 'steps-complete',
+            min: 4,
+            description: 'Je werkt concept, storyboard, shotlist en montageplan uit.',
+        },
+        evidence: 'Je videoplan bevat doelgroep, centrale boodschap, minimaal vijf scenes, acht shots en montagekeuzes.',
+    },
+    'online-helden': {
+        primaryGoal: 'Herken cyberpesten en kies als bijstander een veilige, helpende reactie die de situatie niet verergert.',
+        criteria: {
+            type: 'rounds-complete',
+            description: 'Je beoordeelt scenario’s, rangschikt gedrag en kiest onderbouwde bijstanderacties.',
+        },
+        evidence: 'Je kunt uitleggen wanneer je bewaart, meldt, steun biedt of hulp inschakelt.',
+    },
+    'media-review': {
+        primaryGoal: 'Bewijs dat je media-keuzes, UX, branding, storytelling en doelgroepgericht ontwerpen kunt beoordelen.',
+        criteria: {
+            type: 'score-threshold',
+            threshold: 70,
+            description: 'Je rondt de reviewrondes af en haalt minimaal het niveau Scherp Mediabewust.',
+        },
+        evidence: 'Je score en ronde-antwoorden laten zien dat je productievolgorde, begrippen en bewuste mediakeuzes begrijpt.',
+    },
     'digitale-balans-coach': {
         primaryGoal: 'Maak een persoonlijk en haalbaar plan voor digitale balans en privacy.',
         criteria: {
