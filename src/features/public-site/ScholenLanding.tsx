@@ -64,8 +64,8 @@ const skills: Skill[] = [
         projects: '12 projecten',
         coachTip: 'Start hier als je klas AI wil gebruiken en kritisch wil leren kijken.',
         bestFor: 'brugklas, onderzoeksopdrachten en AI-basis',
-        image: '/assets/skill-cards/skill-ai-data.webp',
-        alt: 'Dynamische AI en data opdrachtwereld met grafieken, datablocks en een AI-assistent',
+        image: '/assets/skill-cards/skill-ai-data-realistic.webp',
+        alt: 'Realistisch AI en data dashboard met grafieken, voortgangskaarten en een AI-assistent',
     },
     {
         title: 'Design & Create',
@@ -75,8 +75,8 @@ const skills: Skill[] = [
         projects: '18 projecten',
         coachTip: 'Goed voor makers: ontwerpen, testen en verbeteren met zichtbaar resultaat.',
         bestFor: 'projectweek, kunstvakken en creatieve keuzeuren',
-        image: '/assets/skill-cards/skill-design-create.webp',
-        alt: 'Dynamische designstudio met prototypes, kleurstalen en animatieframes',
+        image: '/assets/skill-cards/skill-design-create-realistic.webp',
+        alt: 'Realistisch design dashboard met prototypes, kleurstalen, storyboard en feedbackpanelen',
     },
     {
         title: 'Code & Bouw',
@@ -86,8 +86,8 @@ const skills: Skill[] = [
         projects: '24 projecten',
         coachTip: 'Perfect voor leerlingen die willen snappen hoe apps, games en logica werken.',
         bestFor: 'programmeren, technologie en plusopdrachten',
-        image: '/assets/skill-cards/skill-code-bouw.webp',
-        alt: 'Dynamische codewerkplaats met appblokken, game-elementen en bouwmodules',
+        image: '/assets/skill-cards/skill-code-bouw-realistic.webp',
+        alt: 'Realistisch code dashboard met editor, app-preview, teststatus en projectvoortgang',
     },
     {
         title: 'Media & Verhaal',
@@ -97,8 +97,8 @@ const skills: Skill[] = [
         projects: '16 projecten',
         coachTip: 'Sterk voor creatievelingen: video, verhaal, presentatie en digitale identiteit.',
         bestFor: 'Nederlands, mediawijsheid en presentaties',
-        image: '/assets/skill-cards/skill-media-verhaal.webp',
-        alt: 'Dynamische mediastudio met camera, podcastmicrofoon en verhaaltijdlijn',
+        image: '/assets/skill-cards/skill-media-verhaal-realistic.webp',
+        alt: 'Realistisch media dashboard met video-editor, audiotijdlijn, storyboard en exportstatus',
     },
     {
         title: 'Online veiligheid',
@@ -108,8 +108,8 @@ const skills: Skill[] = [
         projects: '8 projecten',
         coachTip: 'Ideaal als startpunt voor mentoraat, privacy, phishing en veilig gedrag.',
         bestFor: 'mentorles, burgerschap en schoolbrede veiligheid',
-        image: '/assets/skill-cards/skill-online-veiligheid.webp',
-        alt: 'Dynamische online veiligheid opdrachtwereld met schild, sloten en privacykaarten',
+        image: '/assets/skill-cards/skill-online-veiligheid-realistic.webp',
+        alt: 'Realistisch online veiligheid dashboard met phishingresultaten, privacykaarten en 2FA-status',
     },
 ];
 
@@ -1750,10 +1750,21 @@ function PortfolioStorySection({ startPilot }: { startPilot: () => void }) {
         };
     }, []);
 
-    const easeOutCubic = (x: number) => 1 - Math.pow(1 - x, 3);
-    const easeInCubic = (x: number) => x * x * x;
     const clamp01 = (x: number) => Math.min(1, Math.max(0, x));
-    const segmentProgress = (offset: number, start: number, end: number) => clamp01((offset - start) / (end - start));
+    const easeOutCubic = (x: number) => 1 - Math.pow(1 - x, 3);
+    const easeInOutCubic = (x: number) => x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+
+    const cardPose = (depth: number) => {
+        const poses = [
+            { x: 10, y: -10, rot: 2.4, scale: 1.035 },
+            { x: -8, y: 16, rot: -2.6, scale: 0.945 },
+            { x: -18, y: 32, rot: -5.2, scale: 0.89 },
+            { x: -28, y: 50, rot: -7.8, scale: 0.835 },
+        ];
+        return poses[Math.min(depth, poses.length - 1)];
+    };
+
+    const mix = (from: number, to: number, amount: number) => from + (to - from) * amount;
 
     const getCardStyle = (index: number): React.CSSProperties => {
         const N = panels.length;
@@ -1770,49 +1781,49 @@ function PortfolioStorySection({ startPilot }: { startPilot: () => void }) {
             };
         }
 
-        const offset = t - index; // <0 = nog in dek, 0 = actief, >0 = aan het wegvliegen
-        let txValue: number, txUnit: 'px' | '%';
-        let ty: number, rot: number, sc: number, op: number;
-        let shakeX = 0;
-        let shakeY = 0;
-        let shakeRot = 0;
+        const activeIndex = Math.min(N - 1, Math.floor(t));
+        const transition = activeIndex >= N - 1 ? 0 : clamp01(t - activeIndex);
+        const depth = (index - activeIndex + N) % N;
 
-        if (offset <= 0) {
-            // incoming: kaart staat in het dek erachter, fan-stack zichtbaar
-            const depth = Math.min(-offset, 3);
-            const pull = easeOutCubic(clamp01(1 + offset));
-            txValue = depth * -10 + pull * 10;
-            txUnit = 'px';
-            ty = depth * 16 - pull * 10;
-            rot = depth * -2.6 + pull * 2.4;
-            sc = Math.max(0.8, 1 - depth * 0.055 + pull * 0.035);
-            op = -offset > 3.1 ? 0 : 1;
-        } else {
-            const settle = segmentProgress(offset, 0, 0.16);
-            const shuffle = segmentProgress(offset, 0.16, 0.58);
-            const leave = segmentProgress(offset, 0.58, 1);
-            const shuffleWave = Math.sin(shuffle * Math.PI * 3);
-            const leaveEase = easeInCubic(leave);
+        let pose = cardPose(depth);
+        let zIndex = N - depth + 1;
+        let pointerEvents: React.CSSProperties['pointerEvents'] = depth === 0 && transition < 0.5 ? 'auto' : 'none';
 
-            shakeX = shuffleWave * 10 * (1 - shuffle * 0.35);
-            shakeY = Math.sin(shuffle * Math.PI * 2) * 6 * (1 - shuffle * 0.45);
-            shakeRot = shuffleWave * 3.2 * (1 - shuffle * 0.35);
+        if (transition > 0) {
+            const shift = easeOutCubic(transition);
 
-            txValue = shakeX - 118 * leaveEase;
-            txUnit = '%';
-            ty = -6 * settle + shakeY - 46 * leaveEase;
-            rot = shakeRot - 19 * leaveEase;
-            sc = 1 + 0.012 * (1 - settle) - 0.075 * leaveEase;
-            op = clamp01(1 - leave * 1.25);
+            if (depth === 0) {
+                const under = easeInOutCubic(transition);
+                const front = cardPose(0);
+                const bottom = cardPose(N - 1);
+                const arc = Math.sin(transition * Math.PI);
+                pose = {
+                    x: mix(front.x, bottom.x, under) + arc * 34,
+                    y: mix(front.y, bottom.y, under) + arc * 56,
+                    rot: mix(front.rot, bottom.rot, under) + arc * 8,
+                    scale: mix(front.scale, bottom.scale, under),
+                };
+                zIndex = transition < 0.24 ? N + 3 : 1;
+            } else {
+                const from = cardPose(depth);
+                const to = cardPose(depth - 1);
+                pose = {
+                    x: mix(from.x, to.x, shift),
+                    y: mix(from.y, to.y, shift),
+                    rot: mix(from.rot, to.rot, shift),
+                    scale: mix(from.scale, to.scale, shift),
+                };
+                zIndex = depth === 1 && transition >= 0.24 ? N + 3 : N - depth + 2;
+                pointerEvents = depth === 1 && transition >= 0.5 ? 'auto' : 'none';
+            }
         }
 
-        const distFromActive = Math.abs(offset);
         return {
-            zIndex: N - Math.round(distFromActive * 2),
-            opacity: op,
-            transform: `translate3d(${txValue}${txUnit}, ${ty}px, 0) rotate(${rot}deg) scale(${sc})`,
+            zIndex,
+            opacity: 1,
+            transform: `translate3d(${pose.x}px, ${pose.y}px, 0) rotate(${pose.rot}deg) scale(${pose.scale})`,
             transition: 'transform 90ms linear, opacity 160ms ease',
-            pointerEvents: distFromActive < 0.5 ? 'auto' : 'none',
+            pointerEvents,
             willChange: 'transform, opacity',
         };
     };

@@ -7,6 +7,17 @@ const config: DebateArenaConfig = {
     introTitle: 'Tech Court',
     introDescription:
         'Een groot techbedrijf wordt aangeklaagd omdat hun AI-systeem vrouwen en mensen met een niet-westerse naam systematisch lager beoordeelt bij sollicitaties. Jij staat in de rechtszaal. Wie heeft gelijk?',
+    missionGoal: {
+        primaryGoal:
+            'Beoordeel een tech-dilemma als rechtszaak en onderbouw een eerlijk oordeel.',
+        criteria: {
+            type: 'rounds-complete',
+            description:
+                'Je onderzoekt rollen, kiest positie, bouwt argumenten en reageert op tegenwerpingen.',
+        },
+        evidence:
+            'Je oordeel noemt maatschappelijke gevolgen en wat dit betekent voor digitaal welzijn.',
+    },
     introFeatures: [
         'Lees de standpunten van 4 betrokkenen',
         'Kies jouw positie in het debat',

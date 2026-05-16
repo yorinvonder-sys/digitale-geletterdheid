@@ -7,6 +7,17 @@ const config: DebateArenaConfig = {
     introTitle: 'AI Ethicus',
     introDescription:
         'Een AI-systeem op een school deelt leerlingen automatisch in op niveau — maar sommige groepen worden vaker lager ingedeeld. Is dat eerlijk? En wat moet er aan gedaan worden? Debatteer mee over bias in algoritmes.',
+    missionGoal: {
+        primaryGoal:
+            'Onderzoek AI-bias vanuit meerdere perspectieven en formuleer een verdedigbaar standpunt.',
+        criteria: {
+            type: 'rounds-complete',
+            description:
+                'Je leest perspectieven, kiest positie, bouwt argumenten en reflecteert op je mening.',
+        },
+        evidence:
+            'Je standpunt noemt minstens twee argumenten en een gevolg voor leerlingen of school.',
+    },
     introFeatures: [
         'Lees de standpunten van 4 betrokkenen',
         'Kies jouw positie in het debat',

@@ -7,6 +7,17 @@ const config: DebateArenaConfig = {
     introTitle: 'Future Forecaster',
     introDescription:
         'Het is 2040. AI geeft bijna alle lessen, zelfrijdende auto\'s zijn de norm en je digitale tweeling houdt je gezondheid bij. Maar niet iedereen is blij. Debatteer mee over hoe ver technologie mag gaan.',
+    missionGoal: {
+        primaryGoal:
+            'Voorspel hoe technologie de toekomst kan veranderen en weeg voordelen en risico’s af.',
+        criteria: {
+            type: 'rounds-complete',
+            description:
+                'Je verkent perspectieven, kiest positie, bouwt argumenten en reflecteert op je voorspelling.',
+        },
+        evidence:
+            'Je toekomstvisie noemt minstens een kans, een risico en wie erdoor geraakt wordt.',
+    },
     introFeatures: [
         'Lees de standpunten van 4 betrokkenen',
         'Kies jouw positie in het debat',

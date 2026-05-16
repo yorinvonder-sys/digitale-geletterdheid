@@ -349,6 +349,46 @@ export const MISSION_GOALS: Record<string, MissionGoal> = {
         },
         evidence: 'Je score en ronde-antwoorden laten zien dat je productievolgorde, begrippen en bewuste mediakeuzes begrijpt.',
     },
+    'ai-ethicus': {
+        primaryGoal: 'Onderzoek AI-bias vanuit meerdere perspectieven en formuleer een verdedigbaar standpunt.',
+        criteria: {
+            type: 'rounds-complete',
+            description: 'Je leest perspectieven, kiest positie, bouwt argumenten en reflecteert op je mening.',
+        },
+        evidence: 'Je standpunt noemt minstens twee argumenten en een gevolg voor leerlingen of school.',
+    },
+    'digital-rights-defender': {
+        primaryGoal: 'Onderzoek welke data een school mag verzamelen en verdedig digitale rechten van leerlingen.',
+        criteria: {
+            type: 'rounds-complete',
+            description: 'Je leest perspectieven, kiest positie, bouwt argumenten en reflecteert op privacygrenzen.',
+        },
+        evidence: 'Je standpunt verbindt een recht, risico of regel aan een concrete schoolpraktijk.',
+    },
+    'tech-court': {
+        primaryGoal: 'Beoordeel een tech-dilemma als rechtszaak en onderbouw een eerlijk oordeel.',
+        criteria: {
+            type: 'rounds-complete',
+            description: 'Je onderzoekt rollen, kiest positie, bouwt argumenten en reageert op tegenwerpingen.',
+        },
+        evidence: 'Je oordeel noemt maatschappelijke gevolgen en wat dit betekent voor digitaal welzijn.',
+    },
+    'future-forecaster': {
+        primaryGoal: 'Voorspel hoe technologie de toekomst kan veranderen en weeg voordelen en risico’s af.',
+        criteria: {
+            type: 'rounds-complete',
+            description: 'Je verkent perspectieven, kiest positie, bouwt argumenten en reflecteert op je voorspelling.',
+        },
+        evidence: 'Je toekomstvisie noemt minstens een kans, een risico en wie erdoor geraakt wordt.',
+    },
+    'eindproject-j2': {
+        primaryGoal: 'Bereid je eindproject voor door projectdata te analyseren en een eigen idee te onderbouwen.',
+        criteria: {
+            type: 'component-complete',
+            description: 'Je onderzoekt voorbeeldprojecten, vergelijkt keuzes en formuleert een haalbaar projectidee.',
+        },
+        evidence: 'Je voorbereiding noemt een probleem, doelgroep, projectvorm en onderbouwing uit de data.',
+    },
     'digitale-balans-coach': {
         primaryGoal: 'Maak een persoonlijk en haalbaar plan voor digitale balans en privacy.',
         criteria: {

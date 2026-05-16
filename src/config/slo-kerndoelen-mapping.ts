@@ -137,9 +137,9 @@ export const KERNDOEL_MISSIONS: KerndoelMissionMeta[] = [
   // Periode 4: Ethiek, Maatschappij & Eindproject
   { id: 'ai-ethicus', title: 'AI Ethicus', week: 4, yearGroup: 2, sloKerndoelen: ['21D', '23C'], sloVsoKerndoelen: ['18C', '20B'] },
   { id: 'digital-rights-defender', title: 'Digital Rights Defender', week: 4, yearGroup: 2, sloKerndoelen: ['23A', '23C'], sloVsoKerndoelen: ['20A', '20B'] }, // 23B→23C: GDPR-rechten = privacy + regelgeving
-  { id: 'tech-court', title: 'Tech Court', week: 4, yearGroup: 2, sloKerndoelen: ['23C'], sloVsoKerndoelen: ['20B'] },                                         // -23B: rechtszaak = puur maatschappij/ethiek
+  { id: 'tech-court', title: 'Tech Court', week: 4, yearGroup: 2, sloKerndoelen: ['23B', '23C'], sloVsoKerndoelen: ['20A', '20B'] },                            // rechtszaak + digitaal welzijn + maatschappelijke gevolgen
   { id: 'future-forecaster', title: 'Future Forecaster', week: 4, yearGroup: 2, sloKerndoelen: ['21D', '23C'], sloVsoKerndoelen: ['18C', '20B'] },
-  { id: 'eindproject-j2', title: 'Eindproject Jaar 2', week: 4, yearGroup: 2, sloKerndoelen: ['21A', '21B', '21C', '21D', '22A', '22B', '23A', '23B', '23C'], sloVsoKerndoelen: ['18A', '18B', '18C', '19A', '20A', '20B'] }, // capstone: alle kerndoelen
+  { id: 'eindproject-j2', title: 'Eindproject Jaar 2 Voorbereiding', week: 4, yearGroup: 2, sloKerndoelen: ['21C', '22A', '23C'], sloVsoKerndoelen: ['18B', '19A', '20B'] }, // voorbereiding: data analyseren, productidee kiezen en maatschappelijk onderbouwen
 
   // Assessment P4
   { id: 'assessment-j2-p4', title: 'Nulmeting Periode 4', week: 4, yearGroup: 2, sloKerndoelen: ['23A', '23B', '23C', '21D'], sloVsoKerndoelen: ['20A', '20B', '18C'] },
