@@ -1,8 +1,17 @@
 #!/usr/bin/env node
-import { readFileSync, readdirSync, statSync } from 'fs';
+import { existsSync, readFileSync, readdirSync, statSync } from 'fs';
 import { join } from 'path';
 
-const budgetsPath = join(process.cwd(), 'config', 'performance-budgets.json');
+const budgetPathCandidates = [
+  join(process.cwd(), 'src', 'config', 'performance-budgets.json'),
+  join(process.cwd(), 'config', 'performance-budgets.json'),
+];
+const budgetsPath = budgetPathCandidates.find((path) => existsSync(path));
+if (!budgetsPath) {
+  console.error('[Bundle Budgets] Missing performance budget config.');
+  console.error(`Checked:\n${budgetPathCandidates.map((path) => ` - ${path}`).join('\n')}`);
+  process.exit(1);
+}
 const budgets = JSON.parse(readFileSync(budgetsPath, 'utf8'));
 
 function patternToRegExp(pattern) {
