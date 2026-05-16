@@ -336,7 +336,7 @@ const LoadingScreen = () => (
     </div>
 );
 
-export const BuilderCanvas: React.FC<TemplateMissionProps> = ({ missionId, onBack, onComplete }) => {
+export const BuilderCanvas: React.FC<TemplateMissionProps> = ({ missionId, onBack, onComplete, enableChat, chatRoleId }) => {
     const [config, setConfig] = useState<BuilderCanvasConfig | null>(null);
     const [loadError, setLoadError] = useState(false);
 
@@ -344,11 +344,15 @@ export const BuilderCanvas: React.FC<TemplateMissionProps> = ({ missionId, onBac
         import(`./configs/${missionId}.ts`)
             .then((mod) => {
                 const cfg = mod.default ?? Object.values(mod).find((v): v is BuilderCanvasConfig => v && typeof v === 'object' && 'missionId' in v);
-                if (cfg) setConfig(cfg);
+                if (cfg) setConfig({
+                    ...cfg,
+                    enableChat: enableChat ?? cfg.enableChat,
+                    chatRoleId: chatRoleId ?? cfg.chatRoleId,
+                });
                 else setLoadError(true);
             })
             .catch(() => setLoadError(true));
-    }, [missionId]);
+    }, [missionId, enableChat, chatRoleId]);
 
     if (loadError) return (
         <div className="min-h-screen bg-[#FCF6EA] flex items-center justify-center p-4">

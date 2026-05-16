@@ -1,5 +1,6 @@
 import React, { useMemo, useState, useEffect } from 'react';
-import { ArrowRight, MessageSquare } from 'lucide-react';
+import { ArrowRight, MessageCircle, MessageSquare } from 'lucide-react';
+import { StudentAIChat } from '@/features/ai-chat/StudentAIChat';
 import { useMissionAutoSave } from '@/hooks/useMissionAutoSave';
 import { PhaseHeader } from '../shared/PhaseHeader';
 import { IntroScreen } from '../shared/IntroScreen';
@@ -37,6 +38,8 @@ export interface DebateArenaConfig {
     introDescription: string;
     missionGoal?: MissionGoal;
     introFeatures?: string[];
+    enableChat?: boolean;
+    chatRoleId?: string;
     topic: string;
     dilemma: string;
     stakeholders: Stakeholder[];
@@ -142,8 +145,21 @@ const DebateArenaInner: React.FC<DebateArenaProps> = ({ config, onBack, onComple
         config.missionId,
         buildInitialState()
     );
+    const [isChatOpen, setIsChatOpen] = useState(false);
 
     const score = useMemo(() => calcScore(state, config), [state, config]);
+    const userId = (() => {
+        try {
+            const key = Object.keys(localStorage).find((k) =>
+                /^sb-[a-z0-9_-]+-auth-token$/i.test(k)
+            );
+            if (!key) return null;
+            const raw = localStorage.getItem(key);
+            return raw ? JSON.parse(raw)?.user?.id : null;
+        } catch {
+            return null;
+        }
+    })();
 
     const setPhase = (phase: Phase) => setState((s) => ({ ...s, phase }));
 
@@ -165,6 +181,50 @@ const DebateArenaInner: React.FC<DebateArenaProps> = ({ config, onBack, onComple
         reflect: 5,
         results: 6,
     };
+
+    const currentPhaseIndex = phaseIndex[state.phase];
+    const selectedPosition = config.positions.find((p) => p.id === state.selectedPosition);
+    const activeStakeholder = config.stakeholders[state.activeStakeholderIndex];
+    const chatOverlay = config.enableChat ? (
+        <>
+            <StudentAIChat
+                roleId={config.chatRoleId ?? 'student-assistant'}
+                userIdentifier={userId ?? 'anonymous'}
+                isOpen={isChatOpen}
+                onOpenChange={setIsChatOpen}
+                context={{
+                    currentDebate: {
+                        topic: config.topic,
+                        dilemma: config.dilemma,
+                        phase: state.phase,
+                    },
+                    activeStakeholder: activeStakeholder
+                        ? {
+                            name: activeStakeholder.name,
+                            role: activeStakeholder.role,
+                            perspective: activeStakeholder.perspective,
+                        }
+                        : null,
+                    progress: {
+                        phase: currentPhaseIndex,
+                        total: 6,
+                        score,
+                        maxScore: config.maxScore,
+                    },
+                    selectedPosition: selectedPosition?.label ?? null,
+                }}
+            />
+            {!isChatOpen && (
+                <button
+                    onClick={() => setIsChatOpen(true)}
+                    className="fixed bottom-6 right-6 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-[#D97848] to-[#D97848] text-white shadow-lg transition-all duration-200 hover:brightness-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0B453F] focus-visible:ring-offset-2 active:scale-95"
+                    aria-label="Open AI-assistent"
+                >
+                    <MessageCircle size={22} />
+                </button>
+            )}
+        </>
+    ) : null;
 
     // Phase: intro
     if (state.phase === 'intro') {
@@ -252,11 +312,10 @@ const DebateArenaInner: React.FC<DebateArenaProps> = ({ config, onBack, onComple
                         }}
                     />
                 </div>
+                {chatOverlay}
             </div>
         );
     }
-
-    const currentPhaseIndex = phaseIndex[state.phase];
 
     return (
         <div className="min-h-screen bg-[#FCF6EA] p-4">
@@ -342,6 +401,7 @@ const DebateArenaInner: React.FC<DebateArenaProps> = ({ config, onBack, onComple
                     />
                 )}
             </div>
+            {chatOverlay}
         </div>
     );
 };
@@ -354,7 +414,7 @@ const LoadingScreen = () => (
     </div>
 );
 
-export const DebateArena: React.FC<TemplateMissionProps> = ({ missionId, onBack, onComplete }) => {
+export const DebateArena: React.FC<TemplateMissionProps> = ({ missionId, onBack, onComplete, enableChat, chatRoleId }) => {
     const [config, setConfig] = useState<DebateArenaConfig | null>(null);
     const [loadError, setLoadError] = useState(false);
 
@@ -362,11 +422,15 @@ export const DebateArena: React.FC<TemplateMissionProps> = ({ missionId, onBack,
         import(`./configs/${missionId}.ts`)
             .then((mod) => {
                 const cfg = mod.default ?? Object.values(mod).find((v): v is DebateArenaConfig => v && typeof v === 'object' && 'missionId' in v);
-                if (cfg) setConfig(cfg);
+                if (cfg) setConfig({
+                    ...cfg,
+                    enableChat: enableChat ?? cfg.enableChat,
+                    chatRoleId: chatRoleId ?? cfg.chatRoleId,
+                });
                 else setLoadError(true);
             })
             .catch(() => setLoadError(true));
-    }, [missionId]);
+    }, [missionId, enableChat, chatRoleId]);
 
     if (loadError) return (
         <div className="min-h-screen bg-[#FCF6EA] flex items-center justify-center p-4">

@@ -388,7 +388,7 @@ const LoadingScreen = () => (
 );
 
 export const ReviewArena: React.FC<TemplateMissionProps> = (props) => {
-    const { missionId, onBack } = props;
+    const { missionId, onBack, enableChat, chatRoleId } = props;
     const [config, setConfig] = useState<ReviewArenaConfig | null>(null);
     const [loadError, setLoadError] = useState(false);
 
@@ -403,11 +403,15 @@ export const ReviewArena: React.FC<TemplateMissionProps> = (props) => {
                         Boolean(value) && typeof value === 'object' && 'missionId' in value
                 );
 
-                if (cfg) setConfig(cfg);
+                if (cfg) setConfig({
+                    ...cfg,
+                    enableChat: enableChat ?? cfg.enableChat,
+                    chatRoleId: chatRoleId ?? cfg.chatRoleId,
+                });
                 else setLoadError(true);
             })
             .catch(() => setLoadError(true));
-    }, [missionId]);
+    }, [missionId, enableChat, chatRoleId]);
 
     if (loadError) return (
         <div className="min-h-screen bg-[#FCF6EA] flex items-center justify-center p-4">
