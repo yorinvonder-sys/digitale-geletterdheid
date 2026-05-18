@@ -7,6 +7,18 @@ export const neuralNavigatorConfig: DataViewerConfig = {
     introTitle: 'Word een Neural Navigator',
     introDescription:
         'Neurale netwerken zijn de motor achter gezichtsherkenning, stemassistenten en aanbevelingsalgoritmes. Ze zijn geïnspireerd op het menselijk brein. Jij gaat van binnenuit ontdekken hoe neuronen, lagen en backpropagation samenwerken.',
+    missionGoal: {
+        primaryGoal:
+            'Leg met berekeningen en voorbeelden uit hoe neuronen, gewichten, lagen en backpropagation samenwerken.',
+        criteria: {
+            type: 'score-threshold',
+            threshold: 55,
+            description:
+                'Alle drie datasets zijn onderzocht, observaties verbinden berekening aan neurale-netwerkbegrippen en de score is minimaal 55/100.',
+        },
+        evidence:
+            'Leerlingbewijs: antwoorden over forward pass, gewichten, training, lagen en toepassingen. Docentbewijs: score, fase-overzicht en tekstbewijs waarin de leerling de werking van een neuraal netwerk uitlegt.',
+    },
     introFeatures: [
         'Reken zelf een forward pass door een neuraal netwerk',
         'Vergelijk hoe de output verandert bij andere gewichten',
@@ -66,6 +78,13 @@ export const neuralNavigatorConfig: DataViewerConfig = {
                     explanation:
                         'Gewichten bepalen hoe "belangrijk" elke input is voor het neuron. Een hoog gewicht betekent: deze input telt zwaar mee. Tijdens training worden gewichten aangepast (via backpropagation) zodat de outputs beter overeenkomen met de gewenste uitkomsten. Het leerproces van een neuraal netwerk is eigenlijk het optimaliseren van al die gewichten.',
                     points: 10,
+                    minLength: 45,
+                    minEvidenceCriteria: 2,
+                    textEvidenceCriteria: [
+                        { label: 'gewicht bepaalt invloed', keywords: ['gewicht', 'gewichten', 'belangrijk', 'zwaar'] },
+                        { label: 'input of output', keywords: ['input', 'output', 'uitkomst'] },
+                        { label: 'aanpassen tijdens leren', keywords: ['aanpassen', 'training', 'leren', 'backpropagation'] },
+                    ],
                 },
             ],
         },
@@ -121,6 +140,14 @@ export const neuralNavigatorConfig: DataViewerConfig = {
                     explanation:
                         'Backpropagation is het leerproces: het netwerk maakt een voorspelling (forward pass), vergelijkt die met het juiste antwoord, berekent hoe groot de fout is, en past de gewichten aan om de fout kleiner te maken. Vergelijking: als je basketbal leert en je gooit te ver, pas je je worp aan (meer of minder kracht). Het netwerk doet hetzelfde, maar met honderden gewichten tegelijk.',
                     points: 10,
+                    minLength: 50,
+                    minEvidenceCriteria: 3,
+                    textEvidenceCriteria: [
+                        { label: 'voorspelling of forward pass', keywords: ['voorspelling', 'forward', 'output'] },
+                        { label: 'fout vergelijken', keywords: ['fout', 'vergelijk', 'juiste antwoord'] },
+                        { label: 'gewichten aanpassen', keywords: ['gewicht', 'gewichten', 'aanpassen'] },
+                        { label: 'eigen vergelijking', keywords: ['zoals', 'alsof', 'vergelijk', 'bijvoorbeeld'] },
+                    ],
                 },
             ],
         },
@@ -178,6 +205,13 @@ export const neuralNavigatorConfig: DataViewerConfig = {
                     explanation:
                         'Goede voorbeelden: gezichtsontgrendeling van je telefoon (input: pixelwaarden, output: jij/niet jij), TikTok aanbevelingsalgoritme (input: kijkgedrag en likes, output: kans dat je een video leuk vindt), autocorrectie (input: getypte letters, output: waarschijnlijkste woord). Neurale netwerken zitten overal in moderne apps.',
                     points: 0,
+                    minLength: 45,
+                    minEvidenceCriteria: 3,
+                    textEvidenceCriteria: [
+                        { label: 'dagelijkse toepassing', keywords: ['telefoon', 'tiktok', 'aanbeveling', 'gezicht', 'autocorrect', 'app'] },
+                        { label: 'input genoemd', keywords: ['input', 'invoer'] },
+                        { label: 'output genoemd', keywords: ['output', 'uitvoer', 'voorspelling', 'kans'] },
+                    ],
                 },
             ],
         },

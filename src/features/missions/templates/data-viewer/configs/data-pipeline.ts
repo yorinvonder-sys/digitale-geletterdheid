@@ -7,6 +7,18 @@ export const dataPipelineConfig: DataViewerConfig = {
     introTitle: 'Word een Data Engineer',
     introDescription:
         'Ruwe data is altijd een puinhoop. Ontbrekende waarden, verkeerde formaten, duplicaten — voordat je data kunt analyseren moet je hem opschonen. Dit heet een ETL-proces: Extract, Transform, Load. Jij gaat leren hoe data-engineers orde scheppen in chaos.',
+    missionGoal: {
+        primaryGoal:
+            'Laat zien dat je dataproblemen herkent en een passende ETL-aanpak kunt uitleggen met bewijs uit de dataset.',
+        criteria: {
+            type: 'score-threshold',
+            threshold: 55,
+            description:
+                'Alle drie datasets zijn onderzocht, observaties noemen concrete dataproblemen en ETL-keuzes en de score is minimaal 55/100.',
+        },
+        evidence:
+            'Leerlingbewijs: antwoorden over datakwaliteit, opschoning, ETL en transformatiestrategieën. Docentbewijs: score, fase-overzicht en tekstbewijs waarin de leerling oorzaak, effect en aanpak van rommelige data uitlegt.',
+    },
     introFeatures: [
         'Analyseer rommelige sensordata en vind de problemen',
         'Vergelijk hoe groot het effect van data-opschoning is',
@@ -74,6 +86,13 @@ export const dataPipelineConfig: DataViewerConfig = {
                     explanation:
                         'Als je het gemiddelde stroomverbruik berekent met -50 W erin, wordt het resultaat misleidend laag. Als je de duplicaat meeneemt, tel je 08:00 twee keer mee. Als je 215°C als temperatuur gebruikt, beïnvloedt het het gemiddelde enorm (echte gemiddelde is ~21°C maar met die fout wordt het ~47°C). Garbage in, garbage out — slechte data levert slechte conclusies.',
                     points: 10,
+                    minLength: 45,
+                    minEvidenceCriteria: 2,
+                    textEvidenceCriteria: [
+                        { label: 'ruwe data geeft foute analyse', keywords: ['ruwe data', 'slecht', 'fout', 'misleidend'] },
+                        { label: 'concreet sensorvoorbeeld', keywords: ['-50', '215', 'duplicaat', 'gemiddelde'] },
+                        { label: 'opschonen voor conclusie', keywords: ['opschonen', 'schoonmaken', 'conclusie', 'garbage'] },
+                    ],
                 },
             ],
         },
@@ -95,7 +114,7 @@ export const dataPipelineConfig: DataViewerConfig = {
                 {
                     id: 'q4-verschil-lokaal3a',
                     question:
-                        'Hoeveel graden wijkt het ruwe gemiddelde van Lokaal 3A af van het schoone gemiddelde?',
+                        'Hoeveel graden wijkt het ruwe gemiddelde van Lokaal 3A af van het schone gemiddelde?',
                     type: 'number-input',
                     correctAnswer: 26.2,
                     explanation:
@@ -115,7 +134,7 @@ export const dataPipelineConfig: DataViewerConfig = {
                     ],
                     correctAnswer: 'De problemen in Lokaal 3B waren minder ernstig (geen extreme uitschieters)',
                     explanation:
-                        'Lokaal 3B had wel een probleem (-50 W stroom) maar geen extreme temperatuuruitschieter zoals Lokaal 3A (215°C). Kleine fouten beïnvloeden het gemiddelde weinig; grote uitschieters kunnen het enorm vertrekken. Dit is waarom je bij data-opschoning eerst naar uitschieters zoekt.',
+                        'Lokaal 3B had wel een probleem (-50 W stroom) maar geen extreme temperatuuruitschieter zoals Lokaal 3A (215°C). Kleine fouten beïnvloeden het gemiddelde weinig; grote uitschieters kunnen het enorm vertekenen. Dit is waarom je bij data-opschoning eerst naar uitschieters zoekt.',
                     points: 10,
                 },
                 {
@@ -125,8 +144,16 @@ export const dataPipelineConfig: DataViewerConfig = {
                     type: 'text-observation',
                     correctAnswer: '',
                     explanation:
-                        'Extract: haal de sensordata op uit de database of CSV-bestanden. Transform: schoon de data op — verwijder duplicaten, repareer datumformaten, vervang onmogelijke waarden, standaardiseer lokaal-namen. Load: laad de schoone data in een nieuw bestand of database die klaar is voor analyse. Zonder de Transform-stap zijn de Extract en Load nutteloos.',
+                        'Extract: haal de sensordata op uit de database of CSV-bestanden. Transform: schoon de data op — verwijder duplicaten, repareer datumformaten, vervang onmogelijke waarden, standaardiseer lokaal-namen. Load: laad de schone data in een nieuw bestand of database die klaar is voor analyse. Zonder de Transform-stap zijn de Extract en Load nutteloos.',
                     points: 10,
+                    minLength: 50,
+                    minEvidenceCriteria: 3,
+                    textEvidenceCriteria: [
+                        { label: 'Extract', keywords: ['extract', 'ophalen', 'halen'] },
+                        { label: 'Transform', keywords: ['transform', 'opschonen', 'schoon', 'vervangen'] },
+                        { label: 'Load', keywords: ['load', 'laden', 'opslaan'] },
+                        { label: 'voorbeeld uit sensordata', keywords: ['sensor', 'duplicaat', 'datum', 'lokaal', '-50'] },
+                    ],
                 },
             ],
         },
@@ -190,6 +217,13 @@ export const dataPipelineConfig: DataViewerConfig = {
                     explanation:
                         'Nadeel van imputatie: je voegt verzonnen data toe aan je dataset. Als je later precies wilt weten wat er om 09:00 is gemeten, bestaat dat getal niet echt. Je zou liever verwijderen als: de omliggende metingen ook ontbreken (je kunt geen gemiddelde maken), of als de meting over een crisissituatie ging waarbij je géén geschatte waarden wilt invoegen.',
                     points: 0,
+                    minLength: 45,
+                    minEvidenceCriteria: 2,
+                    textEvidenceCriteria: [
+                        { label: 'nadeel van imputatie', keywords: ['nadeel', 'risico', 'verzonnen', 'geschat'] },
+                        { label: 'wanneer verwijderen', keywords: ['verwijderen', 'rij verwijderen', 'weghalen'] },
+                        { label: 'reden of voorbeeld', keywords: ['metingen', 'gemiddelde', 'crisissituatie', 'onzeker'] },
+                    ],
                 },
             ],
         },

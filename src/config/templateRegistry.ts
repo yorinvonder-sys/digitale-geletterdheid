@@ -53,7 +53,7 @@ export const TEMPLATE_MISSIONS: Record<string, TemplateMissionEntry> = {
     'app-prototyper':       { missionId: 'app-prototyper',       templateType: 'builder-canvas', enableChat: true, chatRoleId: 'app-prototyper' },
     'automation-engineer':  { missionId: 'automation-engineer',  templateType: 'builder-canvas', enableChat: true, chatRoleId: 'automation-engineer' },
     'api-architect':        { missionId: 'api-architect',        templateType: 'builder-canvas', enableChat: true, chatRoleId: 'api-architect' },
-    'open-source-contributor': { missionId: 'open-source-contributor', templateType: 'builder-canvas', enableChat: true, chatRoleId: 'open-source-contributor' },
+    'open-source-contributor': { missionId: 'open-source-contributor', templateType: 'builder-canvas', enableChat: false, chatRoleId: 'open-source-contributor' },
     'startup-simulator':    { missionId: 'startup-simulator',    templateType: 'builder-canvas', enableChat: true, chatRoleId: 'startup-simulator' },
     'innovation-lab':       { missionId: 'innovation-lab',       templateType: 'builder-canvas', enableChat: true, chatRoleId: 'innovation-lab' },
     'portfolio-builder':    { missionId: 'portfolio-builder',    templateType: 'builder-canvas', enableChat: true, chatRoleId: 'portfolio-builder' },

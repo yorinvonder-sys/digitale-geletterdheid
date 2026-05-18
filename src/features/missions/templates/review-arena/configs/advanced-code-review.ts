@@ -7,6 +7,25 @@ const config: ReviewArenaConfig = {
     introTitle: 'Scan je kennis van geavanceerd programmeren!',
     introDescription:
         'Machine learning, REST API\'s, neurale netwerken, data pipelines — je hebt het allemaal gezien. Doorloop vier ronden en bewijs dat je de geavanceerde concepten echt beheerst.',
+    missionGoal: {
+        primaryGoal:
+            'Bewijs dat je ML-stappen, API- en databegrippen, supervised learning en AI-risico’s kunt herkennen en uitleggen.',
+        criteria: {
+            type: 'score-threshold',
+            threshold: 65,
+            description:
+                'Alle vier reviewrondes zijn afgerond en de totaalscore is minimaal 65/100.',
+        },
+        evidence:
+            'Leerlingbewijs: ronde-antwoorden over ML-volgorde, begrippen, supervised/unsupervised learning en snelle AI/API-vragen. Docentbewijs: score, ronde-overzicht en follow-upresultaten tonen of de periodebegrippen beheerst worden.',
+    },
+    introFeatures: [
+        'Sorteer de stappen van een machine-learningproject',
+        'Koppel geavanceerde programmeerbegrippen aan hun betekenis',
+        'Herken supervised en unsupervised learning in scenario’s',
+        'Beantwoord snelle AI-, API- en open-sourcevragen',
+    ],
+    enableChat: false,
     maxScore: 100,
     badges: [
         {

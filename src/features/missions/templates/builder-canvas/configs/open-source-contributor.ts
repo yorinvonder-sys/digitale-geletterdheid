@@ -6,14 +6,26 @@ export const openSourceContributorConfig: BuilderCanvasConfig = {
     introEmoji: '🐙',
     introTitle: 'Draag bij aan een open source project',
     introDescription:
-        'In deze missie doorloop je de complete open source workflow: je analyseert een issue, forkt een repository, schrijft een bugfix en dient een pull request in — precies zoals echte developers dat doen op GitHub.',
+        'In deze missie doorloop je een gesimuleerde open source workflow: je analyseert een issue, plant een fork/branch, schrijft een bugfix en maakt een pull request-tekst — precies zoals echte developers dat doen, maar zonder dat je echt GitHub hoeft te openen.',
+    missionGoal: {
+        primaryGoal:
+            'Laat zien dat je een open-source issue kunt analyseren, een bugfix kunt uitleggen en een duidelijke PR kunt voorbereiden.',
+        criteria: {
+            type: 'steps-complete',
+            min: 4,
+            description:
+                'Alle vier stappen zijn afgerond met checklist en geschreven bewijs voor workflow, issue-analyse, bugfix en PR.',
+        },
+        evidence:
+            'Leerlingbewijs: Git-workflow, issue-analyse, deterministische sorteerfix met test en PR-tekst. Docentbewijs: fase-overzicht en tekstbewijs tonen of de leerling professioneel kan samenwerken aan code.',
+    },
     introFeatures: [
         'Begrijp hoe open source samenwerking werkt',
-        'Analyseer een bug-rapport en reproduceert het probleem',
+        'Analyseer een bug-rapport en reproduceer het probleem',
         'Schrijf een bugfix met duidelijke code en uitleg',
         'Maak een professioneel pull request',
     ],
-    enableChat: true,
+    enableChat: false,
     chatRoleId: 'open-source-contributor',
     previewType: 'text-preview',
     steps: [
@@ -32,6 +44,7 @@ export const openSourceContributorConfig: BuilderCanvasConfig = {
                 { id: 'branch', label: 'Ik heb uitgelegd waarom je een aparte branch aanmaakt' },
             ],
             textPrompt: 'Beschrijf de complete Git open source workflow',
+            minTextLength: 150,
         },
         {
             id: 'issue-analyseren',
@@ -48,6 +61,7 @@ export const openSourceContributorConfig: BuilderCanvasConfig = {
                 { id: 'oorzaak', label: 'Een mogelijke oorzaak in de code is beschreven' },
             ],
             textPrompt: 'Schrijf je issue-analyse',
+            minTextLength: 140,
         },
         {
             id: 'bugfix',
@@ -64,6 +78,7 @@ export const openSourceContributorConfig: BuilderCanvasConfig = {
                 { id: 'testgeval', label: 'Er is een testgeval met invoer en verwachte uitvoer' },
             ],
             textPrompt: 'Schrijf je bugfix met testgeval',
+            minTextLength: 180,
         },
         {
             id: 'pull-request',
@@ -80,6 +95,7 @@ export const openSourceContributorConfig: BuilderCanvasConfig = {
                 { id: 'closes', label: 'Ik heb "Closes #[nummer]" vermeld' },
             ],
             textPrompt: 'Schrijf je pull request tekst',
+            minTextLength: 160,
         },
     ],
     maxScore: 100,

@@ -7,6 +7,18 @@ export const apiArchitectConfig: BuilderCanvasConfig = {
     introTitle: 'Ontwerp een professionele REST API',
     introDescription:
         'In deze missie ontwerp je een complete REST API voor een huiswerk-planner startup. Je leert hoe APIs de communicatie tussen frontend en backend regelen, welke endpoints je nodig hebt en hoe je ze documenteert.',
+    missionGoal: {
+        primaryGoal:
+            'Ontwerp en documenteer een REST API met endpoints, HTTP-methodes, statuscodes en authenticatiekeuzes.',
+        criteria: {
+            type: 'steps-complete',
+            min: 4,
+            description:
+                'Alle vier stappen zijn afgerond met checklist en geschreven API-bewijs in elk werkveld.',
+        },
+        evidence:
+            'Leerlingbewijs: REST-uitleg, endpointtabel, authenticatiebeschrijving en twee uitgewerkte API-docs. Docentbewijs: fase-overzicht en tekstbewijs tonen of de API logisch, veilig en documenteerbaar is.',
+    },
     introFeatures: [
         'Begrijp wat een REST API is en hoe het werkt',
         'Ontwerp endpoints met de juiste HTTP-methodes',
@@ -31,6 +43,7 @@ export const apiArchitectConfig: BuilderCanvasConfig = {
                 { id: 'json', label: 'Ik heb uitgelegd wat JSON is' },
             ],
             textPrompt: 'Schrijf je uitleg van REST API-principes',
+            minTextLength: 120,
         },
         {
             id: 'endpoints-ontwerpen',
@@ -47,6 +60,7 @@ export const apiArchitectConfig: BuilderCanvasConfig = {
                 { id: 'request-body', label: 'POST en PUT endpoints hebben een voorbeeld request-body' },
             ],
             textPrompt: 'Ontwerp je API-endpoints hier',
+            minTextLength: 160,
         },
         {
             id: 'authenticatie',
@@ -63,6 +77,7 @@ export const apiArchitectConfig: BuilderCanvasConfig = {
                 { id: 'openbaar-auth', label: 'Onderscheid tussen openbare en beveiligde endpoints' },
             ],
             textPrompt: 'Beschrijf de authenticatie van je API',
+            minTextLength: 120,
         },
         {
             id: 'documentatie',
@@ -79,6 +94,7 @@ export const apiArchitectConfig: BuilderCanvasConfig = {
                 { id: 'engels', label: 'Documentatie is geschreven in het Engels' },
             ],
             textPrompt: 'Schrijf je API-documentatie',
+            minTextLength: 180,
         },
     ],
     maxScore: 100,

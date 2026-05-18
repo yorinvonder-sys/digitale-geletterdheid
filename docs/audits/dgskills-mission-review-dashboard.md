@@ -53,7 +53,7 @@ Yorin-oordelen per opdracht:
 | 3 | J3 P2 Cybersecurity & Privacy | 6 | `browser smoke` | Brede audits | Inhoudelijk risicovol, PuzzleLab/no-button en security-evidence | Gerichte review met streng bewijs- en docentcheck |
 | 4 | J1 P3 Digitaal Burgerschap | 14 | `browser smoke` | Brede audits | Privacy/data-bewijs en mixed template/custom routes | Review na J3 P2 of samen met privacycluster |
 | 5 | J2 P4 Ethiek, Maatschappij & Eindproject | 5 | `werkbaarheidsreview` | `docs/audits/dgskills-j2p4-workability-audit-2026-05-18.md` + lokale Google Chrome/CDP viewportmatrix | Echte iPad/Safari en afzonderlijke `@chrome` toolnamespace nog niet bewezen | Alleen live deployen na prod-build en live smoke |
-| 6 | J3 P1 Geavanceerd Programmeren & AI | 6 | `browser smoke` | Brede audits | DataViewer/BuilderCanvas bewijs en AI-route-noise | Perioderapport met advanced-code-review als gate |
+| 6 | J3 P1 Geavanceerd Programmeren & AI | 6 | `release-kandidaat` | `docs/audits/dgskills-j3p1-workability-audit-2026-05-18.md` + `@chrome` extensie-speeltest + Chrome-CDP viewportmatrix | Echte iPad/Safari blijft open; BuilderCanvas inhoud blijft docentbeoordeling | Build/deploy-gates draaien en echte iPad/Safari later menselijk checken |
 | 7 | J3 P3 Maatschappelijke Impact & Innovatie | 8 | `release-blocked` | `docs/audits/dgskills-j3p3-workability-audit-2026-05-18.md` + `@Chrome` desktop leerlingflows | iPad/mobile Chrome-viewportmatrix niet bewezen | Geen live deploy tot Chrome viewportmatrix of echte iPad/Safari-check groen is |
 | 8 | J3 P4 Meesterproef | 6 | `browser smoke` | Brede audits | Eindprojectkwaliteit en portfolio/research-bewijs | Perioderapport met product- en reflectiecriteria |
 | 9 | J1 P1 Digitale Basisvaardigheden | 5 | `browser smoke` | Brede fun/completion audit sterk positief | ToolGuide is afrondbaar maar saai-risico | Later reviewen op fun/didactiek, niet urgent voor completion |
@@ -183,12 +183,12 @@ Legenda voor deze tabel:
 
 | Opdracht | Status | Oordeel | Bewijs | Volgende actie |
 |---|---|---|---|---|
-| `ml-trainer` | `browser smoke` | `menselijke keuze nodig` | Brede audit, DataViewer/no-button | Review in J3 P1 batch |
-| `api-architect` | `browser smoke` | `menselijke keuze nodig` | Brede audit, builder completion onzeker | Review in J3 P1 batch |
-| `neural-navigator` | `browser smoke` | `menselijke keuze nodig` | Brede audit met completionbewijs | Review in J3 P1 batch |
-| `data-pipeline` | `browser smoke` | `menselijke keuze nodig` | Brede audit, DataViewer/no-button | Review in J3 P1 batch |
-| `open-source-contributor` | `browser smoke` | `menselijke keuze nodig` | Brede audit met AI/session-noise | Review in J3 P1 batch |
-| `advanced-code-review` | `browser smoke` | `menselijke keuze nodig` | Brede audit met AI/session-noise | Review in J3 P1 batch |
+| `ml-trainer` | `@chrome pass + matrix groen` | `werkbaar` | J3 P1 audit; Chrome-extensie leerlingflow met foutmoment; CDP 4/4 viewports; `Bewijs compleet`; spampercentage gecorrigeerd naar 42% | Echte iPad/Safari-check |
+| `api-architect` | `@chrome pass + matrix groen` | `werkbaar` | J3 P1 audit; BuilderCanvas 4 stappen met minTextLength/checklist; CDP 4/4 viewports; `Canvasbewijs compleet` | Menselijke inhoudsbeoordeling API-documentatie + echte iPad/Safari |
+| `neural-navigator` | `@chrome pass + matrix groen` | `werkbaar` | J3 P1 audit; DataViewer leerlingflow met foutmoment; CDP 4/4 viewports; completion- en docentbewijs zichtbaar | Echte iPad/Safari-check |
+| `data-pipeline` | `@chrome pass + matrix groen` | `werkbaar` | J3 P1 audit; DataViewer leerlingflow met foutmoment; CDP 4/4 viewports; ETL-tekstbewijs zichtbaar | Echte iPad/Safari-check |
+| `open-source-contributor` | `@chrome pass + matrix groen` | `werkbaar` | J3 P1 audit; BuilderCanvas 4 stappen; CDP 4/4 viewports; AI-chat uit in config en registry | Menselijke PR-inhoudscheck + echte iPad/Safari |
+| `advanced-code-review` | `@chrome pass + matrix groen` | `werkbaar` | J3 P1 audit; ReviewArena uitgespeeld tot 79/100; CDP 4/4 viewports; AI-chat uit en geen session-noise zichtbaar | Echte iPad/Safari-check; sorteerfouten didactisch nabespreken |
 
 ### J3 P2 - Cybersecurity & Privacy
 

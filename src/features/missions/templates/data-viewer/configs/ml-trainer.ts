@@ -7,6 +7,18 @@ export const mlTrainerConfig: DataViewerConfig = {
     introTitle: 'Word een ML Trainer',
     introDescription:
         'Machine learning klinkt ingewikkeld, maar het idee is simpel: je laat een computer leren van voorbeelden. Jij gaat ontdekken hoe supervised learning werkt — van het kiezen van features tot het beoordelen van de accuracy van een model.',
+    missionGoal: {
+        primaryGoal:
+            'Train je ML-denken door data, features, accuracy en overfitting met concrete voorbeelden uit te leggen.',
+        criteria: {
+            type: 'score-threshold',
+            threshold: 55,
+            description:
+                'Alle drie datasets zijn onderzocht, de observaties noemen concrete ML-begrippen en de score is minimaal 55/100.',
+        },
+        evidence:
+            'Leerlingbewijs: antwoorden over spamlabels, features, accuracy, overfitting en eigen tekstobservaties. Docentbewijs: score, fase-overzicht en tekstbewijs waarin supervised learning en modelkwaliteit zichtbaar worden.',
+    },
     introFeatures: [
         'Analyseer een gelabelde dataset voor een spamfilter',
         'Vergelijk accuracy van modellen met verschillende features',
@@ -48,9 +60,9 @@ export const mlTrainerConfig: DataViewerConfig = {
                     id: 'q1-spam-percentage',
                     question: 'Hoeveel procent van de e-mails in deze dataset is gelabeld als "Spam"?',
                     type: 'number-input',
-                    correctAnswer: 50,
+                    correctAnswer: 42,
                     explanation:
-                        'Er zijn 6 spam-mails (ID 1, 3, 5, 7, 10 en één extra) en 6 geen-spam-mails. 6 ÷ 12 × 100 = 50%. Filter op "Label" = "Spam" om te tellen. Een gebalanceerde dataset (50/50) is ideaal voor training — anders leert het model een voorkeur voor de meest voorkomende klasse.',
+                        'Er zijn 5 spam-mails (ID 1, 3, 5, 7 en 10) en 7 geen-spam-mails. 5 ÷ 12 × 100 = 41,7%, afgerond 42%. Filter op "Label" = "Spam" om te tellen. Deze dataset is dus niet perfect gebalanceerd — een model kan daardoor sneller een voorkeur leren voor de meest voorkomende klasse.',
                     points: 15,
                 },
                 {
@@ -78,6 +90,13 @@ export const mlTrainerConfig: DataViewerConfig = {
                     explanation:
                         '"Supervised" betekent begeleid: een mens heeft elke e-mail vooraf gelabeld als spam of niet. Het model leert van die voorbeelden. De Label-kolom is het "juiste antwoord" — het model vergelijkt zijn voorspellingen met de labels en past zijn gewichten aan. Zonder labels (unsupervised learning) moet het model zelf patronen vinden, zonder te weten wat goed is.',
                     points: 10,
+                    minLength: 40,
+                    minEvidenceCriteria: 2,
+                    textEvidenceCriteria: [
+                        { label: 'supervised of begeleid', keywords: ['supervised', 'begeleid'] },
+                        { label: 'label als juist antwoord', keywords: ['label', 'juiste antwoord', 'antwoord'] },
+                        { label: 'leren van voorbeelden', keywords: ['voorbeeld', 'voorbeelden', 'training', 'leren'] },
+                    ],
                 },
             ],
         },
@@ -130,6 +149,13 @@ export const mlTrainerConfig: DataViewerConfig = {
                     explanation:
                         '88% accuracy betekent: het model maakt de juiste beslissing bij 88 van de 100 e-mails. Of dit goed genoeg is, hangt af van de toepassing. Voor een spamfilter is 12% fouten misschien acceptabel (je mist wat spam), maar voor een medisch diagnose-model is 88% veel te laag. Context bepaalt altijd of een accuracy "goed" is.',
                     points: 10,
+                    minLength: 45,
+                    minEvidenceCriteria: 2,
+                    textEvidenceCriteria: [
+                        { label: '88 van 100 correct', keywords: ['88', '100', 'juist', 'correct'] },
+                        { label: 'fouten of foutmarge', keywords: ['fout', 'fouten', '12'] },
+                        { label: 'context van toepassing', keywords: ['context', 'toepassing', 'spamfilter', 'medisch'] },
+                    ],
                 },
             ],
         },
@@ -193,6 +219,13 @@ export const mlTrainerConfig: DataViewerConfig = {
                     explanation:
                         'Dit is regressie: de uitkomst is een getal (bijv. 3,5 uur), geen categorie. Als je zou willen voorspellen of een leerling "veel" of "weinig" telefoongebruik heeft, wordt het classificatie. Het verschil zit in de uitkomstvariabele: getal = regressie, categorie = classificatie.',
                     points: 0,
+                    minLength: 35,
+                    minEvidenceCriteria: 2,
+                    textEvidenceCriteria: [
+                        { label: 'regressie', keywords: ['regressie'] },
+                        { label: 'getal als uitkomst', keywords: ['getal', 'uur', 'uren'] },
+                        { label: 'verschil met classificatie', keywords: ['classificatie', 'categorie'] },
+                    ],
                 },
             ],
         },
