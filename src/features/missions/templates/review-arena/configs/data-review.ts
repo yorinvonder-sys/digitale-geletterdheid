@@ -7,6 +7,21 @@ export const dataReviewConfig: ReviewArenaConfig = {
     introTitle: 'Wat weet jij over data en privacy?',
     introDescription:
         'Test je kennis over databronnen, persoonsgegevens en de AVG via vier afwisselende ronden. Elk type opgave vraagt iets anders van je.',
+    missionGoal: {
+        primaryGoal: 'Bewijs dat je databronnen, persoonsgegevens, beveiliging en AVG-rechten kunt herkennen en toepassen.',
+        criteria: {
+            type: 'score-threshold',
+            threshold: 70,
+            description: 'Alle vier reviewrondes zijn afgerond en de score is minimaal 70/100, zodat het eindbewijs meer is dan alleen doorklikken.',
+        },
+        evidence: 'Leerlingbewijs: ronde-antwoorden over bronbetrouwbaarheid, beveiligingsmaatregelen, persoonsgegevens en AVG-vragen. Docentbewijs: score, ronde-overzicht en follow-upresultaten tonen of privacy- en securitybegrippen voldoende beheerst worden.',
+    },
+    introFeatures: [
+        'Sorteer databronnen op betrouwbaarheid',
+        'Koppel datatypes aan passende beveiliging',
+        'Herken persoonsgegevens volgens de AVG',
+        'Beantwoord snelle privacyvragen met uitleg',
+    ],
     maxScore: 100,
     badges: [
         {

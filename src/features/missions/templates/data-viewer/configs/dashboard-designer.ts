@@ -7,6 +7,15 @@ export const dashboardDesignerConfig: DataViewerConfig = {
     introTitle: 'Word een Dashboard Designer',
     introDescription:
         'Een goed dashboard vertelt een verhaal zonder woorden. Bedrijven, scholen en overheden gebruiken dashboards om complexe data in één oogopslag begrijpelijk te maken. Jij leert welke visualisaties passen bij welke data — en waarom "minder meer is".',
+    missionGoal: {
+        primaryGoal: 'Ontwerp datakeuzes voor een dashboard door KPI’s, grafiektypen en doelgroep helder te onderbouwen.',
+        criteria: {
+            type: 'score-threshold',
+            threshold: 65,
+            description: 'Alle drie datasets zijn afgerond, observaties onderbouwen KPI- en grafiekkeuzes en de score is minimaal 65/100.',
+        },
+        evidence: 'Leerlingbewijs: antwoorden over schooldata, grafiekkeuze en dashboardprincipes plus drie observaties met doelgroep- en KPI-argumenten. Docentbewijs: score, fase-overzicht en zichtbaar tekstbewijs voor eindproductcriteria.',
+    },
     introFeatures: [
         'Analyseer schooldata over cijfers en aanwezigheid',
         'Ontdek welk grafiektype past bij welke soort data',
@@ -64,6 +73,12 @@ export const dashboardDesignerConfig: DataViewerConfig = {
                     explanation:
                         'Goede keuzes zijn "gemiddeld cijfer" en "aanwezigheidspercentage" — ze geven snel inzicht in prestaties én gedrag. KPI staat voor Key Performance Indicator: de meest relevante maatstaven voor je doel. Een directeur hoeft niet elk getal te zien; alleen de signaalwaarden. "Minder is meer" is een kernprincipe van goed dashboard-design.',
                     points: 10,
+                    minEvidenceCriteria: 2,
+                    textEvidenceCriteria: [
+                        { label: 'aanwezigheid', keywords: ['aanwezigheid', 'afwezigheid', 'percentage'] },
+                        { label: 'cijfers of onvoldoendes', keywords: ['cijfer', 'onvoldoende', 'prestaties', 'gemiddelde'] },
+                        { label: 'waarom relevant voor directeur', keywords: ['directeur', 'belangrijk', 'inzicht', 'actie', 'signaal'] },
+                    ],
                 },
             ],
         },
@@ -118,6 +133,12 @@ export const dashboardDesignerConfig: DataViewerConfig = {
                     explanation:
                         'Een cirkeldiagram maakt het moeilijk om kleine verschillen te zien (is 18% groter dan 22%?). Een staafdiagram maakt vergelijking makkelijker door de lengtes van balken. Gebruik een staafdiagram als je de exacte waarden wilt vergelijken, en een cirkeldiagram als het gaat om de verhouding tot het geheel.',
                     points: 10,
+                    minEvidenceCriteria: 2,
+                    textEvidenceCriteria: [
+                        { label: 'kleine verschillen zijn lastig in cirkel', keywords: ['kleine verschillen', 'lastig', 'moeilijk', 'cirkel'] },
+                        { label: 'staafdiagram vergelijkt beter', keywords: ['staaf', 'balk', 'vergelijken', 'vergelijk'] },
+                        { label: 'exacte waarden of categorieën', keywords: ['exact', 'waarde', 'categorie', 'lengte'] },
+                    ],
                 },
             ],
         },
@@ -176,6 +197,12 @@ export const dashboardDesignerConfig: DataViewerConfig = {
                     explanation:
                         'Een effectief antwoord benoemt 2-3 relevante KPI\'s (bijv. aanwezigheid, gemiddeld cijfer, aantal onvoldoendes), legt uit waarom die het belangrijkst zijn voor 2C, en koppelt ze aan een actie voor de docent. Een goed dashboard triggert een gesprek: "Wat doen we nu met deze informatie?"',
                     points: 10,
+                    minEvidenceCriteria: 2,
+                    textEvidenceCriteria: [
+                        { label: 'klas 2C', keywords: ['2c', 'klas'] },
+                        { label: 'relevante KPI’s', keywords: ['kpi', 'aanwezigheid', 'cijfer', 'onvoldoende', 'tevredenheid'] },
+                        { label: 'actie of docentgesprek', keywords: ['actie', 'docent', 'gesprek', 'hulp', 'aanpak'] },
+                    ],
                 },
             ],
         },

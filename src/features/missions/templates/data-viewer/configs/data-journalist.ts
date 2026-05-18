@@ -7,6 +7,15 @@ export const dataJournalistConfig: DataViewerConfig = {
     introTitle: 'Word een data-journalist',
     introDescription:
         'Echte journalisten gebruiken data om verhalen te vertellen. Jij gaat cijfers over social media en schermtijd analyseren, patronen ontdekken en kritisch kijken naar nieuwsberichten. Wat zeggen de getallen écht?',
+    missionGoal: {
+        primaryGoal: 'Onderzoek datasets kritisch en schrijf een onderbouwde dataconclusie met bron- en patroonbewijs.',
+        criteria: {
+            type: 'score-threshold',
+            threshold: 65,
+            description: 'Alle drie datasets zijn onderzocht, observaties noemen concrete patronen of bronrisico’s en de score is minimaal 65/100.',
+        },
+        evidence: 'Leerlingbewijs: antwoorden over platformdata, schermtijd, bronbetrouwbaarheid en drie observaties met concrete datapatronen. Docentbewijs: score, fase-overzicht en zichtbare uitleg over patroon, vergelijking en belangenconflict.',
+    },
     introFeatures: [
         'Analyseer een enquête over social media gebruik (leerjaar 2)',
         'Vergelijk schermtijd in zes landen en ontdek patronen',
@@ -76,6 +85,12 @@ export const dataJournalistConfig: DataViewerConfig = {
                     explanation:
                         'Leerlingen die meer dan 3 uur per dag op TikTok zitten, geven vaker aan zich "Moe" te voelen. Leerlingen met minder gebruik rapporteren vaker "Blij" of "Ontspannen". Sorteer op "Uren/dag" om het patroon te zien.',
                     points: 10,
+                    minEvidenceCriteria: 2,
+                    textEvidenceCriteria: [
+                        { label: 'veel gebruik of meer uren', keywords: ['veel', 'meer', 'hoog', '3 uur', '4 uur', '5 uur'] },
+                        { label: 'gevoel moe of vermoeid', keywords: ['moe', 'vermoeid', 'uitgeput'] },
+                        { label: 'contrast met blij of ontspannen', keywords: ['blij', 'ontspannen', 'minder', 'laag'] },
+                    ],
                 },
             ],
             followUp: {
@@ -134,6 +149,12 @@ export const dataJournalistConfig: DataViewerConfig = {
                     explanation:
                         'Mogelijke verklaringen: Japan kent een andere schoolcultuur (meer huiswerk, minder vrije tijd), andere social media populariteit (bijv. LINE i.p.v. Instagram/TikTok), of culturele normen rondom schermgebruik. Er is geen eenduidig antwoord — de vraag stimuleert kritisch denken.',
                     points: 10,
+                    minEvidenceCriteria: 2,
+                    textEvidenceCriteria: [
+                        { label: 'Nederland hoger dan Japan', keywords: ['nederland', 'hoger', 'meer', '4,2', '4.2', 'japan', '2,9', '2.9'] },
+                        { label: 'mogelijke verklaring', keywords: ['omdat', 'verklaring', 'misschien', 'kan komen door', 'mogelijk'] },
+                        { label: 'cultuur, school of platformgebruik', keywords: ['school', 'cultuur', 'huiswerk', 'platform', 'social media', 'line', 'instagram', 'tiktok'] },
+                    ],
                 },
             ],
         },
@@ -198,6 +219,12 @@ export const dataJournalistConfig: DataViewerConfig = {
                     explanation:
                         'Het kernprobleem heet "conflict of interest" of belangenverstrengeling: Instagram heeft er financieel belang bij dat hun product positief wordt beoordeeld. Onafhankelijk onderzoek (door RIVM, universiteiten) heeft dit belang niet. Goed kritisch denken houdt altijd rekening met wie onderzoek financiert of uitvoert.',
                     points: 5,
+                    minEvidenceCriteria: 2,
+                    textEvidenceCriteria: [
+                        { label: 'belang of belangenverstrengeling', keywords: ['belang', 'belangenverstrengeling', 'conflict of interest', 'financieel'] },
+                        { label: 'niet onafhankelijk', keywords: ['niet onafhankelijk', 'onafhankelijk', 'zelf', 'intern'] },
+                        { label: 'Instagram als bron', keywords: ['instagram', 'platform', 'bedrijf', 'product'] },
+                    ],
                 },
             ],
         },

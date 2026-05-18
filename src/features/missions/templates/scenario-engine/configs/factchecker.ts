@@ -7,11 +7,21 @@ const config: ScenarioEngineConfig = {
     introTitle: 'Factchecker',
     introDescription:
         'Elke dag gaan er berichten viral die niet kloppen. Soms per ongeluk, soms met opzet. Als factchecker leer jij de methodes die journalisten gebruiken om de waarheid boven tafel te krijgen — voor je op "delen" klikt.',
+    missionGoal: {
+        primaryGoal: 'Beoordeel online claims kritisch en kies veilige deelacties met bron-, datum- en belangenbewijs.',
+        criteria: {
+            type: 'score-threshold',
+            threshold: 60,
+            description: 'Alle scenario-rondes zijn afgerond en de score is minimaal 60/100, met extra aandacht voor gezondheidsclaims en bronbetrouwbaarheid.',
+        },
+        evidence: 'Leerlingbewijs: keuzes in rode vlaggen, bronrangschikking, deelbeslissingen en CRAAP-vragen. Docentbewijs: score en ronde-overzicht laten zien of de leerling bron, context, actualiteit en doel kan beoordelen.',
+    },
     introFeatures: [
         'Herken het verschil tussen feit, mening en desinformatie',
         'Beoordeel bronnen met de CRAAP-methode',
         'Rangschik berichten van meest naar minst betrouwbaar',
         'Oefen: wanneer deel je iets wél en wanneer niet?',
+        'Let extra op: gezondheidsclaims vragen altijd betrouwbare bronnen en volwassen begeleiding',
     ],
     maxScore: 100,
     badges: [

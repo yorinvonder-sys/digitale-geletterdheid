@@ -7,11 +7,21 @@ const config: ScenarioEngineConfig = {
     introTitle: 'AI Bias Detective',
     introDescription:
         'AI-systemen leren van menselijke data — en die data is niet neutraal. Als de trainingsdata scheef is, worden de resultaten ook scheef. Jij leert als AI Bias Detective herkennen wanneer een AI oneerlijk uitpakt voor bepaalde groepen mensen.',
+    missionGoal: {
+        primaryGoal: 'Herken AI-bias, beoordeel de gevolgen voor mensen en kies verantwoord ontwerp- of toezichtbewijs.',
+        criteria: {
+            type: 'score-threshold',
+            threshold: 60,
+            description: 'Alle scenario-rondes zijn afgerond en de score is minimaal 60/100, met zorgvuldige uitleg bij gevoelige biasvoorbeelden.',
+        },
+        evidence: 'Leerlingbewijs: keuzes over biasherkenning, risicovolgorde, eerlijkheid en oplossingen. Docentbewijs: score en ronde-overzicht tonen of de leerling concrete biascasussen respectvol kan duiden en toezichtmaatregelen kan noemen.',
+    },
     introFeatures: [
         'Herken vooroordelen in AI-systemen aan de hand van echte voorbeelden',
         'Rangschik AI-toepassingen van meest naar minst risicovol',
         'Ontdek: wanneer is een AI-resultaat scheef of eerlijk?',
         'Bedenk oplossingen voor eerlijkere technologie',
+        'Bespreek gevoelige voorbeelden respectvol: het gaat om systemen en gevolgen, niet om schuld bij groepen',
     ],
     maxScore: 100,
     badges: [
@@ -45,7 +55,7 @@ const config: ScenarioEngineConfig = {
         'Bias in AI kan iedereen treffen, maar treft mensen die al gemarginaliseerd zijn onevenredig hard.',
         'Diverse trainingsdata en diverse ontwikkelteams zijn de beste remedie tegen bias.',
         'Herkennen van bias is een vaardigheid die je kunt leren — je hoeft geen programmeur te zijn.',
-        'Als AI wordt gebruikt voor beslissingen die mensen raken (aanname, leningen, straffen), moet er altijd mensenlijk toezicht zijn.',
+        'Als AI wordt gebruikt voor beslissingen die mensen raken (aanname, leningen, straffen), moet er altijd menselijk toezicht zijn.',
     ],
     rounds: [
         // ── RONDE 1: select-correct ───────────────────────────────────────────────

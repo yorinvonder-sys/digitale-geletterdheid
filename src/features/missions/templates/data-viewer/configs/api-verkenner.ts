@@ -7,6 +7,15 @@ export const apiVerkennerConfig: DataViewerConfig = {
     introTitle: 'Word een API Verkenner',
     introDescription:
         'Elke app die je gebruikt — Instagram, Buienradar, Google Maps — haalt data op via API\'s. Jij gaat ontdekken hoe die onzichtbare datakoppelingen werken. Van JSON-responses tot URL-parameters: na deze missie begrijp je hoe apps met elkaar "praten".',
+    missionGoal: {
+        primaryGoal: 'Leg uit hoe apps data ophalen via API’s en herken welke technische en privacykeuzes daarbij horen.',
+        criteria: {
+            type: 'score-threshold',
+            threshold: 65,
+            description: 'Alle drie datasets zijn onderzocht, observaties noemen API-begrippen en privacyrisico’s en de score is minimaal 65/100.',
+        },
+        evidence: 'Leerlingbewijs: antwoorden over JSON, API-verzoeken, parameters, apiKeys en drie observaties met technische uitleg. Docentbewijs: score, fase-overzicht en zichtbaar bewijs dat de leerling API-data en privacyrisico’s kan uitleggen.',
+    },
     introFeatures: [
         'Analyseer een echte JSON-response van een weer-API',
         'Vergelijk welke data populaire apps via API\'s ophalen',
@@ -70,6 +79,12 @@ export const apiVerkennerConfig: DataViewerConfig = {
                     explanation:
                         'Keys geven betekenis aan de waarden. Zonder keys zou "14.2, 12.8, 78" niks zeggen — je weet niet welk getal de temperatuur is. Met keys zoals "temp" en "humidity" begrijpt elke app wat elk getal betekent, ook als de volgorde verandert. Dit maakt API-communicatie betrouwbaar en leesbaar.',
                     points: 10,
+                    minEvidenceCriteria: 2,
+                    textEvidenceCriteria: [
+                        { label: 'key of sleutel', keywords: ['key', 'sleutel'] },
+                        { label: 'betekenis bij waarde', keywords: ['betekenis', 'waarde', 'value', 'label'] },
+                        { label: 'apps begrijpen de data', keywords: ['app', 'begrijpt', 'leesbaar', 'volgorde', 'json'] },
+                    ],
                 },
             ],
         },
@@ -119,6 +134,12 @@ export const apiVerkennerConfig: DataViewerConfig = {
                     explanation:
                         'WhatsApp stuurt en ontvangt alleen berichten — relatief kleine hoeveelheden tekst en af en toe een foto. Instagram laadt continu een feed met hoge-resolutie foto\'s, video\'s, aanbevelingen, likes en reacties. Meer soorten data betekent meer afzonderlijke API-verzoeken. Instagram heeft ook een aanbevelingsalgoritme dat constant data ophaalt.',
                     points: 10,
+                    minEvidenceCriteria: 2,
+                    textEvidenceCriteria: [
+                        { label: 'WhatsApp heeft kleinere berichtdata', keywords: ['whatsapp', 'bericht', 'tekst', 'klein'] },
+                        { label: 'Instagram laadt feed of media', keywords: ['instagram', 'feed', 'foto', 'video', 'likes', 'aanbeveling'] },
+                        { label: 'meer soorten data betekent meer API-verzoeken', keywords: ['meer data', 'meer verzoek', 'api', 'continu', 'verschillende data'] },
+                    ],
                 },
             ],
         },
@@ -182,6 +203,12 @@ export const apiVerkennerConfig: DataViewerConfig = {
                     explanation:
                         'Op basis van het patroon: https://pokeapi.co/api/v2/pokemon/charizard — je vervangt alleen "pikachu" door "charizard" in het pad. Dit is hoe REST API\'s werken: het "pad" bepaalt welke resource je opvraagt. Dit is een van de meest fundamentele concepten van het moderne web.',
                     points: 15,
+                    minEvidenceCriteria: 2,
+                    textEvidenceCriteria: [
+                        { label: 'pokeapi-url', keywords: ['pokeapi', 'api/v2', 'pokemon'] },
+                        { label: 'charizard in het pad', keywords: ['charizard', '/charizard'] },
+                        { label: 'pikachu vervangen', keywords: ['vervang', 'pikachu', 'pad', 'resource'] },
+                    ],
                 },
             ],
         },

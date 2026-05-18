@@ -7,6 +7,15 @@ export const spreadsheetSpecialistConfig: DataViewerConfig = {
     introTitle: 'Word een Spreadsheet Specialist',
     introDescription:
         'Spreadsheets zijn de werkpaarden van data-analisten, ondernemers en wetenschappers. Jij gaat leren hoe je formules schrijft, grafieken maakt en data samenvat — net als echte professionals. Analyseer het kasboek van de leerlingenraad!',
+    missionGoal: {
+        primaryGoal: 'Gebruik spreadsheetdata en formules om financiële patronen te berekenen, visualiseren en uitleggen.',
+        criteria: {
+            type: 'score-threshold',
+            threshold: 65,
+            description: 'Alle drie datasets zijn afgerond, formule-observaties noemen de juiste begrippen en de score is minimaal 65/100.',
+        },
+        evidence: 'Leerlingbewijs: berekeningen, formulekeuzes en observaties over grafieksoorten en misleidende gemiddelden. Docentbewijs: score, fase-overzicht en tekstbewijs waarin formulebegrip en interpretatie zichtbaar zijn.',
+    },
     introFeatures: [
         'Analyseer het kasboek van de leerlingenraad met formules',
         'Vergelijk uitgaven per categorie in een grafiek',
@@ -71,6 +80,12 @@ export const spreadsheetSpecialistConfig: DataViewerConfig = {
                     explanation:
                         '=GEMIDDELDE() gebruik je als je wilt weten wat een "typische" waarde is in een reeks. Hier wil je alleen uitgaven meenemen: =GEMIDDELDE.ALS(E2:E11;"Uitgave";D2:D11). Het gemiddelde van de 6 uitgaven is 513 ÷ 6 = 85,50 euro.',
                     points: 10,
+                    minEvidenceCriteria: 2,
+                    textEvidenceCriteria: [
+                        { label: 'gemiddelde of gemiddelde.als', keywords: ['gemiddelde', 'gemiddelde.als', '=gemiddelde'] },
+                        { label: 'typische waarde', keywords: ['typische', 'gemiddeld bedrag', 'per uitgave', 'representatief'] },
+                        { label: 'SOM is voor totaal', keywords: ['som', '=som', 'totaal', 'optellen'] },
+                    ],
                 },
             ],
             followUp: {
@@ -125,6 +140,12 @@ export const spreadsheetSpecialistConfig: DataViewerConfig = {
                     explanation:
                         'Een staafdiagram is geschikt voor het vergelijken van losse categorieën die geen tijdsvolgorde hebben. Een lijndiagram gebruik je als je een trend in de tijd wilt tonen (bijv. uitgaven per maand). Categorieën zoals "Evenement" en "Materiaal" hebben geen logische volgorde, dus staafdiagram is de betere keuze.',
                     points: 10,
+                    minEvidenceCriteria: 2,
+                    textEvidenceCriteria: [
+                        { label: 'staafdiagram vergelijkt categorieën', keywords: ['staaf', 'categorie', 'vergelijken', 'vergelijk'] },
+                        { label: 'lijndiagram is voor tijd of trend', keywords: ['lijn', 'trend', 'tijd', 'maand'] },
+                        { label: 'geen logische volgorde', keywords: ['geen volgorde', 'losse', 'niet op volgorde', 'geen tijdsvolgorde'] },
+                    ],
                 },
             ],
         },
@@ -184,6 +205,12 @@ export const spreadsheetSpecialistConfig: DataViewerConfig = {
                     explanation:
                         'Het gemiddelde is misleidend als er uitschieters zijn. Stel: 9 leerlingen geven 1 euro uit en 1 leerling 100 euro — het gemiddelde is dan 10,9 euro, maar dat is niet representatief. In dat geval is =MAX() handiger om die uitschieter te spotten. Ook bij sportprestaties is het maximum (record) vaak relevanter dan het gemiddelde.',
                     points: 5,
+                    minEvidenceCriteria: 2,
+                    textEvidenceCriteria: [
+                        { label: 'uitschieters', keywords: ['uitschieter', 'extreem', 'heel hoog', 'heel laag'] },
+                        { label: 'gemiddelde kan misleiden', keywords: ['misleidend', 'niet representatief', 'vertekenen', 'gemiddelde'] },
+                        { label: 'maximum of minimum gebruiken', keywords: ['max', 'maximum', 'min', 'minimum'] },
+                    ],
                 },
             ],
         },
