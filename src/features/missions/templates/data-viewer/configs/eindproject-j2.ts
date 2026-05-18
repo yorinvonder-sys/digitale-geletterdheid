@@ -206,12 +206,20 @@ export const eindprojectJ2Config: DataViewerConfig = {
                 {
                     id: 'q8-eigen-plan',
                     question:
-                        'Beschrijf in 3 zinnen jouw idee voor een eindproject. Gebruik tip 1: begin met een probleem dat jij ervaart.',
+                        'Beschrijf in 3 zinnen jouw idee voor een eindproject. Noem het probleem, de doelgroep, de projectvorm en welk datapunt of welke tip jouw keuze onderbouwt.',
                     type: 'text-observation',
                     correctAnswer: '',
                     explanation:
-                        'Een goed antwoord benoemt (1) het probleem dat de leerling ervaart, (2) wie er baat bij heeft, en (3) wat voor soort project het wordt (app, website, onderzoek, spel). Voorbeelden: "Ik merk dat klasgenoten nooit weten wanneer de bibliotheek open is. Ik wil een simpele website maken met actuele openingstijden en een agenda." Of: "Ik wil onderzoeken hoeveel schermtijd leerlingen in mijn klas hebben en of dat met hun concentratie samenhangt."',
-                    points: 0,
+                        'Een goed antwoord benoemt (1) het probleem dat de leerling ervaart, (2) wie er baat bij heeft, (3) wat voor soort project het wordt en (4) welke data of tip de keuze ondersteunt. Voorbeelden: "Klasgenoten weten niet wanneer de bibliotheek open is. Ik wil voor brugklassers een simpele website maken met actuele openingstijden, omdat de data laat zien dat presentatie en originaliteit meetellen." Of: "Ik wil onderzoeken hoeveel schermtijd leerlingen in mijn klas hebben, omdat starten vanuit een echt probleem helpt om mijn eindproject concreet te maken."',
+                    points: 15,
+                    minLength: 80,
+                    minEvidenceCriteria: 4,
+                    textEvidenceCriteria: [
+                        { label: 'probleem', keywords: ['probleem', 'lastig', 'mist', 'niet weten', 'ervaar'] },
+                        { label: 'doelgroep', keywords: ['doelgroep', 'leerlingen', 'klasgenoten', 'brugklassers', 'docenten', 'ouders'] },
+                        { label: 'projectvorm', keywords: ['app', 'website', 'onderzoek', 'spel', 'video', 'animatie', 'prototype'] },
+                        { label: 'data of tip als onderbouwing', keywords: ['data', 'tip', 'score', 'originaliteit', 'presentatie', 'techniek', 'gemiddelde'] },
+                    ],
                 },
             ],
         },

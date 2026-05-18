@@ -52,7 +52,7 @@ Yorin-oordelen per opdracht:
 | 2 | J1 P2 AI & Creatie | 16 | `browser smoke` | Brede audits, zichtbare leerlingkritische routes | Veel custom/AiLab routes en completion onzeker | Gerichte review op AI-flow, custom routes en reviewmissies |
 | 3 | J3 P2 Cybersecurity & Privacy | 6 | `browser smoke` | Brede audits | Inhoudelijk risicovol, PuzzleLab/no-button en security-evidence | Gerichte review met streng bewijs- en docentcheck |
 | 4 | J1 P3 Digitaal Burgerschap | 14 | `browser smoke` | Brede audits | Privacy/data-bewijs en mixed template/custom routes | Review na J3 P2 of samen met privacycluster |
-| 5 | J2 P4 Ethiek, Maatschappij & Eindproject | 5 | `browser smoke` | Brede audits | Debate/DataViewer completion vaak niet hard bewezen | Perioderapport met debat- en eindprojectbewijs |
+| 5 | J2 P4 Ethiek, Maatschappij & Eindproject | 5 | `werkbaarheidsreview` | `docs/audits/dgskills-j2p4-workability-audit-2026-05-18.md` + lokale Google Chrome/CDP viewportmatrix | Echte iPad/Safari en afzonderlijke `@chrome` toolnamespace nog niet bewezen | Alleen live deployen na prod-build en live smoke |
 | 6 | J3 P1 Geavanceerd Programmeren & AI | 6 | `browser smoke` | Brede audits | DataViewer/BuilderCanvas bewijs en AI-route-noise | Perioderapport met advanced-code-review als gate |
 | 7 | J3 P3 Maatschappelijke Impact & Innovatie | 8 | `browser smoke` | Brede audits | DataViewer/BuilderCanvas/Debate completion onzeker | Perioderapport op impact en docentbewijs |
 | 8 | J3 P4 Meesterproef | 6 | `browser smoke` | Brede audits | Eindprojectkwaliteit en portfolio/research-bewijs | Perioderapport met product- en reflectiecriteria |
@@ -173,11 +173,11 @@ Legenda voor deze tabel:
 
 | Opdracht | Status | Oordeel | Bewijs | Volgende actie |
 |---|---|---|---|---|
-| `ai-ethicus` | `browser smoke` | `menselijke keuze nodig` | Brede audit, debate completion onzeker | Review in J2 P4 batch |
-| `digital-rights-defender` | `browser smoke` | `menselijke keuze nodig` | Brede audit, debate completion onzeker | Review in J2 P4 batch |
-| `tech-court` | `browser smoke` | `menselijke keuze nodig` | Brede audit met completionbewijs | Review in J2 P4 batch |
-| `future-forecaster` | `browser smoke` | `menselijke keuze nodig` | Brede audit, debate completion onzeker | Review in J2 P4 batch |
-| `eindproject-j2` | `browser smoke` | `menselijke keuze nodig` | Brede audit, DataViewer completion onzeker | Review in J2 P4 batch |
+| `ai-ethicus` | `werkbaarheidsreview` | `werkbaar` | J2 P4 audit + Chrome/CDP matrix; evidence/eindstaat zichtbaar | Echte iPad/Safari blijft open |
+| `digital-rights-defender` | `werkbaarheidsreview` | `werkbaar` | J2 P4 audit + Chrome/CDP matrix; evidence/eindstaat zichtbaar | Echte iPad/Safari blijft open |
+| `tech-court` | `werkbaarheidsreview` | `werkbaar` | J2 P4 audit + Chrome/CDP matrix; evidence/eindstaat zichtbaar | Echte iPad/Safari blijft open |
+| `future-forecaster` | `werkbaarheidsreview` | `werkbaar` | J2 P4 audit + Chrome/CDP matrix; evidence/eindstaat zichtbaar | Echte iPad/Safari blijft open |
+| `eindproject-j2` | `werkbaarheidsreview` | `werkbaar` | J2 P4 audit + Chrome/CDP matrix; DataViewer tekstbewijs/eindstaat zichtbaar | Echte iPad/Safari blijft open |
 
 ### J3 P1 - Geavanceerd Programmeren & AI
 

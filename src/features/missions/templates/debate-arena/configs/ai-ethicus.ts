@@ -103,6 +103,7 @@ const config: DebateArenaConfig = {
     ],
     counterArgument:
         '"Menselijke leraren hebben ook vooroordelen — alleen zijn die onzichtbaar. Een algoritme kun je in ieder geval auditen en verbeteren. Door AI te verbieden, vervangen we een controleerbaar systeem door een oncontroleerbaar menselijk oordeel."',
+    argumentQualityIndicators: true,
     maxScore: 100,
     badges: [
         {

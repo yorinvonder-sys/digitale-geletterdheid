@@ -103,6 +103,7 @@ const config: DebateArenaConfig = {
     ],
     counterArgument:
         '"Als bedrijven aansprakelijk zijn voor elke onbedoelde correlatie in hun systemen, stopt innovatie. Elk systeem dat leert van historische data zal imperfecties hebben. Perfectie als eis maakt AI onmogelijk — en dan blijven we achter terwijl andere landen vooruitlopen."',
+    argumentQualityIndicators: true,
     maxScore: 100,
     badges: [
         {

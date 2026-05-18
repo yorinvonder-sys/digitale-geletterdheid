@@ -103,6 +103,7 @@ const config: DebateArenaConfig = {
     ],
     counterArgument:
         '"Als we helemaal geen data mogen verzamelen op school, hoe weten we dan welke leerlingen extra hulp nodig hebben? Vroeg signaleren van problemen redt schoolcarrières. Privacy zonder nuance betekent dat kwetsbare leerlingen onzichtbaar worden."',
+    argumentQualityIndicators: true,
     maxScore: 100,
     badges: [
         {

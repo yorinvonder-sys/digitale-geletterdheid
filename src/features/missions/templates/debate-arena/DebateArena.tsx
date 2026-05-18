@@ -148,6 +148,7 @@ const DebateArenaInner: React.FC<DebateArenaProps> = ({ config, onBack, onComple
     const [isChatOpen, setIsChatOpen] = useState(false);
 
     const score = useMemo(() => calcScore(state, config), [state, config]);
+    const missionGoal = config.missionGoal ?? getMissionGoal(config.missionId);
     const userId = (() => {
         try {
             const key = Object.keys(localStorage).find((k) =>
@@ -233,7 +234,7 @@ const DebateArenaInner: React.FC<DebateArenaProps> = ({ config, onBack, onComple
                 emoji={config.introEmoji}
                 title={config.introTitle}
                 description={config.introDescription}
-                goal={config.missionGoal ?? getMissionGoal(config.missionId)}
+                goal={missionGoal}
                 features={config.introFeatures}
                 onStart={() => setPhase('explore')}
             />
@@ -244,11 +245,30 @@ const DebateArenaInner: React.FC<DebateArenaProps> = ({ config, onBack, onComple
     if (state.phase === 'results') {
         const initialPos = config.positions.find((p) => p.id === state.selectedPosition);
         const finalPos = config.positions.find((p) => p.id === (state.finalPosition ?? state.selectedPosition));
+        const validArguments = state.arguments.filter(
+            (a) => a.claim.trim().length >= 20 && a.evidence.trim().length >= 20
+        ).length;
+        const allReflectionsComplete = config.reflectionQuestions.every(
+            (q) => (state.reflectionAnswers[q] ?? '').trim().length >= 20
+        );
+        const isDebateComplete =
+            state.stakeholdersRead.length >= config.stakeholders.length &&
+            state.selectedPosition !== null &&
+            validArguments >= 2 &&
+            state.counterResponse.trim().length >= 20 &&
+            allReflectionsComplete;
+        const completionStatus = {
+            isComplete: isDebateComplete,
+            title: isDebateComplete ? 'Debatbewijs compleet' : 'Debatbewijs mist nog onderdelen',
+            description: isDebateComplete
+                ? 'Je hebt perspectieven gelezen, positie gekozen, argumenten gebouwd, gereageerd en gereflecteerd.'
+                : 'Voor voltooiing moeten alle debatfases afgerond zijn met minimaal twee onderbouwde argumenten.',
+        };
 
         const phases = [
             { icon: '👥', title: 'Stakeholders gelezen', score: state.stakeholdersRead.length >= config.stakeholders.length ? 10 : 0, max: 10 },
             { icon: '📍', title: 'Positie gekozen', score: state.selectedPosition ? 10 : 0, max: 10 },
-            { icon: '💬', title: 'Argumenten gebouwd', score: Math.round((Math.min(state.arguments.filter(a => a.claim.trim().length >= 20 && a.evidence.trim().length >= 20).length, 3) / 3) * 50), max: 50 },
+            { icon: '💬', title: 'Argumenten gebouwd', score: Math.round((Math.min(validArguments, 3) / 3) * 50), max: 50 },
             { icon: '⚡', title: 'Tegenargument beantwoord', score: state.counterResponse.trim().length >= 20 ? 10 : 0, max: 10 },
             { icon: '🪞', title: 'Gereflecteerd', score: config.reflectionQuestions.filter(q => (state.reflectionAnswers[q] ?? '').trim().length >= 20).length * 10, max: config.reflectionQuestions.length * 10 },
         ];
@@ -305,10 +325,12 @@ const DebateArenaInner: React.FC<DebateArenaProps> = ({ config, onBack, onComple
                         maxScore={config.maxScore}
                         badges={config.badges}
                         phases={phases}
+                        evidence={missionGoal?.evidence}
+                        completionStatus={completionStatus}
                         takeaways={config.takeaways}
                         onComplete={() => {
                             clearSave();
-                            onComplete(true);
+                            onComplete(isDebateComplete);
                         }}
                     />
                 </div>

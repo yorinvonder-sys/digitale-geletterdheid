@@ -103,6 +103,7 @@ const config: DebateArenaConfig = {
     ],
     counterArgument:
         '"Als we vasthouden aan menselijke leraren puur uit traditie, dan benadelen we de leerlingen die het meest gebaat zijn bij personalisatie — leerlingen met dyslexie, ADHD of een taalachterstand. Voor hen is een perfecte AI-tutor geen luxe maar een gelijkmaker. Traditie als argument is geen argument."',
+    argumentQualityIndicators: true,
     maxScore: 100,
     badges: [
         {
