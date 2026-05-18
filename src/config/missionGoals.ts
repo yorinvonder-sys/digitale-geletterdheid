@@ -381,6 +381,77 @@ export const MISSION_GOALS: Record<string, MissionGoal> = {
         },
         evidence: 'Je toekomstvisie noemt minstens een kans, een risico en wie erdoor geraakt wordt.',
     },
+    'startup-simulator': {
+        primaryGoal: 'Ontwerp een tech-startup die een echt maatschappelijk probleem oplost en onderbouw probleem, model, markt en pitch.',
+        criteria: {
+            type: 'steps-complete',
+            min: 4,
+            description: 'Je werkt alle vier canvasstappen uit met concrete tekst en afgevinkte bewijschecks.',
+        },
+        evidence: 'Je startupcanvas bevat probleem, oplossing, verdienmodel, doelgroep, concurrentievoordeel en pitchstructuur.',
+    },
+    'policy-maker': {
+        primaryGoal: 'Maak een beleidsadvies over gezichtsherkenning op school en verdedig dat advies met meerdere perspectieven.',
+        criteria: {
+            type: 'rounds-complete',
+            description: 'Je leest alle stakeholders, kiest positie, schrijft minimaal twee onderbouwde argumenten, reageert op een tegenargument en reflecteert.',
+        },
+        evidence: 'Je debatbewijs bevat een positie, minimaal twee argumenten met bewijs, een reactie op het tegenargument en een reflectie.',
+    },
+    'innovation-lab': {
+        primaryGoal: 'Ontwerp een technologische innovatie voor een SDG-probleem en onderbouw werking, prototype en maatschappelijke impact.',
+        criteria: {
+            type: 'steps-complete',
+            min: 4,
+            description: 'Je werkt probleem, oplossing, MVP en impact uit met concrete tekst en afgevinkte bewijschecks.',
+        },
+        evidence: 'Je innovatiecanvas noemt SDG-probleem, doelgroep, technologie, MVP-test, impactschatting en risico’s.',
+    },
+    'digital-divide-researcher': {
+        primaryGoal: 'Onderzoek de digitale kloof met data en formuleer een onderbouwde aanbeveling voor meer digitale inclusie.',
+        criteria: {
+            type: 'score-threshold',
+            threshold: 60,
+            description: 'Je rondt alle datasets af, haalt minimaal 60 punten en onderbouwt observaties met data.',
+        },
+        evidence: 'Je antwoorden verwijzen naar verschillen in toegang, vaardigheden, leeftijd/inkomen of landen en eindigen met een concrete aanbeveling.',
+    },
+    'tech-impact-analyst': {
+        primaryGoal: 'Analyseer maatschappelijke gevolgen van technologie door kansen, risico’s, regulering en ethische afwegingen te onderbouwen.',
+        criteria: {
+            type: 'score-threshold',
+            threshold: 60,
+            description: 'Je rondt alle datasets af, haalt minimaal 60 punten en onderbouwt observaties met impactbewijs.',
+        },
+        evidence: 'Je analyse noemt minimaal een kans, een risico, een stakeholder of regelgevingskeuze en een beargumenteerde afweging.',
+    },
+    'welzijnsonderzoeker': {
+        primaryGoal: 'Onderzoek digitaal welzijn met data en leg voorzichtig uit wat je wel en niet uit de cijfers mag concluderen.',
+        criteria: {
+            type: 'score-threshold',
+            threshold: 60,
+            description: 'Je rondt alle datasets af, haalt minimaal 60 punten en gebruikt concrete data in je observaties.',
+        },
+        evidence: 'Je antwoorden verwijzen naar schermtijd, slaap/welzijn, limieten, actief/passief gebruik en het verschil tussen correlatie en causaliteit.',
+    },
+    'startup-pitch': {
+        primaryGoal: 'Bouw een korte AI-startuppitch met probleem, oplossing, merkkeuzes en ethische reflectie.',
+        criteria: {
+            type: 'steps-complete',
+            min: 4,
+            description: 'Je rondt alle vier pitchstappen af met checklist, checkvragen en docentbewijs waar gevraagd.',
+        },
+        evidence: 'Je pitchbewijs bevat een concreet probleem, AI-oplossing, naam/logo/slogan en privacy- of eerlijkheidsrisico met oplossing.',
+    },
+    'impact-review': {
+        primaryGoal: 'Laat zien dat je maatschappelijke kansen en risico’s van digitale technologie kunt herkennen en toepassen.',
+        criteria: {
+            type: 'score-threshold',
+            threshold: 70,
+            description: 'Je rondt alle reviewrondes af en haalt minimaal 70 punten.',
+        },
+        evidence: 'Je ronde-overzicht laat zien dat je impactanalyse, digitale kloof, bias, privacy en regelgeving kunt toepassen.',
+    },
     'eindproject-j2': {
         primaryGoal: 'Bereid je eindproject voor door projectdata te analyseren en een eigen idee te onderbouwen.',
         criteria: {
@@ -431,6 +502,60 @@ export const MISSION_GOALS: Record<string, MissionGoal> = {
             description: 'Je leest perspectieven, neemt positie in en onderbouwt je advies.',
         },
         evidence: 'Je advies noemt voordelen, risico’s en een keuze die je kunt verdedigen.',
+    },
+    'cyber-detective': {
+        primaryGoal: 'Onderzoek digitale sporen en reconstrueer hoe een cyberaanval is verlopen.',
+        criteria: {
+            type: 'score-threshold',
+            threshold: 60,
+            description: 'Je rondt de cyberpuzzels af en haalt minimaal 60 punten.',
+        },
+        evidence: 'Je score, puzzeloverzicht en tijdlijnkeuze laten zien dat je logregels, aanvalsmethoden en bewijsketen begrijpt.',
+    },
+    'encryption-expert': {
+        primaryGoal: 'Kraak eenvoudige codes en laat zien wat echte encryptie en sterke wachtwoorden veiliger maakt.',
+        criteria: {
+            type: 'score-threshold',
+            threshold: 60,
+            description: 'Je rondt de encryptiepuzzels af en haalt minimaal 60 punten.',
+        },
+        evidence: 'Je puzzelresultaten tonen Caesar, Base64, publieke sleutel en wachtwoordsterkte met uitleg op het eindscherm.',
+    },
+    'phishing-fighter': {
+        primaryGoal: 'Herken phishing-signalen en kies veilige acties om jezelf en anderen te beschermen.',
+        criteria: {
+            type: 'score-threshold',
+            threshold: 60,
+            description: 'Je doorloopt alle scenario-rondes en haalt minimaal 60 punten.',
+        },
+        evidence: 'Je ronde-antwoorden tonen rode vlaggen, risicovolgorde, echt/nep-keuzes en beschermmaatregelen.',
+    },
+    'security-auditor': {
+        primaryGoal: 'Vind kwetsbaarheden in een webshopsituatie en schrijf een concrete beveiligingsaanbeveling.',
+        criteria: {
+            type: 'score-threshold',
+            threshold: 60,
+            description: 'Je rondt de security-auditpuzzels af en haalt minimaal 60 punten.',
+        },
+        evidence: 'Je score en eindoverzicht laten zien dat je SQL-injectie, HTTPS-risico, XSS en rapportadvies kunt uitleggen.',
+    },
+    'digital-forensics': {
+        primaryGoal: 'Analyseer digitale forensische sporen en onderscheid bewezen feiten van aannames.',
+        criteria: {
+            type: 'score-threshold',
+            threshold: 60,
+            description: 'Je doorloopt alle forensische scenario-rondes en haalt minimaal 60 punten.',
+        },
+        evidence: 'Je ronde-antwoorden tonen verdachte logregels, een incidenttijdlijn, feit/aanname-keuzes en forensisch protocol.',
+    },
+    'security-review': {
+        primaryGoal: 'Bewijs dat je cybersecuritybegrippen kunt koppelen aan veilige keuzes en tegenmaatregelen.',
+        criteria: {
+            type: 'score-threshold',
+            threshold: 60,
+            description: 'Je rondt alle reviewrondes af en haalt minimaal 60 punten.',
+        },
+        evidence: 'Je reviewscore en ronde-overzicht tonen wachtwoordsterkte, aanval/tegenmaatregel, veilig gedrag en kernbegrippen.',
     },
     'ipad-print-instructies': {
         primaryGoal: 'Print vanaf een iPad door de juiste app, printer en stappen te gebruiken.',

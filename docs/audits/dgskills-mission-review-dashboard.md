@@ -54,7 +54,7 @@ Yorin-oordelen per opdracht:
 | 4 | J1 P3 Digitaal Burgerschap | 14 | `browser smoke` | Brede audits | Privacy/data-bewijs en mixed template/custom routes | Review na J3 P2 of samen met privacycluster |
 | 5 | J2 P4 Ethiek, Maatschappij & Eindproject | 5 | `werkbaarheidsreview` | `docs/audits/dgskills-j2p4-workability-audit-2026-05-18.md` + lokale Google Chrome/CDP viewportmatrix | Echte iPad/Safari en afzonderlijke `@chrome` toolnamespace nog niet bewezen | Alleen live deployen na prod-build en live smoke |
 | 6 | J3 P1 Geavanceerd Programmeren & AI | 6 | `browser smoke` | Brede audits | DataViewer/BuilderCanvas bewijs en AI-route-noise | Perioderapport met advanced-code-review als gate |
-| 7 | J3 P3 Maatschappelijke Impact & Innovatie | 8 | `browser smoke` | Brede audits | DataViewer/BuilderCanvas/Debate completion onzeker | Perioderapport op impact en docentbewijs |
+| 7 | J3 P3 Maatschappelijke Impact & Innovatie | 8 | `release-blocked` | `docs/audits/dgskills-j3p3-workability-audit-2026-05-18.md` + `@Chrome` desktop leerlingflows | iPad/mobile Chrome-viewportmatrix niet bewezen | Geen live deploy tot Chrome viewportmatrix of echte iPad/Safari-check groen is |
 | 8 | J3 P4 Meesterproef | 6 | `browser smoke` | Brede audits | Eindprojectkwaliteit en portfolio/research-bewijs | Perioderapport met product- en reflectiecriteria |
 | 9 | J1 P1 Digitale Basisvaardigheden | 5 | `browser smoke` | Brede fun/completion audit sterk positief | ToolGuide is afrondbaar maar saai-risico | Later reviewen op fun/didactiek, niet urgent voor completion |
 | 10 | J1 P4 Eindproject | 4 | `browser smoke` | Brede audits | BuilderCanvas eindprojectbewijs onvolledig | Later reviewen als afsluitende J1-batch |
@@ -194,25 +194,25 @@ Legenda voor deze tabel:
 
 | Opdracht | Status | Oordeel | Bewijs | Volgende actie |
 |---|---|---|---|---|
-| `cyber-detective` | `browser smoke` | `menselijke keuze nodig` | Brede audit, deels viewport-specifiek | Review in J3 P2 batch |
-| `encryption-expert` | `browser smoke` | `menselijke keuze nodig` | Brede audit, PuzzleLab/no-button | Review in J3 P2 batch |
-| `phishing-fighter` | `browser smoke` | `menselijke keuze nodig` | Brede audit, scenario completion onzeker | Review in J3 P2 batch |
-| `security-auditor` | `browser smoke` | `menselijke keuze nodig` | Brede audit, PuzzleLab/no-button | Review in J3 P2 batch |
-| `digital-forensics` | `browser smoke` | `menselijke keuze nodig` | Brede audit, scenario completion onzeker | Review in J3 P2 batch |
-| `security-review` | `browser smoke` | `menselijke keuze nodig` | Brede audit, ReviewArena completion onzeker | Review in J3 P2 batch |
+| `cyber-detective` | `@Chrome desktop pass` | `release-blocked op viewport` | Desktop leerlingflow uitgespeeld; completionbewijs zichtbaar; viewportmatrix niet betrouwbaar door vaste `1280x622` Chrome-plugin viewport | Chrome viewportmatrix en echte iPad/Safari-check |
+| `encryption-expert` | `@Chrome desktop pass` | `release-blocked op viewport` | PuzzleLab uitgespeeld met bewuste fout; recovery en `Bewijs compleet` zichtbaar | Chrome viewportmatrix en echte iPad/Safari-check |
+| `phishing-fighter` | `@Chrome desktop pass` | `release-blocked op viewport` | ScenarioEngine uitgespeeld; `Echt`/`Phishing` labels en completionbewijs zichtbaar | Chrome viewportmatrix en echte iPad/Safari-check |
+| `security-auditor` | `@Chrome desktop pass` | `release-blocked op viewport` | PuzzleLab uitgespeeld met bewuste fout; recovery en `Bewijs compleet` zichtbaar | Chrome viewportmatrix en echte iPad/Safari-check |
+| `digital-forensics` | `@Chrome desktop pass` | `release-blocked op viewport` | ScenarioEngine uitgespeeld; `Feit`/`Aanname` labels en completionbewijs zichtbaar | Chrome viewportmatrix en echte iPad/Safari-check |
+| `security-review` | `@Chrome desktop pass` | `release-blocked op viewport` | ReviewArena uitgespeeld; categoriseren heeft expliciete `Plaats hier` actie; docentbewijs zichtbaar | Chrome viewportmatrix en echte iPad/Safari-check |
 
 ### J3 P3 - Maatschappelijke Impact & Innovatie
 
 | Opdracht | Status | Oordeel | Bewijs | Volgende actie |
 |---|---|---|---|---|
-| `startup-simulator` | `browser smoke` | `menselijke keuze nodig` | Brede audit, builder completion onzeker | Review in J3 P3 batch |
-| `policy-maker` | `browser smoke` | `menselijke keuze nodig` | Brede audit, debate completion onzeker | Review in J3 P3 batch |
-| `innovation-lab` | `browser smoke` | `menselijke keuze nodig` | Brede audit, builder completion onzeker | Review in J3 P3 batch |
-| `digital-divide-researcher` | `browser smoke` | `menselijke keuze nodig` | Brede audit, DataViewer/no-button | Review in J3 P3 batch |
-| `tech-impact-analyst` | `browser smoke` | `menselijke keuze nodig` | Brede audit, DataViewer/no-button | Review in J3 P3 batch |
-| `welzijnsonderzoeker` | `browser smoke` | `menselijke keuze nodig` | Brede audit, DataViewer/no-button | Review in J3 P3 batch |
-| `startup-pitch` | `browser smoke` | `menselijke keuze nodig` | ToolGuide completion in brede audit | Review in J3 P3 batch |
-| `impact-review` | `browser smoke` | `menselijke keuze nodig` | Brede audit, ReviewArena completion onzeker | Review in J3 P3 batch |
+| `startup-simulator` | `@Chrome desktop pass` | `release-blocked op viewport` | BuilderCanvas uitgespeeld: `Canvasbewijs compleet`, 100/100, docentbewijs zichtbaar | iPad/mobile Chrome-matrix nog doen |
+| `policy-maker` | `@Chrome desktop pass` | `release-blocked op viewport` | DebateArena uitgespeeld: stakeholders gelezen, positie/argumenten/reflectie, `Debatbewijs compleet` | iPad/mobile Chrome-matrix nog doen |
+| `innovation-lab` | `@Chrome desktop pass` | `release-blocked op viewport` | BuilderCanvas uitgespeeld: `Canvasbewijs compleet`, 100/100, docentbewijs zichtbaar | iPad/mobile Chrome-matrix nog doen |
+| `digital-divide-researcher` | `@Chrome desktop pass` | `release-blocked op viewport` | DataViewer uitgespeeld: `Bewijs compleet`, 100/100; te vage tekst geblokkeerd | iPad/mobile Chrome-matrix nog doen |
+| `tech-impact-analyst` | `@Chrome desktop pass` | `release-blocked op viewport` | DataViewer uitgespeeld: `Bewijs compleet`, 100/100; scorecontract hersteld | iPad/mobile Chrome-matrix nog doen |
+| `welzijnsonderzoeker` | `@Chrome desktop pass` | `release-blocked op viewport` | DataViewer uitgespeeld: `Bewijs compleet`, 100/100; correlatie/causaliteit-bewijs zichtbaar | iPad/mobile Chrome-matrix nog doen |
+| `startup-pitch` | `@Chrome desktop pass` | `release-blocked op viewport` | ToolGuide uitgespeeld: bewuste fout gaf feedback, `Pitchbewijs compleet`, docentbewijs zichtbaar | iPad/mobile Chrome-matrix nog doen |
+| `impact-review` | `@Chrome desktop pass` | `release-blocked op viewport` | ReviewArena uitgespeeld: alle rondes, `Bewijs compleet`, 100/100; niet-blokkerende Chrome async-message errors gezien | iPad/mobile Chrome-matrix nog doen |
 
 ### J3 P4 - Meesterproef
 

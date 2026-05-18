@@ -439,9 +439,25 @@ const ToolGuideInner: React.FC<ToolGuideProps> = ({
         initialState
     );
 
+    const missionGoal = config.missionGoal ?? getMissionGoal(config.missionId);
     const score = useMemo(() => computeScore(state, config.steps), [state, config.steps]);
 
     const currentStepData = config.steps[state.currentStep];
+    const allStepsComplete = config.steps.every((step) => {
+        const allChecked = step.checklistItems.every(
+            (item) => state.checklist[`${step.id}-${item.id}`]
+        );
+        const teacherApproved = !step.teacherCheck || !!state.teacherChecks?.[step.id];
+        const questionAnswered = !step.verificationQuestion || !!state.verificationSubmitted[step.id];
+        return allChecked && teacherApproved && questionAnswered;
+    });
+    const completionStatus = {
+        isComplete: allStepsComplete,
+        title: allStepsComplete ? 'Pitchbewijs compleet' : 'Nog niet voltooid',
+        description: allStepsComplete
+            ? `Alle ${config.steps.length} pitchstappen zijn afgerond met bewijschecks.`
+            : 'Rond alle stappen, checkvragen en docentchecks af voordat deze missie voltooid telt.',
+    };
 
     const phaseScores = useMemo(
         () =>
@@ -508,7 +524,7 @@ const ToolGuideInner: React.FC<ToolGuideProps> = ({
 
     function handleComplete() {
         clearSave();
-        onComplete(true);
+        onComplete(allStepsComplete);
     }
 
     if (state.phase === 'intro') {
@@ -518,7 +534,7 @@ const ToolGuideInner: React.FC<ToolGuideProps> = ({
                 title={config.introTitle}
                 description={config.introDescription}
                 features={config.introFeatures}
-                goal={config.missionGoal ?? getMissionGoal(config.missionId)}
+                goal={missionGoal}
                 onStart={() => setState((prev) => ({ ...prev, phase: 'steps' }))}
             />
         );
@@ -531,6 +547,8 @@ const ToolGuideInner: React.FC<ToolGuideProps> = ({
                 maxScore={config.maxScore}
                 badges={config.badges}
                 phases={phaseScores}
+                evidence={missionGoal?.evidence}
+                completionStatus={completionStatus}
                 takeaways={config.takeaways}
                 onComplete={handleComplete}
             />

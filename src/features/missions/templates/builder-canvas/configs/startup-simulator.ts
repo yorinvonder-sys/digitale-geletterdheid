@@ -32,6 +32,7 @@ export const startupSimulatorConfig: BuilderCanvasConfig = {
                 { id: 'timing', label: 'Ik heb uitgelegd waarom nu het juiste moment is' },
             ],
             textPrompt: 'Beschrijf het probleem en de oplossing',
+            minTextLength: 80,
         },
         {
             id: 'businessmodel',
@@ -48,6 +49,7 @@ export const startupSimulatorConfig: BuilderCanvasConfig = {
                 { id: 'break-even', label: 'Ik heb een globaal break-even punt berekend' },
             ],
             textPrompt: 'Beschrijf je businessmodel',
+            minTextLength: 80,
         },
         {
             id: 'marktanalyse',
@@ -64,6 +66,7 @@ export const startupSimulatorConfig: BuilderCanvasConfig = {
                 { id: 'marktomvang', label: 'Een schatting van de marktomvang is gegeven' },
             ],
             textPrompt: 'Schrijf je marktanalyse',
+            minTextLength: 80,
         },
         {
             id: 'pitch',
@@ -80,6 +83,7 @@ export const startupSimulatorConfig: BuilderCanvasConfig = {
                 { id: 'call-to-action', label: 'Er is een duidelijke call to action' },
             ],
             textPrompt: 'Schrijf je pitch-structuur',
+            minTextLength: 80,
         },
     ],
     maxScore: 100,

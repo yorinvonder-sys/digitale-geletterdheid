@@ -69,6 +69,13 @@ export const digitalDivideResearcherConfig: DataViewerConfig = {
                     explanation:
                         'Mogelijke oorzaken: (1) Economisch — minder geld voor apparaten en internet. (2) Educatief — minder blootstelling aan ICT tijdens opleiding. (3) Werkgerelateerd — minder beroepen waarbij je verplicht bent digitale tools te leren. (4) Vertrouwen — lager digitaal zelfvertrouwen. Digitale ongelijkheid hangt samen met andere vormen van maatschappelijke ongelijkheid.',
                     points: 10,
+                    minLength: 50,
+                    minEvidenceCriteria: 2,
+                    textEvidenceCriteria: [
+                        { label: 'toegang of geld', keywords: ['geld', 'inkomen', 'apparaat', 'laptop', 'internet', 'toegang'] },
+                        { label: 'opleiding of oefening', keywords: ['opleiding', 'school', 'onderwijs', 'ict', 'vaardigheden', 'leren'] },
+                        { label: 'werk of zelfvertrouwen', keywords: ['werk', 'beroep', 'zelfvertrouwen', 'vertrouwen', 'ervaring'] },
+                    ],
                 },
             ],
         },
@@ -119,6 +126,13 @@ export const digitalDivideResearcherConfig: DataViewerConfig = {
                     explanation:
                         'Het sterkste argument is voor Bulgarije: 36% van de huishoudens heeft geen breedbandtoegang — dat zijn honderdduizenden gezinnen. In Nederland is al 98% aangesloten; elke extra euro heeft minder impact. EU-subsidies gaan dan ook systematisch naar lidstaten met de laagste digitale toegang. Dit heet "where impact is highest".',
                     points: 10,
+                    minLength: 50,
+                    minEvidenceCriteria: 2,
+                    textEvidenceCriteria: [
+                        { label: 'landkeuze', keywords: ['bulgarije', 'nederland'] },
+                        { label: 'databewijs', keywords: ['36', '62', '98', 'procent', 'breedband'] },
+                        { label: 'impactreden', keywords: ['impact', 'toegang', 'huishoudens', 'achterstand', 'kloof'] },
+                    ],
                 },
             ],
         },
@@ -181,7 +195,14 @@ export const digitalDivideResearcherConfig: DataViewerConfig = {
                     correctAnswer: '',
                     explanation:
                         'Goede aanbevelingen koppelen de aanpak aan de specifieke barrière voor 75-plussers. Typisch: (1) Uitbreiding DigiSterker met meer vrijwilligers en gemeentelijke financiering — gericht op vaardigen, laagdrempelig. (2) Verplichting voor banken om altijd een fysiek loket te houden — vermindert de afhankelijkheid van digitale vaardigheden voor essentiële diensten. De aanbeveling is sterker als ze ingaat op waarom de kloof voor ouderen specifiek bestaat (geen opgegroeid-met-internet).',
-                    points: 0,
+                    points: 10,
+                    minLength: 60,
+                    minEvidenceCriteria: 2,
+                    textEvidenceCriteria: [
+                        { label: 'doelgroep 75+', keywords: ['75', 'ouderen', '65', 'senioren'] },
+                        { label: 'concrete maatregel', keywords: ['digisterker', 'vrijwilligers', 'bibliotheek', 'loket', 'training', 'cursus'] },
+                        { label: 'waarom dit helpt', keywords: ['vaardigheden', 'laagdrempelig', 'persoonlijk', 'toegang', 'vertrouwen'] },
+                    ],
                 },
             ],
         },

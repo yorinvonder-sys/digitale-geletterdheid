@@ -72,6 +72,13 @@ export const techImpactAnalystConfig: DataViewerConfig = {
                     explanation:
                         'Een privacy-advocaat zou zeggen: om criminelen te vinden, moeten alle onschuldige burgers ook worden gescand en geregistreerd. Dit is massasurveillance — je behandelt iedereen als verdachte. Dit schendt het principe van "onschuldig totdat het tegendeel bewezen is". Bovendien toont onderzoek dat de foutmarge bij donkere huidskleur leidt tot valse aanhoudingen van onschuldigen.',
                     points: 10,
+                    minLength: 50,
+                    minEvidenceCriteria: 2,
+                    textEvidenceCriteria: [
+                        { label: 'onschuldige burgers', keywords: ['onschuldig', 'burgers', 'iedereen', 'verdachte'] },
+                        { label: 'privacy of surveillance', keywords: ['privacy', 'massasurveillance', 'surveillance', 'registratie', 'scannen'] },
+                        { label: 'discriminatie of foutmarge', keywords: ['bias', 'fout', 'donkere', 'huidskleur', 'discriminatie'] },
+                    ],
                 },
             ],
         },
@@ -121,6 +128,13 @@ export const techImpactAnalystConfig: DataViewerConfig = {
                     explanation:
                         'Voordeel voor het bedrijf: duidelijke regels geven zekerheid over wat wel en niet mag. Gevestigde grote bedrijven hebben de middelen om aan regels te voldoen — kleine concurrenten soms niet. Regels kunnen zo een "moat" creëren die grote spelers beschermt. Nadeel: compliance kost geld en vertraagt innovatie. Nieuwe toepassingen kunnen verboden worden voordat hun nut bewezen is.',
                     points: 10,
+                    minLength: 60,
+                    minEvidenceCriteria: 2,
+                    textEvidenceCriteria: [
+                        { label: 'voordeel van regels', keywords: ['duidelijk', 'zekerheid', 'vertrouwen', 'regels', 'moat'] },
+                        { label: 'nadeel van regels', keywords: ['kosten', 'compliance', 'duur', 'vertraagt', 'innovatie'] },
+                        { label: 'bedrijfsperspectief', keywords: ['bedrijf', 'techbedrijf', 'grote', 'kleine', 'concurrent'] },
+                    ],
                 },
             ],
         },
@@ -183,7 +197,14 @@ export const techImpactAnalystConfig: DataViewerConfig = {
                     correctAnswer: '',
                     explanation:
                         'Positief: het algoritme helpt je precies de content vinden die je interessant vindt — efficiënte ontdekking van nieuwe creators en onderwerpen. Negatief: filterbubbel — je ziet steeds extremere versies van wat je al leuk vindt, en nooit tegengestelde perspectieven. Dit kan polarisering versterken en je informatieverwerving eenzijdig maken.',
-                    points: 0,
+                    points: 15,
+                    minLength: 50,
+                    minEvidenceCriteria: 2,
+                    textEvidenceCriteria: [
+                        { label: 'positief effect', keywords: ['positief', 'voordeel', 'kans', 'interessant', 'ontdekken', 'relevant'] },
+                        { label: 'negatief risico', keywords: ['negatief', 'risico', 'filterbubbel', 'polarisatie', 'eenzijdig', 'extreem'] },
+                        { label: 'algoritme genoemd', keywords: ['algoritme', 'aanbeveling', 'tiktok', 'video'] },
+                    ],
                 },
             ],
         },

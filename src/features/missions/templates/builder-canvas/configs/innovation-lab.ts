@@ -32,6 +32,7 @@ export const innovationLabConfig: BuilderCanvasConfig = {
                 { id: 'tech-kans', label: 'Ik heb uitgelegd waarom technologie kan helpen' },
             ],
             textPrompt: 'Beschrijf het SDG-probleem dat jij wilt oplossen',
+            minTextLength: 80,
         },
         {
             id: 'technologie-oplossing',
@@ -48,6 +49,7 @@ export const innovationLabConfig: BuilderCanvasConfig = {
                 { id: 'innovatie', label: 'Het meest innovatieve element is benoemd' },
             ],
             textPrompt: 'Beschrijf je technologische oplossing',
+            minTextLength: 80,
         },
         {
             id: 'prototype-concept',
@@ -64,6 +66,7 @@ export const innovationLabConfig: BuilderCanvasConfig = {
                 { id: 'meetmethode', label: 'Ik heb beschreven wat ik meet om succes te bepalen' },
             ],
             textPrompt: 'Beschrijf je prototype-concept en MVP',
+            minTextLength: 80,
         },
         {
             id: 'impact',
@@ -80,6 +83,7 @@ export const innovationLabConfig: BuilderCanvasConfig = {
                 { id: 'duurzaamheid', label: 'Duurzaamheid van de innovatie is beschreven' },
             ],
             textPrompt: 'Beschrijf de impact van jouw innovatie',
+            minTextLength: 80,
         },
     ],
     maxScore: 100,

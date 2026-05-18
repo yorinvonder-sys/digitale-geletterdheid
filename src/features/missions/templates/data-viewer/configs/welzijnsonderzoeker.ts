@@ -106,6 +106,13 @@ export const welzijnsonderzoekerConfig: DataViewerConfig = {
                     explanation:
                         'Van de 5 leerlingen MÉT limiet zijn er 4 tevreden ("Ja") en 0 ontevreden. Van de 10 leerlingen ZÓNDER limiet zijn 6 leerlingen ontevreden ("Nee"), 3 soms tevreden ("Soms") en 1 tevreden. Interessant detail: Kai heeft wél een limiet maar zit toch op 4.0 uur — een limiet alleen garandeert dus geen tevredenheid. Dit maakt de data genuanceerder dan een simpel "limiet = goed".',
                     points: 10,
+                    minLength: 50,
+                    minEvidenceCriteria: 2,
+                    textEvidenceCriteria: [
+                        { label: 'limietgroep', keywords: ['limiet', 'met limiet', 'zonder limiet'] },
+                        { label: 'tevredenheid', keywords: ['tevreden', 'ontevreden', 'soms', 'ja', 'nee'] },
+                        { label: 'datavergelijking', keywords: ['5', '10', '4', '6', 'verschil', 'groep'] },
+                    ],
                 },
             ],
         },
@@ -151,6 +158,13 @@ export const welzijnsonderzoekerConfig: DataViewerConfig = {
                     explanation:
                         'Creatief gebruik (muziek maken, video\'s produceren) staat onderaan met slechts 0,4 uur, maar onderzoek van Harvard Digital Agency laat zien dat actief creëren een fundamenteel ander effect heeft op welzijn dan passief scrollen. Mensen die iets maken, rapporteren meer controle en voldoening — precies wat bij social media-gebruik vaak ontbreekt. Communicatie via apps (0,9 uur) is ook interessant: dit kan zowel sociaal verbindend als stressverhogend zijn, afhankelijk van de context.',
                     points: 15,
+                    minLength: 50,
+                    minEvidenceCriteria: 2,
+                    textEvidenceCriteria: [
+                        { label: 'creatief of actief gebruik', keywords: ['creatief', 'actief', 'maken', 'produceren', 'muziek', 'video'] },
+                        { label: 'verschil met passief scrollen', keywords: ['passief', 'scrollen', 'social media', 'controle', 'voldoening'] },
+                        { label: 'welzijnseffect', keywords: ['welzijn', 'impact', 'gevoel', 'context', 'stress'] },
+                    ],
                 },
             ],
         },
@@ -202,6 +216,13 @@ export const welzijnsonderzoekerConfig: DataViewerConfig = {
                     explanation:
                         'De contextkolom laat zien dat er steeds andere factoren meespelen: toetsdruk in maart, vakantierust in april, eindexamenstress in mei. Het is gevaarlijk omdat je een simpele oorzaak-gevolgrelatie suggereert terwijl er veel andere verklaringen zijn (confounders). Trimbos en Harvard Digital Agency benadrukken dat het HOE (passief scrollen vs. actief gebruik) en de context belangrijker zijn dan de hoeveelheid uren alleen.',
                     points: 10,
+                    minLength: 60,
+                    minEvidenceCriteria: 2,
+                    textEvidenceCriteria: [
+                        { label: 'correlatie is geen oorzaak', keywords: ['correlatie', 'causaliteit', 'oorzaak', 'veroorzaakt', 'verband'] },
+                        { label: 'contextfactor', keywords: ['toets', 'vakantie', 'stress', 'context', 'april', 'mei'] },
+                        { label: 'nuance in schermgebruik', keywords: ['passief', 'actief', 'hoe', 'uren', 'factoren'] },
+                    ],
                 },
             ],
         },
