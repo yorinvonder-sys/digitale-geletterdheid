@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { ArrowLeft, MessageCircle } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { IntroScreen } from '../shared/IntroScreen';
 import { CompletionScreen } from '../shared/CompletionScreen';
 import { PhaseHeader } from '../shared/PhaseHeader';
@@ -75,6 +75,7 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
     const [mobileTab, setMobileTab] = useState<MobileTab>('instructies');
 
     const currentStepData = config.steps[state.currentStep];
+    const missionGoal = config.missionGoal ?? getMissionGoal(config.missionId);
     const pointsPerStep = Math.floor(config.maxScore / config.steps.length);
 
     // ─── Helpers ─────────────────────────────────────────────────────────
@@ -101,6 +102,14 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
     }, 0);
 
     const totalScore = state.completedSteps.length * pointsPerStep + bonusScore;
+    const allStepsComplete = config.steps.every((step) => state.completedSteps.includes(step.id));
+    const completionStatus = {
+        isComplete: allStepsComplete,
+        title: allStepsComplete ? 'Canvasbewijs compleet' : 'Nog niet voltooid',
+        description: allStepsComplete
+            ? `Alle ${config.steps.length} canvasstappen zijn uitgewerkt met checklist en tekstbewijs.`
+            : 'Rond alle canvasstappen af met checklist en tekstbewijs voordat deze missie voltooid telt.',
+    };
 
     // ─── Handlers ────────────────────────────────────────────────────────
 
@@ -164,7 +173,7 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
 
     const handleComplete = () => {
         clearSave();
-        onComplete(true);
+        onComplete(allStepsComplete);
     };
 
     // ─── Phase: Intro ─────────────────────────────────────────────────────
@@ -175,7 +184,7 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
                 emoji={config.introEmoji}
                 title={config.introTitle}
                 description={config.introDescription}
-                goal={config.missionGoal ?? getMissionGoal(config.missionId)}
+                goal={missionGoal}
                 features={config.introFeatures}
                 onStart={handleStart}
             />
@@ -198,6 +207,8 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
                 maxScore={config.maxScore}
                 badges={config.badges}
                 phases={phaseBreakdown}
+                evidence={missionGoal?.evidence}
+                completionStatus={completionStatus}
                 takeaways={config.takeaways}
                 onComplete={handleComplete}
             />
@@ -297,17 +308,6 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
                                 : '',
                         }}
                     />
-
-                    {/* Floating chat button — only visible when chat is closed */}
-                    {!isChatOpen && (
-                        <button
-                            onClick={() => setIsChatOpen(true)}
-                            className="fixed bottom-6 right-6 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-[#D97848] to-[#D97848] text-white shadow-lg transition-all duration-200 hover:brightness-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0B453F] focus-visible:ring-offset-2 active:scale-95"
-                            aria-label="Open AI-assistent"
-                        >
-                            <MessageCircle size={22} />
-                        </button>
-                    )}
                 </>
             )}
 

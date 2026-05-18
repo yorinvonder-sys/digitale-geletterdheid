@@ -26,6 +26,14 @@ export interface DataQuestion {
     explanation: string;
     points: number;
     showConfidence?: boolean;
+    minLength?: number;
+    textEvidenceCriteria?: TextEvidenceCriterion[];
+    minEvidenceCriteria?: number;
+}
+
+interface TextEvidenceCriterion {
+    label: string;
+    keywords: string[];
 }
 
 export interface Dataset {
@@ -75,24 +83,81 @@ interface DataViewerState {
 
 // ── Helper ────────────────────────────────────────────────────────────────────
 
+function normalizeEvidenceText(value: string): string {
+    return value
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '');
+}
+
+function evaluateTextEvidence(q: DataQuestion, value: string) {
+    const criteria = q.textEvidenceCriteria ?? [];
+    const normalized = normalizeEvidenceText(value);
+    const minimumLength = q.minLength ?? (criteria.length > 0 ? 20 : 10);
+
+    if (criteria.length === 0) {
+        return {
+            matched: [],
+            missing: [],
+            required: 0,
+            passed: value.trim().length >= minimumLength,
+        };
+    }
+
+    const matched = criteria.filter((criterion) =>
+        criterion.keywords.some((keyword) => normalized.includes(normalizeEvidenceText(keyword)))
+    );
+    const required = q.minEvidenceCriteria ?? criteria.length;
+
+    return {
+        matched,
+        missing: criteria.filter((criterion) => !matched.includes(criterion)),
+        required,
+        passed: value.trim().length >= minimumLength && matched.length >= required,
+    };
+}
+
+function getCompletionThreshold(goal: MissionGoal | undefined, maxScore: number, fallbackRatio: number): number {
+    const threshold = goal?.criteria.threshold;
+    if (typeof threshold === 'number') {
+        return threshold <= 1 ? Math.round(maxScore * threshold) : threshold;
+    }
+    return Math.round(maxScore * fallbackRatio);
+}
+
 function scoreQuestion(q: DataQuestion, answers: Record<string, string | number>, confidence?: 1 | 2 | 3): number {
-    if (q.type === 'text-observation') return q.points; // always participation points
+    if (q.type === 'text-observation') {
+        return evaluateTextEvidence(q, String(answers[q.id] ?? '')).passed ? q.points : 0;
+    }
     const raw = answers[q.id];
     if (raw === undefined || raw === '') return 0;
-    let base: number;
+    
+    let correct = false;
     if (q.type === 'number-input') {
         const num = Number(raw);
-        const correct = Number(q.correctAnswer);
+        const correctVal = Number(q.correctAnswer);
         if (isNaN(num)) return 0;
-        const tolerance = Math.abs(correct) * 0.05;
-        base = Math.abs(num - correct) <= tolerance ? q.points : 0;
+        const tolerance = Math.abs(correctVal) * 0.05;
+        correct = Math.abs(num - correctVal) <= tolerance;
     } else {
         // multiple-choice
-        base = String(raw).trim().toLowerCase() === String(q.correctAnswer).trim().toLowerCase()
-            ? q.points
-            : 0;
+        correct = String(raw).trim().toLowerCase() === String(q.correctAnswer).trim().toLowerCase();
     }
-    return Math.min(q.points, Math.round(base * confidenceMultiplier(confidence, base > 0)));
+
+    if (correct) {
+        const base = q.points;
+        const multiplier = q.showConfidence
+            ? confidenceMultiplier(confidence, true)
+            : 1;
+        return Math.round(base * multiplier);
+    } else {
+        if (q.showConfidence && confidence) {
+            const penaltyMultiplier = confidenceMultiplier(confidence, false);
+            // penaltyMultiplier is negative, e.g. -0.5 or -0.2
+            return Math.round(q.points * penaltyMultiplier);
+        }
+        return 0;
+    }
 }
 
 function clampScore(score: number, maxScore: number): number {
@@ -100,7 +165,9 @@ function clampScore(score: number, maxScore: number): number {
 }
 
 function isCorrect(q: DataQuestion, answers: Record<string, string | number>): boolean | null {
-    if (q.type === 'text-observation') return true; // always accepted
+    if (q.type === 'text-observation') {
+        return evaluateTextEvidence(q, String(answers[q.id] ?? '')).passed;
+    }
     const raw = answers[q.id];
     if (raw === undefined || raw === '') return null;
     if (q.type === 'number-input') {
@@ -142,14 +209,20 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
     const answer = answers[q.id];
     const observation = textObservations[q.id] ?? '';
     const confidence = confidences[q.id];
+    const textEvidenceEvaluation = q.type === 'text-observation'
+        ? evaluateTextEvidence(q, observation)
+        : null;
     const showConfidenceWidget =
         q.showConfidence === true &&
         q.type !== 'text-observation' &&
         !isSubmitted &&
         answer !== undefined &&
         answer !== '';
+    const textObservationReady = q.type === 'text-observation'
+        ? textEvidenceEvaluation?.passed === true
+        : true;
     const submitDisabled = q.type === 'text-observation'
-        ? observation.trim().length < 10
+        ? !textObservationReady
         : answer === undefined || answer === '' || (q.showConfidence === true && confidence === undefined);
 
     return (
@@ -215,14 +288,42 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                     )}
 
                     {q.type === 'text-observation' && (
-                        <textarea
-                            rows={3}
-                            placeholder="Schrijf je observatie hier…"
-                            value={observation}
-                            onChange={e => onTextObservation(q.id, e.target.value)}
-                            className="w-full mb-3 px-3 py-2 text-sm rounded-xl border border-[#E7D8BD] bg-[#FCF6EA] text-[#08283B] focus:outline-none focus:border-[#D97848] resize-none"
-                            style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
-                        />
+                        <>
+                            <textarea
+                                rows={3}
+                                placeholder="Schrijf je observatie hier…"
+                                value={observation}
+                                onChange={e => onTextObservation(q.id, e.target.value)}
+                                className="w-full mb-3 px-3 py-2 text-sm rounded-xl border border-[#E7D8BD] bg-[#FCF6EA] text-[#08283B] focus:outline-none focus:border-[#D97848] resize-none"
+                                style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                            />
+                            {q.textEvidenceCriteria && q.textEvidenceCriteria.length > 0 && textEvidenceEvaluation && (
+                                <div className="mb-3 rounded-xl border border-[#E7D8BD] bg-[#FFFDF7] px-3 py-2 text-left">
+                                    <p
+                                        className="text-[11px] font-black uppercase tracking-widest text-[#D97848]"
+                                        style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                                    >
+                                        Bewijscheck
+                                    </p>
+                                    <p
+                                        className="mt-1 text-xs leading-snug text-[#445865]"
+                                        style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                                    >
+                                        Noem minimaal {textEvidenceEvaluation.required} van: {q.textEvidenceCriteria.map((criterion) => criterion.label).join(', ')}.
+                                    </p>
+                                    <p
+                                        className={`mt-1 text-xs font-semibold leading-snug ${
+                                            textEvidenceEvaluation.passed ? 'text-[#5F947D]' : 'text-[#8A4A2B]'
+                                        }`}
+                                        style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                                    >
+                                        {textEvidenceEvaluation.passed
+                                            ? 'Bewijs compleet - je kunt bevestigen.'
+                                            : `Nog nodig: ${textEvidenceEvaluation.missing.map((criterion) => criterion.label).join(', ')}.`}
+                                    </p>
+                                </div>
+                            )}
+                        </>
                     )}
 
                     {showConfidenceWidget && (
@@ -243,51 +344,71 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
             )}
 
             {/* Feedback after submit */}
-            {isSubmitted && (
-                <div
-                    className={`rounded-xl p-3 flex items-start gap-2.5 ${
-                        correct
-                            ? 'bg-[#5F947D]/10 border border-[#5F947D]/25'
-                            : 'bg-[#D97848]/8 border border-[#D97848]/20'
-                    }`}
-                >
-                    {correct ? (
-                        <CheckCircle size={16} className="text-[#5F947D] mt-0.5 flex-shrink-0" />
-                    ) : (
-                        <XCircle size={16} className="text-[#D97848] mt-0.5 flex-shrink-0" />
-                    )}
-                    <div>
-                        {q.type === 'text-observation' ? (
-                            <p
-                                className="text-xs font-semibold text-[#5F947D] mb-1"
-                                style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
-                            >
-                                Goed opgeschreven! Observatie ontvangen.
-                            </p>
-                        ) : correct ? (
-                            <p
-                                className="text-xs font-semibold text-[#5F947D] mb-1"
-                                style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
-                            >
-                                Goed! +{q.points} punten
-                            </p>
+            {isSubmitted && (() => {
+                const pointsEarned = scoreQuestion(q, answers, confidence);
+                const submittedTextEvidence = q.type === 'text-observation'
+                    ? evaluateTextEvidence(q, String(answers[q.id] ?? ''))
+                    : null;
+                return (
+                    <div
+                        className={`rounded-xl p-3 flex items-start gap-2.5 ${
+                            correct
+                                ? 'bg-[#5F947D]/10 border border-[#5F947D]/25'
+                                : 'bg-[#D97848]/8 border border-[#D97848]/20'
+                        }`}
+                    >
+                        {correct ? (
+                            <CheckCircle size={16} className="text-[#5F947D] mt-0.5 flex-shrink-0" />
                         ) : (
+                            <XCircle size={16} className="text-[#D97848] mt-0.5 flex-shrink-0" />
+                        )}
+                        <div>
+                            {q.type === 'text-observation' ? (
+                                <>
+                                    <p
+                                        className={`text-xs font-semibold mb-1 ${correct ? 'text-[#5F947D]' : 'text-[#D97848]'}`}
+                                        style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                                    >
+                                        {correct ? 'Observatie bevat genoeg bewijs.' : 'Nog niet genoeg bewijs in je observatie.'}
+                                    </p>
+                                    {!correct && submittedTextEvidence && submittedTextEvidence.missing.length > 0 && (
+                                        <p
+                                            className="text-xs text-[#8A4A2B] leading-snug mb-1"
+                                            style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                                        >
+                                            Mist nog: {submittedTextEvidence.missing.map((criterion) => criterion.label).join(', ')}.
+                                        </p>
+                                    )}
+                                </>
+                            ) : correct ? (
+                                <p
+                                    className="text-xs font-semibold text-[#5F947D] mb-1"
+                                    style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                                >
+                                    Goed! +{pointsEarned} punten {pointsEarned > q.points && '🌟 (Zelfvertrouwen bonus!)'}
+                                </p>
+                            ) : (
+                                <p
+                                    className="text-xs font-semibold text-[#D97848] mb-1"
+                                    style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                                >
+                                    {pointsEarned < 0 ? (
+                                        <>Ai! Strafpunten voor overmoedigheid: {pointsEarned} pt (Juist antwoord: {q.correctAnswer})</>
+                                    ) : (
+                                        <>Niet helemaal — het juiste antwoord: <strong>{q.correctAnswer}</strong></>
+                                    )}
+                                </p>
+                            )}
                             <p
-                                className="text-xs font-semibold text-[#D97848] mb-1"
+                                className="text-xs text-[#445865] leading-snug"
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                             >
-                                Niet helemaal — het juiste antwoord: <strong>{q.correctAnswer}</strong>
+                                {q.explanation}
                             </p>
-                        )}
-                        <p
-                            className="text-xs text-[#445865] leading-snug"
-                            style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
-                        >
-                            {q.explanation}
-                        </p>
+                        </div>
                     </div>
-                </div>
-            )}
+                );
+            })()}
         </div>
     );
 };
@@ -506,6 +627,7 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
     })();
 
     const { phase, currentDataset, answers, submitted, textObservations, confidences, followUpAnswered, followUpCorrect } = state;
+    const missionGoal = config.missionGoal ?? getMissionGoal(config.missionId);
 
     const questionScore = config.datasets.flatMap(ds => ds.questions).reduce((sum, q) => {
         if (!submitted[q.id]) return sum;
@@ -518,6 +640,25 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
     }, 0);
 
     const totalScore = clampScore(questionScore + followUpBonusScore, config.maxScore);
+    const allDatasetsComplete = config.datasets.every((dataset) =>
+        dataset.questions.every((q) => submitted[q.id]) &&
+        (dataset.followUp === undefined || followUpAnswered[dataset.id] === true)
+    );
+    const textEvidenceComplete = config.datasets.every((dataset) =>
+        dataset.questions.every((q) =>
+            q.type !== 'text-observation' ||
+            evaluateTextEvidence(q, String(answers[q.id] ?? textObservations[q.id] ?? '')).passed
+        )
+    );
+    const completionThreshold = getCompletionThreshold(missionGoal, config.maxScore, 0.4);
+    const isMissionComplete = allDatasetsComplete && textEvidenceComplete && totalScore >= completionThreshold;
+    const completionStatus = {
+        isComplete: isMissionComplete,
+        title: isMissionComplete ? 'Bewijs compleet' : 'Nog niet voltooid',
+        description: isMissionComplete
+            ? `Je score is minimaal ${completionThreshold}/${config.maxScore} en je observaties bevatten genoeg bewijs.`
+            : `Voor voltooiing heb je minimaal ${completionThreshold}/${config.maxScore} punten nodig en moeten alle observaties genoeg concreet bewijs bevatten.`,
+    };
 
     const handleAnswer = (id: string, value: string | number) => {
         setState(prev => ({ ...prev, answers: { ...prev.answers, [id]: value } }));
@@ -590,7 +731,7 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
 
     const handleComplete = () => {
         clearSave();
-        onComplete(true);
+        onComplete(isMissionComplete);
     };
 
     // Phase breakdown for CompletionScreen
@@ -613,7 +754,7 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
                 emoji={config.introEmoji}
                 title={config.introTitle}
                 description={config.introDescription}
-                goal={config.missionGoal ?? getMissionGoal(config.missionId)}
+                goal={missionGoal}
                 features={config.introFeatures}
                 onStart={() => setState(prev => ({ ...prev, phase: 'explore' }))}
             />
@@ -627,6 +768,8 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
                 maxScore={config.maxScore}
                 badges={config.badges}
                 phases={phaseScores}
+                evidence={missionGoal?.evidence}
+                completionStatus={completionStatus}
                 takeaways={config.takeaways}
                 onComplete={handleComplete}
             />

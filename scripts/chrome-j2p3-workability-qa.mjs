@@ -16,9 +16,107 @@ const MISSIONS = [
   'media-review',
 ];
 
+const MISSION_TEMPLATES = {
+  'ux-detective': 'data-viewer',
+  'podcast-producer': 'builder-canvas',
+  'meme-machine': 'builder-canvas',
+  'digital-storyteller': 'builder-canvas',
+  'brand-builder': 'builder-canvas',
+  'video-editor': 'builder-canvas',
+  'online-helden': 'scenario-engine',
+  'media-review': 'review-arena',
+  'network-navigator': 'data-viewer',
+  'web-developer': 'builder-canvas',
+  'mail-detective': 'scenario-engine',
+  'code-review-2': 'review-arena',
+};
+
+const REGRESSION_MISSIONS = [
+  'network-navigator',
+  'web-developer',
+  'mail-detective',
+  'code-review-2',
+];
+
+const COMPLETION_SMOKE_MISSIONS = [
+  ...MISSIONS,
+  ...REGRESSION_MISSIONS,
+];
+
+const BUILDER_STEP_IDS = {
+  'podcast-producer': ['onderwerp', 'structuur', 'intro', 'vragen'],
+  'meme-machine': ['meme-analyse', 'viraliteit', 'eigen-meme', 'verantwoord'],
+  'digital-storyteller': ['verhaalidee', 'flowchart', 'scène-schrijven', 'digitale-presentatie'],
+  'brand-builder': ['merkanalyse', 'kleurenpalet', 'logo-concept', 'huisstijl'],
+  'video-editor': ['concept', 'storyboard', 'shotlist', 'montageplan'],
+  'web-developer': ['html-structuur', 'css-layout', 'javascript', 'testen'],
+};
+
+const DATA_COMPLETION_STATES = {
+  'ux-detective': {
+    answers: {
+      'q1-meest-voorkomend': 'Huiswerk niet vinden in menu',
+      'q2-gemiddelde-ernst': 4.3,
+      'q3-prioriteit-observatie': 'De data laat zien dat navigatie het grootste probleem is, met hoge ernst en veel impact voor leerlingen.',
+      'q4-slechte-usability': 'Magister en Itslearning',
+      'q5-verschil-google-itslearning': 23,
+      'q6-sus-verklaring': 'De scoreverschillen tonen dat duidelijke navigatie en feedback de usability voor leerlingen verbeteren.',
+      'q7-principe-herkennen': 'Feedback',
+      'q8-verbetervoorstel': 'Mijn voorstel prioriteert een duidelijke bevestiging en betere menustructuur omdat dit uit de UX-data blijkt.',
+    },
+    submitted: [
+      'q1-meest-voorkomend',
+      'q2-gemiddelde-ernst',
+      'q3-prioriteit-observatie',
+      'q4-slechte-usability',
+      'q5-verschil-google-itslearning',
+      'q6-sus-verklaring',
+      'q7-principe-herkennen',
+      'q8-verbetervoorstel',
+    ],
+  },
+  'network-navigator': {
+    answers: {
+      'q1-totaaltijd': 61,
+      'q2-dns-functie': 'Vertaalt een domeinnaam (instagram.com) naar een IP-adres',
+      'q3-router-observatie': 'De routerstappen laten zien waar vertraging ontstaat en welke netwerkstap de meeste impact heeft.',
+      'q4-snelste-site': 'Google.nl',
+      'q5-verschil-tiktok-google': 5.6,
+      'q6-latency-verklaring': 'Latency verschilt per website door afstand, serverreactie en hoeveel netwerkstappen nodig zijn.',
+      'q7-foutcode-herkennen': '404',
+      'q8-foutcode-uitleg': 'De foutcode bewijst welk type probleem optreedt en welke vervolgstap logisch is voor debugging.',
+    },
+    submitted: [
+      'q1-totaaltijd',
+      'q2-dns-functie',
+      'q3-router-observatie',
+      'q4-snelste-site',
+      'q5-verschil-tiktok-google',
+      'q6-latency-verklaring',
+      'q7-foutcode-herkennen',
+      'q8-foutcode-uitleg',
+    ],
+  },
+};
+
+const SCENARIO_COMPLETION_STATES = {
+  'online-helden': {
+    'is-dit-cyberpesten': { selections: [1, 2, -3, 4, -5, 6, -7, 8], submitted: true },
+    'wat-doe-jij': { selections: [1, 3, 5, 7], submitted: true },
+    'rangschik-impact': { selections: [1, 2, 3, 4, 5, 6, 7, 8], submitted: true },
+  },
+  'mail-detective': {
+    'signalen-herkennen': { selections: [1, 2, 3], submitted: true },
+    'gevaarlijkste-mail': { selections: [1, 2, 3, 4, 5], submitted: true },
+    'echt-of-vals': { selections: [1, -2, 3, -4, 5, -6], submitted: true },
+    'slim-reageren': { selections: [1, 2, 3], submitted: true, followUpAnswered: true, followUpCorrect: true },
+  },
+};
+
 const VIEWPORTS = [
   { name: 'desktop', width: 1440, height: 900, mobile: false },
   { name: 'ipad-portrait', width: 1024, height: 1366, mobile: false },
+  { name: 'ipad-landscape', width: 1366, height: 1024, mobile: false },
   { name: 'mobile', width: 390, height: 844, mobile: true },
 ];
 
@@ -154,13 +252,115 @@ class CdpClient {
   }
 }
 
-async function runMission(client, missionId, viewport) {
+async function setViewport(client, viewport) {
   await client.send('Emulation.setDeviceMetricsOverride', {
     width: viewport.width,
     height: viewport.height,
     deviceScaleFactor: viewport.mobile ? 2 : 1,
     mobile: viewport.mobile,
   });
+}
+
+function completionStateFor(templateType, missionId) {
+  if (templateType === 'builder-canvas') {
+    const completedSteps = BUILDER_STEP_IDS[missionId];
+    if (!completedSteps) throw new Error(`${missionId}: geen BuilderCanvas completion seed`);
+    return {
+      phase: 'results',
+      currentStep: Math.max(0, completedSteps.length - 1),
+      checklist: {},
+      textEntries: Object.fromEntries(
+        completedSteps.map((stepId) => [stepId, 'QA seeded completion evidence for BuilderCanvas.'])
+      ),
+      completedSteps,
+      reflectionAnswered: {},
+      reflectionCorrect: {},
+      showMilestone: false,
+    };
+  }
+
+  if (templateType === 'data-viewer') {
+    const seeded = DATA_COMPLETION_STATES[missionId];
+    if (!seeded) throw new Error(`${missionId}: geen DataViewer completion seed`);
+    const submitted = Object.fromEntries(seeded.submitted.map((id) => [id, true]));
+    const textObservations = Object.fromEntries(
+      Object.entries(seeded.answers).filter(([, value]) => typeof value === 'string')
+    );
+
+    return {
+      phase: 'results',
+      currentDataset: 0,
+      answers: seeded.answers,
+      submitted,
+      textObservations,
+      confidences: {},
+      followUpAnswered: {},
+      followUpCorrect: {},
+    };
+  }
+
+  if (templateType === 'scenario-engine') {
+    const roundStates = SCENARIO_COMPLETION_STATES[missionId];
+    if (!roundStates) throw new Error(`${missionId}: geen ScenarioEngine completion seed`);
+    return {
+      phase: 'results',
+      currentRound: 0,
+      roundStates,
+    };
+  }
+
+  if (templateType === 'review-arena') {
+    return {
+      phase: 'complete',
+      currentRound: 0,
+      roundScores: Array(10).fill(25),
+      followUpResults: {},
+      configMissionId: missionId,
+    };
+  }
+
+  throw new Error(`Geen completion seed bekend voor template ${templateType}`);
+}
+
+async function seedCompletionState(client, missionId, state) {
+  const stateJson = JSON.stringify(state);
+  return client.eval(`(() => {
+    const missionId = ${JSON.stringify(missionId)};
+    const state = ${stateJson};
+    Object.keys(localStorage)
+      .filter((key) => key === 'dgskills_mission_' + missionId || key.endsWith('_' + missionId))
+      .forEach((key) => localStorage.removeItem(key));
+
+    let userId = null;
+    try {
+      const sessionKey = Object.keys(localStorage).find((key) => /^sb-[a-z0-9_-]+-auth-token$/i.test(key));
+      if (sessionKey) {
+        const raw = localStorage.getItem(sessionKey);
+        userId = raw ? JSON.parse(raw)?.user?.id ?? null : null;
+      }
+    } catch {
+      userId = null;
+    }
+
+    const storageKey = userId
+      ? 'dgskills_mission_' + userId + '_' + missionId
+      : 'dgskills_mission_' + missionId;
+    localStorage.setItem(storageKey, JSON.stringify(state));
+    return storageKey;
+  })()`);
+}
+
+async function assertNoConsoleErrors(client, label) {
+  const errors = client.messages.filter((message) => {
+    if (message.method === 'Runtime.consoleAPICalled') return message.params?.type === 'error';
+    if (message.method === 'Log.entryAdded') return message.params?.entry?.level === 'error';
+    return false;
+  });
+  if (errors.length > 0) throw new Error(`${label}: console errors: ${JSON.stringify(errors.slice(-3))}`);
+}
+
+async function runMission(client, missionId, viewport) {
+  await setViewport(client, viewport);
 
   const runId = `${missionId}-${viewport.name}-${Date.now()}`;
   const url = `${ORIGIN}/dev/mission-preview?mission=${missionId}&reset=1&qaRun=${runId}`;
@@ -219,18 +419,63 @@ async function runMission(client, missionId, viewport) {
     bodyText: document.body.innerText.slice(0, 800),
     buttonCount: document.querySelectorAll('button').length,
     horizontalOverflow: Math.ceil(document.documentElement.scrollWidth) > window.innerWidth + 2,
+    feedbackOrFlowVisible: /(controleer|bevestig|volgende|vraag|ronde|dataset|checklist|resultaten|punten)/i.test(document.body.innerText),
   }))()`);
   if (after.horizontalOverflow) throw new Error(`${missionId} ${viewport.name}: horizontale overflow na start`);
+  if (!after.feedbackOrFlowVisible) throw new Error(`${missionId} ${viewport.name}: geen normale flow of feedback-control zichtbaar na start`);
 
-  const errors = client.messages.filter((message) => {
-    if (message.method === 'Runtime.consoleAPICalled') return message.params?.type === 'error';
-    if (message.method === 'Log.entryAdded') return message.params?.entry?.level === 'error';
-    return false;
-  });
-  if (errors.length > 0) throw new Error(`${missionId} ${viewport.name}: console errors: ${JSON.stringify(errors.slice(-3))}`);
+  await assertNoConsoleErrors(client, `${missionId} ${viewport.name}`);
 
   await client.screenshot(`${SCREENSHOT_DIR}/${missionId}-${viewport.name}.png`);
   return { missionId, viewport: viewport.name, buttons: before.buttons, afterButtons: after.buttonCount };
+}
+
+async function runCompletionSmoke(client, missionId, viewport) {
+  const templateType = MISSION_TEMPLATES[missionId];
+  if (!templateType) throw new Error(`${missionId}: onbekend templateType voor completion smoke`);
+
+  await setViewport(client, viewport);
+  client.messages = [];
+  const runId = `${missionId}-${viewport.name}-completion-${Date.now()}`;
+
+  await client.send('Page.navigate', { url: `${ORIGIN}/?qaSeed=${encodeURIComponent(runId)}` });
+  await client.waitForExpression(`document.readyState === 'complete'`, `${missionId} ${viewport.name} origin render`);
+  const storageKey = await seedCompletionState(client, missionId, completionStateFor(templateType, missionId));
+
+  const url = `${ORIGIN}/dev/mission-preview?mission=${missionId}&qaMode=completion&qaRun=${runId}`;
+  await client.send('Page.navigate', { url });
+  await client.waitForExpression(
+    `document.readyState === 'complete' && document.body && document.body.innerText.includes('Missie voltooid')`,
+    `${missionId} ${viewport.name} completion CTA`,
+    15_000
+  );
+
+  const evidence = await client.eval(`(() => {
+    const bodyText = document.body.innerText;
+    const completeButton = Array.from(document.querySelectorAll('button')).find((button) =>
+      /Missie voltooid/i.test(button.innerText || button.getAttribute('aria-label') || '')
+    );
+    const rect = completeButton?.getBoundingClientRect();
+    return {
+      storageKey: ${JSON.stringify(storageKey)},
+      completionCta: Boolean(completeButton),
+      completionCtaVisible: Boolean(rect && rect.width > 0 && rect.height > 0 && rect.bottom > 0 && rect.top < window.innerHeight),
+      hasTakeaways: /wat je hebt geleerd/i.test(bodyText),
+      hasEvidence: /leerlingbewijs\\s*\\/\\s*docentbewijs/i.test(bodyText),
+      horizontalOverflow: Math.ceil(document.documentElement.scrollWidth) > window.innerWidth + 2,
+    };
+  })()`);
+
+  if (!evidence.completionCta || !evidence.completionCtaVisible) {
+    throw new Error(`${missionId} ${viewport.name}: completion CTA niet zichtbaar`);
+  }
+  if (!evidence.hasEvidence) throw new Error(`${missionId} ${viewport.name}: completion evidenceblok ontbreekt`);
+  if (!evidence.hasTakeaways) throw new Error(`${missionId} ${viewport.name}: completion takeaways ontbreken`);
+  if (evidence.horizontalOverflow) throw new Error(`${missionId} ${viewport.name}: horizontale overflow in eindstaat`);
+
+  await assertNoConsoleErrors(client, `${missionId} ${viewport.name} completion`);
+  await client.screenshot(`${SCREENSHOT_DIR}/${missionId}-${viewport.name}-completion.png`);
+  return { missionId, viewport: viewport.name, templateType, storageKey };
 }
 
 async function main() {
@@ -253,13 +498,22 @@ async function main() {
         results.push(await runMission(client, missionId, viewport));
       }
     }
+    for (const missionId of COMPLETION_SMOKE_MISSIONS) {
+      for (const viewport of VIEWPORTS) {
+        results.push(await runCompletionSmoke(client, missionId, viewport));
+      }
+    }
   } finally {
     client.close();
   }
 
   console.log('J2 P3 workability Chrome smoke passed');
   for (const result of results) {
-    console.log(`- ${result.missionId} ${result.viewport}: intro buttons ${result.buttons.join(' | ')}`);
+    if ('buttons' in result) {
+      console.log(`- ${result.missionId} ${result.viewport}: intro buttons ${result.buttons.join(' | ')}`);
+    } else {
+      console.log(`- ${result.missionId} ${result.viewport}: completion CTA visible (${result.templateType})`);
+    }
   }
   console.log(`Screenshots: ${SCREENSHOT_DIR}`);
 }

@@ -25,12 +25,29 @@ import { FeedbackBanner, scoreRound } from './sub/FeedbackBanner';
 function adjustedScoreRound(round: ScenarioRound, rs: RoundState): number {
     if (!rs.submitted) return 0;
     const base = scoreRound(round, rs.selections);
-    const multiplied = Math.round(base * confidenceMultiplier(rs.confidence, base >= 15));
+    // 60% of maxScore is considered correct
+    const correct = base >= (round.maxScore * 0.6);
+    
+    let multiplied = 0;
+    if (correct) {
+        multiplied = Math.round(base * confidenceMultiplier(rs.confidence, true));
+    } else {
+        const penaltyMultiplier = confidenceMultiplier(rs.confidence, false);
+        if (penaltyMultiplier < 0) {
+            // Apply overconfidence penalty based on round maxScore
+            multiplied = Math.round(round.maxScore * penaltyMultiplier);
+        } else {
+            // "Gok" gets no penalty, keeps their minor base score
+            multiplied = base;
+        }
+    }
+
     const withBonus = rs.followUpAnswered && rs.followUpCorrect && round.followUp
         ? multiplied + round.followUp.bonusPoints
         : multiplied;
-    return Math.min(withBonus, round.maxScore);
+    return Math.max(0, Math.min(withBonus, round.maxScore));
 }
+
 
 // ── Loading / error screens ───────────────────────────────────────────────────
 
@@ -126,6 +143,20 @@ const ScenarioEngineInner: React.FC<{
         if (!rs?.submitted) return acc;
         return acc + adjustedScoreRound(round, rs);
     }, 0);
+    const missionGoal = config.missionGoal ?? getMissionGoal(config.missionId);
+    const configuredThreshold = missionGoal?.criteria.threshold;
+    const completionThreshold = typeof configuredThreshold === 'number'
+        ? configuredThreshold <= 1 ? Math.round(config.maxScore * configuredThreshold) : configuredThreshold
+        : Math.round(config.maxScore * 0.4);
+    const allRoundsSubmitted = config.rounds.every((round) => state.roundStates[round.id]?.submitted);
+    const isMissionComplete = allRoundsSubmitted && totalScore >= completionThreshold;
+    const completionStatus = {
+        isComplete: isMissionComplete,
+        title: isMissionComplete ? 'Bewijs compleet' : 'Nog niet voltooid',
+        description: isMissionComplete
+            ? `Je rondes zijn afgerond en je score is minimaal ${completionThreshold}/${config.maxScore}.`
+            : `Voor voltooiing moet je alle rondes afronden en minimaal ${completionThreshold}/${config.maxScore} punten halen.`,
+    };
 
     const updateRoundState = (roundId: string, patch: Partial<RoundState>) => {
         setState((prev) => ({
@@ -179,7 +210,7 @@ const ScenarioEngineInner: React.FC<{
 
     const handleComplete = () => {
         clearSave();
-        onComplete(totalScore >= config.maxScore * 0.4);
+        onComplete(isMissionComplete);
     };
 
     // ── Intro phase ──
@@ -189,7 +220,7 @@ const ScenarioEngineInner: React.FC<{
                 emoji={config.introEmoji}
                 title={config.introTitle}
                 description={config.introDescription}
-                goal={config.missionGoal ?? getMissionGoal(config.missionId)}
+                goal={missionGoal}
                 features={config.introFeatures}
                 onStart={() => setState((prev) => ({ ...prev, phase: 'active' }))}
             />
@@ -209,6 +240,8 @@ const ScenarioEngineInner: React.FC<{
                     score: adjustedScoreRound(round, state.roundStates[round.id] ?? { selections: [], submitted: false }),
                     max: round.maxScore,
                 }))}
+                evidence={missionGoal?.evidence}
+                completionStatus={completionStatus}
                 takeaways={config.takeaways}
                 onComplete={handleComplete}
             />

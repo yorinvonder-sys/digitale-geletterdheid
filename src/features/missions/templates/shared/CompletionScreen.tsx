@@ -9,11 +9,19 @@ interface PhaseScore {
     max: number;
 }
 
+interface CompletionStatus {
+    isComplete: boolean;
+    title?: string;
+    description?: string;
+}
+
 interface CompletionScreenProps {
     score: number;
     maxScore: number;
     badges: BadgeConfig[];
     phases?: PhaseScore[];
+    evidence?: string;
+    completionStatus?: CompletionStatus;
     takeaways: string[];
     onComplete: () => void;
 }
@@ -23,6 +31,8 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
     maxScore,
     badges,
     phases,
+    evidence,
+    completionStatus,
     takeaways,
     onComplete,
 }) => {
@@ -55,6 +65,34 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
                     </div>
                 </div>
 
+                {completionStatus && (
+                    <div
+                        data-qa="completion-status"
+                        className={`mb-4 rounded-2xl border p-4 ${
+                            completionStatus.isComplete
+                                ? 'border-[#5F947D]/30 bg-[#5F947D]/10'
+                                : 'border-[#D97848]/30 bg-[#D97848]/10'
+                        }`}
+                    >
+                        <p
+                            className={`text-sm font-black ${
+                                completionStatus.isComplete ? 'text-[#0B453F]' : 'text-[#8A4A2B]'
+                            }`}
+                            style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                        >
+                            {completionStatus.title ?? (completionStatus.isComplete ? 'Bewijs compleet' : 'Nog niet voltooid')}
+                        </p>
+                        {completionStatus.description && (
+                            <p
+                                className="mt-1 text-sm leading-relaxed text-[#445865]"
+                                style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                            >
+                                {completionStatus.description}
+                            </p>
+                        )}
+                    </div>
+                )}
+
                 {/* Phase breakdown */}
                 {phases && phases.length > 0 && (
                     <div className="bg-white rounded-2xl border border-[#E7D8BD] p-4 mb-4">
@@ -85,6 +123,7 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
                 {/* Complete button */}
                 <button
                     onClick={onComplete}
+                    data-qa="completion-complete"
                     className="mb-4 w-full py-3.5 bg-lab-secondary hover:brightness-95 text-white rounded-full font-black text-sm transition-all duration-200 active:scale-[0.98] shadow-lg shadow-lab-secondary/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lab-secondary focus-visible:ring-offset-2"
                     style={{
                         backgroundColor: '#0B453F',
@@ -92,8 +131,30 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
                         fontFamily: "'Outfit', system-ui, sans-serif",
                     }}
                 >
-                    Missie voltooid! 🎉
+                    {completionStatus && !completionStatus.isComplete ? 'Oefening afsluiten' : 'Missie voltooid! 🎉'}
                 </button>
+
+                {evidence && (
+                    <div className="bg-white rounded-2xl border border-[#E7D8BD] p-4 mb-4" data-qa="completion-evidence">
+                        <div
+                            className="text-xs font-black text-[#D97848] uppercase tracking-widest mb-3"
+                            style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                        >
+                            Leerlingbewijs / docentbewijs
+                        </div>
+                        <div
+                            className="space-y-2 text-sm leading-relaxed text-[#445865]"
+                            style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                        >
+                            <p>
+                                <strong className="text-[#08283B]">Leerlingbewijs:</strong> score en fase-overzicht hierboven.
+                            </p>
+                            <p>
+                                <strong className="text-[#08283B]">Docentbewijs:</strong> {evidence}
+                            </p>
+                        </div>
+                    </div>
+                )}
 
                 {/* Takeaways */}
                 <div className="bg-white rounded-2xl border border-[#E7D8BD] p-4">

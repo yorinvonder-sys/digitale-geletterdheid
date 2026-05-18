@@ -12,6 +12,7 @@ const expect = (condition, message) => {
 const missionGoals = read('src/config/missionGoals.ts');
 const templateRegistry = read('src/config/templateRegistry.ts');
 const devPreview = read('src/features/dev-tools/DevMissionPreview.tsx');
+const visualQa = read('scripts/chrome-j2p3-workability-qa.mjs');
 
 const j2p3Missions = [
   ['ux-detective', 'data-viewer'],
@@ -61,6 +62,19 @@ for (const [name, path] of engineFiles) {
 expect(devPreview.includes("isTemplateMission(missionId)"), 'DevMissionPreview: mist template-mission branch');
 expect(devPreview.includes('<TemplateMissionRouter'), 'DevMissionPreview: mist TemplateMissionRouter voor template previews');
 expect(!devPreview.includes("missionId === 'media-review'") || devPreview.indexOf("missionId === 'media-review'") > devPreview.indexOf('isTemplateMission(missionId)'), 'media-review preview mag geen verborgen assessment override krijgen');
+
+expect(
+  visualQa.includes("name: 'ipad-landscape'") && visualQa.includes('width: 1366') && visualQa.includes('height: 1024'),
+  'Visual QA: mist iPad landscape viewport 1366x1024'
+);
+expect(
+  visualQa.includes('COMPLETION_SMOKE_MISSIONS') && visualQa.includes('runCompletionSmoke') && visualQa.includes('Missie voltooid'),
+  'Visual QA: mist hard completion-smoke voor J2 P3 eind/CTA bewijs'
+);
+expect(
+  visualQa.includes('REGRESSION_MISSIONS') && visualQa.includes("'network-navigator'") && visualQa.includes("'web-developer'") && visualQa.includes("'mail-detective'") && visualQa.includes("'code-review-2'"),
+  'Visual QA: mist regressiemissies voor gedeelde engines buiten J2 P3'
+);
 
 expect(!missionGoals.includes("'sustainability-scanner':"), 'sustainability-scanner mag niet terugkomen in MISSION_GOALS');
 expect(!templateRegistry.includes("'sustainability-scanner':"), 'sustainability-scanner mag niet terugkomen in templateRegistry');

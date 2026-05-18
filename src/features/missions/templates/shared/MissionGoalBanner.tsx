@@ -17,6 +17,7 @@ export const MissionGoalBanner: React.FC<MissionGoalBannerProps> = ({
 }) => {
     const primaryGoal = typeof goal === 'string' ? goal : goal.primaryGoal;
     const evidence = typeof goal === 'string' ? undefined : goal.evidence;
+    const successCriteria = typeof goal === 'string' ? undefined : goal.criteria.description;
 
     return (
         <section
@@ -42,6 +43,11 @@ export const MissionGoalBanner: React.FC<MissionGoalBannerProps> = ({
                     <p className={`font-bold leading-snug text-[#08283B] ${compact ? 'text-sm' : 'text-base'}`}>
                         {primaryGoal}
                     </p>
+                    {successCriteria && !compact && (
+                        <p className="mt-1 text-xs leading-relaxed text-[#445865]">
+                            Succescriteria: {successCriteria}
+                        </p>
+                    )}
                     {evidence && !compact && (
                         <p className="mt-1 text-xs leading-relaxed text-[#445865]">
                             Bewijs: {evidence}

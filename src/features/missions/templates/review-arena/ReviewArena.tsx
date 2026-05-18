@@ -151,6 +151,20 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
     const [showFollowUp, setShowFollowUp] = useState(false);
 
     const totalScore = state.roundScores.reduce((a, b) => a + b, 0);
+    const missionGoal = config.missionGoal ?? getMissionGoal(config.missionId);
+    const configuredThreshold = missionGoal?.criteria.threshold;
+    const completionThreshold = typeof configuredThreshold === 'number'
+        ? configuredThreshold <= 1 ? Math.round(config.maxScore * configuredThreshold) : configuredThreshold
+        : 0;
+    const allRoundsComplete = state.roundScores.length >= config.rounds.length;
+    const isMissionComplete = allRoundsComplete && totalScore >= completionThreshold;
+    const completionStatus = {
+        isComplete: isMissionComplete,
+        title: isMissionComplete ? 'Bewijs compleet' : 'Nog niet voltooid',
+        description: isMissionComplete
+            ? `Alle reviewrondes zijn afgerond en je score is minimaal ${completionThreshold}/${config.maxScore}.`
+            : `Voor voltooiing moet je alle reviewrondes afronden en minimaal ${completionThreshold}/${config.maxScore} punten halen.`,
+    };
 
     const advanceRound = useCallback(
         (score: number) => {
@@ -176,7 +190,7 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
     const handleRoundComplete = useCallback(
         (score: number) => {
             const round = config.rounds[state.currentRound];
-            if (round?.followUp && score > round.maxScore * 0.5) {
+            if (round?.followUp && score >= round.maxScore * 0.5) {
                 setPendingScore(score);
                 setShowFollowUp(true);
             } else {
@@ -211,8 +225,8 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
 
     const handleComplete = useCallback(() => {
         clearSave();
-        onComplete(true);
-    }, [clearSave, onComplete]);
+        onComplete(isMissionComplete);
+    }, [clearSave, isMissionComplete, onComplete]);
 
     // === Intro ===
     if (state.phase === 'intro') {
@@ -223,7 +237,7 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
                 title={config.introTitle}
                 description={config.introDescription}
                 onStart={handleStart}
-                goal={config.missionGoal ?? getMissionGoal(config.missionId)}
+                goal={missionGoal}
                 features={features}
             />
         );
@@ -244,6 +258,8 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
                 maxScore={config.maxScore}
                 badges={config.badges}
                 phases={phases}
+                evidence={missionGoal?.evidence}
+                completionStatus={completionStatus}
                 takeaways={config.takeaways}
                 onComplete={handleComplete}
             />

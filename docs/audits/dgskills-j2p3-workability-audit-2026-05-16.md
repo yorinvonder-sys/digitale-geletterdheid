@@ -1,12 +1,66 @@
 # DGSkills J2 P3 Werkbaarheidsaudit - 2026-05-16
 
-Status: auditrapport, geen productfixes uitgevoerd.
+Status: hercheckrapport na J2 P3 QA-fix, productcode in deze hercheck niet breder aangepast dan bestaande werkboomwijzigingen.
 
 Scope: `ux-detective`, `podcast-producer`, `meme-machine`, `digital-storyteller`, `brand-builder`, `video-editor`, `online-helden`, reviewmissie `media-review` en assessmentlaag `assessment-j2-p3`.
 
 Werkbaarheidsdefinitie: een leerling kan de opdracht zelfstandig starten, begrijpen, doorlopen en afronden, en een docent kan redelijk zien wat de leerling heeft bewezen.
 
-Advies in een zin: de periode is inhoudelijk bruikbaar als media/creatieblok, maar nog niet als geheel shippable; de grootste blokkades zijn ontbrekende expliciete doelcontracten, onvolledig hard completionbewijs en een reviewroute die in dev-preview anders kan aanvoelen dan de echte assessmentroute.
+Advies in een zin: de periode is inhoudelijk bruikbaar als media/creatieblok en heeft nu hardere goal/evidence- en completion-smoke-bewijslast; live release blijft afhankelijk van volledige build/deploy-gates en echte iPad/Safari blijft apart menselijk te controleren.
+
+## Hercheck 2026-05-18
+
+Scope bleef beperkt tot J2 P3: `ux-detective`, `podcast-producer`, `meme-machine`, `digital-storyteller`, `brand-builder`, `video-editor`, `online-helden` en `media-review`.
+
+### Uitgevoerde hercheck
+
+| Check | Resultaat |
+| --- | --- |
+| `npm run context:budget` | Geslaagd; repo blijft groot en dirty, daarom path-scoped gewerkt. |
+| `npm run doctor` | Geslaagd na QA-scriptwijzigingen. |
+| `npm run check:j2p3-workability` | Geslaagd; controleert nu ook iPad landscape, completion-smoke en regressiemissies. |
+| `@chrome` extensie | Geslaagd voor representatieve UX Detective startflow: `/goal`, succescriteria, bewijs, datasetflow, controls, geen horizontale overflow, geen console errors. Screenshot: `/private/tmp/dgskills-j2p3-workability-qa/chrome-extension-ux-detective-startflow.png`. |
+| `npm run check:j2p3-workability:visual` | Geslaagd; desktop, iPad portrait, iPad landscape en mobile voor alle acht J2 P3 startflows plus seeded completion-CTA's. |
+
+### Hercheckresultaat Per Opdracht
+
+| Opdracht | Engine/laag | Leerdoel/evidence | Start/flow viewportmatrix | Eind/CTA completion-smoke | Oordeel |
+| --- | --- | --- | --- | --- | --- |
+| `ux-detective` | `data-viewer` | ja, via `missionGoals.ts` fallback zichtbaar in intro | ja | ja | `release-kandidaat` binnen Chrome-smoke |
+| `podcast-producer` | `builder-canvas` | ja, via `missionGoals.ts` fallback zichtbaar in intro | ja | ja | `release-kandidaat` binnen Chrome-smoke |
+| `meme-machine` | `builder-canvas` | ja, via `missionGoals.ts` fallback zichtbaar in intro | ja | ja | `release-kandidaat` binnen Chrome-smoke |
+| `digital-storyteller` | `builder-canvas` | ja, via `missionGoals.ts` fallback zichtbaar in intro | ja | ja | `release-kandidaat` binnen Chrome-smoke |
+| `brand-builder` | `builder-canvas` | ja, via `missionGoals.ts` fallback zichtbaar in intro | ja | ja | `release-kandidaat` binnen Chrome-smoke |
+| `video-editor` | `builder-canvas` | ja, via `missionGoals.ts` fallback zichtbaar in intro | ja | ja | `release-kandidaat` binnen Chrome-smoke |
+| `online-helden` | `scenario-engine` | ja, via `missionGoals.ts` fallback zichtbaar in intro | ja | ja | `release-kandidaat` binnen Chrome-smoke |
+| `media-review` | `review-arena` in dev-preview | ja, via `missionGoals.ts` fallback zichtbaar in intro | ja | ja | `release-kandidaat` binnen Chrome-smoke |
+
+Regressiebewijs buiten J2 P3 is meegenomen in de completion-smoke voor gedeelde engines:
+`network-navigator` (`data-viewer`), `web-developer` (`builder-canvas`), `mail-detective` (`scenario-engine`) en `code-review-2` (`review-arena`).
+
+### Design
+
+- Chrome viewportmatrix liet voor alle acht J2 P3 missies startknop en eerste flowstaat zien zonder horizontale overflow.
+- De completion-smoke controleert per viewport dat de eindstaat een zichtbare `Missie voltooid` CTA, leerling/docentbewijs en takeaways heeft.
+- De `@chrome` extensiecheck op `ux-detective` bevestigde in het echte Chrome-profiel dat de goal/evidence-intro en datasetflow zichtbaar worden; de extensie heeft geen viewport-resize gebruikt, de matrix komt uit de Chrome-CDP smoke.
+
+### Didactiek
+
+- Alle acht missies tonen nu een expliciet leerdoel, succescriteria en bewijs via `src/config/missionGoals.ts`.
+- Leerlingbewijs is score/fase-overzicht plus missie-specifieke antwoorden of productie-output; docentbewijs wordt op de eindstaat expliciet weergegeven waar de gedeelde CompletionScreen dit ondersteunt.
+- `online-helden` blijft inhoudelijk meer mediawijs handelen/digitaal welzijn dan mediaproductie; plaatsing binnen P3 is verdedigbaar, maar menselijke curriculumreview blijft nuttig.
+
+### Techniek
+
+- `scripts/check-j2p3-workability-contract.mjs` bewaakt nu dat de visual QA iPad landscape, hard completion-smoke en regressiemissies bevat.
+- `scripts/chrome-j2p3-workability-qa.mjs` test nu vier viewports: desktop, iPad portrait, iPad landscape en mobile.
+- De completion-smoke gebruikt seeded autosave-states om de echte template-eindschermen te openen; dit bewijst eindstaat/CTA/evidence rendering, niet een volledige handmatige leerlingdoorloop.
+
+### Resterende onzekerheden
+
+- Echte iPad/Safari-check blijft nodig; Chrome-emulatie is geen Safari-bewijs.
+- De dedicated `media-review` dev-preview bewijst de ReviewArena-template. `assessment-j2-p3` blijft een aparte assessmentlaag en is niet hetzelfde als deze template-preview.
+- De werkboom bevat ook bestaande wijzigingen buiten J2 P3; deze hercheck heeft die niet teruggedraaid en rekent ze alleen mee voor lokale QA-uitkomst.
 
 ## Executive Summary
 
