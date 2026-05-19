@@ -14,6 +14,7 @@
     "bridge:dry": "node scripts/github-agent-bridge.mjs process-pipeline --dry-run",
     "bridge:pipeline": "node scripts/github-agent-bridge.mjs process-pipeline",
     "context:budget": "node scripts/context-budget.mjs",
+    "context:check": "node scripts/context-budget.mjs --check",
     "lint": "echo 'Linting not configured'",
     "preview": "vite preview",
     "clean": "./scripts/cleanup_dev_env.sh",

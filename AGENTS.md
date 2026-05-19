@@ -1,169 +1,110 @@
-# Global Model Routing Policy
+# DGSkills Agent Instructions
 
-Keep `gpt-5.5` as the main model for core work.
+These rules apply to all agents working in this repository. Keep the repo safe for
+a non-coding founder to direct, and keep AI context small by default.
 
-Across all tasks and projects:
-- Prefer delegated sub-agents on `gpt-5.3-codex-spark` for lightweight, bounded, low-risk subtasks.
-- Keep Spark subtasks narrow and pass only the minimum context needed.
-- Use Spark for sidecar work such as repository exploration, targeted file inspection, log reading, narrow QA checks, and simple one-file analysis.
-- Keep `gpt-5.5` on the critical path for architecture, multi-file refactors, ambiguous debugging, security-sensitive changes, integration, and final validation.
-- Do not force delegation when the task is tightly coupled, blocking the immediate next action, or too ambiguous to scope safely.
-- Escalate back to `gpt-5.5` whenever uncertainty, coupling, or risk increases.
-- If no safe lightweight subtask exists, stay on `gpt-5.5` rather than delegating by default.
+## Model And Delegation
 
-Goal: reduce token and capacity usage where safe, without degrading engineering quality.
+- Keep `gpt-5.5` as the main model for architecture, integration, ambiguous
+  debugging, security-sensitive work, release decisions, and final validation.
+- Use cheaper delegated agents only for explicit, narrow, low-risk sidecar work:
+  targeted file discovery, log reading, one-route QA, or one-file review.
+- Do not delegate auth, Supabase/RLS, payments, invoices, personal data,
+  webhooks, secrets, AI endpoints, or final validation decisions.
+- Use the lowest reasoning effort that safely handles the current slice.
 
-# Default Token-Saving Operating Mode
-
-Treat token efficiency as a default operating constraint, not as an optional
-follow-up. This section is standing user authorization to use cheaper routing
-and narrower execution whenever it is safe.
-
-## Reasoning & Model Defaults
-
-- Use the lowest reasoning effort that can safely handle the current slice.
-- Reserve `xhigh` for architecture, security-sensitive changes, ambiguous
-  debugging, high-risk data/auth/payment work, or final integration decisions.
-- Use `medium` or `high` for ordinary implementation, UI polish, SEO/content,
-  browser QA, file moves, and straightforward bug fixes unless risk increases.
-- Prefer `gpt-5.3-codex-spark` sub-agents for narrow, low-risk sidecar work
-  such as targeted file discovery, log reading, one-route QA, one-file review,
-  or summarizing command output.
-- Do not use sub-agents for architecture, security decisions, database/RLS,
-  auth, payments, release decisions, or final validation.
-
-## Prompt Intake Guardrails
-
-When the user gives a broad prompt like "audit everything", "review the whole
-site", "fix all issues", or "make it better":
-
-- First turn it into the smallest useful slice in plain language.
-- State the assumed slice and proceed only with that slice when low-risk.
-- Ask one clarification before proceeding if the wrong slice would waste a lot
-  of tokens or create user-visible risk.
-- Prefer "top 3 highest-impact pages/files/flows first" over whole-repo scans.
-- Do not expand into a full audit unless the user explicitly confirms the scope.
-
-## Context Budget Rules
-
-- Before context-heavy work, run `npm run context:budget`.
-- Use path-scoped `rg`, `git status`, `git diff`, and file reads.
-- Never read broad generated or historical folders for context unless the task
-  is specifically about those artifacts.
-- Summarize large outputs as counts, top paths, and exact next actions.
-- If a thread is getting large or repetitive, create a short handoff summary and
-  recommend starting a narrower follow-up thread.
-
-## Tool & Verification Economy
-
-- Batch independent read-only shell calls with `multi_tool_use.parallel`.
-- Prefer the smallest proof that matches the risk: targeted typecheck, focused
-  script, one browser route, or one SQL read before full build/audit.
-- Run expensive browser, build, Lighthouse, visual, or security checks only when
-  they are required by the task or by project rules.
-- For image generation, generate the minimum useful set first; ask before
-  producing many alternatives.
-
-## Token Tripwires
-
-Pause and narrow the task when any of these are true:
-
-- The work would inspect more than about 10 unrelated files before a hypothesis.
-- The task would touch more than 3 feature areas in one pass.
-- The answer is becoming a long report but the user asked for a decision or fix.
-- The same command/check has failed twice without new evidence.
-- A subtask can be answered by a narrow Spark sidecar while the main model keeps
-  working on integration.
-
-# Plan Mode Prompt Structuring Policy
-
-When the user asks for planning, research, exploration, or uses Plan mode, do not require the user to provide a structured prompt. The user may describe the task informally, briefly, or with partial context.
-
-In Plan mode, ChatGPT/Codex should actively structure the user's intent before proposing or executing work:
-- Restate the likely goal in concrete terms.
-- Separate known context from inferred context.
-- List assumptions and label them as assumptions.
-- Define likely scope and explicitly name what appears out of scope.
-- Infer sensible constraints from the repository, existing instructions, and recent work.
-- Propose clear "done when" criteria.
-- Propose the verification path, including relevant scripts, tests, browser checks, or review steps.
-- Run an intent clarification pass: identify what is still unclear about the user's intent, priorities, target audience, success criteria, non-goals, design taste, or risk tolerance.
-- Ask concise, high-signal clarifying questions when the answers would materially improve the plan or prevent wasted work.
-- Prefer one focused question at a time for fuzzy or strategic topics. Group up to three short questions only when they are independent and easy to answer.
-- When asking questions, include the most likely inferred default so the user can simply confirm or correct it.
-- Do not over-interview when the intent is already clear. If no clarification is needed, say so briefly and proceed.
-- Always ask before proceeding when a wrong assumption would be costly, risky, security-sensitive, user-visible in a significant way, or hard to reverse.
-
-If the user's wording is ambiguous but low-risk, choose a reasonable interpretation, state it briefly, and continue. Make the interpretation easy for the user to correct.
-
-For larger tasks, present the structured plan before implementation. For small low-risk tasks, the structured interpretation can be short and embedded in the working update.
-
-# Context Budget & Repo Hygiene
-
-This repo can fill an agent context very quickly. Default to compact,
-path-scoped exploration.
+## Lean Context Rules
 
 - Start context-heavy work with `npm run context:budget`.
-- Do not run broad `git diff`, `git show`, or `rg` across the whole repo unless the task truly requires it.
-- Prefer `git status --short -- <paths>` and `git diff -- <paths>` for the files being changed.
-- Exclude noisy/generated paths from searches: `.claude/worktrees/`, `.playwright-mcp/`, `dist/`, `node_modules/`, `public/video/`, and large binary assets.
-- Do not paste long command output into the conversation. Summarize counts, top files, and exact paths instead.
-- Read `.claude/progress-log.md`, `.claude/current-task.md`, and other baton files only when the user asks to continue a previous Claude workflow.
-- Treat `.playwright-mcp/` screenshots as artifacts, not source context.
+- Read `docs/architecture/agent-context-strategy.md` for the context map before
+  broad repo work.
+- Use path-scoped commands: `rg`, `git status --short -- <paths>`,
+  `git diff -- <paths>`, and small file reads.
+- Do not broad-read `.claude/worktrees/`, `.playwright-mcp/`, `dist/`,
+  `node_modules/`, `public/video/`, reports, screenshots, or binary assets.
+- Do not auto-load `.claude/current-task.md`, `.claude/progress-log.md`,
+  `.claude/task-queue.md`, or `LAUNCH-PLAN.md` unless the user asks to continue
+  that specific workflow.
+- If a prompt is broad, choose the smallest useful slice first and state the
+  assumption. Ask only when a wrong assumption would be costly or risky.
 
-# Beginner-Safe AI Coding Workflow
+## Before Code Or Config Changes
 
-This repository must be safe for a non-coding founder to direct. Codex should make work understandable, small, testable, and reviewable.
+Begin every assistant reply for code/config work with an afstemmingscheck:
 
-For Skales/fintech-style work, or any task touching payments, subscriptions, ledgers, KYC, compliance, auth, admin access, user data, invoices, banking imports, webhooks, or beginner-friendly explanation, use the project skill:
+- Decide if the request is clear enough to execute safely.
+- If vague, broad, risky, or multi-interpretation, ask critical clarifying
+  questions / kritische vragen first and wait for the answer.
+- Prefer one question at a time; include a recommended answer when useful.
+- If no question is needed, briefly say why it is clear enough to proceed.
 
-`.agents/skills/skales-agentic-fintech-engineering/SKILL.md`
-
-## Before Code Changes: Plan-Risk-Proof
-
-Before editing code for any user request, give a short plain-language block:
+Before editing, give this Dutch block:
 
 ```text
-Plan: what I will change in normal language.
-Risk: Green / Yellow / Red, with one sentence why.
-Likely files: the files or areas I expect to touch.
-Proof: the test, build, browser check, or manual check that will show it works.
+Plan: what will change in normal language.
+Risico: Groen / Geel / Rood, with one sentence why.
+Waarschijnlijke bestanden: files or areas likely to change.
+Bewijs: test, build, browser check, or manual check that proves it.
 ```
 
-Keep the task small. If the request is large, slice it into the smallest useful step and say what is intentionally left for later.
+Keep tasks small, avoid unrelated refactors, and never hide uncertainty.
 
-## Traffic-Light Risk Labels
+## Risk Labels
 
-- **Green:** copy changes, visual polish, static content, harmless UI tweaks.
-- **Yellow:** forms, dashboards, API reads, non-sensitive data updates, normal product logic.
-- **Red:** payments, subscriptions, ledgers, KYC, invoices, auth, admin access, bank data, personal data, webhooks, secrets, database migrations, RLS, AI endpoints.
+- Groen: copy, static docs/content, harmless UI polish.
+- Geel: forms, dashboards, API reads, non-sensitive data updates, ordinary
+  product logic, internal tooling without sensitive data.
+- Rood: auth, admin, Supabase/RLS, AI endpoints, secrets, payments,
+  subscriptions, invoices, KYC, bank data, personal data, webhooks, exports,
+  database migrations, consent, or minors' data.
 
-For Red work:
-- Slow down and explicitly warn what could go wrong.
-- Prefer tests before implementation.
-- Verify permissions, privacy, duplicate-processing, and financial invariants.
-- Do not claim production readiness without proof.
+For Rood work: slow down, identify tests before implementation, verify
+permissions/privacy/duplicate-processing invariants, and do not claim production
+readiness without proof.
 
-## During Implementation
+## Project Shape
 
-- Work one small step at a time.
-- Avoid broad refactors unless needed for the current verified step.
-- Do not make unrelated changes.
-- Do not hide uncertainty; explain it.
-- Do not let sub-agents make architecture, security, or release decisions.
+- Stack: React 19, TypeScript, Vite, Supabase, Tailwind inline classes,
+  Framer Motion, Vercel.
+- Entry path: `App.tsx` -> `AppRouter.tsx` -> `AuthenticatedApp.tsx`.
+- Use `@/*` imports from the project root.
+- Follow local `AGENTS.md` files under `src/features/` before changing a
+  feature domain.
+- Put domain UI in `src/features/<domain>/`; shared UI in `src/components/`;
+  Supabase, AI, analytics, exports, and auth integration in `src/services/`
+  unless clearly feature-local.
 
-## Assignment Review Browser Rule
+## Security Baseline
 
-When reviewing a DGSkills assignment/mission/opdracht, always use Chrome browser for the visual or dynamic review step in addition to static code inspection. If Chrome cannot be used, state that clearly in the final response and mark the browser portion as unverified.
+DGSkills handles minors' data in a high-risk AI education context. For every
+code change, check that you are not introducing XSS, injection, SSRF, path
+traversal, unsafe secrets, permission bypasses, client-side-only validation, or
+privacy leaks. Keep secrets out of code, logs, prompts, and client bundles.
 
-## After Code Changes: Changed-Files Teach-Back
+Extra caution around:
 
-Every final response after code changes must include:
+- `supabase/functions/`
+- `services/PermissionService.ts`
+- `services/supabase.ts`
+- `supabase/migrations/`
+- auth, consent, teacher/admin, exports, and AI chat flows
 
-- What changed, in normal language.
-- Why it changed.
-- Which files changed and what each one does.
-- What tests or checks ran.
-- What remains risky, unverified, or needs human review.
+## Proof And Final Response
 
-Never say "done", "fixed", "ready", or "safe" unless verification actually ran or the remaining gap is clearly stated.
+- Docs/tooling only: run `npm run context:budget` or the smallest matching
+  sanity check.
+- Code/config: run `npm run doctor` unless a narrower project check is clearly
+  sufficient.
+- Rood work: also run `npm run build:prod` and explicit permission/privacy flow
+  verification.
+- DGSkills assignment/mission review or UI QA requires Chrome evidence across
+  desktop, tablet portrait, tablet landscape, and mobile; state if Chrome could
+  not be used.
+
+After code changes, explain:
+
+- what changed in normal language;
+- why it changed;
+- which files changed and what each one does;
+- which tests/checks ran;
+- what remains risky, unverified, or needs human review.

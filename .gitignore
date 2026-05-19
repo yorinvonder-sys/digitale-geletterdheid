@@ -1,4 +1,4 @@
-# Claude Code (shared settings, project docs, and skills are tracked)
+# Claude Code (shared settings, project docs, and canonical skills are tracked)
 .claude/*
 !.claude/*.md
 !.claude/settings.json
@@ -52,12 +52,17 @@ lighthouse-reports/
 lighthouse-report.json
 
 # Agent/browser artifacts (large and noisy for LLM context)
+.agent/skills/
+.claude/worktrees/
 .playwright-mcp/
 playwright-report/
 test-results/
 screenshots/
+!public/screenshots/
+!public/screenshots/**
 .tmp-context/
 .superpowers/
+public/dev-docs/
 
 # Firebase (legacy - migrated to Supabase)
 .firebase/
