@@ -1,7 +1,6 @@
-# Keep agent searches focused. These paths are large, generated, or binary-heavy
-# and should be opened explicitly only when the task truly requires them.
-.claude/worktrees/
+# AI/indexing noise. Keep source, config, docs, and small agent maps visible.
 .agent/skills/
+.claude/worktrees/
 .playwright-mcp/
 node_modules/
 dist/
