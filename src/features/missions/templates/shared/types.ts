@@ -27,6 +27,8 @@ export interface TemplateMissionProps {
     onComplete: (success: boolean) => void;
     stats?: any;
     vsoProfile?: string;
+    enableChat?: boolean;
+    chatRoleId?: string;
 }
 
 // === Base config shared by all templates ===

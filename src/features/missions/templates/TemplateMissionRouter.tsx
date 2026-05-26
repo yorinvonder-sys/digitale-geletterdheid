@@ -40,7 +40,11 @@ export const TemplateMissionRouter: React.FC<TemplateMissionProps> = (props) => 
         );
     }
 
-    const templateProps = { ...props };
+    const templateProps = {
+        ...props,
+        enableChat: entry.enableChat ?? props.enableChat,
+        chatRoleId: entry.chatRoleId ?? props.chatRoleId,
+    };
 
     return (
         <Suspense fallback={<TemplateLoadingFallback />}>

@@ -2,15 +2,26 @@ import type { DataViewerConfig } from '../DataViewer';
 
 export const eindprojectJ2Config: DataViewerConfig = {
     missionId: 'eindproject-j2',
-    title: 'Eindproject Jaar 2',
+    title: 'Eindproject Jaar 2 Voorbereiding',
     introEmoji: '🏆',
-    introTitle: 'Jouw eindproject: laat het zien',
+    introTitle: 'Bereid je eindproject voor',
     introDescription:
-        'Je hebt dit jaar alles geleerd: programmeren, data, design, netwerken en ethiek. Nu is het tijd om te laten zien wat jij kunt. Maar voordat je bouwt, onderzoek je hoe andere leerlingen eindprojecten hebben aangepakt — en wat ze ervan hebben geleerd.',
+        'Voordat je gaat bouwen, onderzoek je hoe andere leerlingen eindprojecten hebben aangepakt. Je gebruikt data, tips en voorbeelden om een haalbaar idee voor jouw eigen eindproject te kiezen.',
+    missionGoal: {
+        primaryGoal:
+            'Bereid je eindproject voor door projectdata te analyseren en een eigen idee te onderbouwen.',
+        criteria: {
+            type: 'component-complete',
+            description:
+                'Je onderzoekt voorbeeldprojecten, vergelijkt keuzes en formuleert een haalbaar projectidee.',
+        },
+        evidence:
+            'Je voorbereiding noemt een probleem, doelgroep, projectvorm en onderbouwing uit de data.',
+    },
     introFeatures: [
-        'Analyseer eindprojectdata van vorige jaar',
+        'Analyseer eindprojectdata van vorig jaar',
         'Vergelijk welke projecttypen het hoogst scoren',
-        'Beoordeel wat een goed eindproject onderscheidt van een gemiddeld project',
+        'Onderbouw welk projectidee bij jou en de beoordelingscriteria past',
     ],
 
     datasets: [
@@ -212,7 +223,7 @@ export const eindprojectJ2Config: DataViewerConfig = {
         {
             minScore: 85,
             emoji: '🏆',
-            title: 'Klaar voor het eindproject!',
+            title: 'Sterk voorbereid!',
             color: '#D7C95F',
         },
         {
@@ -236,11 +247,11 @@ export const eindprojectJ2Config: DataViewerConfig = {
     ],
 
     takeaways: [
-        'App-ontwerp en video/animatie scoren gemiddeld het hoogst als projecttype',
-        'Originaliteit is de sterkste voorspeller van een hoog eindcijfer',
-        'Een goede presentatie kan een lagere techniek-score goed compenseren',
-        'Starten vanuit een persoonlijk probleem maakt je project origineler en gemotiveerder',
-        'Feedback halverwege je project is professioneel, niet een teken van zwakte',
+        'Deze missie helpt je een eindprojectidee kiezen, maar is nog niet het eindproject zelf',
+        'App-ontwerp en video/animatie scoren in de voorbeelddata gemiddeld hoog',
+        'Originaliteit en presentatie geven richting aan je voorbereiding',
+        'Starten vanuit een persoonlijk probleem maakt je idee concreter en gemotiveerder',
+        'Feedback halverwege je echte project is professioneel, niet een teken van zwakte',
     ],
 };
 

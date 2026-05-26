@@ -7,6 +7,17 @@ const config: DebateArenaConfig = {
     introTitle: 'Digital Rights Defender',
     introDescription:
         'Je school verzamelt gegevens via apps, camera\'s en leerlingvolgsystemen. Maar welke rechten heb jij eigenlijk? Debatteer mee over de grenzen van dataverzameling op school.',
+    missionGoal: {
+        primaryGoal:
+            'Onderzoek welke data een school mag verzamelen en verdedig digitale rechten van leerlingen.',
+        criteria: {
+            type: 'rounds-complete',
+            description:
+                'Je leest perspectieven, kiest positie, bouwt argumenten en reflecteert op privacygrenzen.',
+        },
+        evidence:
+            'Je standpunt verbindt een recht, risico of regel aan een concrete schoolpraktijk.',
+    },
     introFeatures: [
         'Lees de standpunten van 4 betrokkenen',
         'Kies jouw positie in het debat',

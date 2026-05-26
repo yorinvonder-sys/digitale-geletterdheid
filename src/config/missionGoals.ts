@@ -279,6 +279,116 @@ export const MISSION_GOALS: Record<string, MissionGoal> = {
         },
         evidence: 'Je conclusie verwijst naar een getal, patroon of grafiek.',
     },
+    'ux-detective': {
+        primaryGoal: 'Onderzoek UX-data, herken de grootste gebruiksproblemen en onderbouw welke verbetering prioriteit heeft.',
+        criteria: {
+            type: 'component-complete',
+            description: 'Je analyseert de datasets, beantwoordt de vragen en kiest een UX-verbetering met data-onderbouwing.',
+        },
+        evidence: 'Je antwoorden verwijzen naar gebruikersonderzoek, usability-scores en een prioriteit op basis van impact.',
+    },
+    'podcast-producer': {
+        primaryGoal: 'Ontwerp een podcastconcept met doelgroep, structuur, sterke intro en open interviewvragen.',
+        criteria: {
+            type: 'steps-complete',
+            min: 4,
+            description: 'Je werkt onderwerp, structuur, intro en interviewvragen uit.',
+        },
+        evidence: 'Je podcastplan bevat een doelgroep, segmenten, hook en minimaal vijf interviewvragen.',
+    },
+    'meme-machine': {
+        primaryGoal: 'Analyseer waarom content gedeeld wordt en ontwerp een meme of post met bewuste boodschap en verantwoordelijkheid.',
+        criteria: {
+            type: 'steps-complete',
+            min: 4,
+            description: 'Je analyseert formats, viraliteit en impact voordat je eigen content ontwerpt.',
+        },
+        evidence: 'Je meme-ontwerp benoemt format, doelgroep, deelreden en grens tussen humor en schadelijke content.',
+    },
+    'digital-storyteller': {
+        primaryGoal: 'Ontwerp een interactief verhaal waarin keuzes, structuur en digitale presentatie logisch samenwerken.',
+        criteria: {
+            type: 'steps-complete',
+            min: 4,
+            description: 'Je werkt setting, flowchart, scenes en presentatievorm uit.',
+        },
+        evidence: 'Je verhaal heeft een hoofdpersoon, keuzemomenten, minimaal drie eindes en een digitale presentatiekeuze.',
+    },
+    'brand-builder': {
+        primaryGoal: 'Ontwerp een merkidentiteit die doelgroep, merkwaarden, kleur, logo en huisstijl bewust verbindt.',
+        criteria: {
+            type: 'steps-complete',
+            min: 4,
+            description: 'Je bepaalt merk, kleurenpalet, logo-concept en huisstijlgids.',
+        },
+        evidence: 'Je merkpresentatie bevat doelgroep, merkwoorden, kleurkeuzes, logo-uitleg en consistente huisstijlregels.',
+    },
+    'video-editor': {
+        primaryGoal: 'Plan een korte video met doel, storyboard, shotlist en montagekeuzes voordat je gaat produceren.',
+        criteria: {
+            type: 'steps-complete',
+            min: 4,
+            description: 'Je werkt concept, storyboard, shotlist en montageplan uit.',
+        },
+        evidence: 'Je videoplan bevat doelgroep, centrale boodschap, minimaal vijf scenes, acht shots en montagekeuzes.',
+    },
+    'online-helden': {
+        primaryGoal: 'Herken cyberpesten en kies als bijstander een veilige, helpende reactie die de situatie niet verergert.',
+        criteria: {
+            type: 'rounds-complete',
+            description: 'Je beoordeelt scenario’s, rangschikt gedrag en kiest onderbouwde bijstanderacties.',
+        },
+        evidence: 'Je kunt uitleggen wanneer je bewaart, meldt, steun biedt of hulp inschakelt.',
+    },
+    'media-review': {
+        primaryGoal: 'Bewijs dat je media-keuzes, UX, branding, storytelling en doelgroepgericht ontwerpen kunt beoordelen.',
+        criteria: {
+            type: 'score-threshold',
+            threshold: 70,
+            description: 'Je rondt de reviewrondes af en haalt minimaal het niveau Scherp Mediabewust.',
+        },
+        evidence: 'Je score en ronde-antwoorden laten zien dat je productievolgorde, begrippen en bewuste mediakeuzes begrijpt.',
+    },
+    'ai-ethicus': {
+        primaryGoal: 'Onderzoek AI-bias vanuit meerdere perspectieven en formuleer een verdedigbaar standpunt.',
+        criteria: {
+            type: 'rounds-complete',
+            description: 'Je leest perspectieven, kiest positie, bouwt argumenten en reflecteert op je mening.',
+        },
+        evidence: 'Je standpunt noemt minstens twee argumenten en een gevolg voor leerlingen of school.',
+    },
+    'digital-rights-defender': {
+        primaryGoal: 'Onderzoek welke data een school mag verzamelen en verdedig digitale rechten van leerlingen.',
+        criteria: {
+            type: 'rounds-complete',
+            description: 'Je leest perspectieven, kiest positie, bouwt argumenten en reflecteert op privacygrenzen.',
+        },
+        evidence: 'Je standpunt verbindt een recht, risico of regel aan een concrete schoolpraktijk.',
+    },
+    'tech-court': {
+        primaryGoal: 'Beoordeel een tech-dilemma als rechtszaak en onderbouw een eerlijk oordeel.',
+        criteria: {
+            type: 'rounds-complete',
+            description: 'Je onderzoekt rollen, kiest positie, bouwt argumenten en reageert op tegenwerpingen.',
+        },
+        evidence: 'Je oordeel noemt maatschappelijke gevolgen en wat dit betekent voor digitaal welzijn.',
+    },
+    'future-forecaster': {
+        primaryGoal: 'Voorspel hoe technologie de toekomst kan veranderen en weeg voordelen en risico’s af.',
+        criteria: {
+            type: 'rounds-complete',
+            description: 'Je verkent perspectieven, kiest positie, bouwt argumenten en reflecteert op je voorspelling.',
+        },
+        evidence: 'Je toekomstvisie noemt minstens een kans, een risico en wie erdoor geraakt wordt.',
+    },
+    'eindproject-j2': {
+        primaryGoal: 'Bereid je eindproject voor door projectdata te analyseren en een eigen idee te onderbouwen.',
+        criteria: {
+            type: 'component-complete',
+            description: 'Je onderzoekt voorbeeldprojecten, vergelijkt keuzes en formuleert een haalbaar projectidee.',
+        },
+        evidence: 'Je voorbereiding noemt een probleem, doelgroep, projectvorm en onderbouwing uit de data.',
+    },
     'digitale-balans-coach': {
         primaryGoal: 'Maak een persoonlijk en haalbaar plan voor digitale balans en privacy.',
         criteria: {

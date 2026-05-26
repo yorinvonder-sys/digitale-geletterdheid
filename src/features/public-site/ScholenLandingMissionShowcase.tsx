@@ -129,7 +129,6 @@ const YEARS: ShowcaseYear[] = [
                     { title: 'Digital Rights Defender', description: 'Verdedig digitale rechten', difficulty: 'Medium', color: '#0B453F', iconLabel: '⚔️' },
                     { title: 'Tech Court', description: 'Voer een tech-rechtszaak', difficulty: 'Hard', color: '#1F2937', iconLabel: '⚖️' },
                     { title: 'Future Forecaster', description: 'Voorspel de digitale toekomst', difficulty: 'Medium', color: '#0B453F', iconLabel: '🔮' },
-                    { title: 'Sustainability Scanner', description: 'Meet de impact van tech op het milieu', difficulty: 'Medium', color: '#5F947D', iconLabel: '🌱' },
                     { title: 'Eindproject Jaar 2', description: 'Toon al je vaardigheden', difficulty: 'Hard', color: '#D97848', iconLabel: '🏆' },
                 ],
             },

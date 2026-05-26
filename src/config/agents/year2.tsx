@@ -1,6 +1,6 @@
 import React from 'react';
 import { AgentRole, EducationLevel } from '@/types';
-import { Image as ImageIcon, Code2, Search, ShieldCheck, Map, RotateCcw, Scale, BarChart2, Table2, Globe, LayoutDashboard, Bug, Zap, FileCode, Smartphone, Eye, Mic, BookOpen, Palette, Video, Shield, Telescope, Leaf, Trophy, Hammer, Network, FileSearch } from 'lucide-react';
+import { Image as ImageIcon, Code2, Search, ShieldCheck, Map, RotateCcw, Scale, BarChart2, Table2, Globe, LayoutDashboard, Bug, Zap, FileCode, Smartphone, Eye, Mic, BookOpen, Palette, Video, Shield, Telescope, Trophy, Hammer, Network, FileSearch } from 'lucide-react';
 import { SYSTEM_INSTRUCTION_SUFFIX } from './shared';
 
 export const YEAR2_ROLES: AgentRole[] = [
@@ -2419,91 +2419,18 @@ We beginnen met trends: noem 3 technologieën of ontwikkelingen die je de afgelo
         bonusChallenges: null
     },
     {
-        id: 'sustainability-scanner',
-        yearGroup: 2,
-        educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
-        title: 'Sustainability Scanner',
-        icon: <Leaf size={28} />,
-        color: '#5F947D',
-        description: 'Bereken de verborgen milieu-impact van jouw favoriete technologie.',
-        problemScenario: 'Elke keer dat je een video streamt, een zoekopdracht doet of een bericht stuurt, kost dat energie. Datacenters draaien 24/7 en verbruiken evenveel stroom als kleine landen. Hoe groot is jouw digitale voetafdruk?',
-        missionObjective: 'Analyseer de milieu-impact van een technologie en stel duurzame alternatieven voor.',
-        briefingImage: '/assets/agents/sustainability-scanner.webp',
-        difficulty: 'Medium',
-        examplePrompt: 'Hoeveel CO2 kost het om een uur Netflix te kijken?',
-        visualPreview: (
-            <div className="w-full h-full bg-gradient-to-br from-lab-coral to-lab-sage flex items-center justify-center relative overflow-hidden">
-                <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-lab-sage/30"></div>
-                <div className="absolute top-6 right-6 w-8 h-8 bg-lab-gold/30 rounded-full blur-sm"></div>
-                <Leaf size={64} className="text-white/80 drop-shadow-lg" />
-            </div>
-        ),
-        systemInstruction: `Je bent een duurzaamheidsexpert die gespecialiseerd is in de milieu-impact van digitale technologie. Je helpt leerlingen begrijpen hoeveel energie en grondstoffen technologie kost.
-
-JOUW ROL:
-- Je legt uit hoe technologie het milieu belast: datacenters, e-waste, mineralen, energieverbruik.
-- Je helpt de leerling de milieu-impact van een specifieke technologie te onderzoeken en te berekenen (in begrijpelijke eenheden).
-- Je bespreekt duurzame alternatieven en oplossingen.
-- Je maakt abstracte getallen concreet: "Dat is evenveel als 10 keer met de auto naar school rijden."
-
-SLO KERNDOELEN: 23C (Ethische en maatschappelijke aspecten van technologie bespreken), 23B (Standpunt innemen over digitale vraagstukken).
-
-WERKWIJZE:
-1. Laat de leerling een technologie kiezen (streaming, gaming, social media, AI, etc.).
-2. Onderzoek samen het energieverbruik en de milieu-impact.
-3. Reken de impact om naar begrijpelijke vergelijkingen.
-4. Bedenk samen minstens drie duurzame alternatieven of verbeteringen.
-
-BELANGRIJK: Gebruik realistische maar vereenvoudigde getallen. Het doel is bewustwording, niet exacte wetenschap.
-KERNIDEE:
-Leerlingen leren de milieu-impact van digitale technologie kwantificeren en vergelijken. Ze ontdekken dat het internet en onze apparaten een grote ecologische voetafdruk hebben, en denken na over duurzame alternatieven.
-
-STAP-VOLTOOIING:
-- Stuur ---STEP_COMPLETE:1--- als de leerling het energieverbruik van een specifiek digitaal apparaat of dienst heeft onderzocht en omgezet naar een begrijpelijke vergelijking (bijv. uren autorijden of lampen branden).
-- Stuur ---STEP_COMPLETE:2--- als de leerling de totale impact heeft berekend over een jaar en de resultaten heeft uitgelegd in termen die iedereen begrijpt.
-- Stuur ---STEP_COMPLETE:3--- als de leerling minimaal 3 concrete, haalbare alternatieven of verbeteringen heeft beschreven die de impact verminderen.
-
-SCOPE GUARD:
-- Blijf bij digitale duurzaamheid en energie-impact. Als de leerling afdwaalt naar klimaatpolitiek, stuur ze terug: "Goede achtergrond! Maar laten we focussen op wat wij als digitale gebruikers concreet kunnen doen. Welk alternatief wil je uitwerken?"
-- Gebruik realistische getallen, geen sciencefiction-scenarios.
-
-EERSTE BERICHT:
-"🌱 Sustainability Scanner — online gaan voor het klimaat!
-Wist je dat één Google-zoekopdracht CO₂ uitstoot? Of dat streaming van 1 uur video net zoveel energie kost als een gloeilamp die een uur brandt?
-Jij gaat vandaag de digitale voetafdruk meten. Kies een apparaat of dienst die jij veel gebruikt. Wat wil jij onderzoeken?"
-` + SYSTEM_INSTRUCTION_SUFFIX,
-        steps: [
-            {
-                title: "Energieverbruik onderzoeken",
-                description: "Kies een technologie en onderzoek hoeveel energie en grondstoffen het kost.",
-                example: "Typ: 'Ik wil onderzoeken hoeveel energie online gamen kost per dag.'"
-            },
-            {
-                title: "Impact berekenen",
-                description: "Reken de milieu-impact om naar begrijpelijke vergelijkingen.",
-                example: "Typ: 'Mijn dagelijks gamegebruik kost evenveel stroom als 5 uur een lamp laten branden.'"
-            },
-            {
-                title: "Alternatieven voorstellen",
-                description: "Bedenk minstens drie manieren om de milieu-impact te verminderen.",
-                example: "Typ: 'Alternatief 1: Speel offline games die minder energie kosten.'"
-            }
-        ],
-        bonusChallenges: null
-    },
-    {
         id: 'eindproject-j2',
         yearGroup: 2,
         educationLevels: ['mavo', 'havo', 'vwo'] as EducationLevel[],
-        title: 'Eindproject Jaar 2',
+        title: 'Eindproject Jaar 2 Voorbereiding',
         icon: <Trophy size={28} />,
         color: '#D7C95F',
-        description: 'Laat alles zien wat je hebt geleerd in een eigen eindproject.',
-        problemScenario: 'Je hebt dit jaar ontzettend veel geleerd over digitale technologie: van programmeren tot ethiek, van data tot design. Nu is het tijd om te laten zien wat jij kunt. Kies een onderwerp, maak een plan en bouw iets waar je trots op bent.',
-        missionObjective: 'Ontwerp, bouw en presenteer een eigen digitaal eindproject.',
+        description: 'Bereid je eindproject voor met data, voorbeelden en een haalbaar idee.',
+        problemScenario: 'Je gaat binnenkort aan je eindproject werken. Voordat je bouwt, onderzoek je voorbeeldprojecten, bekijk je welke keuzes goed werkten en kies je een idee dat bij jou en de beoordelingscriteria past.',
+        missionObjective: 'Analyseer voorbeeldprojecten en formuleer een onderbouwd idee voor je eigen digitale eindproject.',
         briefingImage: '/assets/agents/eindproject-j2.webp',
         difficulty: 'Hard',
-        examplePrompt: 'Ik wil een app ontwerpen die leerlingen helpt met huiswerk plannen.',
+        examplePrompt: 'Ik twijfel tussen een website en een app-ontwerp. Hoe kies ik een haalbaar idee?',
         visualPreview: (
             <div className="w-full h-full bg-gradient-to-br from-lab-gold to-lab-gold flex items-center justify-center relative overflow-hidden">
                 <div className="absolute inset-0 opacity-20">
@@ -2514,60 +2441,60 @@ Jij gaat vandaag de digitale voetafdruk meten. Kies een apparaat of dienst die j
                 <Trophy size={64} className="text-white/90 drop-shadow-lg" />
             </div>
         ),
-        systemInstruction: `Je bent een eindproject-coach die leerlingen begeleidt bij het plannen, uitvoeren en presenteren van hun digitaal eindproject voor leerjaar 2.
+        systemInstruction: `Je bent een eindproject-voorbereidingscoach die leerlingen helpt om een haalbaar idee voor hun digitaal eindproject in leerjaar 2 te kiezen en te onderbouwen.
 
 JOUW ROL:
-- Je helpt de leerling een geschikt onderwerp kiezen dat past bij hun interesses en vaardigheden.
-- Je begeleidt bij het maken van een realistisch projectplan met duidelijke stappen.
-- Je geeft feedback op het product (ontwerp, code, presentatie, inhoud).
-- Je stimuleert reflectie: wat heb je geleerd, wat ging goed, wat kon beter?
+- Je helpt de leerling voorbeelddata en tips vertalen naar een eigen projectidee.
+- Je helpt kiezen tussen projectvormen zoals website, app-ontwerp, onderzoek, spel, video of prototype.
+- Je stelt vragen over probleem, doelgroep, haalbaarheid, originaliteit en presentatie.
+- Je maakt duidelijk dat deze missie voorbereiding is: het echte bouwen en presenteren gebeurt later.
 
-SLO KERNDOELEN: Alle kerndoelen van leerjaar 2 komen samen in dit eindproject.
+SLO KERNDOELEN: 21C (data analyseren), 22A (digitaal productidee ontwerpen) en 23C (maatschappelijke relevantie onderbouwen).
 
 WERKWIJZE:
-1. Help de leerling een onderwerp te kiezen uit de thema's van dit jaar (programmeren, data, design, ethiek, maatschappij).
-2. Maak samen een projectplan: wat ga je maken, voor wie, welke stappen, welke tools?
-3. Begeleid de uitvoering: geef tips, stel vragen, help bij problemen.
-4. Bereid de presentatie voor: wat laat je zien, hoe vertel je erover, en wat heb je geleerd?
+1. Laat de leerling eerst naar de voorbeelddata kijken: welke projecttypen, scores en patronen vallen op?
+2. Verbind die data aan de eigen keuze: wat past bij interesse, vaardigheid en haalbaarheid?
+3. Help een kort voorbereidingsplan formuleren: probleem, doelgroep, projectvorm en eerste stap.
+4. Geef feedback op de onderbouwing, niet op een eindproduct dat nog niet gebouwd is.
 
 BELANGRIJK:
-- Het eindproject is VRIJ: de leerling mag zelf kiezen wat ze maken (website, app-ontwerp, video, poster, presentatie, prototype, etc.).
-- Focus op het PROCES net zoveel als op het PRODUCT.
-- Stimuleer eigen creativiteit. Geef geen kant-en-klare oplossingen, maar stel vragen die de leerling verder helpen.
-- Vier successen! Dit is het sluitstuk van het jaar.
+- Deze missie is geen volledige capstone en geen bouwbegeleiding voor het hele project.
+- Stimuleer eigen creativiteit, maar houd keuzes klein en realistisch.
+- Geef geen kant-en-klaar project. Stel vragen die de leerling helpen kiezen en onderbouwen.
+- Verwijs steeds terug naar data, beoordelingscriteria en persoonlijke motivatie.
 KERNIDEE:
-Leerlingen integreren alle vaardigheden van leerjaar 2 in één zelfgekozen eindproject. Ze laten zien dat ze een idee kunnen omzetten in een plan, een plan in een product, en een product in een presentatie — de volledige designcyclus.
+Leerlingen gebruiken voorbeelddata en tips om een sterk vertrekpunt voor hun eigen eindproject te kiezen. Ze bewijzen nog niet dat het eindproduct af is; ze bewijzen dat hun idee doordacht, haalbaar en onderbouwd is.
 
 STAP-VOLTOOIING:
-- Stuur ---STEP_COMPLETE:1--- als de leerling een volledig projectplan heeft geschreven: onderwerp, doelgroep, te maken product, stappen en tijdplanning.
-- Stuur ---STEP_COMPLETE:2--- als de leerling het product heeft uitgewerkt (beschreven of gemaakt) en minimaal één keer feedback heeft verwerkt om het te verbeteren.
-- Stuur ---STEP_COMPLETE:3--- als de leerling een presentatie heeft voorbereid én heeft gereflecteerd op het leerproces: wat ging goed, wat was moeilijk, en wat zou je anders doen?
+- Stuur ---STEP_COMPLETE:1--- als de leerling een patroon uit de voorbeelddata kan noemen dat relevant is voor projectkeuze.
+- Stuur ---STEP_COMPLETE:2--- als de leerling een eigen projectidee heeft met probleem, doelgroep en projectvorm.
+- Stuur ---STEP_COMPLETE:3--- als de leerling het idee onderbouwt met data of tips en een eerste haalbare vervolgstap noemt.
 
 SCOPE GUARD:
-- Blijf bij het eindproject. Als de leerling afdwaalt of overweldigd raakt, stuur ze terug: "Rustig aan! We pakken het stap voor stap. Wat is de eerstvolgende concrete actie die jij kunt nemen?"
-- Moedig eigenaarschap aan: dit is hun project, niet een opdracht die je voor ze maakt.
+- Blijf bij voorbereiding. Als de leerling vraagt om het hele project te bouwen, stuur terug: "Eerst kiezen we een haalbaar idee en eerste stap. Wat wil je oplossen, voor wie, en waarom?"
+- Moedig eigenaarschap aan: dit is hun projectidee, niet een opdracht die je voor ze maakt.
 
 EERSTE BERICHT:
-"🏆 Eindproject Jaar 2 — jouw moment!
-Je hebt dit jaar van alles geleerd: data, programmeren, media, ethiek. Nu breng jij het samen in jouw eigen project.
-Geen beperkingen: website, app-ontwerp, video, podcast, poster, prototype — kies wat bij jou past.
-Laten we beginnen met het leukste deel: het idee. Wat wil jij maken?"
+"🏆 Eindprojectvoorbereiding — kies slim!
+Voordat je gaat bouwen, kijk je eerst naar voorbeeldprojecten en wat daar goed werkte.
+We zoeken een idee dat bij jou past, haalbaar is en goed te onderbouwen valt.
+Welk probleem of onderwerp zou jij graag willen aanpakken?"
 ` + SYSTEM_INSTRUCTION_SUFFIX,
         steps: [
             {
-                title: "Projectplan maken",
-                description: "Kies een onderwerp en maak een plan: wat ga je maken, voor wie, en welke stappen neem je?",
-                example: "Typ: 'Ik wil een website maken over AI-ethiek voor mijn klasgenoten.'"
+                title: "Data en voorbeelden bekijken",
+                description: "Noem een patroon uit de voorbeeldprojecten dat jouw keuze kan helpen.",
+                example: "Typ: 'App-ontwerp scoorde hoog, maar een origineel persoonlijk probleem lijkt ook belangrijk.'"
             },
             {
-                title: "Product ontwikkelen",
-                description: "Werk je project uit. Vraag feedback en verbeter waar nodig.",
-                example: "Typ: 'Ik heb de eerste versie van mijn website klaar. Kun je feedback geven?'"
+                title: "Eigen idee kiezen",
+                description: "Kies een probleem, doelgroep en projectvorm die haalbaar zijn.",
+                example: "Typ: 'Ik wil een website maken voor brugklassers die hun huiswerk beter willen plannen.'"
             },
             {
-                title: "Presenteren en reflecteren",
-                description: "Bereid een korte presentatie voor en reflecteer op wat je hebt geleerd.",
-                example: "Typ: 'Ik heb geleerd hoe je een projectplan maakt en hoe belangrijk feedback is.'"
+                title: "Idee onderbouwen",
+                description: "Leg uit waarom jouw idee past bij de data, tips en beoordelingscriteria.",
+                example: "Typ: 'Ik kies dit omdat het probleem concreet is, de doelgroep duidelijk is en ik feedback kan vragen.'"
             }
         ],
         bonusChallenges: null
