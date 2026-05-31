@@ -13,6 +13,28 @@ export const pitchPerfectConfig: BuilderCanvasConfig = {
         'Oefen je pitch en verbeter op basis van feedback',
         'Leer omgaan met vragen van de jury',
     ],
+    missionGoal: {
+        primaryGoal:
+            'Maak een overtuigende projectpitch met duidelijke structuur, gesproken tekst, verwerkte feedback en voorbereide jury-antwoorden.',
+        criteria: {
+            type: 'steps-complete',
+            min: 4,
+            description:
+                'Je rondt pitchstructuur, volledige pitchtekst, feedbackverwerking en juryvoorbereiding af.',
+        },
+        evidence:
+            'Leerlingbewijs: pitchopbouw, uitgeschreven pitch, feedbackpunten met aanpassingen en juryvragen met antwoorden. Docentbewijs: checklistvoortgang en tekstinvoer tonen of de leerling helder kan presenteren en reflecteren.',
+    },
+    experienceDesign: {
+        boringRisk: 'low',
+        firstTenSeconds: 'Jury preview: leerling kiest welke hook de jury in de eerste 10 seconden moet pakken.',
+        primaryInteraction: 'test-product',
+        feedbackMoment: 'Na de hookkeuze koppelt feedback pitchstructuur, oefenfeedback en juryvragen aan overtuigingskracht.',
+        visualKit: 'maker-canvas',
+        evidenceMoment: 'De leerling levert pitchopbouw, volledige tekst, verwerkte feedback en jury-antwoorden.',
+        antiBoringRule: 'Pitchen wordt oefenen, testen en aanscherpen voor een jury, niet alleen een tekst uitschrijven.',
+        chromeAcceptance: 'Jury preview, feedbackstap, tekstinvoer en eindbewijs blijven presentatiegericht en responsive op alle vier viewports.',
+    },
     enableChat: true,
     chatRoleId: 'pitch-perfect',
     previewType: 'text-preview',

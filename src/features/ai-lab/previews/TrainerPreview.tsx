@@ -6,6 +6,7 @@ import { MissionConclusion } from '@/features/missions/shared/MissionConclusion'
 
 interface TrainerPreviewProps {
     data: TrainerData;
+    qaInitialConclusion?: boolean;
 }
 
 const AI_TRAINER_ACCENT = '#5F947D';
@@ -77,8 +78,8 @@ const StartButton: React.FC<{ onStart: () => void; countdown: number }> = ({ onS
     );
 };
 
-export const TrainerPreview: React.FC<TrainerPreviewProps> = ({ data }) => {
-    const [showConclusion, setShowConclusion] = useState(false);
+export const TrainerPreview: React.FC<TrainerPreviewProps> = ({ data, qaInitialConclusion = false }) => {
+    const [showConclusion, setShowConclusion] = useState(qaInitialConclusion);
     const [hasStarted, setHasStarted] = useState(false);
     const [readCountdown, setReadCountdown] = useState(3);
 
@@ -104,7 +105,7 @@ export const TrainerPreview: React.FC<TrainerPreviewProps> = ({ data }) => {
 
     if (showIntro) {
         return (
-            <div className="w-full h-full flex flex-col relative overflow-hidden" style={{ backgroundColor: '#FCF6EA' }}>
+            <div className="w-full h-full flex flex-col relative overflow-hidden" style={{ backgroundColor: '#FCF6EA' }} data-qa="ai-trainer-intro">
                 {/* Content — fits in one viewport without scrolling */}
                 <div className="flex-1 flex flex-col items-center justify-start p-4 md:p-5 relative z-10 overflow-y-auto">
                     {/* Mascot + title inline */}
@@ -192,8 +193,8 @@ export const TrainerPreview: React.FC<TrainerPreviewProps> = ({ data }) => {
     const needsPaperExamples = data.classBItems.length < 2;
     const showInstructionBanner = data.classAItems.length === 0 && data.classBItems.length === 0;
     const hasBalancedDataset = data.classAItems.length >= 3 && data.classBItems.length >= 3;
+    const canCompleteMission = hasBalancedDataset;
     const hasTestedModel = Boolean(data.testItem);
-    const canCompleteMission = hasBalancedDataset && hasTestedModel;
     const classALabel = data.classALabel && data.classALabel !== 'A' ? data.classALabel : 'Plastic';
     const classBLabel = data.classBLabel && data.classBLabel !== 'B' ? data.classBLabel : 'Papier';
     const trainingSteps = [
@@ -203,7 +204,7 @@ export const TrainerPreview: React.FC<TrainerPreviewProps> = ({ data }) => {
     ];
 
     return (
-        <div className="w-full h-full flex flex-col relative overflow-hidden font-sans" style={{ backgroundColor: '#FCF6EA', borderLeft: '1px solid #E7D8BD' }}>
+        <div className="w-full h-full flex flex-col relative overflow-hidden font-sans" style={{ backgroundColor: '#FCF6EA', borderLeft: '1px solid #E7D8BD' }} data-qa="ai-trainer-preview">
 
             {/* Header */}
             <div className="px-4 py-3 flex justify-between items-center shrink-0 z-20" style={{ backgroundColor: '#FFFFFF', borderBottom: '1px solid #E7D8BD' }}>
@@ -220,27 +221,31 @@ export const TrainerPreview: React.FC<TrainerPreviewProps> = ({ data }) => {
                     </div>
                     {/* Completion Button */}
                     {canCompleteMission && (
-                        <button
-                            onClick={() => setShowConclusion(true)}
-                            className="px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1 transition-colors text-white"
-                            style={{ backgroundColor: '#5F947D' }}
-                        >
-                            <CheckCircle2 size={12} /> <span>Klaar</span>
-                        </button>
+                        hasTestedModel && (
+                            <button
+                                onClick={() => setShowConclusion(true)}
+                                className="px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1 transition-colors text-white"
+                                style={{ backgroundColor: '#5F947D' }}
+                            >
+                                <CheckCircle2 size={12} /> <span>Klaar</span>
+                            </button>
+                        )
                     )}
                 </div>
             </div>
 
             {showConclusion && (
-                <MissionConclusion
-                    title="Missie Voltooid: AI Trainer"
-                    description="Je hebt je eerste AI-model getraind! Door voorbeelden te geven, leerde de computer het verschil tussen categorieën."
-                    aiConcept={{
-                        title: "Supervised Learning",
-                        text: "Dit heet 'Supervised Learning' (Leren met toezicht). De AI leert door gelabelde voorbeelden te zien: 'Dit is een banaan', 'Dit is papier'. Hoe meer gevarieerde voorbeelden jij geeft, hoe slimmer en nauwkeuriger het model wordt!"
-                    }}
-                    onExit={() => setShowConclusion(false)}
-                />
+                <div data-qa="ai-trainer-completion">
+                    <MissionConclusion
+                        title="Missie Voltooid: AI Trainer"
+                        description="Je hebt je eerste AI-model getraind! Door voorbeelden te geven, leerde de computer het verschil tussen categorieën."
+                        aiConcept={{
+                            title: "Supervised Learning",
+                            text: "Dit heet 'Supervised Learning' (Leren met toezicht). De AI leert door gelabelde voorbeelden te zien: 'Dit is een banaan', 'Dit is papier'. Hoe meer gevarieerde voorbeelden jij geeft, hoe slimmer en nauwkeuriger het model wordt!"
+                        }}
+                        onExit={() => setShowConclusion(false)}
+                    />
+                </div>
             )}
 
             {/* Instruction Banner - Shows when no data yet */}

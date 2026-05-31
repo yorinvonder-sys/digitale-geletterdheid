@@ -1,9 +1,12 @@
-import React, { useState, lazy, Suspense } from 'react';
+import React, { useEffect, useMemo, useState, lazy, Suspense } from 'react';
 import { User, Shield, Trophy, ChevronLeft, Sparkles, ShoppingBag, Palette, Crown, Headphones, Shirt, Columns as Pants, Smile, Glasses, Bot, Backpack, Zap, Scissors, X, Award, Gamepad2, BookOpen, BrainCircuit, Search, RotateCcw, Calendar, Printer, Projector, FileText, Cloud, Share2, MessageSquare, Scale, Save, Star, Heart, Laugh, Meh, Dumbbell, CheckCircle2, AlertTriangle, ShieldCheck, Lock } from 'lucide-react';
 import { ParentUser, UserStats, AvatarConfig, DEFAULT_AVATAR_CONFIG, EducationLevel } from '@/types';
 import { LazyAvatarViewer } from '@/features/profile/avatar/LazyAvatarViewer';
-import { AvatarViewer2D } from '@/features/profile/avatar/AvatarViewer2D';
 import { AVATAR_HAIR_CATALOG, getAvatarHairOptionsForGender } from '@/config/avatarCatalog';
+import { getAvatarShopThumbnail, getShopItemsWithAvatarAssets } from '@/config/avatarAssetCatalog';
+import { getMissionsForYear } from '@/config/missions';
+import { getMissionGoal } from '@/config/missionGoals';
+import { supabase } from '@/services/supabase';
 
 const ConsentManager = lazy(() => import('@/features/consent/ConsentManager').then(m => ({ default: m.ConsentManager })));
 
@@ -22,7 +25,17 @@ interface UserProfileProps {
     onBack: () => void;
     onUpdateProfile: (data: Partial<ParentUser>) => void;
     onLogout?: () => void;
-    initialTab?: 'profile' | 'shop' | 'trophies' | 'privacy';
+    initialTab?: ProfileTab;
+}
+
+type ProfileTab = 'profile' | 'portfolio' | 'shop' | 'trophies' | 'privacy';
+
+interface PortfolioProgressRow {
+    mission_id: string;
+    progress_data: Record<string, unknown> | null;
+    status: string | null;
+    score: number | null;
+    updated_at: string | null;
 }
 
 const PALETTE_COLORS = [
@@ -292,6 +305,130 @@ const TrophyRoom = ({ completedMissions }: { completedMissions: string[] }) => {
     );
 };
 
+const formatPortfolioDate = (value?: string | null) => {
+    if (!value) return 'Nog geen datum';
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return 'Nog geen datum';
+    return date.toLocaleDateString('nl-NL', { day: '2-digit', month: 'short', year: 'numeric' });
+};
+
+const getEvidenceKeys = (progressData?: Record<string, unknown> | null) => {
+    if (!progressData) return [];
+    return Object.keys(progressData)
+        .filter(key => !['completedAt', 'status', 'score'].includes(key))
+        .slice(0, 4);
+};
+
+const PortfolioRoom = ({
+    completedMissions,
+    progressRows,
+    loading,
+}: {
+    completedMissions: string[];
+    progressRows: PortfolioProgressRow[];
+    loading: boolean;
+}) => {
+    const missionCatalog = useMemo(() => {
+        const map = new Map<string, { name: string; short: string }>();
+        [1, 2, 3].forEach(year => {
+            getMissionsForYear(year).forEach(mission => {
+                if (!map.has(mission.id)) map.set(mission.id, mission);
+            });
+        });
+        return map;
+    }, []);
+
+    const progressByMission = useMemo(() => {
+        const map = new Map<string, PortfolioProgressRow>();
+        progressRows.forEach(row => map.set(row.mission_id, row));
+        return map;
+    }, [progressRows]);
+
+    const sortedMissions = useMemo(() => {
+        return [...completedMissions].sort((a, b) => {
+            const aDate = progressByMission.get(a)?.updated_at;
+            const bDate = progressByMission.get(b)?.updated_at;
+            return new Date(bDate || 0).getTime() - new Date(aDate || 0).getTime();
+        });
+    }, [completedMissions, progressByMission]);
+
+    return (
+        <div className="space-y-5 animate-in fade-in duration-300">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+                <div>
+                    <h3 className="text-2xl font-black text-lab-ink">Mijn portfolio</h3>
+                    <p className="mt-1 max-w-xl text-sm font-medium text-lab-muted">
+                        Afgeronde missies met zichtbaar leerbewijs en docentbewijs.
+                    </p>
+                </div>
+                <div className="rounded-2xl bg-lab-cream px-4 py-3 text-left sm:text-right">
+                    <div className="text-[10px] font-black uppercase tracking-widest text-lab-muted">Opdrachten</div>
+                    <div className="text-2xl font-black text-lab-ink">{completedMissions.length}</div>
+                </div>
+            </div>
+
+            {loading ? (
+                <div className="rounded-2xl border border-lab-line bg-lab-cream p-5 text-sm font-bold text-lab-muted">
+                    Portfolio laden...
+                </div>
+            ) : sortedMissions.length === 0 ? (
+                <div className="rounded-2xl border border-lab-line bg-lab-cream p-5 text-sm font-bold text-lab-muted">
+                    Rond je eerste missie af om portfolio-bewijs te verzamelen.
+                </div>
+            ) : (
+                <div className="grid grid-cols-1 gap-3 xl:grid-cols-2">
+                    {sortedMissions.map(missionId => {
+                        const mission = missionCatalog.get(missionId);
+                        const progress = progressByMission.get(missionId);
+                        const goal = getMissionGoal(missionId);
+                        const evidenceKeys = getEvidenceKeys(progress?.progress_data);
+                        return (
+                            <article key={missionId} className="rounded-2xl border border-lab-line bg-lab-cream p-4">
+                                <div className="flex items-start gap-3">
+                                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-lab-coral text-sm font-black text-white">
+                                        {mission?.short || missionId.slice(0, 2).toUpperCase()}
+                                    </div>
+                                    <div className="min-w-0 flex-1">
+                                        <div className="flex flex-wrap items-center gap-2">
+                                            <h4 className="min-w-0 truncate text-base font-black text-lab-ink">
+                                                {mission?.name || missionId}
+                                            </h4>
+                                            <span className="rounded-full bg-white px-2 py-1 text-[10px] font-black uppercase tracking-widest text-lab-muted">
+                                                {progress?.status || 'voltooid'}
+                                            </span>
+                                        </div>
+                                        <p className="mt-1 text-xs font-bold text-lab-muted">
+                                            {formatPortfolioDate(progress?.updated_at || (progress?.progress_data?.completedAt as string | undefined))}
+                                            {typeof progress?.score === 'number' ? ` · score ${progress.score}` : ''}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div className="mt-4 rounded-xl bg-white p-3">
+                                    <div className="text-[10px] font-black uppercase tracking-widest text-lab-muted">Leerbewijs / docentbewijs</div>
+                                    <p className="mt-1 text-sm font-medium leading-relaxed text-lab-ink">
+                                        {goal?.evidence || 'Deze missie is afgerond en staat als completion in je portfolio. Specifiek inhoudelijk bewijs is voor deze opdracht nog niet apart opgeslagen.'}
+                                    </p>
+                                </div>
+
+                                {evidenceKeys.length > 0 && (
+                                    <div className="mt-3 flex flex-wrap gap-2">
+                                        {evidenceKeys.map(key => (
+                                            <span key={key} className="rounded-full border border-lab-line bg-white px-2.5 py-1 text-[10px] font-black uppercase tracking-widest text-lab-muted">
+                                                {key}
+                                            </span>
+                                        ))}
+                                    </div>
+                                )}
+                            </article>
+                        );
+                    })}
+                </div>
+            )}
+        </div>
+    );
+};
+
 export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdateProfile, onLogout, initialTab }) => {
     const defaultStats: UserStats = { xp: 0, level: 1, missionsCompleted: [], inventory: [], avatarConfig: DEFAULT_AVATAR_CONFIG };
     const stats: UserStats = {
@@ -301,8 +438,8 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
         avatarConfig: user.stats?.avatarConfig ? { ...DEFAULT_AVATAR_CONFIG, ...user.stats.avatarConfig } : DEFAULT_AVATAR_CONFIG
     };
 
-    const hasDoneOnboarding = stats.hasCompletedOnboarding;
-    const [activeTab, setActiveTab] = useState<'profile' | 'shop' | 'trophies' | 'privacy'>(initialTab || 'profile');
+    const hasDoneOnboarding = Boolean(stats.hasCompletedOnboarding || stats.hasCompletedAvatarSetup);
+    const [activeTab, setActiveTab] = useState<ProfileTab>(initialTab || 'profile');
     const [shopCategory, setShopCategory] = useState<'all' | 'gender' | 'body' | 'hair' | 'clothes' | 'acc' | 'colors' | 'emotes'>('all');
     const [onboardingStep, setOnboardingStep] = useState<number | null>(hasDoneOnboarding ? null : 0);
     const [previewConfig, setPreviewConfig] = useState<AvatarConfig>(stats.avatarConfig || DEFAULT_AVATAR_CONFIG);
@@ -310,8 +447,44 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
     const [itemToPurchase, setItemToPurchase] = useState<typeof SHOP_ITEMS[0] | null>(null);
     const [showResetConfirm, setShowResetConfirm] = useState(false);
     const [xpLockInfo, setXpLockInfo] = useState<{ item: typeof SHOP_ITEMS[0]; needed: number } | null>(null);
+    const [portfolioProgress, setPortfolioProgress] = useState<PortfolioProgressRow[]>([]);
+    const [portfolioLoading, setPortfolioLoading] = useState(false);
     const equippedConfigRef = React.useRef<AvatarConfig>(stats.avatarConfig || DEFAULT_AVATAR_CONFIG);
     const onboardingHairStyles = getAvatarHairOptionsForGender(previewConfig.gender);
+
+    useEffect(() => {
+        if (initialTab) setActiveTab(initialTab);
+    }, [initialTab]);
+
+    useEffect(() => {
+        if (activeTab !== 'portfolio' || !user.uid) return;
+
+        let cancelled = false;
+        setPortfolioLoading(true);
+        void (async () => {
+            try {
+                const { data, error } = await supabase
+                    .from('mission_progress')
+                    .select('mission_id, progress_data, status, score, updated_at')
+                    .eq('user_id', user.uid)
+                    .order('updated_at', { ascending: false });
+
+                if (cancelled) return;
+                if (error) {
+                    console.error('Error loading portfolio progress:', error);
+                    setPortfolioProgress([]);
+                    return;
+                }
+                setPortfolioProgress((data || []) as unknown as PortfolioProgressRow[]);
+            } finally {
+                if (!cancelled) setPortfolioLoading(false);
+            }
+        })();
+
+        return () => {
+            cancelled = true;
+        };
+    }, [activeTab, user.uid]);
 
     const handlePartClick = (part: string) => {
         // Map clicked parts to customizable categories
@@ -334,6 +507,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
             stats: {
                 ...stats,
                 hasCompletedOnboarding: true,
+                hasCompletedAvatarSetup: true,
                 avatarConfig: previewConfig
             }
         });
@@ -486,7 +660,11 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
                             <X size={20} />
                         </button>
 
-                        <div className="md:w-1/2 relative border-r border-lab-line" style={{ backgroundColor: '#FCF6EA' }}>
+                        <div
+                            className="md:w-1/2 relative border-r border-lab-line"
+                            data-avatar-runtime-surface="profile-preview"
+                            style={{ backgroundColor: '#FCF6EA' }}
+                        >
                             <LazyAvatarViewer
                                 config={previewConfig}
                                 onPartClick={handlePartClick}
@@ -650,11 +828,15 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 h-[calc(100dvh-180px)] min-h-[600px]">
                         <div className="lg:col-span-5 flex flex-col gap-6 max-h-[50vh] lg:max-h-[calc(100dvh-220px)]">
                             <div className="flex-1 bg-gradient-to-b from-lab-creamDeep to-white rounded-[2.5rem] p-1 shadow-xl relative overflow-hidden border border-white">
-                                <div className="w-full h-full relative rounded-[2.3rem] overflow-hidden" style={{ backgroundColor: '#FCF6EA' }}>
-                                    <div className="absolute top-0 w-full p-6 z-10 flex justify-between items-start">
-                                        <div>
-                                            <h2 className="text-lab-ink font-black text-3xl">{user.displayName}</h2>
-                                            <p className="text-lab-muted font-bold text-xs uppercase tracking-widest mt-1">Level {stats.level} Architect</p>
+                                <div
+                                    className="w-full h-full relative rounded-[2.3rem] overflow-hidden"
+                                    data-avatar-runtime-surface={activeTab === 'shop' ? 'shop-preview' : 'profile-preview'}
+                                    style={{ backgroundColor: '#FCF6EA' }}
+                                >
+                                    <div className="absolute top-0 z-30 flex w-full items-start justify-between gap-3 p-6">
+                                        <div className="max-w-[68%] rounded-2xl bg-[#FCF6EA]/90 px-4 py-3 shadow-sm backdrop-blur">
+                                            <h2 className="text-2xl font-black leading-tight text-lab-ink sm:text-3xl">{user.displayName}</h2>
+                                            <p className="mt-1 text-xs font-bold uppercase tracking-widest text-lab-muted">Level {stats.level} Architect</p>
                                         </div>
                                         <div className="flex flex-col gap-2 items-end">
                                             <div className="bg-lab-coral text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg shadow-lab-coral">3D</div>
@@ -693,11 +875,12 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
                         </div>
 
                         <div className="lg:col-span-7 flex flex-col gap-4 h-full">
-                            <div className="bg-white p-2 rounded-2xl shadow-sm border border-lab-line flex gap-2 shrink-0">
-                                <button onClick={() => setActiveTab('profile')} className={`flex-1 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${activeTab === 'profile' ? 'bg-[#D97848] text-white shadow-lg' : 'text-lab-muted hover:bg-lab-cream'}`}><User size={16} /> Stats</button>
-                                <button onClick={() => setActiveTab('shop')} className={`flex-1 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${activeTab === 'shop' ? 'bg-[#D97848] text-white shadow-lg' : 'text-lab-muted hover:bg-lab-cream'}`}><ShoppingBag size={16} /> Winkel</button>
-                                <button onClick={() => setActiveTab('trophies')} className={`flex-1 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${activeTab === 'trophies' ? 'bg-[#D97848] text-white shadow-lg' : 'text-lab-muted hover:bg-lab-cream'}`}><Trophy size={16} /> Trofeeën</button>
-                                <button onClick={() => setActiveTab('privacy')} className={`flex-1 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${activeTab === 'privacy' ? 'bg-[#D97848] text-white shadow-lg' : 'text-lab-muted hover:bg-lab-cream'}`}><ShieldCheck size={16} /> Privacy</button>
+                            <div className="flex shrink-0 gap-2 overflow-x-auto rounded-2xl border border-lab-line bg-white p-2 shadow-sm">
+                                <button onClick={() => setActiveTab('profile')} className={`flex min-w-[106px] shrink-0 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all items-center justify-center gap-2 ${activeTab === 'profile' ? 'bg-[#D97848] text-white shadow-lg' : 'text-lab-muted hover:bg-lab-cream'}`}><User size={16} /> Stats</button>
+                                <button onClick={() => setActiveTab('portfolio')} className={`flex min-w-[132px] shrink-0 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all items-center justify-center gap-2 ${activeTab === 'portfolio' ? 'bg-[#D97848] text-white shadow-lg' : 'text-lab-muted hover:bg-lab-cream'}`}><FileText size={16} /> Portfolio</button>
+                                <button onClick={() => setActiveTab('shop')} className={`flex min-w-[112px] shrink-0 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all items-center justify-center gap-2 ${activeTab === 'shop' ? 'bg-[#D97848] text-white shadow-lg' : 'text-lab-muted hover:bg-lab-cream'}`}><ShoppingBag size={16} /> Winkel</button>
+                                <button onClick={() => setActiveTab('trophies')} className={`flex min-w-[118px] shrink-0 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all items-center justify-center gap-2 ${activeTab === 'trophies' ? 'bg-[#D97848] text-white shadow-lg' : 'text-lab-muted hover:bg-lab-cream'}`}><Trophy size={16} /> Trofeeën</button>
+                                <button onClick={() => setActiveTab('privacy')} className={`flex min-w-[112px] shrink-0 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all items-center justify-center gap-2 ${activeTab === 'privacy' ? 'bg-[#D97848] text-white shadow-lg' : 'text-lab-muted hover:bg-lab-cream'}`}><ShieldCheck size={16} /> Privacy</button>
                             </div>
                             <div className="bg-white rounded-[2.5rem] p-8 shadow-sm border border-lab-line overflow-y-auto custom-scrollbar flex-1">
                             {activeTab === 'privacy' ? (
@@ -712,6 +895,12 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
                                 </Suspense>
                             ) : activeTab === 'trophies' ? (
                                 <TrophyRoom completedMissions={stats.missionsCompleted || []} />
+                            ) : activeTab === 'portfolio' ? (
+                                <PortfolioRoom
+                                    completedMissions={stats.missionsCompleted || []}
+                                    progressRows={portfolioProgress}
+                                    loading={portfolioLoading}
+                                />
                             ) : activeTab === 'profile' ? (
                                 <div className="space-y-8 animate-in fade-in duration-300">
                                     <div className="flex items-center gap-3 mb-6">
@@ -971,7 +1160,11 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
             {itemToPurchase && (
                 <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 animate-in fade-in duration-200">
                     <div className="bg-white rounded-[2rem] shadow-2xl w-full max-w-md overflow-hidden animate-in zoom-in-95 duration-200">
-                        <div className="relative h-64 border-b border-lab-line" style={{ backgroundColor: '#FCF6EA' }}>
+                        <div
+                            className="relative h-64 border-b border-lab-line"
+                            data-avatar-runtime-surface="purchase-preview"
+                            style={{ backgroundColor: '#FCF6EA' }}
+                        >
                             <LazyAvatarViewer config={getPurchasePreviewConfig()} />
                             <div className="absolute top-4 right-4">
                                 <span className="bg-lab-gold text-lab-ink px-3 py-1 rounded-full text-xs font-bold border border-lab-gold">
@@ -1019,32 +1212,39 @@ const BadgeDisplay = ({ icon, label, unlocked, color }: { icon: string, label: s
     </div>
 );
 
-const HEAD_TYPES = ['hairStyle', 'skinColor', 'expression', 'gender'];
-
-const getItemPreviewConfig = (item: any, baseConfig: AvatarConfig): AvatarConfig => {
-    const config = { ...baseConfig };
-    if (item.type === 'baseModel') config.baseModel = item.value;
-    if (item.type === 'shirtColor') config.shirtColor = item.value;
-    if (item.type === 'pantsColor') config.pantsColor = item.value;
-    if (item.type === 'pantsStyle') config.pantsStyle = item.value;
-    if (item.type === 'skinColor') config.skinColor = item.value;
-    if (item.type === 'accessory') config.accessory = item.value;
-    if (item.type === 'hairStyle') config.hairStyle = item.value;
-    if (item.type === 'shirtStyle') config.shirtStyle = item.value;
-    if (item.type === 'gender') config.gender = item.value;
-    if (item.type === 'pose') config.pose = item.value;
-    if (item.type === 'expression') config.expression = item.value;
-    return config;
+const AvatarShopThumbnail = ({ item, label }: { item: { type: string; value: string }; label: string }) => {
+    const thumbnail = getAvatarShopThumbnail(item.type, item.value);
+    return (
+        <div
+            className="relative flex h-20 w-20 items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-b from-[#FCF6EA] to-white"
+            data-avatar-shop-thumbnail
+        >
+            {thumbnail ? (
+                <img
+                    src={thumbnail}
+                    alt=""
+                    className="h-full w-full object-cover"
+                    loading="lazy"
+                    decoding="async"
+                    draggable={false}
+                />
+            ) : (
+                <div className="flex h-full w-full items-center justify-center bg-lab-cream text-[10px] font-black uppercase tracking-widest text-lab-muted">
+                    {label.slice(0, 2)}
+                </div>
+            )}
+        </div>
+    );
 };
 
 const CategorySection = ({ title, items, stats, handlePurchase, handleEquip, previewConfig, setPreviewConfig, equippedConfigRef, ...props }: any) => {
-    const baseConfig = equippedConfigRef?.current || stats.avatarConfig || DEFAULT_AVATAR_CONFIG;
+    const visibleItems = getShopItemsWithAvatarAssets(items);
 
     return (
     <div>
         <h4 className="font-bold text-lab-ink mb-4 px-1">{title}</h4>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-            {items.map((item: any) => {
+            {visibleItems.map((item: any) => {
                 const isOwned = item.price === 0 || stats.inventory.includes(item.id);
                 const notEnoughMoney = !isOwned && stats.xp < item.price;
                 const isEquipped =
@@ -1057,9 +1257,6 @@ const CategorySection = ({ title, items, stats, handlePurchase, handleEquip, pre
                     (item.type === 'hairStyle' && stats.avatarConfig?.hairStyle === item.value) ||
                     (item.type === 'shirtStyle' && stats.avatarConfig?.shirtStyle === item.value) ||
                     (item.type === 'gender' && stats.avatarConfig?.gender === item.value);
-
-                const itemPreviewConfig = getItemPreviewConfig(item, baseConfig);
-                const useHeadVariant = HEAD_TYPES.includes(item.type);
 
                 return (
                     <button
@@ -1088,12 +1285,8 @@ const CategorySection = ({ title, items, stats, handlePurchase, handleEquip, pre
                             ${notEnoughMoney ? 'opacity-40 grayscale cursor-not-allowed' : ''}
                         `}
                     >
-                        <div className={`w-20 h-20 rounded-2xl overflow-hidden flex items-center justify-center transition-transform group-hover:scale-105 ${isOwned ? 'bg-gradient-to-b from-lab-coral to-white' : 'bg-gradient-to-b from-lab-cream to-white opacity-60'}`}>
-                            <AvatarViewer2D
-                                config={itemPreviewConfig}
-                                interactive={false}
-                                variant={useHeadVariant ? 'head' : 'full'}
-                            />
+                        <div className={`transition-transform group-hover:scale-105 ${isOwned ? '' : 'opacity-60'}`}>
+                            <AvatarShopThumbnail item={item} label={item.label} />
                         </div>
 
                         <div className="w-full">

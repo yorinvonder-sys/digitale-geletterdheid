@@ -198,7 +198,19 @@ export const KamerVergrendeldeLaptop: React.FC<Props> = ({ onComplete, variant }
                   {bestandenInMap.map(b => (
                     <div
                       key={b.id}
-                      className="flex items-center justify-between px-3 py-2 bg-lab-cream rounded-lg text-sm"
+                      role={!ingediend ? 'button' : undefined}
+                      tabIndex={!ingediend ? 0 : undefined}
+                      onClick={!ingediend ? () => handleBestandKlik(b.id) : undefined}
+                      onKeyDown={!ingediend ? (e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          handleBestandKlik(b.id);
+                        }
+                      } : undefined}
+                      aria-label={!ingediend ? `${b.naam} naar volgende map verplaatsen` : undefined}
+                      className={`flex items-center justify-between px-3 py-2 bg-lab-cream rounded-lg text-sm ${
+                        !ingediend ? 'cursor-pointer hover:bg-white focus:outline-none focus:ring-2 focus:ring-lab-coral' : ''
+                      }`}
                     >
                       <span className="text-lab-muted flex items-center gap-2">
                         <span className="text-lab-muted">{b.icon}</span>
@@ -206,7 +218,10 @@ export const KamerVergrendeldeLaptop: React.FC<Props> = ({ onComplete, variant }
                       </span>
                       {!ingediend && (
                         <button
-                          onClick={() => verwijderPlaatsing(b.id)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            verwijderPlaatsing(b.id);
+                          }}
                           className="text-lab-muted hover:text-lab-muted transition-colors p-1"
                           aria-label={`${b.naam} verwijderen`}
                         >

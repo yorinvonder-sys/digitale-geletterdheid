@@ -8,7 +8,7 @@ import { saveMissionProgress, loadMissionProgress, resetMissionProgress } from '
 import { stripAiProvenance } from '@/utils/aiContentMarker';
 import DOMPurify from 'dompurify';
 import { useChatSession, MAX_UI_MESSAGES } from './useChatSession';
-import { useGameCode, extractGameHtmlDocument, stripGameCodeFromResponse } from './useGameCode';
+import { useGameCode, extractGameHtmlDocument, stripGameCodeFromResponse, validateGameCode } from './useGameCode';
 import { useStepCompletion } from './useStepCompletion';
 
 // ============================================================================
@@ -56,6 +56,20 @@ function buildDevPreviewReply(selectedRole: AgentRole | null, textInput: string)
     const title = selectedRole?.title || 'deze missie';
     const firstStep = selectedRole?.steps?.[0]?.title;
     const trimmedInput = textInput.trim();
+    const qaStepMatch = trimmedInput.match(/\bQA\s+stap\s+(\d+)/i);
+
+    if (selectedRole?.steps?.length && qaStepMatch) {
+        const requestedStep = Number(qaStepMatch[1]);
+        const stepNumber = Math.min(selectedRole.steps.length, Math.max(1, Number.isFinite(requestedStep) ? requestedStep : 1));
+        const stepTitle = selectedRole.steps[stepNumber - 1]?.title || `stap ${stepNumber}`;
+        return [
+            `Ik zie je QA-uitwerking voor stap ${stepNumber}: "${trimmedInput}".`,
+            '',
+            `Deze lokale preview markeert **${stepTitle}** als afgerond, zodat de leerlingflow controleerbaar is zonder echte AI-sessie.`,
+            '',
+            `---STEP_COMPLETE:${stepNumber}---`,
+        ].join('\n');
+    }
 
     if (selectedRole?.id === 'game-programmeur') {
         return [
@@ -76,6 +90,37 @@ function buildDevPreviewReply(selectedRole: AgentRole | null, textInput: string)
         ].join('\n');
     }
 
+    if (selectedRole?.id === 'data-verzamelaar') {
+        const lower = trimmedInput.toLowerCase();
+        if (/advies|gemeente|fietsenstalling|vervolgonderzoek/.test(lower)) {
+            return [
+                `Ik zie je advies: "${trimmedInput}".`,
+                '',
+                'Je gebruikt data als bewijs en noemt ook beperkingen. Dat is precies wat een goede data-analyse nodig heeft.',
+                '',
+                '---STEP_COMPLETE:3---',
+            ].join('\n');
+        }
+        if (/beperking|één school|1 school|november|winter|zomer|ziek|niet compleet/.test(lower)) {
+            return [
+                `Ik zie je beperkingen: "${trimmedInput}".`,
+                '',
+                'Goed: je laat zien dat data nuttig is, maar niet automatisch alles over de werkelijkheid vertelt.',
+                '',
+                '---STEP_COMPLETE:2---',
+            ].join('\n');
+        }
+        if (/fiets|bus|lopen|scooter|meeste|minst|percentage|leerlingen/.test(lower)) {
+            return [
+                `Ik zie je observaties: "${trimmedInput}".`,
+                '',
+                'Mooi begin. Je noemt concrete patronen uit de dataset en gebruikt cijfers om je observatie te onderbouwen.',
+                '',
+                '---STEP_COMPLETE:1---',
+            ].join('\n');
+        }
+    }
+
     return [
         `Previewantwoord voor **${title}**.`,
         firstStep
@@ -84,6 +129,20 @@ function buildDevPreviewReply(selectedRole: AgentRole | null, textInput: string)
         '',
         'Deze lokale preview gebruikt geen echte AI-sessie, zodat de missie zonder leerlingaccount te testen is.',
     ].join('\n');
+}
+
+function shouldUseQaStepReply(selectedRole: AgentRole | null, textInput: string): boolean {
+    if (!selectedRole?.steps?.length || !/\bQA\s+stap\s+\d+/i.test(textInput)) {
+        return false;
+    }
+
+    if (typeof window === 'undefined') {
+        return false;
+    }
+
+    const isLocalHost = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(window.location.hostname);
+    const isQaAppRouteRun = new URLSearchParams(window.location.search).has('qaAppRun');
+    return isLocalHost && isQaAppRouteRun;
 }
 
 function normalizeTrainerData(data?: Partial<TrainerData> | null): TrainerData {
@@ -455,7 +514,15 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
                 ]).then(data => {
                     if (data) {
                         console.log(`[CloudLoad] Success for ${selectedRole.id}`);
-                        if (data.gameCode && selectedRole.id === 'game-programmeur') setActiveGameCode(data.gameCode);
+                        if (data.gameCode && selectedRole.id === 'game-programmeur') {
+                            const validation = validateGameCode(data.gameCode);
+                            if (validation.valid) {
+                                setActiveGameCode(data.gameCode);
+                            } else {
+                                console.warn(`[CloudLoad] Saved game code is invalid (${validation.reason}), falling back to initialCode`);
+                                if (selectedRole.initialCode) setActiveGameCode(selectedRole.initialCode);
+                            }
+                        }
                         if (data.bookData && selectedRole.id === 'verhalen-ontwerper') setActiveBookData(data.bookData);
                         if (data.logicCode && (selectedRole.id as string) === 'logica-legende') setActiveLogicCode(data.logicCode);
                         if (data.trainerData && ((selectedRole.id as string) === 'prompt-trainer' || selectedRole.id === 'ai-trainer')) {
@@ -474,6 +541,9 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
                     }
                 });
             } else {
+                if (initialProgress?.completedSteps) {
+                    setCompletedSteps(initialProgress.completedSteps);
+                }
                 if (initialProgress?.data) {
                     console.log(`[CloudLoad] Using initialProgress data for ${selectedRole.id}`);
                     if (initialProgress.data.activeGameCode && selectedRole.id === 'game-programmeur') {
@@ -481,6 +551,9 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
                     }
                     if (initialProgress.data.activeBookData && selectedRole.id === 'verhalen-ontwerper') {
                         setActiveBookData(initialProgress.data.activeBookData);
+                    }
+                    if (initialProgress.data.activeTrainerData && selectedRole.id === 'ai-trainer') {
+                        setActiveTrainerData(normalizeTrainerData(initialProgress.data.activeTrainerData));
                     }
                 } else if (selectedRole.id === 'game-programmeur' && selectedRole.initialCode) {
                     setActiveGameCode(selectedRole.initialCode);
@@ -492,7 +565,7 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
     useEffect(() => {
         if (!cloudSyncDisabled && selectedRole?.id === 'game-programmeur' && activeGameCode) {
             const timer = setTimeout(() => {
-                saveMissionProgress(userIdentifier, 'game-programmeur', { gameCode: activeGameCode, schoolId });
+                saveMissionProgress(userIdentifier, 'game-programmeur', { gameCode: activeGameCode }, schoolId);
             }, 1000);
             return () => clearTimeout(timer);
         }
@@ -501,7 +574,7 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
     useEffect(() => {
         if (!cloudSyncDisabled && selectedRole?.id === 'verhalen-ontwerper' && activeBookData) {
             const timer = setTimeout(() => {
-                saveMissionProgress(userIdentifier, 'verhalen-ontwerper', { bookData: activeBookData, schoolId });
+                saveMissionProgress(userIdentifier, 'verhalen-ontwerper', { bookData: activeBookData }, schoolId);
             }, 1000);
             return () => clearTimeout(timer);
         }
@@ -510,7 +583,7 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
     useEffect(() => {
         if (!cloudSyncDisabled && ((selectedRole?.id as string) === 'prompt-trainer' || selectedRole?.id === 'ai-trainer') && activeTrainerData) {
             const timer = setTimeout(() => {
-                saveMissionProgress(userIdentifier, selectedRole.id, { trainerData: activeTrainerData, schoolId });
+                saveMissionProgress(userIdentifier, selectedRole.id, { trainerData: activeTrainerData }, schoolId);
             }, 1000);
             return () => clearTimeout(timer);
         }
@@ -519,7 +592,7 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
     useEffect(() => {
         if (!cloudSyncDisabled && (selectedRole?.id as string) === 'logica-legende' && activeLogicCode) {
             const timer = setTimeout(() => {
-                saveMissionProgress(userIdentifier, 'logica-legende', { logicCode: activeLogicCode, schoolId });
+                saveMissionProgress(userIdentifier, 'logica-legende', { logicCode: activeLogicCode }, schoolId);
             }, 1000);
             return () => clearTimeout(timer);
         }
@@ -591,7 +664,7 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
         setError(null);
         setSuggestions([]);
 
-        if (cloudSyncDisabled) {
+        if (cloudSyncDisabled || shouldUseQaStepReply(selectedRole, textInput)) {
             setThinkingStep('Preview antwoord maken...');
             window.setTimeout(() => {
                 const responseText = parseAndUpdateSteps(buildDevPreviewReply(selectedRole, textInput));
@@ -647,7 +720,16 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
             // 2. Prepare response handling
             let isFirstChunk = true;
             let fullTextAccumulated = "";
-            const useNonStreamingResponse = selectedRole?.id === 'game-programmeur';
+            const useNonStreamingResponse = selectedRole?.id === 'game-programmeur' || selectedRole?.id === 'data-verzamelaar';
+            const withDataVerzamelaarTimeout = <T,>(promise: Promise<T>): Promise<T> => {
+                if (selectedRole?.id !== 'data-verzamelaar') return promise;
+                return Promise.race([
+                    promise,
+                    new Promise<T>((_, reject) => {
+                        window.setTimeout(() => reject(new Error('AI-coach niet bereikbaar. Probeer opnieuw.')), 12000);
+                    }),
+                ]);
+            };
 
             const { sendMessageToGemini, sendMessageToGeminiStream } = await import('@/services/geminiService');
 
@@ -658,10 +740,10 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
 
             if (useNonStreamingResponse) {
                 clearInterval(interval);
-                fullTextAccumulated = await sendMessageToGemini(
+                fullTextAccumulated = await withDataVerzamelaarTimeout(sendMessageToGemini(
                     chatSessionRef.current,
                     promptForAI
-                );
+                ));
                 setMessages(prev => [
                     ...prev,
                     { role: 'model', text: fullTextAccumulated, timestamp: new Date() }
@@ -902,20 +984,11 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
                             rejectionReason = `Code te kort (${Math.round(lengthRatio * 100)}% van origineel)`;
                         }
 
-                        const hasCanvas = newCode.includes('<canvas') || newCode.includes('getContext');
-                        const hasScript = newCode.includes('<script') && newCode.includes('</script>');
-                        const hasGameLoop = newCode.includes('requestAnimationFrame') || newCode.includes('setInterval');
-
-                        if (!hasCanvas || !hasScript || !hasGameLoop) {
+                        // Reuse shared validation for structural checks
+                        const validation = validateGameCode(newCode);
+                        if (!validation.valid) {
                             shouldUpdate = false;
-                            rejectionReason = 'Essentiële game elementen ontbreken (canvas/script/loop)';
-                        }
-
-                        const openCount = (newCode.match(/<script/gi) || []).length;
-                        const closeCount = (newCode.match(/<\/script>/gi) || []).length;
-                        if (openCount !== closeCount) {
-                            shouldUpdate = false;
-                            rejectionReason = 'Onvolledige code (script tags niet gesloten)';
+                            rejectionReason = validation.reason || 'Code validatie mislukt';
                         }
                     }
 
@@ -1003,6 +1076,25 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
             const rawMessage = error instanceof Error
                 ? error.message
                 : "Oeps, er ging iets mis bij het nadenken.";
+            const canUseStepFallback = selectedRole?.id === 'data-verzamelaar'
+                && selectedRole.steps?.length
+                && /niet bereikbaar|probeer opnieuw|timeout|timed out|duurde te lang|network|fetch|functions\/v1\/chat/i.test(rawMessage);
+            if (canUseStepFallback) {
+                console.warn("Agent logic fallback used", { roleId: selectedRole.id, reason: rawMessage });
+                const fallbackText = parseAndUpdateSteps(buildDevPreviewReply(selectedRole, textInput));
+                const sanitizedFallbackText = DOMPurify.sanitize([
+                    'De AI-coach is tijdelijk niet bereikbaar, dus ik controleer je antwoord lokaal op de kernpunten.',
+                    '',
+                    fallbackText,
+                ].join('\n'), {
+                    ALLOWED_TAGS: ['b', 'i', 'em', 'strong', 'p', 'br', 'ul', 'ol', 'li', 'code', 'pre'],
+                    ALLOWED_ATTR: []
+                });
+                setError(null);
+                setMessages(prev => [...prev, { role: 'model', text: sanitizedFallbackText, timestamp: new Date() }]);
+                setSuggestions(getStarterTips(selectedRole.id, selectedRole.examplePrompt));
+                return;
+            }
             const message = selectedRole?.id === 'game-programmeur' && /timeout|duurde te lang|timed out/i.test(rawMessage)
                 ? "⏱️ De AI had te lang nodig om je gamecode aan te passen. Je huidige game is veilig bewaard. Probeer dezelfde opdracht nog één keer, of maak je vraag iets korter."
                 : rawMessage;

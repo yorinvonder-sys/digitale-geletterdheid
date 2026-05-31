@@ -29,15 +29,7 @@ const GEMINI_TEXT_MODEL = 'gemini-2.5-flash';
 const GEMINI_TEXT_GENERATE_CONTENT_URL = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_TEXT_MODEL}:generateContent`;
 
 function getClientGeminiApiKey(): string {
-  try {
-    return String(
-      (import.meta as any).env?.VITE_GEMINI_API_KEY ||
-      (import.meta as any).env?.VITE_GOOGLE_API_KEY ||
-      ''
-    ).trim();
-  } catch {
-    return '';
-  }
+  return '';
 }
 
 // Client-side rate limiting (Cbw Zorgplicht)
@@ -285,6 +277,14 @@ export class Chat {
       parts: [{ text: cleanMessage }]
     });
 
+    if (ALLOW_LOCAL_FALLBACK && this.roleId === 'data-verzamelaar') {
+      const fallbackResponse = await simulateLocalResponse(this.systemInstruction, cleanMessage);
+      this.history.push({ role: 'model', parts: [{ text: fallbackResponse }] });
+      this.trimHistory();
+      logAiInteraction('chat', { model: 'local-fallback', fallback_used: true }).catch(() => { });
+      return { text: fallbackResponse };
+    }
+
     try {
       const { response } = await this.performRequestWithRoleFallback('chat', cleanMessage, clientRequestId);
 
@@ -438,7 +438,7 @@ async function generateClientGeminiTextFallback(params: {
 }): Promise<string> {
   const apiKey = getClientGeminiApiKey();
   if (!apiKey) {
-    throw new Error('VITE_GEMINI_API_KEY ontbreekt voor lokale AI-chat.');
+    throw new Error('Client-side Gemini API-key fallback is uitgeschakeld.');
   }
 
   const systemParts = [
@@ -464,9 +464,9 @@ async function generateClientGeminiTextFallback(params: {
     };
   }
 
-  const response = await fetch(`${GEMINI_TEXT_GENERATE_CONTENT_URL}?key=${encodeURIComponent(apiKey)}`, {
+  const response = await fetch(GEMINI_TEXT_GENERATE_CONTENT_URL, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey },
     body: JSON.stringify(requestBody),
   });
 
@@ -490,6 +490,37 @@ async function generateClientGeminiTextFallback(params: {
 
 async function simulateLocalResponse(systemInstruction: string, userMessage: string): Promise<string> {
   console.log("Simulating local response for:", userMessage);
+
+  if (systemInstruction.includes('Data Verzamelaar Coach')) {
+    const message = userMessage.toLowerCase();
+    if (/advies|gemeente|fietsenstalling|vervolgonderzoek/.test(message)) {
+      return [
+        'Goed advies. Je gebruikt de data als bewijs en je noemt ook waarom de data niet alles zegt.',
+        '',
+        'Je conclusie is daardoor voorzichtig en bruikbaar voor de gemeente.',
+        '',
+        '---STEP_COMPLETE:3---',
+      ].join('\n');
+    }
+    if (/beperking|1 school|een school|november|winter|zomer|seizoen|ziek|niet compleet/.test(message)) {
+      return [
+        'Sterk gezien. Je benoemt dat de dataset maar van een kleine groep komt en dat het meetmoment invloed kan hebben.',
+        '',
+        'Dat is precies kritisch omgaan met data: cijfers gebruiken, maar ook hun grenzen zien.',
+        '',
+        '---STEP_COMPLETE:2---',
+      ].join('\n');
+    }
+    if (/fiets|bus|tram|lopen|lopend|scooter|auto|meeste|minst|percentage|leerlingen/.test(message)) {
+      return [
+        'Goede start. Je noemt concrete patronen uit de dataset en gebruikt cijfers om je observatie te onderbouwen.',
+        '',
+        'Ga nu verder met de vraag: waarom is deze dataset nog geen compleet beeld?',
+        '',
+        '---STEP_COMPLETE:1---',
+      ].join('\n');
+    }
+  }
 
   if (systemInstruction.includes('Fact-Checker') || userMessage.includes('start de missie')) {
     if (userMessage.toLowerCase().includes('start') || userMessage.toLowerCase().includes('zaak')) {
@@ -754,7 +785,7 @@ const generateImageWithClientApiKey = async (
 
   const apiKey = getClientGeminiApiKey();
   if (!apiKey) {
-    throw new Error('VITE_GEMINI_API_KEY ontbreekt voor lokale afbeeldinggeneratie.');
+    throw new Error('Client-side Gemini API-key fallback is uitgeschakeld.');
   }
 
   const sanitizeResult = sanitizePrompt(prompt);
@@ -765,9 +796,9 @@ const generateImageWithClientApiKey = async (
   let lastError: Error | null = null;
 
   for (const model of GEMINI_IMAGE_MODELS) {
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(apiKey)}`, {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey },
       body: JSON.stringify(buildGeminiImageRequest(sanitizeResult.sanitized, options.style, options.aspectRatio)),
     });
 

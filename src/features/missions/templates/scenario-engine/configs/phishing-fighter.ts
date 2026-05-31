@@ -7,6 +7,16 @@ const config: ScenarioEngineConfig = {
     introTitle: 'Phishing Fighter',
     introDescription:
         'Phishing is de meest voorkomende cyberaanval ter wereld. Aanvallers maken nep-berichten die er echt uitzien om jouw wachtwoord of gegevens te stelen. Jij leert de trucjes te herkennen — en hoe je anderen daartegen beschermt.',
+    experienceDesign: {
+        boringRisk: 'medium',
+        firstTenSeconds: 'Je krijgt een urgent nepbericht binnen: kies eerst welk signaal jou laat stoppen.',
+        primaryInteraction: 'pin-evidence',
+        feedbackMoment: 'Feedback koppelt je keuze aan emotiedruk, linkrisico en veilige vervolgstap.',
+        visualKit: 'casefile',
+        evidenceMoment: 'Leerlingen leveren rode vlaggen, risicovolgorde en een veilige hulpactie.',
+        antiBoringRule: 'Geen theorievraag vooraf: eerst een aanval herkennen, dan pas de phishingtechniek benoemen.',
+        chromeAcceptance: 'Aanvalskaart, bewijskeuze, feedback en voortgangsknop zijn binnen 10 seconden duidelijk.',
+    },
     introFeatures: [
         'Herken rode vlaggen in gesimuleerde phishing-berichten',
         'Rangschik aanvallen van gevaarlijkst naar minst gevaarlijk',
@@ -227,6 +237,8 @@ const config: ScenarioEngineConfig = {
             description:
                 'Bekijk elk bericht en beslis: is dit een echt bericht of phishing? Vertrouw je instinct — maar controleer ook de details.',
             type: 'binary-choice',
+            acceptLabel: 'Echt',
+            rejectLabel: 'Phishing',
             maxScore: 25,
             showConfidence: true,
             feedbackCorrect: 'Goed gescoord! Jij laat je niet zo makkelijk vangen.',

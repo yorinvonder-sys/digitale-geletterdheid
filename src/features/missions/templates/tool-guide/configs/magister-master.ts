@@ -16,12 +16,71 @@ const config: ToolGuideConfig = {
         },
         evidence: 'Je toont je startscherm, rooster, huiswerkplek en cijferoverzicht zonder je cijfers hardop te delen.',
     },
+    experienceDesign: {
+        boringRisk: 'high',
+        firstTenSeconds: 'Spoedcase: toets- of huiswerkbewijs vinden voordat de leerling de stappenlijst ziet.',
+        primaryInteraction: 'prioritize-case',
+        feedbackMoment: 'Na de gekozen bewijsplek hoort de leerling waarom agenda/huiswerk sterker is dan gokken of rondvragen.',
+        visualKit: 'tool-crisis',
+        evidenceMoment: 'De leerling toont rooster, huiswerkplek en cijferoverzicht zonder cijfers hardop te noemen.',
+        antiBoringRule: 'Start nooit met "open Magister"; start met een herkenbare schoolstress-case en laat Magister het bewijs leveren.',
+        chromeAcceptance: 'Introchallenge en alle vier stappen werken op desktop, tablet portrait, tablet landscape en mobile zonder horizontale overflow.',
+    },
     introFeatures: [
         'Inloggen met je schoolaccount in de Magister-app',
         'Je rooster voor vandaag en morgen bekijken',
         'Huiswerk en deadlines opzoeken',
         'Je laatste cijfer terugvinden',
     ],
+    introChallenge: {
+        title: 'Toetsalarm',
+        scenario:
+            'Je hoort in de pauze dat er morgen misschien een toets is. Je wilt niet gokken of rondvragen, maar zelf het bewijs vinden in Magister.',
+        prompt: 'Waar kijk je als eerste om te controleren wat je morgen moet leren?',
+        preview: {
+            beforeTitle: 'Gokken en rondvragen',
+            afterTitle: 'Bewijs in Magister',
+            beforeSignals: [
+                'Gerucht in de pauze',
+                'Cijfers zijn achteraf',
+                'Berichten zijn niet altijd compleet',
+            ],
+            afterSignals: [
+                'Rooster voor morgen',
+                'Agenda of ELO-opdracht',
+                'Deadline bij het vak',
+            ],
+            evidenceTitle: 'Schoolbewijs',
+            evidenceItems: ['Rooster', 'Agenda', 'Huiswerk', 'Privacy bij cijfers'],
+        },
+        options: [
+            {
+                id: 'agenda',
+                title: 'Agenda of huiswerk',
+                description: 'Hier staan opdrachten, deadlines en soms toetsinformatie per vak.',
+                correct: true,
+                feedback:
+                    'Sterke start. Huiswerk en toetsafspraken vind je meestal bij Agenda, ELO of de opdrachtinformatie van het vak. Nu ga je bewijzen dat je die plek zelf kunt vinden.',
+            },
+            {
+                id: 'cijfers',
+                title: 'Cijfers',
+                description: 'Hier zie je resultaten nadat iets beoordeeld is.',
+                correct: false,
+                feedback:
+                    'Cijfers zijn handig na de toets, maar niet om te weten wat je morgen moet leren. Je start straks bij rooster en huiswerk, zodat je vooruit kunt plannen.',
+            },
+            {
+                id: 'berichten',
+                title: 'Alleen berichten',
+                description: 'Berichten kunnen helpen, maar niet elke docent zet toetsinformatie daar neer.',
+                correct: false,
+                feedback:
+                    'Berichten kunnen extra uitleg geven, maar zijn niet je eerste bewijsplek. Agenda, ELO en rooster zijn betrouwbaarder om je schooldag te checken.',
+            },
+        ],
+        continueLabel: 'Vind het bewijs',
+    },
     toolName: 'Magister',
     toolIcon: '📅',
     steps: [

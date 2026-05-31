@@ -7,6 +7,16 @@ const config: ScenarioEngineConfig = {
     introTitle: 'Online Helden & Helpers',
     introDescription:
         'Cyberpesten speelt zich af op platforms die jij elke dag gebruikt. Het is niet altijd duidelijk wanneer iets écht pesten is — en wat jij daarin kunt doen. In deze missie leer je patronen herkennen, situaties beoordelen en kiezen hoe jij reageert als bijstander.',
+    experienceDesign: {
+        boringRisk: 'medium',
+        firstTenSeconds: 'Stap als helper in een online situatie en kies eerst welke actie iemand veiliger maakt.',
+        primaryInteraction: 'choose-with-consequence',
+        feedbackMoment: 'Feedback toont waarom een helperactie werkt, tekortschiet of hulp van een volwassene vraagt.',
+        visualKit: 'casefile',
+        evidenceMoment: 'Leerlingen leveren herkenning van cyberpesten, prioriteit en gekozen bijstanderactie.',
+        antiBoringRule: 'Niet heldhaftig overdrijven: de game-loop beloont veilig, rustig en helpend handelen.',
+        chromeAcceptance: 'Dilemma, keuzegevolg, feedback en doorgangsstaat zijn zichtbaar zonder clipped controls.',
+    },
     introFeatures: [
         'Herken cyberpesten in echte situaties op echte platforms',
         'Ontdek welke bijstander-acties echt werken',

@@ -39,30 +39,31 @@ function buildAvailableGames(yearGroup: number = 1): GameInfo[] {
 
 interface TeacherGameToggleProps {
     onTestGame?: (gameId: string) => void;
+    schoolId?: string;
     yearGroup?: number;
 }
 
-export const TeacherGameToggle: React.FC<TeacherGameToggleProps> = ({ onTestGame, yearGroup = 1 }) => {
+export const TeacherGameToggle: React.FC<TeacherGameToggleProps> = ({ onTestGame, schoolId, yearGroup = 1 }) => {
     const [permissions, setPermissions] = useState<GamePermissions | null>(null);
     const [saving, setSaving] = useState<string | null>(null);
     const games = useMemo(() => buildAvailableGames(yearGroup), [yearGroup]);
 
     useEffect(() => {
         // Initial load
-        getGamePermissions(undefined, yearGroup).then(setPermissions);
+        getGamePermissions(schoolId, yearGroup).then(setPermissions);
 
         // Subscribe for real-time updates
-        const unsubscribe = subscribeToPermissions(undefined, (perms) => {
+        const unsubscribe = subscribeToPermissions(schoolId, (perms) => {
             setPermissions(perms);
         }, yearGroup);
 
         return () => unsubscribe();
-    }, [yearGroup]);
+    }, [schoolId, yearGroup]);
 
     const handleToggle = async (gameId: string, enabled: boolean) => {
         setSaving(gameId);
         try {
-            await setGamePermission(gameId, enabled, undefined, undefined, yearGroup);
+            await setGamePermission(gameId, enabled, undefined, schoolId, yearGroup);
             // Permissions will be updated via subscription
         } catch (error) {
             console.error('Error toggling game permission:', error);

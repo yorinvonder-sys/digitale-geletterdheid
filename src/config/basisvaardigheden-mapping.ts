@@ -198,6 +198,27 @@ export const MISSIE_BASISVAARDIGHEDEN: MissieBasisvaardigheden[] = [
       PATRONEN('Leerling herkent terugkerende patronen in computationele problemen.'),
     ],
   },
+  {
+    missionId: 'website-bouwer',
+    basisvaardigheden: [
+      LOGISCH_REDENEREN('Leerling bouwt een webpagina met HTML-structuur en CSS-regels.'),
+      SCHRIJFVAARDIGHEID('Leerling schrijft persoonlijke webteksten en legt technische keuzes uit.'),
+    ],
+  },
+  {
+    missionId: 'schermtijd-coach',
+    basisvaardigheden: [
+      FORMULEREN('Leerling bouwt argumenten over verantwoordelijkheid voor gezonde schermtijd.'),
+      ETHIEK('Leerling weegt verantwoordelijkheid van leerling, ouders, school, overheid en appbedrijven af.'),
+    ],
+  },
+  {
+    missionId: 'notificatie-ninja',
+    basisvaardigheden: [
+      MEDIAWIJSHEID('Leerling herkent ontwerpkeuzes die aandacht sturen en appgedrag beïnvloeden.'),
+      LOGISCH_REDENEREN('Leerling rangschikt notificaties op urgentie, sociale druk en eigen belang.'),
+    ],
+  },
 
   // Review-missie periode 2
   {
@@ -247,10 +268,24 @@ export const MISSIE_BASISVAARDIGHEDEN: MissieBasisvaardigheden[] = [
     ],
   },
   {
+    missionId: 'scroll-stopper',
+    basisvaardigheden: [
+      MEDIAWIJSHEID('Leerling analyseert hoe infinite scroll, likes en beloningen appgedrag sturen.'),
+      ETHIEK('Leerling weegt keuzevrijheid af tegen bescherming van jongeren tegen verslavend ontwerp.'),
+    ],
+  },
+  {
     missionId: 'cookie-crusher',
     basisvaardigheden: [
       BEGRIJPEND_LEZEN('Leerling leest en interpreteert cookie-meldingen en privacyvoorwaarden.'),
       PRIVACY_RECHTEN('Leerling leert over trackingcookies en het recht op privacy.'),
+    ],
+  },
+  {
+    missionId: 'mail-detective',
+    basisvaardigheden: [
+      BEGRIJPEND_LEZEN('Leerling leest e-mails kritisch en herkent verdachte signalen in tekst, links en bijlagen.'),
+      ONLINE_VEILIGHEID('Leerling leert phishing herkennen en kiest veilige reactiestrategieën.'),
     ],
   },
   {
@@ -279,6 +314,20 @@ export const MISSIE_BASISVAARDIGHEDEN: MissieBasisvaardigheden[] = [
     basisvaardigheden: [
       ETHIEK('Leerling reflecteert op de ruil tussen gratis diensten en persoonlijke data.'),
       PRIVACY_RECHTEN('Leerling leert over dataminimalisatie en het recht op vergetelheid.'),
+    ],
+  },
+  {
+    missionId: 'data-speurder',
+    basisvaardigheden: [
+      STATISTIEK('Leerling onderzoekt data, kiest visualisaties en trekt onderbouwde conclusies.'),
+      GRAFIEKEN('Leerling beoordeelt welke grafiekvorm past en hoe grafieken kunnen misleiden.'),
+    ],
+  },
+  {
+    missionId: 'digitale-balans-coach',
+    basisvaardigheden: [
+      FORMULEREN('Leerling formuleert een standpunt over digitale balans en reageert op tegenargumenten.'),
+      ETHIEK('Leerling onderzoekt gedeelde verantwoordelijkheid voor gezonde digitale gewoontes.'),
     ],
   },
   {
@@ -437,6 +486,20 @@ export const MISSIE_BASISVAARDIGHEDEN: MissieBasisvaardigheden[] = [
     ],
   },
   {
+    missionId: 'wachtwoord-warrior',
+    basisvaardigheden: [
+      LOGISCH_REDENEREN('Leerling redeneert over kraaktijd, aanvalspatronen en wachtwoordsterkte.'),
+      ONLINE_VEILIGHEID('Leerling leert regels voor veilig wachtwoordgebruik en accountbescherming.'),
+    ],
+  },
+  {
+    missionId: 'access-control-engineer',
+    basisvaardigheden: [
+      LOGISCH_REDENEREN('Leerling analyseert toegangsregels en test of autorisaties correct werken.'),
+      PRIVACY_RECHTEN('Leerling beschermt privacygevoelige schooldata met passende rolgrenzen.'),
+    ],
+  },
+  {
     missionId: 'code-review-2',
     basisvaardigheden: [
       FORMULEREN('Leerling schrijft gestructureerde code-reviews met verbeterpunten.'),
@@ -494,6 +557,13 @@ export const MISSIE_BASISVAARDIGHEDEN: MissieBasisvaardigheden[] = [
     basisvaardigheden: [
       FORMULEREN('Leerling geeft onderbouwde feedback op mediaproducties van medeleerlingen.'),
       LEESVAARDIGHEID('Leerling beoordeelt of mediaproducties hun boodschap effectief overbrengen.'),
+    ],
+  },
+  {
+    missionId: 'online-helden',
+    basisvaardigheden: [
+      ONLINE_VEILIGHEID('Leerling herkent cyberpesten en kiest passende bijstander-acties.'),
+      MEDIAWIJSHEID('Leerling beoordeelt online situaties op patroon, impact en platformgedrag.'),
     ],
   },
 
@@ -674,6 +744,21 @@ export const MISSIE_BASISVAARDIGHEDEN: MissieBasisvaardigheden[] = [
       BEGRIJPEND_LEZEN('Leerling analyseert rapporten over de maatschappelijke impact van tech.'),
       FORMULEREN('Leerling formuleert een impactanalyse met aanbevelingen.'),
       ETHIEK('Leerling beoordeelt de positieve en negatieve effecten van technologie.'),
+    ],
+  },
+  {
+    missionId: 'welzijnsonderzoeker',
+    basisvaardigheden: [
+      STATISTIEK('Leerling analyseert enquêtedata, gemiddelden en trends over digitaal welzijn.'),
+      GRAFIEKEN('Leerling interpreteert tabellen en grafieken over schermtijd, slaap en welzijn.'),
+      GELIJKHEID('Leerling onderzoekt welzijnssignalen zonder leerlingen te stigmatiseren.'),
+    ],
+  },
+  {
+    missionId: 'startup-pitch',
+    basisvaardigheden: [
+      FORMULEREN('Leerling pitcht een concreet probleem, AI-oplossing en waardepropositie.'),
+      ETHIEK('Leerling benoemt privacy- en eerlijkheidsrisico\'s van een AI-startup.'),
     ],
   },
   {

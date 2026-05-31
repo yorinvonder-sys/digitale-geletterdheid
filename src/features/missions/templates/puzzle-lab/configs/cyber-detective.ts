@@ -7,6 +7,16 @@ const config: PuzzleLabConfig = {
     introTitle: 'Cyber Detective',
     introDescription:
         'Een bedrijf is gehackt en hun klantendata is op het dark web opgedoken. Jij bent ingeschakeld als digitaal forensisch onderzoeker. Analyseer de logbestanden, identificeer de aanvalsmethode en stel een forensisch rapport op.',
+    experienceDesign: {
+        boringRisk: 'low',
+        firstTenSeconds: 'Kies je forensisch spoor: loganalyse, bewijsketen of aanvalsmethode.',
+        primaryInteraction: 'solve-puzzle',
+        feedbackMoment: 'Feedback benoemt welk digitaal spoor geldig bewijs is en wat nog ontbreekt.',
+        visualKit: 'review-puzzle-feedback',
+        evidenceMoment: 'Je bewijs bestaat uit loganalyse, bewijsketenkeuzes, aanvalsmethode en tijdlijnrapport.',
+        antiBoringRule: 'Cybersecurity blijft forensisch en beschermend; geen hacker-glamour of angstbeloning.',
+        chromeAcceptance: 'De eerste keuze maakt de forensische rol duidelijk en de terminal blijft scanbaar op mobiel.',
+    },
     introFeatures: [
         'Analyseer serverlogbestanden en identificeer verdachte patronen',
         'Herken verschillende soorten cyberaanvallen',
@@ -18,9 +28,9 @@ const config: PuzzleLabConfig = {
         {
             id: 'loganalyse',
             title: 'Analyseer de serverlogboeken',
-            type: 'multiple-choice',
+            type: 'code-crack',
             description:
-                'Je hebt toegang tot de serverlogboeken van het gehackte bedrijf. Bekijk de volgende regels:\n\n```\n2024-01-22 02:47:13 | IP: 185.234.xx.xx | LOGIN FAILED | user: admin\n2024-01-22 02:47:15 | IP: 185.234.xx.xx | LOGIN FAILED | user: admin\n2024-01-22 02:47:17 | IP: 185.234.xx.xx | LOGIN FAILED | user: admin\n2024-01-22 02:47:31 | IP: 185.234.xx.xx | LOGIN SUCCESS | user: admin\n2024-01-22 02:48:02 | IP: 185.234.xx.xx | DOWNLOAD | bestand: klanten_export.csv\n```\n\nWat voor type aanval zie je hier?',
+                'Je hebt toegang tot de serverlogboeken van het gehackte bedrijf. Bekijk de regels en typ de aanvalsmethode die je ziet.\n\n```\n2024-01-22 02:47:13 | IP: 185.234.xx.xx | LOGIN FAILED | user: admin\n2024-01-22 02:47:15 | IP: 185.234.xx.xx | LOGIN FAILED | user: admin\n2024-01-22 02:47:17 | IP: 185.234.xx.xx | LOGIN FAILED | user: admin\n2024-01-22 02:47:31 | IP: 185.234.xx.xx | LOGIN SUCCESS | user: admin\n2024-01-22 02:48:02 | IP: 185.234.xx.xx | DOWNLOAD | bestand: klanten_export.csv\n```\n\nAntwoord met de aanvalsmethode, bijvoorbeeld: type aanval.',
             clues: [
                 'Let op het tijdstip: de aanval vond plaats om 02:47 — midden in de nacht.',
                 'Hetzelfde IP-adres probeert meerdere keren in te loggen in korte tijd.',
@@ -31,13 +41,11 @@ const config: PuzzleLabConfig = {
                 'De aanvaller downloadde de klantendatabase direct nadat hij toegang had — dat was zijn doel.',
             ],
             revealExtraAfterAttempts: 2,
-            options: [
-                'Phishing — de aanvaller stuurde een nep-e-mail',
-                'Brute force — het wachtwoord werd geraden door veel te proberen',
-                'SQL-injectie — de database werd aangevallen via een formulier',
-                'Social engineering — iemand werd overgehaald het wachtwoord te geven',
-            ],
-            answer: 'Brute force — het wachtwoord werd geraden door veel te proberen',
+            answer: ['brute force', 'bruteforce'],
+            validator: (input: string) => {
+                const s = input.toLowerCase();
+                return s.includes('brute') && s.includes('force');
+            },
             caseSensitive: false,
             maxAttempts: 3,
             points: 25,
@@ -48,9 +56,9 @@ const config: PuzzleLabConfig = {
         {
             id: 'bewijsketen',
             title: 'Welk spoor is geldig bewijs?',
-            type: 'multiple-choice',
+            type: 'text-input',
             description:
-                'Na de inbraak moet de forensisch analist het bewijs veiligstellen. Maar digitaal bewijs is kwetsbaar — het moet op de juiste manier worden opgeslagen, anders is het onbruikbaar voor de rechtbank.\n\nWelke actie is CORRECT voor het veiligstellen van digitaal bewijs?',
+                'Na de inbraak moet de forensisch analist het bewijs veiligstellen. Digitaal bewijs is kwetsbaar: het moet controleerbaar en onveranderd blijven.\n\nTyp de juiste bewijsactie in één korte zin. Noem minimaal de forensische kopie of hash-waarde.',
             clues: [
                 'Digitaal bewijs moet onveranderd blijven — elke wijziging maakt het onbruikbaar voor justitie.',
                 'Een "forensische kopie" is een exacte kopie van de originele schijf — bit voor bit.',
@@ -61,13 +69,11 @@ const config: PuzzleLabConfig = {
                 'Een hash-waarde (zoals MD5 of SHA-256) bewijst dat een bestand niet is gewijzigd na het kopiëren.',
             ],
             revealExtraAfterAttempts: 2,
-            options: [
-                'Direct inloggen op de gehackte server en de logbestanden bekijken',
-                'De logbestanden kopiëren naar een USB-stick en de originelen verwijderen',
-                'Een forensische kopie maken van de server en de hash-waarde vastleggen',
-                'De server uitzetten zodat de aanvaller geen toegang meer heeft',
-            ],
-            answer: 'Een forensische kopie maken van de server en de hash-waarde vastleggen',
+            answer: [],
+            validator: (input: string) => {
+                const s = input.toLowerCase();
+                return s.includes('forensische kopie') || (s.includes('hash') && (s.includes('kopie') || s.includes('waarde')));
+            },
             caseSensitive: false,
             maxAttempts: 3,
             points: 25,
@@ -78,9 +84,9 @@ const config: PuzzleLabConfig = {
         {
             id: 'aanvalsmethoden',
             title: 'Herken de aanvalsmethode',
-            type: 'multiple-choice',
+            type: 'code-crack',
             description:
-                'Naast brute force zijn er meer aanvalsmethoden. Lees het volgende e-mailbericht dat een medewerker ontving:\n\n---\n**Van:** it-support@bedrijff.nl\n**Onderwerp:** Dringende actie vereist — reset uw wachtwoord\n\n*"Geachte medewerker, uw account loopt risico. Klik hier om uw wachtwoord te resetten: http://bedrijff.nl/reset"*\n\n---\n\nWat voor aanval is dit?',
+                'Naast brute force zijn er meer aanvalsmethoden. Lees het e-mailbericht en typ de aanvalsmethode die dit bewijsstuk laat zien.\n\n---\n**Van:** it-support@bedrijff.nl\n**Onderwerp:** Dringende actie vereist — reset uw wachtwoord\n\n*"Geachte medewerker, uw account loopt risico. Klik hier om uw wachtwoord te resetten: http://bedrijff.nl/reset"*\n\n---\n\nAntwoord met de aanvalsmethode.',
             clues: [
                 'Let op het e-mailadres: "bedrijff.nl" — het echte bedrijf heet "bedrijf.nl".',
                 'De e-mail creëert urgentie: "dringend", "risico" — dit is een klassieke manipulatietechniek.',
@@ -91,13 +97,8 @@ const config: PuzzleLabConfig = {
                 'Het verschil met brute force: phishing manipuleert MENSEN, brute force aanvalt het systeem direct.',
             ],
             revealExtraAfterAttempts: 2,
-            options: [
-                'Brute force — het wachtwoord wordt automatisch geraden',
-                'Malware — er wordt schadelijke software geïnstalleerd',
-                'Phishing — de aanvaller doet zich voor als een betrouwbare partij',
-                'DDoS — de server wordt overspoeld met verzoeken',
-            ],
-            answer: 'Phishing — de aanvaller doet zich voor als een betrouwbare partij',
+            answer: ['phishing'],
+            validator: (input: string) => input.toLowerCase().includes('phishing'),
             caseSensitive: false,
             maxAttempts: 3,
             points: 25,

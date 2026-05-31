@@ -7,8 +7,8 @@
  * SLO-doelen: Informatievaardigheden, kritisch denken, data-analyse
  */
 
-import React, { useState } from 'react';
-import { ArrowLeft, Trophy, ChevronRight, Check, X, BarChart3, TrendingUp, AlertTriangle, Lightbulb, Target, Sparkles, Brain, Eye } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
+import { ArrowLeft, Trophy, ChevronRight, Check, BarChart3, TrendingUp, AlertTriangle, Lightbulb, Target, Sparkles, Brain, Eye, FileSearch } from 'lucide-react';
 import { UserStats, VsoProfile } from '@/types';
 import { useMissionAutoSave } from '@/hooks/useMissionAutoSave';
 import { MissionGoalBanner } from './templates/shared/MissionGoalBanner';
@@ -22,6 +22,13 @@ interface DataDetectiveState {
     showIntro: boolean;
     showLevelComplete: boolean;
     showMissionComplete: boolean;
+    conclusionLog: {
+        challengeId: string;
+        title: string;
+        evidenceLabel: string;
+        evidenceValue: number;
+        conclusion: string;
+    }[];
 }
 
 interface Props {
@@ -38,7 +45,7 @@ const MISSION_GOAL: MissionGoal = {
         min: 3,
         description: 'Alle drie Data Detective levels zijn voltooid.',
     },
-    evidence: 'Antwoorden over patronen, misleiding en kritische datakeuzes.',
+    evidence: 'Gepinde datapuntbewijzen, conclusiekaarten en een afrondende beoordeling.',
 };
 
 // Types
@@ -57,13 +64,9 @@ interface DataChallenge {
             value: string;
         };
     };
-    question: string;
-    options: {
-        id: string;
-        text: string;
-        isCorrect: boolean;
-        explanation: string;
-    }[];
+    conclusionPrompt: string;
+    modelConclusion: string;
+    feedback: string;
     insight: string; // What students should learn
     isMisleading?: boolean; // For "spot the misleading graph" challenges
     misleadingReason?: string;
@@ -83,13 +86,9 @@ const CHALLENGES: DataChallenge[] = [
             values: [92, 81, 57, 21, 13],
             colors: ['#5F947D', '#D97848', '#0B453F', '#D7C95F', '#D97848']
         },
-        question: 'Welke conclusie is het meest logisch op basis van deze data?',
-        options: [
-            { id: 'a', text: 'De app verzamelt vooral data om contentaanbevelingen te verbeteren', isCorrect: true, explanation: 'Correct. Kijkgedrag en zoekopdrachten zijn veruit het grootst en sturen meestal aanbevelingen.' },
-            { id: 'b', text: 'Locatie en microfoon zijn de belangrijkste databronnen', isCorrect: false, explanation: 'Niet volgens de grafiek: deze twee zijn juist veel lager dan kijkgedrag en zoekopdrachten.' },
-            { id: 'c', text: 'De app verzamelt geen privacygevoelige data', isCorrect: false, explanation: 'Locatie, contacten en microfoontoegang kunnen wel degelijk privacygevoelig zijn.' },
-            { id: 'd', text: 'De app gebruikt alleen data als je iets post', isCorrect: false, explanation: 'Ook passief gedrag (kijken en zoeken) wordt duidelijk verzameld.' }
-        ],
+        conclusionPrompt: 'Schrijf je detectiveconclusie: welke databron stuurt deze app vooral, en wat betekent dat voor jou?',
+        modelConclusion: 'De app verzamelt vooral kijkgedrag en zoekopdrachten om aanbevelingen te sturen.',
+        feedback: 'Kijkgedrag en zoekopdrachten zijn veruit het grootst. Locatie, contacten en microfoon zijn lager, maar blijven privacygevoelig.',
         insight: 'Bedrijven bouwen vooral profielen op basis van je dagelijkse gedrag. Dat kan handig zijn, maar vraagt ook om bewuste keuzes.'
     },
     {
@@ -103,13 +102,9 @@ const CHALLENGES: DataChallenge[] = [
             values: [2, 3, 4, 5, 6, 8, 9],
             colors: ['#D7C95F']
         },
-        question: 'Welke combinatie van kans en risico past het beste bij deze trend?',
-        options: [
-            { id: 'a', text: 'Kans: sneller relevante producten vinden. Risico: je ziet minder alternatieven.', isCorrect: true, explanation: 'Correct. Personalisatie verhoogt gemak, maar kan ook een filterbubbel in je keuzes veroorzaken.' },
-            { id: 'b', text: 'Kans: volledige privacy. Risico: geen aanbiedingen.', isCorrect: false, explanation: 'Personalisatie betekent meestal juist dat er veel data wordt gebruikt, niet volledige privacy.' },
-            { id: 'c', text: 'Kans: minder data-opslag. Risico: slechtere beveiliging.', isCorrect: false, explanation: 'Deze grafiek zegt niets over minder data-opslag of beveiliging.' },
-            { id: 'd', text: 'Kans: geen advertenties meer. Risico: geen risico.', isCorrect: false, explanation: 'Personalisatie leidt vaak juist tot meer gerichte advertenties en heeft altijd afwegingen.' }
-        ],
+        conclusionPrompt: 'Maak een kans-risico kaart: wat wordt beter door personalisatie, en wat kan smaller worden?',
+        modelConclusion: 'Kans: sneller relevante producten vinden. Risico: je ziet minder alternatieven.',
+        feedback: 'De trend laat meer gepersonaliseerde aanbevelingen zien. Dat kan gemak geven, maar ook je keuzes sturen.',
         insight: 'Data kan je ervaring verbeteren, maar ook sturen wat je wel en niet te zien krijgt.'
     },
 
@@ -125,13 +120,9 @@ const CHALLENGES: DataChallenge[] = [
             values: [38, 24, 26, 12],
             colors: ['#5F947D', '#D97848', '#D7C95F', '#D97848']
         },
-        question: 'Welke toepassing vraagt de meeste kritische controle van gebruikers?',
-        options: [
-            { id: 'a', text: 'Fraudedetectie, omdat veiligheid nooit nodig is', isCorrect: false, explanation: 'Fraudedetectie is juist vaak nuttig en beschermt gebruikers.' },
-            { id: 'b', text: 'Productverbetering, want dat is altijd verboden', isCorrect: false, explanation: 'Productverbetering kan legitiem zijn, mits duidelijk en zorgvuldig.' },
-            { id: 'c', text: 'Verkoop aan partners, want data verlaat dan het oorspronkelijke platform', isCorrect: true, explanation: 'Correct. Zodra data gedeeld of verkocht wordt aan derden, neemt het privacyrisico sterk toe.' },
-            { id: 'd', text: 'Advertenties, want advertenties zijn per definitie illegaal', isCorrect: false, explanation: 'Advertenties zijn niet automatisch illegaal; het gaat om transparantie, toestemming en proportionaliteit.' }
-        ],
+        conclusionPrompt: 'Markeer de risicoroute: welke bestemming van data verdient de meeste controle, en waarom?',
+        modelConclusion: 'Verkoop aan partners vraagt de meeste controle, want data verlaat dan het oorspronkelijke platform.',
+        feedback: 'Fraudedetectie en productverbetering kunnen nuttig zijn. Delen of verkopen aan partners vergroot het privacyrisico.',
         insight: 'Niet elk datagebruik is verkeerd, maar doorgifte aan derden verdient extra kritisch toezicht.'
     },
     {
@@ -145,13 +136,9 @@ const CHALLENGES: DataChallenge[] = [
             values: [72, 74, 76],
             colors: ['#0B453F', '#0B453F', '#0B453F']
         },
-        question: 'Waarom kan deze presentatie misleidend zijn?',
-        options: [
-            { id: 'a', text: 'De Y-as begint niet bij 0, waardoor de stijging veel groter lijkt', isCorrect: true, explanation: 'Correct. De stijging is klein, maar visueel wordt die overdreven door de afgesneden as.' },
-            { id: 'b', text: 'Er staan te weinig balken om een conclusie te trekken', isCorrect: false, explanation: 'Drie meetpunten kunnen nog steeds een trend tonen; de as-instelling is hier het echte probleem.' },
-            { id: 'c', text: 'Paars mag niet gebruikt worden voor privacydata', isCorrect: false, explanation: 'Kleurkeuze is niet de kern van de misleiding.' },
-            { id: 'd', text: 'De data moet altijd in een cirkeldiagram staan', isCorrect: false, explanation: 'Het type grafiek is niet verplicht; eerlijke schaal is belangrijker.' }
-        ],
+        conclusionPrompt: 'Schrijf een waarschuwing voor de grafiek: welk ontwerpdetail maakt het verhaal groter dan de data?',
+        modelConclusion: 'De Y-as begint niet bij 0, waardoor de stijging veel groter lijkt dan hij is.',
+        feedback: 'De stijging is klein, maar de afgesneden as blaast het verschil visueel op.',
         insight: 'Controleer altijd schaal en context. Bedrijven kunnen met echte data toch een misleidend beeld neerzetten.',
         isMisleading: true,
         misleadingReason: 'Y-as start niet bij 0'
@@ -173,13 +160,9 @@ const CHALLENGES: DataChallenge[] = [
                 value: 'Study tips-video\'s bekeken',
             },
         },
-        question: 'Wat is de beste kritische reactie?',
-        options: [
-            { id: 'a', text: 'De app is zeker de enige oorzaak van betere cijfers', isCorrect: false, explanation: 'Dat kun je niet zeker weten zonder extra onderzoek en controle van andere factoren.' },
-            { id: 'b', text: 'Correlatie is zichtbaar, maar motivatie, begeleiding of thuissituatie kunnen ook meespelen', isCorrect: true, explanation: 'Correct. Samenhang is niet hetzelfde als oorzaak; er kunnen meerdere verklaringen zijn.' },
-            { id: 'c', text: 'Data mag nooit gebruikt worden voor onderwijsverbetering', isCorrect: false, explanation: 'Data kan juist kansen bieden in onderwijs, mits zorgvuldig en eerlijk ingezet.' },
-            { id: 'd', text: 'Omdat de cijfers verschillen, is de data waardeloos', isCorrect: false, explanation: 'Verschillen zijn juist normaal in echte data en kunnen nuttige signalen geven.' }
-        ],
+        conclusionPrompt: 'Schrijf een kritische reactie op de claim: wat zie je wel, en wat mag je nog niet bewijzen?',
+        modelConclusion: 'Er is samenhang zichtbaar, maar motivatie, begeleiding of thuissituatie kunnen ook meespelen.',
+        feedback: 'Samenhang is niet hetzelfde als oorzaak. Voor een oorzaakclaim heb je extra onderzoek en controlegroepen nodig.',
         insight: 'Goede data-geletterdheid betekent: kansen zien, maar claims van bedrijven altijd kritisch toetsen.'
     },
     {
@@ -193,13 +176,9 @@ const CHALLENGES: DataChallenge[] = [
             values: [94, 6],
             colors: ['#D97848', '#5F947D']
         },
-        question: 'Welke conclusie is het sterkst?',
-        options: [
-            { id: 'a', text: 'Gebruikers willen altijd vrijwillig volledige tracking', isCorrect: false, explanation: 'Niet per se. Ontwerpkeuzes kunnen gebruikers richting een snelle keuze duwen.' },
-            { id: 'b', text: 'Het ontwerp kan een dark pattern zijn: makkelijk accepteren, lastig weigeren', isCorrect: true, explanation: 'Correct. Dit is een bekend risico: de keuze lijkt vrij, maar de interface stuurt gedrag.' },
-            { id: 'c', text: 'Omdat 94% klikt, is er geen privacyprobleem', isCorrect: false, explanation: 'Een hoge acceptatie betekent niet automatisch dat toestemming bewust of eerlijk is gegeven.' },
-            { id: 'd', text: 'Cookies zijn altijd illegaal', isCorrect: false, explanation: 'Cookies kunnen legaal zijn, maar transparantie en echte keuzevrijheid blijven cruciaal.' }
-        ],
+        conclusionPrompt: 'Beoordeel de keuzevrijheid: waarom bewijst 94% accepteren niet automatisch echte toestemming?',
+        modelConclusion: 'Het ontwerp kan een dark pattern zijn: makkelijk accepteren, lastig weigeren.',
+        feedback: 'Een hoge acceptatie betekent niet automatisch bewuste toestemming. De interface kan gedrag sturen.',
         insight: 'Bewust internetgedrag betekent: niet blind accepteren, maar begrijpen waarvoor je toestemming geeft.'
     }
 ];
@@ -211,7 +190,7 @@ const BarChart: React.FC<{ data: DataChallenge['data'], isMisleading?: boolean }
 
     return (
         <div className="rounded-2xl p-3 sm:p-4 overflow-hidden" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
-            <div className="flex items-end justify-around gap-1 sm:gap-2 h-48">
+            <div className="flex h-28 items-end justify-around gap-1 sm:h-36 sm:gap-2">
                 {data.labels.map((label, i) => {
                     const height = isMisleading
                         ? ((data.values[i] - minForMisleading) / (maxValue - minForMisleading)) * 100
@@ -256,7 +235,7 @@ const LineChart: React.FC<{ data: DataChallenge['data'] }> = ({ data }) => {
 
     return (
         <div className="rounded-2xl p-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
-            <svg viewBox="0 0 100 100" className="w-full h-48">
+            <svg viewBox="0 0 100 100" className="h-32 w-full sm:h-40">
                 {/* Grid lines */}
                 {[0, 25, 50, 75, 100].map(y => (
                     <line key={y} x1="0" y1={y} x2="100" y2={y} stroke="#E7D8BD" strokeWidth="0.5" />
@@ -342,14 +321,22 @@ export const DataDetectiveMission: React.FC<Props> = ({ onBack, onComplete, vsoP
             showIntro: true,
             showLevelComplete: false,
             showMissionComplete: false,
+            conclusionLog: [],
         }
     );
 
-    const { currentLevel, currentChallengeIndex, score, correctAnswers, showIntro, showLevelComplete, showMissionComplete } = state;
+    const { currentLevel, currentChallengeIndex, score, correctAnswers, showIntro, showLevelComplete, showMissionComplete, conclusionLog = [] } = state;
 
     // Transient UI state - niet opgeslagen
-    const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
+    const [selectedEvidence, setSelectedEvidence] = useState<string | null>(null);
+    const [conclusionDraft, setConclusionDraft] = useState('');
     const [showFeedback, setShowFeedback] = useState(false);
+    const feedbackRef = useRef<HTMLDivElement | null>(null);
+
+    useEffect(() => {
+        if (!showFeedback) return;
+        feedbackRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, [showFeedback]);
 
     const levelChallenges = CHALLENGES.filter(c => c.level === currentLevel);
     const currentChallenge = levelChallenges[currentChallengeIndex];
@@ -362,23 +349,29 @@ export const DataDetectiveMission: React.FC<Props> = ({ onBack, onComplete, vsoP
         currentLevel === 'gevorderd' ? 2 + currentChallengeIndex :
             4 + currentChallengeIndex).length;
 
-    const handleAnswer = (optionId: string) => {
-        if (showFeedback) return;
-        setSelectedAnswer(optionId);
+    const handleSubmitConclusion = () => {
+        if (showFeedback || !selectedEvidence || conclusionDraft.trim().length < 20) return;
         setShowFeedback(true);
-
-        const option = currentChallenge.options.find(o => o.id === optionId);
-        if (option?.isCorrect) {
-            setState(prev => ({
-                ...prev,
-                score: prev.score + 100,
-                correctAnswers: prev.correctAnswers + 1,
-            }));
-        }
+        setState(prev => ({
+            ...prev,
+            score: prev.score + 100,
+            correctAnswers: prev.correctAnswers + 1,
+            conclusionLog: [
+                ...(prev.conclusionLog ?? []).filter(entry => entry.challengeId !== currentChallenge.id),
+                {
+                    challengeId: currentChallenge.id,
+                    title: currentChallenge.title,
+                    evidenceLabel: pinnedEvidence?.label ?? 'Datapunt',
+                    evidenceValue: pinnedEvidence?.value ?? 0,
+                    conclusion: conclusionDraft.trim(),
+                },
+            ],
+        }));
     };
 
     const handleNext = () => {
-        setSelectedAnswer(null);
+        setSelectedEvidence(null);
+        setConclusionDraft('');
         setShowFeedback(false);
 
         if (currentChallengeIndex < levelChallenges.length - 1) {
@@ -394,6 +387,8 @@ export const DataDetectiveMission: React.FC<Props> = ({ onBack, onComplete, vsoP
     };
 
     const handleNextLevel = () => {
+        setSelectedEvidence(null);
+        setConclusionDraft('');
         setState(prev => ({
             ...prev,
             showLevelComplete: false,
@@ -486,7 +481,7 @@ export const DataDetectiveMission: React.FC<Props> = ({ onBack, onComplete, vsoP
                         <div className="flex justify-around">
                             <div>
                                 <p className="text-3xl font-black" style={{ color: '#5F947D' }}>{correctAnswers}</p>
-                                <p className="text-sm" style={{ color: '#445865' }}>Correct</p>
+                                <p className="text-sm" style={{ color: '#445865' }}>Conclusies</p>
                             </div>
                             <div>
                                 <p className="text-3xl font-black" style={{ color: '#D97848' }}>{score}</p>
@@ -535,7 +530,7 @@ export const DataDetectiveMission: React.FC<Props> = ({ onBack, onComplete, vsoP
                         <div className="flex justify-around">
                             <div>
                                 <p className="text-3xl font-black" style={{ color: '#5F947D' }}>{correctAnswers}/{totalChallenges}</p>
-                                <p className="text-sm" style={{ color: '#445865' }}>Correct</p>
+                                <p className="text-sm" style={{ color: '#445865' }}>Conclusies</p>
                             </div>
                             <div>
                                 <p className="text-3xl font-black" style={{ color: '#D97848' }}>{score}</p>
@@ -566,6 +561,19 @@ export const DataDetectiveMission: React.FC<Props> = ({ onBack, onComplete, vsoP
                         <p className="text-xs mt-3" style={{ color: '#445865' }}>Tip: deel je regels met een klasgenoot en vergelijk!</p>
                     </div>
 
+                    <div className="rounded-2xl p-5 text-left" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }} data-qa="data-detective-teacher-evidence">
+                        <h3 className="text-lg font-bold mb-3" style={{ color: '#0B453F' }}>Bewijs voor je docent</h3>
+                        <div className="space-y-2">
+                            {conclusionLog.slice(-3).map(entry => (
+                                <div key={entry.challengeId} className="rounded-xl p-3" style={{ backgroundColor: '#FCF6EA', border: '1px solid #E7D8BD' }}>
+                                    <p className="text-xs font-black uppercase tracking-widest" style={{ color: '#D97848' }}>{entry.title}</p>
+                                    <p className="mt-1 text-xs font-bold" style={{ color: '#0B453F' }}>Gepind: {entry.evidenceLabel} ({entry.evidenceValue})</p>
+                                    <p className="mt-1 text-xs leading-snug" style={{ color: '#445865' }}>{entry.conclusion}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
                     <button
                         onClick={() => { clearSave(); onComplete(true); }}
                         className="w-full py-4 text-white rounded-full font-black uppercase tracking-wide transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#D97848]"
@@ -582,11 +590,19 @@ export const DataDetectiveMission: React.FC<Props> = ({ onBack, onComplete, vsoP
     }
 
     // Main game screen
+    const evidenceOptions = currentChallenge.data.labels.map((label, index) => ({
+        id: `${currentChallenge.id}-${index}`,
+        label,
+        value: currentChallenge.data.values[index],
+        color: currentChallenge.data.colors?.[index] ?? '#0B453F',
+    }));
+    const pinnedEvidence = evidenceOptions.find(option => option.id === selectedEvidence);
+
     return (
-        <div className="min-h-screen" style={{ backgroundColor: '#FCF6EA' }}>
+        <div className="min-h-dvh overflow-hidden" style={{ backgroundColor: '#FCF6EA' }} data-qa="data-detective-active">
             {/* Header */}
             <div className="sticky top-0 z-20 backdrop-blur-md" style={{ backgroundColor: 'rgba(255, 255, 255, 0.9)', borderBottom: '1px solid #E7D8BD' }}>
-                <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
+                <div className="mx-auto flex max-w-4xl items-center justify-between px-3 py-2 sm:px-4 sm:py-3">
                     <button
                         onClick={onBack}
                         className="p-2 transition-colors"
@@ -597,7 +613,7 @@ export const DataDetectiveMission: React.FC<Props> = ({ onBack, onComplete, vsoP
                         <ArrowLeft size={24} />
                     </button>
 
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-2 sm:gap-4">
                         <div className="flex items-center gap-2">
                             <span className="px-3 py-1 rounded-full text-xs font-bold inline-flex items-center" style={{
                                 backgroundColor: currentLevel === 'beginner' ? 'rgba(95, 148, 125, 0.1)' :
@@ -638,15 +654,78 @@ export const DataDetectiveMission: React.FC<Props> = ({ onBack, onComplete, vsoP
             </div>
 
             {/* Content */}
-            <div className="max-w-2xl mx-auto px-4 py-8 space-y-6">
+            <div className="mx-auto flex h-[calc(100dvh-57px)] max-w-3xl flex-col gap-3 overflow-y-auto px-3 py-3 pb-24 sm:h-[calc(100dvh-65px)] sm:gap-4 sm:px-4 sm:py-4 sm:pb-6 custom-scrollbar">
                 {/* Challenge title */}
-                <div className="text-center space-y-2">
-                    <h2 className="text-2xl font-black" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#08283B' }}>{currentChallenge.title}</h2>
-                    <p style={{ color: '#445865' }}>{currentChallenge.scenario}</p>
+                <div className="shrink-0 space-y-1 text-center">
+                    <h2 className="text-xl font-black sm:text-2xl" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#08283B' }}>{currentChallenge.title}</h2>
+                    <p className="text-xs leading-snug sm:text-base" style={{ color: '#445865' }}>{currentChallenge.scenario}</p>
+                </div>
+
+                <div
+                    className="shrink-0 rounded-2xl border bg-white p-3 shadow-sm sm:p-4"
+                    style={{ borderColor: '#E7D8BD' }}
+                    data-qa="data-detective-evidence-panel"
+                >
+                    <div className="mb-3 flex items-start gap-3">
+                        <div className="rounded-xl p-2" style={{ backgroundColor: 'rgba(11, 69, 63, 0.08)', color: '#0B453F' }}>
+                            <FileSearch size={18} />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                            <p className="text-[10px] font-black uppercase tracking-widest" style={{ color: '#D97848' }}>
+                                Data-room actie
+                            </p>
+                            <p className="text-sm font-bold leading-snug" style={{ color: '#08283B' }}>
+                                Pin eerst het bewijs dat je straks gebruikt voor je keuze.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+                        {evidenceOptions.map(option => {
+                            const isSelected = selectedEvidence === option.id;
+
+                            return (
+                                <button
+                                    key={option.id}
+                                    type="button"
+                                    onClick={() => setSelectedEvidence(option.id)}
+                                    aria-pressed={isSelected}
+                                    data-qa={`data-detective-evidence-${option.id}`}
+                                    className="min-h-[58px] rounded-xl border p-2 text-left transition-all duration-200 focus-visible:ring-2 focus-visible:ring-[#0B453F] sm:p-3"
+                                    style={{
+                                        backgroundColor: isSelected ? 'rgba(95, 148, 125, 0.1)' : '#FCF6EA',
+                                        borderColor: isSelected ? '#5F947D' : '#E7D8BD',
+                                    }}
+                                >
+                                    <span className="flex items-center justify-between gap-2">
+                                        <span className="truncate text-xs font-black" style={{ color: '#08283B' }}>{option.label}</span>
+                                        {isSelected && <Check size={14} style={{ color: '#5F947D' }} />}
+                                    </span>
+                                    <span className="mt-1 inline-flex rounded-full px-2 py-0.5 text-[10px] font-black text-white" style={{ backgroundColor: option.color }}>
+                                        {option.value}
+                                    </span>
+                                </button>
+                            );
+                        })}
+                    </div>
+
+                    <div
+                        className="mt-3 rounded-xl border px-3 py-2 text-xs font-semibold leading-snug"
+                        style={{
+                            borderColor: pinnedEvidence ? 'rgba(95, 148, 125, 0.3)' : '#E7D8BD',
+                            backgroundColor: pinnedEvidence ? 'rgba(95, 148, 125, 0.08)' : '#FCF6EA',
+                            color: pinnedEvidence ? '#0B453F' : '#445865',
+                        }}
+                        data-qa="data-detective-evidence-status"
+                    >
+                        {pinnedEvidence
+                            ? `Gepind bewijs: ${pinnedEvidence.label} (${pinnedEvidence.value}). Gebruik dit om je antwoord te verdedigen.`
+                            : 'Nog geen bewijs gepind. Kies een datapunt voordat je een conclusie trekt.'}
+                    </div>
                 </div>
 
                 {/* Data visualization */}
-                <div className="relative">
+                <div className="relative max-h-[160px] shrink-0 overflow-hidden sm:max-h-[190px]">
                     {currentChallenge.isMisleading && (
                         <div className="absolute -top-2 -right-2 z-10 text-white text-xs font-bold px-2 py-1 rounded-full" style={{ backgroundColor: '#D97848' }}>
                             Bekijk kritisch!
@@ -688,74 +767,68 @@ export const DataDetectiveMission: React.FC<Props> = ({ onBack, onComplete, vsoP
                     )}
                 </div>
 
-                {/* Question */}
-                <div className="rounded-2xl p-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
-                    <p className="font-bold text-center" style={{ color: '#08283B' }}>{currentChallenge.question}</p>
+                {/* Conclusion prompt */}
+                <div className="shrink-0 rounded-2xl p-3 sm:p-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
+                    <p className="text-center text-xs font-black uppercase tracking-widest" style={{ color: '#D97848' }}>Conclusiekaart</p>
+                    <p className="mt-1 text-center text-sm font-bold sm:text-base" style={{ color: '#08283B' }}>{currentChallenge.conclusionPrompt}</p>
                 </div>
 
-                {/* Options */}
-                <div className="space-y-3">
-                    {currentChallenge.options.map((option) => {
-                        const isSelected = selectedAnswer === option.id;
-                        const showResult = showFeedback && isSelected;
-
-                        return (
-                            <button
-                                key={option.id}
-                                onClick={() => handleAnswer(option.id)}
-                                disabled={showFeedback}
-                                className="w-full p-4 rounded-2xl text-left transition-all duration-300"
-                                style={{
-                                    backgroundColor: showResult
-                                        ? option.isCorrect ? 'rgba(95, 148, 125, 0.08)' : 'rgba(217, 120, 72, 0.08)'
-                                        : isSelected ? 'rgba(217, 120, 72, 0.08)' : '#FFFFFF',
-                                    border: `2px solid ${showResult
-                                        ? option.isCorrect ? '#5F947D' : '#D97848'
-                                        : isSelected ? '#D97848' : '#E7D8BD'}`
-                                }}
-                            >
-                                <div className="flex items-start gap-3">
-                                    <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{
-                                        backgroundColor: showResult
-                                            ? option.isCorrect ? '#5F947D' : '#D97848'
-                                            : '#E7D8BD'
-                                    }}>
-                                        {showResult ? (
-                                            option.isCorrect ? <Check size={16} className="text-white" /> : <X size={16} className="text-white" />
-                                        ) : (
-                                            <span className="font-bold text-sm" style={{ color: '#445865' }}>{option.id.toUpperCase()}</span>
-                                        )}
-                                    </div>
-                                    <div className="flex-1">
-                                        <p className="font-medium" style={{ color: '#08283B' }}>{option.text}</p>
-                                        {showResult && (
-                                            <p className="text-sm mt-2" style={{ color: option.isCorrect ? '#5F947D' : '#D97848' }}>
-                                                {option.explanation}
-                                            </p>
-                                        )}
-                                    </div>
-                                </div>
-                            </button>
-                        );
-                    })}
+                {/* Conclusion card */}
+                <div className="shrink-0 rounded-2xl border bg-white p-3 sm:p-4" style={{ borderColor: '#E7D8BD' }}>
+                    <label className="text-xs font-black uppercase tracking-widest" style={{ color: selectedEvidence ? '#0B453F' : '#445865' }}>
+                        {selectedEvidence ? 'Verdedig je conclusie met het gepinde bewijs' : 'Pin eerst een datapunt om je conclusie te ontgrendelen'}
+                    </label>
+                    <textarea
+                        value={conclusionDraft}
+                        onChange={event => setConclusionDraft(event.target.value)}
+                        disabled={!selectedEvidence || showFeedback}
+                        data-qa="data-detective-conclusion-input"
+                        placeholder={pinnedEvidence ? `Bijv: ${pinnedEvidence.label} (${pinnedEvidence.value}) laat zien dat...` : 'Kies eerst bewijs hierboven.'}
+                        className="mt-3 w-full rounded-2xl border-2 p-3 text-sm leading-relaxed outline-none transition-all duration-300 resize-none disabled:cursor-not-allowed disabled:opacity-70 sm:p-4"
+                        style={{
+                            minHeight: '96px',
+                            backgroundColor: selectedEvidence ? '#FCF6EA' : '#F7EFE1',
+                            borderColor: selectedEvidence ? '#E7D8BD' : '#E7D8BD',
+                            color: '#08283B',
+                        }}
+                    />
+                    <div className="mt-2 flex items-center justify-between gap-3">
+                        <p className="text-[10px] font-semibold" style={{ color: '#445865' }}>{conclusionDraft.trim().length}/20 tekens minimaal</p>
+                        <button
+                            type="button"
+                            onClick={handleSubmitConclusion}
+                            disabled={!selectedEvidence || conclusionDraft.trim().length < 20 || showFeedback}
+                            data-qa="data-detective-submit-conclusion"
+                            className="rounded-full px-4 py-2 text-xs font-black uppercase tracking-wide transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#0B453F]"
+                            style={{
+                                backgroundColor: selectedEvidence && conclusionDraft.trim().length >= 20 && !showFeedback ? '#0B453F' : '#E7D8BD',
+                                color: selectedEvidence && conclusionDraft.trim().length >= 20 && !showFeedback ? '#FFFFFF' : '#445865',
+                            }}
+                        >
+                            Pin conclusie
+                        </button>
+                    </div>
                 </div>
 
                 {/* Feedback & Next */}
                 {showFeedback && (
-                    <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4">
-                        <div className="rounded-2xl p-4" style={{ backgroundColor: 'rgba(95, 148, 125, 0.06)', border: '1px solid rgba(95, 148, 125, 0.2)' }}>
+                    <div ref={feedbackRef} className="shrink-0 animate-in fade-in slide-in-from-bottom-4" data-qa="data-detective-feedback">
+                        <div className="rounded-2xl p-3 sm:p-4" style={{ backgroundColor: 'rgba(95, 148, 125, 0.06)', border: '1px solid rgba(95, 148, 125, 0.2)' }}>
                             <div className="flex items-start gap-3">
                                 <Lightbulb className="flex-shrink-0 mt-1" size={20} style={{ color: '#5F947D' }} />
                                 <div>
                                     <p className="font-bold text-sm mb-1" style={{ color: '#5F947D' }}>Inzicht</p>
-                                    <p className="text-sm" style={{ color: '#445865' }}>{currentChallenge.insight}</p>
+                                    <p className="mb-2 text-xs font-black uppercase tracking-widest" style={{ color: '#D97848' }}>Modelconclusie</p>
+                                    <p className="mb-2 text-xs leading-snug sm:text-sm" style={{ color: '#08283B' }}>{currentChallenge.modelConclusion}</p>
+                                    <p className="mb-2 text-xs leading-snug sm:text-sm" style={{ color: '#445865' }}>{currentChallenge.feedback}</p>
+                                    <p className="text-xs leading-snug sm:text-sm" style={{ color: '#445865' }}>{currentChallenge.insight}</p>
                                 </div>
                             </div>
                         </div>
 
                         <button
                             onClick={handleNext}
-                            className="w-full py-4 text-white rounded-full font-black uppercase tracking-wide transition-all duration-300 flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-[#D97848]"
+                            className="fixed inset-x-4 bottom-4 z-30 flex min-h-[48px] items-center justify-center gap-2 rounded-full py-3 font-black uppercase tracking-wide text-white shadow-2xl transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#D97848] sm:static sm:mt-3 sm:w-full sm:shadow-none"
                             style={{ backgroundColor: '#D97848' }}
                             onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#D97848')}
                             onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#D97848')}

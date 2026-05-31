@@ -7,6 +7,16 @@ const config: ReviewArenaConfig = {
     introTitle: 'Scan je kennis van geavanceerd programmeren!',
     introDescription:
         'Machine learning, REST API\'s, neurale netwerken, data pipelines — je hebt het allemaal gezien. Doorloop vier ronden en bewijs dat je de geavanceerde concepten echt beheerst.',
+    experienceDesign: {
+        boringRisk: 'low',
+        firstTenSeconds: 'Kies je advanced reviewpad: ML-proces, API-begrippen of leertype-diagnose.',
+        primaryInteraction: 'review-and-improve',
+        feedbackMoment: 'Feedback laat zien of je geavanceerde begrippen kunt toepassen in plaats van alleen herkennen.',
+        visualKit: 'review-puzzle-feedback',
+        evidenceMoment: 'Je bewijs bestaat uit ML-volgorde, begrippenkoppels, leertypekeuzes en snelle AI/API-checks.',
+        antiBoringRule: 'J3-review blijft professioneel en diep genoeg: sprintgevoel zonder arcade-overprikkeling.',
+        chromeAcceptance: 'Routekeuze, scorepoort en rondekaarten blijven scanbaar op desktop, tablet en mobiel.',
+    },
     missionGoal: {
         primaryGoal:
             'Bewijs dat je ML-stappen, API- en databegrippen, supervised learning en AI-risico’s kunt herkennen en uitleggen.',

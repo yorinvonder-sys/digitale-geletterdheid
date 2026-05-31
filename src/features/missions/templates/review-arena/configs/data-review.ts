@@ -7,6 +7,16 @@ export const dataReviewConfig: ReviewArenaConfig = {
     introTitle: 'Wat weet jij over data en privacy?',
     introDescription:
         'Test je kennis over databronnen, persoonsgegevens en de AVG via vier afwisselende ronden. Elk type opgave vraagt iets anders van je.',
+    experienceDesign: {
+        boringRisk: 'low',
+        firstTenSeconds: 'Kies je eerste auditroute: bronvertrouwen, databeveiliging of AVG-bewijs.',
+        primaryInteraction: 'review-and-improve',
+        feedbackMoment: 'Elke ronde geeft directe feedback op je privacy- en databewijs zonder het onderwerp luchtig te maken.',
+        visualKit: 'review-puzzle-feedback',
+        evidenceMoment: 'Je bewijs bestaat uit bronrangschikking, beveiligingskoppels, AVG-categorieën en privacyuitleg.',
+        antiBoringRule: 'Privacyreview blijft zorgvuldig en casusgericht; geen scoregrappen rond persoonsgegevens.',
+        chromeAcceptance: 'Routekeuze, scorepoort en evidence zijn zichtbaar voor start; geen horizontale overflow of geknipte privacycopy.',
+    },
     missionGoal: {
         primaryGoal: 'Bewijs dat je databronnen, persoonsgegevens, beveiliging en AVG-rechten kunt herkennen en toepassen.',
         criteria: {

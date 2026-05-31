@@ -18,13 +18,70 @@ const config: DebateArenaConfig = {
         evidence:
             'Je standpunt noemt minstens twee argumenten en een gevolg voor leerlingen of school.',
     },
+    experienceDesign: {
+        boringRisk: 'medium',
+        firstTenSeconds: 'Jury vote: leerling kiest meteen of een AI schooladvies mag beinvloeden voordat stakeholders verschijnen.',
+        primaryInteraction: 'defend-position',
+        feedbackMoment: 'Na de jurykeuze koppelt feedback bias, menselijke verantwoordelijkheid en leerlingimpact aan de voorlopige positie.',
+        visualKit: 'debate-dilemma',
+        evidenceMoment: 'De leerling bouwt argumenten met perspectiefbewijs over eerlijkheid, toezicht en gevolgen voor leerlingen.',
+        antiBoringRule: 'AI-ethiek start met een scherpe jurykeuze en bewijsweging, niet met abstracte meningen over algoritmes.',
+        chromeAcceptance: 'Jurykeuze, stakeholderkaarten, argumentvelden en reflectie passen zonder clipping op desktop, tablet portrait, tablet landscape en mobile.',
+    },
     introFeatures: [
+        'Stem eerst als AI-jury',
         'Lees de standpunten van 4 betrokkenen',
         'Kies jouw positie in het debat',
         'Bouw 2-3 sterke argumenten op',
         'Reageer op een tegenargument',
         'Reflecteer: is je mening veranderd?',
     ],
+    openingChoice: {
+        title: 'Jury vote: mag deze AI beslissen?',
+        description:
+            'Je start met een snelle jurykeuze. Daarna lees je pas de belangen, regels en bias-uitleg. Je mag je stem later veranderen.',
+        prompt:
+            'Een AI geeft een leerling lager schooladvies dan de docent verwacht. Wat is jouw voorlopige oordeel?',
+        continueLabel: 'Bekijk het bewijs',
+        options: [
+            {
+                id: 'direct-verbieden',
+                label: 'Niet gebruiken voor schooladvies',
+                description:
+                    'Een leerlingniveau bepalen is te belangrijk voor een automatisch systeem.',
+                positionId: 'verboden',
+                feedback:
+                    'Je kiest voor menselijke verantwoordelijkheid. Let straks op of toezicht genoeg bescherming kan bieden.',
+            },
+            {
+                id: 'mens-kijkt-mee',
+                label: 'Alleen als een mens beslist',
+                description:
+                    'AI mag signalen geven, maar een docent moet altijd kunnen afwijken.',
+                positionId: 'toezicht',
+                feedback:
+                    'Je kiest voor controleerbaar gebruik. Verzamel straks bewijs voor wat goed toezicht precies betekent.',
+            },
+            {
+                id: 'audit-eerst',
+                label: 'Eerst bias aantonen en verbeteren',
+                description:
+                    'Gebruik kan pas na audit, bezwaarroute en publieke uitleg.',
+                positionId: 'verbeteren',
+                feedback:
+                    'Je start als auditor: niet blind vertrouwen, maar meten en verantwoorden.',
+            },
+            {
+                id: 'school-keuze',
+                label: 'Scholen laten kiezen',
+                description:
+                    'Niet elke school heeft dezelfde leerlingen, data of ondersteuning nodig.',
+                positionId: 'vrij',
+                feedback:
+                    'Je verdedigt autonomie. Let straks op of leerlingen dan overal dezelfde bescherming krijgen.',
+            },
+        ],
+    },
     topic: 'Bias in AI-systemen op scholen',
     dilemma:
         'Een AI-systeem wijst leerlingen toe aan schoolniveaus. Het systeem is getraind op historische data — en die data bevat ongelijkheid. Is het ethisch om zo\'n systeem te gebruiken?',

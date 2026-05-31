@@ -78,6 +78,7 @@ export const FollowUpCard: React.FC<FollowUpCardProps> = ({ followUp, onComplete
                             key={i}
                             onClick={() => handleSelect(i)}
                             disabled={answered}
+                            data-qa={`followup-option-${i}`}
                             className={`w-full text-left px-3 py-2.5 rounded-xl border-2 text-xs transition-all duration-200 ${optStyle} ${textMain}`}
                             style={fontBody}
                         >
@@ -106,6 +107,7 @@ export const FollowUpCard: React.FC<FollowUpCardProps> = ({ followUp, onComplete
                     </div>
                     <button
                         onClick={() => onComplete(correct)}
+                        data-qa="followup-submit"
                         className={`w-full py-2.5 rounded-full font-black text-sm transition-all duration-200 ${
                             isLight
                                 ? 'bg-gradient-to-r from-[#D97848] to-[#D97848] hover:from-[#D97848] hover:to-[#D97848] text-white'

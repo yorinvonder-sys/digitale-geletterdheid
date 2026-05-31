@@ -86,9 +86,13 @@ export function useFocusMode({ user, activeModule, handleSelectModule }: UseFocu
             .from('classroom_configs')
             .select('*')
             .eq('id', cls)
-            .single()
-            .then(({ data }) => {
-                const config = deserializeClassroomConfig(data);
+            .limit(1)
+            .then(({ data, error }) => {
+                if (error) {
+                    logger.warn('[FocusMode] Classroom config kon niet geladen worden:', error);
+                    return;
+                }
+                const config = deserializeClassroomConfig(data?.[0]);
                 if (config) {
                     lastProcessedFocusMode.current = !!config.focusMode;
                     lastProcessedFocusMissionId.current = config.focusMissionId || null;

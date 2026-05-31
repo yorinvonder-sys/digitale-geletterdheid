@@ -19,11 +19,56 @@ export const dataPipelineConfig: DataViewerConfig = {
         evidence:
             'Leerlingbewijs: antwoorden over datakwaliteit, opschoning, ETL en transformatiestrategieën. Docentbewijs: score, fase-overzicht en tekstbewijs waarin de leerling oorzaak, effect en aanpak van rommelige data uitlegt.',
     },
+    experienceDesign: {
+        boringRisk: 'high',
+        firstTenSeconds: 'Pipeline breaker: markeer welke ETL-stap het energierapport kapot maakt.',
+        primaryInteraction: 'prioritize-case',
+        feedbackMoment: 'Na de verdachte ETL-stap krijgt de leerling feedback op extract, transform of load.',
+        visualKit: 'data-room',
+        evidenceMoment: 'De leerling wijst datakwaliteitsproblemen en passende opschoonkeuzes aan.',
+        antiBoringRule: 'Data pipelines worden een ketenincident met bewijs, geen opsomming van ETL-definities.',
+        chromeAcceptance: 'Pipeline hook, tabellen en follow-up blijven bruikbaar zonder horizontale overflow.',
+    },
     introFeatures: [
         'Analyseer rommelige sensordata en vind de problemen',
         'Vergelijk hoe groot het effect van data-opschoning is',
         'Beoordeel welke transformatiestrategie past bij welk probleem',
     ],
+    investigationHook: {
+        title: 'Het energierapport klopt niet',
+        role: 'Pipeline-inspector',
+        scenario:
+            'De conciërge krijgt een energierapport met onmogelijke temperaturen en negatieve stroomwaarden. Jij markeert eerst waar de dataketen waarschijnlijk kapotgaat.',
+        prompt: 'Welke ETL-stap verdenk je als eerste?',
+        contextLabel: 'Pipeline-verdachte',
+        continueLabel: 'Inspecteer de ruwe data',
+        options: [
+            {
+                id: 'extract',
+                label: 'Extract: data komt al rommelig binnen',
+                description: 'Je zoekt naar ontbrekende waarden, dubbele metingen en sensorfouten in de brondata.',
+                feedback: 'Sterk startpunt. Als de bron rommelig binnenkomt, kan elke latere analyse een mooi verpakte fout worden.',
+                evidenceChips: ['5 probleemrijen', 'duplicaat 08:00', 'missende temperatuur'],
+                impactCue: 'Brondata lek',
+            },
+            {
+                id: 'transform',
+                label: 'Transform: opschonen gebeurt verkeerd',
+                description: 'Je onderzoekt of formaten, namen en onmogelijke waarden goed worden hersteld.',
+                feedback: 'Goede verdachte. Transformeren is waar data bruikbaar wordt, maar ook waar verkeerde aannames schade doen.',
+                evidenceChips: ['-50 W', '215°C', 'datumformaat'],
+                impactCue: 'Reparatiekeuze',
+            },
+            {
+                id: 'load',
+                label: 'Load: het rapport bewaart de verkeerde versie',
+                description: 'Je kijkt of ruwe en opgeschoonde waarden door elkaar in het eindrapport komen.',
+                feedback: 'Slim. Soms is de data al schoongemaakt, maar kijkt het dashboard nog naar de verkeerde tabel.',
+                evidenceChips: ['47,8 → 21,6°C', 'ruw vs schoon', 'rapportversie'],
+                impactCue: 'Verkeerde tabel',
+            },
+        ],
+    },
 
     datasets: [
         // ── Dataset 1: Tabel ──────────────────────────────────────────────────
@@ -64,18 +109,20 @@ export const dataPipelineConfig: DataViewerConfig = {
                 {
                     id: 'q2-onmogelijke-waarde',
                     question:
-                        'De sensor registreert -50 Watt stroomverbruik om 12:00. Welke actie is het meest correct?',
-                    type: 'multiple-choice',
-                    options: [
-                        'De waarde accepteren — misschien geeft de sensor energie terug aan het net',
-                        'De rij verwijderen uit de dataset',
-                        'De waarde vervangen door het gemiddelde van omliggende metingen',
-                        'De waarde omzetten naar positief: 50 Watt',
-                    ],
-                    correctAnswer: 'De waarde vervangen door het gemiddelde van omliggende metingen',
+                        'Pin als pipeline-inspector de beste herstelactie voor -50 Watt. Leg uit waarom je deze waarde niet accepteert of zomaar positief maakt, en welke metingen je gebruikt als bewijs.',
+                    type: 'text-observation',
+                    correctAnswer: '',
                     explanation:
                         'Een negatief stroomverbruik is vrijwel zeker een sensorfout. De meest data-vriendelijke aanpak is imputation: vervang de onmogelijke waarde door het gemiddelde van de omliggende metingen (bijv. 980 en 1010 → gemiddelde ≈ 995 W). Verwijderen verliest data. Simpelweg omkeren is willekeurig.',
                     points: 15,
+                    minLength: 80,
+                    minEvidenceCriteria: 3,
+                    textEvidenceCriteria: [
+                        { label: 'onmogelijke waarde herkend', keywords: ['-50', 'negatief', 'onmogelijk', 'sensorfout'] },
+                        { label: 'imputatie of vervangen gekozen', keywords: ['imputatie', 'imputation', 'vervangen', 'schatten'] },
+                        { label: 'omliggende metingen gebruikt', keywords: ['980', '1010', '995', 'gemiddelde', 'omliggende'] },
+                        { label: 'niet omkeren of accepteren', keywords: ['niet accepteren', 'niet positief', 'willekeurig', 'omzetten'] },
+                    ],
                 },
                 {
                     id: 'q3-etl-observatie',
@@ -124,18 +171,20 @@ export const dataPipelineConfig: DataViewerConfig = {
                 {
                     id: 'q5-lokaal3b-verschil',
                     question:
-                        'Waarom is het verschil tussen ruw en schoon voor Lokaal 3B veel kleiner dan voor Lokaal 3A?',
-                    type: 'multiple-choice',
-                    options: [
-                        'Lokaal 3B had geen dataproblemen in zijn metingen',
-                        'De problemen in Lokaal 3B waren minder ernstig (geen extreme uitschieters)',
-                        'Lokaal 3B werd vaker gemeten dan Lokaal 3A',
-                        'De sensor in Lokaal 3B was recenter gekalibreerd',
-                    ],
-                    correctAnswer: 'De problemen in Lokaal 3B waren minder ernstig (geen extreme uitschieters)',
+                        'Vergelijk als kwaliteitsanalist Lokaal 3A en 3B. Leg uit waarom 3A sterk verandert na opschonen en 3B nauwelijks, met minstens één concreet foutsignaal.',
+                    type: 'text-observation',
+                    correctAnswer: '',
                     explanation:
                         'Lokaal 3B had wel een probleem (-50 W stroom) maar geen extreme temperatuuruitschieter zoals Lokaal 3A (215°C). Kleine fouten beïnvloeden het gemiddelde weinig; grote uitschieters kunnen het enorm vertekenen. Dit is waarom je bij data-opschoning eerst naar uitschieters zoekt.',
                     points: 10,
+                    minLength: 70,
+                    minEvidenceCriteria: 3,
+                    textEvidenceCriteria: [
+                        { label: 'Lokaal 3A extreme uitschieter', keywords: ['3a', '215', 'uitschieter', 'extreem'] },
+                        { label: 'Lokaal 3B kleiner effect', keywords: ['3b', 'kleiner', 'nauwelijks', 'minder ernstig'] },
+                        { label: 'ruw versus schoon vergeleken', keywords: ['ruw', 'schoon', 'opschonen', 'verschil'] },
+                        { label: 'gemiddelde of vertekening genoemd', keywords: ['gemiddelde', 'vertekenen', 'analyse', 'temperatuur'] },
+                    ],
                 },
                 {
                     id: 'q6-etl-keuze',
@@ -195,18 +244,20 @@ export const dataPipelineConfig: DataViewerConfig = {
                 {
                     id: 'q7-strategie-keuze',
                     question:
-                        'De sensor registreert een missende temperatuurwaarde voor 09:00. Welke transformatiestrategie is het meest geschikt?',
-                    type: 'multiple-choice',
-                    options: [
-                        'Verwijderen — de rij is onbruikbaar',
-                        'Imputatie — vervang door het gemiddelde van 08:00 en 10:00',
-                        'Standaardiseren — zorg dat het format klopt',
-                        'Uitschieters markeren — markeer de rij als outlier',
-                    ],
-                    correctAnswer: 'Imputatie — vervang door het gemiddelde van 08:00 en 10:00',
+                        'Kies als ETL-strateeg hoe je de missende temperatuur om 09:00 herstelt. Noem de strategie, het bewijs uit 08:00 en 10:00, en één risico van je keuze.',
+                    type: 'text-observation',
+                    correctAnswer: '',
                     explanation:
                         'Een missende waarde (leeg veld) is het beste op te lossen met imputatie: neem het gemiddelde van de omliggende metingen. 08:00 was 21,5°C, 10:00 was (gecorrigeerd) ≈ 21,8°C, dus een redelijke schatting is ≈ 21,6°C. Verwijderen verliest informatie over dat tijdstip onnodig.',
                     points: 15,
+                    minLength: 75,
+                    minEvidenceCriteria: 3,
+                    textEvidenceCriteria: [
+                        { label: 'imputatie gekozen', keywords: ['imputatie', 'imputation', 'vervangen', 'schatten'] },
+                        { label: '08:00 en 10:00 bewijs gebruikt', keywords: ['08:00', '10:00', '21,5', '21.5', '21,8', '21.8'] },
+                        { label: 'schatting genoemd', keywords: ['21,6', '21.6', 'gemiddelde', 'omliggende'] },
+                        { label: 'risico benoemd', keywords: ['risico', 'verzonnen', 'geschat', 'niet echt', 'onzeker'] },
+                    ],
                 },
                 {
                     id: 'q8-pipeline-reflectie',

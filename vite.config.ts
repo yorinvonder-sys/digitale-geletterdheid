@@ -39,8 +39,14 @@ export default defineConfig(({ mode }) => {
           target: supabaseProxyTarget,
           changeOrigin: true,
           secure: true,
+          headers: {
+            Origin: proxyOrigin,
+            Referer: `${proxyOrigin}/`,
+          },
           configure(proxy) {
             proxy.on('proxyReq', (proxyReq) => {
+              proxyReq.removeHeader('origin');
+              proxyReq.removeHeader('referer');
               proxyReq.setHeader('Origin', proxyOrigin);
               proxyReq.setHeader('Referer', `${proxyOrigin}/`);
             });

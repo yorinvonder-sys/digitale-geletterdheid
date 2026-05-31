@@ -7,6 +7,16 @@ const config: ReviewArenaConfig = {
     introTitle: 'Vind de fouten in AI-creaties!',
     introDescription:
         'Je hebt geleerd hoe AI content maakt en hoe games zijn opgebouwd. Nu test je of je fouten in AI-uitvoer kunt herkennen — van bugs in code tot hallucinaties in tekst.',
+    experienceDesign: {
+        boringRisk: 'low',
+        firstTenSeconds: 'Kies eerst je reviewroute: gameproces ordenen, bugs koppelen of AI-fouten bewijzen.',
+        primaryInteraction: 'review-and-improve',
+        feedbackMoment: 'Na elke ronde zie je direct welk reviewpatroon sterker moet voordat je doorgaat.',
+        visualKit: 'review-puzzle-feedback',
+        evidenceMoment: 'Je bewijs bestaat uit correcte volgorde, bug-oplossingkoppels, foutcategorieën en snelle uitlegvraagstukken.',
+        antiBoringRule: 'Reviewweek voelt als kwaliteitscontrole op AI/game-output, niet als losse kennistoets.',
+        chromeAcceptance: 'Eerste routekeuze is binnen 10 seconden duidelijk, rapid-fire is pas de finale en score/evidence blijven zichtbaar.',
+    },
     maxScore: 100,
     badges: [
         {

@@ -10,7 +10,7 @@ interface AwardXPModalProps {
     onSuccess?: () => void;
 }
 
-const QUICK_AMOUNTS = [5, 10, 25, 50, 100];
+const QUICK_AMOUNTS = [5, 10, 15, 20, 25];
 
 export const AwardXPModal: React.FC<AwardXPModalProps> = ({ student, onClose, onSuccess }) => {
     const [amount, setAmount] = useState(10);
@@ -41,7 +41,7 @@ export const AwardXPModal: React.FC<AwardXPModalProps> = ({ student, onClose, on
     if (!student) return null;
 
     const handleAward = async () => {
-        if (amount <= 0 || isNaN(amount)) return;
+        if (amount <= 0 || amount > 25 || isNaN(amount)) return;
 
         setIsAwarding(true);
         try {
@@ -136,8 +136,9 @@ export const AwardXPModal: React.FC<AwardXPModalProps> = ({ student, onClose, on
                                             ref={inputRef}
                                             type="number"
                                             value={amount}
-                                            onChange={(e) => setAmount(Math.max(0, parseInt(e.target.value) || 0))}
+                                            onChange={(e) => setAmount(Math.min(25, Math.max(0, parseInt(e.target.value) || 0)))}
                                             min="1"
+                                            max="25"
                                             className="w-full px-4 py-4 bg-lab-cream border-2 border-lab-line rounded-xl text-2xl font-black text-center
                                                      focus:ring-4 focus:ring-lab-coral/20 focus:border-lab-coral outline-none transition-all"
                                         />

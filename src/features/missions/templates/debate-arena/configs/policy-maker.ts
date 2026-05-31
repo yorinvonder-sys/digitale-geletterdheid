@@ -7,13 +7,70 @@ const config: DebateArenaConfig = {
     introTitle: 'Policy Maker',
     introDescription:
         'De gemeenteraad wil gezichtsherkenningscamera\'s plaatsen op het schoolplein om pesten te bestrijden. De helft van de ouders is enthousiast. De andere helft is bang voor een bewakingsstaat. Jij bent beleidsadviseur. Wat adviseer je?',
+    experienceDesign: {
+        boringRisk: 'medium',
+        firstTenSeconds: 'Policy slider: leerling kiest direct tussen veiligheid, privacygrens of kleine pilot.',
+        primaryInteraction: 'defend-position',
+        feedbackMoment: 'Na de beleidslijn koppelt feedback biometrie, minderjarigen, proportionaliteit en alternatieven aan de keuze.',
+        visualKit: 'debate-dilemma',
+        evidenceMoment: 'De leerling bouwt een beleidsadvies met stakeholderbewijs, rechten en veiligheidsargumenten.',
+        antiBoringRule: 'Beleid voelt als dilemma met trade-offs en grenzen, niet als voor/tegen-lijst over camera’s.',
+        chromeAcceptance: 'Policy slider, beleidsstukken, argumenten en eindadvies blijven zonder horizontale overflow op alle vier viewports.',
+    },
     introFeatures: [
+        'Kies eerst je beleidslijn',
         'Lees de standpunten van 4 betrokkenen',
         'Kies jouw positie in het debat',
         'Bouw 2-3 sterke argumenten op',
         'Reageer op een tegenargument',
         'Reflecteer: is je mening veranderd?',
     ],
+    openingChoice: {
+        title: 'Policy slider: veiligheid of vrijheid?',
+        description:
+            'Een beleidsadvies begint met een richting. Je kiest eerst waar je instinct ligt, daarna toets je die keuze aan wet, bewijs en leerlingenrechten.',
+        prompt:
+            'De gemeente wil gezichtsherkenning inzetten tegen pesten op schoolpleinen. Welke beleidslijn zet jij voorlopig bovenaan?',
+        continueLabel: 'Lees de beleidsstukken',
+        options: [
+            {
+                id: 'veiligheid-voorwaarden',
+                label: 'Invoeren met strenge voorwaarden',
+                description:
+                    'Veiligheid mag zwaarder wegen als data minimaal en menselijk gecontroleerd blijft.',
+                positionId: 'invoeren',
+                feedback:
+                    'Je start vanuit veiligheid met waarborgen. Let straks op of biometrie op school juridisch en pedagogisch houdbaar is.',
+            },
+            {
+                id: 'privacy-grens',
+                label: 'Verbieden op schoolpleinen',
+                description:
+                    'Biometrische surveillance bij minderjarigen gaat te ver.',
+                positionId: 'verbieden',
+                feedback:
+                    'Je zet privacy als harde grens. Verzamel straks bewijs of alternatieven voldoende veiligheid bieden.',
+            },
+            {
+                id: 'kleine-pilot',
+                label: 'Eerst een beperkte pilot',
+                description:
+                    'Alleen testen met vrijwilligheid, onafhankelijke evaluatie en duidelijke stopknop.',
+                positionId: 'pilot',
+                feedback:
+                    'Je kiest beleid als experiment. Let straks op of een pilot met kinderen wel echt vrijwillig kan zijn.',
+            },
+            {
+                id: 'zonder-biometrie',
+                label: 'Investeer in alternatieven',
+                description:
+                    'Mentoren, meldlijnen en schoolcultuur pakken pesten aan zonder gezichten te scannen.',
+                positionId: 'alternatieven',
+                feedback:
+                    'Je kiest probleemoplossing zonder biometrie. Check straks of die alternatieven snel genoeg beschermen.',
+            },
+        ],
+    },
     topic: 'Gezichtsherkenning op scholen',
     dilemma:
         'De gemeente wil gezichtsherkenningscamera\'s inzetten op schoolpleinen om pestsituaties sneller te signaleren. Het systeem herkent emoties en alarmeert als er een dreigende situatie is. Is dat een goed idee?',

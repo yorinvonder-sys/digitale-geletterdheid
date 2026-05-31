@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ParentUser } from '@/types';
 import { logActivity } from '@/services/teacherService';
 
@@ -10,7 +10,7 @@ export function useNavigation({ user }: UseNavigationParams) {
     const [activeModule, setActiveModule] = useState<string | null>(null);
     const [pendingLibraryItem, setPendingLibraryItem] = useState<any | null>(null);
     const [isProfileOpen, setIsProfileOpen] = useState(false);
-    const [initialProfileTab, setInitialProfileTab] = useState<'profile' | 'shop' | 'trophies' | 'privacy'>('profile');
+    const [initialProfileTab, setInitialProfileTab] = useState<'profile' | 'portfolio' | 'shop' | 'trophies' | 'privacy'>('profile');
     const [viewMode, setViewMode] = useState<'assignments' | 'monitoring'>('monitoring');
     const [activeWeek, setActiveWeek] = useState(2);
     const [showGames, setShowGames] = useState(false);
@@ -22,6 +22,12 @@ export function useNavigation({ user }: UseNavigationParams) {
     const [peerFeedbackMissionId, setPeerFeedbackMissionId] = useState<string | null>(null);
 
     const FOCUS_INTENT_KEY = 'dgskills_focus_intent';
+
+    useEffect(() => {
+        const userYearGroup = Number(user?.yearGroup ?? user?.stats?.yearGroup);
+        if (!Number.isInteger(userYearGroup) || userYearGroup < 1) return;
+        setActiveYearGroup(prev => (prev === userYearGroup ? prev : userYearGroup));
+    }, [user?.uid, user?.yearGroup, user?.stats?.yearGroup]);
 
     const handleExitModule = () => {
         setActiveModule(null);

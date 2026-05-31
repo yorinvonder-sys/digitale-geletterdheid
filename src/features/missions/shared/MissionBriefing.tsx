@@ -1,13 +1,14 @@
 
 import React, { useState, useEffect } from 'react';
 import { AgentRole } from '@/types';
-import { ChevronRight, ChevronLeft, Target, Play } from 'lucide-react';
+import { CheckCircle2, ChevronRight, ChevronLeft, Target, Play } from 'lucide-react';
 import { getMissionGoal } from '@/config/missionGoals';
 import { MissionGoalBanner } from '@/features/missions/templates/shared/MissionGoalBanner';
+import { getMissionLaunchChallenge, type MissionLaunchChallengeOption } from '@/features/missions/shared/missionLaunchChallenges';
 
 interface MissionBriefingProps {
     role: AgentRole;
-    onStart: () => void;
+    onStart: (starterPrompt?: string) => void;
     onBack: () => void;
 }
 
@@ -15,11 +16,14 @@ export const MissionBriefing: React.FC<MissionBriefingProps> = ({ role, onStart,
     const [currentStepIndex, setCurrentStepIndex] = useState(0);
     const [imageError, setImageError] = useState(false);
     const [readCountdown, setReadCountdown] = useState(2); // 2-second reading timer
+    const [selectedLaunchOption, setSelectedLaunchOption] = useState<MissionLaunchChallengeOption | null>(null);
 
     const steps = role.steps || [];
     const isLastStep = steps.length === 0 || currentStepIndex === steps.length - 1;
     const currentStep = steps[currentStepIndex];
     const missionGoal = getMissionGoal(role.id);
+    const launchChallenge = getMissionLaunchChallenge(role.id);
+    const mustChooseLaunchOption = currentStepIndex === 0 && Boolean(launchChallenge) && !selectedLaunchOption;
 
     // Reset and start countdown when reaching the last step
     useEffect(() => {
@@ -38,11 +42,19 @@ export const MissionBriefing: React.FC<MissionBriefingProps> = ({ role, onStart,
         }
     }, [isLastStep, currentStepIndex]);
 
+    useEffect(() => {
+        setSelectedLaunchOption(null);
+        setCurrentStepIndex(0);
+        setImageError(false);
+    }, [role.id]);
+
     const handleNext = () => {
-        if (currentStepIndex < role.steps.length - 1) {
+        if (mustChooseLaunchOption) return;
+
+        if (currentStepIndex < steps.length - 1) {
             setCurrentStepIndex(prev => prev + 1);
         } else {
-            onStart();
+            onStart(selectedLaunchOption?.starterPrompt);
         }
     };
 
@@ -124,6 +136,95 @@ export const MissionBriefing: React.FC<MissionBriefingProps> = ({ role, onStart,
                             {missionGoal && (
                                 <MissionGoalBanner goal={missionGoal} compact />
                             )}
+
+                            {launchChallenge && (
+                                <div
+                                    className="overflow-hidden rounded-2xl border border-lab-line bg-white shadow-sm"
+                                    data-qa="mission-launch-challenge"
+                                >
+                                    <div className="grid gap-4 bg-lab-dark p-4 text-white md:grid-cols-[1fr_auto] md:items-center">
+                                        <div>
+                                            <p className="text-xs font-black uppercase tracking-[0.22em] text-lab-gold">Mission launch</p>
+                                            <h3 className="mt-1 text-xl font-black leading-tight" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
+                                                {launchChallenge.title}
+                                            </h3>
+                                            <p className="mt-2 text-sm font-semibold leading-relaxed text-white/85">{launchChallenge.scenario}</p>
+                                        </div>
+
+                                        <div className="rounded-xl border border-white/15 bg-white/10 p-3 text-xs font-black uppercase tracking-widest text-white/80" data-qa="mission-launch-route-strip">
+                                            <div className="flex items-center gap-2">
+                                                <span className="text-lab-gold">Kies</span>
+                                                <span className="h-px w-5 bg-white/30" />
+                                                <span>Test</span>
+                                                <span className="h-px w-5 bg-white/30" />
+                                                <span>Verbeter</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="space-y-4 p-4">
+                                        <div className="rounded-xl border border-lab-line bg-lab-bg p-3">
+                                            <p className="text-xs font-bold uppercase tracking-widest text-lab-textLight">Kies je eerste zet</p>
+                                            <p className="mt-1 text-sm font-black leading-relaxed text-lab-primary">{launchChallenge.prompt}</p>
+                                        </div>
+
+                                        <div className="grid gap-3 lg:grid-cols-3">
+                                            {launchChallenge.options.map((option, index) => {
+                                                const isSelected = selectedLaunchOption?.id === option.id;
+                                                const routeLabels = ['Onderzoek', 'Plan', 'Actie'];
+
+                                                return (
+                                                    <button
+                                                        key={option.id}
+                                                        type="button"
+                                                        onClick={() => setSelectedLaunchOption(option)}
+                                                        aria-pressed={isSelected}
+                                                        data-qa={`mission-launch-option-${option.id}`}
+                                                        className={`min-h-[132px] rounded-xl border p-4 text-left transition-all duration-200 focus-visible:ring-2 focus-visible:ring-lab-primary ${isSelected
+                                                            ? 'border-lab-primary bg-lab-bg shadow-md ring-2 ring-lab-primary/20'
+                                                            : 'border-lab-line bg-white hover:border-lab-primary/60 hover:bg-lab-bg/70'
+                                                            }`}
+                                                    >
+                                                        <span className="mb-3 inline-flex rounded-full bg-lab-dark px-2.5 py-1 text-[10px] font-black uppercase tracking-widest text-white">
+                                                            Route {index + 1}: {routeLabels[index] ?? 'Keuze'}
+                                                        </span>
+                                                        <span className="flex items-start justify-between gap-3">
+                                                            <span className="text-base font-black leading-tight text-lab-dark">{option.label}</span>
+                                                            {isSelected && <CheckCircle2 size={18} className="shrink-0 text-lab-primary" />}
+                                                        </span>
+                                                        <span className="mt-2 block text-xs font-semibold leading-relaxed text-lab-textLight">
+                                                            {option.description}
+                                                        </span>
+                                                    </button>
+                                                );
+                                            })}
+                                        </div>
+
+                                        {selectedLaunchOption && (
+                                            <div
+                                                className="space-y-3 rounded-xl border border-lab-green/30 bg-lab-green/10 p-3 text-sm font-semibold leading-relaxed text-lab-dark"
+                                                data-qa="mission-launch-feedback"
+                                            >
+                                                <div>
+                                                    <p className="text-xs font-black uppercase tracking-widest text-lab-primary">Goede keuze</p>
+                                                    <p className="mt-1">{selectedLaunchOption.feedback}</p>
+                                                </div>
+                                                {selectedLaunchOption.starterPrompt && (
+                                                    <div className="rounded-lg border border-lab-primary/20 bg-white/80 p-3 text-xs text-lab-dark" data-qa="mission-launch-starter-prompt">
+                                                        <span className="block font-black uppercase tracking-widest text-lab-textLight">Startprompt</span>
+                                                        <span className="mt-1 block font-bold leading-relaxed">"{selectedLaunchOption.starterPrompt}"</span>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        )}
+
+                                        <div className="rounded-xl border border-lab-coral/30 bg-lab-coral/10 p-3 text-xs font-semibold leading-relaxed text-lab-dark" data-qa="mission-launch-safety-note">
+                                            <span className="font-black uppercase tracking-widest text-lab-coral">Denk aan ethiek en veiligheid:</span>{' '}
+                                            wees eerlijk, bescherm privacy en vraag hulp als een antwoord onzeker of ongemakkelijk voelt.
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     )}
 
@@ -202,13 +303,15 @@ export const MissionBriefing: React.FC<MissionBriefingProps> = ({ role, onStart,
                         ) : (
                             <button
                                 onClick={handleNext}
+                                disabled={mustChooseLaunchOption}
                                 className={`
                             px-8 py-3 rounded-full font-bold text-sm flex items-center gap-2 shadow-lg transition-all duration-300 active:scale-95 focus-visible:ring-2 focus-visible:ring-lab-primary
-                            ${isLastStep ? 'bg-lab-primary text-white hover:bg-lab-primaryDark' :
-                                        'bg-lab-dark text-white hover:bg-lab-muted'}
+                            ${mustChooseLaunchOption ? 'cursor-not-allowed bg-lab-cream text-lab-textLight shadow-none' :
+                                        isLastStep ? 'bg-lab-primary text-white hover:bg-lab-primaryDark' :
+                                            'bg-lab-dark text-white hover:bg-lab-muted'}
                         `}
                             >
-                                {isLastStep ? 'Start Missie' : 'Volgende'}
+                                {mustChooseLaunchOption ? 'Kies eerst' : isLastStep ? 'Start Missie' : 'Volgende'}
                                 {isLastStep ? <Play size={16} fill="currentColor" /> : <ChevronRight size={16} />}
                             </button>
                         )}

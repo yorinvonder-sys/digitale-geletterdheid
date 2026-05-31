@@ -7,11 +7,56 @@ export const techImpactAnalystConfig: DataViewerConfig = {
     introTitle: 'Word een Tech Impact Analyst',
     introDescription:
         'Elke technologie heeft gevolgen — voor mensen, samenleving en milieu. Jij gaat als onafhankelijk analist de maatschappelijke impact van AI-systemen en andere technologieën in kaart brengen. Voordelen én risico\'s. Want technologie is nooit neutraal.',
+    experienceDesign: {
+        boringRisk: 'high',
+        firstTenSeconds: 'Impact room: kies welk risico van gezichtsherkenning het zwaarst weegt.',
+        primaryInteraction: 'prioritize-case',
+        feedbackMoment: 'Na de impactlens krijgt de leerling feedback op privacy, bias of democratisch gedrag.',
+        visualKit: 'data-room',
+        evidenceMoment: 'De leerling onderbouwt kansen en risico’s met impactmatrix, beleid en ethische afwegingen.',
+        antiBoringRule: 'Impactanalyse wordt een advieskamer met trade-offs, geen neutrale vragenlijst.',
+        chromeAcceptance: 'Impactlens, matrix en observaties blijven rustig, niet angstig, en werken op alle viewports.',
+    },
     introFeatures: [
         'Analyseer de maatschappelijke impact van gezichtsherkenning',
         'Vergelijk beleidsposities van landen over AI-regulering',
         'Beoordeel welke ethische afwegingen relevant zijn',
     ],
+    investigationHook: {
+        title: 'De impactkamer gaat open',
+        role: 'Onafhankelijk analist',
+        scenario:
+            'Een stad overweegt gezichtsherkenning op drukke plekken. Jij moet vooraf kiezen welk risico je het strengst gaat wegen in je analyse.',
+        prompt: 'Welke impact krijgt jouw eerste aandacht?',
+        contextLabel: 'Impactlens',
+        continueLabel: 'Open de impactmatrix',
+        options: [
+            {
+                id: 'privacy',
+                label: 'Privacy en massasurveillance',
+                description: 'Je onderzoekt of onschuldige burgers structureel gevolgd of geregistreerd worden.',
+                evidenceChips: ['Ernst 5', 'alle burgers gescand', 'hoog bewijs'],
+                impactCue: 'Vrijheid versus opsporingsvoordeel',
+                feedback: 'Sterke lens. Bij publieke technologie telt niet alleen wat het systeem kan, maar ook hoeveel vrijheid het kost.',
+            },
+            {
+                id: 'bias',
+                label: 'Bias en foutieve herkenning',
+                description: 'Je kijkt naar ongelijke foutkansen en wie daardoor meer risico loopt.',
+                evidenceChips: ['ongelijke foutkans', 'trainingsdata', 'valse herkenning'],
+                impactCue: 'Ongelijke foutkansen en valse herkenning',
+                feedback: 'Belangrijk spoor. Een gemiddeld hoge score kan verbergen dat sommige groepen veel slechter worden behandeld.',
+            },
+            {
+                id: 'democratie',
+                label: 'Effect op protest en gedrag',
+                description: 'Je onderzoekt of mensen zich anders gedragen als ze weten dat ze gevolgd kunnen worden.',
+                evidenceChips: ['Ernst 5', 'protest vermijden', 'matige zekerheid'],
+                impactCue: 'Gedrag verandert als toezicht zichtbaar is',
+                feedback: 'Scherp. Technologie kan gedrag veranderen zonder iemand direct aan te raken; dat maakt impactanalyse lastig en belangrijk.',
+            },
+        ],
+    },
 
     datasets: [
         // ── Dataset 1: Tabel ──────────────────────────────────────────────────
@@ -50,18 +95,20 @@ export const techImpactAnalystConfig: DataViewerConfig = {
                 {
                     id: 'q2-bias-probleem',
                     question:
-                        'Gezichtsherkenning-algoritmes maken meer fouten bij donkere huidskleur. Wat is dit een voorbeeld van?',
-                    type: 'multiple-choice',
-                    options: [
-                        'Een softwarebug die makkelijk te repareren is',
-                        'Algoritmische bias door niet-representatieve trainingsdata',
-                        'Een hardwareprobleem met camera-sensoren',
-                        'Bewuste discriminatie door de ontwikkelaars',
-                    ],
-                    correctAnswer: 'Algoritmische bias door niet-representatieve trainingsdata',
+                        'Leg uit waarom de hogere foutkans bij donkere huidskleur een algoritmische bias-risico is. Gebruik bewijs uit de impactmatrix en noem waarom dit niet simpelweg een softwarebug is.',
+                    type: 'text-observation',
+                    correctAnswer: '',
                     explanation:
-                        'De meeste gezichtsherkenning-modellen zijn getraind op datasets met overwegend lichte huidskleur. Het model heeft daardoor minder voorbeelden gezien van donkere gezichten en maakt er meer fouten op. Dit heet algoritmische bias. Het is geen bewuste keuze, maar een structureel probleem door niet-representatieve data.',
+                        'Een sterke analyse noemt dat het probleem structureel is: het model is getraind met data die groepen niet gelijk vertegenwoordigt, waardoor de foutkans ongelijk verdeeld is. Dat kan leiden tot valse herkenningen, discriminatie of onterechte controles. Het is dus niet alleen een losse softwarebug, maar een risico in data, ontwerp en toepassing.',
                     points: 15,
+                    minLength: 70,
+                    minEvidenceCriteria: 2,
+                    textEvidenceCriteria: [
+                        { label: 'algoritmische bias', keywords: ['bias', 'algoritmische', 'algoritme', 'ongelijk', 'foutkans'] },
+                        { label: 'trainingsdata of representatie', keywords: ['trainingsdata', 'representatief', 'data', 'voorbeelden', 'model'] },
+                        { label: 'impact op mensen', keywords: ['valse', 'aanhouding', 'discriminatie', 'risico', 'groep', 'burgers'] },
+                        { label: 'niet alleen een bug', keywords: ['geen bug', 'niet makkelijk', 'structureel', 'systeem', 'ontwerp'] },
+                    ],
                 },
                 {
                     id: 'q3-afweging-observatie',
@@ -101,13 +148,21 @@ export const techImpactAnalystConfig: DataViewerConfig = {
             questions: [
                 {
                     id: 'q4-strengste-regelgeving',
-                    question: 'Welke regio heeft de strengste AI-regulering op basis van de data?',
-                    type: 'multiple-choice',
-                    options: ['VS', 'China', 'EU', 'Japan'],
-                    correctAnswer: 'EU',
+                    question:
+                        'Markeer de regio met de strengste AI-regulering. Noem de score, vergelijk die met minstens één andere regio en leg kort uit wat zo’n hogere score voor burgers of bedrijven kan betekenen.',
+                    type: 'text-observation',
+                    correctAnswer: '',
                     explanation:
-                        'De EU scoort het hoogst met 78 — dat klopt met de werkelijkheid: de EU AI Act (2024) is \'s werelds eerste uitgebreide AI-wetgeving. De VS heeft bewust minder strenge regels om innovatie te stimuleren. China heeft eigen strikte regels, maar die zijn meer gericht op inhoudelijke controle dan op mensenrechten.',
+                        'De EU scoort het hoogst met 78. Dat is hoger dan China (65), het VK (52), Japan (44), de VS (38) en India (28). Een hogere reguleringsscore kan burgers meer bescherming en uitlegrechten geven, terwijl bedrijven meer compliancewerk, documentatie en aanpassingen moeten doen.',
                     points: 10,
+                    minLength: 70,
+                    minEvidenceCriteria: 3,
+                    textEvidenceCriteria: [
+                        { label: 'EU als strengste regio', keywords: ['eu'] },
+                        { label: 'score 78 gebruikt', keywords: ['78'] },
+                        { label: 'vergelijking met andere regio', keywords: ['china', '65', 'vk', '52', 'japan', '44', 'vs', '38', 'india', '28'] },
+                        { label: 'gevolg voor burgers of bedrijven', keywords: ['burgers', 'bescherming', 'uitleg', 'bedrijven', 'compliance', 'regels', 'aanpassen'] },
+                    ],
                 },
                 {
                     id: 'q5-vs-eu-verschil',
@@ -176,18 +231,20 @@ export const techImpactAnalystConfig: DataViewerConfig = {
                 {
                     id: 'q7-methode-toepassen',
                     question:
-                        'Een overheid wil AI inzetten om sollicitaties te beoordelen. Welk stap in de impact-analyse zou als eerste een serieus risico blootleggen?',
-                    type: 'multiple-choice',
-                    options: [
-                        'Stap 1: Technologie beschrijven',
-                        'Stap 2: Positieve effecten in kaart brengen',
-                        'Stap 3: Risico\'s analyseren',
-                        'Stap 4: Conclusie en aanbeveling',
-                    ],
-                    correctAnswer: 'Stap 3: Risico\'s analyseren',
+                        'Een overheid wil AI inzetten om sollicitaties te beoordelen. Kies de analysestap die als eerste een serieus risico blootlegt en onderbouw met minimaal twee risico’s die je bij sollicitatie-AI moet onderzoeken.',
+                    type: 'text-observation',
+                    correctAnswer: '',
                     explanation:
-                        'In Stap 3 worden risico\'s geanalyseerd. Voor AI bij sollicitaties: risico op discriminatie (als de trainingsdata bias bevat), gebrek aan transparantie (sollicitant weet niet waarom hij is afgewezen) en schending van arbeidsrecht (recht op uitleg bij een afwijzing). Dit zijn serieuze mensenrechtenrisico\'s die de EU AI Act als "hoog risico" classificeert.',
+                        'Stap 3: Risico’s analyseren legt dit als eerste bloot. Voor AI bij sollicitaties moet je letten op discriminatie of bias in trainingsdata, gebrek aan transparantie, recht op uitleg bij afwijzing en menselijke controle bij twijfel. Dit is geen neutrale sorteertool maar een hoog-risico toepassing voor kansen van mensen.',
                     points: 15,
+                    minLength: 80,
+                    minEvidenceCriteria: 3,
+                    textEvidenceCriteria: [
+                        { label: 'Stap 3 risicoanalyse gekozen', keywords: ['stap 3', 'risico', 'risicoanalyse', 'risico’s analyseren', 'risico analyseren'] },
+                        { label: 'bias of discriminatie genoemd', keywords: ['bias', 'discriminatie', 'trainingsdata', 'ongelijk'] },
+                        { label: 'transparantie of uitleg genoemd', keywords: ['transparantie', 'uitleg', 'afwijzing', 'waarom'] },
+                        { label: 'menselijke controle of hoog risico', keywords: ['menselijke controle', 'mens', 'hoog risico', 'sollicitatie', 'kansen'] },
+                    ],
                 },
                 {
                     id: 'q8-eigen-analyse',

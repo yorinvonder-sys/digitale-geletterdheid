@@ -84,6 +84,7 @@ export interface AiLabProps {
   libraryData?: any; // Data from library item (gameCode, bookData, etc.)
   vsoProfile?: VsoProfile; // Optional learning-profile hint for missions
   devPreviewMode?: boolean; // Disable cloud side effects for local /dev/mission-preview QA
+  qaState?: string; // Local /dev preview state for mission viewport QA
 }
 
 export interface MissionStep {

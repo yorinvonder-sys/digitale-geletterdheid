@@ -13,6 +13,28 @@ export const prototypeDeveloperConfig: BuilderCanvasConfig = {
         'Test met echte gebruikers en verzamel feedback',
         'Itereer: verbeter op basis van wat je hebt geleerd',
     ],
+    missionGoal: {
+        primaryGoal:
+            'Werk een digitaal productidee uit tot een prototypeplan met ontwerp, bouwbewijs, gebruikerstest en iteratie.',
+        criteria: {
+            type: 'steps-complete',
+            min: 4,
+            description:
+                'Je rondt idee-afbakening, ontwerp, bouwproces en test/iteratie af met concrete product- en feedbackbewijzen.',
+        },
+        evidence:
+            'Leerlingbewijs: afgebakend idee, ontwerp, bouwbeschrijving, testobservaties en verbeterkeuze. Docentbewijs: checklistvoortgang en tekstinvoer tonen of de leerling de ontwikkelcyclus begrijpt.',
+    },
+    experienceDesign: {
+        boringRisk: 'low',
+        firstTenSeconds: 'Prototype smoke test: leerling kiest welke kernfunctie als eerste door een gebruiker getest wordt.',
+        primaryInteraction: 'test-product',
+        feedbackMoment: 'Na de smoke test koppelt feedback afbakening, ontwerp, bouwstap en iteratie aan de ontwikkelcyclus.',
+        visualKit: 'maker-canvas',
+        evidenceMoment: 'De leerling levert idee-afbakening, prototypeontwerp, bouwbewijs, testobservaties en verbeterkeuze.',
+        antiBoringRule: 'Prototypewerk draait om build-test-iterate met echte observaties, niet om een mooi plan zonder test.',
+        chromeAcceptance: 'Smoke-test start, bouwstappen, testobservaties en iteratiebewijs blijven bruikbaar op desktop, tablet portrait, tablet landscape en mobile.',
+    },
     enableChat: true,
     chatRoleId: 'prototype-developer',
     previewType: 'text-preview',

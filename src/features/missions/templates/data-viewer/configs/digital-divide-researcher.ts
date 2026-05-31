@@ -7,11 +7,56 @@ export const digitalDivideResearcherConfig: DataViewerConfig = {
     introTitle: 'Onderzoek de digitale kloof',
     introDescription:
         'Niet iedereen heeft gelijke toegang tot het digitale leven. Ouderen zonder smartphone, gezinnen zonder stabiel internet, mensen die zich geen laptop kunnen veroorloven — dit heet de digitale kloof. Jij gaat als onderzoeker uitzoeken hoe groot het probleem is en wie het raakt.',
+    experienceDesign: {
+        boringRisk: 'high',
+        firstTenSeconds: 'Policy case: kies welke groep als eerste digitale hulp nodig heeft.',
+        primaryInteraction: 'prioritize-case',
+        feedbackMoment: 'Na de impactkeuze hoort de leerling waarom toegang, inkomen, leeftijd of ontwerp drempels maken.',
+        visualKit: 'data-room',
+        evidenceMoment: 'De leerling gebruikt kloofdata om een hulpprioriteit voorzichtig te onderbouwen.',
+        antiBoringRule: 'Maatschappelijke data start met een menselijke beleidskeuze, niet met een tabeloverzicht.',
+        chromeAcceptance: 'Impactkeuze en alle dataweergaven blijven waardig, rustig en responsive.',
+    },
     introFeatures: [
         'Analyseer CBS-data over internetgebruik per bevolkingsgroep',
         'Vergelijk digitale toegang tussen landen in Europa',
         'Beoordeel welke beleidsmaatregelen het meest effectief zijn',
     ],
+    investigationHook: {
+        title: 'Een gemeente heeft één hulpprogramma over',
+        role: 'Toegankelijkheidsonderzoeker',
+        scenario:
+            'De gemeente kan maar één groep als eerste helpen met digitale toegang en vaardigheden. Jij kiest een onderzoeksspoor voordat je de ongelijkheidsdata opent.',
+        prompt: 'Welke groep onderzoek je eerst voor hulp?',
+        contextLabel: 'Impactkeuze',
+        continueLabel: 'Bekijk de kloofdata',
+        options: [
+            {
+                id: 'ouderen',
+                label: 'Ouderen die online diensten moeten gebruiken',
+                description: 'Je let op internetgebruik, basisvaardigheden en zelfstandigheid bij digitale overheid of bankzaken.',
+                evidenceChips: ['Internet 58%', 'Basisvaardigheden 32%', 'DigiSterker hulp'],
+                impactCue: 'Zelfstandig meedoen met zorg, overheid en bankzaken',
+                feedback: 'Sterk maatschappelijk spoor. Digitale toegang raakt hier direct aan meedoen, zorg en praktische zelfstandigheid.',
+            },
+            {
+                id: 'laag-inkomen',
+                label: 'Gezinnen met weinig geld voor apparaten',
+                description: 'Je onderzoekt hoe toegang, inkomen en vaardigheid elkaar versterken.',
+                evidenceChips: ['Internet 81%', 'Vaardigheden 55%', 'apparaatfonds'],
+                impactCue: 'Toegang, oefenkansen en betaalbare apparatuur',
+                feedback: 'Goede keuze. De digitale kloof is vaak ook een economische kloof: zonder apparaat kun je nauwelijks oefenen.',
+            },
+            {
+                id: 'beperking',
+                label: 'Mensen voor wie ontwerp drempels maakt',
+                description: 'Je zoekt signalen dat digitale diensten niet toegankelijk genoeg zijn ontworpen.',
+                evidenceChips: ['Internet 76%', 'Vaardigheden 44%', 'toegankelijke diensten'],
+                impactCue: 'Ontwerp dat drempels wegneemt',
+                feedback: 'Belangrijk. Soms is het probleem niet de gebruiker, maar een systeem dat geen rekening houdt met verschillen.',
+            },
+        ],
+    },
 
     datasets: [
         // ── Dataset 1: Tabel ──────────────────────────────────────────────────
@@ -42,13 +87,20 @@ export const digitalDivideResearcherConfig: DataViewerConfig = {
                 {
                     id: 'q1-kwetsbaarste-groep',
                     question:
-                        'Welke bevolkingsgroep heeft zowel het laagste internetgebruik als het laagste percentage basisvaardigheden?',
-                    type: 'multiple-choice',
-                    options: ['65-74 jaar', '75+ jaar', 'Laag inkomen', 'Met beperking'],
-                    correctAnswer: '75+ jaar',
+                        'Welke groep zou jij als eerste hulp geven? Gebruik minimaal twee datapunten uit de tabel en formuleer respectvol, zonder de groep te labelen als "probleem".',
+                    type: 'text-observation',
+                    correctAnswer: '',
                     explanation:
-                        'De groep 75+ heeft het laagste internetgebruik (58%) én het laagste percentage digitale basisvaardigheden (32%). Dit is een dubbele kwetsbaarheid: ze zijn minder online én hebben minder vaardigheden als ze online zijn. Sorteer op "Internetgebruik" of "Basisvaardigheden" om het snel te bevestigen.',
+                        'Een sterke onderbouwing kiest bijvoorbeeld 75+ omdat deze groep het laagste internetgebruik (58%) én het laagste percentage digitale basisvaardigheden (32%) heeft. Je kunt ook een andere groep kiezen als je uitlegt welke data dat ondersteunt. Belangrijk: beschrijf de drempel in toegang of vaardigheid, niet de mensen als probleem.',
                     points: 15,
+                    minLength: 70,
+                    minEvidenceCriteria: 2,
+                    textEvidenceCriteria: [
+                        { label: 'hulpprioriteit', keywords: ['75+', 'laag inkomen', 'laagopgeleid', 'beperking', 'ouderen', 'groep'] },
+                        { label: 'toegangsdata', keywords: ['internetgebruik', '58', '76', '78', '81', 'toegang'] },
+                        { label: 'vaardigheden of bankieren', keywords: ['basisvaardigheden', '32', '44', '48', '55', 'bankieren'] },
+                        { label: 'respectvolle formulering', keywords: ['hulp', 'drempel', 'toegang', 'vaardigheid', 'ondersteuning', 'meedoen'] },
+                    ],
                 },
                 {
                     id: 'q2-kloof-jongeren-ouderen',
@@ -174,18 +226,20 @@ export const digitalDivideResearcherConfig: DataViewerConfig = {
                 {
                     id: 'q7-maatregel-structureel',
                     question:
-                        'Welke maatregel pakt de digitale kloof het meest structureel aan voor kinderen in kwetsbare gezinnen?',
-                    type: 'multiple-choice',
-                    options: [
-                        'Gratis laptops voor leerlingen',
-                        'Betaalbaar internet voor gezinnen',
-                        'DigiSterker voor ouderen',
-                        'Digitale vaardigheden in het onderwijs',
-                    ],
-                    correctAnswer: 'Digitale vaardigheden in het onderwijs',
+                        'Kies één maatregel als langetermijnprioriteit voor kinderen in kwetsbare gezinnen. Combineer toegang én vaardigheden in je uitleg en noem ook wat deze maatregel niet direct oplost.',
+                    type: 'text-observation',
+                    correctAnswer: '',
                     explanation:
-                        'Digitale vaardigheden in het onderwijs bereikt alle leerlingen structureel en duurzaam — niet eenmalig. De combinatie van toegang (laptop + internet) én vaardigheden (onderwijs) is sterker dan elk los. Maar het duurt generaties om effect te hebben. Voor direct effect is "betaalbaar internet" effectiever.',
+                        'Een sterke prioriteit kiest vaak digitale vaardigheden in het onderwijs, omdat dit alle leerlingen structureel bereikt en vaardigheden opbouwt. De beste antwoorden combineren dat met toegang: zonder laptop, internet of begeleiding blijft de kloof bestaan. Een volwassen aanbeveling benoemt daarom ook de beperking: onderwijs helpt vooral op lange termijn en lost niet meteen apparaat- of internetproblemen thuis op.',
                     points: 15,
+                    minLength: 80,
+                    minEvidenceCriteria: 3,
+                    textEvidenceCriteria: [
+                        { label: 'maatregel gekozen', keywords: ['onderwijs', 'internet', 'laptop', 'vaardigheden', 'training', 'school'] },
+                        { label: 'structureel effect', keywords: ['structureel', 'langetermijn', 'duurzaam', 'alle leerlingen', 'volgende generatie'] },
+                        { label: 'toegang en vaardigheden', keywords: ['toegang', 'apparaat', 'laptop', 'internet', 'vaardigheden', 'oefenen'] },
+                        { label: 'beperking benoemd', keywords: ['nadeel', 'lost niet', 'maar', 'beperking', 'niet direct', 'thuis'] },
+                    ],
                 },
                 {
                     id: 'q8-aanbeveling-formuleren',

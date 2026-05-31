@@ -163,6 +163,7 @@ export const RapidFire: React.FC<RapidFireProps> = ({
 
                 <button
                     onClick={handleContinue}
+                    data-qa="review-next"
                     className="w-full py-3 bg-gradient-to-r from-[#5F947D] to-[#5F947D] hover:from-[#5F947D] hover:to-[#5F947D] text-white rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
@@ -297,6 +298,7 @@ export const RapidFire: React.FC<RapidFireProps> = ({
                 <button
                     onClick={() => handleAnswer(true)}
                     disabled={answered !== null}
+                    data-qa="review-rapid-true"
                     className={`py-4 rounded-xl font-black text-sm transition-all duration-200 active:scale-[0.97]
                         ${answered === null
                             ? 'bg-[#5F947D] hover:bg-[#5F947D] text-white'
@@ -313,6 +315,7 @@ export const RapidFire: React.FC<RapidFireProps> = ({
                 <button
                     onClick={() => handleAnswer(false)}
                     disabled={answered !== null}
+                    data-qa="review-rapid-false"
                     className={`py-4 rounded-xl font-black text-sm transition-all duration-200 active:scale-[0.97]
                         ${answered === null
                             ? 'bg-[#D97848] hover:bg-[#D97848] text-white'

@@ -19,11 +19,56 @@ export const mlTrainerConfig: DataViewerConfig = {
         evidence:
             'Leerlingbewijs: antwoorden over spamlabels, features, accuracy, overfitting en eigen tekstobservaties. Docentbewijs: score, fase-overzicht en tekstbewijs waarin supervised learning en modelkwaliteit zichtbaar worden.',
     },
+    experienceDesign: {
+        boringRisk: 'high',
+        firstTenSeconds: 'Model audit: kies waarom de spamfilter ondanks goede demoscore faalt.',
+        primaryInteraction: 'operate-simulation',
+        feedbackMoment: 'Na de faalhypothese koppelt feedback labels, features of overfitting aan modelkwaliteit.',
+        visualKit: 'data-room',
+        evidenceMoment: 'De leerling noemt labels, features, accuracy en overfitting in concrete observaties.',
+        antiBoringRule: 'ML moet voelen als modeltesten en foutzoeken, niet als spreadsheetanalyse.',
+        chromeAcceptance: 'Model-audit hook en ML-datasets zijn responsive en tekstobservaties blijven duidelijk zichtbaar.',
+    },
     introFeatures: [
         'Analyseer een gelabelde dataset voor een spamfilter',
         'Vergelijk accuracy van modellen met verschillende features',
         'Beoordeel wat overfitting betekent en hoe je het herkent',
     ],
+    investigationHook: {
+        title: 'De spamfilter laat rare mails door',
+        role: 'Model-auditor',
+        scenario:
+            'Een spamfilter scoort goed in de demo, maar mist in de praktijk verdachte mails. Jij kiest eerst welke modelzwakte je gaat testen.',
+        prompt: 'Welke faalhypothese lijkt het meest onderzoekbaar?',
+        contextLabel: 'Modelhypothese',
+        continueLabel: 'Audit de trainingsdata',
+        options: [
+            {
+                id: 'labels',
+                label: 'De labels sturen het model verkeerd',
+                description: 'Je controleert of voorbeelden consequent als spam of geen spam zijn gelabeld.',
+                feedback: 'Sterk. Supervised learning is zo betrouwbaar als de labels waarmee het model leert.',
+                evidenceChips: ['Label-kolom', '5 spam / 7 geen spam', 'supervised'],
+                impactCue: 'Labelkwaliteit',
+            },
+            {
+                id: 'features',
+                label: 'De features zijn te oppervlakkig',
+                description: 'Je kijkt welke kenmerken echt iets voorspellen en welke vooral ruis toevoegen.',
+                feedback: 'Goede ML-denkstap. Een model wordt niet slimmer van meer kolommen als die kolommen weinig betekenis hebben.',
+                evidenceChips: ['Gratis/Win', 'ID 9 en 11', '+1% winst'],
+                impactCue: 'Signaal vs ruis',
+            },
+            {
+                id: 'overfitting',
+                label: 'Het model kent de oefenset te goed',
+                description: 'Je zoekt verschil tussen mooi trainen en betrouwbaar presteren op nieuwe voorbeelden.',
+                feedback: 'Prima auditspoor. Overfitting voelt eerst als succes, totdat nieuwe data laat zien dat het model niet generaliseert.',
+                evidenceChips: ['98% training', '61% test', 'minder features'],
+                impactCue: 'Train-test kloof',
+            },
+        ],
+    },
 
     datasets: [
         // ── Dataset 1: Tabel ──────────────────────────────────────────────────
@@ -68,18 +113,21 @@ export const mlTrainerConfig: DataViewerConfig = {
                 {
                     id: 'q2-beste-feature',
                     question:
-                        'Welke feature is het sterkste voorspeller van spam op basis van deze dataset?',
-                    type: 'multiple-choice',
-                    options: [
-                        'Heeft link',
-                        '"Gratis" of "Win" aanwezig',
-                        'Onbekende afzender',
-                        'Hoofdletterpercentage boven 40%',
-                    ],
-                    correctAnswer: '"Gratis" of "Win" aanwezig',
+                        'Kies als model-auditor de feature die jij het sterkste bewijs vindt voor spam. Onderbouw je keuze met voorbeelden uit de dataset en noem ook waarom één andere feature minder betrouwbaar is.',
+                    type: 'text-observation',
+                    correctAnswer: '',
                     explanation:
-                        'Elke e-mail met "Gratis" of "Win" is óf spam (ID 1, 3, 5, 7, 10) óf heeft andere spam-kenmerken. Van de 5 e-mails met deze woorden zijn er 4-5 spam. Onbekende afzender is ook sterk, maar ID 9 en 11 zijn geen spam ondanks een onbekende afzender. Filter op de kolom om het zelf te controleren.',
+                        '"Gratis" of "Win" is de sterkste feature: de spamvoorbeelden ID 1, 3, 5, 7 en 10 hebben dit signaal, terwijl andere features meer uitzonderingen hebben. Onbekende afzender is bijvoorbeeld minder betrouwbaar, omdat ID 9 en 11 onbekende afzenders hebben maar toch geen spam zijn. Een model-auditor kijkt dus naar patroon én uitzonderingen.',
                     points: 15,
+                    minLength: 75,
+                    minEvidenceCriteria: 2,
+                    textEvidenceCriteria: [
+                        { label: 'sterke feature gekozen', keywords: ['gratis', 'win', 'feature', 'signaal'] },
+                        { label: 'spamvoorbeelden gebruikt', keywords: ['1', '3', '5', '7', '10', 'spam'] },
+                        { label: 'uitzondering genoemd', keywords: ['9', '11', 'uitzondering', 'geen spam'] },
+                        { label: 'minder betrouwbare feature', keywords: ['onbekende afzender', 'link', 'hoofdletters', 'minder betrouwbaar'] },
+                        { label: 'model-audit redenering', keywords: ['patroon', 'bewijs', 'model', 'voorspeller', 'auditor'] },
+                    ],
                 },
                 {
                     id: 'q3-supervised-learning',
@@ -117,18 +165,21 @@ export const mlTrainerConfig: DataViewerConfig = {
             questions: [
                 {
                     id: 'q4-beste-model',
-                    question: 'Welk model heeft de hoogste accuracy op de testset?',
-                    type: 'multiple-choice',
-                    options: [
-                        'Alleen afzender',
-                        'Afzender + link',
-                        'Alle 3 features',
-                        'Alle features + datum',
-                    ],
-                    correctAnswer: 'Alle features + datum',
+                    question:
+                        'Maak als model-auditor een verdict: kies je het 89%-model met extra datumfeature, of het 88%-model met minder complexiteit? Gebruik de accuracy-data en leg uit wat je risico/afweging is.',
+                    type: 'text-observation',
+                    correctAnswer: '',
                     explanation:
-                        '"Alle features + datum" heeft de hoogste accuracy: 89%. Maar het verschil met "Alle 3 features" (88%) is slechts 1 procentpunt. Dit roept een vraag op: is het de moeite waard om een extra feature toe te voegen voor 1% winst? Meer features betekent ook meer complexiteit en kans op overfitting.',
+                        'Het 89%-model heeft technisch de hoogste accuracy, maar wint maar 1 procentpunt van het 88%-model met alle 3 features. Een sterke model-auditor benoemt daarom de afweging: extra complexiteit en mogelijk overfitting tegenover een heel kleine winst. Beide keuzes kunnen kloppen als je de accuracy-data en het risico helder onderbouwt.',
                     points: 10,
+                    minLength: 70,
+                    minEvidenceCriteria: 3,
+                    textEvidenceCriteria: [
+                        { label: 'modelkeuze', keywords: ['89', '88', 'datum', 'alle 3 features', 'model'] },
+                        { label: 'accuracy-data', keywords: ['accuracy', 'procent', '1', '88', '89'] },
+                        { label: 'complexiteit of risico', keywords: ['complexiteit', 'extra feature', 'overfitting', 'risico', 'afweging'] },
+                        { label: 'auditor-verdict', keywords: ['kies', 'verdict', 'advies', 'model-auditor', 'betrouwbaar'] },
+                    ],
                 },
                 {
                     id: 'q5-accuracy-stijging',
@@ -197,18 +248,20 @@ export const mlTrainerConfig: DataViewerConfig = {
                 {
                     id: 'q7-overfitting-herkennen',
                     question:
-                        'Een model heeft 98% accuracy op de trainingset, maar slechts 61% op de testset. Wat is dit een teken van?',
-                    type: 'multiple-choice',
-                    options: [
-                        'Het model is perfect — 98% is uitstekend',
-                        'Overfitting — het model heeft de trainingdata "gememoriseerd"',
-                        'Underfitting — het model is te simpel om patronen te leren',
-                        'De testset is te klein om te meten',
-                    ],
-                    correctAnswer: 'Overfitting — het model heeft de trainingdata "gememoriseerd"',
+                        'Diagnoseer de modelcrash: trainingaccuracy is 98%, testaccuracy is 61%. Wat is er waarschijnlijk aan de hand en welke eerste herstelactie zou jij testen?',
+                    type: 'text-observation',
+                    correctAnswer: '',
                     explanation:
-                        'Het enorme verschil tussen 98% (training) en 61% (test) is een klassiek teken van overfitting. Het model kent de trainingsvoorbeelden van buiten, maar heeft het algemene patroon niet geleerd. Op nieuwe e-mails werkt het dus slecht. Oplossing: minder features, meer trainingsdata, of een eenvoudiger model.',
+                        'Het enorme verschil tussen 98% trainingaccuracy en 61% testaccuracy is een klassiek teken van overfitting. Het model kent de trainingsvoorbeelden te goed, maar heeft het algemene patroon niet geleerd. Een logische eerste herstelactie is minder features gebruiken, meer trainingsdata verzamelen, een eenvoudiger model testen of de testset verbeteren.',
                     points: 15,
+                    minLength: 70,
+                    minEvidenceCriteria: 3,
+                    textEvidenceCriteria: [
+                        { label: 'train-test-gap', keywords: ['98', '61', 'training', 'test', 'testset'] },
+                        { label: 'overfitting diagnose', keywords: ['overfitting', 'memoriseert', 'uit het hoofd', 'te specifiek', 'generaliseert'] },
+                        { label: 'nieuwe data probleem', keywords: ['nieuwe data', 'ongeziene data', 'praktijk', 'werkt slecht', 'patroon'] },
+                        { label: 'herstelactie', keywords: ['minder features', 'meer trainingsdata', 'eenvoudiger model', 'betere testset', 'oplossing'] },
+                    ],
                 },
                 {
                     id: 'q8-classificatie-regressie',

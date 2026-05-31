@@ -12,7 +12,7 @@ import { Loader2, ChevronRight, Trophy, ArrowLeft, Target, Lightbulb, Sparkles, 
 import { WebPreviewModal } from '@/features/ai-lab/WebPreviewModal';
 
 
-import { getSharedProject, SharedProject } from '@/services/missionService';
+import { completeMission, getSharedProject, SharedProject } from '@/services/missionService';
 import { LEVEL_THRESHOLDS, getLevelProgress, getXPForNextLevel, getXPToNextLevel, getLevelFromXP } from '@/utils/xp';
 import { awardXP } from '@/services/XPService';
 import { logger } from '@/utils/logger';
@@ -106,7 +106,7 @@ const getXPReward = (difficulty: string): number => {
   }
 };
 
-export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initialRole, libraryData, vsoProfile, devPreviewMode = false }) => {
+export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initialRole, libraryData, vsoProfile, devPreviewMode = false, qaState }) => {
   const [showXPPopup, setShowXPPopup] = useState(false);
   const [selectedRole, setSelectedRole] = useState<AgentRole | null>(null);
   const [showLevelUp, setShowLevelUp] = useState(false);
@@ -268,37 +268,11 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
     if (allStepsComplete && !missionAlreadyComplete) {
       // Award XP based on mission difficulty and mark mission complete
       const xpReward = getXPReward(selectedRole.difficulty);
-      handleAwardXP(xpReward, `${selectedRole.title} Voltooid!`);
+      void completeAiLabMission(selectedRole.id, xpReward, `${selectedRole.title} Voltooid!`);
 
       // Trigger confetti celebration
       setShowConfetti(true);
       setTimeout(() => setShowConfetti(false), 2500);
-
-      setStats(prev => ({
-        ...prev,
-        missionsCompleted: [...new Set([...(prev.missionsCompleted || []), selectedRole.id])]
-      }));
-
-      // Log activity for teacher analytics/export (90-day retention).
-      // This complements the mission_complete logging in App.tsx for non-AiLab missions.
-      if (user && user.role === 'student') {
-        logActivity({
-          uid: user.uid,
-          schoolId: user.schoolId,
-          studentName: user.displayName || 'Naamloos',
-          type: 'mission_complete',
-          data: `Missie voltooid: ${selectedRole.id} (+${xpReward} XP)`,
-          missionId: selectedRole.id
-        });
-      }
-
-      // Save progress
-      if (saveProgress) {
-        saveProgress({
-          ...stats,
-          missionsCompleted: [...new Set([...(stats.missionsCompleted || []), selectedRole.id])]
-        });
-      }
     }
   }, [completedSteps, selectedRole, stats.missionsCompleted]);
 
@@ -395,12 +369,7 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
     USER ACTIONS: XP & LEVELING
     ---------------------------------------------------------------------------
   */
-  /* 
-    ---------------------------------------------------------------------------
-    USER ACTIONS: XP & LEVELING
-    ---------------------------------------------------------------------------
-  */
-  const handleAwardXP = async (amount: number, label: string) => {
+  const handleAwardXP = async (amount: number, label: string, missionId?: string) => {
     if (!user?.uid) return;
 
     if (devPreviewMode) {
@@ -411,7 +380,7 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
     }
 
     // Call secure server-side RPC
-    const result = await awardXP(user.uid, amount, label);
+    const result = await awardXP(user.uid, amount, label, missionId);
 
     if (!result.awarded) {
       console.warn(`[XP Blocked] ${result.reason}`);
@@ -441,6 +410,35 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
 
       return newStats;
     });
+  };
+
+  const completeAiLabMission = async (missionId: string, xpAmount: number, label: string) => {
+    const completion = await completeMission(missionId);
+    if (!completion?.completed) {
+      logger.error('Mission completion rejected', { missionId });
+      return;
+    }
+
+    setStats(prev => {
+      return {
+        ...prev,
+        ...(completion.stats || {}),
+        missionsCompleted: completion.stats?.missionsCompleted || [...new Set([...(prev.missionsCompleted || []), missionId])],
+      };
+    });
+
+    await handleAwardXP(xpAmount, label, missionId);
+
+    if (!devPreviewMode && user && user.role === 'student') {
+      logActivity({
+        uid: user.uid,
+        schoolId: user.schoolId,
+        studentName: user.displayName || 'Naamloos',
+        type: 'mission_complete',
+        data: `Missie voltooid: ${missionId} (+${xpAmount} XP)`,
+        missionId
+      });
+    }
   };
 
   /* 
@@ -525,7 +523,11 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
     });
   }, [selectedRole, saveProgress]);
 
-  const handleMissionStart = () => {
+  const handleMissionStart = (starterPrompt?: string) => {
+    if (starterPrompt) {
+      setInput(starterPrompt);
+    }
+
     setMissionStarted(true);
   };
 
@@ -535,6 +537,11 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
   // Track used tips to detect copying
   const [usedTips, setUsedTips] = useState<string[]>([]);
   const [tipToConfirm, setTipToConfirm] = useState<string | null>(null);
+  const [inputFeedback, setInputFeedback] = useState<{
+    tone: 'warning' | 'success';
+    title: string;
+    detail: string;
+  } | null>(null);
 
   const handleSuggestionClick = (suggestion: string) => {
     setTipToConfirm(suggestion);
@@ -576,6 +583,7 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
   // Wrap handleSend to check for tip copying AND award XP for engagement
   const handleSendWithTipCheck = (text?: string) => {
     const inputText = text || input;
+    const trimmedInput = inputText.trim();
     if (inputText && !text) {
       // Only check when user types manually (not from suggestion click)
       checkForTipCopy(inputText);
@@ -583,7 +591,21 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
 
     // Award XP for each meaningful interaction (5-10 XP based on message length)
     // This ensures students earn ~300-400 XP in 90 min (~40-60 interactions)
-    if (inputText && inputText.trim().length > 0) {
+    if (trimmedInput.length > 0) {
+      if (!text) {
+        setInputFeedback(trimmedInput.length < 20
+          ? {
+            tone: 'warning',
+            title: 'Feedback: nog te kort',
+            detail: 'Wat gebeurde er? Je stuurde weinig context. Waarom helpt dat minder? De AI kan dan gokken. Volgende stap: noem onderwerp, actie en reden.',
+          }
+          : {
+            tone: 'success',
+            title: 'Feedback: goede start',
+            detail: 'Wat gebeurde er? Je gaf genoeg richting. Waarom werkt dat? De AI kan gerichter reageren. Volgende stap: kijk naar de preview en verbeter een keuze.',
+          });
+      }
+
       const xpAmount = inputText.length > 20 ? 10 : 5;
       handleAwardXP(xpAmount, "Bericht Verstuurd");
 
@@ -889,6 +911,7 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
           <div className="flex-1 overflow-hidden rounded-3xl">
             <GamesSection
               userRole={user?.role || 'student'}
+              schoolId={user?.schoolId}
               avatarConfig={stats.avatarConfig}
               onXPEarned={(amount, label) => handleAwardXP(amount, label)}
               onBack={() => setView('lab')}
@@ -915,14 +938,14 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
             <div className="flex-1 w-full h-full min-h-0 relative animate-in zoom-in-95 duration-500 rounded-3xl overflow-hidden shadow-2xl border-4 border-lab-line bg-lab-ink">
               {selectedRole.id === 'chatbot-trainer' ? (
                 <ChatbotTrainerPreview
-                  onLevelComplete={(level) => handleAwardXP(100, `Chatbot Level ${level} Voltooid`)}
+                  onLevelComplete={(level) => completeAiLabMission('chatbot-trainer', 100, `Chatbot Level ${level} Voltooid`)}
                   initialState={stats.missionProgress?.['chatbot-trainer']?.data}
                   sharedState={sharedData}
                   onSave={handleMissionDataSave}
                 />
               ) : selectedRole.id === 'ai-tekengame' ? (
                 <DrawingGamePreview
-                  onLevelComplete={(level) => handleAwardXP(100, 'AI Tekengame Voltooid')}
+                  onLevelComplete={() => completeAiLabMission('ai-tekengame', 100, 'AI Tekengame Voltooid')}
                   onXPEarned={(amount, label) => handleAwardXP(amount, label)}
                   user={user ? {
                     uid: user.uid,
@@ -941,11 +964,7 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
                     schoolId: user.schoolId
                   } : undefined}
                   onComplete={() => {
-                    handleAwardXP(75, 'AI Beleid Brainstorm Voltooid');
-                    setStats(prev => ({
-                      ...prev,
-                      missionsCompleted: [...new Set([...(prev.missionsCompleted || []), 'ai-beleid-brainstorm'])]
-                    }));
+                    completeAiLabMission('ai-beleid-brainstorm', 75, 'AI Beleid Brainstorm Voltooid');
                     handleBackToOverview();
                   }}
                 />
@@ -954,11 +973,7 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
                   onBack={handleBackToOverview}
                   onComplete={(passed) => {
                     if (passed) {
-                      handleAwardXP(100, 'Data Detective Voltooid!');
-                      setStats(prev => ({
-                        ...prev,
-                        missionsCompleted: [...new Set([...(prev.missionsCompleted || []), 'data-detective'])]
-                      }));
+                      completeAiLabMission('data-detective', 100, 'Data Detective Voltooid!');
                     }
                     handleBackToOverview();
                   }}
@@ -970,11 +985,7 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
                   onBack={handleBackToOverview}
                   onComplete={(passed) => {
                     if (passed) {
-                      handleAwardXP(100, 'Deepfake Detector Voltooid!');
-                      setStats(prev => ({
-                        ...prev,
-                        missionsCompleted: [...new Set([...(prev.missionsCompleted || []), 'deepfake-detector'])]
-                      }));
+                      completeAiLabMission('deepfake-detector', 100, 'Deepfake Detector Voltooid!');
                     }
                     handleBackToOverview();
                   }}
@@ -986,11 +997,7 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
                   onBack={handleBackToOverview}
                   onComplete={(passed) => {
                     if (passed) {
-                      handleAwardXP(100, 'Filter Bubble Breaker Voltooid!');
-                      setStats(prev => ({
-                        ...prev,
-                        missionsCompleted: [...new Set([...(prev.missionsCompleted || []), 'filter-bubble-breaker'])]
-                      }));
+                      completeAiLabMission('filter-bubble-breaker', 100, 'Filter Bubble Breaker Voltooid!');
                     }
                     handleBackToOverview();
                   }}
@@ -1001,11 +1008,7 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
                   onBack={handleBackToOverview}
                   onComplete={(passed) => {
                     if (passed) {
-                      handleAwardXP(100, 'Datalekken Rampenplan Voltooid!');
-                      setStats(prev => ({
-                        ...prev,
-                        missionsCompleted: [...new Set([...(prev.missionsCompleted || []), 'datalekken-rampenplan'])]
-                      }));
+                      completeAiLabMission('datalekken-rampenplan', 100, 'Datalekken Rampenplan Voltooid!');
                     }
                     handleBackToOverview();
                   }}
@@ -1016,11 +1019,7 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
                   onBack={handleBackToOverview}
                   onComplete={(passed) => {
                     if (passed) {
-                      handleAwardXP(100, 'Data voor Data Voltooid!');
-                      setStats(prev => ({
-                        ...prev,
-                        missionsCompleted: [...new Set([...(prev.missionsCompleted || []), 'data-voor-data'])]
-                      }));
+                      completeAiLabMission('data-voor-data', 100, 'Data voor Data Voltooid!');
                     }
                     handleBackToOverview();
                   }}
@@ -1031,11 +1030,7 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
                   onBack={handleBackToOverview}
                   onComplete={(passed) => {
                     if (passed) {
-                      handleAwardXP(100, 'Access Control Engineer Voltooid!');
-                      setStats(prev => ({
-                        ...prev,
-                        missionsCompleted: [...new Set([...(prev.missionsCompleted || []), 'access-control-engineer'])]
-                      }));
+                      completeAiLabMission('access-control-engineer', 100, 'Access Control Engineer Voltooid!');
                     }
                     handleBackToOverview();
                   }}
@@ -1068,11 +1063,7 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
                     }}
                     onComplete={(passed, score) => {
                       if (passed) {
-                        setStats(prev => ({
-                          ...prev,
-                          missionsCompleted: [...new Set([...(prev.missionsCompleted || []), selectedRole.id])]
-                        }));
-                        handleAwardXP(150, `${assessmentData.config.title || 'Praktijk'} Review`);
+                        completeAiLabMission(selectedRole.id, 150, `${assessmentData.config.title || 'Praktijk'} Review`);
                       }
                     }}
                     onExit={handleBackToOverview}
@@ -1084,7 +1075,10 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
             </div>
           ) : (
             // Standard Split View for other missions
-            <div className={`flex-1 flex flex-col ${showRightPanel ? 'md:flex-row ipad-stack' : ''} gap-3 h-full min-h-0 pb-1 animate-in fade-in slide-in-from-right-4 duration-500`}>
+            <div
+              className={`flex-1 flex flex-col ${showRightPanel ? 'md:flex-row ipad-stack' : ''} gap-3 h-full min-h-0 pb-1 animate-in fade-in slide-in-from-right-4 duration-500`}
+              data-qa={`agent-maker-lab-${selectedRole.id}`}
+            >
 
               {/* Chat Column */}
               <section className={`chat-column ${selectedRole.id === 'game-programmeur' ? 'game-programmeur-chat' : ''} ${selectedRole.id === 'ai-trainer' ? 'ai-trainer-chat' : ''} flex flex-col bg-white rounded-2xl shadow-sm border border-lab-line overflow-hidden min-h-0 h-full max-h-full ${chatWidthClass} print:hidden`}>
@@ -1214,6 +1208,23 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
                       <AlertCircle size={16} /> <span className="font-bold">{error}</span>
                     </div>
                   )}
+                  {inputFeedback && (
+                    <div
+                      className={`mb-3 rounded-xl border px-4 py-3 text-sm shadow-sm animate-in fade-in ${
+                        inputFeedback.tone === 'warning'
+                          ? 'border-lab-gold bg-lab-gold/20 text-lab-ink'
+                          : 'border-lab-sage bg-lab-sage/15 text-lab-sage'
+                      }`}
+                      role="status"
+                      aria-live="polite"
+                    >
+                      <div className="mb-1 flex items-center gap-2 font-black">
+                        {inputFeedback.tone === 'warning' ? <AlertCircle size={16} /> : <CheckCircle2 size={16} />}
+                        {inputFeedback.title}
+                      </div>
+                      <p className="leading-relaxed">{inputFeedback.detail}</p>
+                    </div>
+                  )}
                   {suggestions.length > 0 && !isLoading && (
                     <div className="flex flex-wrap gap-2 mb-3 animate-in slide-in-from-bottom-2">
                       <div
@@ -1243,7 +1254,10 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
                     <input
                       type="text"
                       value={input}
-                      onChange={(e) => setInput(e.target.value)}
+                      onChange={(e) => {
+                        setInput(e.target.value);
+                        if (inputFeedback) setInputFeedback(null);
+                      }}
                       onKeyDown={(e) => e.key === 'Enter' && handleSendWithTipCheck()}
                       placeholder={selectedRole.id === 'game-programmeur' ? "Typ bijv: Maak de speler groen..." : "Typ je antwoord..."}
                       className="chat-input flex-1 h-14 bg-white border border-lab-line rounded-xl px-4 focus:ring-4 focus:ring-lab-primary/10 transition-all outline-none shadow-sm text-base"
@@ -1290,11 +1304,7 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
                     ) : selectedRole?.id === 'layout-doctor' ? (
                       <WordSimulator
                         onLevelComplete={() => {
-                          handleAwardXP(50, 'Word Doctor Gediplomeerd!');
-                          setStats(prev => ({
-                            ...prev,
-                            missionsCompleted: [...new Set([...(prev.missionsCompleted || []), 'layout-doctor'])]
-                          }));
+                          completeAiLabMission('layout-doctor', 50, 'Word Doctor Gediplomeerd!');
                           handleBackToOverview();
                         }}
                         onExit={handleBackToOverview}
@@ -1321,6 +1331,7 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
                     ) : selectedRole?.id === 'verhalen-ontwerper' ? (
                       <BookPreview
                         data={activeBookData}
+                        qaInitialConclusion={qaState === 'complete'}
                         user={user ? {
                           uid: user.uid,
                           displayName: user.displayName,
@@ -1332,7 +1343,7 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
                       />
 
                     ) : selectedRole?.id === 'ai-trainer' ? (
-                      <TrainerPreview data={activeTrainerData} />
+                      <TrainerPreview data={activeTrainerData} qaInitialConclusion={qaState === 'complete'} />
                     ) : selectedRole?.id === 'data-verzamelaar' ? (
                       <DataVerzamelaarPreview currentStep={completedSteps?.length || 0} />
                     ) : selectedRole?.id === 'data-journalist' ? (
@@ -1465,7 +1476,7 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
                 });
               }}
               onComplete={(passed, score) => {
-                if (passed) handleAwardXP(score, 'Week 1 Review');
+                if (passed) completeAiLabMission(selectedRole.id, score, 'Week 1 Review');
                 setView('lab');
               }}
               onExit={() => setView('lab')}

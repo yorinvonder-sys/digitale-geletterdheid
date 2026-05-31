@@ -4,7 +4,7 @@ import {
     ArrowLeft, CheckCircle, Type, Image as ImageIcon, Layout, Bold, Italic,
     AlignLeft, AlignCenter, AlignRight, Play, FileText, Save, Printer,
     Table, Square, Palette, Droplet, LayoutTemplate, Columns, FilePlus,
-    List, BookOpen, ChevronDown, ChevronUp, Info, X, Lightbulb
+    List, BookOpen, ChevronDown, ChevronUp, Info, X, Lightbulb, Minus
 } from 'lucide-react';
 import { useMissionAutoSave } from '@/hooks/useMissionAutoSave';
 
@@ -19,6 +19,7 @@ interface LayoutDoctorState {
     bodyFont: string;
     fontSize: number;
     isImageRight: boolean;
+    diagnosedCriteria?: string[];
 }
 
 // Opdrachtcriteria
@@ -29,6 +30,22 @@ const ASSIGNMENT_CRITERIA = [
     { id: 'imagepos', label: 'Sleep de afbeelding naar rechts', check: (s: LayoutDoctorState) => s.isImageRight },
     { id: 'fontsize', label: 'Gebruik minimaal lettergrootte 12', check: (s: LayoutDoctorState) => s.fontSize >= 12 },
 ];
+
+const DIAGNOSIS_CASES = [
+    { id: 'title', label: 'Titel mist structuur', symptom: 'De titel lijkt op gewone tekst en helpt de lezer niet scannen.', prescription: 'Kop 1' },
+    { id: 'font', label: 'Onprofessioneel lettertype', symptom: 'De lopende tekst voelt speels en minder geschikt voor een verslag.', prescription: 'Arial' },
+    { id: 'image', label: 'Afbeelding botst met tekst', symptom: 'De afbeelding ligt los over het document en tekst loopt er niet netjes omheen.', prescription: 'Tekstterugloop' },
+    { id: 'imagepos', label: 'Beeld staat onrustig', symptom: 'De afbeelding trekt te veel aandacht midden in het leespad.', prescription: 'Naar rechts' },
+    { id: 'fontsize', label: 'Tekst te klein', symptom: 'De alinea’s zijn net te klein om prettig te lezen.', prescription: 'Minimaal 12' },
+];
+
+const TREATMENT_LABELS: Record<string, string> = {
+    title: 'Kop 1 toepassen',
+    font: 'Arial zetten',
+    image: 'Tekstterugloop',
+    imagepos: 'Naar rechts',
+    fontsize: '12 pt zetten',
+};
 
 // Uitleg per wijziging
 const CHANGE_EXPLANATIONS: Record<string, string> = {
@@ -61,33 +78,49 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
     );
 
     const { titleStyle, imageAlign, bodyFont, fontSize, isImageRight } = savedState;
-
-    // Wrapper setters that update auto-save state
-    const setTitleStyle = (v: string) => {
-        setSavedState(prev => ({ ...prev, titleStyle: v }));
-        if (v === 'modern') setChangeExplanation('titleStyle');
-    };
-    const setImageAlign = (v: string) => {
-        setSavedState(prev => ({ ...prev, imageAlign: v }));
-        if (v === 'wrap') setChangeExplanation('imageAlign');
-    };
-    const setBodyFont = (v: string) => {
-        setSavedState(prev => ({ ...prev, bodyFont: v }));
-        if (v === 'sans') setChangeExplanation('bodyFont');
-    };
-    const setFontSize = (v: number) => {
-        setSavedState(prev => ({ ...prev, fontSize: v }));
-        if (v >= 12) setChangeExplanation('fontSize');
-    };
-    const setIsImageRight = (v: boolean) => {
-        setSavedState(prev => ({ ...prev, isImageRight: v }));
-        if (v) setChangeExplanation('isImageRight');
-    };
+    const diagnosedCriteria = savedState.diagnosedCriteria ?? [];
 
     // Transient UI state
     const [showAssignment, setShowAssignment] = useState(true);
     const [changeExplanation, setChangeExplanation] = useState<string | null>(null);
     const [inlineMessage, setInlineMessage] = useState<string | null>(null);
+    const [diagnosisFeedback, setDiagnosisFeedback] = useState<string | null>(null);
+
+    const hasDiagnosis = (id: string) => diagnosedCriteria.includes(id);
+    const blockTreatmentUntilDiagnosed = (id: string, label: string) => {
+        if (hasDiagnosis(id)) return false;
+
+        setShowAssignment(true);
+        setInlineMessage(`Spot eerst de diagnose voor ${label}. Dan ontgrendel je het recept.`);
+        return true;
+    };
+
+    // Wrapper setters that update auto-save state
+    const setTitleStyle = (v: string) => {
+        if (v === 'modern' && blockTreatmentUntilDiagnosed('title', 'Kop 1')) return;
+        setSavedState(prev => ({ ...prev, titleStyle: v }));
+        if (v === 'modern') setChangeExplanation('titleStyle');
+    };
+    const setImageAlign = (v: string) => {
+        if (v === 'wrap' && blockTreatmentUntilDiagnosed('image', 'tekstterugloop')) return;
+        setSavedState(prev => ({ ...prev, imageAlign: v }));
+        if (v === 'wrap') setChangeExplanation('imageAlign');
+    };
+    const setBodyFont = (v: string) => {
+        if (v === 'sans' && blockTreatmentUntilDiagnosed('font', 'Arial')) return;
+        setSavedState(prev => ({ ...prev, bodyFont: v }));
+        if (v === 'sans') setChangeExplanation('bodyFont');
+    };
+    const setFontSize = (v: number) => {
+        if (v >= 12 && fontSize < 12 && blockTreatmentUntilDiagnosed('fontsize', 'lettergrootte 12')) return;
+        setSavedState(prev => ({ ...prev, fontSize: v }));
+        if (v >= 12) setChangeExplanation('fontSize');
+    };
+    const setIsImageRight = (v: boolean) => {
+        if (v && blockTreatmentUntilDiagnosed('imagepos', 'afbeelding rechts')) return;
+        setSavedState(prev => ({ ...prev, isImageRight: v }));
+        if (v) setChangeExplanation('isImageRight');
+    };
 
     // Page Settings (not saved - cosmetic)
     const [pageColor, setPageColor] = useState('white');
@@ -113,6 +146,13 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
             return () => clearTimeout(timer);
         }
     }, [inlineMessage]);
+
+    useEffect(() => {
+        if (diagnosisFeedback) {
+            const timer = setTimeout(() => setDiagnosisFeedback(null), 2500);
+            return () => clearTimeout(timer);
+        }
+    }, [diagnosisFeedback]);
 
     // Content State
     const [blocks, setBlocks] = useState<ContentBlock[]>([
@@ -161,6 +201,32 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
 
     // Check completion
     const isComplete = titleStyle === 'modern' && imageAlign === 'wrap' && bodyFont === 'sans' && fontSize >= 12 && isImageRight;
+    const completedCriteria = ASSIGNMENT_CRITERIA.filter((criterion) => criterion.check(savedState)).length;
+    const diagnosisComplete = DIAGNOSIS_CASES.every((item) => diagnosedCriteria.includes(item.id));
+    const canSubmit = isComplete && diagnosisComplete;
+    const markDiagnosis = (id: string) => {
+        const diagnosis = DIAGNOSIS_CASES.find((item) => item.id === id);
+        setSavedState(prev => ({
+            ...prev,
+            diagnosedCriteria: [...new Set([...(prev.diagnosedCriteria ?? []), id])],
+        }));
+        setDiagnosisFeedback(diagnosis ? `Diagnose genoteerd: behandel met ${diagnosis.prescription}.` : 'Diagnose genoteerd.');
+    };
+
+    const applyTreatment = (id: string) => {
+        if (!hasDiagnosis(id)) {
+            markDiagnosis(id);
+            return;
+        }
+
+        if (id === 'title') setTitleStyle('modern');
+        if (id === 'font') setBodyFont('sans');
+        if (id === 'image') setImageAlign('wrap');
+        if (id === 'imagepos') setIsImageRight(true);
+        if (id === 'fontsize') setFontSize(Math.max(fontSize, 12));
+
+        setDiagnosisFeedback(`Behandeling uitgevoerd: ${TREATMENT_LABELS[id] ?? 'recept toegepast'}.`);
+    };
 
     // Render Ribbons
     const renderRibbon = () => {
@@ -186,6 +252,7 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
                                     className="w-32 text-xs border border-[#E7D8BD] rounded focus-visible:ring-2 focus-visible:ring-[#D97848]"
                                     value={bodyFont === 'comic' ? 'Comic Sans MS' : 'Arial'}
                                     onChange={(e) => setBodyFont(e.target.value === 'Arial' ? 'sans' : 'comic')}
+                                    data-qa="layout-doctor-font-select"
                                 >
                                     <option value="Comic Sans MS">Comic Sans MS</option>
                                     <option value="Arial">Arial</option>
@@ -195,6 +262,15 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
                                     <button onClick={() => setIsItalic(!isItalic)} className={`p-1 ${isItalic ? 'bg-[#E7D8BD]' : ''} rounded hover:bg-[#E7D8BD] transition-all duration-300`}><Italic size={14} /></button>
                                     <button onClick={() => setIsUnderlined(!isUnderlined)} className={`p-1 ${isUnderlined ? 'bg-[#E7D8BD]' : ''} rounded hover:bg-[#E7D8BD] transition-all duration-300`}><div className="underline text-[10px] font-bold">U</div></button>
                                 </div>
+                                <div className="flex items-center rounded border border-[#E7D8BD] bg-white">
+                                    <button onClick={() => setFontSize(Math.max(8, fontSize - 1))} className="grid h-7 w-7 place-items-center hover:bg-[#FCF6EA] transition-all" aria-label="Lettergrootte kleiner">
+                                        <Minus size={12} />
+                                    </button>
+                                    <span className="min-w-8 text-center text-xs font-bold text-[#445865]">{fontSize}</span>
+                                    <button onClick={() => setFontSize(fontSize + 1)} className="grid h-7 w-7 place-items-center hover:bg-[#FCF6EA] transition-all" aria-label="Lettergrootte groter" data-qa="layout-doctor-font-size-increase">
+                                        <Type size={12} />
+                                    </button>
+                                </div>
                             </div>
                             <span className="text-[10px] text-center text-[#445865]">Lettertype</span>
                         </div>
@@ -203,7 +279,7 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
                                 <button onClick={() => setTitleStyle('comic')} className={`p-2 border rounded-lg transition-all duration-300 ${titleStyle === 'comic' ? 'bg-[#D97848]/10 border-[#D97848]' : 'border-[#E7D8BD]'} w-20`}>
                                     <span className="font-[Comic_Sans_MS] text-xs">Normaal</span>
                                 </button>
-                                <button onClick={() => setTitleStyle('modern')} className={`p-2 border rounded-lg transition-all duration-300 ${titleStyle === 'modern' ? 'bg-[#D97848]/10 border-[#D97848]' : 'border-[#E7D8BD]'} w-20`}>
+                                <button onClick={() => setTitleStyle('modern')} className={`p-2 border rounded-lg transition-all duration-300 ${titleStyle === 'modern' ? 'bg-[#D97848]/10 border-[#D97848]' : 'border-[#E7D8BD]'} w-20`} data-qa="layout-doctor-title-modern">
                                     <span className="font-sans font-bold text-lg">Kop 1</span>
                                 </button>
                             </div>
@@ -211,8 +287,11 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
                         </div>
                         {selection === 'image' && (
                             <div className="flex flex-col px-2 border-r border-[#E7D8BD] h-full justify-between pb-1 animate-in fade-in slide-in-from-top-2">
-                                <button onClick={() => setImageAlign('wrap')} className={`flex flex-col items-center p-1 rounded-lg transition-all duration-300 ${imageAlign === 'wrap' ? 'bg-[#E7D8BD]' : ''}`}>
+                                <button onClick={() => setImageAlign('wrap')} className={`flex flex-col items-center p-1 rounded-lg transition-all duration-300 ${imageAlign === 'wrap' ? 'bg-[#E7D8BD]' : ''}`} data-qa="layout-doctor-image-wrap">
                                     <AlignLeft size={20} /> <span className="text-[10px]">Tekstterugloop</span>
+                                </button>
+                                <button onClick={() => setIsImageRight(true)} className={`flex flex-col items-center p-1 rounded-lg transition-all duration-300 ${isImageRight ? 'bg-[#E7D8BD]' : ''}`} data-qa="layout-doctor-image-right">
+                                    <AlignRight size={20} /> <span className="text-[10px]">Naar rechts</span>
                                 </button>
                                 <span className="text-[10px] text-center text-[#0B453F] font-bold">Afbeelding</span>
                             </div>
@@ -278,9 +357,9 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
     };
 
     return (
-        <div className="min-h-screen bg-[#FCF6EA] flex flex-col text-[#08283B]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }} onClick={() => setSelection('none')}>
+        <div className="h-dvh overflow-hidden bg-[#FCF6EA] flex flex-col text-[#08283B]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }} onClick={() => setSelection('none')}>
             {/* Header */}
-            <header className="bg-[#D97848] text-white px-4 py-2 flex items-center justify-between shadow-md relative z-20">
+            <header className="bg-[#D97848] text-white px-4 py-2 flex flex-wrap items-center justify-between gap-2 shadow-md relative z-20 shrink-0">
                 <div className="flex items-center gap-4">
                     <button onClick={onBack} className="p-1.5 hover:bg-white/10 rounded-lg transition-all duration-300 focus-visible:ring-2 focus-visible:ring-white"><ArrowLeft size={20} /></button>
                     <div className="flex flex-col">
@@ -293,10 +372,11 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
                     </div>
                 </div>
                 <button
-                    onClick={() => { if (isComplete) { clearSave(); onComplete(true); } else { setInlineMessage('Nog niet klaar! Check de opdrachtkaart bovenaan.'); setShowAssignment(true); } }}
-                    className={`px-4 py-1.5 rounded-full font-bold text-sm flex items-center gap-2 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-white ${isComplete ? 'bg-[#5F947D] hover:bg-lab-sage hover:text-white' : 'bg-white/20'}`}
+                    onClick={() => { if (canSubmit) { clearSave(); onComplete(true); } else { setInlineMessage('Nog niet klaar! Diagnoseer en behandel alle documentproblemen.'); setShowAssignment(true); } }}
+                    className={`px-4 py-1.5 rounded-full font-bold text-sm flex items-center gap-2 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-white ${canSubmit ? 'bg-[#5F947D] hover:bg-lab-sage hover:text-white' : 'bg-white/20'}`}
+                    data-qa="layout-doctor-submit"
                 >
-                    <CheckCircle size={16} /> {isComplete ? 'Inleveren' : 'Nog Bezig'}
+                    <CheckCircle size={16} /> {canSubmit ? 'Inleveren' : 'Nog Bezig'}
                 </button>
             </header>
 
@@ -304,6 +384,35 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
             <div className="bg-white border-b border-[#E7D8BD] shadow-sm relative z-10 overflow-x-auto" onClick={(e) => e.stopPropagation()}>
                 <div className="min-w-max">
                     {renderRibbon()}
+                </div>
+            </div>
+
+            <div className="bg-[#FFFDF7] border-b border-[#E7D8BD] px-4 py-2 shrink-0" data-qa="layout-doctor-progress">
+                <div className="mx-auto flex max-w-4xl flex-wrap items-center justify-between gap-3">
+                    <div>
+                        <p className="text-[10px] font-black uppercase tracking-widest text-[#D97848]">Layout-check</p>
+                        <p className="text-xs font-bold text-[#445865]">
+                            {diagnosedCriteria.length}/{DIAGNOSIS_CASES.length} diagnoses · {completedCriteria}/{ASSIGNMENT_CRITERIA.length} behandelingen
+                        </p>
+                    </div>
+                    <div className="min-w-40 flex-1 sm:max-w-xs">
+                        <div className="h-2 overflow-hidden rounded-full bg-[#E7D8BD]">
+                            <div
+                                className="h-full rounded-full bg-[#5F947D] transition-all duration-500"
+                                style={{ width: `${(completedCriteria / ASSIGNMENT_CRITERIA.length) * 100}%` }}
+                            />
+                        </div>
+                    </div>
+                    <button
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            setShowAssignment(true);
+                            setInlineMessage(canSubmit ? 'Alle diagnoses en checks zijn groen. Je kunt inleveren.' : 'Stel eerst je diagnose en werk de checklist verder af.');
+                        }}
+                        className="rounded-full border border-[#E7D8BD] bg-white px-3 py-1.5 text-xs font-bold text-[#445865] hover:border-[#D97848] transition-all"
+                    >
+                        Check opdracht
+                    </button>
                 </div>
             </div>
 
@@ -318,6 +427,21 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
                     >
                         <Info size={16} />
                         {inlineMessage}
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* Diagnosis Feedback Toast */}
+            <AnimatePresence>
+                {diagnosisFeedback && (
+                    <motion.div
+                        initial={{ opacity: 0, y: -30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -30 }}
+                        className="fixed top-32 left-1/2 -translate-x-1/2 z-50 max-w-sm rounded-2xl bg-[#5F947D] px-5 py-3 text-sm font-bold text-white shadow-2xl"
+                        data-qa="layout-doctor-diagnosis-feedback"
+                    >
+                        {diagnosisFeedback}
                     </motion.div>
                 )}
             </AnimatePresence>
@@ -341,7 +465,7 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
             </AnimatePresence>
 
             {/* Workspace */}
-            <div className="flex-1 overflow-y-auto p-4 lg:p-8 flex flex-col items-center bg-[#FCF6EA] perspective-[1000px]">
+            <div className="min-h-0 flex-1 overflow-y-auto p-4 lg:p-8 flex flex-col items-center bg-[#FCF6EA] perspective-[1000px]">
                 {/* Opdrachtkaart */}
                 <div className={`w-full max-w-4xl mb-4 transition-all duration-300 ${showAssignment ? '' : 'mb-2'}`}>
                     <button
@@ -355,7 +479,79 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
                     </button>
                     {showAssignment && (
                         <div className="bg-white border border-t-0 border-[#E7D8BD] rounded-b-2xl px-4 py-4 shadow-sm">
-                            <p className="text-sm text-[#445865] mb-3">Voer alle stappen uit om het document op te knappen:</p>
+                            <div className="mb-4 rounded-2xl border border-[#D97848]/20 bg-[#D97848]/5 p-3" data-qa="layout-doctor-diagnosis-panel">
+                                <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+                                    <div>
+                                        <p className="text-[10px] font-black uppercase tracking-widest text-[#D97848]">Dokterdiagnose</p>
+                                        <p className="text-sm font-black text-[#08283B]" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
+                                            Spot eerst wat er mis is met het document.
+                                        </p>
+                                    </div>
+                                    <span className={`rounded-full px-3 py-1 text-[10px] font-black ${diagnosisComplete ? 'bg-[#5F947D]/10 text-[#5F947D]' : 'bg-white text-[#D97848]'}`}>
+                                        {diagnosedCriteria.length}/{DIAGNOSIS_CASES.length} gevonden
+                                    </span>
+                                </div>
+                                <div className="grid gap-2 sm:grid-cols-2">
+                                    {DIAGNOSIS_CASES.map((item) => {
+                                        const diagnosed = diagnosedCriteria.includes(item.id);
+                                        const treated = ASSIGNMENT_CRITERIA.find((criterion) => criterion.id === item.id)?.check(savedState) ?? false;
+                                        return (
+                                            <div
+                                                key={item.id}
+                                                className={`rounded-xl border p-3 text-left transition-all duration-200 focus-visible:ring-2 focus-visible:ring-[#D97848] ${
+                                                    diagnosed
+                                                        ? 'border-[#5F947D]/40 bg-[#5F947D]/10'
+                                                        : 'border-[#E7D8BD] bg-white hover:border-[#D97848]/50'
+                                                }`}
+                                            >
+                                                <button
+                                                    type="button"
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        markDiagnosis(item.id);
+                                                    }}
+                                                    aria-pressed={diagnosed}
+                                                    data-qa={`layout-doctor-diagnosis-${item.id}`}
+                                                    className="w-full text-left focus-visible:outline-none"
+                                                >
+                                                <span className="flex items-start gap-2">
+                                                    <span className={`mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-lg ${diagnosed ? 'bg-[#5F947D] text-white' : 'bg-[#D97848]/10 text-[#D97848]'}`}>
+                                                        {diagnosed ? <CheckCircle size={13} /> : <Lightbulb size={13} />}
+                                                    </span>
+                                                    <span>
+                                                        <span className="block text-xs font-black text-[#08283B]">{item.label}</span>
+                                                        <span className="mt-1 block text-[11px] leading-snug text-[#445865]">{item.symptom}</span>
+                                                        {diagnosed && (
+                                                            <span className="mt-1 inline-flex rounded-full bg-white px-2 py-0.5 text-[10px] font-bold text-[#5F947D]">
+                                                                {treated ? 'Behandeld' : `Recept: ${item.prescription}`}
+                                                            </span>
+                                                        )}
+                                                    </span>
+                                                </span>
+                                                </button>
+                                                {diagnosed && (
+                                                    <button
+                                                        type="button"
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            applyTreatment(item.id);
+                                                        }}
+                                                        data-qa={`layout-doctor-treatment-${item.id}`}
+                                                        className={`mt-3 inline-flex w-full items-center justify-center rounded-xl px-3 py-2 text-xs font-black transition-all focus-visible:ring-2 focus-visible:ring-[#D97848] ${
+                                                            treated
+                                                                ? 'bg-[#5F947D] text-white'
+                                                                : 'bg-[#D97848] text-white hover:bg-[#C8663A]'
+                                                        }`}
+                                                    >
+                                                        {treated ? 'Behandeld' : `Behandel: ${TREATMENT_LABELS[item.id]}`}
+                                                    </button>
+                                                )}
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                            <p className="text-sm text-[#445865] mb-3">Behandel daarna alle problemen in het document:</p>
                             <ul className="space-y-2">
                                 {ASSIGNMENT_CRITERIA.map((criterion) => {
                                     const done = criterion.check(savedState);

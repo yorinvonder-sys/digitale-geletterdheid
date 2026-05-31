@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from 'react';
+import { CheckCircle2, ChevronRight, ClipboardCheck, FileSearch, Target } from 'lucide-react';
 import { useMissionAutoSave } from '@/hooks/useMissionAutoSave';
 import { PhaseHeader } from '../shared/PhaseHeader';
 import { PhaseCard } from '../shared/PhaseCard';
 import { CompletionScreen } from '../shared/CompletionScreen';
 import { IntroScreen } from '../shared/IntroScreen';
+import { MissionGoalBanner } from '../shared/MissionGoalBanner';
 import { ConfidenceRating, confidenceMultiplier } from '../shared/ConfidenceRating';
 import { FollowUpCard } from '../shared/FollowUpCard';
 import { getMissionGoal } from '@/config/missionGoals';
-import type { TemplateMissionProps } from '../shared/types';
+import type { MissionExperienceDesign, TemplateMissionProps } from '../shared/types';
 import type {
     ScenarioEngineConfig,
     ScenarioEngineState,
     ScenarioRound,
     RoundState,
+    ScenarioIntroChoiceOption,
 } from './types';
 import { SelectCorrectRound } from './sub/SelectCorrectRound';
 import { OrderPriorityRound } from './sub/OrderPriorityRound';
@@ -47,6 +50,248 @@ function adjustedScoreRound(round: ScenarioRound, rs: RoundState): number {
         : multiplied;
     return Math.max(0, Math.min(withBonus, round.maxScore));
 }
+
+function getRoundTypeLabel(round: ScenarioRound): string {
+    switch (round.type) {
+        case 'select-correct':
+            return 'Bewijs kiezen';
+        case 'order-priority':
+            return 'Prioriteit bepalen';
+        case 'binary-choice':
+            return round.acceptLabel && round.rejectLabel ? `${round.acceptLabel} / ${round.rejectLabel}` : 'Dilemma beslissen';
+        default:
+            return 'Case oplossen';
+    }
+}
+
+function getScenarioAction(round: ScenarioRound, experienceDesign?: MissionExperienceDesign): string {
+    if (experienceDesign?.primaryInteraction === 'prioritize-case') {
+        return round.type === 'order-priority'
+            ? 'Zet de cases in volgorde van urgentie.'
+            : 'Kies welke signalen direct actie vragen.';
+    }
+    if (experienceDesign?.primaryInteraction === 'choose-with-consequence') {
+        return round.type === 'binary-choice'
+            ? 'Neem per case een keuze en check de consequentie.'
+            : 'Selecteer je keuze alsof iemand op jouw advies wacht.';
+    }
+    if (experienceDesign?.primaryInteraction === 'pin-evidence') {
+        return 'Pin alleen het bewijs dat je keuze echt ondersteunt.';
+    }
+    return round.type === 'order-priority'
+        ? 'Rangschik de cases en verdedig je volgorde.'
+        : 'Kies je bewijs en controleer de feedback.';
+}
+
+function getScenarioEvidence(round: ScenarioRound, experienceDesign?: MissionExperienceDesign): string {
+    if (experienceDesign?.evidenceMoment) return experienceDesign.evidenceMoment;
+    return round.type === 'order-priority'
+        ? 'Je bewijs is je volgorde plus de uitleg per case.'
+        : 'Je bewijs is je selectie en de feedback op gemiste of fout gekozen items.';
+}
+
+function getScenarioFeedback(round: ScenarioRound, experienceDesign?: MissionExperienceDesign): string {
+    if (experienceDesign?.feedbackMoment) return experienceDesign.feedbackMoment;
+    return round.followUp
+        ? 'Na feedback volgt een korte bonuscheck.'
+        : 'Feedback toont direct welke signalen kloppen en welke je mist.';
+}
+
+const ScenarioRoundBrief: React.FC<{
+    round: ScenarioRound;
+    experienceDesign?: MissionExperienceDesign;
+}> = ({ round, experienceDesign }) => (
+    <section
+        className="mb-3 grid gap-2 rounded-xl border border-[#E7D8BD] bg-[#FFFDF7] p-2 sm:grid-cols-[0.8fr_1fr_1fr]"
+        data-qa="scenario-round-brief"
+    >
+        <div className="rounded-lg bg-white p-2">
+            <div className="mb-1 flex items-center gap-1.5 text-[#D97848]">
+                <FileSearch size={13} />
+                <p className="text-[10px] font-black uppercase tracking-widest">{getRoundTypeLabel(round)}</p>
+            </div>
+            <p className="text-[11px] font-semibold leading-snug text-[#445865]">
+                {getScenarioAction(round, experienceDesign)}
+            </p>
+        </div>
+        <div className="rounded-lg bg-white p-2">
+            <div className="mb-1 flex items-center gap-1.5 text-[#0B453F]">
+                <Target size={13} />
+                <p className="text-[10px] font-black uppercase tracking-widest">Bewijs</p>
+            </div>
+            <p className="text-[11px] font-semibold leading-snug text-[#445865]">
+                {getScenarioEvidence(round, experienceDesign)}
+            </p>
+        </div>
+        <div className="rounded-lg bg-white p-2">
+            <div className="mb-1 flex items-center gap-1.5 text-[#5F947D]">
+                <ClipboardCheck size={13} />
+                <p className="text-[10px] font-black uppercase tracking-widest">Feedback</p>
+            </div>
+            <p className="text-[11px] font-semibold leading-snug text-[#445865]">
+                {getScenarioFeedback(round, experienceDesign)}
+            </p>
+        </div>
+    </section>
+);
+
+interface ScenarioTriageRoute {
+    id: string;
+    label: string;
+    description: string;
+    feedback: string;
+    tag: string;
+}
+
+function buildScenarioTriageRoutes(config: ScenarioEngineConfig): ScenarioTriageRoute[] {
+    if (config.introChoice) {
+        return config.introChoice.options.map((option: ScenarioIntroChoiceOption) => ({
+            ...option,
+            tag: 'Hypothese',
+        }));
+    }
+
+    return config.rounds.slice(0, 3).map((round, index) => ({
+        id: round.id,
+        label: round.title,
+        description: getScenarioAction(round, config.experienceDesign),
+        tag: getRoundTypeLabel(round),
+        feedback: index === 0
+            ? (config.experienceDesign?.feedbackMoment ?? 'Goede route: je begint met bewijs voordat je conclusies trekt.')
+            : 'Slimme route: je kiest eerst welke case aandacht vraagt en bouwt daarna bewijs op.',
+    }));
+}
+
+const ScenarioTriageIntro: React.FC<{
+    config: ScenarioEngineConfig;
+    missionGoal?: ReturnType<typeof getMissionGoal>;
+    selectedRouteId?: string;
+    onSelectRoute: (routeId: string) => void;
+    onStart: () => void;
+}> = ({ config, missionGoal, selectedRouteId, onSelectRoute, onStart }) => {
+    const routes = buildScenarioTriageRoutes(config);
+    const selectedRoute = routes.find((route) => route.id === selectedRouteId);
+    const prompt = config.introChoice?.prompt ?? 'Kies je eerste route voordat je de case opent.';
+    const scenario = config.introChoice?.scenario ?? (config.experienceDesign?.firstTenSeconds ?? config.introDescription);
+
+    return (
+        <div
+            className="flex min-h-dvh items-start justify-center overflow-y-auto bg-[#FCF6EA] px-4 py-4 sm:py-6"
+            data-qa="scenario-triage-console"
+            style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+        >
+            <div className="w-full max-w-3xl pb-[max(1rem,env(safe-area-inset-bottom))]">
+                <div className="mb-4 rounded-2xl border border-[#E7D8BD] bg-[#FFFDF7] p-4 text-center shadow-sm sm:p-5">
+                    <div className="mx-auto mb-3 flex size-14 items-center justify-center rounded-2xl bg-[#08283B] text-3xl text-white shadow-sm sm:size-16 sm:text-4xl">
+                        <span aria-hidden="true">{config.introEmoji}</span>
+                    </div>
+                    <p className="text-[11px] font-black uppercase tracking-widest text-[#D97848]">
+                        Case Triage
+                    </p>
+                    <h1
+                        className="mt-1 text-xl font-black text-[#08283B] sm:text-2xl"
+                        style={{ fontFamily: "'Newsreader', Georgia, serif" }}
+                    >
+                        {config.introTitle}
+                    </h1>
+                    <p className="mx-auto mt-2 max-w-2xl text-sm leading-relaxed text-[#445865]">
+                        {config.introDescription}
+                    </p>
+                </div>
+
+                {missionGoal && <MissionGoalBanner goal={missionGoal} compact className="mb-4" />}
+
+                <section className="rounded-2xl border border-[#E7D8BD] bg-white p-4 shadow-sm" data-qa="scenario-intro-choice">
+                    <div className="mb-3 rounded-xl border border-[#E7D8BD] bg-[#FCF6EA] p-3">
+                        <p className="text-[10px] font-black uppercase tracking-widest text-[#D97848]">
+                            Eerste actie
+                        </p>
+                        <p className="mt-1 text-sm font-black leading-relaxed text-[#08283B]">
+                            {scenario}
+                        </p>
+                    </div>
+
+                    <div className="mb-3 flex items-center justify-between gap-3">
+                        <div>
+                            <p className="text-xs font-black uppercase tracking-widest text-[#445865]">
+                                {config.introChoice?.title ?? 'Kies je triageroute'}
+                            </p>
+                            <p className="mt-1 text-sm font-black leading-relaxed text-[#08283B]">
+                                {prompt}
+                            </p>
+                        </div>
+                        <span className="hidden shrink-0 rounded-lg bg-[#08283B] px-2.5 py-1 text-[10px] font-black text-white sm:inline-flex">
+                            {config.rounds.length} rondes
+                        </span>
+                    </div>
+
+                    <div className="grid gap-2 sm:grid-cols-3" role="group" aria-label="Kies je eerste caseroute">
+                        {routes.map((route) => {
+                            const selected = selectedRouteId === route.id;
+                            return (
+                                <button
+                                    key={route.id}
+                                    type="button"
+                                    onClick={() => onSelectRoute(route.id)}
+                                    aria-pressed={selected}
+                                    data-qa="scenario-triage-route"
+                                    className={`rounded-xl border p-3 text-left transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D97848]/50 ${
+                                        selected
+                                            ? 'border-[#D97848] bg-[#D97848]/10 shadow-sm'
+                                            : 'border-[#E7D8BD] bg-[#FFFDF7] hover:border-[#D97848]/50 hover:bg-white'
+                                    }`}
+                                >
+                                    <span className="flex items-start justify-between gap-3">
+                                        <span className="min-w-0">
+                                            <span className="block text-[10px] font-black uppercase tracking-widest text-[#5F947D]">
+                                                {route.tag}
+                                            </span>
+                                            <span className="mt-1 block text-sm font-black leading-tight text-[#08283B]">
+                                                {route.label}
+                                            </span>
+                                            <span className="mt-1 block text-xs font-semibold leading-relaxed text-[#445865]">
+                                                {route.description}
+                                            </span>
+                                        </span>
+                                        {selected && <CheckCircle2 size={18} className="shrink-0 text-[#D97848]" />}
+                                    </span>
+                                </button>
+                            );
+                        })}
+                    </div>
+
+                    <div
+                        className={`mt-3 rounded-xl border p-3 text-xs font-bold leading-snug ${
+                            selectedRoute
+                                ? 'border-[#5F947D]/30 bg-[#5F947D]/10 text-[#08283B]'
+                                : 'border-[#E7D8BD] bg-[#FCF6EA] text-[#445865]'
+                        }`}
+                        data-qa="scenario-triage-feedback"
+                        aria-live="polite"
+                    >
+                        {selectedRoute
+                            ? selectedRoute.feedback
+                            : (config.experienceDesign?.antiBoringRule ?? 'Kies eerst hoe je deze case aanpakt. Daarna verzamel je bewijs in de rondes.')}
+                    </div>
+                </section>
+
+                <button
+                    onClick={onStart}
+                    disabled={!selectedRouteId}
+                    data-qa="scenario-triage-start"
+                    className={`mt-4 flex w-full items-center justify-center gap-2 rounded-full py-3.5 text-sm font-black shadow-lg transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0B453F] focus-visible:ring-offset-2 active:scale-[0.98] ${
+                        selectedRouteId
+                            ? 'bg-[#D7C95F] text-[#08283B] shadow-[#D7C95F]/25 hover:bg-[#CBC04F]'
+                            : 'cursor-not-allowed bg-[#E7D8BD] text-[#445865] shadow-none'
+                    }`}
+                >
+                    {selectedRouteId ? 'Open de case' : 'Kies eerst je route'}
+                    <ChevronRight size={16} />
+                </button>
+            </div>
+        </div>
+    );
+};
 
 
 // ── Loading / error screens ───────────────────────────────────────────────────
@@ -148,14 +393,23 @@ const ScenarioEngineInner: React.FC<{
     const completionThreshold = typeof configuredThreshold === 'number'
         ? configuredThreshold <= 1 ? Math.round(config.maxScore * configuredThreshold) : configuredThreshold
         : Math.round(config.maxScore * 0.4);
-    const allRoundsSubmitted = config.rounds.every((round) => state.roundStates[round.id]?.submitted);
-    const isMissionComplete = allRoundsSubmitted && totalScore >= completionThreshold;
+    const submittedRounds = config.rounds.filter((round) => state.roundStates[round.id]?.submitted).length;
+    const requiredRounds = missionGoal?.criteria.type === 'rounds-complete'
+        ? missionGoal.criteria.min ?? config.rounds.length
+        : config.rounds.length;
+    const isMissionComplete = missionGoal?.criteria.type === 'rounds-complete'
+        ? submittedRounds >= requiredRounds
+        : submittedRounds >= config.rounds.length && totalScore >= completionThreshold;
     const completionStatus = {
         isComplete: isMissionComplete,
         title: isMissionComplete ? 'Bewijs compleet' : 'Nog niet voltooid',
         description: isMissionComplete
-            ? `Je rondes zijn afgerond en je score is minimaal ${completionThreshold}/${config.maxScore}.`
-            : `Voor voltooiing moet je alle rondes afronden en minimaal ${completionThreshold}/${config.maxScore} punten halen.`,
+            ? missionGoal?.criteria.type === 'rounds-complete'
+                ? `Je rondes zijn afgerond: ${submittedRounds}/${config.rounds.length} case-acties zijn ingediend.`
+                : `Je rondes zijn afgerond en je score is minimaal ${completionThreshold}/${config.maxScore}.`
+            : missionGoal?.criteria.type === 'rounds-complete'
+              ? `Voor voltooiing moet je ${requiredRounds}/${config.rounds.length} case-acties indienen.`
+              : `Voor voltooiing moet je alle rondes afronden en minimaal ${completionThreshold}/${config.maxScore} punten halen.`,
     };
 
     const updateRoundState = (roundId: string, patch: Partial<RoundState>) => {
@@ -215,13 +469,28 @@ const ScenarioEngineInner: React.FC<{
 
     // ── Intro phase ──
     if (state.phase === 'intro') {
+        if (config.experienceDesign || config.introChoice) {
+            return (
+                <ScenarioTriageIntro
+                    config={config}
+                    missionGoal={missionGoal}
+                    selectedRouteId={state.introChoiceId}
+                    onSelectRoute={(routeId) => setState(prev => ({ ...prev, introChoiceId: routeId }))}
+                    onStart={() => setState((prev) => ({ ...prev, phase: 'active' }))}
+                />
+            );
+        }
+
         return (
             <IntroScreen
                 emoji={config.introEmoji}
                 title={config.introTitle}
                 description={config.introDescription}
                 goal={missionGoal}
-                features={config.introFeatures}
+                features={[
+                    ...(config.experienceDesign?.firstTenSeconds ? [config.experienceDesign.firstTenSeconds] : []),
+                    ...(config.introFeatures ?? []),
+                ]}
                 onStart={() => setState((prev) => ({ ...prev, phase: 'active' }))}
             />
         );
@@ -255,16 +524,19 @@ const ScenarioEngineInner: React.FC<{
     const roundIsCorrect = roundState.submitted && baseScore >= 15;
     const hasFollowUp = !!currentRound.followUp;
     const followUpPending = roundIsCorrect && hasFollowUp && !roundState.followUpAnswered;
+    const feedbackReady = roundState.submitted && (currentRound.showConfidence ? roundState.confidence !== undefined : true);
 
     return (
-        <div className="min-h-screen bg-[#FCF6EA] p-4">
-            <div className="max-w-md mx-auto">
+        <div className="min-h-dvh overflow-y-auto bg-[#FCF6EA] p-3 sm:p-4" data-qa="scenario-engine-active">
+            <div className="mx-auto max-w-3xl pb-[max(1rem,env(safe-area-inset-bottom))]">
                 <PhaseHeader
                     currentPhase={state.currentRound}
                     totalPhases={config.rounds.length}
                     totalScore={totalScore}
                     onBack={onBack}
                 />
+
+                <ScenarioRoundBrief round={currentRound} experienceDesign={config.experienceDesign} />
 
                 <PhaseCard
                     icon={<span className="text-lg">{currentRound.emoji}</span>}
@@ -312,7 +584,7 @@ const ScenarioEngineInner: React.FC<{
                         </div>
                     )}
 
-                    {roundState.submitted && (currentRound.showConfidence ? roundState.confidence !== undefined : true) && (
+                    {feedbackReady && (
                         <>
                             <FeedbackBanner
                                 round={currentRound}
@@ -338,6 +610,30 @@ const ScenarioEngineInner: React.FC<{
                         </>
                     )}
                 </PhaseCard>
+
+                {feedbackReady && !followUpPending && (
+                    <div
+                        className="fixed inset-x-3 bottom-3 z-40 mx-auto flex max-w-3xl items-center justify-between gap-3 rounded-xl border border-[#E7D8BD] bg-[#FFFDF7] p-2 shadow-lg shadow-[#08283B]/10"
+                        data-qa="scenario-fixed-progress"
+                    >
+                        <div className="min-w-0">
+                            <p className="text-[10px] font-black uppercase tracking-widest text-[#D97848]">
+                                Ronde klaar
+                            </p>
+                            <p className="truncate text-xs font-bold text-[#445865]">
+                                Score {scoreRound(currentRound, roundState.selections)}/25
+                            </p>
+                        </div>
+                        <button
+                            type="button"
+                            onClick={handleNextRound}
+                            className="min-h-[40px] shrink-0 rounded-lg bg-[#D97848] px-4 text-xs font-black text-white transition-colors hover:brightness-95"
+                            data-qa="scenario-fixed-next"
+                        >
+                            {state.currentRound === config.rounds.length - 1 ? 'Resultaat' : 'Volgende'}
+                        </button>
+                    </div>
+                )}
             </div>
         </div>
     );

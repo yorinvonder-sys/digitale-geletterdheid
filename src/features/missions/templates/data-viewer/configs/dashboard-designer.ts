@@ -16,11 +16,56 @@ export const dashboardDesignerConfig: DataViewerConfig = {
         },
         evidence: 'Leerlingbewijs: antwoorden over schooldata, grafiekkeuze en dashboardprincipes plus drie observaties met doelgroep- en KPI-argumenten. Docentbewijs: score, fase-overzicht en zichtbaar tekstbewijs voor eindproductcriteria.',
     },
+    experienceDesign: {
+        boringRisk: 'high',
+        firstTenSeconds: 'Dashboard brief: kies één hoofd-KPI voordat de leerling de tabel ziet.',
+        primaryInteraction: 'build',
+        feedbackMoment: 'Na de KPI-keuze hoort de leerling hoe focus, doelgroep en vervolgvragen samenhangen.',
+        visualKit: 'data-room',
+        evidenceMoment: 'De leerling onderbouwt KPI, grafiektype en dashboardprincipe met observaties.',
+        antiBoringRule: 'Dashboardontwerp begint met een ontwerpbesluit, niet met losse datavragen.',
+        chromeAcceptance: 'KPI-keuze, grafiekdata en observatievelden blijven scanbaar op desktop, tablet en mobile.',
+    },
     introFeatures: [
         'Analyseer schooldata over cijfers en aanwezigheid',
         'Ontdek welk grafiektype past bij welke soort data',
         'Beoordeel dashboard-ontwerpen op overzichtelijkheid',
     ],
+    investigationHook: {
+        title: 'De directie wil maar één hoofdgetal',
+        role: 'Dashboard-redacteur',
+        scenario:
+            'De schooldirecteur opent het dashboard straks op een digibord. Er is bovenaan plek voor één hoofd-KPI. Jouw keuze bepaalt waar het gesprek over gaat.',
+        prompt: 'Welke KPI verdient de eerste plek?',
+        contextLabel: 'Dashboardfocus',
+        continueLabel: 'Bekijk de schooldata',
+        options: [
+            {
+                id: 'aanwezigheid',
+                label: 'Aanwezigheid als waarschuwingssignaal',
+                description: 'Je onderzoekt of afwezigheid vroeg laat zien waar prestaties later onder druk komen.',
+                feedback: 'Sterk voor actiegericht dashboarden: aanwezigheid is snel meetbaar en kan een vroeg signaal zijn voordat cijfers dalen.',
+                evidenceChips: ['89% bij 2C', '8 procentpunt verschil', 'trendvraag'],
+                impactCue: 'Vroeg signaal',
+            },
+            {
+                id: 'onvoldoendes',
+                label: 'Aantal onvoldoendes als urgentie',
+                description: 'Je zoekt naar de klas of het vak waar leerlingen nu het meest hulp nodig hebben.',
+                feedback: 'Goede directiekeuze. Onvoldoendes maken urgentie zichtbaar, maar je moet straks wel verklaren wat erachter zit.',
+                evidenceChips: ['19 onvoldoendes', '2C markeren', 'Wiskunde 28%'],
+                impactCue: 'Hulpprioriteit',
+            },
+            {
+                id: 'tevredenheid',
+                label: 'Tevredenheid als verborgen risico',
+                description: 'Je kijkt of cijfers alleen te weinig zeggen en welzijn/tevredenheid het verhaal aanvult.',
+                feedback: 'Mooi genuanceerd. Een dashboard is sterker als het niet alleen prestaties toont, maar ook signalen die prestaties kunnen verklaren.',
+                evidenceChips: ['6,5 tevredenheid', 'doelgroep', 'kleur bewust'],
+                impactCue: 'Contextsignaal',
+            },
+        ],
+    },
 
     datasets: [
         // ── Dataset 1: Tabel ──────────────────────────────────────────────────
@@ -46,13 +91,22 @@ export const dashboardDesignerConfig: DataViewerConfig = {
             questions: [
                 {
                     id: 'q1-zorgenklas',
-                    question: 'Welke klas heeft zowel het laagste gemiddelde cijfer als de laagste aanwezigheid?',
-                    type: 'multiple-choice',
-                    options: ['2A', '2B', '2C', '2D'],
-                    correctAnswer: '2C',
+                    question:
+                        'Markeer de klas die bovenaan het dashboard als aandachtspunt moet komen. Onderbouw je keuze met minimaal twee datapunten uit de tabel, zoals cijfer, aanwezigheid, onvoldoendes of tevredenheid.',
+                    type: 'text-observation',
+                    correctAnswer: '',
                     explanation:
-                        '2C heeft het laagste gemiddelde cijfer (6,4) én de laagste aanwezigheid (89%). Dit is een patroon: minder aanwezigheid hangt vaak samen met lagere prestaties. Een goed dashboard zou deze klas automatisch markeren als "aandachtspunt".',
+                        'Een sterke dashboardkeuze markeert klas 2C: deze klas heeft het laagste gemiddelde cijfer (6,4), de laagste aanwezigheid (89%) en de meeste onvoldoendes (19). Dat is een duidelijk patroon. Een goed directiedashboard toont niet alleen losse getallen, maar maakt zichtbaar waar actie nodig is.',
                     points: 15,
+                    minLength: 70,
+                    minEvidenceCriteria: 2,
+                    textEvidenceCriteria: [
+                        { label: 'klas 2C gemarkeerd', keywords: ['2c', 'klas 2c', 'aandachtspunt'] },
+                        { label: 'cijfer gebruikt', keywords: ['6,4', '6.4', 'laagste cijfer', 'gemiddelde', 'cijfer'] },
+                        { label: 'aanwezigheid gebruikt', keywords: ['89', 'aanwezigheid', 'laagste aanwezigheid', 'afwezigheid'] },
+                        { label: 'onvoldoendes of tevredenheid gebruikt', keywords: ['19', 'onvoldoendes', 'tevredenheid', '6,5', '6.5'] },
+                        { label: 'actiegericht dashboard', keywords: ['actie', 'directie', 'dashboard', 'signaal', 'markeren'] },
+                    ],
                 },
                 {
                     id: 'q2-verschil-aanwezigheid',
@@ -100,29 +154,39 @@ export const dashboardDesignerConfig: DataViewerConfig = {
             questions: [
                 {
                     id: 'q4-grootste-deel',
-                    question: 'Welk vak heeft het grootste aandeel in de totale onvoldoendes?',
-                    type: 'multiple-choice',
-                    options: ['Engels', 'Aardrijkskunde', 'Wiskunde', 'Nederlands'],
-                    correctAnswer: 'Wiskunde',
+                    question:
+                        'Pin het vak dat als prioriteitskaart op het directiedashboard moet verschijnen. Noem het percentage, leg uit waarom dit het grootste deel is en voorkom dat je het vak meteen "slecht" noemt.',
+                    type: 'text-observation',
+                    correctAnswer: '',
                     explanation:
                         'Wiskunde vertegenwoordigt 28% van alle onvoldoendes — het grootste segment van het cirkeldiagram. Dit betekent niet dat wiskunde het "slechtste" vak is, maar dat het de meeste hulp nodig heeft.',
                     points: 10,
+                    minLength: 70,
+                    minEvidenceCriteria: 3,
+                    textEvidenceCriteria: [
+                        { label: 'Wiskunde geprioriteerd', keywords: ['wiskunde'] },
+                        { label: '28% genoemd', keywords: ['28', '28%'] },
+                        { label: 'grootste aandeel of segment uitgelegd', keywords: ['grootste', 'meeste', 'aandeel', 'segment', 'deel'] },
+                        { label: 'voorzichtige dashboardtaal', keywords: ['hulp', 'aandacht', 'prioriteit', 'niet slecht', 'niet het slechtste'] },
+                    ],
                 },
                 {
                     id: 'q5-cirkel-geschikt',
                     question:
-                        'Cirkeldiagrammen zijn het meest geschikt voor welk type data?',
-                    type: 'multiple-choice',
-                    options: [
-                        'Data die een trend in de tijd toont',
-                        'Data die laat zien hoe een totaal verdeeld is over categorieën',
-                        'Data waarbij je twee groepen naast elkaar vergelijkt',
-                        'Data met meer dan 10 categorieën',
-                    ],
-                    correctAnswer: 'Data die laat zien hoe een totaal verdeeld is over categorieën',
+                        'Test je grafiekkeuze: wanneer mag dit cirkeldiagram blijven staan op het dashboard? Leg uit welk type data het toont en noem één situatie waarin je juist geen cirkeldiagram gebruikt.',
+                    type: 'text-observation',
+                    correctAnswer: '',
                     explanation:
                         'Een cirkeldiagram toont altijd hoe een geheel (100%) verdeeld is over delen. Het werkt goed met 3-6 categorieën. Bij meer categorieën worden de segmenten te klein om te lezen. Voor trends in de tijd gebruik je een lijndiagram.',
                     points: 15,
+                    minLength: 80,
+                    minEvidenceCriteria: 3,
+                    textEvidenceCriteria: [
+                        { label: 'geheel of 100% benoemd', keywords: ['geheel', '100', 'totaal'] },
+                        { label: 'categorieën of delen benoemd', keywords: ['categorie', 'delen', 'verdeling', 'verdeeld'] },
+                        { label: 'beperkt aantal categorieën', keywords: ['3-6', '3 tot 6', 'weinig categorie', 'te veel categorie'] },
+                        { label: 'geen trend of tijdreeks', keywords: ['trend', 'tijd', 'lijn', 'lijndiagram', 'maanden'] },
+                    ],
                 },
                 {
                     id: 'q6-dashboard-keuze',
@@ -180,13 +244,20 @@ export const dashboardDesignerConfig: DataViewerConfig = {
                 {
                     id: 'q7-principe-toepassen',
                     question:
-                        'De directeur wil weten of aanwezigheid de afgelopen 6 maanden is gestegen of gedaald. Welk grafiektype past het best?',
-                    type: 'multiple-choice',
-                    options: ['Cirkeldiagram', 'Staafdiagram', 'Lijndiagram', 'Getalskaart (KPI)'],
-                    correctAnswer: 'Lijndiagram',
+                        'Test je dashboard voor de eerste directievraag: aanwezigheid over 6 maanden. Kies het grafiektype en verdedig waarom dit de stijging of daling sneller zichtbaar maakt dan een cirkel of losse KPI.',
+                    type: 'text-observation',
+                    correctAnswer: '',
                     explanation:
                         'Een lijndiagram is ideaal voor het tonen van een trend over tijd. Zes maanden is een tijdreeks — dan zie je in een lijndiagram direct of het omhoog of omlaag gaat. Een staafdiagram zou ook kunnen, maar een lijn maakt de trend visueel sterker.',
                     points: 15,
+                    minLength: 80,
+                    minEvidenceCriteria: 3,
+                    textEvidenceCriteria: [
+                        { label: 'lijndiagram gekozen', keywords: ['lijndiagram', 'lijn'] },
+                        { label: 'trend over tijd benoemd', keywords: ['trend', 'tijd', 'maanden', '6 maanden', 'zes maanden'] },
+                        { label: 'stijging of daling zichtbaar', keywords: ['stijging', 'daling', 'omhoog', 'omlaag', 'verandering'] },
+                        { label: 'vergeleken met cirkel of KPI', keywords: ['cirkel', 'cirkeldiagram', 'kpi', 'losse kpi'] },
+                    ],
                 },
                 {
                     id: 'q8-dashboard-reflectie',

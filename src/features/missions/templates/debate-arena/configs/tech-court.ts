@@ -18,13 +18,70 @@ const config: DebateArenaConfig = {
         evidence:
             'Je oordeel noemt maatschappelijke gevolgen en wat dit betekent voor digitaal welzijn.',
     },
+    experienceDesign: {
+        boringRisk: 'medium',
+        firstTenSeconds: 'Voorlopig vonnis: leerling spreekt meteen een eerste oordeel uit in de tech-rechtszaal.',
+        primaryInteraction: 'defend-position',
+        feedbackMoment: 'Na het vonnis koppelt feedback impact, intentie en zorgplicht aan de gekozen proceslijn.',
+        visualKit: 'debate-dilemma',
+        evidenceMoment: 'De leerling onderbouwt een eerlijk oordeel met maatschappelijke gevolgen, partijen en tegenargumenten.',
+        antiBoringRule: 'Het tech-dilemma wordt een rechtszaak met bewijsstukken, niet een algemene mening over AI.',
+        chromeAcceptance: 'Vonniskeuze, partijen, bewijsargumenten en eindreflectie blijven strak uitgelijnd op alle vier viewports.',
+    },
     introFeatures: [
+        'Spreek eerst een voorlopig vonnis uit',
         'Lees de standpunten van 4 betrokkenen',
         'Kies jouw positie in het debat',
         'Bouw 2-3 sterke argumenten op',
         'Reageer op een tegenargument',
         'Reflecteer: is je mening veranderd?',
     ],
+    openingChoice: {
+        title: 'Voorlopig vonnis',
+        description:
+            'Je stapt de rechtszaal binnen voordat je alle stukken kent. Kies je eerste vonnis en kijk later of het bewijs je laat bijstellen.',
+        prompt:
+            'Een AI-systeem selecteert aantoonbaar minder vrouwen en kandidaten met niet-westerse namen. Wat is jouw eerste oordeel?',
+        continueLabel: 'Hoor de partijen',
+        options: [
+            {
+                id: 'schuldig-effect',
+                label: 'Schuldig: het effect telt',
+                description:
+                    'Discriminatie blijft discriminatie, ook als niemand het zo bedoelde.',
+                positionId: 'schuldig',
+                feedback:
+                    'Je start vanuit impact op mensen. Let straks op hoe intentie, bewijs en zorgplicht meespelen.',
+            },
+            {
+                id: 'geen-opzet',
+                label: 'Niet schuldig zonder opzet',
+                description:
+                    'Het bedrijf programmeerde geen verboden selectiecriterium in.',
+                positionId: 'niet-schuldig',
+                feedback:
+                    'Je legt de lat bij intentie. Zoek straks of de wet alleen opzet telt of ook effect.',
+            },
+            {
+                id: 'gedeeld',
+                label: 'Gedeelde verantwoordelijkheid',
+                description:
+                    'Bedrijf, data en regels hebben allemaal een rol in deze uitkomst.',
+                positionId: 'gedeelde-schuld',
+                feedback:
+                    'Je kiest voor gedeelde schuld. Dat vraagt straks precies uitleggen wie wat had moeten doen.',
+            },
+            {
+                id: 'systeem',
+                label: 'Dit is systeemfalen',
+                description:
+                    'De fout zit niet in één persoon maar in historische ongelijkheid en data.',
+                positionId: 'systeem-kwestie',
+                feedback:
+                    'Je kijkt breder dan de rechtszaak. Let straks op of dat een bedrijf ontslaat van verantwoordelijkheid.',
+            },
+        ],
+    },
     topic: 'AI-discriminatie bij sollicitaties',
     dilemma:
         'Een techbedrijf gebruikt AI om cv\'s te beoordelen. Het systeem scoort kandidaten met vrouwelijke namen en namen met een niet-westerse herkomst significant lager — zonder dat de programmeurs dit hebben bedoeld. Is het bedrijf schuldig aan discriminatie?',

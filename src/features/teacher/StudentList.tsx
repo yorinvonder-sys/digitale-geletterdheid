@@ -18,6 +18,18 @@ const getTimestampMs = (value: unknown): number => {
     return 0;
 };
 
+const normalizeYearGroup = (value: unknown): number | null => {
+    const numeric = typeof value === 'number' ? value : typeof value === 'string' ? Number(value) : NaN;
+    return numeric === 1 || numeric === 2 || numeric === 3 ? numeric : null;
+};
+
+const getStudentYearGroup = (student: StudentData, fallbackYearGroup: number): number => (
+    normalizeYearGroup(student.stats?.yearGroup)
+    ?? normalizeYearGroup(student.yearGroup)
+    ?? normalizeYearGroup(fallbackYearGroup)
+    ?? 1
+);
+
 interface StudentListProps {
     students: StudentData[];
     loading: boolean;
@@ -51,7 +63,11 @@ export const StudentList: React.FC<StudentListProps> = ({
         });
         return Array.from(groups).sort();
     }, [students]);
-    const yearMissions = useMemo(() => getMissionsForYear(yearGroup), [yearGroup]);
+    const missionsByYear = useMemo(() => new Map([
+        [1, getMissionsForYear(1)],
+        [2, getMissionsForYear(2)],
+        [3, getMissionsForYear(3)],
+    ]), []);
     const [now, setNow] = useState(new Date().getTime());
     const fiveMinutes = 5 * 60 * 1000;
     const [passwordResetStudent, setPasswordResetStudent] = useState<StudentData | null>(null);
@@ -81,19 +97,21 @@ export const StudentList: React.FC<StudentListProps> = ({
     // Count mission statuses for inline summary
     const getMissionCounts = (student: StudentData) => {
         let completed = 0, inProgress = 0;
-        yearMissions.forEach(m => {
+        const studentMissions = missionsByYear.get(getStudentYearGroup(student, yearGroup)) || [];
+        studentMissions.forEach(m => {
             const status = getMissionStatus(student, m.id);
             if (status === 'completed') completed++;
             else if (status === 'in-progress') inProgress++;
         });
-        return { completed, inProgress, total: yearMissions.length };
+        return { completed, inProgress, total: studentMissions.length };
     };
 
     // Get the last active mission name for a student
     const getActiveMissionName = (student: StudentData): string | null => {
         const activeId = student.stats?.activeMission;
         if (!activeId) return null;
-        const mission = yearMissions.find(m => m.id === activeId);
+        const studentMissions = missionsByYear.get(getStudentYearGroup(student, yearGroup)) || [];
+        const mission = studentMissions.find(m => m.id === activeId);
         return mission?.short || mission?.name || null;
     };
 
@@ -249,7 +267,7 @@ export const StudentList: React.FC<StudentListProps> = ({
                                     </td>
                                     <td className="px-4 py-3 hidden lg:table-cell">
                                         <div className="flex gap-0.5 flex-wrap max-w-[200px]">
-                                            {yearMissions.map(m => {
+                                            {(missionsByYear.get(getStudentYearGroup(student, yearGroup)) || []).map(m => {
                                                 const status = getMissionStatus(student, m.id);
                                                 return (
                                                     <div

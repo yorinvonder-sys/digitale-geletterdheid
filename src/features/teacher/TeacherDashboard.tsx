@@ -176,7 +176,21 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                 setLoading(false);
                 return;
             }
-            const studentList = (data || []) as unknown as StudentData[];
+            const studentList = ((data || []) as any[]).map((row): StudentData => ({
+                ...row,
+                uid: row.uid || row.id,
+                displayName: row.display_name ?? row.displayName ?? null,
+                email: row.email ?? null,
+                photoURL: row.photo_url ?? row.photoURL ?? null,
+                role: row.role ?? 'student',
+                identifier: row.identifier ?? row.student_number ?? row.stats?.studentClass ?? row.email ?? row.uid ?? row.id,
+                schoolId: row.school_id ?? row.schoolId,
+                studentClass: row.student_class ?? row.studentClass ?? row.stats?.studentClass,
+                lastLogin: row.last_login ?? row.lastLogin,
+                lastActive: row.last_active ?? row.lastActive ?? row.last_login,
+                yearGroup: row.year_group ?? row.yearGroup ?? row.stats?.yearGroup,
+                educationLevel: row.education_level ?? row.educationLevel,
+            }));
             studentList.sort((a, b) => {
                 const bTime = (b as any).last_login ? new Date((b as any).last_login).getTime() : 0;
                 const aTime = (a as any).last_login ? new Date((a as any).last_login).getTime() : 0;
@@ -213,9 +227,14 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
             const { data } = await supabase
                 .from('hybrid_assessments')
                 .select('*')
-                .order('timestamp', { ascending: false })
+                .order('created_at', { ascending: false })
                 .limit(100);
-            if (data) setHybridAssessments(data as unknown as HybridAssessmentRecord[]);
+            if (data) {
+                setHybridAssessments(data.map(row => ({
+                    ...row,
+                    timestamp: row.created_at,
+                })) as unknown as HybridAssessmentRecord[]);
+            }
         };
         fetchAssessments();
 
@@ -654,6 +673,36 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                             </div>
                         </header>
 
+                        <nav className="lg:hidden border-b border-lab-line bg-lab-paper px-3 py-2" aria-label="Docent navigatie">
+                            <div className="flex min-w-0 gap-2 overflow-x-auto pb-1">
+                                {sideNavItems.map((item) => {
+                                    const Icon = item.icon;
+                                    const isActive = activeTab === item.id;
+                                    return (
+                                        <button
+                                            key={item.id}
+                                            type="button"
+                                            onClick={() => navigateTo(item.id)}
+                                            className={`flex h-11 shrink-0 items-center gap-2 rounded-xl border px-3 text-sm font-black transition ${
+                                                isActive
+                                                    ? 'border-lab-primary bg-lab-primary/15 text-lab-primary'
+                                                    : 'border-lab-line bg-lab-cream/60 text-lab-muted hover:bg-lab-cream hover:text-lab-ink'
+                                            }`}
+                                            aria-current={isActive ? 'page' : undefined}
+                                        >
+                                            <Icon size={16} className="shrink-0" />
+                                            <span className="whitespace-nowrap">{item.label}</span>
+                                            {item.badge ? (
+                                                <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-lab-primary px-1.5 text-[10px] font-black text-white">
+                                                    {item.badge}
+                                                </span>
+                                            ) : null}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                        </nav>
+
                         {error && <div className="m-4 rounded-xl border border-lab-coral bg-lab-coral p-4 text-sm text-lab-coral">{error}</div>}
 
                         <main className="min-w-0 p-4 lg:p-6">
@@ -733,7 +782,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                             </PageTransition>
                         )}
 
-                        {activeTab === 'settings' && <PageTransition key="settings" className="space-y-6"><SettingsPanel classFilter={classFilter} onClassFilterChange={setClassFilter} availableClasses={classGroups} enabledMissions={enabledMissions} onToggleMission={handleToggleMission} onTestGame={onOpenGames} yearGroup={yearGroupFilter} classroomConfig={classRoomConfig} onUpdateConfig={async u => {
+                        {activeTab === 'settings' && <PageTransition key="settings" className="space-y-6"><SettingsPanel classFilter={classFilter} onClassFilterChange={setClassFilter} availableClasses={classGroups} enabledMissions={enabledMissions} onToggleMission={handleToggleMission} onTestGame={onOpenGames} schoolId={user?.schoolId} yearGroup={yearGroupFilter} classroomConfig={classRoomConfig} onUpdateConfig={async u => {
                             if (!selectedClassId || !user?.schoolId) {
                                 addToast('Selecteer een klas', 'Klasconfiguratie kan niet voor alle klassen tegelijk worden opgeslagen.', 'warning');
                                 return;
@@ -741,7 +790,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                             await updateClassroomConfig(user.schoolId, selectedClassId, u);
                             setClassRoomConfig(p => p ? { ...p, ...u } : null);
                         }} onOpenSchedulingConfig={(user?.role === 'admin' || user?.role === 'developer') ? () => setShowSchedulingConfig(true) : undefined} />{onLogout && <button onClick={onLogout} className="w-full py-4 border-2 border-lab-coral text-lab-coral rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-lab-coral hover:text-white"><RotateCcw size={18} /> Uitloggen</button>}</PageTransition>}
-                        {activeTab === 'games' && <PageTransition key="games"><GamesPanel onOpenGame={onOpenGames || (() => { })} /></PageTransition>}
+                        {activeTab === 'games' && <PageTransition key="games"><GamesPanel onOpenGame={onOpenGames || (() => { })} schoolId={user?.schoolId} /></PageTransition>}
                         {activeTab === 'ai-beleid' && <PageTransition key="ai-beleid"><div className="bg-white rounded-[2rem] border border-lab-line p-6"><AiBeleidFeedbackPanel classFilter={classFilter !== 'all' ? classFilter : undefined} schoolId={user?.schoolId} /></div></PageTransition>}
                         {activeTab === 'feedback' && <PageTransition key="feedback"><FeedbackPanel schoolId={user?.schoolId} /></PageTransition>}
                         {activeTab === 'progress' && <PageTransition key="progress" className="space-y-6"><MissionProgressPanel students={students} classFilter={classFilter} availableClasses={classGroups} onClassFilterChange={setClassFilter} onSelectStudent={setSelectedStudent} yearGroup={yearGroupFilter} /><HybridAssessmentPanel records={hybridAssessments} classFilter={classFilter} /><GrowthOverviewPanel studentIds={students.filter(s => classFilter === 'all' || s.studentClass === classFilter).map(s => s.uid)} /></PageTransition>}

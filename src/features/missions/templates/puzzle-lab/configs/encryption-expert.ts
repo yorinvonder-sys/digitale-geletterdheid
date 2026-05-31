@@ -7,6 +7,16 @@ export const encryptionExpertConfig: PuzzleLabConfig = {
     introTitle: 'Encryptie Expert',
     introDescription:
         'Welkom, hacker-in-opleiding. In deze missie leer je hoe mensen berichten geheim houden — van oude codes tot moderne encryptie. Kraak de puzzels en bewijs dat jij de codes begrijpt.',
+    experienceDesign: {
+        boringRisk: 'low',
+        firstTenSeconds: 'Kies je codekraakerspoor: Caesar-cijfer, Base64 of publieke sleutel.',
+        primaryInteraction: 'solve-puzzle',
+        feedbackMoment: 'Elke poging maakt zichtbaar of je het encryptieprincipe begrijpt of alleen gokt.',
+        visualKit: 'review-puzzle-feedback',
+        evidenceMoment: 'Je bewijs bestaat uit ontcijferde codes, encryptiekeuzes en een veilig wachtwoordantwoord.',
+        antiBoringRule: 'Encryptie draait om begrip van bescherming, niet om stoer hacker-gedrag.',
+        chromeAcceptance: 'Clue Sprint start als codeonderzoek, met hintkosten en bewijsdoel zichtbaar voor de eerste input.',
+    },
     introFeatures: [
         'Kraak een Caesar-cijfer met schuif 3',
         'Decodeer een Base64-bericht',
@@ -66,22 +76,20 @@ export const encryptionExpertConfig: PuzzleLabConfig = {
         {
             id: 'public-key',
             title: 'Wie kan het bericht lezen?',
-            type: 'multiple-choice',
+            type: 'code-crack',
             description:
-                'Stel: Emma wil een geheim bericht sturen naar Liam. Liam heeft een publieke sleutel (die iedereen mag weten) en een privésleutel (die alleen Liam heeft).\n\nEmma versleutelt het bericht met Liams PUBLIEKE sleutel. Wie kan het bericht nu ontsleutelen en lezen?',
+                'Stel: Emma wil een geheim bericht sturen naar Liam. Liam heeft een publieke sleutel die iedereen mag weten en een privésleutel die alleen Liam heeft.\n\nEmma versleutelt het bericht met Liams publieke sleutel. Typ wie het bericht nu kan ontsleutelen en waarom.',
             clues: [
                 'Bij asymmetrische encryptie zijn er twee sleutels: een publieke en een privé.',
                 'Wat versleuteld is met de publieke sleutel, kan alleen ontsleuteld worden met de bijbehorende privésleutel.',
                 'De publieke sleutel mag iedereen hebben — de privésleutel bewaar je zelf.',
             ],
-            options: [
-                'Iedereen, want de publieke sleutel is openbaar',
-                'Alleen Emma, want zij heeft het bericht verstuurd',
-                'Alleen Liam, want hij heeft de privésleutel',
-                'Zowel Emma als Liam, want zij zijn allebei betrokken',
-            ],
             revealExtraAfterAttempts: 999,
-            answer: 'Alleen Liam, want hij heeft de privésleutel',
+            answer: [],
+            validator: (input: string) => {
+                const s = input.toLowerCase();
+                return s.includes('liam') && (s.includes('privé') || s.includes('private') || s.includes('privesleutel') || s.includes('privésleutel'));
+            },
             caseSensitive: false,
             maxAttempts: 3,
             points: 25,

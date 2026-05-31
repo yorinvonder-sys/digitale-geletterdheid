@@ -7,13 +7,70 @@ const config: DebateArenaConfig = {
     introTitle: 'Scroll Stopper',
     introDescription:
         'Social media apps zijn bewust ontworpen om je zo lang mogelijk vast te houden. Infinite scroll, likes, notificaties — allemaal trucjes. Maar is dat erg? En wie mag daar iets van vinden?',
+    experienceDesign: {
+        boringRisk: 'medium',
+        firstTenSeconds: 'Breek de scroll-loop: leerling kiest een noodrem in een herkenbare late-night scrollsituatie.',
+        primaryInteraction: 'choose-with-consequence',
+        feedbackMoment: 'Na de noodrem koppelt feedback ontwerpkeuze, autonomie en platformverantwoordelijkheid aan de situatie.',
+        visualKit: 'debate-dilemma',
+        evidenceMoment: 'De leerling verdedigt een positie over manipulatief ontwerp met stakeholderbewijs en eigen regie.',
+        antiBoringRule: 'Schermtijddebat blijft herkenbaar en handelingsgericht, zonder moralistische of beschamende toon.',
+        chromeAcceptance: 'Noodremkeuze, stakeholderlezing en argumentvelden blijven kalm, leesbaar en tappable op alle vier viewports.',
+    },
     introFeatures: [
+        'Kies eerst jouw noodrem tegen doorscrollen',
         'Lees de standpunten van 4 betrokkenen',
         'Kies jouw positie in het debat',
         'Bouw 2-3 sterke argumenten op',
         'Reageer op een tegenargument',
         'Reflecteer: is je mening veranderd?',
     ],
+    openingChoice: {
+        title: 'Breek de scroll-loop',
+        description:
+            'Je begint niet met een mening uit je hoofd, maar met een herkenbare scrollsituatie. Kies je eerste noodrem; later mag je je standpunt aanscherpen.',
+        prompt:
+            'Het is laat, de volgende video start vanzelf en je merkt dat je eigenlijk wilde stoppen. Welke oplossing voelt voor jou het meest eerlijk?',
+        continueLabel: 'Bekijk wie hier iets over zegt',
+        options: [
+            {
+                id: 'harde-stop',
+                label: 'Ontwerptrucs moeten stoppen',
+                description:
+                    'Infinite scroll en variabele beloningen zijn te sterk voor veel jongeren.',
+                positionId: 'verboden',
+                feedback:
+                    'Je start met bescherming als uitgangspunt. Let straks op welke bewijzen laten zien wanneer ontwerp geen vrije keuze meer is.',
+            },
+            {
+                id: 'platform-regels',
+                label: 'Platforms krijgen duidelijke grenzen',
+                description:
+                    'De functies mogen bestaan, maar met regels voor minderjarigen en transparantie.',
+                positionId: 'reguleren',
+                feedback:
+                    'Je kiest voor ingrijpen zonder alles te verbieden. Zoek straks waar de grens tussen leuk ontwerp en manipulatie ligt.',
+            },
+            {
+                id: 'eigen-rem',
+                label: 'Ik wil zelf mijn rem bouwen',
+                description:
+                    'Pauzetimers, meldingen uit en bewust kiezen horen bij digitale weerbaarheid.',
+                positionId: 'zelfregulatie',
+                feedback:
+                    'Je start vanuit eigen regie. Check straks of de stakeholders vinden dat die regie eerlijk genoeg is.',
+            },
+            {
+                id: 'ontwerpvrijheid',
+                label: 'Ontwerpvrijheid blijft belangrijk',
+                description:
+                    'Apps mogen aantrekkelijk zijn; gebruikers houden zelf keuzevrijheid.',
+                positionId: 'vrijheid',
+                feedback:
+                    'Je verdedigt vrijheid van ontwerp. Let straks op de tegenvraag: wanneer is keuze nog echt vrij?',
+            },
+        ],
+    },
     topic: 'Verslavend app-design',
     dilemma:
         'Social media apps zijn bewust ontworpen om je zo lang mogelijk vast te houden. Is dat acceptabel?',

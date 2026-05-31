@@ -13,6 +13,7 @@ interface BookPreviewProps {
     onSendPrompt?: (prompt: string) => void; // NEW: Send prompt directly to chat
     hasStarted?: boolean; // When true, skip intro and show book directly
     readOnly?: boolean; // If true, disable editing and publishing
+    qaInitialConclusion?: boolean;
     user?: {
         uid: string;
         displayName: string;
@@ -483,7 +484,7 @@ const PageContent = ({
     );
 };
 
-export const BookPreview: React.FC<BookPreviewProps> = ({ data, onStart, onSendPrompt, hasStarted: externalHasStarted = false, readOnly = false, user }) => {
+export const BookPreview: React.FC<BookPreviewProps> = ({ data, onStart, onSendPrompt, hasStarted: externalHasStarted = false, readOnly = false, qaInitialConclusion = false, user }) => {
     const [internalHasStarted, setInternalHasStarted] = useState(false);
     const [showForm, setShowForm] = useState(false);
     const hasStarted = externalHasStarted || internalHasStarted;
@@ -496,7 +497,7 @@ export const BookPreview: React.FC<BookPreviewProps> = ({ data, onStart, onSendP
 
     // New state for start button delay
     const [startTimer, setStartTimer] = useState(0);
-    const [showConclusion, setShowConclusion] = useState(false);
+    const [showConclusion, setShowConclusion] = useState(qaInitialConclusion);
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
 
@@ -517,6 +518,7 @@ export const BookPreview: React.FC<BookPreviewProps> = ({ data, onStart, onSendP
     // Library save state
     const [isSavingToLibrary, setIsSavingToLibrary] = useState(false);
     const [librarySaveSuccess, setLibrarySaveSuccess] = useState(false);
+    const hasCompletionEvidence = data.title !== 'Nieuw Verhaal' && data.pages.length >= 2;
 
     // Handle saving book to personal library
     const handleSaveToLibrary = async () => {
@@ -857,7 +859,7 @@ Maak nu de titel met [TITLE] tags en de tekst van de eerste pagina met [PAGE] ta
 
     if (isEmptyBook && !hasStarted) {
         return (
-            <div className="w-full h-full flex items-center justify-start overflow-y-auto p-4 relative" style={{ backgroundColor: '#FCF6EA' }}>
+            <div className="w-full h-full flex items-center justify-start overflow-y-auto p-4 relative" style={{ backgroundColor: '#FCF6EA' }} data-qa="story-setup-preview">
                 <div className="absolute inset-0 bg-[radial-gradient(#D9784820_1px,transparent_1px)] [background-size:20px_20px] opacity-50"></div>
                 <div className="z-10 w-full max-w-md">
                     {showForm ? (
@@ -1095,7 +1097,20 @@ Maak nu de titel met [TITLE] tags en de tekst van de eerste pagina met [PAGE] ta
     return (
         <>
             {createPortal(<PrintView />, document.body)}
-            <div className="w-full h-full flex flex-col bg-stone-100 relative overflow-hidden">
+            <div className="w-full h-full flex flex-col bg-stone-100 relative overflow-hidden" data-qa="story-book-preview">
+                {showConclusion && (
+                    <div data-qa="story-completion">
+                        <MissionConclusion
+                            title="Missie Voltooid: Verhalen Ontwerper"
+                            description="Je hebt een digitaal verhaal opgebouwd met titel, pagina's en een controleerbaar boekvoorbeeld."
+                            aiConcept={{
+                                title: "Story Spark",
+                                text: "Een sterke AI-story prompt geeft richting: held, probleem, setting en twist. Daarna test je of het verhaal logisch leest en verbeter je gericht."
+                            }}
+                            onExit={() => setShowConclusion(false)}
+                        />
+                    </div>
+                )}
                 {/* Book Container - Centered and Scaled to Fit - Added padding to prevent edge touching */}
                 <div className="flex-1 flex items-center justify-center p-8 z-10 perspective-2000 overflow-hidden">
                     {/* ... Book Structure Wrappers ... */}
@@ -1349,7 +1364,16 @@ Maak nu de titel met [TITLE] tags en de tekst van de eerste pagina met [PAGE] ta
                         </button>
                     )}
 
-                    {/* Publish Button - DISABLED: Students should not share books */}
+                    {hasCompletionEvidence && (
+                        <button
+                            onClick={() => setShowConclusion(true)}
+                            className="p-2 rounded-full text-[#5F947D] bg-[#5F947D]/10 hover:bg-[#5F947D]/15 transition-all hover:scale-105 active:scale-95"
+                            title="Bewijs afronden"
+                            data-qa="story-complete-button"
+                        >
+                            <CheckCircle size={16} />
+                        </button>
+                    )}
                 </div>
             </div>
 

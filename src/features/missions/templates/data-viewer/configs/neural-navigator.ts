@@ -19,11 +19,56 @@ export const neuralNavigatorConfig: DataViewerConfig = {
         evidence:
             'Leerlingbewijs: antwoorden over forward pass, gewichten, training, lagen en toepassingen. Docentbewijs: score, fase-overzicht en tekstbewijs waarin de leerling de werking van een neuraal netwerk uitlegt.',
     },
+    experienceDesign: {
+        boringRisk: 'high',
+        firstTenSeconds: 'Black-box challenge: kies waarom een cijferherkenner twijfelt tussen 3 en 8.',
+        primaryInteraction: 'operate-simulation',
+        feedbackMoment: 'Na de keuze verbindt feedback gewichten, training of lagen aan de verwarring.',
+        visualKit: 'data-room',
+        evidenceMoment: 'De leerling gebruikt berekeningen en netwerkbegrippen om de black box te verklaren.',
+        antiBoringRule: 'Neurale netwerken starten met een misleidende input en spoorzoeken, niet met losse formules.',
+        chromeAcceptance: 'Black-box hook, berekeningstabel en vervolgvragen blijven leesbaar op alle vier viewports.',
+    },
     introFeatures: [
         'Reken zelf een forward pass door een neuraal netwerk',
         'Vergelijk hoe de output verandert bij andere gewichten',
         'Beoordeel hoe backpropagation een netwerk laat leren van fouten',
     ],
+    investigationHook: {
+        title: 'De black box twijfelt tussen 3 en 8',
+        role: 'Neural navigator',
+        scenario:
+            'Een cijferherkenner ziet een handgeschreven 3, maar geeft toch kans aan 8. Jij kiest eerst waar je in het netwerk zoekt naar de oorzaak.',
+        prompt: 'Waar verwacht je dat de verwarring ontstaat?',
+        contextLabel: 'Black-box spoor',
+        continueLabel: 'Open het netwerk',
+        options: [
+            {
+                id: 'weights',
+                label: 'Gewichten leggen nadruk op de verkeerde lijnen',
+                description: 'Je onderzoekt hoe gewichten bepalen welke input zwaar meetelt in een neuron.',
+                feedback: 'Sterke keuze. Kleine gewichtsverschillen kunnen bepalen welk patroon het netwerk belangrijk vindt.',
+                evidenceChips: ['Neuron D 0,84', 'gewicht D naar 8', 'input telt zwaar'],
+                impactCue: 'Gewichtspatroon',
+            },
+            {
+                id: 'training',
+                label: 'Training heeft te weinig lastige voorbeelden gezien',
+                description: 'Je kijkt of leren van fouten de output na training genoeg verandert.',
+                feedback: 'Goed gedacht. Een netwerk leert pas robuust als het ook voorbeelden ziet die makkelijk te verwarren zijn.',
+                evidenceChips: ['3: 0,12 naar 0,87', '8: 0,31 naar 0,08', 'backpropagation'],
+                impactCue: 'Trainingseffect',
+            },
+            {
+                id: 'layers',
+                label: 'Een laag geeft een te sterke tussenoutput',
+                description: 'Je volgt hoe outputs van neurons doorwerken naar de volgende laag.',
+                feedback: 'Mooi netwerkdenken. Een foute tussenoutput kan later worden versterkt alsof het bewijs is.',
+                evidenceChips: ['laag 1 naar 2', 'tussenoutput', 'output-neuron'],
+                impactCue: 'Laagtrace',
+            },
+        ],
+    },
 
     datasets: [
         // ── Dataset 1: Tabel ──────────────────────────────────────────────────
@@ -61,13 +106,21 @@ export const neuralNavigatorConfig: DataViewerConfig = {
                 },
                 {
                     id: 'q2-hoogste-output',
-                    question: 'Welk neuron heeft de hoogste output?',
-                    type: 'multiple-choice',
-                    options: ['Neuron A', 'Neuron B', 'Neuron C', 'Neuron D'],
-                    correctAnswer: 'Neuron D',
+                    question:
+                        'Pin het neuron dat het sterkst actief is. Noem de outputwaarde en leg uit waarom zo’n sterk actief neuron later veel invloed kan hebben op de voorspelling.',
+                    type: 'text-observation',
+                    correctAnswer: '',
                     explanation:
                         'Neuron D heeft de hoogste output: 0,84. Sorteer op "Output" om het snel te zien. Een hogere output betekent dat dit neuron sterker "actief" is dan de anderen. In een netwerk voor beeldherkenning zou een sterk actief neuron een specifiek kenmerk (lijn, kleur, vorm) kunnen vertegenwoordigen.',
                     points: 10,
+                    minLength: 65,
+                    minEvidenceCriteria: 2,
+                    textEvidenceCriteria: [
+                        { label: 'Neuron D gekozen', keywords: ['neuron d', 'd'] },
+                        { label: 'outputwaarde genoemd', keywords: ['0,84', '0.84', 'hoogste output'] },
+                        { label: 'activatie uitgelegd', keywords: ['actief', 'activatie', 'sterker', 'output'] },
+                        { label: 'invloed op voorspelling', keywords: ['voorspelling', 'volgende laag', 'kenmerk', 'patroon'] },
+                    ],
                 },
                 {
                     id: 'q3-gewichten-observatie',
@@ -118,18 +171,20 @@ export const neuralNavigatorConfig: DataViewerConfig = {
                 {
                     id: 'q5-verwarring-3-8',
                     question:
-                        'Waarom was het netwerk vóór training vaker in de war tussen een "3" en een "8"?',
-                    type: 'multiple-choice',
-                    options: [
-                        'Het netwerk had te weinig neuronen',
-                        'De gewichten waren willekeurig — het netwerk had nog niets geleerd',
-                        'Cijfers 3 en 8 zien er precies hetzelfde uit',
-                        'De trainingsdata bevatte geen afbeeldingen van "3"',
-                    ],
-                    correctAnswer: 'De gewichten waren willekeurig — het netwerk had nog niets geleerd',
+                        'Analyseer als neural navigator waarom de black box vóór training twijfelt tussen 3 en 8. Gebruik de voor/na-kansen en leg uit wat willekeurige gewichten en training veranderen.',
+                    type: 'text-observation',
+                    correctAnswer: '',
                     explanation:
                         'Aan het begin zijn gewichten willekeurig (random initialization). Het netwerk maakt dan willekeurige voorspellingen. Na elke fout worden gewichten aangepast via backpropagation. Na genoeg trainingsrondes heeft het netwerk geleerd welke patronen bij "3" horen (open aan de bovenkant) en welke bij "8" (gesloten cirkel).',
                     points: 10,
+                    minLength: 80,
+                    minEvidenceCriteria: 3,
+                    textEvidenceCriteria: [
+                        { label: 'willekeurige gewichten genoemd', keywords: ['willekeurig', 'random', 'gewichten', 'initialisatie'] },
+                        { label: 'voor/na-kansen gebruikt', keywords: ['0,12', '0.12', '0,31', '0.31', '0,87', '0.87', '0,08', '0.08'] },
+                        { label: 'training verandert output', keywords: ['training', 'geleerd', 'trainingsrondes', 'na training'] },
+                        { label: 'backpropagation of foutcorrectie', keywords: ['backpropagation', 'fout', 'aanpassen', 'patronen'] },
+                    ],
                 },
                 {
                     id: 'q6-backpropagation',

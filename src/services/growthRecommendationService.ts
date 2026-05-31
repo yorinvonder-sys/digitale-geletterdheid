@@ -118,27 +118,19 @@ export async function getPendingRecommendations(
 
 /**
  * Keur een aanbeveling goed of af.
- * Slaat teacher_approved, teacher_approved_at, teacher_approved_by en optioneel teacher_notes op.
+ * Laat de database-RPC MFA, school-scope, auditlog en veldmutaties afdwingen.
  */
 export async function approveRecommendation(
   recommendationId: string,
   approved: boolean,
-  teacherId: string,
+  _teacherId: string,
   notes?: string,
 ): Promise<void> {
-  const update: Partial<GrowthRecommendationRow> = {
-    teacher_approved: approved,
-    teacher_approved_at: new Date().toISOString(),
-    teacher_approved_by: teacherId,
-  };
-
-  if (notes !== undefined) {
-    update.teacher_notes = notes;
-  }
-
-  const { error } = await recommendationsTable()
-    .update(update)
-    .eq('id', recommendationId);
+  const { error } = await supabase.rpc('review_growth_recommendation', {
+    p_recommendation_id: recommendationId,
+    p_approved: approved,
+    p_notes: notes ?? null,
+  });
 
   if (error) {
     logger.error('[growthRecommendationService] approveRecommendation error:', error);

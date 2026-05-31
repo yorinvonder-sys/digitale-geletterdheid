@@ -30,7 +30,7 @@ interface GamePreviewProps {
 const normalizeGameCode = (value: string) => value.replace(/\s+/g, '');
 
 // Loading state with timeout - shows retry option after 8 seconds
-const LoadingStateWithTimeout: React.FC = () => {
+const LoadingStateWithTimeout: React.FC<{ onReset?: () => void }> = ({ onReset }) => {
   const [showRetry, setShowRetry] = useState(false);
 
   useEffect(() => {
@@ -54,19 +54,66 @@ const LoadingStateWithTimeout: React.FC = () => {
           <p className="text-sm mb-4" style={{ color: '#445865' }}>
             Er is mogelijk een probleem met je opgeslagen game. Ververs de pagina of reset je voortgang.
           </p>
-          <button
-            onClick={() => window.location.reload()}
-            className="w-full py-3 text-white rounded-xl font-bold transition-all active:scale-95 flex items-center justify-center gap-2"
-            style={{ backgroundColor: '#D97848' }}
-          >
-            <RefreshCw size={18} />
-            Pagina Verversen
-          </button>
+          <div className="space-y-2">
+            {onReset && (
+              <button
+                onClick={onReset}
+                className="w-full py-3 text-white rounded-xl font-bold transition-all active:scale-95 flex items-center justify-center gap-2"
+                style={{ backgroundColor: '#5F947D' }}
+              >
+                <RefreshCw size={18} />
+                Herstel standaard game
+              </button>
+            )}
+            <button
+              onClick={() => window.location.reload()}
+              className="w-full py-3 rounded-xl font-bold transition-all active:scale-95 flex items-center justify-center gap-2 border"
+              style={{ color: '#445865', borderColor: '#E7D8BD' }}
+            >
+              <RefreshCw size={18} />
+              Pagina Verversen
+            </button>
+          </div>
         </div>
       )}
     </div>
   );
 };
+
+// Overlay shown when game iframe loaded but appears stuck (broken AI code)
+const GameStuckOverlay: React.FC<{ onReset?: () => void; onReload: () => void }> = ({ onReset, onReload }) => (
+  <div className="absolute inset-0 z-30 flex items-center justify-center p-4 animate-in fade-in duration-300" style={{ backgroundColor: 'rgba(8, 40, 59, 0.85)' }}>
+    <div className="text-center max-w-xs">
+      <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: 'rgba(217, 120, 72, 0.15)' }}>
+        <Gamepad2 size={28} style={{ color: '#D97848' }} />
+      </div>
+      <h3 className="text-lg font-bold mb-2" style={{ color: '#FFFFFF' }}>Game werkt niet goed?</h3>
+      <p className="text-sm mb-5" style={{ color: '#E7D8BD' }}>
+        Het lijkt erop dat de AI-code een foutje bevat. Geen zorgen — je kunt de originele game herstellen!
+      </p>
+      <div className="space-y-2">
+        {onReset && (
+          <button
+            onClick={onReset}
+            className="w-full py-3.5 text-white rounded-xl font-bold transition-all active:scale-95 flex items-center justify-center gap-2 shadow-lg"
+            style={{ backgroundColor: '#5F947D' }}
+          >
+            <RefreshCw size={18} />
+            Herstel originele game
+          </button>
+        )}
+        <button
+          onClick={onReload}
+          className="w-full py-3 rounded-xl font-bold transition-all active:scale-95 flex items-center justify-center gap-2"
+          style={{ color: '#E7D8BD', border: '1px solid rgba(231, 216, 189, 0.3)' }}
+        >
+          <RefreshCw size={18} />
+          Probeer opnieuw te laden
+        </button>
+      </div>
+    </div>
+  </div>
+);
 
 export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = false, isGenerating = false, onLoad, missionId, completedSteps = [], initialCode, user, onUndo, canUndo = false, onReset }) => {
   const [blobUrl, setBlobUrl] = useState<string | null>(null);
@@ -75,6 +122,7 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
   const [updateCount, setUpdateCount] = useState(0);
   const [showUpdateBanner, setShowUpdateBanner] = useState(false);
   const [showConclusion, setShowConclusion] = useState(false);
+  const [showGameStuck, setShowGameStuck] = useState(false);
 
   // Publish modal state
   const [showPublishModal, setShowPublishModal] = useState(false);
@@ -150,7 +198,9 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
     }
   }, [completedSteps.length, missionId]);
 
-  // Listen for game completion messages
+  // Listen for game completion messages AND track game activity
+  const gameActivityRef = useRef(false);
+
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
       // SECURITY: Only accept messages from our preview iframe.
@@ -167,10 +217,36 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
       if (isComplete) {
         setShowConclusion(true);
       }
+
+      // Track any game activity (score updates, game over events) to confirm game is running
+      const isGameActivity =
+        (typeof data === 'object' && data !== null && (data.type === 'gameScore' || data.type === 'gameOver'));
+      if (isGameActivity || isComplete) {
+        gameActivityRef.current = true;
+        setShowGameStuck(false);
+      }
     };
     window.addEventListener('message', handleMessage);
     return () => window.removeEventListener('message', handleMessage);
   }, []);
+
+  // Stuck detection: if game started + iframe loaded but no game activity after 15s
+  useEffect(() => {
+    if (!gameStarted || !iframeLoaded || isGenerating) return;
+
+    // Reset stuck state on new code / reload
+    setShowGameStuck(false);
+    gameActivityRef.current = false;
+
+    const timer = setTimeout(() => {
+      // If no game activity detected after 15 seconds, show the stuck overlay
+      if (!gameActivityRef.current && !showConclusion) {
+        setShowGameStuck(true);
+      }
+    }, 15000);
+
+    return () => clearTimeout(timer);
+  }, [gameStarted, iframeLoaded, blobUrl, isGenerating, showConclusion]);
 
   // Auto-start logic when blobUrl changes or iframe loads
   useEffect(() => {
@@ -377,7 +453,7 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
   const showIntroOverlay = !gameStarted;
 
   return (
-    <div className="w-full h-full flex flex-col relative bg-lab-cream border-l border-lab-line">
+    <div className="w-full h-full flex flex-col relative bg-lab-cream border-l border-lab-line" data-qa="game-programmeur-preview">
       {/* Header */}
       <div className="px-3 md:px-4 py-2 md:py-3 flex justify-between items-center shrink-0 shadow-sm z-10 bg-white border-b border-lab-line">
         <div className="flex items-center gap-2">
@@ -476,15 +552,17 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
       </div>
 
       {showConclusion && (
-        <MissionConclusion
-          title="Missie Voltooid: Game Programmeur"
-          description="Je hebt de logica van de game aangepast en bugs opgelost. De computer deed precies wat jij vroeg!"
-          aiConcept={{
-            title: "Algoritmes & Regels",
-            text: "Net als deze game volgt software strikte regels (algoritmes). 'Als speler botst -> Game Over'.\n\nModerne AI schrijft soms zijn eigen regels door naar data te kijken, maar de basis blijft: logisch nadenken en stap-voor-stap instructies!"
-          }}
-          onExit={() => setShowConclusion(false)}
-        />
+        <div data-qa="game-programmeur-completion">
+          <MissionConclusion
+            title="Missie Voltooid: Game Programmeur"
+            description="Je hebt de logica van de game aangepast en bugs opgelost. De computer deed precies wat jij vroeg!"
+            aiConcept={{
+              title: "Algoritmes & Regels",
+              text: "Net als deze game volgt software strikte regels (algoritmes). 'Als speler botst -> Game Over'.\n\nModerne AI schrijft soms zijn eigen regels door naar data te kijken, maar de basis blijft: logisch nadenken en stap-voor-stap instructies!"
+            }}
+            onExit={() => setShowConclusion(false)}
+          />
+        </div>
       )}
 
       {/* Game Area */}
@@ -563,7 +641,7 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
 
             {/* INTRO OVERLAY */}
             {showIntroOverlay && (
-              <div className="absolute inset-0 z-20 flex flex-col items-center justify-start p-4 md:p-8 overflow-y-auto" style={{ backgroundColor: 'rgba(250, 249, 240, 0.98)' }}>
+              <div className="absolute inset-0 z-20 flex flex-col items-center justify-start p-4 md:p-8 overflow-y-auto" style={{ backgroundColor: 'rgba(250, 249, 240, 0.98)' }} data-qa="game-programmeur-test-start">
                 {/* Content */}
                 <div className="text-center max-w-sm md:max-w-md w-full">
                   {/* Mascot */}
@@ -617,9 +695,17 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
                 </div>
               </div>
             )}
+
+            {/* GAME STUCK OVERLAY - Shows when game loaded but appears non-functional */}
+            {showGameStuck && !showIntroOverlay && !isGenerating && !showConclusion && (
+              <GameStuckOverlay
+                onReset={onReset}
+                onReload={handleReload}
+              />
+            )}
           </>
         ) : (
-          <LoadingStateWithTimeout />
+          <LoadingStateWithTimeout onReset={onReset} />
         )}
       </div>
 

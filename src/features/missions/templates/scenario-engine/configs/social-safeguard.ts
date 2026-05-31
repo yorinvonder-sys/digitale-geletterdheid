@@ -7,6 +7,16 @@ const config: ScenarioEngineConfig = {
     introTitle: 'Social Safeguard',
     introDescription:
         'Online conflicten kunnen snel escaleren: pesten, nepaccounts, doxing, schermafdrukken die worden doorgestuurd. Je wil helpen — maar hoe doe je dat zonder het erger te maken? Jij leert veilig en slim reageren in lastige online situaties.',
+    experienceDesign: {
+        boringRisk: 'medium',
+        firstTenSeconds: 'Bekijk de groepsapp-case en kies welke situatie direct hulp of bewijs vraagt.',
+        primaryInteraction: 'prioritize-case',
+        feedbackMoment: 'Feedback laat zien of je veiligheid, bewijs bewaren en hulp inschakelen goed afweegt.',
+        visualKit: 'casefile',
+        evidenceMoment: 'Leerlingen leveren geprioriteerde situaties en een SAFE-ACT keuze met uitleg.',
+        antiBoringRule: 'Welzijn blijft serieus: gamification draait om veilig handelen, niet om drama of sensatie.',
+        chromeAcceptance: 'Case, actieprioriteit, foutfeedback en eindbewijs zijn duidelijk zonder het onderwerp te trivialiseren.',
+    },
     introFeatures: [
         'Herken wat er echt aan de hand is in online conflicten',
         'Kies de veiligste actie in lastige situaties',

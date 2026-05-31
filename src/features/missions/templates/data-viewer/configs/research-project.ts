@@ -12,6 +12,63 @@ export const researchProjectConfig: DataViewerConfig = {
         'Vergelijk de betrouwbaarheid van onderzoeksmethoden',
         'Beoordeel hoe je een conclusie onderbouwt met data',
     ],
+    missionGoal: {
+        primaryGoal:
+            'Onderzoek een technologische claim kritisch en trek een voorzichtige conclusie met data, methodekennis en bronbewustzijn.',
+        criteria: {
+            type: 'score-threshold',
+            threshold: 50,
+            description:
+                'Je haalt de completiondrempel door datasets te analyseren, onderzoeksmethoden te vergelijken en tekstobservaties met bewijs te schrijven.',
+        },
+        evidence:
+            'Leerlingbewijs: antwoorden over schermtijddata, correlatie versus causaliteit, onderzoeksmethoden en conclusieopbouw. Docentbewijs: score, fase-overzicht en tekstobservaties tonen of de leerling verantwoord met bewijs redeneert.',
+    },
+    experienceDesign: {
+        boringRisk: 'high',
+        firstTenSeconds: 'Research fork: kies of je verband, bewijssterkte of mogelijke oorzaak onderzoekt.',
+        primaryInteraction: 'pin-evidence',
+        feedbackMoment: 'Na de onderzoeksvork krijgt de leerling feedback op claimsterkte en verantwoord bewijsgebruik.',
+        visualKit: 'data-room',
+        evidenceMoment: 'De leerling schrijft conclusies die data, methode en onzekerheid zichtbaar meenemen.',
+        antiBoringRule: 'Onderzoek start met autonomie over de route, niet met een vast onderzoeksformulier.',
+        chromeAcceptance: 'Onderzoeksvork, datasets en tekstobservaties blijven bruikbaar en niet te tekstzwaar op mobile/tablet.',
+    },
+    investigationHook: {
+        title: 'Kies je onderzoeksvork',
+        role: 'Junior onderzoeker',
+        scenario:
+            'Er ligt een stapel beweringen over schermtijd en welzijn. Jij kiest eerst wat voor soort conclusie je verantwoord wilt proberen te trekken.',
+        prompt: 'Welke onderzoeksvraag neem je als startpunt?',
+        contextLabel: 'Onderzoeksvork',
+        continueLabel: 'Start het onderzoek',
+        options: [
+            {
+                id: 'verband',
+                label: 'Is er een verband zichtbaar?',
+                description: 'Je onderzoekt patronen in de data zonder meteen oorzaak en gevolg te claimen.',
+                feedback: 'Sterke wetenschappelijke start. Eerst aantonen dat iets samenhangt, daarna pas vragen wat het betekent.',
+                evidenceChips: ['7,4 naar 5,8', '42% laag welzijn', 'geen causaliteit'],
+                impactCue: 'Voorzichtig verband',
+            },
+            {
+                id: 'methode',
+                label: 'Hoe betrouwbaar is het bewijs?',
+                description: 'Je vergelijkt onderzoeksmethoden voordat je conclusies te zwaar maakt.',
+                feedback: 'Goed kritisch spoor. Niet elk onderzoek verdient evenveel vertrouwen; methode bepaalt hoeveel je mag claimen.',
+                evidenceChips: ['meta-analyse 95', 'enquete 45', 'n=200'],
+                impactCue: 'Bewijssterkte',
+            },
+            {
+                id: 'oorzaak',
+                label: 'Wat zou oorzaak kunnen zijn?',
+                description: 'Je zoekt voorzichtig naar verklaringen en let extra op correlatie versus causaliteit.',
+                feedback: 'Ambitieus, maar haalbaar als je voorzichtig blijft. Een goede onderzoeker noemt alternatieve verklaringen.',
+                evidenceChips: ['derde factor', 'omgekeerde richting', 'experiment nodig'],
+                impactCue: 'Causaliteitscheck',
+            },
+        ],
+    },
 
     datasets: [
         // ── Dataset 1: Tabel ──────────────────────────────────────────────────
@@ -39,18 +96,20 @@ export const researchProjectConfig: DataViewerConfig = {
                 {
                     id: 'q1-patroon-herkennen',
                     question:
-                        'Wat is het verband tussen schermtijd en gemiddeld welzijn op basis van deze data?',
-                    type: 'multiple-choice',
-                    options: [
-                        'Meer schermtijd hangt samen met hoger welzijn',
-                        'Er is geen verband tussen schermtijd en welzijn',
-                        'Meer schermtijd hangt samen met lager welzijn',
-                        'Alleen boven 8 uur is er een verband',
-                    ],
-                    correctAnswer: 'Meer schermtijd hangt samen met lager welzijn',
+                        'Pin als junior onderzoeker het patroon in deze dataset. Noem minstens twee welzijnsscores en formuleer de claim voorzichtig, zonder oorzaak-gevolg te beweren.',
+                    type: 'text-observation',
+                    correctAnswer: '',
                     explanation:
                         'Van < 2 uur (7,4) naar > 8 uur (5,8) daalt het gemiddelde welzijn consistent. Sorteer op "Groep" om de trend te zien. Let op: dit is correlatie, geen causaliteit — we weten niet of schermtijd het welzijn verlaagt, of dat leerlingen met laag welzijn meer gaan swipen.',
                     points: 15,
+                    minLength: 80,
+                    minEvidenceCriteria: 3,
+                    textEvidenceCriteria: [
+                        { label: 'lager welzijn bij meer schermtijd', keywords: ['lager', 'daalt', 'minder welzijn', 'meer schermtijd'] },
+                        { label: 'concrete scores genoemd', keywords: ['7,4', '7.4', '5,8', '5.8', '6,2', '6.2'] },
+                        { label: 'correlatie voorzichtig benoemd', keywords: ['correlatie', 'hangt samen', 'verband', 'suggereert'] },
+                        { label: 'geen causaliteit geclaimd', keywords: ['geen causaliteit', 'geen oorzaak', 'niet bewijst', 'oorzaak'] },
+                    ],
                 },
                 {
                     id: 'q2-laag-welzijn-verschil',
@@ -93,13 +152,21 @@ export const researchProjectConfig: DataViewerConfig = {
             questions: [
                 {
                     id: 'q4-sterkste-bewijs',
-                    question: 'Welke onderzoeksmethode levert het sterkste wetenschappelijke bewijs?',
-                    type: 'multiple-choice',
-                    options: ['Expertmening', 'Cohort-onderzoek', 'Meta-analyse', 'Enquête'],
-                    correctAnswer: 'Meta-analyse',
+                    question:
+                        'Rangschik als evidence reviewer welke methode bovenaan je bewijskaart komt. Noem de sterkste methode, haar score en waarom die sterker is dan één losse enquête.',
+                    type: 'text-observation',
+                    correctAnswer: '',
                     explanation:
                         'Een meta-analyse combineert de resultaten van tientallen of honderden onderzoeken. Zo middel je toevallige fouten uit en zie je het werkelijke patroon. Een meta-analyse van 47 studies over schermtijd en welzijn zegt veel meer dan één studie met 200 leerlingen.',
                     points: 10,
+                    minLength: 70,
+                    minEvidenceCriteria: 3,
+                    textEvidenceCriteria: [
+                        { label: 'meta-analyse gekozen', keywords: ['meta-analyse', 'meta analyse'] },
+                        { label: 'score of bewijssterkte genoemd', keywords: ['95', 'sterkst', 'hoogste', 'bewijs'] },
+                        { label: 'meerdere studies uitgelegd', keywords: ['meerdere onderzoeken', 'studies', 'combineert', 'tientallen'] },
+                        { label: 'enquête vergeleken', keywords: ['enquete', 'enquête', 'zelfrapportage', '45', 'losse studie'] },
+                    ],
                 },
                 {
                     id: 'q5-enquete-beperking',
@@ -161,18 +228,20 @@ export const researchProjectConfig: DataViewerConfig = {
                 {
                     id: 'q7-onderzoeksvraag-beoordelen',
                     question:
-                        'Welke onderzoeksvraag is het meest geschikt voor wetenschappelijk onderzoek?',
-                    type: 'multiple-choice',
-                    options: [
-                        '"Is social media slecht voor jongeren?"',
-                        '"Hoeveel uur zitten jongeren van 13-15 jaar per dag op TikTok in 2025?"',
-                        '"Waarom is schermtijd een probleem?"',
-                        '"Social media maakt je depressief — klopt dat?"',
-                    ],
-                    correctAnswer: '"Hoeveel uur zitten jongeren van 13-15 jaar per dag op TikTok in 2025?"',
+                        'Kies als onderzoekscoach de beste onderzoeksvraag en verdedig je keuze. Leg uit waarom de vraag specifiek, meetbaar en niet leidend is.',
+                    type: 'text-observation',
+                    correctAnswer: '',
                     explanation:
                         'Deze vraag is specifiek (leeftijdsgroep, platform, jaar), beantwoordbaar (je kunt data verzamelen) en open (suggereert geen antwoord). De andere vragen zijn te breed ("slecht" is vaag), suggestief ("een probleem" gaat al van een negatief antwoord uit) of al een claim in de vraag ("depressief").',
                     points: 15,
+                    minLength: 80,
+                    minEvidenceCriteria: 3,
+                    textEvidenceCriteria: [
+                        { label: 'TikTok-vraag gekozen', keywords: ['tiktok', '13-15', '2025', 'hoeveel uur'] },
+                        { label: 'specifiek uitgelegd', keywords: ['specifiek', 'leeftijdsgroep', 'platform', 'jaar'] },
+                        { label: 'meetbaar of beantwoordbaar', keywords: ['meetbaar', 'beantwoordbaar', 'data', 'verzamelen'] },
+                        { label: 'niet leidend of open', keywords: ['niet leidend', 'open', 'suggereert geen', 'niet suggestief'] },
+                    ],
                 },
                 {
                     id: 'q8-eigen-beperking',

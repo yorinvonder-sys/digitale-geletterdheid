@@ -11,13 +11,14 @@ interface SettingsPanelProps {
     enabledMissions: string[];
     onToggleMission: (missionId: string) => void;
     onTestGame?: (gameId: string) => void;
+    schoolId?: string;
     yearGroup?: number;
     classroomConfig: ClassroomConfig | null;
     onUpdateConfig: (update: Partial<ClassroomConfig>) => void;
     onOpenSchedulingConfig?: () => void;
 }
 
-export const SettingsPanel: React.FC<SettingsPanelProps> = ({ classFilter, onClassFilterChange, availableClasses, enabledMissions, onToggleMission, onTestGame, yearGroup = 1, classroomConfig, onUpdateConfig, onOpenSchedulingConfig }) => {
+export const SettingsPanel: React.FC<SettingsPanelProps> = ({ classFilter, onClassFilterChange, availableClasses, enabledMissions, onToggleMission, onTestGame, schoolId, yearGroup = 1, classroomConfig, onUpdateConfig, onOpenSchedulingConfig }) => {
     const yearMissions = useMemo(() => getMissionsForYear(yearGroup), [yearGroup]);
     return (
         <div className="space-y-6">
@@ -150,7 +151,7 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({ classFilter, onCla
             )}
 
             <div className="mt-8">
-                <TeacherGameToggle onTestGame={onTestGame} yearGroup={yearGroup} />
+                <TeacherGameToggle onTestGame={onTestGame} schoolId={schoolId} yearGroup={yearGroup} />
             </div>
         </div>
     );

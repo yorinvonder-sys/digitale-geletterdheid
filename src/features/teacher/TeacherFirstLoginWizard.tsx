@@ -75,15 +75,17 @@ export const TeacherFirstLoginWizard: React.FC<TeacherFirstLoginWizardProps> = (
                 hasCompletedTeacherOnboarding: true,
             };
 
-            const { error } = await supabase
+            const { error: profileError } = await supabase
                 .from('users')
-                .update({
-                    display_name: sanitizedName,
-                    stats: sanitizeForDb(newStats),
-                })
+                .update({ display_name: sanitizedName })
                 .eq('id', user.uid);
 
-            if (error) throw error;
+            if (profileError) throw profileError;
+
+            const { error: statsError } = await supabase
+                .rpc('update_student_stats', { p_stats: sanitizeForDb(newStats) });
+
+            if (statsError) throw statsError;
 
             onComplete({ displayName: sanitizedName, stats: newStats });
         } catch (err) {

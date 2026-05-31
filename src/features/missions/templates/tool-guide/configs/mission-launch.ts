@@ -7,12 +7,71 @@ const config: ToolGuideConfig = {
     introTitle: 'De Lancering',
     introDescription:
         'Je project is af — nu moet de wereld het weten. Je leert een pakkende flyer maken met een sterke kop, heldere informatie en een duidelijke call to action. Plus: je bereidt je presentatie voor.',
+    experienceDesign: {
+        boringRisk: 'high',
+        firstTenSeconds: 'Projecttrailer: kies een hook die het probleem en de belofte meteen duidelijk maakt.',
+        primaryInteraction: 'build',
+        feedbackMoment: 'Na de hookkeuze hoort de leerling waarom probleem plus belofte beter werkt dan alleen naam of lange uitleg.',
+        visualKit: 'tool-crisis',
+        evidenceMoment: 'De leerling levert een kop, kernboodschap, call-to-action en visuele flyerindeling op.',
+        antiBoringRule: 'Eindprojectstart moet voelen als lancering/pitch, niet als administratieve checklist.',
+        chromeAcceptance: 'Pitch-je-missie challenge en flyer-stappen passen op alle viewports met duidelijke CTA.',
+    },
     introFeatures: [
         'Een aandachttrekkende kop bedenken voor je flyer',
         'De kernboodschap kort en helder formuleren',
         'Een call to action schrijven die mensen activeert',
         'Je flyer visueel indelen volgens de regels van visuele hiërarchie',
     ],
+    introChallenge: {
+        title: 'Pitch je missie in een zin',
+        scenario:
+            'Je project is klaar, maar niemand stopt voor een flyer met alleen "Mijn project" erop. Je hebt een hook nodig die in een paar seconden blijft hangen.',
+        prompt: 'Welke hook maakt mensen het snelst nieuwsgierig naar jouw project?',
+        preview: {
+            beforeTitle: 'Zwakke projectflyer',
+            afterTitle: 'Pitchbare missiehook',
+            beforeSignals: [
+                'Alleen een projectnaam',
+                'Geen duidelijk probleem',
+                'CTA ontbreekt',
+            ],
+            afterSignals: [
+                'Probleem herkenbaar',
+                'Belofte in een zin',
+                'Actie duidelijk',
+            ],
+            evidenceTitle: 'Launchbewijs',
+            evidenceItems: ['Hook', 'Doelgroep', 'CTA', 'Visuele hierarchie'],
+        },
+        options: [
+            {
+                id: 'probleem-belofte',
+                title: 'Probleem + belofte',
+                description: '"Nooit meer huiswerkstress: mijn planner helpt je op tijd."',
+                correct: true,
+                feedback:
+                    'Sterk. Je benoemt een herkenbaar probleem en belooft direct wat jouw project oplost. Dat is precies wat een flyer nodig heeft.',
+            },
+            {
+                id: 'alleen-titel',
+                title: 'Alleen de projectnaam',
+                description: '"Project Digitaal".',
+                correct: false,
+                feedback:
+                    'Een losse titel zegt te weinig. Je flyer moet meteen duidelijk maken waarom iemand moet stoppen en kijken.',
+            },
+            {
+                id: 'lange-uitleg',
+                title: 'Een complete uitleg',
+                description: 'Een lange alinea met alle onderdelen van je project.',
+                correct: false,
+                feedback:
+                    'Een flyer krijgt maar een paar seconden aandacht. De details komen later; eerst heb je een korte, scherpe hook nodig.',
+            },
+        ],
+        continueLabel: 'Maak de flyer sterker',
+    },
     toolName: 'Flyer & Presentatie',
     toolIcon: '📢',
     steps: [

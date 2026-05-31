@@ -56,25 +56,71 @@ export const InteractiveTable: React.FC<InteractiveTableProps> = ({ columns, row
         });
     }, [filteredRows, sortKey, sortDir]);
 
+    const sortedColumnLabel = columns.find(c => c.key === sortKey)?.label;
+
     return (
-        <div className="rounded-xl border border-[#E7D8BD] overflow-hidden">
+        <div className="overflow-hidden rounded-xl border border-[#E7D8BD]">
             {/* Filter row */}
-            <div className="bg-[#FCF6EA] border-b border-[#E7D8BD] px-3 py-2 flex gap-2 flex-wrap">
+            <div className="grid gap-2 border-b border-[#E7D8BD] bg-[#FCF6EA] px-3 py-2 sm:grid-cols-2">
                 {columns.map(col => (
-                    <input
-                        key={col.key}
-                        type="text"
-                        placeholder={`Filter ${col.label.toLowerCase()}…`}
-                        value={filters[col.key] ?? ''}
-                        onChange={e => setFilters(prev => ({ ...prev, [col.key]: e.target.value }))}
-                        className="flex-1 min-w-[100px] text-xs px-2.5 py-1.5 rounded-lg border border-[#E7D8BD] bg-white text-[#445865] placeholder:text-[#445865] focus:outline-none focus:border-[#D97848]"
-                        style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
-                    />
+                    <label key={col.key} className="min-w-0">
+                        <span
+                            className="mb-1 block truncate text-[10px] font-black uppercase text-[#445865]"
+                            style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                        >
+                            {col.label}
+                        </span>
+                        <input
+                            type="text"
+                            placeholder="Filter…"
+                            value={filters[col.key] ?? ''}
+                            onChange={e => setFilters(prev => ({ ...prev, [col.key]: e.target.value }))}
+                            className="w-full rounded-lg border border-[#E7D8BD] bg-white px-2.5 py-2 text-xs text-[#445865] placeholder:text-[#8EA0A9] focus:outline-none focus:border-[#D97848]"
+                            style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                        />
+                    </label>
                 ))}
             </div>
 
+            {/* Mobile cards */}
+            <div className="divide-y divide-[#E7D8BD] sm:hidden">
+                {sortedRows.length === 0 ? (
+                    <div
+                        className="bg-white px-4 py-6 text-center text-sm text-[#445865]"
+                        style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                    >
+                        Geen resultaten voor deze filter
+                    </div>
+                ) : (
+                    sortedRows.map((row, i) => (
+                        <article key={i} className="bg-white px-4 py-3">
+                            <div className="grid gap-2">
+                                {columns.map(col => (
+                                    <div key={col.key} className="min-w-0 rounded-lg bg-[#FCF6EA] px-3 py-2">
+                                        <div
+                                            className="text-[10px] font-black uppercase text-[#445865]"
+                                            style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                                        >
+                                            {col.label}
+                                        </div>
+                                        <div
+                                            className={`mt-0.5 break-words text-sm text-[#08283B] ${
+                                                sortKey === col.key ? 'font-bold' : 'font-semibold'
+                                            }`}
+                                            style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                                        >
+                                            {row[col.key] ?? '-'}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </article>
+                    ))
+                )}
+            </div>
+
             {/* Table */}
-            <div className="overflow-x-auto">
+            <div className="hidden overflow-x-auto sm:block" aria-label="Datatabel">
                 <table className="w-full min-w-[480px]">
                     <thead>
                         <tr className="bg-[#FCF6EA] border-b border-[#E7D8BD]">
@@ -151,9 +197,9 @@ export const InteractiveTable: React.FC<InteractiveTableProps> = ({ columns, row
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     {sortedRows.length} van {rows.length} rijen
-                    {sortKey && sortDir && (
+                    {sortedColumnLabel && sortDir && (
                         <span className="ml-2 text-[#D97848]">
-                            Gesorteerd op {columns.find(c => c.key === sortKey)?.label} ({sortDir === 'asc' ? 'oplopend' : 'aflopend'})
+                            Gesorteerd op {sortedColumnLabel} ({sortDir === 'asc' ? 'oplopend' : 'aflopend'})
                         </span>
                     )}
                 </span>

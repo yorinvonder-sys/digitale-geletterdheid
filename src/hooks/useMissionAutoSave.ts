@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
+import type { Dispatch, SetStateAction } from 'react';
 
 const STORAGE_PREFIX = 'dgskills_mission_';
 const DEBOUNCE_MS = 1_000;
@@ -21,7 +22,7 @@ interface AutoSaveResult<T> {
     /** Current state value */
     state: T;
     /** Update the state (triggers debounced save to localStorage) */
-    setState: React.Dispatch<React.SetStateAction<T>>;
+    setState: Dispatch<SetStateAction<T>>;
     /** Whether a previous save was found and restored */
     hasSavedProgress: boolean;
     /** Clear saved progress from localStorage (call on mission completion) */
@@ -58,6 +59,7 @@ export function useMissionAutoSave<T>(
     const storageKey = userId
         ? `${STORAGE_PREFIX}${userId}_${missionId}`
         : `${STORAGE_PREFIX}${missionId}`;
+    const clearedRef = useRef(false);
 
     // Try to restore saved state on initial render
     const [state, setState] = useState<T>(() => {
@@ -85,9 +87,26 @@ export function useMissionAutoSave<T>(
     const stateRef = useRef<T>(state);
     stateRef.current = state;
 
+    const setAutoSavedState = useCallback<Dispatch<SetStateAction<T>>>((value) => {
+        clearedRef.current = false;
+        setState(prev => {
+            const nextState = typeof value === 'function'
+                ? (value as (previousState: T) => T)(prev)
+                : value;
+            stateRef.current = nextState;
+            try {
+                localStorage.setItem(storageKey, JSON.stringify(nextState));
+            } catch {
+                // Best effort; debounced and beforeunload saves may still succeed.
+            }
+            return nextState;
+        });
+    }, [storageKey]);
+
     // Debounced save to localStorage
     useEffect(() => {
         const timer = setTimeout(() => {
+            if (clearedRef.current) return;
             try {
                 localStorage.setItem(storageKey, JSON.stringify(state));
             } catch {
@@ -101,6 +120,7 @@ export function useMissionAutoSave<T>(
     // beforeunload: flush immediately (no debounce) as a safety net
     useEffect(() => {
         const handleBeforeUnload = () => {
+            if (clearedRef.current) return;
             try {
                 localStorage.setItem(storageKey, JSON.stringify(stateRef.current));
             } catch {
@@ -115,6 +135,7 @@ export function useMissionAutoSave<T>(
     // Flush on unmount so pending changes aren't lost when leaving a mission
     useEffect(() => {
         return () => {
+            if (clearedRef.current) return;
             try {
                 localStorage.setItem(storageKey, JSON.stringify(stateRef.current));
             } catch {
@@ -124,6 +145,7 @@ export function useMissionAutoSave<T>(
     }, [storageKey]);
 
     const clearSave = useCallback(() => {
+        clearedRef.current = true;
         try {
             localStorage.removeItem(storageKey);
         } catch {
@@ -131,5 +153,5 @@ export function useMissionAutoSave<T>(
         }
     }, [storageKey]);
 
-    return { state, setState, hasSavedProgress, clearSave };
+    return { state, setState: setAutoSavedState, hasSavedProgress, clearSave };
 }

@@ -106,7 +106,7 @@ export const DocumentCanvas: React.FC<DocumentCanvasProps> = ({
             style={{
                 width: '794px', // A4 pixels at 96 DPI
                 transform: `scale(${state.zoom / 100})`,
-                transformOrigin: 'top center',
+                transformOrigin: state.zoom < 100 ? 'top left' : 'top center',
             }}
             onClick={() => onSelectImage(null)} // Deselect image when clicking "background" (wrapper)
         >
@@ -163,6 +163,7 @@ export const DocumentCanvas: React.FC<DocumentCanvasProps> = ({
             {/* TEXT EDITOR - Transparent Layout */}
             <div
                 id="sim-editor"
+                data-qa="word-simulator-editor"
                 ref={editorRef}
                 contentEditable
                 className="outline-none min-h-[1123px] font-serif text-lab-ink leading-relaxed cursor-text relative w-full"

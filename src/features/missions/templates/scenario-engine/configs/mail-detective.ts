@@ -7,6 +7,16 @@ const config: ScenarioEngineConfig = {
     introTitle: 'Mail Detective',
     introDescription:
         'Elke dag landen er duizenden nep-mails in Nederlandse inboxen. Aanvallers maken ze zo echt mogelijk — maar als je weet waar je op moet letten, prik je er zo doorheen. Jij wordt Mail Detective.',
+    experienceDesign: {
+        boringRisk: 'medium',
+        firstTenSeconds: 'Open de verdachte inbox en pin meteen het eerste signaal dat niet klopt.',
+        primaryInteraction: 'pin-evidence',
+        feedbackMoment: 'Na elke ronde laat de feedback zien welke mailtruc je wel of niet hebt ontmaskerd.',
+        visualKit: 'casefile',
+        evidenceMoment: 'Leerlingen leveren verdachte signalen, risicovolgorde en veilige reactie als docentbewijs.',
+        antiBoringRule: 'Niet starten met phishingtheorie: eerst bewijs uit een casefile kiezen en daarna pas uitleg lezen.',
+        chromeAcceptance: 'Inboxcase, bewijskeuze, feedback en eindbewijs zijn zichtbaar zonder overflow; de hoofdhandeling is bewijs pinnen of prioriteren.',
+    },
     introFeatures: [
         'Herken verdachte signalen in gesimuleerde e-mails',
         'Rangschik e-mails van gevaarlijkst naar minst gevaarlijk',

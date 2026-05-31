@@ -37,10 +37,61 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
     const currentTextLength = state.textEntries[stepData.id]?.trim().length ?? 0;
     const textRequirementMet = !requiredTextLength || currentTextLength >= requiredTextLength;
 
+    const handleInsertTag = (tag: string) => {
+        const textarea = document.getElementById(`text-${stepData.id}`) as HTMLTextAreaElement;
+        if (!textarea) return;
+
+        const start = textarea.selectionStart;
+        const end = textarea.selectionEnd;
+        const currentText = state.textEntries[stepData.id] ?? '';
+        const newText = currentText.substring(0, start) + tag + currentText.substring(end);
+
+        onTextChange(stepData.id, newText);
+
+        setTimeout(() => {
+            textarea.focus();
+            // Zorg dat de cursor precies tussen de tags invalt (bijv. <h1>|</h1> of **|**)
+            let cursorOffset = tag.length;
+            if (tag.startsWith('<') && tag.endsWith('>') && tag.includes('</')) {
+                const closeTagIndex = tag.indexOf('</');
+                cursorOffset = closeTagIndex;
+            } else if (tag === '****') {
+                cursorOffset = 2;
+            } else if (tag === '**') {
+                cursorOffset = 1;
+            }
+            textarea.setSelectionRange(start + cursorOffset, start + cursorOffset);
+        }, 50);
+    };
+
+    const isHtmlMission = stepData.textPrompt?.toLowerCase().includes('html') ||
+                          stepData.instruction.toLowerCase().includes('html') ||
+                          stepData.title.toLowerCase().includes('website') ||
+                          stepData.description.toLowerCase().includes('website');
+
+    const helpers = isHtmlMission
+        ? [
+            { label: '<h1>', value: '<h1></h1>' },
+            { label: '<p>', value: '<p></p>' },
+            { label: '<img>', value: '<img src="" alt="" />' },
+            { label: '<a>', value: '<a href=""></a>' },
+            { label: '<style>', value: '<style>\n  \n</style>' },
+            { label: '<div>', value: '<div></div>' },
+            { label: '<b>', value: '<b></b>' },
+          ]
+        : [
+            { label: '# H1', value: '# ' },
+            { label: '## H2', value: '## ' },
+            { label: '**Vet**', value: '****' },
+            { label: '*Schuin*', value: '**' },
+            { label: 'Lijst', value: '\n- ' },
+            { label: 'Link', value: '[Tekst](url)' },
+          ];
+
     return (
-        <div className="flex min-h-full flex-col p-5">
+        <div className="flex min-h-full flex-col p-3 pb-[calc(env(safe-area-inset-bottom)+6rem)] sm:p-5">
             {/* Step indicator */}
-            <div className="flex items-center gap-2 mb-4">
+            <div className="flex items-center gap-2 mb-2 sm:mb-4">
                 <div className="w-7 h-7 rounded-xl bg-gradient-to-br from-[#D97848] to-[#D97848] flex items-center justify-center">
                     <span className="text-xs font-black text-white">{stepIndex + 1}</span>
                 </div>
@@ -62,16 +113,16 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
 
             {/* Description */}
             <p
-                className="text-sm text-[#445865] leading-relaxed mb-4"
+                className="hidden text-sm text-[#445865] leading-relaxed mb-4 sm:block"
                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
             >
                 {stepData.description}
             </p>
 
             {/* Instruction card */}
-            <div className="bg-white rounded-2xl border border-[#E7D8BD] p-4 mb-4">
+            <div className="bg-white rounded-2xl border border-[#E7D8BD] p-3 mb-3 sm:p-4 sm:mb-4">
                 <p
-                    className="text-sm text-[#445865] leading-relaxed"
+                    className="text-xs text-[#445865] leading-snug line-clamp-2 sm:text-sm sm:leading-relaxed sm:line-clamp-none"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     {stepData.instruction}
@@ -80,7 +131,7 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
 
             {/* Optional tip */}
             {stepData.tip && (
-                <div className="flex items-start gap-2 bg-[#D97848]/8 border border-[#D97848]/20 rounded-xl p-3 mb-4">
+                <div className="hidden items-start gap-2 bg-[#D97848]/8 border border-[#D97848]/20 rounded-xl p-3 mb-4 sm:flex">
                     <Lightbulb size={14} className="text-[#D97848] mt-0.5 shrink-0" />
                     <p
                         className="text-xs text-[#D97848] leading-relaxed"
@@ -92,14 +143,14 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
             )}
 
             {/* Checklist */}
-            <div className="mb-4">
+            <div className="mb-3 sm:mb-4">
                 <span
                     className="text-[10px] font-black text-[#445865] uppercase tracking-widest mb-2 block"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     Checklist
                 </span>
-                <div className="space-y-2">
+                <div className="grid grid-cols-2 gap-2">
                     {stepData.checklistItems.map((item) => (
                         <ChecklistItem
                             key={item.id}
@@ -114,7 +165,7 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
 
             {/* Optional text area */}
             {stepData.textPrompt && (
-                <div className="mb-4 flex min-h-[160px] flex-1 flex-col">
+                <div className="mb-4 flex min-h-[110px] flex-1 flex-col sm:min-h-[160px]">
                     <label
                         className="text-[10px] font-black text-[#445865] uppercase tracking-widest mb-2 block"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
@@ -122,13 +173,30 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
                     >
                         {stepData.textPrompt}
                     </label>
+
+                    {/* Sneltoets-balk voor codering */}
+                    <div className="flex flex-wrap gap-1.5 pb-2 mb-1.5 shrink-0">
+                        {helpers.map((h, index) => (
+                            <button
+                                key={h.label}
+                                type="button"
+                                onClick={() => handleInsertTag(h.value)}
+                                className={`px-2.5 py-1 text-[10px] font-black rounded-lg border border-[#E7D8BD] bg-white text-[#445865] hover:border-[#D97848] active:scale-95 transition-all shrink-0 ${index > 1 ? 'hidden sm:inline-flex' : ''}`}
+                                style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                            >
+                                {h.label}
+                            </button>
+                        ))}
+                    </div>
+
                     <textarea
                         id={`text-${stepData.id}`}
                         value={state.textEntries[stepData.id] ?? ''}
                         onChange={(e) => onTextChange(stepData.id, e.target.value)}
                         placeholder="Schrijf hier jouw antwoord…"
                         rows={5}
-                        className="w-full min-h-[120px] flex-1 resize-none rounded-xl border border-[#E7D8BD] bg-white px-4 py-3 text-sm leading-relaxed text-[#445865] placeholder:text-[#445865] transition-all duration-200 focus:border-[#D97848]/50 focus:outline-none focus:ring-2 focus:ring-[#D97848]/30"
+                        data-qa="step-textarea"
+                        className="w-full min-h-[80px] flex-1 resize-none rounded-xl border border-[#E7D8BD] bg-white px-4 py-3 text-sm leading-relaxed text-[#445865] placeholder:text-[#445865] transition-all duration-200 focus:border-[#D97848]/50 focus:outline-none focus:ring-2 focus:ring-[#D97848]/30 sm:min-h-[120px]"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     />
                 </div>
@@ -144,25 +212,28 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
             )}
 
             {/* Next step button */}
-            <button
-                onClick={onNextStep}
-                disabled={!canProceed}
-                className={`mt-auto flex min-h-[44px] w-full items-center justify-center gap-2 rounded-xl text-sm font-bold transition-all duration-200 ${
-                    canProceed
-                        ? 'bg-gradient-to-r from-[#D97848] to-[#D97848] hover:from-[#D97848] hover:to-[#D97848] text-white active:scale-[0.98]'
-                        : 'bg-[#E7D8BD] text-[#445865] cursor-not-allowed'
-                }`}
-                style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
-            >
-                {stepIndex === totalSteps - 1 ? (
-                    <>Resultaten bekijken</>
-                ) : (
-                    <>
-                        Volgende stap
-                        <ChevronRight size={16} />
-                    </>
-                )}
-            </button>
+            <div className="sticky bottom-0 mt-auto bg-[#FCF6EA]/95 pt-3 backdrop-blur-sm">
+                <button
+                    onClick={onNextStep}
+                    disabled={!canProceed}
+                    data-qa="step-next"
+                    className={`flex min-h-[44px] w-full items-center justify-center gap-2 rounded-xl text-sm font-bold transition-all duration-200 ${
+                        canProceed
+                            ? 'bg-gradient-to-r from-[#D97848] to-[#D97848] hover:from-[#D97848] hover:to-[#D97848] text-white active:scale-[0.98]'
+                            : 'bg-[#E7D8BD] text-[#445865] cursor-not-allowed'
+                    }`}
+                    style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                >
+                    {stepIndex === totalSteps - 1 ? (
+                        <>Resultaten bekijken</>
+                    ) : (
+                        <>
+                            Volgende stap
+                            <ChevronRight size={16} />
+                        </>
+                    )}
+                </button>
+            </div>
 
             {!textRequirementMet && (
                 <p

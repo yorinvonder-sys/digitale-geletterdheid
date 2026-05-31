@@ -1,12 +1,12 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, ArrowRight, CheckCircle2, MessageCircle, Sparkles, TestTube2 } from 'lucide-react';
 import { IntroScreen } from '../shared/IntroScreen';
 import { CompletionScreen } from '../shared/CompletionScreen';
 import { PhaseHeader } from '../shared/PhaseHeader';
 import { StudentAIChat } from '@/features/ai-chat/StudentAIChat';
 import { useMissionAutoSave } from '@/hooks/useMissionAutoSave';
 import { getMissionGoal } from '@/config/missionGoals';
-import type { TemplateMissionProps, BadgeConfig, FollowUpQuestion, MissionGoal } from '../shared/types';
+import type { TemplateMissionProps, BadgeConfig, FollowUpQuestion, MissionGoal, MissionExperienceDesign } from '../shared/types';
 import { MilestoneToast } from './sub/MilestoneToast';
 import { MobileTabBar, type MobileTab } from './sub/MobileTabBar';
 import { PreviewPanel } from './sub/PreviewPanel';
@@ -34,6 +34,7 @@ export interface BuilderCanvasConfig {
     introTitle: string;
     introDescription: string;
     missionGoal?: MissionGoal;
+    experienceDesign?: MissionExperienceDesign;
     introFeatures?: string[];
     enableChat: boolean;
     chatRoleId?: string;
@@ -50,6 +51,182 @@ interface BuilderCanvasProps extends TemplateMissionProps {
     config: BuilderCanvasConfig;
 }
 
+const launchChoices = [
+    {
+        id: 'core-test',
+        label: 'Test de kern',
+        description: 'Check eerst of de belangrijkste functie of boodschap werkt.',
+    },
+    {
+        id: 'proof-first',
+        label: 'Pin je bewijs',
+        description: 'Kies welk bewijs straks laat zien dat je product klopt.',
+    },
+    {
+        id: 'improve-loop',
+        label: 'Verbeter na feedback',
+        description: 'Maak ruimte voor een test, reactie en volgende versie.',
+    },
+];
+
+interface BuilderLaunchChallengeProps {
+    config: BuilderCanvasConfig;
+    selectedChoiceId?: string;
+    onSelect: (choiceId: string) => void;
+    onContinue: () => void;
+    onBack: () => void;
+}
+
+const BuilderLaunchChallenge: React.FC<BuilderLaunchChallengeProps> = ({
+    config,
+    selectedChoiceId,
+    onSelect,
+    onContinue,
+    onBack,
+}) => {
+    const experience = config.experienceDesign;
+    const selectedChoice = launchChoices.find((choice) => choice.id === selectedChoiceId);
+
+    return (
+        <main
+            className="min-h-dvh bg-[#FCF6EA] px-4 py-5 sm:px-6 lg:px-10"
+            data-qa="builder-launch-challenge"
+        >
+            <div className="mx-auto flex min-h-[calc(100dvh-2.5rem)] w-full max-w-6xl flex-col">
+                <button
+                    type="button"
+                    onClick={onBack}
+                    className="mb-4 inline-flex min-h-[40px] w-fit items-center gap-2 rounded-xl border border-[#E7D8BD] bg-white px-3 text-sm font-bold text-[#445865] shadow-sm transition-colors hover:border-[#D97848]/40 hover:text-[#08283B] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0B453F] focus-visible:ring-offset-2"
+                    style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                >
+                    <ArrowLeft size={16} />
+                    Terug
+                </button>
+
+                <section className="grid min-h-0 flex-1 gap-4 lg:grid-cols-[1.05fr_0.95fr] lg:items-stretch">
+                    <div className="flex flex-col justify-between rounded-2xl border border-[#E7D8BD] bg-white p-5 shadow-sm sm:p-6">
+                        <div>
+                            <div className="mb-4 flex items-center gap-3">
+                                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#0B453F] text-white">
+                                    <TestTube2 size={22} />
+                                </div>
+                                <div>
+                                    <p
+                                        className="text-[11px] font-black uppercase tracking-widest text-[#D97848]"
+                                        style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                                    >
+                                        Maker test
+                                    </p>
+                                    <h1
+                                        className="text-2xl font-black leading-tight text-[#08283B] sm:text-3xl"
+                                        style={{ fontFamily: "'Newsreader', Georgia, serif" }}
+                                    >
+                                        {config.title}
+                                    </h1>
+                                </div>
+                            </div>
+
+                            <p
+                                className="max-w-2xl text-base leading-relaxed text-[#445865] sm:text-lg"
+                                style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                            >
+                                {experience?.firstTenSeconds ?? 'Kies eerst hoe je jouw product gaat testen voordat je begint met bouwen.'}
+                            </p>
+                        </div>
+
+                        <div className="mt-6 grid gap-3 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
+                            {launchChoices.map((choice) => {
+                                const isSelected = choice.id === selectedChoiceId;
+
+                                return (
+                                    <button
+                                        key={choice.id}
+                                        type="button"
+                                        onClick={() => onSelect(choice.id)}
+                                        data-qa="builder-launch-choice"
+                                        className={`min-h-[116px] rounded-2xl border p-4 text-left transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0B453F] focus-visible:ring-offset-2 ${
+                                            isSelected
+                                                ? 'border-[#0B453F] bg-[#0B453F] text-white shadow-md'
+                                                : 'border-[#E7D8BD] bg-[#FFFDF7] text-[#445865] hover:border-[#D97848]/50 hover:bg-white'
+                                        }`}
+                                        style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                                    >
+                                        <div className="mb-3 flex items-center justify-between gap-2">
+                                            <span className={`text-sm font-black ${isSelected ? 'text-white' : 'text-[#08283B]'}`}>
+                                                {choice.label}
+                                            </span>
+                                            {isSelected ? <CheckCircle2 size={18} /> : <Sparkles size={16} className="text-[#D97848]" />}
+                                        </div>
+                                        <p className={`text-sm leading-snug ${isSelected ? 'text-white/85' : 'text-[#445865]'}`}>
+                                            {choice.description}
+                                        </p>
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    </div>
+
+                    <aside
+                        className="flex min-h-[360px] flex-col justify-between rounded-2xl border border-[#E7D8BD] bg-[#08283B] p-5 text-white shadow-sm sm:p-6"
+                        data-qa="builder-launch-feedback"
+                    >
+                        <div>
+                            <p
+                                className="mb-2 text-[11px] font-black uppercase tracking-widest text-[#F3C766]"
+                                style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                            >
+                                Testfeedback
+                            </p>
+                            <h2
+                                className="text-xl font-black leading-tight sm:text-2xl"
+                                style={{ fontFamily: "'Newsreader', Georgia, serif" }}
+                            >
+                                {selectedChoice ? selectedChoice.label : 'Kies je eerste test'}
+                            </h2>
+                            <p
+                                className="mt-3 text-sm leading-relaxed text-white/78"
+                                style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                            >
+                                {selectedChoice
+                                    ? experience?.feedbackMoment ?? 'Je keuze bepaalt waar je tijdens het bouwen extra op let.'
+                                    : 'Maak eerst een keuze. Daarna zie je hoe deze missie je productbewijs scherper maakt.'}
+                            </p>
+                        </div>
+
+                        <div className="mt-5 space-y-3">
+                            <div className="rounded-2xl border border-white/12 bg-white/8 p-4">
+                                <p
+                                    className="text-[11px] font-black uppercase tracking-widest text-[#F3C766]"
+                                    style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                                >
+                                    Bewijs dat telt
+                                </p>
+                                <p
+                                    className="mt-2 text-sm leading-relaxed text-white/82"
+                                    style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                                >
+                                    {experience?.evidenceMoment ?? 'Je rondt deze missie af met zichtbaar productbewijs en een korte reflectie op je keuzes.'}
+                                </p>
+                            </div>
+
+                            <button
+                                type="button"
+                                onClick={onContinue}
+                                disabled={!selectedChoiceId}
+                                className="flex min-h-[48px] w-full items-center justify-center gap-2 rounded-xl bg-[#D97848] px-4 text-sm font-black text-white shadow-sm transition-all hover:bg-[#C5673A] disabled:cursor-not-allowed disabled:bg-white/18 disabled:text-white/50"
+                                style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                            >
+                                Start canvas
+                                <ArrowRight size={18} />
+                            </button>
+                        </div>
+                    </aside>
+                </section>
+            </div>
+        </main>
+    );
+};
+
 const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
     config,
     onBack,
@@ -64,6 +241,7 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
         reflectionAnswered: {},
         reflectionCorrect: {},
         showMilestone: false,
+        testedSteps: {},
     };
 
     const { state, setState, clearSave } = useMissionAutoSave<BuilderCanvasState>(
@@ -114,6 +292,17 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
     // ─── Handlers ────────────────────────────────────────────────────────
 
     const handleStart = () => {
+        setState((prev) => ({
+            ...prev,
+            phase: config.experienceDesign ? 'launch' : 'building',
+        }));
+    };
+
+    const handleLaunchSelect = (choiceId: string) => {
+        setState((prev) => ({ ...prev, launchChoiceId: choiceId }));
+    };
+
+    const handleLaunchContinue = () => {
         setState((prev) => ({ ...prev, phase: 'building' }));
     };
 
@@ -171,6 +360,21 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
         }));
     };
 
+    const handleTestLensSelect = (lensId: string) => {
+        setState((prev) => ({ ...prev, testLensId: lensId }));
+    };
+
+    const handleMarkCurrentStepTested = () => {
+        if (!currentStepData) return;
+        setState((prev) => ({
+            ...prev,
+            testedSteps: {
+                ...prev.testedSteps,
+                [currentStepData.id]: true,
+            },
+        }));
+    };
+
     const handleComplete = () => {
         clearSave();
         onComplete(allStepsComplete);
@@ -187,6 +391,20 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
                 goal={missionGoal}
                 features={config.introFeatures}
                 onStart={handleStart}
+            />
+        );
+    }
+
+    // ─── Phase: Launch challenge ─────────────────────────────────────────
+
+    if (state.phase === 'launch') {
+        return (
+            <BuilderLaunchChallenge
+                config={config}
+                selectedChoiceId={state.launchChoiceId}
+                onSelect={handleLaunchSelect}
+                onContinue={handleLaunchContinue}
+                onBack={() => setState((prev) => ({ ...prev, phase: 'intro' }))}
             />
         );
     }
@@ -234,7 +452,7 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
     const totalSteps = config.steps.length;
 
     return (
-        <div className="flex h-screen min-h-screen flex-col overflow-hidden bg-[#FCF6EA]">
+        <div className="flex h-dvh min-h-dvh flex-col overflow-hidden bg-[#FCF6EA]">
             <MilestoneToast
                 show={state.showMilestone}
                 completedCount={completedStepIndex}
@@ -242,7 +460,7 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
             />
 
             {/* Header */}
-            <div className="px-4 pt-4 pb-2 shrink-0">
+            <div className="px-3 pt-3 pb-2 shrink-0 md:px-4 md:pt-4">
                 <PhaseHeader
                     currentPhase={state.currentStep}
                     totalPhases={config.steps.length}
@@ -252,6 +470,21 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
             </div>
 
             <MobileTabBar activeTab={mobileTab} onTabChange={setMobileTab} />
+
+            {config.enableChat && (
+                <div className="md:hidden flex justify-end border-b border-[#E7D8BD] bg-[#FCF6EA] px-3 py-2">
+                    <button
+                        type="button"
+                        onClick={() => setIsChatOpen(true)}
+                        className="inline-flex min-h-[36px] items-center gap-2 rounded-full border border-[#E7D8BD] bg-white px-3 text-xs font-bold text-[#445865] shadow-sm transition-colors hover:border-[#D97848]/40 hover:text-[#08283B] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0B453F] focus-visible:ring-offset-2"
+                        style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                        aria-label="Open AI Coach"
+                    >
+                        <MessageCircle size={14} />
+                        AI Coach
+                    </button>
+                </div>
+            )}
 
             {/* Main split layout */}
             <div className="min-h-0 flex-1 flex flex-col overflow-hidden md:flex-row">
@@ -280,7 +513,12 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
                         mobileTab !== 'preview' ? 'hidden md:block' : 'block'
                     }`}
                 >
-                    <PreviewPanel config={config} state={state} />
+                    <PreviewPanel
+                        config={config}
+                        state={state}
+                        onTestLensSelect={handleTestLensSelect}
+                        onMarkCurrentStepTested={handleMarkCurrentStepTested}
+                    />
                 </div>
             </div>
 
@@ -292,7 +530,16 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
                         userIdentifier={userId ?? 'anonymous'}
                         isOpen={isChatOpen}
                         onOpenChange={setIsChatOpen}
+                        mobileDock="safe"
+                        hideUntilCookieChoice
+                        hideMobileLauncher
                         context={{
+                            mission: {
+                                id: config.missionId,
+                                title: config.title,
+                                goal: missionGoal?.primaryGoal ?? config.title,
+                                evidence: missionGoal?.evidence,
+                            },
                             currentStep: {
                                 title: currentStepData?.title,
                                 instruction: currentStepData?.instruction,

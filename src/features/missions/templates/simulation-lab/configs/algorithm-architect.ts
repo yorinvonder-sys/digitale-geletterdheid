@@ -172,6 +172,16 @@ export const algorithmArchitectConfig: SimulationLabConfig = {
         },
         evidence: 'Ingevulde simulatievragen, scores per algoritme-onderdeel en een uitleg van de gekozen aanpak.',
     },
+    experienceDesign: {
+        boringRisk: 'medium',
+        firstTenSeconds: 'Kies een algoritme-aanpak en vergroot direct de dataset om te zien waar het misgaat.',
+        primaryInteraction: 'operate-simulation',
+        feedbackMoment: 'De simulatie toont live het aantal stappen; feedback koppelt dat aan efficiëntie en schaal.',
+        visualKit: 'simulation-control',
+        evidenceMoment: 'Leerlingen bewaren hun algoritmekeuze, stapvergelijking en uitleg wanneer de aanpak efficiënt is.',
+        antiBoringRule: 'Niet starten met definities: eerst een algoritme onder druk zetten, daarna de verklaring geven.',
+        chromeAcceptance: 'Datasetkeuze, live resultaat, analysevraag en completionbewijs zijn zichtbaar en niet alleen meerkeuze.',
+    },
     introFeatures: [
         'Sim 1 — Vergelijk lineair en binair zoeken',
         'Sim 2 — Ontdek de kosten van sorteeralgoritmes',
@@ -224,7 +234,7 @@ export const algorithmArchitectConfig: SimulationLabConfig = {
                     id: 'za1-q1',
                     question:
                         'Wat is het grootste voordeel van binair zoeken ten opzichte van lineair zoeken?',
-                    type: 'multiple-choice',
+                    type: 'evidence-input',
                     options: [
                         'Binair zoeken werkt ook op ongesorteerde lijsten',
                         'Binair zoeken halveert elke stap het zoekgebied — veel minder stappen nodig',
@@ -239,7 +249,7 @@ export const algorithmArchitectConfig: SimulationLabConfig = {
                 {
                     id: 'za1-q2',
                     question: 'Wanneer mag je binair zoeken gebruiken?',
-                    type: 'multiple-choice',
+                    type: 'evidence-input',
                     options: [
                         'Altijd — binair zoeken werkt bij elke lijst',
                         'Alleen bij gesorteerde lijsten',
@@ -255,7 +265,7 @@ export const algorithmArchitectConfig: SimulationLabConfig = {
                     id: 'za1-q3',
                     question:
                         'In een lijst van 1024 items: hoeveel stappen heeft binair zoeken maximaal nodig?',
-                    type: 'multiple-choice',
+                    type: 'evidence-input',
                     options: [
                         '1024 stappen — elk item één keer',
                         '512 stappen — de helft van de lijst',
@@ -286,7 +296,7 @@ export const algorithmArchitectConfig: SimulationLabConfig = {
                 {
                     id: 'sa1-q1',
                     question: 'Hoe werkt Bubble Sort in één zin?',
-                    type: 'multiple-choice',
+                    type: 'evidence-input',
                     options: [
                         'Zoek het kleinste element en zet het vooraan, herhaal voor de rest',
                         'Vergelijk steeds twee naast elkaar liggende elementen en wissel als ze in de verkeerde volgorde staan',
@@ -302,7 +312,7 @@ export const algorithmArchitectConfig: SimulationLabConfig = {
                     id: 'sa1-q2',
                     question:
                         'Waarom is het belangrijk te weten welk sorteeralgoritme je kiest bij grote hoeveelheden data?',
-                    type: 'multiple-choice',
+                    type: 'evidence-input',
                     options: [
                         'Het maakt niet uit — alle algoritmes zijn even snel',
                         'Een slecht algoritme op miljoenen rijen data kan minuten of uren langer duren dan een goed algoritme',
@@ -318,7 +328,7 @@ export const algorithmArchitectConfig: SimulationLabConfig = {
                     id: 'sa1-q3',
                     question:
                         'Wat bedoelen we met "efficiëntie" van een algoritme?',
-                    type: 'multiple-choice',
+                    type: 'evidence-input',
                     options: [
                         'Hoeveel regels code het algoritme heeft',
                         'Hoeveel stappen (tijd) of geheugen het nodig heeft in verhouding tot de invoergrootte',
@@ -352,7 +362,7 @@ export const algorithmArchitectConfig: SimulationLabConfig = {
                 {
                     id: 'ps1-q1',
                     question: 'Wat is pseudocode?',
-                    type: 'multiple-choice',
+                    type: 'evidence-input',
                     options: [
                         'Code die er echt uitziet maar niet werkt',
                         'Stappen van een algoritme in gewone taal opgeschreven — niet in een echte programmeertaal',
@@ -368,7 +378,7 @@ export const algorithmArchitectConfig: SimulationLabConfig = {
                     id: 'ps1-q2',
                     question:
                         'Wat zijn de vier basisconcepten van computational thinking?',
-                    type: 'multiple-choice',
+                    type: 'evidence-input',
                     options: [
                         'HTML, CSS, JavaScript en Python',
                         'Decompositie, patroonherkenning, abstractie en algoritmisch denken',
@@ -384,7 +394,7 @@ export const algorithmArchitectConfig: SimulationLabConfig = {
                     id: 'ps1-q3',
                     question:
                         'Je schrijft pseudocode voor het vinden van het grootste getal in een lijst. Wat is de eerste stap?',
-                    type: 'multiple-choice',
+                    type: 'evidence-input',
                     options: [
                         'Begin met het getal 0 als tijdelijke grootste',
                         'Sorteer eerst de hele lijst',

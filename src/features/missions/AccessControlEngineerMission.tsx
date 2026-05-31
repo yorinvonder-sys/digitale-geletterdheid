@@ -41,12 +41,14 @@ interface TestScenario {
 
 interface MissionState {
     currentStep: number;
+    launchCase?: 'student-grades' | 'guest-login' | 'teacher-admin';
     // Stap 1: analyse
     gevondenProblemen: string[];
     // Stap 2: regels aanpassen
     aangepasteRegels: Record<string, ('leerling' | 'docent' | 'admin' | 'gast')[]>;
     // Stap 3: testen
     testResultaten: Record<string, 'correct' | 'fout' | null>;
+    testVoorspellingen?: Record<string, 'toegang' | 'geblokkeerd'>;
     afgerond: boolean;
 }
 
@@ -255,6 +257,33 @@ const ROLLEN_KLEUREN: Record<string, string> = {
     gast: 'bg-lab-cream text-lab-muted',
 };
 
+const LAUNCH_CASES = [
+    {
+        id: 'student-grades',
+        icon: Eye,
+        role: 'Leerling',
+        resource: 'Cijfers',
+        question: 'Kan een leerling cijfers van anderen zien?',
+        feedback: 'Sterke start: privacygevoelige cijfers horen nooit voor iedereen open te staan.',
+    },
+    {
+        id: 'guest-login',
+        icon: Lock,
+        role: 'Gast',
+        resource: 'Inloggen',
+        question: 'Kan een gast zonder wachtwoord binnenkomen?',
+        feedback: 'Goed gekozen: zonder wachtwoord weet het systeem niet wie er echt binnenkomt.',
+    },
+    {
+        id: 'teacher-admin',
+        icon: Shield,
+        role: 'Docent',
+        resource: 'Admin reset',
+        question: 'Mag een docent een admin-wachtwoord resetten?',
+        feedback: 'Scherp: admin-rechten zijn krachtig en moeten extra streng beschermd zijn.',
+    },
+] as const;
+
 // ---------------------------------------------------------------------------
 // Component
 // ---------------------------------------------------------------------------
@@ -268,9 +297,11 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
         'access-control-engineer',
         {
             currentStep: 0,
+            launchCase: undefined,
             gevondenProblemen: [],
             aangepasteRegels: {},
             testResultaten: {},
+            testVoorspellingen: {},
             afgerond: false,
         }
     );
@@ -286,10 +317,14 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
     const aantalRegelsIngesteld = Object.keys(state.aangepasteRegels).length;
     const aantalTestsGedaan = Object.values(state.testResultaten).filter(v => v !== null).length;
     const aantalTestsCorrect = Object.values(state.testResultaten).filter(v => v === 'correct').length;
+    const testVoorspellingen = state.testVoorspellingen ?? {};
+    const aantalTestsMetVoorspelling = TEST_SCENARIOS.filter(scenario => Boolean(testVoorspellingen[scenario.id])).length;
+    const selectedLaunchCase = LAUNCH_CASES.find(item => item.id === state.launchCase);
+    const kanRegelsInspecteren = Boolean(state.launchCase) || aantalProblemen > 0;
 
     const stap1Klaar = aantalProblemen >= 3;
     const stap2Klaar = aantalRegelsIngesteld >= 4;
-    const stap3Klaar = aantalTestsGedaan >= 5 && aantalTestsCorrect >= 4;
+    const stap3Klaar = aantalTestsGedaan >= 5 && aantalTestsCorrect >= 4 && aantalTestsMetVoorspelling >= 5;
 
     const isVso = vsoProfile === 'dagbesteding';
 
@@ -325,6 +360,7 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
     const voerTestUit = (scenarioId: string) => {
         const scenario = TEST_SCENARIOS.find(s => s.id === scenarioId);
         if (!scenario) return;
+        if (!testVoorspellingen[scenarioId]) return;
 
         const resource = RESOURCES.find(r => r.resource === scenario.resource);
         if (!resource) return;
@@ -345,8 +381,22 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
         setCoachMessage(getCoachHint(isCorrect === 'correct' ? 'stap3_goed' : 'stap3_fout'));
     };
 
+    const kiesTestVoorspelling = (scenarioId: string, voorspelling: 'toegang' | 'geblokkeerd') => {
+        setState({
+            ...state,
+            testVoorspellingen: {
+                ...testVoorspellingen,
+                [scenarioId]: voorspelling,
+            },
+        });
+    };
+
     const handleVoltooi = () => {
-        setState({ ...state, afgerond: true });
+        setState(prev => ({ ...prev, afgerond: true }));
+        setCoachMessage(getCoachHint('voltooiing'));
+    };
+
+    const handleBevestigAfronding = () => {
         clearSave();
         onComplete(true);
     };
@@ -355,9 +405,133 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
         setState({ ...state, currentStep: stap });
     };
 
+    const kiesLaunchCase = (launchCase: MissionState['launchCase']) => {
+        setState({ ...state, launchCase });
+    };
+
     // ---------------------------------------------------------------------------
     // Render
     // ---------------------------------------------------------------------------
+
+    if (state.afgerond) {
+        const gevondenRisicos = state.gevondenProblemen
+            .map(id => ONVEILIGE_REGELS.find(regel => regel.id === id))
+            .filter((regel): regel is Regel => Boolean(regel));
+        const ingesteldeRegels = RESOURCES.map(resource => ({
+            resource: resource.resource,
+            rollen: state.aangepasteRegels[resource.id] ?? resource.toegestaanVoor,
+        }));
+
+        return (
+            <div className="min-h-screen overflow-y-auto bg-lab-cream px-4 py-6">
+                <div className="mx-auto w-full max-w-2xl space-y-4">
+                    <div className="rounded-2xl border border-lab-line bg-white p-5 shadow-sm">
+                        <div className="mb-4 flex items-start gap-3">
+                            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-lab-sage text-white">
+                                <Shield size={22} />
+                            </div>
+                            <div>
+                                <p className="text-xs font-black uppercase tracking-widest text-lab-coral">
+                                    Leerlingbewijs / docentbewijs
+                                </p>
+                                <h1 className="mt-1 text-xl font-black leading-tight text-lab-ink">
+                                    Access Control Engineer afgerond
+                                </h1>
+                                <p className="mt-2 text-sm leading-relaxed text-lab-muted">
+                                    Je hebt risico's gevonden, toegangsregels ingesteld en de configuratie getest. Dit overzicht is het bewijs dat een docent kan beoordelen.
+                                </p>
+                            </div>
+                        </div>
+
+                        <MissionGoalBanner goal={MISSION_GOAL} className="mb-4" />
+
+                        <div className="grid gap-3 md:grid-cols-3">
+                            <div className="rounded-xl border border-lab-line bg-lab-cream p-3">
+                                <p className="text-xs font-bold uppercase tracking-wide text-lab-muted">Risico's</p>
+                                <p className="mt-1 text-2xl font-black text-lab-ink">{gevondenRisicos.length}</p>
+                                <p className="text-xs text-lab-muted">gevonden problemen</p>
+                            </div>
+                            <div className="rounded-xl border border-lab-line bg-lab-cream p-3">
+                                <p className="text-xs font-bold uppercase tracking-wide text-lab-muted">Regels</p>
+                                <p className="mt-1 text-2xl font-black text-lab-ink">{aantalRegelsIngesteld}</p>
+                                <p className="text-xs text-lab-muted">resources ingesteld</p>
+                            </div>
+                            <div className="rounded-xl border border-lab-line bg-lab-cream p-3">
+                                <p className="text-xs font-bold uppercase tracking-wide text-lab-muted">Tests</p>
+                                <p className="mt-1 text-2xl font-black text-lab-ink">{aantalTestsCorrect}/{aantalTestsGedaan}</p>
+                                <p className="text-xs text-lab-muted">correct uitgevoerd</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="rounded-2xl border border-lab-line bg-white p-4">
+                        <h2 className="mb-3 text-sm font-black text-lab-ink">Gevonden risico's</h2>
+                        <div className="space-y-2">
+                            {gevondenRisicos.map(regel => (
+                                <div key={regel.id} className="rounded-xl bg-lab-cream p-3">
+                                    <p className="text-sm font-semibold text-lab-ink">{regel.beschrijving}</p>
+                                    <p className="mt-1 text-xs text-lab-muted">{regel.uitleg}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="rounded-2xl border border-lab-line bg-white p-4">
+                        <h2 className="mb-3 text-sm font-black text-lab-ink">Ingestelde toegangsregels</h2>
+                        <div className="space-y-2">
+                            {ingesteldeRegels.map(regel => (
+                                <div key={regel.resource} className="flex flex-col gap-2 rounded-xl bg-lab-cream p-3 sm:flex-row sm:items-center sm:justify-between">
+                                    <p className="text-sm font-semibold text-lab-ink">{regel.resource}</p>
+                                    <div className="flex flex-wrap gap-1.5">
+                                        {regel.rollen.map(rol => (
+                                            <span key={rol} className={`rounded-full px-2 py-1 text-xs font-bold ${ROLLEN_KLEUREN[rol]}`}>
+                                                {rol}
+                                            </span>
+                                        ))}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="rounded-2xl border border-lab-line bg-white p-4">
+                        <h2 className="mb-3 text-sm font-black text-lab-ink">Testresultaten</h2>
+                        <div className="space-y-2">
+                            {TEST_SCENARIOS.map(scenario => {
+                                const resultaat = state.testResultaten[scenario.id];
+                                return (
+                                    <div key={scenario.id} className="flex items-start gap-3 rounded-xl bg-lab-cream p-3">
+                                        {resultaat === 'correct'
+                                            ? <CheckCircle2 size={18} className="mt-0.5 shrink-0 text-lab-sage" />
+                                            : <XCircle size={18} className="mt-0.5 shrink-0 text-lab-coral" />
+                                        }
+                                        <div>
+                                            <p className="text-sm font-semibold text-lab-ink">
+                                                {scenario.gebruiker.naam} - {scenario.resource}
+                                            </p>
+                                            <p className="mt-1 text-xs font-bold text-lab-ink">
+                                                Voorspelling: {testVoorspellingen[scenario.id] === 'toegang' ? 'toestaan' : testVoorspellingen[scenario.id] === 'geblokkeerd' ? 'blokkeren' : 'niet vastgelegd'}
+                                            </p>
+                                            <p className="mt-1 text-xs text-lab-muted">{scenario.uitleg}</p>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+
+                    <button
+                        onClick={handleBevestigAfronding}
+                        data-qa="confirm-completion"
+                        className="flex min-h-[48px] w-full items-center justify-center gap-2 rounded-xl bg-lab-sage px-4 text-sm font-black text-white transition-colors hover:bg-lab-sage hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lab-sage focus-visible:ring-offset-2"
+                    >
+                        <Shield size={18} />
+                        Bevestig bewijs en voltooi missie
+                    </button>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="flex h-screen min-h-screen flex-col overflow-hidden bg-lab-cream">
@@ -399,18 +573,18 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
             </div>
 
             {/* Content */}
-            <div className="mx-auto min-h-0 w-full max-w-2xl flex-1 overflow-y-auto p-4 pb-24">
+            <div className={`mx-auto min-h-0 w-full max-w-2xl flex-1 overflow-y-auto p-4 ${coachMessage ? 'pb-40' : 'pb-24'}`}>
                 {/* Introductie */}
                 {state.currentStep === 0 && (
                     <div className="space-y-4">
                         <MissionGoalBanner goal={MISSION_GOAL} />
 
-                        <div className="bg-lab-gold border border-lab-gold rounded-xl p-4">
+                        <div className="bg-lab-gold/10 border border-lab-gold/40 rounded-xl p-4">
                             <div className="flex items-start gap-3">
-                                <AlertTriangle size={20} className="text-lab-gold shrink-0 mt-0.5" />
+                                <AlertTriangle size={20} className="text-lab-coral shrink-0 mt-0.5" />
                                 <div>
-                                    <h2 className="font-bold text-lab-gold text-sm">Melding van {SCHOOL_NAAM}</h2>
-                                    <p className="text-lab-gold text-sm mt-1">
+                                    <h2 className="font-bold text-lab-ink text-sm">Melding van {SCHOOL_NAAM}</h2>
+                                    <p className="text-lab-muted text-sm mt-1">
                                         {isVso
                                             ? `Het schoolsysteem heeft problemen. Niet iedereen mag alles zien, maar de regels kloppen niet. Kijk welke regels onveilig zijn.`
                                             : `Het inlogportaal van de school is onveilig: leerlingen kunnen bij cijfers van anderen, gasten loggen zonder wachtwoord in, en roosters zijn aanpasbaar door de verkeerde mensen. Analyseer de beveiligingsregels en vind de problemen.`
@@ -420,87 +594,139 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                             </div>
                         </div>
 
-                        <h3 className="font-bold text-lab-ink">Stap 1: Vind de problemen</h3>
-                        <p className="text-sm text-lab-muted">
-                            Hieronder staan de huidige beveiligingsregels van het schoolsysteem.
-                            Tik op de regels die <strong>onveilig</strong> zijn.
-                            {isVso && ' Tip: kijk welke regels iedereen overal bij laten.'}
-                        </p>
-
-                        <div className="space-y-2">
-                            {ONVEILIGE_REGELS.map(regel => {
-                                const geselecteerd = state.gevondenProblemen.includes(regel.id);
-                                const toonUitleg = showUitleg === regel.id;
-                                return (
-                                    <div key={regel.id} className="bg-white rounded-xl border border-lab-line overflow-hidden">
+                        <div className="rounded-2xl border border-lab-line bg-white p-4 shadow-sm" data-qa="access-launch-console">
+                            <div className="mb-3 flex items-start justify-between gap-3">
+                                <div>
+                                    <p className="text-xs font-black uppercase tracking-widest text-lab-coral">Eerste toegangstest</p>
+                                    <h2 className="mt-1 text-lg font-black leading-tight text-lab-ink">Kies welke situatie je als eerste test.</h2>
+                                </div>
+                                <span className="shrink-0 rounded-full border border-lab-line bg-lab-cream px-3 py-1 text-xs font-black text-lab-muted">1/3</span>
+                            </div>
+                            <div className="grid gap-3 sm:grid-cols-3">
+                                {LAUNCH_CASES.map(item => {
+                                    const Icon = item.icon;
+                                    const selected = state.launchCase === item.id;
+                                    return (
                                         <button
-                                            onClick={() => toggleProbleem(regel.id)}
-                                            className={`w-full text-left p-3 flex items-center gap-3 transition-colors ${
-                                                geselecteerd
-                                                    ? regel.isVeilig
-                                                        ? 'bg-lab-coral border-l-4 border-lab-coral'
-                                                        : 'bg-lab-sage border-l-4 border-lab-sage'
-                                                    : 'hover:bg-lab-cream'
+                                            key={item.id}
+                                            type="button"
+                                            onClick={() => kiesLaunchCase(item.id)}
+                                            data-qa="access-launch-case"
+                                            aria-pressed={selected}
+                                            className={`rounded-xl border p-3 text-left transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lab-coral active:scale-[0.98] ${
+                                                selected
+                                                    ? 'border-lab-coral bg-lab-coral/10 shadow-sm'
+                                                    : 'border-lab-line bg-lab-cream hover:border-lab-coral/60'
                                             }`}
                                         >
-                                            <div className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 ${
-                                                geselecteerd ? (regel.isVeilig ? 'bg-lab-coral' : 'bg-lab-sage') : 'bg-lab-cream'
-                                            }`}>
-                                                {geselecteerd ? (
-                                                    regel.isVeilig
-                                                        ? <XCircle size={14} className="text-lab-muted" />
-                                                        : <CheckCircle2 size={14} className="text-lab-muted" />
-                                                ) : (
-                                                    <Eye size={14} className="text-lab-muted" />
-                                                )}
-                                            </div>
-                                            <div className="flex-1 min-w-0">
-                                                <p className="text-sm text-lab-ink">{regel.beschrijving}</p>
-                                                <span className={`inline-block mt-1 text-xs px-2 py-0.5 rounded-full ${
-                                                    regel.risicoType === 'privacy' ? 'bg-lab-teal text-white' :
-                                                    regel.risicoType === 'authenticatie' ? 'bg-lab-coral text-white' :
-                                                    'bg-lab-teal text-white'
-                                                }`}>
-                                                    {regel.risicoType}
-                                                </span>
-                                            </div>
+                                            <Icon size={22} className={selected ? 'text-lab-coral' : 'text-lab-teal'} />
+                                            <p className="mt-2 text-sm font-black text-lab-ink">{item.role} → {item.resource}</p>
+                                            <p className="mt-1 text-xs leading-snug text-lab-muted">{item.question}</p>
                                         </button>
-                                        {geselecteerd && (
-                                            <div className="px-3 pb-3">
-                                                <button
-                                                    onClick={() => setShowUitleg(toonUitleg ? null : regel.id)}
-                                                    className="flex min-h-[44px] items-center rounded-lg px-2 text-xs text-lab-coral hover:underline"
-                                                >
-                                                    {toonUitleg ? 'Verberg uitleg' : 'Bekijk uitleg'}
-                                                </button>
-                                                {toonUitleg && (
-                                                    <p className="text-xs text-lab-muted mt-1 bg-lab-cream rounded-lg p-2">
-                                                        {geselecteerd && regel.isVeilig
-                                                            ? `Oeps! Deze regel is eigenlijk veilig. ${regel.uitleg}`
-                                                            : regel.uitleg
-                                                        }
-                                                    </p>
-                                                )}
-                                            </div>
-                                        )}
-                                    </div>
-                                );
-                            })}
+                                    );
+                                })}
+                            </div>
+                            <div className="mt-3 rounded-xl border border-lab-sage/25 bg-lab-sage/10 p-3" data-qa="access-launch-feedback">
+                                <p className="text-xs font-bold leading-relaxed text-lab-ink">
+                                    {selectedLaunchCase?.feedback ?? 'Kies eerst een testcase. Daarna inspecteer je welke regels het systeem onveilig maken.'}
+                                </p>
+                            </div>
                         </div>
 
-                        <div className="bg-lab-cream rounded-xl p-3 flex items-center justify-between">
-                            <p className="text-sm text-lab-muted">
-                                Gevonden: <strong>{aantalProblemen}</strong> / minstens 3 problemen
-                            </p>
-                            {stap1Klaar && (
-                                <button
-                                    onClick={() => naarStap(1)}
-                                    className="flex min-h-[44px] items-center gap-1 rounded-lg bg-lab-coral px-4 text-sm font-medium text-white transition-colors hover:bg-lab-coral hover:text-white"
-                                >
-                                    Volgende <ArrowRight size={16} />
-                                </button>
-                            )}
-                        </div>
+                        {kanRegelsInspecteren ? (
+                            <>
+                                <h3 className="font-bold text-lab-ink">Stap 1: Vind de problemen</h3>
+                                <p className="text-sm text-lab-muted">
+                                    Hieronder staan de huidige beveiligingsregels van het schoolsysteem.
+                                    Tik op de regels die <strong>onveilig</strong> zijn.
+                                    {isVso && ' Tip: kijk welke regels iedereen overal bij laten.'}
+                                </p>
+
+                                <div className="space-y-2">
+                                    {ONVEILIGE_REGELS.map(regel => {
+                                        const geselecteerd = state.gevondenProblemen.includes(regel.id);
+                                        const toonUitleg = showUitleg === regel.id;
+                                        return (
+                                            <div key={regel.id} className="bg-white rounded-xl border border-lab-line overflow-hidden">
+                                                <button
+                                                    onClick={() => toggleProbleem(regel.id)}
+                                                    data-qa={`step1-problem-${regel.id}`}
+                                                    className={`w-full text-left p-3 flex items-center gap-3 transition-colors ${
+                                                        geselecteerd
+                                                            ? regel.isVeilig
+                                                                ? 'bg-lab-coral border-l-4 border-lab-coral'
+                                                                : 'bg-lab-sage border-l-4 border-lab-sage'
+                                                            : 'hover:bg-lab-cream'
+                                                    }`}
+                                                >
+                                                    <div className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 ${
+                                                        geselecteerd ? (regel.isVeilig ? 'bg-lab-coral' : 'bg-lab-sage') : 'bg-lab-cream'
+                                                    }`}>
+                                                        {geselecteerd ? (
+                                                            regel.isVeilig
+                                                                ? <XCircle size={14} className="text-lab-muted" />
+                                                                : <CheckCircle2 size={14} className="text-lab-muted" />
+                                                        ) : (
+                                                            <Eye size={14} className="text-lab-muted" />
+                                                        )}
+                                                    </div>
+                                                    <div className="flex-1 min-w-0">
+                                                        <p className="text-sm text-lab-ink">{regel.beschrijving}</p>
+                                                        <span className={`inline-block mt-1 text-xs px-2 py-0.5 rounded-full ${
+                                                            regel.risicoType === 'privacy' ? 'bg-lab-teal text-white' :
+                                                            regel.risicoType === 'authenticatie' ? 'bg-lab-coral text-white' :
+                                                            'bg-lab-teal text-white'
+                                                        }`}>
+                                                            {regel.risicoType}
+                                                        </span>
+                                                    </div>
+                                                </button>
+                                                {geselecteerd && (
+                                                    <div className="px-3 pb-3">
+                                                        <button
+                                                            onClick={() => setShowUitleg(toonUitleg ? null : regel.id)}
+                                                            className="flex min-h-[44px] items-center rounded-lg px-2 text-xs text-lab-coral hover:underline"
+                                                        >
+                                                            {toonUitleg ? 'Verberg uitleg' : 'Bekijk uitleg'}
+                                                        </button>
+                                                        {toonUitleg && (
+                                                            <p className="text-xs text-lab-muted mt-1 bg-lab-cream rounded-lg p-2">
+                                                                {geselecteerd && regel.isVeilig
+                                                                    ? `Oeps! Deze regel is eigenlijk veilig. ${regel.uitleg}`
+                                                                    : regel.uitleg
+                                                                }
+                                                            </p>
+                                                        )}
+                                                    </div>
+                                                )}
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+
+                                <div className="bg-lab-cream rounded-xl p-3 flex items-center justify-between">
+                                    <p className="text-sm text-lab-muted">
+                                        Gevonden: <strong>{aantalProblemen}</strong> / minstens 3 problemen
+                                    </p>
+                                    {stap1Klaar && (
+                                        <button
+                                            onClick={() => naarStap(1)}
+                                            data-qa="step1-next"
+                                            className="flex min-h-[44px] items-center gap-1 rounded-lg bg-lab-coral px-4 text-sm font-medium text-white transition-colors hover:bg-lab-coral hover:text-white"
+                                        >
+                                            Volgende <ArrowRight size={16} />
+                                        </button>
+                                    )}
+                                </div>
+                            </>
+                        ) : (
+                            <div className="rounded-xl border border-lab-line bg-white p-4 text-center" data-qa="access-launch-gate">
+                                <p className="text-sm font-bold text-lab-ink">Nog geen regels zichtbaar.</p>
+                                <p className="mt-1 text-xs leading-relaxed text-lab-muted">
+                                    Start als engineer met één concrete testcase. Daarna weet je waar je in de regels op moet letten.
+                                </p>
+                            </div>
+                        )}
                     </div>
                 )}
 
@@ -539,6 +765,7 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                                                                 : [...huidigeRollen, rol];
                                                             updateToegangsRegel(resource.id, nieuw);
                                                         }}
+                                                        data-qa={`step2-role-${resource.id}-${rol}`}
                                                         className={`min-h-[44px] rounded-full px-3 text-xs font-medium transition-all ${
                                                             actief
                                                                 ? ROLLEN_KLEUREN[rol] + ' ring-2 ring-offset-1 ring-lab-coral'
@@ -570,6 +797,7 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                                 {stap2Klaar && (
                                     <button
                                         onClick={() => naarStap(2)}
+                                        data-qa="step2-next"
                                         className="flex min-h-[44px] items-center gap-1 rounded-lg bg-lab-coral px-4 text-sm font-medium text-white transition-colors hover:bg-lab-coral hover:text-white"
                                     >
                                         Volgende <ArrowRight size={16} />
@@ -595,6 +823,7 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                             {TEST_SCENARIOS.map(scenario => {
                                 const resultaat = state.testResultaten[scenario.id];
                                 const toonDetail = showTestResult === scenario.id;
+                                const voorspelling = testVoorspellingen[scenario.id];
                                 return (
                                     <div key={scenario.id} className={`bg-white rounded-xl border overflow-hidden transition-colors ${
                                         resultaat === 'correct' ? 'border-lab-sage' :
@@ -611,13 +840,49 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                                             <p className="text-sm text-lab-muted mb-3">
                                                 Wil: <strong>{scenario.resource}</strong>
                                             </p>
+                                            <div className="mb-3 rounded-xl border border-lab-line bg-lab-cream p-3" data-qa={`step3-prediction-${scenario.id}`}>
+                                                <p className="mb-2 text-xs font-black uppercase tracking-widest text-lab-muted">
+                                                    Voorspel eerst de juiste uitkomst
+                                                </p>
+                                                <div className="grid grid-cols-2 gap-2">
+                                                    {(['toegang', 'geblokkeerd'] as const).map(optie => {
+                                                        const selected = voorspelling === optie;
+                                                        return (
+                                                            <button
+                                                                key={optie}
+                                                                type="button"
+                                                                onClick={() => kiesTestVoorspelling(scenario.id, optie)}
+                                                                disabled={resultaat !== null && resultaat !== undefined && Boolean(voorspelling)}
+                                                                aria-pressed={selected}
+                                                                data-qa={`step3-predict-${scenario.id}-${optie}`}
+                                                                className={`min-h-[44px] rounded-lg border px-3 text-xs font-black transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lab-coral disabled:cursor-default ${
+                                                                    selected
+                                                                        ? optie === 'toegang'
+                                                                            ? 'border-lab-sage bg-lab-sage text-white'
+                                                                            : 'border-lab-coral bg-lab-coral text-white'
+                                                                        : 'border-lab-line bg-white text-lab-muted hover:border-lab-coral/50'
+                                                                }`}
+                                                            >
+                                                                {optie === 'toegang' ? 'Toestaan' : 'Blokkeren'}
+                                                            </button>
+                                                        );
+                                                    })}
+                                                </div>
+                                                <p className="mt-2 text-xs leading-relaxed text-lab-muted">
+                                                    {voorspelling
+                                                        ? `Bewijs gepind: jij verwacht ${voorspelling === 'toegang' ? 'toegang' : 'blokkade'} voor deze rol/resource-combinatie.`
+                                                        : 'Pin je verwachting. Daarna mag je de test-run starten.'}
+                                                </p>
+                                            </div>
                                             <div className="flex items-center gap-2">
                                                 {resultaat === null || resultaat === undefined ? (
                                                     <button
                                                         onClick={() => voerTestUit(scenario.id)}
-                                                        className="min-h-[44px] rounded-lg bg-lab-coral px-3 text-xs font-medium text-white transition-colors hover:bg-lab-coral hover:text-white"
+                                                        disabled={!voorspelling}
+                                                        data-qa={`step3-run-test-${scenario.id}`}
+                                                        className="min-h-[44px] rounded-lg bg-lab-coral px-3 text-xs font-medium text-white transition-colors hover:bg-lab-coral hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
                                                     >
-                                                        Test uitvoeren
+                                                        {voorspelling ? 'Test uitvoeren' : 'Voorspel eerst'}
                                                     </button>
                                                 ) : (
                                                     <>
@@ -653,6 +918,9 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                                         {toonDetail && (
                                             <div className="bg-lab-cream px-4 py-3 border-t border-lab-line">
                                                 <p className="text-xs text-lab-muted">
+                                                    <strong>Jouw voorspelling:</strong> {voorspelling === 'toegang' ? 'Toegang verlenen' : voorspelling === 'geblokkeerd' ? 'Geblokkeerd' : 'Niet gekozen'}
+                                                </p>
+                                                <p className="text-xs text-lab-muted">
                                                     <strong>Verwacht:</strong> {scenario.verwachtResultaat === 'toegang' ? 'Toegang verlenen' : 'Geblokkeerd'}
                                                 </p>
                                                 <p className="text-xs text-lab-muted mt-1">{scenario.uitleg}</p>
@@ -667,6 +935,7 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                             <div className="flex items-center justify-between mb-2">
                                 <p className="text-sm text-lab-muted">
                                     Tests: <strong>{aantalTestsCorrect}</strong> correct / {aantalTestsGedaan} uitgevoerd
+                                    <span className="block text-xs">Voorspellingen: {aantalTestsMetVoorspelling} / 5 nodig</span>
                                 </p>
                                 <button
                                     onClick={() => naarStap(1)}
@@ -678,6 +947,7 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                             {stap3Klaar && (
                                 <button
                                     onClick={handleVoltooi}
+                                    data-qa="step3-finish"
                                     className="flex min-h-[44px] w-full items-center justify-center gap-2 rounded-xl bg-lab-sage px-4 text-sm font-bold text-white transition-colors hover:bg-lab-sage hover:text-white"
                                 >
                                     <Shield size={18} />
@@ -686,7 +956,9 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                             )}
                             {!stap3Klaar && aantalTestsGedaan > 0 && (
                                 <p className="text-xs text-lab-gold mt-1">
-                                    {aantalTestsCorrect < 4
+                                    {aantalTestsMetVoorspelling < 5
+                                        ? `Pin eerst bij minstens 5 tests je voorspelling (nu: ${aantalTestsMetVoorspelling}).`
+                                        : aantalTestsCorrect < 4
                                         ? 'Sommige tests mislukken. Ga terug naar Stap 2 en pas de rechten aan.'
                                         : `Voer minstens 5 tests uit (nu: ${aantalTestsGedaan}).`
                                     }
@@ -699,18 +971,18 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
 
             {/* AI Coach bubble — sticky onderaan */}
             {coachMessage && (
-                <div className="fixed bottom-4 left-4 right-4 max-w-lg mx-auto z-30 animate-in slide-in-from-bottom-4">
-                    <div className="bg-lab-coral border border-lab-coral rounded-xl p-3 shadow-lg flex items-start gap-3">
-                        <div className="w-8 h-8 bg-lab-coral rounded-full flex items-center justify-center shrink-0">
-                            <MessageCircle size={16} className="text-lab-coral" />
+                <div className="fixed bottom-4 left-4 right-4 z-30 mx-auto max-w-lg animate-in slide-in-from-bottom-4" data-qa="security-coach">
+                    <div className="flex items-start gap-3 rounded-xl border border-lab-coral/35 bg-white p-3 shadow-xl shadow-lab-coral/10">
+                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-lab-coral/12 text-lab-coral">
+                            <MessageCircle size={16} />
                         </div>
-                        <div className="flex-1 min-w-0">
-                            <p className="text-xs font-semibold text-lab-coral mb-0.5">Security Coach</p>
-                            <p className="text-sm text-lab-coral">{coachMessage}</p>
+                        <div className="min-w-0 flex-1">
+                            <p className="mb-0.5 text-xs font-black uppercase tracking-wide text-lab-coral">Security Coach</p>
+                            <p className="text-sm leading-relaxed text-lab-ink">{coachMessage}</p>
                         </div>
                         <button
                             onClick={() => setCoachMessage(null)}
-                            className="flex min-h-[44px] min-w-[44px] shrink-0 items-center justify-center rounded-full text-lab-coral hover:text-lab-coral"
+                            className="flex min-h-[44px] min-w-[44px] shrink-0 items-center justify-center rounded-full text-lab-muted transition-colors hover:bg-lab-cream hover:text-lab-coral focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lab-coral"
                             aria-label="Sluit hint"
                         >
                             <XCircle size={16} />

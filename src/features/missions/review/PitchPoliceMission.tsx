@@ -9,6 +9,7 @@ interface PitchPoliceState {
     currentSlideIndex: number;
     slideStates: Record<number, 'broken' | 'fixed'>;
     showIntro: boolean;
+    violationCalls?: Record<number, ViolationId>;
 }
 
 interface PitchPoliceProps {
@@ -23,6 +24,15 @@ interface SlideOption {
     correct: boolean;
 }
 
+type ViolationId = 'text' | 'contrast' | 'chaos' | 'image' | 'readability';
+
+interface ViolationOption {
+    id: ViolationId;
+    label: string;
+    clue: string;
+    icon: React.ReactNode;
+}
+
 interface SlideData {
     id: number;
     title: string;
@@ -32,11 +42,20 @@ interface SlideData {
     textColor: string;
     font?: string;
     images?: string[];
+    violation: ViolationId;
     issue: string; // text-overload, contrast, chaos, distraction, size
     feedback: string;
     options: SlideOption[];
     customRender?: (fixed: boolean) => React.ReactNode; // For complex slides like Chaos/GIFs
 }
+
+const VIOLATION_OPTIONS: ViolationOption[] = [
+    { id: 'text', label: 'Te veel tekst', clue: 'De slide probeert het hele verhaal zelf te vertellen.', icon: <Type size={14} /> },
+    { id: 'contrast', label: 'Contrastfout', clue: 'Tekst en achtergrond botsen of verdwijnen.', icon: <Palette size={14} /> },
+    { id: 'chaos', label: 'Chaos-layout', clue: 'Stijl, kleur of grafiek maakt de boodschap onrustig.', icon: <Layout size={14} /> },
+    { id: 'image', label: 'Beeldprobleem', clue: 'Afbeelding, GIF of verhouding leidt af van de boodschap.', icon: <ImageIcon size={14} /> },
+    { id: 'readability', label: 'Leesbaarheid', clue: 'Tekst is te klein, slordig of moeilijk scanbaar.', icon: <MousePointer size={14} /> },
+];
 
 const SLIDES: SlideData[] = [
     {
@@ -54,6 +73,7 @@ const SLIDES: SlideData[] = [
         ),
         bg: "bg-white",
         textColor: "text-[#08283B]",
+        violation: "text",
         issue: "text-overload",
         feedback: "Veel te veel tekst! Mensen gaan dit lezen in plaats van naar jou luisteren.",
         options: [
@@ -68,6 +88,7 @@ const SLIDES: SlideData[] = [
         content: "In de zomer ging ik naar Spanje",
         bg: "bg-lab-gold",
         textColor: "text-white",
+        violation: "contrast",
         issue: "contrast",
         feedback: "Au! Witte tekst op een gele achtergrond is onleesbaar.",
         options: [
@@ -83,6 +104,7 @@ const SLIDES: SlideData[] = [
         bg: "bg-lab-teal",
         textColor: "text-lab-sage",
         font: "font-serif",
+        violation: "chaos",
         issue: "chaos",
         feedback: "Wow, rustig aan! Te veel verschillende kleuren en lettertypes maken het onrustig.",
         customRender: (fixed) => (
@@ -114,6 +136,7 @@ const SLIDES: SlideData[] = [
         content: "Het klimaat verandert. De aarde warmt op.",
         bg: "bg-white",
         textColor: "text-[#08283B]",
+        violation: "image",
         issue: "distraction",
         feedback: "Is dit een presentatie of een meme-pagina? De GIFs leiden af van je serieuze boodschap.",
         customRender: (fixed) => (
@@ -157,6 +180,7 @@ const SLIDES: SlideData[] = [
         content: "Bedankt voor het luisteren. Zijn er nog vragen? Je kunt me mailen op naam@school.nl voor meer info.",
         bg: "bg-[#08283B]",
         textColor: "text-[#445865]", // Low contrast intentionally for initial state
+        violation: "readability",
         issue: "size",
         feedback: "Kan iemand dit lezen? De tekst is veel te klein en valt weg!",
         customRender: (fixed) => (
@@ -181,6 +205,7 @@ const SLIDES: SlideData[] = [
         content: "Dit is de auto die ik later wil kopen.",
         bg: "bg-white",
         textColor: "text-[#08283B]",
+        violation: "image",
         issue: "image-stretch",
         feedback: "Die auto is helemaal platgedrukt! Dat ziet er gek uit.",
         customRender: (fixed) => (
@@ -205,6 +230,7 @@ const SLIDES: SlideData[] = [
         content: "Ik vint het egt heel leuk omdat hun goeie musiek maken en ik luister er elken dag naar.",
         bg: "bg-[#FCF6EA]",
         textColor: "text-[#08283B]",
+        violation: "readability",
         issue: "spelling",
         feedback: "Ai... Zoveel taalfouten leiden af van je verhaal. Het staat ook een beetje slordig.",
         fixedContent: "Ik vind het echt heel leuk, omdat ze goede muziek maken. Ik luister er elke dag naar.",
@@ -220,6 +246,7 @@ const SLIDES: SlideData[] = [
         content: "Hier zie je een overzicht van mijn schoolcijfers.",
         bg: "bg-white",
         textColor: "text-[#08283B]",
+        violation: "chaos",
         issue: "chart-chaos",
         feedback: "Help! Deze grafiek is veel te ingewikkeld en onduidelijk. Niemand snapt dit in 3 seconden.",
         customRender: (fixed) => (
@@ -263,6 +290,7 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
 
     // Transient UI state - niet opgeslagen
     const [showFeedback, setShowFeedback] = useState<boolean | null>(null);
+    const [showIssueFeedback, setShowIssueFeedback] = useState<boolean | null>(null);
     const [showMobileInspector, setShowMobileInspector] = useState(false);
     const [visibleIntroSteps, setVisibleIntroSteps] = useState(0);
 
@@ -287,8 +315,32 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
     const currentSlide = SLIDES[currentSlideIndex];
     const slideState = slideStates[currentSlideIndex] || 'broken';
     const isFixed = slideState === 'fixed';
+    const spottedViolation = state.violationCalls?.[currentSlideIndex] ?? null;
+    const hasSpottedViolation = spottedViolation === currentSlide.violation;
+
+    const handleViolationSelect = (violation: ViolationId) => {
+        const isCorrect = violation === currentSlide.violation;
+        if (isCorrect) {
+            setState(prev => ({
+                ...prev,
+                violationCalls: { ...(prev.violationCalls ?? {}), [prev.currentSlideIndex]: violation },
+            }));
+            setShowIssueFeedback(true);
+            setTimeout(() => setShowIssueFeedback(null), 1400);
+            return;
+        }
+
+        setShowIssueFeedback(false);
+        setTimeout(() => setShowIssueFeedback(null), 1600);
+    };
 
     const handleOptionSelect = (isCorrect: boolean) => {
+        if (!hasSpottedViolation) {
+            setShowIssueFeedback(false);
+            setTimeout(() => setShowIssueFeedback(null), 1600);
+            return;
+        }
+
         if (isCorrect) {
             setShowFeedback(true);
 
@@ -310,6 +362,8 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
 
     const handleNextSlide = () => {
         if (currentSlideIndex < SLIDES.length - 1) {
+            setShowFeedback(null);
+            setShowIssueFeedback(null);
             setState(prev => ({
                 ...prev,
                 currentSlideIndex: prev.currentSlideIndex + 1,
@@ -322,12 +376,117 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
 
     const handlePrevSlide = () => {
         if (currentSlideIndex > 0) {
+            setShowFeedback(null);
+            setShowIssueFeedback(null);
             setState(prev => ({
                 ...prev,
                 currentSlideIndex: prev.currentSlideIndex - 1,
             }));
         }
     };
+
+    const renderInspectorContent = () => (
+        <>
+            <div className="mb-5">
+                <h3 className="text-lg font-black text-lab-ink mb-2 flex items-center gap-2" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
+                    Spot de overtreding
+                </h3>
+                <p className="text-xs text-lab-muted mb-3 leading-relaxed">
+                    Maak eerst jouw inspectie-call. Daarna mag je de slide repareren.
+                </p>
+                <div className="grid grid-cols-1 gap-2" data-qa="pitch-police-violation-panel">
+                    {VIOLATION_OPTIONS.map((option) => {
+                        const selected = spottedViolation === option.id;
+                        const correctSelected = selected && hasSpottedViolation;
+                        return (
+                            <button
+                                key={option.id}
+                                type="button"
+                                onClick={() => handleViolationSelect(option.id)}
+                                aria-pressed={selected}
+                                data-qa={`pitch-police-violation-${option.id}`}
+                                className={`w-full rounded-2xl border p-3 text-left transition-all duration-200 focus-visible:ring-2 focus-visible:ring-lab-teal ${
+                                    correctSelected
+                                        ? 'border-lab-sage bg-lab-sage/10'
+                                        : selected
+                                            ? 'border-lab-coral bg-lab-coral/10'
+                                            : 'border-lab-line bg-lab-cream hover:border-lab-coral/50'
+                                }`}
+                            >
+                                <span className="flex items-start gap-3">
+                                    <span className={`mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-xl ${
+                                        correctSelected ? 'bg-lab-sage text-white' : 'bg-lab-coral/10 text-lab-coral'
+                                    }`}>
+                                        {option.icon}
+                                    </span>
+                                    <span>
+                                        <span className="block text-sm font-black text-lab-ink">{option.label}</span>
+                                        <span className="mt-0.5 block text-[11px] font-semibold leading-snug text-lab-muted">{option.clue}</span>
+                                    </span>
+                                </span>
+                            </button>
+                        );
+                    })}
+                </div>
+                {showIssueFeedback === true && (
+                    <div className="mt-3 rounded-2xl border border-lab-sage/30 bg-lab-sage/10 p-3 text-xs font-bold text-lab-ink" data-qa="pitch-police-violation-feedback">
+                        Goede spot. Nu mag je de beste fix kiezen.
+                    </div>
+                )}
+                {showIssueFeedback === false && (
+                    <div className="mt-3 rounded-2xl border border-lab-coral/30 bg-lab-coral/10 p-3 text-xs font-bold text-lab-ink" data-qa="pitch-police-violation-feedback">
+                        Nog niet. Kijk naar wat het publiek als eerste zou storen.
+                    </div>
+                )}
+            </div>
+
+            <div className="mb-5">
+                <h3 className="text-lg font-black text-lab-ink mb-2 flex items-center gap-2" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
+                    Politie Rapport
+                </h3>
+                <div className="bg-lab-cream p-4 rounded-2xl border border-lab-line" data-qa="pitch-police-report">
+                    <p className="text-lab-coral font-bold text-xs uppercase mb-1 flex items-center gap-1">
+                        <AlertTriangle size={12} /> Overtreding:
+                    </p>
+                    <p className="text-lab-muted text-sm leading-relaxed">
+                        {hasSpottedViolation
+                            ? currentSlide.feedback
+                            : 'Het rapport blijft dicht totdat jij eerst de overtreding spot.'}
+                    </p>
+                </div>
+            </div>
+
+            <div className="space-y-3">
+                <h4 className="text-xs font-bold text-lab-muted uppercase tracking-widest pl-1">Jouw Fix:</h4>
+                {currentSlide.options.map((opt) => (
+                    <button
+                        key={opt.id}
+                        onClick={() => handleOptionSelect(opt.correct)}
+                        disabled={!hasSpottedViolation}
+                        data-qa={`pitch-police-fix-${opt.id}`}
+                        className={`w-full text-left p-4 rounded-2xl border transition-all duration-300 group relative overflow-hidden focus-visible:ring-2 focus-visible:ring-lab-teal ${
+                            hasSpottedViolation
+                                ? 'bg-lab-cream hover:bg-lab-teal border-lab-line hover:border-lab-teal'
+                                : 'bg-lab-line/40 border-lab-line cursor-not-allowed opacity-70'
+                        }`}
+                    >
+                        <div className="flex items-start gap-3 relative z-10">
+                            <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 shrink-0 ${
+                                hasSpottedViolation
+                                    ? 'bg-lab-teal text-white group-hover:bg-lab-gold group-hover:text-lab-ink'
+                                    : 'bg-lab-muted/30 text-lab-muted'
+                            }`}>
+                                {opt.id.toUpperCase()}
+                            </div>
+                            <span className={`text-sm font-medium ${hasSpottedViolation ? 'text-lab-muted group-hover:text-white' : 'text-lab-muted'}`}>
+                                {opt.text}
+                            </span>
+                        </div>
+                    </button>
+                ))}
+            </div>
+        </>
+    );
 
     // INTRO SCREEN
     if (showIntro) {
@@ -591,39 +750,7 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
                     ${isFixed ? 'opacity-30 pointer-events-none grayscale' : 'opacity-100'}
                 `}>
                     <div className="p-6">
-                        <div className="mb-6">
-                            <h3 className="text-lg font-black text-lab-ink mb-2 flex items-center gap-2" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
-                                Politie Rapport
-                            </h3>
-                            <div className="bg-lab-cream p-4 rounded-2xl border border-lab-line">
-                                <p className="text-lab-coral font-bold text-xs uppercase mb-1 flex items-center gap-1">
-                                    <AlertTriangle size={12} /> Overtreding:
-                                </p>
-                                <p className="text-lab-muted text-sm leading-relaxed">
-                                    {currentSlide.feedback}
-                                </p>
-                            </div>
-                        </div>
-
-                        <div className="space-y-3">
-                            <h4 className="text-xs font-bold text-lab-muted uppercase tracking-widest pl-1">Jouw Oplossing:</h4>
-                            {currentSlide.options.map((opt) => (
-                                <button
-                                    key={opt.id}
-                                    onClick={() => handleOptionSelect(opt.correct)}
-                                    className="w-full text-left p-4 rounded-2xl bg-lab-cream hover:bg-lab-teal border border-lab-line hover:border-lab-teal transition-all duration-300 group relative overflow-hidden focus-visible:ring-2 focus-visible:ring-lab-teal"
-                                >
-                                    <div className="flex items-start gap-3 relative z-10">
-                                        <div className="w-6 h-6 rounded-full bg-lab-teal text-white flex items-center justify-center text-xs font-bold group-hover:bg-lab-gold group-hover:text-lab-ink transition-all duration-300 shrink-0">
-                                            {opt.id.toUpperCase()}
-                                        </div>
-                                        <span className="text-sm font-medium text-lab-muted group-hover:text-white">
-                                            {opt.text}
-                                        </span>
-                                    </div>
-                                </button>
-                            ))}
-                        </div>
+                        {renderInspectorContent()}
                     </div>
                 </aside>
 
@@ -633,39 +760,7 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
                         <div className="absolute inset-0 bg-lab-teal/40 backdrop-blur-sm" onClick={() => setShowMobileInspector(false)} />
                         <div className="relative bg-lab-paper rounded-t-3xl p-6 max-h-[80vh] overflow-y-auto animate-in slide-in-from-bottom fade-in duration-300">
                             <div className="w-10 h-1 bg-lab-line rounded-full mx-auto mb-4" />
-                            <div className="mb-4">
-                                <h3 className="text-lg font-black text-lab-ink mb-2 flex items-center gap-2" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
-                                    Politie Rapport
-                                </h3>
-                                <div className="bg-lab-cream p-4 rounded-2xl border border-lab-line">
-                                    <p className="text-lab-coral font-bold text-xs uppercase mb-1 flex items-center gap-1">
-                                        <AlertTriangle size={12} /> Overtreding:
-                                    </p>
-                                    <p className="text-lab-muted text-sm leading-relaxed">
-                                        {currentSlide.feedback}
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div className="space-y-3">
-                                <h4 className="text-xs font-bold text-lab-muted uppercase tracking-widest pl-1">Jouw Oplossing:</h4>
-                                {currentSlide.options.map((opt) => (
-                                    <button
-                                        key={opt.id}
-                                        onClick={() => handleOptionSelect(opt.correct)}
-                                        className="w-full text-left p-4 rounded-2xl bg-lab-cream hover:bg-lab-teal border border-lab-line hover:border-lab-teal transition-all duration-300 group relative overflow-hidden focus-visible:ring-2 focus-visible:ring-lab-teal"
-                                    >
-                                        <div className="flex items-start gap-3 relative z-10">
-                                            <div className="w-6 h-6 rounded-full bg-lab-teal flex items-center justify-center text-xs font-bold group-hover:bg-lab-gold group-hover:text-lab-ink transition-all duration-300 shrink-0 text-white">
-                                                {opt.id.toUpperCase()}
-                                            </div>
-                                            <span className="text-sm font-medium text-lab-muted group-hover:text-white">
-                                                {opt.text}
-                                            </span>
-                                        </div>
-                                    </button>
-                                ))}
-                            </div>
+                            {renderInspectorContent()}
                         </div>
                     </div>
                 )}

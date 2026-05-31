@@ -7,6 +7,16 @@ const config: ScenarioEngineConfig = {
     introTitle: 'Digital Forensics',
     introDescription:
         'Elke keer dat iemand een computer gebruikt, laat hij digitale sporen achter: in logbestanden, metadata en netwerkdata. Als digitaal forensisch analist leer jij die sporen lezen, een tijdlijn reconstrueren en een onderbouwde conclusie trekken — net als bij de politie.',
+    experienceDesign: {
+        boringRisk: 'medium',
+        firstTenSeconds: 'Open het forensisch dossier en pin het eerste digitale spoor dat de tijdlijn verandert.',
+        primaryInteraction: 'pin-evidence',
+        feedbackMoment: 'Feedback maakt onderscheid tussen feit, aanname en bruikbaar digitaal bewijs.',
+        visualKit: 'casefile',
+        evidenceMoment: 'Leerlingen leveren spoorselectie, tijdlijnvolgorde en onderbouwde conclusie.',
+        antiBoringRule: 'Geen definities vooraf: leerlingen bouwen eerst een bewijsdossier en benoemen daarna de forensische regel.',
+        chromeAcceptance: 'Dossierkaart, bewijsselectie, prioritering en resultaatfeedback passen zonder overlap.',
+    },
     introFeatures: [
         'Herken verdachte patronen in gesimuleerde logbestanden',
         'Rangschik gebeurtenissen chronologisch om een tijdlijn op te bouwen',
@@ -220,6 +230,8 @@ const config: ScenarioEngineConfig = {
             description:
                 'Een forensisch analist mag alleen concluderen wat de data bewijst. Is onderstaande uitspraak een bewezen feit of een aanname die niet uit de logdata volgt?',
             type: 'binary-choice',
+            acceptLabel: 'Feit',
+            rejectLabel: 'Aanname',
             maxScore: 25,
             feedbackCorrect: 'Correct! Je maakt het cruciale onderscheid tussen bewijs en speculatie.',
             feedbackIncorrect: 'Lastig. Een rechter accepteert alleen wat de data direct bewijst.',

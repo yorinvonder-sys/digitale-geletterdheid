@@ -16,13 +16,66 @@ const config: DebateArenaConfig = {
         },
         evidence: 'Een gekozen positie, meerdere argumenten, een reactie op kritiek en een reflectie.',
     },
+    experienceDesign: {
+        boringRisk: 'medium',
+        firstTenSeconds: 'Telefoonmoment: leerling kiest eerst hoe te reageren op streakmelding en autoplay.',
+        primaryInteraction: 'choose-with-consequence',
+        feedbackMoment: 'Na de schermtijdkeuze koppelt feedback eigen regie, hulpafspraken of platformregels aan aandacht.',
+        visualKit: 'debate-dilemma',
+        evidenceMoment: 'De leerling bouwt een onderbouwd standpunt over verantwoordelijkheid voor gezonde schermtijd.',
+        antiBoringRule: 'Digitale balans blijft niet-oordelend en handelingsgericht; geen schuldgevoel, wel keuzes en perspectieven.',
+        chromeAcceptance: 'Schermtijdkeuze, welzijnscopy, stakeholderkaarten en reflectie werken rustig op desktop, tablet portrait, tablet landscape en mobile.',
+    },
     introFeatures: [
         'Lees de standpunten van 4 betrokkenen',
+        'Maak eerst een eigen schermtijdkeuze',
         'Kies jouw positie in het debat',
         'Bouw 2-3 sterke argumenten op',
         'Reageer op een tegenargument',
         'Reflecteer: is je mening veranderd?',
     ],
+    openingChoice: {
+        title: 'Je telefoon vraagt aandacht',
+        description:
+            'Voor je gaat debatteren, maak je eerst zelf een kleine keuze. Zo merk je hoe ontwerpkeuzes je gedrag kunnen sturen zonder dat het meteen fout of goed hoeft te zijn.',
+        prompt:
+            'Je wilde tien minuten ontspannen, maar een app toont een streakmelding en start automatisch de volgende video. Wat doe jij eerst?',
+        options: [
+            {
+                id: 'zelf-sturen',
+                label: 'Ik stuur mijn eigen aandacht',
+                description: 'Meldingen uit, pauzes nemen en bewust kiezen horen bij mijn eigen regie.',
+                positionId: 'eigen-keuze',
+                feedback:
+                    'Je start vanuit eigen keuze. Let straks op of die keuze nog eerlijk voelt als apps bewust blijven trekken.',
+            },
+            {
+                id: 'hulp-afspraken',
+                label: 'Afspraken en hulp zijn nodig',
+                description: 'Ouders, school of instellingen kunnen helpen zonder meteen alles te verbieden.',
+                positionId: 'ouders',
+                feedback:
+                    'Je kiest voor steun rond gedrag. Verzamel straks bewijs voor wat hulpvol is en wat betuttelend voelt.',
+            },
+            {
+                id: 'bedrijf-plicht',
+                label: 'App-bedrijven moeten eerlijker ontwerpen',
+                description: 'Autoplay, streaks en prikkels zijn ontwerpkeuzes waar bedrijven voor kiezen.',
+                positionId: 'bedrijven',
+                feedback:
+                    'Je legt verantwoordelijkheid bij ontwerpers. Let straks op hoe ver die verantwoordelijkheid reikt.',
+            },
+            {
+                id: 'regels',
+                label: 'Ontwerptrucs voor jongeren begrenzen',
+                description: 'Voor minderjarigen mogen de sterkste aandachtstrucs niet standaard aan staan.',
+                positionId: 'verbieden',
+                feedback:
+                    'Je kiest een duidelijke beschermingsgrens. Check straks of regels haalbaar en eerlijk te handhaven zijn.',
+            },
+        ],
+        continueLabel: 'Bekijk wie hier verantwoordelijk is',
+    },
     topic: 'Verantwoordelijkheid voor schermtijd',
     dilemma:
         'Apps zijn vaak ontworpen om aandacht vast te houden. Wie is er verantwoordelijk voor gezonde digitale keuzes?',

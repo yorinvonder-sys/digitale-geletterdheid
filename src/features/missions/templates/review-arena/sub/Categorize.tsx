@@ -123,6 +123,7 @@ export const Categorize: React.FC<CategorizeProps> = ({
                         <motion.div
                             key={cat}
                             onClick={() => handleCategoryClick(cat)}
+                            data-qa="review-category"
                             className={`rounded-xl border-2 p-2 min-h-[80px] transition-all duration-200
                                 ${isClickable
                                     ? 'cursor-pointer scale-[1.02] shadow-md'
@@ -139,6 +140,20 @@ export const Categorize: React.FC<CategorizeProps> = ({
                             >
                                 {cat}
                             </div>
+                            {isClickable && (
+                                <button
+                                    type="button"
+                                    data-qa="review-category-drop"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleCategoryClick(cat);
+                                    }}
+                                    className="mb-2 w-full rounded-lg border border-dashed bg-white/80 px-2 py-2 text-xs font-bold transition-colors hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D97848]/40"
+                                    style={{ borderColor: color.bg, color: color.bg, fontFamily: "'Outfit', system-ui, sans-serif" }}
+                                >
+                                    Plaats hier
+                                </button>
+                            )}
                             <div className="flex flex-wrap gap-1">
                                 {catItems.map((item) => {
                                     const isCorrect = submitted && item.correctCategory === cat;
@@ -188,6 +203,7 @@ export const Categorize: React.FC<CategorizeProps> = ({
                                 key={item.id}
                                 layout
                                 onClick={() => handleItemClick(item.id)}
+                                data-qa="review-categorize-item"
                                 className={`px-3 py-1.5 rounded-lg border text-xs font-medium transition-all duration-200
                                     ${selectedItem === item.id
                                         ? 'bg-[#D97848]/15 border-[#D97848] text-[#D97848] scale-105'
@@ -227,6 +243,7 @@ export const Categorize: React.FC<CategorizeProps> = ({
                 <button
                     onClick={handleSubmit}
                     disabled={!allPlaced}
+                    data-qa="review-submit"
                     className={`w-full py-3 rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98]
                         ${allPlaced
                             ? 'bg-gradient-to-r from-[#D97848] to-[#D97848] hover:from-[#D97848] hover:to-[#D97848] text-white'
@@ -239,6 +256,7 @@ export const Categorize: React.FC<CategorizeProps> = ({
             ) : (
                 <button
                     onClick={handleContinue}
+                    data-qa="review-next"
                     className="w-full py-3 bg-gradient-to-r from-[#5F947D] to-[#5F947D] hover:from-[#5F947D] hover:to-[#5F947D] text-white rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >

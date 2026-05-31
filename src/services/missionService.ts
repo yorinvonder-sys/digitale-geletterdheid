@@ -25,16 +25,20 @@ export const saveMissionProgress = async (
 ): Promise<boolean> => {
     try {
         const sanitized = sanitizeForPostgres(progressData);
+        const sanitizedRecord = sanitized && typeof sanitized === 'object' && !Array.isArray(sanitized)
+            ? sanitized as Record<string, any>
+            : {};
+        const { status: _status, score: _score, completedAt: _completedAt, ...safeProgress } = sanitizedRecord;
 
         const { error } = await supabase
             .from('mission_progress')
             .upsert({
                 user_id: userId,
                 mission_id: missionId,
-                progress_data: sanitized,
+                progress_data: safeProgress,
                 school_id: schoolId,
-                status: sanitized?.status || 'in_progress',
-                score: sanitized?.score || null,
+                status: 'in_progress',
+                score: null,
                 updated_at: new Date().toISOString(),
             }, {
                 onConflict: 'user_id,mission_id',
@@ -45,6 +49,38 @@ export const saveMissionProgress = async (
     } catch (error) {
         console.error(`Error saving progress for ${missionId}:`, error);
         return false;
+    }
+};
+
+export interface CompleteMissionResult {
+    completed: boolean;
+    missionId: string;
+    stats?: Record<string, any>;
+}
+
+export const completeMission = async (
+    missionId: string,
+    progressData: Record<string, any> = {},
+    score?: number | null
+): Promise<CompleteMissionResult | null> => {
+    try {
+        const sanitized = sanitizeForPostgres(progressData);
+        const sanitizedRecord = sanitized && typeof sanitized === 'object' && !Array.isArray(sanitized)
+            ? sanitized as Record<string, any>
+            : {};
+        const { status: _status, score: _score, completedAt: _completedAt, ...safeProgress } = sanitizedRecord;
+
+        const { data, error } = await (supabase as any).rpc('complete_mission', {
+            p_mission_id: missionId,
+            p_progress_data: safeProgress,
+            p_score: typeof score === 'number' ? score : null,
+        });
+
+        if (error) throw error;
+        return data as CompleteMissionResult;
+    } catch (error) {
+        console.error(`Error completing mission ${missionId}:`, error);
+        return null;
     }
 };
 

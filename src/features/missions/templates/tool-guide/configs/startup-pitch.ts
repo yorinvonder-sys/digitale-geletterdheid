@@ -7,12 +7,71 @@ const config: ToolGuideConfig = {
     introTitle: 'Startup Pitch',
     introDescription:
         'Bedenk je eigen AI-startup en pitch hem aan investeerders. Je combineert alles wat je hebt geleerd: probleemanalyse, AI-oplossing, branding en ethische reflectie.',
+    experienceDesign: {
+        boringRisk: 'high',
+        firstTenSeconds: 'Investor cold-open: kies de 15-seconden opening die een jury wakker maakt.',
+        primaryInteraction: 'build',
+        feedbackMoment: 'Na de opening hoort de leerling waarom een probleem met bewijs sterker is dan techniekdump of vage belofte.',
+        visualKit: 'tool-crisis',
+        evidenceMoment: 'De pitch bevat probleem, AI-oplossing, logo/slogan en ethische reflectie.',
+        antiBoringRule: 'Startupwerk begint met overtuigen en testen van een opening, niet met een invulformulier.',
+        chromeAcceptance: 'Jurytijd challenge en pitchstappen blijven rustig, professioneel en zonder horizontale overflow.',
+    },
     introFeatures: [
         'Een concreet probleem identificeren uit het dagelijks leven',
         'Een AI-oplossing bedenken en je startup een naam geven',
         'Een logo, slogan en visuele pitch ontwerpen',
         'Nadenken over privacy en ethische risico\'s van je AI',
     ],
+    introChallenge: {
+        title: '15 seconden jurytijd',
+        scenario:
+            'Je staat voor investeerders. Ze luisteren maar kort voordat ze afhaken. Je eerste zin moet meteen bewijzen dat jouw AI-startup een echt probleem oplost.',
+        prompt: 'Waarmee open je jouw pitch?',
+        preview: {
+            beforeTitle: 'Zwakke opening',
+            afterTitle: 'Probleem + bewijs',
+            beforeSignals: [
+                'Vage belofte',
+                'Techniekdump',
+                'Geen doelgroepbewijs',
+            ],
+            afterSignals: [
+                'Probleem herkenbaar',
+                'Bewijs in 15 seconden',
+                'AI-oplossing als belofte',
+            ],
+            evidenceTitle: 'Investeerderbewijs',
+            evidenceItems: ['Probleem', 'Doelgroep', 'AI-oplossing', 'Ethiek'],
+        },
+        options: [
+            {
+                id: 'probleem-bewijs',
+                title: 'Probleem met bewijs',
+                description: '"Leerlingen vergeten deadlines omdat hun planning over drie apps verspreid is."',
+                correct: true,
+                feedback:
+                    'Dit is een sterke opening. Je noemt een concreet probleem en laat zien dat je de doelgroep begrijpt. Daarna mag je pas je AI-oplossing verkopen.',
+            },
+            {
+                id: 'techniek-eerst',
+                title: 'Alle techniek eerst',
+                description: '"Onze AI gebruikt neural networks, embeddings en machine learning."',
+                correct: false,
+                feedback:
+                    'Techniek kan later indruk maken, maar investeerders willen eerst weten welk probleem je oplost en voor wie.',
+            },
+            {
+                id: 'vage-belofte',
+                title: 'Een grote maar vage belofte',
+                description: '"Onze startup maakt de wereld beter met AI."',
+                correct: false,
+                feedback:
+                    'Een grote belofte klinkt ambitieus, maar is te vaag. Een sterke pitch begint met een scherp probleem dat je publiek herkent.',
+            },
+        ],
+        continueLabel: 'Bouw de startup pitch',
+    },
     toolName: 'Startup Canvas',
     toolIcon: '🚀',
     steps: [

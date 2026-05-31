@@ -7,7 +7,7 @@
  * SLO-doelen: Mediawijsheid, kritische media-analyse, AI-awareness
  */
 
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ArrowLeft, Trophy, ChevronRight, Check, X, Eye, Brain, Shield, Sparkles, ThumbsUp, ThumbsDown, HelpCircle, Zap, Camera, FileText, MessageSquare, MessageCircle, Lightbulb } from 'lucide-react';
 import { UserStats, VsoProfile } from '@/types';
 import { useMissionAutoSave } from '@/hooks/useMissionAutoSave';
@@ -216,7 +216,7 @@ const ContentCard: React.FC<{
     };
 
     return (
-        <div className="bg-white rounded-2xl border border-[#E7D8BD] p-6 space-y-4">
+        <div className="rounded-2xl border border-[#E7D8BD] bg-white p-4 shadow-sm sm:p-5">
             <div className="flex items-center gap-2">
                 <div className="p-2 bg-[#FCF6EA] rounded-lg border border-[#E7D8BD]">
                     {getIcon()}
@@ -227,14 +227,14 @@ const ContentCard: React.FC<{
                 </span>
             </div>
 
-            <div className="bg-[#FCF6EA] rounded-2xl p-5 border border-[#E7D8BD]">
-                <p className="text-[#08283B] text-lg leading-relaxed italic">
+            <div className="mt-4 rounded-2xl border border-[#E7D8BD] bg-[#FCF6EA] p-4">
+                <p className="text-sm leading-relaxed text-[#08283B] italic sm:text-base">
                     "{challenge.content}"
                 </p>
             </div>
 
             {showHints && (
-                <div className="bg-[#D97848]/10 rounded-xl p-4 border border-[#D97848]/20 animate-in fade-in">
+                <div className="mt-4 rounded-xl border border-[#D97848]/20 bg-[#D97848]/10 p-3 animate-in fade-in">
                     <div className="flex items-start gap-2">
                         <HelpCircle size={18} className="text-[#D97848] flex-shrink-0 mt-0.5" />
                         <div>
@@ -271,13 +271,32 @@ export const DeepfakeDetectorMission: React.FC<Props> = ({ onBack, onComplete, v
 
     // Transient UI state - niet opgeslagen
     const [answer, setAnswer] = useState<'real' | 'ai' | null>(null);
+    const [selectedSignal, setSelectedSignal] = useState<string | null>(null);
     const [showFeedback, setShowFeedback] = useState(false);
     const [showHints, setShowHints] = useState(vsoProfile === 'dagbesteding');
     const [isChatOpen, setIsChatOpen] = useState(false);
+    const feedbackRef = useRef<HTMLDivElement | null>(null);
 
     const levelChallenges = CHALLENGES.filter(c => c.level === currentLevel);
     const currentChallenge = levelChallenges[currentChallengeIndex];
     const totalChallenges = CHALLENGES.length;
+    const signalOptions = [
+        ...currentChallenge.hints.map((hint, index) => ({
+            id: `hint-${index}`,
+            label: hint,
+            description: index === 0 ? 'Eerste controlepunt' : 'Tweede controlepunt',
+        })),
+        {
+            id: 'category',
+            label: currentChallenge.category,
+            description: 'Type bewijs',
+        },
+    ];
+
+    useEffect(() => {
+        if (!showFeedback) return;
+        feedbackRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, [showFeedback]);
 
     // Globale challenge-index voor correcte voortgangsbalk over alle niveaus
     const globalChallengeIndex =
@@ -286,7 +305,7 @@ export const DeepfakeDetectorMission: React.FC<Props> = ({ onBack, onComplete, v
         6 + currentChallengeIndex;
 
     const handleAnswer = (userAnswer: 'real' | 'ai') => {
-        if (showFeedback) return;
+        if (showFeedback || !selectedSignal) return;
         setAnswer(userAnswer);
         setShowFeedback(true);
 
@@ -307,6 +326,7 @@ export const DeepfakeDetectorMission: React.FC<Props> = ({ onBack, onComplete, v
 
     const handleNext = () => {
         setAnswer(null);
+        setSelectedSignal(null);
         setShowFeedback(false);
         // VSO dagbesteding-leerlingen krijgen hints altijd aan
         setShowHints(vsoProfile === 'dagbesteding');
@@ -323,6 +343,7 @@ export const DeepfakeDetectorMission: React.FC<Props> = ({ onBack, onComplete, v
     };
 
     const handleNextLevel = () => {
+        setSelectedSignal(null);
         setState(prev => ({
             ...prev,
             showLevelComplete: false,
@@ -594,41 +615,120 @@ export const DeepfakeDetectorMission: React.FC<Props> = ({ onBack, onComplete, v
                             ? currentChallenge.challengeQuestionVso
                             : currentChallenge?.challengeQuestion)
                         : undefined,
+                    selectedSignal,
                     level: currentLevel,
                     vsoProfile: vsoProfile ?? null,
                 }}
             />
 
             {/* Content */}
-            <div className="max-w-2xl mx-auto px-4 py-8 space-y-6">
-                {/* Challenge title */}
-                <div className="text-center">
-                    <h2 className="text-2xl font-black text-[#08283B]" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>{currentChallenge.title}</h2>
-                    <p className="text-[#445865] mt-1">Is dit door een mens gemaakt of door AI gegenereerd?</p>
-                </div>
+            <div className="mx-auto grid max-w-5xl gap-5 px-4 py-5 lg:grid-cols-[minmax(0,1fr)_380px] lg:items-start" data-qa="deepfake-detector-active">
+                <section className="space-y-4">
+                    <div className="rounded-2xl border border-[#E7D8BD] bg-white p-4 shadow-sm">
+                        <div className="flex flex-wrap items-start justify-between gap-3">
+                            <div>
+                                <p className="text-[10px] font-black uppercase tracking-widest text-[#D97848]">
+                                    Media dossier
+                                </p>
+                                <h2 className="mt-1 text-2xl font-black leading-tight text-[#08283B]" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
+                                    {currentChallenge.title}
+                                </h2>
+                                <p className="mt-1 text-sm text-[#445865]">Onderzoek eerst een signaal. Oordeel daarna pas: mens of AI.</p>
+                            </div>
+                            <span className="rounded-full border border-[#E7D8BD] bg-[#FCF6EA] px-3 py-1 text-xs font-black text-[#445865]">
+                                Dossier {globalChallengeIndex + 1}/{totalChallenges}
+                            </span>
+                        </div>
+                    </div>
 
-                {/* Content card */}
-                <ContentCard challenge={currentChallenge} showHints={showHints} />
+                    <ContentCard challenge={currentChallenge} showHints={showHints} />
 
-                {/* Hint button */}
-                {!showFeedback && !showHints && (
-                    <div className="text-center">
+                    {!showFeedback && !showHints && (
                         <button
                             onClick={() => setShowHints(true)}
-                            className="text-[#445865] text-sm font-medium hover:text-[#D97848] transition-all duration-300 flex items-center gap-2 mx-auto"
+                            className="flex min-h-[40px] items-center gap-2 rounded-full border border-[#E7D8BD] bg-white px-4 text-sm font-bold text-[#445865] transition-all duration-300 hover:border-[#D97848]/40 hover:text-[#D97848]"
                         >
                             <HelpCircle size={16} />
                             Hint nodig?
                         </button>
-                    </div>
-                )}
+                    )}
+                </section>
 
-                {/* Answer buttons */}
-                {!showFeedback && (
+                <aside className="space-y-4 lg:sticky lg:top-24">
+                    {!showFeedback && (
+                    <div
+                        className="rounded-2xl border border-[#E7D8BD] bg-white p-4 shadow-sm"
+                        data-qa="deepfake-signal-panel"
+                    >
+                        <div className="mb-3 flex items-start gap-3">
+                            <div className="rounded-xl border border-[#0B453F]/15 bg-[#0B453F]/10 p-2 text-[#0B453F]">
+                                <Eye size={18} />
+                            </div>
+                            <div className="min-w-0 flex-1">
+                                <p className="text-[10px] font-black uppercase tracking-widest text-[#D97848]">
+                                    Detective-actie
+                                </p>
+                                <p className="text-sm font-bold leading-snug text-[#08283B]">
+                                    Pin eerst welk signaal je gebruikt. Daarna mag je oordelen: echt of AI.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="grid gap-2 sm:grid-cols-3">
+                            {signalOptions.map(option => {
+                                const isSelected = selectedSignal === option.id;
+
+                                return (
+                                    <button
+                                        key={option.id}
+                                        type="button"
+                                        onClick={() => setSelectedSignal(option.id)}
+                                        aria-pressed={isSelected}
+                                        data-qa={`deepfake-signal-${option.id}`}
+                                        className={`min-h-[76px] rounded-xl border p-3 text-left transition-all duration-200 focus-visible:ring-2 focus-visible:ring-[#D97848] ${
+                                            isSelected
+                                                ? 'border-[#5F947D] bg-[#5F947D]/10 shadow-sm'
+                                                : 'border-[#E7D8BD] bg-[#FCF6EA] hover:border-[#D97848]/60'
+                                        }`}
+                                    >
+                                        <span className="flex items-start justify-between gap-2">
+                                            <span className="text-xs font-black leading-snug text-[#08283B]">{option.label}</span>
+                                            {isSelected && <Check size={14} className="shrink-0 text-[#5F947D]" />}
+                                        </span>
+                                        <span className="mt-1 block text-[10px] font-bold uppercase tracking-wide text-[#445865]">
+                                            {option.description}
+                                        </span>
+                                    </button>
+                                );
+                            })}
+                        </div>
+
+                        <p
+                            className={`mt-3 rounded-xl border px-3 py-2 text-xs font-semibold leading-snug ${
+                                selectedSignal
+                                    ? 'border-[#5F947D]/30 bg-[#5F947D]/10 text-[#0B453F]'
+                                    : 'border-[#E7D8BD] bg-[#FCF6EA] text-[#445865]'
+                            }`}
+                            data-qa="deepfake-signal-status"
+                        >
+                            {selectedSignal
+                                ? `Gepind signaal: ${signalOptions.find(option => option.id === selectedSignal)?.label}. Gebruik dit als bewijs voor je keuze.`
+                                : 'Nog geen signaal gepind. Kijk naar details, bron, stijl of perfectie voordat je stemt.'}
+                        </p>
+                    </div>
+                    )}
+
+                    {!showFeedback && (
                     <div className="grid grid-cols-2 gap-4">
                         <button
                             onClick={() => handleAnswer('real')}
-                            className="py-6 bg-[#5F947D]/10 hover:bg-[#5F947D]/20 border-2 border-[#5F947D]/30 hover:border-[#5F947D] rounded-2xl transition-all duration-300 group focus-visible:ring-2 focus-visible:ring-[#D97848]"
+                            disabled={!selectedSignal}
+                            data-qa="deepfake-answer-real"
+                            className={`py-6 border-2 rounded-2xl transition-all duration-300 group focus-visible:ring-2 focus-visible:ring-[#D97848] ${
+                                selectedSignal
+                                    ? 'bg-[#5F947D]/10 hover:bg-[#5F947D]/20 border-[#5F947D]/30 hover:border-[#5F947D]'
+                                    : 'cursor-not-allowed border-[#E7D8BD] bg-[#F7EFE1] opacity-70'
+                            }`}
                         >
                             <ThumbsUp size={32} className="text-[#5F947D] mx-auto mb-2 group-hover:scale-110 transition-transform" />
                             <span className="text-[#5F947D] font-black text-lg">ECHT</span>
@@ -637,18 +737,23 @@ export const DeepfakeDetectorMission: React.FC<Props> = ({ onBack, onComplete, v
 
                         <button
                             onClick={() => handleAnswer('ai')}
-                            className="py-6 bg-[#0B453F]/10 hover:bg-[#0B453F]/20 border-2 border-[#0B453F]/30 hover:border-[#0B453F] rounded-2xl transition-all duration-300 group focus-visible:ring-2 focus-visible:ring-[#D97848]"
+                            disabled={!selectedSignal}
+                            data-qa="deepfake-answer-ai"
+                            className={`py-6 border-2 rounded-2xl transition-all duration-300 group focus-visible:ring-2 focus-visible:ring-[#D97848] ${
+                                selectedSignal
+                                    ? 'bg-[#0B453F]/10 hover:bg-[#0B453F]/20 border-[#0B453F]/30 hover:border-[#0B453F]'
+                                    : 'cursor-not-allowed border-[#E7D8BD] bg-[#F7EFE1] opacity-70'
+                            }`}
                         >
                             <ThumbsDown size={32} className="text-[#0B453F] mx-auto mb-2 group-hover:scale-110 transition-transform" />
                             <span className="text-[#0B453F] font-black text-lg">AI</span>
                             <p className="text-[#0B453F]/60 text-xs mt-1">Door AI gegenereerd</p>
                         </button>
                     </div>
-                )}
+                    )}
 
-                {/* Feedback */}
-                {showFeedback && (
-                    <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4">
+                    {showFeedback && (
+                    <div ref={feedbackRef} className="space-y-4 animate-in fade-in slide-in-from-bottom-4" data-qa="deepfake-feedback">
                         {/* Result banner */}
                         <div className={`rounded-2xl p-6 border-2 ${isCorrect
                                 ? 'bg-[#5F947D]/10 border-[#5F947D]'
@@ -682,6 +787,9 @@ export const DeepfakeDetectorMission: React.FC<Props> = ({ onBack, onComplete, v
                                 <Brain size={18} className="text-[#0B453F]" />
                                 Uitleg
                             </h4>
+                            <p className="mb-3 rounded-xl border border-[#5F947D]/25 bg-[#5F947D]/10 px-3 py-2 text-xs font-bold leading-snug text-[#0B453F]">
+                                Jouw gepinde signaal: {signalOptions.find(option => option.id === selectedSignal)?.label ?? 'geen signaal'}
+                            </p>
                             <p className="text-[#445865] text-sm">{currentChallenge.explanation}</p>
 
                             {currentChallenge.telltaleSign && (
@@ -716,7 +824,8 @@ export const DeepfakeDetectorMission: React.FC<Props> = ({ onBack, onComplete, v
                             Volgende <ChevronRight size={20} />
                         </button>
                     </div>
-                )}
+                    )}
+                </aside>
             </div>
         </div>
     );

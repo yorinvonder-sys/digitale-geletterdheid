@@ -58,11 +58,21 @@ export const logAuditEvent = async (
 
 export const getAuditLogsForUser = async (uid: string): Promise<AuditLogEntry[]> => {
     try {
-        const { data, error } = await supabase
+        let { data, error } = await supabase
             .from('audit_logs')
             .select('*')
             .eq('uid', uid)
-            .order('created_at', { ascending: false });
+            .order('timestamp', { ascending: false });
+
+        if (error && error.code === '42703') {
+            const fallback = await supabase
+                .from('audit_logs')
+                .select('*')
+                .eq('uid', uid)
+                .order('created_at', { ascending: false });
+            data = fallback.data;
+            error = fallback.error;
+        }
 
         if (error) throw error;
         return (data || []) as unknown as AuditLogEntry[];

@@ -4,6 +4,7 @@ import { useStudentAssistant } from '@/hooks/useStudentAssistant';
 import { MarkdownRenderer } from '@/components/ui/MarkdownRenderer';
 import { AiDisclosureBadge } from '@/features/ai-chat/AiDisclosureBadge';
 import { WellbeingAlert } from '@/features/student/WellbeingAlert';
+import { COOKIE_CONSENT_EVENT, COOKIE_CONSENT_KEY } from '@/components/app-shell/CookieConsent';
 
 /** Context data passed to AI for better responses */
 interface AIContextData {
@@ -30,9 +31,15 @@ interface StudentAIChatProps {
     onOpenChange?: (open: boolean) => void; // State handler
     /** Optionele server-side roleId voor missie-specifieke AI-instructies. Default: 'student-assistant'. */
     roleId?: string;
+    /** Zet de mobiele coach boven een vaste bottombar wanneer een missie die heeft. */
+    mobileDock?: 'safe' | 'above-bar' | 'above-cta' | 'top-corner';
+    /** Verberg de floating coach tot de cookie-keuze is gemaakt, zodat first-run CTA's vrij blijven. */
+    hideUntilCookieChoice?: boolean;
+    /** Gebruik een template-eigen mobiele knop in plaats van de floating launcher. */
+    hideMobileLauncher?: boolean;
 }
 
-export const StudentAIChat: React.FC<StudentAIChatProps> = ({ userIdentifier, context, isOpen: controlledIsOpen, onOpenChange, roleId }) => {
+export const StudentAIChat: React.FC<StudentAIChatProps> = ({ userIdentifier, context, isOpen: controlledIsOpen, onOpenChange, roleId, mobileDock = 'safe', hideUntilCookieChoice = false, hideMobileLauncher = false }) => {
     const getQuickPromptLabel = () => {
         const week = typeof context?.week === 'number' ? context.week : null;
         if (context?.currentChallenge) return 'Game Challenge Hulp';
@@ -139,6 +146,29 @@ export const StudentAIChat: React.FC<StudentAIChatProps> = ({ userIdentifier, co
     };
 
     const messagesEndRef = useRef<HTMLDivElement>(null);
+    const [hasCookieChoice, setHasCookieChoice] = React.useState(() => {
+        if (!hideUntilCookieChoice || typeof window === 'undefined') return true;
+        return Boolean(window.localStorage.getItem(COOKIE_CONSENT_KEY));
+    });
+
+    useEffect(() => {
+        if (!hideUntilCookieChoice || typeof window === 'undefined') {
+            setHasCookieChoice(true);
+            return;
+        }
+
+        const syncCookieChoice = () => {
+            setHasCookieChoice(Boolean(window.localStorage.getItem(COOKIE_CONSENT_KEY)));
+        };
+
+        syncCookieChoice();
+        window.addEventListener(COOKIE_CONSENT_EVENT, syncCookieChoice);
+        window.addEventListener('storage', syncCookieChoice);
+        return () => {
+            window.removeEventListener(COOKIE_CONSENT_EVENT, syncCookieChoice);
+            window.removeEventListener('storage', syncCookieChoice);
+        };
+    }, [hideUntilCookieChoice]);
 
     // Auto-scroll to bottom of messages
     useEffect(() => {
@@ -155,7 +185,20 @@ export const StudentAIChat: React.FC<StudentAIChatProps> = ({ userIdentifier, co
         }
     };
 
-    if (!userIdentifier) return null;
+    if (!userIdentifier || !hasCookieChoice) return null;
+
+    const mobileButtonDockClass = mobileDock === 'top-corner'
+        ? 'top-[calc(env(safe-area-inset-top)+5.5rem)]'
+        : mobileDock === 'above-cta'
+        ? 'bottom-[calc(env(safe-area-inset-bottom)+10.75rem)]'
+        : mobileDock === 'above-bar'
+            ? 'bottom-[calc(env(safe-area-inset-bottom)+5.75rem)]'
+            : 'bottom-[max(1rem,env(safe-area-inset-bottom))]';
+    const mobileWindowDockClass = mobileDock === 'above-cta'
+        ? 'bottom-[calc(env(safe-area-inset-bottom)+10.75rem)]'
+        : mobileDock === 'above-bar'
+            ? 'bottom-[calc(env(safe-area-inset-bottom)+5.75rem)]'
+            : 'bottom-[max(1rem,env(safe-area-inset-bottom))]';
 
     return (
         <>
@@ -166,16 +209,17 @@ export const StudentAIChat: React.FC<StudentAIChatProps> = ({ userIdentifier, co
             {!isVisible && (
                 <button
                     onClick={handleOpen}
-                    className="fixed bottom-20 sm:bottom-6 right-4 sm:right-6 group z-[70] flex items-center gap-0"
+                    className={`fixed ${mobileButtonDockClass} right-4 sm:bottom-6 sm:right-6 group z-[70] ${hideMobileLauncher ? 'hidden sm:flex' : 'flex'} items-center gap-0`}
                     title="Vraag de AI om hulp"
+                    aria-label="Vraag de AI om hulp"
                 >
                     {/* Speech bubble — appears on hover */}
                     <span className="hidden sm:flex opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-2 group-hover:translate-x-0 text-xs font-semibold px-3 py-1.5 rounded-full shadow-md whitespace-nowrap mr-2" style={{ backgroundColor: '#FFFFFF', color: '#445865', borderWidth: 1, borderColor: '#E7D8BD' }}>
                         Hulp nodig? Vraag het mij!
                     </span>
                     {/* AI coach avatar */}
-                    <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300 overflow-hidden flex items-center justify-center" style={{ backgroundColor: '#FFFFFF', borderWidth: 2, borderColor: '#D97848' }}>
-                        <img src="/assets/storytelling/beaver-storyteller.webp" alt="DGSkills bever — visuele AI-hulp" className="w-11 h-11 sm:w-12 sm:h-12 object-contain" draggable={false} loading="lazy" />
+                    <div className="relative w-12 h-12 sm:w-16 sm:h-16 rounded-full shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300 overflow-hidden flex items-center justify-center" style={{ backgroundColor: '#FFFFFF', borderWidth: 2, borderColor: '#D97848' }}>
+                        <img src="/assets/storytelling/beaver-storyteller.webp" alt="DGSkills bever — visuele AI-hulp" className="w-9 h-9 sm:w-12 sm:h-12 object-contain" draggable={false} loading="lazy" />
                         {/* Pulse ring */}
                         <span className="absolute inset-0 rounded-full animate-ping opacity-20 pointer-events-none" style={{ borderWidth: 2, borderColor: '#D97848' }} />
                     </div>
@@ -187,7 +231,7 @@ export const StudentAIChat: React.FC<StudentAIChatProps> = ({ userIdentifier, co
 
             {/* Chat Window */}
             {isVisible && (
-                <div className="fixed bottom-20 sm:bottom-6 right-2 sm:right-6 w-[94vw] sm:w-[90vw] max-w-[384px] h-[60vh] sm:h-[70vh] max-h-[500px] rounded-2xl shadow-2xl flex flex-col z-[70] overflow-hidden animate-in fade-in slide-in-from-bottom-10 duration-300" style={{ backgroundColor: '#FFFFFF', borderWidth: 1, borderColor: '#E7D8BD' }}>
+                <div className={`fixed ${mobileWindowDockClass} sm:bottom-6 right-2 sm:right-6 w-[94vw] sm:w-[90vw] max-w-[384px] h-[60vh] sm:h-[70vh] max-h-[500px] rounded-2xl shadow-2xl flex flex-col z-[70] overflow-hidden animate-in fade-in slide-in-from-bottom-10 duration-300`} style={{ backgroundColor: '#FFFFFF', borderWidth: 1, borderColor: '#E7D8BD' }}>
                     {/* Header */}
                     <div className="p-4 flex items-center justify-between" style={{ background: isLocked ? '#FEF2F2' : 'linear-gradient(to right, #D97848, #D97848)' }}>
                         <div className="flex items-center gap-2">

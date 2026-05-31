@@ -18,13 +18,70 @@ const config: DebateArenaConfig = {
         evidence:
             'Je standpunt verbindt een recht, risico of regel aan een concrete schoolpraktijk.',
     },
+    experienceDesign: {
+        boringRisk: 'medium',
+        firstTenSeconds: 'Rights emergency: leerling kiest direct welk digitaal recht bescherming nodig heeft.',
+        primaryInteraction: 'defend-position',
+        feedbackMoment: 'Na de rechtenkeuze koppelt feedback dataminimalisatie, toestemming of inzage aan een schoolpraktijk.',
+        visualKit: 'debate-dilemma',
+        evidenceMoment: 'De leerling verdedigt digitale rechten met concrete data, schoolcontext en privacygrenzen.',
+        antiBoringRule: 'Privacy wordt een noodzaak-case met leerlingrechten, niet een losse AVG-begrippenronde.',
+        chromeAcceptance: 'Rechtenkeuze, privacycopy, stakeholderkaarten en argumentinput blijven waardig en responsive op alle vier viewports.',
+    },
     introFeatures: [
+        'Kies eerst welk digitaal recht acuut is',
         'Lees de standpunten van 4 betrokkenen',
         'Kies jouw positie in het debat',
         'Bouw 2-3 sterke argumenten op',
         'Reageer op een tegenargument',
         'Reflecteer: is je mening veranderd?',
     ],
+    openingChoice: {
+        title: 'Rights emergency',
+        description:
+            'Een schoolapp vraagt meer data dan leerlingen verwachten. Jij kiest eerst welk recht als eerste bescherming nodig heeft.',
+        prompt:
+            'De app wil aanwezigheid, studiegedrag en opdrachtkliks bijhouden. Welke grens verdedig jij eerst?',
+        continueLabel: 'Onderzoek de rechten',
+        options: [
+            {
+                id: 'alleen-noodzakelijk',
+                label: 'Alleen noodzakelijke data',
+                description:
+                    'Als de school het niet echt nodig heeft, hoort het niet verzameld te worden.',
+                positionId: 'minimaal',
+                feedback:
+                    'Je begint bij dataminimalisatie. Let straks op welke data echt onderwijsdoel heeft en welke controle wordt.',
+            },
+            {
+                id: 'eerst-toestemming',
+                label: 'Eerst duidelijke toestemming',
+                description:
+                    'Leerlingen en ouders moeten weten waarvoor data wordt gebruikt.',
+                positionId: 'toestemming',
+                feedback:
+                    'Je kiest voor keuze en uitleg. Onderzoek straks of toestemming op school wel echt vrij kan zijn.',
+            },
+            {
+                id: 'toezicht-nodig',
+                label: 'Onafhankelijke controle',
+                description:
+                    'Een school of leverancier mag niet alleen zijn eigen privacywerk nakijken.',
+                positionId: 'reguleren',
+                feedback:
+                    'Je start als rechtenbewaker. Let straks op welke regels controleerbaar en haalbaar zijn.',
+            },
+            {
+                id: 'schoolruimte',
+                label: 'School moet kunnen handelen',
+                description:
+                    'Data kan helpen om leerlingen sneller te ondersteunen.',
+                positionId: 'vrijheid',
+                feedback:
+                    'Je verdedigt praktische hulp. Check straks waar hulp omslaat in onnodige monitoring.',
+            },
+        ],
+    },
     topic: 'Dataverzameling op school',
     dilemma:
         'Jouw school wil een app invoeren die bijhoudt wanneer je op school bent, hoe lang je studeert en welke opdrachten je bekijkt. De school zegt het is voor jouw eigen leervoortgang. Maar wie heeft toegang tot die data?',

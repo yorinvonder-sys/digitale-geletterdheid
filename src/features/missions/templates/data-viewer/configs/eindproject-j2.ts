@@ -18,6 +18,51 @@ export const eindprojectJ2Config: DataViewerConfig = {
         evidence:
             'Je voorbereiding noemt een probleem, doelgroep, projectvorm en onderbouwing uit de data.',
     },
+    experienceDesign: {
+        boringRisk: 'low',
+        firstTenSeconds: 'Projectcoach start: kies welke projectroute je met data wilt onderzoeken.',
+        primaryInteraction: 'pin-evidence',
+        feedbackMoment: 'Na elke keuze koppelt feedback projecttype, criteria en tips aan een haalbaar eigen plan.',
+        visualKit: 'data-room',
+        evidenceMoment: 'De leerling gebruikt scores, rubriccriteria en leerlingtips als bewijs voor een eigen projectkeuze.',
+        antiBoringRule: 'Eindprojectvoorbereiding moet voelen als een projectkeuze met bewijsdruk, niet als terugkijken naar cijfers.',
+        chromeAcceptance: 'Projectroute, scorekaarten, tipkaarten en eindplan blijven responsive en tonen docentbewijs.',
+    },
+    investigationHook: {
+        title: 'Je projectcoach opent het keuzebord',
+        role: 'Projectvoorbereider',
+        scenario:
+            'Je hoeft nog niet te bouwen. Eerst kies je welk soort project je wilt onderzoeken, zodat je later een sterker eigen plan kunt maken.',
+        prompt: 'Welke projectroute wil je als eerste onderzoeken?',
+        contextLabel: 'Projectroute',
+        continueLabel: 'Open het projectbord',
+        options: [
+            {
+                id: 'app',
+                label: 'App of prototype met duidelijke gebruiker',
+                description: 'Je let op gemiddelde score, techniek en of het probleem voor iemand herkenbaar is.',
+                evidenceChips: ['App 7,9', 'Elif 8,3', 'probleem + doelgroep'],
+                impactCue: 'Route met herkenbare gebruiker',
+                feedback: 'Sterke route. Apps scoren hoog als probleem, doelgroep en functies helder zijn.',
+            },
+            {
+                id: 'onderzoek',
+                label: 'Onderzoek met sterke vraag en presentatie',
+                description: 'Je zoekt hoe onderzoek toch zichtbaar kan scoren op techniek, originaliteit en uitleg.',
+                evidenceChips: ['Onderzoek 6,8', 'Chiara 9-6-9', 'methode zichtbaar'],
+                impactCue: 'Criteria-risico oplossen',
+                feedback: 'Interessant spoor. Onderzoek vraagt extra bewijs: je moet data, methode en presentatie goed zichtbaar maken.',
+            },
+            {
+                id: 'makersroute',
+                label: 'Spel, website of video als makerproject',
+                description: 'Je vergelijkt creatieve vorm, technische haalbaarheid en presentatiekracht.',
+                evidenceChips: ['Video 7,8', 'Spel 7,7', 'feedback testen'],
+                impactCue: 'Vorm plus publiek',
+                feedback: 'Goede makersroute. De vorm is niet genoeg: je project moet ook een concreet probleem of publiek hebben.',
+            },
+        ],
+    },
     introFeatures: [
         'Analyseer eindprojectdata van vorig jaar',
         'Vergelijk welke projecttypen het hoogst scoren',
@@ -62,29 +107,38 @@ export const eindprojectJ2Config: DataViewerConfig = {
                 {
                     id: 'q1-hoogste-gemiddelde-type',
                     question:
-                        'Welk projecttype heeft het hoogste gemiddelde eindcijfer over alle leerlingen?',
-                    type: 'multiple-choice',
-                    options: ['Website', 'Onderzoek', 'App-ontwerp', 'Video/animatie'],
-                    correctAnswer: 'App-ontwerp',
+                        'Kies de projectroute die volgens de data het sterkste startpunt lijkt. Noem het gemiddelde van App-ontwerp en vergelijk kort met minstens één andere projectvorm.',
+                    type: 'text-observation',
+                    correctAnswer: '',
                     explanation:
-                        'App-ontwerp: (7,7 + 8,3 + 8,3 + 7,3) ÷ 4 = 31,6 ÷ 4 = 7,9. Video/animatie: (8,0 + 7,0 + 8,3) ÷ 3 = 7,8. Spel: (7,3 + 7,7 + 8,0) ÷ 3 = 7,7. Onderzoek: (8,0 + 6,7 + 5,7) ÷ 3 = 6,8. Website: (7,0 + 6,0 + 7,7) ÷ 3 = 6,9. App-ontwerp wint net. Filter op projecttype en sorteer op eindcijfer.',
+                        'App-ontwerp is in deze oefendata het sterkste startpunt met gemiddeld 7,9. Video/animatie zit daar vlak achter met 7,8 en Spel op 7,7. Een slimme projectkeuze noemt dus de data, maar ziet ook dat het verschil klein is: de route helpt, maar jouw probleem, originaliteit en presentatie blijven doorslaggevend.',
                     points: 15,
+                    minLength: 65,
+                    minEvidenceCriteria: 2,
+                    textEvidenceCriteria: [
+                        { label: 'projectroute gekozen', keywords: ['app', 'app-ontwerp', 'projectroute', 'startpunt'] },
+                        { label: 'gemiddelde score', keywords: ['7,9', '7.9', 'gemiddelde', 'hoogste'] },
+                        { label: 'vergelijking gemaakt', keywords: ['video', 'spel', 'website', 'onderzoek', '7,8', '7.8', '7,7', '7.7'] },
+                        { label: 'nuance bij keuze', keywords: ['verschil klein', 'maar', 'route', 'probleem', 'originaliteit', 'presentatie'] },
+                    ],
                 },
                 {
                     id: 'q2-presentatie-impact',
                     question:
-                        'Chiara scoort 9 voor originaliteit, maar slechts 5 voor techniek. Toch haalt ze een 8,0. Wat maakt het verschil?',
-                    type: 'multiple-choice',
-                    options: [
-                        'Originaliteit weegt zwaarder dan techniek in het eindcijfer',
-                        'Ze scoort een 9 voor presentatie — dat compenseert de lage techniek-score',
-                        'Het eindcijfer is alleen gebaseerd op presentatie',
-                        'De docent heeft een fout gemaakt in de berekening',
-                    ],
-                    correctAnswer: 'Ze scoort een 9 voor presentatie — dat compenseert de lage techniek-score',
+                        'Leg als projectcoach uit hoe Chiara toch een 8,0 haalt. Gebruik haar scores voor originaliteit, techniek en presentatie en benoem wat jij daarvan leert voor je eigen project.',
+                    type: 'text-observation',
+                    correctAnswer: '',
                     explanation:
-                        'Chiara: originaliteit 9 + techniek 6 + presentatie 9 = gemiddelde (9+6+9)/3 = 8,0. Een sterke presentatie kan een lagere techniek compenseren. Dit is een waardevolle les: hoe je je werk presenteert is net zo belangrijk als hoe je het maakt.',
+                        'Chiara haalt een 8,0 doordat originaliteit 9 en presentatie 9 haar lagere techniek 6 compenseren. Dat betekent niet dat techniek onbelangrijk is, maar wel dat een sterk probleem en duidelijke uitleg veel kunnen dragen. Voor je eigen project is de les: laat zien waarom je iets maakt en presenteer je keuzes helder.',
                     points: 15,
+                    minLength: 65,
+                    minEvidenceCriteria: 3,
+                    textEvidenceCriteria: [
+                        { label: 'Chiara genoemd', keywords: ['chiara'] },
+                        { label: 'scores gebruikt', keywords: ['9', '6', '8,0', '8.0', 'originaliteit', 'techniek', 'presentatie'] },
+                        { label: 'compensatie uitgelegd', keywords: ['compenseert', 'draagt', 'maakt verschil', 'uitleg', 'presentatie'] },
+                        { label: 'eigen projectles', keywords: ['eigen project', 'les', 'leren', 'waarom', 'duidelijk'] },
+                    ],
                 },
                 {
                     id: 'q3-patroon-observatie',
@@ -127,18 +181,20 @@ export const eindprojectJ2Config: DataViewerConfig = {
                 {
                     id: 'q5-onderzoekers-lager',
                     question:
-                        'Onderzoek-projecten scoren gemiddeld lager. Wat is de meest logische verklaring?',
-                    type: 'multiple-choice',
-                    options: [
-                        'Onderzoeken zijn makkelijker te maken dan apps of spellen',
-                        'Techniek-score weegt zwaarder bij onderzoeken',
-                        'Bij onderzoeken is het moeilijker om technische vaardigheden te laten zien',
-                        'Docenten houden niet van onderzoeksprojecten',
-                    ],
-                    correctAnswer: 'Bij onderzoeken is het moeilijker om technische vaardigheden te laten zien',
+                        'Onderzoek scoort gemiddeld lager in deze grafiek. Diagnoseer als projectcoach waar het risico zit en bedenk één manier om een onderzoeksproject toch sterker te maken voor de criteria.',
+                    type: 'text-observation',
+                    correctAnswer: '',
                     explanation:
-                        'De beoordelingscriteria zijn originaliteit, techniek en presentatie. Bij een app of spel kun je duidelijk technische vaardigheden laten zien (code, ontwerp, functies). Bij een onderzoek scoort de techniek-kolom lager omdat "techniek" minder tastbaar is. Het is een kwestie van hoe goed het project aansluit bij de beoordelingscriteria.',
+                        'Onderzoek scoort in deze oefendata gemiddeld 6,8. Het risico is niet dat onderzoek slecht is, maar dat technische vaardigheden minder tastbaar zichtbaar zijn dan bij een app, website of spel. Een onderzoeksproject wordt sterker als je methode, data-analyse, visualisatie, prototype of presentatie heel concreet maakt.',
                     points: 10,
+                    minLength: 65,
+                    minEvidenceCriteria: 3,
+                    textEvidenceCriteria: [
+                        { label: 'onderzoekscore genoemd', keywords: ['onderzoek', '6,8', '6.8', 'lager'] },
+                        { label: 'criteriumrisico', keywords: ['techniek', 'criteria', 'zichtbaar', 'tastbaar', 'minder duidelijk'] },
+                        { label: 'geen negatieve generalisatie', keywords: ['niet slecht', 'risico', 'maar', 'kan sterker'] },
+                        { label: 'verbeteractie', keywords: ['methode', 'data', 'analyse', 'visualisatie', 'prototype', 'presentatie'] },
+                    ],
                 },
                 {
                     id: 'q6-eigen-keuze',
@@ -190,18 +246,20 @@ export const eindprojectJ2Config: DataViewerConfig = {
                 {
                     id: 'q7-beste-tip',
                     question:
-                        'Welke tip heeft het meeste impact op de originaliteits-score op basis van de leerlingen die hem gaven?',
-                    type: 'multiple-choice',
-                    options: [
-                        'Tip 1: Begin met een probleem dat jou bezighoudt',
-                        'Tip 2: Maak een plan vóórdat je begint',
-                        'Tip 3: Leg uit waarom, niet alleen hoe',
-                        'Tip 4: Vraag feedback halverwege',
-                    ],
-                    correctAnswer: 'Tip 1: Begin met een probleem dat jou bezighoudt',
+                        'Kies de tip die jij als eerste in je projectplan zet. Leg uit waarom starten vanuit een echt probleem originaliteit kan helpen en koppel je keuze aan minstens één leerlingvoorbeeld of score.',
+                    type: 'text-observation',
+                    correctAnswer: '',
                     explanation:
-                        'Elif en Iris (beiden 8,3) begonnen vanuit een persoonlijk probleem. Een persoonlijk vertrekpunt leidt tot een origineler, specifieker project. Originaliteit is in de tabel de sterkste voorspeller van het eindcijfer. Starten vanuit een echte behoefte in plaats van een vaag idee geeft automatisch meer richting en motivatie.',
+                        'Tip 1 is vaak de sterkste eerste stap: begin met een probleem dat jou echt bezighoudt. Elif haalt 8,3 met een app voor een herkenbaar roosterprobleem en Iris haalt 8,3 na een helder plan. Een echt probleem maakt je project specifieker, motiveert je keuzes en helpt je originaliteit zichtbaar te maken.',
                     points: 15,
+                    minLength: 70,
+                    minEvidenceCriteria: 3,
+                    textEvidenceCriteria: [
+                        { label: 'tip gekozen', keywords: ['tip 1', 'probleem', 'echt probleem', 'bezighoudt'] },
+                        { label: 'originaliteit gekoppeld', keywords: ['originaliteit', 'origineler', 'specifiek', 'richting'] },
+                        { label: 'leerlingvoorbeeld of score', keywords: ['elif', 'iris', '8,3', '8.3', 'rooster', 'wireframe'] },
+                        { label: 'projectplan toepassing', keywords: ['projectplan', 'eerst', 'keuze', 'mijn project', 'start'] },
+                    ],
                 },
                 {
                     id: 'q8-eigen-plan',

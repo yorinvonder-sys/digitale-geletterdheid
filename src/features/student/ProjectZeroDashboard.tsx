@@ -25,7 +25,7 @@ import { Mission, MISSION_OVERRIDES, CURRICULUM_MISSION_IDS, getMissionOverride,
 
 interface DashboardProps {
     onSelectModule: (moduleId: string, libraryItemData?: any) => void;
-    onOpenProfile: (tab?: 'profile' | 'shop' | 'trophies') => void;
+    onOpenProfile: (tab?: 'profile' | 'portfolio' | 'shop' | 'trophies') => void;
     onLogout?: () => void;
     onOpenGames?: () => void;
     gamesEnabled?: boolean;
@@ -228,6 +228,7 @@ const StudentProjectCard: React.FC<StudentProjectCardProps> = ({ mission, isComp
 
     return (
         <article
+            data-mission-id={mission.id}
             className={`group flex h-full flex-col overflow-hidden rounded-[1.75rem] border shadow-sm transition-all duration-200
                 ${isCompleted ? 'ring-2 ring-[#5F947D]/30' : ''}
                 ${canOpen && !isCompleted ? 'hover:-translate-y-1 hover:shadow-md' : ''}
@@ -635,10 +636,24 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
     const dashboardNavItems = [
         { label: 'Dashboard', icon: <Home size={19} />, active: activeNav === 'Dashboard', onClick: () => { setActiveNav('Dashboard'); scrollDashboardToTop(); } },
         { label: 'Projecten', icon: <BookOpen size={19} />, active: activeNav === 'Projecten', onClick: () => { setActiveNav('Projecten'); scrollDashboardSectionIntoView('mission-grid-container'); } },
-        { label: 'Mijn portfolio', icon: <User size={19} />, active: activeNav === 'Mijn portfolio', onClick: () => { setActiveNav('Mijn portfolio'); onOpenProfile(); } },
+        { label: 'Mijn portfolio', icon: <User size={19} />, active: activeNav === 'Mijn portfolio', onClick: () => { setActiveNav('Mijn portfolio'); onOpenProfile('portfolio'); } },
     ];
     const learningProgressControls = (
         <>
+            <section className="mb-4 flex gap-2 overflow-x-auto lg:hidden" aria-label="Dashboard navigatie">
+                {dashboardNavItems.map(item => (
+                    <button
+                        key={item.label}
+                        type="button"
+                        onClick={item.onClick}
+                        className={`inline-flex min-h-[44px] shrink-0 items-center justify-center gap-2 rounded-2xl border px-4 text-sm font-black transition-colors ${item.active ? 'border-[#D7C95F] bg-[#D7C95F] text-[#08283B]' : 'border-[#E7D8BD] bg-[#FFFDF7] text-[#445865] hover:bg-[#FCF6EA]'}`}
+                    >
+                        {item.icon}
+                        <span className="whitespace-nowrap">{item.label}</span>
+                    </button>
+                ))}
+            </section>
+
             <section className="mb-4 hidden items-center justify-between gap-4 lg:flex">
                 <button
                     type="button"
@@ -674,6 +689,114 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                     <MessageSquare size={17} className="text-[#99984D]" />
                     Feedback
                 </button>
+
+                <div className="relative shrink-0">
+                    <button
+                        type="button"
+                        onClick={() => setShowProfileMenu(prev => !prev)}
+                        aria-label="Profiel menu openen"
+                        aria-expanded={showProfileMenu}
+                        aria-haspopup="true"
+                        className="inline-flex min-h-[52px] items-center gap-3 rounded-3xl border bg-[#FFFDF7] px-3 pr-4 text-left shadow-sm transition-transform duration-200 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0B453F] focus-visible:ring-offset-2"
+                        style={{ borderColor: STUDENT_DASHBOARD_COLORS.line }}
+                        data-tutorial="student-profile-btn"
+                    >
+                        <span className="flex size-10 shrink-0 overflow-hidden rounded-2xl border border-[#E7D8BD] bg-[#FCF6EA] text-[#0B453F]">
+                            {isVisualCapture ? (
+                                <span className="flex size-full items-center justify-center font-black">
+                                    {profileInitial}
+                                </span>
+                            ) : (
+                                <LazyAvatarViewer
+                                    config={stats?.avatarConfig || DEFAULT_AVATAR_CONFIG}
+                                    interactive={false}
+                                    variant="head"
+                                />
+                            )}
+                        </span>
+                        <span className="hidden min-w-0 flex-col xl:flex">
+                            <span className="text-[9px] font-black uppercase leading-none tracking-tight text-[#0B453F]">Mijn profiel</span>
+                            <span className="max-w-28 truncate text-sm font-black text-[#08283B]">{userDisplayName || 'Gast'}</span>
+                        </span>
+                    </button>
+
+                    {showProfileMenu && (
+                        <>
+                            <div
+                                className="fixed inset-0 z-40"
+                                onClick={() => setShowProfileMenu(false)}
+                            />
+                            <div className="absolute right-0 top-[calc(100%+0.5rem)] z-50 w-[min(92vw,240px)] overflow-hidden rounded-2xl border border-[#E7D8BD] bg-[#FFFDF7] shadow-2xl">
+                                <div className="border-b border-[#E7D8BD] bg-[#FCF6EA] p-3">
+                                    <div className="truncate text-sm font-bold text-[#08283B]">{userDisplayName || 'Gast'}</div>
+                                    <div className="text-[10px] font-medium text-[#445865]">Leerling Account</div>
+                                </div>
+                                <div className="p-2">
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            setShowProfileMenu(false);
+                                            onOpenProfile();
+                                        }}
+                                        className="flex min-h-[48px] w-full items-center gap-3 rounded-xl px-4 py-3 text-left transition-colors hover:bg-[#FCF6EA]"
+                                    >
+                                        <User size={18} className="text-[#0B453F]" />
+                                        <span className="text-sm font-bold text-[#445865]">Avatar Aanpassen</span>
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            setShowProfileMenu(false);
+                                            onOpenProfile('trophies');
+                                        }}
+                                        className="flex min-h-[48px] w-full items-center gap-3 rounded-xl px-4 py-3 text-left transition-colors hover:bg-[#D7C95F]/15"
+                                    >
+                                        <Trophy size={18} className="text-[#D7C95F]" />
+                                        <span className="text-sm font-bold text-[#445865]">Trofeeënhal</span>
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            setShowProfileMenu(false);
+                                            setShowLibrary(true);
+                                        }}
+                                        className="flex min-h-[48px] w-full items-center gap-3 rounded-xl px-4 py-3 text-left transition-colors hover:bg-[#5F947D]/10"
+                                    >
+                                        <BookOpen size={18} className="text-[#5F947D]" />
+                                        <span className="text-sm font-bold text-[#445865]">Bibliotheek</span>
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            if (gamesEnabled && onOpenGames) {
+                                                setShowProfileMenu(false);
+                                                onOpenGames();
+                                            }
+                                        }}
+                                        disabled={!gamesEnabled}
+                                        className={`flex min-h-[48px] w-full items-center gap-3 rounded-xl px-4 py-3 text-left transition-colors ${gamesEnabled ? 'hover:bg-[#5F947D]/10' : 'cursor-not-allowed opacity-50'}`}
+                                    >
+                                        <Gamepad2 size={18} className={gamesEnabled ? 'text-[#5F947D]' : 'text-[#445865]'} />
+                                        <span className="text-sm font-bold text-[#445865]">Games</span>
+                                    </button>
+                                    {onLogout && (
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                setShowProfileMenu(false);
+                                                onLogout();
+                                            }}
+                                            className="flex min-h-[48px] w-full items-center gap-3 rounded-xl px-4 py-3 text-left transition-colors hover:bg-[#D97848]/10"
+                                        >
+                                            <LogOut size={18} className="text-[#D97848]" />
+                                            <span className="text-sm font-bold text-[#445865]">Uitloggen</span>
+                                        </button>
+                                    )}
+                                </div>
+                            </div>
+                        </>
+                    )}
+                </div>
             </section>
 
             <section className="mb-6 grid gap-3 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">

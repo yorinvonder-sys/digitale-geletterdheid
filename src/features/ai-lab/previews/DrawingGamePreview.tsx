@@ -369,6 +369,7 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
     const [analysisStep, setAnalysisStep] = useState(0); // For animating the analysis phase
     const [showConclusion, setShowConclusion] = useState(false);
     const [currentFactIndex, setCurrentFactIndex] = useState(0); // For rotating AI facts
+    const [useLocalAnalysisOnly, setUseLocalAnalysisOnly] = useState(false);
 
     // DUEL MODE STATE
     const [duelMode, setDuelMode] = useState<'off' | 'lobby' | 'waiting' | 'playing'>('off');
@@ -436,7 +437,7 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
 
     // Subscribe to incoming duel challenges
     useEffect(() => {
-        if (!user?.uid) return;
+        if (!user?.uid || duelMode === 'off') return;
 
         const unsubscribe = subscribeToChallenges(user.uid, (challenges) => {
             // Show the first pending challenge
@@ -448,7 +449,7 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
         });
 
         return () => unsubscribe();
-    }, [user?.uid, activeDuelSession, blockedUserIds]);
+    }, [user?.uid, activeDuelSession, blockedUserIds, duelMode]);
 
     // Handle accepting a challenge
     const handleAcceptChallenge = async () => {
@@ -564,7 +565,11 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
         const possibleLabels = PROMPTS.map(p => p.word);
         let analysisResult: AnalysisResult;
 
-        try {
+        if (useLocalAnalysisOnly) {
+            setAnalysisStep(3);
+            await new Promise(resolve => setTimeout(resolve, 400));
+            analysisResult = analyzeDrawing(canvasRef.current!, gamePrompts[currentRound].word);
+        } else try {
             const aiResult = await analyzeDrawingWithAI(imageBase64, possibleLabels);
 
             // Step 3: Process AI response
@@ -583,10 +588,12 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
                 };
             } else {
                 // Fallback to local analysis if AI failed
+                setUseLocalAnalysisOnly(true);
                 analysisResult = analyzeDrawing(canvasRef.current!, gamePrompts[currentRound].word);
             }
         } catch (error) {
             console.warn('AI analysis failed, using local fallback:', error);
+            setUseLocalAnalysisOnly(true);
             setAnalysisStep(3);
             await new Promise(resolve => setTimeout(resolve, 400));
             // Fallback to local pattern detection
@@ -613,6 +620,8 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
             setTimeout(clearCanvas, 100);
         } else {
             // FINISHED
+            setResult(null);
+            setIsDrawing(false);
             setShowConclusion(true);
             if (onLevelComplete) onLevelComplete(1);
         }
@@ -936,17 +945,22 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
 
                                     <div className="flex justify-end gap-3">
                                         {!result.success && (
-                                            <button
-                                                onClick={() => {
-                                                    setGamePhase('draw');
-                                                    setResult(null);
-                                                    setIsDrawing(false);
-                                                }}
-                                                className="px-5 py-2 rounded-lg font-bold flex items-center gap-2 text-sm transition-colors"
-                                                style={{ backgroundColor: '#E7D8BD', color: '#445865' }}
-                                            >
-                                                <RotateCcw size={16} /> Probeer Opnieuw
-                                            </button>
+                                            <>
+                                                <button
+                                                    onClick={() => {
+                                                        setGamePhase('draw');
+                                                        setResult(null);
+                                                        setIsDrawing(false);
+                                                    }}
+                                                    className="px-5 py-2 rounded-lg font-bold flex items-center gap-2 text-sm transition-colors"
+                                                    style={{ backgroundColor: '#E7D8BD', color: '#445865' }}
+                                                >
+                                                    <RotateCcw size={16} /> Probeer Opnieuw
+                                                </button>
+                                                <button onClick={nextRound} className="px-5 py-2 rounded-lg font-bold flex items-center gap-2 text-sm transition-colors text-white" style={{ backgroundColor: '#0B453F' }}>
+                                                    {currentRound < totalRounds - 1 ? 'Verder zonder punten' : 'Afronden'} <ArrowRight size={16} />
+                                                </button>
+                                            </>
                                         )}
 
                                         {result.success && (

@@ -16,19 +16,94 @@ export interface WordSimulatorProps {
     initialLevelIndex?: number;
     onProgressUpdate?: (levelIndex: number) => void;
     vsoProfile?: VsoProfile;
+    initialShowConclusion?: boolean;
 }
+
+type DiagnosisOption = {
+    id: string;
+    label: string;
+    feedback: string;
+};
+
+type LevelDiagnosis = {
+    prompt: string;
+    prescription: string;
+    correctOptionId: string;
+    options: DiagnosisOption[];
+};
+
+const PRESCRIPTION_ACTION_LABELS: Record<string, string> = {
+    'level-1-romans': 'Tekstomloop + rechts plaatsen',
+    'level-2-headings': 'Kop 1 toepassen',
+    'level-3-toc': 'Inhoudsopgave maken',
+    'level-4-pagenums': 'Paginanummers middenonder',
+};
+
+const DIAGNOSIS_GATED_ACTIONS: Record<string, string[]> = {
+    'level-1-romans': ['wrapMode', 'moveImageRight'],
+    'level-2-headings': ['heading1'],
+    'level-3-toc': ['toc'],
+    'level-4-pagenums': ['pageNumber'],
+};
+
+const LEVEL_DIAGNOSES: Record<string, LevelDiagnosis> = {
+    'level-1-romans': {
+        prompt: 'Wat is het echte probleem in deze slide-achtige tekstpagina?',
+        prescription: 'zet tekstomloop op Vierkant en verplaats het beeld naar rechts.',
+        correctOptionId: 'image-wrap',
+        options: [
+            { id: 'image-wrap', label: 'De afbeelding blokkeert de tekststroom.', feedback: 'Klopt.' },
+            { id: 'font-color', label: 'De tekstkleur is te fel.', feedback: 'Kijk nog eens: de tekst is leesbaar, maar het beeld ligt in de weg.' },
+            { id: 'missing-title', label: 'Er ontbreekt een duidelijke titel.', feedback: 'De titel staat er al. Het probleem zit in de positie van de afbeelding.' },
+        ],
+    },
+    'level-2-headings': {
+        prompt: 'Welke diagnose past bij de drie regels die als gewone tekst blijven staan?',
+        prescription: 'maak van de drie hoofdstukregels Kop 1.',
+        correctOptionId: 'headings',
+        options: [
+            { id: 'headings', label: 'De hoofdstukregels hebben geen echte kopstijl.', feedback: 'Klopt.' },
+            { id: 'spacing', label: 'Er staat te veel witruimte tussen alinea’s.', feedback: 'De witruimte is niet het kernprobleem. De structuur mist koppen.' },
+            { id: 'picture', label: 'Er ontbreekt een ondersteunende afbeelding.', feedback: 'Hier gaat het om documentstructuur, niet om beeld.' },
+        ],
+    },
+    'level-3-toc': {
+        prompt: 'Wat mist dit document waardoor lezers verdwalen?',
+        prescription: 'voeg een automatische inhoudsopgave toe.',
+        correctOptionId: 'toc',
+        options: [
+            { id: 'toc', label: 'Er is geen automatisch overzicht van de koppen.', feedback: 'Klopt.' },
+            { id: 'page-number', label: 'Alleen paginanummers lossen dit op.', feedback: 'Paginanummers helpen later, maar de lezer mist eerst een inhoudsopgave.' },
+            { id: 'font', label: 'Het lettertype moet naar Comic Sans.', feedback: 'Dat maakt het juist minder professioneel. Zoek naar navigatie in het document.' },
+        ],
+    },
+    'level-4-pagenums': {
+        prompt: 'Welke finishing touch maakt dit printdocument controleerbaar?',
+        prescription: 'plaats paginanummers onderaan in het midden.',
+        correctOptionId: 'bottom-center-pages',
+        options: [
+            { id: 'bottom-center-pages', label: 'Paginanummers onderaan in het midden.', feedback: 'Klopt.' },
+            { id: 'top-left-pages', label: 'Paginanummers linksboven.', feedback: 'De opdracht vraagt om een nette printversie; de juiste positie is onderaan in het midden.' },
+            { id: 'more-title', label: 'Nog een extra titel bovenaan.', feedback: 'De titel is niet het ontbrekende bewijs. Denk aan pagina’s terugvinden na het printen.' },
+        ],
+    },
+};
 
 export const WordSimulator: React.FC<WordSimulatorProps> = ({
     onLevelComplete,
     onExit,
     initialLevelIndex = 0,
-    onProgressUpdate
+    onProgressUpdate,
+    initialShowConclusion = false
 }) => {
     // Game State
     const [currentLevelIndex, setCurrentLevelIndex] = useState(initialLevelIndex);
-    const [showConclusion, setShowConclusion] = useState(false);
+    const [showConclusion, setShowConclusion] = useState(initialShowConclusion);
     const [showSuccessFeedback, setShowSuccessFeedback] = useState(false);
     const [autoRedirectCountdown, setAutoRedirectCountdown] = useState(3);
+    const [mobileView, setMobileView] = useState<'task' | 'document'>('task');
+    const [diagnosedLevelIds, setDiagnosedLevelIds] = useState<string[]>([]);
+    const [diagnosisFeedback, setDiagnosisFeedback] = useState<string | null>(null);
 
     // Editor State
     const [simState, setSimState] = useState<SimulatorState>({
@@ -49,6 +124,10 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
     const [showPageNumberDialog, setShowPageNumberDialog] = useState(false);
 
     const currentLevel = levels[currentLevelIndex];
+    const currentDiagnosis = LEVEL_DIAGNOSES[currentLevel.id];
+    const currentCaseDiagnosed = diagnosedLevelIds.includes(currentLevel.id);
+    const solvedCaseCount = Math.min(levels.length, currentLevelIndex + (showSuccessFeedback ? 1 : 0));
+    const caseProgress = Math.round((solvedCaseCount / levels.length) * 100);
 
     // Load Level
     useEffect(() => {
@@ -58,9 +137,12 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
         setHasPageNumbers(false);
         setPageNumberPosition(null);
         setShowPageNumberDialog(false);
-        setSimState(s => ({ ...s, margins: 'normal', zoom: 100, activeTab: 'start' }));
+        const mobileZoom = typeof window !== 'undefined' && window.innerWidth < 640 ? 46 : 100;
+        setSimState(s => ({ ...s, margins: 'normal', zoom: mobileZoom, activeTab: 'start' }));
         setShowSuccessFeedback(false);
         setAutoRedirectCountdown(3);
+        setMobileView('task');
+        setDiagnosisFeedback(null);
     }, [currentLevel]);
 
     // Auto-switch to Layout tab when image is selected
@@ -78,7 +160,7 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
             checkLevelSuccess(content, images, simState, hasPageNumbers, pageNumberPosition);
         }, 500);
         return () => clearTimeout(timer);
-    }, [images, editorContent, simState, hasPageNumbers, pageNumberPosition]);
+    }, [images, editorContent, simState, hasPageNumbers, pageNumberPosition, diagnosedLevelIds]);
 
     // Auto-redirect countdown when success is shown
     useEffect(() => {
@@ -94,7 +176,115 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
 
     // --- ACTIONS ---
 
+    const markDiagnosis = (optionId: string) => {
+        if (!currentDiagnosis) return;
+
+        const option = currentDiagnosis.options.find((item) => item.id === optionId);
+        if (!option) return;
+
+        if (option.id === currentDiagnosis.correctOptionId) {
+            setDiagnosedLevelIds(prev => prev.includes(currentLevel.id) ? prev : [...prev, currentLevel.id]);
+            setDiagnosisFeedback(`Diagnose klopt: ${currentDiagnosis.prescription}`);
+            return;
+        }
+
+        setDiagnosisFeedback(option.feedback);
+    };
+
+    const blockActionUntilDiagnosis = (action: string) => {
+        if (!currentDiagnosis || currentCaseDiagnosed) return false;
+
+        const gatedActions = DIAGNOSIS_GATED_ACTIONS[currentLevel.id] ?? [];
+        if (!gatedActions.includes(action)) return false;
+
+        setDiagnosisFeedback('Stel eerst de juiste diagnose. Daarna ontgrendel je het recept.');
+        setMobileView('task');
+        return true;
+    };
+
+    const applyCurrentPrescription = () => {
+        if (!currentDiagnosis) return;
+
+        if (!currentCaseDiagnosed) {
+            setDiagnosisFeedback('Kies eerst de diagnose die bij deze casus hoort.');
+            setMobileView('task');
+            return;
+        }
+
+        const editor = document.getElementById('sim-editor');
+
+        if (currentLevel.id === 'level-1-romans') {
+            setSelectedImageId('romans-img');
+            setSimState(s => ({ ...s, activeTab: 'indeling' }));
+            setImages(prev => prev.map(img =>
+                img.id === 'romans-img'
+                    ? { ...img, wrapMode: 'square', x: Math.max(img.x, 430) }
+                    : img
+            ));
+            setDiagnosisFeedback('Behandeling uitgevoerd: tekst loopt om het beeld heen en het beeld staat rechts.');
+            setMobileView('document');
+            return;
+        }
+
+        if (currentLevel.id === 'level-2-headings' && editor) {
+            const headingTargets = ['Inleiding', 'Wat is een vulkaan?', 'Soorten vulkanen'];
+            Array.from(editor.children).forEach((block) => {
+                if (!(block instanceof HTMLElement)) return;
+                const text = block.textContent?.trim();
+                if (!text || !headingTargets.includes(text) || block.tagName.toLowerCase() === 'h1') return;
+
+                const h1 = document.createElement('h1');
+                h1.innerHTML = DOMPurify.sanitize(block.innerHTML);
+                h1.style.cssText = 'color: #D97848; font-size: 24px; font-weight: bold; margin-bottom: 0.5em;';
+                editor.replaceChild(h1, block);
+            });
+            setEditorContent(editor.innerHTML);
+            setDiagnosisFeedback('Behandeling uitgevoerd: de hoofdstukregels zijn echte Kop 1-stijlen.');
+            setMobileView('document');
+            setTimeout(() => checkLevelSuccess(editor.innerHTML, images, simState, hasPageNumbers, pageNumberPosition), 100);
+            return;
+        }
+
+        if (currentLevel.id === 'level-3-toc' && editor) {
+            const headings = Array.from(editor.querySelectorAll('h1')).map((heading) => heading.textContent?.trim()).filter(Boolean);
+            if (headings.length === 0) {
+                setDiagnosisFeedback('Maak eerst koppen voordat een inhoudsopgave kan werken.');
+                return;
+            }
+
+            const tocHtml = `
+                <div style="margin: 0 0 30px 0; padding: 0; font-family: 'Calibri', sans-serif;">
+                    <p style="color: #D97848; font-size: 24px; font-weight: bold; margin-bottom: 16px; border-bottom: 2px solid #D97848; padding-bottom: 8px;">Inhoudsopgave</p>
+                    ${headings.map((heading, index) => `
+                        <div style="display: flex; align-items: baseline; margin: 8px 0; font-size: 14px;">
+                            <span style="color: #D97848; font-weight: 500;">${DOMPurify.sanitize(String(heading))}</span>
+                            <span style="flex: 1; border-bottom: 1px dotted #445865; margin: 0 8px; min-width: 20px;"></span>
+                            <span style="color: #445865; font-weight: 500;">${index + 1}</span>
+                        </div>
+                    `).join('')}
+                    <!-- TOC -->
+                </div>
+            `;
+            editor.innerHTML = `${tocHtml}${editor.innerHTML}`;
+            setEditorContent(editor.innerHTML);
+            setDiagnosisFeedback('Behandeling uitgevoerd: de automatische inhoudsopgave staat bovenaan.');
+            setMobileView('document');
+            setTimeout(() => checkLevelSuccess(editor.innerHTML, images, simState, hasPageNumbers, pageNumberPosition), 100);
+            return;
+        }
+
+        if (currentLevel.id === 'level-4-pagenums') {
+            setPageNumberPosition({ vertical: 'bottom', horizontal: 'center' });
+            setHasPageNumbers(true);
+            setShowPageNumberDialog(false);
+            setDiagnosisFeedback('Behandeling uitgevoerd: paginanummers staan onderaan in het midden.');
+            setMobileView('document');
+        }
+    };
+
     const handleSimulatorAction = (action: string, payload?: any) => {
+        if (blockActionUntilDiagnosis(action)) return;
+
         // Focus the editor before any text action to ensure execCommand works
         const editor = document.getElementById('sim-editor');
 
@@ -459,6 +649,14 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
             ));
         }
 
+        if (action === 'moveImageRight' && selectedImageId) {
+            setImages(prev => prev.map(img =>
+                img.id === selectedImageId
+                    ? { ...img, x: Math.max(img.x, 420) }
+                    : img
+            ));
+        }
+
         // Layout Actions
         if (action === 'margins') setSimState(s => ({ ...s, margins: payload }));
 
@@ -492,6 +690,10 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
         // Always check the actual DOM content for the most up-to-date state
         const editorElement = document.getElementById('sim-editor');
         const actualContent = editorElement?.innerHTML || content;
+
+        if (currentDiagnosis && !diagnosedLevelIds.includes(currentLevel.id)) {
+            return;
+        }
 
         if (currentLevel.id === 'level-4-pagenums') {
             // Must have page numbers AND position set to bottom-center
@@ -570,13 +772,13 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
                                 <span className="hidden sm:inline">Dashboard</span>
                             </button>
                         )}
-                        <button className="flex items-center justify-center w-6 h-6 hover:bg-white/15 rounded-sm transition-colors" title="Opslaan">
+                        <button className="hidden items-center justify-center w-6 h-6 hover:bg-white/15 rounded-sm transition-colors sm:flex" title="Opslaan">
                             <Save size={12} />
                         </button>
-                        <button className="flex items-center justify-center w-6 h-6 hover:bg-white/15 rounded-sm transition-colors" title="Ongedaan maken">
+                        <button className="hidden items-center justify-center w-6 h-6 hover:bg-white/15 rounded-sm transition-colors sm:flex" title="Ongedaan maken">
                             <RotateCcw size={12} />
                         </button>
-                        <button className="flex items-center justify-center w-6 h-6 hover:bg-white/15 rounded-sm transition-colors" title="Opnieuw">
+                        <button className="hidden items-center justify-center w-6 h-6 hover:bg-white/15 rounded-sm transition-colors sm:flex" title="Opnieuw">
                             <RotateCw size={12} />
                         </button>
                         <div className="w-px h-4 bg-white/20 mx-1" />
@@ -626,8 +828,52 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
                 selectedImageWrapMode={images.find(i => i.id === selectedImageId)?.wrapMode as any}
             />
 
+            {/* MOBILE TASK/DOCUMENT SWITCH */}
+            <div className="md:hidden shrink-0 border-b border-[#E7D8BD] bg-white px-3 py-2">
+                <div className="mb-2 flex items-center justify-between gap-3">
+                    <div className="min-w-0">
+                        <p className="text-[10px] font-bold uppercase tracking-wider text-lab-muted">
+                            Casus {currentLevelIndex + 1}/{levels.length}
+                        </p>
+                        <p className="truncate text-sm font-black text-lab-ink">
+                            {solvedCaseCount}/{levels.length} genezen
+                        </p>
+                    </div>
+                    <div className="w-28">
+                        <div className="h-2 overflow-hidden rounded-full bg-lab-line">
+                            <div
+                                className="h-full rounded-full bg-lab-sage transition-all duration-500"
+                                style={{ width: `${caseProgress}%` }}
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div className="grid grid-cols-2 gap-2 rounded-xl border border-lab-line bg-lab-cream p-1">
+                    <button
+                        onClick={() => setMobileView('task')}
+                        className={`flex min-h-[42px] items-center justify-center gap-2 rounded-lg text-xs font-black transition-all ${
+                            mobileView === 'task'
+                                ? 'bg-white text-lab-coral shadow-sm'
+                                : 'text-lab-muted hover:text-lab-ink'
+                        }`}
+                    >
+                        <Search size={14} /> Opdracht
+                    </button>
+                    <button
+                        onClick={() => setMobileView('document')}
+                        className={`flex min-h-[42px] items-center justify-center gap-2 rounded-lg text-xs font-black transition-all ${
+                            mobileView === 'document'
+                                ? 'bg-white text-lab-coral shadow-sm'
+                                : 'text-lab-muted hover:text-lab-ink'
+                        }`}
+                    >
+                        <FileText size={14} /> Document
+                    </button>
+                </div>
+            </div>
+
             {/* HORIZONTAL RULER */}
-            <div className="bg-white border-b border-[#E7D8BD] shrink-0 h-[22px] flex items-center overflow-hidden select-none">
+            <div className="hidden bg-white border-b border-[#E7D8BD] shrink-0 h-[22px] md:flex items-center overflow-hidden select-none">
                 {/* Left margin area (matches sidebar width) */}
                 <div className="w-[300px] shrink-0 bg-[#f3f3f3] h-full border-r border-[#E7D8BD]" />
                 {/* Ruler */}
@@ -675,10 +921,10 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
             </div>
 
             {/* MAIN CONTENT SPLIT */}
-            <div className="flex-1 flex overflow-hidden">
+            <div className="flex-1 flex flex-col md:flex-row overflow-hidden">
 
                 {/* LEFT SIDEBAR - Teacher Info & Context */}
-                <div className="w-[300px] bg-lab-paper border-r border-lab-line flex flex-col shrink-0 overflow-y-auto">
+                <div className={`${mobileView === 'task' ? 'flex' : 'hidden'} md:flex w-full md:w-[300px] bg-lab-paper border-b md:border-b-0 md:border-r border-lab-line flex-col shrink-0 overflow-y-auto`}>
                     {/* Teacher Profile */}
                     <div className="p-6 border-b border-lab-line">
                         <div className="flex items-center gap-4 mb-4">
@@ -707,6 +953,73 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
                                 "{currentLevel.complaint}"
                             </p>
                         </div>
+
+                        {currentDiagnosis && (
+                            <div className="mb-4 rounded-xl border border-lab-coral/25 bg-white p-4 shadow-sm" data-qa="layout-doctor-diagnosis-panel">
+                                <div className="mb-3 flex items-start justify-between gap-3">
+                                    <div>
+                                        <h4 className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-lab-coral">
+                                            <Search size={14} /> Diagnose
+                                        </h4>
+                                        <p className="mt-1 text-sm font-bold leading-snug text-lab-ink">
+                                            {currentDiagnosis.prompt}
+                                        </p>
+                                    </div>
+                                    <span className={`shrink-0 rounded-full px-2 py-1 text-[10px] font-black ${
+                                        currentCaseDiagnosed ? 'bg-lab-sage/10 text-lab-sage' : 'bg-lab-cream text-lab-coral'
+                                    }`}>
+                                        {currentCaseDiagnosed ? 'Gecheckt' : 'Eerst kiezen'}
+                                    </span>
+                                </div>
+                                <div className="space-y-2">
+                                    {currentDiagnosis.options.map((option) => {
+                                        const isSelected = currentCaseDiagnosed && option.id === currentDiagnosis.correctOptionId;
+                                        return (
+                                            <button
+                                                key={option.id}
+                                                type="button"
+                                                onClick={() => markDiagnosis(option.id)}
+                                                aria-pressed={isSelected}
+                                                data-qa={`layout-doctor-diagnosis-${option.id}`}
+                                                className={`w-full rounded-lg border p-3 text-left text-xs font-bold leading-snug transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-lab-coral ${
+                                                    isSelected
+                                                        ? 'border-lab-sage bg-lab-sage/10 text-lab-sage'
+                                                        : 'border-lab-line bg-lab-cream/50 text-lab-ink hover:border-lab-coral hover:bg-lab-cream'
+                                                }`}
+                                            >
+                                                {option.label}
+                                            </button>
+                                        );
+                                    })}
+                                </div>
+                                {diagnosisFeedback && (
+                                    <p className={`mt-3 rounded-lg px-3 py-2 text-xs font-bold leading-snug ${
+                                        currentCaseDiagnosed ? 'bg-lab-sage/10 text-lab-sage' : 'bg-lab-gold/40 text-lab-ink'
+                                    }`} data-qa="layout-doctor-diagnosis-feedback">
+                                        {diagnosisFeedback}
+                                    </p>
+                                )}
+                                {currentCaseDiagnosed && (
+                                    <div className="mt-3 rounded-xl border border-lab-sage/30 bg-lab-sage/10 p-3" data-qa="layout-doctor-prescription-card">
+                                        <p className="text-[10px] font-black uppercase tracking-wider text-lab-sage">
+                                            Recept ontgrendeld
+                                        </p>
+                                        <p className="mt-1 text-xs font-bold leading-snug text-lab-ink">
+                                            {currentDiagnosis.prescription}
+                                        </p>
+                                        <button
+                                            type="button"
+                                            onClick={applyCurrentPrescription}
+                                            className="mt-3 flex min-h-[42px] w-full items-center justify-center gap-2 rounded-xl bg-lab-sage px-3 py-2 text-xs font-black text-white shadow-sm transition-all hover:bg-lab-teal focus-visible:outline focus-visible:outline-2 focus-visible:outline-lab-sage"
+                                            data-qa="layout-doctor-apply-prescription"
+                                        >
+                                            <Check size={14} />
+                                            Behandel: {PRESCRIPTION_ACTION_LABELS[currentLevel.id] ?? 'recept toepassen'}
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+                        )}
 
                         {/* Instruction */}
                         <div className="bg-lab-teal p-4 rounded-xl border border-lab-teal">
@@ -739,6 +1052,13 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
                             <div className="text-xs text-lab-muted bg-white p-2 rounded-lg border border-lab-line">
                                 <span className="font-bold text-lab-coral">💡 Tip:</span> {currentLevel.hint}
                             </div>
+
+                            <button
+                                onClick={() => setMobileView('document')}
+                                className="mt-3 flex min-h-[44px] w-full items-center justify-center gap-2 rounded-xl bg-white px-4 py-3 text-sm font-black text-lab-teal shadow-sm transition-all hover:bg-lab-cream md:hidden"
+                            >
+                                <FileText size={16} /> Open document
+                            </button>
                         </div>
                     </div>
 
@@ -765,7 +1085,13 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
                 </div>
 
                 {/* DOCUMENT CANVAS CONTAINER WITH FOOTER */}
-                <div className="flex-1 bg-[#e8e6df] overflow-auto p-8 relative flex justify-center">
+                <div className={`${mobileView === 'document' ? 'flex' : 'hidden'} md:flex flex-1 flex-col md:flex-row bg-[#e8e6df] overflow-auto p-3 md:p-8 relative justify-start md:justify-center`}>
+                    <button
+                        onClick={() => setMobileView('task')}
+                        className="sticky left-3 top-3 z-30 mb-3 flex min-h-[40px] w-fit items-center gap-2 rounded-full border border-lab-line bg-white px-3 py-2 text-xs font-black text-lab-ink shadow-lg md:hidden"
+                    >
+                        <ArrowLeft size={14} /> Opdracht
+                    </button>
                     <div className="relative">
                         <DocumentCanvas
                             state={simState}
@@ -921,19 +1247,19 @@ export const WordSimulator: React.FC<WordSimulatorProps> = ({
             </div>
 
             {/* WORD STATUS BAR */}
-            <div className="bg-[#0B453F] text-white text-[11px] px-3 h-[24px] flex items-center justify-between shrink-0 select-none">
+            <div className="bg-[#0B453F] text-white text-[11px] px-3 h-[24px] flex items-center justify-between shrink-0 select-none overflow-hidden">
                 {/* Left side: page info */}
-                <div className="flex items-center gap-4">
+                <div className="flex min-w-0 items-center gap-2 sm:gap-4">
                     <span className="hover:bg-white/10 px-1.5 py-0.5 rounded-sm cursor-default">Pagina 1 van 1</span>
                     <span className="hover:bg-white/10 px-1.5 py-0.5 rounded-sm cursor-default">{editorContent.split(/\s+/).filter(Boolean).length} woorden</span>
-                    <span className="hover:bg-white/10 px-1.5 py-0.5 rounded-sm cursor-default flex items-center gap-1">
+                    <span className="hidden hover:bg-white/10 px-1.5 py-0.5 rounded-sm cursor-default sm:flex items-center gap-1">
                         <div className="w-1.5 h-1.5 rounded-full bg-lab-sage" />
                         Nederlands (NL)
                     </span>
                 </div>
 
                 {/* Right side: view modes + zoom */}
-                <div className="flex items-center gap-2">
+                <div className="hidden items-center gap-2 sm:flex">
                     {/* View mode buttons */}
                     <div className="flex items-center gap-0 mr-2">
                         <button className="p-1 hover:bg-white/10 rounded-sm cursor-default" title="Leesmodus">

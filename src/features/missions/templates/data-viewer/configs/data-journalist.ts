@@ -16,11 +16,56 @@ export const dataJournalistConfig: DataViewerConfig = {
         },
         evidence: 'Leerlingbewijs: antwoorden over platformdata, schermtijd, bronbetrouwbaarheid en drie observaties met concrete datapatronen. Docentbewijs: score, fase-overzicht en zichtbare uitleg over patroon, vergelijking en belangenconflict.',
     },
+    experienceDesign: {
+        boringRisk: 'low',
+        firstTenSeconds: 'Newsroom start: kies eerst welke headline-hypothese je met data gaat checken.',
+        primaryInteraction: 'pin-evidence',
+        feedbackMoment: 'Feedback koppelt headline, patroonbewijs en bronkwaliteit aan een publiceerbare conclusie.',
+        visualKit: 'data-room',
+        evidenceMoment: 'De leerling pint platform-, schermtijd- en bronbewijs voordat de conclusie telt.',
+        antiBoringRule: 'Datajournalistiek moet voelen als een redactiekeuze met bewijsdruk, niet als losse quizvragen.',
+        chromeAcceptance: 'Headlinekeuze, datasetkaarten, bronkaarten en publiceer-eindstaat blijven responsive zonder overflow.',
+    },
     introFeatures: [
         'Analyseer een enquête over social media gebruik (leerjaar 2)',
         'Vergelijk schermtijd in zes landen en ontdek patronen',
         'Beoordeel nieuwsberichten op betrouwbaarheid',
     ],
+    investigationHook: {
+        title: 'De redactie wil een headline voor morgenochtend',
+        role: 'Datajournalist',
+        scenario:
+            'Er ligt een artikel over jongeren en social media klaar, maar de headline mag pas online als jij genoeg bewijs vindt.',
+        prompt: 'Welke headline-hypothese ga je als eerste factchecken?',
+        contextLabel: 'Headline-spoor',
+        continueLabel: 'Open de bewijsdesk',
+        options: [
+            {
+                id: 'platform',
+                label: 'TikTok domineert deze klasgroep',
+                description: 'Je checkt of het meest genoemde platform echt uit de data blijkt.',
+                evidenceChips: ['TikTok 4x', 'Instagram 3x', 'YouTube 3x'],
+                impactCue: 'Patroon eerst, gevoel later',
+                feedback: 'Goed spoor. Een sterke headline begint met een telbaar patroon, niet met een gevoel.',
+            },
+            {
+                id: 'screen-time',
+                label: 'Schermtijd verschilt sterk per land',
+                description: 'Je vergelijkt grafiekbalken voordat je een internationale claim maakt.',
+                evidenceChips: ['VS 7,7u', 'NL 4,2u', 'Japan 2,9u'],
+                impactCue: 'Voorzichtige internationale vergelijking',
+                feedback: 'Journalistiek scherp. Vergelijken maakt een claim sterker, zolang je de cijfers precies houdt.',
+            },
+            {
+                id: 'source-risk',
+                label: 'Niet elke bron verdient dezelfde plek',
+                description: 'Je onderzoekt onafhankelijkheid, belangen en bewijssterkte van berichten.',
+                evidenceChips: ['Meta-analyse 47', 'Intern onderzoek', 'Opinie'],
+                impactCue: 'Bronsterkte voor publicatie',
+                feedback: 'Sterke redactiekeuze. Bronkwaliteit bepaalt of een verhaal publiceerbaar is.',
+            },
+        ],
+    },
     enableChat: true,
     chatRoleId: 'data-journalist',
 
@@ -56,14 +101,21 @@ export const dataJournalistConfig: DataViewerConfig = {
             questions: [
                 {
                     id: 'q1-platform',
-                    question: 'Welk platform wordt door de meeste leerlingen in deze enquête gebruikt?',
-                    type: 'multiple-choice',
-                    showConfidence: true,
-                    options: ['Instagram', 'TikTok', 'YouTube', 'Snapchat'],
-                    correctAnswer: 'TikTok',
+                    question:
+                        'Kies de headline die de data het best ondersteunt. Noem het platform, tel hoeveel leerlingen het gebruiken en vergelijk kort met minstens één ander platform.',
+                    type: 'text-observation',
+                    correctAnswer: '',
                     explanation:
-                        'TikTok wordt door 4 leerlingen gebruikt (Daan, Sara, Jayden, Tim), meer dan elk ander platform. Sorteer de kolom "Platform" om dit snel te zien.',
+                        'De sterkste headline is dat TikTok in deze oefendataset het vaakst voorkomt: 4 leerlingen gebruiken TikTok (Daan, Sara, Jayden en Tim). Instagram en YouTube komen elk 3 keer voor, Snapchat 2 keer. Een datajournalist noemt dus zowel het patroon als de vergelijking.',
                     points: 15,
+                    minLength: 65,
+                    minEvidenceCriteria: 2,
+                    textEvidenceCriteria: [
+                        { label: 'TikTok als headline-spoor', keywords: ['tiktok', 'headline', 'kop'] },
+                        { label: 'aantal leerlingen genoemd', keywords: ['4', 'vier', 'meeste'] },
+                        { label: 'vergelijking met ander platform', keywords: ['instagram', 'youtube', 'snapchat', 'vergeleken', 'meer dan'] },
+                        { label: 'journalistieke onderbouwing', keywords: ['data', 'bewijs', 'patroon', 'ondersteunt'] },
+                    ],
                 },
                 {
                     id: 'q2-uren-14',
@@ -120,14 +172,22 @@ export const dataJournalistConfig: DataViewerConfig = {
             questions: [
                 {
                     id: 'q4-hoogste-schermtijd',
-                    question: 'Welk land heeft de hoogste gemiddelde schermtijd per dag voor jongeren van 13-15 jaar?',
-                    type: 'multiple-choice',
+                    question:
+                        'Maak een voorzichtige internationale headline op basis van de grafiek. Noem welk land bovenaan staat, gebruik het cijferbewijs en voeg één contextzin toe over wat de data nog niet verklaart.',
+                    type: 'text-observation',
                     showConfidence: true,
-                    options: ['Brazilië', 'Nederland', 'VS', 'Japan'],
-                    correctAnswer: 'VS',
+                    correctAnswer: '',
                     explanation:
-                        'De VS heeft met 7,7 uur per dag de hoogste schermtijd. Dat is bijna een volledige werkdag! De VS scoort bijna een uur hoger dan nummer 2, Brazilië.',
+                        'De VS heeft met 7,7 uur per dag de hoogste gemiddelde schermtijd in deze oefencasus. Brazilië volgt met 6,4 uur. Een sterke dataheadline noemt het patroon, maar blijft voorzichtig: de grafiek verklaart nog niet waarom dit verschil bestaat. Daarvoor heb je context nodig over school, cultuur, platformgebruik of de onderzoeksmethode.',
                     points: 10,
+                    minLength: 70,
+                    minEvidenceCriteria: 3,
+                    textEvidenceCriteria: [
+                        { label: 'hoogste land genoemd', keywords: ['vs', 'verenigde staten', 'amerika'] },
+                        { label: 'cijferbewijs gebruikt', keywords: ['7,7', '7.7', 'uur', 'hoogste', 'brazilië', '6,4', '6.4'] },
+                        { label: 'headline of publicatie', keywords: ['headline', 'kop', 'artikel', 'publiceer', 'publicatie'] },
+                        { label: 'voorzichtige context', keywords: ['verklaart niet', 'context', 'mogelijk', 'school', 'cultuur', 'platform', 'methode'] },
+                    ],
                 },
                 {
                     id: 'q5-nl-jp-verschil',
@@ -189,26 +249,27 @@ export const dataJournalistConfig: DataViewerConfig = {
                     title: 'Schoolkrant 2B — 12 maart 2025',
                     icon: '✏️',
                     content:
-                        '"Social media maakt iedereen depressief, dat is wel duidelijk." Geschreven door leerling Jayden V. (13) als opiniestuk voor de schoolkrant. Gebaseerd op zijn eigen ervaringen en een gesprek met vrienden.',
+                        '"Volgens mij voelen veel jongeren zich somberder door social media." Geschreven door leerling Jayden V. (13) als opiniestuk voor de schoolkrant. Gebaseerd op zijn eigen ervaringen en een gesprek met vrienden.',
                 },
             ],
             questions: [
                 {
                     id: 'q7-meest-betrouwbaar',
                     question:
-                        'Welk nieuwsbericht is het meest betrouwbaar als bewijs voor een wetenschappelijke claim over social media en welzijn?',
-                    type: 'multiple-choice',
-                    showConfidence: true,
-                    options: [
-                        'NOS-stijl bericht — RIVM-achtig onderzoek',
-                        'Instagram-stijl blog — intern onderzoek',
-                        'Volkskrant-stijl bericht — meta-analyse 47 studies',
-                        'Schoolkrant 2B — opiniestuk Jayden',
-                    ],
-                    correctAnswer: 'Volkskrant-stijl bericht — meta-analyse 47 studies',
+                        'Kies als eindredacteur welk bericht bovenaan je bronlijst komt. Leg uit waarom deze bron sterker is dan het Instagram-bericht en het schoolkrant-opiniestuk.',
+                    type: 'text-observation',
+                    correctAnswer: '',
                     explanation:
-                        'Het Volkskrant-stijl voorbeeldbericht is gebaseerd op 47 onafhankelijke studies — dat is de sterkste vorm van wetenschappelijk bewijs. Het RIVM-achtige bericht is ook goed, maar één studie. Het Instagram-onderzoek is niet onafhankelijk. De schoolkrant is een mening.',
+                        'Het Volkskrant-stijl voorbeeldbericht is het sterkst voor een wetenschappelijke claim, omdat het verwijst naar een meta-analyse van 47 internationale studies. Het Instagram-bericht is intern en niet onafhankelijk, terwijl de schoolkrant vooral een persoonlijke mening is. Het RIVM-achtige bericht is ook bruikbaar, maar is één studie.',
                     points: 15,
+                    minLength: 75,
+                    minEvidenceCriteria: 3,
+                    textEvidenceCriteria: [
+                        { label: 'sterkste bron gekozen', keywords: ['volkskrant', 'meta-analyse', '47'] },
+                        { label: 'onafhankelijkheid genoemd', keywords: ['onafhankelijk', 'intern', 'instagram', 'bedrijf'] },
+                        { label: 'mening herkend', keywords: ['schoolkrant', 'mening', 'opiniestuk', 'ervaring'] },
+                        { label: 'bewijssterkte uitgelegd', keywords: ['studies', 'wetenschappelijk', 'bewijs', 'bron'] },
+                    ],
                 },
                 {
                     id: 'q8-instagram-probleem',

@@ -7,6 +7,16 @@ const config: ScenarioEngineConfig = {
     introTitle: 'Notificatie Ninja',
     introDescription:
         'Elke dag sturen apps je honderden notificaties, autoplay-videos en streaks. Dat is geen toeval — het is ontwerp. Jij leert de technieken doorzien waarmee apps jouw aandacht vangen en vasthouden.',
+    experienceDesign: {
+        boringRisk: 'medium',
+        firstTenSeconds: 'Een app probeert je terug te trekken: kies eerst of de melding jou helpt of de app helpt.',
+        primaryInteraction: 'choose-with-consequence',
+        feedbackMoment: 'Feedback maakt zichtbaar welke ontwerpkeuze aandacht stuurt en welke instelling je helpt.',
+        visualKit: 'casefile',
+        evidenceMoment: 'Leerlingen leveren aandachtstrucs, urgentievolgorde en een bewuste notificatiekeuze.',
+        antiBoringRule: 'Geen schermtijdpreek: leerlingen ontleden eerst de ontwerpprikkel en kiezen daarna een eigen maatregel.',
+        chromeAcceptance: 'Notificatiecase, keuze, feedback en eindbewijs zijn snel scanbaar en niet alleen meerkeuze.',
+    },
     introFeatures: [
         'Herken welke app-features bedoeld zijn om je aandacht vast te houden',
         'Rangschik notificaties van meest naar minst manipulatief',

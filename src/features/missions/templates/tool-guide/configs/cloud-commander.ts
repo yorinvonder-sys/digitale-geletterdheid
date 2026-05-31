@@ -7,12 +7,71 @@ export const cloudCommanderConfig: ToolGuideConfig = {
     introTitle: 'Cloud Commander',
     introDescription:
         'Leer werken met OneDrive op je school-iPad. Je slaat je bestanden op in de cloud, maakt mappen aan en deelt je werk met klasgenoten — zonder USB-stick of e-mail.',
+    experienceDesign: {
+        boringRisk: 'high',
+        firstTenSeconds: 'Verdwenen werkstuk redden en de veiligste terugvindplek kiezen.',
+        primaryInteraction: 'prioritize-case',
+        feedbackMoment: 'Na de opslagkeuze ziet de leerling waarom een schoolmap in OneDrive veiliger is dan downloads of oude bijlagen.',
+        visualKit: 'tool-crisis',
+        evidenceMoment: 'De leerling maakt een schoolmap, uploadt een bestand en deelt veilig via een link.',
+        antiBoringRule: 'Bestandsbeheer moet voelen als een reddingsmissie, niet als een map-uitleg.',
+        chromeAcceptance: 'Werkstuk-kwijt challenge en de vier OneDrive-stappen zijn scanbaar en bedienbaar op alle vier viewports.',
+    },
     introFeatures: [
         'OneDrive openen en inloggen met je schoolaccount',
         'Een map aanmaken voor je schoolwerk',
         'Een bestand uploaden naar de cloud',
         'Je bestand veilig delen met een klasgenoot',
     ],
+    introChallenge: {
+        title: 'Werkstuk kwijt',
+        scenario:
+            'Je hebt morgen een presentatie. Het bestand staat niet op je beginscherm en je klasgenoot vraagt of je de nieuwste versie kunt delen.',
+        prompt: 'Welke plek geeft jou de grootste kans dat je werk veilig terugkomt en deelbaar blijft?',
+        preview: {
+            beforeTitle: 'Onzekere plekken',
+            afterTitle: 'Schoolmap met sync',
+            beforeSignals: [
+                'Downloads staat alleen lokaal',
+                'Chatbijlage kan oude versie zijn',
+                'Geen duidelijke mapstructuur',
+            ],
+            afterSignals: [
+                'Back-up in de cloud',
+                'Toegang vanaf meerdere apparaten',
+                'Veilig delen via link',
+            ],
+            evidenceTitle: 'Herstelbewijs',
+            evidenceItems: ['Schoolmap', 'Sync', 'Upload', 'Deellink'],
+        },
+        options: [
+            {
+                id: 'onedrive-schoolmap',
+                title: 'OneDrive schoolmap',
+                description: 'Een map in je schoolaccount die online synchroniseert.',
+                correct: true,
+                feedback:
+                    'Precies. Een schoolmap in OneDrive blijft bewaard, is vanaf meerdere apparaten bereikbaar en is veilig te delen met je klasgenoot.',
+            },
+            {
+                id: 'downloads',
+                title: 'Downloads op de iPad',
+                description: 'Een lokale plek waar bestanden snel kunnen verdwijnen tussen andere downloads.',
+                correct: false,
+                feedback:
+                    'Downloads kan werken voor tijdelijk gebruik, maar is geen veilige vaste plek voor schoolwerk. Je gaat nu leren hoe je OneDrive ordelijk gebruikt.',
+            },
+            {
+                id: 'chat-bijlage',
+                title: 'Een oude chatbijlage',
+                description: 'Een bestand dat ooit in een bericht is meegestuurd.',
+                correct: false,
+                feedback:
+                    'Een chatbijlage is vaak een oude versie. Beter is een cloudbestand dat automatisch de nieuwste versie bewaart.',
+            },
+        ],
+        continueLabel: 'Red het werkstuk',
+    },
     toolName: 'OneDrive',
     toolIcon: '☁️',
     steps: [

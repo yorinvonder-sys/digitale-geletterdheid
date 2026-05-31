@@ -7,12 +7,71 @@ const config: ToolGuideConfig = {
     introTitle: 'Print Pro',
     introDescription:
         'Leer printen op school, stap voor stap. Je ontdekt hoe je je apparaat verbindt met de schoolprinter, de juiste instellingen kiest en je printopdracht verstuurt.',
+    experienceDesign: {
+        boringRisk: 'high',
+        firstTenSeconds: 'Printercrisis: voorkom dat de opdracht verkeerd, te vaak of in de verkeerde kleur uit de printer komt.',
+        primaryInteraction: 'choose-with-consequence',
+        feedbackMoment: 'Na de gekozen instelling hoort de leerling welk printprobleem daarmee wordt voorkomen.',
+        visualKit: 'tool-crisis',
+        evidenceMoment: 'De leerling kan printer, aantal kopieen, kleurinstelling en ophaal/inleverstap uitleggen.',
+        antiBoringRule: 'Printen wordt alleen interessant als een verkeerde instelling direct voelbare gevolgen heeft.',
+        chromeAcceptance: 'Printer-op-hol challenge en stapkaarten blijven bedienbaar zonder sticky button overlap op mobile.',
+    },
     introFeatures: [
         'Het printsysteem van je school herkennen',
         'Je apparaat verbinden met de schoolprinter',
         'De juiste printinstellingen kiezen (kleur, dubbelzijdig)',
         'Een printopdracht versturen en ophalen',
     ],
+    introChallenge: {
+        title: 'Printer op hol',
+        scenario:
+            'Je wilt een verslag van 4 pagina\'s printen. In het printvenster staat per ongeluk: 28 kopieen, enkelzijdig, kleur.',
+        prompt: 'Welke instelling moet je als eerste controleren om de grootste print-ramp te voorkomen?',
+        preview: {
+            beforeTitle: 'Risico: papierberg',
+            afterTitle: 'Veilig: slim printen',
+            beforeSignals: [
+                '28 kopieen',
+                'Enkelzijdig',
+                'Kleur aan',
+            ],
+            afterSignals: [
+                '1 kopie',
+                'Dubbelzijdig',
+                'Zwart-wit waar het kan',
+            ],
+            evidenceTitle: 'Printbewijs',
+            evidenceItems: ['Aantal', 'Dubbelzijdig', 'Kleurmodus', 'Privacy'],
+        },
+        options: [
+            {
+                id: 'kopieen',
+                title: 'Aantal kopieen',
+                description: 'Van 28 terug naar 1 voordat je op print drukt.',
+                correct: true,
+                feedback:
+                    'Precies. Het aantal kopieen is de grootste rampmaker. Daarna check je dubbelzijdig, kleur en de juiste printer.',
+            },
+            {
+                id: 'kleur',
+                title: 'Kleur of zwart-wit',
+                description: 'Belangrijk voor kosten en inkt, maar niet de grootste fout hier.',
+                correct: false,
+                feedback:
+                    'Kleur is belangrijk, maar 28 kopieen is de grootste fout. Eerst voorkom je verspilling, daarna maak je de rest netjes.',
+            },
+            {
+                id: 'bestandsnaam',
+                title: 'Bestandsnaam',
+                description: 'Handig om je document terug te vinden, maar het verandert de printopdracht niet.',
+                correct: false,
+                feedback:
+                    'Een goede bestandsnaam helpt later, maar voorkomt geen papierberg. Je gaat nu leren welke printinstellingen echt tellen.',
+            },
+        ],
+        continueLabel: 'Stop de print-ramp',
+    },
     toolName: 'Schoolprinter',
     toolIcon: '🖨️',
     steps: [

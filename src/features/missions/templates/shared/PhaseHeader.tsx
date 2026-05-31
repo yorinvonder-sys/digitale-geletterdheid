@@ -16,7 +16,7 @@ export const PhaseHeader: React.FC<PhaseHeaderProps> = ({
     onBack,
     scoreLabel = 'pts',
 }) => (
-    <div className="flex items-center justify-between mb-6">
+    <div className="flex items-center justify-between mb-4 sm:mb-6">
         <button
             onClick={onBack}
             className="-ml-2 flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full text-[#445865] transition-all duration-300 hover:bg-[#E7D8BD]/60 hover:text-[#08283B] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0B453F] focus-visible:ring-offset-2"
@@ -28,7 +28,7 @@ export const PhaseHeader: React.FC<PhaseHeaderProps> = ({
             {Array.from({ length: totalPhases }).map((_, i) => (
                 <div
                     key={i}
-                    className={`w-8 h-1.5 rounded-full transition-all duration-300 ${
+                    className={`h-1.5 w-6 rounded-full transition-all duration-300 sm:w-8 ${
                         i < currentPhase
                             ? 'bg-[#5F947D]'
                             : i === currentPhase

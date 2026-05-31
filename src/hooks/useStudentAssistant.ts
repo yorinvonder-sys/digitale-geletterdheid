@@ -19,49 +19,7 @@ const WEEK1_HELP_CONTEXT = {
     ]
 };
 
-interface UseStudentAssistantProps {
-    userIdentifier: string; // usually the student's UID
-    context?: any; // Optional context to "watch along"
-    /** Optionele server-side roleId. Default: 'student-assistant'. */
-    roleId?: string;
-}
-
-export const useStudentAssistant = ({ userIdentifier, context, roleId = 'student-assistant' }: UseStudentAssistantProps) => {
-    const [messages, setMessages] = useState<ChatMessage[]>([]);
-    const [input, setInput] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
-    const [isLocked, setIsLocked] = useState(false);
-    const [abuseCount, setAbuseCount] = useState(0);
-    const chatSessionRef = useRef<any>(null);
-    const [isOpen, setIsOpen] = useState(false); // Controls UI visibility
-    const shouldUseRemoteStudentControls = Boolean(userIdentifier)
-        && userIdentifier !== 'anonymous'
-        && !((import.meta as any).env?.DEV === true && userIdentifier.startsWith('dev-'));
-
-    // Welzijnsdetectie — scant berichten op zorgwekkende taal voordat ze naar AI gaan
-    const handleWellbeingAlert = useCallback(async (match: WellbeingMatch) => {
-        if (!shouldUseRemoteStudentControls) return;
-
-        // Log alert naar Supabase voor docentnotificatie (zonder originele tekst — privacy)
-        try {
-            await supabase.rpc('log_wellbeing_alert' as any, {
-                p_student_id: userIdentifier,
-                p_category: match.category,
-                p_detected_at: match.timestamp,
-            });
-        } catch (err) {
-            // Tabel/RPC bestaat mogelijk nog niet — fail silently in dev, log in prod
-            console.error('Wellbeing alert logging failed:', err);
-        }
-    }, [shouldUseRemoteStudentControls, userIdentifier]);
-
-    const { scanText: scanWellbeing, showHulplijn, lastMatch: wellbeingMatch, dismissHulplijn } = useWellbeingMonitor({
-        onAlert: handleWellbeingAlert,
-        studentId: userIdentifier,
-    });
-
-    // System instruction for the student assistant
-    const systemInstruction = `
+const WEEK1_SYSTEM_INSTRUCTION = `
 Je bent een behulpzame AI-assistent voor leerlingen in de 'AI Lab - Future Architect' omgeving.
 Jouw doel is om leerlingen te helpen als ze vastlopen met hun opdrachten (missies).
 
@@ -88,14 +46,119 @@ REGELS VOOR JOU:
 4. **BELANGRIJK**: Je bent er ALLEEN voor schoolwerk. Weiger alle irrelevante vragen met [ABUSE_WARNING].
 `;
 
+const MISSION_ASSISTANT_SYSTEM_INSTRUCTION = `
+Je bent een behulpzame AI-coach voor leerlingen in de DGSkills missieomgeving.
+Gebruik de actuele missiecontext om korte, concrete hulp te geven bij de opdracht die de leerling nu maakt.
+
+BELANGRIJK:
+- Verwijs alleen naar de huidige missie, stap, dataset, ronde of challenge.
+- Noem geen Magister, OneDrive, Word, PowerPoint, printen of iPad-apps tenzij die expliciet in de actuele missiecontext staan.
+- Geef geen kant-en-klare eindantwoorden; geef hints, kleine voorbeelden en controlevragen.
+- Laat de leerling eigen bewijs invullen in de opdrachtvelden.
+- Stel maximaal een vervolgvraag tegelijk.
+- Weiger irrelevante vragen met [ABUSE_WARNING].
+`;
+
+const hasMissionContext = (context: any): boolean => Boolean(
+    context?.mission ||
+    context?.currentChallenge ||
+    context?.currentStep ||
+    context?.currentRound ||
+    context?.currentDataset ||
+    context?.currentDebate
+);
+
+const contextLabel = (context: any, roleId: string): string => {
+    if (typeof context?.mission?.title === 'string' && context.mission.title.trim()) {
+        return context.mission.title.trim();
+    }
+
+    if (typeof context?.currentChallenge?.title === 'string' && context.currentChallenge.title.trim()) {
+        return context.currentChallenge.title.trim();
+    }
+
+    if (typeof context?.currentStep?.title === 'string' && context.currentStep.title.trim()) {
+        return context.currentStep.title.trim();
+    }
+
+    if (typeof context?.currentRound?.title === 'string' && context.currentRound.title.trim()) {
+        return context.currentRound.title.trim();
+    }
+
+    if (typeof context?.currentDataset?.title === 'string' && context.currentDataset.title.trim()) {
+        return context.currentDataset.title.trim();
+    }
+
+    return roleId === 'student-assistant'
+        ? 'deze opdracht'
+        : roleId.split('-').map(part => `${part.charAt(0).toUpperCase()}${part.slice(1)}`).join(' ');
+};
+
+interface UseStudentAssistantProps {
+    userIdentifier: string; // usually the student's UID
+    context?: any; // Optional context to "watch along"
+    /** Optionele server-side roleId. Default: 'student-assistant'. */
+    roleId?: string;
+}
+
+export const useStudentAssistant = ({ userIdentifier, context, roleId = 'student-assistant' }: UseStudentAssistantProps) => {
+    const [messages, setMessages] = useState<ChatMessage[]>([]);
+    const [input, setInput] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+    const [isLocked, setIsLocked] = useState(false);
+    const [abuseCount, setAbuseCount] = useState(0);
+    const chatSessionRef = useRef<any>(null);
+    const [isOpen, setIsOpen] = useState(false); // Controls UI visibility
+    const shouldUseRemoteStudentControls = Boolean(userIdentifier)
+        && userIdentifier !== 'anonymous'
+        && !((import.meta as any).env?.DEV === true && userIdentifier.startsWith('dev-'));
+    const isWeek1Assistant = roleId === 'student-assistant' && !hasMissionContext(context);
+
+    // Welzijnsdetectie — scant berichten op zorgwekkende taal voordat ze naar AI gaan
+    const handleWellbeingAlert = useCallback(async (match: WellbeingMatch) => {
+        if (!shouldUseRemoteStudentControls) return;
+
+        // Log alert naar Supabase voor docentnotificatie (zonder originele tekst — privacy)
+        try {
+            await supabase.rpc('log_wellbeing_alert' as any, {
+                p_student_id: userIdentifier,
+                p_category: match.category,
+                p_detected_at: match.timestamp,
+            });
+        } catch (err) {
+            // Tabel/RPC bestaat mogelijk nog niet — fail silently in dev, log in prod
+            console.error('Wellbeing alert logging failed:', err);
+        }
+    }, [shouldUseRemoteStudentControls, userIdentifier]);
+
+    const { scanText: scanWellbeing, showHulplijn, lastMatch: wellbeingMatch, dismissHulplijn } = useWellbeingMonitor({
+        onAlert: handleWellbeingAlert,
+        studentId: userIdentifier,
+    });
+
+    // Only used for local DEV fallback. Production chat instructions are looked up server-side by roleId.
+    const systemInstruction = isWeek1Assistant
+        ? WEEK1_SYSTEM_INSTRUCTION
+        : MISSION_ASSISTANT_SYSTEM_INSTRUCTION;
+
     const assistantMissionContext = [
         `Rol: ${roleId}`,
+        context?.mission?.title ? `Missie: ${context.mission.title}` : null,
+        context?.mission?.goal ? `Doel: ${context.mission.goal}` : null,
         context?.currentChallenge?.title ? `Challenge: ${context.currentChallenge.title}` : null,
         context?.currentChallenge?.description ? `Situatie: ${context.currentChallenge.description}` : null,
-        `Week 1 focus: ${WEEK1_HELP_CONTEXT.focus.join(', ')}`,
+        context?.currentStep?.title ? `Stap: ${context.currentStep.title}` : null,
+        context?.currentStep?.instruction ? `Instructie: ${context.currentStep.instruction}` : null,
+        context?.currentRound?.title ? `Ronde: ${context.currentRound.title}` : null,
+        context?.currentDataset?.title ? `Dataset: ${context.currentDataset.title}` : null,
+        isWeek1Assistant ? `Week 1 focus: ${WEEK1_HELP_CONTEXT.focus.join(', ')}` : null,
     ]
         .filter(Boolean)
         .join(' ');
+
+    const welcomeMessage = isWeek1Assistant
+        ? "Hoi! 👋 Ik ben je AI-buddy. Voor Week 1 help ik je met de apps op je iPad (Magister, OneDrive, Word, PowerPoint). Het echte werk doe je in die apps, en ik help je bij elke stap. Vertel me: bij welke app ben je nu?"
+        : `Hoi! Ik ben je AI Coach voor ${contextLabel(context, roleId)}. Ik kijk mee met de opdracht en geef hints, kleine voorbeelden en controlevragen zonder het eindantwoord over te nemen. Waar loop je vast?`;
 
     // 1. Check lock status on mount/change — use Supabase Realtime
     useEffect(() => {
@@ -148,11 +211,11 @@ REGELS VOOR JOU:
             // Add welcome message
             setMessages([{
                 role: 'model',
-                text: "Hoi! 👋 Ik ben je AI-buddy. Voor Week 1 help ik je met de apps op je iPad (Magister, OneDrive, Word, PowerPoint). Het echte werk doe je in die apps, en ik help je bij elke stap. Vertel me: bij welke app ben je nu?",
+                text: welcomeMessage,
                 timestamp: new Date()
             }]);
         }
-    }, [assistantMissionContext, roleId, systemInstruction]);
+    }, [assistantMissionContext, roleId, systemInstruction, welcomeMessage]);
 
     const handleSend = async (messageOverride?: string) => {
         const messageText = (messageOverride ?? input).trim();

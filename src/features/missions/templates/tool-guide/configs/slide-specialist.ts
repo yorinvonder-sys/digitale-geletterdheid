@@ -7,12 +7,71 @@ const config: ToolGuideConfig = {
     introTitle: 'Slide Specialist',
     introDescription:
         'Leer presenteren met PowerPoint op je iPad. Je maakt een professionele presentatie met een strak thema, korte tekst, afbeeldingen en animaties — zodat je publiek blijft kijken.',
+    experienceDesign: {
+        boringRisk: 'high',
+        firstTenSeconds: 'Slide-battle: kies welke slide op het digibord overeind blijft.',
+        primaryInteraction: 'review-and-improve',
+        feedbackMoment: 'Na de slidekeuze krijgt de leerling direct feedback op rust, beeld, kernwoorden en afleiding.',
+        visualKit: 'tool-crisis',
+        evidenceMoment: 'De presentatie heeft leesbare slides, passend beeld en een korte uitleg per slide.',
+        antiBoringRule: 'Presenteren begint met een visuele keuze onder druk, niet met lege-slide-instructies.',
+        chromeAcceptance: 'Digibord-check en alle slide-stappen blijven leesbaar op mobile/tablet zonder overlappende tekst.',
+    },
     introFeatures: [
         'Een professioneel thema kiezen in PowerPoint',
         'Slides opbouwen met weinig tekst en sterke beelden',
         'Animaties toevoegen aan elementen op een slide',
         'Overgangen instellen tussen slides',
     ],
+    introChallenge: {
+        title: 'Digibord-check',
+        scenario:
+            'Je presentatie staat straks groot op het digibord. De klas kijkt maar kort. Een slide moet meteen leesbaar zijn, ook achterin het lokaal.',
+        prompt: 'Welke slide zou jij durven tonen aan de klas?',
+        preview: {
+            beforeTitle: 'Slide A: tekstmuur',
+            afterTitle: 'Slide B: klaar voor het digibord',
+            beforeSignals: [
+                'Te veel tekst',
+                'Drukke animatie',
+                'Laag contrast',
+            ],
+            afterSignals: [
+                'Korte titel',
+                'Groot beeld ondersteunt verhaal',
+                'Maximaal 3 kernwoorden',
+            ],
+            evidenceTitle: 'Presentatiebewijs',
+            evidenceItems: ['Contrast', 'Kernwoorden', 'Beeld', 'Rustige animatie'],
+        },
+        options: [
+            {
+                id: 'rustige-slide',
+                title: 'Korte titel, groot beeld, drie kernwoorden',
+                description: 'De slide ondersteunt wat jij vertelt en is in een paar seconden te scannen.',
+                correct: true,
+                feedback:
+                    'Goede keuze. Een sterke slide is geen spreektekst, maar een visuele steun. Kort, rustig en duidelijk wint op het digibord.',
+            },
+            {
+                id: 'tekstmuur',
+                title: 'Een volle slide met twee alinea\'s tekst',
+                description: 'Alles staat erop, maar het publiek moet tegelijk lezen en luisteren.',
+                correct: false,
+                feedback:
+                    'Een tekstmuur lijkt compleet, maar werkt slecht tijdens presenteren. Je publiek haakt af omdat ze lezen terwijl jij praat.',
+            },
+            {
+                id: 'animatiefeest',
+                title: 'Veel animaties, kleuren en overgangen',
+                description: 'De slide beweegt veel en trekt steeds aandacht.',
+                correct: false,
+                feedback:
+                    'Beweging kan helpen, maar te veel animatie leidt af. Jij gaat leren hoe een presentatie rustig en professioneel blijft.',
+            },
+        ],
+        continueLabel: 'Bouw een betere slide',
+    },
     toolName: 'Microsoft PowerPoint',
     toolIcon: '🖥️',
     steps: [

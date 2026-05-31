@@ -45,7 +45,7 @@ const ItemRow: React.FC<ItemRowProps> = ({ item, submitted, currentIndex, totalI
             value={item}
             dragListener={false}
             dragControls={controls}
-            className={`flex items-center gap-3 p-3 rounded-xl border transition-all duration-300 select-none
+            className={`flex min-w-0 items-center gap-2 rounded-xl border p-2 transition-all duration-300 select-none sm:gap-3 sm:p-3
                 ${submitted
                     ? isCorrect
                         ? 'bg-[#5F947D]/10 border-[#5F947D]'
@@ -55,7 +55,7 @@ const ItemRow: React.FC<ItemRowProps> = ({ item, submitted, currentIndex, totalI
         >
             <div
                 onPointerDown={submitted ? undefined : (e) => controls.start(e)}
-                className={`min-h-[44px] min-w-[32px] inline-flex items-center justify-center text-[#445865] ${submitted ? '' : 'cursor-grab active:cursor-grabbing'}`}
+                className={`min-h-[36px] min-w-[28px] inline-flex items-center justify-center text-[#445865] ${submitted ? '' : 'cursor-grab active:cursor-grabbing'}`}
                 style={{ touchAction: 'none' }}
                 aria-hidden="true"
             >
@@ -68,7 +68,7 @@ const ItemRow: React.FC<ItemRowProps> = ({ item, submitted, currentIndex, totalI
             </div>
 
             <span
-                className="flex-1 text-sm text-[#445865] font-medium"
+                className="min-w-0 flex-1 break-words text-xs text-[#445865] font-medium sm:text-sm"
                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
             >
                 {item.label}
@@ -85,8 +85,9 @@ const ItemRow: React.FC<ItemRowProps> = ({ item, submitted, currentIndex, totalI
                         type="button"
                         onClick={() => onMove(item.id, -1)}
                         disabled={currentIndex === 0}
+                        data-qa="review-move-up"
                         aria-label={`${item.label} omhoog verplaatsen`}
-                        className="grid min-h-[36px] min-w-[36px] place-items-center rounded-lg border border-[#E7D8BD] text-[#445865] transition-colors hover:border-[#D97848] hover:text-[#D97848] disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D97848]/40"
+                        className="grid min-h-[32px] min-w-[32px] place-items-center rounded-lg border border-[#E7D8BD] text-[#445865] transition-colors hover:border-[#D97848] hover:text-[#D97848] disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D97848]/40"
                     >
                         <ArrowUp size={14} />
                     </button>
@@ -94,8 +95,9 @@ const ItemRow: React.FC<ItemRowProps> = ({ item, submitted, currentIndex, totalI
                         type="button"
                         onClick={() => onMove(item.id, 1)}
                         disabled={currentIndex === totalItems - 1}
+                        data-qa="review-move-down"
                         aria-label={`${item.label} omlaag verplaatsen`}
-                        className="grid min-h-[36px] min-w-[36px] place-items-center rounded-lg border border-[#E7D8BD] text-[#445865] transition-colors hover:border-[#D97848] hover:text-[#D97848] disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D97848]/40"
+                        className="grid min-h-[32px] min-w-[32px] place-items-center rounded-lg border border-[#E7D8BD] text-[#445865] transition-colors hover:border-[#D97848] hover:text-[#D97848] disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D97848]/40"
                     >
                         <ArrowDown size={14} />
                     </button>
@@ -141,16 +143,16 @@ export const DragSort: React.FC<DragSortProps> = ({
     const correctCount = submitted ? order.filter((item, i) => item.correctPosition === i).length : 0;
 
     return (
-        <div className="space-y-4">
+        <div className="space-y-3">
             <div>
                 <h3
-                    className="text-lg font-black text-[#08283B] mb-1"
+                    className="text-base font-black text-[#08283B] mb-1 sm:text-lg"
                     style={{ fontFamily: "'Newsreader', Georgia, serif" }}
                 >
                     {title}
                 </h3>
                 <p
-                    className="text-sm text-[#445865]"
+                    className="text-xs text-[#445865] sm:text-sm"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     {description}
@@ -166,7 +168,7 @@ export const DragSort: React.FC<DragSortProps> = ({
                 axis="y"
                 values={order}
                 onReorder={submitted ? () => {} : setOrder}
-                className="space-y-2"
+                className="space-y-1.5 sm:space-y-2"
             >
                 {order.map((item, index) => (
                     <ItemRow
@@ -200,6 +202,7 @@ export const DragSort: React.FC<DragSortProps> = ({
             {!submitted ? (
                 <button
                     onClick={handleSubmit}
+                    data-qa="review-submit"
                     className="w-full py-3 bg-gradient-to-r from-[#D97848] to-[#D97848] hover:from-[#D97848] hover:to-[#D97848] text-white rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98]"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
@@ -208,6 +211,7 @@ export const DragSort: React.FC<DragSortProps> = ({
             ) : (
                 <button
                     onClick={handleContinue}
+                    data-qa="review-next"
                     className="w-full py-3 bg-gradient-to-r from-[#5F947D] to-[#5F947D] hover:from-[#5F947D] hover:to-[#5F947D] text-white rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >

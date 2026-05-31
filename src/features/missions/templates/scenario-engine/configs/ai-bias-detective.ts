@@ -16,6 +16,16 @@ const config: ScenarioEngineConfig = {
         },
         evidence: 'Leerlingbewijs: keuzes over biasherkenning, risicovolgorde, eerlijkheid en oplossingen. Docentbewijs: score en ronde-overzicht tonen of de leerling concrete biascasussen respectvol kan duiden en toezichtmaatregelen kan noemen.',
     },
+    experienceDesign: {
+        boringRisk: 'medium',
+        firstTenSeconds: 'Bekijk een AI-beslissing en kies direct welk signaal wijst op oneerlijke gevolgen.',
+        primaryInteraction: 'prioritize-case',
+        feedbackMoment: 'Feedback benoemt het systeemrisico, de gevolgen voor mensen en een verantwoord toezichtpunt.',
+        visualKit: 'casefile',
+        evidenceMoment: 'Leerlingen leveren biasherkenning, risicovolgorde en ontwerp- of toezichtbewijs.',
+        antiBoringRule: 'Bias wordt niet als scoregrap behandeld: de game-loop draait om zorgvuldige systeemkritiek en respectvolle taal.',
+        chromeAcceptance: 'AI-case, prioriteit, feedback en completionstatus blijven zichtbaar zonder het gevoelige onderwerp te trivialiseren.',
+    },
     introFeatures: [
         'Herken vooroordelen in AI-systemen aan de hand van echte voorbeelden',
         'Rangschik AI-toepassingen van meest naar minst risicovol',

@@ -137,6 +137,7 @@ export const StudentModal: React.FC<StudentModalProps> = ({ student, onClose, on
                 await addTeacherNote({
                     student_uid: student.uid,
                     teacher_uid: currentUser?.id || 'unknown',
+                    school_id: student.schoolId,
                     text: noteText,
                 });
             }

@@ -148,6 +148,16 @@ export const aiSpiegelConfig: SimulationLabConfig = {
     introTitle: 'De AI Spiegel',
     introDescription:
         'Jouw likes, kijktijd en locatie bouwen stukje bij beetje een profiel van jou op. Ontdek hoe dat werkt, wat platforms ermee doen en hoe je zelf keuzes kunt maken.',
+    experienceDesign: {
+        boringRisk: 'medium',
+        firstTenSeconds: 'Zet een datapunt aan en voorspel direct hoe scherp het AI-profiel wordt.',
+        primaryInteraction: 'operate-simulation',
+        feedbackMoment: 'De profielmeter verandert live en de analysevraag legt uit welke data het zwaarst meetelt.',
+        visualKit: 'simulation-control',
+        evidenceMoment: 'Leerlingen bewaren hun instellingkeuzes, profielscore en uitleg over controle over eigen data.',
+        antiBoringRule: 'Geen losse meerkeuze vooraf: eerst een datapunt bedienen, daarna pas verklaren wat de AI denkt te weten.',
+        chromeAcceptance: 'Binnen 10 seconden is duidelijk welke parameter je moet bedienen; meter/grafiek, antwoordfeedback en eindbewijs blijven zichtbaar zonder overflow.',
+    },
     introFeatures: [
         'Sim 1 — Bouw je advertentieprofiel en zie hoe nauwkeurig het wordt',
         'Sim 2 — Check je iPad-instellingen en hun impact',
@@ -193,7 +203,7 @@ export const aiSpiegelConfig: SimulationLabConfig = {
                     id: 'ap1-q1',
                     question:
                         'Waarom is kijktijd een waardevollere datapunt voor platforms dan likes?',
-                    type: 'multiple-choice',
+                    type: 'evidence-input',
                     options: [
                         'Kijktijd wordt niet bijgehouden — alleen likes tellen',
                         'Kijktijd is moeilijker te manipuleren — als je lang kijkt, vind je het echt interessant',
@@ -209,7 +219,7 @@ export const aiSpiegelConfig: SimulationLabConfig = {
                     id: 'ap1-q2',
                     question:
                         'Wat betekent het als een platform jouw gedrag kan "voorspellen"?',
-                    type: 'multiple-choice',
+                    type: 'evidence-input',
                     options: [
                         'Het platform weet wat jij gaat doen voordat jij het zelf weet',
                         'Het platform gokt altijd en heeft nooit gelijk',
@@ -225,7 +235,7 @@ export const aiSpiegelConfig: SimulationLabConfig = {
                     id: 'ap1-q3',
                     question:
                         'Wat is de KANS van een goed gepersonaliseerd platform — niet alleen het risico?',
-                    type: 'multiple-choice',
+                    type: 'evidence-input',
                     options: [
                         'Er zijn geen voordelen aan personalisatie',
                         'Je vindt sneller content die je interessant vindt, wat tijd bespaart',
@@ -280,7 +290,7 @@ export const aiSpiegelConfig: SimulationLabConfig = {
                     id: 'ip1-q1',
                     question:
                         'Welk type toegang is gevaarlijker: "Alleen bij gebruik van de app" of "Altijd"?',
-                    type: 'multiple-choice',
+                    type: 'evidence-input',
                     options: [
                         '"Alleen bij gebruik" — dan ziet de app meer',
                         '"Altijd" — de app kan jouw locatie bijhouden ook als je hem niet gebruikt',
@@ -296,7 +306,7 @@ export const aiSpiegelConfig: SimulationLabConfig = {
                     id: 'ip1-q2',
                     question:
                         'Je controleert je iPad en ziet dat een spelletjes-app toegang heeft tot je microfoon. Wat doe je?',
-                    type: 'multiple-choice',
+                    type: 'evidence-input',
                     options: [
                         'Niets — alle apps mogen de microfoon gebruiken',
                         'Beoordeel of het spelletje de microfoon echt nodig heeft, en zo niet: toegang intrekken',
@@ -312,7 +322,7 @@ export const aiSpiegelConfig: SimulationLabConfig = {
                     id: 'ip1-q3',
                     question:
                         'Waar ga je op je iPad om app-permissies te controleren?',
-                    type: 'multiple-choice',
+                    type: 'evidence-input',
                     options: [
                         'Instellingen → Privacy & Beveiliging → [Soort toegang]',
                         'Instellingen → Algemeen → Over',
@@ -346,7 +356,7 @@ export const aiSpiegelConfig: SimulationLabConfig = {
                 {
                     id: 'fb1-q1',
                     question: 'Wat is een filterbubbel?',
-                    type: 'multiple-choice',
+                    type: 'evidence-input',
                     options: [
                         'Een beveiligingssetting op je browser',
                         'Een situatie waarbij algoritmes je steeds meer van hetzelfde laten zien, waardoor andere perspectieven verdwijnen',
@@ -362,7 +372,7 @@ export const aiSpiegelConfig: SimulationLabConfig = {
                     id: 'fb1-q2',
                     question:
                         'Waarom is een filterbubbel ook een probleem voor de democratie?',
-                    type: 'multiple-choice',
+                    type: 'evidence-input',
                     options: [
                         'Filterbubbels zijn alleen een persoonlijk probleem, niet maatschappelijk',
                         'Als mensen steeds andere informatie zien, wordt het moeilijker om een gemeenschappelijke basis te vinden voor gesprekken en beslissingen',
@@ -378,7 +388,7 @@ export const aiSpiegelConfig: SimulationLabConfig = {
                     id: 'fb1-q3',
                     question:
                         'Welke strategie helpt het meest om bewust uit je filterbubbel te stappen?',
-                    type: 'multiple-choice',
+                    type: 'evidence-input',
                     options: [
                         'Social media helemaal verwijderen',
                         'Bewust zoeken naar bronnen en meningen die je normaal niet tegenkomt',

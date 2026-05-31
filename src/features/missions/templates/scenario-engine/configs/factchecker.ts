@@ -16,6 +16,16 @@ const config: ScenarioEngineConfig = {
         },
         evidence: 'Leerlingbewijs: keuzes in rode vlaggen, bronrangschikking, deelbeslissingen en CRAAP-vragen. Docentbewijs: score en ronde-overzicht laten zien of de leerling bron, context, actualiteit en doel kan beoordelen.',
     },
+    experienceDesign: {
+        boringRisk: 'medium',
+        firstTenSeconds: 'Een claim gaat viral: pin eerst welk bewijs je nodig hebt voordat je deelt.',
+        primaryInteraction: 'pin-evidence',
+        feedbackMoment: 'Feedback koppelt je keuze aan bron, actualiteit, belang en veilige deelactie.',
+        visualKit: 'casefile',
+        evidenceMoment: 'Leerlingen leveren rode vlaggen, bronrangschikking, deelbeslissing en CRAAP-bewijs.',
+        antiBoringRule: 'Geen waar/niet-waar quiz: leerlingen bouwen eerst een bewijsdossier en kiezen pas daarna een deelactie.',
+        chromeAcceptance: 'Claimcase, bewijskaart, foutfeedback en eindbewijs blijven helder zonder misleidende gezondheidsclaims te versterken.',
+    },
     introFeatures: [
         'Herken het verschil tussen feit, mening en desinformatie',
         'Beoordeel bronnen met de CRAAP-methode',

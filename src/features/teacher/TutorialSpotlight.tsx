@@ -125,20 +125,32 @@ const TutorialSpotlight: React.FC = () => {
     const isFullscreen = !currentStep?.target;
 
     const getTooltipStyle = useCallback((): React.CSSProperties => {
+        const VIEWPORT_MARGIN = 12;
+        const TOOLTIP_WIDTH = 320;
+        const TOOLTIP_HEIGHT_ESTIMATE = 160; // approx tooltip height for clamping
+
+        const clamp = (value: number, min: number, max: number) => {
+            if (max < min) return min;
+            return Math.min(Math.max(value, min), max);
+        };
+
         if (!rect) {
             return {
                 position: 'absolute',
                 top: '50%',
                 left: '50%',
                 transform: 'translate(-50%, -50%)',
+                width: `min(360px, calc(100vw - ${VIEWPORT_MARGIN * 2}px))`,
                 maxWidth: 360,
             };
         }
 
         const pos = currentStep?.position || 'bottom';
-        const style: React.CSSProperties = { position: 'absolute', maxWidth: 320 };
-        const TOOLTIP_HEIGHT_ESTIMATE = 160; // approx tooltip height for clamping
-        const VIEWPORT_MARGIN = 12;
+        const style: React.CSSProperties = {
+            position: 'absolute',
+            width: `min(${TOOLTIP_WIDTH}px, calc(100vw - ${VIEWPORT_MARGIN * 2}px))`,
+            maxWidth: TOOLTIP_WIDTH,
+        };
 
         if (pos === 'bottom') {
             let top = rect.top + rect.height + TOOLTIP_GAP;
@@ -147,7 +159,7 @@ const TutorialSpotlight: React.FC = () => {
                 top = Math.max(VIEWPORT_MARGIN, rect.top - TOOLTIP_HEIGHT_ESTIMATE - TOOLTIP_GAP);
             }
             style.top = top;
-            style.left = Math.min(Math.max(VIEWPORT_MARGIN, rect.left + rect.width / 2), window.innerWidth - VIEWPORT_MARGIN);
+            style.left = clamp(rect.left + rect.width / 2, VIEWPORT_MARGIN + TOOLTIP_WIDTH / 2, window.innerWidth - VIEWPORT_MARGIN - TOOLTIP_WIDTH / 2);
             style.transform = 'translateX(-50%)';
         } else if (pos === 'top') {
             let top = rect.top - TOOLTIP_HEIGHT_ESTIMATE - TOOLTIP_GAP;
@@ -158,15 +170,25 @@ const TutorialSpotlight: React.FC = () => {
             // Clamp to viewport bottom
             top = Math.min(top, window.innerHeight - TOOLTIP_HEIGHT_ESTIMATE - VIEWPORT_MARGIN);
             style.top = Math.max(VIEWPORT_MARGIN, top);
-            style.left = Math.min(Math.max(VIEWPORT_MARGIN, rect.left + rect.width / 2), window.innerWidth - VIEWPORT_MARGIN);
+            style.left = clamp(rect.left + rect.width / 2, VIEWPORT_MARGIN + TOOLTIP_WIDTH / 2, window.innerWidth - VIEWPORT_MARGIN - TOOLTIP_WIDTH / 2);
             style.transform = 'translateX(-50%)';
         } else if (pos === 'left') {
-            style.top = Math.max(VIEWPORT_MARGIN, Math.min(rect.top + rect.height / 2, window.innerHeight - TOOLTIP_HEIGHT_ESTIMATE - VIEWPORT_MARGIN));
-            style.right = window.innerWidth - rect.left + TOOLTIP_GAP;
+            style.top = clamp(rect.top + rect.height / 2, VIEWPORT_MARGIN + TOOLTIP_HEIGHT_ESTIMATE / 2, window.innerHeight - VIEWPORT_MARGIN - TOOLTIP_HEIGHT_ESTIMATE / 2);
+            const preferredLeft = rect.left - TOOLTIP_GAP - TOOLTIP_WIDTH;
+            const flippedLeft = rect.left + rect.width + TOOLTIP_GAP;
+            const left = preferredLeft >= VIEWPORT_MARGIN
+                ? preferredLeft
+                : Math.min(flippedLeft, window.innerWidth - VIEWPORT_MARGIN - TOOLTIP_WIDTH);
+            style.left = clamp(left, VIEWPORT_MARGIN, window.innerWidth - VIEWPORT_MARGIN - TOOLTIP_WIDTH);
             style.transform = 'translateY(-50%)';
         } else {
-            style.top = Math.max(VIEWPORT_MARGIN, Math.min(rect.top + rect.height / 2, window.innerHeight - TOOLTIP_HEIGHT_ESTIMATE - VIEWPORT_MARGIN));
-            style.left = rect.left + rect.width + TOOLTIP_GAP;
+            style.top = clamp(rect.top + rect.height / 2, VIEWPORT_MARGIN + TOOLTIP_HEIGHT_ESTIMATE / 2, window.innerHeight - VIEWPORT_MARGIN - TOOLTIP_HEIGHT_ESTIMATE / 2);
+            const preferredLeft = rect.left + rect.width + TOOLTIP_GAP;
+            const flippedLeft = rect.left - TOOLTIP_GAP - TOOLTIP_WIDTH;
+            const left = preferredLeft + TOOLTIP_WIDTH <= window.innerWidth - VIEWPORT_MARGIN
+                ? preferredLeft
+                : Math.max(flippedLeft, VIEWPORT_MARGIN);
+            style.left = clamp(left, VIEWPORT_MARGIN, window.innerWidth - VIEWPORT_MARGIN - TOOLTIP_WIDTH);
             style.transform = 'translateY(-50%)';
         }
 

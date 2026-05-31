@@ -3,20 +3,21 @@ import type { BarChartData, MeterData, ComparisonData, VisualData } from '../Sim
 
 export const BarChartVis: React.FC<{ data: BarChartData }> = ({ data }) => {
     const max = Math.max(...data.map((d) => d.value), 1);
+    const dense = data.length >= 5;
     return (
-        <div className="flex items-end gap-2 h-36 w-full px-2">
+        <div className={`flex h-36 w-full items-end ${dense ? 'gap-1 px-1' : 'gap-2 px-2'}`}>
             {data.map((bar) => {
                 const heightPct = Math.max((bar.value / max) * 100, 2);
                 return (
-                    <div key={bar.label} className="flex-1 flex flex-col items-center gap-1">
+                    <div key={bar.label} className="flex min-w-0 flex-1 flex-col items-center gap-1">
                         <span
-                            className="text-xs font-bold"
+                            className={`${dense ? 'text-[10px]' : 'text-xs'} font-bold`}
                             style={{ color: bar.color, fontFamily: "'Outfit', system-ui, sans-serif" }}
                         >
                             {bar.value}
                         </span>
                         <div
-                            className="w-full rounded-t-lg transition-all duration-500"
+                            className="w-full min-w-[10px] rounded-t-lg transition-all duration-500"
                             style={{
                                 height: `${heightPct}%`,
                                 backgroundColor: bar.color,
@@ -24,7 +25,7 @@ export const BarChartVis: React.FC<{ data: BarChartData }> = ({ data }) => {
                             }}
                         />
                         <span
-                            className="text-[10px] text-[#445865] text-center leading-tight"
+                            className={`${dense ? 'whitespace-nowrap text-[8px] leading-tight' : 'text-[10px] leading-tight'} min-w-0 w-full text-center text-[#445865]`}
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         >
                             {bar.label}

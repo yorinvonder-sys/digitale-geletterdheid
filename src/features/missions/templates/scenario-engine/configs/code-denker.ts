@@ -7,6 +7,16 @@ const config: ScenarioEngineConfig = {
     introTitle: 'De Code Denker',
     introDescription:
         'Programmeurs schrijven niet gewoon code — ze denken EERST na. Ze splitsen problemen op, zoeken patronen, laten onnodige details weg en schrijven stappenplannen. Dat heet computational thinking. En het beste nieuws: je hebt er geen computer voor nodig.',
+    experienceDesign: {
+        boringRisk: 'medium',
+        firstTenSeconds: 'Pak een probleemkaart en kies eerst welke stap het probleem kleiner maakt.',
+        primaryInteraction: 'prioritize-case',
+        feedbackMoment: 'Feedback koppelt je keuze aan decompositie, patroonherkenning, abstractie of algoritmisch denken.',
+        visualKit: 'casefile',
+        evidenceMoment: 'Leerlingen leveren gekozen bouwstenen, volgorde en uitleg waarom die aanpak werkt.',
+        antiBoringRule: 'Niet starten met begrippen stampen: eerst een probleem oplossen, daarna het denkprincipe benoemen.',
+        chromeAcceptance: 'Probleemcase, volgordeactie, feedback en eindbewijs blijven leesbaar zonder horizontale overflow.',
+    },
     introFeatures: [
         'Herken de 4 bouwstenen van computational thinking',
         'Rangschik stappen van een algoritme in de juiste volgorde',

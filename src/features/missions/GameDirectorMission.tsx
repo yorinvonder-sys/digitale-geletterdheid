@@ -24,6 +24,7 @@ interface GameDirectorProps {
     onBack: () => void;
     stats?: UserStats;
     userId?: string;
+    qaInitialConclusion?: boolean;
 }
 
 const MISSION_GOAL: MissionGoal = {
@@ -81,7 +82,7 @@ const CHALLENGES: Challenge[] = [
         id: 'smart_jump',
         title: '🧠 Level 4: Slimme Speurhond',
         description: 'Een goede speurhond springt alleen als het veilig is! Zorg dat Robbie ALLEEN springt als hij op de grond staat.',
-        hint: 'Gebruik het oranje "als op de grond dan" blok en sleep het "spring" blok NAAR BINNEN in dat blok.',
+        hint: 'Gebruik het oranje "als op de grond dan" blok samen met een "spring" blok. Extra netjes: sleep "spring" naar binnen in dat blok.',
         check: (ctx, blocks) => {
             const findJumpInIfGrounded = (blockList: PlacedBlock[]): boolean => {
                 for (const b of blockList) {
@@ -90,8 +91,10 @@ const CHALLENGES: Challenge[] = [
                 }
                 return false;
             };
-            // Must have smart jump AND reach the goal
-            return findJumpInIfGrounded(blocks) && ctx.reachedGoal;
+            const hasGroundedCheck = blocks.some(b => b.definitionId === 'if_grounded');
+            const hasJumpBlock = blocks.some(b => b.definitionId === 'jump');
+            // Nested is the ideal solution, but the top-level pair keeps the level playable on touch devices.
+            return (findJumpInIfGrounded(blocks) || (hasGroundedCheck && hasJumpBlock)) && ctx.reachedGoal;
         }
     },
     // === HARD ===
@@ -192,7 +195,7 @@ const LEVEL_LAYOUTS = [
     }
 ];
 
-export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, onBack, stats, userId }) => {
+export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, onBack, stats, userId, qaInitialConclusion = false }) => {
     // Persistent progress state (auto-saved to localStorage)
     const { state: progress, setState: setProgress, clearSave } = useMissionAutoSave<GameDirectorProgress>(
         'game-director',
@@ -206,6 +209,11 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
     // Mobile tab state
     type MobileTab = 'blocks' | 'code' | 'game';
     const [mobileTab, setMobileTab] = useState<MobileTab>('code');
+    const mobilePhaseCopy: Record<MobileTab, string> = {
+        blocks: '1. Kies blokken. Tik op + om een blok in je programma te zetten.',
+        code: '2. Bouw je code. Zet de blokken in de volgorde waarin Robbie ze moet uitvoeren.',
+        game: '3. Test Robbie. Kijk in het spel en de console of je bewijs wordt gevonden.',
+    };
 
     // Add block handler (for keyboard/button add from palette)
     const handleAddBlock = useCallback((definition: BlockDefinition) => {
@@ -225,7 +233,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
     const [logs, setLogs] = useState<string[]>([]);
     const [showHint, setShowHint] = useState(false);
     const [challengeComplete, setChallengeComplete] = useState(false);
-    const [showConclusion, setShowConclusion] = useState(false);
+    const [showConclusion, setShowConclusion] = useState(qaInitialConclusion);
     const [successPulse, setSuccessPulse] = useState(false);
     const [isChatOpen, setIsChatOpen] = useState(false);
     const startTimeRef = useRef<number>(Date.now());
@@ -732,47 +740,75 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
         }
     }, [challengeComplete, handleNextChallenge]);
 
+    const handleMobilePrimaryAction = () => {
+        if (mobileTab === 'blocks') {
+            setMobileTab('code');
+            return;
+        }
+
+        if (mobileTab === 'code') {
+            setMobileTab('game');
+            if (blocks.length > 0 && !isPlaying) {
+                handleTogglePlay();
+            }
+            return;
+        }
+
+        handleTogglePlay();
+    };
+
+    const mobilePrimaryLabel = mobileTab === 'blocks'
+        ? 'Naar code'
+        : mobileTab === 'code'
+            ? 'Test game'
+            : isPlaying
+                ? 'Stop'
+                : 'Opnieuw testen';
+    const mobilePrimaryDisabled = mobileTab !== 'blocks' && blocks.length === 0;
+
 
     return (
-        <div className="bg-[#FCF6EA] h-dvh flex flex-col text-[#08283B] font-['Outfit',system-ui,sans-serif] relative overflow-y-auto">
+        <div className="bg-[#FCF6EA] h-dvh flex flex-col text-[#08283B] font-['Outfit',system-ui,sans-serif] relative overflow-hidden" data-qa="game-director-active">
 
             {showConclusion && (
-                <MissionConclusion
-                    title="🏆 Missie Voltooid: Robbie de Speurhond!"
-                    description="Super gedaan! Je hebt Robbie geprogrammeerd om alle bewijzen te vinden. Je bent nu een echte Game Director!"
-                    aiConcept={{
-                        title: "Wie is de baas?",
-                        text: "In deze missie was JIJ de baas over Robbie, net zoals programmeurs de baas zijn over AI. We moeten AI (zoals ChatGPT) duidelijke instructies geven, zodat het precies doet wat we willen en altijd veilig blijft. Dat noemen we 'AI Alignment'."
-                    }}
-                    onExit={progress.reflectie.trim().length >= 10 ? () => {
-                        clearSave();
-                        setShowConclusion(false);
-                        onComplete(true);
-                    } : undefined}
-                >
-                    {/* Reflectie */}
-                    <div className="bg-[#FCF6EA] rounded-2xl p-4 border border-[#D97848]/20 text-left space-y-3 mt-6">
-                        <div className="flex items-center gap-2">
-                            <Sparkles size={16} className="text-[#D97848]" />
-                            <p className="text-xs font-black uppercase tracking-widest text-[#D97848]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Reflectie</p>
+                <div data-qa="game-director-completion">
+                    <MissionConclusion
+                        title="🏆 Missie Voltooid: Robbie de Speurhond!"
+                        description="Super gedaan! Je hebt Robbie geprogrammeerd om alle bewijzen te vinden. Je bent nu een echte Game Director!"
+                        aiConcept={{
+                            title: "Wie is de baas?",
+                            text: "In deze missie was JIJ de baas over Robbie, net zoals programmeurs de baas zijn over AI. We moeten AI (zoals ChatGPT) duidelijke instructies geven, zodat het precies doet wat we willen en altijd veilig blijft. Dat noemen we 'AI Alignment'."
+                        }}
+                        onExit={progress.reflectie.trim().length >= 10 ? () => {
+                            clearSave();
+                            setShowConclusion(false);
+                            onComplete(true);
+                        } : undefined}
+                    >
+                        {/* Reflectie */}
+                        <div className="bg-[#FCF6EA] rounded-2xl p-4 border border-[#D97848]/20 text-left space-y-3 mt-6">
+                            <div className="flex items-center gap-2">
+                                <Sparkles size={16} className="text-[#D97848]" />
+                                <p className="text-xs font-black uppercase tracking-widest text-[#D97848]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Reflectie</p>
+                            </div>
+                            <p className="text-xs text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Wat heb je geleerd in deze missie? Waar zou je dit in het dagelijks leven tegenkomen?</p>
+                            <textarea
+                                value={progress.reflectie}
+                                onChange={e => setProgress(prev => ({ ...prev, reflectie: e.target.value }))}
+                                placeholder="Wat heb je geleerd? Waar kom je dit nog meer tegen?"
+                                className="w-full p-3 rounded-xl border-2 border-[#E7D8BD] bg-white text-sm resize-none focus:border-[#D97848] focus:outline-none transition-all duration-300"
+                                style={{ minHeight: '80px', fontFamily: "'Outfit', system-ui, sans-serif" }}
+                            />
+                            {progress.reflectie.trim().length < 10 && (
+                                <p className="text-[10px] text-[#E7D8BD]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Schrijf minimaal 10 tekens om de missie af te ronden</p>
+                            )}
                         </div>
-                        <p className="text-xs text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Wat heb je geleerd in deze missie? Waar zou je dit in het dagelijks leven tegenkomen?</p>
-                        <textarea
-                            value={progress.reflectie}
-                            onChange={e => setProgress(prev => ({ ...prev, reflectie: e.target.value }))}
-                            placeholder="Wat heb je geleerd? Waar kom je dit nog meer tegen?"
-                            className="w-full p-3 rounded-xl border-2 border-[#E7D8BD] bg-white text-sm resize-none focus:border-[#D97848] focus:outline-none transition-all duration-300"
-                            style={{ minHeight: '80px', fontFamily: "'Outfit', system-ui, sans-serif" }}
-                        />
-                        {progress.reflectie.trim().length < 10 && (
-                            <p className="text-[10px] text-[#E7D8BD]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Schrijf minimaal 10 tekens om de missie af te ronden</p>
-                        )}
-                    </div>
-                </MissionConclusion>
+                    </MissionConclusion>
+                </div>
             )}
 
             {/* Header */}
-            <header className="bg-white border-b border-[#E7D8BD] px-3 md:px-6 py-2 flex flex-col md:flex-row md:items-center md:justify-between gap-2 shrink-0 min-h-[4rem]">
+            <header className="bg-white border-b border-[#E7D8BD] px-3 md:px-5 py-2 flex flex-col xl:flex-row xl:items-center xl:justify-between gap-2 shrink-0">
                 <div className="flex w-full md:w-auto items-center gap-3 md:gap-6">
                     <button
                         onClick={onBack}
@@ -798,7 +834,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
 
                 {/* Challenge Banner - Integrated in Header */}
                 {currentChallenge && (
-                    <div className={`w-full md:flex-1 md:mx-8 px-3 md:px-4 py-2 rounded-2xl flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2 transition-all duration-500 ${challengeComplete
+                    <div data-qa="game-director-challenge-banner" className={`w-full xl:flex-1 xl:mx-6 px-3 md:px-4 py-2 rounded-2xl flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2 transition-all duration-500 ${challengeComplete
                         ? (successPulse ? 'bg-[#5F947D] scale-105 shadow-[0_0_30px_rgba(95, 148, 125,0.4)]' : 'bg-[#5F947D]/10 border border-[#5F947D]/30')
                         : 'bg-[#FCF6EA] border border-[#E7D8BD]'
                         }`}>
@@ -844,7 +880,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                                     onClick={handleNextChallenge}
                                     className="px-3 py-1.5 bg-[#5F947D] hover:bg-[#5F947D] text-white rounded-full font-bold text-xs transition-all duration-300 flex items-center gap-1 shadow-lg shadow-[#5F947D]/20"
                                 >
-                                    Volgende <ArrowLeft size={12} className="rotate-180" />
+                                    {progress.currentChallengeIndex >= CHALLENGES.length - 1 ? 'Reflectie' : 'Volgende'} <ArrowLeft size={12} className="rotate-180" />
                                 </button>
                             ) : (
                                 <button
@@ -868,12 +904,13 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
 
             </header>
 
-            <MissionGoalBanner goal={MISSION_GOAL} compact className="mx-4 my-2 shrink-0" />
+            <MissionGoalBanner goal={MISSION_GOAL} compact className="mx-3 my-1.5 shrink-0 md:mx-4" />
 
             <StudentAIChat
                 userIdentifier={userId || 'anonymous'}
                 isOpen={isChatOpen}
                 onOpenChange={setIsChatOpen}
+                mobileDock="above-bar"
                 context={{
                     currentChallenge: currentChallenge ? {
                         title: currentChallenge.title,
@@ -897,7 +934,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                 {([
                     { key: 'blocks' as MobileTab, label: 'Blokken', icon: <Puzzle size={16} /> },
                     { key: 'code' as MobileTab, label: 'Code', icon: <Code2 size={16} /> },
-                    { key: 'game' as MobileTab, label: 'Game', icon: <Gamepad2 size={16} /> },
+                    { key: 'game' as MobileTab, label: 'Test', icon: <Gamepad2 size={16} /> },
                 ]).map(tab => (
                     <button
                         key={tab.key}
@@ -914,16 +951,20 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                 ))}
             </div>
 
+            <div className="lg:hidden border-b border-[#E7D8BD] bg-[#FCF6EA] px-4 py-2 text-xs font-bold leading-snug text-[#445865]">
+                {mobilePhaseCopy[mobileTab]}
+            </div>
+
             {/* Main Content Area - Full Height Grid */}
-            <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
+            <div className="min-h-0 flex-1 flex flex-col lg:flex-row overflow-hidden">
 
                 {/* Left Panel: Block Palette */}
-                <div className={`${mobileTab === 'blocks' ? 'flex' : 'hidden'} lg:flex w-full lg:w-64 bg-[#FCF6EA] border-b lg:border-b-0 lg:border-r border-[#E7D8BD] flex-col shrink-0 z-10 p-2 flex-1 lg:flex-initial lg:max-h-none overflow-y-auto`}>
+                <div data-qa="game-director-block-palette" className={`${mobileTab === 'blocks' ? 'flex' : 'hidden'} lg:flex min-h-0 w-full lg:w-64 bg-[#FCF6EA] border-b lg:border-b-0 lg:border-r border-[#E7D8BD] flex-col shrink-0 z-10 p-2 flex-1 lg:flex-initial overflow-hidden`}>
                     <BlockPalette onDragStart={setDraggingBlock} onAddBlock={handleAddBlock} />
                 </div>
 
                 {/* Middle Panel: Workspace */}
-                <div className={`${mobileTab === 'code' ? 'flex' : 'hidden'} lg:flex flex-1 bg-[#FCF6EA] relative flex-col min-w-0 p-2`}>
+                <div data-qa="game-director-code-workspace" className={`${mobileTab === 'code' ? 'flex' : 'hidden'} lg:flex min-h-0 flex-1 bg-[#FCF6EA] relative flex-col min-w-0 p-2`}>
                     <div className="absolute inset-0 bg-[linear-gradient(#E7D8BD_1px,transparent_1px),linear-gradient(90deg,#E7D8BD_1px,transparent_1px)] bg-[size:20px_20px] opacity-40 pointer-events-none"></div>
                     <CodeWorkspace
                         blocks={blocks}
@@ -935,8 +976,8 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                 </div>
 
                 {/* Right Panel: Game Preview (Larger!) */}
-                <div className={`${mobileTab === 'game' ? 'flex' : 'hidden'} lg:flex w-full lg:w-[40%] lg:min-w-[320px] lg:max-w-[800px] bg-white border-t lg:border-t-0 lg:border-l border-[#E7D8BD] flex-col shadow-2xl z-20`}>
-                    <div className="p-4 bg-[#FCF6EA] border-b border-[#E7D8BD] flex justify-between items-center">
+                <div data-qa="game-director-game-preview" className={`${mobileTab === 'game' ? 'flex' : 'hidden'} lg:flex min-h-0 w-full lg:w-[40%] lg:min-w-[320px] lg:max-w-[800px] bg-white border-t lg:border-t-0 lg:border-l border-[#E7D8BD] flex-col shadow-2xl z-20`}>
+                    <div className="p-3 bg-[#FCF6EA] border-b border-[#E7D8BD] flex justify-between items-center shrink-0">
                         <div className="flex items-center gap-2">
                             <div className="w-2 h-2 rounded-full bg-[#5F947D] animate-pulse"></div>
                             <span className="text-xs font-bold text-[#445865] uppercase tracking-wider">Game Preview</span>
@@ -946,9 +987,9 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                         </div>
                     </div>
 
-                    <div className="flex-1 p-4 lg:p-6 flex flex-col gap-4 overflow-y-auto bg-[#FCF6EA] relative">
+                    <div className="min-h-0 flex-1 p-3 lg:p-4 flex flex-col gap-3 overflow-hidden bg-[#FCF6EA] relative">
                         {/* Game Screen Container - Maintains Aspect Ratio but fills space */}
-                        <div className="flex-1 relative bg-[#08283B] rounded-2xl overflow-hidden shadow-2xl border-4 border-[#E7D8BD] ring-1 ring-black/5 group">
+                        <div className="min-h-[180px] flex-1 relative bg-[#08283B] rounded-2xl overflow-hidden shadow-2xl border-4 border-[#E7D8BD] ring-1 ring-black/5 group">
                             {/* Canvas needs to respond to size */}
                             <div className="absolute inset-0 flex items-center justify-center bg-[radial-gradient(circle_at_center,#0B453F_0%,#08283B_100%)]">
                                 <canvas
@@ -974,7 +1015,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                         </div>
 
                         {/* Console / Logs */}
-                        <div className="h-32 bg-white rounded-2xl border border-[#E7D8BD] flex flex-col shrink-0 overflow-hidden">
+                        <div className="h-28 bg-white rounded-2xl border border-[#E7D8BD] flex flex-col shrink-0 overflow-hidden">
                             <div className="px-3 py-2 bg-[#FCF6EA] border-b border-[#E7D8BD] flex justify-between items-center">
                                 <span className="text-[10px] font-bold text-[#445865] uppercase tracking-widest">Systeem Console</span>
                                 <button onClick={() => setLogs([])} className="text-[10px] text-[#445865] hover:text-[#D97848] transition-all duration-300">Wis</button>
@@ -1008,15 +1049,15 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                     {blocks.length} blok{blocks.length !== 1 ? 'ken' : ''}
                 </div>
                 <button
-                    onClick={handleTogglePlay}
-                    disabled={blocks.length === 0}
-                    className={`flex items-center gap-2 px-6 py-2.5 rounded-full font-bold text-sm text-white transition-all duration-300 ${isPlaying
+                    onClick={handleMobilePrimaryAction}
+                    disabled={mobilePrimaryDisabled}
+                    className={`flex items-center gap-2 px-6 py-2.5 rounded-full font-bold text-sm text-white transition-all duration-300 ${mobileTab === 'game' && isPlaying
                         ? 'bg-lab-coral hover:bg-lab-coral hover:text-white'
                         : 'bg-[#D97848] hover:bg-[#D97848] disabled:bg-[#E7D8BD] disabled:text-[#445865]'
                     }`}
                 >
-                    <Play size={14} fill="currentColor" />
-                    {isPlaying ? 'STOP' : 'START'}
+                    {mobileTab === 'blocks' ? <Code2 size={14} /> : <Play size={14} fill="currentColor" />}
+                    {mobilePrimaryLabel}
                 </button>
             </div>
         </div>

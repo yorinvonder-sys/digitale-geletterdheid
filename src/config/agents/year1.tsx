@@ -877,6 +877,8 @@ Typ 'MISSIE VOLTOOID' om terug te keren naar het heden."
         description: 'Visualiseer verhalen met AI.',
         problemScenario: 'Ideeën zijn niets zonder beeld. Leer hoe je met AI jouw fantasie omzet in professionele illustraties.',
         missionObjective: 'Maak je eigen prentenboek.',
+        primaryGoal: 'Maak een kort prentenboekconcept met een hoofdpersoon, een eerste verhaalpagina en een afgerond einde.',
+        goalCriteria: { type: 'steps-complete', min: 3 },
         briefingImage: '/assets/agents/verhalen_ontwerper_new.webp',
         difficulty: 'Easy',
         examplePrompt: 'Schrijf een verhaal over een draak.',
@@ -1528,6 +1530,8 @@ Wat wil je als eerste veranderen?"` + SYSTEM_INSTRUCTION_SUFFIX,
         description: 'Train een AI om plastic en papier uit elkaar te houden door voorbeelden te geven.',
         problemScenario: 'Een computer weet niets. Tenzij jij hem traint. Jij bent de leraar van de machine.',
         missionObjective: 'Train een AI om afval te scheiden (Plastic vs Papier).',
+        primaryGoal: 'Train een eenvoudige sorteer-AI met voorbeelden, test een nieuw voorwerp en verbeter je dataset op basis van de voorspelling.',
+        goalCriteria: { type: 'steps-complete', min: 3 },
         briefingImage: '/assets/agents/ai_trainer_new.webp',
         difficulty: 'Medium',
         examplePrompt: 'Een plastic flesje hoort bij Plastic.',
@@ -1573,7 +1577,7 @@ Wat wil je als eerste veranderen?"` + SYSTEM_INSTRUCTION_SUFFIX,
     - Als de gebruiker een voorbeeld geeft voor Groep 1, antwoord met: [TRAIN_A]Het voorbeeld[/TRAIN_A]
     - Als de gebruiker een voorbeeld geeft voor Groep 2, antwoord met: [TRAIN_B]Het voorbeeld[/TRAIN_B]
     - Als de gebruiker vraagt om te testen, antwoord met: [PREDICT]Het testwoord[/PREDICT]
-    - Vraag na een testvraag om één slimme vervolgstap: een moeilijker testvoorwerp of een extra trainingsvoorbeeld waardoor de AI zichtbaar beter wordt.
+    - Vraag na een testvraag niet om extra trainingsvoorbeelden
     
     EERSTE BERICHT:
     "🤖 **Welkom bij de AI Trainer!**
@@ -2712,7 +2716,7 @@ Ben je er klaar voor? Typ 'START' voor Case 1!"
         color: '#D97848',
         description: 'Vergelijk twee social media feeds en ontdek hoe algoritmes jouw wereld vormen.',
         problemScenario: 'Zie jij hetzelfde als je klasgenoot op TikTok? Waarschijnlijk niet! Algoritmes bouwen een eigen werkelijkheid voor iedereen. Ontdek hoe jouw "bubbel" eruitziet.',
-        missionObjective: 'Vergelijk twee gesimuleerde feeds, doe een quiz over filterbubbels en leer 3 concrete tips om je bubbel te breken.',
+        missionObjective: 'Vergelijk twee gesimuleerde feeds, pin algoritme-bewijs en ontwerp 3 concrete acties om je bubbel te breken.',
         briefingImage: '/assets/agents/ai_spiegel.webp',
         difficulty: 'Medium',
         examplePrompt: 'Laat me twee feeds vergelijken!',
@@ -2743,9 +2747,9 @@ Ben je er klaar voor? Typ 'START' voor Case 1!"
 WERKWIJZE:
 1. Presenteer 2 fictieve leerlingprofielen (Sam en Lina) met verschillende interesses.
 2. Toon hun feeds met [FEED] tags.
-3. Stel 5 multiple-choice quizvragen over filterbubbels.
-4. Bespreek VOORDELEN en RISICO'S.
-5. Sluit af met 3 tips om de bubbel te doorbreken.
+3. Laat de leerling minimaal 3 bewijsstukken pinnen: welk datapunt stuurt welk algoritme-effect?
+4. Laat de leerling een voordeel-risico kaart invullen: wat helpt personalisatie, wat beperkt je blik?
+5. Sluit af met een Bubbel Breek Plan: 3 acties die de leerling zelf kan testen.
 
 FEED FORMAT:
 [FEED]
@@ -2757,14 +2761,14 @@ FEED FORMAT:
 ╚════════════════════╝ ╚════════════════════╝
 [/FEED]
 
-DE 5 QUIZVRAGEN:
-Q1: "Wat is een filterbubbel?" B) Een algoritme dat content kiest op basis van je gedrag ✓
-Q2: "Welk gedrag gebruikt TikTok?" B) Kijktijd, likes en herhaling ✓
-Q3: "Nadeel van een filterbubbel?" B) Je ziet alleen meningen die op die van jou lijken ✓
-Q4: "Voordeel van het algoritme?" B) Content die aansluit bij wat je leuk vindt ✓
-Q5: "Hoe doorbreek je je bubbel?" B) Andere accounts volgen en incognito zoeken ✓
+BUBBEL LAB CHALLENGES:
+Challenge 1 — Feed Split: laat de leerling 3 verschillen tussen Sam en Lina aanwijzen.
+Challenge 2 — Algoritme Bewijs: laat de leerling uitleggen welk gedrag het algoritme waarschijnlijk gebruikt: kijktijd, likes, herhaling of zoekgedrag.
+Challenge 3 — Kans/Risico Kaart: laat de leerling 1 voordeel en 1 risico van personalisatie benoemen.
+Challenge 4 — Perspectief Test: laat de leerling kiezen welk nieuw perspectief ontbreekt in elke feed.
+Challenge 5 — Bubbel Breek Plan: laat de leerling 3 eigen acties formuleren.
 
-Score: 0-1: Bubbel Gevangene, 2-3: Bubbel Bewoner, 4-5: Bubbel Breker.
+Feedbackbadge: 0-1 bewijsstukken: Bubbel Starter, 2-3 bewijsstukken: Feed Onderzoeker, 4-5 bewijsstukken: Bubbel Breker.
 
 TIPS:
 1. Volg accounts die ANDERS denken dan jij
@@ -2787,9 +2791,9 @@ Typ 'SHOW FEEDS' om hun feeds naast elkaar te zien!"
                 example: "Typ: 'Laat me twee feeds vergelijken!'"
             },
             {
-                title: "Bubble Quiz",
-                description: "Beantwoord 5 vragen over hoe algoritmes werken.",
-                example: "Typ: 'Ik ben klaar voor de quiz!'"
+                title: "Algoritme Bewijs",
+                description: "Pin minimaal 3 bewijsstukken: welk gedrag stuurt welke feedkeuze?",
+                example: "Typ: 'Sam krijgt veel sport omdat hij daar waarschijnlijk lang naar kijkt en veel op reageert.'"
             },
             {
                 title: "Bubbel Breken",

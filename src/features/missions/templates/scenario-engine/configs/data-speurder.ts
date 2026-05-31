@@ -16,12 +16,47 @@ const config: ScenarioEngineConfig = {
         },
         evidence: 'Antwoorden over data versus informatie, grafieken, patronen en misleiding.',
     },
+    experienceDesign: {
+        boringRisk: 'medium',
+        firstTenSeconds: 'Bekijk de datasetcase en kies eerst welk bewijs nodig is voor een betrouwbare conclusie.',
+        primaryInteraction: 'pin-evidence',
+        feedbackMoment: 'Feedback laat zien of je data, grafiekkeuze en conclusie logisch aan elkaar koppelt.',
+        visualKit: 'data-room',
+        evidenceMoment: 'Leerlingen leveren grafiekkeuzes, patroonherkenning en een conclusie met databewijs.',
+        antiBoringRule: 'Geen tabelvragen zonder doel: elke ronde start met bewijs zoeken voor een concrete dataclaim.',
+        chromeAcceptance: 'Datasetcase, bewijskeuze, feedback en completionbewijs zijn duidelijk en niet alleen multiple choice.',
+    },
     introFeatures: [
         'Onderscheid data van informatie en conclusies',
         'Kies de juiste grafiekvorm voor verschillende soorten data',
         'Herken patronen en trek onderbouwde conclusies',
         'Oefen: wat zegt deze data écht — en wat niet?',
     ],
+    introChoice: {
+        title: 'Datacase',
+        scenario: 'Je krijgt straks meetwaarden over schermtijd, cijfers en klasgedrag. Eerst maak je een onderzoekshypothese.',
+        prompt: 'Welke hypothese wil jij als data-speurder toetsen?',
+        options: [
+            {
+                id: 'schermtijd-cijfers',
+                label: 'Schermtijd hangt samen met cijfers',
+                description: 'Ik verwacht een patroon tussen veel schermtijd en lagere cijfers.',
+                feedback: 'Goede start: je kiest een toetsbare relatie. Let straks wel op: verband is nog geen oorzaak.'
+            },
+            {
+                id: 'grafiek-misleidt',
+                label: 'De grafiek kan misleiden',
+                description: 'Ik verwacht dat presentatiekeuzes het verhaal kunnen verdraaien.',
+                feedback: 'Sterke datahouding: je kijkt niet alleen naar getallen, maar ook naar hoe ze worden getoond.'
+            },
+            {
+                id: 'gemiddelde-verbergt',
+                label: 'Het gemiddelde verbergt uitschieters',
+                description: 'Ik verwacht dat een samenvatting niet alles vertelt.',
+                feedback: 'Scherp: gemiddelden zijn handig, maar kunnen verschillen in de groep onzichtbaar maken.'
+            }
+        ]
+    },
     maxScore: 100,
     badges: [
         {

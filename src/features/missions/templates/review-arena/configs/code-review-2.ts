@@ -7,6 +7,16 @@ const config: ReviewArenaConfig = {
     introTitle: 'Bewijs dat je programmeren beheerst!',
     introDescription:
         'Je hebt algoritmes, webdevelopment, debugging en automatisering geleerd. In vier ronden test je of je de kernconcepten echt begrijpt.',
+    experienceDesign: {
+        boringRisk: 'low',
+        firstTenSeconds: 'Kies een reviewspoor: weblaag controleren, begrippen koppelen of bugdiagnose starten.',
+        primaryInteraction: 'review-and-improve',
+        feedbackMoment: 'Na je keuze zie je of je programmeerreview scherp genoeg is voor de volgende laag.',
+        visualKit: 'review-puzzle-feedback',
+        evidenceMoment: 'Je bewijs bestaat uit weblaagvolgorde, juiste begrippenkoppels, categorieën en programmeerbeslissingen.',
+        antiBoringRule: 'Code-review blijft een kwaliteitscontrole op werkende producten, geen begrippenlijst met punten.',
+        chromeAcceptance: 'Startknop blijft vergrendeld tot een route is gekozen en de rondedossierkaart past op mobiel.',
+    },
     missionGoal: {
         primaryGoal: 'Bewijs dat je de programmeerconcepten uit periode 2 kunt herkennen, koppelen en uitleggen.',
         criteria: {

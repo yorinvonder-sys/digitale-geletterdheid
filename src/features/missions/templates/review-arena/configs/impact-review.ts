@@ -7,6 +7,16 @@ const config: ReviewArenaConfig = {
     introTitle: 'Wat is de impact van technologie?',
     introDescription:
         'Technologie verandert de samenleving — soms ten goede, soms niet. In vier ronden toets je je kennis over de maatschappelijke gevolgen van digitale innovaties.',
+    experienceDesign: {
+        boringRisk: 'low',
+        firstTenSeconds: 'Kies je impactreviewroute: analysevolgorde, effectkoppels of kans-risico dossier.',
+        primaryInteraction: 'review-and-improve',
+        feedbackMoment: 'Feedback laat zien of je maatschappelijke gevolgen genuanceerd en bewijsgericht beoordeelt.',
+        visualKit: 'review-puzzle-feedback',
+        evidenceMoment: 'Je bewijs bestaat uit impactvolgorde, technologie-effectkoppels, kans-risico keuzes en ethische uitleg.',
+        antiBoringRule: 'Impactreview blijft genuanceerd: gamification ondersteunt afwegingen, niet zwart-wit winnen.',
+        chromeAcceptance: 'Routekeuze start de analyse actief en houdt maatschappelijke nuance zichtbaar op alle viewports.',
+    },
     maxScore: 100,
     badges: [
         {

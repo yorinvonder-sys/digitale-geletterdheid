@@ -16,11 +16,56 @@ export const networkNavigatorConfig: DataViewerConfig = {
         },
         evidence: 'Antwoorden over datapakketten, reactietijden en HTTP-foutcodes.',
     },
+    experienceDesign: {
+        boringRisk: 'high',
+        firstTenSeconds: 'Lag hunt: een bericht blijft hangen en de leerling kiest de eerste bottleneck.',
+        primaryInteraction: 'pin-evidence',
+        feedbackMoment: 'Na de bottleneckkeuze krijgt de leerling feedback op DNS, route-latency of serverfouten.',
+        visualKit: 'data-room',
+        evidenceMoment: 'De leerling gebruikt netwerkstappen, reactietijden en foutcodes als bewijs.',
+        antiBoringRule: 'Netwerken blijven concreet door storing en routebewijs, niet door abstracte definities.',
+        chromeAcceptance: 'Routeonderzoek en datatabellen werken zonder clipped controls op mobile en tablet.',
+    },
     introFeatures: [
         'Analyseer hoe een bericht reist van je telefoon naar een server',
         'Vergelijk reactietijden van populaire websites',
         'Beoordeel wat HTTP-foutcodes betekenen',
     ],
+    investigationHook: {
+        title: 'Een bericht blijft op verzenden staan',
+        role: 'Netwerk-engineer',
+        scenario:
+            'Een leerling stuurt een belangrijk groepsbericht, maar de app blijft hangen op verzenden. Jij moet bepalen waar in de internetreis de vertraging waarschijnlijk zit.',
+        prompt: 'Welke bottleneck check je eerst?',
+        contextLabel: 'Bottleneck-hypothese',
+        continueLabel: 'Traceer de route',
+        options: [
+            {
+                id: 'dns',
+                label: 'DNS vertaalt te langzaam',
+                description: 'Je onderzoekt of de domeinnaam naar het juiste IP-adres wordt vertaald.',
+                feedback: 'Goede eerste verdachte. Zonder DNS weet de app niet naar welk adres het pakket moet reizen.',
+                evidenceChips: ['Stap 3', 'DNS-server', 'IP-adres'],
+                impactCue: 'Adres vertalen',
+            },
+            {
+                id: 'routers',
+                label: 'Te veel routers onderweg',
+                description: 'Je kijkt naar latency: afstand, tussenstappen en routes door het internet.',
+                feedback: 'Sterke netwerkblik. Vertraging zit vaak niet in de telefoon, maar in de route tussen gebruiker en server.',
+                evidenceChips: ['Routers x12', '22 + 20 ms', 'Latency'],
+                impactCue: 'Routevertraging',
+            },
+            {
+                id: 'server',
+                label: 'De server geeft een fout terug',
+                description: 'Je let op HTTP-foutcodes en wat die zeggen over client, server of toegang.',
+                feedback: 'Slim. Een foutcode is geen willekeurig getal, maar een aanwijzing over waar het probleem ontstaat.',
+                evidenceChips: ['404', '500', 'Client/server'],
+                impactCue: 'Statuscode lezen',
+            },
+        ],
+    },
 
     datasets: [
         // ── Dataset 1: Tabel ──────────────────────────────────────────────────
@@ -59,18 +104,22 @@ export const networkNavigatorConfig: DataViewerConfig = {
                 },
                 {
                     id: 'q2-dns-functie',
-                    question: 'Wat doet een DNS-server?',
-                    type: 'multiple-choice',
-                    options: [
-                        'Slaat berichten op als er geen verbinding is',
-                        'Vertaalt een domeinnaam (instagram.com) naar een IP-adres',
-                        'Versleutelt het bericht zodat niemand het kan lezen',
-                        'Stuurt het bericht door naar de dichtstbijzijnde router',
-                    ],
-                    correctAnswer: 'Vertaalt een domeinnaam (instagram.com) naar een IP-adres',
+                    question:
+                        'Pin de stap waar DNS gebeurt. Leg uit wat DNS daar doet en waarom het bericht zonder deze vertaling niet weet naar welk adres het moet reizen.',
+                    type: 'text-observation',
+                    correctAnswer: '',
                     explanation:
-                        'DNS staat voor Domain Name System. Het is het "telefoonboek van het internet": je geeft de naam (instagram.com) en DNS geeft het adres terug (bijv. 31.13.92.36). Zonder DNS zou je IP-adressen uit je hoofd moeten kennen.',
+                        'DNS gebeurt bij stap 3: de DNS-server vertaalt instagram.com naar een IP-adres. Dat werkt als een adresboek voor internetverkeer. Zonder die vertaling kent de app wel de naam, maar niet het technische adres waar het datapakket naartoe moet.',
                     points: 15,
+                    minLength: 60,
+                    minEvidenceCriteria: 2,
+                    textEvidenceCriteria: [
+                        { label: 'stap 3 of DNS-server', keywords: ['stap 3', 'dns-server', 'dns server', 'dns'] },
+                        { label: 'domeinnaam genoemd', keywords: ['domeinnaam', 'instagram.com', 'naam'] },
+                        { label: 'IP-adres genoemd', keywords: ['ip-adres', 'ip adres', 'adres'] },
+                        { label: 'vertaling uitgelegd', keywords: ['vertaalt', 'vertaling', 'omzetten', 'koppelt'] },
+                        { label: 'pakket weet route', keywords: ['pakket', 'reizen', 'waarheen', 'server', 'route'] },
+                    ],
                 },
                 {
                     id: 'q3-router-observatie',
@@ -103,13 +152,21 @@ export const networkNavigatorConfig: DataViewerConfig = {
             questions: [
                 {
                     id: 'q4-snelste-site',
-                    question: 'Welke website heeft de laagste reactietijd vanuit Nederland?',
-                    type: 'multiple-choice',
-                    options: ['YouTube', 'Wikipedia', 'Google.nl', 'Instagram'],
-                    correctAnswer: 'Google.nl',
+                    question:
+                        'Markeer de site die als snelste ping bovenaan je netwerkmonitor moet staan. Noem de reactietijd en leg uit waarom servers of CDN-knooppunten dicht bij Nederland hierbij helpen.',
+                    type: 'text-observation',
+                    correctAnswer: '',
                     explanation:
                         'Google.nl heeft met 8 ms de laagste reactietijd. Dit komt doordat Google enorme servers en CDN-knooppunten (Content Delivery Networks) in Nederland heeft. Amazon.com is het langzaamst (72 ms) omdat de hoofdserver ver weg staat.',
                     points: 10,
+                    minLength: 70,
+                    minEvidenceCriteria: 3,
+                    textEvidenceCriteria: [
+                        { label: 'Google.nl gemarkeerd', keywords: ['google.nl', 'google'] },
+                        { label: '8 ms genoemd', keywords: ['8', '8 ms', '8ms'] },
+                        { label: 'laagste of snelste ping benoemd', keywords: ['laagste', 'snelste', 'ping', 'reactietijd'] },
+                        { label: 'server of CDN dichtbij uitgelegd', keywords: ['cdn', 'server', 'nederland', 'dichtbij', 'datacenter'] },
+                    ],
                 },
                 {
                     id: 'q5-verschil-tiktok-google',
@@ -171,13 +228,20 @@ export const networkNavigatorConfig: DataViewerConfig = {
                 {
                     id: 'q7-foutcode-herkennen',
                     question:
-                        'Je bezoekt een website en krijgt de melding "Pagina niet gevonden". Welke HTTP-foutcode hoort hierbij?',
-                    type: 'multiple-choice',
-                    options: ['200', '403', '404', '500'],
-                    correctAnswer: '404',
+                        'Classificeer de storing "Pagina niet gevonden" in je HTTP-statuspaneel. Noem de foutcode, leg uit of de server wel bereikbaar is en aan welke kant je de oplossing eerst zoekt.',
+                    type: 'text-observation',
+                    correctAnswer: '',
                     explanation:
                         '"Pagina niet gevonden" is de 404-fout: de server bestaat, maar de specifieke pagina niet. 500 is een serverfout (server crashed), 403 is "geen toegang" en 200 betekent succes.',
                     points: 15,
+                    minLength: 80,
+                    minEvidenceCriteria: 3,
+                    textEvidenceCriteria: [
+                        { label: '404 genoemd', keywords: ['404'] },
+                        { label: 'pagina of pad niet gevonden', keywords: ['pagina niet gevonden', 'not found', 'pad', 'url', 'bestaat niet'] },
+                        { label: 'server bereikbaar benoemd', keywords: ['server bestaat', 'server bereikbaar', 'server is er', 'server wel'] },
+                        { label: 'aanvraag/clientkant eerst checken', keywords: ['client', 'aanvraag', 'gebruiker', 'url controleren', 'typefout'] },
+                    ],
                 },
                 {
                     id: 'q8-foutcode-uitleg',

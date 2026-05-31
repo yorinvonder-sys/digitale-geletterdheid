@@ -44,6 +44,33 @@ export interface TeacherNote {
     updated_at?: string;
 }
 
+type TeacherNotesRow = Database['public']['Tables']['teacher_notes']['Row'];
+
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+    typeof value === 'object' && value !== null && !Array.isArray(value);
+
+const mapTeacherNoteRow = (row: TeacherNotesRow & Partial<TeacherNote>): TeacherNote => {
+    const noteData = isRecord(row.data) ? row.data : {};
+    return {
+        id: row.id,
+        teacher_uid: row.teacher_uid ?? String(noteData.teacher_uid ?? ''),
+        student_uid: row.student_uid ?? String(noteData.student_uid ?? ''),
+        school_id: row.school_id ?? (String(noteData.school_id ?? '') || undefined),
+        text: row.text ?? String(noteData.text ?? ''),
+        category: row.category ?? (typeof noteData.category === 'string' ? noteData.category : undefined),
+        created_at: row.created_at ?? undefined,
+        updated_at: row.updated_at ?? undefined,
+    };
+};
+
+const serializeTeacherNote = (note: Partial<TeacherNote>) => ({
+    teacher_uid: note.teacher_uid,
+    student_uid: note.student_uid,
+    school_id: note.school_id,
+    text: note.text,
+    category: note.category,
+});
+
 export interface StudentGroup {
     id?: string;
     name: string;
@@ -345,29 +372,14 @@ export const deleteStudent = async (userId: string): Promise<boolean> => {
 
 export const awardBadge = async (userId: string, badgeId: string): Promise<boolean> => {
     try {
-        const { data: user, error: fetchError } = await supabase
-            .from('users')
-            .select('stats')
-            .eq('id', userId)
-            .single();
+        const { data, error } = await (supabase as any).rpc('teacher_award_badge', {
+            p_student_id: userId,
+            p_badge_id: badgeId,
+            p_reason: 'teacher_award',
+        });
 
-        if (fetchError) throw fetchError;
-        const currentStats = (user?.stats as any) || {};
-        const currentBadges = currentStats.badges || [];
-
-        if (!currentBadges.includes(badgeId)) {
-            const { error } = await supabase
-                .from('users')
-                .update({
-                    stats: {
-                        ...currentStats,
-                        badges: [...currentBadges, badgeId],
-                    },
-                })
-                .eq('id', userId);
-            if (error) throw error;
-        }
-        return true;
+        if (error) throw error;
+        return data === true;
     } catch (error) {
         console.error('Error awarding badge:', error);
         return false;
@@ -375,38 +387,14 @@ export const awardBadge = async (userId: string, badgeId: string): Promise<boole
 };
 // --- Classroom config / XP ---
 
-const LEVEL_THRESHOLDS = [0, 50, 105, 165, 231, 304, 384, 472, 569, 676, 793, 922, 1064, 1220, 1392, 1581, 1789, 2018, 2270, 2547];
-
 export const awardXP = async (studentId: string, amount: number, studentName?: string) => {
     try {
-        const { data: user, error: fetchError } = await supabase
-            .from('users')
-            .select('stats')
-            .eq('id', studentId)
-            .single();
-
-        if (fetchError || !user) {
-            console.error('Student not found:', studentId);
-            return false;
-        }
-
-        const currentStats = (user.stats as any) || { xp: 0, level: 1 };
-        const newXP = Math.max(0, (currentStats.xp || 0) + amount);
-
-        let newLevel = 1;
-        for (let i = LEVEL_THRESHOLDS.length - 1; i >= 0; i--) {
-            if (newXP >= LEVEL_THRESHOLDS[i]) {
-                newLevel = Math.min(i + 1, 50);
-                break;
-            }
-        }
-
-        const { error } = await supabase
-            .from('users')
-            .update({
-                stats: { ...currentStats, xp: newXP, level: newLevel },
-            })
-            .eq('id', studentId);
+        const safeAmount = Math.max(1, Math.min(25, Math.trunc(amount)));
+        const { data, error } = await (supabase as any).rpc('teacher_award_xp', {
+            p_student_id: studentId,
+            p_amount: safeAmount,
+            p_reason: 'teacher_award',
+        });
 
         if (error) throw error;
 
@@ -414,10 +402,10 @@ export const awardXP = async (studentId: string, amount: number, studentName?: s
             uid: studentId,
             studentName: studentName || 'Leerling',
             type: 'xp_earned',
-            data: `${amount} bonus XP (nu level ${newLevel})`,
+            data: `${safeAmount} bonus XP (nu level ${data?.newLevel ?? 'onbekend'})`,
         });
 
-        return true;
+        return data?.awarded === true;
     } catch (error) {
         console.error('Error awarding XP:', error);
         return false;
@@ -691,7 +679,10 @@ export const addTeacherNote = async (note: Omit<TeacherNote, 'id' | 'created_at'
     try {
         const { data, error } = await supabase
             .from('teacher_notes')
-            .insert(note)
+            .insert({
+                school_id: note.school_id,
+                data: serializeTeacherNote(note) as unknown as Database['public']['Tables']['teacher_notes']['Insert']['data'],
+            })
             .select('id')
             .single();
 
@@ -707,12 +698,12 @@ export const getTeacherNotes = async (studentUid: string): Promise<TeacherNote[]
     try {
         const { data, error } = await supabase
             .from('teacher_notes')
-            .select('*')
-            .eq('student_uid', studentUid)
+            .select('id, school_id, data, created_at, updated_at')
+            .contains('data', { student_uid: studentUid })
             .order('created_at', { ascending: false });
 
         if (error) throw error;
-        return (data || []) as TeacherNote[];
+        return (data || []).map(row => mapTeacherNoteRow(row));
     } catch (error) {
         console.error('Error getting teacher notes:', error);
         return [];
@@ -721,10 +712,24 @@ export const getTeacherNotes = async (studentUid: string): Promise<TeacherNote[]
 
 export const updateTeacherNote = async (noteId: string, updates: Partial<TeacherNote> & { schoolId?: string }): Promise<boolean> => {
     try {
+        const { data: existing, error: fetchError } = await supabase
+            .from('teacher_notes')
+            .select('data')
+            .eq('id', noteId)
+            .maybeSingle();
+        if (fetchError) throw fetchError;
+
+        const currentData = isRecord(existing?.data) ? existing.data : {};
+        const nextData = {
+            ...currentData,
+            ...serializeTeacherNote(updates),
+        };
+
         const { error } = await supabase
             .from('teacher_notes')
             .update({
-                ...updates,
+                school_id: updates.school_id ?? updates.schoolId,
+                data: nextData as unknown as Database['public']['Tables']['teacher_notes']['Update']['data'],
                 updated_at: new Date().toISOString(),
             })
             .eq('id', noteId);

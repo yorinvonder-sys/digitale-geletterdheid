@@ -16,11 +16,56 @@ export const apiVerkennerConfig: DataViewerConfig = {
         },
         evidence: 'Leerlingbewijs: antwoorden over JSON, API-verzoeken, parameters, apiKeys en drie observaties met technische uitleg. Docentbewijs: score, fase-overzicht en zichtbaar bewijs dat de leerling API-data en privacyrisico’s kan uitleggen.',
     },
+    experienceDesign: {
+        boringRisk: 'high',
+        firstTenSeconds: 'API-detective: de leerling kiest eerst waarom een weer-widget blijft hangen.',
+        primaryInteraction: 'pin-evidence',
+        feedbackMoment: 'Na de hypothese koppelt feedback endpoint, JSON-key of apiKey direct aan een technisch spoor.',
+        visualKit: 'data-room',
+        evidenceMoment: 'De leerling wijst API-begrippen, URL-parameters en privacyrisico’s aan in data.',
+        antiBoringRule: 'API-data mag niet starten als begrippenlijst; start met een kapotte keten en bewijsstukken.',
+        chromeAcceptance: 'Investigation hook, datasetkaarten en tekstobservaties werken op alle vier viewports zonder horizontale overflow.',
+    },
     introFeatures: [
         'Analyseer een echte JSON-response van een weer-API',
         'Vergelijk welke data populaire apps via API\'s ophalen',
         'Beoordeel hoe URL-parameters werken bij het opvragen van data',
     ],
+    investigationHook: {
+        title: 'De weer-widget blijft hangen',
+        role: 'API-detective',
+        scenario:
+            'De schoolsite toont al de hele ochtend hetzelfde weerbericht. Jij krijgt drie minuten om te bepalen waar de API-keten waarschijnlijk breekt voordat iemand in de code duikt.',
+        prompt: 'Welke hypothese onderzoek je als eerste?',
+        contextLabel: 'API-hypothese',
+        continueLabel: 'Open de API-data',
+        options: [
+            {
+                id: 'endpoint-route',
+                label: 'De app vraagt de verkeerde endpoint op',
+                description: 'Je let extra op URL-paden, parameters en welke resource de app eigenlijk opvraagt.',
+                feedback: 'Sterke technische start. Als de route of parameter niet klopt, kan een API prima werken maar toch de verkeerde data teruggeven.',
+                evidenceChips: ['/current vs /now', 'city=Amsterdam', 'units=metric'],
+                impactCue: 'Route en parameters',
+            },
+            {
+                id: 'json-keys',
+                label: 'De JSON wordt verkeerd gelezen',
+                description: 'Je zoekt naar keys, datatypes en waarden die de app verkeerd kan interpreteren.',
+                feedback: 'Goede onderzoekslijn. Een app heeft niets aan data als de code niet begrijpt welke key bij welke waarde hoort.',
+                evidenceChips: ['humidity 78', 'temp 14,2', 'datatype number'],
+                impactCue: 'Key mapping',
+            },
+            {
+                id: 'api-key',
+                label: 'De toegangssleutel is het risico',
+                description: 'Je kijkt of apiKeys, misbruikpreventie of gedeelde sleutels een rol spelen.',
+                feedback: 'Slim bekeken. API-toegang is niet alleen techniek, maar ook beveiliging: een sleutel hoort nooit zichtbaar rond te zwerven.',
+                evidenceChips: ['apiKey verborgen', 'niet delen', 'misbruik blokkeren'],
+                impactCue: 'Sleutelveiligheid',
+            },
+        ],
+    },
 
     datasets: [
         // ── Dataset 1: Tabel ──────────────────────────────────────────────────
@@ -62,13 +107,21 @@ export const apiVerkennerConfig: DataViewerConfig = {
                 {
                     id: 'q2-datatype',
                     question:
-                        'Welk datatype heeft de waarde van "humidity" in deze JSON-response?',
-                    type: 'multiple-choice',
-                    options: ['string', 'boolean', 'number', 'array'],
-                    correctAnswer: 'number',
+                        'Pin de JSON-sleutel die de luchtvochtigheid beschrijft. Leg uit welk datatype deze waarde heeft en waarom een weer-app dit niet als gewone tekst moet behandelen.',
+                    type: 'text-observation',
+                    correctAnswer: '',
                     explanation:
-                        '"humidity" heeft de waarde 78 — dat is een getal (number), geen tekst. Strings staan tussen aanhalingstekens ("Amsterdam"), numbers zijn kale getallen. Sorteer op "Datatype" om alle numbers te groeperen.',
+                        '"humidity" heeft de waarde 78. Dat is een number: een kaal getal waarmee de app kan rekenen, vergelijken of een meter kan vullen. Als de app dit als gewone tekst behandelt, kan hij bijvoorbeeld niet betrouwbaar sorteren, drempels checken of een vochtigheidswaarschuwing berekenen.',
                     points: 10,
+                    minLength: 60,
+                    minEvidenceCriteria: 2,
+                    textEvidenceCriteria: [
+                        { label: 'humidity-key genoemd', keywords: ['humidity', 'luchtvochtigheid'] },
+                        { label: 'datatype number', keywords: ['number', 'getal', 'numeriek', 'datatype'] },
+                        { label: 'waarde 78 gebruikt', keywords: ['78', 'waarde'] },
+                        { label: 'app kan ermee rekenen', keywords: ['rekenen', 'vergelijken', 'meter', 'sorteren', 'drempel', 'waarschuwing'] },
+                        { label: 'niet gewone tekst', keywords: ['geen tekst', 'niet als tekst', 'string'] },
+                    ],
                 },
                 {
                     id: 'q3-json-observatie',
@@ -107,13 +160,21 @@ export const apiVerkennerConfig: DataViewerConfig = {
             questions: [
                 {
                     id: 'q4-meeste-verzoeken',
-                    question: 'Welke app stuurt de meeste API-verzoeken tijdens een sessie van 5 minuten?',
-                    type: 'multiple-choice',
-                    options: ['Instagram', 'Spotify', 'WhatsApp', 'Google Maps'],
-                    correctAnswer: 'Google Maps',
+                    question:
+                        'Markeer de app die als request-volume incident bovenaan je API-monitor moet staan. Noem het aantal verzoeken en leg uit welke soorten data daardoor waarschijnlijk tegelijk worden opgehaald.',
+                    type: 'text-observation',
+                    correctAnswer: '',
                     explanation:
                         'Google Maps stuurt 47 verzoeken per 5 minuten — de meeste van alle apps. Dit komt doordat kaartdata, verkeersinformatie, locatiedata en routeberekeningen allemaal via aparte API-calls worden opgehaald terwijl je navigeert.',
                     points: 10,
+                    minLength: 70,
+                    minEvidenceCriteria: 3,
+                    textEvidenceCriteria: [
+                        { label: 'Google Maps gemarkeerd', keywords: ['google maps', 'maps'] },
+                        { label: '47 verzoeken genoemd', keywords: ['47', 'verzoeken', 'api-calls', 'api calls'] },
+                        { label: 'meeste of hoogste piek benoemd', keywords: ['meeste', 'hoogste', 'piek', 'bovenaan', 'incident'] },
+                        { label: 'soorten kaartdata uitgelegd', keywords: ['kaartdata', 'verkeer', 'locatie', 'route', 'navigatie'] },
+                    ],
                 },
                 {
                     id: 'q5-verschil-instagram-wikipedia',
@@ -181,18 +242,20 @@ export const apiVerkennerConfig: DataViewerConfig = {
                 {
                     id: 'q7-parameter-functie',
                     question:
-                        'Wat is de functie van een "apiKey" in een API-URL? Kies het beste antwoord.',
-                    type: 'multiple-choice',
-                    options: [
-                        'Het versleutelt de data die de API terugstuurt',
-                        'Het identificeert wie het verzoek stuurt en voorkomt misbruik',
-                        'Het versnelt de API-response',
-                        'Het bepaalt de taal van de JSON-response',
-                    ],
-                    correctAnswer: 'Het identificeert wie het verzoek stuurt en voorkomt misbruik',
+                        'Review de API-URL alsof je hem moet vrijgeven aan een schoolsite. Leg uit waarvoor een apiKey dient, welk misbruikrisico ontstaat als je een echte sleutel deelt en welke veilige regel je daarom toepast.',
+                    type: 'text-observation',
+                    correctAnswer: '',
                     explanation:
                         'Een apiKey is als een pasje: het bewijst wie jij bent. Zo kan de API-aanbieder bijhouden wie de API gebruikt en misbruik blokkeren. Omdat een echte sleutel toegang kan geven tot jouw account of tegoed, houd je die altijd privé.',
                     points: 15,
+                    minLength: 90,
+                    minEvidenceCriteria: 3,
+                    textEvidenceCriteria: [
+                        { label: 'identificatie of toegang benoemd', keywords: ['identificeert', 'wie', 'toegang', 'pasje', 'sleutel'] },
+                        { label: 'misbruik of blokkeren benoemd', keywords: ['misbruik', 'blokkeren', 'limiet', 'rate limit', 'bijhouden'] },
+                        { label: 'privé houden', keywords: ['privé', 'niet delen', 'nooit delen', 'geheim', 'niet openbaar'] },
+                        { label: 'risico voor account of tegoed', keywords: ['account', 'tegoed', 'kosten', 'quota', 'rechten'] },
+                    ],
                 },
                 {
                     id: 'q8-url-bouwen',

@@ -852,20 +852,20 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
     return (
         <div className="w-full h-full flex flex-col relative overflow-hidden" style={{ ...CHATBOT_THEME_VARS, backgroundColor: 'var(--chatbot-bg)', color: 'var(--chatbot-ink)' }}>
             {/* Header */}
-            <div className="px-4 py-3 flex items-center justify-between shrink-0" style={{ backgroundColor: 'var(--chatbot-surface)', borderBottom: '1px solid var(--chatbot-line)' }}>
-                <div className="flex items-center gap-3">
+            <div className="px-3 py-2 sm:px-4 sm:py-3 flex items-center justify-between gap-3 shrink-0" style={{ backgroundColor: 'var(--chatbot-surface)', borderBottom: '1px solid var(--chatbot-line)' }}>
+                <div className="flex min-w-0 items-center gap-2 sm:gap-3">
                     {!isSharedView && (
-                        <button onClick={() => setMode('setup')} className="p-2 rounded-lg transition-colors" style={{ color: 'var(--chatbot-muted)' }}>
+                        <button onClick={() => setMode('setup')} className="shrink-0 p-2 rounded-lg transition-colors" style={{ color: 'var(--chatbot-muted)' }}>
                             <ArrowLeft size={18} />
                         </button>
                     )}
-                    <span className="text-2xl">{activeScenario.icon}</span>
-                    <div>
-                        <h3 className="font-bold text-sm" style={{ color: 'var(--chatbot-ink)' }}>{activeScenario.name}</h3>
-                        <p className="text-xs" style={{ color: 'var(--chatbot-muted)' }}>{activeScenario.context}</p>
+                    <span className="shrink-0 text-2xl">{activeScenario.icon}</span>
+                    <div className="min-w-0">
+                        <h3 className="truncate font-bold text-sm" style={{ color: 'var(--chatbot-ink)' }}>{activeScenario.name}</h3>
+                        <p className="truncate text-xs" style={{ color: 'var(--chatbot-muted)' }}>{activeScenario.context}</p>
                     </div>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex shrink-0 items-center gap-2">
                     {activeScenario.isCustom && !isSharedView && (
                         <button
                             onClick={handleShare}
@@ -905,9 +905,9 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                 />
             )}
 
-            <div className="flex-1 flex overflow-hidden">
+            <div className="flex-1 min-h-0 flex flex-col overflow-y-auto lg:flex-row lg:overflow-hidden">
                 {/* Left: Intent List */}
-                <div className="w-64 p-3 flex flex-col shrink-0" style={{ backgroundColor: 'var(--chatbot-surface)', borderRight: '1px solid var(--chatbot-line)' }}>
+                <div className="w-full max-h-[40vh] p-3 flex flex-col shrink-0 overflow-hidden lg:max-h-none lg:w-64" style={{ backgroundColor: 'var(--chatbot-surface)', borderRight: '1px solid var(--chatbot-line)', borderBottom: '1px solid var(--chatbot-line)' }}>
                     <div className="flex items-center justify-between mb-3">
                         <h4 className="text-[10px] font-bold uppercase tracking-widest flex items-center gap-2" style={{ color: 'var(--chatbot-muted)' }}>
                             <Target size={12} /> Intents (Onderwerpen)
@@ -1027,7 +1027,7 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                 </div>
 
                 {/* Middle: Training Panel */}
-                <div className="flex-1 p-4 md:p-5 flex flex-col min-w-0" style={{ backgroundColor: 'var(--chatbot-bg)' }}>
+                <div className="min-h-[520px] flex-none p-3 sm:p-4 md:p-5 flex flex-col min-w-0 lg:min-h-0 lg:flex-1" style={{ backgroundColor: 'var(--chatbot-bg)' }}>
                     {selectedIntentData ? (
                         <div className="h-full flex flex-col max-w-4xl mx-auto w-full">
                             <div className="mb-4 flex items-start justify-between">
@@ -1140,7 +1140,7 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                 </div>
 
                 {/* Right: Test Chat */}
-                <div className="w-80 flex flex-col shrink-0" style={{ backgroundColor: 'var(--chatbot-surface)', borderLeft: '1px solid var(--chatbot-line)' }}>
+                <div className="min-h-[430px] w-full flex flex-col shrink-0 lg:min-h-0 lg:w-80" style={{ backgroundColor: 'var(--chatbot-surface)', borderLeft: '1px solid var(--chatbot-line)', borderTop: '1px solid var(--chatbot-line)' }}>
                     <div className="p-4" style={{ borderBottom: '1px solid var(--chatbot-line)' }}>
                         <h4 className="text-xs font-bold uppercase tracking-widest flex items-center gap-2" style={{ color: 'var(--chatbot-muted)' }}>
                             <MessageCircle size={12} /> Test Omgeving

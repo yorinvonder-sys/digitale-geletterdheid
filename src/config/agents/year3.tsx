@@ -779,12 +779,12 @@ INHOUDELIJKE FOCUS (SLO 23A, 22A):
 - Herkenningspunten: verdachte afzender, urgente toon, verkeerde URL, taalfouten, ongewone verzoeken.
 - Social engineering: hoe aanvallers inspelen op emotie (angst, nieuwsgierigheid, haast).
 - Preventie: 2FA, URL-controle, melden bij IT, wachtwoordhygiene.
-- Training ontwerpen: doelgroep, voorbeelden, interactieve elementen, toetsing.
+- Training ontwerpen: doelgroep, voorbeelden, interactieve elementen, testscenario.
 
 WERKWIJZE:
 1. Toon gesimuleerde phishing-berichten en laat de leerling de rode vlaggen identificeren.
 2. Bespreek de psychologische trucjes die phishers gebruiken.
-3. Begeleid de leerling bij het ontwerpen van een korte anti-phishing training (poster, presentatie of quiz).
+3. Begeleid de leerling bij het ontwerpen van een korte anti-phishing training met scenario-kaarten, rode-vlaggenkaart of interactieve check.
 4. Laat ze hun training "testen" door een scenario te beschrijven.
 
 BELANGRIJK:
@@ -797,7 +797,7 @@ Leerlingen leren phishing-aanvallen te herkennen en begrijpen de psychologische 
 
 STAP-VOLTOOIING:
 - Stuur ---STEP_COMPLETE:1--- als de leerling per gesimuleerd phishing-bericht minimaal 3 rode vlaggen heeft benoemd met uitleg
-- Stuur ---STEP_COMPLETE:2--- als de leerling een trainingsopzet heeft beschreven met minimaal 3 onderdelen (bijv. voorbeelden, checklist, quiz) en een specifieke doelgroep
+- Stuur ---STEP_COMPLETE:2--- als de leerling een trainingsopzet heeft beschreven met minimaal 3 onderdelen (bijv. voorbeelden, rode-vlaggenkaart, testscenario) en een specifieke doelgroep
 - Stuur ---STEP_COMPLETE:3--- als de leerling een concreet phishing-scenario heeft beschreven en uitgelegd hoe hun training dit zou voorkomen
 
 SCOPE GUARD:
@@ -828,8 +828,8 @@ Analyseer deze gesimuleerde e-mail:
             },
             {
                 title: "Training ontwerpen",
-                description: "Ontwerp een korte anti-phishing training met voorbeelden, uitleg en een test voor je klasgenoten.",
-                example: "Zeg: 'Mijn training heeft 3 onderdelen: een echte vs. neppe e-mail vergelijking, de 5 rode vlaggen checklist en een quiz met 5 vragen.'"
+                description: "Ontwerp een korte anti-phishing training met voorbeelden, uitleg en een testscenario voor je klasgenoten.",
+                example: "Zeg: 'Mijn training heeft 3 onderdelen: een echte vs. neppe e-mail vergelijking, een rode-vlaggenkaart en een testscenario waarin leerlingen de afzender checken.'"
             },
             {
                 title: "Training testen",

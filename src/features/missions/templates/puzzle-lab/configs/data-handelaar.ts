@@ -7,6 +7,16 @@ const config: PuzzleLabConfig = {
     introTitle: 'De Data Handelaar',
     introDescription:
         'Je bent undercover bij DataDeal BV — een bedrijf dat stiekem persoonsgegevens verkoopt. Je hebt interne documenten onderschept. Jouw missie: vind de AVG-overtredingen, begrijp de regels en rapporteer de feiten.',
+    experienceDesign: {
+        boringRisk: 'low',
+        firstTenSeconds: 'Kies je eerste bewijsroute: onderschepte e-mail, klantprofiel of AVG-rechten.',
+        primaryInteraction: 'solve-puzzle',
+        feedbackMoment: 'Elke poging geeft onderzoeksfeedback zonder privacy van minderjarigen te trivialiseren.',
+        visualKit: 'review-puzzle-feedback',
+        evidenceMoment: 'Je bewijs bestaat uit gevonden AVG-overtredingen, rechtenanalyse en een korte rapportconclusie.',
+        antiBoringRule: 'Privacy blijft een zorgvuldig onderzoek met bewijsstukken, niet een spannende datadeal-fantasie.',
+        chromeAcceptance: 'Clue Sprint routekeuze is direct duidelijk, hints zijn helpend en privacycopy blijft leesbaar.',
+    },
     introFeatures: [
         'Analyseer een onderschepte bedrijfse-mail op AVG-overtredingen',
         'Ontdek welke data extra beschermd is onder de wet',
@@ -18,9 +28,9 @@ const config: PuzzleLabConfig = {
         {
             id: 'bewijsstuk-a',
             title: 'Bewijsstuk A — De interne e-mail',
-            type: 'multiple-choice',
+            type: 'text-input',
             description:
-                'Je onderschept een interne e-mail bij DataDeal BV:\n\n---\n**Van:** directeur@datadeal.nl\n**Aan:** verkoop@datadeal.nl\n\n*"Hi team, we hebben van FitTrack 50.000 gebruikersprofielen ontvangen — locatiedata, hartslag en slaappatronen. De gebruikers weten hier niks van maar dat hoeft ook niet — ze hebben de algemene voorwaarden geaccepteerd. Verkoop ze door aan verzekeraar HealthPlus."*\n\n---\n\nWelke AVG-overtreding is dit PRIMAIR?',
+                'Je onderschept een interne e-mail bij DataDeal BV:\n\n---\n**Van:** directeur@datadeal.nl\n**Aan:** verkoop@datadeal.nl\n\n*"Hi team, we hebben van FitTrack 50.000 gebruikersprofielen ontvangen — locatiedata, hartslag en slaappatronen. De gebruikers weten hier niks van maar dat hoeft ook niet — ze hebben de algemene voorwaarden geaccepteerd. Verkoop ze door aan verzekeraar HealthPlus."*\n\n---\n\nTyp de primaire AVG-overtreding die dit bewijsstuk laat zien.',
             clues: [
                 'De AVG zegt: je mag data alleen verwerken voor het doel waarvoor het is verzameld.',
                 'FitTrack verzamelde de data voor de sportapp — niet om door te verkopen aan verzekeraars.',
@@ -31,13 +41,11 @@ const config: PuzzleLabConfig = {
                 'Doelbinding = AVG-artikel 5: je mag data alleen gebruiken voor het doel waarvoor het is verzameld.',
             ],
             revealExtraAfterAttempts: 2,
-            options: [
-                'De data werd niet goed beveiligd opgeslagen',
-                'De data wordt gebruikt voor een ander doel dan waarvoor het verzameld is (schending van doelbinding)',
-                'De e-mail werd verstuurd zonder versleuteling',
-                'Het bedrijf heeft geen privacyverklaring op de website',
-            ],
-            answer: 'De data wordt gebruikt voor een ander doel dan waarvoor het verzameld is (schending van doelbinding)',
+            answer: ['doelbinding', 'schending van doelbinding'],
+            validator: (input: string) => {
+                const s = input.toLowerCase();
+                return s.includes('doelbinding') || (s.includes('ander doel') && s.includes('verzameld'));
+            },
             caseSensitive: false,
             maxAttempts: 3,
             points: 25,
@@ -48,9 +56,9 @@ const config: PuzzleLabConfig = {
         {
             id: 'bewijsstuk-b',
             title: 'Bewijsstuk B — Het klantprofiel',
-            type: 'multiple-choice',
+            type: 'text-input',
             description:
-                'Je vindt een klantprofiel in de database van DataDeal BV:\n\n---\n**KLANTPROFIEL nr. 4892**\nNaam: Emma de Vries, 14 jaar\nSchool: Stedelijk College\nZoekgeschiedenis: "hoe word ik populair", "ben ik te dik", "crush tips"\nPsychologisch profiel: "onzeker, beïnvloedbaar"\nDoelgroep: Influencer-marketing campagnes\n\n---\n\nWelke AVG-overtreding is hier het meest ernstig?',
+                'Je vindt een klantprofiel in de database van DataDeal BV:\n\n---\n**KLANTPROFIEL nr. 4892**\nNaam: Emma de Vries, 14 jaar\nSchool: Stedelijk College\nZoekgeschiedenis: "hoe word ik populair", "ben ik te dik", "crush tips"\nPsychologisch profiel: "onzeker, beïnvloedbaar"\nDoelgroep: Influencer-marketing campagnes\n\n---\n\nTyp de ernstigste privacyfinding. Noem de minderjarige of profilering voor marketing.',
             clues: [
                 'Emma is 14 jaar — zij is een minderjarige.',
                 'De AVG geeft kinderen extra bescherming bij online diensten.',
@@ -61,13 +69,12 @@ const config: PuzzleLabConfig = {
                 'Zoekgeschiedenissen en psychologische profielen zijn gevoelige data die niet zonder expliciete toestemming van ouders verzameld mogen worden bij minderjarigen.',
             ],
             revealExtraAfterAttempts: 2,
-            options: [
-                'Er staat geen telefoonnummer in het profiel, dus het is onvolledig',
-                'De schoolnaam had niet opgeslagen mogen worden',
-                'Een minderjarige wordt geprofileerd voor marketingdoeleinden zonder toestemming van ouders',
-                'Het profiel bevat spelfouten in de naam',
-            ],
-            answer: 'Een minderjarige wordt geprofileerd voor marketingdoeleinden zonder toestemming van ouders',
+            answer: [],
+            validator: (input: string) => {
+                const s = input.toLowerCase();
+                return (s.includes('minderjarig') || s.includes('kind') || s.includes('14')) &&
+                    (s.includes('profil') || s.includes('marketing') || s.includes('toestemming'));
+            },
             caseSensitive: false,
             maxAttempts: 3,
             points: 25,
@@ -78,9 +85,9 @@ const config: PuzzleLabConfig = {
         {
             id: 'rechten-betrokkenen',
             title: 'Wat mogen burgers eisen?',
-            type: 'multiple-choice',
+            type: 'text-input',
             description:
-                'Liam hoort dat zijn gezondheidsdata is doorverkocht door DataDeal BV zonder zijn toestemming. Hij wil actie ondernemen.\n\nWat heeft Liam het DIRECTE RECHT om te doen onder de AVG?',
+                'Liam hoort dat zijn gezondheidsdata is doorverkocht door DataDeal BV zonder zijn toestemming. Hij wil actie ondernemen.\n\nTyp twee directe AVG-rechten die Liam kan gebruiken.',
             clues: [
                 'De AVG geeft iedereen rechten over hun eigen persoonsgegevens.',
                 'Recht op inzage: je mag opvragen welke data een bedrijf over jou heeft.',
@@ -91,13 +98,11 @@ const config: PuzzleLabConfig = {
                 'Als een bedrijf niet meewerkt, kun je een klacht indienen bij de Autoriteit Persoonsgegevens (AP) — de Nederlandse privacywaakhond.',
             ],
             revealExtraAfterAttempts: 2,
-            options: [
-                'Liam kan niets doen want hij heeft de algemene voorwaarden geaccepteerd',
-                'Liam kan het bedrijf vragen zijn data in te zien en te verwijderen',
-                'Liam kan pas actie ondernemen als er schade is aangetoond',
-                'Liam moet eerst een advocaat inhuren voordat hij rechten heeft',
-            ],
-            answer: 'Liam kan het bedrijf vragen zijn data in te zien en te verwijderen',
+            answer: [],
+            validator: (input: string) => {
+                const s = input.toLowerCase();
+                return (s.includes('inzage') || s.includes('inzien')) && (s.includes('verwijder') || s.includes('wissen') || s.includes('vergeten'));
+            },
             caseSensitive: false,
             maxAttempts: 3,
             points: 25,

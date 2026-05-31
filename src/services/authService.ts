@@ -375,7 +375,7 @@ export const subscribeToAuthChanges = (callback: (user: ParentUser | null) => vo
             return await Promise.race<ParentUser>([
                 buildParentUser(supabaseUser),
                 new Promise<ParentUser>((resolve) => {
-                    setTimeout(() => resolve(buildFallbackParentUser(supabaseUser)), 4_000);
+                    setTimeout(() => resolve(buildFallbackParentUser(supabaseUser)), 12_000);
                 }),
             ]);
         } catch (err) {
@@ -407,12 +407,19 @@ export const subscribeToAuthChanges = (callback: (user: ParentUser | null) => vo
             .from('users')
             .select('*')
             .eq('id', supabaseUser.id)
-            .single()
+            .maybeSingle()
             .then(
-                ({ data: profile }) => profile,
+                ({ data: profile, error }) => {
+                    if (error) {
+                        console.error('Error fetching profile:', error);
+                        return { profile: null, canCreateMissingProfile: false };
+                    }
+
+                    return { profile, canCreateMissingProfile: !profile };
+                },
                 (err) => {
                     console.error('Error fetching profile:', err);
-                    return null;
+                    return { profile: null, canCreateMissingProfile: false };
                 }
             );
 
@@ -422,7 +429,8 @@ export const subscribeToAuthChanges = (callback: (user: ParentUser | null) => vo
                 .catch(() => { console.warn('MFA check failed, requiring verification'); return true; })
             : Promise.resolve(false);
 
-        const [profile, mfaPending] = await Promise.all([profilePromise, mfaPromise]);
+        const [{ profile, canCreateMissingProfile }, mfaPending] = await Promise.all([profilePromise, mfaPromise]);
+        const canUseDefaultStudentStats = Boolean(profile) || canCreateMissingProfile;
 
         if (profile) {
             // P2-2 FIX: NEVER fall back to profile.role — it is user-mutable via DB.
@@ -450,7 +458,7 @@ export const subscribeToAuthChanges = (callback: (user: ParentUser | null) => vo
                     () => {},
                     (writeErr) => console.warn('Could not update lastLogin:', writeErr)
                 );
-        } else {
+        } else if (canCreateMissingProfile) {
             // Fire-and-forget: create user row without blocking login flow
             supabase.from('users').insert({
                 id: supabaseUser.id,
@@ -467,6 +475,8 @@ export const subscribeToAuthChanges = (callback: (user: ParentUser | null) => vo
                     () => {},
                     (writeErr) => console.warn('Could not create user document:', writeErr)
                 );
+        } else {
+            console.warn('Skipping profile creation because profile read failed.');
         }
 
         return {
@@ -478,7 +488,7 @@ export const subscribeToAuthChanges = (callback: (user: ParentUser | null) => vo
             schoolId: finalSchoolId || undefined,
             identifier: finalIdentifier,
             studentClass: existingStudentClass,
-            stats: existingStats,
+            stats: existingStats ?? (canUseDefaultStudentStats ? { xp: 0, level: 1, missionsCompleted: [], inventory: [] } : undefined),
             mustChangePassword,
             chatLocked,
             chatLockReason,

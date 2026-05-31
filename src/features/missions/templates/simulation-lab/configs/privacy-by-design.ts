@@ -165,6 +165,16 @@ export const privacyByDesignConfig: SimulationLabConfig = {
         },
         evidence: 'Keuzes rond profielzichtbaarheid, app-permissies en cookie-instellingen.',
     },
+    experienceDesign: {
+        boringRisk: 'medium',
+        firstTenSeconds: 'Redesign een onveilig standaardprofiel door eerst één privacy-instelling dicht te zetten.',
+        primaryInteraction: 'operate-simulation',
+        feedbackMoment: 'De privacy-score reageert live; feedback verbindt de keuze aan privacy by default en dataminimalisatie.',
+        visualKit: 'simulation-control',
+        evidenceMoment: 'Leerlingen leveren instellingkeuzes, scoreverschil en een korte uitleg welke data echt nodig is.',
+        antiBoringRule: 'Privacy blijft serieus: geen puntenjacht om alles te delen, maar een keuze met zichtbaar risico en herstel.',
+        chromeAcceptance: 'Startactie, live score, analysevraag, feedback en completionbewijs zijn zichtbaar op desktop/tablet/mobile zonder clipping.',
+    },
     introFeatures: [
         'Sim 1 — Pas je sociale media instellingen aan',
         'Sim 2 — Kies welke app-permissies je geeft',
@@ -214,7 +224,7 @@ export const privacyByDesignConfig: SimulationLabConfig = {
                     id: 'sp1-q1',
                     question:
                         'Wat gebeurt er met jouw Privacy Score als je profielfoto op "publiek" staat én je locatie deelt?',
-                    type: 'multiple-choice',
+                    type: 'evidence-input',
                     options: [
                         'De score is hoog, want iedereen kan je vinden',
                         'De score is laag, want jij deelt veel informatie',
@@ -229,7 +239,7 @@ export const privacyByDesignConfig: SimulationLabConfig = {
                 {
                     id: 'sp1-q2',
                     question: 'Welke instelling verbetert de Privacy Score het meest?',
-                    type: 'multiple-choice',
+                    type: 'evidence-input',
                     options: [
                         'Profielfoto op "vrienden" zetten',
                         'Locatie-delen uitschakelen',
@@ -244,7 +254,7 @@ export const privacyByDesignConfig: SimulationLabConfig = {
                 {
                     id: 'sp1-q3',
                     question: 'Wat is het grootste risico van je locatie automatisch delen op sociale media?',
-                    type: 'multiple-choice',
+                    type: 'evidence-input',
                     options: [
                         'Je profiel ziet er minder mooi uit',
                         'Mensen weten waar je bent en wanneer je niet thuis bent',
@@ -277,7 +287,7 @@ export const privacyByDesignConfig: SimulationLabConfig = {
                     id: 'ap1-q1',
                     question:
                         'Welke permissie verzamelt de meest privacy-gevoelige data?',
-                    type: 'multiple-choice',
+                    type: 'evidence-input',
                     options: ['Camera', 'Microfoon of Locatie', 'Opslag', 'Contacten'],
                     correctAnswer: 'Microfoon of Locatie',
                     explanation:
@@ -288,7 +298,7 @@ export const privacyByDesignConfig: SimulationLabConfig = {
                     id: 'ap1-q2',
                     question:
                         'Een spelletjes-app vraagt toegang tot je contacten. Waarom is dat verdacht?',
-                    type: 'multiple-choice',
+                    type: 'evidence-input',
                     options: [
                         'Spellen hebben contacten nodig om scores bij te houden',
                         'Een spelletje heeft contacten normaal gesproken helemaal niet nodig',
@@ -304,7 +314,7 @@ export const privacyByDesignConfig: SimulationLabConfig = {
                     id: 'ap1-q3',
                     question:
                         'Wat is het principe van "data minimalisatie" bij app-permissies?',
-                    type: 'multiple-choice',
+                    type: 'evidence-input',
                     options: [
                         'Geef apps zo weinig permissies als mogelijk voor ze te laten werken',
                         'Verwijder apps die je niet gebruikt',
@@ -339,7 +349,7 @@ export const privacyByDesignConfig: SimulationLabConfig = {
                     id: 'ck1-q1',
                     question:
                         'Wat betekent het als een website zegt "we gebruiken cookies voor een betere ervaring"?',
-                    type: 'multiple-choice',
+                    type: 'evidence-input',
                     options: [
                         'De site wordt sneller voor jou',
                         'De site slaat jouw gedrag op om gerichte advertenties te tonen',
@@ -354,7 +364,7 @@ export const privacyByDesignConfig: SimulationLabConfig = {
                 {
                     id: 'ck1-q2',
                     question: 'Welk cookie-type heb je minimaal nodig om een webshop te gebruiken?',
-                    type: 'multiple-choice',
+                    type: 'evidence-input',
                     options: [
                         'Geen cookies — je kunt alles anoniem doen',
                         'Functionele cookies — voor je winkelmandje en inlogstatus',
@@ -370,7 +380,7 @@ export const privacyByDesignConfig: SimulationLabConfig = {
                     id: 'ck1-q3',
                     question:
                         'Je kiest "Geen cookies". Welk nadeel heeft dit voor jou als gebruiker?',
-                    type: 'multiple-choice',
+                    type: 'evidence-input',
                     options: [
                         'De site laadt langzamer',
                         'Je blijft niet ingelogd en je winkelmandje wordt vergeten',

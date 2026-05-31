@@ -105,9 +105,9 @@ export const GamesSection: React.FC<GamesSectionProps> = ({
         };
 
         Promise.all([
-            isGameEnabled('arena-battle'),
-            isGameEnabled('code-breaker'),
-            isGameEnabled('typing-trainer'),
+            isGameEnabled('arena-battle', schoolId),
+            isGameEnabled('code-breaker', schoolId),
+            isGameEnabled('typing-trainer', schoolId),
         ]).then(([arenaBattle, codeBreaker, typingTrainer]) => {
             setPermissions({
                 'arena-battle': arenaBattle,
@@ -118,10 +118,10 @@ export const GamesSection: React.FC<GamesSectionProps> = ({
         }).catch(console.error);
 
         // Subscribe to Supabase for real-time updates
-        const unsubscribe = subscribeToPermissions(undefined, applyPermissionSnapshot);
+        const unsubscribe = subscribeToPermissions(schoolId, applyPermissionSnapshot);
 
         return () => unsubscribe();
-    }, []);
+    }, [schoolId]);
 
     const isTeacher = userRole === 'teacher' || userRole === 'admin' || userRole === 'developer';
 
@@ -264,7 +264,7 @@ export const GamesSection: React.FC<GamesSectionProps> = ({
             {/* Teacher Panel (conditionally shown) */}
             {isTeacher && showTeacherPanel && (
                 <div className="shrink-0 p-6" style={{ borderBottom: `1px solid ${C.border}`, backgroundColor: C.bgAlt }}>
-                    <TeacherGameToggle />
+                    <TeacherGameToggle schoolId={schoolId} />
                 </div>
             )}
 

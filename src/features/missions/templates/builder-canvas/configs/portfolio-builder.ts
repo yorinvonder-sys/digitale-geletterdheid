@@ -13,6 +13,28 @@ export const portfolioBuilderConfig: BuilderCanvasConfig = {
         'Ontwerp de structuur van je portfolio',
         'Schrijf een persoonlijk profiel dat jou als maker neerzet',
     ],
+    missionGoal: {
+        primaryGoal:
+            'Stel een digitaal portfolio samen dat je beste werk, leerproces en profiel als digitale maker overtuigend presenteert.',
+        criteria: {
+            type: 'steps-complete',
+            min: 4,
+            description:
+                'Je rondt projectselectie, reflecties, portfoliosructuur en persoonlijk profiel af met concrete tekstbewijzen.',
+        },
+        evidence:
+            'Leerlingbewijs: geselecteerde projecten, twee reflecties, portfoliosructuur en persoonlijk profiel. Docentbewijs: checklistvoortgang, tekstinvoer en eindscore tonen of de leerling groei en digitale vaardigheden kan onderbouwen.',
+    },
+    experienceDesign: {
+        boringRisk: 'low',
+        firstTenSeconds: 'Portfolio first impression: leerling kiest welke projectkaart de bezoeker meteen moet overtuigen.',
+        primaryInteraction: 'test-product',
+        feedbackMoment: 'Na de projectkaartkeuze koppelt feedback selectie, reflectie, structuur en profiel aan een professionele eerste indruk.',
+        visualKit: 'maker-canvas',
+        evidenceMoment: 'De leerling toont geselecteerde projecten, reflecties, portfoliosructuur en persoonlijk profiel als groeibewijs.',
+        antiBoringRule: 'Portfolio bouwen is cureren en testen op eerste indruk, geen map met alles wat ooit gemaakt is.',
+        chromeAcceptance: 'Portfolio-start, projectselectie, reflecties en completionbewijs blijven rustig, professioneel en responsive op alle vier viewports.',
+    },
     enableChat: true,
     chatRoleId: 'portfolio-builder',
     previewType: 'text-preview',

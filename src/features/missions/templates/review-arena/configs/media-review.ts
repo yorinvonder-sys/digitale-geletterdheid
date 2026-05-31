@@ -7,6 +7,16 @@ const config: ReviewArenaConfig = {
     introTitle: 'Wat weet jij van digitale media?',
     introDescription:
         'Van podcast tot meme, van storytelling tot branding — je hebt een hele mediaklas doorlopen. In vier ronden bewijs je dat je alle concepten echt begrijpt.',
+    experienceDesign: {
+        boringRisk: 'low',
+        firstTenSeconds: 'Kies je media-reviewroute: productievolgorde, begrippencheck of bewuste boodschap inspecteren.',
+        primaryInteraction: 'review-and-improve',
+        feedbackMoment: 'Na elke ronde krijg je feedback op hoe goed je mediakeuzes en effecten herkent.',
+        visualKit: 'review-puzzle-feedback',
+        evidenceMoment: 'Je bewijs bestaat uit productiestappen, begrip-koppels, mediakeuze-categorieën en snelle uitleg.',
+        antiBoringRule: 'Mediareview voelt als redactiecheck van echte contentkeuzes, niet als algemene mediakennisquiz.',
+        chromeAcceptance: 'Eerste routekeuze en rondedossier maken de redactiecheck duidelijk zonder clipped labels.',
+    },
     maxScore: 100,
     badges: [
         {

@@ -164,6 +164,16 @@ export const bugHunterConfig: SimulationLabConfig = {
         },
         evidence: 'Antwoorden over foutmeldingen, bugtypen, debugstrategieen en de behaalde debugscore.',
     },
+    experienceDesign: {
+        boringRisk: 'medium',
+        firstTenSeconds: 'Lees de eerste foutmelding alsof je een incidentticket krijgt en kies je eerste debug-ingreep.',
+        primaryInteraction: 'operate-simulation',
+        feedbackMoment: 'De debugscore verandert live en feedback maakt zichtbaar welke strategie sneller tot de oorzaak leidt.',
+        visualKit: 'simulation-control',
+        evidenceMoment: 'Leerlingen tonen hun foutanalyse, gekozen debugstrategie en score per debugging-simulatie.',
+        antiBoringRule: 'Eerst een fout opsporen en een strategie bedienen, daarna pas de analysevraag beantwoorden.',
+        chromeAcceptance: 'Foutticket, controls, live score, vraagfeedback en resultaatstatus passen in beeld zonder horizontale overflow.',
+    },
     introFeatures: [
         'Sim 1 — Lees foutmeldingen en stel je debug-score in',
         'Sim 2 — Ontdek welke bugs het gevaarlijkst zijn',
@@ -209,7 +219,7 @@ export const bugHunterConfig: SimulationLabConfig = {
                     id: 'fl1-q1',
                     question:
                         'Wat is het eerste wat je doet als je een foutmelding ziet?',
-                    type: 'multiple-choice',
+                    type: 'evidence-input',
                     options: [
                         'Alle code verwijderen en opnieuw beginnen',
                         'De foutmelding zorgvuldig lezen en de regelnummer noteren',
@@ -225,7 +235,7 @@ export const bugHunterConfig: SimulationLabConfig = {
                     id: 'fl1-q2',
                     question:
                         'Wat is het verschil tussen een syntax error en een runtime error?',
-                    type: 'multiple-choice',
+                    type: 'evidence-input',
                     options: [
                         'Er is geen verschil — beide stoppen de code',
                         'Syntax error = schrijffout in code; runtime error = fout die pas optreedt tijdens uitvoering',
@@ -240,7 +250,7 @@ export const bugHunterConfig: SimulationLabConfig = {
                 {
                     id: 'fl1-q3',
                     question: 'Waarvoor gebruik je console.log bij het debuggen?',
-                    type: 'multiple-choice',
+                    type: 'evidence-input',
                     options: [
                         'Om de code te versnellen',
                         'Om te zien welke waarden variabelen hebben op een bepaald moment',
@@ -272,7 +282,7 @@ export const bugHunterConfig: SimulationLabConfig = {
                 {
                     id: 'sb1-q1',
                     question: 'Welke bug is het moeilijkst om te vinden?',
-                    type: 'multiple-choice',
+                    type: 'evidence-input',
                     options: [
                         'Syntax fout — de editor toont direct een fout',
                         'Logische fout — de code werkt, maar geeft verkeerde uitkomsten',
@@ -288,7 +298,7 @@ export const bugHunterConfig: SimulationLabConfig = {
                     id: 'sb1-q2',
                     question:
                         'Je hebt de code: `for (let i = 0; i <= 5; i++)` maar je wil precies 5 elementen doorlopen (0 t/m 4). Welke bug bevat dit?',
-                    type: 'multiple-choice',
+                    type: 'evidence-input',
                     options: [
                         'Syntax fout — de lus is verkeerd geschreven',
                         'Off-by-one fout — de lus loopt één stap te ver (tot 5 inclusief)',
@@ -304,7 +314,7 @@ export const bugHunterConfig: SimulationLabConfig = {
                     id: 'sb1-q3',
                     question:
                         'Waarom is een variabele de naam "x" geven een probleem, ook al werkt de code?',
-                    type: 'multiple-choice',
+                    type: 'evidence-input',
                     options: [
                         'De computer begrijpt de naam "x" niet',
                         'Over 2 weken weet jij (of een ander) niet meer wat "x" betekent',
@@ -339,7 +349,7 @@ export const bugHunterConfig: SimulationLabConfig = {
                     id: 'ds1-q1',
                     question:
                         'Een klasgenoot "fixt" een bug door willekeurig dingen te veranderen totdat het werkt. Wat is het probleem?',
-                    type: 'multiple-choice',
+                    type: 'evidence-input',
                     options: [
                         'Helemaal geen probleem — als het werkt, is het goed',
                         'Ze begrijpen de oorzaak niet en dezelfde bug keert later terug',
@@ -355,7 +365,7 @@ export const bugHunterConfig: SimulationLabConfig = {
                     id: 'ds1-q2',
                     question:
                         'Wat zijn de vier stappen van systematisch debuggen?',
-                    type: 'multiple-choice',
+                    type: 'evidence-input',
                     options: [
                         'Schrijven → Testen → Verwijderen → Opnieuw schrijven',
                         'Reproduceren → Lokaliseren → Diagnosticeren → Fixen',
@@ -371,7 +381,7 @@ export const bugHunterConfig: SimulationLabConfig = {
                     id: 'ds1-q3',
                     question:
                         'Na het fixen van een bug doe je: de fix testen met het geval dat de bug triggerde. Waarom is dat extra stap belangrijk?',
-                    type: 'multiple-choice',
+                    type: 'evidence-input',
                     options: [
                         'Het is niet nodig als je zeker weet dat de fix klopt',
                         'Om te verifiëren dat de bug echt weg is en je geen nieuwe bugs hebt geïntroduceerd',

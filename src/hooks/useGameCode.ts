@@ -49,6 +49,35 @@ export function extractGameHtmlDocument(rawResponse: string): string | null {
     return null;
 }
 
+/**
+ * Validates that game HTML code contains the minimum required elements
+ * for a functional canvas game. Returns { valid, reason }.
+ */
+export function validateGameCode(code: string): { valid: boolean; reason?: string } {
+    if (!code || code.trim().length < 200) {
+        return { valid: false, reason: 'Code te kort voor een werkende game' };
+    }
+
+    const hasCanvas = /<canvas\b/i.test(code);
+    const hasScript = /<script\b/i.test(code) && /<\/script>/i.test(code);
+    const hasGameLoop = /requestAnimationFrame/i.test(code) || /setInterval/i.test(code);
+    const hasDrawFunction = /function\s+draw\s*\(/i.test(code) || /\.fillRect\s*\(/i.test(code) || /\.drawImage\s*\(/i.test(code);
+
+    if (!hasCanvas) return { valid: false, reason: 'Canvas element ontbreekt' };
+    if (!hasScript) return { valid: false, reason: 'Script tags ontbreken of niet gesloten' };
+    if (!hasGameLoop) return { valid: false, reason: 'Game loop (requestAnimationFrame) ontbreekt' };
+    if (!hasDrawFunction) return { valid: false, reason: 'Draw functie ontbreekt' };
+
+    // Check balanced script tags
+    const openScripts = (code.match(/<script/gi) || []).length;
+    const closeScripts = (code.match(/<\/script>/gi) || []).length;
+    if (openScripts !== closeScripts) {
+        return { valid: false, reason: 'Script tags niet in balans' };
+    }
+
+    return { valid: true };
+}
+
 export function stripGameCodeFromResponse(rawResponse: string): string {
     return stripAiProvenance(rawResponse)
         .replace(GAME_HTML_DOCUMENT_REGEX, '')

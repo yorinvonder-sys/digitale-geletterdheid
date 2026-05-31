@@ -28,6 +28,7 @@ export const ConfidenceRating: React.FC<ConfidenceRatingProps> = ({ onSelect }) 
                 <button
                     key={l.value}
                     onClick={() => onSelect(l.value)}
+                    data-qa={`confidence-level-${l.value}`}
                     className={`flex-1 py-2.5 px-2 rounded-xl border-2 text-center transition-all duration-200 active:scale-[0.97] ${l.color}`}
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
@@ -39,12 +40,14 @@ export const ConfidenceRating: React.FC<ConfidenceRatingProps> = ({ onSelect }) 
     </motion.div>
 );
 
-/** Score multiplier op basis van confidence + correctheid */
+/** Score multiplier op basis van confidence + correctheid (Asymmetrisch) */
 export function confidenceMultiplier(confidence: 1 | 2 | 3 | undefined, correct: boolean): number {
     if (!confidence) return 1;
     if (correct) {
-        return confidence === 3 ? 1.2 : confidence === 2 ? 1.1 : 1.0;
+        // Correct: extra beloning voor terechte zelfverzekerdheid
+        return confidence === 3 ? 1.5 : confidence === 2 ? 1.2 : 1.0;
     }
-    // Fout: hoe zekerder, hoe meer straf
-    return confidence === 3 ? 0.8 : 1.0;
+    // Fout: straf bij fout antwoord met hoog zelfvertrouwen
+    return confidence === 3 ? -0.5 : confidence === 2 ? -0.2 : 0.0;
 }
+

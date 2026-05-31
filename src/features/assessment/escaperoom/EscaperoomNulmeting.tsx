@@ -188,7 +188,7 @@ export const EscaperoomNulmeting: React.FC<Props> = ({ variant = 'nulmeting', on
   if (stap === 'intro') {
     return (
       <div className="w-full h-full bg-lab-cream text-lab-ink overflow-y-auto">
-        <div className="min-h-full flex items-center justify-center p-6">
+        <div className="min-h-full flex items-start justify-center p-4 md:p-6">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -253,7 +253,7 @@ export const EscaperoomNulmeting: React.FC<Props> = ({ variant = 'nulmeting', on
 
               <button
                 onClick={startEscaperoom}
-                className="w-full py-4 bg-lab-coral hover:bg-lab-coral hover:text-white rounded-xl font-black text-lg text-white shadow-lg shadow-lab-coral hover:shadow-lab-coral hover:scale-[1.02] transition-all active:scale-[0.98]"
+                className="sticky bottom-3 z-10 w-full py-4 bg-lab-coral hover:bg-lab-coral hover:text-white rounded-xl font-black text-lg text-white shadow-lg shadow-lab-coral hover:shadow-lab-coral hover:scale-[1.02] transition-all active:scale-[0.98]"
               >
                 START DE ESCAPEROOM
               </button>
@@ -286,7 +286,7 @@ export const EscaperoomNulmeting: React.FC<Props> = ({ variant = 'nulmeting', on
 
     return (
       <div className="w-full h-full bg-lab-cream text-lab-ink overflow-y-auto">
-        <div className="min-h-full flex items-center justify-center p-6">
+        <div className="min-h-full flex items-start justify-center p-4 md:p-6">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -352,7 +352,7 @@ export const EscaperoomNulmeting: React.FC<Props> = ({ variant = 'nulmeting', on
 
             <button
               onClick={() => onComplete(resultaat)}
-              className="w-full py-4 bg-lab-coral hover:bg-lab-coral hover:text-white rounded-xl font-black text-lg text-white shadow-lg shadow-lab-coral hover:scale-[1.02] transition-all active:scale-[0.98]"
+              className="sticky bottom-3 z-10 w-full py-4 bg-lab-coral hover:bg-lab-coral hover:text-white rounded-xl font-black text-lg text-white shadow-lg shadow-lab-coral hover:scale-[1.02] transition-all active:scale-[0.98]"
             >
               Ga naar je Dashboard
             </button>

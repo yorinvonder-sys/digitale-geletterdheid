@@ -24,7 +24,7 @@ export function useAuth() {
                 });
             }
         });
-        // Failsafe: als de auth-callback na 10s niet heeft gevuurd
+        // Failsafe: als de auth-callback na 20s niet heeft gevuurd
         // (corrupt token of trage DB), stop met laden en redirect naar login.
         authTimeoutId = setTimeout(async () => {
             // Actief opruimen: signOut stopt Supabase's interne refresh-loop.
@@ -34,7 +34,7 @@ export function useAuth() {
             } catch { /* negeer */ }
             setUser(null);
             setLoading(false);
-        }, 10_000);
+        }, 20_000);
         return () => {
             clearTimeout(authTimeoutId);
             unsubscribe();

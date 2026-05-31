@@ -7,6 +7,16 @@ const config: ReviewArenaConfig = {
     introTitle: 'Hoe veilig ben jij online?',
     introDescription:
         'Je hebt gewerkt als cyber detective, encryptie-expert en forensisch analist. Nu toets je of je de kernconcepten van cybersecurity echt begrijpt via vier afwisselende ronden.',
+    experienceDesign: {
+        boringRisk: 'low',
+        firstTenSeconds: 'Kies je security-auditroute: wachtwoordsterkte, aanval-tegenmaatregel of veilig gedrag.',
+        primaryInteraction: 'review-and-improve',
+        feedbackMoment: 'Elke ronde geeft nuchtere securityfeedback: wat klopt, wat risicovol is en welke maatregel past.',
+        visualKit: 'review-puzzle-feedback',
+        evidenceMoment: 'Je bewijs bestaat uit wachtwoordranking, aanval-tegenmaatregelkoppels, gedragscategorieën en securityuitleg.',
+        antiBoringRule: 'Securityreview blijft serieus en handelingsgericht; geen angstbeloning of trivialisering van leerlingveiligheid.',
+        chromeAcceptance: 'Routekeuze en evidence blijven duidelijk zonder fear-based visuals; viewportmatrix is verplicht.',
+    },
     maxScore: 100,
     badges: [
         {

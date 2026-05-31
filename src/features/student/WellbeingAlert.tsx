@@ -15,6 +15,19 @@ interface Props {
 }
 
 export const WellbeingAlert: React.FC<Props> = ({ match, onDismiss }) => {
+  React.useEffect(() => {
+    if (!match) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onDismiss();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [match, onDismiss]);
+
   if (!match) return null;
 
   return (
@@ -25,10 +38,11 @@ export const WellbeingAlert: React.FC<Props> = ({ match, onDismiss }) => {
       aria-labelledby="wellbeing-title"
       aria-describedby="wellbeing-desc"
     >
-      <div className="max-w-md w-full bg-white rounded-2xl shadow-2xl overflow-hidden">
+      <div className="flex max-h-[calc(100dvh-2rem)] w-full max-w-md flex-col overflow-hidden rounded-2xl bg-white shadow-2xl">
         {/* Header */}
-        <div className="bg-gradient-to-r from-lab-coral to-lab-coral p-6 text-center relative">
+        <div className="relative shrink-0 bg-gradient-to-r from-lab-coral to-lab-coral p-5 text-center sm:p-6">
           <button
+            type="button"
             onClick={onDismiss}
             className="absolute top-3 right-3 p-2 rounded-lg text-white/70 hover:text-white hover:bg-white/20 transition-colors"
             aria-label="Sluiten"
@@ -44,7 +58,7 @@ export const WellbeingAlert: React.FC<Props> = ({ match, onDismiss }) => {
         </div>
 
         {/* Body */}
-        <div className="p-6">
+        <div className="min-h-0 overflow-y-auto p-5 sm:p-6">
           <p id="wellbeing-desc" className="text-lab-muted text-sm leading-relaxed mb-5">
             We merkten dat je iets schreef waarover we ons een beetje zorgen maken.
             Dat kan helemaal niets zijn, maar als je ergens mee zit, zijn er mensen
@@ -80,14 +94,18 @@ export const WellbeingAlert: React.FC<Props> = ({ match, onDismiss }) => {
             ))}
           </div>
 
-          <p className="text-xs text-lab-muted text-center leading-relaxed mb-4">
+          <p className="text-xs text-lab-muted text-center leading-relaxed">
             Je docent krijgt een melding dat je misschien hulp kunt gebruiken.
             Ze zullen discreet even bij je checken.
           </p>
+        </div>
 
+        <div className="shrink-0 border-t border-lab-line bg-white p-4">
           <button
+            type="button"
             onClick={onDismiss}
-            className="w-full py-3 bg-lab-cream hover:bg-lab-creamDeep text-lab-muted rounded-xl font-bold text-sm transition-colors"
+            data-qa="wellbeing-alert-dismiss"
+            className="w-full rounded-xl bg-lab-cream px-4 py-3 text-sm font-bold text-lab-muted transition-colors hover:bg-lab-creamDeep"
           >
             Ik begrijp het, terug naar de missie
           </button>

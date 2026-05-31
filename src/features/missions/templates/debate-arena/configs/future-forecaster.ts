@@ -18,13 +18,70 @@ const config: DebateArenaConfig = {
         evidence:
             'Je toekomstvisie noemt minstens een kans, een risico en wie erdoor geraakt wordt.',
     },
+    experienceDesign: {
+        boringRisk: 'medium',
+        firstTenSeconds: 'Forecast bet: leerling plaatst eerst een toekomstweddenschap over AI-onderwijs in 2040.',
+        primaryInteraction: 'defend-position',
+        feedbackMoment: 'Na de forecast koppelt feedback kans, risico en geraakte groep aan de voorlopige toekomstvisie.',
+        visualKit: 'debate-dilemma',
+        evidenceMoment: 'De leerling gebruikt stakeholders en argumenten om een toekomstvisie met onzekerheid te verdedigen.',
+        antiBoringRule: 'Toekomstdenken voelt als scenario-keuze met consequenties, niet als fantaseren zonder bewijs.',
+        chromeAcceptance: 'Forecastkeuze, toekomstbeelden en argumentbouw zijn zonder overflow bruikbaar op desktop, tablet portrait, tablet landscape en mobile.',
+    },
     introFeatures: [
+        'Plaats eerst je forecast bet',
         'Lees de standpunten van 4 betrokkenen',
         'Kies jouw positie in het debat',
         'Bouw 2-3 sterke argumenten op',
         'Reageer op een tegenargument',
         'Reflecteer: is je mening veranderd?',
     ],
+    openingChoice: {
+        title: 'Forecast bet: onderwijs in 2040',
+        description:
+            'Je doet eerst een voorspelling voordat je de toekomstargumenten leest. Daarna zie je of je forecast sterker of anders wordt.',
+        prompt:
+            'Een AI-tutor kan elke leerling persoonlijk uitleg geven, 24/7 en zonder geduld te verliezen. Welke toekomst kies jij voorlopig?',
+        continueLabel: 'Bekijk de toekomstbeelden',
+        options: [
+            {
+                id: 'ai-eerst',
+                label: 'AI wordt de primaire leraar',
+                description:
+                    'Als leren beter en persoonlijker wordt, mag AI de meeste uitleg overnemen.',
+                positionId: 'ai-primair',
+                feedback:
+                    'Je zet efficiënt en persoonlijk leren voorop. Let straks op sociale, democratische en ongelijke effecten.',
+            },
+            {
+                id: 'hybride',
+                label: 'Mens en AI als team',
+                description:
+                    'AI geeft uitleg en oefening; mensen begeleiden motivatie, veiligheid en groei.',
+                positionId: 'hybride',
+                feedback:
+                    'Je kiest voor samenwerking. Verzamel straks bewijs waar AI sterk is en waar mensen onmisbaar blijven.',
+            },
+            {
+                id: 'mens-centraal',
+                label: 'De menselijke leraar blijft de kern',
+                description:
+                    'Onderwijs is ook relatie, vertrouwen en burgerschap.',
+                positionId: 'menselijk-centraal',
+                feedback:
+                    'Je start vanuit menselijke waarde. Let straks op of dat genoeg antwoord geeft op leerachterstanden en personalisatie.',
+            },
+            {
+                id: 'keuzevrijheid',
+                label: 'Leerlingen kiezen hun leerroute',
+                description:
+                    'Niet één model past bij iedereen; keuzevrijheid voorkomt een opgelegd systeem.',
+                positionId: 'recht-op-keuze',
+                feedback:
+                    'Je voorspelt een keuzemodel. Check straks of keuze eerlijk is als toegang tot goede AI ongelijk verdeeld is.',
+            },
+        ],
+    },
     topic: 'Technologie en de toekomst van onderwijs en werk',
     dilemma:
         'In 2040 kan een AI-leraar elke les perfect aanpassen op elke leerling, 24/7 beschikbaar zijn en nooit ongeduldig worden. Moeten we menselijke leraren dan nog inzetten — en zo ja, waarvoor?',

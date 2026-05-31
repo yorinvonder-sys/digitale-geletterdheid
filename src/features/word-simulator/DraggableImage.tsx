@@ -89,6 +89,7 @@ export const DraggableImage: React.FC<DraggableImageProps> = ({ item, isSelected
     return (
         <div
             ref={elementRef}
+            data-qa={`word-simulator-image-${item.id}`}
             style={getStyles()}
             onPointerDown={onPointerDown}
             onPointerMove={onPointerMove}

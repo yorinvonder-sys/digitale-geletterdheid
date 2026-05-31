@@ -7,6 +7,16 @@ const config: ScenarioEngineConfig = {
     introTitle: 'Cookie Crusher',
     introDescription:
         'Elke dag klikken miljoenen mensen op "Accepteer alles" zonder na te denken. Websites gebruiken slimme trucjes om je dat te laten doen. Jij leert die trucjes herkennen — en er slim mee omgaan.',
+    experienceDesign: {
+        boringRisk: 'medium',
+        firstTenSeconds: 'Bekijk de cookie-pop-up alsof je hem moet goedkeuren en markeer direct het manipulatieve element.',
+        primaryInteraction: 'pin-evidence',
+        feedbackMoment: 'Feedback benoemt welk dark pattern de keuze stuurt en wat een eerlijke variant zou doen.',
+        visualKit: 'casefile',
+        evidenceMoment: 'Leerlingen bewaren herkende dark patterns, prioritering en accept/weiger-beslissingen.',
+        antiBoringRule: 'Geen losse AVG-checklist: leerlingen beoordelen eerst de interface-truc en zien daarna de privacygevolgen.',
+        chromeAcceptance: 'Pop-upcase, bewijskeuze, consequentiefeedback en completionbewijs blijven leesbaar op alle viewports.',
+    },
     introFeatures: [
         'Herken manipulatieve cookie-popups (dark patterns)',
         'Rangschik popups van meest naar minst manipulatief',

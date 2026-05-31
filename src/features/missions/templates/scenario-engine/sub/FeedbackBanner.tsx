@@ -50,9 +50,10 @@ export const FeedbackBanner: React.FC<{
 
     return (
         <div
+            data-qa="scenario-feedback"
             className={`rounded-2xl border-2 p-4 mt-4 ${
                 good ? 'border-[#5F947D] bg-[#5F947D]/5' : 'border-[#D97848] bg-[#D97848]/5'
-            }`}
+            } sticky bottom-3 z-20 shadow-sm backdrop-blur-sm sm:static sm:shadow-none sm:backdrop-blur-0`}
         >
             <div className="flex items-center gap-2 mb-2">
                 <span className="text-lg">{good ? '🎉' : '💡'}</span>
@@ -73,6 +74,7 @@ export const FeedbackBanner: React.FC<{
             {!hideButton && (
                 <button
                     onClick={onNext}
+                    data-qa="scenario-next"
                     className="w-full py-2.5 rounded-full font-black text-sm bg-gradient-to-r from-[#D97848] to-[#D97848] hover:from-[#D97848] hover:to-[#D97848] text-white transition-all duration-200"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >

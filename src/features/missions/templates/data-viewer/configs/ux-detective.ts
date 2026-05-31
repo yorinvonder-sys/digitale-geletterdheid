@@ -7,11 +7,56 @@ export const uxDetectiveConfig: DataViewerConfig = {
     introTitle: 'Word een UX Detective',
     introDescription:
         'Waarom is de ene app fijn om te gebruiken en de andere een frustratie? Dat is user experience (UX). Jij gaat als UX-detective apps analyseren: problemen vinden, begrijpen waarom ze problemen zijn, en verbeteringen ontwerpen.',
+    experienceDesign: {
+        boringRisk: 'high',
+        firstTenSeconds: 'Frustratiekaart: kies welke appklacht als eerste opgelost moet worden.',
+        primaryInteraction: 'prioritize-case',
+        feedbackMoment: 'Na de UX-prioriteit hoort de leerling waarom navigatie, feedback of toegankelijkheid impact heeft.',
+        visualKit: 'data-room',
+        evidenceMoment: 'De leerling prioriteert UX-problemen met frequentie, ernst en toegankelijkheidsbewijs.',
+        antiBoringRule: 'UX-analyse begint met een echte frustratie en triage, niet met een vragenlijst.',
+        chromeAcceptance: 'UX-triage, tabelsortering en observaties blijven bruikbaar op alle vier viewports.',
+    },
     introFeatures: [
         'Analyseer gebruikersonderzoek over app-frustraties',
         'Vergelijk usability-scores van populaire apps',
         'Beoordeel welke UX-problemen het meest impact hebben',
     ],
+    investigationHook: {
+        title: 'Welke klacht los je als eerste op?',
+        role: 'UX-triageteam',
+        scenario:
+            'De schoolapp krijgt slechte reviews. Er is budget voor één eerste verbetering. Jij kiest welke frustratie het zwaarst telt voordat je de onderzoeksdata opent.',
+        prompt: 'Welke UX-prioriteit neem je mee de data in?',
+        contextLabel: 'UX-prioriteit',
+        continueLabel: 'Onderzoek de klachten',
+        options: [
+            {
+                id: 'navigatie',
+                label: 'Leerlingen vinden taken niet',
+                description: 'Je zoekt naar navigatieproblemen die vaak terugkomen en dagelijkse impact hebben.',
+                feedback: 'Sterke UX-prioriteit. Als gebruikers hun doel niet vinden, voelt de hele app onbetrouwbaar.',
+                evidenceChips: ['3 meldingen', 'ernst 5', 'elke dag'],
+                impactCue: 'Doel vinden',
+            },
+            {
+                id: 'feedback',
+                label: 'De app bevestigt acties niet',
+                description: 'Je onderzoekt waar leerlingen onzeker worden omdat de app geen reactie geeft.',
+                feedback: 'Goed gezien. Feedback is klein in beeld, maar groot in vertrouwen: gebruikers willen weten of iets gelukt is.',
+                evidenceChips: ['2 meldingen', 'bevestiging ontbreekt', 'vertrouwen'],
+                impactCue: 'Actiezekerheid',
+            },
+            {
+                id: 'toegankelijkheid',
+                label: 'Knoppen en contrast sluiten mensen uit',
+                description: 'Je let op touch targets, kleurcontrast en wie daardoor vastloopt.',
+                feedback: 'Belangrijk spoor. Toegankelijkheid is geen extraatje, maar bepaalt wie de app zelfstandig kan gebruiken.',
+                evidenceChips: ['knoppen te klein', 'contrast', 'zelfstandig gebruik'],
+                impactCue: 'Inclusiecheck',
+            },
+        ],
+    },
 
     datasets: [
         // ── Dataset 1: Tabel ──────────────────────────────────────────────────
@@ -44,18 +89,20 @@ export const uxDetectiveConfig: DataViewerConfig = {
                 {
                     id: 'q1-meest-voorkomend',
                     question:
-                        'Welk usability-probleem komt het meest voor in deze gebruikersfeedback?',
-                    type: 'multiple-choice',
-                    options: [
-                        'Knoppen te klein',
-                        'Geen bevestiging na inleveren',
-                        'Huiswerk niet vinden in menu',
-                        'Kleuren moeilijk te zien',
-                    ],
-                    correctAnswer: 'Huiswerk niet vinden in menu',
+                        'Kies de klacht die jij als UX-detective als eerste zou oplossen. Onderbouw je prioriteit met minimaal twee bewijzen uit de tabel: hoe vaak komt het voor, hoe ernstig is het en welke dagelijkse impact heeft het?',
+                    type: 'text-observation',
+                    correctAnswer: '',
                     explanation:
-                        '"Huiswerk niet vinden in menu" wordt door 3 leerlingen (1, 4, 10) genoemd — het meest van alle problemen. Het heeft ook ernst 5 (maximaal). Sorteer op "Gevonden probleem" om duplicaten te groeperen. In UX noemen we dit een "high-priority issue": veel gebruikers, hoge ernst.',
+                        'Een sterke UX-prioriteit wijst op "Huiswerk niet vinden in menu": dit komt drie keer terug, heeft ernst 5 en gebeurt elke dag. Dat maakt het een high-priority issue: veel gebruikers, hoge ernst en directe impact op schoolwerk. Een ander antwoord kan goed zijn als het met frequentie, ernst en impact wordt onderbouwd.',
                     points: 15,
+                    minLength: 70,
+                    minEvidenceCriteria: 2,
+                    textEvidenceCriteria: [
+                        { label: 'concrete klacht gekozen', keywords: ['huiswerk', 'menu', 'navigatie', 'knoppen', 'bevestiging', 'kleuren'] },
+                        { label: 'frequentie gebruikt', keywords: ['3', 'drie', 'vaak', 'elke dag', 'dagelijks', 'meest'] },
+                        { label: 'ernst gebruikt', keywords: ['ernst', 'score', '5', 'hoog', 'maximaal'] },
+                        { label: 'impact op gebruiker', keywords: ['impact', 'schoolwerk', 'frustratie', 'leerlingen', 'doel', 'vinden'] },
+                    ],
                 },
                 {
                     id: 'q2-gemiddelde-ernst',
@@ -97,18 +144,22 @@ export const uxDetectiveConfig: DataViewerConfig = {
             questions: [
                 {
                     id: 'q4-slechte-usability',
-                    question: 'Welke apps scoren ONDER de drempelwaarde van 68 (dus als "niet goed" beschouwd)?',
-                    type: 'multiple-choice',
-                    options: [
-                        'Magister en Itslearning',
-                        'Itslearning en Google Classroom',
-                        'Magister, Itslearning en Zermelo',
-                        'Alleen Itslearning',
-                    ],
-                    correctAnswer: 'Magister en Itslearning',
+                    question:
+                        'Markeer de apps die onder de SUS-drempel van 68 vallen. Noem hun scores en leg uit waarom dit voor een UX-team een urgent signaal is.',
+                    type: 'text-observation',
+                    correctAnswer: '',
                     explanation:
-                        'Magister scoort 61 (onder 68) en Itslearning 55 (ruim onder 68). Zermelo zit met 69 net boven de grens. Google Classroom (78) en Microsoft Teams (72) zijn goed bruikbaar. Magister is de meest gebruikte Nederlandse schoolapp maar heeft dus een onder-gemiddelde usability.',
+                        'Magister scoort 61 en Itslearning 55: allebei onder de SUS-drempel van 68. Zermelo zit met 69 net boven de grens. Voor een UX-team is dit urgent omdat scores onder 68 wijzen op matige bruikbaarheid en frustratie in dagelijkse schooltaken.',
                     points: 10,
+                    minLength: 70,
+                    minEvidenceCriteria: 3,
+                    textEvidenceCriteria: [
+                        { label: 'Magister genoemd', keywords: ['magister'] },
+                        { label: 'Itslearning genoemd', keywords: ['itslearning'] },
+                        { label: 'scores 61 en 55 gebruikt', keywords: ['61', '55'] },
+                        { label: 'drempel 68 benoemd', keywords: ['68', 'drempel', 'onder'] },
+                        { label: 'urgentie of frustratie uitgelegd', keywords: ['urgent', 'frustratie', 'matig', 'gebruiksvriendelijkheid', 'bruikbaarheid'] },
+                    ],
                 },
                 {
                     id: 'q5-verschil-google-itslearning',
@@ -170,13 +221,20 @@ export const uxDetectiveConfig: DataViewerConfig = {
                 {
                     id: 'q7-principe-herkennen',
                     question:
-                        'Een leerling klikt op "Inleveren" maar ziet niets veranderen. Ze weet niet of haar opdracht aangekomen is. Welk UX-principe wordt hier geschonden?',
-                    type: 'multiple-choice',
-                    options: ['Affordance', 'Feedback', 'Consistentie', 'Foutpreventie'],
-                    correctAnswer: 'Feedback',
+                        'Diagnoseer het incident "Inleveren zonder reactie". Leg uit welk UX-principe wordt geschonden, waarom de leerling onzeker wordt en welke concrete bevestiging je als fix toevoegt.',
+                    type: 'text-observation',
+                    correctAnswer: '',
                     explanation:
-                        'De app geeft geen feedback na de actie — de gebruiker weet niet of de opdracht aangekomen is. Dit is precies het probleem dat 2 van de 10 leerlingen in de gebruikersfeedback-tabel noemden. Oplossing: voeg een bevestigingsmelding toe ("Opdracht ingeleverd op 10:32 uur").',
+                        'De app geeft geen feedback na de actie: de gebruiker weet niet of de opdracht aangekomen is. Dit is precies het probleem dat 2 van de 10 leerlingen in de feedbacktabel noemden. Een concrete oplossing is een bevestigingsmelding, groen vinkje of tijdstempel zoals "Opdracht ingeleverd op 10:32 uur".',
                     points: 15,
+                    minLength: 80,
+                    minEvidenceCriteria: 3,
+                    textEvidenceCriteria: [
+                        { label: 'Feedback-principe genoemd', keywords: ['feedback'] },
+                        { label: 'onzekerheid na actie uitgelegd', keywords: ['onzeker', 'niet weet', 'aangekomen', 'niets veranderen', 'geen reactie'] },
+                        { label: 'inleveractie gekoppeld', keywords: ['inleveren', 'opdracht', 'actie'] },
+                        { label: 'concrete bevestiging voorgesteld', keywords: ['bevestiging', 'groen vinkje', 'melding', 'opgeslagen', 'ingeleverd', 'tijdstempel'] },
+                    ],
                 },
                 {
                     id: 'q8-verbetervoorstel',

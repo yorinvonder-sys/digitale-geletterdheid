@@ -11,9 +11,9 @@ interface BlockPaletteProps {
 export const BlockPalette: React.FC<BlockPaletteProps> = ({ onDragStart, onAddBlock }) => {
     const [expandedCategories, setExpandedCategories] = useState<Record<BlockCategory, boolean>>({
         event: true,
-        motion: true,
-        control: true,
-        variable: true,
+        motion: false,
+        control: false,
+        variable: false,
     });
 
     const toggleCategory = (category: BlockCategory) => {

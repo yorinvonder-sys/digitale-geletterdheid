@@ -162,6 +162,16 @@ export const codeReviewerConfig: SimulationLabConfig = {
         },
         evidence: 'Keuzes over leesbaarheid, DRY, feedbackmethode en de bijbehorende code-review score.',
     },
+    experienceDesign: {
+        boringRisk: 'medium',
+        firstTenSeconds: 'Open de review alsof je teammate wacht: verander één codekwaliteit-keuze en check de impact.',
+        primaryInteraction: 'operate-simulation',
+        feedbackMoment: 'De kwaliteitsscore en antwoordfeedback laten zien waarom leesbaarheid of feedbackstijl werkt.',
+        visualKit: 'simulation-control',
+        evidenceMoment: 'Leerlingen leveren gekozen reviewcriteria, scoreverschil en concrete verbeterfeedback.',
+        antiBoringRule: 'Geen theoriekaart vooraf: leerlingen beoordelen eerst codekwaliteit en verdedigen daarna hun reviewkeuze.',
+        chromeAcceptance: 'Reviewactie, live score, vraagkaart, feedback en eindbewijs blijven bruikbaar op desktop/tablet/mobile.',
+    },
     introFeatures: [
         'Sim 1 — Stel leesbaarheid in en zie je kwaliteitsscore',
         'Sim 2 — Ontdek hoeveel herhaling te veel is',
@@ -204,7 +214,7 @@ export const codeReviewerConfig: SimulationLabConfig = {
                     id: 'cl1-q1',
                     question:
                         'Je ziet een variabele met de naam "temp2". Wat is hiervan het probleem?',
-                    type: 'multiple-choice',
+                    type: 'evidence-input',
                     options: [
                         'De naam is te lang',
                         'Je kunt niet raden wat de variabele bevat zonder de rest van de code te lezen',
@@ -219,7 +229,7 @@ export const codeReviewerConfig: SimulationLabConfig = {
                 {
                     id: 'cl1-q2',
                     question: 'Wanneer moet je commentaar schrijven in code?',
-                    type: 'multiple-choice',
+                    type: 'evidence-input',
                     options: [
                         'Bij elke regel code, altijd',
                         'Nooit — goede code heeft geen commentaar nodig',
@@ -235,7 +245,7 @@ export const codeReviewerConfig: SimulationLabConfig = {
                     id: 'cl1-q3',
                     question:
                         'Waarom is consistente inspringing (indentation) zo belangrijk in code?',
-                    type: 'multiple-choice',
+                    type: 'evidence-input',
                     options: [
                         'De computer werkt sneller met nette inspringing',
                         'Het maakt de structuur van de code zichtbaar — wat is binnen wat?',
@@ -267,7 +277,7 @@ export const codeReviewerConfig: SimulationLabConfig = {
                 {
                     id: 'dry1-q1',
                     question: 'Wat betekent het DRY-principe (Don\'t Repeat Yourself)?',
-                    type: 'multiple-choice',
+                    type: 'evidence-input',
                     options: [
                         'Schrijf code zo snel mogelijk, zonder te wachten',
                         'Schrijf dezelfde logica maar één keer en hergebruik het via functies',
@@ -283,7 +293,7 @@ export const codeReviewerConfig: SimulationLabConfig = {
                     id: 'dry1-q2',
                     question:
                         'Wat is een "magisch getal" in code en waarom is het een probleem?',
-                    type: 'multiple-choice',
+                    type: 'evidence-input',
                     options: [
                         'Een getal dat nooit verandert, zoals het getal 1',
                         'Een hardgecodeerd getal zonder naam, zoals "0.21" voor btw — niemand weet wat het betekent',
@@ -299,7 +309,7 @@ export const codeReviewerConfig: SimulationLabConfig = {
                     id: 'dry1-q3',
                     question:
                         'Je hebt dezelfde berekening op 5 plekken in de code. Het btw-tarief verandert. Hoe vaak moet je de code aanpassen?',
-                    type: 'multiple-choice',
+                    type: 'evidence-input',
                     options: [
                         'Één keer, als je de berekening in een functie hebt gezet',
                         'Vijf keer — één keer per plek in de code',
@@ -333,7 +343,7 @@ export const codeReviewerConfig: SimulationLabConfig = {
                 {
                     id: 'fb1-q1',
                     question: 'Wat is de kern van de sandwich-methode bij code review?',
-                    type: 'multiple-choice',
+                    type: 'evidence-input',
                     options: [
                         'Alleen maar positief zijn zodat de samenwerking goed blijft',
                         'Positief punt → verbeterpunt met uitleg → positief punt',
@@ -349,7 +359,7 @@ export const codeReviewerConfig: SimulationLabConfig = {
                     id: 'fb1-q2',
                     question:
                         'Wat is het verschil tussen "Dit is slechte code" en "De functienaam geeft niet aan wat de functie doet"?',
-                    type: 'multiple-choice',
+                    type: 'evidence-input',
                     options: [
                         'Geen verschil — beide beschrijven een probleem',
                         'De tweede is concreet en actionable — je weet precies wat je kunt verbeteren',
@@ -365,7 +375,7 @@ export const codeReviewerConfig: SimulationLabConfig = {
                     id: 'fb1-q3',
                     question:
                         'Waarom is het ook nuttig voor de reviewer om code review te doen — niet alleen voor de schrijver?',
-                    type: 'multiple-choice',
+                    type: 'evidence-input',
                     options: [
                         'Het is niet nuttig voor de reviewer',
                         'Je leert code van anderen lezen en patroonherkennen — dat maakt jou een betere programmeur',

@@ -13,6 +13,7 @@ interface Props {
 
 interface DatalekkenState {
     phase: 'intro' | 'evidence' | 'priorities' | 'letter' | 'budget' | 'results';
+    introAction?: 'containment' | 'team' | 'evidence';
     evidenceSelected: number[];
     evidenceSubmitted: boolean;
     priorityOrder: number[];
@@ -25,6 +26,7 @@ interface DatalekkenState {
 
 const INITIAL_STATE: DatalekkenState = {
     phase: 'intro',
+    introAction: undefined,
     evidenceSelected: [],
     evidenceSubmitted: false,
     priorityOrder: [],
@@ -119,6 +121,33 @@ const BUDGET_ITEMS: BudgetItem[] = [
 
 const TOTAL_BUDGET = 10000;
 
+const INTRO_ACTIONS = [
+    {
+        id: 'containment',
+        icon: Shield,
+        title: 'Isoleer systemen',
+        prompt: 'Beperk eerst verdere schade.',
+        feedback: 'Goed: containment houdt de situatie rustig en voorkomt dat het lek groter wordt.',
+    },
+    {
+        id: 'team',
+        icon: Clock,
+        title: 'Roep crisisteam',
+        prompt: 'Zet direct de juiste mensen aan tafel.',
+        feedback: 'Sterk: bij een datalek heb je ICT, schoolleiding en communicatie snel samen nodig.',
+    },
+    {
+        id: 'evidence',
+        icon: Search,
+        title: 'Veilig bewijs',
+        prompt: 'Bewijs verzamelen zonder sporen te wissen.',
+        feedback: 'Scherp: bewijs moet veilig worden vastgelegd voordat je conclusies trekt.',
+    },
+] as const;
+
+const getIntroActionLabel = (actionId?: DatalekkenState['introAction']) =>
+    INTRO_ACTIONS.find(action => action.id === actionId)?.title ?? 'Nog niet gekozen';
+
 // === Scoring functions ===
 function scoreEvidence(selected: number[]): { score: number; max: number } {
     const correctSelected = selected.filter(id => CORRECT_EVIDENCE.includes(id)).length;
@@ -171,7 +200,7 @@ const PhaseHeader: React.FC<{
     totalScore: number;
     onBack: () => void;
 }> = ({ currentPhase, totalPhases, totalScore, onBack }) => (
-    <div className="flex items-center justify-between mb-6">
+    <div className="mb-3 flex items-center justify-between">
         <button onClick={onBack} className="text-[#445865] hover:text-[#08283B] transition-all duration-300">
             <ArrowLeft size={18} />
         </button>
@@ -198,21 +227,21 @@ const PhaseCard: React.FC<{
     description: string;
     children: React.ReactNode;
 }> = ({ icon, phaseNumber, totalPhases, title, description, children }) => (
-    <div className="bg-white rounded-2xl border border-[#E7D8BD] p-5 mb-6">
-        <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 bg-[#D97848]/10 rounded-xl flex items-center justify-center text-[#D97848]">
+    <div className="mb-3 rounded-2xl border border-[#E7D8BD] bg-white p-3 sm:p-4">
+        <div className="mb-2 flex items-center gap-3">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#D97848]/10 text-[#D97848]">
                 {icon}
             </div>
             <div>
                 <span className="text-[10px] font-black text-[#D97848] uppercase tracking-widest" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                     Fase {phaseNumber}/{totalPhases}
                 </span>
-                <h3 className="text-lg font-black text-[#08283B]" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
+                <h3 className="text-base font-black text-[#08283B] sm:text-lg" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
                     {title}
                 </h3>
             </div>
         </div>
-        <p className="text-sm text-[#445865] leading-relaxed" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+        <p className="text-xs leading-snug text-[#445865] sm:text-sm" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
             {description}
         </p>
         {children}
@@ -227,7 +256,7 @@ const EvidencePhase: React.FC<{
     onSubmit: () => void;
 }> = ({ selected, submitted, onToggle, onSubmit }) => (
     <>
-        <div className="grid gap-3 mb-4">
+        <div className="mb-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
             {EVIDENCE_ITEMS.map((item) => {
                 const isSelected = selected.includes(item.id);
                 const showResult = submitted;
@@ -255,13 +284,13 @@ const EvidencePhase: React.FC<{
                         key={item.id}
                         onClick={() => !submitted && onToggle(item.id)}
                         disabled={submitted}
-                        className={`w-full p-4 rounded-2xl border-2 text-left transition-all duration-200 ${borderClass} ${bgClass}`}
+                        className={`min-h-[86px] w-full rounded-xl border-2 p-2.5 text-left transition-all duration-200 ${borderClass} ${bgClass}`}
                     >
-                        <div className="flex items-start gap-3">
-                            <span className="text-xl mt-0.5">{item.icon}</span>
+                        <div className="flex items-start gap-2">
+                            <span className="mt-0.5 text-base">{item.icon}</span>
                             <div className="flex-1 min-w-0">
-                                <div className="flex items-center gap-2 mb-1">
-                                    <span className="text-sm font-bold text-[#08283B]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                <div className="mb-1 flex items-center gap-1.5">
+                                    <span className="text-xs font-bold leading-tight text-[#08283B]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                         {item.title}
                                     </span>
                                     {isSelected && !showResult && (
@@ -276,11 +305,11 @@ const EvidencePhase: React.FC<{
                                         <span className="text-[10px] text-[#5F947D] font-bold">gemist!</span>
                                     )}
                                 </div>
-                                <p className="text-xs text-[#445865] leading-relaxed" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                <p className="text-[11px] leading-snug text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                     {item.description}
                                 </p>
                                 {showResult && (isSelected || item.relevant) && (
-                                    <p className="text-[11px] text-[#445865] mt-2 italic" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                    <p className="mt-1 text-[10px] leading-snug text-[#445865] italic" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                         {item.explanation}
                                     </p>
                                 )}
@@ -299,7 +328,7 @@ const EvidencePhase: React.FC<{
             <button
                 onClick={onSubmit}
                 disabled={selected.length === 0}
-                className={`w-full py-3 rounded-full font-black text-sm transition-all duration-300 ${
+                className={`min-h-[42px] w-full rounded-full py-2.5 text-sm font-black transition-all duration-300 ${
                     selected.length > 0
                         ? 'bg-[#D97848] hover:bg-[#D97848] text-white'
                         : 'bg-[#E7D8BD] text-[#445865] cursor-not-allowed'
@@ -325,8 +354,8 @@ const PrioritiesPhase: React.FC<{
         <>
             {/* Selected order */}
             {order.length > 0 && (
-                <div className="bg-[#FCF6EA] rounded-xl p-3 mb-4 border border-[#E7D8BD]">
-                    <div className="flex items-center justify-between mb-2">
+                <div className="mb-3 rounded-xl border border-[#E7D8BD] bg-[#FCF6EA] p-2.5">
+                    <div className="mb-2 flex items-center justify-between">
                         <span className="text-[10px] font-black text-[#445865] uppercase tracking-widest" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                             Jouw volgorde
                         </span>
@@ -336,13 +365,13 @@ const PrioritiesPhase: React.FC<{
                             </button>
                         )}
                     </div>
-                    <div className="space-y-1.5">
+                    <div className="grid gap-1.5 sm:grid-cols-2">
                         {order.map((id, i) => {
                             const action = PRIORITY_ACTIONS.find(a => a.id === id)!;
                             const isCorrectPos = submitted && action.correctPosition === i;
                             const isClosePos = submitted && !isCorrectPos && Math.abs(action.correctPosition - i) === 1;
                             return (
-                                <div key={id} className={`flex items-center gap-2 p-2 rounded-lg text-xs transition-all ${
+                                <div key={id} className={`flex items-center gap-2 rounded-lg p-2 text-[11px] transition-all ${
                                     submitted
                                         ? isCorrectPos ? 'bg-[#5F947D]/10 text-[#5F947D]'
                                         : isClosePos ? 'bg-lab-gold text-lab-ink'
@@ -366,17 +395,17 @@ const PrioritiesPhase: React.FC<{
 
             {/* Remaining actions */}
             {!submitted && remaining.length > 0 && (
-                <div className="grid gap-2 mb-4">
-                    <span className="text-[10px] font-black text-[#445865] uppercase tracking-widest" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                <div className="mb-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
+                    <span className="sm:col-span-2 text-[10px] font-black text-[#445865] uppercase tracking-widest" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                         Klik in volgorde van prioriteit
                     </span>
                     {remaining.map((action) => (
                         <button
                             key={action.id}
                             onClick={() => onAdd(action.id)}
-                            className="w-full p-3 rounded-xl border-2 border-[#E7D8BD] bg-white text-left hover:border-[#D97848]/40 transition-all duration-200"
+                            className="min-h-[58px] w-full rounded-xl border-2 border-[#E7D8BD] bg-white p-2.5 text-left transition-all duration-200 hover:border-[#D97848]/40"
                         >
-                            <span className="text-sm text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                            <span className="text-[11px] leading-snug text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                 {action.icon} {action.text}
                             </span>
                         </button>
@@ -396,7 +425,7 @@ const PrioritiesPhase: React.FC<{
             {!submitted && order.length === PRIORITY_ACTIONS.length && (
                 <button
                     onClick={onSubmit}
-                    className="w-full py-3 rounded-full font-black text-sm bg-[#D97848] hover:bg-[#D97848] text-white transition-all duration-300"
+                    className="min-h-[42px] w-full rounded-full bg-[#D97848] py-2.5 text-sm font-black text-white transition-all duration-300 hover:bg-[#D97848]"
                 >
                     Bevestig volgorde
                 </button>
@@ -418,14 +447,14 @@ const LetterPhase: React.FC<{
         <>
             {/* Letter preview */}
             {selectedBlocks.length > 0 && (
-                <div className="bg-white rounded-xl p-4 mb-4 border-2 border-dashed border-[#E7D8BD]">
-                    <div className="flex items-center gap-2 mb-3">
+                <div className="mb-3 max-h-32 overflow-y-auto rounded-xl border-2 border-dashed border-[#E7D8BD] bg-white p-3">
+                    <div className="mb-2 flex items-center gap-2">
                         <Mail size={14} className="text-[#D97848]" />
                         <span className="text-[10px] font-black text-[#445865] uppercase tracking-widest" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                             Jouw brief aan ouders
                         </span>
                     </div>
-                    <div className="text-xs text-[#445865] space-y-2 leading-relaxed italic" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                    <div className="space-y-1.5 text-[11px] leading-snug text-[#445865] italic" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                         <p className="text-[#445865]">Geachte ouders/verzorgers,</p>
                         {selectedBlocks.map((block) => (
                             <p key={block.id} className={submitted ? (block.belongsInLetter ? 'text-[#5F947D]' : 'text-lab-muted line-through') : ''}>
@@ -438,8 +467,8 @@ const LetterPhase: React.FC<{
             )}
 
             {/* Block options */}
-            <div className="grid gap-2 mb-4">
-                <span className="text-[10px] font-black text-[#445865] uppercase tracking-widest" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+            <div className="mb-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
+                <span className="sm:col-span-2 text-[10px] font-black text-[#445865] uppercase tracking-widest" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                     {submitted ? 'Beoordeling' : 'Selecteer wat er in de brief moet'}
                 </span>
                 {LETTER_BLOCKS.map((block) => {
@@ -468,13 +497,13 @@ const LetterPhase: React.FC<{
                             key={block.id}
                             onClick={() => !submitted && onToggle(block.id)}
                             disabled={submitted}
-                            className={`w-full p-3 rounded-xl border-2 text-left transition-all duration-200 ${borderClass} ${bgClass}`}
+                            className={`min-h-[64px] w-full rounded-xl border-2 p-2.5 text-left transition-all duration-200 ${borderClass} ${bgClass}`}
                         >
                             <div className="flex items-start gap-2">
-                                <span className="text-base mt-0.5">{block.icon}</span>
+                                <span className="mt-0.5 text-sm">{block.icon}</span>
                                 <div className="flex-1">
-                                    <div className="flex items-center gap-2">
-                                        <span className="text-sm font-bold text-[#08283B]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                    <div className="flex items-center gap-1.5">
+                                        <span className="text-xs font-bold leading-tight text-[#08283B]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                             {block.title}
                                         </span>
                                         {submitted && isSelected && (
@@ -487,7 +516,7 @@ const LetterPhase: React.FC<{
                                         )}
                                     </div>
                                     {submitted && (isSelected || block.belongsInLetter) && (
-                                        <p className="text-[11px] text-[#445865] mt-1" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                        <p className="mt-1 text-[10px] leading-snug text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                             {block.explanation}
                                         </p>
                                     )}
@@ -502,7 +531,7 @@ const LetterPhase: React.FC<{
                 <button
                     onClick={onSubmit}
                     disabled={selected.length === 0}
-                    className={`w-full py-3 rounded-full font-black text-sm transition-all duration-300 ${
+                    className={`min-h-[42px] w-full rounded-full py-2.5 text-sm font-black transition-all duration-300 ${
                         selected.length > 0
                             ? 'bg-[#D97848] hover:bg-[#D97848] text-white'
                             : 'bg-[#E7D8BD] text-[#445865] cursor-not-allowed'
@@ -528,7 +557,7 @@ const BudgetPhase: React.FC<{
     return (
         <>
             {/* Budget bar */}
-            <div className="bg-[#FCF6EA] rounded-xl p-3 mb-4 border border-[#E7D8BD]">
+            <div className="mb-3 rounded-xl border border-[#E7D8BD] bg-[#FCF6EA] p-2.5">
                 <div className="flex items-center justify-between mb-2">
                     <span className="text-[10px] font-black text-[#445865] uppercase tracking-widest" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                         Beschikbaar budget
@@ -546,7 +575,7 @@ const BudgetPhase: React.FC<{
             </div>
 
             {/* Budget items */}
-            <div className="grid gap-3 mb-4">
+            <div className="mb-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
                 {BUDGET_ITEMS.map((item) => {
                     const isAllocated = allocations[item.id] && allocations[item.id] >= item.cost;
                     const canAfford = remaining >= item.cost || isAllocated;
@@ -556,7 +585,7 @@ const BudgetPhase: React.FC<{
                             key={item.id}
                             onClick={() => !submitted && onToggle(item.id)}
                             disabled={submitted || (!isAllocated && !canAfford)}
-                            className={`w-full p-4 rounded-2xl border-2 text-left transition-all duration-200 ${
+                            className={`min-h-[86px] w-full rounded-xl border-2 p-2.5 text-left transition-all duration-200 ${
                                 isAllocated
                                     ? submitted
                                         ? 'border-[#5F947D] bg-[#5F947D]/5'
@@ -566,18 +595,18 @@ const BudgetPhase: React.FC<{
                                         : 'border-[#E7D8BD] bg-white hover:border-[#D97848]/40'
                             }`}
                         >
-                            <div className="flex items-start gap-3">
-                                <span className="text-xl mt-0.5">{item.icon}</span>
+                            <div className="flex items-start gap-2">
+                                <span className="mt-0.5 text-base">{item.icon}</span>
                                 <div className="flex-1">
-                                    <div className="flex items-center justify-between mb-1">
-                                        <span className="text-sm font-bold text-[#08283B]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                    <div className="mb-1 flex items-center justify-between gap-1">
+                                        <span className="text-xs font-bold leading-tight text-[#08283B]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                             {item.title}
                                         </span>
-                                        <span className={`text-xs font-bold ${isAllocated ? 'text-[#D97848]' : 'text-[#445865]'}`} style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                        <span className={`text-[10px] font-bold ${isAllocated ? 'text-[#D97848]' : 'text-[#445865]'}`} style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                             €{item.cost.toLocaleString('nl-NL')}
                                         </span>
                                     </div>
-                                    <p className="text-xs text-[#445865] leading-relaxed mb-2" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                    <p className="mb-1.5 text-[11px] leading-snug text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                         {item.description}
                                     </p>
                                     <div className="flex items-center gap-1">
@@ -613,7 +642,7 @@ const BudgetPhase: React.FC<{
                 <button
                     onClick={onSubmit}
                     disabled={totalSpent === 0 || remaining < 0}
-                    className={`w-full py-3 rounded-full font-black text-sm transition-all duration-300 ${
+                    className={`min-h-[42px] w-full rounded-full py-2.5 text-sm font-black transition-all duration-300 ${
                         totalSpent > 0 && remaining >= 0
                             ? 'bg-[#D97848] hover:bg-[#D97848] text-white'
                             : 'bg-[#E7D8BD] text-[#445865] cursor-not-allowed'
@@ -634,6 +663,8 @@ export const DatalekkenRampenplanMission: React.FC<Props> = ({ onBack, onComplet
     );
 
     const phase = saved.phase;
+    const introAction = saved.introAction;
+    const selectedIntroAction = INTRO_ACTIONS.find(action => action.id === introAction);
     const setPhase = (p: DatalekkenState['phase']) => setSaved(prev => ({ ...prev, phase: p }));
 
     // Phase navigation
@@ -688,39 +719,97 @@ export const DatalekkenRampenplanMission: React.FC<Props> = ({ onBack, onComplet
                     <ArrowLeft size={18} />
                     <span className="text-sm font-bold" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Terug</span>
                 </button>
-                <div className="max-w-lg mx-auto text-center space-y-6">
-                    <div className="w-20 h-20 bg-[#D97848]/10 rounded-3xl flex items-center justify-center mx-auto border border-[#D97848]/20 animate-pulse">
-                        <span className="text-4xl">🚨</span>
-                    </div>
-                    <h1 className="text-3xl font-black" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
-                        Datalekken Rampenplan
-                    </h1>
-                    <p className="text-[#445865] text-sm leading-relaxed max-w-sm mx-auto" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
-                        <span className="text-[#D97848] font-bold">BREAKING:</span> De school is gehackt! 800 leerlinggegevens liggen op straat.
-                        Analyseer bewijs, stel prioriteiten, schrijf de crisiscommunicatie en verdeel het beveiligingsbudget.
-                    </p>
-                    <MissionGoalBanner goal={getMissionGoal('datalekken-rampenplan')!} compact />
-                    <div className="grid grid-cols-2 gap-3 max-w-xs mx-auto">
-                        {[
-                            { icon: <Search size={16} />, label: 'Bewijs analyseren' },
-                            { icon: <ListOrdered size={16} />, label: 'Prioriteiten stellen' },
-                            { icon: <Mail size={16} />, label: 'Brief schrijven' },
-                            { icon: <PiggyBank size={16} />, label: 'Budget verdelen' },
-                        ].map((item, i) => (
-                            <div key={i} className="bg-white border border-[#E7D8BD] rounded-2xl p-3 flex items-center gap-2">
-                                <div className="text-[#D97848]">{item.icon}</div>
-                                <span className="text-xs font-bold text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
-                                    {item.label}
-                                </span>
+                <div className="mx-auto grid max-w-5xl gap-4 lg:grid-cols-[0.82fr_1.18fr] lg:items-start">
+                    <section className="space-y-4 text-center lg:text-left">
+                        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-3xl border border-[#D97848]/20 bg-[#D97848]/10 lg:mx-0">
+                            <span className="text-3xl">🚨</span>
+                        </div>
+                        <div>
+                            <h1 className="text-3xl font-black" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
+                                Datalekken Rampenplan
+                            </h1>
+                            <p className="mt-3 text-sm leading-relaxed text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                <span className="font-bold text-[#D97848]">Melding:</span> Er is mogelijk een export met leerlinggegevens buiten de schoolomgeving gedeeld.
+                                Werk rustig: bewijs pinnen, acties prioriteren, communiceren en budget slim verdelen.
+                            </p>
+                        </div>
+                        <MissionGoalBanner goal={getMissionGoal('datalekken-rampenplan')!} compact />
+                    </section>
+
+                    <section className="space-y-4">
+                    <div className="rounded-3xl border border-[#E7D8BD] bg-white p-4 text-left shadow-sm" data-qa="breach-triage-console">
+                        <div className="mb-3 flex items-start justify-between gap-3">
+                            <div>
+                                <p className="text-[10px] font-black uppercase tracking-widest text-[#D97848]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                    Eerste actie
+                                </p>
+                                <h2 className="mt-1 text-xl font-black leading-tight text-[#08283B]" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
+                                    De melding komt binnen. Wat doe je als eerste?
+                                </h2>
                             </div>
-                        ))}
+                            <span className="shrink-0 rounded-full border border-[#E7D8BD] bg-[#FCF6EA] px-3 py-1 text-xs font-black text-[#445865]" data-qa="breach-triage-step">
+                                Incident
+                            </span>
+                        </div>
+                        <div className="grid gap-2 sm:grid-cols-3">
+                            {INTRO_ACTIONS.map(action => {
+                                const Icon = action.icon;
+                                const selected = introAction === action.id;
+                                return (
+                                    <button
+                                        key={action.id}
+                                        type="button"
+                                        onClick={() => setSaved(prev => ({ ...prev, introAction: action.id }))}
+                                        data-qa="breach-triage-action"
+                                        aria-pressed={selected}
+                                        className={`rounded-2xl border p-3 text-left transition-all duration-200 focus-visible:ring-2 focus-visible:ring-[#D97848] active:scale-[0.98] ${
+                                            selected
+                                                ? 'border-[#D97848] bg-[#D97848]/10 shadow-sm'
+                                                : 'border-[#E7D8BD] bg-[#FFFDF7] hover:border-[#D97848]/50'
+                                        }`}
+                                    >
+                                        <Icon size={22} className={selected ? 'text-[#D97848]' : 'text-[#0B453F]'} />
+                                        <p className="mt-2 text-sm font-black text-[#08283B]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                            {action.title}
+                                        </p>
+                                        <p className="mt-1 text-xs leading-snug text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                            {action.prompt}
+                                        </p>
+                                    </button>
+                                );
+                            })}
+                        </div>
+                        <div className="mt-3 rounded-2xl border border-[#5F947D]/25 bg-[#5F947D]/10 p-3" data-qa="breach-triage-feedback">
+                            <p className="text-xs font-bold leading-relaxed text-[#0B453F]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                {selectedIntroAction?.feedback ?? 'Kies eerst je crisisroute. Je handelt rustig, met bewijs en zonder paniek.'}
+                            </p>
+                        </div>
+                        <div className="mt-3 grid grid-cols-3 gap-2 text-center" aria-label="Incidentstatus">
+                            {[
+                                ['Urgentie', 'Hoog'],
+                                ['Bewijs', 'Onzeker'],
+                                ['Toon', 'Rustig'],
+                            ].map(([label, value]) => (
+                                <div key={label} className="rounded-2xl border border-[#E7D8BD] bg-[#FCF6EA] p-2">
+                                    <p className="text-[9px] font-black uppercase tracking-widest text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                        {label}
+                                    </p>
+                                    <p className="mt-0.5 text-xs font-black text-[#08283B]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                        {value}
+                                    </p>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                     <button
                         onClick={() => setPhase('evidence')}
-                        className="px-8 py-4 bg-[#D97848] hover:bg-[#D97848] text-white rounded-full font-black text-lg transition-all duration-300 active:scale-95 shadow-xl shadow-[#D97848]/30 focus-visible:ring-2 focus-visible:ring-[#D97848]"
+                        disabled={!introAction}
+                        data-qa="breach-triage-start"
+                        className="w-full rounded-full bg-[#D97848] px-8 py-4 text-lg font-black text-white shadow-xl shadow-[#D97848]/30 transition-all duration-300 hover:bg-[#D97848] active:scale-95 focus-visible:ring-2 focus-visible:ring-[#D97848] disabled:cursor-not-allowed disabled:bg-[#E7D8BD] disabled:text-[#445865] disabled:shadow-none"
                     >
                         Start de crisis →
                     </button>
+                    </section>
                 </div>
             </div>
         );
@@ -735,7 +824,7 @@ export const DatalekkenRampenplanMission: React.FC<Props> = ({ onBack, onComplet
         };
         const badge = getBadge();
 
-        const phases = [
+        const evidenceRows = [
             { icon: '🔍', title: 'Bewijs analyse', ...evidenceScore },
             { icon: '📋', title: 'Prioriteiten', ...priorityScore },
             { icon: '✉️', title: 'Crisisbrief', ...letterScore },
@@ -767,8 +856,19 @@ export const DatalekkenRampenplanMission: React.FC<Props> = ({ onBack, onComplet
                             <p className="text-xs font-bold text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                 Score per fase
                             </p>
-                            {phases.map((p, i) => (
-                                <div key={i} className="flex items-center gap-3">
+                            <div className="flex items-center gap-3 rounded-xl bg-[#FCF6EA] p-2">
+                                <span className="text-base">🧭</span>
+                                <div className="flex-1">
+                                    <div className="flex items-center justify-between gap-3">
+                                        <span className="text-xs text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                            Eerste actie
+                                        </span>
+                                        <span className="text-right text-xs font-bold text-[#D97848]">{getIntroActionLabel(saved.introAction)}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            {evidenceRows.map((p) => (
+                                <div key={p.title} className="flex items-center gap-3">
                                     <span className="text-base">{p.icon}</span>
                                     <div className="flex-1">
                                         <div className="flex items-center justify-between mb-1">
@@ -847,8 +947,8 @@ export const DatalekkenRampenplanMission: React.FC<Props> = ({ onBack, onComplet
     if (!config) return null;
 
     return (
-        <div className="min-h-screen bg-[#FCF6EA] text-[#08283B] overflow-y-auto p-4 pb-safe">
-            <div className="max-w-lg mx-auto">
+        <div className="min-h-dvh overflow-hidden bg-[#FCF6EA] p-3 text-[#08283B] sm:p-4">
+            <div className="mx-auto flex h-[calc(100dvh-1.5rem)] max-w-3xl flex-col overflow-hidden sm:h-[calc(100dvh-2rem)]">
                 <PhaseHeader
                     currentPhase={currentPhaseIndex}
                     totalPhases={4}
@@ -863,73 +963,75 @@ export const DatalekkenRampenplanMission: React.FC<Props> = ({ onBack, onComplet
                     title={config.title}
                     description={config.description}
                 >
-                    <div className="mt-4" />
+                    <div className="mt-1" />
                 </PhaseCard>
 
-                {phase === 'evidence' && (
-                    <EvidencePhase
-                        selected={saved.evidenceSelected}
-                        submitted={saved.evidenceSubmitted}
-                        onToggle={(id) => setSaved(prev => ({
-                            ...prev,
-                            evidenceSelected: prev.evidenceSelected.includes(id)
-                                ? prev.evidenceSelected.filter(x => x !== id)
-                                : [...prev.evidenceSelected, id],
-                        }))}
-                        onSubmit={() => setSaved(prev => ({ ...prev, evidenceSubmitted: true }))}
-                    />
-                )}
+                <div className="min-h-0 flex-1 overflow-y-auto pr-1">
+                    {phase === 'evidence' && (
+                        <EvidencePhase
+                            selected={saved.evidenceSelected}
+                            submitted={saved.evidenceSubmitted}
+                            onToggle={(id) => setSaved(prev => ({
+                                ...prev,
+                                evidenceSelected: prev.evidenceSelected.includes(id)
+                                    ? prev.evidenceSelected.filter(x => x !== id)
+                                    : [...prev.evidenceSelected, id],
+                            }))}
+                            onSubmit={() => setSaved(prev => ({ ...prev, evidenceSubmitted: true }))}
+                        />
+                    )}
 
-                {phase === 'priorities' && (
-                    <PrioritiesPhase
-                        order={saved.priorityOrder}
-                        submitted={saved.prioritySubmitted}
-                        onAdd={(id) => setSaved(prev => ({
-                            ...prev,
-                            priorityOrder: [...prev.priorityOrder, id],
-                        }))}
-                        onReset={() => setSaved(prev => ({ ...prev, priorityOrder: [] }))}
-                        onSubmit={() => setSaved(prev => ({ ...prev, prioritySubmitted: true }))}
-                    />
-                )}
+                    {phase === 'priorities' && (
+                        <PrioritiesPhase
+                            order={saved.priorityOrder}
+                            submitted={saved.prioritySubmitted}
+                            onAdd={(id) => setSaved(prev => ({
+                                ...prev,
+                                priorityOrder: [...prev.priorityOrder, id],
+                            }))}
+                            onReset={() => setSaved(prev => ({ ...prev, priorityOrder: [] }))}
+                            onSubmit={() => setSaved(prev => ({ ...prev, prioritySubmitted: true }))}
+                        />
+                    )}
 
-                {phase === 'letter' && (
-                    <LetterPhase
-                        selected={saved.letterSelected}
-                        submitted={saved.letterSubmitted}
-                        onToggle={(id) => setSaved(prev => ({
-                            ...prev,
-                            letterSelected: prev.letterSelected.includes(id)
-                                ? prev.letterSelected.filter(x => x !== id)
-                                : [...prev.letterSelected, id],
-                        }))}
-                        onSubmit={() => setSaved(prev => ({ ...prev, letterSubmitted: true }))}
-                    />
-                )}
+                    {phase === 'letter' && (
+                        <LetterPhase
+                            selected={saved.letterSelected}
+                            submitted={saved.letterSubmitted}
+                            onToggle={(id) => setSaved(prev => ({
+                                ...prev,
+                                letterSelected: prev.letterSelected.includes(id)
+                                    ? prev.letterSelected.filter(x => x !== id)
+                                    : [...prev.letterSelected, id],
+                            }))}
+                            onSubmit={() => setSaved(prev => ({ ...prev, letterSubmitted: true }))}
+                        />
+                    )}
 
-                {phase === 'budget' && (
-                    <BudgetPhase
-                        allocations={saved.budgetAllocations}
-                        submitted={saved.budgetSubmitted}
-                        onToggle={(id) => setSaved(prev => {
-                            const item = BUDGET_ITEMS.find(b => b.id === id)!;
-                            const current = prev.budgetAllocations[id] || 0;
-                            const newAllocations = { ...prev.budgetAllocations };
-                            if (current >= item.cost) {
-                                delete newAllocations[id];
-                            } else {
-                                newAllocations[id] = item.cost;
-                            }
-                            return { ...prev, budgetAllocations: newAllocations };
-                        })}
-                        onSubmit={() => setSaved(prev => ({ ...prev, budgetSubmitted: true }))}
-                    />
-                )}
+                    {phase === 'budget' && (
+                        <BudgetPhase
+                            allocations={saved.budgetAllocations}
+                            submitted={saved.budgetSubmitted}
+                            onToggle={(id) => setSaved(prev => {
+                                const item = BUDGET_ITEMS.find(b => b.id === id)!;
+                                const current = prev.budgetAllocations[id] || 0;
+                                const newAllocations = { ...prev.budgetAllocations };
+                                if (current >= item.cost) {
+                                    delete newAllocations[id];
+                                } else {
+                                    newAllocations[id] = item.cost;
+                                }
+                                return { ...prev, budgetAllocations: newAllocations };
+                            })}
+                            onSubmit={() => setSaved(prev => ({ ...prev, budgetSubmitted: true }))}
+                        />
+                    )}
+                </div>
 
                 {isCurrentPhaseSubmitted() && (
                     <button
                         onClick={goNext}
-                        className="w-full mt-4 py-3 bg-[#D97848] hover:bg-[#D97848] text-white rounded-full font-black text-sm flex items-center justify-center gap-2 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#D97848]"
+                        className="mt-2 flex min-h-[42px] w-full shrink-0 items-center justify-center gap-2 rounded-full bg-[#D97848] py-2.5 text-sm font-black text-white transition-all duration-300 hover:bg-[#D97848] focus-visible:ring-2 focus-visible:ring-[#D97848]"
                     >
                         {currentPhaseIndex < PHASE_SEQUENCE.length - 1
                             ? <>Volgende fase <ChevronRight size={16} /></>

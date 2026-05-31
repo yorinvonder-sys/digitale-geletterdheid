@@ -7,13 +7,69 @@ const config: DebateArenaConfig = {
     introTitle: 'Digitale Balans Coach',
     introDescription:
         'Je gebruikt je telefoon elke dag — maar wie bepaalt eigenlijk hoelang? Jijzelf, de app-makers, je ouders, of de overheid? In dit debat onderzoek je vier perspectieven en bouw je je eigen standpunt op.',
+    experienceDesign: {
+        boringRisk: 'medium',
+        firstTenSeconds: 'Balansscore start: leerling kiest waar digitale balans schuurt: slaap, focus of online druk.',
+        primaryInteraction: 'choose-with-consequence',
+        feedbackMoment: 'Na de balanssituatie koppelt feedback rust, focus of sociale druk aan gedeelde verantwoordelijkheid.',
+        visualKit: 'debate-dilemma',
+        evidenceMoment: 'De leerling verdedigt wie kan helpen bij digitale balans met perspectieven en eigen reflectie.',
+        antiBoringRule: 'Balans wordt een herkenbare situatie met agency, geen les over telefoon-slecht of telefoon-goed.',
+        chromeAcceptance: 'Balanskeuze, perspectieven, argumentbouw en reflectie blijven leesbaar en niet-beschamend op alle vier viewports.',
+    },
     introFeatures: [
+        'Kies eerst waar jouw digitale balans schuurt',
         'Lees hoe vier betrokkenen hier anders over denken',
         'Kies jouw positie: wie is verantwoordelijk?',
         'Bouw 2-3 argumenten op vanuit de perspectieven',
         'Reageer op een sterk tegenargument',
         'Reflecteer op je eigen digitale gewoontes',
     ],
+    openingChoice: {
+        title: 'Waar loopt het bij jou mis?',
+        description:
+            'Digitale balans voelt pas echt als je een concrete situatie kiest. Je bouwt rustig balanspunten op door eerst een herkenbare situatie te kiezen; daarna onderzoek je wie kan helpen.',
+        prompt: 'Welke situatie wil jij vandaag oplossen voor je balansscore?',
+        continueLabel: 'Onderzoek wie kan helpen',
+        options: [
+            {
+                id: 'slaap',
+                label: 'Slaap raakt verstoord',
+                description:
+                    'Je telefoon ligt naast je bed en "nog even kijken" wordt laat slapen.',
+                positionId: 'gedeeld',
+                feedback:
+                    'Wat gebeurde er: je koos een rust-probleem en pakt je eerste balanspunt. Waarom: slaap bepaalt je energie op school. Volgende stap: let op wie kan helpen zonder meteen alles te verbieden.',
+            },
+            {
+                id: 'huiswerk',
+                label: 'Focus verdwijnt',
+                description:
+                    'Tijdens huiswerk trekken meldingen, shorts of games steeds je aandacht weg.',
+                positionId: 'bedrijfsverantwoordelijkheid',
+                feedback:
+                    'Wat gebeurde er: je koos een aandacht-probleem en pakt je eerste balanspunt. Waarom: apps zijn gebouwd om je terug te trekken. Volgende stap: zoek naar afspraken en ontwerpkeuzes die focus beschermen.',
+            },
+            {
+                id: 'vrienden',
+                label: 'Online druk voelt hoog',
+                description:
+                    'Je wilt bereikbaar blijven, maar groepsapps en reacties blijven doorgaan.',
+                positionId: 'zelfregulatie',
+                feedback:
+                    'Wat gebeurde er: je koos een sociale-druk-probleem en pakt je eerste balanspunt. Waarom: balans gaat ook over verwachtingen van anderen. Volgende stap: vergelijk eigen regie met gezamenlijke afspraken.',
+            },
+            {
+                id: 'regels',
+                label: 'Platforms hebben regels nodig',
+                description:
+                    'Grote apps moeten jongeren standaard meer rust en controle geven.',
+                positionId: 'regulering',
+                feedback:
+                    'Wat gebeurde er: je koos een systeem-probleem. Waarom: soms is individuele wilskracht niet genoeg tegen slim ontwerp. Volgende stap: onderzoek of regels helpen zonder keuzevrijheid weg te nemen.',
+            },
+        ],
+    },
     topic: 'Jouw digitale balans — wie bepaalt hoeveel tijd je online bent?',
     dilemma:
         'Wie is verantwoordelijk voor jouw digitale balans: jijzelf, de app-makers, je ouders, of de overheid?',

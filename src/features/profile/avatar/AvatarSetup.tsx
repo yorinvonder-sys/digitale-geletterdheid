@@ -3,6 +3,7 @@ import { Crown, ChevronRight, ChevronLeft, Sparkles, User, Lock } from 'lucide-r
 import { LazyAvatarViewer } from '@/features/profile/avatar/LazyAvatarViewer';
 import { AvatarConfig, DEFAULT_AVATAR_CONFIG } from '@/types';
 import { AVATAR_PET_CATALOG, getAvatarHairOptionsForGender } from '@/config/avatarCatalog';
+import { getAvatarShopThumbnail } from '@/config/avatarAssetCatalog';
 
 interface AvatarSetupProps {
     onComplete: (avatarConfig: AvatarConfig) => void;
@@ -95,6 +96,65 @@ const ACCESSORIES = [
 
 // Poses removed — animations were inaccurate
 
+type AvatarSetupAssetType = 'hairStyle' | 'shirtStyle' | 'pantsStyle' | 'accessory' | 'pet';
+
+const AvatarSetupAssetOption = ({
+    assetType,
+    value,
+    label,
+    selected,
+    locked = false,
+    onSelect,
+}: {
+    assetType: AvatarSetupAssetType;
+    value: string;
+    label: string;
+    selected: boolean;
+    locked?: boolean;
+    onSelect: () => void;
+}) => {
+    const thumbnail = getAvatarShopThumbnail(assetType, value);
+
+    return (
+        <button
+            type="button"
+            data-avatar-setup-asset-option={assetType}
+            onClick={() => !locked && onSelect()}
+            disabled={locked}
+            aria-label={`${label}${locked ? ' vergrendeld' : ''}`}
+            aria-pressed={selected}
+            className={`group relative overflow-hidden rounded-xl border-2 p-1.5 text-center transition-all ${locked
+                ? 'cursor-not-allowed border-[#E7D8BD] bg-[#E7D8BD]/50 text-[#445865] opacity-50'
+                : selected
+                    ? 'border-[#D97848] bg-white text-[#08283B] shadow-[0_10px_24px_-18px_rgba(217,120,72,0.65)]'
+                    : 'border-[#E7D8BD] bg-white/70 text-[#445865] hover:border-[#D97848]/45 hover:bg-white active:scale-95'
+                }`}
+        >
+            <div className="relative mx-auto aspect-square w-full overflow-hidden rounded-lg" style={{ backgroundColor: '#FCF6EA' }}>
+                {thumbnail ? (
+                    <img
+                        src={thumbnail}
+                        alt=""
+                        className="h-full w-full object-cover transition-transform duration-200 group-hover:scale-105"
+                        loading="lazy"
+                        decoding="async"
+                        draggable={false}
+                    />
+                ) : (
+                    <div className="flex h-full w-full items-center justify-center text-[10px] font-black uppercase tracking-[0.12em]" style={{ color: '#445865' }}>
+                        {label.slice(0, 2)}
+                    </div>
+                )}
+                {selected && <div className="absolute inset-0 rounded-lg ring-2 ring-inset ring-[#D97848]" />}
+            </div>
+            <div className="mt-1 flex min-h-[28px] items-center justify-center gap-1 px-0.5 text-[10px] font-black leading-tight">
+                <span className="line-clamp-2">{label}</span>
+                {locked && <Lock size={10} className="shrink-0 text-[#D97848]/70" />}
+            </div>
+        </button>
+    );
+};
+
 export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, initialConfig }) => {
     const [currentStep, setCurrentStep] = useState(0);
     const [config, setConfig] = useState<AvatarConfig>(initialConfig || DEFAULT_AVATAR_CONFIG);
@@ -145,7 +205,11 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
             {/* Main Content */}
             <div className="relative z-10 h-full flex flex-col lg:flex-row items-stretch overflow-hidden">
                 {/* Avatar Preview — bg matches canvas to prevent flicker */}
-                <div className="flex-1 relative min-h-[250px] lg:min-h-0" style={{ backgroundColor: '#FCF6EA' }}>
+                <div
+                    className="flex-1 relative min-h-[250px] lg:min-h-0"
+                    data-avatar-runtime-surface="setup-preview"
+                    style={{ backgroundColor: '#FCF6EA' }}
+                >
                     <LazyAvatarViewer config={config} interactive={true} />
                 </div>
 
@@ -267,22 +331,15 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
                                         <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: '#445865' }}>Kapsel</p>
                                         <div className="grid grid-cols-4 gap-2">
                                             {hairStyles.map(hair => (
-                                                <button
-                                                    key={hair.value}
-                                                    onClick={() => !hair.locked && setConfig({ ...config, hairStyle: hair.value as any })}
-                                                    disabled={hair.locked}
-                                                    className={`p-3 rounded-xl border-2 transition-all text-center relative ${hair.locked
-                                                        ? 'border-[#E7D8BD] bg-[#E7D8BD]/50 text-[#445865] cursor-not-allowed opacity-50'
-                                                        : config.hairStyle === hair.value
-                                                            ? 'border-[#D97848] bg-[#D97848]/15 text-[#445865]'
-                                                            : 'border-[#E7D8BD] text-[#445865] hover:border-[#D97848]/40 active:scale-95'
-                                                        }`}
-                                                >
-                                                    <div className="font-bold text-xs flex items-center justify-center gap-1">
-                                                        {hair.label}
-                                                        {hair.locked && <Lock size={11} className="text-[#D97848]/70" />}
-                                                    </div>
-                                                </button>
+                                                <AvatarSetupAssetOption
+                                                    key={hair.id}
+                                                    assetType="hairStyle"
+                                                    value={hair.value}
+                                                    label={hair.label}
+                                                    selected={config.hairStyle === hair.value}
+                                                    locked={hair.locked}
+                                                    onSelect={() => setConfig({ ...config, hairStyle: hair.value as AvatarConfig['hairStyle'] })}
+                                                />
                                             ))}
                                         </div>
                                     </div>
@@ -291,9 +348,9 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
                                     <div>
                                         <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: '#445865' }}>Haar kleur</p>
                                         <div className="flex flex-wrap gap-2.5 justify-center">
-                                            {HAIR_COLORS.map(color => (
+                                            {HAIR_COLORS.map((color, index) => (
                                                 <button
-                                                    key={color}
+                                                    key={`hair-${color}-${index}`}
                                                     onClick={() => setConfig({ ...config, hairColor: color })}
                                                     className={`w-9 h-9 rounded-full transition-all border-2 ${config.hairColor === color
                                                         ? 'ring-3 ring-[#D97848] ring-offset-2 ring-offset-[#FCF6EA] scale-110 border-[#445865]'
@@ -315,22 +372,15 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
                                         <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: '#445865' }}>Shirt stijl</p>
                                         <div className="grid grid-cols-4 gap-2">
                                             {SHIRT_STYLES.map(shirt => (
-                                                <button
+                                                <AvatarSetupAssetOption
                                                     key={shirt.value}
-                                                    onClick={() => !shirt.locked && setConfig({ ...config, shirtStyle: shirt.value as any })}
-                                                    disabled={shirt.locked}
-                                                    className={`p-3 rounded-xl border-2 transition-all text-center relative ${shirt.locked
-                                                        ? 'border-[#E7D8BD] bg-[#E7D8BD]/50 text-[#445865] cursor-not-allowed opacity-50'
-                                                        : config.shirtStyle === shirt.value
-                                                            ? 'border-[#D97848] bg-[#D97848]/15 text-[#445865]'
-                                                            : 'border-[#E7D8BD] text-[#445865] hover:border-[#D97848]/40 active:scale-95'
-                                                        }`}
-                                                >
-                                                    <div className="font-bold text-xs flex items-center justify-center gap-1">
-                                                        {shirt.label}
-                                                        {shirt.locked && <Lock size={11} className="text-[#D97848]/70" />}
-                                                    </div>
-                                                </button>
+                                                    assetType="shirtStyle"
+                                                    value={shirt.value}
+                                                    label={shirt.label}
+                                                    selected={config.shirtStyle === shirt.value}
+                                                    locked={shirt.locked}
+                                                    onSelect={() => setConfig({ ...config, shirtStyle: shirt.value as AvatarConfig['shirtStyle'] })}
+                                                />
                                             ))}
                                         </div>
                                     </div>
@@ -339,9 +389,9 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
                                     <div>
                                         <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: '#445865' }}>Shirt kleur</p>
                                         <div className="flex flex-wrap gap-2.5 justify-center">
-                                            {SHIRT_COLORS.map(color => (
+                                            {SHIRT_COLORS.map((color, index) => (
                                                 <button
-                                                    key={color}
+                                                    key={`shirt-${color}-${index}`}
                                                     onClick={() => setConfig({ ...config, shirtColor: color })}
                                                     className={`w-9 h-9 rounded-full transition-all border-2 ${config.shirtColor === color
                                                         ? 'ring-3 ring-[#D97848] ring-offset-2 ring-offset-[#FCF6EA] scale-110 border-[#445865]'
@@ -358,22 +408,15 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
                                         <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: '#445865' }}>Broek stijl</p>
                                         <div className="grid grid-cols-4 gap-2">
                                             {PANTS_STYLES.map(pants => (
-                                                <button
+                                                <AvatarSetupAssetOption
                                                     key={pants.value}
-                                                    onClick={() => !pants.locked && setConfig({ ...config, pantsStyle: pants.value as any })}
-                                                    disabled={pants.locked}
-                                                    className={`p-3 rounded-xl border-2 transition-all text-center relative ${pants.locked
-                                                        ? 'border-[#E7D8BD] bg-[#E7D8BD]/50 text-[#445865] cursor-not-allowed opacity-50'
-                                                        : config.pantsStyle === pants.value
-                                                            ? 'border-[#D97848] bg-[#D97848]/15 text-[#445865]'
-                                                            : 'border-[#E7D8BD] text-[#445865] hover:border-[#D97848]/40 active:scale-95'
-                                                        }`}
-                                                >
-                                                    <div className="font-bold text-xs flex items-center justify-center gap-1">
-                                                        {pants.label}
-                                                        {pants.locked && <Lock size={11} className="text-[#D97848]/70" />}
-                                                    </div>
-                                                </button>
+                                                    assetType="pantsStyle"
+                                                    value={pants.value}
+                                                    label={pants.label}
+                                                    selected={config.pantsStyle === pants.value}
+                                                    locked={pants.locked}
+                                                    onSelect={() => setConfig({ ...config, pantsStyle: pants.value as AvatarConfig['pantsStyle'] })}
+                                                />
                                             ))}
                                         </div>
                                     </div>
@@ -382,9 +425,9 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
                                     <div>
                                         <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: '#445865' }}>Broek kleur</p>
                                         <div className="flex flex-wrap gap-2.5 justify-center">
-                                            {SHIRT_COLORS.map(color => (
+                                            {SHIRT_COLORS.map((color, index) => (
                                                 <button
-                                                    key={color}
+                                                    key={`pants-${color}-${index}`}
                                                     onClick={() => setConfig({ ...config, pantsColor: color })}
                                                     className={`w-9 h-9 rounded-full transition-all border-2 ${config.pantsColor === color
                                                         ? 'ring-3 ring-[#D97848] ring-offset-2 ring-offset-[#FCF6EA] scale-110 border-[#445865]'
@@ -400,9 +443,9 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
                                     <div>
                                         <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: '#445865' }}>Schoenen kleur</p>
                                         <div className="flex flex-wrap gap-2.5 justify-center">
-                                            {SHOE_COLORS.map(color => (
+                                            {SHOE_COLORS.map((color, index) => (
                                                 <button
-                                                    key={color}
+                                                    key={`shoes-${color}-${index}`}
                                                     onClick={() => setConfig({ ...config, shoeColor: color })}
                                                     className={`w-9 h-9 rounded-full transition-all border-2 ${config.shoeColor === color
                                                         ? 'ring-3 ring-[#D97848] ring-offset-2 ring-offset-[#FCF6EA] scale-110 border-[#445865]'
@@ -419,22 +462,15 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
                                         <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: '#445865' }}>Accessoire</p>
                                         <div className="grid grid-cols-4 gap-2">
                                             {ACCESSORIES.map(acc => (
-                                                <button
-                                                    key={acc.value}
-                                                    onClick={() => !acc.locked && setConfig({ ...config, accessory: acc.value as any })}
-                                                    disabled={acc.locked}
-                                                    className={`p-3 rounded-xl border-2 transition-all text-center relative ${acc.locked
-                                                        ? 'border-[#E7D8BD] bg-[#E7D8BD]/50 text-[#445865] cursor-not-allowed opacity-50'
-                                                        : config.accessory === acc.value
-                                                            ? 'border-[#D97848] bg-[#D97848]/15 text-[#445865]'
-                                                            : 'border-[#E7D8BD] text-[#445865] hover:border-[#D97848]/40 active:scale-95'
-                                                        }`}
-                                                >
-                                                    <div className="font-bold text-xs flex items-center justify-center gap-1">
-                                                        {acc.label}
-                                                        {acc.locked && <Lock size={11} className="text-[#D97848]/70" />}
-                                                    </div>
-                                                </button>
+                                                <AvatarSetupAssetOption
+                                                    key={`setup-accessory-${acc.value}`}
+                                                    assetType="accessory"
+                                                    value={acc.value}
+                                                    label={acc.label}
+                                                    selected={config.accessory === acc.value}
+                                                    locked={acc.locked}
+                                                    onSelect={() => setConfig({ ...config, accessory: acc.value as AvatarConfig['accessory'] })}
+                                                />
                                             ))}
                                         </div>
                                     </div>
@@ -444,17 +480,14 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
                                         <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: '#445865' }}>Huisdier</p>
                                         <div className="grid grid-cols-4 gap-2">
                                             {AVATAR_PET_CATALOG.map(pet => (
-                                                <button
+                                                <AvatarSetupAssetOption
                                                     key={pet.value}
-                                                    onClick={() => setConfig({ ...config, pet: pet.value as any })}
-                                                    className={`p-3 rounded-xl border-2 transition-all flex flex-col items-center gap-1 active:scale-95 ${config.pet === pet.value || (!config.pet && pet.value === 'pet_dog')
-                                                        ? 'border-[#D97848] bg-[#D97848]/15 text-[#445865]'
-                                                        : 'border-[#E7D8BD] text-[#445865] hover:border-[#D97848]/40'
-                                                        }`}
-                                                >
-                                                    <span className="text-xl">{pet.emoji}</span>
-                                                    <span className="font-bold text-[11px]">{pet.label}</span>
-                                                </button>
+                                                    assetType="pet"
+                                                    value={pet.value}
+                                                    label={pet.label}
+                                                    selected={config.pet === pet.value || (!config.pet && pet.value === 'pet_dog')}
+                                                    onSelect={() => setConfig({ ...config, pet: pet.value as AvatarConfig['pet'] })}
+                                                />
                                             ))}
                                         </div>
                                     </div>

@@ -156,33 +156,35 @@ export const Ribbon: React.FC<RibbonProps> = ({ state, onAction, onTabChange, ha
     const tabs = [
         { id: 'bestand', label: 'Bestand' },
         { id: 'start', label: 'Start' },
-        { id: 'invoegen', label: 'Invoegen' },
-        { id: 'ontwerp', label: 'Ontwerp' },
-        { id: 'indeling', label: 'Indeling' },
-        { id: 'verwijzingen', label: 'Verwijzingen' },
-        { id: 'verzendlijsten', label: 'Verzendlijsten' },
-        { id: 'controleren', label: 'Controleren' },
-        { id: 'beeld', label: 'Beeld' },
+        { id: 'invoegen', label: 'Invoegen', mobileHidden: true },
+        { id: 'ontwerp', label: 'Ontwerp', mobileHidden: true },
+        { id: 'indeling', label: 'Indeling', mobileHidden: true },
+        { id: 'verwijzingen', label: 'Verwijzingen', mobileHidden: true },
+        { id: 'verzendlijsten', label: 'Verzendlijsten', mobileHidden: true },
+        { id: 'controleren', label: 'Controleren', mobileHidden: true },
+        { id: 'beeld', label: 'Beeld', mobileHidden: true },
     ];
 
     return (
         <div className="bg-[#f3f3f3] border-b border-[#E7D8BD] shrink-0 z-30 relative select-none">
             {/* TABS ROW */}
-            <div className="flex items-end px-1 bg-[#f3f3f3] overflow-x-auto" aria-label="Word lint tabs">
+            <div className="hidden items-end px-1 bg-[#f3f3f3] overflow-hidden sm:flex sm:overflow-x-auto" aria-label="Word lint tabs">
                 {tabs.map(tab => {
                     const isActive = state.activeTab === tab.id;
                     return (
                         <button
                             key={tab.id}
+                            data-qa={`word-tab-${tab.id}`}
                             onMouseDown={(e) => e.preventDefault()}
                             onClick={() => onTabChange(tab.id)}
                             className={`
-                                shrink-0 px-3 py-[5px] text-[12px] transition-colors relative cursor-default
+                                shrink-0 px-2 py-[5px] text-[11px] transition-colors relative cursor-default sm:px-3 sm:text-[12px]
                                 ${isActive
                                     ? 'bg-[#fdfdfd] text-[#08283B] border-t border-l border-r border-[#E7D8BD] border-b-0 -mb-px z-10 rounded-t-[3px] font-medium'
                                     : 'text-[#444] hover:bg-[#e8e8e8] border border-transparent'
                                 }
                                 ${tab.id === 'bestand' ? 'bg-[#185abd] text-white hover:bg-[#1a4fa0] rounded-[3px] font-medium mr-1 border-none' : ''}
+                                ${tab.mobileHidden ? 'hidden sm:block' : ''}
                             `}
                         >
                             {tab.label}
@@ -191,8 +193,83 @@ export const Ribbon: React.FC<RibbonProps> = ({ state, onAction, onTabChange, ha
                 })}
             </div>
 
+            <div className="grid grid-cols-3 gap-1.5 bg-[#fdfdfd] border-t border-[#E7D8BD] p-2 sm:hidden">
+                <button
+                    type="button"
+                    data-qa="word-mobile-heading1"
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => onAction('heading1')}
+                    className="flex min-h-[36px] flex-col items-center justify-center gap-0.5 rounded-lg border border-[#E7D8BD] bg-white px-1 text-[10px] font-bold text-[#445865]"
+                >
+                    <Heading size={14} />
+                    Kop 1
+                </button>
+                <button
+                    type="button"
+                    data-qa="word-mobile-margins"
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => onAction('margins', 'narrow')}
+                    className="flex min-h-[36px] flex-col items-center justify-center gap-0.5 rounded-lg border border-[#E7D8BD] bg-white px-1 text-[10px] font-bold text-[#445865]"
+                >
+                    <Columns size={14} />
+                    Marges
+                </button>
+                <button
+                    type="button"
+                    data-qa="word-mobile-wrap-square"
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => onAction('wrapMode', 'square')}
+                    disabled={!hasSelection}
+                    className="flex min-h-[36px] flex-col items-center justify-center gap-0.5 rounded-lg border border-[#E7D8BD] bg-white px-1 text-[10px] font-bold text-[#445865] disabled:opacity-40"
+                >
+                    <AlignLeft size={14} />
+                    Omloop
+                </button>
+                <button
+                    type="button"
+                    data-qa="word-mobile-image-right"
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => onAction('moveImageRight')}
+                    disabled={!hasSelection}
+                    className="flex min-h-[36px] flex-col items-center justify-center gap-0.5 rounded-lg border border-[#E7D8BD] bg-white px-1 text-[10px] font-bold text-[#445865] disabled:opacity-40"
+                >
+                    <AlignRight size={14} />
+                    Rechts
+                </button>
+                <button
+                    type="button"
+                    data-qa="word-mobile-insert-image"
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => onAction('insertImage')}
+                    className="flex min-h-[36px] flex-col items-center justify-center gap-0.5 rounded-lg border border-[#E7D8BD] bg-white px-1 text-[10px] font-bold text-[#445865]"
+                >
+                    <Image size={14} />
+                    Afb.
+                </button>
+                <button
+                    type="button"
+                    data-qa="word-mobile-toc"
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => onAction('toc')}
+                    className="flex min-h-[36px] flex-col items-center justify-center gap-0.5 rounded-lg border border-[#E7D8BD] bg-white px-1 text-[10px] font-bold text-[#445865]"
+                >
+                    <BookOpen size={14} />
+                    Inhoud
+                </button>
+                <button
+                    type="button"
+                    data-qa="word-mobile-page-number"
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => onAction('pageNumber')}
+                    className="flex min-h-[36px] flex-col items-center justify-center gap-0.5 rounded-lg border border-[#E7D8BD] bg-white px-1 text-[10px] font-bold text-[#445865]"
+                >
+                    <Hash size={14} />
+                    Pagina #
+                </button>
+            </div>
+
             {/* RIBBON CONTENT */}
-            <div className="bg-[#fdfdfd] border-t border-[#E7D8BD] min-h-[90px] px-2 py-1 flex items-stretch gap-0 overflow-x-auto">
+            <div className="hidden bg-[#fdfdfd] border-t border-[#E7D8BD] min-h-[90px] px-2 py-1 sm:flex items-stretch gap-0 overflow-x-auto">
 
                 {/* ===== START TAB ===== */}
                 {state.activeTab === 'start' && (
@@ -574,6 +651,17 @@ export const Ribbon: React.FC<RibbonProps> = ({ state, onAction, onTabChange, ha
                                         </button>
                                     </div>
                                 </div>
+                                <button
+                                    data-qa="word-image-right"
+                                    onMouseDown={(e) => e.preventDefault()}
+                                    onClick={() => onAction('moveImageRight')}
+                                    disabled={!hasSelection}
+                                    className="flex h-14 w-14 flex-col items-center justify-center rounded-sm border border-[#E7D8BD] bg-white text-[9px] text-[#445865] transition-colors hover:bg-[#FCF6EA] hover:border-[#91c4e9] disabled:opacity-40"
+                                    title="Afbeelding rechts plaatsen"
+                                >
+                                    <AlignRight size={18} className="mb-0.5 text-[#445865]" strokeWidth={1.5} />
+                                    Rechts
+                                </button>
                             </div>
                             <GroupLabel label="Schikken" />
                         </div>

@@ -58,6 +58,7 @@ export const BinaryChoiceRound: React.FC<{
                                 <div className="flex gap-2">
                                     <button
                                         onClick={() => onChoice(item.id, true)}
+                                        data-qa="scenario-binary-accept"
                                         className={`flex-1 min-h-[44px] py-2 rounded-lg text-xs font-bold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D97848]/40 ${
                                             isAccepted
                                                 ? 'bg-[#D97848] text-white'
@@ -69,6 +70,7 @@ export const BinaryChoiceRound: React.FC<{
                                     </button>
                                     <button
                                         onClick={() => onChoice(item.id, false)}
+                                        data-qa="scenario-binary-reject"
                                         className={`flex-1 min-h-[44px] py-2 rounded-lg text-xs font-bold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#08283B]/30 ${
                                             isRejected
                                                 ? 'bg-[#08283B] text-white'
@@ -100,6 +102,7 @@ export const BinaryChoiceRound: React.FC<{
             {!submitted && allAnswered && (
                 <button
                     onClick={onSubmit}
+                    data-qa="scenario-submit"
                     className="w-full py-3 rounded-full font-black text-sm bg-[#D97848] hover:bg-[#D97848] hover:brightness-95 hover:shadow-md active:scale-[0.98] text-white transition-all duration-300"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >

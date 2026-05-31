@@ -13,6 +13,28 @@ export const meesterproefConfig: BuilderCanvasConfig = {
         'Bouw en test je eindproduct',
         'Verdedig je project voor een jury',
     ],
+    missionGoal: {
+        primaryGoal:
+            'Laat met een eindproject zien dat je zelfstandig kunt onderzoeken, ontwerpen, bouwen, testen, presenteren en reflecteren.',
+        criteria: {
+            type: 'steps-complete',
+            min: 4,
+            description:
+                'Je rondt projectvoorstel, ontwikkeldagboek, eindproductverantwoording en juryvoorbereiding af.',
+        },
+        evidence:
+            'Leerlingbewijs: SMART-projectvoorstel, ontwikkeldagboek, productbeschrijving, testbewijs en juryvoorbereiding. Docentbewijs: checklistvoortgang en tekstinvoer tonen of de leerling een compleet digitaal project kan plannen en verantwoorden.',
+    },
+    experienceDesign: {
+        boringRisk: 'low',
+        firstTenSeconds: 'Meesterproefbrief: leerling kiest welk productbewijs de jury als eerste moet overtuigen.',
+        primaryInteraction: 'test-product',
+        feedbackMoment: 'Na de bewijskeuze koppelt feedback projectdoel, ontwikkeldagboek, testbewijs en juryverdediging aan elkaar.',
+        visualKit: 'maker-canvas',
+        evidenceMoment: 'De leerling toont SMART-voorstel, proceslog, productverantwoording, testbewijs en juryvoorbereiding.',
+        antiBoringRule: 'De eindopdracht blijft volwassen productbewijs met test en verdediging, geen extra speellaag bovenop de meesterproef.',
+        chromeAcceptance: 'Projectbrief, canvasstappen, bewijsstatus en eindstaat blijven professioneel, rustig en responsive op alle vier viewports.',
+    },
     enableChat: true,
     chatRoleId: 'meesterproef',
     previewType: 'text-preview',

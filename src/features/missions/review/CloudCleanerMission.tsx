@@ -12,55 +12,36 @@ interface CloudCleanerState {
     mistakes: number;
 }
 
-// "Waarom" reflectievragen per map
-const WHY_QUESTIONS: Record<string, { question: string; options: { text: string; correct: boolean }[] }> = {
+const EVIDENCE_PROMPTS: Record<string, { prompt: string; signal: string; modelEvidence: string }> = {
     nederlands: {
-        question: 'Waarom past dit bestand in de map Nederlands?',
-        options: [
-            { text: 'Het is een schooldocument voor het vak Nederlands', correct: true },
-            { text: 'Omdat het een .docx bestand is', correct: false },
-            { text: 'Omdat het een klein bestand is', correct: false },
-        ],
+        prompt: 'Welk signaal bewijst dat dit bij Nederlands hoort?',
+        signal: 'Vakcode of onderwerp in de bestandsnaam',
+        modelEvidence: 'De naam verwijst naar een Nederlands-opdracht, dus de vakmap is sterker bewijs dan alleen de extensie.',
     },
     wiskunde: {
-        question: 'Waarom hoort dit bestand bij Wiskunde?',
-        options: [
-            { text: 'Het gaat over wiskundige opdrachten of huiswerk', correct: true },
-            { text: 'Omdat het een PDF is', correct: false },
-            { text: 'Omdat de bestandsnaam kort is', correct: false },
-        ],
+        prompt: 'Welk signaal bewijst dat dit bij Wiskunde hoort?',
+        signal: 'Huiswerk of wiskundetaal in de naam',
+        modelEvidence: 'De naam noemt huiswerk en Wiskunde. Het vaksignaal is belangrijker dan het bestandstype.',
     },
     aardrijkskunde: {
-        question: 'Waarom past dit in de map Aardrijkskunde?',
-        options: [
-            { text: 'Het is een presentatie of document voor het vak Aardrijkskunde', correct: true },
-            { text: 'Omdat het een PowerPoint is', correct: false },
-            { text: 'Omdat het groot is', correct: false },
-        ],
+        prompt: 'Welk signaal bewijst dat dit bij Aardrijkskunde past?',
+        signal: 'Vakafkorting of presentatie-onderwerp',
+        modelEvidence: 'De naam verwijst naar Aardrijkskunde. De inhoudsaanwijzing wint van de extensie.',
     },
     school_algemeen: {
-        question: 'Waarom past dit bij School Algemeen?',
-        options: [
-            { text: 'Het is een algemeen schooldocument, niet voor een specifiek vak', correct: true },
-            { text: 'Omdat het een tekstbestand is', correct: false },
-            { text: 'Omdat het niet belangrijk is', correct: false },
-        ],
+        prompt: 'Welk signaal bewijst dat dit School Algemeen is?',
+        signal: 'Schooldocument zonder duidelijke vaknaam',
+        modelEvidence: 'Lesaantekeningen zijn schoolwerk, maar de naam noemt geen specifiek vak. Daarom is School Algemeen logisch.',
     },
     prive: {
-        question: 'Waarom hoort dit in Priv\u00e9?',
-        options: [
-            { text: 'Het is een persoonlijk bestand, niet voor school', correct: true },
-            { text: 'Omdat het een afbeelding is', correct: false },
-            { text: 'Omdat het gevaarlijk is', correct: false },
-        ],
+        prompt: 'Welk signaal bewijst dat dit prive is?',
+        signal: 'Persoonlijke foto of eigen verzameling',
+        modelEvidence: 'De naam wijst op iets persoonlijks. Dat hoort niet tussen schoolvakken en hoeft niet weg.',
     },
     trash: {
-        question: 'Waarom gooi je dit weg?',
-        options: [
-            { text: 'Het is een verdacht of ongewenst bestand (virus, spam, troep)', correct: true },
-            { text: 'Omdat de bestandsnaam lang is', correct: false },
-            { text: 'Omdat je het niet kent', correct: false },
-        ],
+        prompt: 'Welk signaal bewijst dat dit naar de prullenbak moet?',
+        signal: 'Verdachte naam, hack/virus/setup of ongewenst bestand',
+        modelEvidence: 'De naam klinkt verdacht of ongewenst. Je bewaart dit niet tussen school- of privebestanden.',
     },
 };
 
@@ -120,6 +101,9 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
     const files = FILES.filter(f => savedState.remainingFileIds.includes(f.id));
     const score = savedState.score;
     const mistakes = savedState.mistakes;
+    const completedCount = FILES.length - files.length;
+    const progressPercent = Math.round((completedCount / FILES.length) * 100);
+    const nextFile = files[0];
 
     // Transient UI state - niet opgeslagen
     const [showSuccess, setShowSuccess] = useState(false);
@@ -133,14 +117,16 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
     const [lastSuccessFolder, setLastSuccessFolder] = useState<string | null>(null);
     const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
-    // "Waarom" reflectie state
+    // Evidence card state
     const [whyQuestion, setWhyQuestion] = useState<{ folderId: string; fileName: string } | null>(null);
-    const [whyFeedback, setWhyFeedback] = useState<'correct' | 'wrong' | null>(null);
+    const [evidenceNote, setEvidenceNote] = useState('');
+    const [evidencePinned, setEvidencePinned] = useState(false);
+    const showCompletionModal = (showSuccess || files.length === 0) && !whyQuestion;
 
     // Touch drag state
     const [touchDragFile, setTouchDragFile] = useState<string | null>(null);
     const [touchPosition, setTouchPosition] = useState<{ x: number; y: number } | null>(null);
-    const folderRefs = useRef<Map<string, HTMLDivElement>>(new Map());
+    const folderRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
 
     // Auto-hide error message after 3 seconds
     useEffect(() => {
@@ -188,7 +174,7 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
         if (file.correctFolder === folderId) {
             // Correct! Show success animation
             setLastSuccessFolder(folderId);
-            setSuccessMessage(`\u2713 ${file.name} geplaatst!`);
+            setSuccessMessage(`\u2713 ${file.name} klopt! +10 XP`);
             setSavedState(prev => ({
                 ...prev,
                 remainingFileIds: prev.remainingFileIds.filter(id => id !== fileId),
@@ -197,8 +183,7 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
             setSelectedFile(null);
             setSelectedFolder(null);
 
-            // Show "waarom" reflectie vraag
-            if (WHY_QUESTIONS[folderId]) {
+            if (EVIDENCE_PROMPTS[folderId]) {
                 setTimeout(() => {
                     setWhyQuestion({ folderId, fileName: file.name });
                 }, 800);
@@ -215,11 +200,11 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
 
             setSavedState(prev => ({ ...prev, mistakes: prev.mistakes + 1 }));
             if (folderId === 'trash' && file.correctFolder !== 'trash') {
-                setErrorMessage('Ho! Dit is een belangrijk bestand, niet weggooien!');
+                setErrorMessage('Feedback: dit is belangrijk school- of privéwerk. Zoek een passende map in plaats van de prullenbak.');
             } else if (file.correctFolder === 'trash' && folderId !== 'trash') {
-                setErrorMessage('Dit is een virus- of onzinbestand. Gooi dit weg in de Prullenbak!');
+                setErrorMessage('Feedback: dit lijkt verdacht of ongewenst. Dit hoort veilig in de Prullenbak.');
             } else {
-                setErrorMessage('Oeps! Dit bestand hoort niet in deze map.');
+                setErrorMessage('Feedback: kijk naar de bestandsnaam. Welk vak, privédoel of risico herken je?');
             }
             setSelectedFile(null);
             setSelectedFolder(null);
@@ -322,7 +307,7 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
         setDragOverFolderId(null);
     };
 
-    const registerFolderRef = (folderId: string, element: HTMLDivElement | null) => {
+    const registerFolderRef = (folderId: string, element: HTMLButtonElement | null) => {
         if (element) {
             folderRefs.current.set(folderId, element);
         } else {
@@ -331,7 +316,7 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
     };
 
     return (
-        <div className="min-h-screen bg-[#FCF6EA] flex flex-col text-[#08283B]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+        <div className="h-dvh overflow-hidden bg-[#FCF6EA] flex flex-col text-[#08283B]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
             {/* Touch drag ghost */}
             {touchDragFile && touchPosition && (
                 <div
@@ -378,7 +363,7 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
             </AnimatePresence>
 
             {/* OneDrive Header */}
-            <header className="bg-lab-teal text-white flex items-center justify-between px-4 py-3 shadow-md">
+            <header className="bg-lab-teal text-white flex flex-wrap items-center justify-between gap-3 px-4 py-3 shadow-md">
                 <div className="flex items-center gap-4">
                     <button onClick={onBack} className="p-2 hover:bg-white/10 rounded-full transition-all duration-300 focus-visible:ring-2 focus-visible:ring-white" title="Terug naar opdrachten">
                         <ArrowLeft size={20} />
@@ -388,7 +373,7 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
                         <span>OneDrive - School</span>
                     </div>
                 </div>
-                <div className="flex items-center gap-4 text-sm font-medium">
+                <div className="hidden sm:flex items-center gap-4 text-sm font-medium">
                     <div className="flex items-center gap-2 bg-white/10 px-3 py-1 rounded-full">
                         <Monitor size={16} />
                         <span>Mijn Bestanden</span>
@@ -400,13 +385,40 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
             </header>
 
             <div className="bg-[#FCF6EA] border-b border-lab-line px-3 py-2">
-                <div className="mx-auto max-w-3xl">
+                <div className="mx-auto max-w-4xl">
                     <MissionGoalBanner goal={getMissionGoal('cloud-cleaner')!} compact />
                 </div>
             </div>
 
+            <section className="bg-white border-b border-lab-line px-3 py-3" data-qa="cloud-cleaner-challenge">
+                <div className="mx-auto grid max-w-4xl gap-3 sm:grid-cols-[1fr_auto] sm:items-center">
+                    <div>
+                        <p className="text-[10px] font-black uppercase tracking-widest text-lab-coral">
+                            Challenge {Math.min(completedCount + 1, FILES.length)}/{FILES.length}
+                        </p>
+                        <h2 className="text-base font-black text-lab-ink" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
+                            Sorteer slim: bewaren, vakmap of prullenbak?
+                        </h2>
+                        <p className="text-xs leading-relaxed text-lab-muted">
+                            {nextFile
+                                ? `Eerste keuze: waar hoort "${nextFile.name}"? Elke goede plaatsing geeft feedback en +10 XP.`
+                                : 'Alle bestanden zijn beoordeeld. Rond af met je bewijs.'}
+                        </p>
+                    </div>
+                    <div className="rounded-2xl border border-lab-line bg-lab-cream px-4 py-3 text-sm shadow-sm">
+                        <div className="mb-2 flex items-center justify-between gap-4 font-bold text-lab-ink">
+                            <span>{score} XP</span>
+                            <span>{completedCount}/{FILES.length} klaar</span>
+                        </div>
+                        <div className="h-2 w-full overflow-hidden rounded-full bg-white">
+                            <div className="h-full rounded-full bg-lab-sage transition-all duration-500" style={{ width: `${progressPercent}%` }} />
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             {/* Main Interface */}
-            <div className="flex-1 flex overflow-hidden relative">
+            <div className="min-h-0 flex-1 flex overflow-hidden relative">
                 {/* Mobile sidebar toggle */}
                 <button
                     onClick={() => setMobileSidebarOpen(!mobileSidebarOpen)}
@@ -424,9 +436,9 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
                 <aside className={`
                     fixed lg:relative z-30 lg:z-auto
                     w-64 bg-lab-cream border-r border-lab-line p-4 flex flex-col overflow-y-auto
-                    h-[calc(100vh-56px)] lg:h-auto
+                    h-[calc(100dvh-56px)] lg:h-auto
                     transition-transform duration-300 lg:transition-none
-                    ${mobileSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+                    ${mobileSidebarOpen ? 'flex translate-x-0' : 'hidden -translate-x-full lg:flex lg:translate-x-0'}
                 `}>
                     <h3 className="text-xs font-bold text-lab-muted uppercase tracking-widest mb-4 px-2">Mijn Mappen</h3>
 
@@ -449,8 +461,9 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
                     {/* Folder List */}
                     <div className="space-y-1 mb-6">
                         {FOLDERS.map(folder => (
-                            <motion.div
+                            <motion.button
                                 key={folder.id}
+                                type="button"
                                 ref={(el) => registerFolderRef(folder.id, el)}
                                 onClick={(e) => handleFolderClick(e, folder.id)}
                                 onDragOver={handleDragOver}
@@ -495,11 +508,12 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
                                         <CheckCircle size={18} />
                                     </motion.span>
                                 )}
-                            </motion.div>
+                            </motion.button>
                         ))}
 
                         {/* TRASH BIN */}
-                        <motion.div
+                        <motion.button
+                            type="button"
                             ref={(el) => registerFolderRef('trash', el)}
                             onClick={(e) => handleFolderClick(e, 'trash')}
                             onDragOver={handleDragOver}
@@ -546,7 +560,7 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
                                     <Trash2 size={18} />
                                 </motion.span>
                             )}
-                        </motion.div>
+                        </motion.button>
                     </div>
 
                     {/* Score Panel */}
@@ -581,7 +595,10 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
                     onTouchEnd={handleTouchEnd}
                 >
                     <div className="mb-6 flex items-center justify-between flex-wrap gap-2">
-                        <h2 className="text-xl font-bold text-lab-ink">Recente Bestanden</h2>
+                        <div>
+                            <h2 className="text-xl font-bold text-lab-ink">Recente Bestanden</h2>
+                            <p className="text-xs text-lab-muted">Klik of sleep een bestand naar de beste bestemming. Fouten zijn oefenfeedback.</p>
+                        </div>
                         {selectedFile && (
                             <motion.div
                                 initial={{ opacity: 0, x: 20 }}
@@ -606,11 +623,12 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
                         </div>
                     )}
 
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-3 gap-2 md:grid-cols-3 md:gap-4 lg:grid-cols-4">
                         <AnimatePresence mode="popLayout">
                             {files.map(file => (
-                                <motion.div
+                                <motion.button
                                     key={file.id}
+                                    type="button"
                                     layout
                                     initial={{ opacity: 0, scale: 0.8, y: 20 }}
                                     animate={{
@@ -636,7 +654,7 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
                                     onTouchStart={(e) => handleTouchStart(e, file.id)}
                                     style={{ touchAction: 'none' }}
                                     className={`
-                                        bg-lab-paper rounded-2xl border-2 shadow-sm p-4 flex flex-col items-center gap-3 cursor-grab active:cursor-grabbing transition-all duration-300 group select-none
+                                        bg-lab-paper rounded-xl border-2 shadow-sm p-2 md:p-4 flex flex-col items-center gap-2 md:gap-3 cursor-grab active:cursor-grabbing transition-all duration-300 group select-none
                                         ${dragActive === file.id ? 'opacity-50 ring-2 ring-lab-coral shadow-xl border-lab-coral' : ''}
                                         ${selectedFile === file.id
                                             ? 'border-lab-coral bg-lab-coral/5 ring-2 ring-lab-coral/20 shadow-lg'
@@ -645,7 +663,7 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
                                     `}
                                 >
                                     <motion.div
-                                        className={`w-16 h-16 rounded-2xl flex items-center justify-center transition-all duration-300
+                                        className={`h-10 w-10 rounded-xl md:w-16 md:h-16 md:rounded-2xl flex items-center justify-center transition-all duration-300
                                             ${file.type === 'junk' ? 'bg-lab-coral text-white group-hover:bg-lab-coral' : 'bg-lab-cream group-hover:bg-lab-coral/10'}
                                         `}
                                         animate={{
@@ -653,11 +671,11 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
                                         }}
                                         transition={{ duration: 0.5, repeat: dragActive === file.id ? Infinity : 0 }}
                                     >
-                                        {file.type === 'doc' && <FileText size={32} className="text-lab-sage" />}
-                                        {file.type === 'image' && <ImageIcon size={32} className="text-lab-teal" />}
-                                        {file.type === 'junk' && <FileWarning size={32} className="text-white" />}
+                                        {file.type === 'doc' && <FileText size={24} className="text-lab-sage md:size-8" />}
+                                        {file.type === 'image' && <ImageIcon size={24} className="text-lab-teal md:size-8" />}
+                                        {file.type === 'junk' && <FileWarning size={24} className="text-white md:size-8" />}
                                     </motion.div>
-                                    <span className="text-sm font-medium text-lab-muted text-center break-all line-clamp-2">
+                                    <span className="text-[10px] font-medium text-lab-muted text-center break-all line-clamp-2 md:text-sm">
                                         {file.name}
                                     </span>
                                     {selectedFile === file.id && (
@@ -669,14 +687,14 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
                                             Geselecteerd ✓
                                         </motion.span>
                                     )}
-                                </motion.div>
+                                </motion.button>
                             ))}
                         </AnimatePresence>
                     </div>
                 </main>
             </div>
 
-            {/* "Waarom" Reflectie Modal */}
+            {/* Evidence Modal */}
             <AnimatePresence>
                 {whyQuestion && (
                     <motion.div
@@ -689,56 +707,60 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
                             initial={{ scale: 0.8, y: 30 }}
                             animate={{ scale: 1, y: 0 }}
                             exit={{ scale: 0.8, y: 30 }}
-                            className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl"
+                            className="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl"
+                            data-qa="cloud-cleaner-evidence-modal"
                         >
                             <div className="text-center mb-4">
                                 <div className="w-12 h-12 bg-[#5F947D]/10 rounded-full flex items-center justify-center mx-auto mb-3">
-                                    <Sparkles size={24} className="text-[#5F947D]" />
+                                    <FileText size={24} className="text-[#5F947D]" />
                                 </div>
-                                <p className="text-sm text-[#445865] mb-1">Even nadenken over:</p>
+                                <p className="text-[10px] font-black uppercase tracking-widest text-lab-coral mb-1">Bewijskaart</p>
                                 <p className="font-bold text-[#08283B]">{whyQuestion.fileName}</p>
                             </div>
-                            <p className="text-sm font-medium text-[#445865] mb-4 text-center">
-                                {WHY_QUESTIONS[whyQuestion.folderId]?.question}
-                            </p>
-                            <div className="space-y-2">
-                                {WHY_QUESTIONS[whyQuestion.folderId]?.options.map((opt, idx) => (
-                                    <button
-                                        key={idx}
-                                        onClick={() => {
-                                            if (opt.correct) {
-                                                setWhyFeedback('correct');
-                                                setTimeout(() => {
-                                                    setWhyQuestion(null);
-                                                    setWhyFeedback(null);
-                                                }, 800);
-                                            } else {
-                                                setWhyFeedback('wrong');
-                                                setTimeout(() => setWhyFeedback(null), 1500);
-                                            }
-                                        }}
-                                        disabled={whyFeedback === 'correct'}
-                                        className={`w-full text-left p-3 rounded-xl text-sm font-medium transition-all duration-300 border-2 ${
-                                            whyFeedback === 'correct' && opt.correct
-                                                ? 'border-[#5F947D] bg-[#5F947D]/10 text-[#5F947D]'
-                                                : 'border-[#E7D8BD] hover:border-[#5F947D] text-[#445865]'
-                                        }`}
-                                    >
-                                        {opt.text}
-                                    </button>
-                                ))}
+                            <div className="rounded-2xl border border-[#E7D8BD] bg-[#FCF6EA] p-3 mb-4">
+                                <p className="text-xs font-black uppercase tracking-widest text-[#D97848]">Te pinnen signaal</p>
+                                <p className="mt-1 text-sm font-bold text-[#08283B]">{EVIDENCE_PROMPTS[whyQuestion.folderId]?.signal}</p>
                             </div>
-                            {whyFeedback === 'wrong' && (
-                                <p className="text-xs text-lab-muted text-center mt-3 font-medium">Niet helemaal, probeer nog eens!</p>
-                            )}
-                            {whyFeedback === 'correct' && (
-                                <p className="text-xs text-[#5F947D] text-center mt-3 font-bold">Goed beredeneerd!</p>
+                            <label className="text-sm font-bold text-[#445865]" htmlFor="cloud-cleaner-evidence-note">
+                                {EVIDENCE_PROMPTS[whyQuestion.folderId]?.prompt}
+                            </label>
+                            <textarea
+                                id="cloud-cleaner-evidence-note"
+                                data-qa="cloud-cleaner-evidence-note"
+                                value={evidenceNote}
+                                onChange={event => setEvidenceNote(event.target.value)}
+                                disabled={evidencePinned}
+                                placeholder="Bijv: In de naam staat..."
+                                className="mt-2 w-full rounded-2xl border-2 border-[#E7D8BD] bg-[#FCF6EA] p-3 text-sm leading-relaxed text-[#08283B] outline-none transition-all duration-300 focus:border-[#5F947D] disabled:opacity-70"
+                                style={{ minHeight: '92px' }}
+                            />
+                            {evidencePinned && (
+                                <div className="mt-3 rounded-2xl border border-[#5F947D]/20 bg-[#5F947D]/10 p-3" data-qa="cloud-cleaner-evidence-feedback">
+                                    <p className="text-xs font-black uppercase tracking-widest text-[#5F947D]">Modelbewijs</p>
+                                    <p className="mt-1 text-sm text-[#445865]">{EVIDENCE_PROMPTS[whyQuestion.folderId]?.modelEvidence}</p>
+                                </div>
                             )}
                             <button
-                                onClick={() => { setWhyQuestion(null); setWhyFeedback(null); }}
-                                className="w-full mt-4 text-xs text-[#445865] hover:text-[#08283B] transition-colors"
+                                type="button"
+                                onClick={() => {
+                                    if (!evidencePinned) {
+                                        if (evidenceNote.trim().length < 18) return;
+                                        setEvidencePinned(true);
+                                        return;
+                                    }
+                                    setWhyQuestion(null);
+                                    setEvidenceNote('');
+                                    setEvidencePinned(false);
+                                }}
+                                disabled={!evidencePinned && evidenceNote.trim().length < 18}
+                                data-qa="cloud-cleaner-pin-evidence"
+                                className="mt-4 w-full rounded-full px-4 py-3 text-sm font-black uppercase tracking-wide transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#5F947D]"
+                                style={{
+                                    backgroundColor: evidencePinned || evidenceNote.trim().length >= 18 ? '#5F947D' : '#E7D8BD',
+                                    color: evidencePinned || evidenceNote.trim().length >= 18 ? '#FFFFFF' : '#445865',
+                                }}
                             >
-                                Overslaan
+                                {evidencePinned ? 'Volgende file' : 'Pin bewijs'}
                             </button>
                         </motion.div>
                     </motion.div>
@@ -747,7 +769,7 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
 
             {/* Success Modal */}
             <AnimatePresence>
-                {showSuccess && (
+                {showCompletionModal && (
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
@@ -764,7 +786,11 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
                                 <motion.div
                                     initial={{ scale: 0 }}
                                     animate={{ scale: 1, rotate: [0, -10, 10, -5, 5, 0] }}
-                                    transition={{ delay: 0.2, type: 'spring' }}
+                                    transition={{
+                                        delay: 0.2,
+                                        scale: { type: 'spring' },
+                                        rotate: { duration: 0.7, ease: 'easeInOut' },
+                                    }}
                                     className="w-24 h-24 bg-gradient-to-br from-[#5F947D] to-lab-sage text-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl shadow-[#5F947D]/20"
                                 >
                                     <CheckCircle size={48} />

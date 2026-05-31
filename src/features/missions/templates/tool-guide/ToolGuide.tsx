@@ -1,11 +1,11 @@
 import React, { useMemo, useState, useEffect } from 'react';
-import { Check, ChevronRight, ClipboardCheck, Lightbulb } from 'lucide-react';
+import { AlertTriangle, Check, ChevronRight, ClipboardCheck, Lightbulb, Target, Zap } from 'lucide-react';
 import { useMissionAutoSave } from '@/hooks/useMissionAutoSave';
 import { IntroScreen } from '../shared/IntroScreen';
 import { CompletionScreen } from '../shared/CompletionScreen';
 import { PhaseHeader } from '../shared/PhaseHeader';
 import { getMissionGoal } from '@/config/missionGoals';
-import type { TemplateMissionProps, BadgeConfig, MissionGoal } from '../shared/types';
+import type { TemplateMissionProps, BadgeConfig, MissionGoal, MissionExperienceDesign } from '../shared/types';
 
 // ─── Config types ────────────────────────────────────────────────────────────
 
@@ -19,6 +19,32 @@ export interface VerificationQuestion {
     options: string[];
     correctIndex: number;
     explanation: string;
+}
+
+export interface IntroChallengeOption {
+    id: string;
+    title: string;
+    description: string;
+    feedback: string;
+    correct?: boolean;
+}
+
+export interface IntroChallengePreview {
+    beforeTitle: string;
+    afterTitle: string;
+    beforeSignals: string[];
+    afterSignals: string[];
+    evidenceTitle: string;
+    evidenceItems: string[];
+}
+
+export interface IntroChallenge {
+    title: string;
+    scenario: string;
+    prompt: string;
+    options: IntroChallengeOption[];
+    preview?: IntroChallengePreview;
+    continueLabel?: string;
 }
 
 export interface ToolStep {
@@ -38,7 +64,9 @@ export interface ToolGuideConfig {
     introTitle: string;
     introDescription: string;
     missionGoal?: MissionGoal;
+    experienceDesign?: MissionExperienceDesign;
     introFeatures?: string[];
+    introChallenge?: IntroChallenge;
     toolName: string;
     toolIcon: string;
     steps: ToolStep[];
@@ -50,8 +78,10 @@ export interface ToolGuideConfig {
 // ─── State ───────────────────────────────────────────────────────────────────
 
 interface ToolGuideState {
-    phase: 'intro' | 'steps' | 'results';
+    phase: 'intro' | 'challenge' | 'steps' | 'results';
     currentStep: number;
+    introChallengeChoice?: string;
+    introChallengeSubmitted?: boolean;
     checklist: Record<string, boolean>;
     teacherChecks: Record<string, boolean>;
     verificationAnswers: Record<string, number>;
@@ -414,6 +444,312 @@ const StepCard: React.FC<StepCardProps> = ({
     );
 };
 
+// ─── Intro challenge ────────────────────────────────────────────────────────
+
+interface IntroChallengeCardProps {
+    challenge: IntroChallenge;
+    experienceDesign?: MissionExperienceDesign;
+    missionTitle: string;
+    toolIcon: string;
+    selectedId?: string;
+    submitted?: boolean;
+    onSelect: (optionId: string) => void;
+    onContinue: () => void;
+}
+
+const IntroChallengeCard: React.FC<IntroChallengeCardProps> = ({
+    challenge,
+    experienceDesign,
+    missionTitle,
+    toolIcon,
+    selectedId,
+    submitted,
+    onSelect,
+    onContinue,
+}) => {
+    const selectedOption = challenge.options.find((option) => option.id === selectedId);
+
+    return (
+        <div className="min-h-screen bg-[#FCF6EA] px-4 py-5 sm:py-8" data-qa="tool-guide-intro-challenge">
+            <div className="mx-auto flex w-full max-w-5xl flex-col gap-4">
+                <div className="rounded-[1.25rem] border border-[#0B453F]/20 bg-[#0B453F] p-4 text-white shadow-xl shadow-[#0B453F]/10">
+                    <div className="flex flex-wrap items-center justify-between gap-3">
+                        <div className="flex min-w-0 items-center gap-3">
+                            <div className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-white/12 text-2xl">
+                                {toolIcon}
+                            </div>
+                            <div className="min-w-0">
+                                <p
+                                    className="text-[10px] font-black uppercase tracking-[0.2em] text-[#D7C95F]"
+                                    style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                                >
+                                    Crisis console
+                                </p>
+                                <h1
+                                    className="truncate text-xl font-black sm:text-2xl"
+                                    style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                                >
+                                    {missionTitle}
+                                </h1>
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-2 rounded-full bg-white/10 px-3 py-2 text-xs font-black">
+                            <Zap size={14} className="text-[#D7C95F]" />
+                            Eerste zet
+                        </div>
+                    </div>
+                    {experienceDesign?.firstTenSeconds && (
+                        <p
+                            className="mt-3 max-w-3xl text-sm font-semibold leading-relaxed text-white/82"
+                            style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                        >
+                            {experienceDesign.firstTenSeconds}
+                        </p>
+                    )}
+                </div>
+
+                <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(340px,420px)]">
+                    <section className="rounded-[1.25rem] border border-[#E7D8BD] bg-[#FFFDF7] p-4 shadow-sm">
+                        <div className="mb-4 flex items-start gap-3">
+                            <div className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-[#D97848] text-white">
+                                <AlertTriangle size={20} />
+                            </div>
+                            <div>
+                                <p
+                                    className="text-xs font-black uppercase tracking-widest text-[#D97848]"
+                                    style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                                >
+                                    Startchallenge
+                                </p>
+                                <h2
+                                    className="mt-1 text-2xl font-black leading-tight text-[#08283B]"
+                                    style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                                >
+                                    {challenge.title}
+                                </h2>
+                            </div>
+                        </div>
+
+                        <div className="rounded-2xl border border-[#D97848]/20 bg-[#D97848]/7 p-4">
+                            <p
+                                className="text-sm font-semibold leading-relaxed text-[#08283B]"
+                                style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                            >
+                                {challenge.scenario}
+                            </p>
+                        </div>
+
+                        <div className="mt-4 flex items-start gap-3 rounded-2xl border border-[#E7D8BD] bg-[#FCF6EA] p-4">
+                            <Target size={18} className="mt-0.5 shrink-0 text-[#0B453F]" />
+                            <p
+                                className="text-sm font-black leading-relaxed text-[#08283B]"
+                                style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                            >
+                                {challenge.prompt}
+                            </p>
+                        </div>
+
+                        {challenge.preview && (
+                            <div className="mt-4 grid gap-3 sm:grid-cols-2" data-qa="tool-guide-visual-preview">
+                                <div className="rounded-2xl border border-[#D97848]/35 bg-[#D97848]/8 p-3">
+                                    <div className="mb-3 flex items-center justify-between gap-2">
+                                        <p
+                                            className="text-xs font-black uppercase tracking-widest text-[#D97848]"
+                                            style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                                        >
+                                            Fout
+                                        </p>
+                                        <AlertTriangle size={16} className="text-[#D97848]" />
+                                    </div>
+                                    <div className="rounded-xl border border-[#D97848]/25 bg-white p-3">
+                                        <p
+                                            className="text-lg font-black leading-tight text-[#08283B]"
+                                            style={{ fontFamily: "'Newsreader', Georgia, serif" }}
+                                        >
+                                            {challenge.preview.beforeTitle}
+                                        </p>
+                                        <div className="mt-3 space-y-2">
+                                            {challenge.preview.beforeSignals.map((signal) => (
+                                                <div key={signal} className="flex items-center gap-2">
+                                                    <span className="h-1.5 w-1.5 rounded-full bg-[#D97848]" />
+                                                    <span
+                                                        className="text-xs font-bold text-[#445865]"
+                                                        style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                                                    >
+                                                        {signal}
+                                                    </span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="rounded-2xl border border-[#5F947D]/35 bg-[#5F947D]/8 p-3">
+                                    <div className="mb-3 flex items-center justify-between gap-2">
+                                        <p
+                                            className="text-xs font-black uppercase tracking-widest text-[#5F947D]"
+                                            style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                                        >
+                                            Fix
+                                        </p>
+                                        <Check size={16} className="text-[#5F947D]" />
+                                    </div>
+                                    <div className="rounded-xl border border-[#5F947D]/25 bg-white p-3">
+                                        <p
+                                            className="text-lg font-black leading-tight text-[#08283B]"
+                                            style={{ fontFamily: "'Newsreader', Georgia, serif" }}
+                                        >
+                                            {challenge.preview.afterTitle}
+                                        </p>
+                                        <div className="mt-3 space-y-2">
+                                            {challenge.preview.afterSignals.map((signal) => (
+                                                <div key={signal} className="flex items-center gap-2">
+                                                    <span className="h-1.5 w-1.5 rounded-full bg-[#5F947D]" />
+                                                    <span
+                                                        className="text-xs font-bold text-[#445865]"
+                                                        style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                                                    >
+                                                        {signal}
+                                                    </span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="rounded-2xl border border-[#0B453F]/18 bg-white p-3 sm:col-span-2">
+                                    <div className="mb-2 flex items-center gap-2 text-[#0B453F]">
+                                        <ClipboardCheck size={16} />
+                                        <p
+                                            className="text-xs font-black uppercase tracking-widest"
+                                            style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                                        >
+                                            {challenge.preview.evidenceTitle}
+                                        </p>
+                                    </div>
+                                    <div className="flex flex-wrap gap-2">
+                                        {challenge.preview.evidenceItems.map((item) => (
+                                            <span
+                                                key={item}
+                                                className="rounded-full border border-[#E7D8BD] bg-[#FCF6EA] px-3 py-1 text-xs font-black text-[#08283B]"
+                                                style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                                            >
+                                                {item}
+                                            </span>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </section>
+
+                    <section className="rounded-[1.25rem] border border-[#E7D8BD] bg-white p-4 shadow-sm">
+                        <p
+                            className="mb-3 text-xs font-black uppercase tracking-widest text-[#0B453F]"
+                            style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                        >
+                            Bewijsroute
+                        </p>
+                        <div className="space-y-2">
+                            {challenge.options.map((option, index) => {
+                                const selected = selectedId === option.id;
+                                const revealCorrect = submitted && option.correct;
+                                const revealWrongSelection = submitted && selected && option.correct === false;
+                                const optionStyle = revealCorrect
+                                    ? 'border-[#5F947D] bg-[#5F947D]/10'
+                                    : revealWrongSelection
+                                      ? 'border-[#D97848] bg-[#D97848]/10'
+                                      : selected
+                                        ? 'border-[#D97848] bg-[#D97848]/8'
+                                        : 'border-[#E7D8BD] bg-[#FFFDF7] hover:border-[#D97848]/50';
+
+                                return (
+                                    <button
+                                        key={option.id}
+                                        type="button"
+                                        aria-pressed={selected}
+                                        disabled={submitted}
+                                        onClick={() => onSelect(option.id)}
+                                        data-qa={`tool-guide-option-${option.id}`}
+                                        className={`w-full text-left border rounded-2xl p-3 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D97848] focus-visible:ring-offset-2 disabled:cursor-default ${optionStyle}`}
+                                    >
+                                        <div className="flex items-start gap-3">
+                                            <div
+                                                className={`mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-xl text-xs font-black ${
+                                                    revealCorrect
+                                                        ? 'bg-[#5F947D] text-white'
+                                                        : selected
+                                                          ? 'bg-[#D97848] text-white'
+                                                          : 'bg-[#FCF6EA] text-[#D97848]'
+                                                }`}
+                                            >
+                                                {revealCorrect ? <Check size={15} strokeWidth={3} /> : String.fromCharCode(65 + index)}
+                                            </div>
+                                            <div className="min-w-0">
+                                                <p
+                                                    className="text-sm font-black text-[#08283B]"
+                                                    style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                                                >
+                                                    {option.title}
+                                                </p>
+                                                <p
+                                                    className="mt-1 text-xs leading-relaxed text-[#445865]"
+                                                    style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                                                >
+                                                    {option.description}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </button>
+                                );
+                            })}
+                        </div>
+
+                        {submitted && selectedOption && (
+                            <div
+                                className={`mt-4 rounded-2xl p-4 ${
+                                    selectedOption.correct === false
+                                        ? 'bg-[#D97848]/10 border border-[#D97848]/25'
+                                        : 'bg-[#5F947D]/10 border border-[#5F947D]/25'
+                                }`}
+                                data-qa="tool-guide-feedback"
+                            >
+                                <p
+                                    className="mb-1 text-[10px] font-black uppercase tracking-widest text-[#D97848]"
+                                    style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                                >
+                                    Gevolg
+                                </p>
+                                <p
+                                    className={`text-sm font-bold leading-relaxed ${
+                                        selectedOption.correct === false ? 'text-[#08283B]' : 'text-[#0B453F]'
+                                    }`}
+                                    style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                                >
+                                    {selectedOption.feedback}
+                                </p>
+                            </div>
+                        )}
+
+                        {submitted && (
+                            <button
+                                type="button"
+                                onClick={onContinue}
+                                data-qa="tool-guide-continue"
+                                className="mt-4 w-full py-3 bg-[#D7C95F] hover:bg-[#CBC04F] text-[#08283B] rounded-full font-black text-sm transition-colors flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0B453F] focus-visible:ring-offset-2"
+                                style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                            >
+                                {challenge.continueLabel ?? 'Start de stappen'}
+                                <ChevronRight size={16} />
+                            </button>
+                        )}
+                    </section>
+                </div>
+            </div>
+        </div>
+    );
+};
+
 // ─── Main component ───────────────────────────────────────────────────────────
 
 interface ToolGuideProps extends TemplateMissionProps {
@@ -428,6 +764,8 @@ const ToolGuideInner: React.FC<ToolGuideProps> = ({
     const initialState: ToolGuideState = {
         phase: 'intro',
         currentStep: 0,
+        introChallengeChoice: undefined,
+        introChallengeSubmitted: false,
         checklist: {},
         teacherChecks: {},
         verificationAnswers: {},
@@ -453,9 +791,9 @@ const ToolGuideInner: React.FC<ToolGuideProps> = ({
     });
     const completionStatus = {
         isComplete: allStepsComplete,
-        title: allStepsComplete ? 'Pitchbewijs compleet' : 'Nog niet voltooid',
+        title: allStepsComplete ? 'Missiebewijs compleet' : 'Nog niet voltooid',
         description: allStepsComplete
-            ? `Alle ${config.steps.length} pitchstappen zijn afgerond met bewijschecks.`
+            ? `Alle ${config.steps.length} stappen voor ${config.toolName} zijn afgerond met bewijschecks.`
             : 'Rond alle stappen, checkvragen en docentchecks af voordat deze missie voltooid telt.',
     };
 
@@ -527,6 +865,26 @@ const ToolGuideInner: React.FC<ToolGuideProps> = ({
         onComplete(allStepsComplete);
     }
 
+    function handleStart() {
+        setState((prev) => ({
+            ...prev,
+            phase: config.introChallenge ? 'challenge' : 'steps',
+        }));
+    }
+
+    function handleIntroChallengeSelect(optionId: string) {
+        if (state.introChallengeSubmitted) return;
+        setState((prev) => ({
+            ...prev,
+            introChallengeChoice: optionId,
+            introChallengeSubmitted: true,
+        }));
+    }
+
+    function handleIntroChallengeContinue() {
+        setState((prev) => ({ ...prev, phase: 'steps' }));
+    }
+
     if (state.phase === 'intro') {
         return (
             <IntroScreen
@@ -535,7 +893,22 @@ const ToolGuideInner: React.FC<ToolGuideProps> = ({
                 description={config.introDescription}
                 features={config.introFeatures}
                 goal={missionGoal}
-                onStart={() => setState((prev) => ({ ...prev, phase: 'steps' }))}
+                onStart={handleStart}
+            />
+        );
+    }
+
+    if (state.phase === 'challenge' && config.introChallenge) {
+        return (
+            <IntroChallengeCard
+                challenge={config.introChallenge}
+                experienceDesign={config.experienceDesign}
+                missionTitle={config.title}
+                toolIcon={config.toolIcon}
+                selectedId={state.introChallengeChoice}
+                submitted={state.introChallengeSubmitted}
+                onSelect={handleIntroChallengeSelect}
+                onContinue={handleIntroChallengeContinue}
             />
         );
     }

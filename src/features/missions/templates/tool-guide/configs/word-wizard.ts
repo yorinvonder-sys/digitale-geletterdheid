@@ -7,12 +7,71 @@ const config: ToolGuideConfig = {
     introTitle: 'Word Wizard',
     introDescription:
         'Leer werken met Microsoft Word op je iPad. Je maakt een professioneel verslag met koppen, een afbeelding en een automatische inhoudsopgave — precies zoals het op school verwacht wordt.',
+    experienceDesign: {
+        boringRisk: 'high',
+        firstTenSeconds: 'Rommelig verslag repareren voordat de leerling losse Word-functies volgt.',
+        primaryInteraction: 'review-and-improve',
+        feedbackMoment: 'Na de gekozen reparatie hoort de leerling waarom kopstijlen structuur en inhoudsopgave tegelijk verbeteren.',
+        visualKit: 'tool-crisis',
+        evidenceMoment: 'Het document heeft titel, kopstijlen, afbeelding, tekstomloop en automatische inhoudsopgave.',
+        antiBoringRule: 'Word-opmaak wordt gepresenteerd als redactie/reparatie, niet als knopjestraining.',
+        chromeAcceptance: 'Verslag-in-gevaar challenge en documentstappen passen zonder clipped controls op mobile en tablet.',
+    },
     introFeatures: [
         'Een nieuw Word-document aanmaken en opslaan',
         'Tekst opmaken met kopstijlen (Kop 1, Kop 2)',
         'Een afbeelding invoegen en tekstomloop instellen',
         'Een automatische inhoudsopgave toevoegen',
     ],
+    introChallenge: {
+        title: 'Verslag in gevaar',
+        scenario:
+            'Een klasgenoot wil een verslag inleveren. Het ziet er slordig uit: elke kop is handmatig groter gemaakt, de afbeelding duwt tekst weg en de inhoudsopgave klopt niet.',
+        prompt: 'Welke ingreep maakt dit verslag het snelst professioneler en makkelijker te controleren?',
+        preview: {
+            beforeTitle: 'Verslag zonder structuur',
+            afterTitle: 'Verslag met vaste stijlen',
+            beforeSignals: [
+                'Handmatig grote koppen',
+                'Afbeelding duwt tekst weg',
+                'Inhoudsopgave klopt niet',
+            ],
+            afterSignals: [
+                'Kop 1 en Kop 2 zichtbaar',
+                'Afbeelding met tekstomloop',
+                'Inhoudsopgave kan bijwerken',
+            ],
+            evidenceTitle: 'Docentbewijs',
+            evidenceItems: ['Kopstijl', 'Afbeelding', 'Tekstomloop', 'Inhoudsopgave'],
+        },
+        options: [
+            {
+                id: 'kopstijlen',
+                title: 'Kopstijlen gebruiken',
+                description: 'Geef hoofdstukken Kop 1 en paragrafen Kop 2, zodat structuur en inhoudsopgave samenwerken.',
+                correct: true,
+                feedback:
+                    'Sterk gekozen. Kopstijlen maken je document niet alleen mooier, maar zorgen ook dat Word automatisch structuur en inhoudsopgave kan herkennen.',
+            },
+            {
+                id: 'meer-kleuren',
+                title: 'Meer kleuren gebruiken',
+                description: 'Elke kop krijgt een andere kleur om op te vallen.',
+                correct: false,
+                feedback:
+                    'Meer kleuren maakt een document vaak drukker. Een professioneel verslag begint met structuur: kopstijlen, rustige opmaak en duidelijke plaatsing.',
+            },
+            {
+                id: 'alles-vet',
+                title: 'Alle tekst vet maken',
+                description: 'Dan valt in elk geval alles op.',
+                correct: false,
+                feedback:
+                    'Als alles opvalt, valt niets meer op. Je gaat leren hoe Word met stijlen, afbeeldingen en inhoudsopgave echt professioneel wordt.',
+            },
+        ],
+        continueLabel: 'Repareer het verslag',
+    },
     toolName: 'Microsoft Word',
     toolIcon: '📄',
     steps: [

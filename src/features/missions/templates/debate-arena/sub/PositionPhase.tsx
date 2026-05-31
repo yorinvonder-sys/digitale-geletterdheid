@@ -11,6 +11,9 @@ export interface PositionPhaseProps {
 }
 
 export const PositionPhase: React.FC<PositionPhaseProps> = ({ config, state, onSelect, onNext, onBack }) => {
+    const openingOption = config.openingChoice?.options.find((option) => option.id === state.openingChoiceId);
+    const openingPosition = config.positions.find((position) => position.id === openingOption?.positionId);
+
     return (
         <div>
             <div className="mb-5">
@@ -22,6 +25,20 @@ export const PositionPhase: React.FC<PositionPhaseProps> = ({ config, state, onS
                 </p>
             </div>
 
+            {openingPosition && (
+                <div className="mb-4 rounded-2xl border border-[#0B453F]/20 bg-[#0B453F]/10 p-3" data-qa="debate-provisional-position">
+                    <p className="text-[10px] font-black uppercase tracking-widest text-[#0B453F]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                        Startpositie uit je dilemma
+                    </p>
+                    <p className="mt-1 text-sm font-bold text-[#08283B]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                        {openingPosition.label}
+                    </p>
+                    <p className="mt-1 text-xs leading-relaxed text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                        Deze staat alvast geselecteerd. Na de perspectieven mag je hem houden of bewust bijstellen.
+                    </p>
+                </div>
+            )}
+
             <div className="space-y-3 mb-6">
                 {config.positions.map((pos) => {
                     const isSelected = state.selectedPosition === pos.id;
@@ -29,6 +46,8 @@ export const PositionPhase: React.FC<PositionPhaseProps> = ({ config, state, onS
                         <button
                             key={pos.id}
                             onClick={() => onSelect(pos.id)}
+                            aria-pressed={isSelected}
+                            data-qa={`debate-position-option-${pos.id}`}
                             className={`w-full text-left p-4 rounded-2xl border-2 transition-all duration-200 ${
                                 isSelected
                                     ? 'border-[#0B453F] bg-[#0B453F]/10'

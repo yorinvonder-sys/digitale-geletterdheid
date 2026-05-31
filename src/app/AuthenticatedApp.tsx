@@ -24,6 +24,8 @@ import { ExitConfirmDialog } from '@/components/app-shell/ExitConfirmDialog';
 import { Toast } from '@/components/app-shell/Toast';
 import { useSchoolContainers } from '@/hooks/useSchoolContainers';
 import { ContainerConfig } from '@/config/containerTypes';
+import { completeMission } from '@/services/missionService';
+import { PeerFeedbackPanel } from '@/features/missions/PeerFeedbackPanel';
 
 
 import '@/styles/app.css';
@@ -58,7 +60,6 @@ const FilterBubbleBreakerMission = lazyWithRetry(() => import('@/features/missio
 const DatalekkenRampenplanMission = lazyWithRetry(() => import('@/features/missions/DatalekkenRampenplanMission').then(m => ({ default: m.DatalekkenRampenplanMission })));
 const AccessControlEngineerMission = lazyWithRetry(() => import('@/features/missions/AccessControlEngineerMission').then(m => ({ default: m.AccessControlEngineerMission })));
 const DataVoorDataMission = lazyWithRetry(() => import('@/features/missions/DataVoorDataMission').then(m => ({ default: m.DataVoorDataMission })));
-const PeerFeedbackPanel = lazyWithRetry(() => import('@/features/missions/PeerFeedbackPanel').then(m => ({ default: m.PeerFeedbackPanel })));
 const NulmetingFlow = lazyWithRetry(() => import('@/features/assessment/escaperoom/NulmetingFlow').then(m => ({ default: m.NulmetingFlow })));
 const EindmetingFlow = lazyWithRetry(() => import('@/features/assessment/escaperoom/EindmetingFlow').then(m => ({ default: m.EindmetingFlow })));
 const TemplateMissionRouter = lazyWithRetry(() => import('@/features/missions/templates/TemplateMissionRouter').then(m => ({ default: m.TemplateMissionRouter })));
@@ -86,6 +87,15 @@ const DEDICATED_MISSIONS = new Set([
     'data-voor-data',
     'access-control-engineer',
 ]);
+
+const MISSION_COMPLETION_XP = 25;
+
+const humanizeMissionTitle = (missionId: string) =>
+    missionId
+        .split('-')
+        .filter(Boolean)
+        .map(part => `${part.charAt(0).toUpperCase()}${part.slice(1)}`)
+        .join(' ');
 
 /** Authenticated app shell — only loaded for private/authenticated flows. Public routes use AppRouter. */
 export function AuthenticatedApp() {
@@ -137,6 +147,96 @@ export function AuthenticatedApp() {
     const [isOnline, setIsOnline] = useState(navigator.onLine);
 
     useEffect(() => {
+        if (loading) return;
+
+        if (!user) {
+            document.title = 'Inloggen — DGSkills';
+            return;
+        }
+
+        if (user.mustChangePassword) {
+            document.title = 'Wachtwoord wijzigen — DGSkills';
+            return;
+        }
+
+        if (user.mfaPending) {
+            document.title = 'Beveiligingscontrole — DGSkills';
+            return;
+        }
+
+        if (showAvatarSetup) {
+            document.title = 'Avatar instellen — DGSkills';
+            return;
+        }
+
+        if (showNulmeting) {
+            document.title = 'Nulmeting — DGSkills';
+            return;
+        }
+
+        if (showEindmeting) {
+            document.title = 'Eindmeting — DGSkills';
+            return;
+        }
+
+        if (peerFeedbackMissionId) {
+            document.title = `Peerfeedback ${humanizeMissionTitle(peerFeedbackMissionId)} — DGSkills`;
+            return;
+        }
+
+        if (activeModule) {
+            document.title = `${humanizeMissionTitle(activeModule)} — DGSkills`;
+            return;
+        }
+
+        if (isProfileOpen) {
+            document.title = 'Profiel — DGSkills';
+            return;
+        }
+
+        if (showGames) {
+            document.title = 'Games — DGSkills';
+            return;
+        }
+
+        if (user.role === 'developer') {
+            if (devViewOverride === 'teacher') {
+                document.title = 'Docentdashboard — DGSkills';
+                return;
+            }
+
+            if (devViewOverride === 'student') {
+                document.title = 'Leerlingdashboard — DGSkills';
+                return;
+            }
+
+            document.title = 'Developerdashboard — DGSkills';
+            return;
+        }
+
+        if (user.role === 'teacher') {
+            document.title = viewMode === 'monitoring'
+                ? 'Docentdashboard — DGSkills'
+                : 'Opdrachten — DGSkills';
+            return;
+        }
+
+        document.title = 'Leerlingdashboard — DGSkills';
+    }, [
+        activeModule,
+        devViewOverride,
+        isProfileOpen,
+        loading,
+        peerFeedbackMissionId,
+        showAvatarSetup,
+        showEindmeting,
+        showGames,
+        showNulmeting,
+        user,
+        viewMode,
+    ]);
+
+    useEffect(() => {
         const handleOnline = () => setIsOnline(true);
         const handleOffline = () => setIsOnline(false);
         window.addEventListener('online', handleOnline);
@@ -165,6 +265,12 @@ export function AuthenticatedApp() {
     const studentTutorialSteps = useMemo((): TutorialStep[] =>
         STUDENT_TUTORIAL_STEPS,
     []);
+    const hasStudentStats = Boolean(user?.stats);
+    const hasCompletedInitialAvatarFlow = Boolean(
+        user?.stats?.hasCompletedAvatarSetup === true ||
+        user?.stats?.hasCompletedOnboarding === true
+    );
+    const hasCompletedNulmeting = user?.stats?.hasCompletedNulmeting === true;
 
     // Redirect naar login als er geen user is na auth-check.
     // MOET in useEffect: dispatchEvent triggert setState in AppRouter,
@@ -179,18 +285,30 @@ export function AuthenticatedApp() {
     // Onboarding triggers: useEffect i.p.v. setTimeout-in-render (React 19 compatibiliteit).
     // Moeten vóór early returns staan om Rules of Hooks te respecteren.
     useEffect(() => {
-        if (user?.role === 'student' && !user.stats?.hasCompletedAvatarSetup && !showAvatarSetup) {
+        if (user?.role === 'student' && hasStudentStats && !hasCompletedInitialAvatarFlow && !showAvatarSetup) {
             const id = setTimeout(() => setShowAvatarSetup(true), 100);
             return () => clearTimeout(id);
         }
-    }, [user?.role, user?.stats?.hasCompletedAvatarSetup, showAvatarSetup]);
+    }, [user?.role, hasStudentStats, hasCompletedInitialAvatarFlow, showAvatarSetup]);
 
     useEffect(() => {
-        if (user?.role === 'student' && !user.stats?.hasCompletedNulmeting && !showNulmeting) {
+        if (showAvatarSetup && hasCompletedInitialAvatarFlow) {
+            setShowAvatarSetup(false);
+        }
+    }, [showAvatarSetup, hasCompletedInitialAvatarFlow]);
+
+    useEffect(() => {
+        if (user?.role === 'student' && hasStudentStats && !hasCompletedNulmeting && !showNulmeting) {
             const id = setTimeout(() => setShowNulmeting(true), 100);
             return () => clearTimeout(id);
         }
-    }, [user?.role, user?.stats?.hasCompletedNulmeting, showNulmeting]);
+    }, [user?.role, hasStudentStats, hasCompletedNulmeting, showNulmeting]);
+
+    useEffect(() => {
+        if (showNulmeting && hasCompletedNulmeting) {
+            setShowNulmeting(false);
+        }
+    }, [showNulmeting, hasCompletedNulmeting]);
 
     // Eindmeting: check of de docent de eindmeting heeft vrijgegeven voor deze klas
     useEffect(() => {
@@ -315,8 +433,6 @@ export function AuthenticatedApp() {
         );
     }
 
-    const hasCompletedAvatarSetup = user.stats?.hasCompletedAvatarSetup === true;
-
     if (showAvatarSetup && user.role === 'student') {
         const handleAvatarComplete = async (avatarConfig: AvatarConfig) => {
             if (user) {
@@ -343,8 +459,6 @@ export function AuthenticatedApp() {
     }
 
     // Nulmeting escaperoom: na avatar setup, voor het dashboard
-    const hasCompletedNulmeting = user.stats?.hasCompletedNulmeting === true;
-
     if (showNulmeting && user.role === 'student' && !hasCompletedNulmeting) {
         const handleNulmetingComplete = async (result: NulmetingResult) => {
             if (user) {
@@ -513,33 +627,47 @@ export function AuthenticatedApp() {
             // Idempotency guard: prevent double completion from rapid clicks or re-renders
             if (completingMissionRef.current.has(missionId)) return;
 
+            let completionConfirmed = false;
+
             if (user && user.stats) {
                 const currentCompleted = user.stats.missionsCompleted || [];
                 if (!currentCompleted.includes(missionId)) {
                     completingMissionRef.current.add(missionId);
                     try {
-                        const newStats = {
+                        const completion = await completeMission(missionId);
+                        if (!completion?.completed) {
+                            throw new Error(`Mission completion rejected for ${missionId}`);
+                        }
+
+                        const completedStats = {
                             ...user.stats,
-                            missionsCompleted: [...currentCompleted, missionId],
-	        }
-                        setUser({ ...user, stats: newStats });
-                        await handleSaveProgress(newStats);
+                            ...(completion.stats || {}),
+                            missionsCompleted: completion.stats?.missionsCompleted || [...currentCompleted, missionId],
+                        };
+                        setUser({ ...user, stats: completedStats });
 
                         // Award XP via server-side RPC (enforces rate limiting + daily cap)
-                        const xpResult = await awardXP(user.uid, 50, 'Missie Voltooid', missionId);
+                        const previousXP = Number(completedStats.xp || 0);
+                        const xpResult = await awardXP(user.uid, MISSION_COMPLETION_XP, 'Missie Voltooid', missionId);
+                        const awardedXP = xpResult.awarded
+                            ? Math.max(0, (xpResult.newXP ?? previousXP + MISSION_COMPLETION_XP) - previousXP)
+                            : 0;
                         if (xpResult.awarded && xpResult.newXP !== undefined) {
                             setUser(prev => prev ? {
                                 ...prev,
                                 stats: { ...prev.stats, xp: xpResult.newXP!, level: xpResult.newLevel ?? prev.stats.level }
                             } : prev);
                         }
+                        const completionActivity = xpResult.awarded
+                            ? `Missie voltooid: ${missionId} (+${awardedXP} XP)`
+                            : `Missie voltooid: ${missionId} (XP niet toegekend: ${xpResult.reason || 'limiet bereikt'})`;
 
-                        logActivity({
+                        await logActivity({
                             uid: user.uid,
                             schoolId: user.schoolId,
                             studentName: user.displayName || 'Naamloos',
                             type: 'mission_complete',
-                            data: `Missie voltooid: ${missionId} (+50 XP)`,
+                            data: completionActivity,
                             missionId
                         });
                         if (focusMissionId && missionId === focusMissionId) {
@@ -547,11 +675,28 @@ export function AuthenticatedApp() {
                             setFocusMissionId(null);
                             setFocusMissionTitle(null);
                         }
+                        completionConfirmed = true;
+                    } catch (error) {
+                        console.error(`Mission completion failed for ${missionId}:`, error);
+                        setToast({
+                            message: 'Missie kon niet worden opgeslagen. Probeer het opnieuw.',
+                            type: 'error',
+                        });
                     } finally {
                         completingMissionRef.current.delete(missionId);
                     }
+                } else {
+                    completionConfirmed = true;
                 }
+            } else {
+                setToast({
+                    message: 'Missie kon niet worden opgeslagen. Log opnieuw in en probeer het nog eens.',
+                    type: 'error',
+                });
             }
+
+            if (!completionConfirmed) return;
+
             // Show peer feedback panel instead of immediately exiting
             setPeerFeedbackMissionId(missionId);
         };
@@ -771,6 +916,7 @@ export function AuthenticatedApp() {
                 <div className="flex-1 w-full flex flex-col font-sans text-lab-ink pb-safe relative">
                     <GamesSection
                         userRole={user?.role || 'student'}
+                        schoolId={user?.schoolId}
                         avatarConfig={user?.stats?.avatarConfig}
                         onXPEarned={() => { }}
                         onBack={() => {
@@ -840,7 +986,7 @@ export function AuthenticatedApp() {
                             onSelectModule={handleSelectModule}
                             userDisplayName={user?.displayName}
                             userUid={user?.uid}
-                            onOpenProfile={(tab?: 'profile' | 'shop' | 'trophies') => {
+                            onOpenProfile={(tab?: 'profile' | 'portfolio' | 'shop' | 'trophies') => {
                                 setInitialProfileTab(tab || 'profile');
                                 setIsProfileOpen(true);
                             }}
@@ -874,7 +1020,7 @@ export function AuthenticatedApp() {
                 onSelectModule={handleSelectModule}
                 userDisplayName={user?.displayName}
                 userUid={user?.uid}
-                onOpenProfile={(tab?: 'profile' | 'shop' | 'trophies') => {
+                onOpenProfile={(tab?: 'profile' | 'portfolio' | 'shop' | 'trophies') => {
                     setInitialProfileTab(tab || 'profile');
                     setIsProfileOpen(true);
                 }}

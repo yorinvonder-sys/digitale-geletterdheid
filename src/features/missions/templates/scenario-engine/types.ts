@@ -1,4 +1,4 @@
-import type { BadgeConfig, FollowUpQuestion, MissionGoal } from '../shared/types';
+import type { BadgeConfig, FollowUpQuestion, MissionGoal, MissionExperienceDesign } from '../shared/types';
 
 export type { BadgeConfig, FollowUpQuestion };
 
@@ -41,6 +41,20 @@ export interface ScenarioRound {
     followUp?: FollowUpQuestion;
 }
 
+export interface ScenarioIntroChoiceOption {
+    id: string;
+    label: string;
+    description: string;
+    feedback: string;
+}
+
+export interface ScenarioIntroChoice {
+    title: string;
+    scenario: string;
+    prompt: string;
+    options: ScenarioIntroChoiceOption[];
+}
+
 export interface ScenarioEngineConfig {
     missionId: string;
     title: string;
@@ -48,7 +62,10 @@ export interface ScenarioEngineConfig {
     introTitle: string;
     introDescription: string;
     missionGoal?: MissionGoal;
+    experienceDesign?: MissionExperienceDesign;
     introFeatures?: string[];
+    /** Optional first-minute hypothesis/choice before the normal rounds start. */
+    introChoice?: ScenarioIntroChoice;
     /** Optional explicit, measurable learning objectives — preferred over implicit `introFeatures` for SLO-rapportage. Format: action verb + measurable outcome. */
     learningObjectives?: string[];
     rounds: ScenarioRound[];
@@ -72,4 +89,5 @@ export interface ScenarioEngineState {
     phase: 'intro' | 'active' | 'results';
     currentRound: number;
     roundStates: Record<string, RoundState>;
+    introChoiceId?: string;
 }

@@ -122,6 +122,7 @@ export const MatchPairs: React.FC<MatchPairsProps> = ({
                             <motion.button
                                 key={item.id}
                                 onClick={() => handleLeftClick(item.id)}
+                                data-qa="review-match-left"
                                 className={`w-full text-left p-2.5 rounded-xl border text-xs font-medium transition-all duration-200
                                     ${isMatched
                                         ? 'bg-[#5F947D]/10 border-[#5F947D] text-[#5F947D] opacity-60 cursor-default'
@@ -149,6 +150,7 @@ export const MatchPairs: React.FC<MatchPairsProps> = ({
                             <motion.button
                                 key={item.id}
                                 onClick={() => handleRightClick(item.id)}
+                                data-qa="review-match-right"
                                 className={`w-full text-left p-2.5 rounded-xl border text-xs font-medium transition-all duration-200
                                     ${isMatched
                                         ? 'bg-[#5F947D]/10 border-[#5F947D] text-[#5F947D] opacity-60 cursor-default'
@@ -200,6 +202,7 @@ export const MatchPairs: React.FC<MatchPairsProps> = ({
                         </div>
                         <button
                             onClick={handleContinue}
+                            data-qa="review-next"
                             className="w-full py-3 bg-gradient-to-r from-[#5F947D] to-[#5F947D] hover:from-[#5F947D] hover:to-[#5F947D] text-white rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2"
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         >

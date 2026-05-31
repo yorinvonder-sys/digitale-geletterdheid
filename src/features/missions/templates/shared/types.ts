@@ -20,6 +20,40 @@ export interface MissionGoal {
     evidence?: string;
 }
 
+export type MissionBoringRisk = 'low' | 'medium' | 'high';
+
+export type MissionPrimaryInteraction =
+    | 'build'
+    | 'choose-with-consequence'
+    | 'pin-evidence'
+    | 'operate-simulation'
+    | 'solve-puzzle'
+    | 'prioritize-case'
+    | 'test-product'
+    | 'defend-position'
+    | 'review-and-improve';
+
+export type MissionVisualKit =
+    | 'tool-crisis'
+    | 'data-room'
+    | 'debate-dilemma'
+    | 'maker-canvas'
+    | 'evidence-badge'
+    | 'review-puzzle-feedback'
+    | 'simulation-control'
+    | 'casefile';
+
+export interface MissionExperienceDesign {
+    boringRisk: MissionBoringRisk;
+    firstTenSeconds: string;
+    primaryInteraction: MissionPrimaryInteraction;
+    feedbackMoment: string;
+    visualKit: MissionVisualKit;
+    evidenceMoment: string;
+    antiBoringRule: string;
+    chromeAcceptance: string;
+}
+
 // === Standard mission props (all templates receive these) ===
 export interface TemplateMissionProps {
     missionId: string;
@@ -39,6 +73,7 @@ export interface BaseTemplateConfig {
     introTitle: string;
     introDescription: string;
     missionGoal?: MissionGoal;
+    experienceDesign?: MissionExperienceDesign;
     enableChat?: boolean;
     chatRoleId?: string;
 }

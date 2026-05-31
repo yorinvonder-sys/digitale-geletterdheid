@@ -6,7 +6,8 @@ interface CookieConsentProps {
     schoolId?: string;
 }
 
-const CONSENT_KEY = 'cookie-consent-status';
+export const COOKIE_CONSENT_KEY = 'cookie-consent-status';
+export const COOKIE_CONSENT_EVENT = 'dgskills:cookie-consent-updated';
 
 /** Inline SVG icons keep cookie banner out of the lucide critical path. */
 const IconCookie = (props: { className?: string; size?: number }) => (
@@ -82,7 +83,7 @@ export const CookieConsent: React.FC<CookieConsentProps> = ({ onAccept, onDeclin
     const [showDetails, setShowDetails] = useState(false);
 
     useEffect(() => {
-        const consent = localStorage.getItem(CONSENT_KEY);
+        const consent = localStorage.getItem(COOKIE_CONSENT_KEY);
         if (!consent) {
             // Small delay for better UX
             const timer = setTimeout(() => setIsVisible(true), 1000);
@@ -91,14 +92,16 @@ export const CookieConsent: React.FC<CookieConsentProps> = ({ onAccept, onDeclin
     }, []);
 
     const handleAccept = () => {
-        localStorage.setItem(CONSENT_KEY, JSON.stringify({ status: 'accepted', timestamp: new Date().toISOString(), version: '2.0' }));
+        localStorage.setItem(COOKIE_CONSENT_KEY, JSON.stringify({ status: 'accepted', timestamp: new Date().toISOString(), version: '2.0' }));
+        window.dispatchEvent(new Event(COOKIE_CONSENT_EVENT));
         setIsVisible(false);
         onAccept?.();
         void logConsentAudit('accept', schoolId);
     };
 
     const handleDecline = () => {
-        localStorage.setItem(CONSENT_KEY, JSON.stringify({ status: 'declined', timestamp: new Date().toISOString(), version: '2.0' }));
+        localStorage.setItem(COOKIE_CONSENT_KEY, JSON.stringify({ status: 'declined', timestamp: new Date().toISOString(), version: '2.0' }));
+        window.dispatchEvent(new Event(COOKIE_CONSENT_EVENT));
         setIsVisible(false);
         onDecline?.();
         void logConsentAudit('decline', schoolId);
@@ -178,7 +181,7 @@ export const CookieConsent: React.FC<CookieConsentProps> = ({ onAccept, onDeclin
  */
 export const hasAnalyticsConsent = (): boolean => {
     if (typeof window === 'undefined') return false;
-    const raw = localStorage.getItem(CONSENT_KEY);
+    const raw = localStorage.getItem(COOKIE_CONSENT_KEY);
     if (!raw) return false;
     // Backward compat: support old 'accepted' string AND new JSON format
     if (raw === 'accepted') return true;
@@ -195,5 +198,6 @@ export const hasAnalyticsConsent = (): boolean => {
  */
 export const resetConsent = (): void => {
     if (typeof window === 'undefined') return;
-    localStorage.removeItem(CONSENT_KEY);
+    localStorage.removeItem(COOKIE_CONSENT_KEY);
+    window.dispatchEvent(new Event(COOKIE_CONSENT_EVENT));
 };

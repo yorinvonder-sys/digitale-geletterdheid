@@ -8,6 +8,7 @@ import { subscribeToActiveLobbies, forceStartAllLobbies, forceStartLobbiesByClas
 
 interface GamesPanelProps {
     onOpenGame: (gameId?: string) => void;
+    schoolId?: string;
 }
 
 // Define available games - map to permission IDs
@@ -43,7 +44,7 @@ const GAMES = [
 // Available classes for per-class force start
 const CLASSES = ['MH1A', 'MH1B', 'MH1C', 'MH1D', 'MH1E', 'MH2A', 'MH2B', 'MH2C', 'MH2D', 'MH2E'];
 
-export const GamesPanel: React.FC<GamesPanelProps> = ({ onOpenGame }) => {
+export const GamesPanel: React.FC<GamesPanelProps> = ({ onOpenGame, schoolId }) => {
     const [permissions, setPermissions] = useState<GamePermissions | null>(null);
     const [loading, setLoading] = useState<string | null>(null);
     const [activeLobbies, setActiveLobbies] = useState<BombermanLobby[]>([]);
@@ -51,11 +52,11 @@ export const GamesPanel: React.FC<GamesPanelProps> = ({ onOpenGame }) => {
     const [selectedClass, setSelectedClass] = useState<string>('');
 
     useEffect(() => {
-        const unsub = subscribeToPermissions(undefined, (perms) => {
+        const unsub = subscribeToPermissions(schoolId, (perms) => {
             setPermissions(perms);
         });
         return () => unsub();
-    }, []);
+    }, [schoolId]);
 
     // Subscribe to active Bomberman lobbies
     useEffect(() => {
@@ -70,7 +71,7 @@ export const GamesPanel: React.FC<GamesPanelProps> = ({ onOpenGame }) => {
         try {
             const { data: { session } } = await supabase.auth.getSession();
             const teacherId = session?.user?.id || 'teacher_demo';
-            await setGamePermission(permissionId, !currentlyEnabled, teacherId);
+            await setGamePermission(permissionId, !currentlyEnabled, teacherId, schoolId);
         } catch (error) {
             console.error('Error toggling game permission:', error);
         } finally {

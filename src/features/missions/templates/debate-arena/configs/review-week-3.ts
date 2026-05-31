@@ -7,13 +7,70 @@ const config: DebateArenaConfig = {
     introTitle: 'De Ethische Raad',
     introDescription:
         'We lanceren een groot AI-project — maar mag alles wat kan? Jij bent lid van de Ethische Raad. Drie dossiers liggen op tafel: over privacy, bias en eerlijkheid. Debatteer mee over de grenzen van technologie.',
+    experienceDesign: {
+        boringRisk: 'medium',
+        firstTenSeconds: 'Boss question: leerling neemt direct een voorlopig raadsoordeel over privacy, bias en eerlijkheid.',
+        primaryInteraction: 'defend-position',
+        feedbackMoment: 'Na het raadsoordeel koppelt feedback ethische grens, voorwaarden en bewijs aan de gekozen route.',
+        visualKit: 'debate-dilemma',
+        evidenceMoment: 'De leerling toont reviewbewijs via positie, argumenten, tegenargument en reflectie op ethische AI-grenzen.',
+        antiBoringRule: 'De reviewweek voelt als ethische raad met dossiers, niet als herhalingstoets in debatvorm.',
+        chromeAcceptance: 'Raadskeuze, dossierkaarten en completionbewijs blijven zichtbaar en zonder clipped controls op alle vier viewports.',
+    },
     introFeatures: [
+        'Geef eerst een voorlopig raadsoordeel',
         'Lees de standpunten van 4 betrokkenen',
         'Kies jouw positie in het debat',
         'Bouw 2-3 sterke argumenten op',
         'Reageer op een tegenargument',
         'Reflecteer: is je mening veranderd?',
     ],
+    openingChoice: {
+        title: 'Boss question: wat beslist de raad?',
+        description:
+            'Dit is geen gewone reviewvraag. Je doet eerst een voorlopig raadsoordeel, daarna bekijk je bewijs en belangen alsof je in de ethische raad zit.',
+        prompt:
+            'Drie school-AI-projecten staan klaar, maar er zijn zorgen over privacy, bias en automatische beoordeling. Wat is jouw eerste besluit?',
+        continueLabel: 'Open de raadstukken',
+        options: [
+            {
+                id: 'stopzetten',
+                label: 'Stopzetten en opnieuw ontwerpen',
+                description:
+                    'De risico’s zijn te groot om door te gaan met kleine reparaties.',
+                positionId: 'stoppen',
+                feedback:
+                    'Je kiest voor een harde ethische grens. Let straks op of elk risico echt onacceptabel is of dat voorwaarden kunnen helpen.',
+            },
+            {
+                id: 'voorwaarden',
+                label: 'Doorgaan onder strikte voorwaarden',
+                description:
+                    'Foto’s, bias-audit en menselijk toezicht moeten eerst geregeld zijn.',
+                positionId: 'aanpassen',
+                feedback:
+                    'Je zoekt een middenweg: niet blind door, niet meteen alles weg. Verzamel straks bewijs voor haalbare voorwaarden.',
+            },
+            {
+                id: 'voordelen',
+                label: 'Voordelen wegen voorlopig zwaarder',
+                description:
+                    'Snellere hulp en feedback kunnen leerlingen ook beschermen.',
+                positionId: 'doorgaan',
+                feedback:
+                    'Je start vanuit innovatie en opbrengst. Let straks extra op wie de risico’s draagt.',
+            },
+            {
+                id: 'dossier-apart',
+                label: 'Elk dossier apart behandelen',
+                description:
+                    'Foto’s scrapen, voorspellen en beoordelen zijn drie verschillende kwesties.',
+                positionId: 'apart-beoordelen',
+                feedback:
+                    'Je kiest voor nuance. Dat is sterk als je straks per dossier precies kunt uitleggen waarom.',
+            },
+        ],
+    },
     topic: 'Ethiek van AI-projecten op school',
     dilemma:
         'Een schoolteam wil een AI-systeem lanceren dat leerlingfoto\'s verzamelt, niveaus voorspelt en eindverslagen beoordeelt. Technisch is het mogelijk. Maar is het ook ethisch verantwoord?',

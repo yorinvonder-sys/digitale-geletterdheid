@@ -1,5 +1,40 @@
 import type { PuzzleLabConfig } from '../puzzleLabTypes';
 
+const normalizePasswordPattern = (input: string): string => input
+    .toLowerCase()
+    .replace(/[@]/g, 'a')
+    .replace(/[0]/g, 'o')
+    .replace(/[1!|]/g, 'i')
+    .replace(/[3]/g, 'e')
+    .replace(/[4]/g, 'a')
+    .replace(/[5$]/g, 's')
+    .replace(/[7]/g, 't')
+    .replace(/[^a-z0-9]/g, '');
+
+const hasWeakPasswordPattern = (input: string): boolean => {
+    const normalized = normalizePasswordPattern(input);
+    const weakTerms = [
+        'password',
+        'wachtwoord',
+        'welkom',
+        'qwerty',
+        'admin',
+        'login',
+        'letmein',
+        'zomer',
+        'winter',
+        'lente',
+        'herfst',
+        'emma',
+        'liam',
+        'school',
+    ];
+    return weakTerms.some(term => normalized.includes(term))
+        || /(.)\1{3,}/.test(normalized)
+        || /(.{3,})\1/.test(normalized)
+        || /1234|2345|3456|4567|5678|abcd|bcde|cdef/.test(normalized);
+};
+
 const config: PuzzleLabConfig = {
     missionId: 'wachtwoord-warrior',
     title: 'Wachtwoord Warrior',
@@ -7,6 +42,16 @@ const config: PuzzleLabConfig = {
     introTitle: 'Wachtwoord Warrior',
     introDescription:
         'In 2024 zijn meer dan 10 miljard wachtwoorden gelekt. Wachtwoorden als "123456" worden in minder dan 1 seconde gekraakt. Maar hoe werken aanvallen precies — en wat maakt een wachtwoord echt sterk? Bewijs dat jij je digitale leven kunt beschermen.',
+    experienceDesign: {
+        boringRisk: 'low',
+        firstTenSeconds: 'Kies je eerste kluisspoor: kraaktijd, woordenboekaanval of credential stuffing.',
+        primaryInteraction: 'solve-puzzle',
+        feedbackMoment: 'Na elke poging zie je waarom een wachtwoordpatroon wel of niet veilig is.',
+        visualKit: 'review-puzzle-feedback',
+        evidenceMoment: 'Je bewijs bestaat uit opgeloste wachtwoordpuzzels en regels voor veilig wachtwoordgebruik.',
+        antiBoringRule: 'Geen paniektimer: de spanning zit in bewijs kraken en veilig herstellen, niet in leerlingen opjagen.',
+        chromeAcceptance: 'Routekeuze, hintkosten en safe-recovery panel zijn zichtbaar voordat de eerste puzzel start.',
+    },
     missionGoal: {
         primaryGoal: 'Los de wachtwoordpuzzels op en formuleer regels voor een sterk en veilig wachtwoordbeleid.',
         criteria: {
@@ -27,9 +72,9 @@ const config: PuzzleLabConfig = {
         {
             id: 'kraaktijd',
             title: 'Hoe snel wordt dit gekraakt?',
-            type: 'multiple-choice',
+            type: 'code-crack',
             description:
-                'Een hacker gebruikt een computer die 1 miljard wachtwoorden per seconde kan proberen. Hoe lang duurt het om het wachtwoord **"abc123"** te kraken?\n\nHet wachtwoord heeft 6 tekens. Er zijn 26 kleine letters + 10 cijfers = 36 mogelijke tekens. Totaal aantal combinaties van 6 tekens: 36⁶ = 2.176.782.336.',
+                'Een aanvaller gebruikt een computer die 1 miljard wachtwoorden per seconde kan proberen. Schat de kraaktijd van "abc123" en typ je bewijsantwoord.\n\nHet wachtwoord heeft 6 tekens. Er zijn 26 kleine letters + 10 cijfers = 36 mogelijke tekens. Totaal aantal combinaties van 6 tekens: 36⁶ = 2.176.782.336.\n\nNoem in je antwoord dat dit in seconden of vrijwel direct te kraken is.',
             clues: [
                 'Bij 1 miljard pogingen per seconde: deel het totaal aantal combinaties door 1.000.000.000.',
                 '2.176.782.336 ÷ 1.000.000.000 = ongeveer 2 seconden.',
@@ -40,13 +85,11 @@ const config: PuzzleLabConfig = {
                 'Een wachtwoord van 12 tekens (mix van letters, cijfers, symbolen) duurt gemiddeld 200 jaar om te kraken.',
             ],
             revealExtraAfterAttempts: 2,
-            options: [
-                'Meerdere jaren — 6 tekens is genoeg voor veiligheid',
-                'Enkele uren — een computer moet veel combinaties proberen',
-                'Minder dan 1 minuut — maar de hacker heeft geluk nodig',
-                'Minder dan 1 seconde — het staat in elke hackerswoordenlijst',
-            ],
-            answer: 'Minder dan 1 seconde — het staat in elke hackerswoordenlijst',
+            answer: [],
+            validator: (input: string) => {
+                const s = input.toLowerCase();
+                return s.includes('seconde') || s.includes('direct') || s.includes('meteen') || s.includes('minder dan 1 minuut');
+            },
             caseSensitive: false,
             maxAttempts: 3,
             points: 25,
@@ -57,9 +100,9 @@ const config: PuzzleLabConfig = {
         {
             id: 'woordenboekaanval',
             title: 'Waarom is "P@ssw0rd!" zwak?',
-            type: 'multiple-choice',
+            type: 'text-input',
             description:
-                'Het wachtwoord **"P@ssw0rd!"** heeft:\n- Een hoofdletter ✓\n- Een speciaal teken ✓\n- Een cijfer ✓\n- Meer dan 8 tekens ✓\n\nToch wordt het als "zwak" beoordeeld. Waarom?',
+                'Het wachtwoord "P@ssw0rd!" heeft:\n- Een hoofdletter ✓\n- Een speciaal teken ✓\n- Een cijfer ✓\n- Meer dan 8 tekens ✓\n\nToch wordt het als "zwak" beoordeeld. Typ de reden: welk aanvalspatroon herkent dit soort wachtwoordtruc?',
             clues: [
                 'Hackers kennen alle trucs: @ voor a, 0 voor o, 1 voor i, 3 voor e.',
                 'Een woordenboekaanval probeert niet alleen woorden, maar ook variaties met vervangingen.',
@@ -70,13 +113,12 @@ const config: PuzzleLabConfig = {
                 'Een passphrase zoals "Fiets-Rood-Piano-7" is sterker: het is lang en niet voorspelbaar.',
             ],
             revealExtraAfterAttempts: 2,
-            options: [
-                'Het wachtwoord is te kort — minder dan 10 tekens',
-                'Hackers kennen variaties op bekende woorden, waardoor symboolvervanging niet helpt',
-                'Het bevat geen kleine letters, dus de computer kan het raden',
-                'Het is niet sterk genoeg omdat het geen spaties bevat',
-            ],
-            answer: 'Hackers kennen variaties op bekende woorden, waardoor symboolvervanging niet helpt',
+            answer: [],
+            validator: (input: string) => {
+                const s = input.toLowerCase();
+                return (s.includes('woordenboek') || s.includes('variatie') || s.includes('bekende woorden')) &&
+                    (s.includes('symbool') || s.includes('@') || s.includes('vervang'));
+            },
             caseSensitive: false,
             maxAttempts: 3,
             points: 25,
@@ -87,9 +129,9 @@ const config: PuzzleLabConfig = {
         {
             id: 'credential-stuffing',
             title: 'Zelfde wachtwoord, meerdere sites',
-            type: 'multiple-choice',
+            type: 'code-crack',
             description:
-                'Emma gebruikt het wachtwoord "Zomer2024!" voor haar e-mail, Instagram én haar schoolaccount. In 2024 lekt een grote game-site haar database — ook Emma\'s account (met hetzelfde wachtwoord) staat erin.\n\nWat is het gevaar voor Emma\'s andere accounts?',
+                'Emma gebruikt het wachtwoord "Zomer2024!" voor haar e-mail, Instagram én haar schoolaccount. In 2024 lekt een grote game-site haar database — ook Emma\'s account met hetzelfde wachtwoord staat erin.\n\nTyp de naam van het risico voor haar andere accounts.',
             clues: [
                 'Hackers verkopen of publiceren gelekte wachtwoorden op het dark web.',
                 'Daarna proberen ze die wachtwoorden automatisch op andere populaire sites.',
@@ -100,13 +142,11 @@ const config: PuzzleLabConfig = {
                 'Oplossing: gebruik voor elke site een UNIEK wachtwoord — een wachtwoordmanager helpt je dat bij te houden.',
             ],
             revealExtraAfterAttempts: 2,
-            options: [
-                'Geen gevaar — de game-site heeft niets te maken met haar andere accounts',
-                'Weinig gevaar — hackers richten zich niet op individuele personen',
-                'Groot gevaar — hackers proberen het gelekte wachtwoord automatisch op andere sites',
-                'Gemiddeld gevaar — alleen als haar e-mailadres ook bekend is',
-            ],
-            answer: 'Groot gevaar — hackers proberen het gelekte wachtwoord automatisch op andere sites',
+            answer: ['credential stuffing'],
+            validator: (input: string) => {
+                const s = input.toLowerCase();
+                return s.includes('credential') || (s.includes('zelfde wachtwoord') && s.includes('andere'));
+            },
             caseSensitive: false,
             maxAttempts: 3,
             points: 25,
@@ -116,10 +156,10 @@ const config: PuzzleLabConfig = {
         },
         {
             id: 'sterk-wachtwoord-maken',
-            title: 'Maak een echt sterk wachtwoord',
+            title: 'Maak een fictieve sterke passphrase',
             type: 'text-input',
             description:
-                'Nu jij weet hoe aanvallen werken, maak je een wachtwoord dat echt sterk is. Het moet aan ALLE eisen voldoen:\n\n• Minimaal 14 tekens lang\n• Minstens 1 hoofdletter (A–Z)\n• Minstens 1 cijfer (0–9)\n• Minstens 1 speciaal teken (!@#$%&*-_)\n• Geen herkenbaar woord of naam\n\nTip: gebruik een passphrase — meerdere willekeurige woorden met symbolen: "Paraplu#Boot7Ster"',
+                'Nu jij weet hoe aanvallen werken, maak je een fictieve oefen-passphrase. Gebruik nooit een echt wachtwoord of een wachtwoord dat je ergens anders gebruikt. De passphrase moet aan ALLE eisen voldoen:\n\n• Minimaal 14 tekens lang\n• Minstens 1 hoofdletter (A–Z)\n• Minstens 1 cijfer (0–9)\n• Minstens 1 speciaal teken (!@#$%&*-_)\n• Geen bekend wachtwoordwoord, naam, seizoen of voorspelbaar patroon\n\nTip: gebruik meerdere willekeurige woorden met symbolen, bijvoorbeeld: "Paraplu#Boot7Ster"',
             clues: [
                 'Lengte is de krachtigste factor: 14 tekens is véél sterker dan 8 tekens.',
                 'Willekeurige woorden combineren werkt beter dan trucs op één woord: "Groen-Fiets-42-Maan!" is sterk.',
@@ -136,12 +176,14 @@ const config: PuzzleLabConfig = {
                     s.length >= 14 &&
                     /[A-Z]/.test(s) &&
                     /[0-9]/.test(s) &&
-                    /[!@#$%&*\-_]/.test(s)
+                    /[!@#$%&*\-_]/.test(s) &&
+                    !hasWeakPasswordPattern(s)
                 );
             },
             caseSensitive: true,
             maxAttempts: 10,
             points: 25,
+            sensitiveAnswer: true,
             successMessage:
                 'Uitstekend! Je begrijpt nu wat een echt sterk wachtwoord maakt: lengte + variatie + onvoorspelbaarheid. In de praktijk hoef je zulke wachtwoorden niet te onthouden — een wachtwoordmanager (zoals Bitwarden of 1Password) slaat unieke sterke wachtwoorden per site op.',
             hintCost: 2,

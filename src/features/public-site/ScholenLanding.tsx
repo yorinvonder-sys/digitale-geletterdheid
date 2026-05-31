@@ -64,8 +64,8 @@ const skills: Skill[] = [
         projects: '12 projecten',
         coachTip: 'Start hier als je klas AI wil gebruiken en kritisch wil leren kijken.',
         bestFor: 'brugklas, onderzoeksopdrachten en AI-basis',
-        image: '/assets/skill-cards/skill-ai-data-realistic.webp',
-        alt: 'Realistisch AI en data dashboard met grafieken, voortgangskaarten en een AI-assistent',
+        image: '/assets/skill-cards/skill-ai-data-dgskills.webp',
+        alt: 'DGSkills AI Trainer scherm waarin leerlingen een AI leren plastic en papier te herkennen',
     },
     {
         title: 'Design & Create',
@@ -75,8 +75,8 @@ const skills: Skill[] = [
         projects: '18 projecten',
         coachTip: 'Goed voor makers: ontwerpen, testen en verbeteren met zichtbaar resultaat.',
         bestFor: 'projectweek, kunstvakken en creatieve keuzeuren',
-        image: '/assets/skill-cards/skill-design-create-realistic.webp',
-        alt: 'Realistisch design dashboard met prototypes, kleurstalen, storyboard en feedbackpanelen',
+        image: '/assets/skill-cards/skill-design-create-dgskills.webp',
+        alt: 'DGSkills Brand Builder opdracht waarin leerlingen een merk en doelgroep bepalen',
     },
     {
         title: 'Code & Bouw',
@@ -86,8 +86,8 @@ const skills: Skill[] = [
         projects: '24 projecten',
         coachTip: 'Perfect voor leerlingen die willen snappen hoe apps, games en logica werken.',
         bestFor: 'programmeren, technologie en plusopdrachten',
-        image: '/assets/skill-cards/skill-code-bouw-realistic.webp',
-        alt: 'Realistisch code dashboard met editor, app-preview, teststatus en projectvoortgang',
+        image: '/assets/skill-cards/skill-code-bouw-dgskills.webp',
+        alt: 'DGSkills missiekaart voor Game Programmeur waarin leerlingen games met code repareren',
     },
     {
         title: 'Media & Verhaal',
@@ -97,8 +97,8 @@ const skills: Skill[] = [
         projects: '16 projecten',
         coachTip: 'Sterk voor creatievelingen: video, verhaal, presentatie en digitale identiteit.',
         bestFor: 'Nederlands, mediawijsheid en presentaties',
-        image: '/assets/skill-cards/skill-media-verhaal-realistic.webp',
-        alt: 'Realistisch media dashboard met video-editor, audiotijdlijn, storyboard en exportstatus',
+        image: '/assets/skill-cards/skill-media-verhaal-dgskills.webp',
+        alt: 'DGSkills Digital Storyteller opdracht waarin leerlingen verhaallidee en setting bepalen',
     },
     {
         title: 'Online veiligheid',
@@ -108,8 +108,8 @@ const skills: Skill[] = [
         projects: '8 projecten',
         coachTip: 'Ideaal als startpunt voor mentoraat, privacy, phishing en veilig gedrag.',
         bestFor: 'mentorles, burgerschap en schoolbrede veiligheid',
-        image: '/assets/skill-cards/skill-online-veiligheid-realistic.webp',
-        alt: 'Realistisch online veiligheid dashboard met phishingresultaten, privacykaarten en 2FA-status',
+        image: '/assets/skill-cards/skill-online-veiligheid-dgskills.webp',
+        alt: 'DGSkills Security en Privacy pagina met AVG, EU data residency en inkoopdossier kaarten',
     },
 ];
 

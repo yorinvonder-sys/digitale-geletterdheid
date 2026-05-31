@@ -75,6 +75,35 @@ export interface WellbeingResult {
   match: WellbeingMatch | null;
 }
 
+export interface WellbeingScanOptions {
+  /**
+   * Mission evidence fields sometimes ask pupils to write about curriculum
+   * concepts such as wellbeing, correlation, or third-factor explanations.
+   * Keep hard safety terms active, but reduce one known false positive there.
+   */
+  educationalContext?: boolean;
+}
+
+const EDUCATIONAL_CONTEXT_CUES = [
+  'analyse', 'causaliteit', 'context', 'correlatie', 'data', 'dataset',
+  'factor', 'leerlingen', 'methode', 'onderzoek', 'schermtijd',
+  'steekproef', 'welzijn',
+];
+
+const PERSONAL_DISTRESS_PATTERN = /\b(ik|me|mij|mijn)\b.{0,40}\b(eenzaam|alleen)\b|\b(eenzaam|alleen)\b.{0,40}\b(ik|me|mij|mijn)\b/i;
+
+function isEducationalContextFalsePositive(
+  normalized: string,
+  term: string,
+  category: string,
+  scanOptions?: WellbeingScanOptions
+): boolean {
+  if (!scanOptions?.educationalContext) return false;
+  if (category !== 'psychisch' || term !== 'eenzaam') return false;
+  if (PERSONAL_DISTRESS_PATTERN.test(normalized)) return false;
+  return EDUCATIONAL_CONTEXT_CUES.some((cue) => normalized.includes(cue));
+}
+
 // ─── Hulplijn-informatie ─────────────────────────────────────────────
 export const HULPLIJNEN = [
   {
@@ -121,7 +150,7 @@ export function useWellbeingMonitor(options?: UseWellbeingMonitorOptions) {
    * Gebruik dit VOORDAT je het bericht naar de AI stuurt.
    */
   const scanText = useCallback(
-    (text: string): WellbeingResult => {
+    (text: string, scanOptions?: WellbeingScanOptions): WellbeingResult => {
       if (!text || text.trim().length < 5) {
         return { isBlocked: false, match: null };
       }
@@ -130,17 +159,22 @@ export function useWellbeingMonitor(options?: UseWellbeingMonitorOptions) {
 
       for (const { term, category } of ALL_TERMS) {
         if (normalized.includes(term)) {
+          if (isEducationalContextFalsePositive(normalized, term, category, scanOptions)) {
+            continue;
+          }
+
           const match: WellbeingMatch = {
             category,
             timestamp: new Date().toISOString(),
           };
 
+          setLastMatch(match);
+          setShowHulplijn(true);
+
           // Voorkom spam: max 1 alert per 60 seconden
           const now = Date.now();
           if (now - cooldownRef.current > 60_000) {
             cooldownRef.current = now;
-            setLastMatch(match);
-            setShowHulplijn(true);
             options?.onAlert?.(match);
           }
 
@@ -156,6 +190,7 @@ export function useWellbeingMonitor(options?: UseWellbeingMonitorOptions) {
   /** Sluit de hulplijn-melding */
   const dismissHulplijn = useCallback(() => {
     setShowHulplijn(false);
+    setLastMatch(null);
   }, []);
 
   return {

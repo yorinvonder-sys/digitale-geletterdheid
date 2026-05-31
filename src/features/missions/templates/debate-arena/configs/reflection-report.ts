@@ -8,12 +8,80 @@ const config: DebateArenaConfig = {
     introDescription:
         'Drie jaar informatica zitten erop. Maar wat heb je eigenlijk geleerd — en wat zegt dat over wie jij bent als digitale burger? Debatteer mee over de waarde van zelfreflectie en persoonlijke groei.',
     introFeatures: [
+        'Kies eerst wat groei volgens jou bewijst',
         'Lees de standpunten van 4 betrokkenen',
         'Kies jouw positie in het debat',
         'Bouw 2-3 sterke argumenten op',
         'Reageer op een tegenargument',
         'Reflecteer: is je mening veranderd?',
     ],
+    missionGoal: {
+        primaryGoal:
+            'Onderbouw wat drie jaar informatica over jouw groei als digitale maker en burger laat zien.',
+        criteria: {
+            type: 'rounds-complete',
+            description:
+                'Je doorloopt keuze, perspectieven, positie, argumenten, tegenargument en reflectie.',
+        },
+        evidence:
+            'Leerlingbewijs: gekozen positie, argumenten met bewijs, reactie op kritiek en eindreflectie. Docentbewijs: debatfase, argumentkwaliteit en reflectietekst tonen of de leerling groei en verantwoordelijkheid kan verwoorden.',
+    },
+    experienceDesign: {
+        boringRisk: 'medium',
+        firstTenSeconds: 'Before/after stance: leerling kiest welk eindbewijs echte groei laat zien.',
+        primaryInteraction: 'defend-position',
+        feedbackMoment: 'Na de groeikeuze koppelt feedback zelfinzicht, technisch bewijs of maatschappelijke waarde aan het portfolioverhaal.',
+        visualKit: 'evidence-badge',
+        evidenceMoment: 'De leerling gebruikt gekozen positie, argumenten en eindreflectie als bewijs voor digitale groei.',
+        antiBoringRule: 'Reflectie start met een stance en bewijskeuze, niet met een leeg terugblikformulier.',
+        chromeAcceptance: 'Groei-keuze, argumentvelden en reflectie-eindstaat blijven niet te tekstzwaar en responsive op alle vier viewports.',
+    },
+    openingChoice: {
+        title: 'Before/after stance',
+        description:
+            'Reflectie wordt sterker als je eerst kiest wat volgens jou echt telt. Aan het eind zie je of jouw kijk op groei is verschoven.',
+        prompt:
+            'Je sluit drie jaar informatica af. Wat moet een goed eindbewijs volgens jou vooral laten zien?',
+        continueLabel: 'Bekijk de perspectieven',
+        options: [
+            {
+                id: 'persoonlijke-groei',
+                label: 'Zelfinzicht en verantwoordelijkheid',
+                description:
+                    'Wat je over jezelf als maker en digitale burger leerde, hoort centraal te staan.',
+                positionId: 'reflectie-kern',
+                feedback:
+                    'Je start met reflectie als kerndoel. Let straks op of dat binnen informatica genoeg focus houdt.',
+            },
+            {
+                id: 'techniek-bewijs',
+                label: 'Technisch kunnen bewijzen',
+                description:
+                    'Code, systemen en ontwerpkeuzes zijn het harde bewijs van leren.',
+                positionId: 'technisch-eerst',
+                feedback:
+                    'Je kiest voor technische diepgang. Onderzoek straks of techniek zonder reflectie genoeg toekomstwaarde heeft.',
+            },
+            {
+                id: 'in-projecten',
+                label: 'Reflectie in elk project',
+                description:
+                    'Groei toon je niet apart, maar bij keuzes, tests en verbeteringen.',
+                positionId: 'integreren',
+                feedback:
+                    'Je kiest voor verweven reflectie. Dat vraagt straks voorbeelden die meer zijn dan een afsluitende tekst.',
+            },
+            {
+                id: 'eigen-route',
+                label: 'Leerling kiest eigen nadruk',
+                description:
+                    'Sommige leerlingen groeien technisch, anderen ethisch of creatief.',
+                positionId: 'student-kiest',
+                feedback:
+                    'Je verdedigt eigenaarschap. Let straks op hoe een school dan toch eerlijk beoordeelt.',
+            },
+        ],
+    },
     topic: 'De waarde van reflectie in een digitale wereld',
     dilemma:
         'Informatica gaat over vaardigheden en kennis. Maar moet een informatica-opleiding ook bijdragen aan wie je bent als persoon — je zelfkennis, je verantwoordelijkheidsgevoel, je digitale ethiek? Of is dat buiten de scope?',

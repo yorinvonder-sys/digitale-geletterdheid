@@ -148,16 +148,17 @@ export async function getAssessmentResult(
     .eq('user_id', userId)
     .eq('assessment_type', type)
     .eq('school_year', schoolYear)
-    .single();
+    .limit(1);
 
   if (error) {
     // Stil falen bij: geen rij gevonden, tabel bestaat niet (migratie nog niet gedraaid)
-    if (error.code === 'PGRST116' || error.code === '42P01' || error.message?.includes('does not exist')) return null;
+    if (error.code === '42P01' || error.message?.includes('does not exist')) return null;
     logger.error('[assessmentService] getAssessmentResult error:', error);
     return null;
   }
 
-  return fromRow(data as AssessmentRow);
+  const row = ((data as AssessmentRow[]) ?? [])[0];
+  return row ? fromRow(row) : null;
 }
 
 /** Haal zowel nulmeting als eindmeting op voor één leerling in één schooljaar */
@@ -257,8 +258,8 @@ export async function hasCompletedAssessment(
     .eq('user_id', userId)
     .eq('assessment_type', type)
     .eq('school_year', schoolYear)
-    .single();
+    .limit(1);
 
   if (error) return false;
-  return !!data;
+  return ((data as { id: string }[] | null) ?? []).length > 0;
 }

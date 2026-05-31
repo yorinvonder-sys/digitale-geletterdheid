@@ -11,7 +11,8 @@ export interface ChecklistItemProps {
 export const ChecklistItem: React.FC<ChecklistItemProps> = ({ id, label, checked, onToggle }) => (
     <button
         onClick={() => onToggle(id)}
-        className={`w-full flex items-center gap-3 p-3 rounded-xl border transition-all duration-200 text-left ${
+        data-qa={`checklist-item-${id}`}
+        className={`w-full flex items-center gap-2 rounded-xl border p-2 text-left transition-all duration-200 sm:gap-3 sm:p-3 ${
             checked
                 ? 'bg-[#5F947D]/8 border-[#5F947D]/30'
                 : 'bg-white border-[#E7D8BD] hover:border-[#D97848]/40 hover:bg-[#D97848]/4'
@@ -26,7 +27,7 @@ export const ChecklistItem: React.FC<ChecklistItemProps> = ({ id, label, checked
             {checked && <Check size={11} className="text-white" strokeWidth={3} />}
         </div>
         <span
-            className={`text-sm transition-colors duration-200 ${
+            className={`text-xs transition-colors duration-200 sm:text-sm ${
                 checked ? 'text-[#445865] line-through' : 'text-[#445865]'
             }`}
             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}

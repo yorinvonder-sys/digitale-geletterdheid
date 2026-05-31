@@ -16,11 +16,56 @@ export const spreadsheetSpecialistConfig: DataViewerConfig = {
         },
         evidence: 'Leerlingbewijs: berekeningen, formulekeuzes en observaties over grafieksoorten en misleidende gemiddelden. Docentbewijs: score, fase-overzicht en tekstbewijs waarin formulebegrip en interpretatie zichtbaar zijn.',
     },
+    experienceDesign: {
+        boringRisk: 'low',
+        firstTenSeconds: 'Formula rescue: het kasboektotaal klopt niet en jij kiest welk bewijs eerst wordt gecontroleerd.',
+        primaryInteraction: 'pin-evidence',
+        feedbackMoment: 'Feedback koppelt formulekeuze, bereik en grafiekbewijs aan een gecorrigeerd kasboekadvies.',
+        visualKit: 'data-room',
+        evidenceMoment: 'De leerling noemt formule, categorie, bedrag en grafiekkeuze voordat het budgetadvies telt.',
+        antiBoringRule: 'Spreadsheetwerk moet voelen als foutopsporing in een kasboek, niet als losse formulequiz.',
+        chromeAcceptance: 'Formulecrisis, kasboekrijen, grafiekbewijs en tekstobservaties blijven scanbaar zonder overflow.',
+    },
     introFeatures: [
         'Analyseer het kasboek van de leerlingenraad met formules',
         'Vergelijk uitgaven per categorie in een grafiek',
         'Beoordeel welke formule je wanneer gebruikt',
     ],
+    investigationHook: {
+        title: 'Het budgetrapport geeft een vreemd totaal',
+        role: 'Formule-auditor',
+        scenario:
+            'De leerlingenraad wil stemmen over een nieuw evenement, maar het kasboek lijkt niet te kloppen. Jij kiest welk spoor je eerst controleert.',
+        prompt: 'Welke controle levert waarschijnlijk het snelste bewijs op?',
+        contextLabel: 'Formulespoor',
+        continueLabel: 'Open het kasboek',
+        options: [
+            {
+                id: 'sumif',
+                label: 'Check de SOM.ALS voor uitgaven',
+                description: 'Je controleert of alleen uitgave-rijen in het totaal zijn meegenomen.',
+                evidenceChips: ['Uitgaven 513', 'SOM.ALS', 'type=Uitgave'],
+                impactCue: 'Voorwaarde + bereik',
+                feedback: 'Goed spoor. SOM.ALS voorkomt dat inkomsten en uitgaven door elkaar in één totaal belanden.',
+            },
+            {
+                id: 'category-income',
+                label: 'Vergelijk inkomsten per categorie',
+                description: 'Je zoekt welke categorie echt de meeste inkomsten oplevert.',
+                evidenceChips: ['Subsidie 700', 'Verkoop 272', 'categorie totaal'],
+                impactCue: 'Inkomstenbewijs',
+                feedback: 'Slim. Een budgetadvies wordt sterker als je categorieën met bedragen onderbouwt.',
+            },
+            {
+                id: 'outlier',
+                label: 'Spoor een uitschieter op met MAX',
+                description: 'Je test of één dure post het beeld vertekent.',
+                evidenceChips: ['Evenement 460', 'Materiaal 53', 'MAX duurste post'],
+                impactCue: 'Uitschieter vinden',
+                feedback: 'Sterke auditkeuze. MAX helpt om extreme bedragen te vinden voordat een gemiddelde misleidt.',
+            },
+        ],
+    },
 
     datasets: [
         // ── Dataset 1: Tabel ──────────────────────────────────────────────────
@@ -62,14 +107,21 @@ export const spreadsheetSpecialistConfig: DataViewerConfig = {
                 },
                 {
                     id: 'q2-hoogste-inkomst',
-                    question: 'Welke categorie leverde de meeste inkomsten op?',
-                    type: 'multiple-choice',
-                    showConfidence: true,
-                    options: ['Evenement', 'Subsidie', 'Verkoop', 'Materiaal'],
-                    correctAnswer: 'Subsidie',
+                    question:
+                        'Pin de inkomsten-categorie die het budget het meest draagt. Noem de categorie, de twee bedragen die je optelt en vergelijk kort met verkoop.',
+                    type: 'text-observation',
+                    correctAnswer: '',
                     explanation:
-                        'Subsidie bracht 500 + 200 = 700 euro op. Verkoop bracht 42 + 230 = 272 euro. Subsidie wint. Sorteer op "Type" en "Categorie" om alle inkomsten per categorie te groeperen.',
+                        'Subsidie bracht 500 + 200 = 700 euro op. Verkoop bracht 42 + 230 = 272 euro. Subsidie wint. Een formule-auditor onderbouwt de categorie dus met beide bedragen en een vergelijking.',
                     points: 15,
+                    minLength: 65,
+                    minEvidenceCriteria: 2,
+                    textEvidenceCriteria: [
+                        { label: 'subsidie gekozen', keywords: ['subsidie', 'sponsoring'] },
+                        { label: 'beide subsidiebedragen genoemd', keywords: ['500', '200', '700'] },
+                        { label: 'verkoopvergelijking genoemd', keywords: ['verkoop', '42', '230', '272'] },
+                        { label: 'budgetbewijs', keywords: ['inkomsten', 'categorie', 'bewijs', 'optellen'] },
+                    ],
                 },
                 {
                     id: 'q3-formule-observatie',
@@ -111,14 +163,21 @@ export const spreadsheetSpecialistConfig: DataViewerConfig = {
             questions: [
                 {
                     id: 'q4-grootste-post',
-                    question: 'Welke uitgavenpost is veruit het grootst voor de leerlingenraad?',
-                    type: 'multiple-choice',
-                    showConfidence: true,
-                    options: ['Materiaal', 'Vergadering', 'Evenement', 'Drukwerk'],
-                    correctAnswer: 'Evenement',
+                    question:
+                        'Markeer de grootste uitgavenpost als grafiekbewijs. Noem de post, het bedrag en waarom dit in een staafdiagram meteen opvalt.',
+                    type: 'text-observation',
+                    correctAnswer: '',
                     explanation:
                         'Evenementen kosten 460 euro — bijna 90% van de totale uitgaven (513 euro). Dit zijn de introductiedag, Halloween, Kerstmarkt en Carnaval bij elkaar opgeteld. Een staafdiagram maakt dit ongelijkwicht in één oogopslag zichtbaar.',
                     points: 10,
+                    minLength: 55,
+                    minEvidenceCriteria: 2,
+                    textEvidenceCriteria: [
+                        { label: 'evenement gekozen', keywords: ['evenement', 'evenementen'] },
+                        { label: 'bedrag genoemd', keywords: ['460', '513', '90'] },
+                        { label: 'staafdiagram verklaard', keywords: ['staaf', 'grafiek', 'balk', 'opvalt', 'vergelijken'] },
+                        { label: 'vergelijking met materiaal', keywords: ['materiaal', '53', 'groter', 'verschil'] },
+                    ],
                 },
                 {
                     id: 'q5-verschil',
@@ -187,14 +246,20 @@ export const spreadsheetSpecialistConfig: DataViewerConfig = {
                 {
                     id: 'q7-juiste-formule',
                     question:
-                        'Je wilt weten wat het duurste evenement van het jaar was. Welke formule gebruik je?',
-                    type: 'multiple-choice',
-                    showConfidence: true,
-                    options: ['=SOM(bereik)', '=GEMIDDELDE(bereik)', '=MAX(bereik)', '=AANTAL(bereik)'],
-                    correctAnswer: '=MAX(bereik)',
+                        'Kies als formule-auditor de formule waarmee je de duurste post vindt. Leg uit waarom die formule beter past dan SOM of GEMIDDELDE.',
+                    type: 'text-observation',
+                    correctAnswer: '',
                     explanation:
                         '=MAX() geeft de hoogste waarde in een bereik terug — dat is precies de duurste aankoop. =SOM() geeft het totaal, =GEMIDDELDE() het gemiddelde en =AANTAL() telt alleen hoeveel rijen er zijn.',
                     points: 15,
+                    minLength: 65,
+                    minEvidenceCriteria: 2,
+                    textEvidenceCriteria: [
+                        { label: 'MAX gekozen', keywords: ['max', '=max', 'maximum', 'hoogste'] },
+                        { label: 'duurste post uitgelegd', keywords: ['duurste', 'hoogste waarde', 'aankoop', 'post'] },
+                        { label: 'SOM afgezet', keywords: ['som', '=som', 'totaal', 'optellen'] },
+                        { label: 'GEMIDDELDE afgezet', keywords: ['gemiddelde', 'typische', 'gemiddeld'] },
+                    ],
                 },
                 {
                     id: 'q8-formule-uitleg',

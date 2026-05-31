@@ -1,6 +1,6 @@
 import React, { Suspense, useEffect, useMemo, useRef, memo, useState, useCallback } from 'react';
 import { Canvas, ThreeEvent, useFrame, useThree } from '@react-three/fiber';
-import { OrbitControls, ContactShadows, Environment, Sparkles } from '@react-three/drei';
+import { OrbitControls, ContactShadows, Sparkles } from '@react-three/drei';
 import * as THREE from 'three';
 import { AvatarConfig } from '@/types';
 
@@ -2142,12 +2142,6 @@ export const AvatarViewer: React.FC<AvatarViewerProps> = ({
                 />
                 <directionalLight position={[-3, 2, -4]} intensity={0.3} color="#D97848" />
                 <pointLight position={[0, -1, 2]} intensity={0.15} color="#fff0e0" />
-
-                <ThreeErrorBoundary>
-                    <Suspense fallback={null}>
-                        <Environment preset="sunset" />
-                    </Suspense>
-                </ThreeErrorBoundary>
 
                 <AvatarModel
                     config={config}
