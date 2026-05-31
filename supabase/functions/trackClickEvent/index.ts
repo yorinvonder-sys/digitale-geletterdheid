@@ -111,9 +111,11 @@ function normalizeMetricValue(value: unknown): number | null {
 function getClientIp(req: Request): string {
   const raw = req.headers.get('cf-connecting-ip')
     || req.headers.get('x-real-ip')
-    || req.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
     || 'unknown';
-  return sanitizeToken(raw, 128) || 'unknown';
+  const normalized = sanitizeToken(raw, 128);
+  return normalized && (/^[a-fA-F0-9:.]{3,45}$/.test(normalized) || /^(?:\d{1,3}\.){3}\d{1,3}$/.test(normalized))
+    ? normalized
+    : 'unknown';
 }
 
 async function sha256(input: string): Promise<string> {

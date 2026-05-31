@@ -64,9 +64,11 @@ function escapeHtml(input: string): string {
 function getClientIp(req: Request): string {
   const raw = req.headers.get('cf-connecting-ip')
     || req.headers.get('x-real-ip')
-    || req.headers.get('x-forwarded-for')?.split(',')[0]
     || 'unknown';
-  return normalizeText(raw, 128) || 'unknown';
+  const normalized = normalizeText(raw, 128);
+  return normalized && (/^[a-fA-F0-9:.]{3,45}$/.test(normalized) || /^(?:\d{1,3}\.){3}\d{1,3}$/.test(normalized))
+    ? normalized
+    : 'unknown';
 }
 
 function cleanupBuckets(now: number) {

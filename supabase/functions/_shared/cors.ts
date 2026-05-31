@@ -1,6 +1,6 @@
 /**
  * Shared CORS configuration for all edge functions.
- * Localhost origins are only allowed in non-production environments.
+ * Localhost origins are only allowed when explicitly enabled.
  */
 
 const PRODUCTION_ORIGINS = [
@@ -17,20 +17,39 @@ const DEV_ORIGINS = [
     "http://127.0.0.1:3000",
 ];
 
+function addCommaSeparatedOrigins(target: Set<string>, value: string | undefined): void {
+    if (!value) return;
+
+    for (const rawOrigin of value.split(",")) {
+        const origin = rawOrigin.trim();
+        if (!origin) continue;
+
+        try {
+            const parsed = new URL(origin);
+            if (parsed.protocol !== "https:" && parsed.hostname !== "localhost" && parsed.hostname !== "127.0.0.1") {
+                continue;
+            }
+            target.add(parsed.origin);
+        } catch {
+            // Ignore malformed origins instead of failing every edge request.
+        }
+    }
+}
+
 function buildAllowedOrigins(): Set<string> {
     const origins = new Set(PRODUCTION_ORIGINS);
     const env = (globalThis as { Deno?: { env?: { get?: (key: string) => string | undefined } } }).Deno?.env;
-    const environment = env?.get?.("ENVIRONMENT");
     const allowDevCors = env?.get?.("ALLOW_DEV_CORS");
+    const additionalOrigins = env?.get?.("ADDITIONAL_ALLOWED_ORIGINS");
 
-    // Include dev origins when either:
-    // 1. ENVIRONMENT is not explicitly set to "production", OR
-    // 2. ALLOW_DEV_CORS is explicitly set to "true" (overrides production restriction)
-    if (environment !== "production" || allowDevCors === "true") {
+    // Production-safe default: dev origins must be enabled deliberately.
+    if (allowDevCors === "true") {
         for (const o of DEV_ORIGINS) {
             origins.add(o);
         }
     }
+
+    addCommaSeparatedOrigins(origins, additionalOrigins);
 
     return origins;
 }

@@ -31,12 +31,11 @@ async function sha256(input: string): Promise<string> {
 
 /** Extract client IP from request headers (Supabase/Vercel proxy chain) */
 function getClientIp(req: Request): string {
-    const forwarded = req.headers.get("x-forwarded-for");
-    if (forwarded) {
-        // x-forwarded-for can contain multiple IPs: "client, proxy1, proxy2"
-        return forwarded.split(",")[0].trim();
-    }
-    return req.headers.get("x-real-ip") || "unknown";
+    const raw = req.headers.get("cf-connecting-ip") || req.headers.get("x-real-ip") || "unknown";
+    const normalized = raw.trim().slice(0, 128);
+    return /^[a-fA-F0-9:.]{3,45}$/.test(normalized) || /^(?:\d{1,3}\.){3}\d{1,3}$/.test(normalized)
+        ? normalized
+        : "unknown";
 }
 
 /**

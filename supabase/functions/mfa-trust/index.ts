@@ -29,9 +29,11 @@ const TRUST_DURATION_MINUTES = 30;
 function getClientIp(req: Request): string {
     const raw = req.headers.get("cf-connecting-ip")
         || req.headers.get("x-real-ip")
-        || req.headers.get("x-forwarded-for")?.split(",")[0]?.trim()
         || "unknown";
-    return raw.slice(0, 128);
+    const normalized = raw.trim().slice(0, 128);
+    return /^[a-fA-F0-9:.]{3,45}$/.test(normalized) || /^(?:\d{1,3}\.){3}\d{1,3}$/.test(normalized)
+        ? normalized
+        : "unknown";
 }
 
 async function sha256(input: string): Promise<string> {

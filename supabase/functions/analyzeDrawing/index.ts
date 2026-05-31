@@ -24,7 +24,7 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { getAccessToken, getVertexUrl } from "../_shared/vertexAuth.ts";
 import { buildCorsHeaders, rejectDisallowedBrowserRequest } from "../_shared/cors.ts";
-import { checkDurableRateLimit, rateLimitResponse, rateLimitHeaders } from "../_shared/rateLimiter.ts";
+import { checkDurableRateLimit, rateLimitResponse, rateLimitHeaders, type RateLimitResult } from "../_shared/rateLimiter.ts";
 import { ensureAiInteractionConsent } from "../_shared/consent.ts";
 import { getUserSchoolId, logAiUsageEvent, resolveAiRequestId } from "../_shared/aiUsageLogger.ts";
 
@@ -68,6 +68,28 @@ interface DrawingGuess {
 interface DrawingAnalysis {
     guesses: DrawingGuess[];
     reasoning: string;
+}
+
+function localFallbackResponse(
+    corsHeaders: Record<string, string>,
+    requestId: string,
+    rateCheck?: RateLimitResult,
+): Response {
+    return new Response(
+        JSON.stringify({
+            guesses: [],
+            reasoning: "AI-analyse is tijdelijk niet beschikbaar. Gebruik de lokale patroonherkenning.",
+        }),
+        {
+            status: 200,
+            headers: {
+                ...corsHeaders,
+                "Content-Type": "application/json",
+                "X-AI-Request-Id": requestId,
+                ...(rateCheck ? rateLimitHeaders(rateCheck) : {}),
+            },
+        },
+    );
 }
 
 /** Validate that the parsed AI response matches the expected schema. */
@@ -233,10 +255,7 @@ Deno.serve(async (req: Request) => {
             imageCount: 1,
             metadata: { error_stage: "auth" },
         }).catch((logErr) => console.error("[analyzeDrawing] Usage log error:", logErr));
-        return new Response(
-            JSON.stringify({ error: "AI-service tijdelijk niet beschikbaar." }),
-            { status: 502, headers: responseHeaders },
-        );
+        return localFallbackResponse(responseHeaders, requestId, rateCheck);
     }
 
     const vertexPayload = {
@@ -286,10 +305,7 @@ Deno.serve(async (req: Request) => {
             imageCount: 1,
             metadata: { error_stage: "fetch" },
         }).catch((logErr) => console.error("[analyzeDrawing] Usage log error:", logErr));
-        return new Response(
-            JSON.stringify({ error: "AI-service tijdelijk niet beschikbaar." }),
-            { status: 502, headers: responseHeaders },
-        );
+        return localFallbackResponse(responseHeaders, requestId, rateCheck);
     }
 
     if (!vertexResponse.ok) {
@@ -312,10 +328,7 @@ Deno.serve(async (req: Request) => {
             );
         }
         console.error("[analyzeDrawing] Vertex error:", status);
-        return new Response(
-            JSON.stringify({ error: "AI-service tijdelijk niet beschikbaar." }),
-            { status: 502, headers: responseHeaders },
-        );
+        return localFallbackResponse(responseHeaders, requestId, rateCheck);
     }
 
     // 8. Extract and parse the JSON from Vertex AI response text
@@ -354,10 +367,7 @@ Deno.serve(async (req: Request) => {
             usagePayload: vertexData,
             metadata: { error_stage: "parse", possible_label_count: Array.isArray(body.possibleLabels) ? body.possibleLabels.length : 0 },
         }).catch((logErr) => console.error("[analyzeDrawing] Usage log error:", logErr));
-        return new Response(
-            JSON.stringify({ error: "Tekening kon niet worden geanalyseerd." }),
-            { status: 422, headers: responseHeaders },
-        );
+        return localFallbackResponse(responseHeaders, requestId, rateCheck);
     }
 
     logAiUsageEvent({

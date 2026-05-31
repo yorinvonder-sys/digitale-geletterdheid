@@ -45,6 +45,11 @@ serve(async (req: Request) => {
     }
 
     const uid = user.id;
+    if (!/^[0-9a-fA-F-]{36}$/.test(uid)) {
+      return new Response(JSON.stringify({ error: 'Ongeldige sessie.' }), {
+        status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
 
     // Rate limit: 2 requests per hour per user
     const rateCheck = checkRateLimit(uid, { maxRequests: 2, windowMs: 3_600_000 });
@@ -54,7 +59,7 @@ serve(async (req: Request) => {
 
     const [
       profileRes, missionRes, xpRes, sharedProjectsRes, sharedGamesRes,
-      feedbackRes, activitiesRes, auditRes, surveysRes, surveyFeedbackRes,
+      feedbackRes, activitiesRes, auditInitialRes, surveysRes, surveyFeedbackRes,
       messagesRes, libraryRes, duelsRes, devTasksRes, devMilestonesRes,
       devPlansRes, devSettingsRes, studentConsentsRes, parentalConsentReqRes,
       peerFeedbackRes, wellbeingRes, nulmetingRes, overridesRes,
@@ -62,13 +67,13 @@ serve(async (req: Request) => {
       supabase.from('users').select('*').eq('id', uid).single(),
       supabase.from('mission_progress').select('*').eq('user_id', uid),
       supabase.from('xp_transactions').select('*').eq('user_id', uid).order('created_at', { ascending: false }).limit(500),
-      supabase.from('shared_projects').select('*').eq('user_id', uid),
+      supabase.from('shared_projects').select('*').or(`user_id.eq.${uid},created_by.eq.${uid}`),
       supabase.from('shared_games').select('*').eq('user_id', uid),
       supabase.from('feedback').select('*').eq('user_id', uid),
-      supabase.from('student_activities').select('*').eq('user_id', uid).order('timestamp', { ascending: false }).limit(1000),
-      supabase.from('audit_logs').select('*').eq('user_id', uid).order('created_at', { ascending: false }).limit(500),
-      supabase.from('ai_beleid_surveys').select('*').eq('user_id', uid),
-      supabase.from('ai_beleid_feedback').select('*').eq('user_id', uid),
+      supabase.from('student_activities').select('*').eq('uid', uid).order('timestamp', { ascending: false }).limit(1000),
+      supabase.from('audit_logs').select('*').eq('uid', uid).order('timestamp', { ascending: false }).limit(500),
+      supabase.from('ai_beleid_surveys').select('*').eq('uid', uid),
+      supabase.from('ai_beleid_feedback').select('*').eq('uid', uid),
       supabase.from('teacher_messages').select('*').or(`sender_id.eq.${uid},receiver_id.eq.${uid}`),
       supabase.from('library_items').select('*').eq('user_id', uid),
       supabase.from('duel_challenges').select('*').or(`challenger_id.eq.${uid},challenged_id.eq.${uid}`),
@@ -83,6 +88,10 @@ serve(async (req: Request) => {
       supabase.from('nulmeting_results').select('*').eq('user_id', uid),
       supabase.from('teacher_step_overrides').select('*').eq('student_id', uid),
     ]);
+
+    const auditRes = auditInitialRes.error && auditInitialRes.error.code === '42703'
+      ? await supabase.from('audit_logs').select('*').eq('uid', uid).order('created_at', { ascending: false }).limit(500)
+      : auditInitialRes;
 
     const exportDate = new Date().toISOString();
     const payload = {
@@ -119,11 +128,21 @@ serve(async (req: Request) => {
       teacher_step_overrides: overridesRes.data ?? [],
     };
 
-    await supabase.from('audit_logs').insert({
-      user_id: uid,
+    const schoolId = (profileRes.data as { school_id?: string } | null)?.school_id ?? null;
+    const { error: auditInsertError } = await supabase.from('audit_logs').insert({
+      uid,
+      school_id: schoolId,
       action: 'gdpr_data_export',
-      metadata: { export_date: exportDate, schema_version: '2.0' },
+      data: { export_date: exportDate, schema_version: '2.0' },
     });
+
+    if (auditInsertError) {
+      console.error('[exportMyData] audit log insert failed', auditInsertError.message);
+      return new Response(JSON.stringify({ error: 'Data export mislukt. Probeer later opnieuw.' }), {
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
 
     return new Response(JSON.stringify(payload), {
       status: 200,

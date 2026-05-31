@@ -93,6 +93,11 @@ serve(async (req: Request) => {
     }
 
     const tokenHash = await sha256(token);
+    const tokenRateCheck = await checkDurableRateLimit(`consent-token:${tokenHash.slice(0, 32)}`, { maxRequests: 6, windowMs: 60_000 });
+    if (!tokenRateCheck.allowed) {
+      return rateLimitResponse(tokenRateCheck, corsHeaders);
+    }
+
     const adminClient = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
     const { data: row, error } = await adminClient

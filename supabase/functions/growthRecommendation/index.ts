@@ -3,9 +3,9 @@
  *
  * Security layers:
  * 1. JWT auth verification (Supabase)
- * 2. Input validation — alle velden, score ranges 0-100
+ * 2. AI consent enforcement + input validation — alle velden, score ranges 0-100
  * 3. No PII in Gemini prompt — alleen scores en missie-IDs
- * 4. Rate limit via UNIQUE constraint (1 aanbeveling per leerling per schooljaar)
+ * 4. Durable rate limit + database reservation before AI call
  * 5. Vertex AI (europe-west4) — enterprise ToS, geen leeftijdsbeperking
  * 6. Service account auth (geen API key in URL)
  * 7. EU AI Act Art. 12: audit trail in input_context
@@ -14,6 +14,8 @@
 import { createClient } from "jsr:@supabase/supabase-js@2";
 import { getAccessToken, getVertexUrl } from "../_shared/vertexAuth.ts";
 import { buildCorsHeaders, rejectDisallowedBrowserRequest } from "../_shared/cors.ts";
+import { ensureAiInteractionConsent } from "../_shared/consent.ts";
+import { checkDurableRateLimit, rateLimitHeaders, rateLimitResponse } from "../_shared/rateLimiter.ts";
 
 const MODEL = "gemini-2.0-flash-001";
 const VALID_DOMAINS = [
@@ -25,6 +27,7 @@ const VALID_DOMAINS = [
 ] as const;
 
 type Domain = typeof VALID_DOMAINS[number];
+type EducationLevel = "mavo" | "havo" | "vwo";
 
 interface ScoreMap {
     digitaleSystemen: number;
@@ -40,9 +43,14 @@ interface RequestBody {
     missionsCompleted: string[];
     sloProgress: Record<string, number>;
     yearGroup: number;
-    educationLevel: string;
+    educationLevel: EducationLevel;
     schoolYear: number;
 }
+
+const VALID_EDUCATION_LEVELS = new Set<EducationLevel>(["mavo", "havo", "vwo"]);
+const SLO_KEY_PATTERN = /^[0-9]{2}[A-Z](?:-[A-Z0-9]{1,12})?$/;
+const MISSION_ID_PATTERN = /^[a-z0-9][a-z0-9-]{0,99}$/;
+const MAX_SLO_PROGRESS_KEYS = 40;
 
 const DOMAIN_LABELS: Record<Domain, string> = {
     digitaleSystemen: "Digitale Systemen",
@@ -85,6 +93,15 @@ function validateScoreMap(scores: unknown): scores is ScoreMap {
     return VALID_DOMAINS.every((d) => isValidScore((scores as Record<string, unknown>)[d]));
 }
 
+function validateSloProgress(value: unknown): value is Record<string, number> {
+    if (!value || typeof value !== "object" || Array.isArray(value)) return false;
+
+    const entries = Object.entries(value as Record<string, unknown>);
+    if (entries.length > MAX_SLO_PROGRESS_KEYS) return false;
+
+    return entries.every(([key, score]) => SLO_KEY_PATTERN.test(key) && isValidScore(score));
+}
+
 function validateRequestBody(body: unknown): body is RequestBody {
     if (!body || typeof body !== "object") return false;
     const b = body as Record<string, unknown>;
@@ -92,14 +109,14 @@ function validateRequestBody(body: unknown): body is RequestBody {
     if (!validateScoreMap(b.nulmetingScores)) return false;
     if (!validateScoreMap(b.eindmetingScores)) return false;
     if (!Array.isArray(b.missionsCompleted)) return false;
-    if (!b.sloProgress || typeof b.sloProgress !== "object") return false;
+    if (!validateSloProgress(b.sloProgress)) return false;
     if (typeof b.yearGroup !== "number" || b.yearGroup < 1 || b.yearGroup > 6) return false;
-    if (typeof b.educationLevel !== "string" || b.educationLevel.trim() === "") return false;
+    if (typeof b.educationLevel !== "string" || !VALID_EDUCATION_LEVELS.has(b.educationLevel as EducationLevel)) return false;
     if (typeof b.schoolYear !== "number" || b.schoolYear < 2020 || b.schoolYear > 2100) return false;
 
-    // missionsCompleted: max 100 items, each a non-empty string (no PII)
+    // missionsCompleted: max 100 mission IDs, strict format to keep model input non-instructional.
     if (b.missionsCompleted.length > 100) return false;
-    if (!b.missionsCompleted.every((m) => typeof m === "string" && m.length > 0 && m.length <= 100)) return false;
+    if (!b.missionsCompleted.every((m) => typeof m === "string" && MISSION_ID_PATTERN.test(m))) return false;
 
     return true;
 }
@@ -219,6 +236,9 @@ Deno.serve(async (req: Request) => {
 
     const userId = user.id;
 
+    const consentRejection = await ensureAiInteractionConsent(userClient, user, corsHeaders);
+    if (consentRejection) return consentRejection;
+
     // --- Parse & validate body ---
     let rawBody: unknown;
     try {
@@ -238,6 +258,15 @@ Deno.serve(async (req: Request) => {
     }
 
     const body = rawBody as RequestBody;
+
+    const rateCheck = await checkDurableRateLimit(
+        `growthRecommendation:${userId}:${body.schoolYear}`,
+        { maxRequests: 1, windowMs: 60_000 },
+        authHeader,
+    );
+    if (!rateCheck.allowed) {
+        return rateLimitResponse(rateCheck, corsHeaders);
+    }
 
     // --- Check rate limit: 1 aanbeveling per leerling per schooljaar ---
     const serviceClient = createClient(supabaseUrl, supabaseServiceKey);
@@ -273,6 +302,54 @@ Deno.serve(async (req: Request) => {
     if (profileData?.school_id) {
         schoolId = profileData.school_id;
     }
+
+    const inputContext = {
+        nulmetingScores: body.nulmetingScores,
+        eindmetingScores: body.eindmetingScores,
+        missionsCompleted: body.missionsCompleted,
+        sloProgress: body.sloProgress,
+        yearGroup: body.yearGroup,
+        educationLevel: body.educationLevel,
+        schoolYear: body.schoolYear,
+    };
+
+    const { data: reservation, error: reservationError } = await serviceClient
+        .from("growth_recommendations")
+        .insert({
+            user_id: userId,
+            school_year: body.schoolYear,
+            school_id: schoolId,
+            recommendation_text: "Aanbeveling wordt gegenereerd.",
+            focus_domains: [],
+            input_context: inputContext,
+            model_version: MODEL,
+            teacher_approved: null,
+        })
+        .select("id")
+        .single();
+
+    if (reservationError) {
+        if (reservationError.code === "23505") {
+            return new Response(
+                JSON.stringify({ error: "Er bestaat al een aanbeveling voor dit schooljaar." }),
+                { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json", ...rateLimitHeaders(rateCheck) } },
+            );
+        }
+        console.error("[growthRecommendation] DB reservation error:", reservationError.message);
+        return new Response(JSON.stringify({ error: "Opslaan mislukt." }), {
+            status: 500,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+    }
+
+    const reservationId = (reservation as unknown as { id: string }).id;
+    const releaseReservation = async () => {
+        await serviceClient
+            .from("growth_recommendations")
+            .delete()
+            .eq("id", reservationId)
+            .eq("user_id", userId);
+    };
 
     // --- Build Vertex AI request ---
     const userMessage = buildUserMessage(body);
@@ -316,11 +393,13 @@ Deno.serve(async (req: Request) => {
             const errBody = await geminiResponse.text().catch(() => "");
             console.error(`[growthRecommendation] Vertex AI error (${status}):`, errBody);
             if (status === 429) {
+                await releaseReservation();
                 return new Response(
                     JSON.stringify({ error: "Te veel verzoeken. Wacht even en probeer opnieuw." }),
                     { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } },
                 );
             }
+            await releaseReservation();
             return new Response(
                 JSON.stringify({ error: "AI-service tijdelijk niet beschikbaar." }),
                 { status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" } },
@@ -333,6 +412,7 @@ Deno.serve(async (req: Request) => {
 
         if (!recommendationText) {
             console.error("[growthRecommendation] Empty response from Vertex AI");
+            await releaseReservation();
             return new Response(
                 JSON.stringify({ error: "AI-service tijdelijk niet beschikbaar." }),
                 { status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" } },
@@ -343,6 +423,7 @@ Deno.serve(async (req: Request) => {
     } catch (err: unknown) {
         const message = err instanceof Error ? err.message : String(err);
         console.error("[growthRecommendation] Vertex AI unhandled error:", message);
+        await releaseReservation();
         return new Response(
             JSON.stringify({ error: "AI-service tijdelijk niet beschikbaar." }),
             { status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" } },
@@ -352,40 +433,22 @@ Deno.serve(async (req: Request) => {
     // --- Extract focus domains ---
     const focusDomains = extractFocusDomains(recommendationText);
 
-    // --- Build sanitized input_context (geen PII — alleen scores en labels) ---
-    const inputContext = {
-        nulmetingScores: body.nulmetingScores,
-        eindmetingScores: body.eindmetingScores,
-        missionsCompleted: body.missionsCompleted,
-        sloProgress: body.sloProgress,
-        yearGroup: body.yearGroup,
-        educationLevel: body.educationLevel,
-        schoolYear: body.schoolYear,
-    };
-
     // --- Store in database ---
-    const { error: insertError } = await serviceClient
+    const { error: updateError } = await serviceClient
         .from("growth_recommendations")
-        .insert({
-            user_id: userId,
-            school_year: body.schoolYear,
-            school_id: schoolId,
+        .update({
             recommendation_text: recommendationText,
             focus_domains: focusDomains,
             input_context: inputContext,
             model_version: MODEL,
             teacher_approved: null,
-        });
+        })
+        .eq("id", reservationId)
+        .eq("user_id", userId);
 
-    if (insertError) {
-        // Unique constraint violation = duplicate (race condition, already handled above)
-        if (insertError.code === "23505") {
-            return new Response(
-                JSON.stringify({ error: "Er bestaat al een aanbeveling voor dit schooljaar." }),
-                { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } },
-            );
-        }
-        console.error("[growthRecommendation] DB insert error:", insertError.message);
+    if (updateError) {
+        await releaseReservation();
+        console.error("[growthRecommendation] DB update error:", updateError.message);
         return new Response(JSON.stringify({ error: "Opslaan mislukt." }), {
             status: 500,
             headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -403,7 +466,7 @@ Deno.serve(async (req: Request) => {
         }),
         {
             status: 200,
-            headers: { ...corsHeaders, "Content-Type": "application/json" },
+            headers: { ...corsHeaders, "Content-Type": "application/json", ...rateLimitHeaders(rateCheck) },
         },
     );
 });
