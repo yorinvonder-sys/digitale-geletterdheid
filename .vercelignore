@@ -10,7 +10,6 @@ business
 .playwright-mcp
 playwright-report
 test-results
-screenshots
 .tmp-context
 .superpowers
 *.zip

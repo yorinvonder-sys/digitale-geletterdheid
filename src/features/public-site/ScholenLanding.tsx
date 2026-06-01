@@ -2008,14 +2008,14 @@ function ProductHeroMockup() {
                         <span className="size-2.5 rounded-full bg-lab-coral md:size-3" aria-hidden="true" />
                         <span className="size-2.5 rounded-full bg-lab-gold md:size-3" aria-hidden="true" />
                         <span className="size-2.5 rounded-full bg-lab-sage md:size-3" aria-hidden="true" />
-                        <span className="ml-3 truncate rounded-full bg-lab-cream px-3 py-0.5 text-[10px] font-black text-lab-muted md:ml-4 md:px-4 md:py-1 md:text-xs">dgskills.app/dashboard</span>
+                        <span className="ml-3 truncate rounded-full bg-lab-cream px-3 py-0.5 text-[10px] font-black text-lab-muted md:ml-4 md:px-4 md:py-1 md:text-xs">dgskills.app/missie</span>
                     </div>
                     <img
-                        src="/screenshots/student-dashboard.webp"
-                        alt="DGSkills leerlingdashboard met XP-punten, streak, level en projectkaarten"
+                        src="/screenshots/prompt-master.webp"
+                        alt="Leerling werkt aan de DGSkills-missie Prompt Perfectionist en typt een AI-prompt"
                         className="block w-full object-cover object-top"
-                        width={1280}
-                        height={800}
+                        width={960}
+                        height={600}
                         loading="eager"
                         decoding="async"
                         fetchPriority="high"
