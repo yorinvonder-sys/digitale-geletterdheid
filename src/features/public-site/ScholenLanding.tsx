@@ -197,20 +197,6 @@ const screenshotProofPanels = [
         alt: 'DGSkills docentdashboard met leerlijn, periodes en missiekaarten',
     },
     {
-        label: 'SLO-voortgang',
-        title: 'Bewijs per leerdoel',
-        copy: 'Voortgang en XP worden gekoppeld aan zichtbare groei, zodat de opbrengst bespreekbaar wordt.',
-        image: '/screenshots/student-progress-xp-1200.webp',
-        alt: 'DGSkills voortgangsscherm met XP, levels en bewijs van groei',
-    },
-    {
-        label: 'Portfolio-bewijs',
-        title: 'Een verhaal achter de score',
-        copy: 'Leerlingen bouwen een portfolio dat laat zien wat ze maken, uitleggen en verbeteren.',
-        image: '/screenshots/student-dashboard.webp',
-        alt: 'DGSkills leerlingdashboard als portfolio-overzicht',
-    },
-    {
         label: 'Privacy/ICT',
         title: 'Beoordeelbaar voor schoolteams',
         copy: 'Privacy, AI-transparantie en implementatievragen krijgen een eigen plek in de pilot.',
@@ -950,7 +936,7 @@ function JourneyDashboardPreview({ active, onSelect }: { active: number; onSelec
                     <span className="ml-3 truncate rounded-full bg-white/12 px-4 py-1 text-xs font-black text-white/82">dgskills.app/journey</span>
                 </div>
 
-                <div className="grid min-h-[430px] bg-lab-paper sm:grid-cols-[132px_minmax(0,1fr)]">
+                <div className="grid min-h-[320px] bg-lab-paper sm:min-h-[430px] sm:grid-cols-[132px_minmax(0,1fr)]">
                     <aside className="hidden border-r border-lab-line bg-white/76 p-4 sm:block" aria-hidden="true">
                         <div className="text-lg font-black text-lab-ink">DGSkills</div>
                         <div className="mt-6 space-y-2">
@@ -1372,7 +1358,7 @@ function AiGameBuilderDemo({ reduceMotion }: { reduceMotion: boolean }) {
 
     return (
         <Reveal y={34} className="project-card-motion grid gap-5 rounded-[36px] bg-lab-paper p-4 shadow-2xl shadow-lab-ink/12 ring-1 ring-lab-line lg:grid-cols-[0.82fr_1.18fr] lg:p-6">
-            <div className="flex min-h-[430px] flex-col rounded-[28px] bg-lab-ink p-5 text-white shadow-xl shadow-lab-ink/18">
+            <div className="flex min-h-[340px] flex-col rounded-[28px] bg-lab-ink p-5 text-white shadow-xl shadow-lab-ink/18 sm:min-h-[430px]">
                 <div className="flex items-start justify-between gap-4">
                     <div>
                         <p className="text-xs font-black uppercase tracking-wide text-lab-gold">Gemini coach</p>
@@ -1425,7 +1411,7 @@ function AiGameBuilderDemo({ reduceMotion }: { reduceMotion: boolean }) {
                 </form>
             </div>
 
-            <div className="relative min-h-[430px] overflow-hidden rounded-[28px] bg-[#08283B] p-4 shadow-xl shadow-lab-ink/18">
+            <div className="relative min-h-[340px] overflow-hidden rounded-[28px] bg-[#08283B] p-4 shadow-xl shadow-lab-ink/18 sm:min-h-[430px]">
                 <div className="mb-4 flex items-center justify-between rounded-2xl bg-white/95 px-4 py-3 text-lab-ink">
                     <div>
                         <p className="text-xs font-black uppercase text-lab-sageDeep">Live preview</p>
@@ -1954,14 +1940,11 @@ function PortfolioStorySection({ startPilot }: { startPilot: () => void }) {
                 </div>
 
                 <div className={`space-y-7 ${reduceMotion ? '' : 'lg:hidden'}`}>
-                    {panels.map((panel, index) => (
-                        <Reveal key={panel.title} delay={index * 0.05} y={34} className="portfolio-story-motion overflow-hidden rounded-[28px] bg-white shadow-xl shadow-lab-ink/8 ring-1 ring-lab-line">
+                    {panels.filter((_, i) => i === 0 || i === panels.length - 1).map((panel) => (
+                        <Reveal key={panel.title} delay={0.05} y={34} className="portfolio-story-motion overflow-hidden rounded-[28px] bg-white shadow-xl shadow-lab-ink/8 ring-1 ring-lab-line">
                             <div className="p-7">
                                 <div className="flex items-center justify-between gap-3">
                                     <p className="text-sm font-black uppercase tracking-[0.14em] text-lab-sageDeep">{panel.kicker}</p>
-                                    <span className="rounded-full border border-lab-line bg-lab-paper px-2.5 py-1 text-[10px] font-black uppercase tracking-wide text-lab-tealDark">
-                                        Stap {String(index + 1).padStart(2, '0')} / {String(panels.length).padStart(2, '0')}
-                                    </span>
                                 </div>
                                 <h3 className="mt-3 text-2xl font-black leading-[1.1] text-lab-ink">{panel.title}</h3>
                                 <p className="mt-4 text-base font-semibold leading-7 text-lab-muted">{panel.copy}</p>
