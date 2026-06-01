@@ -315,10 +315,23 @@ function trackLandingEvent(event: string, data?: Record<string, unknown>) {
 export const ScholenLanding: React.FC = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [activeSkillIndex, setActiveSkillIndex] = useState(0);
+    const [showFloatingCta, setShowFloatingCta] = useState(false);
     const reduceMotion = usePrefersReducedMotion();
     const activeSkill = skills[activeSkillIndex];
 
     useHomepageGsapEffects(reduceMotion);
+
+    useEffect(() => {
+        const onScroll = () => {
+            const scrolled = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            // Toon na ~50% scroll, verberg vlak bij de footer (laatste ~12%) waar al een CTA staat.
+            setShowFloatingCta(docHeight > 0 && scrolled > docHeight * 0.5 && scrolled < docHeight * 0.88);
+        };
+        onScroll();
+        window.addEventListener('scroll', onScroll, { passive: true });
+        return () => window.removeEventListener('scroll', onScroll);
+    }, []);
 
     useEffect(() => {
         const originalTitle = document.title;
@@ -498,6 +511,32 @@ export const ScholenLanding: React.FC = () => {
                     <HeroJourneyBridge />
                 </section>
 
+                <section aria-label="Voor scholen in het kort" className="relative scroll-mt-24 border-y border-lab-line bg-lab-paper px-5 py-12 md:px-10 md:py-14">
+                    <div className="mx-auto max-w-5xl">
+                        <p className="text-xs font-black uppercase tracking-[0.14em] text-lab-coralDeep">Voor scholen in het kort</p>
+                        <h2 className="mt-2 max-w-2xl text-balance text-2xl font-black leading-tight text-lab-ink md:text-3xl">
+                            Motiverend voor leerlingen, aantoonbaar voor je school.
+                        </h2>
+                        <div className="mt-7 grid gap-4 md:grid-cols-3">
+                            <a href="#voor-schoolleiding" onClick={(e) => { e.preventDefault(); scrollTo('voor-schoolleiding'); }} className="group rounded-2xl border border-lab-line bg-lab-cream p-5 text-left shadow-sm shadow-lab-ink/5 transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink">
+                                <p className="text-sm font-black uppercase tracking-wide text-lab-sageDeep">Aantoonbaar</p>
+                                <p className="mt-2 text-base font-bold leading-snug text-lab-ink">SLO-kerndoelen zichtbaar per missie, met portfolio-bewijs voor de inspectie.</p>
+                                <span className="mt-3 inline-flex items-center gap-1 text-sm font-black text-lab-tealDark group-hover:underline">Voor schoolleiding<ArrowRightIcon /></span>
+                            </a>
+                            <a href="#voor-schoolleiding" onClick={(e) => { e.preventDefault(); scrollTo('voor-schoolleiding'); }} className="group rounded-2xl border border-lab-line bg-lab-cream p-5 text-left shadow-sm shadow-lab-ink/5 transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink">
+                                <p className="text-sm font-black uppercase tracking-wide text-lab-sageDeep">Veilig</p>
+                                <p className="mt-2 text-base font-bold leading-snug text-lab-ink">AVG-compliant, verwerkersovereenkomst en DPIA-ondersteuning — te beoordelen door ICT.</p>
+                                <span className="mt-3 inline-flex items-center gap-1 text-sm font-black text-lab-tealDark group-hover:underline">Veilig &amp; AVG<ArrowRightIcon /></span>
+                            </a>
+                            <a href="#schoolpilot" onClick={(e) => { e.preventDefault(); scrollTo('schoolpilot'); }} className="group rounded-2xl border border-lab-line bg-lab-cream p-5 text-left shadow-sm shadow-lab-ink/5 transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink">
+                                <p className="text-sm font-black uppercase tracking-wide text-lab-sageDeep">Snel live</p>
+                                <p className="mt-2 text-base font-bold leading-snug text-lab-ink">Schoolpilot binnen 10 werkdagen ingericht, samen met je team.</p>
+                                <span className="mt-3 inline-flex items-center gap-1 text-sm font-black text-lab-tealDark group-hover:underline">Wat zit er in de pilot?<ArrowRightIcon /></span>
+                            </a>
+                        </div>
+                    </div>
+                </section>
+
                 <CinematicSkillJourney />
 
                 <section id="skills" className="relative scroll-mt-24 overflow-hidden bg-lab-paper px-5 py-20 md:px-10">
@@ -633,6 +672,21 @@ export const ScholenLanding: React.FC = () => {
                     </footer>
                 </section>
             </main>
+
+            <div
+                className={`fixed inset-x-0 bottom-0 z-40 px-4 pb-[calc(env(safe-area-inset-bottom)+12px)] pt-3 lg:hidden ${reduceMotion ? '' : 'transition-all duration-300'} ${showFloatingCta ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-4 opacity-0'}`}
+                aria-hidden={!showFloatingCta}
+            >
+                <a
+                    href="/pilot"
+                    onClick={startPilot}
+                    tabIndex={showFloatingCta ? 0 : -1}
+                    className="mx-auto flex min-h-[52px] max-w-md items-center justify-center gap-2 rounded-full bg-lab-gold px-6 py-3 text-sm font-black text-lab-ink shadow-xl shadow-lab-ink/20 ring-1 ring-lab-ink/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink"
+                >
+                    Plan een schoolpilot
+                    <ArrowRightIcon />
+                </a>
+            </div>
         </div>
     );
 };
@@ -1064,7 +1118,7 @@ function BuyerReadySchoolSections({ startPilot }: { startPilot: () => void }) {
                                 <p className="mt-5 text-pretty text-base font-semibold leading-7 text-lab-muted">
                                     De pilot laat niet alleen zien dat leerlingen gemotiveerd zijn, maar ook hoe digitale geletterdheid structureel in de school kan landen.
                                 </p>
-                                <a href="/pilot" onClick={startPilot} className="mt-7 inline-flex min-h-[48px] items-center gap-3 rounded-full bg-lab-gold px-7 py-3 text-sm font-black text-lab-ink shadow-md shadow-lab-ink/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink">
+                                <a href="/pilot" onClick={startPilot} className="group mt-7 inline-flex min-h-[48px] items-center gap-3 rounded-full border-2 border-lab-tealDark bg-transparent px-7 py-3 text-sm font-black text-lab-tealDark transition-colors hover:bg-lab-tealDark hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink">
                                     Plan pilotgesprek
                                     <ArrowRightIcon />
                                 </a>
@@ -1166,7 +1220,7 @@ function BuyerReadySchoolSections({ startPilot }: { startPilot: () => void }) {
                                     </li>
                                 ))}
                             </ul>
-                            <a href="/pilot" onClick={startPilot} className="mt-6 inline-flex min-h-[48px] items-center gap-3 rounded-full bg-lab-gold px-7 py-3 text-sm font-black text-lab-ink shadow-md shadow-lab-ink/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink">
+                            <a href="/pilot" onClick={startPilot} className="group mt-6 inline-flex min-h-[48px] items-center gap-3 rounded-full border-2 border-lab-tealDark bg-transparent px-7 py-3 text-sm font-black text-lab-tealDark transition-colors hover:bg-lab-tealDark hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink">
                                 Plan mijn schoolpilot
                                 <ArrowRightIcon />
                             </a>
@@ -1852,7 +1906,7 @@ function PortfolioStorySection({ startPilot }: { startPilot: () => void }) {
                     <p className="mt-5 max-w-md text-pretty text-base font-semibold leading-7 text-lab-muted">
                         Scroll door een portfolio dat echt iets vertelt: wie je bent, wat je maakt, welke trofeeën je haalt en waar je nog in groeit.
                     </p>
-                    <a href="/pilot" onClick={startPilot} className="mt-7 inline-flex min-h-[48px] items-center gap-3 rounded-full bg-lab-gold px-7 py-3 text-sm font-black text-lab-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink">
+                    <a href="/pilot" onClick={startPilot} className="group mt-7 inline-flex min-h-[48px] items-center gap-3 rounded-full border-2 border-lab-tealDark bg-transparent px-7 py-3 text-sm font-black text-lab-tealDark transition-colors hover:bg-lab-tealDark hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink">
                         Plan pilot met portfolio-route
                         <ArrowRightIcon />
                     </a>
