@@ -114,8 +114,8 @@ const skills: Skill[] = [
 ];
 
 const HOMEPAGE_SEO = {
-    title: 'Digitale Geletterdheid voor VO en VSO | DGSkills schoolpilot',
-    description: 'DGSkills maakt digitale geletterdheid tastbaar voor VO en VSO. AI-missies, SLO-rapportage, docentdashboard, AVG-bewuste AI en een schoolpilot op maat.',
+    title: 'Digitale Geletterdheid voor VO en VSO — Lesmethode | DGSkills',
+    description: 'DGSkills: lesmethode digitale geletterdheid voor VO en VSO (mavo, havo, vwo). AI-missies, SLO-rapportage en docentdashboard. Plan een schoolpilot, binnen 10 werkdagen live.',
     image: 'https://dgskills.app/og-image.png',
 };
 
@@ -123,13 +123,13 @@ const heroProofItems = [
     { label: 'SLO-ready', value: 'Kerndoelen zichtbaar per missie' },
     { label: 'Docentproof', value: 'Dashboard voor voortgang en signalen' },
     { label: 'Samen ingericht', value: 'Schoolpilot op maat met je team' },
-    { label: 'Veilig', value: 'AVG-bewust en AI Act-roadmap 2026' },
+    { label: 'Veilig', value: 'AVG-compliant en AI Act-roadmap 2026' },
 ] as const;
 
 const trustChips = [
     '20+ AI-missies',
     'SLO-mapping',
-    'AVG-bewust',
+    'AVG-compliant',
     'AI Act-roadmap 2026',
     'Microsoft 365',
     'Pilot binnen 10 werkdagen',
@@ -462,6 +462,13 @@ export const ScholenLanding: React.FC = () => {
                                     <ArrowRightIcon />
                                 </button>
                             </div>
+                            <p className="mt-4 text-sm font-semibold text-lab-mutedDeep">
+                                Wil je het eerst intern delen?{' '}
+                                <a href="/slo-kerndoelen-digitale-geletterdheid" className="font-black text-lab-tealDark underline decoration-lab-gold decoration-2 underline-offset-4 hover:text-lab-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink">
+                                    Bekijk de SLO-mapping per missie
+                                </a>{' '}
+                                — handig om door te sturen naar je team of schoolleiding.
+                            </p>
                             <div className="mt-8 flex max-w-[620px] flex-wrap items-center gap-2 text-xs font-black text-lab-tealDark sm:max-w-none">
                                 {trustChips.map((label) => (
                                     <span key={label} className="rounded-full border border-[#D7C95F] bg-white/72 px-3 py-2 shadow-sm shadow-lab-ink/5">
@@ -469,10 +476,13 @@ export const ScholenLanding: React.FC = () => {
                                     </span>
                                 ))}
                             </div>
+                            <p className="mt-4 text-sm font-bold text-lab-coralDeep">
+                                Digitale geletterdheid wordt per 2027 een verplicht SLO-kerndoel — plan tijdig een pilot, dan staat je leerlijn klaar vóór het nieuwe schooljaar.
+                            </p>
                             <dl className="mt-7 grid max-w-[760px] gap-3 sm:grid-cols-2 xl:grid-cols-4">
                                 {heroProofItems.map((item) => (
                                     <div key={item.label} className="rounded-2xl border border-lab-line bg-lab-paper/82 px-4 py-3 shadow-sm shadow-lab-ink/5">
-                                        <dt className="text-[11px] font-black uppercase tracking-[0.14em] text-lab-sage">{item.label}</dt>
+                                        <dt className="text-[11px] font-black uppercase tracking-[0.14em] text-lab-sageDeep">{item.label}</dt>
                                         <dd className="mt-1 text-sm font-bold leading-snug text-lab-ink">{item.value}</dd>
                                     </div>
                                 ))}
@@ -513,7 +523,7 @@ export const ScholenLanding: React.FC = () => {
                                         decoding="async"
                                     />
                                     <div className="min-w-0" aria-live="polite">
-                                        <p className="text-[11px] font-black uppercase tracking-wide text-lab-sage">Beveradvies</p>
+                                        <p className="text-[11px] font-black uppercase tracking-wide text-lab-sageDeep">Beveradvies</p>
                                         <p className="mt-1 text-sm font-black leading-5 text-lab-ink">{activeSkill.coachTip}</p>
                                         <p className="mt-3 rounded-2xl bg-lab-cream px-3 py-2 text-xs font-black leading-5 text-lab-tealDark">
                                             Past goed bij: {activeSkill.bestFor}.
@@ -596,8 +606,8 @@ export const ScholenLanding: React.FC = () => {
                         </div>
                         <div className="relative">
                             <div>
-                                <h2 className="text-balance text-4xl font-black leading-tight md:text-5xl">Klaar om iets <span className="text-lab-gold">tofs</span> te maken?</h2>
-                                <p className="mt-3 text-sm font-semibold text-white/78">Plan een schoolpilot en ontdek welke route past bij jouw leerlingen.</p>
+                                <h2 className="text-balance text-4xl font-black leading-tight md:text-5xl">Klaar om digitale geletterdheid <span className="text-lab-gold">aantoonbaar</span> te maken?</h2>
+                                <p className="mt-3 text-sm font-semibold text-white/78">Eén schoolpilot, binnen 10 werkdagen live — motiverend voor leerlingen, aantoonbaar voor je school.</p>
                             </div>
                         </div>
                         <a href="/pilot" onClick={startPilot} className="inline-flex min-h-[52px] shrink-0 items-center justify-center gap-3 whitespace-nowrap rounded-full bg-lab-gold px-8 py-4 text-sm font-black text-lab-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-gold focus-visible:ring-offset-lab-tealDark">
@@ -609,10 +619,12 @@ export const ScholenLanding: React.FC = () => {
                         <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
                             <a href="/" className="inline-flex min-h-[44px] items-center rounded px-1 py-2 font-black text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-gold focus-visible:ring-offset-lab-tealDark">dgskills.app</a>
                             <div className="flex flex-wrap gap-6">
-                                <button onClick={() => scrollTo('journey')} className="rounded min-h-[44px] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-gold focus-visible:ring-offset-lab-tealDark">Hoe het werkt</button>
-                                <a href="/ict/privacy/cookies" className="inline-flex min-h-[44px] items-center rounded hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-gold focus-visible:ring-offset-lab-tealDark">Cookies</a>
+                                <a href="/digitale-geletterdheid-vo" className="inline-flex min-h-[44px] items-center rounded hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-gold focus-visible:ring-offset-lab-tealDark">Digitale geletterdheid VO</a>
+                                <a href="/slo-kerndoelen-digitale-geletterdheid" className="inline-flex min-h-[44px] items-center rounded hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-gold focus-visible:ring-offset-lab-tealDark">SLO-kerndoelen</a>
+                                <a href="/ai-geletterdheid-onderwijs-ai-act" className="inline-flex min-h-[44px] items-center rounded hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-gold focus-visible:ring-offset-lab-tealDark">AI-geletterdheid &amp; AI Act</a>
                                 <a href="/ict/privacy/policy" className="inline-flex min-h-[44px] items-center rounded hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-gold focus-visible:ring-offset-lab-tealDark">Privacy</a>
                                 <a href="/ict/privacy/ai" className="inline-flex min-h-[44px] items-center rounded hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-gold focus-visible:ring-offset-lab-tealDark">AI-transparantie</a>
+                                <a href="/ict/privacy/cookies" className="inline-flex min-h-[44px] items-center rounded hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-gold focus-visible:ring-offset-lab-tealDark">Cookies</a>
                                 <a href="mailto:info@dgskills.app" className="inline-flex min-h-[44px] items-center rounded hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-gold focus-visible:ring-offset-lab-tealDark">Contact</a>
                             </div>
                             <p>Zin om samen te werken?</p>
@@ -836,7 +848,7 @@ function CinematicSkillJourney() {
                                         <div className="min-w-0">
                                             <div className="flex flex-wrap items-center gap-2">
                                                 <span className="text-xs font-black text-lab-oliveDeep">{chapter.step}</span>
-                                                <span className="rounded-full bg-lab-cream px-3 py-1 text-[11px] font-black uppercase text-lab-sage">{chapter.eyebrow}</span>
+                                                <span className="rounded-full bg-lab-cream px-3 py-1 text-[11px] font-black uppercase text-lab-sageDeep">{chapter.eyebrow}</span>
                                             </div>
                                             <h3 className={`mt-2 font-black leading-tight text-lab-ink ${isActive ? 'text-2xl' : 'text-xl'}`}>{chapter.title}</h3>
                                             <p className="mt-1 max-w-[420px] text-pretty text-sm font-semibold leading-6 text-lab-muted md:text-base md:leading-7">{chapter.copy}</p>
@@ -902,7 +914,7 @@ function JourneyDashboardPreview({ active, onSelect }: { active: number; onSelec
                     <div className="min-w-0 p-4 sm:p-5 lg:p-6">
                         <div className="flex flex-wrap items-center justify-between gap-3">
                             <div>
-                                <p className="text-[11px] font-black uppercase text-lab-sage">Mijn route</p>
+                                <p className="text-[11px] font-black uppercase text-lab-sageDeep">Mijn route</p>
                                 <h3 className="mt-1 text-xl font-black leading-tight text-lab-ink md:text-2xl">Goedemorgen Jamie</h3>
                             </div>
                             <div className="flex items-center gap-2 rounded-full border border-lab-line bg-white px-3 py-2 text-xs font-black text-lab-muted">
@@ -914,7 +926,7 @@ function JourneyDashboardPreview({ active, onSelect }: { active: number; onSelec
                         <div className="mt-5 rounded-2xl border border-lab-line bg-white p-4 shadow-sm shadow-lab-ink/5">
                             <div className="flex items-center justify-between gap-3">
                                 <p className="text-sm font-black text-lab-ink">Jouw leerlijn</p>
-                                <span className="rounded-full bg-lab-cream px-3 py-1 text-[11px] font-black uppercase text-lab-sage">{chapter.eyebrow}</span>
+                                <span className="rounded-full bg-lab-cream px-3 py-1 text-[11px] font-black uppercase text-lab-sageDeep">{chapter.eyebrow}</span>
                             </div>
                             <div className="mt-4 grid grid-cols-5 gap-2">
                                 {cinematicChapters.map((item, index) => {
@@ -949,7 +961,7 @@ function JourneyDashboardPreview({ active, onSelect }: { active: number; onSelec
                             <div className="rounded-2xl border border-lab-line bg-white p-4 shadow-sm shadow-lab-ink/5">
                                 <div className="flex items-start justify-between gap-4">
                                     <div className="min-w-0">
-                                        <p className="text-[11px] font-black uppercase text-lab-sage">Ga verder met</p>
+                                        <p className="text-[11px] font-black uppercase text-lab-sageDeep">Ga verder met</p>
                                         <h4 className="mt-1 text-xl font-black leading-tight text-lab-ink">{chapter.title}</h4>
                                         <p className="mt-2 text-sm font-semibold leading-6 text-lab-muted">{chapter.copy}</p>
                                     </div>
@@ -973,7 +985,7 @@ function JourneyDashboardPreview({ active, onSelect }: { active: number; onSelec
                             </div>
 
                             <div className="rounded-2xl border border-lab-line bg-white p-4 shadow-sm shadow-lab-ink/5">
-                                <p className="text-[11px] font-black uppercase text-lab-sage">Recente badges</p>
+                                <p className="text-[11px] font-black uppercase text-lab-sageDeep">Recente badges</p>
                                 <div className="mt-3 grid grid-cols-3 gap-2 lg:grid-cols-1">
                                     {badgeItems.map((badge) => (
                                         <div key={badge.title} className="min-w-0 rounded-xl bg-lab-paper px-3 py-2">
@@ -1013,7 +1025,7 @@ function BuyerReadySchoolSections({ startPilot }: { startPilot: () => void }) {
                 <div className="relative z-10 mx-auto max-w-5xl">
                     <Reveal className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
                         <div>
-                            <p className="text-xs font-black uppercase tracking-[0.14em] text-lab-sage">Voor docenten</p>
+                            <p className="text-xs font-black uppercase tracking-[0.14em] text-lab-sageDeep">Voor docenten</p>
                             <h2 className="mt-3 text-balance text-4xl font-black leading-tight text-lab-ink md:text-5xl">Zo werkt een DGSkills-les</h2>
                             <Squiggle color={C.coral} />
                             <p className="mt-5 max-w-xl text-pretty text-base font-semibold leading-7 text-lab-muted">
@@ -1047,7 +1059,7 @@ function BuyerReadySchoolSections({ startPilot }: { startPilot: () => void }) {
                     <Reveal y={30} className="rounded-[34px] bg-lab-creamDeep px-5 py-8 shadow-xl shadow-lab-ink/8 ring-1 ring-lab-line md:px-8 lg:px-10">
                         <div className="grid gap-8 lg:grid-cols-[0.86fr_1.14fr] lg:items-start">
                             <div>
-                                <p className="text-xs font-black uppercase tracking-[0.14em] text-lab-coral">Voor schoolleiding</p>
+                                <p className="text-xs font-black uppercase tracking-[0.14em] text-lab-coralDeep">Voor schoolleiding</p>
                                 <h2 className="mt-3 text-balance text-4xl font-black leading-tight text-lab-ink md:text-5xl">Waarom schoolleiders kiezen voor DGSkills</h2>
                                 <p className="mt-5 text-pretty text-base font-semibold leading-7 text-lab-muted">
                                     De pilot laat niet alleen zien dat leerlingen gemotiveerd zijn, maar ook hoe digitale geletterdheid structureel in de school kan landen.
@@ -1060,7 +1072,7 @@ function BuyerReadySchoolSections({ startPilot }: { startPilot: () => void }) {
                             <div className="grid gap-4 sm:grid-cols-2">
                                 {leaderReasons.map((reason, index) => (
                                     <article key={reason.title} className="rounded-[24px] bg-white p-5 shadow-md shadow-lab-ink/6 ring-1 ring-lab-line">
-                                        <div className="mb-4 grid size-12 place-items-center rounded-full bg-lab-paper text-lg font-black text-lab-coral">{String(index + 1).padStart(2, '0')}</div>
+                                        <div className="mb-4 grid size-12 place-items-center rounded-full bg-lab-paper text-lg font-black text-lab-coralDeep">{String(index + 1).padStart(2, '0')}</div>
                                         <h3 className="text-xl font-black leading-tight text-lab-ink">{reason.title}</h3>
                                         <p className="mt-3 text-sm font-semibold leading-6 text-lab-muted">{reason.copy}</p>
                                     </article>
@@ -1072,7 +1084,7 @@ function BuyerReadySchoolSections({ startPilot }: { startPilot: () => void }) {
                     <Reveal y={30} className="grid gap-8 lg:grid-cols-[1fr_0.9fr] lg:items-start">
                         <div className="rounded-[34px] bg-white p-5 shadow-xl shadow-lab-ink/8 ring-1 ring-lab-line md:p-7">
                             <div className="mb-6">
-                                <p className="text-xs font-black uppercase tracking-[0.14em] text-lab-sage">SLO & curriculum proof</p>
+                                <p className="text-xs font-black uppercase tracking-[0.14em] text-lab-sageDeep">SLO & curriculum proof</p>
                                 <h2 className="mt-3 text-balance text-3xl font-black leading-tight text-lab-ink md:text-4xl">Van losse activiteit naar aantoonbare leerlijn</h2>
                             </div>
                             <div className="overflow-hidden rounded-[24px] border border-lab-line">
@@ -1110,7 +1122,7 @@ function BuyerReadySchoolSections({ startPilot }: { startPilot: () => void }) {
                     <Reveal y={30}>
                         <div className="mb-8 flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
                             <div>
-                                <p className="text-xs font-black uppercase tracking-[0.14em] text-lab-coral">Productbewijs</p>
+                                <p className="text-xs font-black uppercase tracking-[0.14em] text-lab-coralDeep">Productbewijs</p>
                                 <h2 className="mt-3 text-balance text-4xl font-black leading-tight text-lab-ink md:text-5xl">Screenshots die de aankoopvraag beantwoorden</h2>
                                 <Squiggle color={C.ink} />
                             </div>
@@ -1139,10 +1151,10 @@ function BuyerReadySchoolSections({ startPilot }: { startPilot: () => void }) {
                 <div className="relative z-10 mx-auto max-w-5xl">
                     <Reveal y={30} className="grid gap-8 rounded-[34px] bg-lab-cream px-5 py-8 shadow-xl shadow-lab-ink/8 ring-1 ring-lab-line md:px-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-center lg:px-10">
                         <div>
-                            <p className="text-xs font-black uppercase tracking-[0.14em] text-lab-sage">Schoolpilot</p>
+                            <p className="text-xs font-black uppercase tracking-[0.14em] text-lab-sageDeep">Schoolpilot</p>
                             <h2 className="mt-3 text-balance text-4xl font-black leading-tight text-lab-ink md:text-5xl">Wat krijg je in de schoolpilot?</h2>
                             <p className="mt-5 text-pretty text-base font-semibold leading-7 text-lab-muted">
-                                Gebouwd vanuit VO/VSO-praktijk en doorlopend getest met docenten. De pilot is klein genoeg om te starten, maar concreet genoeg om er een schoolbesluit op te baseren.
+                                Gemaakt door een docent die DGSkills zelf in de eigen VO/VSO-klas gebruikt, en doorlopend getest met docenten. De pilot is klein genoeg om te starten, maar concreet genoeg om er een schoolbesluit op te baseren.
                             </p>
                         </div>
                         <div>
@@ -1167,13 +1179,13 @@ function BuyerReadySchoolSections({ startPilot }: { startPilot: () => void }) {
                 <div className="relative z-10 mx-auto max-w-5xl">
                     <Reveal y={30}>
                         <div className="mb-8">
-                            <p className="text-xs font-black uppercase tracking-[0.14em] text-lab-sage">Veelgestelde vragen per rol</p>
+                            <p className="text-xs font-black uppercase tracking-[0.14em] text-lab-sageDeep">Veelgestelde vragen per rol</p>
                             <h2 className="mt-3 text-balance text-4xl font-black leading-tight text-lab-ink md:text-5xl">De vragen die in een schoolteam op tafel komen</h2>
                         </div>
                         <div className="grid gap-4 md:grid-cols-2">
                             {roleFaqs.map((faq) => (
                                 <article key={faq.role} className="rounded-[24px] bg-white p-5 shadow-md shadow-lab-ink/6 ring-1 ring-lab-line">
-                                    <p className="text-xs font-black uppercase tracking-[0.14em] text-lab-coral">{faq.role}</p>
+                                    <p className="text-xs font-black uppercase tracking-[0.14em] text-lab-coralDeep">{faq.role}</p>
                                     <h3 className="mt-3 text-xl font-black leading-tight text-lab-ink">{faq.question}</h3>
                                     <p className="mt-3 text-sm font-semibold leading-6 text-lab-muted">{faq.answer}</p>
                                 </article>
@@ -1319,7 +1331,7 @@ function AiGameBuilderDemo({ reduceMotion }: { reduceMotion: boolean }) {
                     <p className="text-xs font-black uppercase tracking-wide text-white/56">Laatste idee</p>
                     <p className="mt-2 text-base font-bold leading-7 text-white">{lastPrompt}</p>
                     {errorText && (
-                        <p className="mt-2 text-xs font-bold text-lab-coral" role="alert">{errorText}</p>
+                        <p className="mt-2 text-xs font-bold text-lab-coralDeep" role="alert">{errorText}</p>
                     )}
                 </div>
 
@@ -1362,7 +1374,7 @@ function AiGameBuilderDemo({ reduceMotion }: { reduceMotion: boolean }) {
             <div className="relative min-h-[430px] overflow-hidden rounded-[28px] bg-[#08283B] p-4 shadow-xl shadow-lab-ink/18">
                 <div className="mb-4 flex items-center justify-between rounded-2xl bg-white/95 px-4 py-3 text-lab-ink">
                     <div>
-                        <p className="text-xs font-black uppercase text-lab-sage">Live preview</p>
+                        <p className="text-xs font-black uppercase text-lab-sageDeep">Live preview</p>
                         <h3 className="text-lg font-black">{active.name}</h3>
                     </div>
                     <span className="rounded-full bg-lab-cream px-3 py-1 text-xs font-black">Game Programmeur</span>
@@ -1637,7 +1649,7 @@ function PlayableBeaverStream({ active, reduceMotion, config }: { active: typeof
                     </svg>
                 </div>
                 <div>
-                    <p className="text-[10px] font-black uppercase tracking-wide text-lab-coral">Leerdoel</p>
+                    <p className="text-[10px] font-black uppercase tracking-wide text-lab-coralDeep">Leerdoel</p>
                     <p className="mt-0.5 text-xs font-black leading-snug text-lab-ink">Testen, aanpassen en uitleggen waarom de game beter wordt.</p>
                 </div>
             </div>
@@ -1645,7 +1657,7 @@ function PlayableBeaverStream({ active, reduceMotion, config }: { active: typeof
             {gameState === 'over' && (
                 <div className="absolute inset-0 z-40 flex items-center justify-center bg-lab-ink/40 backdrop-blur-[2px]">
                     <div className="rounded-2xl bg-lab-paper px-6 py-5 text-center shadow-2xl">
-                        <p className="text-xs font-black uppercase tracking-wide text-lab-coral">Game over</p>
+                        <p className="text-xs font-black uppercase tracking-wide text-lab-coralDeep">Game over</p>
                         <p className="mt-1 text-3xl font-black text-lab-ink">{displayScore}</p>
                         <p className="text-xs font-semibold text-lab-muted">poorten gehaald</p>
                         <button
@@ -1857,7 +1869,7 @@ function PortfolioStorySection({ startPilot }: { startPilot: () => void }) {
                             aria-hidden={Math.abs(progress * (panels.length - 1) - index) >= 0.5}
                         >
                             <div className="flex flex-col justify-center p-9 md:p-10">
-                                <p className="text-sm font-black uppercase tracking-[0.14em] text-lab-sage">{panel.kicker}</p>
+                                <p className="text-sm font-black uppercase tracking-[0.14em] text-lab-sageDeep">{panel.kicker}</p>
                                 <h3 className="mt-3 text-3xl font-black leading-[1.1] text-lab-ink">{panel.title}</h3>
                                 <p className="mt-5 text-base font-semibold leading-7 text-lab-muted">{panel.copy}</p>
                                 <div className="mt-7">
@@ -1879,7 +1891,7 @@ function PortfolioStorySection({ startPilot }: { startPilot: () => void }) {
                                     </div>
                                 </div>
                                 <div className="absolute -bottom-3 right-5 max-w-[78%] rounded-2xl bg-white px-4 py-3 shadow-xl shadow-lab-ink/14 ring-1 ring-lab-line">
-                                    <p className="text-[10px] font-black uppercase tracking-wide text-lab-sage">{panel.statLabel}</p>
+                                    <p className="text-[10px] font-black uppercase tracking-wide text-lab-sageDeep">{panel.statLabel}</p>
                                     <p className="mt-0.5 text-sm font-black text-lab-ink">{panel.stat}</p>
                                 </div>
                             </div>
@@ -1892,7 +1904,7 @@ function PortfolioStorySection({ startPilot }: { startPilot: () => void }) {
                         <Reveal key={panel.title} delay={index * 0.05} y={34} className="portfolio-story-motion overflow-hidden rounded-[28px] bg-white shadow-xl shadow-lab-ink/8 ring-1 ring-lab-line">
                             <div className="p-7">
                                 <div className="flex items-center justify-between gap-3">
-                                    <p className="text-sm font-black uppercase tracking-[0.14em] text-lab-sage">{panel.kicker}</p>
+                                    <p className="text-sm font-black uppercase tracking-[0.14em] text-lab-sageDeep">{panel.kicker}</p>
                                     <span className="rounded-full border border-lab-line bg-lab-paper px-2.5 py-1 text-[10px] font-black uppercase tracking-wide text-lab-tealDark">
                                         Stap {String(index + 1).padStart(2, '0')} / {String(panels.length).padStart(2, '0')}
                                     </span>
@@ -1913,7 +1925,7 @@ function PortfolioStorySection({ startPilot }: { startPilot: () => void }) {
                                     </div>
                                 </div>
                                 <div className="absolute -bottom-3 right-4 max-w-[80%] rounded-xl bg-white px-3 py-2 shadow-xl shadow-lab-ink/14 ring-1 ring-lab-line">
-                                    <p className="text-[9px] font-black uppercase tracking-wide text-lab-sage">{panel.statLabel}</p>
+                                    <p className="text-[9px] font-black uppercase tracking-wide text-lab-sageDeep">{panel.statLabel}</p>
                                     <p className="mt-0.5 text-xs font-black text-lab-ink">{panel.stat}</p>
                                 </div>
                             </div>
