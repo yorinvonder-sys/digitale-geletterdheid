@@ -33,8 +33,9 @@ const ROUTES = [
   '/ict/privacy/policy',
   '/ict/privacy/cookies',
   '/ict/privacy/ai',
-  '/ict/technisch', 
+  '/ict/technisch',
   '/ict/support',
+  '/pilot',
   '/404',
   '/digitale-geletterdheid-vo',
   '/slo-kerndoelen-digitale-geletterdheid',
@@ -104,19 +105,19 @@ function prerenderRoutes() {
 
   const routeMeta = {
     '/': {
-      title: 'Digitale Geletterdheid voor Scholen — Gratis Pilot | DGSkills',
-      description: 'DGSkills is het interactieve platform voor digitale geletterdheid in het voortgezet onderwijs. AI-missies, gamification en SLO Kerndoelen 2025. Start een gratis pilot voor jouw school.',
+      title: 'Digitale Geletterdheid voor VO en VSO — Lesmethode | DGSkills',
+      description: 'DGSkills: lesmethode digitale geletterdheid voor VO en VSO (mavo, havo, vwo). AI-missies, SLO-rapportage en docentdashboard. Plan een schoolpilot, binnen 10 werkdagen live.',
       canonical: 'https://dgskills.app/',
-      ogTitle: 'DGSkills — Digitale Geletterdheid voor het Onderwijs',
-      ogDescription: 'Interactief platform met AI-missies, gamification en SLO Kerndoelen 2025 voor het voortgezet onderwijs. Gratis pilot voor scholen.',
+      ogTitle: 'Digitale Geletterdheid voor VO en VSO | DGSkills',
+      ogDescription: 'De lesmethode digitale geletterdheid voor VO en VSO: AI-missies, SLO-rapportage en docentdashboard. Plan een schoolpilot.',
       ogUrl: 'https://dgskills.app/',
     },
     '/scholen': {
-      title: 'Digitale Geletterdheid voor Scholen — Gratis Pilot | DGSkills',
-      description: 'DGSkills is het interactieve platform voor digitale geletterdheid in het voortgezet onderwijs. AI-missies, gamification en SLO Kerndoelen 2025. Start een gratis pilot voor jouw school.',
+      title: 'Digitale Geletterdheid voor VO en VSO — Lesmethode | DGSkills',
+      description: 'DGSkills: lesmethode digitale geletterdheid voor VO en VSO (mavo, havo, vwo). AI-missies, SLO-rapportage en docentdashboard. Plan een schoolpilot, binnen 10 werkdagen live.',
       canonical: 'https://dgskills.app/scholen',
-      ogTitle: 'Digitale Geletterdheid voor Scholen — Gratis Pilot | DGSkills',
-      ogDescription: 'AI-missies, gamification en SLO Kerndoelen 2025 in één platform. Start een gratis pilot van 3 maanden.',
+      ogTitle: 'Digitale Geletterdheid voor VO en VSO | DGSkills',
+      ogDescription: 'De lesmethode digitale geletterdheid voor VO en VSO: AI-missies, SLO-rapportage en docentdashboard. Plan een schoolpilot.',
       ogUrl: 'https://dgskills.app/scholen',
     },
     '/login': {
@@ -126,6 +127,14 @@ function prerenderRoutes() {
       ogTitle: 'Inloggen — DGSkills',
       ogDescription: 'Log in op het DGSkills platform voor digitale geletterdheid.',
       ogUrl: 'https://dgskills.app/login',
+    },
+    '/pilot': {
+      title: 'Plan een schoolpilot — Digitale Geletterdheid | DGSkills',
+      description: 'Plan een schoolpilot van DGSkills voor jouw VO- of VSO-school. Binnen 10 werkdagen live met AI-missies, SLO-rapportage en docentdashboard.',
+      canonical: 'https://dgskills.app/pilot',
+      ogTitle: 'Plan een schoolpilot | DGSkills',
+      ogDescription: 'Start een schoolpilot digitale geletterdheid voor VO en VSO. Binnen 10 werkdagen live.',
+      ogUrl: 'https://dgskills.app/pilot',
     },
     '/ict': {
       title: 'ICT & Informatiemanagers — Veiligheid, Privacy & Integratie | DGSkills',
