@@ -197,20 +197,6 @@ const screenshotProofPanels = [
         alt: 'DGSkills docentdashboard met leerlijn, periodes en missiekaarten',
     },
     {
-        label: 'SLO-voortgang',
-        title: 'Bewijs per leerdoel',
-        copy: 'Voortgang en XP worden gekoppeld aan zichtbare groei, zodat de opbrengst bespreekbaar wordt.',
-        image: '/screenshots/student-progress-xp-1200.webp',
-        alt: 'DGSkills voortgangsscherm met XP, levels en bewijs van groei',
-    },
-    {
-        label: 'Portfolio-bewijs',
-        title: 'Een verhaal achter de score',
-        copy: 'Leerlingen bouwen een portfolio dat laat zien wat ze maken, uitleggen en verbeteren.',
-        image: '/screenshots/student-dashboard.webp',
-        alt: 'DGSkills leerlingdashboard als portfolio-overzicht',
-    },
-    {
         label: 'Privacy/ICT',
         title: 'Beoordeelbaar voor schoolteams',
         copy: 'Privacy, AI-transparantie en implementatievragen krijgen een eigen plek in de pilot.',
@@ -315,10 +301,23 @@ function trackLandingEvent(event: string, data?: Record<string, unknown>) {
 export const ScholenLanding: React.FC = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [activeSkillIndex, setActiveSkillIndex] = useState(0);
+    const [showFloatingCta, setShowFloatingCta] = useState(false);
     const reduceMotion = usePrefersReducedMotion();
     const activeSkill = skills[activeSkillIndex];
 
     useHomepageGsapEffects(reduceMotion);
+
+    useEffect(() => {
+        const onScroll = () => {
+            const scrolled = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            // Toon na ~50% scroll, verberg vlak bij de footer (laatste ~12%) waar al een CTA staat.
+            setShowFloatingCta(docHeight > 0 && scrolled > docHeight * 0.5 && scrolled < docHeight * 0.88);
+        };
+        onScroll();
+        window.addEventListener('scroll', onScroll, { passive: true });
+        return () => window.removeEventListener('scroll', onScroll);
+    }, []);
 
     useEffect(() => {
         const originalTitle = document.title;
@@ -441,16 +440,16 @@ export const ScholenLanding: React.FC = () => {
                     <div className="relative z-10 mx-auto grid min-w-0 max-w-5xl items-center gap-10 lg:grid-cols-[minmax(0,60fr)_minmax(0,40fr)] lg:gap-6 xl:grid-cols-[minmax(0,58fr)_minmax(0,42fr)]">
                         <Reveal className="relative z-10 min-w-0" style={{ maxWidth: 'calc(100vw - 40px)' }}>
                             <h1
-                                aria-label="Maak digitale geletterdheid tastbaar, motiverend en aantoonbaar."
-                                className="w-full max-w-[22rem] text-balance text-[2.1rem] font-black leading-[1.06] text-lab-ink sm:max-w-[780px] sm:text-6xl lg:text-[4.45rem]"
+                                aria-label="Eindelijk digitale geletterdheid die leerlingen leuk vinden én die je kunt verantwoorden."
+                                className="w-full max-w-[22rem] text-balance text-[1.85rem] font-black leading-[1.08] text-lab-ink sm:max-w-[780px] sm:text-5xl lg:text-[3.6rem]"
                             >
-                                <span className="relative inline-block"><TitleSpark />M</span>aak digitale geletterdheid tastbaar, motiverend en <span className="relative inline-block text-lab-oliveDeep">aantoonbaar<Underline /></span>.
+                                <span className="relative inline-block"><TitleSpark />E</span>indelijk digitale geletterdheid die leerlingen leuk vinden én die je kunt <span className="relative inline-block text-lab-oliveDeep">verantwoorden<Underline /></span>.
                             </h1>
                             <p className="mt-7 w-full max-w-[22rem] break-words text-pretty text-base font-semibold leading-7 text-lab-mutedDeep sm:mt-8 sm:max-w-md sm:text-lg sm:leading-8 md:max-w-[640px]">
-                                De missiegedreven leeromgeving voor VO en VSO die aansluit op de nieuwste SLO-kerndoelen. Van AI-geletterdheid tot online veiligheid — leerlingen leren door te doen, docenten zien voortgang per kerndoel.
+                                AI-missies voor VO en VSO, gekoppeld aan de SLO-kerndoelen. Leerlingen leren door te doen, jij houdt overzicht zonder extra nakijkwerk.
                             </p>
                             <p className="mt-4 w-full max-w-[22rem] text-pretty text-sm font-black leading-6 text-lab-tealDark sm:max-w-[620px] sm:text-base">
-                                Voor VO en VSO: AI-missies, SLO-voortgang en portfolio-bewijs in een veilige leeromgeving.
+                                Van AI-geletterdheid tot online veiligheid — met SLO-voortgang en portfolio-bewijs in één veilige leeromgeving.
                             </p>
                             <div className="mt-8 flex w-full max-w-[340px] flex-col gap-3 sm:max-w-full sm:flex-row">
                                 <a href="/pilot" onClick={startPilot} className="group inline-flex min-h-[48px] w-full items-center justify-center gap-3 rounded-full bg-lab-gold px-6 py-3 text-sm font-black text-lab-ink shadow-lg shadow-lab-ink/10 transition-transform hover:-translate-y-0.5 sm:w-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink">
@@ -496,6 +495,32 @@ export const ScholenLanding: React.FC = () => {
                         </Reveal>
                     </div>
                     <HeroJourneyBridge />
+                </section>
+
+                <section aria-label="Voor scholen in het kort" className="relative scroll-mt-24 border-y border-lab-line bg-lab-paper px-5 py-12 md:px-10 md:py-14">
+                    <div className="mx-auto max-w-5xl">
+                        <p className="text-xs font-black uppercase tracking-[0.14em] text-lab-coralDeep">Voor scholen in het kort</p>
+                        <h2 className="mt-2 max-w-2xl text-balance text-2xl font-black leading-tight text-lab-ink md:text-3xl">
+                            Motiverend voor leerlingen, aantoonbaar voor je school.
+                        </h2>
+                        <div className="mt-7 grid gap-4 md:grid-cols-3">
+                            <a href="#voor-schoolleiding" onClick={(e) => { e.preventDefault(); scrollTo('voor-schoolleiding'); }} className="group rounded-2xl border border-lab-line bg-lab-cream p-5 text-left shadow-sm shadow-lab-ink/5 transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink">
+                                <p className="text-sm font-black uppercase tracking-wide text-lab-sageDeep">Aantoonbaar</p>
+                                <p className="mt-2 text-base font-bold leading-snug text-lab-ink">SLO-kerndoelen zichtbaar per missie, met portfolio-bewijs voor de inspectie.</p>
+                                <span className="mt-3 inline-flex items-center gap-1 text-sm font-black text-lab-tealDark group-hover:underline">Voor schoolleiding<ArrowRightIcon /></span>
+                            </a>
+                            <a href="#voor-schoolleiding" onClick={(e) => { e.preventDefault(); scrollTo('voor-schoolleiding'); }} className="group rounded-2xl border border-lab-line bg-lab-cream p-5 text-left shadow-sm shadow-lab-ink/5 transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink">
+                                <p className="text-sm font-black uppercase tracking-wide text-lab-sageDeep">Veilig</p>
+                                <p className="mt-2 text-base font-bold leading-snug text-lab-ink">AVG-compliant, verwerkersovereenkomst en DPIA-ondersteuning — te beoordelen door ICT.</p>
+                                <span className="mt-3 inline-flex items-center gap-1 text-sm font-black text-lab-tealDark group-hover:underline">Veilig &amp; AVG<ArrowRightIcon /></span>
+                            </a>
+                            <a href="#schoolpilot" onClick={(e) => { e.preventDefault(); scrollTo('schoolpilot'); }} className="group rounded-2xl border border-lab-line bg-lab-cream p-5 text-left shadow-sm shadow-lab-ink/5 transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink">
+                                <p className="text-sm font-black uppercase tracking-wide text-lab-sageDeep">Snel live</p>
+                                <p className="mt-2 text-base font-bold leading-snug text-lab-ink">Schoolpilot binnen 10 werkdagen ingericht, samen met je team.</p>
+                                <span className="mt-3 inline-flex items-center gap-1 text-sm font-black text-lab-tealDark group-hover:underline">Wat zit er in de pilot?<ArrowRightIcon /></span>
+                            </a>
+                        </div>
+                    </div>
                 </section>
 
                 <CinematicSkillJourney />
@@ -633,6 +658,21 @@ export const ScholenLanding: React.FC = () => {
                     </footer>
                 </section>
             </main>
+
+            <div
+                className={`fixed inset-x-0 bottom-0 z-40 px-4 pb-[calc(env(safe-area-inset-bottom)+12px)] pt-3 lg:hidden ${reduceMotion ? '' : 'transition-all duration-300'} ${showFloatingCta ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-4 opacity-0'}`}
+                aria-hidden={!showFloatingCta}
+            >
+                <a
+                    href="/pilot"
+                    onClick={startPilot}
+                    tabIndex={showFloatingCta ? 0 : -1}
+                    className="mx-auto flex min-h-[52px] max-w-md items-center justify-center gap-2 rounded-full bg-lab-gold px-6 py-3 text-sm font-black text-lab-ink shadow-xl shadow-lab-ink/20 ring-1 ring-lab-ink/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink"
+                >
+                    Plan een schoolpilot
+                    <ArrowRightIcon />
+                </a>
+            </div>
         </div>
     );
 };
@@ -896,7 +936,7 @@ function JourneyDashboardPreview({ active, onSelect }: { active: number; onSelec
                     <span className="ml-3 truncate rounded-full bg-white/12 px-4 py-1 text-xs font-black text-white/82">dgskills.app/journey</span>
                 </div>
 
-                <div className="grid min-h-[430px] bg-lab-paper sm:grid-cols-[132px_minmax(0,1fr)]">
+                <div className="grid min-h-[320px] bg-lab-paper sm:min-h-[430px] sm:grid-cols-[132px_minmax(0,1fr)]">
                     <aside className="hidden border-r border-lab-line bg-white/76 p-4 sm:block" aria-hidden="true">
                         <div className="text-lg font-black text-lab-ink">DGSkills</div>
                         <div className="mt-6 space-y-2">
@@ -1064,7 +1104,7 @@ function BuyerReadySchoolSections({ startPilot }: { startPilot: () => void }) {
                                 <p className="mt-5 text-pretty text-base font-semibold leading-7 text-lab-muted">
                                     De pilot laat niet alleen zien dat leerlingen gemotiveerd zijn, maar ook hoe digitale geletterdheid structureel in de school kan landen.
                                 </p>
-                                <a href="/pilot" onClick={startPilot} className="mt-7 inline-flex min-h-[48px] items-center gap-3 rounded-full bg-lab-gold px-7 py-3 text-sm font-black text-lab-ink shadow-md shadow-lab-ink/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink">
+                                <a href="/pilot" onClick={startPilot} className="group mt-7 inline-flex min-h-[48px] items-center gap-3 rounded-full border-2 border-lab-tealDark bg-transparent px-7 py-3 text-sm font-black text-lab-tealDark transition-colors hover:bg-lab-tealDark hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink">
                                     Plan pilotgesprek
                                     <ArrowRightIcon />
                                 </a>
@@ -1166,7 +1206,7 @@ function BuyerReadySchoolSections({ startPilot }: { startPilot: () => void }) {
                                     </li>
                                 ))}
                             </ul>
-                            <a href="/pilot" onClick={startPilot} className="mt-6 inline-flex min-h-[48px] items-center gap-3 rounded-full bg-lab-gold px-7 py-3 text-sm font-black text-lab-ink shadow-md shadow-lab-ink/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink">
+                            <a href="/pilot" onClick={startPilot} className="group mt-6 inline-flex min-h-[48px] items-center gap-3 rounded-full border-2 border-lab-tealDark bg-transparent px-7 py-3 text-sm font-black text-lab-tealDark transition-colors hover:bg-lab-tealDark hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink">
                                 Plan mijn schoolpilot
                                 <ArrowRightIcon />
                             </a>
@@ -1318,7 +1358,7 @@ function AiGameBuilderDemo({ reduceMotion }: { reduceMotion: boolean }) {
 
     return (
         <Reveal y={34} className="project-card-motion grid gap-5 rounded-[36px] bg-lab-paper p-4 shadow-2xl shadow-lab-ink/12 ring-1 ring-lab-line lg:grid-cols-[0.82fr_1.18fr] lg:p-6">
-            <div className="flex min-h-[430px] flex-col rounded-[28px] bg-lab-ink p-5 text-white shadow-xl shadow-lab-ink/18">
+            <div className="flex min-h-[340px] flex-col rounded-[28px] bg-lab-ink p-5 text-white shadow-xl shadow-lab-ink/18 sm:min-h-[430px]">
                 <div className="flex items-start justify-between gap-4">
                     <div>
                         <p className="text-xs font-black uppercase tracking-wide text-lab-gold">Gemini coach</p>
@@ -1371,7 +1411,7 @@ function AiGameBuilderDemo({ reduceMotion }: { reduceMotion: boolean }) {
                 </form>
             </div>
 
-            <div className="relative min-h-[430px] overflow-hidden rounded-[28px] bg-[#08283B] p-4 shadow-xl shadow-lab-ink/18">
+            <div className="relative min-h-[340px] overflow-hidden rounded-[28px] bg-[#08283B] p-4 shadow-xl shadow-lab-ink/18 sm:min-h-[430px]">
                 <div className="mb-4 flex items-center justify-between rounded-2xl bg-white/95 px-4 py-3 text-lab-ink">
                     <div>
                         <p className="text-xs font-black uppercase text-lab-sageDeep">Live preview</p>
@@ -1852,7 +1892,7 @@ function PortfolioStorySection({ startPilot }: { startPilot: () => void }) {
                     <p className="mt-5 max-w-md text-pretty text-base font-semibold leading-7 text-lab-muted">
                         Scroll door een portfolio dat echt iets vertelt: wie je bent, wat je maakt, welke trofeeën je haalt en waar je nog in groeit.
                     </p>
-                    <a href="/pilot" onClick={startPilot} className="mt-7 inline-flex min-h-[48px] items-center gap-3 rounded-full bg-lab-gold px-7 py-3 text-sm font-black text-lab-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink">
+                    <a href="/pilot" onClick={startPilot} className="group mt-7 inline-flex min-h-[48px] items-center gap-3 rounded-full border-2 border-lab-tealDark bg-transparent px-7 py-3 text-sm font-black text-lab-tealDark transition-colors hover:bg-lab-tealDark hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink">
                         Plan pilot met portfolio-route
                         <ArrowRightIcon />
                     </a>
@@ -1900,14 +1940,11 @@ function PortfolioStorySection({ startPilot }: { startPilot: () => void }) {
                 </div>
 
                 <div className={`space-y-7 ${reduceMotion ? '' : 'lg:hidden'}`}>
-                    {panels.map((panel, index) => (
-                        <Reveal key={panel.title} delay={index * 0.05} y={34} className="portfolio-story-motion overflow-hidden rounded-[28px] bg-white shadow-xl shadow-lab-ink/8 ring-1 ring-lab-line">
+                    {panels.filter((_, i) => i === 0 || i === panels.length - 1).map((panel) => (
+                        <Reveal key={panel.title} delay={0.05} y={34} className="portfolio-story-motion overflow-hidden rounded-[28px] bg-white shadow-xl shadow-lab-ink/8 ring-1 ring-lab-line">
                             <div className="p-7">
                                 <div className="flex items-center justify-between gap-3">
                                     <p className="text-sm font-black uppercase tracking-[0.14em] text-lab-sageDeep">{panel.kicker}</p>
-                                    <span className="rounded-full border border-lab-line bg-lab-paper px-2.5 py-1 text-[10px] font-black uppercase tracking-wide text-lab-tealDark">
-                                        Stap {String(index + 1).padStart(2, '0')} / {String(panels.length).padStart(2, '0')}
-                                    </span>
                                 </div>
                                 <h3 className="mt-3 text-2xl font-black leading-[1.1] text-lab-ink">{panel.title}</h3>
                                 <p className="mt-4 text-base font-semibold leading-7 text-lab-muted">{panel.copy}</p>
@@ -2031,14 +2068,14 @@ function ProductHeroMockup() {
                         <span className="size-2.5 rounded-full bg-lab-coral md:size-3" aria-hidden="true" />
                         <span className="size-2.5 rounded-full bg-lab-gold md:size-3" aria-hidden="true" />
                         <span className="size-2.5 rounded-full bg-lab-sage md:size-3" aria-hidden="true" />
-                        <span className="ml-3 truncate rounded-full bg-lab-cream px-3 py-0.5 text-[10px] font-black text-lab-muted md:ml-4 md:px-4 md:py-1 md:text-xs">dgskills.app/dashboard</span>
+                        <span className="ml-3 truncate rounded-full bg-lab-cream px-3 py-0.5 text-[10px] font-black text-lab-muted md:ml-4 md:px-4 md:py-1 md:text-xs">dgskills.app/missie</span>
                     </div>
                     <img
-                        src="/screenshots/student-dashboard.webp"
-                        alt="DGSkills leerlingdashboard met XP-punten, streak, level en projectkaarten"
+                        src="/screenshots/prompt-master.webp"
+                        alt="Leerling werkt aan de DGSkills-missie Prompt Perfectionist en typt een AI-prompt om een hond te laten tekenen"
                         className="block w-full object-cover object-top"
-                        width={1280}
-                        height={800}
+                        width={960}
+                        height={600}
                         loading="eager"
                         decoding="async"
                         fetchPriority="high"
