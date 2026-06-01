@@ -454,16 +454,16 @@ export const ScholenLanding: React.FC = () => {
                     <div className="relative z-10 mx-auto grid min-w-0 max-w-5xl items-center gap-10 lg:grid-cols-[minmax(0,60fr)_minmax(0,40fr)] lg:gap-6 xl:grid-cols-[minmax(0,58fr)_minmax(0,42fr)]">
                         <Reveal className="relative z-10 min-w-0" style={{ maxWidth: 'calc(100vw - 40px)' }}>
                             <h1
-                                aria-label="Maak digitale geletterdheid tastbaar, motiverend en aantoonbaar."
-                                className="w-full max-w-[22rem] text-balance text-[2.1rem] font-black leading-[1.06] text-lab-ink sm:max-w-[780px] sm:text-6xl lg:text-[4.45rem]"
+                                aria-label="Eindelijk digitale geletterdheid die leerlingen leuk vinden én die je kunt verantwoorden."
+                                className="w-full max-w-[22rem] text-balance text-[1.85rem] font-black leading-[1.08] text-lab-ink sm:max-w-[780px] sm:text-5xl lg:text-[3.6rem]"
                             >
-                                <span className="relative inline-block"><TitleSpark />M</span>aak digitale geletterdheid tastbaar, motiverend en <span className="relative inline-block text-lab-oliveDeep">aantoonbaar<Underline /></span>.
+                                <span className="relative inline-block"><TitleSpark />E</span>indelijk digitale geletterdheid die leerlingen leuk vinden én die je kunt <span className="relative inline-block text-lab-oliveDeep">verantwoorden<Underline /></span>.
                             </h1>
                             <p className="mt-7 w-full max-w-[22rem] break-words text-pretty text-base font-semibold leading-7 text-lab-mutedDeep sm:mt-8 sm:max-w-md sm:text-lg sm:leading-8 md:max-w-[640px]">
-                                De missiegedreven leeromgeving voor VO en VSO die aansluit op de nieuwste SLO-kerndoelen. Van AI-geletterdheid tot online veiligheid — leerlingen leren door te doen, docenten zien voortgang per kerndoel.
+                                AI-missies voor VO en VSO, gekoppeld aan de SLO-kerndoelen. Leerlingen leren door te doen, jij houdt overzicht zonder extra nakijkwerk.
                             </p>
                             <p className="mt-4 w-full max-w-[22rem] text-pretty text-sm font-black leading-6 text-lab-tealDark sm:max-w-[620px] sm:text-base">
-                                Voor VO en VSO: AI-missies, SLO-voortgang en portfolio-bewijs in een veilige leeromgeving.
+                                Van AI-geletterdheid tot online veiligheid — met SLO-voortgang en portfolio-bewijs in één veilige leeromgeving.
                             </p>
                             <div className="mt-8 flex w-full max-w-[340px] flex-col gap-3 sm:max-w-full sm:flex-row">
                                 <a href="/pilot" onClick={startPilot} className="group inline-flex min-h-[48px] w-full items-center justify-center gap-3 rounded-full bg-lab-gold px-6 py-3 text-sm font-black text-lab-ink shadow-lg shadow-lab-ink/10 transition-transform hover:-translate-y-0.5 sm:w-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink">
@@ -2085,14 +2085,14 @@ function ProductHeroMockup() {
                         <span className="size-2.5 rounded-full bg-lab-coral md:size-3" aria-hidden="true" />
                         <span className="size-2.5 rounded-full bg-lab-gold md:size-3" aria-hidden="true" />
                         <span className="size-2.5 rounded-full bg-lab-sage md:size-3" aria-hidden="true" />
-                        <span className="ml-3 truncate rounded-full bg-lab-cream px-3 py-0.5 text-[10px] font-black text-lab-muted md:ml-4 md:px-4 md:py-1 md:text-xs">dgskills.app/dashboard</span>
+                        <span className="ml-3 truncate rounded-full bg-lab-cream px-3 py-0.5 text-[10px] font-black text-lab-muted md:ml-4 md:px-4 md:py-1 md:text-xs">dgskills.app/missie</span>
                     </div>
                     <img
-                        src="/screenshots/student-dashboard.webp"
-                        alt="DGSkills leerlingdashboard met XP-punten, streak, level en projectkaarten"
+                        src="/screenshots/prompt-master.webp"
+                        alt="Leerling werkt aan de DGSkills-missie Prompt Perfectionist en typt een AI-prompt om een hond te laten tekenen"
                         className="block w-full object-cover object-top"
-                        width={1280}
-                        height={800}
+                        width={960}
+                        height={600}
                         loading="eager"
                         decoding="async"
                         fetchPriority="high"
