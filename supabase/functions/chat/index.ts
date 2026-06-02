@@ -1,25 +1,35 @@
 /**
- * Edge Function: /chat — AI Chat Proxy
+ * Edge Function: /chat — AI Chat Proxy (Mistral AI)
  *
  * Security layers:
  * 1. JWT auth verification (Supabase)
  * 2. Server-side prompt injection filtering (mirrors client-side)
  * 3. Server-side rate limiting (15 req/min per user)
- * 4. Vertex AI (europe-west4) — enterprise ToS, no age restriction
- * 5. Service account auth (no API key in URL)
+ * 4. Mistral AI (EU provider) — processes learner chat requests
+ * 5. API key auth via secret (Bearer header, never in URL, never logged)
  * 6. Server-side system instruction lookup via roleId (prevents prompt injection via systemInstruction)
+ *
+ * Privacy: no learner PII is sent to Mistral — only the sanitized message,
+ * sanitized history and a server-side role instruction.
  */
-import { getAccessToken, getVertexUrl } from "../_shared/vertexAuth.ts";
 import { buildCorsHeaders, rejectDisallowedBrowserRequest } from "../_shared/cors.ts";
 import { rateLimitHeaders } from "../_shared/rateLimiter.ts";
 import {
     validateAndParseRequest,
-    buildVertexPayload,
     selectModel,
+    buildGenerationConfig,
 } from "../_shared/chatCore.ts";
+import {
+    getMistralApiKey,
+    getMistralUrl,
+    buildMistralPayload,
+    extractMistralText,
+} from "../_shared/mistralClient.ts";
 import { filterAiOutput } from "../_shared/outputFilter.ts";
 import { detectAndLogStepComplete } from "../_shared/stepCompleteDetector.ts";
 import { countTextChars, logAiUsageEvent } from "../_shared/aiUsageLogger.ts";
+
+const AI_PROVIDER = "mistral";
 
 Deno.serve(async (req: Request) => {
     const corsHeaders = buildCorsHeaders(req, "POST, OPTIONS", "Content-Type, Authorization");
@@ -33,36 +43,36 @@ Deno.serve(async (req: Request) => {
     const validated = await validateAndParseRequest(req, corsHeaders, "chat");
     if (validated instanceof Response) return validated;
 
-    // Forward sanitized message to Gemini via Vertex AI (EU endpoint)
+    // Forward sanitized message to Mistral AI (EU provider)
     try {
         const hasGameContext = !!(validated.body.gameContext && typeof validated.body.gameContext === "string");
         const model = selectModel(validated.body.roleId, hasGameContext);
-        const vertexPayload = buildVertexPayload(validated);
-        const inputChars = countTextChars(vertexPayload);
+        const generationConfig = buildGenerationConfig(validated.body.roleId, hasGameContext);
+        const mistralPayload = buildMistralPayload(validated, model, generationConfig, false);
+        const inputChars = countTextChars(validated.safeHistory.history) + validated.sanitized.length;
         const historyChars = countTextChars(validated.safeHistory.history);
 
-        console.log("[chat] Step 1: Building Vertex URL...");
-        const geminiUrl = getVertexUrl(model);
-        console.log("[chat] Step 2: Getting access token...");
-        const accessToken = await getAccessToken();
-        console.log("[chat] Step 3: Sending to Vertex AI...");
+        console.log("[chat] Step 1: Reading API key...");
+        const apiKey = getMistralApiKey();
+        console.log("[chat] Step 2: Sending to Mistral AI...");
 
-        const geminiResponse = await fetch(geminiUrl, {
+        const geminiResponse = await fetch(getMistralUrl(), {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${accessToken}`,
+                "Authorization": `Bearer ${apiKey}`,
             },
-            body: JSON.stringify(vertexPayload),
+            body: JSON.stringify(mistralPayload),
         });
 
         if (!geminiResponse.ok) {
             const status = geminiResponse.status;
             const errBody = await geminiResponse.text().catch(() => "");
-            console.error(`[chat] Vertex AI error (${status}):`, errBody);
+            console.error(`[chat] Mistral AI error (${status}):`, errBody);
             logAiUsageEvent({
                 requestId: validated.requestId,
                 endpoint: "chat",
+                provider: AI_PROVIDER,
                 model,
                 status: status === 429 ? "rate_limited" : "error",
                 userId: validated.userId,
@@ -87,18 +97,19 @@ Deno.serve(async (req: Request) => {
 
         const geminiData = await geminiResponse.json();
 
-        // Extract text from Vertex AI response format
-        console.log("[chat] Step 4: Vertex AI response OK, extracting text...");
-        const rawText = geminiData?.candidates?.[0]?.content?.parts?.[0]?.text || "";
+        // Extract text from Mistral AI response format
+        console.log("[chat] Step 3: Mistral AI response OK, extracting text...");
+        const rawText = extractMistralText(geminiData);
 
         // Post-processing safety filter for minors
         const filterResult = filterAiOutput(rawText);
         const text = filterResult.safe ? rawText : (filterResult.filtered || "");
-        console.log("[chat] Step 5: Success, text length:", text.length, filterResult.safe ? "" : `(filtered: ${filterResult.category})`);
+        console.log("[chat] Step 4: Success, text length:", text.length, filterResult.safe ? "" : `(filtered: ${filterResult.category})`);
 
         logAiUsageEvent({
             requestId: validated.requestId,
             endpoint: "chat",
+            provider: AI_PROVIDER,
             model,
             status: filterResult.safe ? "ok" : "blocked",
             userId: validated.userId,
@@ -111,7 +122,7 @@ Deno.serve(async (req: Request) => {
             metadata: {
                 role_id: validated.body.roleId,
                 mission_id: validated.body.missionId,
-                finish_reason: geminiData?.candidates?.[0]?.finishReason,
+                finish_reason: geminiData?.choices?.[0]?.finish_reason,
                 output_filter: filterResult.safe ? "safe" : filterResult.category,
             },
         }).catch((err) => console.error("[chat] Usage log error:", err));
@@ -129,6 +140,7 @@ Deno.serve(async (req: Request) => {
         logAiUsageEvent({
             requestId: validated.requestId,
             endpoint: "chat",
+            provider: AI_PROVIDER,
             model: selectModel(validated.body.roleId, !!validated.body.gameContext),
             status: "error",
             userId: validated.userId,

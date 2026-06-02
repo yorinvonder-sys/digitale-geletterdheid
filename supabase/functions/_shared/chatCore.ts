@@ -2,7 +2,8 @@
  * Shared core for /chat and /chatStream edge functions.
  *
  * Security-critical: auth verification, rate limiting, prompt sanitization,
- * and Vertex AI payload construction are all handled here.
+ * and request validation are all handled here. Provider-specific payload
+ * construction lives in the provider client (see mistralClient.ts).
  *
  * Do NOT modify security logic (auth, rate limit, sanitization, CORS) without
  * reviewing the security audit at docs/security/security-audit-rapport-dgskills.md.
@@ -20,8 +21,9 @@ import { getUserSchoolId, logAiUsageEvent, resolveAiRequestId } from "./aiUsageL
 export const MAX_REQUEST_BYTES = 160_000;
 export const MAX_MESSAGE_LENGTH = 4_000;
 export const MAX_GAME_CONTEXT_LENGTH = 40_000;
-export const DEFAULT_MODEL = "gemini-3-flash-preview";
-export const CODE_MODEL = "gemini-2.5-pro";
+// Mistral models — env-overridable so models can be tuned without a redeploy.
+export const DEFAULT_MODEL = Deno.env.get("MISTRAL_DEFAULT_MODEL") ?? "mistral-small-latest";
+export const CODE_MODEL = Deno.env.get("MISTRAL_CODE_MODEL") ?? "mistral-large-latest";
 export const DEFAULT_TEMPERATURE = 0.7;
 export const CODE_TEMPERATURE = 0.2;
 export const DEFAULT_MAX_OUTPUT_TOKENS = 768;
@@ -38,25 +40,14 @@ export interface ChatRequestBody {
     clientRequestId?: string;
 }
 
-export interface SafetySettingEntry {
-    category: string;
-    threshold: string;
-}
-
-export interface VertexPart {
+/** Provider-neutral chat history shapes (produced by buildSafeHistory). */
+export interface ChatPart {
     text: string;
 }
 
-export interface VertexContent {
+export interface ChatContent {
     role: string;
-    parts: VertexPart[];
-}
-
-export interface VertexPayload {
-    contents: VertexContent[];
-    safetySettings: SafetySettingEntry[];
-    systemInstruction: { parts: VertexPart[] };
-    generationConfig: { maxOutputTokens: number; temperature: number };
+    parts: ChatPart[];
 }
 
 export interface ValidatedRequest {
@@ -67,7 +58,7 @@ export interface ValidatedRequest {
     systemInstruction: string;
     rateCheck: RateLimitResult;
     sanitized: string;
-    safeHistory: { history: VertexContent[]; blocked: boolean; detectionLabel?: string };
+    safeHistory: { history: ChatContent[]; blocked: boolean; detectionLabel?: string };
 }
 
 // ── Model selection ──────────────────────────────────────────────────────────
@@ -295,47 +286,6 @@ export async function validateAndParseRequest(
         systemInstruction,
         rateCheck,
         sanitized: validation.sanitized,
-        safeHistory: safeHistory as { history: VertexContent[]; blocked: boolean; detectionLabel?: string },
-    };
-}
-
-// ── Vertex AI payload builder ─────────────────────────────────────────────────
-
-/**
- * Constructs the Vertex AI request body from a validated request.
- * Includes safety settings for minors (EU AI Act + child protection).
- */
-export function buildVertexPayload(validated: ValidatedRequest): VertexPayload {
-    const { body, sanitized, safeHistory, systemInstruction } = validated;
-    const hasGameContext = !!(body.gameContext && typeof body.gameContext === "string");
-
-    // Build user message parts — include game code context if provided
-    // gameContext bypasses the sanitizer because it's our own application code, not user input
-    const userParts: VertexPart[] = [];
-    if (hasGameContext) {
-        userParts.push({
-            text: `[HUIDIGE_GAME_CODE]\n${body.gameContext}\n[/HUIDIGE_GAME_CODE]\n\nKRITIEK: Dit is de HUIDIGE game van de leerling. Je MOET deze code aanpassen — NIET een nieuwe game maken. Verwerk het verzoek hieronder in de bestaande code en geef de VOLLEDIGE aangepaste versie terug.`,
-        });
-    }
-    userParts.push({ text: sanitized });
-
-    const contents: VertexContent[] = [
-        ...safeHistory.history,
-        { role: "user", parts: userParts },
-    ];
-
-    // Safety settings for minors (12-18 year olds) — EU AI Act + child protection
-    const safetySettings: SafetySettingEntry[] = [
-        { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_LOW_AND_ABOVE" },
-        { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_LOW_AND_ABOVE" },
-        { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_LOW_AND_ABOVE" },
-        { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_LOW_AND_ABOVE" },
-    ];
-
-    return {
-        contents,
-        safetySettings,
-        systemInstruction: { parts: [{ text: systemInstruction }] },
-        generationConfig: buildGenerationConfig(body.roleId, hasGameContext),
+        safeHistory: safeHistory as { history: ChatContent[]; blocked: boolean; detectionLabel?: string },
     };
 }

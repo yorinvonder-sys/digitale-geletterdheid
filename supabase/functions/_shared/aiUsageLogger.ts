@@ -56,6 +56,19 @@ export function getUserSchoolId(user: { app_metadata?: Record<string, unknown> }
 
 export function extractUsageMetadata(payload: unknown): AiUsageTokens {
   const root = payload && typeof payload === "object" ? payload as Record<string, unknown> : {};
+
+  // Mistral (OpenAI-compatible) usage: { prompt_tokens, completion_tokens, total_tokens }
+  const mistralUsage = root.usage;
+  if (mistralUsage && typeof mistralUsage === "object") {
+    const source = mistralUsage as Record<string, unknown>;
+    return {
+      promptTokens: valueAt(source, "promptTokens", "prompt_tokens"),
+      candidatesTokens: valueAt(source, "completionTokens", "completion_tokens"),
+      totalTokens: valueAt(source, "totalTokens", "total_tokens"),
+    };
+  }
+
+  // Vertex/Gemini usage (still used by image + other endpoints).
   const usage = root.usageMetadata ?? root.usage_metadata;
   if (!usage || typeof usage !== "object") return {};
 

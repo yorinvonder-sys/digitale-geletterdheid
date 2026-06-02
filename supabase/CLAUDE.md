@@ -43,6 +43,18 @@ This subtree contains migrations and edge functions for a school-facing educatio
 - **Prompt injection:** AI-endpoints moeten input sanitizen tegen injection patterns (zie `docs/security/rapport-ai-cybersecurity-kwetsbaarheden.md`).
 - **Data minimalisatie:** Retourneer alleen de velden die de client nodig heeft. Geen `SELECT *` naar de client.
 
+## AI-providers
+- **Leerling-chat (`chat`, `chatStream`):** Mistral AI (EU). Secret
+  `MISTRAL_API_KEY` (+ optioneel `MISTRAL_DEFAULT_MODEL` / `MISTRAL_CODE_MODEL`).
+  Provider-helper: `_shared/mistralClient.ts`. Zie
+  `docs/security/mistral-ai-provider.md` voor setup en de compliance-checklist
+  (DPA, minderjarigen-ToS, EU-residentie, geen training) die vóór productie af
+  moet zijn.
+- **Beeld + overige functies:** Vertex AI via `GOOGLE_SERVICE_ACCOUNT_KEY`
+  (`_shared/vertexAuth.ts`). Niet wijzigen bij Mistral-werk.
+- Stuur nooit leerling-PII naar een AI-provider — alleen geschoond bericht,
+  geschoonde historie en server-side rol-instructie.
+
 ## Output expectations
 - Explain privacy and security impact in plain Dutch.
 - Explain whether the change affects compliance, school trust, or learner safety.
