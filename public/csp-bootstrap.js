@@ -110,22 +110,26 @@
     var path = window.location.pathname;
     if (path !== '/' && path !== '/scholen') return;
 
-    var fontUrl = '/fonts/outfit.css';
-    function loadOutfit() {
-      var link = document.createElement('link');
-      link.rel = 'stylesheet';
-      link.href = fontUrl;
-      link.onload = function () {
-        document.documentElement.classList.add('font-outfit-ready');
-      };
-      document.head.appendChild(link);
+    function loadFonts() {
+      var fontUrls = ['/fonts/outfit.css', '/fonts/fraunces.css'];
+      for (var i = 0; i < fontUrls.length; i++) {
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = fontUrls[i];
+        if (fontUrls[i] === '/fonts/outfit.css') {
+          link.onload = function () {
+            document.documentElement.classList.add('font-outfit-ready');
+          };
+        }
+        document.head.appendChild(link);
+      }
     }
 
     function schedule() {
       if (typeof requestIdleCallback !== 'undefined') {
-        requestIdleCallback(loadOutfit, { timeout: 2500 });
+        requestIdleCallback(loadFonts, { timeout: 2500 });
       } else {
-        setTimeout(loadOutfit, 0);
+        setTimeout(loadFonts, 0);
       }
     }
 

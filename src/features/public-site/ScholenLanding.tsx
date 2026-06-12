@@ -7,18 +7,19 @@ import {
 } from '@/services/gameDemoService';
 
 type NavItem = { label: string; target: string };
+type SkillTone = 'paper' | 'acid';
 type Skill = {
     title: string;
+    letter: string;
+    tone: SkillTone;
+    art: SkillArtVariant;
     icon: React.ReactNode;
-    color: string;
     bullets: string[];
     projects: string;
     coachTip: string;
     bestFor: string;
-    image: string;
-    alt: string;
 };
-type CinematicChapter = {
+type JourneyChapter = {
     step: string;
     title: string;
     eyebrow: string;
@@ -26,27 +27,10 @@ type CinematicChapter = {
     routeCoachTip: string;
     image: string;
     alt: string;
-    accent: string;
     icon: React.ReactNode;
     stat: string;
     statLabel: string;
 };
-
-const C = {
-    cream: '#FCF6EA',
-    creamDeep: '#F3E4CB',
-    paper: '#FFFDF7',
-    ink: '#08283B',
-    muted: '#445865',
-    olive: '#99984D',
-    gold: '#D7C95F',
-    sage: '#5F947D',
-    sageSoft: '#DCE9DD',
-    coral: '#D97848',
-    peach: '#D97848',
-    teal: '#0B453F',
-    line: '#E7D8BD',
-} as const;
 
 const NAV_ITEMS: NavItem[] = [
     { label: 'Hoe het werkt', target: 'journey' },
@@ -55,61 +39,72 @@ const NAV_ITEMS: NavItem[] = [
     { label: 'Portfolio', target: 'portfolio' },
 ];
 
+const MARQUEE_WORDS = [
+    'AI-geletterdheid',
+    'Mediawijsheid',
+    'Computational thinking',
+    'Informatievaardigheden',
+    'Online veiligheid',
+    'Digitale vaardigheden',
+    'Portfolio-bewijs',
+    'SLO-kerndoelen',
+] as const;
+
 const skills: Skill[] = [
     {
         title: 'AI & Data',
+        letter: 'A',
+        tone: 'paper',
+        art: 'ai',
         icon: <BrainIcon />,
-        color: '#7EAD94',
         bullets: ['AI-tools gebruiken', 'Data analyseren', 'Slimme apps bouwen'],
         projects: '12 projecten',
         coachTip: 'Start hier als je klas AI wil gebruiken en kritisch wil leren kijken.',
         bestFor: 'brugklas, onderzoeksopdrachten en AI-basis',
-        image: '/assets/skill-cards/skill-ai-data.webp',
-        alt: 'Dynamische AI en data opdrachtwereld met grafieken, datablocks en een AI-assistent',
     },
     {
         title: 'Design & Create',
+        letter: 'D',
+        tone: 'acid',
+        art: 'create',
         icon: <PencilIcon />,
-        color: '#E49A73',
         bullets: ['Grafisch ontwerp', 'UI/UX design', 'Animatie & video'],
         projects: '18 projecten',
         coachTip: 'Goed voor makers: ontwerpen, testen en verbeteren met zichtbaar resultaat.',
         bestFor: 'projectweek, kunstvakken en creatieve keuzeuren',
-        image: '/assets/skill-cards/skill-design-create.webp',
-        alt: 'Dynamische designstudio met prototypes, kleurstalen en animatieframes',
     },
     {
         title: 'Code & Bouw',
+        letter: 'C',
+        tone: 'paper',
+        art: 'code',
         icon: <CodeIcon />,
-        color: '#5F947D',
         bullets: ['Web development', 'App development', 'Games maken'],
         projects: '24 projecten',
         coachTip: 'Perfect voor leerlingen die willen snappen hoe apps, games en logica werken.',
         bestFor: 'programmeren, technologie en plusopdrachten',
-        image: '/assets/skill-cards/skill-code-bouw.webp',
-        alt: 'Dynamische codewerkplaats met appblokken, game-elementen en bouwmodules',
     },
     {
         title: 'Media & Verhaal',
+        letter: 'M',
+        tone: 'acid',
+        art: 'media',
         icon: <CameraIcon />,
-        color: '#D97848',
         bullets: ['Video editen', 'Podcast maken', 'Storytelling'],
         projects: '16 projecten',
         coachTip: 'Sterk voor creatievelingen: video, verhaal, presentatie en digitale identiteit.',
         bestFor: 'Nederlands, mediawijsheid en presentaties',
-        image: '/assets/skill-cards/skill-media-verhaal.webp',
-        alt: 'Dynamische mediastudio met camera, podcastmicrofoon en verhaaltijdlijn',
     },
     {
         title: 'Online veiligheid',
+        letter: 'V',
+        tone: 'paper',
+        art: 'safe',
         icon: <LockIcon />,
-        color: '#DBC95D',
         bullets: ['Privacy & security', 'Cyber awareness', 'Verantwoord online'],
         projects: '8 projecten',
         coachTip: 'Ideaal als startpunt voor mentoraat, privacy, phishing en veilig gedrag.',
         bestFor: 'mentorles, burgerschap en schoolbrede veiligheid',
-        image: '/assets/skill-cards/skill-online-veiligheid.webp',
-        alt: 'Dynamische online veiligheid opdrachtwereld met schild, sloten en privacykaarten',
     },
 ];
 
@@ -127,13 +122,13 @@ const heroProofItems = [
 ] as const;
 
 const trustChips = [
-    '20+ AI-missies',
-    'SLO-mapping',
-    'AVG-bewust',
-    'AI Act-roadmap 2026',
-    'Microsoft 365',
-    'Pilot binnen 10 werkdagen',
-    'Geen creditcard',
+    { label: '20+ AI-missies', tone: 'acid', pos: 'left-[4%] top-[20%] xl:left-[6%]', rotate: '-rotate-[9deg]' },
+    { label: 'SLO-mapping', tone: 'paper', pos: 'left-[2%] top-[46%] xl:left-[4%]', rotate: 'rotate-[7deg]' },
+    { label: 'Microsoft 365', tone: 'paper', pos: 'left-[7%] top-[68%] xl:left-[10%]', rotate: 'rotate-[4deg]' },
+    { label: 'AVG-bewust', tone: 'paper', pos: 'right-[4%] top-[18%] xl:right-[7%]', rotate: 'rotate-[8deg]' },
+    { label: 'AI Act-roadmap 2026', tone: 'ink', pos: 'right-[1%] top-[44%] xl:right-[3%]', rotate: '-rotate-[7deg]' },
+    { label: 'Pilot binnen 10 werkdagen', tone: 'ink', pos: 'right-[6%] top-[66%] xl:right-[9%]', rotate: '-rotate-[4deg]' },
+    { label: 'Geen creditcard', tone: 'acid', pos: 'left-[40%] top-[78%]', rotate: 'rotate-[3deg]' },
 ] as const;
 
 const lessonSteps = [
@@ -236,7 +231,7 @@ const roleFaqs = [
     { role: 'Pilot', question: 'Hoe snel kan een school starten?', answer: 'De pilot is ingericht op een compacte start: meestal binnen 10 werkdagen nadat scope en accounts zijn afgestemd.' },
 ] as const;
 
-const cinematicChapters: CinematicChapter[] = [
+const journeyChapters: JourneyChapter[] = [
     {
         step: '01',
         title: 'Ontdek',
@@ -245,7 +240,6 @@ const cinematicChapters: CinematicChapter[] = [
         routeCoachTip: 'Kies een leerlijn en zie meteen waar je klas start.',
         image: '/screenshots/new-dashboard-missions.png',
         alt: 'DGSkills dashboard met leerlijn, periodes, leerdoelen en missiekaarten',
-        accent: '#D7C95F',
         icon: <SearchIcon />,
         stat: '20+',
         statLabel: 'AI-missies klaar',
@@ -258,7 +252,6 @@ const cinematicChapters: CinematicChapter[] = [
         routeCoachTip: 'Elke missie geeft directe feedback, dus leerlingen blijven bezig.',
         image: '/screenshots/prompt-master.webp',
         alt: 'DGSkills Prompt Perfectionist opdracht met invoerveld voor een AI-prompt',
-        accent: '#5F947D',
         icon: <BookIcon />,
         stat: 'SLO',
         statLabel: 'gekoppeld',
@@ -271,7 +264,6 @@ const cinematicChapters: CinematicChapter[] = [
         routeCoachTip: 'Hier wordt het concreet: games, robots, prompts, projecten.',
         image: '/screenshots/mission-game-programmeur.webp',
         alt: 'DGSkills game studio met platformgame, robotroute, AI tekengame en prompt challenge voorbeelden',
-        accent: '#D97848',
         icon: <PencilIcon />,
         stat: '24',
         statLabel: 'bouwprojecten',
@@ -284,7 +276,6 @@ const cinematicChapters: CinematicChapter[] = [
         routeCoachTip: 'Alles eindigt in zichtbaar portfolio- of voortgangsbewijs.',
         image: '/screenshots/student-progress-xp.webp',
         alt: 'DGSkills voortgangsscherm met XP, level en trofeeën',
-        accent: '#5F947D',
         icon: <BadgeIcon />,
         stat: 'XP',
         statLabel: 'groeit mee',
@@ -297,7 +288,6 @@ const cinematicChapters: CinematicChapter[] = [
         routeCoachTip: 'Maak groei zichtbaar per leerling, klas en route.',
         image: '/screenshots/student-dashboard.webp',
         alt: 'DGSkills student dashboard als portfolio-overzicht',
-        accent: '#08283B',
         icon: <GrowthIcon />,
         stat: '1',
         statLabel: 'groeiroute',
@@ -314,9 +304,8 @@ function trackLandingEvent(event: string, data?: Record<string, unknown>) {
 
 export const ScholenLanding: React.FC = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-    const [activeSkillIndex, setActiveSkillIndex] = useState(0);
     const reduceMotion = usePrefersReducedMotion();
-    const activeSkill = skills[activeSkillIndex];
+    const { hidden: headerHidden, scrolled: headerScrolled } = useHeaderChrome(mobileMenuOpen);
 
     useHomepageGsapEffects(reduceMotion);
 
@@ -359,6 +348,15 @@ export const ScholenLanding: React.FC = () => {
         };
     }, []);
 
+    useEffect(() => {
+        if (!mobileMenuOpen) return;
+        const previous = document.body.style.overflow;
+        document.body.style.overflow = 'hidden';
+        return () => {
+            document.body.style.overflow = previous;
+        };
+    }, [mobileMenuOpen]);
+
     const scrollTo = (target: string) => {
         setMobileMenuOpen(false);
         window.requestAnimationFrame(() => {
@@ -377,206 +375,184 @@ export const ScholenLanding: React.FC = () => {
     };
 
     return (
-        <div className="min-h-screen overflow-x-clip antialiased" style={{ background: C.cream, color: C.ink, fontFamily: "'Outfit', system-ui, sans-serif" }}>
-            <nav className="sticky top-0 z-50 border-b border-lab-line/50 bg-lab-cream/92 backdrop-blur-md" aria-label="Hoofdnavigatie">
-                <div className="mx-auto flex h-20 max-w-5xl items-center justify-between px-5 md:px-10">
-                    <a href="/" className="flex min-h-[44px] items-center rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink" aria-label="DGSkills homepage">
-                        <img src="/logo-lockup.svg" alt="" className="h-11 w-auto max-w-[180px] object-contain sm:h-12 sm:max-w-[220px]" width={320} height={96} />
+        <div className="min-h-screen overflow-x-clip bg-duck-bg font-sans text-duck-ink antialiased selection:bg-duck-acid selection:text-duck-ink">
+            <header
+                className={`fixed inset-x-0 top-0 z-50 transition-[transform,background-color,box-shadow] duration-500 ${headerHidden ? '-translate-y-full' : 'translate-y-0'} ${mobileMenuOpen ? 'bg-duck-acid' : headerScrolled ? 'bg-duck-bg/95 shadow-[0_1px_0_rgba(32,32,35,0.10)] backdrop-blur-md' : 'bg-transparent'}`}
+            >
+                <nav className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 md:px-10" aria-label="Hoofdnavigatie">
+                    <a href="/" className="flex min-h-[44px] items-center gap-3 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2" aria-label="DGSkills homepage">
+                        <SpriteMark className="size-9" />
+                        <span className="text-xl font-extrabold tracking-tight">DGSkills</span>
                     </a>
 
-                    <div className="hidden items-center gap-9 lg:flex">
+                    <div className="hidden items-center gap-8 lg:flex">
                         {NAV_ITEMS.map((item) => (
-                            <button key={item.target} onClick={() => scrollTo(item.target)} className="min-h-[44px] rounded-full px-2 text-sm font-bold text-lab-ink transition-colors hover:text-lab-sage focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink">
+                            <button
+                                key={item.target}
+                                onClick={() => scrollTo(item.target)}
+                                className="group relative min-h-[44px] px-1 text-sm font-bold text-duck-ink transition-transform duration-300 hover:translate-x-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
+                            >
                                 {item.label}
+                                <span className="absolute -bottom-0.5 left-0 h-0.5 w-full origin-left scale-x-0 bg-duck-ink transition-transform duration-300 group-hover:scale-x-100" aria-hidden="true" />
                             </button>
                         ))}
                     </div>
 
                     <div className="hidden items-center gap-3 lg:flex">
-                        <a href="/login" className="inline-flex min-h-[44px] items-center rounded-full px-4 py-3 text-sm font-bold text-lab-ink transition-colors hover:text-lab-sage focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink">
+                        <a href="/login" className="group relative inline-flex min-h-[44px] items-center px-2 text-sm font-bold text-duck-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2">
                             Inloggen
+                            <span className="absolute bottom-1.5 left-2 h-0.5 w-[calc(100%-1rem)] origin-left scale-x-0 bg-duck-ink transition-transform duration-300 group-hover:scale-x-100" aria-hidden="true" />
                         </a>
-                        <a href="/pilot" onClick={startPilot} className="group inline-flex min-h-[44px] items-center gap-3 rounded-full bg-lab-gold px-5 py-2 text-sm font-black text-lab-ink shadow-md shadow-lab-ink/10 transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink">
+                        <a
+                            href="/pilot"
+                            onClick={startPilot}
+                            className="inline-flex min-h-[46px] items-center gap-2 rounded-full border border-duck-ink bg-duck-acid px-6 py-2.5 text-sm font-extrabold text-duck-ink transition-all duration-300 hover:-translate-y-0.5 hover:bg-duck-ink hover:text-duck-acid focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
+                        >
                             Plan schoolpilot
-                            <span className="grid size-8 place-items-center rounded-full bg-lab-oliveDeep text-white transition-transform group-hover:translate-x-0.5">
-                                <ArrowRightIcon />
-                            </span>
+                            <ArrowRightIcon />
                         </a>
                     </div>
 
                     <button
                         type="button"
                         onClick={() => setMobileMenuOpen((open) => !open)}
-                        className="grid size-11 place-items-center rounded-full border border-lab-line bg-white lg:hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink"
+                        className="grid size-11 place-items-center rounded-full border border-duck-ink bg-duck-bgLight text-duck-ink lg:hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
                         aria-label={mobileMenuOpen ? 'Menu sluiten' : 'Menu openen'}
                         aria-expanded={mobileMenuOpen}
                     >
                         {mobileMenuOpen ? <XIcon /> : <MenuIcon />}
                     </button>
-                </div>
+                </nav>
+            </header>
 
-                {mobileMenuOpen && (
-                    <div className="border-t border-lab-line bg-lab-cream px-5 py-4 lg:hidden">
-                        <div className="space-y-1">
-                            {NAV_ITEMS.map((item) => (
-                                <button key={item.target} onClick={() => scrollTo(item.target)} className="block w-full rounded-lg px-3 py-3 text-left text-sm font-bold text-lab-ink hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink">
-                                    {item.label}
-                                </button>
-                            ))}
-                        </div>
-                        <div className="mt-4 grid grid-cols-2 gap-3">
-                            <a href="/login" className="grid min-h-[44px] place-items-center rounded-full border border-lab-line bg-white text-sm font-black text-lab-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink">
-                                Inloggen
-                            </a>
-                            <a href="/pilot" onClick={startPilot} className="grid min-h-[44px] place-items-center rounded-full bg-lab-gold text-sm font-black text-lab-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink">
-                                Plan pilot
-                            </a>
-                        </div>
+            {mobileMenuOpen && (
+                <div className="fixed inset-0 z-40 flex flex-col overflow-y-auto bg-duck-acid px-6 pb-10 pt-28 lg:hidden">
+                    <nav aria-label="Mobiel menu" className="flex-1">
+                        {NAV_ITEMS.map((item, index) => (
+                            <button
+                                key={item.target}
+                                onClick={() => scrollTo(item.target)}
+                                className={`block w-full border-b border-duck-ink/10 py-4 text-left font-display text-4xl text-duck-ink opacity-0 motion-reduce:animate-none motion-reduce:opacity-100 ${['animate-fade-in-up', 'animate-fade-in-up-delay-1', 'animate-fade-in-up-delay-2', 'animate-fade-in-up-delay-3'][index] ?? 'animate-fade-in-up-delay-3'} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink`}
+                            >
+                                {item.label}
+                            </button>
+                        ))}
+                    </nav>
+                    <div className="mt-10 grid grid-cols-2 gap-3">
+                        <a href="/login" className="grid min-h-[52px] place-items-center rounded-full border border-duck-ink text-sm font-extrabold text-duck-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink">
+                            Inloggen
+                        </a>
+                        <a href="/pilot" onClick={startPilot} className="grid min-h-[52px] place-items-center rounded-full bg-duck-ink text-sm font-extrabold text-duck-acid focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink">
+                            Plan pilot
+                        </a>
                     </div>
-                )}
-            </nav>
+                </div>
+            )}
 
             <main>
-                <section data-home-hero className="relative overflow-hidden px-5 pb-16 pt-14 md:px-10 md:pb-20 md:pt-20">
-                    <div className="relative z-10 mx-auto grid min-w-0 max-w-5xl items-center gap-10 lg:grid-cols-[minmax(0,60fr)_minmax(0,40fr)] lg:gap-6 xl:grid-cols-[minmax(0,58fr)_minmax(0,42fr)]">
-                        <Reveal className="relative z-10 min-w-0" style={{ maxWidth: 'calc(100vw - 40px)' }}>
-                            <h1
-                                aria-label="Maak digitale geletterdheid tastbaar, motiverend en aantoonbaar."
-                                className="w-full max-w-[22rem] text-balance text-[2.1rem] font-black leading-[1.06] text-lab-ink sm:max-w-[780px] sm:text-6xl lg:text-[4.45rem]"
-                            >
-                                <span className="relative inline-block"><TitleSpark />M</span>aak digitale geletterdheid tastbaar, motiverend en <span className="relative inline-block text-lab-oliveDeep">aantoonbaar<Underline /></span>.
-                            </h1>
-                            <p className="mt-7 w-full max-w-[22rem] break-words text-pretty text-base font-semibold leading-7 text-lab-mutedDeep sm:mt-8 sm:max-w-md sm:text-lg sm:leading-8 md:max-w-[640px]">
-                                De missiegedreven leeromgeving voor VO en VSO die aansluit op de nieuwste SLO-kerndoelen. Van AI-geletterdheid tot online veiligheid — leerlingen leren door te doen, docenten zien voortgang per kerndoel.
-                            </p>
-                            <p className="mt-4 w-full max-w-[22rem] text-pretty text-sm font-black leading-6 text-lab-tealDark sm:max-w-[620px] sm:text-base">
-                                Voor VO en VSO: AI-missies, SLO-voortgang en portfolio-bewijs in een veilige leeromgeving.
-                            </p>
-                            <div className="mt-8 flex w-full max-w-[340px] flex-col gap-3 sm:max-w-full sm:flex-row">
-                                <a href="/pilot" onClick={startPilot} className="group inline-flex min-h-[48px] w-full items-center justify-center gap-3 rounded-full bg-lab-gold px-6 py-3 text-sm font-black text-lab-ink shadow-lg shadow-lab-ink/10 transition-transform hover:-translate-y-0.5 sm:w-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink">
-                                    Plan schoolpilot
-                                    <ArrowRightIcon />
-                                </a>
-                                <button onClick={() => scrollTo('projecten')} className="group inline-flex min-h-[48px] w-full items-center justify-center gap-3 rounded-full border border-lab-mutedSoft bg-white/70 px-6 py-3 text-sm font-black text-lab-ink transition-transform hover:-translate-y-0.5 sm:w-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink">
-                                    Bekijk leerlingdemo
-                                    <ArrowRightIcon />
-                                </button>
-                            </div>
-                            <div className="mt-8 flex max-w-[620px] flex-wrap items-center gap-2 text-xs font-black text-lab-tealDark sm:max-w-none">
-                                {trustChips.map((label) => (
-                                    <span key={label} className="rounded-full border border-[#D7C95F] bg-white/72 px-3 py-2 shadow-sm shadow-lab-ink/5">
-                                        {label}
-                                    </span>
-                                ))}
-                            </div>
-                            <dl className="mt-7 grid max-w-[760px] gap-3 sm:grid-cols-2 xl:grid-cols-4">
-                                {heroProofItems.map((item) => (
-                                    <div key={item.label} className="rounded-2xl border border-lab-line bg-lab-paper/82 px-4 py-3 shadow-sm shadow-lab-ink/5">
-                                        <dt className="text-[11px] font-black uppercase tracking-[0.14em] text-lab-sage">{item.label}</dt>
-                                        <dd className="mt-1 text-sm font-bold leading-snug text-lab-ink">{item.value}</dd>
-                                    </div>
-                                ))}
-                            </dl>
-                        </Reveal>
-
-                        <Reveal delay={0.12} y={34} className="relative flex min-h-[340px] min-w-0 items-center sm:min-h-[460px] lg:min-h-[600px] lg:justify-end" style={{ maxWidth: 'calc(100vw - 40px)' }}>
-                            <div className="absolute -left-8 bottom-8 right-0 top-20 rounded-[42%_58%_45%_55%/50%_42%_58%_50%] bg-lab-creamWarm/70" aria-hidden="true" />
-                            <ProductHeroMockup />
-                            <Doodle className="-bottom-4 left-12 text-lab-oliveDeep" variant="dot" />
-                        </Reveal>
+                <section data-home-hero className="relative overflow-hidden px-5 pb-16 pt-32 md:px-10 md:pt-40">
+                    <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-20 hidden lg:block">
+                        {trustChips.map((chip) => (
+                            <span key={chip.label} data-chip-pop className={`absolute ${chip.pos}`}>
+                                <span className={`inline-flex items-center whitespace-nowrap rounded-full border border-duck-ink px-4 py-2 text-xs font-bold ${chip.rotate} ${chip.tone === 'acid' ? 'bg-duck-acid text-duck-ink' : chip.tone === 'ink' ? 'bg-duck-ink text-duck-acid' : 'bg-duck-bgLight text-duck-ink'}`}>
+                                    {chip.label}
+                                </span>
+                            </span>
+                        ))}
                     </div>
-                    <HeroJourneyBridge />
-                </section>
 
-                <CinematicSkillJourney />
-
-                <section id="skills" className="relative scroll-mt-24 overflow-hidden bg-lab-paper px-5 py-20 md:px-10">
-                    <Doodle className="right-4 top-8 hidden text-lab-sage/70 lg:block" variant="leaf" />
-
-                    <div className="mx-auto max-w-5xl">
-                        <div className="relative mb-10 grid gap-6 lg:grid-cols-[minmax(0,1fr)_340px] lg:items-end">
-                            <Reveal>
-                                <h2 className="text-balance text-4xl font-black leading-tight text-lab-ink md:text-5xl">Ontdek jouw favoriete skills</h2>
-                                <Squiggle color={C.coral} />
-                                <p className="mt-5 max-w-2xl text-pretty text-base font-semibold leading-7 text-lab-muted">
-                                    Elke skill krijgt een zichtbaar voorbeeld: van een AI-tool bouwen tot een game ontwerpen of veilig online werken.
-                                </p>
-                            </Reveal>
-                            <Reveal delay={0.08} y={24} className="relative rounded-[28px] border border-lab-line bg-white p-4 shadow-xl shadow-lab-ink/8 lg:p-5">
-                                <div className="flex items-center gap-4">
-                                    <img
-                                        src="/assets/storytelling/beaver-storyteller.webp"
-                                        alt=""
-                                        aria-hidden="true"
-                                        className="size-16 shrink-0 -rotate-6 object-contain drop-shadow-md lg:size-[4.5rem] lg:translate-y-2"
-                                        loading="lazy"
-                                        decoding="async"
-                                    />
-                                    <div className="min-w-0" aria-live="polite">
-                                        <p className="text-[11px] font-black uppercase tracking-wide text-lab-sage">Beveradvies</p>
-                                        <p className="mt-1 text-sm font-black leading-5 text-lab-ink">{activeSkill.coachTip}</p>
-                                        <p className="mt-3 rounded-2xl bg-lab-cream px-3 py-2 text-xs font-black leading-5 text-lab-tealDark">
-                                            Past goed bij: {activeSkill.bestFor}.
-                                        </p>
-                                    </div>
-                                </div>
-                            </Reveal>
-                        </div>
-                        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-5">
-                            {skills.map((skill, index) => (
-                                <Reveal key={skill.title} delay={index * 0.06} y={30} className={`skill-card-motion overflow-hidden rounded-[28px] bg-white shadow-lg shadow-lab-ink/8 ring-1 transition duration-300 ${activeSkillIndex === index ? 'ring-lab-coral/70 lg:-translate-y-1 lg:shadow-xl lg:shadow-lab-ink/12' : 'ring-lab-line/80'}`}>
-                                    <article
-                                        tabIndex={0}
-                                        onMouseEnter={() => setActiveSkillIndex(index)}
-                                        onFocus={() => setActiveSkillIndex(index)}
-                                        aria-label={`${skill.title}. ${skill.coachTip}`}
-                                        className="h-full outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-lab-coral"
-                                    >
-                                    <div className="relative aspect-[1.35] overflow-hidden bg-lab-cream">
-                                        <img src={skill.image} alt={skill.alt} className="h-full w-full object-cover transition-transform duration-500 hover:scale-[1.04]" loading="lazy" decoding="async" />
-                                    </div>
-                                    <div className="p-6">
-                                        <div className="mb-5 grid size-16 place-items-center rounded-full text-lab-ink" style={{ backgroundColor: skill.color }}>
-                                            {skill.icon}
-                                        </div>
-                                        <h3 className="text-lg font-black text-lab-ink">{skill.title}</h3>
-                                        <ul className="mt-4 space-y-2">
-                                            {skill.bullets.map((bullet) => (
-                                                <li key={bullet} className="flex gap-2 text-sm font-semibold text-lab-bodyDark">
-                                                    <CheckIcon />
-                                                    <span>{bullet}</span>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                        <p className="mt-6 text-sm font-black text-lab-ink">{skill.projects}</p>
-                                        <p className="mt-3 rounded-2xl bg-lab-cream px-3 py-2 text-xs font-black leading-5 text-lab-tealDark lg:hidden">
-                                            Past goed bij: {skill.bestFor}.
-                                        </p>
-                                    </div>
-                                    </article>
-                                </Reveal>
-                            ))}
-                        </div>
-                        <div className="mt-8 flex justify-center">
-                            <button onClick={() => scrollTo('projecten')} className="inline-flex min-h-[48px] items-center gap-3 rounded-full bg-lab-tealDark px-7 py-3 text-sm font-black text-white shadow-lg shadow-lab-ink/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink">
-                                Bekijk hoe leerlingen bouwen
+                    <div className="relative z-10 mx-auto max-w-5xl text-center">
+                        <p className="inline-flex items-center gap-2 rounded-full border border-duck-ink bg-duck-acid px-4 py-2 text-xs font-extrabold uppercase tracking-[0.16em] opacity-0 motion-reduce:animate-none motion-reduce:opacity-100 animate-fade-in-up">
+                            Digitale geletterdheid voor VO &amp; VSO
+                        </p>
+                        <h1
+                            aria-label="Maak digitale geletterdheid tastbaar, motiverend en aantoonbaar."
+                            className="mx-auto mt-7 max-w-[20ch] text-balance font-display text-[clamp(2.6rem,7vw,6.4rem)] font-normal leading-[1.02] tracking-[-0.01em] opacity-0 motion-reduce:animate-none motion-reduce:opacity-100 animate-fade-in-up-delay-1"
+                        >
+                            Maak digitale geletterdheid <em className="italic">tastbaar</em>, <em className="italic">motiverend</em> en{' '}
+                            <span className="relative inline-block whitespace-nowrap">
+                                <span aria-hidden="true" className="absolute inset-x-[-3%] inset-y-[8%] -rotate-1 rounded-[0.5em] bg-duck-acid" />
+                                <span className="relative">aantoonbaar</span>
+                            </span>
+                            .
+                        </h1>
+                        <p className="mx-auto mt-7 max-w-2xl text-pretty text-base font-semibold leading-7 text-duck-ink/70 sm:text-lg sm:leading-8 opacity-0 motion-reduce:animate-none motion-reduce:opacity-100 animate-fade-in-up-delay-2">
+                            De missiegedreven leeromgeving voor VO en VSO die aansluit op de nieuwste SLO-kerndoelen. Van AI-geletterdheid tot online veiligheid — leerlingen leren door te doen, docenten zien voortgang per kerndoel.
+                        </p>
+                        <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row opacity-0 motion-reduce:animate-none motion-reduce:opacity-100 animate-fade-in-up-delay-3">
+                            <a
+                                href="/pilot"
+                                onClick={startPilot}
+                                className="group inline-flex min-h-[54px] w-full items-center justify-center gap-3 rounded-full border border-duck-ink bg-duck-acid px-8 py-3.5 text-base font-extrabold text-duck-ink transition-all duration-300 hover:-translate-y-0.5 hover:bg-duck-ink hover:text-duck-acid sm:w-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
+                            >
+                                Plan schoolpilot
                                 <ArrowRightIcon />
+                            </a>
+                            <button
+                                onClick={() => scrollTo('projecten')}
+                                className="group inline-flex min-h-[54px] w-full items-center justify-center gap-3 rounded-full border border-duck-ink/20 bg-duck-bgLight px-8 py-3.5 text-base font-extrabold text-duck-ink transition-all duration-300 hover:-translate-y-0.5 hover:border-duck-ink sm:w-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
+                            >
+                                Bekijk leerlingdemo
+                                <span className="transition-transform duration-300 group-hover:translate-y-0.5"><ArrowDownIcon /></span>
                             </button>
                         </div>
+                        <p className="mx-auto mt-6 max-w-xl text-pretty text-sm font-bold leading-6 text-duck-ink/60 opacity-0 motion-reduce:animate-none motion-reduce:opacity-100 animate-fade-in-up-delay-3">
+                            Voor VO en VSO: AI-missies, SLO-voortgang en portfolio-bewijs in een veilige leeromgeving.
+                        </p>
+
+                        <ul className="mx-auto mt-8 flex max-w-2xl flex-wrap items-center justify-center gap-2 lg:sr-only">
+                            {trustChips.map((chip) => (
+                                <li key={chip.label} className={`rounded-full border border-duck-ink px-3.5 py-1.5 text-xs font-bold ${chip.tone === 'acid' ? 'bg-duck-acid text-duck-ink' : chip.tone === 'ink' ? 'bg-duck-ink text-duck-acid' : 'bg-duck-bgLight text-duck-ink'}`}>
+                                    {chip.label}
+                                </li>
+                            ))}
+                        </ul>
+
+                        <div className="pointer-events-none absolute -top-12 right-[6%] hidden rotate-6 md:block lg:-top-16 lg:right-[4%]" aria-hidden="true">
+                            <SpriteMascot className="size-16 lg:size-20 animate-duck-float motion-reduce:animate-none" />
+                        </div>
+                    </div>
+
+                    <div className="relative z-10 mx-auto mt-14 max-w-5xl opacity-0 motion-reduce:animate-none motion-reduce:opacity-100 animate-fade-in-up-delay-3 md:mt-16">
+                        <div data-hero-mockup className="relative mx-auto w-full max-w-[980px] lg:-rotate-1">
+                            <BrowserFrame url="dgskills.app/missie">
+                                <img
+                                    src="/screenshots/prompt-master.webp"
+                                    alt="Leerling werkt aan de DGSkills-missie Prompt Perfectionist en typt een AI-prompt"
+                                    className="block w-full object-cover object-top"
+                                    width={960}
+                                    height={600}
+                                    loading="eager"
+                                    decoding="async"
+                                    fetchPriority="high"
+                                />
+                            </BrowserFrame>
+                        </div>
+                        <dl className="mx-auto mt-10 grid max-w-4xl grid-cols-2 gap-x-6 gap-y-6 border-t border-duck-ink/10 pt-7 text-left lg:grid-cols-4">
+                            {heroProofItems.map((item) => (
+                                <div key={item.label}>
+                                    <dt className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-duck-ink/50">{item.label}</dt>
+                                    <dd className="mt-1.5 text-sm font-bold leading-snug">{item.value}</dd>
+                                </div>
+                            ))}
+                        </dl>
                     </div>
                 </section>
 
-                <section id="projecten" className="relative scroll-mt-24 px-5 py-20 md:px-10">
-                    <div className="absolute inset-0 -z-10 bg-lab-creamWarm" aria-hidden="true" />
-                    <WaveTop color={C.cream} />
-                    <WaveBottom color={C.cream} />
-                    <div className="relative z-10 mx-auto max-w-5xl">
-                        <div className="mb-8 flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
+                <SkillMarquee reduceMotion={reduceMotion} />
+
+                <JourneySection />
+
+                <SkillsSection scrollTo={scrollTo} />
+
+                <section id="projecten" className="relative scroll-mt-24 bg-duck-bg px-5 py-20 md:px-10 md:py-28">
+                    <div className="relative z-10 mx-auto max-w-6xl">
+                        <div className="mb-10 flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
                             <Reveal>
-                                <h2 className="max-w-xl text-balance text-4xl font-black leading-tight text-lab-ink md:text-5xl">Laat AI een game mee bouwen</h2>
-                                <Squiggle color={C.ink} />
+                                <SectionLabel>Game demo</SectionLabel>
+                                <h2 className="mt-4 max-w-2xl text-balance font-display text-[clamp(2.1rem,4.5vw,4rem)] leading-[1.05]">Laat AI een game mee bouwen</h2>
                             </Reveal>
-                            <Reveal delay={0.1} className="max-w-lg text-pretty text-base font-semibold leading-7 text-lab-muted">
+                            <Reveal delay={0.1} className="max-w-md text-pretty text-base font-semibold leading-7 text-duck-ink/65">
                                 Leerlingen schrijven zelf een prompt en zien meteen hoe hun mini-game verandert. De demo stopt na vijf prompts.
                             </Reveal>
                         </div>
@@ -586,44 +562,209 @@ export const ScholenLanding: React.FC = () => {
 
                 <PortfolioStorySection startPilot={startPilot} />
 
-                <BuyerReadySchoolSections startPilot={startPilot} />
-
-                <section className="relative bg-lab-tealDark px-5 pb-12 pt-20 text-white md:px-10 md:pt-24">
-                    <WaveTop color={C.cream} dark />
-                    <Reveal className="footer-cta-motion relative z-10 mx-auto flex max-w-5xl flex-col gap-8 md:flex-row md:items-center md:justify-between">
-                        <div className="hidden h-40 w-32 flex-none items-center justify-center md:flex" aria-hidden="true">
-                            <img src="/assets/storytelling/beaver-storyteller.webp" alt="" className="max-h-36 w-auto object-contain opacity-90 drop-shadow-2xl" loading="lazy" decoding="async" />
-                        </div>
-                        <div className="relative">
+                <section id="docent-les" className="relative scroll-mt-24 bg-duck-bgLight px-5 py-20 md:px-10 md:py-28">
+                    <div className="relative z-10 mx-auto max-w-6xl">
+                        <Reveal className="grid gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
                             <div>
-                                <h2 className="text-balance text-4xl font-black leading-tight md:text-5xl">Klaar om iets <span className="text-lab-gold">tofs</span> te maken?</h2>
-                                <p className="mt-3 text-sm font-semibold text-white/78">Plan een schoolpilot en ontdek welke route past bij jouw leerlingen.</p>
+                                <SectionLabel>Voor docenten</SectionLabel>
+                                <h2 className="mt-4 text-balance font-display text-[clamp(2.1rem,4.5vw,4rem)] leading-[1.05]">Zo werkt een DGSkills-les</h2>
+                                <p className="mt-5 max-w-xl text-pretty text-base font-semibold leading-7 text-duck-ink/65">
+                                    Een les hoeft geen losse uitleg over AI of mediawijsheid te zijn. DGSkills maakt er een maakmoment van, met zichtbare voortgang voor leerling en docent.
+                                </p>
+                                <ol className="mt-9">
+                                    {lessonSteps.map((item) => (
+                                        <li key={item.step} className="grid grid-cols-[4.5rem_1fr] items-start gap-4 border-t border-duck-ink/10 py-5 last:border-b">
+                                            <span className="font-display text-4xl leading-none text-duck-ink/25" aria-hidden="true">{item.step}</span>
+                                            <div>
+                                                <h3 className="text-lg font-extrabold leading-tight">{item.title}</h3>
+                                                <p className="mt-1.5 text-sm font-semibold leading-6 text-duck-ink/65">{item.copy}</p>
+                                            </div>
+                                        </li>
+                                    ))}
+                                </ol>
                             </div>
-                        </div>
-                        <a href="/pilot" onClick={startPilot} className="inline-flex min-h-[52px] shrink-0 items-center justify-center gap-3 whitespace-nowrap rounded-full bg-lab-gold px-8 py-4 text-sm font-black text-lab-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-gold focus-visible:ring-offset-lab-tealDark">
-                            Plan mijn pilot
-                            <ArrowRightIcon />
-                        </a>
-                    </Reveal>
-                    <footer className="relative z-10 mx-auto mt-12 flex max-w-5xl flex-col gap-6 border-t border-white/10 pt-7 text-sm font-semibold text-white/75">
-                        <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-                            <a href="/" className="inline-flex min-h-[44px] items-center rounded px-1 py-2 font-black text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-gold focus-visible:ring-offset-lab-tealDark">dgskills.app</a>
-                            <div className="flex flex-wrap gap-6">
-                                <button onClick={() => scrollTo('journey')} className="rounded min-h-[44px] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-gold focus-visible:ring-offset-lab-tealDark">Hoe het werkt</button>
-                                <a href="/ict/privacy/cookies" className="inline-flex min-h-[44px] items-center rounded hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-gold focus-visible:ring-offset-lab-tealDark">Cookies</a>
-                                <a href="/ict/privacy/policy" className="inline-flex min-h-[44px] items-center rounded hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-gold focus-visible:ring-offset-lab-tealDark">Privacy</a>
-                                <a href="/ict/privacy/ai" className="inline-flex min-h-[44px] items-center rounded hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-gold focus-visible:ring-offset-lab-tealDark">AI-transparantie</a>
-                                <a href="mailto:info@dgskills.app" className="inline-flex min-h-[44px] items-center rounded hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-gold focus-visible:ring-offset-lab-tealDark">Contact</a>
-                            </div>
-                            <p>Zin om samen te werken?</p>
-                        </div>
-                        <p className="text-sm text-white/70">Eenmanszaak Yorin Vonder · KvK 81819889 · info@dgskills.app</p>
-                    </footer>
+                            <ProductProofFrame
+                                label="Leerlingmissie"
+                                title="Prompt Perfectionist"
+                                image="/screenshots/prompt-master.webp"
+                                alt="DGSkills Prompt Perfectionist missie met promptinvoer en feedback"
+                                caption="Leerlingen maken, testen en leggen uit wat ze aanpassen."
+                            />
+                        </Reveal>
+                    </div>
                 </section>
+
+                <section id="voor-schoolleiding" className="relative scroll-mt-24 bg-duck-bg px-5 py-20 md:px-10 md:py-28">
+                    <div className="relative z-10 mx-auto max-w-6xl space-y-16">
+                        <Reveal y={30} className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+                            <div>
+                                <SectionLabel>Voor schoolleiding</SectionLabel>
+                                <h2 className="mt-4 text-balance font-display text-[clamp(2.1rem,4.5vw,4rem)] leading-[1.05]">Waarom schoolleiders kiezen voor DGSkills</h2>
+                                <p className="mt-5 text-pretty text-base font-semibold leading-7 text-duck-ink/65">
+                                    De pilot laat niet alleen zien dat leerlingen gemotiveerd zijn, maar ook hoe digitale geletterdheid structureel in de school kan landen.
+                                </p>
+                                <a
+                                    href="/pilot"
+                                    onClick={startPilot}
+                                    className="mt-8 inline-flex min-h-[50px] items-center gap-3 rounded-full border border-duck-ink bg-duck-acid px-7 py-3 text-sm font-extrabold text-duck-ink transition-all duration-300 hover:-translate-y-0.5 hover:bg-duck-ink hover:text-duck-acid focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
+                                >
+                                    Plan pilotgesprek
+                                    <ArrowRightIcon />
+                                </a>
+                            </div>
+                            <div className="grid gap-4 sm:grid-cols-2">
+                                {leaderReasons.map((reason, index) => (
+                                    <article key={reason.title} className={`rounded-[1.5rem] p-6 shadow-[2px_4px_24px_rgba(199,197,188,0.30)] ${index % 3 === 0 ? 'bg-duck-acid' : 'bg-white'}`}>
+                                        <p className="font-display text-3xl leading-none text-duck-ink/30" aria-hidden="true">{String(index + 1).padStart(2, '0')}</p>
+                                        <h3 className="mt-4 text-xl font-extrabold leading-tight">{reason.title}</h3>
+                                        <p className="mt-2.5 text-sm font-semibold leading-6 text-duck-ink/65">{reason.copy}</p>
+                                    </article>
+                                ))}
+                            </div>
+                        </Reveal>
+
+                        <Reveal y={30} className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-stretch">
+                            <div className="rounded-[1.5rem] bg-white p-6 shadow-[2px_4px_24px_rgba(199,197,188,0.30)] md:p-8">
+                                <SectionLabel>SLO &amp; curriculum proof</SectionLabel>
+                                <h2 className="mt-4 text-balance font-display text-3xl leading-[1.08] md:text-4xl">Van losse activiteit naar aantoonbare leerlijn</h2>
+                                <div className="mt-7">
+                                    {sloRows.map((row) => (
+                                        <div key={row.domain} className="grid gap-2 border-t border-duck-ink/10 py-4 last:border-b md:grid-cols-[0.8fr_1fr_1fr] md:items-center md:gap-4">
+                                            <p className="text-sm font-extrabold">{row.domain}</p>
+                                            <p className="text-sm font-semibold leading-6 text-duck-ink/65">{row.missions}</p>
+                                            <p className="text-xs font-bold leading-5 text-duck-ink/80">{row.proof}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                            <div className="rounded-[1.5rem] bg-duck-ink p-6 text-white md:p-8">
+                                <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-duck-acid">Voor ICT en privacy</p>
+                                <h2 className="mt-4 text-balance font-display text-3xl leading-[1.08] md:text-4xl">Veilig te beoordelen door ICT</h2>
+                                <p className="mt-4 text-pretty text-sm font-semibold leading-7 text-white/70">
+                                    DGSkills verkoopt geen zwarte doos. De pilot geeft scholen tijd om privacy, AI en beheer concreet te toetsen.
+                                </p>
+                                <div className="mt-6">
+                                    {ictTrustItems.map((item) => (
+                                        <article key={item.title} className="border-t border-white/10 py-4 last:pb-0">
+                                            <h3 className="text-base font-extrabold text-white">{item.title}</h3>
+                                            <p className="mt-1 text-sm font-semibold leading-6 text-white/65">{item.copy}</p>
+                                        </article>
+                                    ))}
+                                </div>
+                            </div>
+                        </Reveal>
+                    </div>
+                </section>
+
+                <section id="productbewijs" className="relative scroll-mt-24 bg-duck-bgLight px-5 py-20 md:px-10 md:py-28">
+                    <div className="relative z-10 mx-auto max-w-6xl">
+                        <Reveal y={30}>
+                            <div className="mb-10 flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
+                                <div>
+                                    <SectionLabel>Productbewijs</SectionLabel>
+                                    <h2 className="mt-4 text-balance font-display text-[clamp(2.1rem,4.5vw,4rem)] leading-[1.05]">Screenshots die de aankoopvraag beantwoorden</h2>
+                                </div>
+                                <p className="max-w-md text-pretty text-base font-semibold leading-7 text-duck-ink/65">
+                                    Elk scherm laat een ander beslispunt zien: motivatie voor leerlingen, grip voor docenten en vertrouwen voor schoolteams.
+                                </p>
+                            </div>
+                            <div className="grid gap-5 md:grid-cols-2">
+                                {screenshotProofPanels.map((panel, index) => (
+                                    <ProductProofFrame
+                                        key={panel.label}
+                                        label={panel.label}
+                                        title={panel.title}
+                                        image={panel.image}
+                                        alt={panel.alt}
+                                        caption={panel.copy}
+                                        featured={index === 1}
+                                    />
+                                ))}
+                            </div>
+                        </Reveal>
+                    </div>
+                </section>
+
+                <section id="schoolpilot" className="relative scroll-mt-24 bg-duck-bg px-5 py-20 md:px-10 md:py-28">
+                    <div className="relative z-10 mx-auto max-w-6xl">
+                        <Reveal y={30} className="grid gap-10 rounded-[2rem] bg-duck-acid px-6 py-10 md:px-10 md:py-14 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
+                            <div>
+                                <p className="inline-flex rounded-full border border-duck-ink px-4 py-1.5 text-xs font-extrabold uppercase tracking-[0.16em]">Schoolpilot</p>
+                                <h2 className="mt-5 text-balance font-display text-[clamp(2.1rem,4.5vw,4rem)] leading-[1.05]">Wat krijg je in de schoolpilot?</h2>
+                                <p className="mt-5 text-pretty text-base font-semibold leading-7 text-duck-ink/70">
+                                    Gebouwd vanuit VO/VSO-praktijk en doorlopend getest met docenten. De pilot is klein genoeg om te starten, maar concreet genoeg om er een schoolbesluit op te baseren.
+                                </p>
+                            </div>
+                            <div>
+                                <ul className="grid gap-x-6 sm:grid-cols-2">
+                                    {pilotItems.map((item) => (
+                                        <li key={item} className="flex gap-3 border-b border-duck-ink/10 py-3.5 text-sm font-extrabold leading-6">
+                                            <CheckIcon />
+                                            <span>{item}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                                <a
+                                    href="/pilot"
+                                    onClick={startPilot}
+                                    className="mt-8 inline-flex min-h-[52px] items-center gap-3 rounded-full bg-duck-ink px-8 py-3.5 text-sm font-extrabold text-duck-acid transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2 focus-visible:ring-offset-duck-acid"
+                                >
+                                    Plan mijn schoolpilot
+                                    <ArrowRightIcon />
+                                </a>
+                            </div>
+                        </Reveal>
+                    </div>
+                </section>
+
+                <FaqSection />
+
+                <FooterCta startPilot={startPilot} scrollTo={scrollTo} />
             </main>
         </div>
     );
 };
+
+function useHeaderChrome(menuOpen: boolean) {
+    const [hidden, setHidden] = useState(false);
+    const [scrolled, setScrolled] = useState(false);
+    const menuOpenRef = useRef(menuOpen);
+
+    useEffect(() => {
+        menuOpenRef.current = menuOpen;
+        if (menuOpen) setHidden(false);
+    }, [menuOpen]);
+
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+        let lastY = window.scrollY;
+        let raf = 0;
+        const onScroll = () => {
+            if (raf) return;
+            raf = window.requestAnimationFrame(() => {
+                raf = 0;
+                const y = window.scrollY;
+                setScrolled(y > 24);
+                if (menuOpenRef.current) {
+                    setHidden(false);
+                } else if (y > lastY + 6 && y > 160) {
+                    setHidden(true);
+                } else if (y < lastY - 6) {
+                    setHidden(false);
+                }
+                lastY = y;
+            });
+        };
+        onScroll();
+        window.addEventListener('scroll', onScroll, { passive: true });
+        return () => {
+            window.removeEventListener('scroll', onScroll);
+            if (raf) window.cancelAnimationFrame(raf);
+        };
+    }, []);
+
+    return { hidden, scrolled };
+}
 
 function useHomepageGsapEffects(reduceMotion: boolean) {
     useEffect(() => {
@@ -631,6 +772,7 @@ function useHomepageGsapEffects(reduceMotion: boolean) {
 
         let cancelled = false;
         let ctx: { revert: () => void } | undefined;
+        let matched: { revert: () => void } | undefined;
 
         void Promise.all([import('gsap'), import('gsap/ScrollTrigger')])
             .then(([gsapModule, scrollTriggerModule]) => {
@@ -640,84 +782,49 @@ function useHomepageGsapEffects(reduceMotion: boolean) {
                 gsap.registerPlugin(ScrollTrigger);
 
                 ctx = gsap.context(() => {
-                    gsap.to('[data-hero-mockup]', {
-                        yPercent: -7,
-                        rotation: -1.2,
-                        ease: 'none',
-                        scrollTrigger: {
-                            trigger: '[data-home-hero]',
-                            start: 'top top',
-                            end: 'bottom top',
-                            scrub: 0.8,
-                        },
+                    gsap.fromTo(
+                        '[data-chip-pop]',
+                        { autoAlpha: 0, scale: 0.6, y: 16 },
+                        { autoAlpha: 1, scale: 1, y: 0, duration: 0.7, stagger: 0.09, delay: 0.5, ease: 'back.out(2.2)' }
+                    );
+
+                    const mm = gsap.matchMedia();
+                    matched = mm;
+                    mm.add('(min-width: 1024px)', () => {
+                        gsap.to('[data-hero-mockup]', {
+                            yPercent: -6,
+                            rotation: -2.4,
+                            ease: 'none',
+                            scrollTrigger: {
+                                trigger: '[data-home-hero]',
+                                start: 'top top',
+                                end: 'bottom top',
+                                scrub: 0.8,
+                            },
+                        });
+
+                        const track = document.querySelector<HTMLElement>('[data-skills-track]');
+                        const stage = document.querySelector<HTMLElement>('[data-skills-stage]');
+                        if (track && stage) {
+                            const getAmount = () => Math.max(0, track.scrollWidth - window.innerWidth);
+                            gsap.to(track, {
+                                x: () => -getAmount(),
+                                ease: 'none',
+                                scrollTrigger: {
+                                    trigger: stage,
+                                    start: 'top top',
+                                    end: () => `+=${getAmount()}`,
+                                    pin: true,
+                                    scrub: 0.6,
+                                    anticipatePin: 1,
+                                    invalidateOnRefresh: true,
+                                },
+                            });
+                        }
                     });
-
-                    gsap.fromTo(
-                        '.skill-card-motion',
-                        {
-                            autoAlpha: 0,
-                            y: 92,
-                            scale: 0.9,
-                            rotation: (index: number) => [-5, 4, -3, 5, -4][index] ?? 0,
-                        },
-                        {
-                            autoAlpha: 1,
-                            y: 0,
-                            scale: 1,
-                            rotation: 0,
-                            duration: 0.85,
-                            stagger: 0.08,
-                            ease: 'back.out(1.35)',
-                            scrollTrigger: {
-                                trigger: '#skills',
-                                start: 'top 72%',
-                            },
-                        }
-                    );
-
-                    gsap.fromTo(
-                        '.project-card-motion',
-                        {
-                            autoAlpha: 0,
-                            xPercent: (index: number) => [-36, -14, 14, 36][index] ?? 0,
-                            y: 70,
-                            scale: 0.9,
-                            rotation: (index: number) => [-6, 3, -2, 6][index] ?? 0,
-                        },
-                        {
-                            autoAlpha: 1,
-                            xPercent: 0,
-                            y: 0,
-                            scale: 1,
-                            rotation: 0,
-                            duration: 0.9,
-                            stagger: 0.08,
-                            ease: 'power3.out',
-                            scrollTrigger: {
-                                trigger: '#projecten',
-                                start: 'top 68%',
-                            },
-                        }
-                    );
-
-                    gsap.fromTo(
-                        '.footer-cta-motion',
-                        { y: 42, scale: 0.98 },
-                        {
-                            y: 0,
-                            scale: 1,
-                            duration: 0.9,
-                            ease: 'power3.out',
-                            scrollTrigger: {
-                                trigger: '.footer-cta-motion',
-                                start: 'top 78%',
-                            },
-                        }
-                    );
-
                 }, document.body);
 
-                window.setTimeout(() => ScrollTrigger.refresh(), 150);
+                window.setTimeout(() => ScrollTrigger.refresh(), 200);
             })
             .catch(() => {
                 // Motion enhancement should never block the landing page.
@@ -725,28 +832,55 @@ function useHomepageGsapEffects(reduceMotion: boolean) {
 
         return () => {
             cancelled = true;
+            matched?.revert();
             ctx?.revert();
         };
     }, [reduceMotion]);
 }
 
-function CinematicSkillJourney() {
+function SectionLabel({ children }: { children: React.ReactNode }) {
+    return (
+        <p className="inline-flex items-center gap-2 rounded-full border border-duck-ink bg-duck-bgLight px-4 py-1.5 text-xs font-extrabold uppercase tracking-[0.16em] text-duck-ink">
+            <span className="size-1.5 rounded-full bg-duck-ink" aria-hidden="true" />
+            {children}
+        </p>
+    );
+}
+
+function SkillMarquee({ reduceMotion }: { reduceMotion: boolean }) {
+    const row = (
+        <div className="flex w-max shrink-0 items-center">
+            {MARQUEE_WORDS.map((word) => (
+                <span key={word} className="flex items-center gap-8 px-8 text-sm font-extrabold uppercase tracking-[0.22em] text-duck-ink">
+                    {word}
+                    <span className="text-base" aria-hidden="true">✦</span>
+                </span>
+            ))}
+        </div>
+    );
+
+    return (
+        <div className="overflow-hidden border-y border-duck-ink/10 bg-duck-acid py-4" aria-hidden="true">
+            <div className={`flex w-max ${reduceMotion ? '' : 'animate-duck-marquee'}`}>
+                {row}
+                {row}
+            </div>
+        </div>
+    );
+}
+
+function JourneySection() {
     const [active, setActive] = useState(0);
     const chapterRefs = useRef<Array<HTMLLIElement | null>>([]);
     const activeRef = useRef(0);
     const manualActiveUntilRef = useRef(0);
-    const progressScale = Math.max(0.12, (active + 1) / cinematicChapters.length);
 
     const setActiveChapter = (index: number, fromUser = false) => {
-        const next = Math.max(0, Math.min(cinematicChapters.length - 1, index));
+        const next = Math.max(0, Math.min(journeyChapters.length - 1, index));
         if (fromUser) manualActiveUntilRef.current = Date.now() + 1600;
         if (activeRef.current === next) return;
         activeRef.current = next;
         setActive(next);
-    };
-
-    const handleUserSelectChapter = (index: number) => {
-        setActiveChapter(index, true);
     };
 
     useEffect(() => {
@@ -771,507 +905,180 @@ function CinematicSkillJourney() {
     }, []);
 
     return (
-        <section
-            id="journey"
-            className="relative scroll-mt-24 overflow-x-clip bg-lab-paper px-5 py-20 md:px-10 lg:py-24"
-        >
-            <div className="absolute inset-0 bg-[linear-gradient(180deg,#FFFDF7_0%,#FCF6EA_100%)]" aria-hidden="true" />
-            <div className="absolute inset-x-0 top-0 h-px bg-lab-line" aria-hidden="true" />
-            <div className="absolute inset-x-0 bottom-0 h-px bg-lab-line" aria-hidden="true" />
-
-            <div className="relative z-10 mx-auto grid max-w-6xl gap-10 lg:grid-cols-[minmax(0,470px)_minmax(0,1fr)] lg:items-center xl:gap-14">
-                <div className="min-w-0">
+        <section id="journey" className="relative scroll-mt-24 overflow-x-clip bg-duck-bgLight px-5 py-20 md:px-10 md:py-28">
+            <div className="relative z-10 mx-auto grid max-w-6xl gap-12 lg:grid-cols-[0.85fr_1.15fr]">
+                <div className="min-w-0 lg:sticky lg:top-32 lg:self-start">
                     <Reveal>
-                        <div className="relative max-w-[470px]">
-                            <h2 className="text-balance text-4xl font-black leading-tight text-lab-ink md:text-5xl lg:text-[3.35rem]">
-                                Jouw skill journey
-                            </h2>
-                            <div className="mt-3">
-                                <Squiggle color={C.ink} />
-                            </div>
-                            <p className="mt-5 text-pretty text-base font-semibold leading-7 text-lab-muted md:text-lg">
-                                Van startniveau naar zichtbaar portfolio. Leerlingen zien steeds waar ze staan, wat de volgende stap is en welk bewijs ze opbouwen.
-                            </p>
-                            <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-lab-line bg-white px-4 py-2 text-sm font-black text-lab-teal shadow-sm shadow-lab-ink/5">
-                                <span className="size-2 rounded-full bg-lab-sage" aria-hidden="true" />
-                                Heldere route, zichtbare groei
-                            </div>
-                        </div>
+                        <SectionLabel>Hoe het werkt</SectionLabel>
+                        <h2 className="mt-4 text-balance font-display text-[clamp(2.1rem,4.5vw,4rem)] leading-[1.05]">
+                            Jouw <em className="italic">skill journey</em>
+                        </h2>
+                        <p className="mt-5 max-w-md text-pretty text-base font-semibold leading-7 text-duck-ink/65 md:text-lg">
+                            Van startniveau naar zichtbaar portfolio. Leerlingen zien steeds waar ze staan, wat de volgende stap is en welk bewijs ze opbouwen.
+                        </p>
+                        <p className="mt-6 inline-flex items-center gap-2 rounded-full bg-duck-acid px-4 py-2 text-sm font-extrabold">
+                            <span className="size-2 rounded-full bg-duck-ink" aria-hidden="true" />
+                            Heldere route, zichtbare groei
+                        </p>
                     </Reveal>
-
-                    <ol className="relative mt-8 space-y-3 md:space-y-4">
-                        <span className="absolute bottom-7 left-6 top-7 w-0.5 rounded-full bg-lab-line" aria-hidden="true" />
-                        <span
-                            className="absolute bottom-7 left-6 top-7 w-0.5 origin-top rounded-full bg-lab-coral transition-transform duration-500"
-                            style={{ transform: `scaleY(${progressScale})` }}
-                            aria-hidden="true"
-                        />
-                        {cinematicChapters.map((chapter, index) => {
-                            const isActive = active === index;
-                            const iconIsLight = chapter.accent === C.ink;
-                            const chapterOffset = index - active;
-                            const isUpcomingPreview = chapterOffset === 1;
-                            return (
-                                <li
-                                    key={chapter.title}
-                                    ref={(node) => {
-                                        chapterRefs.current[index] = node;
-                                    }}
-                                    data-chapter-index={index}
-                                    className="relative"
-                                >
-                                    <button
-                                        type="button"
-                                        aria-current={isActive ? 'step' : undefined}
-                                        onClick={() => handleUserSelectChapter(index)}
-                                        onFocus={() => handleUserSelectChapter(index)}
-                                        className={`group grid w-full grid-cols-[3rem_1fr_1.75rem] items-center gap-4 rounded-[22px] border p-3 text-left transition-[background-color,border-color,box-shadow,transform] duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lab-gold focus-visible:ring-offset-2 focus-visible:ring-offset-lab-paper md:p-4 ${isActive ? 'border-lab-gold bg-white shadow-xl shadow-lab-ink/10' : isUpcomingPreview ? 'border-lab-line bg-white/72 shadow-sm shadow-lab-ink/5 hover:-translate-y-0.5 hover:bg-white' : 'border-lab-line/75 bg-white/48 hover:-translate-y-0.5 hover:bg-white/82'}`}
-                                    >
-                                        <div
-                                            className="relative z-10 grid size-12 place-items-center rounded-full border-4 border-lab-paper shadow-md shadow-lab-ink/10 transition-transform duration-300"
-                                            style={{ backgroundColor: isActive ? chapter.accent : '#FFFDF7', color: isActive && iconIsLight ? '#FFFFFF' : '#08283B', transform: isActive ? 'scale(1.05)' : 'scale(1)' }}
-                                        >
-                                            {chapter.icon}
-                                        </div>
-                                        <div className="min-w-0">
-                                            <div className="flex flex-wrap items-center gap-2">
-                                                <span className="text-xs font-black text-lab-oliveDeep">{chapter.step}</span>
-                                                <span className="rounded-full bg-lab-cream px-3 py-1 text-[11px] font-black uppercase text-lab-sage">{chapter.eyebrow}</span>
-                                            </div>
-                                            <h3 className={`mt-2 font-black leading-tight text-lab-ink ${isActive ? 'text-2xl' : 'text-xl'}`}>{chapter.title}</h3>
-                                            <p className="mt-1 max-w-[420px] text-pretty text-sm font-semibold leading-6 text-lab-muted md:text-base md:leading-7">{chapter.copy}</p>
-                                            {isActive && (
-                                                <p className="mt-3 rounded-xl bg-lab-cream px-3 py-2 text-sm font-black leading-5 text-lab-teal">
-                                                    {chapter.routeCoachTip}
-                                                </p>
-                                            )}
-                                        </div>
-                                        <span className={`grid size-9 place-items-center rounded-full transition-colors duration-300 ${isActive ? 'bg-lab-ink text-white' : 'bg-lab-paper text-lab-ink group-hover:bg-lab-gold'}`} aria-hidden="true">
-                                            <ArrowRightIcon />
-                                        </span>
-                                    </button>
-                                </li>
-                            );
-                        })}
-                    </ol>
                 </div>
 
-                <div className="min-w-0 lg:flex lg:items-center lg:justify-center">
-                    <JourneyDashboardPreview active={active} onSelect={handleUserSelectChapter} />
+                <ol className="min-w-0">
+                    {journeyChapters.map((chapter, index) => {
+                        const isActive = active === index;
+                        return (
+                            <li
+                                key={chapter.title}
+                                ref={(node) => {
+                                    chapterRefs.current[index] = node;
+                                }}
+                                data-chapter-index={index}
+                                className="border-t border-duck-ink/10 last:border-b"
+                            >
+                                <button
+                                    type="button"
+                                    aria-current={isActive ? 'step' : undefined}
+                                    aria-expanded={isActive}
+                                    onClick={() => setActiveChapter(index, true)}
+                                    onFocus={() => setActiveChapter(index, true)}
+                                    className="grid w-full grid-cols-[5rem_1fr_2.5rem] items-baseline gap-4 py-6 text-left transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2 focus-visible:ring-offset-duck-bgLight md:grid-cols-[6.5rem_1fr_2.75rem]"
+                                >
+                                    <span className={`font-display text-5xl leading-none transition-colors duration-300 md:text-6xl ${isActive ? 'text-duck-ink' : 'text-duck-ink/20'}`} aria-hidden="true">
+                                        {chapter.step}
+                                    </span>
+                                    <span className="min-w-0">
+                                        <span className="flex flex-wrap items-center gap-2.5">
+                                            <span className={`font-display text-2xl leading-tight md:text-3xl ${isActive ? 'text-duck-ink' : 'text-duck-ink/70'}`}>{chapter.title}</span>
+                                            <span className={`rounded-full px-3 py-1 text-[10px] font-extrabold uppercase tracking-[0.14em] transition-colors duration-300 ${isActive ? 'bg-duck-acid text-duck-ink' : 'bg-duck-ink/5 text-duck-ink/50'}`}>
+                                                {chapter.eyebrow}
+                                            </span>
+                                        </span>
+                                        <span className="mt-2 block max-w-xl text-pretty text-sm font-semibold leading-6 text-duck-ink/65 md:text-base md:leading-7">{chapter.copy}</span>
+                                    </span>
+                                    <span className={`grid size-10 place-items-center justify-self-end rounded-full border transition-all duration-300 ${isActive ? 'rotate-45 border-duck-ink bg-duck-ink text-duck-acid' : 'border-duck-ink/20 text-duck-ink'}`} aria-hidden="true">
+                                        <PlusIcon />
+                                    </span>
+                                </button>
+                                <div className={`grid transition-[grid-template-rows,opacity] duration-500 ease-out ${isActive ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
+                                    <div className="overflow-hidden">
+                                        <div className="grid gap-4 pb-7 md:grid-cols-[1.25fr_0.75fr] md:items-end">
+                                            <BrowserFrame url={`dgskills.app/${chapter.title.toLowerCase()}`}>
+                                                <img
+                                                    src={chapter.image}
+                                                    alt={chapter.alt}
+                                                    className="aspect-[16/10] w-full object-cover object-top"
+                                                    loading="lazy"
+                                                    decoding="async"
+                                                />
+                                            </BrowserFrame>
+                                            <div>
+                                                <div className="rounded-[1.25rem] bg-duck-ink p-5 text-white">
+                                                    <p className="font-display text-4xl text-duck-acid">{chapter.stat}</p>
+                                                    <p className="mt-1 text-xs font-extrabold uppercase tracking-[0.14em] text-white/60">{chapter.statLabel}</p>
+                                                </div>
+                                                <p className="mt-4 rounded-[1.25rem] bg-duck-acid px-5 py-4 text-sm font-extrabold leading-5">
+                                                    {chapter.routeCoachTip}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        );
+                    })}
+                </ol>
+            </div>
+        </section>
+    );
+}
+
+function SkillsSection({ scrollTo }: { scrollTo: (target: string) => void }) {
+    return (
+        <section id="skills" className="relative scroll-mt-24 overflow-hidden bg-duck-bg">
+            <div data-skills-stage className="py-16 md:py-24 lg:flex lg:h-svh lg:min-h-[640px] lg:flex-col lg:justify-center lg:py-0">
+                <div className="mx-auto w-full max-w-6xl px-5 md:px-10">
+                    <Reveal className="flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
+                        <div>
+                            <SectionLabel>Skills</SectionLabel>
+                            <h2 className="mt-4 max-w-2xl text-balance font-display text-[clamp(2.1rem,4.5vw,4rem)] leading-[1.05]">Ontdek jouw favoriete skills</h2>
+                        </div>
+                        <p className="max-w-md text-pretty text-base font-semibold leading-7 text-duck-ink/65">
+                            Elke skill krijgt een zichtbaar voorbeeld: van een AI-tool bouwen tot een game ontwerpen of veilig online werken. <span className="hidden lg:inline">Scroll verder om ze allemaal te zien.</span>
+                        </p>
+                    </Reveal>
+                </div>
+
+                <div className="mt-10 overflow-x-auto pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:mt-12 lg:overflow-visible lg:pb-0">
+                    <div data-skills-track className="flex w-max snap-x snap-mandatory gap-5 px-5 md:px-10 lg:snap-none lg:will-change-transform">
+                        {skills.map((skill) => (
+                            <article
+                                key={skill.title}
+                                className={`relative flex h-[500px] w-[80vw] max-w-[400px] shrink-0 snap-center flex-col overflow-hidden rounded-[1.6rem] p-7 shadow-[2px_4px_24px_rgba(199,197,188,0.30)] sm:h-[540px] ${skill.tone === 'acid' ? 'bg-duck-acid' : 'bg-white'}`}
+                                aria-label={`${skill.title}. ${skill.coachTip}`}
+                            >
+                                <span className="pointer-events-none absolute -right-2 -top-8 select-none font-display text-[11rem] leading-none text-duck-ink/10" aria-hidden="true">
+                                    {skill.letter}
+                                </span>
+                                <div className="relative flex items-center justify-between gap-3">
+                                    <span className={`grid size-12 place-items-center rounded-full border border-duck-ink ${skill.tone === 'acid' ? 'bg-white/60' : 'bg-duck-acid'}`} aria-hidden="true">
+                                        {skill.icon}
+                                    </span>
+                                    <span className="rounded-full border border-duck-ink px-3.5 py-1.5 text-xs font-extrabold">{skill.projects}</span>
+                                </div>
+                                <SkillArt variant={skill.art} tone={skill.tone} className="mx-auto my-5 h-36 sm:h-40" />
+                                <h3 className="font-display text-3xl leading-tight">{skill.title}</h3>
+                                <ul className="mt-4 space-y-1.5">
+                                    {skill.bullets.map((bullet) => (
+                                        <li key={bullet} className="flex gap-2.5 text-sm font-bold text-duck-ink/80">
+                                            <CheckIcon />
+                                            <span>{bullet}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                                <p className={`mt-auto rounded-[1rem] px-4 py-3 text-xs font-extrabold leading-5 ${skill.tone === 'acid' ? 'bg-white/60' : 'bg-duck-bg'}`}>
+                                    Past goed bij: {skill.bestFor}.
+                                </p>
+                            </article>
+                        ))}
+
+                        <article className="relative flex h-[500px] w-[80vw] max-w-[400px] shrink-0 snap-center flex-col items-start justify-center overflow-hidden rounded-[1.6rem] bg-duck-ink p-9 text-white sm:h-[540px]">
+                            <SpriteMark className="size-14" />
+                            <h3 className="mt-6 text-balance font-display text-4xl leading-[1.08]">
+                                Zien hoe leerlingen <em className="italic text-duck-acid">bouwen</em>?
+                            </h3>
+                            <p className="mt-4 text-pretty text-sm font-semibold leading-6 text-white/65">
+                                Probeer de live game-demo en laat AI meebouwen aan een mini-game.
+                            </p>
+                            <button
+                                onClick={() => scrollTo('projecten')}
+                                className="mt-8 inline-flex min-h-[50px] items-center gap-3 rounded-full bg-duck-acid px-7 py-3 text-sm font-extrabold text-duck-ink transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid focus-visible:ring-offset-2 focus-visible:ring-offset-duck-ink"
+                            >
+                                Bekijk hoe leerlingen bouwen
+                                <ArrowRightIcon />
+                            </button>
+                        </article>
+                    </div>
                 </div>
             </div>
         </section>
     );
 }
 
-function JourneyDashboardPreview({ active, onSelect }: { active: number; onSelect: (index: number) => void }) {
-    const chapter = cinematicChapters[active];
-    const completion = Math.round(((active + 1) / cinematicChapters.length) * 100);
-    const sidebarItems = ['Overzicht', 'Mijn missies', 'Portfolio', 'Badges', 'Voortgang'];
-    const badgeItems = [
-        { title: 'Doorzetter', meta: 'Level 1', color: C.gold },
-        { title: 'Samenwerker', meta: 'Level 2', color: C.coral },
-        { title: 'Routebouwer', meta: chapter.statLabel, color: chapter.accent },
-    ];
-
-    return (
-        <div className="relative mx-auto w-full max-w-[760px]">
-            <div className="overflow-hidden rounded-[28px] border border-lab-line bg-white shadow-2xl shadow-lab-ink/14">
-                <div className="flex h-12 items-center gap-2 bg-lab-ink px-4 text-white">
-                    <span className="size-3 rounded-full bg-lab-coral" aria-hidden="true" />
-                    <span className="size-3 rounded-full bg-lab-gold" aria-hidden="true" />
-                    <span className="size-3 rounded-full bg-lab-sage" aria-hidden="true" />
-                    <span className="ml-3 truncate rounded-full bg-white/12 px-4 py-1 text-xs font-black text-white/82">dgskills.app/journey</span>
-                </div>
-
-                <div className="grid min-h-[430px] bg-lab-paper sm:grid-cols-[132px_minmax(0,1fr)]">
-                    <aside className="hidden border-r border-lab-line bg-white/76 p-4 sm:block" aria-hidden="true">
-                        <div className="text-lg font-black text-lab-ink">DGSkills</div>
-                        <div className="mt-6 space-y-2">
-                            {sidebarItems.map((item, index) => (
-                                <div
-                                    key={item}
-                                    className={`rounded-xl px-3 py-2 text-[11px] font-black ${index === 0 ? 'bg-lab-gold/18 text-lab-ink' : 'text-lab-muted'}`}
-                                >
-                                    {item}
-                                </div>
-                            ))}
-                        </div>
-                    </aside>
-
-                    <div className="min-w-0 p-4 sm:p-5 lg:p-6">
-                        <div className="flex flex-wrap items-center justify-between gap-3">
-                            <div>
-                                <p className="text-[11px] font-black uppercase text-lab-sage">Mijn route</p>
-                                <h3 className="mt-1 text-xl font-black leading-tight text-lab-ink md:text-2xl">Goedemorgen Jamie</h3>
-                            </div>
-                            <div className="flex items-center gap-2 rounded-full border border-lab-line bg-white px-3 py-2 text-xs font-black text-lab-muted">
-                                <span className="size-2 rounded-full bg-lab-gold" aria-hidden="true" />
-                                {completion}% zichtbaar
-                            </div>
-                        </div>
-
-                        <div className="mt-5 rounded-2xl border border-lab-line bg-white p-4 shadow-sm shadow-lab-ink/5">
-                            <div className="flex items-center justify-between gap-3">
-                                <p className="text-sm font-black text-lab-ink">Jouw leerlijn</p>
-                                <span className="rounded-full bg-lab-cream px-3 py-1 text-[11px] font-black uppercase text-lab-sage">{chapter.eyebrow}</span>
-                            </div>
-                            <div className="mt-4 grid grid-cols-5 gap-2">
-                                {cinematicChapters.map((item, index) => {
-                                    const isActive = active === index;
-                                    const isComplete = index < active;
-                                    return (
-                                        <button
-                                            key={item.title}
-                                            type="button"
-                                            onClick={() => onSelect(index)}
-                                            onFocus={() => onSelect(index)}
-                                            className="group min-w-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lab-gold focus-visible:ring-offset-2"
-                                            aria-label={`Toon stap ${item.step}: ${item.title}`}
-                                            aria-current={isActive ? 'step' : undefined}
-                                        >
-                                            <span
-                                                className={`mx-auto grid size-11 place-items-center rounded-full border text-lab-ink shadow-sm transition-transform duration-300 group-hover:-translate-y-0.5 ${isActive ? 'border-transparent text-white' : isComplete ? 'border-lab-sage bg-lab-sageSoft' : 'border-lab-line bg-lab-paper'}`}
-                                                style={isActive ? { backgroundColor: item.accent } : undefined}
-                                            >
-                                                {item.icon}
-                                            </span>
-                                            <span className={`mt-2 block truncate text-[10px] font-black ${isActive ? 'text-lab-ink' : 'text-lab-muted'}`}>
-                                                {index + 1} {item.title}
-                                            </span>
-                                        </button>
-                                    );
-                                })}
-                            </div>
-                        </div>
-
-                        <div className="mt-4 grid gap-4 lg:grid-cols-[minmax(0,1fr)_220px]">
-                            <div className="rounded-2xl border border-lab-line bg-white p-4 shadow-sm shadow-lab-ink/5">
-                                <div className="flex items-start justify-between gap-4">
-                                    <div className="min-w-0">
-                                        <p className="text-[11px] font-black uppercase text-lab-sage">Ga verder met</p>
-                                        <h4 className="mt-1 text-xl font-black leading-tight text-lab-ink">{chapter.title}</h4>
-                                        <p className="mt-2 text-sm font-semibold leading-6 text-lab-muted">{chapter.copy}</p>
-                                    </div>
-                                    <div
-                                        className="grid size-12 flex-none place-items-center rounded-2xl text-white shadow-md shadow-lab-ink/10"
-                                        style={{ backgroundColor: chapter.accent }}
-                                        aria-hidden="true"
-                                    >
-                                        {chapter.icon}
-                                    </div>
-                                </div>
-                                <div className="mt-4 h-2 rounded-full bg-lab-cream">
-                                    <div
-                                        className="h-full rounded-full transition-[width] duration-500"
-                                        style={{ width: `${completion}%`, backgroundColor: chapter.accent }}
-                                    />
-                                </div>
-                                <div className="mt-4 inline-flex rounded-full bg-lab-ink px-4 py-2 text-xs font-black text-white">
-                                    Ga verder
-                                </div>
-                            </div>
-
-                            <div className="rounded-2xl border border-lab-line bg-white p-4 shadow-sm shadow-lab-ink/5">
-                                <p className="text-[11px] font-black uppercase text-lab-sage">Recente badges</p>
-                                <div className="mt-3 grid grid-cols-3 gap-2 lg:grid-cols-1">
-                                    {badgeItems.map((badge) => (
-                                        <div key={badge.title} className="min-w-0 rounded-xl bg-lab-paper px-3 py-2">
-                                            <div className="flex items-center gap-2">
-                                                <span className="grid size-8 place-items-center rounded-full border border-lab-line bg-white">
-                                                    <span className="size-3 rounded-full" style={{ backgroundColor: badge.color }} aria-hidden="true" />
-                                                </span>
-                                                <div className="min-w-0">
-                                                    <p className="truncate text-[11px] font-black text-lab-ink">{badge.title}</p>
-                                                    <p className="truncate text-[10px] font-bold text-lab-muted">{badge.meta}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="mt-4 rounded-2xl border border-lab-sage/20 bg-lab-sageSoft px-4 py-3">
-                            <p className="text-sm font-black text-lab-teal">Tip voor vandaag</p>
-                            <p className="mt-1 text-sm font-semibold leading-6 text-lab-muted">{chapter.routeCoachTip}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
-}
-
-function BuyerReadySchoolSections({ startPilot }: { startPilot: () => void }) {
-    return (
-        <>
-            <section id="docent-les" className="relative scroll-mt-24 overflow-hidden bg-lab-paper px-5 pt-20 pb-12 md:px-10 md:pt-24 md:pb-16">
-                <WaveTop color={C.cream} />
-                <Doodle className="right-5 top-20 hidden text-lab-sage/60 lg:block" variant="leaf" />
-
-                <div className="relative z-10 mx-auto max-w-5xl">
-                    <Reveal className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
-                        <div>
-                            <p className="text-xs font-black uppercase tracking-[0.14em] text-lab-sage">Voor docenten</p>
-                            <h2 className="mt-3 text-balance text-4xl font-black leading-tight text-lab-ink md:text-5xl">Zo werkt een DGSkills-les</h2>
-                            <Squiggle color={C.coral} />
-                            <p className="mt-5 max-w-xl text-pretty text-base font-semibold leading-7 text-lab-muted">
-                                Een les hoeft geen losse uitleg over AI of mediawijsheid te zijn. DGSkills maakt er een maakmoment van, met zichtbare voortgang voor leerling en docent.
-                            </p>
-                            <ol className="mt-7 grid gap-3">
-                                {lessonSteps.map((item) => (
-                                    <li key={item.step} className="grid grid-cols-[3rem_1fr] gap-3 rounded-2xl border border-lab-line bg-white/78 p-4 shadow-sm shadow-lab-ink/5">
-                                        <span className="grid size-12 place-items-center rounded-full bg-lab-gold text-sm font-black text-lab-ink">{item.step}</span>
-                                        <div>
-                                            <h3 className="text-lg font-black leading-tight text-lab-ink">{item.title}</h3>
-                                            <p className="mt-1 text-sm font-semibold leading-6 text-lab-muted">{item.copy}</p>
-                                        </div>
-                                    </li>
-                                ))}
-                            </ol>
-                        </div>
-                        <ProductProofFrame
-                            label="Leerlingmissie"
-                            title="Prompt Perfectionist"
-                            image="/screenshots/prompt-master.webp"
-                            alt="DGSkills Prompt Perfectionist missie met promptinvoer en feedback"
-                            caption="Leerlingen maken, testen en leggen uit wat ze aanpassen."
-                        />
-                    </Reveal>
-                </div>
-            </section>
-
-            <section id="voor-schoolleiding" className="relative scroll-mt-24 bg-lab-paper px-5 py-12 md:px-10 md:py-16">
-                <div className="relative z-10 mx-auto max-w-5xl space-y-12">
-                    <Reveal y={30} className="rounded-[34px] bg-lab-creamDeep px-5 py-8 shadow-xl shadow-lab-ink/8 ring-1 ring-lab-line md:px-8 lg:px-10">
-                        <div className="grid gap-8 lg:grid-cols-[0.86fr_1.14fr] lg:items-start">
-                            <div>
-                                <p className="text-xs font-black uppercase tracking-[0.14em] text-lab-coral">Voor schoolleiding</p>
-                                <h2 className="mt-3 text-balance text-4xl font-black leading-tight text-lab-ink md:text-5xl">Waarom schoolleiders kiezen voor DGSkills</h2>
-                                <p className="mt-5 text-pretty text-base font-semibold leading-7 text-lab-muted">
-                                    De pilot laat niet alleen zien dat leerlingen gemotiveerd zijn, maar ook hoe digitale geletterdheid structureel in de school kan landen.
-                                </p>
-                                <a href="/pilot" onClick={startPilot} className="mt-7 inline-flex min-h-[48px] items-center gap-3 rounded-full bg-lab-gold px-7 py-3 text-sm font-black text-lab-ink shadow-md shadow-lab-ink/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink">
-                                    Plan pilotgesprek
-                                    <ArrowRightIcon />
-                                </a>
-                            </div>
-                            <div className="grid gap-4 sm:grid-cols-2">
-                                {leaderReasons.map((reason, index) => (
-                                    <article key={reason.title} className="rounded-[24px] bg-white p-5 shadow-md shadow-lab-ink/6 ring-1 ring-lab-line">
-                                        <div className="mb-4 grid size-12 place-items-center rounded-full bg-lab-paper text-lg font-black text-lab-coral">{String(index + 1).padStart(2, '0')}</div>
-                                        <h3 className="text-xl font-black leading-tight text-lab-ink">{reason.title}</h3>
-                                        <p className="mt-3 text-sm font-semibold leading-6 text-lab-muted">{reason.copy}</p>
-                                    </article>
-                                ))}
-                            </div>
-                        </div>
-                    </Reveal>
-
-                    <Reveal y={30} className="grid gap-8 lg:grid-cols-[1fr_0.9fr] lg:items-start">
-                        <div className="rounded-[34px] bg-white p-5 shadow-xl shadow-lab-ink/8 ring-1 ring-lab-line md:p-7">
-                            <div className="mb-6">
-                                <p className="text-xs font-black uppercase tracking-[0.14em] text-lab-sage">SLO & curriculum proof</p>
-                                <h2 className="mt-3 text-balance text-3xl font-black leading-tight text-lab-ink md:text-4xl">Van losse activiteit naar aantoonbare leerlijn</h2>
-                            </div>
-                            <div className="overflow-hidden rounded-[24px] border border-lab-line">
-                                {sloRows.map((row) => (
-                                    <div key={row.domain} className="grid gap-3 border-b border-lab-line bg-lab-paper/75 p-4 last:border-b-0 md:grid-cols-[0.75fr_1fr_1fr] md:items-center">
-                                        <p className="text-sm font-black text-lab-ink">{row.domain}</p>
-                                        <p className="text-sm font-semibold leading-6 text-lab-muted">{row.missions}</p>
-                                        <p className="text-xs font-black leading-5 text-lab-tealDark">{row.proof}</p>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                        <div className="rounded-[34px] bg-lab-tealDark p-6 text-white shadow-xl shadow-lab-ink/12">
-                            <p className="text-xs font-black uppercase tracking-[0.14em] text-lab-gold">Voor ICT en privacy</p>
-                            <h2 className="mt-3 text-balance text-3xl font-black leading-tight md:text-4xl">Veilig te beoordelen door ICT</h2>
-                            <p className="mt-4 text-pretty text-sm font-semibold leading-7 text-white/78">
-                                DGSkills verkoopt geen zwarte doos. De pilot geeft scholen tijd om privacy, AI en beheer concreet te toetsen.
-                            </p>
-                            <div className="mt-6 grid gap-3">
-                                {ictTrustItems.map((item) => (
-                                    <article key={item.title} className="rounded-2xl border border-white/10 bg-white/8 p-4">
-                                        <h3 className="text-base font-black text-white">{item.title}</h3>
-                                        <p className="mt-1 text-sm font-semibold leading-6 text-white/72">{item.copy}</p>
-                                    </article>
-                                ))}
-                            </div>
-                        </div>
-                    </Reveal>
-                </div>
-            </section>
-
-            <section id="productbewijs" className="relative scroll-mt-24 overflow-hidden bg-lab-paper px-5 py-12 md:px-10 md:py-16">
-                <Doodle className="bottom-20 left-8 hidden text-lab-coral/70 lg:block" variant="spark" />
-                <div className="relative z-10 mx-auto max-w-5xl">
-                    <Reveal y={30}>
-                        <div className="mb-8 flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
-                            <div>
-                                <p className="text-xs font-black uppercase tracking-[0.14em] text-lab-coral">Productbewijs</p>
-                                <h2 className="mt-3 text-balance text-4xl font-black leading-tight text-lab-ink md:text-5xl">Screenshots die de aankoopvraag beantwoorden</h2>
-                                <Squiggle color={C.ink} />
-                            </div>
-                            <p className="max-w-xl text-pretty text-base font-semibold leading-7 text-lab-muted">
-                                Elk scherm laat een ander beslispunt zien: motivatie voor leerlingen, grip voor docenten en vertrouwen voor schoolteams.
-                            </p>
-                        </div>
-                        <div className="grid gap-5 md:grid-cols-2">
-                            {screenshotProofPanels.map((panel, index) => (
-                                <ProductProofFrame
-                                    key={panel.label}
-                                    label={panel.label}
-                                    title={panel.title}
-                                    image={panel.image}
-                                    alt={panel.alt}
-                                    caption={panel.copy}
-                                    featured={index === 1}
-                                />
-                            ))}
-                        </div>
-                    </Reveal>
-                </div>
-            </section>
-
-            <section id="schoolpilot" className="relative scroll-mt-24 bg-lab-paper px-5 py-12 md:px-10 md:py-16">
-                <div className="relative z-10 mx-auto max-w-5xl">
-                    <Reveal y={30} className="grid gap-8 rounded-[34px] bg-lab-cream px-5 py-8 shadow-xl shadow-lab-ink/8 ring-1 ring-lab-line md:px-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-center lg:px-10">
-                        <div>
-                            <p className="text-xs font-black uppercase tracking-[0.14em] text-lab-sage">Schoolpilot</p>
-                            <h2 className="mt-3 text-balance text-4xl font-black leading-tight text-lab-ink md:text-5xl">Wat krijg je in de schoolpilot?</h2>
-                            <p className="mt-5 text-pretty text-base font-semibold leading-7 text-lab-muted">
-                                Gebouwd vanuit VO/VSO-praktijk en doorlopend getest met docenten. De pilot is klein genoeg om te starten, maar concreet genoeg om er een schoolbesluit op te baseren.
-                            </p>
-                        </div>
-                        <div>
-                            <ul className="grid gap-3 sm:grid-cols-2">
-                                {pilotItems.map((item) => (
-                                    <li key={item} className="flex gap-3 rounded-2xl bg-white p-4 text-sm font-black leading-6 text-lab-ink shadow-sm shadow-lab-ink/5 ring-1 ring-lab-line">
-                                        <CheckIcon />
-                                        <span>{item}</span>
-                                    </li>
-                                ))}
-                            </ul>
-                            <a href="/pilot" onClick={startPilot} className="mt-6 inline-flex min-h-[48px] items-center gap-3 rounded-full bg-lab-gold px-7 py-3 text-sm font-black text-lab-ink shadow-md shadow-lab-ink/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink">
-                                Plan mijn schoolpilot
-                                <ArrowRightIcon />
-                            </a>
-                        </div>
-                    </Reveal>
-                </div>
-            </section>
-
-            <section id="faq" className="relative scroll-mt-24 bg-lab-paper px-5 py-12 md:px-10 md:pt-16 md:pb-24">
-                <div className="relative z-10 mx-auto max-w-5xl">
-                    <Reveal y={30}>
-                        <div className="mb-8">
-                            <p className="text-xs font-black uppercase tracking-[0.14em] text-lab-sage">Veelgestelde vragen per rol</p>
-                            <h2 className="mt-3 text-balance text-4xl font-black leading-tight text-lab-ink md:text-5xl">De vragen die in een schoolteam op tafel komen</h2>
-                        </div>
-                        <div className="grid gap-4 md:grid-cols-2">
-                            {roleFaqs.map((faq) => (
-                                <article key={faq.role} className="rounded-[24px] bg-white p-5 shadow-md shadow-lab-ink/6 ring-1 ring-lab-line">
-                                    <p className="text-xs font-black uppercase tracking-[0.14em] text-lab-coral">{faq.role}</p>
-                                    <h3 className="mt-3 text-xl font-black leading-tight text-lab-ink">{faq.question}</h3>
-                                    <p className="mt-3 text-sm font-semibold leading-6 text-lab-muted">{faq.answer}</p>
-                                </article>
-                            ))}
-                        </div>
-                    </Reveal>
-                </div>
-            </section>
-        </>
-    );
-}
-
-function ProductProofFrame({
-    label,
-    title,
-    image,
-    alt,
-    caption,
-    featured = false,
-}: {
-    label: string;
-    title: string;
-    image: string;
-    alt: string;
-    caption: string;
-    featured?: boolean;
-}) {
-    return (
-        <article className={`overflow-hidden rounded-[30px] bg-white shadow-xl shadow-lab-ink/8 ring-1 ring-lab-line ${featured ? 'md:col-span-2 lg:grid lg:grid-cols-[0.72fr_1.28fr]' : ''}`}>
-            <div className="flex flex-col justify-center p-5 md:p-6">
-                <span className="w-fit rounded-full bg-lab-cream px-3 py-1.5 text-[11px] font-black uppercase tracking-wide text-lab-tealDark">{label}</span>
-                <h3 className="mt-4 text-2xl font-black leading-tight text-lab-ink">{title}</h3>
-                <p className="mt-3 text-sm font-semibold leading-6 text-lab-muted">{caption}</p>
-            </div>
-            <div className="bg-lab-cream p-4 md:p-5">
-                <div className="overflow-hidden rounded-[22px] bg-lab-paper shadow-lg shadow-lab-ink/10 ring-1 ring-lab-line">
-                    <div className="flex h-10 items-center gap-2 border-b border-lab-line bg-white px-4">
-                        <span className="size-2.5 rounded-full bg-lab-coral" />
-                        <span className="size-2.5 rounded-full bg-lab-gold" />
-                        <span className="size-2.5 rounded-full bg-lab-sage" />
-                        <span className="ml-3 truncate rounded-full bg-lab-cream px-3 py-1 text-[10px] font-black text-lab-muted">dgskills.app</span>
-                    </div>
-                    <div className="aspect-[16/10] bg-lab-paper">
-                        <img src={image} alt={alt} className="h-full w-full object-cover object-top" loading="lazy" decoding="async" />
-                    </div>
-                </div>
-            </div>
-        </article>
-    );
-}
-
-const gamePrompts = [
-    {
-        name: 'Stroomroute 01',
-        sky: '#5F947D',
-        pipe: '#0B453F',
-        beaver: '#D97848',
-        accent: '#D7C95F',
-    },
-    {
-        name: 'Snelle stroom',
-        sky: '#5F947D',
-        pipe: '#08283B',
-        beaver: '#D97848',
-        accent: '#F3E4CB',
-    },
-    {
-        name: 'Avondrivier',
-        sky: '#08283B',
-        pipe: '#0B453F',
-        beaver: '#D7C95F',
-        accent: '#D7C95F',
-    },
-    {
-        name: 'Leerdoel-stroom',
-        sky: '#FCF6EA',
-        pipe: '#5F947D',
-        beaver: '#D97848',
-        accent: '#0B453F',
-    },
-    {
-        name: 'Eindbaas: rapids',
-        sky: '#08283B',
-        pipe: '#0B453F',
-        beaver: '#D97848',
-        accent: '#D7C95F',
-    },
-];
+const gameTheme = {
+    name: 'Level 01 — Flow',
+    sky: '#f8f8f5',
+    pipe: '#202023',
+    sprite: '#e1ff01',
+} as const;
 
 function AiGameBuilderDemo({ reduceMotion }: { reduceMotion: boolean }) {
     const [promptsUsed, setPromptsUsed] = useState(0);
     const [customPrompt, setCustomPrompt] = useState('');
-    const [lastPrompt, setLastPrompt] = useState<string>('Nog geen prompt geschreven. Begin makkelijk: "maak het gat groter" of "maak de bever sneller".');
+    const [lastPrompt, setLastPrompt] = useState<string>('Nog geen prompt geschreven. Begin makkelijk: "maak het gat groter" of "maak de sprite sneller".');
     const [gameConfig, setGameConfig] = useState<GameConfig>(DEFAULT_GAME_CONFIG);
     const [isLoading, setIsLoading] = useState(false);
     const [errorText, setErrorText] = useState<string | null>(null);
     const [honeypot, setHoneypot] = useState('');
-    const active = gamePrompts[1]; // Vaste 'Snelle stroom' theme als basis-palet
     const promptLimitReached = promptsUsed >= 5;
     const inputDisabled = promptLimitReached || isLoading;
 
@@ -1305,34 +1112,34 @@ function AiGameBuilderDemo({ reduceMotion }: { reduceMotion: boolean }) {
     };
 
     return (
-        <Reveal y={34} className="project-card-motion grid gap-5 rounded-[36px] bg-lab-paper p-4 shadow-2xl shadow-lab-ink/12 ring-1 ring-lab-line lg:grid-cols-[0.82fr_1.18fr] lg:p-6">
-            <div className="flex min-h-[430px] flex-col rounded-[28px] bg-lab-ink p-5 text-white shadow-xl shadow-lab-ink/18">
+        <Reveal y={34} className="grid gap-4 rounded-[2rem] bg-white p-4 shadow-[2px_4px_24px_rgba(199,197,188,0.30)] lg:grid-cols-[0.82fr_1.18fr] lg:p-5">
+            <div className="flex min-h-[430px] flex-col rounded-[1.6rem] bg-duck-ink p-6 text-white">
                 <div className="flex items-start justify-between gap-4">
                     <div>
-                        <p className="text-xs font-black uppercase tracking-wide text-lab-gold">Gemini coach</p>
-                        <h3 className="mt-1 text-2xl font-black">Schrijf je eigen prompt</h3>
+                        <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-duck-acid">Gemini coach</p>
+                        <h3 className="mt-1.5 font-display text-3xl">Schrijf je eigen prompt</h3>
                     </div>
-                    <span className="rounded-full bg-white/10 px-3 py-2 text-xs font-black">{promptsUsed}/5 prompts</span>
+                    <span className="rounded-full bg-white/10 px-3.5 py-2 text-xs font-extrabold">{promptsUsed}/5 prompts</span>
                 </div>
 
-                <div className="mt-7 rounded-3xl bg-white/10 p-4">
-                    <p className="text-xs font-black uppercase tracking-wide text-white/56">Laatste idee</p>
+                <div className="mt-7 rounded-[1.25rem] bg-white/10 p-4">
+                    <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-white/50">Laatste idee</p>
                     <p className="mt-2 text-base font-bold leading-7 text-white">{lastPrompt}</p>
                     {errorText && (
-                        <p className="mt-2 text-xs font-bold text-lab-coral" role="alert">{errorText}</p>
+                        <p className="mt-2 text-xs font-bold text-duck-error" role="alert">{errorText}</p>
                     )}
                 </div>
 
                 <form onSubmit={submitCustomPrompt} className="mt-auto pt-6">
-                    <label htmlFor="game-prompt" className="text-sm font-black text-white">Wat moet de game doen?</label>
+                    <label htmlFor="game-prompt" className="text-sm font-extrabold text-white">Wat moet de game doen?</label>
                     <textarea
                         id="game-prompt"
                         value={customPrompt}
                         onChange={(event) => setCustomPrompt(event.target.value)}
                         disabled={inputDisabled}
                         maxLength={500}
-                        placeholder={promptLimitReached ? 'Promptlimiet bereikt' : 'Bijvoorbeeld: maak de bever sneller en het gat groter.'}
-                        className="mt-3 min-h-[112px] w-full resize-none rounded-3xl border border-white/10 bg-white/10 px-4 py-3 text-sm font-semibold leading-6 text-white outline-none placeholder:text-white/50 focus:border-lab-gold disabled:opacity-50"
+                        placeholder={promptLimitReached ? 'Promptlimiet bereikt' : 'Bijvoorbeeld: maak de sprite sneller en het gat groter.'}
+                        className="mt-3 min-h-[112px] w-full resize-none rounded-[1.25rem] border border-white/10 bg-white/10 px-4 py-3 text-sm font-semibold leading-6 text-white outline-none placeholder:text-white/50 focus:border-duck-acid disabled:opacity-50"
                     />
                     {/* Honeypot — visually hidden, only bots fill this in */}
                     <input
@@ -1346,11 +1153,11 @@ function AiGameBuilderDemo({ reduceMotion }: { reduceMotion: boolean }) {
                         style={{ position: 'absolute', left: '-9999px', width: '1px', height: '1px', opacity: 0 }}
                     />
                     <div className="mt-3 flex items-center justify-between gap-3">
-                        <p className="text-xs font-semibold text-white/58">Maximaal vijf prompts per demo.</p>
+                        <p className="text-xs font-semibold text-white/55">Maximaal vijf prompts per demo.</p>
                         <button
                             type="submit"
                             disabled={inputDisabled || !customPrompt.trim()}
-                            className="inline-flex min-h-[46px] items-center gap-2 rounded-full bg-lab-gold px-5 py-2 text-sm font-black text-lab-ink disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-gold focus-visible:ring-offset-lab-ink"
+                            className="inline-flex min-h-[46px] items-center gap-2 rounded-full bg-duck-acid px-6 py-2 text-sm font-extrabold text-duck-ink transition-transform duration-300 hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid focus-visible:ring-offset-2 focus-visible:ring-offset-duck-ink"
                         >
                             {isLoading ? 'Bezig…' : 'Pas aan'}
                             {!isLoading && <ArrowRightIcon />}
@@ -1359,74 +1166,54 @@ function AiGameBuilderDemo({ reduceMotion }: { reduceMotion: boolean }) {
                 </form>
             </div>
 
-            <div className="relative min-h-[430px] overflow-hidden rounded-[28px] bg-[#08283B] p-4 shadow-xl shadow-lab-ink/18">
-                <div className="mb-4 flex items-center justify-between rounded-2xl bg-white/95 px-4 py-3 text-lab-ink">
+            <div className="relative min-h-[430px] rounded-[1.6rem] bg-duck-bgLight p-4">
+                <div className="mb-4 flex items-center justify-between gap-3 px-1">
                     <div>
-                        <p className="text-xs font-black uppercase text-lab-sage">Live preview</p>
-                        <h3 className="text-lg font-black">{active.name}</h3>
+                        <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-duck-ink/50">Live preview</p>
+                        <h3 className="font-display text-xl">{gameTheme.name}</h3>
                     </div>
-                    <span className="rounded-full bg-lab-cream px-3 py-1 text-xs font-black">Game Programmeur</span>
+                    <span className="rounded-full border border-duck-ink bg-duck-acid px-3.5 py-1.5 text-xs font-extrabold">Game Programmeur</span>
                 </div>
-                <FlappyGamePreview active={active} reduceMotion={reduceMotion} config={gameConfig} />
+                <PlayableSpriteStream reduceMotion={reduceMotion} config={gameConfig} />
             </div>
         </Reveal>
     );
 }
 
-function BeaverGlider({ color, reduceMotion, yPercent, domRef }: { color: string; reduceMotion: boolean; yPercent?: number; domRef?: React.Ref<HTMLDivElement> }) {
-    const tailColor = '#8B5A3C';
+function SpriteGlider({ color, reduceMotion, yPercent, domRef }: { color: string; reduceMotion: boolean; yPercent?: number; domRef?: React.Ref<HTMLDivElement> }) {
     return (
         <div
             ref={domRef}
-            className="absolute left-[8%] z-30"
-            style={{
-                top: yPercent !== undefined ? `${yPercent}%` : '41%',
-                animation: yPercent === undefined && !reduceMotion ? 'dg-glider-bob 1.8s ease-in-out infinite' : undefined,
-            }}
+            className={`absolute left-[8%] z-30 ${yPercent === undefined && !reduceMotion ? 'animate-duck-float' : ''}`}
+            style={{ top: yPercent !== undefined ? `${yPercent}%` : '41%' }}
             aria-hidden="true"
         >
             {!reduceMotion && (
-                <div className="absolute -left-10 top-[39%] flex flex-col gap-[4px]">
-                    <span className="block h-[3px] w-8 rounded-full bg-white/60" />
-                    <span className="block h-[3px] w-5 rounded-full bg-white/38" />
-                    <span className="block h-[3px] w-3 rounded-full bg-white/22" />
+                <div className="absolute -left-10 top-[42%] flex flex-col gap-[4px]">
+                    <span className="block h-[3px] w-8 rounded-full bg-duck-ink/20" />
+                    <span className="block h-[3px] w-5 rounded-full bg-duck-ink/15" />
+                    <span className="block h-[3px] w-3 rounded-full bg-duck-ink/10" />
                 </div>
             )}
-            <svg
-                viewBox="0 0 92 64"
-                width="86"
-                height="60"
-                xmlns="http://www.w3.org/2000/svg"
-                aria-hidden="true"
-            >
-                <path d="M24 41 C10 37 8 25 21 20 C33 18 41 26 38 38 Z" fill="#FCF6EA" opacity="0.82" />
-                <ellipse cx="15" cy="43" rx="14" ry="9" fill={tailColor} style={{ transform: 'rotate(-12deg)', transformOrigin: '18px 38px' }} />
-                <ellipse cx="14" cy="44" rx="10" ry="6" fill="#6B3C1E" style={{ transform: 'rotate(-12deg)', transformOrigin: '18px 38px' }} />
-                <ellipse cx="48" cy="37" rx="27" ry="17" fill={color} />
-                <path d="M31 35 C42 24 57 22 69 32 C57 34 45 40 35 50 Z" fill="#F3E4CB" opacity="0.8" />
-                <ellipse cx="69" cy="27" rx="14" ry="12" fill={color} />
-                <ellipse cx="62" cy="17" rx="4.2" ry="5.2" fill={tailColor} />
-                <ellipse cx="74" cy="16" rx="4.2" ry="5.2" fill={tailColor} />
-                <circle cx="75" cy="23" r="4.1" fill="white" />
-                <circle cx="76" cy="24" r="2" fill="#08283B" />
-                <circle cx="77" cy="23" r="0.8" fill="white" />
-                <ellipse cx="82" cy="30" rx="5.5" ry="3.7" fill={tailColor} />
-                <ellipse cx="54" cy="51" rx="6" ry="3.5" fill={tailColor} />
-                <ellipse cx="39" cy="52" rx="6" ry="3.5" fill={tailColor} />
+            <svg viewBox="0 0 64 64" width="58" height="58" xmlns="http://www.w3.org/2000/svg" className="-rotate-[5deg]" aria-hidden="true">
+                <rect x="4" y="4" width="56" height="56" rx="17" fill={color} stroke="#202023" strokeWidth="4" />
+                <ellipse cx="26" cy="29" rx="5" ry="8.4" fill="#202023" />
+                <ellipse cx="43" cy="29" rx="5" ry="8.4" fill="#202023" />
+                <path d="M27 45c3.8 3.2 12 3.2 15.5 0" stroke="#202023" strokeWidth="3.8" strokeLinecap="round" fill="none" />
             </svg>
         </div>
     );
 }
 
 // Static physical sprite sizes (tuning happens via GameConfig)
-const BEAVER_W = 8;
-const BEAVER_H = 10;
+const SPRITE_W = 8;
+const SPRITE_H = 10;
 
 type GameState = 'idle' | 'playing' | 'over';
 interface Gate { id: number; x: number; gapTop: number; passed: boolean; }
 
 function createGate(config: GameConfig, x: number): Gate {
-    const maxGapTop = Math.max(8, 88 - config.gateGap - BEAVER_H);
+    const maxGapTop = Math.max(8, 88 - config.gateGap - SPRITE_H);
     const minGapTop = 8;
 
     return {
@@ -1446,19 +1233,19 @@ function createInitialGates(config: GameConfig): Gate[] {
     ];
 }
 
-function PlayableBeaverStream({ active, reduceMotion, config }: { active: typeof gamePrompts[number]; reduceMotion: boolean; config: GameConfig }) {
-    const gateColor = config.pipeColor ?? active.pipe;
-    const beaverColor = config.beaverColor ?? active.beaver;
-    const skyColor = config.skyColor ?? active.sky;
+function PlayableSpriteStream({ reduceMotion, config }: { reduceMotion: boolean; config: GameConfig }) {
+    const gateColor = config.pipeColor ?? gameTheme.pipe;
+    const spriteColor = config.beaverColor ?? gameTheme.sprite;
+    const skyColor = config.skyColor ?? gameTheme.sky;
     const [gameState, setGameState] = useState<GameState>('idle');
     const [displayScore, setDisplayScore] = useState(0);
     const [renderTick, setRenderTick] = useState(0);
 
-    const beaverY = useRef(50);
+    const spriteY = useRef(50);
     const velocity = useRef(0);
     const gatesRef = useRef<Gate[]>([]);
     const scoreRef = useRef(0);
-    const beaverDomRef = useRef<HTMLDivElement>(null);
+    const spriteDomRef = useRef<HTMLDivElement>(null);
     const animId = useRef<number>(0);
     const lastTime = useRef<number>(0);
     const frameCount = useRef(0);
@@ -1470,7 +1257,7 @@ function PlayableBeaverStream({ active, reduceMotion, config }: { active: typeof
 
     const handleFlap = useCallback(() => {
         if (gameStateRef.current === 'idle') {
-            beaverY.current = 50;
+            spriteY.current = 50;
             velocity.current = configRef.current.flapVelocity;
             gatesRef.current = createInitialGates(configRef.current);
             scoreRef.current = 0;
@@ -1513,9 +1300,9 @@ function PlayableBeaverStream({ active, reduceMotion, config }: { active: typeof
             const cfg = configRef.current;
 
             velocity.current += cfg.gravity * dt;
-            beaverY.current += velocity.current * dt;
+            spriteY.current += velocity.current * dt;
 
-            if (beaverY.current < 0 || beaverY.current > 88) {
+            if (spriteY.current < 0 || spriteY.current > 88) {
                 setGameState('over');
                 return;
             }
@@ -1530,11 +1317,11 @@ function PlayableBeaverStream({ active, reduceMotion, config }: { active: typeof
             }
 
             const bL = 8;
-            const bR = 8 + BEAVER_W;
+            const bR = 8 + SPRITE_W;
             for (const g of gatesRef.current) {
                 const gR = g.x + 10;
                 if (g.x < bR && gR > bL) {
-                    if (beaverY.current < g.gapTop || beaverY.current > g.gapTop + cfg.gateGap - BEAVER_H) {
+                    if (spriteY.current < g.gapTop || spriteY.current > g.gapTop + cfg.gateGap - SPRITE_H) {
                         setGameState('over');
                         return;
                     }
@@ -1546,8 +1333,8 @@ function PlayableBeaverStream({ active, reduceMotion, config }: { active: typeof
                 }
             }
 
-            if (beaverDomRef.current) {
-                beaverDomRef.current.style.top = `${beaverY.current}%`;
+            if (spriteDomRef.current) {
+                spriteDomRef.current.style.top = `${spriteY.current}%`;
             }
 
             if (frameCount.current % 3 === 0) {
@@ -1576,18 +1363,15 @@ function PlayableBeaverStream({ active, reduceMotion, config }: { active: typeof
             aria-label="Speel mini-game — klik of druk op spatie om te starten"
             onClick={handleFlap}
             onTouchStart={(e) => { e.preventDefault(); handleFlap(); }}
-            className="relative h-[390px] cursor-pointer overflow-hidden rounded-[24px] shadow-2xl shadow-black/24 ring-1 ring-white/15 select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink"
-            style={{ background: `linear-gradient(180deg, ${skyColor} 0%, #9FDAF2 42%, #B8E3CF 72%, #5F947D 100%)` }}
+            className="relative h-[390px] cursor-pointer touch-none select-none overflow-hidden rounded-[1.25rem] border border-duck-ink/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
+            style={{ backgroundColor: skyColor }}
         >
-            <div className="absolute left-0 right-0 top-[30%] h-14 bg-white/16 blur-[8px]" />
-            <div className="absolute left-8 top-8 h-7 w-32 rounded-full bg-white/48 blur-[2px]" />
-            <div className="absolute right-16 top-14 h-6 w-28 rounded-full bg-white/36 blur-[2px]" />
-            <div className="absolute left-[45%] top-12 h-4 w-20 rounded-full bg-white/30 blur-[1px]" />
+            <div className="absolute left-8 top-8 h-6 w-28 rounded-full bg-white/80" aria-hidden="true" />
+            <div className="absolute right-16 top-16 h-5 w-24 rounded-full bg-white/60" aria-hidden="true" />
+            <div className="absolute left-[46%] top-12 h-4 w-16 rounded-full bg-white/70" aria-hidden="true" />
 
-            <div className="absolute bottom-0 left-0 right-0 h-[82px] bg-gradient-to-b from-[#6CA47E] to-[#0B453F]">
-                <div className="absolute left-0 right-0 top-0 h-3 bg-lab-gold/65" />
-                <div className="absolute left-0 right-0 top-5 h-[2px] rounded-full bg-white/18" />
-                <div className="absolute left-0 right-0 top-11 h-[1.5px] rounded-full bg-white/12" />
+            <div className="absolute bottom-0 left-0 right-0 h-[72px] bg-duck-ink" aria-hidden="true">
+                <div className="absolute left-0 right-0 top-0 h-2.5 bg-duck-acid" />
             </div>
 
             {visibleGates.map((gate) => (
@@ -1597,83 +1381,63 @@ function PlayableBeaverStream({ active, reduceMotion, config }: { active: typeof
                     style={{ left: `${gate.x}%`, height: '100%' }}
                 >
                     <div
-                        className="absolute inset-x-0 top-0 rounded-b-[16px] shadow-xl shadow-lab-ink/20"
+                        className="absolute inset-x-0 top-0 rounded-b-[14px]"
                         style={{ height: `${gate.gapTop}%`, backgroundColor: gateColor }}
                     >
-                        <div className="absolute bottom-4 left-1/2 h-[70%] w-[3px] -translate-x-1/2 rounded-full bg-white/13" />
+                        <div className="absolute bottom-4 left-1/2 h-[70%] w-[3px] -translate-x-1/2 rounded-full bg-white/15" />
                     </div>
                     <div
-                        className="absolute inset-x-0 bottom-[82px] rounded-t-[16px] shadow-xl shadow-lab-ink/20"
+                        className="absolute inset-x-0 bottom-[72px] rounded-t-[14px]"
                         style={{ height: `${Math.max(0, 100 - gate.gapTop - config.gateGap)}%`, backgroundColor: gateColor }}
                     >
-                        <div className="absolute left-1/2 top-4 h-[70%] w-[3px] -translate-x-1/2 rounded-full bg-white/13" />
+                        <div className="absolute left-1/2 top-4 h-[70%] w-[3px] -translate-x-1/2 rounded-full bg-white/15" />
                     </div>
                 </div>
             ))}
 
-            <BeaverGlider
-                color={beaverColor}
+            <SpriteGlider
+                color={spriteColor}
                 reduceMotion={reduceMotion}
-                yPercent={gameState === 'idle' && !reduceMotion ? undefined : beaverY.current}
-                domRef={beaverDomRef}
+                yPercent={gameState === 'idle' && !reduceMotion ? undefined : spriteY.current}
+                domRef={spriteDomRef}
             />
 
             {gameState !== 'idle' && (
-                <div className="absolute left-5 top-5 flex items-center gap-2 rounded-full bg-lab-paper/95 px-4 py-2 shadow-lg shadow-lab-ink/10">
-                    <span className="size-2 rounded-full bg-lab-sage" />
-                    <span className="text-xs font-black text-lab-ink">{displayScore} poorten</span>
+                <div className="absolute left-5 top-5 flex items-center gap-2 rounded-full border border-duck-ink bg-white px-4 py-2">
+                    <span className="size-2 rounded-full bg-duck-acid" aria-hidden="true" />
+                    <span className="text-xs font-extrabold text-duck-ink">{displayScore} poorten</span>
                 </div>
             )}
 
-            <div className="absolute right-5 top-5 rounded-full bg-lab-cream/90 px-3 py-1.5 text-xs font-black uppercase tracking-wide text-lab-tealDark shadow-md shadow-lab-ink/8">
+            <div className="absolute right-5 top-5 rounded-full bg-duck-ink px-3.5 py-1.5 text-xs font-extrabold uppercase tracking-[0.14em] text-duck-acid">
                 Eigen side-scroller
             </div>
 
-            <div className="absolute bottom-5 left-5 right-5 flex items-start gap-3 rounded-3xl bg-lab-paper/96 p-3 shadow-xl shadow-lab-ink/18">
-                <div className="mt-0.5 flex size-7 flex-none items-center justify-center rounded-full bg-lab-coral/15">
-                    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                        <circle cx="8" cy="8" r="7" stroke="#D97848" strokeWidth="2" />
-                        <circle cx="8" cy="8" r="3" fill="#D97848" />
-                    </svg>
-                </div>
+            <div className="absolute bottom-5 left-5 right-5 flex items-start gap-3 rounded-[1.25rem] border border-duck-ink/10 bg-white/95 p-3.5">
+                <span className="mt-1 size-2.5 flex-none rounded-full bg-duck-acid ring-1 ring-duck-ink" aria-hidden="true" />
                 <div>
-                    <p className="text-[10px] font-black uppercase tracking-wide text-lab-coral">Leerdoel</p>
-                    <p className="mt-0.5 text-xs font-black leading-snug text-lab-ink">Testen, aanpassen en uitleggen waarom de game beter wordt.</p>
+                    <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-duck-ink/50">Leerdoel</p>
+                    <p className="mt-0.5 text-xs font-extrabold leading-snug text-duck-ink">Testen, aanpassen en uitleggen waarom de game beter wordt.</p>
                 </div>
             </div>
 
             {gameState === 'over' && (
-                <div className="absolute inset-0 z-40 flex items-center justify-center bg-lab-ink/40 backdrop-blur-[2px]">
-                    <div className="rounded-2xl bg-lab-paper px-6 py-5 text-center shadow-2xl">
-                        <p className="text-xs font-black uppercase tracking-wide text-lab-coral">Game over</p>
-                        <p className="mt-1 text-3xl font-black text-lab-ink">{displayScore}</p>
-                        <p className="text-xs font-semibold text-lab-muted">poorten gehaald</p>
+                <div className="absolute inset-0 z-40 flex items-center justify-center bg-duck-ink/40 backdrop-blur-[2px]">
+                    <div className="rounded-[1.5rem] bg-white px-8 py-6 text-center shadow-[2px_4px_24px_rgba(32,32,35,0.20)]">
+                        <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-duck-ink/50">Game over</p>
+                        <p className="mt-1 font-display text-5xl text-duck-ink">{displayScore}</p>
+                        <p className="text-xs font-semibold text-duck-ink/60">poorten gehaald</p>
                         <button
                             onClick={(e) => { e.stopPropagation(); handleFlap(); }}
-                            className="mt-3 inline-flex min-h-[44px] items-center gap-2 rounded-full bg-lab-gold px-5 py-2 text-sm font-black text-lab-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink"
+                            className="mt-4 inline-flex min-h-[44px] items-center gap-2 rounded-full border border-duck-ink bg-duck-acid px-6 py-2 text-sm font-extrabold text-duck-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
                         >
                             Opnieuw
                         </button>
                     </div>
                 </div>
             )}
-
-            <style>{`
-                @keyframes dg-glider-bob {
-                    0%, 100% { transform: translate3d(0, 0, 0) rotate(-4deg); }
-                    50% { transform: translate3d(0, -14px, 0) rotate(3deg); }
-                }
-            `}</style>
         </div>
     );
-}
-
-function FlappyGamePreview({ active, reduceMotion, config }: { active: typeof gamePrompts[number]; reduceMotion: boolean; config: GameConfig }) {
-    return <PlayableBeaverStream active={active} reduceMotion={reduceMotion} config={config} />;
-}
-
-function promptsUsedLabel(name: string) {
-    return name.length * 17;
 }
 
 function PortfolioStorySection({ startPilot }: { startPilot: () => void }) {
@@ -1821,55 +1585,52 @@ function PortfolioStorySection({ startPilot }: { startPilot: () => void }) {
         <section
             id="portfolio"
             ref={sectionRef}
-            className={`relative scroll-mt-24 px-5 py-20 md:px-10 ${reduceMotion ? '' : 'lg:min-h-[420svh] lg:py-0'}`}
+            className={`relative scroll-mt-24 bg-duck-bgLight px-5 py-20 md:px-10 ${reduceMotion ? '' : 'lg:min-h-[420svh] lg:py-0'}`}
         >
-            <div className={`mx-auto grid max-w-5xl gap-10 lg:grid-cols-[0.72fr_1.28fr] ${reduceMotion ? 'lg:items-start' : 'lg:sticky lg:top-20 lg:h-[calc(100svh-80px)] lg:items-center'}`}>
+            <div className={`mx-auto grid max-w-6xl gap-10 lg:grid-cols-[0.72fr_1.28fr] ${reduceMotion ? 'lg:items-start' : 'lg:sticky lg:top-20 lg:h-[calc(100svh-80px)] lg:items-center'}`}>
                 <Reveal className="lg:h-fit lg:self-center">
-                    <h2 className="text-balance text-4xl font-black leading-tight text-lab-ink md:text-5xl">Jouw portfolio. Jouw verhaal.</h2>
-                    <p className="mt-5 max-w-md text-pretty text-base font-semibold leading-7 text-lab-muted">
+                    <SectionLabel>Portfolio</SectionLabel>
+                    <h2 className="mt-4 text-balance font-display text-[clamp(2.1rem,4.5vw,4rem)] leading-[1.05]">
+                        Jouw portfolio. <em className="italic">Jouw verhaal.</em>
+                    </h2>
+                    <p className="mt-5 max-w-md text-pretty text-base font-semibold leading-7 text-duck-ink/65">
                         Scroll door een portfolio dat echt iets vertelt: wie je bent, wat je maakt, welke trofeeën je haalt en waar je nog in groeit.
                     </p>
-                    <a href="/pilot" onClick={startPilot} className="mt-7 inline-flex min-h-[48px] items-center gap-3 rounded-full bg-lab-gold px-7 py-3 text-sm font-black text-lab-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-ink">
+                    <a
+                        href="/pilot"
+                        onClick={startPilot}
+                        className="mt-8 inline-flex min-h-[50px] items-center gap-3 rounded-full border border-duck-ink bg-duck-acid px-7 py-3 text-sm font-extrabold text-duck-ink transition-all duration-300 hover:-translate-y-0.5 hover:bg-duck-ink hover:text-duck-acid focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
+                    >
                         Plan pilot met portfolio-route
                         <ArrowRightIcon />
                     </a>
                 </Reveal>
 
                 <div className={`${reduceMotion ? 'hidden' : 'relative hidden h-[min(68svh,560px)] min-h-[440px] overflow-visible lg:block'}`}>
-                    <div className="absolute inset-0 translate-x-9 translate-y-10 rotate-3 rounded-[34px] bg-lab-creamDeep/80 shadow-xl shadow-lab-ink/8 ring-1 ring-lab-line" aria-hidden="true" />
-                    <div className="absolute inset-0 translate-x-5 translate-y-5 -rotate-2 rounded-[34px] bg-white/75 shadow-xl shadow-lab-ink/8 ring-1 ring-lab-line" aria-hidden="true" />
+                    <div className="absolute inset-0 translate-x-9 translate-y-10 rotate-3 rounded-[1.6rem] bg-duck-acid/60" aria-hidden="true" />
+                    <div className="absolute inset-0 translate-x-5 translate-y-5 -rotate-2 rounded-[1.6rem] bg-white/70" aria-hidden="true" />
                     {panels.map((panel, index) => (
                         <article
                             key={panel.title}
-                            className="portfolio-story-motion absolute inset-0 grid overflow-hidden rounded-[34px] bg-white shadow-2xl shadow-lab-ink/12 ring-1 ring-lab-line md:grid-cols-[0.8fr_1.2fr]"
+                            className="absolute inset-0 grid overflow-hidden rounded-[1.6rem] bg-white shadow-[2px_4px_24px_rgba(199,197,188,0.40)] md:grid-cols-[0.8fr_1.2fr]"
                             style={getCardStyle(index)}
                             aria-hidden={Math.abs(progress * (panels.length - 1) - index) >= 0.5}
                         >
                             <div className="flex flex-col justify-center p-9 md:p-10">
-                                <p className="text-sm font-black uppercase tracking-[0.14em] text-lab-sage">{panel.kicker}</p>
-                                <h3 className="mt-3 text-3xl font-black leading-[1.1] text-lab-ink">{panel.title}</h3>
-                                <p className="mt-5 text-base font-semibold leading-7 text-lab-muted">{panel.copy}</p>
-                                <div className="mt-7">
-                                    <span className="inline-flex rounded-full border border-lab-line bg-lab-paper px-3 py-1.5 text-[11px] font-black uppercase tracking-wide text-lab-tealDark">
-                                        Stap {String(index + 1).padStart(2, '0')} van {String(panels.length).padStart(2, '0')}
-                                    </span>
-                                </div>
+                                <p className="w-fit rounded-full bg-duck-acid px-3.5 py-1.5 text-xs font-extrabold uppercase tracking-[0.14em]">{panel.kicker}</p>
+                                <h3 className="mt-4 font-display text-3xl leading-[1.1]">{panel.title}</h3>
+                                <p className="mt-4 text-base font-semibold leading-7 text-duck-ink/65">{panel.copy}</p>
+                                <p className="mt-7 text-xs font-extrabold uppercase tracking-[0.16em] text-duck-ink/40">
+                                    Stap {String(index + 1).padStart(2, '0')} van {String(panels.length).padStart(2, '0')}
+                                </p>
                             </div>
-                            <div className="relative bg-lab-cream p-6 md:p-7">
-                                <div className="overflow-hidden rounded-[20px] bg-lab-paper shadow-xl shadow-lab-ink/10 ring-1 ring-lab-line">
-                                    <div className="flex h-9 items-center gap-1.5 border-b border-lab-line bg-white px-3">
-                                        <span className="size-2.5 rounded-full bg-lab-coral" />
-                                        <span className="size-2.5 rounded-full bg-lab-gold" />
-                                        <span className="size-2.5 rounded-full bg-lab-sage" />
-                                        <span className="ml-3 truncate rounded-full bg-lab-cream px-3 py-0.5 text-[10px] font-black text-lab-muted">{panel.url}</span>
-                                    </div>
-                                    <div className="aspect-[16/11] bg-lab-paper">
-                                        <img src={panel.image} alt={panel.alt} className="h-full w-full object-cover object-top" loading="lazy" decoding="async" />
-                                    </div>
-                                </div>
-                                <div className="absolute -bottom-3 right-5 max-w-[78%] rounded-2xl bg-white px-4 py-3 shadow-xl shadow-lab-ink/14 ring-1 ring-lab-line">
-                                    <p className="text-[10px] font-black uppercase tracking-wide text-lab-sage">{panel.statLabel}</p>
-                                    <p className="mt-0.5 text-sm font-black text-lab-ink">{panel.stat}</p>
+                            <div className="relative bg-duck-bg p-6 md:p-7">
+                                <BrowserFrame url={panel.url}>
+                                    <img src={panel.image} alt={panel.alt} className="aspect-[16/11] w-full object-cover object-top" loading="lazy" decoding="async" />
+                                </BrowserFrame>
+                                <div className="absolute -bottom-3 right-5 max-w-[78%] rounded-[1rem] bg-duck-ink px-4 py-3 text-white">
+                                    <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-duck-acid">{panel.statLabel}</p>
+                                    <p className="mt-0.5 text-sm font-extrabold">{panel.stat}</p>
                                 </div>
                             </div>
                         </article>
@@ -1878,38 +1639,137 @@ function PortfolioStorySection({ startPilot }: { startPilot: () => void }) {
 
                 <div className={`space-y-7 ${reduceMotion ? '' : 'lg:hidden'}`}>
                     {panels.map((panel, index) => (
-                        <Reveal key={panel.title} delay={index * 0.05} y={34} className="portfolio-story-motion overflow-hidden rounded-[28px] bg-white shadow-xl shadow-lab-ink/8 ring-1 ring-lab-line">
+                        <Reveal key={panel.title} delay={index * 0.05} y={34} className="overflow-hidden rounded-[1.6rem] bg-white shadow-[2px_4px_24px_rgba(199,197,188,0.30)]">
                             <div className="p-7">
                                 <div className="flex items-center justify-between gap-3">
-                                    <p className="text-sm font-black uppercase tracking-[0.14em] text-lab-sage">{panel.kicker}</p>
-                                    <span className="rounded-full border border-lab-line bg-lab-paper px-2.5 py-1 text-[10px] font-black uppercase tracking-wide text-lab-tealDark">
+                                    <p className="rounded-full bg-duck-acid px-3.5 py-1.5 text-xs font-extrabold uppercase tracking-[0.14em]">{panel.kicker}</p>
+                                    <span className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-duck-ink/40">
                                         Stap {String(index + 1).padStart(2, '0')} / {String(panels.length).padStart(2, '0')}
                                     </span>
                                 </div>
-                                <h3 className="mt-3 text-2xl font-black leading-[1.1] text-lab-ink">{panel.title}</h3>
-                                <p className="mt-4 text-base font-semibold leading-7 text-lab-muted">{panel.copy}</p>
+                                <h3 className="mt-4 font-display text-2xl leading-[1.1]">{panel.title}</h3>
+                                <p className="mt-3 text-base font-semibold leading-7 text-duck-ink/65">{panel.copy}</p>
                             </div>
-                            <div className="relative bg-lab-cream px-5 pb-9 pt-2">
-                                <div className="overflow-hidden rounded-[18px] bg-lab-paper shadow-xl shadow-lab-ink/10 ring-1 ring-lab-line">
-                                    <div className="flex h-8 items-center gap-1.5 border-b border-lab-line bg-white px-3">
-                                        <span className="size-2 rounded-full bg-lab-coral" />
-                                        <span className="size-2 rounded-full bg-lab-gold" />
-                                        <span className="size-2 rounded-full bg-lab-sage" />
-                                        <span className="ml-2 truncate rounded-full bg-lab-cream px-2.5 py-0.5 text-[9px] font-black text-lab-muted">{panel.url}</span>
-                                    </div>
-                                    <div className="aspect-[16/10] bg-lab-paper">
-                                        <img src={panel.image} alt={panel.alt} className="h-full w-full object-cover object-top" loading="lazy" decoding="async" />
-                                    </div>
-                                </div>
-                                <div className="absolute -bottom-3 right-4 max-w-[80%] rounded-xl bg-white px-3 py-2 shadow-xl shadow-lab-ink/14 ring-1 ring-lab-line">
-                                    <p className="text-[9px] font-black uppercase tracking-wide text-lab-sage">{panel.statLabel}</p>
-                                    <p className="mt-0.5 text-xs font-black text-lab-ink">{panel.stat}</p>
+                            <div className="relative bg-duck-bg px-5 pb-9 pt-2">
+                                <BrowserFrame url={panel.url}>
+                                    <img src={panel.image} alt={panel.alt} className="aspect-[16/10] w-full object-cover object-top" loading="lazy" decoding="async" />
+                                </BrowserFrame>
+                                <div className="absolute -bottom-3 right-4 max-w-[80%] rounded-[0.9rem] bg-duck-ink px-3.5 py-2.5 text-white">
+                                    <p className="text-[9px] font-extrabold uppercase tracking-[0.14em] text-duck-acid">{panel.statLabel}</p>
+                                    <p className="mt-0.5 text-xs font-extrabold">{panel.stat}</p>
                                 </div>
                             </div>
                         </Reveal>
                     ))}
                 </div>
             </div>
+        </section>
+    );
+}
+
+function FaqSection() {
+    const [openIndex, setOpenIndex] = useState<number>(0);
+
+    return (
+        <section id="faq" className="relative scroll-mt-24 bg-duck-bg px-5 py-20 md:px-10 md:py-28">
+            <div className="relative z-10 mx-auto grid max-w-6xl gap-12 lg:grid-cols-[0.8fr_1.2fr]">
+                <Reveal y={30} className="lg:sticky lg:top-32 lg:self-start">
+                    <SectionLabel>FAQ per rol</SectionLabel>
+                    <h2 className="mt-4 text-balance font-display text-[clamp(2.1rem,4.5vw,4rem)] leading-[1.05]">De vragen die in een schoolteam op tafel komen</h2>
+                </Reveal>
+                <Reveal y={30}>
+                    <div role="list">
+                        {roleFaqs.map((faq, index) => {
+                            const isOpen = openIndex === index;
+                            return (
+                                <div key={faq.role} role="listitem" className="border-t border-duck-ink/10 last:border-b">
+                                    <button
+                                        type="button"
+                                        onClick={() => setOpenIndex(isOpen ? -1 : index)}
+                                        aria-expanded={isOpen}
+                                        className="flex w-full items-center justify-between gap-4 py-6 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
+                                    >
+                                        <span>
+                                            <span className="text-xs font-extrabold uppercase tracking-[0.16em] text-duck-ink/45">{faq.role}</span>
+                                            <span className="mt-1.5 block font-display text-xl leading-snug md:text-2xl">{faq.question}</span>
+                                        </span>
+                                        <span className={`grid size-10 flex-none place-items-center rounded-full border transition-all duration-300 ${isOpen ? 'rotate-45 border-duck-ink bg-duck-acid' : 'border-duck-ink/20'}`} aria-hidden="true">
+                                            <PlusIcon />
+                                        </span>
+                                    </button>
+                                    <div className={`grid transition-[grid-template-rows,opacity] duration-300 ease-out ${isOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
+                                        <div className="overflow-hidden">
+                                            <p className="max-w-xl pb-6 text-base font-semibold leading-7 text-duck-ink/65">{faq.answer}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </Reveal>
+            </div>
+        </section>
+    );
+}
+
+function FooterCta({ startPilot, scrollTo }: { startPilot: () => void; scrollTo: (target: string) => void }) {
+    return (
+        <section className="relative bg-duck-ink px-5 pb-12 pt-24 text-white md:px-10 md:pt-32">
+            <Reveal className="relative z-10 mx-auto flex max-w-4xl flex-col items-center text-center">
+                <div className="relative grid size-40 place-items-center md:size-44" aria-hidden="true">
+                    <svg viewBox="0 0 200 200" className="absolute inset-0 animate-duck-spin-slow motion-reduce:animate-none">
+                        <defs>
+                            <path id="dg-cta-circle" d="M100,100 m-80,0 a80,80 0 1,1 160,0 a80,80 0 1,1 -160,0" />
+                        </defs>
+                        <text className="fill-duck-acid text-[13.5px] font-extrabold uppercase tracking-[0.34em]">
+                            <textPath href="#dg-cta-circle">Plan een schoolpilot • Samen starten • </textPath>
+                        </text>
+                    </svg>
+                    <SpriteMascot className="size-16 md:size-[4.5rem]" />
+                </div>
+                <h2 className="mt-8 text-balance font-display text-[clamp(2.4rem,6vw,5rem)] leading-[1.04]">
+                    Klaar om iets{' '}
+                    <span className="relative inline-block whitespace-nowrap">
+                        <span aria-hidden="true" className="absolute inset-x-[-4%] inset-y-[8%] -rotate-1 rounded-[0.5em] bg-duck-acid" />
+                        <em className="relative italic text-duck-ink">tofs</em>
+                    </span>{' '}
+                    te maken?
+                </h2>
+                <p className="mt-5 max-w-md text-pretty text-base font-semibold leading-7 text-white/65">
+                    Plan een schoolpilot en ontdek welke route past bij jouw leerlingen.
+                </p>
+                <a
+                    href="/pilot"
+                    onClick={startPilot}
+                    className="mt-9 inline-flex min-h-[56px] items-center gap-3 rounded-full bg-duck-acid px-9 py-4 text-base font-extrabold text-duck-ink transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid focus-visible:ring-offset-2 focus-visible:ring-offset-duck-ink"
+                >
+                    Plan mijn pilot
+                    <ArrowRightIcon />
+                </a>
+            </Reveal>
+
+            <footer className="relative z-10 mx-auto mt-20 max-w-6xl border-t border-white/10 pt-8 text-sm font-semibold text-white/65">
+                <div className="grid gap-8 md:grid-cols-3 md:items-center">
+                    <a href="/" className="inline-flex min-h-[44px] w-fit items-center rounded font-extrabold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid focus-visible:ring-offset-2 focus-visible:ring-offset-duck-ink">
+                        dgskills.app
+                    </a>
+                    <div className="flex items-center gap-3 md:justify-center">
+                        <SpriteMark className="size-9" />
+                        <span className="text-lg font-extrabold tracking-tight text-white">DGSkills</span>
+                    </div>
+                    <div className="flex flex-wrap gap-x-6 gap-y-2 md:justify-end">
+                        <button onClick={() => scrollTo('journey')} className="min-h-[44px] rounded transition-colors hover:text-duck-acid focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid focus-visible:ring-offset-2 focus-visible:ring-offset-duck-ink">Hoe het werkt</button>
+                        <a href="/ict/privacy/cookies" className="inline-flex min-h-[44px] items-center rounded transition-colors hover:text-duck-acid focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid focus-visible:ring-offset-2 focus-visible:ring-offset-duck-ink">Cookies</a>
+                        <a href="/ict/privacy/policy" className="inline-flex min-h-[44px] items-center rounded transition-colors hover:text-duck-acid focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid focus-visible:ring-offset-2 focus-visible:ring-offset-duck-ink">Privacy</a>
+                        <a href="/ict/privacy/ai" className="inline-flex min-h-[44px] items-center rounded transition-colors hover:text-duck-acid focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid focus-visible:ring-offset-2 focus-visible:ring-offset-duck-ink">AI-transparantie</a>
+                        <a href="mailto:info@dgskills.app" className="inline-flex min-h-[44px] items-center rounded transition-colors hover:text-duck-acid focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid focus-visible:ring-offset-2 focus-visible:ring-offset-duck-ink">Contact</a>
+                    </div>
+                </div>
+                <div className="mt-8 flex flex-col gap-2 border-t border-white/10 pt-6 text-xs text-white/50 md:flex-row md:items-center md:justify-between">
+                    <p>Eenmanszaak Yorin Vonder · KvK 81819889 · info@dgskills.app</p>
+                    <p>Zin om samen te werken?</p>
+                </div>
+            </footer>
         </section>
     );
 }
@@ -1990,103 +1850,188 @@ function usePrefersReducedMotion() {
     return reduced;
 }
 
-function HeroJourneyBridge() {
+function BrowserFrame({ url, children }: { url: string; children: React.ReactNode }) {
     return (
-        <div className="pointer-events-none absolute inset-x-0 bottom-[-1px] z-0 h-52 bg-gradient-to-b from-transparent via-lab-paper/72 to-lab-paper md:h-64" aria-hidden="true">
-            <div className="absolute inset-x-0 bottom-0 h-20 bg-lab-paper" />
-        </div>
-    );
-}
-
-function ProductHeroMockup() {
-    return (
-        <div data-hero-mockup className="relative z-10 mx-auto w-full max-w-[720px] pt-4 sm:pt-6 lg:ml-auto lg:mr-0 lg:w-[min(44vw,760px)] lg:max-w-none xl:w-[min(48vw,980px)]">
-            <div className="absolute inset-x-[18%] -bottom-2 h-24 rounded-full bg-lab-ink/15 blur-2xl" aria-hidden="true" />
-            <div className="relative overflow-hidden rounded-[26px] bg-lab-ink p-2 shadow-[0_30px_60px_rgba(6,31,45,0.22)] md:rounded-[32px] md:p-3">
-                <div className="overflow-hidden rounded-[18px] bg-lab-paper md:rounded-[24px]">
-                    <div className="flex h-9 items-center gap-1.5 border-b border-lab-line bg-white px-3 md:h-11 md:gap-2 md:px-4">
-                        <span className="size-2.5 rounded-full bg-lab-coral md:size-3" aria-hidden="true" />
-                        <span className="size-2.5 rounded-full bg-lab-gold md:size-3" aria-hidden="true" />
-                        <span className="size-2.5 rounded-full bg-lab-sage md:size-3" aria-hidden="true" />
-                        <span className="ml-3 truncate rounded-full bg-lab-cream px-3 py-0.5 text-[10px] font-black text-lab-muted md:ml-4 md:px-4 md:py-1 md:text-xs">dgskills.app/missie</span>
-                    </div>
-                    <img
-                        src="/screenshots/prompt-master.webp"
-                        alt="Leerling werkt aan de DGSkills-missie Prompt Perfectionist en typt een AI-prompt"
-                        className="block w-full object-cover object-top"
-                        width={960}
-                        height={600}
-                        loading="eager"
-                        decoding="async"
-                        fetchPriority="high"
-                    />
-                </div>
+        <div className="overflow-hidden rounded-[1.25rem] bg-duck-ink shadow-[2px_4px_24px_rgba(199,197,188,0.40)]">
+            <div className="flex h-10 items-center gap-1.5 px-4">
+                <span className="size-2.5 rounded-full bg-white/25" aria-hidden="true" />
+                <span className="size-2.5 rounded-full bg-white/25" aria-hidden="true" />
+                <span className="size-2.5 rounded-full bg-duck-acid" aria-hidden="true" />
+                <span className="ml-3 truncate rounded-full bg-white/10 px-3.5 py-1 text-[10px] font-extrabold text-white/65">{url}</span>
             </div>
+            <div className="overflow-hidden rounded-t-[0.9rem] bg-white">{children}</div>
         </div>
     );
 }
 
-function WaveTop({ color, dark = false }: { color: string; dark?: boolean }) {
+function ProductProofFrame({
+    label,
+    title,
+    image,
+    alt,
+    caption,
+    featured = false,
+}: {
+    label: string;
+    title: string;
+    image: string;
+    alt: string;
+    caption: string;
+    featured?: boolean;
+}) {
     return (
-        <svg className={`pointer-events-none absolute left-0 top-0 h-16 w-full -translate-y-[1px] ${dark ? 'text-lab-tealDark' : ''}`} viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
-            <path fill={color} d="M0,44 C180,92 318,88 488,56 C680,20 812,16 992,54 C1164,90 1294,88 1440,40 L1440,0 L0,0 Z" />
+        <article className={`overflow-hidden rounded-[1.6rem] bg-white shadow-[2px_4px_24px_rgba(199,197,188,0.30)] ${featured ? 'md:col-span-2 lg:grid lg:grid-cols-[0.72fr_1.28fr]' : ''}`}>
+            <div className="flex flex-col justify-center p-6 md:p-7">
+                <span className="w-fit rounded-full bg-duck-acid px-3.5 py-1.5 text-[11px] font-extrabold uppercase tracking-[0.14em]">{label}</span>
+                <h3 className="mt-4 font-display text-2xl leading-tight md:text-3xl">{title}</h3>
+                <p className="mt-3 text-sm font-semibold leading-6 text-duck-ink/65">{caption}</p>
+            </div>
+            <div className="bg-duck-bg p-4 md:p-5">
+                <BrowserFrame url="dgskills.app">
+                    <img src={image} alt={alt} className="aspect-[16/10] w-full object-cover object-top" loading="lazy" decoding="async" />
+                </BrowserFrame>
+            </div>
+        </article>
+    );
+}
+
+function SpriteMark({ className }: { className?: string }) {
+    return (
+        <svg viewBox="0 0 64 64" className={className} xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="3" y="3" width="58" height="58" rx="17" fill="#e1ff01" stroke="#202023" strokeWidth="4.5" />
+            <ellipse cx="25" cy="28.5" rx="5.6" ry="9.2" fill="#202023" />
+            <ellipse cx="43" cy="28.5" rx="5.6" ry="9.2" fill="#202023" />
+            <path d="M25 45.5c4.2 3.6 13.8 3.6 18 0" stroke="#202023" strokeWidth="4.2" strokeLinecap="round" fill="none" />
         </svg>
     );
 }
 
-function WaveBottom({ color }: { color: string }) {
+function SpriteMascot({ className }: { className?: string }) {
+    const wrapRef = useRef<HTMLDivElement | null>(null);
+    const reduceMotion = usePrefersReducedMotion();
+
+    useEffect(() => {
+        if (reduceMotion || typeof window === 'undefined') return;
+        if (window.matchMedia('(pointer: coarse)').matches) return;
+        const el = wrapRef.current;
+        if (!el) return;
+
+        let raf = 0;
+        const onMove = (event: MouseEvent) => {
+            if (raf) return;
+            raf = window.requestAnimationFrame(() => {
+                raf = 0;
+                const rect = el.getBoundingClientRect();
+                const cx = rect.left + rect.width / 2;
+                const cy = rect.top + rect.height / 2;
+                const dx = event.clientX - cx;
+                const dy = event.clientY - cy;
+                const dist = Math.hypot(dx, dy) || 1;
+                const max = rect.width * 0.07;
+                el.style.setProperty('--eye-x', `${(dx / dist) * max}px`);
+                el.style.setProperty('--eye-y', `${(dy / dist) * max}px`);
+            });
+        };
+        window.addEventListener('mousemove', onMove, { passive: true });
+        return () => {
+            window.removeEventListener('mousemove', onMove);
+            if (raf) window.cancelAnimationFrame(raf);
+        };
+    }, [reduceMotion]);
+
     return (
-        <svg className="pointer-events-none absolute bottom-0 left-0 h-16 w-full translate-y-[1px]" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
-            <path fill={color} d="M0,76 C154,34 310,32 474,66 C660,104 812,102 1000,64 C1176,28 1306,30 1440,78 L1440,120 L0,120 Z" />
-        </svg>
+        <div ref={wrapRef} className={`relative ${className ?? ''}`} aria-hidden="true">
+            <svg viewBox="0 0 64 64" className="size-full" xmlns="http://www.w3.org/2000/svg">
+                <rect x="3" y="3" width="58" height="58" rx="17" fill="#e1ff01" stroke="#202023" strokeWidth="4.5" />
+                <path d="M25 45.5c4.2 3.6 13.8 3.6 18 0" stroke="#202023" strokeWidth="4.2" strokeLinecap="round" fill="none" />
+            </svg>
+            <span className="absolute left-[31%] top-[31%] block h-[29%] w-[17.5%] animate-duck-blink motion-reduce:animate-none">
+                <span className="block size-full rounded-full bg-duck-ink" style={{ transform: 'translate(var(--eye-x, 0px), var(--eye-y, 0px))' }} />
+            </span>
+            <span className="absolute left-[59%] top-[31%] block h-[29%] w-[17.5%] animate-duck-blink motion-reduce:animate-none">
+                <span className="block size-full rounded-full bg-duck-ink" style={{ transform: 'translate(var(--eye-x, 0px), var(--eye-y, 0px))' }} />
+            </span>
+        </div>
     );
 }
 
-function Underline() {
-    return (
-        <svg className="absolute -bottom-2 left-0 h-3 w-full" viewBox="0 0 220 16" preserveAspectRatio="none" aria-hidden="true">
-            <path d="M3 11 C52 4 121 3 217 10" fill="none" stroke="#8F9148" strokeWidth="4" strokeLinecap="round" />
-        </svg>
-    );
-}
+type SkillArtVariant = 'ai' | 'create' | 'code' | 'media' | 'safe';
 
-function TitleSpark() {
-    return (
-        <svg className="pointer-events-none absolute -top-5 left-[18%] h-7 w-12 -translate-x-1/2 -rotate-[22deg] sm:-top-7 sm:h-9 sm:w-16" viewBox="0 0 64 42" fill="none" aria-hidden="true">
-            <path d="M32 4v22M4 12l16 18M60 12 44 30" stroke="#D97848" strokeWidth="6" strokeLinecap="round" />
-        </svg>
-    );
-}
+function SkillArt({ variant, tone, className }: { variant: SkillArtVariant; tone: SkillTone; className?: string }) {
+    const accent = tone === 'acid' ? '#ffffff' : '#e1ff01';
+    const ink = '#202023';
+    const common = { stroke: ink, strokeWidth: 7, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const };
 
-function Squiggle({ color }: { color: string }) {
-    return (
-        <svg className="mt-4 h-6 w-28" viewBox="0 0 120 24" aria-hidden="true">
-            <path d="M2 15 C16 2 27 25 41 12 C54 0 65 24 80 11 C94 -1 105 19 118 8" fill="none" stroke={color} strokeWidth="3" strokeLinecap="round" />
-        </svg>
-    );
-}
-
-function Doodle({ variant, className }: { variant: 'spark' | 'arrow' | 'dot' | 'leaf'; className?: string }) {
-    const common = `pointer-events-none absolute z-0 ${className ?? ''}`;
-    if (variant === 'spark') {
-        return <svg className={`${common} h-16 w-16`} viewBox="0 0 64 64" fill="none" aria-hidden="true"><path d="M31 6v18M12 16l12 13M52 16 40 29" stroke="currentColor" strokeWidth="4" strokeLinecap="round" /></svg>;
+    if (variant === 'ai') {
+        return (
+            <svg viewBox="0 0 200 200" className={className} aria-hidden="true">
+                <circle cx="38" cy="44" r="13" fill={accent} {...common} />
+                <circle cx="168" cy="58" r="10" fill="#ffffff" {...common} />
+                <circle cx="156" cy="160" r="11" fill="#ffffff" {...common} />
+                <path d="M50 52 76 74M158 66l-26 22M148 152l-22-24" fill="none" {...common} />
+                <rect x="62" y="66" width="84" height="76" rx="22" fill={accent} {...common} />
+                <ellipse cx="90" cy="100" rx="7" ry="12" fill={ink} />
+                <ellipse cx="118" cy="100" rx="7" ry="12" fill={ink} />
+                <path d="M92 124c5 4 19 4 24 0" fill="none" {...common} />
+                <path d="M104 66V46" fill="none" {...common} />
+                <circle cx="104" cy="38" r="8" fill={ink} />
+            </svg>
+        );
     }
-    if (variant === 'arrow') {
-        return <svg className={`${common} h-28 w-28`} viewBox="0 0 112 112" fill="none" aria-hidden="true"><path d="M100 8C68 14 42 35 28 72" stroke="currentColor" strokeWidth="3" strokeDasharray="7 7" /><path d="m28 72 18-10M28 72l8-19" stroke="currentColor" strokeWidth="3" strokeLinecap="round" /></svg>;
+    if (variant === 'create') {
+        return (
+            <svg viewBox="0 0 200 200" className={className} aria-hidden="true">
+                <path d="M36 36l30 74 14-28 28-12z" fill="#ffffff" {...common} />
+                <path d="M84 96c30 28 44 6 68 18" fill="none" strokeDasharray="2 16" {...common} />
+                <path d="M152 86l7 18 18 7-18 7-7 18-7-18-18-7 18-7z" fill={accent} {...common} />
+                <circle cx="56" cy="156" r="10" fill={accent} {...common} />
+                <circle cx="88" cy="166" r="10" fill="#ffffff" {...common} />
+                <circle cx="120" cy="156" r="10" fill={ink} />
+            </svg>
+        );
     }
-    if (variant === 'leaf') {
-        return <svg className={`${common} h-32 w-32`} viewBox="0 0 120 120" fill="none" aria-hidden="true"><path d="M14 100C40 72 55 37 103 20C97 62 76 91 38 101" stroke="currentColor" strokeWidth="3" /><path d="M31 92C47 70 64 51 88 33" stroke="currentColor" strokeWidth="2" /></svg>;
+    if (variant === 'code') {
+        return (
+            <svg viewBox="0 0 200 200" className={className} aria-hidden="true">
+                <rect x="56" y="36" width="88" height="40" rx="14" fill={accent} {...common} />
+                <rect x="44" y="80" width="112" height="40" rx="14" fill="#ffffff" {...common} />
+                <path d="M86 90l-12 10 12 10M114 90l12 10-12 10" fill="none" {...common} />
+                <rect x="56" y="124" width="88" height="40" rx="14" fill="#ffffff" {...common} />
+                <path d="M160 128l16 16m0-16l-16 16" fill="none" {...common} />
+                <circle cx="168" cy="136" r="14" fill={accent} {...common} />
+            </svg>
+        );
     }
-    return <span className={`${common} size-10 rounded-full bg-lab-oliveDeep/80`} aria-hidden="true" />;
+    if (variant === 'media') {
+        return (
+            <svg viewBox="0 0 200 200" className={className} aria-hidden="true">
+                <path d="M40 52h88c12 0 22 10 22 22v22c0 12-10 22-22 22H84l-24 24v-24h-20c-12 0-22-10-22-22V74c0-12 10-22 22-22z" fill={accent} {...common} transform="translate(8 0)" />
+                <path d="M86 76v44l36-22z" fill={ink} />
+                <path d="M134 134l34 14-6 14-34-14" fill="#ffffff" {...common} />
+                <circle cx="58" cy="158" r="12" fill="#ffffff" {...common} />
+            </svg>
+        );
+    }
+    return (
+        <svg viewBox="0 0 200 200" className={className} aria-hidden="true">
+            <path d="M100 28l56 18v44c0 36-22 62-56 78-34-16-56-42-56-78V46z" fill={accent} {...common} />
+            <ellipse cx="84" cy="84" rx="7" ry="12" fill={ink} />
+            <ellipse cx="116" cy="84" rx="7" ry="12" fill={ink} />
+            <rect x="82" y="112" width="36" height="28" rx="9" fill="#ffffff" {...common} />
+            <path d="M91 112v-7a9 9 0 0 1 18 0v7" fill="none" {...common} />
+        </svg>
+    );
 }
 
 function IconBase({ children }: { children: React.ReactNode }) {
-    return <svg className="size-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{children}</svg>;
+    return <svg className="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{children}</svg>;
 }
 
 function ArrowRightIcon() { return <IconBase><path d="M5 12h14M13 5l7 7-7 7" /></IconBase>; }
+function ArrowDownIcon() { return <IconBase><path d="M12 5v14M5 13l7 7 7-7" /></IconBase>; }
 function MenuIcon() { return <IconBase><path d="M4 7h16M4 12h16M4 17h16" /></IconBase>; }
 function XIcon() { return <IconBase><path d="M18 6 6 18M6 6l12 12" /></IconBase>; }
+function PlusIcon() { return <svg className="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" aria-hidden="true"><path d="M12 4v16M4 12h16" /></svg>; }
 function SearchIcon() { return <IconBase><circle cx="11" cy="11" r="7" /><path d="m20 20-4-4" /></IconBase>; }
 function BookIcon() { return <IconBase><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /><path d="M6.5 3H20v18H6.5A2.5 2.5 0 0 1 4 18.5v-13A2.5 2.5 0 0 1 6.5 3Z" /></IconBase>; }
 function PencilIcon() { return <IconBase><path d="m18 2 4 4-13 13-5 1 1-5Z" /><path d="M15 5 19 9" /></IconBase>; }
@@ -2096,4 +2041,4 @@ function BrainIcon() { return <IconBase><path d="M9 9a3 3 0 1 1 3-3v12a3 3 0 1 1
 function CodeIcon() { return <IconBase><path d="m8 9-4 3 4 3M16 9l4 3-4 3M14 5l-4 14" /></IconBase>; }
 function CameraIcon() { return <IconBase><path d="M15 10 20 7v10l-5-3Z" /><rect x="3" y="6" width="12" height="12" rx="2" /></IconBase>; }
 function LockIcon() { return <IconBase><rect x="4" y="10" width="16" height="10" rx="2" /><path d="M8 10V7a4 4 0 0 1 8 0v3" /></IconBase>; }
-function CheckIcon() { return <svg className="mt-1 size-4 flex-none" viewBox="0 0 20 20" fill="none" stroke="#0B453F" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m4 10 4 4 8-8" /></svg>; }
+function CheckIcon() { return <svg className="mt-1 size-4 flex-none" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m4 10 4 4 8-8" /></svg>; }
