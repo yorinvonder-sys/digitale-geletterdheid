@@ -67,6 +67,25 @@
     border: 2px solid var(--hc-border) !important;
 }
 
+/* ---- High contrast — DUCK design tokens ---- */
+.high-contrast [class*="bg-duck-bg"],
+.high-contrast [class*="bg-duck-bgLight"] {
+    background-color: var(--hc-bg) !important;
+}
+
+.high-contrast [class*="text-duck-ink"],
+.high-contrast [class*="text-duck-ink\/"] {
+    color: var(--hc-text) !important;
+}
+
+.high-contrast [class*="bg-duck-acid"] {
+    background-color: #ffff00 !important;
+}
+
+.high-contrast [class*="text-duck-error"] {
+    color: var(--hc-accent) !important;
+}
+
 /* ---- Font size ---- */
 .font-large {
     font-size: 112% !important;

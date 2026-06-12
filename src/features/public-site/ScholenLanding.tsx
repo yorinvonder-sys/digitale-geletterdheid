@@ -5,6 +5,9 @@ import {
     tweakGameDemo,
     type GameConfig,
 } from '@/services/gameDemoService';
+import { DuckMark } from '@/components/brand/DuckMark';
+import { DuckMascot } from '@/components/brand/DuckMascot';
+import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 
 type NavItem = { label: string; target: string };
 type SkillTone = 'paper' | 'acid';
@@ -404,7 +407,7 @@ export const ScholenLanding: React.FC = () => {
             >
                 <nav className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 md:px-10" aria-label="Hoofdnavigatie">
                     <a href="/" className="flex min-h-[44px] items-center gap-3 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2" aria-label="DGSkills homepage">
-                        <SpriteMark className="size-9" />
+                        <DuckMark className="size-9" />
                         <span className="text-xl font-extrabold tracking-tight">DGSkills</span>
                     </a>
 
@@ -522,7 +525,7 @@ export const ScholenLanding: React.FC = () => {
                         </ul>
 
                         <div className="pointer-events-none absolute -top-12 right-[6%] hidden rotate-6 md:block lg:-top-16 lg:right-[4%]" aria-hidden="true">
-                            <SpriteMascot className="size-16 lg:size-20 animate-duck-float motion-reduce:animate-none" />
+                            <DuckMascot className="size-16 lg:size-20 animate-duck-float motion-reduce:animate-none" />
                         </div>
                     </div>
 
@@ -1038,7 +1041,7 @@ function SkillsSection({ scrollTo }: { scrollTo: (target: string) => void }) {
                         ))}
 
                         <article className="relative flex h-[500px] w-[80vw] max-w-[400px] shrink-0 snap-center flex-col items-start justify-center overflow-hidden rounded-[1.6rem] bg-duck-ink p-9 text-white sm:h-[540px]">
-                            <SpriteMark className="size-14" />
+                            <DuckMark className="size-14" />
                             <h3 className="mt-6 text-balance font-display text-4xl leading-[1.08]">
                                 Zien hoe leerlingen <em className="italic text-duck-acid">bouwen</em>?
                             </h3>
@@ -1805,7 +1808,7 @@ function FooterCta({ startPilot, scrollTo }: { startPilot: () => void; scrollTo:
                             <textPath href="#dg-cta-circle">Plan een schoolpilot • Samen starten • </textPath>
                         </text>
                     </svg>
-                    <SpriteMascot className="size-16 md:size-[4.5rem]" />
+                    <DuckMascot className="size-16 md:size-[4.5rem]" />
                 </div>
                 <h2 className="mt-8 text-balance font-display text-[clamp(2.4rem,6vw,5rem)] leading-[1.04]">
                     Klaar om iets{' '}
@@ -1834,7 +1837,7 @@ function FooterCta({ startPilot, scrollTo }: { startPilot: () => void; scrollTo:
                         dgskills.app
                     </a>
                     <div className="flex items-center gap-3 md:justify-center">
-                        <SpriteMark className="size-9" />
+                        <DuckMark className="size-9" />
                         <span className="text-lg font-extrabold tracking-tight text-white">DGSkills</span>
                     </div>
                     <div className="flex flex-wrap gap-x-6 gap-y-2 md:justify-end">
@@ -1915,21 +1918,6 @@ function Reveal({
     );
 }
 
-function usePrefersReducedMotion() {
-    const [reduced, setReduced] = useState(false);
-
-    useEffect(() => {
-        if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return;
-        const media = window.matchMedia('(prefers-reduced-motion: reduce)');
-        const update = () => setReduced(media.matches);
-        update();
-        media.addEventListener?.('change', update);
-        return () => media.removeEventListener?.('change', update);
-    }, []);
-
-    return reduced;
-}
-
 function BrowserFrame({ url, children }: { url: string; children: React.ReactNode }) {
     return (
         <div className="overflow-hidden rounded-[1.25rem] bg-duck-ink shadow-[2px_4px_24px_rgba(199,197,188,0.40)]">
@@ -1957,7 +1945,7 @@ function ScreenMissies() {
         <div className="flex aspect-[16/10] bg-duck-bgLight text-duck-ink">
             <aside className="hidden w-[24%] flex-col gap-1.5 border-r border-duck-ink/10 bg-white p-[4%] sm:flex">
                 <div className="mb-2 flex items-center gap-1.5">
-                    <SpriteMark className="w-[22%] min-w-4" />
+                    <DuckMark className="w-[22%] min-w-4" />
                     <span className="text-[0.5em] font-extrabold sm:text-[10px]">DGSkills</span>
                 </div>
                 {['Missies', 'Routes', 'Portfolio', 'Badges'].map((item, index) => (
@@ -2096,7 +2084,7 @@ function ScreenPortfolio() {
         <div className="aspect-[16/10] bg-duck-bgLight p-[4%] text-duck-ink">
             <div className="flex items-center gap-2.5">
                 <span className="grid size-8 shrink-0 place-items-center rounded-full bg-duck-acid ring-2 ring-duck-ink">
-                    <SpriteMark className="size-5" />
+                    <DuckMark className="size-5" />
                 </span>
                 <div>
                     <p className="font-display text-[14px] leading-tight">Mila — portfolio</p>
@@ -2186,7 +2174,7 @@ function ScreenAvatar() {
         <div className="flex aspect-[16/10] items-center gap-[5%] bg-duck-bgLight p-[5%] text-duck-ink">
             <div className="grid w-[38%] shrink-0 place-items-center">
                 <div className="grid aspect-square w-full place-items-center rounded-[28%] bg-duck-acid ring-2 ring-duck-ink">
-                    <SpriteMark className="w-[58%]" />
+                    <DuckMark className="w-[58%]" />
                 </div>
             </div>
             <div className="min-w-0 flex-1">
@@ -2236,18 +2224,6 @@ function ProductProofFrame({
     );
 }
 
-function SpriteMark({ className }: { className?: string }) {
-    return (
-        <svg viewBox="0 0 64 64" className={className} xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M34 4.5c-3-1.3-6.4.3-7.5 3.4" fill="none" stroke="#202023" strokeWidth="3.8" strokeLinecap="round" />
-            <circle cx="32" cy="34" r="25.5" fill="#e1ff01" stroke="#202023" strokeWidth="4.5" />
-            <ellipse cx="24" cy="31" rx="5.4" ry="9" fill="#202023" />
-            <ellipse cx="40" cy="31" rx="5.4" ry="9" fill="#202023" />
-            <rect x="23" y="44" width="18" height="9" rx="4.5" fill="#ffffff" stroke="#202023" strokeWidth="3.8" />
-        </svg>
-    );
-}
-
 function PageLoader({ onDone }: { onDone: () => void }) {
     const [pct, setPct] = useState(0);
     const [leaving, setLeaving] = useState(false);
@@ -2279,7 +2255,7 @@ function PageLoader({ onDone }: { onDone: () => void }) {
             aria-hidden="true"
             className={`fixed inset-0 z-[100] flex flex-col items-center justify-center gap-7 bg-duck-acid transition-[transform,border-radius] duration-700 ease-[cubic-bezier(0.65,0,0.35,1)] ${leaving ? '-translate-y-full rounded-b-[44%]' : ''}`}
         >
-            <SpriteMascot className="size-20 md:size-24" />
+            <DuckMascot className="size-20 md:size-24" />
             <p className="font-display text-7xl tabular-nums text-duck-ink md:text-8xl">{pct}%</p>
         </div>
     );
@@ -2311,56 +2287,6 @@ function HeroHeadline({ introReady }: { introReady: boolean }) {
                 </span>
             ))}
         </h1>
-    );
-}
-
-function SpriteMascot({ className }: { className?: string }) {
-    const wrapRef = useRef<HTMLDivElement | null>(null);
-    const reduceMotion = usePrefersReducedMotion();
-
-    useEffect(() => {
-        if (reduceMotion || typeof window === 'undefined') return;
-        if (window.matchMedia('(pointer: coarse)').matches) return;
-        const el = wrapRef.current;
-        if (!el) return;
-
-        let raf = 0;
-        const onMove = (event: MouseEvent) => {
-            if (raf) return;
-            raf = window.requestAnimationFrame(() => {
-                raf = 0;
-                const rect = el.getBoundingClientRect();
-                const cx = rect.left + rect.width / 2;
-                const cy = rect.top + rect.height / 2;
-                const dx = event.clientX - cx;
-                const dy = event.clientY - cy;
-                const dist = Math.hypot(dx, dy) || 1;
-                const max = rect.width * 0.07;
-                el.style.setProperty('--eye-x', `${(dx / dist) * max}px`);
-                el.style.setProperty('--eye-y', `${(dy / dist) * max}px`);
-            });
-        };
-        window.addEventListener('mousemove', onMove, { passive: true });
-        return () => {
-            window.removeEventListener('mousemove', onMove);
-            if (raf) window.cancelAnimationFrame(raf);
-        };
-    }, [reduceMotion]);
-
-    return (
-        <div ref={wrapRef} className={`relative ${className ?? ''}`} aria-hidden="true">
-            <svg viewBox="0 0 64 64" className="size-full" xmlns="http://www.w3.org/2000/svg">
-                <path d="M34 4.5c-3-1.3-6.4.3-7.5 3.4" fill="none" stroke="#202023" strokeWidth="3.8" strokeLinecap="round" />
-                <circle cx="32" cy="34" r="25.5" fill="#e1ff01" stroke="#202023" strokeWidth="4.5" />
-                <rect x="23" y="44" width="18" height="9" rx="4.5" fill="#ffffff" stroke="#202023" strokeWidth="3.8" />
-            </svg>
-            <span className="absolute left-[29%] top-[34%] block h-[28%] w-[17%] animate-duck-blink motion-reduce:animate-none">
-                <span className="block size-full rounded-full bg-duck-ink" style={{ transform: 'translate(var(--eye-x, 0px), var(--eye-y, 0px))' }} />
-            </span>
-            <span className="absolute left-[54%] top-[34%] block h-[28%] w-[17%] animate-duck-blink motion-reduce:animate-none">
-                <span className="block size-full rounded-full bg-duck-ink" style={{ transform: 'translate(var(--eye-x, 0px), var(--eye-y, 0px))' }} />
-            </span>
-        </div>
     );
 }
 

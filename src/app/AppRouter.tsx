@@ -36,6 +36,9 @@ const DesignPreview = React.lazy(() => import('@/features/dev-tools/DesignPrevie
 const DevMissionPreview = import.meta.env.DEV
     ? React.lazy(() => import('@/features/dev-tools/DevMissionPreview'))
     : null;
+const DevShellPreview = import.meta.env.DEV
+    ? React.lazy(() => import('@/features/dev-tools/DevShellPreview'))
+    : null;
 
 /** Minimal spinner — no lucide to avoid blocking LCP */
 const LoadingFallback = () => (
@@ -485,6 +488,15 @@ export function AppRouter() {
         return (
             <React.Suspense fallback={<LoadingFallback />}>
                 <DevMissionPreview />
+            </React.Suspense>
+        );
+    }
+
+    // DEV ONLY: Shell preview — leerlingschermen met fixture-data.
+    if (import.meta.env.DEV && DevShellPreview && normalizedPath === '/dev/shell-preview') {
+        return (
+            <React.Suspense fallback={<LoadingFallback />}>
+                <DevShellPreview />
             </React.Suspense>
         );
     }

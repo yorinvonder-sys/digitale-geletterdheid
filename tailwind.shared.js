@@ -84,6 +84,9 @@ export const sharedTailwindConfig = {
             backgroundImage: {
                 'grid-pattern': "linear-gradient(to right, #E7D8BD 1px, transparent 1px), linear-gradient(to bottom, #E7D8BD 1px, transparent 1px)",
             },
+            boxShadow: {
+                'duck-soft': '2px 4px 24px rgba(199,197,188,0.30)',
+            },
             animation: {
                 'float': 'float 6s ease-in-out infinite',
                 'pulse-soft': 'pulse-soft 2s ease-in-out infinite',

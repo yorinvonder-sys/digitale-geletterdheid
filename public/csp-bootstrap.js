@@ -107,8 +107,6 @@
   // Route-specific font loading (after first paint)
   // Self-hosted Outfit font — no external Google Fonts dependency (SRI/CSP compliant)
   function setupRouteFontLoading() {
-    var path = window.location.pathname;
-    if (path !== '/' && path !== '/scholen') return;
 
     function loadFonts() {
       var fontUrls = ['/fonts/outfit.css', '/fonts/fraunces.css'];

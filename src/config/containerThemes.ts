@@ -68,3 +68,36 @@ export const DEFAULT_PERIOD_ICON_KEYS: Record<number, string> = {
     3: 'shield',
     4: 'rocket',
 };
+
+// Duck-stijl variant — identieke shape/keys als CONTAINER_THEME_MAP
+export const CONTAINER_THEME_MAP_DUCK: Record<string, ContainerTheme> = {
+    'indigo':   { border: 'border-duck-ink/15', bg: 'bg-duck-acid',    text: 'text-duck-ink', iconKey: 'monitor', label: 'Digitale Basis' },
+    'pink':     { border: 'border-duck-ink/15', bg: 'bg-duck-acid',    text: 'text-duck-ink', iconKey: 'brain',   label: 'AI & Creatie' },
+    'cyan':     { border: 'border-duck-ink/15', bg: 'bg-duck-ink',     text: 'text-white',    iconKey: 'shield',  label: 'Data & Veiligheid' },
+    'violet':   { border: 'border-duck-ink/15', bg: 'bg-duck-ink',     text: 'text-white',    iconKey: 'rocket',  label: 'Eindproject' },
+    'emerald':  { border: 'border-duck-ink/15', bg: 'bg-duck-bgLight', text: 'text-duck-ink', iconKey: 'leaf',    label: '' },
+    'amber':    { border: 'border-duck-ink/15', bg: 'bg-duck-acid',    text: 'text-duck-ink', iconKey: 'star',    label: '' },
+    'rose':     { border: 'border-duck-ink/15', bg: 'bg-duck-bgLight', text: 'text-duck-ink', iconKey: 'heart',   label: '' },
+    'slate':    { border: 'border-duck-ink/15', bg: 'bg-duck-bgLight', text: 'text-duck-ink', iconKey: 'puzzle',  label: '' },
+    'orange':   { border: 'border-duck-ink/15', bg: 'bg-duck-acid',    text: 'text-duck-ink', iconKey: 'flame',   label: '' },
+    'teal':     { border: 'border-duck-ink/15', bg: 'bg-duck-ink',     text: 'text-white',    iconKey: 'compass', label: '' },
+    'fuchsia':  { border: 'border-duck-ink/15', bg: 'bg-duck-bgLight', text: 'text-duck-ink', iconKey: 'sparkle', label: '' },
+    'lime':     { border: 'border-duck-ink/15', bg: 'bg-duck-acid',    text: 'text-duck-ink', iconKey: 'bolt',    label: '' },
+};
+
+export function getContainerThemeDuck(colorKey?: string): ContainerTheme {
+    if (!colorKey) return {
+        border: 'border-duck-ink/15',
+        bg: 'bg-duck-bgLight',
+        text: 'text-duck-ink',
+        iconKey: 'puzzle',
+        label: '',
+    };
+    return CONTAINER_THEME_MAP_DUCK[colorKey] ?? {
+        border: 'border-duck-ink/15',
+        bg: 'bg-duck-bgLight',
+        text: 'text-duck-ink',
+        iconKey: 'puzzle',
+        label: '',
+    };
+}
