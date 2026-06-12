@@ -104,6 +104,7 @@ export const sharedTailwindConfig = {
                 'duck-float': 'duckFloat 7s ease-in-out infinite',
                 'duck-float-delayed': 'duckFloat 7s ease-in-out 2.4s infinite',
                 'duck-blink': 'duckBlink 5.2s ease-in-out infinite',
+                'duck-rise': 'duckRise 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards',
             },
             keyframes: {
                 float: {
@@ -162,6 +163,10 @@ export const sharedTailwindConfig = {
                 duckBlink: {
                     '0%, 94%, 100%': { transform: 'scaleY(1)' },
                     '96%, 98%': { transform: 'scaleY(0.08)' },
+                },
+                duckRise: {
+                    '0%': { transform: 'translateY(115%)' },
+                    '100%': { transform: 'translateY(0)' },
                 },
             }
         },

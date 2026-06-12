@@ -310,10 +310,37 @@ function trackLandingEvent(event: string, data?: Record<string, unknown>) {
 
 export const ScholenLanding: React.FC = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [showLoader, setShowLoader] = useState(false);
+    const [introReady, setIntroReady] = useState(false);
     const reduceMotion = usePrefersReducedMotion();
     const { hidden: headerHidden, scrolled: headerScrolled } = useHeaderChrome(mobileMenuOpen);
 
     useHomepageGsapEffects(reduceMotion);
+
+    useEffect(() => {
+        let seen = true;
+        try {
+            seen = sessionStorage.getItem('dg-intro-seen') === '1';
+        } catch {
+            seen = true;
+        }
+        const prefersReduce = typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (seen || prefersReduce) {
+            setIntroReady(true);
+            return;
+        }
+        try {
+            sessionStorage.setItem('dg-intro-seen', '1');
+        } catch {
+            // sessionStorage onbeschikbaar — intro toont dan vaker; acceptabel.
+        }
+        setShowLoader(true);
+    }, []);
+
+    const finishIntro = useCallback(() => {
+        setShowLoader(false);
+        setIntroReady(true);
+    }, []);
 
     useEffect(() => {
         const originalTitle = document.title;
@@ -382,6 +409,7 @@ export const ScholenLanding: React.FC = () => {
 
     return (
         <div className="min-h-screen overflow-x-clip bg-duck-bg font-sans text-duck-ink antialiased selection:bg-duck-acid selection:text-duck-ink">
+            {showLoader && <PageLoader onDone={finishIntro} />}
             <header
                 className={`fixed inset-x-0 top-0 z-50 transition-[transform,background-color,box-shadow] duration-500 ${headerHidden ? '-translate-y-full' : 'translate-y-0'} ${mobileMenuOpen ? 'bg-duck-acid' : headerScrolled ? 'bg-duck-bg/95 shadow-[0_1px_0_rgba(32,32,35,0.10)] backdrop-blur-md' : 'bg-transparent'}`}
             >
@@ -468,24 +496,14 @@ export const ScholenLanding: React.FC = () => {
                     </div>
 
                     <div className="relative z-10 mx-auto max-w-5xl text-center">
-                        <p className="inline-flex items-center gap-2 rounded-full border border-duck-ink bg-duck-acid px-4 py-2 text-xs font-extrabold uppercase tracking-[0.16em] opacity-0 motion-reduce:animate-none motion-reduce:opacity-100 animate-fade-in-up">
+                        <p className={`inline-flex items-center gap-2 rounded-full border border-duck-ink bg-duck-acid px-4 py-2 text-xs font-extrabold uppercase tracking-[0.16em] opacity-0 motion-reduce:animate-none motion-reduce:opacity-100 ${introReady ? 'animate-fade-in-up' : ''}`}>
                             Digitale geletterdheid voor VO &amp; VSO
                         </p>
-                        <h1
-                            aria-label="Maak digitale geletterdheid tastbaar, motiverend en aantoonbaar."
-                            className="mx-auto mt-7 max-w-[20ch] text-balance font-display text-[clamp(2.6rem,7vw,6.4rem)] font-normal leading-[1.02] tracking-[-0.01em] opacity-0 motion-reduce:animate-none motion-reduce:opacity-100 animate-fade-in-up-delay-1"
-                        >
-                            Maak digitale geletterdheid <em className="italic">tastbaar</em>, <em className="italic">motiverend</em> en{' '}
-                            <span className="relative inline-block whitespace-nowrap">
-                                <span aria-hidden="true" className="absolute inset-x-[-3%] inset-y-[8%] -rotate-1 rounded-[0.5em] bg-duck-acid" />
-                                <span className="relative">aantoonbaar</span>
-                            </span>
-                            .
-                        </h1>
-                        <p className="mx-auto mt-7 max-w-2xl text-pretty text-base font-semibold leading-7 text-duck-ink/70 sm:text-lg sm:leading-8 opacity-0 motion-reduce:animate-none motion-reduce:opacity-100 animate-fade-in-up-delay-2">
+                        <HeroHeadline introReady={introReady} />
+                        <p className={`mx-auto mt-7 max-w-2xl text-pretty text-base font-semibold leading-7 text-duck-ink/70 sm:text-lg sm:leading-8 opacity-0 motion-reduce:animate-none motion-reduce:opacity-100 ${introReady ? 'animate-fade-in-up-delay-2' : ''}`}>
                             De missiegedreven leeromgeving voor VO en VSO die aansluit op de nieuwste SLO-kerndoelen. Van AI-geletterdheid tot online veiligheid — leerlingen leren door te doen, docenten zien voortgang per kerndoel.
                         </p>
-                        <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row opacity-0 motion-reduce:animate-none motion-reduce:opacity-100 animate-fade-in-up-delay-3">
+                        <div className={`mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row opacity-0 motion-reduce:animate-none motion-reduce:opacity-100 ${introReady ? 'animate-fade-in-up-delay-3' : ''}`}>
                             <a
                                 href="/pilot"
                                 onClick={startPilot}
@@ -502,7 +520,7 @@ export const ScholenLanding: React.FC = () => {
                                 <span className="transition-transform duration-300 group-hover:translate-y-0.5"><ArrowDownIcon /></span>
                             </button>
                         </div>
-                        <p className="mx-auto mt-6 max-w-xl text-pretty text-sm font-bold leading-6 text-duck-ink/60 opacity-0 motion-reduce:animate-none motion-reduce:opacity-100 animate-fade-in-up-delay-3">
+                        <p className={`mx-auto mt-6 max-w-xl text-pretty text-sm font-bold leading-6 text-duck-ink/60 opacity-0 motion-reduce:animate-none motion-reduce:opacity-100 ${introReady ? 'animate-fade-in-up-delay-3' : ''}`}>
                             Voor VO en VSO: AI-missies, SLO-voortgang en portfolio-bewijs in een veilige leeromgeving.
                         </p>
 
@@ -519,7 +537,7 @@ export const ScholenLanding: React.FC = () => {
                         </div>
                     </div>
 
-                    <div className="relative z-10 mx-auto mt-14 max-w-5xl opacity-0 motion-reduce:animate-none motion-reduce:opacity-100 animate-fade-in-up-delay-3 md:mt-16">
+                    <div className={`relative z-10 mx-auto mt-14 max-w-5xl opacity-0 motion-reduce:animate-none motion-reduce:opacity-100 md:mt-16 ${introReady ? 'animate-fade-in-up-delay-3' : ''}`}>
                         <div data-hero-mockup className="relative mx-auto w-full max-w-[980px] lg:-rotate-1">
                             <BrowserFrame url="dgskills.app/missie">
                                 <img
@@ -1260,10 +1278,11 @@ function SpriteGlider({ color, reduceMotion, yPercent, domRef }: { color: string
                 </div>
             )}
             <svg viewBox="0 0 64 64" width="58" height="58" xmlns="http://www.w3.org/2000/svg" className="-rotate-[5deg]" aria-hidden="true">
-                <rect x="4" y="4" width="56" height="56" rx="17" fill={color} stroke="#202023" strokeWidth="4" />
-                <ellipse cx="26" cy="29" rx="5" ry="8.4" fill="#202023" />
-                <ellipse cx="43" cy="29" rx="5" ry="8.4" fill="#202023" />
-                <path d="M27 45c3.8 3.2 12 3.2 15.5 0" stroke="#202023" strokeWidth="3.8" strokeLinecap="round" fill="none" />
+                <path d="M34 5c-3-1.3-6.4.3-7.5 3.4" fill="none" stroke="#202023" strokeWidth="3.6" strokeLinecap="round" />
+                <circle cx="32" cy="34" r="24.5" fill={color} stroke="#202023" strokeWidth="4" />
+                <ellipse cx="25" cy="31" rx="5" ry="8.4" fill="#202023" />
+                <ellipse cx="41" cy="31" rx="5" ry="8.4" fill="#202023" />
+                <rect x="24" y="44" width="17" height="8.5" rx="4.25" fill="#ffffff" stroke="#202023" strokeWidth="3.4" />
             </svg>
         </div>
     );
@@ -1991,11 +2010,78 @@ function ProductProofFrame({
 function SpriteMark({ className }: { className?: string }) {
     return (
         <svg viewBox="0 0 64 64" className={className} xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <rect x="3" y="3" width="58" height="58" rx="17" fill="#e1ff01" stroke="#202023" strokeWidth="4.5" />
-            <ellipse cx="25" cy="28.5" rx="5.6" ry="9.2" fill="#202023" />
-            <ellipse cx="43" cy="28.5" rx="5.6" ry="9.2" fill="#202023" />
-            <path d="M25 45.5c4.2 3.6 13.8 3.6 18 0" stroke="#202023" strokeWidth="4.2" strokeLinecap="round" fill="none" />
+            <path d="M34 4.5c-3-1.3-6.4.3-7.5 3.4" fill="none" stroke="#202023" strokeWidth="3.8" strokeLinecap="round" />
+            <circle cx="32" cy="34" r="25.5" fill="#e1ff01" stroke="#202023" strokeWidth="4.5" />
+            <ellipse cx="24" cy="31" rx="5.4" ry="9" fill="#202023" />
+            <ellipse cx="40" cy="31" rx="5.4" ry="9" fill="#202023" />
+            <rect x="23" y="44" width="18" height="9" rx="4.5" fill="#ffffff" stroke="#202023" strokeWidth="3.8" />
         </svg>
+    );
+}
+
+function PageLoader({ onDone }: { onDone: () => void }) {
+    const [pct, setPct] = useState(0);
+    const [leaving, setLeaving] = useState(false);
+
+    useEffect(() => {
+        let raf = 0;
+        let exitTimer = 0;
+        const start = performance.now();
+        const DURATION = 1100;
+        const tick = (now: number) => {
+            const progress = Math.min(1, (now - start) / DURATION);
+            setPct(Math.round(progress * 100));
+            if (progress < 1) {
+                raf = requestAnimationFrame(tick);
+            } else {
+                setLeaving(true);
+                exitTimer = window.setTimeout(onDone, 700);
+            }
+        };
+        raf = requestAnimationFrame(tick);
+        return () => {
+            cancelAnimationFrame(raf);
+            window.clearTimeout(exitTimer);
+        };
+    }, [onDone]);
+
+    return (
+        <div
+            aria-hidden="true"
+            className={`fixed inset-0 z-[100] flex flex-col items-center justify-center gap-7 bg-duck-acid transition-[transform,border-radius] duration-700 ease-[cubic-bezier(0.65,0,0.35,1)] ${leaving ? '-translate-y-full rounded-b-[44%]' : ''}`}
+        >
+            <SpriteMascot className="size-20 md:size-24" />
+            <p className="font-display text-7xl tabular-nums text-duck-ink md:text-8xl">{pct}%</p>
+        </div>
+    );
+}
+
+function HeroHeadline({ introReady }: { introReady: boolean }) {
+    const rise = (index: number, child: React.ReactNode) => (
+        <span className="inline-block overflow-hidden pb-[0.14em] pr-[0.06em] align-bottom -mb-[0.14em] -mr-[0.06em]">
+            <span
+                className={`inline-block motion-reduce:translate-y-0 motion-reduce:animate-none ${introReady ? 'animate-duck-rise' : 'translate-y-[115%]'}`}
+                style={{ animationDelay: `${0.1 + index * 0.07}s` }}
+            >
+                {child}
+            </span>
+        </span>
+    );
+
+    return (
+        <h1
+            aria-label="Maak digitale geletterdheid tastbaar, motiverend en aantoonbaar."
+            className="mx-auto mt-7 max-w-[20ch] text-balance font-display text-[clamp(2.6rem,7vw,6.4rem)] font-normal leading-[1.04] tracking-[-0.01em]"
+        >
+            {rise(0, 'Maak')} {rise(1, 'digitale')} {rise(2, 'geletterdheid')} {rise(3, <em className="italic">tastbaar,</em>)}{' '}
+            {rise(4, <em className="italic">motiverend</em>)} {rise(5, 'en')}{' '}
+            {rise(6, (
+                <span className="relative inline-block whitespace-nowrap">
+                    <span aria-hidden="true" className="absolute inset-x-[-3%] inset-y-[8%] -rotate-1 rounded-[0.5em] bg-duck-acid" />
+                    <span className="relative">aantoonbaar.</span>
+                </span>
+            ))}
+        </h1>
     );
 }
 
@@ -2035,13 +2121,14 @@ function SpriteMascot({ className }: { className?: string }) {
     return (
         <div ref={wrapRef} className={`relative ${className ?? ''}`} aria-hidden="true">
             <svg viewBox="0 0 64 64" className="size-full" xmlns="http://www.w3.org/2000/svg">
-                <rect x="3" y="3" width="58" height="58" rx="17" fill="#e1ff01" stroke="#202023" strokeWidth="4.5" />
-                <path d="M25 45.5c4.2 3.6 13.8 3.6 18 0" stroke="#202023" strokeWidth="4.2" strokeLinecap="round" fill="none" />
+                <path d="M34 4.5c-3-1.3-6.4.3-7.5 3.4" fill="none" stroke="#202023" strokeWidth="3.8" strokeLinecap="round" />
+                <circle cx="32" cy="34" r="25.5" fill="#e1ff01" stroke="#202023" strokeWidth="4.5" />
+                <rect x="23" y="44" width="18" height="9" rx="4.5" fill="#ffffff" stroke="#202023" strokeWidth="3.8" />
             </svg>
-            <span className="absolute left-[31%] top-[31%] block h-[29%] w-[17.5%] animate-duck-blink motion-reduce:animate-none">
+            <span className="absolute left-[29%] top-[34%] block h-[28%] w-[17%] animate-duck-blink motion-reduce:animate-none">
                 <span className="block size-full rounded-full bg-duck-ink" style={{ transform: 'translate(var(--eye-x, 0px), var(--eye-y, 0px))' }} />
             </span>
-            <span className="absolute left-[59%] top-[31%] block h-[29%] w-[17.5%] animate-duck-blink motion-reduce:animate-none">
+            <span className="absolute left-[54%] top-[34%] block h-[28%] w-[17%] animate-duck-blink motion-reduce:animate-none">
                 <span className="block size-full rounded-full bg-duck-ink" style={{ transform: 'translate(var(--eye-x, 0px), var(--eye-y, 0px))' }} />
             </span>
         </div>
