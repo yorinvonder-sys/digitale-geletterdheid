@@ -236,7 +236,7 @@ const journeyChapters: JourneyChapter[] = [
         step: '01',
         title: 'Ontdek',
         eyebrow: 'Start je route',
-        copy: 'Leerlingen kiezen een leerlijn, zien direct de AI-missies en starten vanuit hun eigen niveau.',
+        copy: 'Leerlingen kiezen een leerlijn, zien meteen de AI-missies en starten op hun eigen niveau.',
         routeCoachTip: 'Kies een leerlijn en zie meteen waar je klas start.',
         screen: <ScreenMissies />,
         icon: <SearchIcon />,
@@ -247,7 +247,7 @@ const journeyChapters: JourneyChapter[] = [
         step: '02',
         title: 'Leer',
         eyebrow: 'Korte challenges',
-        copy: 'Elke opdracht gebruikt echte DGSkills-schermen, zodat leerlingen leren door te doen in plaats van alleen te lezen.',
+        copy: 'Elke opdracht draait in echte DGSkills-schermen, dus leerlingen leren door te doen, niet door te lezen.',
         routeCoachTip: 'Elke missie geeft directe feedback, dus leerlingen blijven bezig.',
         screen: <ScreenMissieDetail />,
         icon: <BookIcon />,
@@ -269,7 +269,7 @@ const journeyChapters: JourneyChapter[] = [
         step: '04',
         title: 'Bewijs',
         eyebrow: 'Trofeeën en XP',
-        copy: 'Voortgang wordt zichtbaar met levels, trofeeën en XP, zonder dat het voelt als een saai leerlingvolgsysteem.',
+        copy: 'Voortgang wordt zichtbaar met levels, trofeeën en XP, zonder dat het voelt als een saai volgsysteem.',
         routeCoachTip: 'Alles eindigt in zichtbaar portfolio- of voortgangsbewijs.',
         screen: <ScreenVoortgang />,
         icon: <BadgeIcon />,
@@ -280,7 +280,7 @@ const journeyChapters: JourneyChapter[] = [
         step: '05',
         title: 'Groei',
         eyebrow: 'Portfolio groei',
-        copy: 'Leerlingen krijgen feedback, bouwen bewijs op en zien hun groei terug in een portfolio dat met ze meegroeit.',
+        copy: 'Leerlingen krijgen feedback, bouwen bewijs op en zien hun groei in een portfolio dat met ze meegroeit.',
         routeCoachTip: 'Maak groei zichtbaar per leerling, klas en route.',
         screen: <ScreenPortfolio />,
         icon: <GrowthIcon />,
@@ -490,7 +490,7 @@ export const ScholenLanding: React.FC = () => {
                         </p>
                         <HeroHeadline introReady={introReady} />
                         <p className={`mx-auto mt-7 max-w-2xl text-pretty text-base font-semibold leading-7 text-duck-ink/70 sm:text-lg sm:leading-8 opacity-0 motion-reduce:animate-none motion-reduce:opacity-100 ${introReady ? 'animate-fade-in-up-delay-2' : ''}`}>
-                            De missiegedreven leeromgeving voor VO en VSO die aansluit op de nieuwste SLO-kerndoelen. Van AI-geletterdheid tot online veiligheid — leerlingen leren door te doen, docenten zien voortgang per kerndoel.
+                            De missiegedreven leeromgeving voor VO en VSO, gekoppeld aan de SLO-kerndoelen. Van AI-geletterdheid tot online veiligheid: leerlingen leren door te doen, docenten zien voortgang per kerndoel.
                         </p>
                         <div className={`mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row opacity-0 motion-reduce:animate-none motion-reduce:opacity-100 ${introReady ? 'animate-fade-in-up-delay-3' : ''}`}>
                             <a
@@ -505,7 +505,7 @@ export const ScholenLanding: React.FC = () => {
                                 onClick={() => scrollTo('projecten')}
                                 className="group inline-flex min-h-[54px] w-full items-center justify-center gap-3 rounded-full border border-duck-ink/20 bg-duck-bgLight px-8 py-3.5 text-base font-extrabold text-duck-ink transition-all duration-300 hover:-translate-y-0.5 hover:border-duck-ink sm:w-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
                             >
-                                Bekijk leerlingdemo
+                                Bekijk de leerlingdemo
                                 <span className="transition-transform duration-300 group-hover:translate-y-0.5"><ArrowDownIcon /></span>
                             </button>
                         </div>
@@ -557,7 +557,7 @@ export const ScholenLanding: React.FC = () => {
                                 <h2 className="mt-4 max-w-2xl text-balance font-display text-[clamp(2.1rem,4.5vw,4rem)] leading-[1.05]">Laat AI een game mee bouwen</h2>
                             </Reveal>
                             <Reveal delay={0.1} className="max-w-md text-pretty text-base font-semibold leading-7 text-duck-ink/65">
-                                Leerlingen schrijven zelf een prompt en zien meteen hoe hun mini-game verandert. De demo stopt na vijf prompts.
+                                Leerlingen schrijven zelf een prompt en zien meteen hun mini-game veranderen. De demo stopt na vijf prompts.
                             </Reveal>
                         </div>
                         <AiGameBuilderDemo reduceMotion={reduceMotion} />
@@ -604,7 +604,7 @@ export const ScholenLanding: React.FC = () => {
                                 <SectionLabel>Voor schoolleiding</SectionLabel>
                                 <h2 className="mt-4 text-balance font-display text-[clamp(2.1rem,4.5vw,4rem)] leading-[1.05]">Waarom schoolleiders kiezen voor DGSkills</h2>
                                 <p className="mt-5 text-pretty text-base font-semibold leading-7 text-duck-ink/65">
-                                    De pilot laat niet alleen zien dat leerlingen gemotiveerd zijn, maar ook hoe digitale geletterdheid structureel in de school kan landen.
+                                    De pilot laat zien dat leerlingen gemotiveerd raken én hoe digitale geletterdheid structureel in de school landt.
                                 </p>
                                 <a
                                     href="/pilot"
@@ -644,7 +644,7 @@ export const ScholenLanding: React.FC = () => {
                                 <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-duck-acid">Voor ICT en privacy</p>
                                 <h2 className="mt-4 text-balance font-display text-3xl leading-[1.08] md:text-4xl">Veilig te beoordelen door ICT</h2>
                                 <p className="mt-4 text-pretty text-sm font-semibold leading-7 text-white/70">
-                                    DGSkills verkoopt geen zwarte doos. De pilot geeft scholen tijd om privacy, AI en beheer concreet te toetsen.
+                                    DGSkills is geen zwarte doos. De pilot geeft scholen tijd om privacy, AI en beheer concreet te toetsen.
                                 </p>
                                 <div className="mt-6">
                                     {ictTrustItems.map((item) => (
@@ -694,7 +694,7 @@ export const ScholenLanding: React.FC = () => {
                                 <p className="inline-flex rounded-full border border-duck-ink px-4 py-1.5 text-xs font-extrabold uppercase tracking-[0.16em]">Schoolpilot</p>
                                 <h2 className="mt-5 text-balance font-display text-[clamp(2.1rem,4.5vw,4rem)] leading-[1.05]">Wat krijg je in de schoolpilot?</h2>
                                 <p className="mt-5 text-pretty text-base font-semibold leading-7 text-duck-ink/70">
-                                    Gebouwd vanuit VO/VSO-praktijk en doorlopend getest met docenten. De pilot is klein genoeg om te starten, maar concreet genoeg om er een schoolbesluit op te baseren.
+                                    Gebouwd vanuit de VO/VSO-praktijk en doorlopend getest met docenten. Klein genoeg om te starten, concreet genoeg voor een schoolbesluit.
                                 </p>
                             </div>
                             <div>
@@ -999,7 +999,7 @@ function SkillsSection({ scrollTo }: { scrollTo: (target: string) => void }) {
                             <h2 className="mt-4 max-w-2xl text-balance font-display text-[clamp(2.1rem,4.5vw,4rem)] leading-[1.05]">Ontdek jouw favoriete skills</h2>
                         </div>
                         <p className="max-w-md text-pretty text-base font-semibold leading-7 text-duck-ink/65">
-                            Elke skill krijgt een zichtbaar voorbeeld: van een AI-tool bouwen tot een game ontwerpen of veilig online werken. <span className="hidden lg:inline">Scroll verder om ze allemaal te zien.</span>
+                            Elke skill krijgt een zichtbaar voorbeeld: een AI-tool bouwen, een game ontwerpen of veilig online werken. <span className="hidden lg:inline">Scroll verder om ze allemaal te zien.</span>
                         </p>
                     </Reveal>
                 </div>
@@ -1069,14 +1069,14 @@ const gameTheme = {
 
 const QUICK_PROMPTS = [
     'Maak de game sneller en het gat kleiner',
-    'Geef de lucht een avondkleur en maak de sprite wit',
+    'Geef de lucht een avondkleur en maak de eend wit',
     'Maak de zwaartekracht lager zodat ik zachter val',
 ] as const;
 
 const CONFIG_LABELS: Partial<Record<keyof GameConfig, string>> = {
     skyColor: 'luchtkleur',
     pipeColor: 'poortkleur',
-    beaverColor: 'sprite-kleur',
+    beaverColor: 'eend-kleur',
     gravity: 'zwaartekracht',
     flapVelocity: 'vleugelkracht',
     scrollSpeed: 'snelheid',
@@ -1093,7 +1093,7 @@ function diffConfigLabels(prev: GameConfig, next: GameConfig): string[] {
 function AiGameBuilderDemo({ reduceMotion }: { reduceMotion: boolean }) {
     const [promptsUsed, setPromptsUsed] = useState(0);
     const [customPrompt, setCustomPrompt] = useState('');
-    const [lastPrompt, setLastPrompt] = useState<string>('Nog geen prompt geschreven. Begin makkelijk: "maak het gat groter" of "maak de sprite sneller".');
+    const [lastPrompt, setLastPrompt] = useState<string>('Nog geen prompt geschreven. Begin makkelijk: "maak het gat groter" of "maak de eend sneller".');
     const [gameConfig, setGameConfig] = useState<GameConfig>(DEFAULT_GAME_CONFIG);
     const [isLoading, setIsLoading] = useState(false);
     const [errorText, setErrorText] = useState<string | null>(null);
@@ -1182,7 +1182,7 @@ function AiGameBuilderDemo({ reduceMotion }: { reduceMotion: boolean }) {
                         onChange={(event) => setCustomPrompt(event.target.value)}
                         disabled={inputDisabled}
                         maxLength={500}
-                        placeholder={promptLimitReached ? 'Promptlimiet bereikt' : 'Bijvoorbeeld: maak de sprite sneller en het gat groter.'}
+                        placeholder={promptLimitReached ? 'Promptlimiet bereikt' : 'Bijvoorbeeld: maak de eend sneller en het gat groter.'}
                         className="mt-3 min-h-[112px] w-full resize-none rounded-[1.25rem] border border-white/10 bg-white/10 px-4 py-3 text-sm font-semibold leading-6 text-white outline-none placeholder:text-white/50 focus:border-duck-acid disabled:opacity-50"
                     />
                     {/* Honeypot — visually hidden, only bots fill this in */}
@@ -1674,7 +1674,7 @@ function PortfolioStorySection({ startPilot }: { startPilot: () => void }) {
                         Jouw portfolio. <em className="italic">Jouw verhaal.</em>
                     </h2>
                     <p className="mt-5 max-w-md text-pretty text-base font-semibold leading-7 text-duck-ink/65">
-                        Scroll door een portfolio dat echt iets vertelt: wie je bent, wat je maakt, welke trofeeën je haalt en waar je nog in groeit.
+                        Scroll door een portfolio dat echt iets vertelt: wie je bent, wat je maakt, welke trofeeën je haalt en waar je nog groeit.
                     </p>
                     <a
                         href="/pilot"
