@@ -13,6 +13,7 @@ type Skill = {
     letter: string;
     tone: SkillTone;
     art: SkillArtVariant;
+    image?: string;
     icon: React.ReactNode;
     bullets: string[];
     projects: string;
@@ -56,6 +57,7 @@ const skills: Skill[] = [
         letter: 'A',
         tone: 'paper',
         art: 'ai',
+        image: '/brand-duck/skill-ai-data.webp',
         icon: <BrainIcon />,
         bullets: ['AI-tools gebruiken', 'Data analyseren', 'Slimme apps bouwen'],
         projects: '12 projecten',
@@ -67,6 +69,7 @@ const skills: Skill[] = [
         letter: 'D',
         tone: 'acid',
         art: 'create',
+        image: '/brand-duck/skill-design-create.webp',
         icon: <PencilIcon />,
         bullets: ['Grafisch ontwerp', 'UI/UX design', 'Animatie & video'],
         projects: '18 projecten',
@@ -78,6 +81,7 @@ const skills: Skill[] = [
         letter: 'C',
         tone: 'paper',
         art: 'code',
+        image: '/brand-duck/skill-code-bouw.webp',
         icon: <CodeIcon />,
         bullets: ['Web development', 'App development', 'Games maken'],
         projects: '24 projecten',
@@ -89,6 +93,7 @@ const skills: Skill[] = [
         letter: 'M',
         tone: 'acid',
         art: 'media',
+        image: '/brand-duck/skill-media-verhaal.webp',
         icon: <CameraIcon />,
         bullets: ['Video editen', 'Podcast maken', 'Storytelling'],
         projects: '16 projecten',
@@ -100,6 +105,7 @@ const skills: Skill[] = [
         letter: 'V',
         tone: 'paper',
         art: 'safe',
+        image: '/brand-duck/skill-veiligheid.webp',
         icon: <LockIcon />,
         bullets: ['Privacy & security', 'Cyber awareness', 'Verantwoord online'],
         projects: '8 projecten',
@@ -1025,7 +1031,7 @@ function SkillsSection({ scrollTo }: { scrollTo: (target: string) => void }) {
                                     </span>
                                     <span className="rounded-full border border-duck-ink px-3.5 py-1.5 text-xs font-extrabold">{skill.projects}</span>
                                 </div>
-                                <SkillArt variant={skill.art} tone={skill.tone} className="mx-auto my-5 h-36 sm:h-40" />
+                                <SkillVisual skill={skill} />
                                 <h3 className="font-display text-3xl leading-tight">{skill.title}</h3>
                                 <ul className="mt-4 space-y-1.5">
                                     {skill.bullets.map((bullet) => (
@@ -1071,6 +1077,29 @@ const gameTheme = {
     sprite: '#e1ff01',
 } as const;
 
+const QUICK_PROMPTS = [
+    'Maak de game sneller en het gat kleiner',
+    'Geef de lucht een avondkleur en maak de sprite wit',
+    'Maak de zwaartekracht lager zodat ik zachter val',
+] as const;
+
+const CONFIG_LABELS: Partial<Record<keyof GameConfig, string>> = {
+    skyColor: 'luchtkleur',
+    pipeColor: 'poortkleur',
+    beaverColor: 'sprite-kleur',
+    gravity: 'zwaartekracht',
+    flapVelocity: 'vleugelkracht',
+    scrollSpeed: 'snelheid',
+    gateGap: 'gat-grootte',
+    gateInterval: 'poort-afstand',
+};
+
+function diffConfigLabels(prev: GameConfig, next: GameConfig): string[] {
+    return (Object.keys(CONFIG_LABELS) as Array<keyof GameConfig>)
+        .filter((key) => prev[key] !== next[key])
+        .map((key) => CONFIG_LABELS[key] as string);
+}
+
 function AiGameBuilderDemo({ reduceMotion }: { reduceMotion: boolean }) {
     const [promptsUsed, setPromptsUsed] = useState(0);
     const [customPrompt, setCustomPrompt] = useState('');
@@ -1079,6 +1108,7 @@ function AiGameBuilderDemo({ reduceMotion }: { reduceMotion: boolean }) {
     const [isLoading, setIsLoading] = useState(false);
     const [errorText, setErrorText] = useState<string | null>(null);
     const [honeypot, setHoneypot] = useState('');
+    const [changedLabels, setChangedLabels] = useState<string[]>([]);
     const promptLimitReached = promptsUsed >= 5;
     const inputDisabled = promptLimitReached || isLoading;
 
@@ -1094,7 +1124,9 @@ function AiGameBuilderDemo({ reduceMotion }: { reduceMotion: boolean }) {
         const result = await tweakGameDemo(trimmed, gameConfig, honeypot);
 
         if (result.ok === true) {
-            setGameConfig((prev) => applyDelta(prev, result.delta));
+            const next = applyDelta(gameConfig, result.delta);
+            setChangedLabels(diffConfigLabels(gameConfig, next));
+            setGameConfig(next);
             setLastPrompt(result.reply);
             setPromptsUsed((count) => Math.min(5, count + 1));
             setCustomPrompt('');
@@ -1102,6 +1134,7 @@ function AiGameBuilderDemo({ reduceMotion }: { reduceMotion: boolean }) {
                 setPromptsUsed(5);
             }
         } else {
+            setChangedLabels([]);
             setLastPrompt('Probeer het nog eens met een ander verzoek.');
             setErrorText(result.error.message);
             if (result.error.code === 'rate_limit') {
@@ -1122,9 +1155,17 @@ function AiGameBuilderDemo({ reduceMotion }: { reduceMotion: boolean }) {
                     <span className="rounded-full bg-white/10 px-3.5 py-2 text-xs font-extrabold">{promptsUsed}/5 prompts</span>
                 </div>
 
-                <div className="mt-7 rounded-[1.25rem] bg-white/10 p-4">
+                <div className="mt-7 rounded-[1.25rem] bg-white/10 p-4" aria-live="polite">
                     <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-white/50">Laatste idee</p>
                     <p className="mt-2 text-base font-bold leading-7 text-white">{lastPrompt}</p>
+                    {changedLabels.length > 0 && (
+                        <p className="mt-3 flex flex-wrap items-center gap-1.5">
+                            <span className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-white/50">Aangepast:</span>
+                            {changedLabels.map((label) => (
+                                <span key={label} className="rounded-full bg-duck-acid px-2.5 py-1 text-[10px] font-extrabold text-duck-ink">{label}</span>
+                            ))}
+                        </p>
+                    )}
                     {errorText && (
                         <p className="mt-2 text-xs font-bold text-duck-error" role="alert">{errorText}</p>
                     )}
@@ -1132,6 +1173,19 @@ function AiGameBuilderDemo({ reduceMotion }: { reduceMotion: boolean }) {
 
                 <form onSubmit={submitCustomPrompt} className="mt-auto pt-6">
                     <label htmlFor="game-prompt" className="text-sm font-extrabold text-white">Wat moet de game doen?</label>
+                    <div className="mt-3 flex flex-wrap gap-2">
+                        {QUICK_PROMPTS.map((prompt) => (
+                            <button
+                                key={prompt}
+                                type="button"
+                                disabled={inputDisabled}
+                                onClick={() => setCustomPrompt(prompt)}
+                                className="rounded-full border border-white/15 px-3.5 py-1.5 text-xs font-bold text-white/80 transition-colors hover:border-duck-acid hover:text-duck-acid disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid"
+                            >
+                                {prompt}
+                            </button>
+                        ))}
+                    </div>
                     <textarea
                         id="game-prompt"
                         value={customPrompt}
@@ -1153,7 +1207,17 @@ function AiGameBuilderDemo({ reduceMotion }: { reduceMotion: boolean }) {
                         style={{ position: 'absolute', left: '-9999px', width: '1px', height: '1px', opacity: 0 }}
                     />
                     <div className="mt-3 flex items-center justify-between gap-3">
-                        <p className="text-xs font-semibold text-white/55">Maximaal vijf prompts per demo.</p>
+                        {promptLimitReached ? (
+                            <a
+                                href="/pilot"
+                                onClick={() => trackLandingEvent('dual_cta_click', { type: 'plan_schoolpilot' })}
+                                className="text-xs font-extrabold text-duck-acid underline decoration-duck-acid/50 underline-offset-4 hover:decoration-duck-acid focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid"
+                            >
+                                Promptlimiet bereikt — leerlingen bouwen verder in de missie Game Programmeur. Plan een pilot →
+                            </a>
+                        ) : (
+                            <p className="text-xs font-semibold text-white/55">Maximaal vijf prompts per demo.</p>
+                        )}
                         <button
                             type="submit"
                             disabled={inputDisabled || !customPrompt.trim()}
@@ -1239,6 +1303,7 @@ function PlayableSpriteStream({ reduceMotion, config }: { reduceMotion: boolean;
     const skyColor = config.skyColor ?? gameTheme.sky;
     const [gameState, setGameState] = useState<GameState>('idle');
     const [displayScore, setDisplayScore] = useState(0);
+    const [bestScore, setBestScore] = useState(0);
     const [renderTick, setRenderTick] = useState(0);
 
     const spriteY = useRef(50);
@@ -1254,6 +1319,11 @@ function PlayableSpriteStream({ reduceMotion, config }: { reduceMotion: boolean;
 
     useEffect(() => { gameStateRef.current = gameState; }, [gameState]);
     useEffect(() => { configRef.current = config; }, [config]);
+    useEffect(() => {
+        if (gameState === 'over') {
+            setBestScore((best) => Math.max(best, scoreRef.current));
+        }
+    }, [gameState]);
 
     const handleFlap = useCallback(() => {
         if (gameStateRef.current === 'idle') {
@@ -1403,9 +1473,29 @@ function PlayableSpriteStream({ reduceMotion, config }: { reduceMotion: boolean;
             />
 
             {gameState !== 'idle' && (
-                <div className="absolute left-5 top-5 flex items-center gap-2 rounded-full border border-duck-ink bg-white px-4 py-2">
-                    <span className="size-2 rounded-full bg-duck-acid" aria-hidden="true" />
-                    <span className="text-xs font-extrabold text-duck-ink">{displayScore} poorten</span>
+                <div className="absolute left-5 top-5 flex items-center gap-2">
+                    <span className="flex items-center gap-2 rounded-full border border-duck-ink bg-white px-4 py-2">
+                        <span className="size-2 rounded-full bg-duck-acid" aria-hidden="true" />
+                        <span className="text-xs font-extrabold text-duck-ink">{displayScore} poorten</span>
+                    </span>
+                    {bestScore > 0 && (
+                        <span className="rounded-full border border-duck-ink bg-duck-acid px-3.5 py-2 text-xs font-extrabold text-duck-ink">Beste: {bestScore}</span>
+                    )}
+                </div>
+            )}
+
+            {gameState === 'idle' && !reduceMotion && (
+                <div className="pointer-events-none absolute inset-0 z-30 flex items-center justify-center px-6" aria-hidden="true">
+                    <div className="flex flex-col items-center gap-2.5 rounded-[1.5rem] border border-duck-ink/10 bg-white/95 px-7 py-6 text-center shadow-[2px_4px_24px_rgba(32,32,35,0.15)] backdrop-blur-[2px]">
+                        <p className="font-display text-2xl text-duck-ink">Probeer &rsquo;m zelf</p>
+                        <p className="max-w-[250px] text-xs font-bold leading-5 text-duck-ink/60">Vlieg langs de poorten — en bouw de game daarna om met je eigen prompts.</p>
+                        <span className="mt-1 inline-flex animate-pulse-soft items-center gap-2 rounded-full border border-duck-ink bg-duck-acid px-5 py-2.5 text-sm font-extrabold text-duck-ink motion-reduce:animate-none">
+                            Klik of druk op spatie
+                        </span>
+                        {bestScore > 0 && (
+                            <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-duck-ink/40">Beste score: {bestScore} poorten</p>
+                        )}
+                    </div>
                 </div>
             )}
 
@@ -1427,6 +1517,9 @@ function PlayableSpriteStream({ reduceMotion, config }: { reduceMotion: boolean;
                         <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-duck-ink/50">Game over</p>
                         <p className="mt-1 font-display text-5xl text-duck-ink">{displayScore}</p>
                         <p className="text-xs font-semibold text-duck-ink/60">poorten gehaald</p>
+                        {displayScore > 0 && displayScore >= bestScore && (
+                            <p className="mx-auto mt-2 w-fit rounded-full bg-duck-acid px-3.5 py-1 text-[11px] font-extrabold text-duck-ink">Nieuw record!</p>
+                        )}
                         <button
                             onClick={(e) => { e.stopPropagation(); handleFlap(); }}
                             className="mt-4 inline-flex min-h-[44px] items-center gap-2 rounded-full border border-duck-ink bg-duck-acid px-6 py-2 text-sm font-extrabold text-duck-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
@@ -1952,6 +2045,29 @@ function SpriteMascot({ className }: { className?: string }) {
                 <span className="block size-full rounded-full bg-duck-ink" style={{ transform: 'translate(var(--eye-x, 0px), var(--eye-y, 0px))' }} />
             </span>
         </div>
+    );
+}
+
+// Toont de ChatGPT-illustratie zodra die bestaat; valt anders terug op de inline vector-art.
+function SkillVisual({ skill }: { skill: Skill }) {
+    const [failed, setFailed] = useState(false);
+
+    if (!skill.image || failed) {
+        return <SkillArt variant={skill.art} tone={skill.tone} className="mx-auto my-5 h-36 sm:h-40" />;
+    }
+
+    return (
+        <img
+            src={skill.image}
+            alt=""
+            aria-hidden="true"
+            width={400}
+            height={400}
+            className="mx-auto my-5 h-36 w-auto object-contain sm:h-40"
+            loading="lazy"
+            decoding="async"
+            onError={() => setFailed(true)}
+        />
     );
 }
 
