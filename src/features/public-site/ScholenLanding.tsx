@@ -26,8 +26,7 @@ type JourneyChapter = {
     eyebrow: string;
     copy: string;
     routeCoachTip: string;
-    image: string;
-    alt: string;
+    screen: React.ReactNode;
     icon: React.ReactNode;
     stat: string;
     statLabel: string;
@@ -187,36 +186,31 @@ const screenshotProofPanels = [
         label: 'Leerlingmissie',
         title: 'Leerlingen leren door te doen',
         copy: 'Leerlingen kiezen uit echte missies — Prompt Perfectionist, Game Programmeur, AI Trainer — en starten direct vanuit hun eigen niveau.',
-        image: '/screenshots/new-mission-cards.png',
-        alt: 'DGSkills missiekaarten met Prompt Perfectionist, Game Programmeur en AI Trainer',
+        screen: <ScreenMissieDetail />,
     },
     {
         label: 'Docentdashboard',
         title: 'Voortgang in een oogopslag',
         copy: 'Docenten zien routes, periodes, leerdoelen en missiekaarten zonder eigen spreadsheets bij te houden.',
-        image: '/screenshots/new-dashboard-missions.png',
-        alt: 'DGSkills docentdashboard met leerlijn, periodes en missiekaarten',
+        screen: <ScreenDocent />,
     },
     {
         label: 'SLO-voortgang',
         title: 'Bewijs per leerdoel',
         copy: 'Voortgang en XP worden gekoppeld aan zichtbare groei, zodat de opbrengst bespreekbaar wordt.',
-        image: '/screenshots/student-progress-xp-1200.webp',
-        alt: 'DGSkills voortgangsscherm met XP, levels en bewijs van groei',
+        screen: <ScreenVoortgang />,
     },
     {
         label: 'Portfolio-bewijs',
         title: 'Een verhaal achter de score',
         copy: 'Leerlingen bouwen een portfolio dat laat zien wat ze maken, uitleggen en verbeteren.',
-        image: '/screenshots/student-dashboard.webp',
-        alt: 'DGSkills leerlingdashboard als portfolio-overzicht',
+        screen: <ScreenPortfolio />,
     },
     {
         label: 'Privacy/ICT',
         title: 'Beoordeelbaar voor schoolteams',
         copy: 'Privacy, AI-transparantie en implementatievragen krijgen een eigen plek in de pilot.',
-        image: '/screenshots/ict-privacy.webp',
-        alt: 'DGSkills privacy- en ICT-informatiepagina',
+        screen: <ScreenPrivacy />,
     },
 ] as const;
 
@@ -244,8 +238,7 @@ const journeyChapters: JourneyChapter[] = [
         eyebrow: 'Start je route',
         copy: 'Leerlingen kiezen een leerlijn, zien direct de AI-missies en starten vanuit hun eigen niveau.',
         routeCoachTip: 'Kies een leerlijn en zie meteen waar je klas start.',
-        image: '/screenshots/new-dashboard-missions.png',
-        alt: 'DGSkills dashboard met leerlijn, periodes, leerdoelen en missiekaarten',
+        screen: <ScreenMissies />,
         icon: <SearchIcon />,
         stat: '20+',
         statLabel: 'AI-missies klaar',
@@ -256,8 +249,7 @@ const journeyChapters: JourneyChapter[] = [
         eyebrow: 'Korte challenges',
         copy: 'Elke opdracht gebruikt echte DGSkills-schermen, zodat leerlingen leren door te doen in plaats van alleen te lezen.',
         routeCoachTip: 'Elke missie geeft directe feedback, dus leerlingen blijven bezig.',
-        image: '/screenshots/prompt-master.webp',
-        alt: 'DGSkills Prompt Perfectionist opdracht met invoerveld voor een AI-prompt',
+        screen: <ScreenMissieDetail />,
         icon: <BookIcon />,
         stat: 'SLO',
         statLabel: 'gekoppeld',
@@ -268,8 +260,7 @@ const journeyChapters: JourneyChapter[] = [
         eyebrow: 'Projectmodus',
         copy: 'Bouw een platformer, ontwerp een robotroute, laat AI je tekening raden en remix challenges tot iets eigens.',
         routeCoachTip: 'Hier wordt het concreet: games, robots, prompts, projecten.',
-        image: '/screenshots/mission-game-programmeur.webp',
-        alt: 'DGSkills game studio met platformgame, robotroute, AI tekengame en prompt challenge voorbeelden',
+        screen: <ScreenBouwen />,
         icon: <PencilIcon />,
         stat: '24',
         statLabel: 'bouwprojecten',
@@ -280,8 +271,7 @@ const journeyChapters: JourneyChapter[] = [
         eyebrow: 'Trofeeën en XP',
         copy: 'Voortgang wordt zichtbaar met levels, trofeeën en XP, zonder dat het voelt als een saai leerlingvolgsysteem.',
         routeCoachTip: 'Alles eindigt in zichtbaar portfolio- of voortgangsbewijs.',
-        image: '/screenshots/student-progress-xp.webp',
-        alt: 'DGSkills voortgangsscherm met XP, level en trofeeën',
+        screen: <ScreenVoortgang />,
         icon: <BadgeIcon />,
         stat: 'XP',
         statLabel: 'groeit mee',
@@ -292,8 +282,7 @@ const journeyChapters: JourneyChapter[] = [
         eyebrow: 'Portfolio groei',
         copy: 'Leerlingen krijgen feedback, bouwen bewijs op en zien hun groei terug in een portfolio dat met ze meegroeit.',
         routeCoachTip: 'Maak groei zichtbaar per leerling, klas en route.',
-        image: '/screenshots/student-dashboard.webp',
-        alt: 'DGSkills student dashboard als portfolio-overzicht',
+        screen: <ScreenPortfolio />,
         icon: <GrowthIcon />,
         stat: '1',
         statLabel: 'groeiroute',
@@ -539,17 +528,8 @@ export const ScholenLanding: React.FC = () => {
 
                     <div className={`relative z-10 mx-auto mt-14 max-w-5xl opacity-0 motion-reduce:animate-none motion-reduce:opacity-100 md:mt-16 ${introReady ? 'animate-fade-in-up-delay-3' : ''}`}>
                         <div data-hero-mockup className="relative mx-auto w-full max-w-[980px] lg:-rotate-1">
-                            <BrowserFrame url="dgskills.app/missie">
-                                <img
-                                    src="/screenshots/prompt-master.webp"
-                                    alt="Leerling werkt aan de DGSkills-missie Prompt Perfectionist en typt een AI-prompt"
-                                    className="block w-full object-cover object-top"
-                                    width={960}
-                                    height={600}
-                                    loading="eager"
-                                    decoding="async"
-                                    fetchPriority="high"
-                                />
+                            <BrowserFrame url="dgskills.app/missies">
+                                <ScreenMissies />
                             </BrowserFrame>
                         </div>
                         <dl className="mx-auto mt-10 grid max-w-4xl grid-cols-2 gap-x-6 gap-y-6 border-t border-duck-ink/10 pt-7 text-left lg:grid-cols-4">
@@ -610,8 +590,7 @@ export const ScholenLanding: React.FC = () => {
                             <ProductProofFrame
                                 label="Leerlingmissie"
                                 title="Prompt Perfectionist"
-                                image="/screenshots/prompt-master.webp"
-                                alt="DGSkills Prompt Perfectionist missie met promptinvoer en feedback"
+                                screen={<ScreenMissieDetail />}
                                 caption="Leerlingen maken, testen en leggen uit wat ze aanpassen."
                             />
                         </Reveal>
@@ -685,8 +664,8 @@ export const ScholenLanding: React.FC = () => {
                         <Reveal y={30}>
                             <div className="mb-10 flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
                                 <div>
-                                    <SectionLabel>Productbewijs</SectionLabel>
-                                    <h2 className="mt-4 text-balance font-display text-[clamp(2.1rem,4.5vw,4rem)] leading-[1.05]">Screenshots die de aankoopvraag beantwoorden</h2>
+                                    <SectionLabel>Product in beeld</SectionLabel>
+                                    <h2 className="mt-4 text-balance font-display text-[clamp(2.1rem,4.5vw,4rem)] leading-[1.05]">Schermen die de aankoopvraag beantwoorden</h2>
                                 </div>
                                 <p className="max-w-md text-pretty text-base font-semibold leading-7 text-duck-ink/65">
                                     Elk scherm laat een ander beslispunt zien: motivatie voor leerlingen, grip voor docenten en vertrouwen voor schoolteams.
@@ -698,8 +677,7 @@ export const ScholenLanding: React.FC = () => {
                                         key={panel.label}
                                         label={panel.label}
                                         title={panel.title}
-                                        image={panel.image}
-                                        alt={panel.alt}
+                                        screen={panel.screen}
                                         caption={panel.copy}
                                         featured={index === 1}
                                     />
@@ -987,13 +965,7 @@ function JourneySection() {
                                     <div className="overflow-hidden">
                                         <div className="grid gap-4 pb-7 md:grid-cols-[1.25fr_0.75fr] md:items-end">
                                             <BrowserFrame url={`dgskills.app/${chapter.title.toLowerCase()}`}>
-                                                <img
-                                                    src={chapter.image}
-                                                    alt={chapter.alt}
-                                                    className="aspect-[16/10] w-full object-cover object-top"
-                                                    loading="lazy"
-                                                    decoding="async"
-                                                />
+                                                {chapter.screen}
                                             </BrowserFrame>
                                             <div>
                                                 <div className="rounded-[1.25rem] bg-duck-ink p-5 text-white">
@@ -1561,8 +1533,7 @@ function PortfolioStorySection({ startPilot }: { startPilot: () => void }) {
             kicker: 'Avatar',
             title: 'Een leerling bouwt een herkenbare identiteit.',
             copy: 'Niet alleen punten, maar een profiel dat laat zien welke rol iemand pakt: maker, onderzoeker, ontwerper of programmeur.',
-            image: '/screenshots/avatar-customization-1200.webp',
-            alt: 'DGSkills avatar-aanpassing voor het leerlingportfolio',
+            screen: <ScreenAvatar />,
             url: 'dgskills.app/avatar',
             statLabel: 'Mila — eigen identiteit',
             stat: 'Level 1 · Architect',
@@ -1571,8 +1542,7 @@ function PortfolioStorySection({ startPilot }: { startPilot: () => void }) {
             kicker: 'Trofeeën',
             title: 'Trofeeën maken groei zichtbaar.',
             copy: 'Leerlingen zien wat ze al beheersen en welke volgende stap logisch is.',
-            image: '/screenshots/student-progress-xp-1200.webp',
-            alt: 'DGSkills voortgangsscherm met XP, level en trofeeën',
+            screen: <ScreenVoortgang />,
             url: 'dgskills.app/voortgang',
             statLabel: 'Streak — week 12',
             stat: '12 dagen · 4 badges',
@@ -1581,8 +1551,7 @@ function PortfolioStorySection({ startPilot }: { startPilot: () => void }) {
             kicker: 'Portfolio',
             title: 'Projecten worden bewijsstukken.',
             copy: 'Een portfolio vertelt wat iemand gemaakt heeft, welke keuzes zijn gemaakt en welke skills daarbij horen.',
-            image: '/screenshots/student-dashboard.webp',
-            alt: 'DGSkills leerlingdashboard als portfolio-overzicht',
+            screen: <ScreenPortfolio />,
             url: 'dgskills.app/portfolio',
             statLabel: 'Mila — Level 6 Creator',
             stat: '1.840 XP · 4 projecten',
@@ -1591,8 +1560,7 @@ function PortfolioStorySection({ startPilot }: { startPilot: () => void }) {
             kicker: 'Docent',
             title: 'De docent ziet waar groei zit.',
             copy: 'Voor scholen wordt zichtbaar waar een leerling sterk op scoort, waar extra uitleg nodig is en welke SLO-doelen geraakt worden.',
-            image: '/screenshots/student-mission-overview-1200.webp',
-            alt: 'DGSkills missie-overzicht met voortgang en SLO-koppeling per leerling',
+            screen: <ScreenDocent />,
             url: 'dgskills.app/docent',
             statLabel: 'Klas 3D · Periode 1',
             stat: '9 SLO-kerndoelen zichtbaar',
@@ -1738,7 +1706,7 @@ function PortfolioStorySection({ startPilot }: { startPilot: () => void }) {
                             </div>
                             <div className="relative bg-duck-bg p-6 md:p-7">
                                 <BrowserFrame url={panel.url}>
-                                    <img src={panel.image} alt={panel.alt} className="aspect-[16/11] w-full object-cover object-top" loading="lazy" decoding="async" />
+                                    {panel.screen}
                                 </BrowserFrame>
                                 <div className="absolute -bottom-3 right-5 max-w-[78%] rounded-[1rem] bg-duck-ink px-4 py-3 text-white">
                                     <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-duck-acid">{panel.statLabel}</p>
@@ -1764,7 +1732,7 @@ function PortfolioStorySection({ startPilot }: { startPilot: () => void }) {
                             </div>
                             <div className="relative bg-duck-bg px-5 pb-9 pt-2">
                                 <BrowserFrame url={panel.url}>
-                                    <img src={panel.image} alt={panel.alt} className="aspect-[16/10] w-full object-cover object-top" loading="lazy" decoding="async" />
+                                    {panel.screen}
                                 </BrowserFrame>
                                 <div className="absolute -bottom-3 right-4 max-w-[80%] rounded-[0.9rem] bg-duck-ink px-3.5 py-2.5 text-white">
                                     <p className="text-[9px] font-extrabold uppercase tracking-[0.14em] text-duck-acid">{panel.statLabel}</p>
@@ -1976,18 +1944,279 @@ function BrowserFrame({ url, children }: { url: string; children: React.ReactNod
     );
 }
 
+/* ---- Mock-productschermen in DUCK-stijl (productimpressies, geen screenshots) ---- */
+
+function ScreenMissies() {
+    const missions = [
+        { title: 'Prompt Perfectionist', domain: 'Digitale vaardigheden', pct: 72, tone: 'acid' },
+        { title: 'Deepfake Detector', domain: 'Mediawijsheid', pct: 38, tone: 'paper' },
+        { title: 'Game Programmeur', domain: 'Computational thinking', pct: 12, tone: 'ink' },
+    ] as const;
+
+    return (
+        <div className="flex aspect-[16/10] bg-duck-bgLight text-duck-ink">
+            <aside className="hidden w-[24%] flex-col gap-1.5 border-r border-duck-ink/10 bg-white p-[4%] sm:flex">
+                <div className="mb-2 flex items-center gap-1.5">
+                    <SpriteMark className="w-[22%] min-w-4" />
+                    <span className="text-[0.5em] font-extrabold sm:text-[10px]">DGSkills</span>
+                </div>
+                {['Missies', 'Routes', 'Portfolio', 'Badges'].map((item, index) => (
+                    <span key={item} className={`rounded-full px-2.5 py-1 text-[9px] font-extrabold ${index === 0 ? 'bg-duck-acid' : 'text-duck-ink/45'}`}>{item}</span>
+                ))}
+            </aside>
+            <div className="min-w-0 flex-1 p-[4%]">
+                <div className="flex items-center justify-between gap-2">
+                    <div>
+                        <p className="text-[8px] font-extrabold uppercase tracking-[0.14em] text-duck-ink/40">Mijn route</p>
+                        <p className="font-display text-[15px] leading-tight">Goedemorgen Jamie</p>
+                    </div>
+                    <span className="rounded-full bg-duck-ink px-2.5 py-1 text-[9px] font-extrabold text-duck-acid">1.840 XP</span>
+                </div>
+                <div className="mt-[4%] grid gap-[3%]">
+                    {missions.map((mission) => (
+                        <div key={mission.title} className={`rounded-xl p-2.5 ${mission.tone === 'acid' ? 'bg-duck-acid' : mission.tone === 'ink' ? 'bg-duck-ink text-white' : 'bg-white'}`}>
+                            <div className="flex items-center justify-between gap-2">
+                                <p className="truncate text-[10px] font-extrabold">{mission.title}</p>
+                                <span className={`hidden whitespace-nowrap rounded-full px-2 py-0.5 text-[8px] font-extrabold sm:inline ${mission.tone === 'ink' ? 'bg-white/10 text-duck-acid' : 'bg-duck-ink text-duck-acid'}`}>{mission.domain}</span>
+                            </div>
+                            <div className={`mt-2 h-1.5 overflow-hidden rounded-full ${mission.tone === 'ink' ? 'bg-white/15' : 'bg-duck-ink/10'}`}>
+                                <div className={`h-full rounded-full ${mission.tone === 'acid' ? 'bg-duck-ink' : 'bg-duck-acid'}`} style={{ width: `${mission.pct}%` }} />
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
+}
+
+function ScreenMissieDetail() {
+    return (
+        <div className="aspect-[16/10] bg-duck-bgLight p-[4%] text-duck-ink">
+            <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                    <span className="grid size-6 place-items-center rounded-lg bg-duck-acid text-[10px] font-extrabold">01</span>
+                    <p className="font-display text-[14px] leading-tight">Prompt Perfectionist</p>
+                </div>
+                <span className="rounded-full bg-white px-2.5 py-1 text-[8px] font-extrabold uppercase tracking-[0.12em] text-duck-ink/60">Digitale vaardigheden</span>
+            </div>
+            <div className="mt-[3.5%] rounded-xl bg-white p-3">
+                <p className="text-[8px] font-extrabold uppercase tracking-[0.14em] text-duck-ink/40">Opdracht</p>
+                <p className="mt-1 text-[10px] font-bold leading-snug">Schrijf een prompt die de AI een spannend verhaal laat vertellen voor groep 2.</p>
+            </div>
+            <div className="mt-[3%] rounded-xl border-2 border-duck-ink bg-white p-3">
+                <p className="text-[10px] font-semibold leading-snug text-duck-ink/80">
+                    Vertel een spannend verhaal over een robot die leert fietsen, met een grappig einde<span className="ml-0.5 inline-block h-[1em] w-[2px] translate-y-[2px] animate-pulse-soft bg-duck-ink align-baseline" />
+                </p>
+            </div>
+            <div className="mt-[3%] flex items-center justify-between gap-2">
+                <span className="rounded-full bg-duck-acid px-2.5 py-1 text-[9px] font-extrabold">Sterke prompt! +25 XP</span>
+                <span className="rounded-full bg-duck-ink px-3 py-1.5 text-[9px] font-extrabold text-duck-acid">Volgende stap →</span>
+            </div>
+        </div>
+    );
+}
+
+function ScreenBouwen() {
+    return (
+        <div className="flex aspect-[16/10] gap-[3%] bg-duck-bgLight p-[4%] text-duck-ink">
+            <div className="relative w-[58%] overflow-hidden rounded-xl border-2 border-duck-ink bg-white">
+                <div className="absolute left-[12%] top-[38%]">
+                    <svg viewBox="0 0 64 64" className="w-7 -rotate-[5deg]" aria-hidden="true">
+                        <circle cx="32" cy="34" r="24.5" fill="#e1ff01" stroke="#202023" strokeWidth="4" />
+                        <ellipse cx="25" cy="31" rx="5" ry="8.4" fill="#202023" />
+                        <ellipse cx="41" cy="31" rx="5" ry="8.4" fill="#202023" />
+                        <rect x="24" y="44" width="17" height="8.5" rx="4.25" fill="#ffffff" stroke="#202023" strokeWidth="3.4" />
+                    </svg>
+                </div>
+                <div className="absolute right-[28%] top-0 h-[32%] w-[12%] rounded-b-md bg-duck-ink" />
+                <div className="absolute bottom-[14%] right-[28%] h-[30%] w-[12%] rounded-t-md bg-duck-ink" />
+                <div className="absolute bottom-0 inset-x-0 h-[14%] bg-duck-ink">
+                    <div className="h-[22%] bg-duck-acid" />
+                </div>
+                <span className="absolute left-2 top-2 rounded-full bg-duck-bgLight px-2 py-0.5 text-[8px] font-extrabold text-duck-ink/60">Live test</span>
+            </div>
+            <div className="flex min-w-0 flex-1 flex-col gap-[4%]">
+                <p className="font-display text-[13px] leading-tight">Bouw je game</p>
+                {[{ label: 'Snelheid', pct: 65 }, { label: 'Gat-grootte', pct: 40 }].map((slider) => (
+                    <div key={slider.label} className="rounded-xl bg-white p-2.5">
+                        <div className="flex justify-between text-[8px] font-extrabold uppercase tracking-[0.12em] text-duck-ink/50">
+                            <span>{slider.label}</span><span>{slider.pct}</span>
+                        </div>
+                        <div className="relative mt-1.5 h-1.5 rounded-full bg-duck-ink/10">
+                            <div className="h-full rounded-full bg-duck-acid ring-1 ring-duck-ink/20" style={{ width: `${slider.pct}%` }} />
+                            <span className="absolute top-1/2 size-3 -translate-y-1/2 rounded-full border-2 border-duck-ink bg-duck-acid" style={{ left: `calc(${slider.pct}% - 6px)` }} />
+                        </div>
+                    </div>
+                ))}
+                <span className="mt-auto rounded-full bg-duck-ink px-3 py-2 text-center text-[9px] font-extrabold text-duck-acid">Test je game ▶</span>
+            </div>
+        </div>
+    );
+}
+
+function ScreenVoortgang() {
+    const RADIUS = 15.9155;
+    const CIRC = 2 * Math.PI * RADIUS;
+    return (
+        <div className="flex aspect-[16/10] items-center gap-[5%] bg-duck-bgLight p-[5%] text-duck-ink">
+            <div className="relative w-[34%] shrink-0">
+                <svg viewBox="0 0 42 42" className="w-full -rotate-90">
+                    <circle cx="21" cy="21" r={RADIUS} fill="none" stroke="#202023" strokeOpacity="0.1" strokeWidth="5" />
+                    <circle cx="21" cy="21" r={RADIUS} fill="none" stroke="#e1ff01" strokeWidth="5" strokeLinecap="round" strokeDasharray={`${CIRC * 0.72} ${CIRC}`} />
+                </svg>
+                <div className="absolute inset-0 grid place-items-center text-center">
+                    <div>
+                        <p className="font-display text-[16px] leading-none">72%</p>
+                        <p className="text-[7px] font-extrabold uppercase tracking-[0.12em] text-duck-ink/40">Periode 1</p>
+                    </div>
+                </div>
+            </div>
+            <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-2">
+                    <p className="font-display text-[14px] leading-tight">Mila</p>
+                    <span className="rounded-full bg-duck-ink px-2 py-0.5 text-[8px] font-extrabold text-duck-acid">Level 6 · Creator</span>
+                </div>
+                <div className="mt-[4%] grid grid-cols-3 gap-[3%]">
+                    {[{ name: 'Doorzetter', tone: 'acid' }, { name: 'Maker', tone: 'ink' }, { name: 'Factchecker', tone: 'paper' }].map((badge) => (
+                        <div key={badge.name} className={`rounded-xl p-2 text-center ${badge.tone === 'acid' ? 'bg-duck-acid' : badge.tone === 'ink' ? 'bg-duck-ink text-duck-acid' : 'bg-white'}`}>
+                            <p className="font-display text-[12px] leading-none">★</p>
+                            <p className="mt-1 truncate text-[7px] font-extrabold">{badge.name}</p>
+                        </div>
+                    ))}
+                </div>
+                <p className="mt-[4%] w-fit rounded-full bg-white px-2.5 py-1 text-[8px] font-extrabold text-duck-ink/70">🔥 12 dagen streak · 4 badges</p>
+            </div>
+        </div>
+    );
+}
+
+function ScreenPortfolio() {
+    return (
+        <div className="aspect-[16/10] bg-duck-bgLight p-[4%] text-duck-ink">
+            <div className="flex items-center gap-2.5">
+                <span className="grid size-8 shrink-0 place-items-center rounded-full bg-duck-acid ring-2 ring-duck-ink">
+                    <SpriteMark className="size-5" />
+                </span>
+                <div>
+                    <p className="font-display text-[14px] leading-tight">Mila — portfolio</p>
+                    <p className="text-[8px] font-extrabold uppercase tracking-[0.12em] text-duck-ink/40">Level 6 Creator · 1.840 XP · 4 projecten</p>
+                </div>
+            </div>
+            <div className="mt-[4%] grid grid-cols-2 gap-[3%]">
+                {[
+                    { title: 'Mijn eigen mini-game', tags: ['Code & Bouw', '+120 XP'], tone: 'acid' },
+                    { title: 'Deepfake-checklist', tags: ['Mediawijsheid', '+90 XP'], tone: 'paper' },
+                ].map((project) => (
+                    <div key={project.title} className={`rounded-xl p-2.5 ${project.tone === 'acid' ? 'bg-duck-acid' : 'bg-white'}`}>
+                        <div className={`h-9 rounded-lg ${project.tone === 'acid' ? 'bg-white/55' : 'bg-duck-bgLight'}`} />
+                        <p className="mt-2 truncate text-[10px] font-extrabold">{project.title}</p>
+                        <div className="mt-1.5 flex flex-wrap gap-1">
+                            {project.tags.map((tag) => (
+                                <span key={tag} className="rounded-full bg-duck-ink px-1.5 py-0.5 text-[7px] font-extrabold text-duck-acid">{tag}</span>
+                            ))}
+                        </div>
+                    </div>
+                ))}
+            </div>
+            <p className="mt-[4%] rounded-xl bg-white px-2.5 py-2 text-[9px] font-bold leading-snug text-duck-ink/70">"Ik heb mijn game drie keer verbeterd na feedback — de besturing is nu veel soepeler."</p>
+        </div>
+    );
+}
+
+function ScreenDocent() {
+    const rows = [
+        { name: 'Mila V.', pct: 82 },
+        { name: 'Noah K.', pct: 64 },
+        { name: 'Sara B.', pct: 47 },
+        { name: 'Liam J.', pct: 29 },
+    ] as const;
+    return (
+        <div className="aspect-[16/10] bg-duck-bgLight p-[4%] text-duck-ink">
+            <div className="flex items-center justify-between gap-2">
+                <p className="font-display text-[14px] leading-tight">Klas 3D · Periode 1</p>
+                <span className="rounded-full bg-duck-acid px-2.5 py-1 text-[8px] font-extrabold">2 hulpvragen</span>
+            </div>
+            <div className="mt-[3.5%] overflow-hidden rounded-xl bg-white">
+                {rows.map((row, index) => (
+                    <div key={row.name} className={`flex items-center gap-2.5 px-2.5 py-2 ${index > 0 ? 'border-t border-duck-ink/5' : ''}`}>
+                        <span className="w-[22%] truncate text-[9px] font-extrabold">{row.name}</span>
+                        <span className="h-1.5 flex-1 overflow-hidden rounded-full bg-duck-ink/10">
+                            <span className="block h-full rounded-full bg-duck-acid ring-1 ring-duck-ink/15" style={{ width: `${row.pct}%` }} />
+                        </span>
+                        <span className="flex gap-0.5">
+                            {[0, 1, 2].map((dot) => (
+                                <span key={dot} className={`size-1.5 rounded-full ${dot < Math.round(row.pct / 34) ? 'bg-duck-ink' : 'bg-duck-ink/15'}`} />
+                            ))}
+                        </span>
+                        <span className="text-[8px] font-extrabold text-duck-ink/45">{row.pct}%</span>
+                    </div>
+                ))}
+            </div>
+            <p className="mt-[3.5%] w-fit rounded-full bg-duck-ink px-2.5 py-1 text-[8px] font-extrabold text-duck-acid">9 SLO-kerndoelen zichtbaar</p>
+        </div>
+    );
+}
+
+function ScreenPrivacy() {
+    const docs = ['Verwerkersovereenkomst', 'DPIA-informatie', 'AI-transparantie'] as const;
+    return (
+        <div className="aspect-[16/10] bg-duck-bgLight p-[4%] text-duck-ink">
+            <div className="flex items-center justify-between gap-2">
+                <p className="font-display text-[14px] leading-tight">Privacy & ICT</p>
+                <span className="rounded-full bg-duck-ink px-2.5 py-1 text-[8px] font-extrabold text-duck-acid">Data in de EU</span>
+            </div>
+            <div className="mt-[3.5%] grid gap-[3%]">
+                {docs.map((doc) => (
+                    <div key={doc} className="flex items-center justify-between rounded-xl bg-white px-3 py-2.5">
+                        <span className="text-[10px] font-extrabold">{doc}</span>
+                        <span className="grid size-4 place-items-center rounded-full bg-duck-acid ring-1 ring-duck-ink">
+                            <svg viewBox="0 0 20 20" className="size-2.5" fill="none" stroke="#202023" strokeWidth="3.4" strokeLinecap="round" strokeLinejoin="round"><path d="m4 10 4 4 8-8" /></svg>
+                        </span>
+                    </div>
+                ))}
+            </div>
+            <p className="mt-[3.5%] rounded-xl bg-white px-3 py-2 text-[9px] font-bold leading-snug text-duck-ink/70">Beoordeelbaar vóór de pilot start — samen met ICT en privacy-team.</p>
+        </div>
+    );
+}
+
+function ScreenAvatar() {
+    return (
+        <div className="flex aspect-[16/10] items-center gap-[5%] bg-duck-bgLight p-[5%] text-duck-ink">
+            <div className="grid w-[38%] shrink-0 place-items-center">
+                <div className="grid aspect-square w-full place-items-center rounded-[28%] bg-duck-acid ring-2 ring-duck-ink">
+                    <SpriteMark className="w-[58%]" />
+                </div>
+            </div>
+            <div className="min-w-0 flex-1">
+                <p className="font-display text-[14px] leading-tight">Kies je look, Mila</p>
+                <div className="mt-[4%] flex gap-1.5">
+                    {['#e1ff01', '#ffffff', '#202023', '#c2c1bd'].map((swatch, index) => (
+                        <span key={swatch} className={`size-5 rounded-full border-2 ${index === 0 ? 'border-duck-ink' : 'border-duck-ink/20'}`} style={{ backgroundColor: swatch }} />
+                    ))}
+                </div>
+                <div className="mt-[4%] flex flex-wrap gap-1.5">
+                    <span className="rounded-full bg-duck-ink px-2.5 py-1 text-[8px] font-extrabold text-duck-acid">Level 1 · Architect</span>
+                    <span className="rounded-full bg-white px-2.5 py-1 text-[8px] font-extrabold text-duck-ink/60">Maker</span>
+                    <span className="rounded-full bg-white px-2.5 py-1 text-[8px] font-extrabold text-duck-ink/60">Onderzoeker</span>
+                </div>
+                <p className="mt-[4%] w-fit rounded-full bg-duck-acid px-2.5 py-1 text-[8px] font-extrabold">Profiel opgeslagen ✓</p>
+            </div>
+        </div>
+    );
+}
+
 function ProductProofFrame({
     label,
     title,
-    image,
-    alt,
+    screen,
     caption,
     featured = false,
 }: {
     label: string;
     title: string;
-    image: string;
-    alt: string;
+    screen: React.ReactNode;
     caption: string;
     featured?: boolean;
 }) {
@@ -2000,7 +2229,7 @@ function ProductProofFrame({
             </div>
             <div className="bg-duck-bg p-4 md:p-5">
                 <BrowserFrame url="dgskills.app">
-                    <img src={image} alt={alt} className="aspect-[16/10] w-full object-cover object-top" loading="lazy" decoding="async" />
+                    {screen}
                 </BrowserFrame>
             </div>
         </article>
