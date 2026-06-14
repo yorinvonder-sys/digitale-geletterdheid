@@ -1808,7 +1808,7 @@ function FooterCta({ startPilot, scrollTo }: { startPilot: () => void; scrollTo:
                             <textPath href="#dg-cta-circle">Plan een schoolpilot • Samen starten • </textPath>
                         </text>
                     </svg>
-                    <DuckMascot className="size-16 md:size-[4.5rem]" />
+                    <DuckMark className="size-16 md:size-[4.5rem]" />
                 </div>
                 <h2 className="mt-8 text-balance font-display text-[clamp(2.4rem,6vw,5rem)] leading-[1.04]">
                     Klaar om iets{' '}
