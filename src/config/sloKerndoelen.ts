@@ -152,13 +152,16 @@ export const SLO_KERNDOELEN: Record<SloKerndoelCode, SloKerndoel> = {
     },
 };
 
-// Helper: get kerndoel badge styling classes
+// Helper: get kerndoel badge styling classes (DUCK-stijl).
+// Drie domein-categorieën gedifferentieerd via vlak-variant: ink-vlak (acid-tekst
+// mag op ink), licht-vlak met ink-border, en acid-vlak met ink-tekst. Acid komt
+// nooit voor als tekstkleur op een lichte achtergrond.
 export function getKerndoelBadgeClasses(code: SloKerndoelCode): string {
     const kerndoel = SLO_KERNDOELEN[code];
     if (!kerndoel) return '';
     switch (kerndoel.kleur) {
-        case 'blue': return 'bg-lab-teal text-white border-lab-teal';
-        case 'purple': return 'bg-lab-coral text-white border-lab-coral';
-        case 'amber': return 'bg-lab-gold text-lab-ink border-lab-olive';
+        case 'blue': return 'bg-duck-ink text-duck-acid border-duck-ink';
+        case 'purple': return 'bg-duck-bgLight text-duck-ink border-duck-ink';
+        case 'amber': return 'bg-duck-acid text-duck-ink border-duck-ink';
     }
 }

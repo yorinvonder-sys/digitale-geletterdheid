@@ -191,8 +191,8 @@ export const MissionPreviewVisual: React.FC<{ mission: Mission; index: number; i
                 return (
                     <div className="grid h-full grid-cols-[1.2fr_0.8fr] gap-3">
                         <div className="relative overflow-hidden rounded-2xl shadow-sm" style={{ backgroundColor: STUDENT_DASHBOARD_COLORS.ink }}>
-                            <div className="absolute bottom-4 left-4 right-4 h-3 rounded-full" style={{ backgroundColor: STUDENT_DASHBOARD_COLORS.sage }} />
-                            <div className="absolute left-8 top-8 size-7 rounded-lg" style={{ backgroundColor: STUDENT_DASHBOARD_COLORS.gold }} />
+                            <div className="absolute bottom-4 left-4 right-4 h-3 rounded-full" style={{ backgroundColor: STUDENT_DASHBOARD_COLORS.olive }} />
+                            <div className="absolute left-8 top-8 size-7 rounded-lg bg-white" />
                             <div className="absolute right-8 top-10 size-8 rounded-full" style={{ backgroundColor: STUDENT_DASHBOARD_COLORS.coral }} />
                             <Play size={22} className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white" fill="currentColor" />
                         </div>
@@ -245,10 +245,10 @@ export const MissionPreviewVisual: React.FC<{ mission: Mission; index: number; i
                 return (
                     <div className="grid h-full grid-cols-[1.2fr_0.8fr] gap-3">
                         <div className="rounded-2xl p-3 font-mono text-[9px] text-white shadow-sm" style={{ backgroundColor: STUDENT_DASHBOARD_COLORS.ink }}>
-                            <div className="mb-2" style={{ color: STUDENT_DASHBOARD_COLORS.gold }}>review.ts</div>
-                            <div className="mb-1"><span style={{ color: STUDENT_DASHBOARD_COLORS.sage }}>+</span> check(input)</div>
+                            <div className="mb-2" style={{ color: STUDENT_DASHBOARD_COLORS.olive }}>review.ts</div>
+                            <div className="mb-1"><span style={{ color: STUDENT_DASHBOARD_COLORS.olive }}>+</span> check(input)</div>
                             <div className="mb-1"><span style={{ color: STUDENT_DASHBOARD_COLORS.coral }}>!</span> bug gevonden</div>
-                            <div><span style={{ color: STUDENT_DASHBOARD_COLORS.teal }}>✓</span> fix getest</div>
+                            <div><span style={{ color: STUDENT_DASHBOARD_COLORS.olive }}>✓</span> fix getest</div>
                         </div>
                         <div className="space-y-2">
                             {['logica', 'test', 'kwaliteit'].map((item) => (
