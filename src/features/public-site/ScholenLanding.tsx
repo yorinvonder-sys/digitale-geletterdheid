@@ -407,7 +407,7 @@ export const ScholenLanding: React.FC = () => {
             >
                 <nav className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 md:px-10" aria-label="Hoofdnavigatie">
                     <a href="/" className="flex min-h-[44px] items-center gap-3 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2" aria-label="DGSkills homepage">
-                        <DuckMark className="size-9" />
+                        <img src="/logo.webp" alt="" className="size-9 object-contain" width={512} height={512} decoding="async" />
                         <span className="text-xl font-extrabold tracking-tight">DGSkills</span>
                     </a>
 
@@ -1039,7 +1039,7 @@ function SkillsSection({ scrollTo }: { scrollTo: (target: string) => void }) {
                         ))}
 
                         <article className="relative flex h-[500px] w-[80vw] max-w-[400px] shrink-0 snap-center flex-col items-start justify-center overflow-hidden rounded-[1.6rem] bg-duck-ink p-9 text-white sm:h-[540px]">
-                            <DuckMark className="size-14" />
+                            <img src="/logo.webp" alt="" className="size-14 object-contain brightness-0 invert" width={512} height={512} decoding="async" />
                             <h3 className="mt-6 text-balance font-display text-4xl leading-[1.08]">
                                 Zien hoe leerlingen <em className="italic text-duck-acid">bouwen</em>?
                             </h3>
@@ -1153,6 +1153,7 @@ function HeroGameDemo({ reduceMotion }: { reduceMotion: boolean }) {
                     <form onSubmit={submitCustomPrompt} className="flex gap-2">
                         <input
                             id="hero-game-prompt"
+                            aria-label="Wat moet de game doen?"
                             value={customPrompt}
                             onChange={(event) => setCustomPrompt(event.target.value)}
                             disabled={inputDisabled}
@@ -1797,7 +1798,7 @@ function FooterCta({ startPilot, scrollTo }: { startPilot: () => void; scrollTo:
                         dgskills.app
                     </a>
                     <div className="flex items-center gap-3 md:justify-center">
-                        <DuckMark className="size-9" />
+                        <img src="/logo.webp" alt="" className="size-9 object-contain brightness-0 invert" width={512} height={512} decoding="async" />
                         <span className="text-lg font-extrabold tracking-tight text-white">DGSkills</span>
                     </div>
                     <div className="flex flex-wrap gap-x-6 gap-y-2 md:justify-end">
