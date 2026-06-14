@@ -63,7 +63,7 @@ const skills: Skill[] = [
         icon: <BrainIcon />,
         bullets: ['AI-tools gebruiken', 'Data analyseren', 'Slimme apps bouwen'],
         projects: '12 projecten',
-        coachTip: 'Start hier als je klas AI wil gebruiken en kritisch wil leren kijken.',
+        coachTip: 'Voor de klas die AI wil gebruiken — en ook wil snappen wat er eigenlijk gebeurt.',
         bestFor: 'brugklas, onderzoeksopdrachten en AI-basis',
     },
     {
@@ -75,7 +75,7 @@ const skills: Skill[] = [
         icon: <PencilIcon />,
         bullets: ['Grafisch ontwerp', 'UI/UX design', 'Animatie & video'],
         projects: '18 projecten',
-        coachTip: 'Goed voor makers: ontwerpen, testen en verbeteren met zichtbaar resultaat.',
+        coachTip: 'Voor leerlingen die liever iets bouwen dan erover lezen.',
         bestFor: 'projectweek, kunstvakken en creatieve keuzeuren',
     },
     {
@@ -87,7 +87,7 @@ const skills: Skill[] = [
         icon: <CodeIcon />,
         bullets: ['Web development', 'App development', 'Games maken'],
         projects: '24 projecten',
-        coachTip: 'Perfect voor leerlingen die willen snappen hoe apps, games en logica werken.',
+        coachTip: 'Voor wie wil snappen hoe apps, games en logica werken. En waarom ze soms niet doen wat je wil.',
         bestFor: 'programmeren, technologie en plusopdrachten',
     },
     {
@@ -99,7 +99,7 @@ const skills: Skill[] = [
         icon: <CameraIcon />,
         bullets: ['Video editen', 'Podcast maken', 'Storytelling'],
         projects: '16 projecten',
-        coachTip: 'Sterk voor creatievelingen: video, verhaal, presentatie en digitale identiteit.',
+        coachTip: 'Voor wie iets te zeggen heeft. En weet hoe dat overkomt.',
         bestFor: 'Nederlands, mediawijsheid en presentaties',
     },
     {
@@ -111,7 +111,7 @@ const skills: Skill[] = [
         icon: <LockIcon />,
         bullets: ['Privacy & security', 'Cyber awareness', 'Verantwoord online'],
         projects: '8 projecten',
-        coachTip: 'Ideaal als startpunt voor mentoraat, privacy, phishing en veilig gedrag.',
+        coachTip: "Privacy, phishing, veilig gedrag. Klinkt saai — tot iemand z'n account kwijt is.",
         bestFor: 'mentorles, burgerschap en schoolbrede veiligheid',
     },
 ];
@@ -142,31 +142,31 @@ const trustChips = [
 const lessonSteps = [
     {
         step: '01',
-        title: 'Start missie',
-        copy: 'De docent kiest een missie die past bij de les, periode of leerlijn. Leerlingen zien meteen wat ze gaan maken.',
+        title: 'Jij kiest een missie',
+        copy: 'Een paar klikken en de klas is gestart. Leerlingen zien direct wat ze gaan maken — geen tien minuten uitleg vooraf.',
     },
     {
         step: '02',
-        title: 'Leerlingen werken zelfstandig',
-        copy: 'Korte opdrachten, echte DGSkills-schermen en directe feedback houden de klas actief zonder lange instructieronde.',
+        title: 'De klas werkt',
+        copy: 'Echte tools, directe feedback. Leerlingen hoeven niet te raden of ze op de goede weg zitten. Jij ook niet.',
     },
     {
         step: '03',
-        title: 'Docent ziet signalen',
-        copy: 'Voortgang, antwoorden en leervragen worden zichtbaar, zodat hulp terechtkomt bij leerlingen die die nodig hebben.',
+        title: 'Jij ziet wie vastzit',
+        copy: 'Voortgang en leervragen zijn zichtbaar in je dashboard. Je helpt gericht — in plaats van 29 keer dezelfde vraag beantwoorden.',
     },
     {
         step: '04',
-        title: 'Portfolio/reflectie',
-        copy: 'Elke missie eindigt met bewijs: wat is gemaakt, welke keuze is uitgelegd en welke skill is gegroeid.',
+        title: 'Bewijs, geen rapport',
+        copy: 'Elke missie sluit af met iets wat leerlingen kunnen laten zien. Niet een bladzijde aantekeningen. Iets echts.',
     },
 ] as const;
 
 const leaderReasons = [
-    { title: 'Curriculum zichtbaar', copy: 'Missies worden gekoppeld aan digitale geletterdheid, SLO-domeinen en portfolio-bewijs.' },
-    { title: 'Minder voorbereiding', copy: 'Docenten starten vanuit kant-en-klare routes in plaats van losse lessen en werkbladen.' },
-    { title: 'Pilotrapport', copy: 'De schoolpilot levert signalen op over deelname, voortgang en vervolgstappen voor het team.' },
-    { title: 'Schoolbreed inzetbaar', copy: 'Geschikt voor mentorles, projectweek, keuzeuur of een doorlopende leerlijn.' },
+    { title: 'SLO zit erin, niet ernaast', copy: 'Kerndoelen zijn standaard onderdeel van de missies. Na de les kun je aanwijzen wat er geleerd is — niet reconstrueren.' },
+    { title: 'Geen zondagsvoorbereiding', copy: 'Docenten starten met wat er al ligt. Geen werkbladen ontwerpen, geen AI-cursus volgen voor de eerste les.' },
+    { title: 'Rapport na zes weken', copy: 'Deelname, voortgang en SLO-koppeling op papier. Iets om op te baseren als het breder ingevoerd moet worden.' },
+    { title: 'Past bijna overal', copy: 'Mentorles, projectweek, keuzeuur of gewone les. Als het maar niet de 47e Teams-vergadering is.' },
 ] as const;
 
 const sloRows = [
@@ -177,61 +177,61 @@ const sloRows = [
 ] as const;
 
 const ictTrustItems = [
-    { title: 'Microsoft 365', copy: 'Inloggen en klasbeheer worden besproken vanuit de bestaande schoolomgeving.' },
-    { title: 'Verwerkersovereenkomst', copy: 'Voor privacyteams is er ruimte om afspraken en verantwoordelijkheden vooraf te beoordelen.' },
-    { title: 'DPIA support', copy: 'DGSkills helpt scholen met informatie die nodig is voor een zorgvuldige DPIA-check.' },
-    { title: 'AI-transparantie', copy: 'AI-gebruik wordt uitlegbaar gemaakt voor leerlingen, docenten en schoolbeleid.' },
-    { title: 'Support/contact', copy: 'Tijdens de pilot is er een helder aanspreekpunt voor docent, schoolleiding en ICT.' },
+    { title: 'Microsoft 365', copy: 'Inloggen via de schoolomgeving die je al hebt. ICT hoeft niets nieuws in te richten.' },
+    { title: 'Verwerkersovereenkomst', copy: 'Privacyteam wil eerst de afspraken zien? Goed plan. Dat kan.' },
+    { title: 'DPIA support', copy: 'DGSkills levert wat je nodig hebt voor de DPIA-check. Scholen beoordelen zelf — zo hoort het.' },
+    { title: 'AI-transparantie', copy: 'Hoe de AI werkt, is uitlegbaar voor leerlingen, docenten en het schoolbeleid. Geen zwarte doos.' },
+    { title: 'Support/contact', copy: 'Eén aanspreekpunt. Geen ticketnummer, geen wachtrij van drie dagen.' },
 ] as const;
 
 const screenshotProofPanels = [
     {
         label: 'Leerlingmissie',
-        title: 'Leerlingen leren door te doen',
-        copy: 'Leerlingen kiezen uit echte missies — Prompt Perfectionist, Game Programmeur, AI Trainer — en starten direct vanuit hun eigen niveau.',
+        title: 'Leerlingen die gewoon beginnen',
+        copy: 'Prompt Perfectionist, Game Programmeur, AI Trainer — missies met een concreet eindproduct. Leerlingen starten zelfstandig, vanuit hun eigen niveau.',
         screen: <ScreenMissieDetail />,
     },
     {
         label: 'Docentdashboard',
-        title: 'Voortgang in een oogopslag',
-        copy: 'Docenten zien routes, periodes, leerdoelen en missiekaarten zonder eigen spreadsheets bij te houden.',
+        title: 'Alles op één plek',
+        copy: 'Routes, periodes, leerdoelen en missiekaarten in één scherm. Jij houdt bij wie vastzit. Niet in een spreadsheet.',
         screen: <ScreenDocent />,
     },
     {
         label: 'SLO-voortgang',
-        title: 'Bewijs per leerdoel',
-        copy: 'Voortgang en XP worden gekoppeld aan zichtbare groei, zodat de opbrengst bespreekbaar wordt.',
+        title: 'Bewijs per kerndoel',
+        copy: 'Voortgang is gekoppeld aan leerdoelen. Het gesprek met de schoolleiding wordt een stuk makkelijker als je kunt aanwijzen wat waar zit.',
         screen: <ScreenVoortgang />,
     },
     {
         label: 'Portfolio-bewijs',
-        title: 'Een verhaal achter de score',
-        copy: 'Leerlingen bouwen een portfolio dat laat zien wat ze maken, uitleggen en verbeteren.',
+        title: 'Meer dan een cijfer',
+        copy: 'Wat leerlingen gemaakt hebben, welke keuzes ze uitleggen, welke skills erbij horen. Een portfolio dat ze zelf willen laten zien.',
         screen: <ScreenPortfolio />,
     },
     {
         label: 'Privacy/ICT',
-        title: 'Beoordeelbaar voor schoolteams',
-        copy: 'Privacy, AI-transparantie en implementatievragen krijgen een eigen plek in de pilot.',
+        title: 'Controleerbaar van tevoren',
+        copy: 'Privacy, AI en beheer zijn standaard onderdeel van de pilot — niet als bijlage achteraf.',
         screen: <ScreenPrivacy />,
     },
 ] as const;
 
 const pilotItems = [
-    'Onboarding call met schoolteam',
-    'Docent startguide voor de eerste les',
-    '20+ AI-missies om direct te proberen',
-    'Klas- en route-inrichting voor de pilot',
-    'Pilotrapport na 6 weken',
-    'Geen creditcard nodig',
-    'Binnen 10 werkdagen live',
+    'Kickoff-call — wij bereiden ons voor, niet alleen jij',
+    'Startgids voor de eerste les (voor de docent, niet de ICT-er)',
+    '20+ missies die leerlingen direct kunnen starten',
+    'Klas en route ingericht vóór les één',
+    'Pilotrapport na 6 weken — met vervolgadvies',
+    'Geen creditcard. Echt niet.',
+    'Live binnen 10 werkdagen',
 ] as const;
 
 const roleFaqs = [
-    { role: 'Docenten', question: 'Moet ik zelf AI-lessen ontwerpen?', answer: 'Nee. Je start met missies, voorbeeldroutes en korte opdrachten die je in je eigen les kunt gebruiken.' },
-    { role: 'Schoolleiding', question: 'Wat levert een pilot op?', answer: 'Een concreet beeld van deelname, voortgang, SLO-koppeling en wat er nodig is voor bredere invoering.' },
-    { role: 'ICT & privacy', question: 'Kunnen we privacy en AI vooraf beoordelen?', answer: 'Ja. De pilot is bedoeld om ook verwerkersafspraken, DPIA-informatie en AI-transparantie zorgvuldig door te nemen.' },
-    { role: 'Pilot', question: 'Hoe snel kan een school starten?', answer: 'De pilot is ingericht op een compacte start: meestal binnen 10 werkdagen nadat scope en accounts zijn afgestemd.' },
+    { role: 'Docenten', question: 'Moet ik zelf AI-lessen ontwerpen?', answer: 'Nee. Je start met kant-en-klare missies en routes. Als je later wil aanpassen, kan dat ook — maar het hoeft echt niet.' },
+    { role: 'Schoolleiding', question: 'Wat levert een pilot op?', answer: 'Deelname, voortgang en SLO-koppeling op papier. Plus advies over wat nodig is als je verder wil. Niet alleen: "de leerlingen waren enthousiast".' },
+    { role: 'ICT & privacy', question: 'Kunnen we privacy en AI vooraf beoordelen?', answer: 'Ja — en dat is precies de bedoeling. Verwerkersafspraken, DPIA-ondersteuning en AI-transparantie zitten standaard in de pilot. Neem de tijd die je nodig hebt.' },
+    { role: 'Pilot', question: 'Hoe snel kan een school starten?', answer: 'Binnen 10 werkdagen na de eerste afstemming. Geen projectplan van tien pagina\'s, geen maanden aanlooptijd.' },
 ] as const;
 
 const journeyChapters: JourneyChapter[] = [
@@ -239,8 +239,8 @@ const journeyChapters: JourneyChapter[] = [
         step: '01',
         title: 'Ontdek',
         eyebrow: 'Start je route',
-        copy: 'Leerlingen kiezen een leerlijn, zien meteen de AI-missies en starten op hun eigen niveau.',
-        routeCoachTip: 'Kies een leerlijn en zie meteen waar je klas start.',
+        copy: 'Leerlingen kiezen een leerlijn en zien direct hun missies. Geen rondleiding, geen uitlegscherm.',
+        routeCoachTip: 'Route gekozen. Dat was al het lastigste.',
         screen: <ScreenMissies />,
         icon: <SearchIcon />,
         stat: '20+',
@@ -250,8 +250,8 @@ const journeyChapters: JourneyChapter[] = [
         step: '02',
         title: 'Leer',
         eyebrow: 'Korte challenges',
-        copy: 'Elke opdracht draait in echte DGSkills-schermen, dus leerlingen leren door te doen, niet door te lezen.',
-        routeCoachTip: 'Elke missie geeft directe feedback, dus leerlingen blijven bezig.',
+        copy: 'Echte tools, directe feedback. Leerlingen hoeven niet te raden of ze iets goed doen.',
+        routeCoachTip: 'De klas werkt zelfstandig. Dat geeft jou een kopje koffie. Of tien minuten nakijken.',
         screen: <ScreenMissieDetail />,
         icon: <BookIcon />,
         stat: 'SLO',
@@ -261,8 +261,8 @@ const journeyChapters: JourneyChapter[] = [
         step: '03',
         title: 'Maak',
         eyebrow: 'Projectmodus',
-        copy: 'Bouw een platformer, ontwerp een robotroute, laat AI je tekening raden en remix challenges tot iets eigens.',
-        routeCoachTip: 'Hier wordt het concreet: games, robots, prompts, projecten.',
+        copy: 'Een platformer bouwen, een robotroute ontwerpen, AI laten raden wat je tekende. Echte projecten, geen nagebootste oefeningen.',
+        routeCoachTip: 'Hier willen leerlingen mee thuiskomen.',
         screen: <ScreenBouwen />,
         icon: <PencilIcon />,
         stat: '24',
@@ -272,8 +272,8 @@ const journeyChapters: JourneyChapter[] = [
         step: '04',
         title: 'Bewijs',
         eyebrow: 'Trofeeën en XP',
-        copy: 'Voortgang wordt zichtbaar met levels, trofeeën en XP, zonder dat het voelt als een saai volgsysteem.',
-        routeCoachTip: 'Alles eindigt in zichtbaar portfolio- of voortgangsbewijs.',
+        copy: 'Levels, trofeeën en XP. Voortgang die leerlingen zelf willen laten zien — dat scheelt een hoop uitleg.',
+        routeCoachTip: 'Bewijs dat leerlingen zelf willen delen. Rare bijkomstigheid.',
         screen: <ScreenVoortgang />,
         icon: <BadgeIcon />,
         stat: 'XP',
@@ -283,8 +283,8 @@ const journeyChapters: JourneyChapter[] = [
         step: '05',
         title: 'Groei',
         eyebrow: 'Portfolio groei',
-        copy: 'Leerlingen krijgen feedback, bouwen bewijs op en zien hun groei in een portfolio dat met ze meegroeit.',
-        routeCoachTip: 'Maak groei zichtbaar per leerling, klas en route.',
+        copy: 'Wat gemaakt is, welke keuzes zijn gemaakt — zichtbaar in een portfolio. Niet in een excelbestand van de docent.',
+        routeCoachTip: 'Groei per leerling, klas en route. Zonder achteraf te reconstrueren.',
         screen: <ScreenPortfolio />,
         icon: <GrowthIcon />,
         stat: '1',
@@ -493,7 +493,7 @@ export const ScholenLanding: React.FC = () => {
                         </p>
                         <HeroHeadline introReady={introReady} />
                         <p className={`mx-auto mt-7 max-w-2xl text-pretty text-base font-semibold leading-7 text-duck-ink/70 sm:text-lg sm:leading-8 opacity-0 motion-reduce:animate-none motion-reduce:opacity-100 ${introReady ? 'animate-fade-in-up-delay-2' : ''}`}>
-                            De missiegedreven leeromgeving voor VO en VSO, gekoppeld aan de SLO-kerndoelen. Van AI-geletterdheid tot online veiligheid: leerlingen leren door te doen, docenten zien voortgang per kerndoel.
+                            Kant-en-klare AI-missies voor VO en VSO, gekoppeld aan de SLO-kerndoelen. Leerlingen werken zelfstandig, jij volgt de voortgang. De spreadsheet mag met pensioen.
                         </p>
                         <div className={`mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row opacity-0 motion-reduce:animate-none motion-reduce:opacity-100 ${introReady ? 'animate-fade-in-up-delay-3' : ''}`}>
                             <a
@@ -557,10 +557,10 @@ export const ScholenLanding: React.FC = () => {
                         <div className="mb-10 flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
                             <Reveal>
                                 <SectionLabel>Game demo</SectionLabel>
-                                <h2 className="mt-4 max-w-2xl text-balance font-display text-[clamp(2.1rem,4.5vw,4rem)] leading-[1.05]">Laat AI een game mee bouwen</h2>
+                                <h2 className="mt-4 max-w-2xl text-balance font-display text-[clamp(2.1rem,4.5vw,4rem)] leading-[1.05]">Laat AI een game bouwen. Wat kan er misgaan.</h2>
                             </Reveal>
                             <Reveal delay={0.1} className="max-w-md text-pretty text-base font-semibold leading-7 text-duck-ink/65">
-                                Leerlingen schrijven zelf een prompt en zien meteen hun mini-game veranderen. De demo stopt na vijf prompts.
+                                Leerlingen schrijven een prompt en zien direct hoe de game verandert. Na vijf prompts stopt de demo. Dat is genoeg om het te snappen.
                             </Reveal>
                         </div>
                         <AiGameBuilderDemo reduceMotion={reduceMotion} />
@@ -574,9 +574,9 @@ export const ScholenLanding: React.FC = () => {
                         <Reveal className="grid gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
                             <div>
                                 <SectionLabel>Voor docenten</SectionLabel>
-                                <h2 className="mt-4 text-balance font-display text-[clamp(2.1rem,4.5vw,4rem)] leading-[1.05]">Zo werkt een DGSkills-les</h2>
+                                <h2 className="mt-4 text-balance font-display text-[clamp(2.1rem,4.5vw,4rem)] leading-[1.05]">Zo werkt een DGSkills-les. Niet ingewikkeld.</h2>
                                 <p className="mt-5 max-w-xl text-pretty text-base font-semibold leading-7 text-duck-ink/65">
-                                    Een les hoeft geen losse uitleg over AI of mediawijsheid te zijn. DGSkills maakt er een maakmoment van, met zichtbare voortgang voor leerling en docent.
+                                    Een les AI of mediawijsheid hoeft geen college te zijn. Leerlingen beginnen direct, werken zelfstandig en eindigen met iets wat ze kunnen laten zien.
                                 </p>
                                 <ol className="mt-9">
                                     {lessonSteps.map((item) => (
@@ -605,9 +605,9 @@ export const ScholenLanding: React.FC = () => {
                         <Reveal y={30} className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
                             <div>
                                 <SectionLabel>Voor schoolleiding</SectionLabel>
-                                <h2 className="mt-4 text-balance font-display text-[clamp(2.1rem,4.5vw,4rem)] leading-[1.05]">Waarom schoolleiders kiezen voor DGSkills</h2>
+                                <h2 className="mt-4 text-balance font-display text-[clamp(2.1rem,4.5vw,4rem)] leading-[1.05]">Voor schoolleiders die meer willen dan 'de leerlingen waren enthousiast'.</h2>
                                 <p className="mt-5 text-pretty text-base font-semibold leading-7 text-duck-ink/65">
-                                    De pilot laat zien dat leerlingen gemotiveerd raken én hoe digitale geletterdheid structureel in de school landt.
+                                    De pilot levert deelname, voortgang en SLO-koppeling op papier. Iets om een schoolbesluit op te baseren — geen PowerPoint vol beloften.
                                 </p>
                                 <a
                                     href="/pilot"
@@ -668,7 +668,7 @@ export const ScholenLanding: React.FC = () => {
                             <div className="mb-10 flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
                                 <div>
                                     <SectionLabel>Product in beeld</SectionLabel>
-                                    <h2 className="mt-4 text-balance font-display text-[clamp(2.1rem,4.5vw,4rem)] leading-[1.05]">Schermen die de aankoopvraag beantwoorden</h2>
+                                    <h2 className="mt-4 text-balance font-display text-[clamp(2.1rem,4.5vw,4rem)] leading-[1.05]">Dit is hoe het eruit ziet. Kijk zelf.</h2>
                                 </div>
                                 <p className="max-w-md text-pretty text-base font-semibold leading-7 text-duck-ink/65">
                                     Elk scherm laat een ander beslispunt zien: motivatie voor leerlingen, grip voor docenten en vertrouwen voor schoolteams.
@@ -695,9 +695,9 @@ export const ScholenLanding: React.FC = () => {
                         <Reveal y={30} className="grid gap-10 rounded-[2rem] bg-duck-acid px-6 py-10 md:px-10 md:py-14 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
                             <div>
                                 <p className="inline-flex rounded-full border border-duck-ink px-4 py-1.5 text-xs font-extrabold uppercase tracking-[0.16em]">Schoolpilot</p>
-                                <h2 className="mt-5 text-balance font-display text-[clamp(2.1rem,4.5vw,4rem)] leading-[1.05]">Wat krijg je in de schoolpilot?</h2>
+                                <h2 className="mt-5 text-balance font-display text-[clamp(2.1rem,4.5vw,4rem)] leading-[1.05]">Wat er in de schoolpilot zit. Zonder reclametaal.</h2>
                                 <p className="mt-5 text-pretty text-base font-semibold leading-7 text-duck-ink/70">
-                                    Gebouwd vanuit de VO/VSO-praktijk en doorlopend getest met docenten. Klein genoeg om te starten, concreet genoeg voor een schoolbesluit.
+                                    Gebouwd vanuit de VO/VSO-praktijk. Klein genoeg om dit semester te starten — concreet genoeg om een schoolbesluit op te baseren.
                                 </p>
                             </div>
                             <div>
@@ -1535,7 +1535,7 @@ function PortfolioStorySection({ startPilot }: { startPilot: () => void }) {
         {
             kicker: 'Avatar',
             title: 'Een leerling bouwt een herkenbare identiteit.',
-            copy: 'Niet alleen punten, maar een profiel dat laat zien welke rol iemand pakt: maker, onderzoeker, ontwerper of programmeur.',
+            copy: 'Geen anoniem schoolaccount. Een profiel dat zegt wie je bent: maker, onderzoeker, ontwerper of programmeur.',
             screen: <ScreenAvatar />,
             url: 'dgskills.app/avatar',
             statLabel: 'Mila — eigen identiteit',
@@ -1544,7 +1544,7 @@ function PortfolioStorySection({ startPilot }: { startPilot: () => void }) {
         {
             kicker: 'Trofeeën',
             title: 'Trofeeën maken groei zichtbaar.',
-            copy: 'Leerlingen zien wat ze al beheersen en welke volgende stap logisch is.',
+            copy: 'Leerlingen zien wat ze al kunnen en wat daarna logisch is. Geen verrassing bij de eindbespreking.',
             screen: <ScreenVoortgang />,
             url: 'dgskills.app/voortgang',
             statLabel: 'Streak — week 12',
@@ -1553,7 +1553,7 @@ function PortfolioStorySection({ startPilot }: { startPilot: () => void }) {
         {
             kicker: 'Portfolio',
             title: 'Projecten worden bewijsstukken.',
-            copy: 'Een portfolio vertelt wat iemand gemaakt heeft, welke keuzes zijn gemaakt en welke skills daarbij horen.',
+            copy: 'Projecten als bewijsstukken: wat gemaakt is, welke keuzes zijn gemaakt, welke skills daarbij horen.',
             screen: <ScreenPortfolio />,
             url: 'dgskills.app/portfolio',
             statLabel: 'Mila — Level 6 Creator',
@@ -1562,7 +1562,7 @@ function PortfolioStorySection({ startPilot }: { startPilot: () => void }) {
         {
             kicker: 'Docent',
             title: 'De docent ziet waar groei zit.',
-            copy: 'Voor scholen wordt zichtbaar waar een leerling sterk op scoort, waar extra uitleg nodig is en welke SLO-doelen geraakt worden.',
+            copy: 'Per leerling: sterk in, aandachtspunten, SLO-kerndoelen. Zonder spreadsheet erbij.',
             screen: <ScreenDocent />,
             url: 'dgskills.app/docent',
             statLabel: 'Klas 3D · Periode 1',
@@ -1677,7 +1677,7 @@ function PortfolioStorySection({ startPilot }: { startPilot: () => void }) {
                         Jouw portfolio. <em className="italic">Jouw verhaal.</em>
                     </h2>
                     <p className="mt-5 max-w-md text-pretty text-base font-semibold leading-7 text-duck-ink/65">
-                        Scroll door een portfolio dat echt iets vertelt: wie je bent, wat je maakt, welke trofeeën je haalt en waar je nog groeit.
+                        Wie je bent, wat je maakt, welke trofeeën je hebt gehaald. En waar je nog in groeit — dat ook.
                     </p>
                     <a
                         href="/pilot"
@@ -1758,7 +1758,7 @@ function FaqSection() {
             <div className="relative z-10 mx-auto grid max-w-6xl gap-12 lg:grid-cols-[0.8fr_1.2fr]">
                 <Reveal y={30} className="lg:sticky lg:top-32 lg:self-start">
                     <SectionLabel>FAQ per rol</SectionLabel>
-                    <h2 className="mt-4 text-balance font-display text-[clamp(2.1rem,4.5vw,4rem)] leading-[1.05]">De vragen die in een schoolteam op tafel komen</h2>
+                    <h2 className="mt-4 text-balance font-display text-[clamp(2.1rem,4.5vw,4rem)] leading-[1.05]">De vragen die in elk schoolteam op tafel komen. En dan beantwoord.</h2>
                 </Reveal>
                 <Reveal y={30}>
                     <div role="list">
@@ -1819,7 +1819,7 @@ function FooterCta({ startPilot, scrollTo }: { startPilot: () => void; scrollTo:
                     te maken?
                 </h2>
                 <p className="mt-5 max-w-md text-pretty text-base font-semibold leading-7 text-white/65">
-                    Plan een schoolpilot en ontdek welke route past bij jouw leerlingen.
+                    Plan een pilot. De eend heeft zijn agenda al vrijgehouden.
                 </p>
                 <a
                     href="/pilot"
@@ -2275,15 +2275,15 @@ function HeroHeadline({ introReady }: { introReady: boolean }) {
 
     return (
         <h1
-            aria-label="Maak digitale geletterdheid tastbaar, motiverend en aantoonbaar."
+            aria-label="Leerlingen leren digitale vaardigheden. Maandagochtend gewoon starten."
             className="mx-auto mt-7 max-w-[20ch] text-balance font-display text-[clamp(2.6rem,7vw,6.4rem)] font-normal leading-[1.04] tracking-[-0.01em]"
         >
-            {rise(0, 'Maak')} {rise(1, 'digitale')} {rise(2, 'geletterdheid')} {rise(3, <em className="italic">tastbaar,</em>)}{' '}
-            {rise(4, <em className="italic">motiverend</em>)} {rise(5, 'en')}{' '}
+            {rise(0, 'Leerlingen')} {rise(1, 'leren')} {rise(2, 'digitale')} {rise(3, 'vaardigheden.')}{' '}
+            {rise(4, 'Maandagochtend')} {rise(5, 'gewoon')}{' '}
             {rise(6, (
                 <span className="relative inline-block whitespace-nowrap">
                     <span aria-hidden="true" className="absolute inset-x-[-3%] inset-y-[8%] -rotate-1 rounded-[0.5em] bg-duck-acid" />
-                    <span className="relative">aantoonbaar.</span>
+                    <span className="relative">starten.</span>
                 </span>
             ))}
         </h1>
