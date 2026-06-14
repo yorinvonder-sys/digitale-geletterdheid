@@ -1036,7 +1036,7 @@ function SkillsSection({ scrollTo }: { scrollTo: (target: string) => void }) {
                     </Reveal>
                 </div>
 
-                <div className="mt-10 overflow-x-auto pb-8 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:mt-12 lg:overflow-visible lg:pb-0">
+                <div className="mt-10 overflow-x-auto pb-8 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:mt-12 lg:overflow-visible lg:pb-10">
                     <div data-skills-track className="flex w-max snap-x snap-mandatory gap-5 px-5 md:px-10 lg:snap-none lg:will-change-transform">
                         {skills.map((skill) => (
                             <article
