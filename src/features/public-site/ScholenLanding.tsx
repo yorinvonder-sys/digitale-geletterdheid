@@ -530,21 +530,31 @@ export const ScholenLanding: React.FC = () => {
                     </div>
 
                     <div className={`relative z-10 mx-auto mt-14 max-w-[1120px] opacity-0 motion-reduce:animate-none motion-reduce:opacity-100 md:mt-16 ${introReady ? 'animate-fade-in-up-delay-3' : ''}`}>
-                        <div data-hero-mockup id="game-demo" className="relative grid gap-6 scroll-mt-24 lg:grid-cols-[1.15fr_0.85fr] lg:items-start">
-                            <div className="lg:-rotate-1">
-                                <HeroGameDemo reduceMotion={reduceMotion} />
-                                <p className="mt-3 text-center text-xs font-bold text-duck-ink/50">Wat de leerling doet</p>
+                        <div data-hero-mockup id="game-demo" className="relative grid scroll-mt-24 gap-4 lg:grid-cols-2 lg:items-start">
+                            {/* Leerling-kaart */}
+                            <div className="flex flex-col gap-5 overflow-hidden rounded-[1.5rem] bg-duck-ink p-6 lg:-rotate-1">
+                                <div>
+                                    <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-duck-acid/60">Voor de leerling</p>
+                                    <p className="mt-1 font-display text-5xl leading-none text-duck-acid">Leerling</p>
+                                    <p className="mt-2 text-sm font-bold text-white/45">Bouwt. Prompts. Leert.</p>
+                                </div>
+                                <div className="overflow-hidden rounded-[1.1rem]">
+                                    <HeroGameDemo reduceMotion={reduceMotion} />
+                                </div>
                             </div>
-                            <div className="relative lg:translate-y-8 lg:rotate-1">
-                                <div className="relative">
-                                    <BrowserFrame url="dgskills.app/docent">
-                                        <ScreenDocent />
-                                    </BrowserFrame>
-                                    <span className="absolute -right-2 -top-2 rounded-full border border-duck-ink bg-duck-ink px-3 py-1.5 text-[11px] font-extrabold text-duck-acid shadow-sm">
+                            {/* Docent-kaart */}
+                            <div className="flex flex-col gap-5 overflow-hidden rounded-[1.5rem] border border-duck-ink/10 bg-duck-bgLight p-6 lg:translate-y-6 lg:rotate-1">
+                                <div>
+                                    <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-duck-ink/40">Voor de docent</p>
+                                    <p className="mt-1 font-display text-5xl leading-none text-duck-ink">Docent</p>
+                                    <p className="mt-2 text-sm font-bold text-duck-ink/45">Volgt. Ziet. Stuurt.</p>
+                                </div>
+                                <div className="relative overflow-hidden rounded-[1.1rem]">
+                                    <ScreenDocent />
+                                    <span className="absolute -right-2 -top-2 rounded-full bg-duck-ink px-3 py-1.5 text-[11px] font-extrabold text-duck-acid">
                                         24/28 actief
                                     </span>
                                 </div>
-                                <p className="mt-3 text-center text-xs font-bold text-duck-ink/50">Wat jij ziet</p>
                             </div>
                         </div>
                         <dl className="mx-auto mt-10 grid max-w-4xl grid-cols-2 gap-x-6 gap-y-6 border-t border-duck-ink/10 pt-7 text-left lg:grid-cols-4">
@@ -991,7 +1001,7 @@ function JourneySection() {
 
 function SkillsSection({ scrollTo }: { scrollTo: (target: string) => void }) {
     return (
-        <section id="skills" className="relative scroll-mt-24 overflow-hidden bg-duck-bg">
+        <section id="skills" className="relative scroll-mt-24 overflow-x-clip bg-duck-bg">
             <div data-skills-stage className="py-16 md:py-24 lg:flex lg:h-svh lg:min-h-[640px] lg:flex-col lg:justify-center lg:py-0">
                 <div className="mx-auto w-full max-w-6xl px-5 md:px-10">
                     <Reveal className="flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
@@ -1005,12 +1015,12 @@ function SkillsSection({ scrollTo }: { scrollTo: (target: string) => void }) {
                     </Reveal>
                 </div>
 
-                <div className="mt-10 overflow-x-auto pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:mt-12 lg:overflow-visible lg:pb-0">
+                <div className="mt-10 overflow-x-auto pb-8 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:mt-12 lg:overflow-visible lg:pb-0">
                     <div data-skills-track className="flex w-max snap-x snap-mandatory gap-5 px-5 md:px-10 lg:snap-none lg:will-change-transform">
                         {skills.map((skill) => (
                             <article
                                 key={skill.title}
-                                className={`relative flex h-[500px] w-[80vw] max-w-[400px] shrink-0 snap-center flex-col overflow-hidden rounded-[1.6rem] p-7 shadow-[2px_4px_24px_rgba(199,197,188,0.30)] sm:h-[540px] ${skill.tone === 'acid' ? 'bg-duck-acid' : 'bg-white'}`}
+                                className={`relative flex h-[500px] w-[80vw] max-w-[400px] shrink-0 snap-center flex-col overflow-hidden rounded-[1.6rem] p-7 shadow-[2px_4px_24px_rgba(199,197,188,0.30)] sm:h-[540px] lg:h-[500px] ${skill.tone === 'acid' ? 'bg-duck-acid' : 'bg-white'}`}
                                 aria-label={`${skill.title}. ${skill.coachTip}`}
                             >
                                 <span className="pointer-events-none absolute -right-2 -top-8 select-none font-display text-[11rem] leading-none text-duck-ink/10" aria-hidden="true">
@@ -1038,7 +1048,7 @@ function SkillsSection({ scrollTo }: { scrollTo: (target: string) => void }) {
                             </article>
                         ))}
 
-                        <article className="relative flex h-[500px] w-[80vw] max-w-[400px] shrink-0 snap-center flex-col items-start justify-center overflow-hidden rounded-[1.6rem] bg-duck-ink p-9 text-white sm:h-[540px]">
+                        <article className="relative flex h-[500px] w-[80vw] max-w-[400px] shrink-0 snap-center flex-col items-start justify-center overflow-hidden rounded-[1.6rem] bg-duck-ink p-9 text-white sm:h-[540px] lg:h-[500px]">
                             <img src="/logo.webp" alt="" className="size-14 object-contain brightness-0 invert" width={512} height={512} decoding="async" />
                             <h3 className="mt-6 text-balance font-display text-4xl leading-[1.08]">
                                 Zien hoe leerlingen <em className="italic text-duck-acid">bouwen</em>?
@@ -1133,9 +1143,8 @@ function HeroGameDemo({ reduceMotion }: { reduceMotion: boolean }) {
     };
 
     return (
-        <BrowserFrame url="dgskills.app/missie/game-programmeur">
-            <div className="bg-duck-bgLight text-duck-ink">
-                <PlayableSpriteStream reduceMotion={reduceMotion} config={gameConfig} heightClass="h-[300px]" />
+        <div className="bg-duck-bgLight text-duck-ink">
+            <PlayableSpriteStream reduceMotion={reduceMotion} config={gameConfig} heightClass="h-[300px]" />
                 <div className="border-t border-duck-ink/10 bg-white p-4">
                     <div className="mb-3 flex flex-wrap gap-1.5">
                         {QUICK_PROMPTS.map((prompt) => (
@@ -1193,8 +1202,7 @@ function HeroGameDemo({ reduceMotion }: { reduceMotion: boolean }) {
                         )}
                     </div>
                 </div>
-            </div>
-        </BrowserFrame>
+        </div>
     );
 }
 
