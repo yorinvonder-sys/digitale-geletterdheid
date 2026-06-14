@@ -110,8 +110,8 @@ export const TrainerPreview: React.FC<TrainerPreviewProps> = ({ data }) => {
                     {/* Mascot + title inline */}
                     <div className="flex items-center gap-2 mb-2">
                         <img
-                            src="/assets/storytelling/beaver-storyteller.webp"
-                            alt="DGSkills bever"
+                            src="/assets/brand/dgskills-duck-guide-v3.png"
+                            alt="DGSkills eend"
                             className="w-11 h-11 object-contain"
                         />
                         <h2 className="text-xl font-black tracking-tight text-balance" style={{ color: '#08283B' }}>
@@ -208,7 +208,7 @@ export const TrainerPreview: React.FC<TrainerPreviewProps> = ({ data }) => {
             {/* Header */}
             <div className="px-4 py-3 flex justify-between items-center shrink-0 z-20" style={{ backgroundColor: '#FFFFFF', borderBottom: '1px solid #E7D8BD' }}>
                 <div className="flex items-center gap-3">
-                    <img src="/assets/storytelling/beaver-storyteller.webp" alt="DGSkills bever" className="w-8 h-8 object-contain" loading="lazy" />
+                    <img src="/assets/brand/dgskills-duck-guide-v3.png" alt="DGSkills eend" className="w-8 h-8 object-contain" loading="lazy" />
                     <div>
                         <h3 className="font-bold text-xs tracking-wider uppercase" style={{ color: AI_TRAINER_ACCENT }}>Sorteer Lab</h3>
                         <span className="font-bold text-sm" style={{ color: '#08283B' }}>Afval Sorteerder</span>
@@ -247,7 +247,7 @@ export const TrainerPreview: React.FC<TrainerPreviewProps> = ({ data }) => {
             {showInstructionBanner && (
                 <div className="mx-4 mt-4 rounded-2xl p-3 shadow-sm" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
                     <div className="flex items-start gap-3">
-                        <img src="/assets/storytelling/beaver-storyteller.webp" alt="DGSkills bever" className="w-10 h-10 object-contain shrink-0" loading="lazy" />
+                        <img src="/assets/brand/dgskills-duck-guide-v3.png" alt="DGSkills eend" className="w-10 h-10 object-contain shrink-0" loading="lazy" />
                         <div>
                             <h4 className="font-bold text-sm mb-1" style={{ color: '#08283B' }}>Wat moet je nu doen?</h4>
                             <p className="text-xs leading-relaxed mb-2" style={{ color: '#445865' }}>
@@ -432,7 +432,7 @@ export const TrainerPreview: React.FC<TrainerPreviewProps> = ({ data }) => {
                         </>
                     ) : (
                         <div className="w-full text-center text-sm flex flex-col items-center gap-2" style={{ color: '#445865' }}>
-                            <img src="/assets/storytelling/beaver-storyteller.webp" alt="DGSkills bever denkt mee" className="w-12 h-12 object-contain" loading="lazy" />
+                            <img src="/assets/brand/dgskills-duck-guide-v3.png" alt="DGSkills eend denkt mee" className="w-12 h-12 object-contain" loading="lazy" />
                             <span className="font-medium" style={{ color: '#08283B' }}>Hier test je de AI straks</span>
                             <div className="rounded-lg px-3 py-2 text-xs" style={{ backgroundColor: '#FCF6EA', border: '1px solid #E7D8BD' }}>
                                 <p style={{ color: '#445865' }}>Als je genoeg voorbeelden hebt gegeven, typ dan in de chat:</p>

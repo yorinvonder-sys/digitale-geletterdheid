@@ -1,6 +1,8 @@
-export const AGENTS = ["chatgpt", "claude"];
+export const AGENTS = ["chatgpt", "claude", "reasonix"];
 const DEFAULT_OPENAI_MODEL = "gpt-4o-mini";
 const DEFAULT_ANTHROPIC_MODEL = "claude-3-5-sonnet-latest";
+const DEFAULT_REASONIX_MODEL = "deepseek-r1:1.5b";
+const DEFAULT_REASONIX_BASE_URL = "http://127.0.0.1:11434";
 
 export function normalizeAgent(value) {
   if (typeof value !== "string") {
@@ -121,6 +123,40 @@ async function generateAnthropicReply(userPrompt, systemPrompt) {
   };
 }
 
+async function generateReasonixReply(userPrompt, systemPrompt) {
+  const baseUrl = (process.env.REASONIX_BASE_URL || DEFAULT_REASONIX_BASE_URL).replace(/\/+$/, "");
+  const model = process.env.REASONIX_MODEL || DEFAULT_REASONIX_MODEL;
+  const prompt = [`System:\n${systemPrompt}`, "", `User:\n${userPrompt}`].join("\n");
+
+  const response = await fetch(`${baseUrl}/api/generate`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      model,
+      prompt,
+      stream: false,
+    }),
+  });
+
+  const data = await response.json();
+  if (!response.ok) {
+    const message = typeof data?.error === "string" ? data.error : "Unknown Reasonix/Ollama error.";
+    throw new Error(`Reasonix request failed (${response.status}): ${message}`);
+  }
+
+  const text = typeof data?.response === "string" ? data.response.trim() : "";
+  if (!text) {
+    throw new Error("Reasonix returned an empty response.");
+  }
+
+  return {
+    model: data.model || model,
+    text,
+  };
+}
+
 export async function generateAgentReply({ agent, systemPrompt, userPrompt, dryRun = false, dryRunText = "" }) {
   const normalizedAgent = normalizeAgent(agent);
 
@@ -143,6 +179,10 @@ export async function generateAgentReply({ agent, systemPrompt, userPrompt, dryR
 
   if (normalizedAgent === "claude") {
     return generateAnthropicReply(userPrompt, systemPrompt);
+  }
+
+  if (normalizedAgent === "reasonix") {
+    return generateReasonixReply(userPrompt, systemPrompt);
   }
 
   throw new Error(`No provider configured for agent "${normalizedAgent}".`);

@@ -1,6 +1,14 @@
 import React from 'react';
 import type { ScenarioRound } from '../types';
 
+const ScenarioIcon = ({ icon, className }: { icon: string; className: string }) => (
+    icon.startsWith('/assets/') ? (
+        <img src={icon} alt="" className={`shrink-0 object-contain ${className}`} width={24} height={24} loading="lazy" decoding="async" />
+    ) : (
+        <span className={className}>{icon}</span>
+    )
+);
+
 export const BinaryChoiceRound: React.FC<{
     round: ScenarioRound;
     selections: number[];
@@ -37,7 +45,7 @@ export const BinaryChoiceRound: React.FC<{
                             }`}
                         >
                             <div className="flex items-start gap-3 mb-3">
-                                <span className="text-xl mt-0.5">{item.icon}</span>
+                                <ScenarioIcon icon={item.icon} className="h-6 w-6 text-xl mt-0.5" />
                                 <div className="flex-1">
                                     <p
                                         className="text-sm font-bold text-[#08283B] mb-1"

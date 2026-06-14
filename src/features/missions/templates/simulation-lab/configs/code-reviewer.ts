@@ -125,7 +125,7 @@ function computeVisuals(
             data: {
                 leftTitle: 'Hoe jij feedback geeft',
                 leftItems: [
-                    { icon: '😊', label: '"Ziet er goed uit!"' },
+                    { icon: '/assets/brand/ui-icons/dgskills-duck-happy.webp', label: '"Ziet er goed uit!"' },
                     { icon: '👍', label: '"Prima gedaan!"' },
                     { icon: '🙈', label: 'Problemen bewust niet noemen' },
                 ],

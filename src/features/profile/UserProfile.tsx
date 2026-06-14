@@ -1,5 +1,5 @@
 import React, { useState, lazy, Suspense } from 'react';
-import { User, Shield, Trophy, ChevronLeft, Sparkles, ShoppingBag, Palette, Crown, Headphones, Shirt, Columns as Pants, Smile, Glasses, Bot, Backpack, Zap, Scissors, X, Award, Gamepad2, BookOpen, BrainCircuit, Search, RotateCcw, Calendar, Printer, Projector, FileText, Cloud, Share2, MessageSquare, Scale, Save, Star, Heart, Laugh, Meh, Dumbbell, CheckCircle2, AlertTriangle, ShieldCheck, Lock } from 'lucide-react';
+import { User, Shield, Trophy, ChevronLeft, Sparkles, ShoppingBag, Palette, Crown, Headphones, Shirt, Columns as Pants, Glasses, Bot, Backpack, Zap, Scissors, X, Award, Gamepad2, BookOpen, BrainCircuit, Search, RotateCcw, Calendar, Printer, Projector, FileText, Cloud, Share2, MessageSquare, Scale, Save, Star, Heart, Dumbbell, CheckCircle2, AlertTriangle, ShieldCheck, Lock } from 'lucide-react';
 import { ParentUser, UserStats, AvatarConfig, DEFAULT_AVATAR_CONFIG, EducationLevel } from '@/types';
 import { LazyAvatarViewer } from '@/features/profile/avatar/LazyAvatarViewer';
 import { AvatarViewer2D } from '@/features/profile/avatar/AvatarViewer2D';
@@ -76,6 +76,25 @@ type ShopItem = {
     gender?: AvatarConfig['gender'];
 };
 
+const DUCK_UI_ICONS = {
+    default: '/assets/brand/ui-icons/dgskills-duck-default.webp',
+    neutral: '/assets/brand/ui-icons/dgskills-duck-neutral.webp',
+    happy: '/assets/brand/ui-icons/dgskills-duck-happy.webp',
+    surprised: '/assets/brand/ui-icons/dgskills-duck-surprised.webp',
+} as const;
+
+const DuckUiIcon = ({ variant = 'default', size = 16, alt = '' }: { variant?: keyof typeof DUCK_UI_ICONS; size?: number; alt?: string }) => (
+    <img
+        src={DUCK_UI_ICONS[variant]}
+        alt={alt}
+        className="shrink-0 object-contain"
+        width={size}
+        height={size}
+        loading="lazy"
+        decoding="async"
+    />
+);
+
 const HAIR_SHOP_ITEMS: ShopItem[] = AVATAR_HAIR_CATALOG.map(item => ({
     id: item.id,
     type: 'hairStyle',
@@ -93,8 +112,8 @@ const SHOP_ITEMS: ShopItem[] = [
     // ═══════════════════════════════════════════════════════════════════════════════
     // LICHAAM & BASIS - Gratis basis opties voor iedereen
     // ═══════════════════════════════════════════════════════════════════════════════
-    { id: 'gender_male', type: 'gender', value: 'male', label: 'Jongen', price: 0, icon: <Smile size={16} /> },
-    { id: 'gender_female', type: 'gender', value: 'female', label: 'Meisje', price: 0, icon: <Smile size={16} /> },
+    { id: 'gender_male', type: 'gender', value: 'male', label: 'Jongen', price: 0, icon: <DuckUiIcon variant="default" /> },
+    { id: 'gender_female', type: 'gender', value: 'female', label: 'Meisje', price: 0, icon: <DuckUiIcon variant="default" /> },
     { id: 'model_std', type: 'baseModel', value: 'standard', label: 'Standaard', price: 0, icon: <User size={16} /> },
     { id: 'model_slim', type: 'baseModel', value: 'slim', label: 'Sportief', price: 0, icon: <Zap size={16} /> },
     { id: 'model_bot', type: 'baseModel', value: 'robot', label: 'Robot', price: 500, icon: <Bot size={16} /> },
@@ -159,7 +178,7 @@ const SHOP_ITEMS: ShopItem[] = [
     // ACCESSOIRES (20+ opties!)
     // ═══════════════════════════════════════════════════════════════════════════════
     // --- HOOFD ---
-    { id: 'acc_none', type: 'accessory', value: 'none', label: 'Geen', price: 0, icon: <Smile size={16} /> },
+    { id: 'acc_none', type: 'accessory', value: 'none', label: 'Geen', price: 0, icon: <DuckUiIcon variant="default" /> },
     { id: 'acc_glasses', type: 'accessory', value: 'glasses', label: 'Coole Bril', price: 100, icon: <Glasses size={16} /> },
     { id: 'acc_sunglasses', type: 'accessory', value: 'sunglasses', label: 'Zonnebril', price: 150, icon: <Glasses size={16} /> },
     { id: 'acc_cap', type: 'accessory', value: 'cap', label: 'Pet', price: 125, icon: <Crown size={16} /> },
@@ -204,10 +223,10 @@ const SHOP_ITEMS: ShopItem[] = [
     // ═══════════════════════════════════════════════════════════════════════════════
     // UITDRUKKINGEN - Gezichtsuitdrukkingen
     // ═══════════════════════════════════════════════════════════════════════════════
-    { id: 'expr_neutral', type: 'expression', value: 'neutral', label: 'Neutraal', price: 0, icon: <Meh size={16} /> },
-    { id: 'expr_happy', type: 'expression', value: 'happy', label: 'Blij', price: 0, icon: <Smile size={16} /> },
+    { id: 'expr_neutral', type: 'expression', value: 'neutral', label: 'Neutraal', price: 0, icon: <DuckUiIcon variant="neutral" /> },
+    { id: 'expr_happy', type: 'expression', value: 'happy', label: 'Blij', price: 0, icon: <DuckUiIcon variant="happy" /> },
     { id: 'expr_cool', type: 'expression', value: 'cool', label: 'Cool', price: 100, icon: <Glasses size={16} /> },
-    { id: 'expr_surprised', type: 'expression', value: 'surprised', label: 'Verrast', price: 100, icon: <Laugh size={16} /> },
+    { id: 'expr_surprised', type: 'expression', value: 'surprised', label: 'Verrast', price: 100, icon: <DuckUiIcon variant="surprised" /> },
 
     // ═══════════════════════════════════════════════════════════════════════════════
     // POSES - Lichaamshoudingen
@@ -791,7 +810,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onBack, onUpdate
                                     <aside className="w-full md:w-20 lg:w-48 flex md:flex-col gap-2 shrink-0 overflow-x-auto md:overflow-y-auto pb-4 md:pb-0 h-auto md:h-full hide-scrollbar">
                                         {[
                                             { id: 'all', label: 'Alles', icon: <ShoppingBag size={20} /> },
-                                            { id: 'gender', label: 'Geslacht', icon: <Smile size={20} /> },
+                                            { id: 'gender', label: 'Geslacht', icon: <DuckUiIcon variant="default" size={20} /> },
                                             { id: 'body', label: 'Lichaam', icon: <User size={20} /> },
                                             { id: 'hair', label: 'Kapsels', icon: <Scissors size={20} /> },
                                             { id: 'clothes', label: 'Kleding', icon: <Shirt size={20} /> },

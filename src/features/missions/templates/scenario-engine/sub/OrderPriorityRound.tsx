@@ -2,6 +2,14 @@ import React from 'react';
 import { Check, RotateCcw } from 'lucide-react';
 import type { ScenarioRound } from '../types';
 
+const ScenarioIcon = ({ icon, className }: { icon: string; className: string }) => (
+    icon.startsWith('/assets/') ? (
+        <img src={icon} alt="" className={`shrink-0 object-contain ${className}`} width={24} height={24} loading="lazy" decoding="async" />
+    ) : (
+        <span className={className}>{icon}</span>
+    )
+);
+
 export const OrderPriorityRound: React.FC<{
     round: ScenarioRound;
     selections: number[];
@@ -63,7 +71,7 @@ export const OrderPriorityRound: React.FC<{
                                     >
                                         {i + 1}
                                     </span>
-                                    <span>{item.icon}</span>
+                                    <ScenarioIcon icon={item.icon} className="h-5 w-5" />
                                     <span className="flex-1">{item.title}</span>
                                     {submitted && isCorrect && <Check size={12} />}
                                     {submitted && !isCorrect && (
@@ -92,7 +100,7 @@ export const OrderPriorityRound: React.FC<{
                             onClick={() => onAdd(item.id)}
                             className="w-full min-h-[44px] p-3 rounded-xl border-2 border-[#E7D8BD] bg-white hover:border-[#D97848] hover:bg-[#D97848]/5 text-left transition-all duration-200 flex items-center gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D97848]/40"
                         >
-                            <span className="text-lg">{item.icon}</span>
+                            <ScenarioIcon icon={item.icon} className="h-6 w-6 text-lg" />
                             <div className="flex-1 min-w-0">
                                 <p
                                     className="text-sm font-bold text-[#08283B]"
@@ -123,7 +131,10 @@ export const OrderPriorityRound: React.FC<{
                                 className="p-3 rounded-xl bg-[#FCF6EA] border border-[#E7D8BD] text-xs text-[#445865] italic"
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                             >
-                                <span className="font-bold not-italic">{item.icon} {item.title}:</span>{' '}
+                                <span className="inline-flex items-center gap-1 font-bold not-italic">
+                                    <ScenarioIcon icon={item.icon} className="h-4 w-4" />
+                                    {item.title}:
+                                </span>{' '}
                                 {item.explanation}
                             </div>
                         );

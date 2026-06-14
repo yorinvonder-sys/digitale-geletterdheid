@@ -2,6 +2,14 @@ import React from 'react';
 import { Check, X } from 'lucide-react';
 import type { ScenarioRound } from '../types';
 
+const ScenarioIcon = ({ icon, className }: { icon: string; className: string }) => (
+    icon.startsWith('/assets/') ? (
+        <img src={icon} alt="" className={`object-contain ${className}`} width={24} height={24} loading="lazy" decoding="async" />
+    ) : (
+        <span className={className}>{icon}</span>
+    )
+);
+
 export const SelectCorrectRound: React.FC<{
     round: ScenarioRound;
     selections: number[];
@@ -50,7 +58,7 @@ export const SelectCorrectRound: React.FC<{
                         className={`w-full p-4 rounded-2xl border-2 text-left transition-all duration-200 ${border} ${bg}`}
                     >
                         <div className="flex items-start gap-3">
-                            <span className="shrink-0 text-xl mt-0.5">{item.icon}</span>
+                            <ScenarioIcon icon={item.icon} className="h-6 w-6 shrink-0 text-xl mt-0.5" />
                             <div className="flex-1 min-w-0">
                                 <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mb-1">
                                     <span

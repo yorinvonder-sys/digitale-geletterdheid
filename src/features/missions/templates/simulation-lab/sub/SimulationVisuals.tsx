@@ -113,7 +113,11 @@ export const ComparisonVis: React.FC<{ data: ComparisonData }> = ({ data }) => (
                 <div className="p-2 space-y-1.5 bg-white">
                     {panel.items.map((item, i) => (
                         <div key={i} className="flex items-center gap-2">
-                            <span className="text-sm">{item.icon}</span>
+                            {item.icon.startsWith('/assets/') ? (
+                                <img src={item.icon} alt="" className="h-5 w-5 shrink-0 object-contain" width={20} height={20} loading="lazy" decoding="async" />
+                            ) : (
+                                <span className="text-sm">{item.icon}</span>
+                            )}
                             <span
                                 className="text-xs text-[#445865] leading-tight"
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}

@@ -38,7 +38,7 @@ type JourneyChapter = {
 const NAV_ITEMS: NavItem[] = [
     { label: 'Hoe het werkt', target: 'journey' },
     { label: 'Skills', target: 'skills' },
-    { label: 'Game demo', target: 'projecten' },
+    { label: 'Game demo', target: 'game-demo' },
     { label: 'Portfolio', target: 'portfolio' },
 ];
 
@@ -63,7 +63,7 @@ const skills: Skill[] = [
         icon: <BrainIcon />,
         bullets: ['AI-tools gebruiken', 'Data analyseren', 'Slimme apps bouwen'],
         projects: '12 projecten',
-        coachTip: 'Start hier als je klas AI wil gebruiken en kritisch wil leren kijken.',
+        coachTip: 'Voor de klas die AI wil gebruiken — en ook wil snappen wat er eigenlijk gebeurt.',
         bestFor: 'brugklas, onderzoeksopdrachten en AI-basis',
     },
     {
@@ -75,7 +75,7 @@ const skills: Skill[] = [
         icon: <PencilIcon />,
         bullets: ['Grafisch ontwerp', 'UI/UX design', 'Animatie & video'],
         projects: '18 projecten',
-        coachTip: 'Goed voor makers: ontwerpen, testen en verbeteren met zichtbaar resultaat.',
+        coachTip: 'Voor leerlingen die liever iets bouwen dan erover lezen.',
         bestFor: 'projectweek, kunstvakken en creatieve keuzeuren',
     },
     {
@@ -87,7 +87,7 @@ const skills: Skill[] = [
         icon: <CodeIcon />,
         bullets: ['Web development', 'App development', 'Games maken'],
         projects: '24 projecten',
-        coachTip: 'Perfect voor leerlingen die willen snappen hoe apps, games en logica werken.',
+        coachTip: 'Voor wie wil snappen hoe apps, games en logica werken. En waarom ze soms niet doen wat je wil.',
         bestFor: 'programmeren, technologie en plusopdrachten',
     },
     {
@@ -99,7 +99,7 @@ const skills: Skill[] = [
         icon: <CameraIcon />,
         bullets: ['Video editen', 'Podcast maken', 'Storytelling'],
         projects: '16 projecten',
-        coachTip: 'Sterk voor creatievelingen: video, verhaal, presentatie en digitale identiteit.',
+        coachTip: 'Voor wie iets te zeggen heeft. En weet hoe dat overkomt.',
         bestFor: 'Nederlands, mediawijsheid en presentaties',
     },
     {
@@ -111,7 +111,7 @@ const skills: Skill[] = [
         icon: <LockIcon />,
         bullets: ['Privacy & security', 'Cyber awareness', 'Verantwoord online'],
         projects: '8 projecten',
-        coachTip: 'Ideaal als startpunt voor mentoraat, privacy, phishing en veilig gedrag.',
+        coachTip: "Privacy, phishing, veilig gedrag. Klinkt saai — tot iemand z'n account kwijt is.",
         bestFor: 'mentorles, burgerschap en schoolbrede veiligheid',
     },
 ];
@@ -142,31 +142,31 @@ const trustChips = [
 const lessonSteps = [
     {
         step: '01',
-        title: 'Start missie',
-        copy: 'De docent kiest een missie die past bij de les, periode of leerlijn. Leerlingen zien meteen wat ze gaan maken.',
+        title: 'Jij kiest een missie',
+        copy: 'Een paar klikken en de klas is gestart. Leerlingen zien direct wat ze gaan maken — geen tien minuten uitleg vooraf.',
     },
     {
         step: '02',
-        title: 'Leerlingen werken zelfstandig',
-        copy: 'Korte opdrachten, echte DGSkills-schermen en directe feedback houden de klas actief zonder lange instructieronde.',
+        title: 'De klas werkt',
+        copy: 'Echte tools, directe feedback. Leerlingen hoeven niet te raden of ze op de goede weg zitten. Jij ook niet.',
     },
     {
         step: '03',
-        title: 'Docent ziet signalen',
-        copy: 'Voortgang, antwoorden en leervragen worden zichtbaar, zodat hulp terechtkomt bij leerlingen die die nodig hebben.',
+        title: 'Jij ziet wie vastzit',
+        copy: 'Voortgang en leervragen zijn zichtbaar in je dashboard. Je helpt gericht — in plaats van 29 keer dezelfde vraag beantwoorden.',
     },
     {
         step: '04',
-        title: 'Portfolio/reflectie',
-        copy: 'Elke missie eindigt met bewijs: wat is gemaakt, welke keuze is uitgelegd en welke skill is gegroeid.',
+        title: 'Bewijs, geen rapport',
+        copy: 'Elke missie sluit af met iets wat leerlingen kunnen laten zien. Niet een bladzijde aantekeningen. Iets echts.',
     },
 ] as const;
 
 const leaderReasons = [
-    { title: 'Curriculum zichtbaar', copy: 'Missies worden gekoppeld aan digitale geletterdheid, SLO-domeinen en portfolio-bewijs.' },
-    { title: 'Minder voorbereiding', copy: 'Docenten starten vanuit kant-en-klare routes in plaats van losse lessen en werkbladen.' },
-    { title: 'Pilotrapport', copy: 'De schoolpilot levert signalen op over deelname, voortgang en vervolgstappen voor het team.' },
-    { title: 'Schoolbreed inzetbaar', copy: 'Geschikt voor mentorles, projectweek, keuzeuur of een doorlopende leerlijn.' },
+    { title: 'SLO zit erin, niet ernaast', copy: 'Kerndoelen zijn standaard onderdeel van de missies. Na de les kun je aanwijzen wat er geleerd is — niet reconstrueren.' },
+    { title: 'Geen zondagsvoorbereiding', copy: 'Docenten starten met wat er al ligt. Geen werkbladen ontwerpen, geen AI-cursus volgen voor de eerste les.' },
+    { title: 'Rapport na zes weken', copy: 'Deelname, voortgang en SLO-koppeling op papier. Iets om op te baseren als het breder ingevoerd moet worden.' },
+    { title: 'Past bijna overal', copy: 'Mentorles, projectweek, keuzeuur of gewone les. Als het maar niet de 47e Teams-vergadering is.' },
 ] as const;
 
 const sloRows = [
@@ -177,61 +177,61 @@ const sloRows = [
 ] as const;
 
 const ictTrustItems = [
-    { title: 'Microsoft 365', copy: 'Inloggen en klasbeheer worden besproken vanuit de bestaande schoolomgeving.' },
-    { title: 'Verwerkersovereenkomst', copy: 'Voor privacyteams is er ruimte om afspraken en verantwoordelijkheden vooraf te beoordelen.' },
-    { title: 'DPIA support', copy: 'DGSkills helpt scholen met informatie die nodig is voor een zorgvuldige DPIA-check.' },
-    { title: 'AI-transparantie', copy: 'AI-gebruik wordt uitlegbaar gemaakt voor leerlingen, docenten en schoolbeleid.' },
-    { title: 'Support/contact', copy: 'Tijdens de pilot is er een helder aanspreekpunt voor docent, schoolleiding en ICT.' },
+    { title: 'Microsoft 365', copy: 'Inloggen via de schoolomgeving die je al hebt. ICT hoeft niets nieuws in te richten.' },
+    { title: 'Verwerkersovereenkomst', copy: 'Privacyteam wil eerst de afspraken zien? Goed plan. Dat kan.' },
+    { title: 'DPIA support', copy: 'DGSkills levert wat je nodig hebt voor de DPIA-check. Scholen beoordelen zelf — zo hoort het.' },
+    { title: 'AI-transparantie', copy: 'Hoe de AI werkt, is uitlegbaar voor leerlingen, docenten en het schoolbeleid. Geen zwarte doos.' },
+    { title: 'Support/contact', copy: 'Eén aanspreekpunt. Geen ticketnummer, geen wachtrij van drie dagen.' },
 ] as const;
 
 const screenshotProofPanels = [
     {
         label: 'Leerlingmissie',
-        title: 'Leerlingen leren door te doen',
-        copy: 'Leerlingen kiezen uit echte missies — Prompt Perfectionist, Game Programmeur, AI Trainer — en starten direct vanuit hun eigen niveau.',
+        title: 'Leerlingen die gewoon beginnen',
+        copy: 'Prompt Perfectionist, Game Programmeur, AI Trainer — missies met een concreet eindproduct. Leerlingen starten zelfstandig, vanuit hun eigen niveau.',
         screen: <ScreenMissieDetail />,
     },
     {
         label: 'Docentdashboard',
-        title: 'Voortgang in een oogopslag',
-        copy: 'Docenten zien routes, periodes, leerdoelen en missiekaarten zonder eigen spreadsheets bij te houden.',
+        title: 'Alles op één plek',
+        copy: 'Routes, periodes, leerdoelen en missiekaarten in één scherm. Jij houdt bij wie vastzit. Niet in een spreadsheet.',
         screen: <ScreenDocent />,
     },
     {
         label: 'SLO-voortgang',
-        title: 'Bewijs per leerdoel',
-        copy: 'Voortgang en XP worden gekoppeld aan zichtbare groei, zodat de opbrengst bespreekbaar wordt.',
+        title: 'Bewijs per kerndoel',
+        copy: 'Voortgang is gekoppeld aan leerdoelen. Het gesprek met de schoolleiding wordt een stuk makkelijker als je kunt aanwijzen wat waar zit.',
         screen: <ScreenVoortgang />,
     },
     {
         label: 'Portfolio-bewijs',
-        title: 'Een verhaal achter de score',
-        copy: 'Leerlingen bouwen een portfolio dat laat zien wat ze maken, uitleggen en verbeteren.',
+        title: 'Meer dan een cijfer',
+        copy: 'Wat leerlingen gemaakt hebben, welke keuzes ze uitleggen, welke skills erbij horen. Een portfolio dat ze zelf willen laten zien.',
         screen: <ScreenPortfolio />,
     },
     {
         label: 'Privacy/ICT',
-        title: 'Beoordeelbaar voor schoolteams',
-        copy: 'Privacy, AI-transparantie en implementatievragen krijgen een eigen plek in de pilot.',
+        title: 'Controleerbaar van tevoren',
+        copy: 'Privacy, AI en beheer zijn standaard onderdeel van de pilot — niet als bijlage achteraf.',
         screen: <ScreenPrivacy />,
     },
 ] as const;
 
 const pilotItems = [
-    'Onboarding call met schoolteam',
-    'Docent startguide voor de eerste les',
-    '20+ AI-missies om direct te proberen',
-    'Klas- en route-inrichting voor de pilot',
-    'Pilotrapport na 6 weken',
-    'Geen creditcard nodig',
-    'Binnen 10 werkdagen live',
+    'Kickoff-call — wij bereiden ons voor, niet alleen jij',
+    'Startgids voor de eerste les (voor de docent, niet de ICT-er)',
+    '20+ missies die leerlingen direct kunnen starten',
+    'Klas en route ingericht vóór les één',
+    'Pilotrapport na 6 weken — met vervolgadvies',
+    'Geen creditcard. Echt niet.',
+    'Live binnen 10 werkdagen',
 ] as const;
 
 const roleFaqs = [
-    { role: 'Docenten', question: 'Moet ik zelf AI-lessen ontwerpen?', answer: 'Nee. Je start met missies, voorbeeldroutes en korte opdrachten die je in je eigen les kunt gebruiken.' },
-    { role: 'Schoolleiding', question: 'Wat levert een pilot op?', answer: 'Een concreet beeld van deelname, voortgang, SLO-koppeling en wat er nodig is voor bredere invoering.' },
-    { role: 'ICT & privacy', question: 'Kunnen we privacy en AI vooraf beoordelen?', answer: 'Ja. De pilot is bedoeld om ook verwerkersafspraken, DPIA-informatie en AI-transparantie zorgvuldig door te nemen.' },
-    { role: 'Pilot', question: 'Hoe snel kan een school starten?', answer: 'De pilot is ingericht op een compacte start: meestal binnen 10 werkdagen nadat scope en accounts zijn afgestemd.' },
+    { role: 'Docenten', question: 'Moet ik zelf AI-lessen ontwerpen?', answer: 'Nee. Je start met kant-en-klare missies en routes. Als je later wil aanpassen, kan dat ook — maar het hoeft echt niet.' },
+    { role: 'Schoolleiding', question: 'Wat levert een pilot op?', answer: 'Deelname, voortgang en SLO-koppeling op papier. Plus advies over wat nodig is als je verder wil. Niet alleen: "de leerlingen waren enthousiast".' },
+    { role: 'ICT & privacy', question: 'Kunnen we privacy en AI vooraf beoordelen?', answer: 'Ja — en dat is precies de bedoeling. Verwerkersafspraken, DPIA-ondersteuning en AI-transparantie zitten standaard in de pilot. Neem de tijd die je nodig hebt.' },
+    { role: 'Pilot', question: 'Hoe snel kan een school starten?', answer: 'Binnen 10 werkdagen na de eerste afstemming. Geen projectplan van tien pagina\'s, geen maanden aanlooptijd.' },
 ] as const;
 
 const journeyChapters: JourneyChapter[] = [
@@ -239,8 +239,8 @@ const journeyChapters: JourneyChapter[] = [
         step: '01',
         title: 'Ontdek',
         eyebrow: 'Start je route',
-        copy: 'Leerlingen kiezen een leerlijn, zien meteen de AI-missies en starten op hun eigen niveau.',
-        routeCoachTip: 'Kies een leerlijn en zie meteen waar je klas start.',
+        copy: 'Leerlingen kiezen een leerlijn en zien direct hun missies. Geen rondleiding, geen uitlegscherm.',
+        routeCoachTip: 'Route gekozen. Dat was al het lastigste.',
         screen: <ScreenMissies />,
         icon: <SearchIcon />,
         stat: '20+',
@@ -250,8 +250,8 @@ const journeyChapters: JourneyChapter[] = [
         step: '02',
         title: 'Leer',
         eyebrow: 'Korte challenges',
-        copy: 'Elke opdracht draait in echte DGSkills-schermen, dus leerlingen leren door te doen, niet door te lezen.',
-        routeCoachTip: 'Elke missie geeft directe feedback, dus leerlingen blijven bezig.',
+        copy: 'Echte tools, directe feedback. Leerlingen hoeven niet te raden of ze iets goed doen.',
+        routeCoachTip: 'De klas werkt zelfstandig. Dat geeft jou een kopje koffie. Of tien minuten nakijken.',
         screen: <ScreenMissieDetail />,
         icon: <BookIcon />,
         stat: 'SLO',
@@ -261,8 +261,8 @@ const journeyChapters: JourneyChapter[] = [
         step: '03',
         title: 'Maak',
         eyebrow: 'Projectmodus',
-        copy: 'Bouw een platformer, ontwerp een robotroute, laat AI je tekening raden en remix challenges tot iets eigens.',
-        routeCoachTip: 'Hier wordt het concreet: games, robots, prompts, projecten.',
+        copy: 'Een platformer bouwen, een robotroute ontwerpen, AI laten raden wat je tekende. Echte projecten, geen nagebootste oefeningen.',
+        routeCoachTip: 'Hier willen leerlingen mee thuiskomen.',
         screen: <ScreenBouwen />,
         icon: <PencilIcon />,
         stat: '24',
@@ -272,8 +272,8 @@ const journeyChapters: JourneyChapter[] = [
         step: '04',
         title: 'Bewijs',
         eyebrow: 'Trofeeën en XP',
-        copy: 'Voortgang wordt zichtbaar met levels, trofeeën en XP, zonder dat het voelt als een saai volgsysteem.',
-        routeCoachTip: 'Alles eindigt in zichtbaar portfolio- of voortgangsbewijs.',
+        copy: 'Levels, trofeeën en XP. Voortgang die leerlingen zelf willen laten zien — dat scheelt een hoop uitleg.',
+        routeCoachTip: 'Bewijs dat leerlingen zelf willen delen. Rare bijkomstigheid.',
         screen: <ScreenVoortgang />,
         icon: <BadgeIcon />,
         stat: 'XP',
@@ -283,8 +283,8 @@ const journeyChapters: JourneyChapter[] = [
         step: '05',
         title: 'Groei',
         eyebrow: 'Portfolio groei',
-        copy: 'Leerlingen krijgen feedback, bouwen bewijs op en zien hun groei in een portfolio dat met ze meegroeit.',
-        routeCoachTip: 'Maak groei zichtbaar per leerling, klas en route.',
+        copy: 'Wat gemaakt is, welke keuzes zijn gemaakt — zichtbaar in een portfolio. Niet in een excelbestand van de docent.',
+        routeCoachTip: 'Groei per leerling, klas en route. Zonder achteraf te reconstrueren.',
         screen: <ScreenPortfolio />,
         icon: <GrowthIcon />,
         stat: '1',
@@ -407,7 +407,7 @@ export const ScholenLanding: React.FC = () => {
             >
                 <nav className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 md:px-10" aria-label="Hoofdnavigatie">
                     <a href="/" className="flex min-h-[44px] items-center gap-3 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2" aria-label="DGSkills homepage">
-                        <DuckMark className="size-9" />
+                        <img src="/logo.webp" alt="" className="size-9 object-contain" width={512} height={512} decoding="async" />
                         <span className="text-xl font-extrabold tracking-tight">DGSkills</span>
                     </a>
 
@@ -493,7 +493,7 @@ export const ScholenLanding: React.FC = () => {
                         </p>
                         <HeroHeadline introReady={introReady} />
                         <p className={`mx-auto mt-7 max-w-2xl text-pretty text-base font-semibold leading-7 text-duck-ink/70 sm:text-lg sm:leading-8 opacity-0 motion-reduce:animate-none motion-reduce:opacity-100 ${introReady ? 'animate-fade-in-up-delay-2' : ''}`}>
-                            De missiegedreven leeromgeving voor VO en VSO, gekoppeld aan de SLO-kerndoelen. Van AI-geletterdheid tot online veiligheid: leerlingen leren door te doen, docenten zien voortgang per kerndoel.
+                            Kant-en-klare AI-missies voor VO en VSO, gekoppeld aan de SLO-kerndoelen. Leerlingen werken zelfstandig, jij volgt de voortgang. De spreadsheet mag met pensioen.
                         </p>
                         <div className={`mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row opacity-0 motion-reduce:animate-none motion-reduce:opacity-100 ${introReady ? 'animate-fade-in-up-delay-3' : ''}`}>
                             <a
@@ -505,7 +505,7 @@ export const ScholenLanding: React.FC = () => {
                                 <ArrowRightIcon />
                             </a>
                             <button
-                                onClick={() => scrollTo('projecten')}
+                                onClick={() => scrollTo('game-demo')}
                                 className="group inline-flex min-h-[54px] w-full items-center justify-center gap-3 rounded-full border border-duck-ink/20 bg-duck-bgLight px-8 py-3.5 text-base font-extrabold text-duck-ink transition-all duration-300 hover:-translate-y-0.5 hover:border-duck-ink sm:w-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
                             >
                                 Bekijk de leerlingdemo
@@ -529,11 +529,33 @@ export const ScholenLanding: React.FC = () => {
                         </div>
                     </div>
 
-                    <div className={`relative z-10 mx-auto mt-14 max-w-5xl opacity-0 motion-reduce:animate-none motion-reduce:opacity-100 md:mt-16 ${introReady ? 'animate-fade-in-up-delay-3' : ''}`}>
-                        <div data-hero-mockup className="relative mx-auto w-full max-w-[980px] lg:-rotate-1">
-                            <BrowserFrame url="dgskills.app/missies">
-                                <ScreenMissies />
-                            </BrowserFrame>
+                    <div className={`relative z-10 mx-auto mt-14 max-w-[1120px] opacity-0 motion-reduce:animate-none motion-reduce:opacity-100 md:mt-16 ${introReady ? 'animate-fade-in-up-delay-3' : ''}`}>
+                        <div data-hero-mockup id="game-demo" className="relative grid scroll-mt-24 gap-4 lg:grid-cols-2 lg:items-start">
+                            {/* Leerling-kaart */}
+                            <div className="flex flex-col gap-5 overflow-hidden rounded-[1.5rem] bg-duck-ink p-6 lg:-rotate-1">
+                                <div>
+                                    <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-duck-acid/60">Voor de leerling</p>
+                                    <p className="mt-1 font-display text-5xl leading-none text-duck-acid">Leerling</p>
+                                    <p className="mt-2 text-sm font-bold text-white/45">Bouwt. Prompts. Leert.</p>
+                                </div>
+                                <div className="overflow-hidden rounded-[1.1rem]">
+                                    <HeroGameDemo reduceMotion={reduceMotion} />
+                                </div>
+                            </div>
+                            {/* Docent-kaart */}
+                            <div className="flex flex-col gap-5 overflow-hidden rounded-[1.5rem] border border-duck-ink/10 bg-duck-bgLight p-6 lg:translate-y-6 lg:rotate-1">
+                                <div>
+                                    <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-duck-ink/40">Voor de docent</p>
+                                    <p className="mt-1 font-display text-5xl leading-none text-duck-ink">Docent</p>
+                                    <p className="mt-2 text-sm font-bold text-duck-ink/45">Volgt. Ziet. Stuurt.</p>
+                                </div>
+                                <div className="relative overflow-hidden rounded-[1.1rem]">
+                                    <ScreenDocent />
+                                    <span className="absolute -right-2 -top-2 rounded-full bg-duck-ink px-3 py-1.5 text-[11px] font-extrabold text-duck-acid">
+                                        24/28 actief
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                         <dl className="mx-auto mt-10 grid max-w-4xl grid-cols-2 gap-x-6 gap-y-6 border-t border-duck-ink/10 pt-7 text-left lg:grid-cols-4">
                             {heroProofItems.map((item) => (
@@ -552,20 +574,6 @@ export const ScholenLanding: React.FC = () => {
 
                 <SkillsSection scrollTo={scrollTo} />
 
-                <section id="projecten" className="relative scroll-mt-24 bg-duck-bg px-5 py-20 md:px-10 md:py-28">
-                    <div className="relative z-10 mx-auto max-w-6xl">
-                        <div className="mb-10 flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
-                            <Reveal>
-                                <SectionLabel>Game demo</SectionLabel>
-                                <h2 className="mt-4 max-w-2xl text-balance font-display text-[clamp(2.1rem,4.5vw,4rem)] leading-[1.05]">Laat AI een game mee bouwen</h2>
-                            </Reveal>
-                            <Reveal delay={0.1} className="max-w-md text-pretty text-base font-semibold leading-7 text-duck-ink/65">
-                                Leerlingen schrijven zelf een prompt en zien meteen hun mini-game veranderen. De demo stopt na vijf prompts.
-                            </Reveal>
-                        </div>
-                        <AiGameBuilderDemo reduceMotion={reduceMotion} />
-                    </div>
-                </section>
 
                 <PortfolioStorySection startPilot={startPilot} />
 
@@ -574,9 +582,9 @@ export const ScholenLanding: React.FC = () => {
                         <Reveal className="grid gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
                             <div>
                                 <SectionLabel>Voor docenten</SectionLabel>
-                                <h2 className="mt-4 text-balance font-display text-[clamp(2.1rem,4.5vw,4rem)] leading-[1.05]">Zo werkt een DGSkills-les</h2>
+                                <h2 className="mt-4 text-balance font-display text-[clamp(2.1rem,4.5vw,4rem)] leading-[1.05]">Zo werkt een DGSkills-les. Niet ingewikkeld.</h2>
                                 <p className="mt-5 max-w-xl text-pretty text-base font-semibold leading-7 text-duck-ink/65">
-                                    Een les hoeft geen losse uitleg over AI of mediawijsheid te zijn. DGSkills maakt er een maakmoment van, met zichtbare voortgang voor leerling en docent.
+                                    Een les AI of mediawijsheid hoeft geen college te zijn. Leerlingen beginnen direct, werken zelfstandig en eindigen met iets wat ze kunnen laten zien.
                                 </p>
                                 <ol className="mt-9">
                                     {lessonSteps.map((item) => (
@@ -605,9 +613,9 @@ export const ScholenLanding: React.FC = () => {
                         <Reveal y={30} className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
                             <div>
                                 <SectionLabel>Voor schoolleiding</SectionLabel>
-                                <h2 className="mt-4 text-balance font-display text-[clamp(2.1rem,4.5vw,4rem)] leading-[1.05]">Waarom schoolleiders kiezen voor DGSkills</h2>
+                                <h2 className="mt-4 text-balance font-display text-[clamp(2.1rem,4.5vw,4rem)] leading-[1.05]">Voor schoolleiders die meer willen dan 'de leerlingen waren enthousiast'.</h2>
                                 <p className="mt-5 text-pretty text-base font-semibold leading-7 text-duck-ink/65">
-                                    De pilot laat zien dat leerlingen gemotiveerd raken én hoe digitale geletterdheid structureel in de school landt.
+                                    De pilot levert deelname, voortgang en SLO-koppeling op papier. Iets om een schoolbesluit op te baseren — geen PowerPoint vol beloften.
                                 </p>
                                 <a
                                     href="/pilot"
@@ -662,29 +670,78 @@ export const ScholenLanding: React.FC = () => {
                     </div>
                 </section>
 
-                <section id="productbewijs" className="relative scroll-mt-24 bg-duck-bgLight px-5 py-20 md:px-10 md:py-28">
-                    <div className="relative z-10 mx-auto max-w-6xl">
-                        <Reveal y={30}>
-                            <div className="mb-10 flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
+                <section id="productbewijs" className="scroll-mt-24">
+                    {/* Panel 1 — Leerling */}
+                    <div className="bg-duck-bgLight px-5 py-20 md:px-10 md:py-28">
+                        <Reveal y={24} className="mx-auto max-w-6xl">
+                            <p className="flex items-center gap-2.5 text-[11px] font-extrabold uppercase tracking-[0.1em] text-duck-ink/40">
+                                <span>01</span>
+                                <span className="h-px w-7 bg-duck-ink/20" />
+                                <span>Voor leerlingen</span>
+                            </p>
+                            <div className="mt-10 grid gap-10 lg:grid-cols-2 lg:items-center">
                                 <div>
-                                    <SectionLabel>Product in beeld</SectionLabel>
-                                    <h2 className="mt-4 text-balance font-display text-[clamp(2.1rem,4.5vw,4rem)] leading-[1.05]">Schermen die de aankoopvraag beantwoorden</h2>
+                                    <span className="inline-block rounded-full bg-duck-acid px-3.5 py-1.5 text-[11px] font-extrabold uppercase tracking-[0.14em]">Leerlingmissie</span>
+                                    <h2 className="mt-5 text-balance font-display text-[clamp(2rem,4vw,3.5rem)] leading-[1.05]">Gewoon beginnen, ook zonder plan.</h2>
+                                    <p className="mt-5 max-w-md text-pretty text-base font-semibold leading-7 text-duck-ink/65">
+                                        Leerlingen starten een missie zelfstandig. De stappen zijn duidelijk, het eindproduct concreet. Motivatie hoef je niet af te dwingen.
+                                    </p>
                                 </div>
-                                <p className="max-w-md text-pretty text-base font-semibold leading-7 text-duck-ink/65">
-                                    Elk scherm laat een ander beslispunt zien: motivatie voor leerlingen, grip voor docenten en vertrouwen voor schoolteams.
-                                </p>
+                                <div className="rounded-[1.6rem] bg-duck-bg p-4 md:p-5">
+                                    <BrowserFrame url="dgskills.app">
+                                        <ScreenMissieDetail />
+                                    </BrowserFrame>
+                                </div>
                             </div>
-                            <div className="grid gap-5 md:grid-cols-2">
-                                {screenshotProofPanels.map((panel, index) => (
-                                    <ProductProofFrame
-                                        key={panel.label}
-                                        label={panel.label}
-                                        title={panel.title}
-                                        screen={panel.screen}
-                                        caption={panel.copy}
-                                        featured={index === 1}
-                                    />
-                                ))}
+                        </Reveal>
+                    </div>
+
+                    {/* Panel 2 — Docent (omgekeerd) */}
+                    <div className="border-t border-duck-ink/10 bg-duck-bg px-5 py-20 md:px-10 md:py-28">
+                        <Reveal y={24} className="mx-auto max-w-6xl">
+                            <p className="flex items-center gap-2.5 text-[11px] font-extrabold uppercase tracking-[0.1em] text-duck-ink/40">
+                                <span>02</span>
+                                <span className="h-px w-7 bg-duck-ink/20" />
+                                <span>Voor docenten</span>
+                            </p>
+                            <div className="mt-10 grid gap-10 lg:grid-cols-2 lg:items-center">
+                                <div className="rounded-[1.6rem] bg-duck-bgLight p-4 md:p-5 lg:order-first">
+                                    <BrowserFrame url="dgskills.app/klas">
+                                        <ScreenDocent />
+                                    </BrowserFrame>
+                                </div>
+                                <div>
+                                    <span className="inline-block rounded-full bg-duck-acid px-3.5 py-1.5 text-[11px] font-extrabold uppercase tracking-[0.14em]">Docentdashboard</span>
+                                    <h2 className="mt-5 text-balance font-display text-[clamp(2rem,4vw,3.5rem)] leading-[1.05]">Grip op de klas, zonder bij te houden.</h2>
+                                    <p className="mt-5 max-w-md text-pretty text-base font-semibold leading-7 text-duck-ink/65">
+                                        Je ziet wie vastzit en wie klaar is. Geen Excel, geen rondje langs alle tafels.
+                                    </p>
+                                </div>
+                            </div>
+                        </Reveal>
+                    </div>
+
+                    {/* Panel 3 — Schoolteam */}
+                    <div className="border-t border-duck-ink/10 bg-duck-bgLight px-5 py-20 md:px-10 md:py-28">
+                        <Reveal y={24} className="mx-auto max-w-6xl">
+                            <p className="flex items-center gap-2.5 text-[11px] font-extrabold uppercase tracking-[0.1em] text-duck-ink/40">
+                                <span>03</span>
+                                <span className="h-px w-7 bg-duck-ink/20" />
+                                <span>Voor schoolteams</span>
+                            </p>
+                            <div className="mt-10 grid gap-10 lg:grid-cols-2 lg:items-center">
+                                <div>
+                                    <span className="inline-block rounded-full bg-duck-acid px-3.5 py-1.5 text-[11px] font-extrabold uppercase tracking-[0.14em]">SLO-bewijs</span>
+                                    <h2 className="mt-5 text-balance font-display text-[clamp(2rem,4vw,3.5rem)] leading-[1.05]">Aantonen dat het werkt, zonder rapporten schrijven.</h2>
+                                    <p className="mt-5 max-w-md text-pretty text-base font-semibold leading-7 text-duck-ink/65">
+                                        Schoolteams zien wat er schoolbreed geleerd wordt. Klaar voor het directieoverleg.
+                                    </p>
+                                </div>
+                                <div className="rounded-[1.6rem] bg-duck-bg p-4 md:p-5">
+                                    <BrowserFrame url="dgskills.app/voortgang">
+                                        <ScreenVoortgang />
+                                    </BrowserFrame>
+                                </div>
                             </div>
                         </Reveal>
                     </div>
@@ -695,9 +752,9 @@ export const ScholenLanding: React.FC = () => {
                         <Reveal y={30} className="grid gap-10 rounded-[2rem] bg-duck-acid px-6 py-10 md:px-10 md:py-14 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
                             <div>
                                 <p className="inline-flex rounded-full border border-duck-ink px-4 py-1.5 text-xs font-extrabold uppercase tracking-[0.16em]">Schoolpilot</p>
-                                <h2 className="mt-5 text-balance font-display text-[clamp(2.1rem,4.5vw,4rem)] leading-[1.05]">Wat krijg je in de schoolpilot?</h2>
+                                <h2 className="mt-5 text-balance font-display text-[clamp(2.1rem,4.5vw,4rem)] leading-[1.05]">Wat er in de schoolpilot zit. Zonder reclametaal.</h2>
                                 <p className="mt-5 text-pretty text-base font-semibold leading-7 text-duck-ink/70">
-                                    Gebouwd vanuit de VO/VSO-praktijk en doorlopend getest met docenten. Klein genoeg om te starten, concreet genoeg voor een schoolbesluit.
+                                    Gebouwd vanuit de VO/VSO-praktijk. Klein genoeg om dit semester te starten — concreet genoeg om een schoolbesluit op te baseren.
                                 </p>
                             </div>
                             <div>
@@ -993,7 +1050,7 @@ function JourneySection() {
 
 function SkillsSection({ scrollTo }: { scrollTo: (target: string) => void }) {
     return (
-        <section id="skills" className="relative scroll-mt-24 overflow-hidden bg-duck-bg">
+        <section id="skills" className="relative scroll-mt-24 overflow-x-clip bg-duck-bg">
             <div data-skills-stage className="py-16 md:py-24 lg:flex lg:h-svh lg:min-h-[640px] lg:flex-col lg:justify-center lg:py-0">
                 <div className="mx-auto w-full max-w-6xl px-5 md:px-10">
                     <Reveal className="flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
@@ -1007,12 +1064,12 @@ function SkillsSection({ scrollTo }: { scrollTo: (target: string) => void }) {
                     </Reveal>
                 </div>
 
-                <div className="mt-10 overflow-x-auto pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:mt-12 lg:overflow-visible lg:pb-0">
+                <div className="mt-10 overflow-x-auto pb-8 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:mt-12 lg:overflow-visible lg:pb-0">
                     <div data-skills-track className="flex w-max snap-x snap-mandatory gap-5 px-5 md:px-10 lg:snap-none lg:will-change-transform">
                         {skills.map((skill) => (
                             <article
                                 key={skill.title}
-                                className={`relative flex h-[500px] w-[80vw] max-w-[400px] shrink-0 snap-center flex-col overflow-hidden rounded-[1.6rem] p-7 shadow-[2px_4px_24px_rgba(199,197,188,0.30)] sm:h-[540px] ${skill.tone === 'acid' ? 'bg-duck-acid' : 'bg-white'}`}
+                                className={`relative flex h-[500px] w-[80vw] max-w-[400px] shrink-0 snap-center flex-col overflow-hidden rounded-[1.6rem] p-7 shadow-[2px_4px_24px_rgba(199,197,188,0.30)] sm:h-[540px] lg:h-[500px] ${skill.tone === 'acid' ? 'bg-duck-acid' : 'bg-white'}`}
                                 aria-label={`${skill.title}. ${skill.coachTip}`}
                             >
                                 <span className="pointer-events-none absolute -right-2 -top-8 select-none font-display text-[11rem] leading-none text-duck-ink/10" aria-hidden="true">
@@ -1040,8 +1097,8 @@ function SkillsSection({ scrollTo }: { scrollTo: (target: string) => void }) {
                             </article>
                         ))}
 
-                        <article className="relative flex h-[500px] w-[80vw] max-w-[400px] shrink-0 snap-center flex-col items-start justify-center overflow-hidden rounded-[1.6rem] bg-duck-ink p-9 text-white sm:h-[540px]">
-                            <DuckMark className="size-14" />
+                        <article className="relative flex h-[500px] w-[80vw] max-w-[400px] shrink-0 snap-center flex-col items-start justify-center overflow-hidden rounded-[1.6rem] bg-duck-ink p-9 text-white sm:h-[540px] lg:h-[500px]">
+                            <img src="/logo.webp" alt="" className="size-14 object-contain brightness-0 invert" width={512} height={512} decoding="async" />
                             <h3 className="mt-6 text-balance font-display text-4xl leading-[1.08]">
                                 Zien hoe leerlingen <em className="italic text-duck-acid">bouwen</em>?
                             </h3>
@@ -1049,7 +1106,7 @@ function SkillsSection({ scrollTo }: { scrollTo: (target: string) => void }) {
                                 Probeer de live game-demo en laat AI meebouwen aan een mini-game.
                             </p>
                             <button
-                                onClick={() => scrollTo('projecten')}
+                                onClick={() => scrollTo('game-demo')}
                                 className="mt-8 inline-flex min-h-[50px] items-center gap-3 rounded-full bg-duck-acid px-7 py-3 text-sm font-extrabold text-duck-ink transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid focus-visible:ring-offset-2 focus-visible:ring-offset-duck-ink"
                             >
                                 Bekijk hoe leerlingen bouwen
@@ -1093,10 +1150,10 @@ function diffConfigLabels(prev: GameConfig, next: GameConfig): string[] {
         .map((key) => CONFIG_LABELS[key] as string);
 }
 
-function AiGameBuilderDemo({ reduceMotion }: { reduceMotion: boolean }) {
+function HeroGameDemo({ reduceMotion }: { reduceMotion: boolean }) {
     const [promptsUsed, setPromptsUsed] = useState(0);
     const [customPrompt, setCustomPrompt] = useState('');
-    const [lastPrompt, setLastPrompt] = useState<string>('Nog geen prompt geschreven. Begin makkelijk: "maak het gat groter" of "maak de eend sneller".');
+    const [lastPrompt, setLastPrompt] = useState<string>('Typ een prompt om de game te veranderen.');
     const [gameConfig, setGameConfig] = useState<GameConfig>(DEFAULT_GAME_CONFIG);
     const [isLoading, setIsLoading] = useState(false);
     const [errorText, setErrorText] = useState<string | null>(null);
@@ -1109,13 +1166,10 @@ function AiGameBuilderDemo({ reduceMotion }: { reduceMotion: boolean }) {
         event.preventDefault();
         const trimmed = customPrompt.trim();
         if (!trimmed || inputDisabled) return;
-
         setIsLoading(true);
         setErrorText(null);
         setLastPrompt('Gemini denkt na…');
-
         const result = await tweakGameDemo(trimmed, gameConfig, honeypot);
-
         if (result.ok === true) {
             const next = applyDelta(gameConfig, result.delta);
             setChangedLabels(diffConfigLabels(gameConfig, next));
@@ -1128,7 +1182,7 @@ function AiGameBuilderDemo({ reduceMotion }: { reduceMotion: boolean }) {
             }
         } else {
             setChangedLabels([]);
-            setLastPrompt('Probeer het nog eens met een ander verzoek.');
+            setLastPrompt('Probeer een ander verzoek.');
             setErrorText(result.error.message);
             if (result.error.code === 'rate_limit') {
                 setPromptsUsed(5);
@@ -1138,102 +1192,66 @@ function AiGameBuilderDemo({ reduceMotion }: { reduceMotion: boolean }) {
     };
 
     return (
-        <Reveal y={34} className="grid gap-4 rounded-[2rem] bg-white p-4 shadow-[2px_4px_24px_rgba(199,197,188,0.30)] lg:grid-cols-[0.82fr_1.18fr] lg:p-5">
-            <div className="flex min-h-[430px] flex-col rounded-[1.6rem] bg-duck-ink p-6 text-white">
-                <div className="flex items-start justify-between gap-4">
-                    <div>
-                        <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-duck-acid">Gemini coach</p>
-                        <h3 className="mt-1.5 font-display text-3xl">Schrijf je eigen prompt</h3>
-                    </div>
-                    <span className="rounded-full bg-white/10 px-3.5 py-2 text-xs font-extrabold">{promptsUsed}/5 prompts</span>
-                </div>
-
-                <div className="mt-7 rounded-[1.25rem] bg-white/10 p-4" aria-live="polite">
-                    <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-white/50">Laatste idee</p>
-                    <p className="mt-2 text-base font-bold leading-7 text-white">{lastPrompt}</p>
-                    {changedLabels.length > 0 && (
-                        <p className="mt-3 flex flex-wrap items-center gap-1.5">
-                            <span className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-white/50">Aangepast:</span>
-                            {changedLabels.map((label) => (
-                                <span key={label} className="rounded-full bg-duck-acid px-2.5 py-1 text-[10px] font-extrabold text-duck-ink">{label}</span>
-                            ))}
-                        </p>
-                    )}
-                    {errorText && (
-                        <p className="mt-2 text-xs font-bold text-duck-error" role="alert">{errorText}</p>
-                    )}
-                </div>
-
-                <form onSubmit={submitCustomPrompt} className="mt-auto pt-6">
-                    <label htmlFor="game-prompt" className="text-sm font-extrabold text-white">Wat moet de game doen?</label>
-                    <div className="mt-3 flex flex-wrap gap-2">
+        <div className="bg-duck-bgLight text-duck-ink">
+            <PlayableSpriteStream reduceMotion={reduceMotion} config={gameConfig} heightClass="h-[300px]" />
+                <div className="border-t border-duck-ink/10 bg-white p-4">
+                    <div className="mb-3 flex flex-wrap gap-1.5">
                         {QUICK_PROMPTS.map((prompt) => (
                             <button
                                 key={prompt}
                                 type="button"
                                 disabled={inputDisabled}
                                 onClick={() => setCustomPrompt(prompt)}
-                                className="rounded-full border border-white/15 px-3.5 py-1.5 text-xs font-bold text-white/80 transition-colors hover:border-duck-acid hover:text-duck-acid disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid"
+                                className="rounded-full border border-duck-ink/15 px-3 py-1 text-[11px] font-bold text-duck-ink/70 transition-colors hover:border-duck-ink hover:text-duck-ink disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink"
                             >
                                 {prompt}
                             </button>
                         ))}
                     </div>
-                    <textarea
-                        id="game-prompt"
-                        value={customPrompt}
-                        onChange={(event) => setCustomPrompt(event.target.value)}
-                        disabled={inputDisabled}
-                        maxLength={500}
-                        placeholder={promptLimitReached ? 'Promptlimiet bereikt' : 'Bijvoorbeeld: maak de eend sneller en het gat groter.'}
-                        className="mt-3 min-h-[112px] w-full resize-none rounded-[1.25rem] border border-white/10 bg-white/10 px-4 py-3 text-sm font-semibold leading-6 text-white outline-none placeholder:text-white/50 focus:border-duck-acid disabled:opacity-50"
-                    />
-                    {/* Honeypot — visually hidden, only bots fill this in */}
-                    <input
-                        type="text"
-                        name="hp_field"
-                        value={honeypot}
-                        onChange={(event) => setHoneypot(event.target.value)}
-                        tabIndex={-1}
-                        autoComplete="off"
-                        aria-hidden="true"
-                        style={{ position: 'absolute', left: '-9999px', width: '1px', height: '1px', opacity: 0 }}
-                    />
-                    <div className="mt-3 flex items-center justify-between gap-3">
-                        {promptLimitReached ? (
-                            <a
-                                href="/pilot"
-                                onClick={() => trackLandingEvent('dual_cta_click', { type: 'plan_schoolpilot' })}
-                                className="text-xs font-extrabold text-duck-acid underline decoration-duck-acid/50 underline-offset-4 hover:decoration-duck-acid focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid"
-                            >
-                                Promptlimiet bereikt — leerlingen bouwen verder in de missie Game Programmeur. Plan een pilot →
-                            </a>
-                        ) : (
-                            <p className="text-xs font-semibold text-white/55">Maximaal vijf prompts per demo.</p>
-                        )}
+                    <form onSubmit={submitCustomPrompt} className="flex gap-2">
+                        <input
+                            id="hero-game-prompt"
+                            aria-label="Wat moet de game doen?"
+                            value={customPrompt}
+                            onChange={(event) => setCustomPrompt(event.target.value)}
+                            disabled={inputDisabled}
+                            maxLength={200}
+                            placeholder={promptLimitReached ? 'Promptlimiet bereikt' : 'Typ je idee voor de game…'}
+                            className="min-h-[42px] flex-1 rounded-full border border-duck-ink/15 bg-duck-bgLight px-4 py-2 text-sm font-semibold text-duck-ink outline-none placeholder:text-duck-ink/40 focus:border-duck-ink disabled:opacity-50"
+                        />
+                        <input
+                            type="text"
+                            name="hp_field"
+                            value={honeypot}
+                            onChange={(event) => setHoneypot(event.target.value)}
+                            tabIndex={-1}
+                            autoComplete="off"
+                            aria-hidden="true"
+                            style={{ position: 'absolute', left: '-9999px', width: '1px', height: '1px', opacity: 0 }}
+                        />
                         <button
                             type="submit"
                             disabled={inputDisabled || !customPrompt.trim()}
-                            className="inline-flex min-h-[46px] items-center gap-2 rounded-full bg-duck-acid px-6 py-2 text-sm font-extrabold text-duck-ink transition-transform duration-300 hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid focus-visible:ring-offset-2 focus-visible:ring-offset-duck-ink"
+                            className="inline-flex min-h-[42px] items-center gap-1.5 rounded-full bg-duck-ink px-5 py-2 text-sm font-extrabold text-duck-acid transition-transform duration-300 hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink"
                         >
-                            {isLoading ? 'Bezig…' : 'Pas aan'}
-                            {!isLoading && <ArrowRightIcon />}
+                            {isLoading ? '…' : 'Pas aan'}
                         </button>
+                    </form>
+                    <div className="mt-2 flex items-center justify-between gap-2" aria-live="polite">
+                        <p className="truncate text-xs font-semibold text-duck-ink/55">
+                            {errorText ?? lastPrompt}
+                        </p>
+                        {changedLabels.length > 0 && (
+                            <span className="shrink-0 rounded-full bg-duck-acid px-2 py-0.5 text-[10px] font-extrabold text-duck-ink">
+                                {changedLabels[0]}{changedLabels.length > 1 ? ` +${changedLabels.length - 1}` : ''} aangepast
+                            </span>
+                        )}
+                        {changedLabels.length === 0 && (
+                            <span className="shrink-0 text-xs font-extrabold text-duck-ink/40">{promptsUsed}/5</span>
+                        )}
                     </div>
-                </form>
-            </div>
-
-            <div className="relative min-h-[430px] rounded-[1.6rem] bg-duck-bgLight p-4">
-                <div className="mb-4 flex items-center justify-between gap-3 px-1">
-                    <div>
-                        <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-duck-ink/50">Live preview</p>
-                        <h3 className="font-display text-xl">{gameTheme.name}</h3>
-                    </div>
-                    <span className="rounded-full border border-duck-ink bg-duck-acid px-3.5 py-1.5 text-xs font-extrabold">Game Programmeur</span>
                 </div>
-                <PlayableSpriteStream reduceMotion={reduceMotion} config={gameConfig} />
-            </div>
-        </Reveal>
+        </div>
     );
 }
 
@@ -1291,7 +1309,7 @@ function createInitialGates(config: GameConfig): Gate[] {
     ];
 }
 
-function PlayableSpriteStream({ reduceMotion, config }: { reduceMotion: boolean; config: GameConfig }) {
+function PlayableSpriteStream({ reduceMotion, config, heightClass = 'h-[390px]' }: { reduceMotion: boolean; config: GameConfig; heightClass?: string }) {
     const gateColor = config.pipeColor ?? gameTheme.pipe;
     const spriteColor = config.beaverColor ?? gameTheme.sprite;
     const skyColor = config.skyColor ?? gameTheme.sky;
@@ -1427,7 +1445,7 @@ function PlayableSpriteStream({ reduceMotion, config }: { reduceMotion: boolean;
             aria-label="Speel mini-game — klik of druk op spatie om te starten"
             onClick={handleFlap}
             onTouchStart={(e) => { e.preventDefault(); handleFlap(); }}
-            className="relative h-[390px] cursor-pointer touch-none select-none overflow-hidden rounded-[1.25rem] border border-duck-ink/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
+            className={`relative ${heightClass} cursor-pointer touch-none select-none overflow-hidden rounded-[1.25rem] border border-duck-ink/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2`}
             style={{ backgroundColor: skyColor }}
         >
             <div className="absolute left-8 top-8 h-6 w-28 rounded-full bg-white/80" aria-hidden="true" />
@@ -1535,7 +1553,7 @@ function PortfolioStorySection({ startPilot }: { startPilot: () => void }) {
         {
             kicker: 'Avatar',
             title: 'Een leerling bouwt een herkenbare identiteit.',
-            copy: 'Niet alleen punten, maar een profiel dat laat zien welke rol iemand pakt: maker, onderzoeker, ontwerper of programmeur.',
+            copy: 'Geen anoniem schoolaccount. Een profiel dat zegt wie je bent: maker, onderzoeker, ontwerper of programmeur.',
             screen: <ScreenAvatar />,
             url: 'dgskills.app/avatar',
             statLabel: 'Mila — eigen identiteit',
@@ -1544,7 +1562,7 @@ function PortfolioStorySection({ startPilot }: { startPilot: () => void }) {
         {
             kicker: 'Trofeeën',
             title: 'Trofeeën maken groei zichtbaar.',
-            copy: 'Leerlingen zien wat ze al beheersen en welke volgende stap logisch is.',
+            copy: 'Leerlingen zien wat ze al kunnen en wat daarna logisch is. Geen verrassing bij de eindbespreking.',
             screen: <ScreenVoortgang />,
             url: 'dgskills.app/voortgang',
             statLabel: 'Streak — week 12',
@@ -1553,7 +1571,7 @@ function PortfolioStorySection({ startPilot }: { startPilot: () => void }) {
         {
             kicker: 'Portfolio',
             title: 'Projecten worden bewijsstukken.',
-            copy: 'Een portfolio vertelt wat iemand gemaakt heeft, welke keuzes zijn gemaakt en welke skills daarbij horen.',
+            copy: 'Projecten als bewijsstukken: wat gemaakt is, welke keuzes zijn gemaakt, welke skills daarbij horen.',
             screen: <ScreenPortfolio />,
             url: 'dgskills.app/portfolio',
             statLabel: 'Mila — Level 6 Creator',
@@ -1562,7 +1580,7 @@ function PortfolioStorySection({ startPilot }: { startPilot: () => void }) {
         {
             kicker: 'Docent',
             title: 'De docent ziet waar groei zit.',
-            copy: 'Voor scholen wordt zichtbaar waar een leerling sterk op scoort, waar extra uitleg nodig is en welke SLO-doelen geraakt worden.',
+            copy: 'Per leerling: sterk in, aandachtspunten, SLO-kerndoelen. Zonder spreadsheet erbij.',
             screen: <ScreenDocent />,
             url: 'dgskills.app/docent',
             statLabel: 'Klas 3D · Periode 1',
@@ -1677,7 +1695,7 @@ function PortfolioStorySection({ startPilot }: { startPilot: () => void }) {
                         Jouw portfolio. <em className="italic">Jouw verhaal.</em>
                     </h2>
                     <p className="mt-5 max-w-md text-pretty text-base font-semibold leading-7 text-duck-ink/65">
-                        Scroll door een portfolio dat echt iets vertelt: wie je bent, wat je maakt, welke trofeeën je haalt en waar je nog groeit.
+                        Wie je bent, wat je maakt, welke trofeeën je hebt gehaald. En waar je nog in groeit — dat ook.
                     </p>
                     <a
                         href="/pilot"
@@ -1758,7 +1776,7 @@ function FaqSection() {
             <div className="relative z-10 mx-auto grid max-w-6xl gap-12 lg:grid-cols-[0.8fr_1.2fr]">
                 <Reveal y={30} className="lg:sticky lg:top-32 lg:self-start">
                     <SectionLabel>FAQ per rol</SectionLabel>
-                    <h2 className="mt-4 text-balance font-display text-[clamp(2.1rem,4.5vw,4rem)] leading-[1.05]">De vragen die in een schoolteam op tafel komen</h2>
+                    <h2 className="mt-4 text-balance font-display text-[clamp(2.1rem,4.5vw,4rem)] leading-[1.05]">De vragen die in elk schoolteam op tafel komen. En dan beantwoord.</h2>
                 </Reveal>
                 <Reveal y={30}>
                     <div role="list">
@@ -1808,7 +1826,7 @@ function FooterCta({ startPilot, scrollTo }: { startPilot: () => void; scrollTo:
                             <textPath href="#dg-cta-circle">Plan een schoolpilot • Samen starten • </textPath>
                         </text>
                     </svg>
-                    <DuckMascot className="size-16 md:size-[4.5rem]" />
+                    <DuckMark className="size-16 md:size-[4.5rem]" />
                 </div>
                 <h2 className="mt-8 text-balance font-display text-[clamp(2.4rem,6vw,5rem)] leading-[1.04]">
                     Klaar om iets{' '}
@@ -1819,7 +1837,7 @@ function FooterCta({ startPilot, scrollTo }: { startPilot: () => void; scrollTo:
                     te maken?
                 </h2>
                 <p className="mt-5 max-w-md text-pretty text-base font-semibold leading-7 text-white/65">
-                    Plan een schoolpilot en ontdek welke route past bij jouw leerlingen.
+                    Plan een pilot. De eend heeft zijn agenda al vrijgehouden.
                 </p>
                 <a
                     href="/pilot"
@@ -1837,7 +1855,7 @@ function FooterCta({ startPilot, scrollTo }: { startPilot: () => void; scrollTo:
                         dgskills.app
                     </a>
                     <div className="flex items-center gap-3 md:justify-center">
-                        <DuckMark className="size-9" />
+                        <img src="/logo.webp" alt="" className="size-9 object-contain brightness-0 invert" width={512} height={512} decoding="async" />
                         <span className="text-lg font-extrabold tracking-tight text-white">DGSkills</span>
                     </div>
                     <div className="flex flex-wrap gap-x-6 gap-y-2 md:justify-end">
@@ -2275,15 +2293,15 @@ function HeroHeadline({ introReady }: { introReady: boolean }) {
 
     return (
         <h1
-            aria-label="Maak digitale geletterdheid tastbaar, motiverend en aantoonbaar."
+            aria-label="Weer een tool voor de klas. Deze keer werkt 'ie."
             className="mx-auto mt-7 max-w-[20ch] text-balance font-display text-[clamp(2.6rem,7vw,6.4rem)] font-normal leading-[1.04] tracking-[-0.01em]"
         >
-            {rise(0, 'Maak')} {rise(1, 'digitale')} {rise(2, 'geletterdheid')} {rise(3, <em className="italic">tastbaar,</em>)}{' '}
-            {rise(4, <em className="italic">motiverend</em>)} {rise(5, 'en')}{' '}
-            {rise(6, (
+            {rise(0, 'Weer')} {rise(1, 'een')} {rise(2, 'tool')} {rise(3, 'voor')} {rise(4, 'de')} {rise(5, 'klas.')}{' '}
+            {rise(6, 'Deze')} {rise(7, 'keer')} {rise(8, 'werkt')}{' '}
+            {rise(9, (
                 <span className="relative inline-block whitespace-nowrap">
                     <span aria-hidden="true" className="absolute inset-x-[-3%] inset-y-[8%] -rotate-1 rounded-[0.5em] bg-duck-acid" />
-                    <span className="relative">aantoonbaar.</span>
+                    <span className="relative">'ie.</span>
                 </span>
             ))}
         </h1>

@@ -64,7 +64,15 @@ const WEEKS_DATA: WeekConfig[] = [
                                 <p className="text-sm text-white/90">Je bestanden veilig in de cloud. Nooit meer iets kwijt.</p>
                             </div>
                             <div className="bg-white/10 p-6 rounded-2xl backdrop-blur-sm border border-white/20">
-                                <div className="text-4xl mb-4">😎</div>
+                                <img
+                                    src="/assets/brand/ui-icons/dgskills-duck-default.webp"
+                                    alt=""
+                                    className="mb-4 h-12 w-12 object-contain"
+                                    width={48}
+                                    height={48}
+                                    loading="lazy"
+                                    decoding="async"
+                                />
                                 <h3 className="font-bold text-white mb-2">Pro Verslagen</h3>
                                 <p className="text-sm text-white/90">Word en PowerPoint geheimen voor indrukwekkend werk.</p>
                             </div>

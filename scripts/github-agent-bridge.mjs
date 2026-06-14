@@ -10,7 +10,7 @@ const MAX_BODY_CHARS = 20000;
 function usage() {
   return [
     "Usage:",
-    "  node scripts/github-agent-bridge.mjs process-all --agent <chatgpt|claude> [--base-dir bridge] [--dry-run]",
+    "  node scripts/github-agent-bridge.mjs process-all --agent <chatgpt|claude|reasonix> [--base-dir bridge] [--dry-run]",
     "  node scripts/github-agent-bridge.mjs process-pipeline [--base-dir bridge] [--dry-run] [--max-passes 4]",
   ].join("\n");
 }
@@ -176,6 +176,11 @@ function validateEnvelope(envelope, expectedAgent, filePath) {
     };
   }
 
+  const reviewWith = [...new Set(toStringArray(envelope.reviewWith, "reviewWith").map((reviewer) => normalizeAgent(reviewer)))];
+  if (reviewWith.includes(expectedAgent)) {
+    fail(`Message ${envelope.id} cannot request review from the same agent.`);
+  }
+
   return {
     id: envelope.id.trim(),
     threadId,
@@ -185,6 +190,7 @@ function validateEnvelope(envelope, expectedAgent, filePath) {
     body: envelope.body.trim(),
     context,
     handoff,
+    reviewWith,
   };
 }
 
@@ -281,6 +287,29 @@ function createHandoffEnvelope(message, agent, reply) {
   };
 }
 
+function createReviewEnvelopes(message, agent, reply) {
+  return message.reviewWith.map((reviewer) => ({
+    id: `${message.threadId}-${agent}-review-by-${reviewer}-${crypto.randomUUID().slice(0, 8)}`,
+    threadId: message.threadId,
+    createdAt: new Date().toISOString(),
+    from: agent,
+    to: reviewer,
+    subject: `Review Reasonix output: ${message.subject || message.threadId}`,
+    body: [
+      "Review the output as a coding reviewer.",
+      "Check correctness, missing tests, safety, and whether the implementation matches the plan.",
+      "Return concrete findings first. If it looks good, say that clearly and mention any residual risk.",
+      "",
+      "Original request:",
+      message.body,
+      "",
+      `${agent[0].toUpperCase()}${agent.slice(1)} output:`,
+      reply.text,
+    ].join("\n"),
+    context: [`Source message: ${message.id}`, `Source model: ${reply.model}`],
+  }));
+}
+
 function moveToProcessed(baseDir, agent, sourcePath) {
   const targetPath = path.join(baseDir, "processed", agent, path.basename(sourcePath));
   fs.renameSync(sourcePath, targetPath);
@@ -300,6 +329,12 @@ async function processSingleMessage(baseDir, agent, filePath, dryRun) {
     const handoffFileName = `${fileStamp()}-${sanitizeSlug(handoffEnvelope.id)}.json`;
     const handoffPath = path.join(baseDir, "inbox", handoffEnvelope.to, handoffFileName);
     writeJson(handoffPath, handoffEnvelope);
+  }
+
+  for (const reviewEnvelope of createReviewEnvelopes(envelope, agent, reply)) {
+    const reviewFileName = `${fileStamp()}-${sanitizeSlug(reviewEnvelope.id)}.json`;
+    const reviewPath = path.join(baseDir, "inbox", reviewEnvelope.to, reviewFileName);
+    writeJson(reviewPath, reviewEnvelope);
   }
 
   moveToProcessed(baseDir, agent, filePath);

@@ -207,7 +207,7 @@ const config: ScenarioEngineConfig = {
                 },
                 {
                     id: 5,
-                    icon: '😮',
+                    icon: '/assets/brand/ui-icons/dgskills-duck-surprised.webp',
                     title: '"Je vriend heeft iets gepost wat je niet mag missen!"',
                     description:
                         'Facebook of Instagram meldt dat iemand die je kent een "populaire" post heeft geplaatst — maar laat niet zien wat.',
@@ -335,7 +335,7 @@ const config: ScenarioEngineConfig = {
                 },
                 {
                     id: 8,
-                    icon: '😮',
+                    icon: '/assets/brand/ui-icons/dgskills-duck-surprised.webp',
                     title: '"Je vriend reageert misschien op jouw reactie — open de app"',
                     description:
                         'Instagram stuurt: "Luca heeft misschien gereageerd op jouw comment. Tik om te zien of er een reactie is."',

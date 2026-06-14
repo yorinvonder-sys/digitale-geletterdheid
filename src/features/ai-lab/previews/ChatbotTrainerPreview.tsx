@@ -643,7 +643,7 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
             <div className="w-full h-full flex flex-col relative overflow-hidden" style={{ ...CHATBOT_THEME_VARS, backgroundColor: 'var(--chatbot-bg)', color: 'var(--chatbot-ink)' }}>
                 <div className="flex-1 flex flex-col items-center justify-start p-5 md:p-6 relative z-10 overflow-y-auto">
                     <div className="relative mb-4 flex w-full max-w-md items-start justify-center gap-3">
-                        <img src="/assets/storytelling/beaver-storyteller.webp" alt="DGSkills bever" className="w-16 h-16 object-contain shrink-0" loading="lazy" />
+                        <img src="/assets/brand/dgskills-duck-guide-v3.png" alt="DGSkills eend" className="w-16 h-16 object-contain shrink-0" loading="lazy" />
                         <div
                             className="relative mt-1 rounded-2xl px-4 py-3 text-left text-sm font-bold leading-snug shadow-sm"
                             style={{ backgroundColor: 'var(--chatbot-surface)', border: '1px solid var(--chatbot-line)', color: 'var(--chatbot-muted)' }}
