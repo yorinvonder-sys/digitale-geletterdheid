@@ -38,7 +38,7 @@ type JourneyChapter = {
 const NAV_ITEMS: NavItem[] = [
     { label: 'Hoe het werkt', target: 'journey' },
     { label: 'Skills', target: 'skills' },
-    { label: 'Game demo', target: 'projecten' },
+    { label: 'Game demo', target: 'game-demo' },
     { label: 'Portfolio', target: 'portfolio' },
 ];
 
@@ -505,7 +505,7 @@ export const ScholenLanding: React.FC = () => {
                                 <ArrowRightIcon />
                             </a>
                             <button
-                                onClick={() => scrollTo('projecten')}
+                                onClick={() => scrollTo('game-demo')}
                                 className="group inline-flex min-h-[54px] w-full items-center justify-center gap-3 rounded-full border border-duck-ink/20 bg-duck-bgLight px-8 py-3.5 text-base font-extrabold text-duck-ink transition-all duration-300 hover:-translate-y-0.5 hover:border-duck-ink sm:w-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
                             >
                                 Bekijk de leerlingdemo
@@ -529,11 +529,23 @@ export const ScholenLanding: React.FC = () => {
                         </div>
                     </div>
 
-                    <div className={`relative z-10 mx-auto mt-14 max-w-5xl opacity-0 motion-reduce:animate-none motion-reduce:opacity-100 md:mt-16 ${introReady ? 'animate-fade-in-up-delay-3' : ''}`}>
-                        <div data-hero-mockup className="relative mx-auto w-full max-w-[980px] lg:-rotate-1">
-                            <BrowserFrame url="dgskills.app/missies">
-                                <ScreenMissies />
-                            </BrowserFrame>
+                    <div className={`relative z-10 mx-auto mt-14 max-w-[1120px] opacity-0 motion-reduce:animate-none motion-reduce:opacity-100 md:mt-16 ${introReady ? 'animate-fade-in-up-delay-3' : ''}`}>
+                        <div data-hero-mockup id="game-demo" className="relative grid gap-6 scroll-mt-24 lg:grid-cols-[1.15fr_0.85fr] lg:items-start">
+                            <div className="lg:-rotate-1">
+                                <HeroGameDemo reduceMotion={reduceMotion} />
+                                <p className="mt-3 text-center text-xs font-bold text-duck-ink/50">Wat de leerling doet</p>
+                            </div>
+                            <div className="relative lg:translate-y-8 lg:rotate-1">
+                                <div className="relative">
+                                    <BrowserFrame url="dgskills.app/docent">
+                                        <ScreenDocent />
+                                    </BrowserFrame>
+                                    <span className="absolute -right-2 -top-2 rounded-full border border-duck-ink bg-duck-ink px-3 py-1.5 text-[11px] font-extrabold text-duck-acid shadow-sm">
+                                        24/28 actief
+                                    </span>
+                                </div>
+                                <p className="mt-3 text-center text-xs font-bold text-duck-ink/50">Wat jij ziet</p>
+                            </div>
                         </div>
                         <dl className="mx-auto mt-10 grid max-w-4xl grid-cols-2 gap-x-6 gap-y-6 border-t border-duck-ink/10 pt-7 text-left lg:grid-cols-4">
                             {heroProofItems.map((item) => (
@@ -552,20 +564,6 @@ export const ScholenLanding: React.FC = () => {
 
                 <SkillsSection scrollTo={scrollTo} />
 
-                <section id="projecten" className="relative scroll-mt-24 bg-duck-bg px-5 py-20 md:px-10 md:py-28">
-                    <div className="relative z-10 mx-auto max-w-6xl">
-                        <div className="mb-10 flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
-                            <Reveal>
-                                <SectionLabel>Game demo</SectionLabel>
-                                <h2 className="mt-4 max-w-2xl text-balance font-display text-[clamp(2.1rem,4.5vw,4rem)] leading-[1.05]">Laat AI een game bouwen. Wat kan er misgaan.</h2>
-                            </Reveal>
-                            <Reveal delay={0.1} className="max-w-md text-pretty text-base font-semibold leading-7 text-duck-ink/65">
-                                Leerlingen schrijven een prompt en zien direct hoe de game verandert. Na vijf prompts stopt de demo. Dat is genoeg om het te snappen.
-                            </Reveal>
-                        </div>
-                        <AiGameBuilderDemo reduceMotion={reduceMotion} />
-                    </div>
-                </section>
 
                 <PortfolioStorySection startPilot={startPilot} />
 
@@ -1049,7 +1047,7 @@ function SkillsSection({ scrollTo }: { scrollTo: (target: string) => void }) {
                                 Probeer de live game-demo en laat AI meebouwen aan een mini-game.
                             </p>
                             <button
-                                onClick={() => scrollTo('projecten')}
+                                onClick={() => scrollTo('game-demo')}
                                 className="mt-8 inline-flex min-h-[50px] items-center gap-3 rounded-full bg-duck-acid px-7 py-3 text-sm font-extrabold text-duck-ink transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid focus-visible:ring-offset-2 focus-visible:ring-offset-duck-ink"
                             >
                                 Bekijk hoe leerlingen bouwen
@@ -1093,10 +1091,10 @@ function diffConfigLabels(prev: GameConfig, next: GameConfig): string[] {
         .map((key) => CONFIG_LABELS[key] as string);
 }
 
-function AiGameBuilderDemo({ reduceMotion }: { reduceMotion: boolean }) {
+function HeroGameDemo({ reduceMotion }: { reduceMotion: boolean }) {
     const [promptsUsed, setPromptsUsed] = useState(0);
     const [customPrompt, setCustomPrompt] = useState('');
-    const [lastPrompt, setLastPrompt] = useState<string>('Nog geen prompt geschreven. Begin makkelijk: "maak het gat groter" of "maak de eend sneller".');
+    const [lastPrompt, setLastPrompt] = useState<string>('Typ een prompt om de game te veranderen.');
     const [gameConfig, setGameConfig] = useState<GameConfig>(DEFAULT_GAME_CONFIG);
     const [isLoading, setIsLoading] = useState(false);
     const [errorText, setErrorText] = useState<string | null>(null);
@@ -1109,13 +1107,10 @@ function AiGameBuilderDemo({ reduceMotion }: { reduceMotion: boolean }) {
         event.preventDefault();
         const trimmed = customPrompt.trim();
         if (!trimmed || inputDisabled) return;
-
         setIsLoading(true);
         setErrorText(null);
         setLastPrompt('Gemini denkt na…');
-
         const result = await tweakGameDemo(trimmed, gameConfig, honeypot);
-
         if (result.ok === true) {
             const next = applyDelta(gameConfig, result.delta);
             setChangedLabels(diffConfigLabels(gameConfig, next));
@@ -1128,7 +1123,7 @@ function AiGameBuilderDemo({ reduceMotion }: { reduceMotion: boolean }) {
             }
         } else {
             setChangedLabels([]);
-            setLastPrompt('Probeer het nog eens met een ander verzoek.');
+            setLastPrompt('Probeer een ander verzoek.');
             setErrorText(result.error.message);
             if (result.error.code === 'rate_limit') {
                 setPromptsUsed(5);
@@ -1138,102 +1133,67 @@ function AiGameBuilderDemo({ reduceMotion }: { reduceMotion: boolean }) {
     };
 
     return (
-        <Reveal y={34} className="grid gap-4 rounded-[2rem] bg-white p-4 shadow-[2px_4px_24px_rgba(199,197,188,0.30)] lg:grid-cols-[0.82fr_1.18fr] lg:p-5">
-            <div className="flex min-h-[430px] flex-col rounded-[1.6rem] bg-duck-ink p-6 text-white">
-                <div className="flex items-start justify-between gap-4">
-                    <div>
-                        <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-duck-acid">Gemini coach</p>
-                        <h3 className="mt-1.5 font-display text-3xl">Schrijf je eigen prompt</h3>
-                    </div>
-                    <span className="rounded-full bg-white/10 px-3.5 py-2 text-xs font-extrabold">{promptsUsed}/5 prompts</span>
-                </div>
-
-                <div className="mt-7 rounded-[1.25rem] bg-white/10 p-4" aria-live="polite">
-                    <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-white/50">Laatste idee</p>
-                    <p className="mt-2 text-base font-bold leading-7 text-white">{lastPrompt}</p>
-                    {changedLabels.length > 0 && (
-                        <p className="mt-3 flex flex-wrap items-center gap-1.5">
-                            <span className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-white/50">Aangepast:</span>
-                            {changedLabels.map((label) => (
-                                <span key={label} className="rounded-full bg-duck-acid px-2.5 py-1 text-[10px] font-extrabold text-duck-ink">{label}</span>
-                            ))}
-                        </p>
-                    )}
-                    {errorText && (
-                        <p className="mt-2 text-xs font-bold text-duck-error" role="alert">{errorText}</p>
-                    )}
-                </div>
-
-                <form onSubmit={submitCustomPrompt} className="mt-auto pt-6">
-                    <label htmlFor="game-prompt" className="text-sm font-extrabold text-white">Wat moet de game doen?</label>
-                    <div className="mt-3 flex flex-wrap gap-2">
+        <BrowserFrame url="dgskills.app/missie/game-programmeur">
+            <div className="bg-duck-bgLight text-duck-ink">
+                <PlayableSpriteStream reduceMotion={reduceMotion} config={gameConfig} heightClass="h-[300px]" />
+                <div className="border-t border-duck-ink/10 bg-white p-4">
+                    <div className="mb-3 flex flex-wrap gap-1.5">
                         {QUICK_PROMPTS.map((prompt) => (
                             <button
                                 key={prompt}
                                 type="button"
                                 disabled={inputDisabled}
                                 onClick={() => setCustomPrompt(prompt)}
-                                className="rounded-full border border-white/15 px-3.5 py-1.5 text-xs font-bold text-white/80 transition-colors hover:border-duck-acid hover:text-duck-acid disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid"
+                                className="rounded-full border border-duck-ink/15 px-3 py-1 text-[11px] font-bold text-duck-ink/70 transition-colors hover:border-duck-ink hover:text-duck-ink disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink"
                             >
                                 {prompt}
                             </button>
                         ))}
                     </div>
-                    <textarea
-                        id="game-prompt"
-                        value={customPrompt}
-                        onChange={(event) => setCustomPrompt(event.target.value)}
-                        disabled={inputDisabled}
-                        maxLength={500}
-                        placeholder={promptLimitReached ? 'Promptlimiet bereikt' : 'Bijvoorbeeld: maak de eend sneller en het gat groter.'}
-                        className="mt-3 min-h-[112px] w-full resize-none rounded-[1.25rem] border border-white/10 bg-white/10 px-4 py-3 text-sm font-semibold leading-6 text-white outline-none placeholder:text-white/50 focus:border-duck-acid disabled:opacity-50"
-                    />
-                    {/* Honeypot — visually hidden, only bots fill this in */}
-                    <input
-                        type="text"
-                        name="hp_field"
-                        value={honeypot}
-                        onChange={(event) => setHoneypot(event.target.value)}
-                        tabIndex={-1}
-                        autoComplete="off"
-                        aria-hidden="true"
-                        style={{ position: 'absolute', left: '-9999px', width: '1px', height: '1px', opacity: 0 }}
-                    />
-                    <div className="mt-3 flex items-center justify-between gap-3">
-                        {promptLimitReached ? (
-                            <a
-                                href="/pilot"
-                                onClick={() => trackLandingEvent('dual_cta_click', { type: 'plan_schoolpilot' })}
-                                className="text-xs font-extrabold text-duck-acid underline decoration-duck-acid/50 underline-offset-4 hover:decoration-duck-acid focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid"
-                            >
-                                Promptlimiet bereikt — leerlingen bouwen verder in de missie Game Programmeur. Plan een pilot →
-                            </a>
-                        ) : (
-                            <p className="text-xs font-semibold text-white/55">Maximaal vijf prompts per demo.</p>
-                        )}
+                    <form onSubmit={submitCustomPrompt} className="flex gap-2">
+                        <input
+                            id="hero-game-prompt"
+                            value={customPrompt}
+                            onChange={(event) => setCustomPrompt(event.target.value)}
+                            disabled={inputDisabled}
+                            maxLength={200}
+                            placeholder={promptLimitReached ? 'Promptlimiet bereikt' : 'Typ je idee voor de game…'}
+                            className="min-h-[42px] flex-1 rounded-full border border-duck-ink/15 bg-duck-bgLight px-4 py-2 text-sm font-semibold text-duck-ink outline-none placeholder:text-duck-ink/40 focus:border-duck-ink disabled:opacity-50"
+                        />
+                        <input
+                            type="text"
+                            name="hp_field"
+                            value={honeypot}
+                            onChange={(event) => setHoneypot(event.target.value)}
+                            tabIndex={-1}
+                            autoComplete="off"
+                            aria-hidden="true"
+                            style={{ position: 'absolute', left: '-9999px', width: '1px', height: '1px', opacity: 0 }}
+                        />
                         <button
                             type="submit"
                             disabled={inputDisabled || !customPrompt.trim()}
-                            className="inline-flex min-h-[46px] items-center gap-2 rounded-full bg-duck-acid px-6 py-2 text-sm font-extrabold text-duck-ink transition-transform duration-300 hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid focus-visible:ring-offset-2 focus-visible:ring-offset-duck-ink"
+                            className="inline-flex min-h-[42px] items-center gap-1.5 rounded-full bg-duck-ink px-5 py-2 text-sm font-extrabold text-duck-acid transition-transform duration-300 hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink"
                         >
-                            {isLoading ? 'Bezig…' : 'Pas aan'}
-                            {!isLoading && <ArrowRightIcon />}
+                            {isLoading ? '…' : 'Pas aan'}
                         </button>
+                    </form>
+                    <div className="mt-2 flex items-center justify-between gap-2" aria-live="polite">
+                        <p className="truncate text-xs font-semibold text-duck-ink/55">
+                            {errorText ?? lastPrompt}
+                        </p>
+                        {changedLabels.length > 0 && (
+                            <span className="shrink-0 rounded-full bg-duck-acid px-2 py-0.5 text-[10px] font-extrabold text-duck-ink">
+                                {changedLabels[0]}{changedLabels.length > 1 ? ` +${changedLabels.length - 1}` : ''} aangepast
+                            </span>
+                        )}
+                        {changedLabels.length === 0 && (
+                            <span className="shrink-0 text-xs font-extrabold text-duck-ink/40">{promptsUsed}/5</span>
+                        )}
                     </div>
-                </form>
-            </div>
-
-            <div className="relative min-h-[430px] rounded-[1.6rem] bg-duck-bgLight p-4">
-                <div className="mb-4 flex items-center justify-between gap-3 px-1">
-                    <div>
-                        <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-duck-ink/50">Live preview</p>
-                        <h3 className="font-display text-xl">{gameTheme.name}</h3>
-                    </div>
-                    <span className="rounded-full border border-duck-ink bg-duck-acid px-3.5 py-1.5 text-xs font-extrabold">Game Programmeur</span>
                 </div>
-                <PlayableSpriteStream reduceMotion={reduceMotion} config={gameConfig} />
             </div>
-        </Reveal>
+        </BrowserFrame>
     );
 }
 
@@ -1291,7 +1251,7 @@ function createInitialGates(config: GameConfig): Gate[] {
     ];
 }
 
-function PlayableSpriteStream({ reduceMotion, config }: { reduceMotion: boolean; config: GameConfig }) {
+function PlayableSpriteStream({ reduceMotion, config, heightClass = 'h-[390px]' }: { reduceMotion: boolean; config: GameConfig; heightClass?: string }) {
     const gateColor = config.pipeColor ?? gameTheme.pipe;
     const spriteColor = config.beaverColor ?? gameTheme.sprite;
     const skyColor = config.skyColor ?? gameTheme.sky;
@@ -1427,7 +1387,7 @@ function PlayableSpriteStream({ reduceMotion, config }: { reduceMotion: boolean;
             aria-label="Speel mini-game — klik of druk op spatie om te starten"
             onClick={handleFlap}
             onTouchStart={(e) => { e.preventDefault(); handleFlap(); }}
-            className="relative h-[390px] cursor-pointer touch-none select-none overflow-hidden rounded-[1.25rem] border border-duck-ink/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
+            className={`relative ${heightClass} cursor-pointer touch-none select-none overflow-hidden rounded-[1.25rem] border border-duck-ink/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2`}
             style={{ backgroundColor: skyColor }}
         >
             <div className="absolute left-8 top-8 h-6 w-28 rounded-full bg-white/80" aria-hidden="true" />
@@ -2275,15 +2235,15 @@ function HeroHeadline({ introReady }: { introReady: boolean }) {
 
     return (
         <h1
-            aria-label="Leerlingen leren digitale vaardigheden. Maandagochtend gewoon starten."
+            aria-label="Weer een tool voor de klas. Deze keer werkt 'ie."
             className="mx-auto mt-7 max-w-[20ch] text-balance font-display text-[clamp(2.6rem,7vw,6.4rem)] font-normal leading-[1.04] tracking-[-0.01em]"
         >
-            {rise(0, 'Leerlingen')} {rise(1, 'leren')} {rise(2, 'digitale')} {rise(3, 'vaardigheden.')}{' '}
-            {rise(4, 'Maandagochtend')} {rise(5, 'gewoon')}{' '}
-            {rise(6, (
+            {rise(0, 'Weer')} {rise(1, 'een')} {rise(2, 'tool')} {rise(3, 'voor')} {rise(4, 'de')} {rise(5, 'klas.')}{' '}
+            {rise(6, 'Deze')} {rise(7, 'keer')} {rise(8, 'werkt')}{' '}
+            {rise(9, (
                 <span className="relative inline-block whitespace-nowrap">
                     <span aria-hidden="true" className="absolute inset-x-[-3%] inset-y-[8%] -rotate-1 rounded-[0.5em] bg-duck-acid" />
-                    <span className="relative">starten.</span>
+                    <span className="relative">'ie.</span>
                 </span>
             ))}
         </h1>
