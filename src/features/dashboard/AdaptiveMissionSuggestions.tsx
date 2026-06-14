@@ -6,6 +6,7 @@ import { extractDomeinScores, getDomeinLabel, getDomeinKleur, type DomeinKey } f
 import { getAssessmentResult, getCurrentSchoolYear, type AssessmentType } from '@/services/assessmentService';
 import { ROLES } from '@/config/agents';
 import { KERNDOEL_MISSIONS } from '@/config/slo-kerndoelen-mapping';
+import { duckUi } from '@/config/duckUi';
 
 interface AdaptiveMissionSuggestionsProps {
   userId: string;
@@ -14,22 +15,22 @@ interface AdaptiveMissionSuggestionsProps {
 }
 
 const DOMAIN_COLORS: Record<string, { badge: string; dot: string }> = {
-  indigo:  { badge: 'bg-lab-coral/20 text-lab-coral',  dot: 'bg-lab-coral' },
-  emerald: { badge: 'bg-lab-coral/20 text-lab-sage', dot: 'bg-lab-sage' },
-  violet:  { badge: 'bg-lab-coral/20 text-lab-teal',  dot: 'bg-lab-teal' },
-  rose:    { badge: 'bg-lab-coral/20 text-lab-coral',      dot: 'bg-lab-coral' },
-  sky:     { badge: 'bg-lab-coral/20 text-lab-teal',        dot: 'bg-lab-teal' },
+  indigo:  { badge: 'bg-duck-ink/10 text-duck-ink',  dot: 'bg-duck-ink' },
+  emerald: { badge: 'bg-duck-ink/10 text-duck-ink',  dot: 'bg-duck-ink' },
+  violet:  { badge: 'bg-duck-ink/10 text-duck-ink',  dot: 'bg-duck-ink' },
+  rose:    { badge: 'bg-duck-ink/10 text-duck-ink',  dot: 'bg-duck-ink' },
+  sky:     { badge: 'bg-duck-ink/10 text-duck-ink',  dot: 'bg-duck-ink' },
 };
 
 function domainBadgeClass(key: DomeinKey): string {
   const color = getDomeinKleur(key);
-  return DOMAIN_COLORS[color]?.badge ?? 'bg-lab-coral/20 text-lab-muted';
+  return DOMAIN_COLORS[color]?.badge ?? 'bg-duck-ink/10 text-duck-ink/65';
 }
 
 function relevanceIndicator(score: number): { label: string; className: string } {
-  if (score > 0.6) return { label: 'Hoog',   className: 'bg-lab-sage' };
-  if (score >= 0.3) return { label: 'Middel', className: 'bg-lab-gold' };
-  return               { label: 'Laag',   className: 'bg-lab-coral' };
+  if (score > 0.6) return { label: 'Hoog',   className: 'bg-duck-acid' };
+  if (score >= 0.3) return { label: 'Middel', className: 'bg-duck-ink/40' };
+  return               { label: 'Laag',   className: 'bg-duck-ink/20' };
 }
 
 const cardVariants = {
@@ -91,11 +92,11 @@ export const AdaptiveMissionSuggestions: React.FC<AdaptiveMissionSuggestionsProp
 
   if (loading) {
     return (
-      <div className="bg-lab-ink/50 border border-lab-line/50 rounded-2xl p-5 space-y-3">
-        <div className="h-5 w-40 bg-lab-muted/60 rounded animate-pulse" />
-        <div className="h-3 w-56 bg-lab-muted/40 rounded animate-pulse" />
+      <div className="rounded-[1.5rem] border border-duck-ink/10 bg-white p-5 shadow-duck-soft space-y-3">
+        <div className="h-5 w-40 bg-duck-ink/10 rounded animate-pulse" />
+        <div className="h-3 w-56 bg-duck-ink/10 rounded animate-pulse" />
         {[0, 1, 2].map((i) => (
-          <div key={i} className="h-14 bg-lab-muted/30 rounded-xl animate-pulse" />
+          <div key={i} className="h-14 bg-duck-ink/10 rounded-xl animate-pulse" />
         ))}
       </div>
     );
@@ -105,7 +106,7 @@ export const AdaptiveMissionSuggestions: React.FC<AdaptiveMissionSuggestionsProp
 
   return (
     <motion.div
-      className="bg-lab-ink/50 border border-lab-line/50 rounded-2xl p-5 space-y-4"
+      className="rounded-[1.5rem] border border-duck-ink/10 bg-white p-5 shadow-duck-soft space-y-4"
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35, ease: 'easeOut' }}
@@ -113,10 +114,10 @@ export const AdaptiveMissionSuggestions: React.FC<AdaptiveMissionSuggestionsProp
       {/* Header */}
       <div className="space-y-1">
         <div className="flex items-center gap-2">
-          <Target size={18} className="text-lab-accent shrink-0" />
-          <h3 className="text-white font-semibold text-sm">Aanbevolen voor jou</h3>
+          <Target size={18} className="text-duck-ink shrink-0" />
+          <h3 className="font-display text-duck-ink font-semibold text-sm">Aanbevolen voor jou</h3>
         </div>
-        <p className="text-lab-muted text-xs pl-6">
+        <p className="text-duck-ink/65 text-xs pl-6">
           Op basis van je {assessmentLabel === 'eindmeting' ? 'eindmeting' : 'nulmeting'}
         </p>
       </div>
@@ -138,7 +139,7 @@ export const AdaptiveMissionSuggestions: React.FC<AdaptiveMissionSuggestionsProp
               key={mission.missionId}
               variants={cardVariants}
               transition={{ duration: 0.25, ease: 'easeOut' }}
-              className="flex items-center gap-3 bg-lab-muted/30 hover:bg-lab-muted/50 rounded-xl px-3 py-2.5 transition-colors"
+              className="flex items-center gap-3 bg-duck-bg hover:bg-duck-ink/10 rounded-xl px-3 py-2.5 transition-colors"
             >
               {/* Relevance dot */}
               <span
@@ -148,7 +149,7 @@ export const AdaptiveMissionSuggestions: React.FC<AdaptiveMissionSuggestionsProp
 
               {/* Title + domains */}
               <div className="flex-1 min-w-0">
-                <p className="text-white text-xs font-medium truncate">{title}</p>
+                <p className="text-duck-ink text-xs font-medium truncate">{title}</p>
                 {mission.matchingDomains.length > 0 && (
                   <div className="flex flex-wrap gap-1 mt-1">
                     {mission.matchingDomains.map((domain) => (
@@ -163,14 +164,14 @@ export const AdaptiveMissionSuggestions: React.FC<AdaptiveMissionSuggestionsProp
                 )}
               </div>
 
-              <ChevronRight size={14} className="text-lab-muted shrink-0" />
+              <ChevronRight size={14} className="text-duck-ink/65 shrink-0" />
             </motion.li>
           );
         })}
       </motion.ul>
 
       {/* AI disclosure */}
-      <p className="flex items-center gap-1.5 text-lab-muted text-[10px] pt-1 border-t border-lab-line/50">
+      <p className="flex items-center gap-1.5 text-duck-ink/65 text-[10px] pt-1 border-t border-duck-ink/10">
         <Sparkles size={10} className="shrink-0" />
         Deze suggesties zijn gebaseerd op je toetsresultaten
       </p>

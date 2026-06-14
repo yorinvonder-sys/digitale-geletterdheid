@@ -44,8 +44,9 @@ const DomainRing: React.FC<{ score: number; color: string; label: string; size?:
                     cy={size / 2}
                     r={radius}
                     fill="none"
-                    stroke="#E7D8BD"
+                    stroke="currentColor"
                     strokeWidth={3}
+                    className="text-duck-ink/10"
                 />
                 <circle
                     cx={size / 2}
@@ -60,7 +61,7 @@ const DomainRing: React.FC<{ score: number; color: string; label: string; size?:
                     className="transition-all duration-700"
                 />
             </svg>
-            <span className="text-[9px] font-bold text-[#445865] leading-none text-center max-w-[48px] truncate">
+            <span className="text-[9px] font-bold text-duck-ink/65 leading-none text-center max-w-[48px] truncate">
                 {label.split(' ')[0]}
             </span>
         </div>
@@ -77,24 +78,24 @@ export const ProgressStrip: React.FC<ProgressStripProps> = ({
     const domainScores = nulmetingResult ? extractDomeinScores(nulmetingResult) : null;
 
     return (
-        <section className="mb-6 flex flex-wrap items-center gap-4 rounded-2xl border bg-[#FFFDF7] px-5 py-3.5 shadow-sm" style={{ borderColor: '#E7D8BD' }}>
-            <div className="flex items-center gap-3 border-r border-[#E7D8BD] pr-4">
+        <section className="mb-6 flex flex-wrap items-center gap-4 rounded-[1.5rem] border border-duck-ink/10 bg-white px-5 py-3.5 shadow-duck-soft">
+            <div className="flex items-center gap-3 border-r border-duck-ink/10 pr-4">
                 <div>
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-[#445865]">Level</p>
-                    <p className="text-lg font-black tabular-nums text-[#08283B]">{level}</p>
+                    <p className="text-[10px] font-bold uppercase tracking-wider text-duck-ink/65">Level</p>
+                    <p className="text-lg font-black tabular-nums text-duck-ink">{level}</p>
                 </div>
-                <div className="h-8 w-1.5 overflow-hidden rounded-full bg-[#E7D8BD]">
+                <div className="h-8 w-1.5 overflow-hidden rounded-full bg-duck-ink/10">
                     <div
-                        className="w-full rounded-full bg-[#5F947D] transition-all duration-700"
+                        className="w-full rounded-full bg-duck-acid ring-1 ring-duck-ink/15 transition-all duration-700"
                         style={{ height: `${progressPercentage}%`, marginTop: `${100 - progressPercentage}%` }}
                     />
                 </div>
             </div>
 
-            <div className="border-r border-[#E7D8BD] pr-4">
-                <p className="text-[10px] font-bold uppercase tracking-wider text-[#445865]">Missies</p>
-                <p className="text-lg font-black tabular-nums text-[#08283B]">
-                    {completedCount}<span className="text-sm font-bold text-[#445865]">/{totalMissions}</span>
+            <div className="border-r border-duck-ink/10 pr-4">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-duck-ink/65">Missies</p>
+                <p className="text-lg font-black tabular-nums text-duck-ink">
+                    {completedCount}<span className="text-sm font-bold text-duck-ink/65">/{totalMissions}</span>
                 </p>
             </div>
 
@@ -102,12 +103,12 @@ export const ProgressStrip: React.FC<ProgressStripProps> = ({
                 {DOMAIN_KEYS.map((key) => {
                     const score = domainScores?.[key] ?? 0;
                     const colorName = getDomeinKleur(key);
-                    const color = domainScores ? (RING_COLORS[colorName] || '#99984D') : '#E7D8BD';
+                    const color = domainScores ? (RING_COLORS[colorName] || '#99984D') : undefined;
                     return (
                         <DomainRing
                             key={key}
                             score={domainScores ? score : 0}
-                            color={color}
+                            color={color ?? '#202023'}
                             label={getDomeinLabel(key)}
                         />
                     );

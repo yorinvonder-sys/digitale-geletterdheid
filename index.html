@@ -4,10 +4,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <script defer src="/csp-bootstrap.js?v=2"></script>
+  <script defer src="/csp-bootstrap.js?v=3"></script>
   <!-- PWA Meta Tags - mobile-web-app-capable is the standard, apple- prefix is legacy -->
   <meta name="mobile-web-app-capable" content="yes">
-  <meta name="theme-color" content="#D97848">
+  <meta name="theme-color" content="#f2f1ec">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="DGSkills">
@@ -45,6 +45,7 @@
   <meta name="twitter:image" content="https://dgskills.app/og-image.png" />
   <meta name="twitter:image:alt" content="DGSkills - Digitale Geletterdheid platform" />
 
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
   <link rel="icon" type="image/png" sizes="512x512" href="/icon-512x512.png" />
 
@@ -63,9 +64,9 @@
   <div id="root">
     <!-- Inline loading skeleton: painted immediately, replaced by React on first render.
          Ensures FCP fires in headless Chrome before JS modules execute. -->
-    <div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#FCF6EA" aria-hidden="true">
-      <div style="width:3rem;height:3rem;border:2px solid #E7D8BD;border-top-color:#0B453F;border-radius:50%;animation:spin 1s linear infinite"></div>
-      <p style="margin-top:1rem;font-family:system-ui,-apple-system,sans-serif;color:#445865;font-size:0.875rem">Laden...</p>
+    <div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#f2f1ec" aria-hidden="true">
+      <div style="width:3rem;height:3rem;border:2px solid #c2c1bd;border-top-color:#202023;border-radius:50%;animation:spin 1s linear infinite"></div>
+      <p style="margin-top:1rem;font-family:system-ui,-apple-system,sans-serif;color:#6f6e69;font-size:0.875rem">Laden...</p>
     </div>
     <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
   </div>
@@ -118,50 +119,34 @@
         "mainEntity": [
           {
             "@type": "Question",
-            "name": "Wat is digitale geletterdheid en waarom wordt het verplicht?",
+            "name": "Moet ik zelf AI-lessen ontwerpen?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Kennis en vaardigheden om veilig en effectief te functioneren in een digitale samenleving. SLO-kerndoelen worden per 2027 wettelijk verplicht; scholen kunnen al vanaf 2025/2026 starten."
+              "text": "Nee. Je start met missies, voorbeeldroutes en korte opdrachten die je in je eigen les kunt gebruiken."
             }
           },
           {
             "@type": "Question",
-            "name": "Hoe verschilt DGSkills van DIGIT-vo of Basicly?",
+            "name": "Wat levert een pilot op?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "DGSkills combineert AI-missies, gamification (XP, badges, leaderboards) en volledige SLO-koppeling. Leerlingen leren door te doen — geen werkbladen."
+              "text": "Een concreet beeld van deelname, voortgang, SLO-koppeling en wat er nodig is voor bredere invoering."
             }
           },
           {
             "@type": "Question",
-            "name": "Welke SLO Kerndoelen dekt DGSkills af?",
+            "name": "Kunnen we privacy en AI vooraf beoordelen?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Alle vier domeinen: Digitale vaardigheden, Informatievaardigheden, Mediawijsheid en Computational Thinking. Elke missie is gekoppeld aan specifieke kerndoelen."
+              "text": "Ja. De pilot is bedoeld om ook verwerkersafspraken, DPIA-informatie en AI-transparantie zorgvuldig door te nemen."
             }
           },
           {
             "@type": "Question",
-            "name": "Is DGSkills AVG-compliant en veilig?",
+            "name": "Hoe snel kan een school starten?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Ja. Data binnen de EU (Google Cloud). Verwerkersovereenkomst en DPIA beschikbaar. Voldoet aan AVG en onderwijseisen."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Op welke apparaten werkt DGSkills?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Elk apparaat met browser: iPad, Chromebook, laptop, telefoon. Geen installatie, geen IT-configuratie."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Wat kost DGSkills en is er een gratis proefperiode?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Gratis pilot van 3 maanden met volledige toegang. Daarna schoollicentie vanaf 2.000 euro per jaar."
+              "text": "De pilot is ingericht op een compacte start: meestal binnen 10 werkdagen nadat scope en accounts zijn afgestemd."
             }
           }
         ]

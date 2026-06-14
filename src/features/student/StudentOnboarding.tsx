@@ -1,6 +1,8 @@
 
 import React, { useState } from 'react';
 import { Rocket, MessageSquare, Target, Trophy, ChevronRight, ChevronLeft, Brain, Sparkles, Zap, CheckCircle, Play } from 'lucide-react';
+import { DuckMascot } from '@/components/brand/DuckMascot';
+import { duckUi } from '@/config/duckUi';
 
 interface StudentOnboardingProps {
     onComplete: () => void;
@@ -15,7 +17,7 @@ const ONBOARDING_STEPS = [
         subtitle: 'Jouw digitale vaardigheden avontuur begint nu',
         description: 'Hier leer jij hoe je digitale tools en AI kunt gebruiken als superkracht. Van slimme presentaties tot je eigen creaties - jij bouwt aan je toekomst.',
         animation: 'rocket',
-        color: 'from-lab-coral to-lab-teal',
+        showMascot: true,
     },
     {
         id: 'what',
@@ -29,7 +31,7 @@ const ONBOARDING_STEPS = [
             { icon: '🎨', text: 'Creaties maken' },
         ],
         animation: 'pulse',
-        color: 'from-lab-coral to-lab-teal',
+        showMascot: false,
     },
     {
         id: 'how',
@@ -42,7 +44,7 @@ const ONBOARDING_STEPS = [
             { role: 'ai', text: 'Top! Ik pas de kleur aan... 🎨' },
         ],
         animation: 'chat',
-        color: 'from-lab-coral to-lab-teal',
+        showMascot: false,
     },
     {
         id: 'why',
@@ -55,7 +57,7 @@ const ONBOARDING_STEPS = [
             { value: '3x', label: 'effectiever met goede skills' },
         ],
         animation: 'brain',
-        color: 'from-lab-coral to-lab-coral',
+        showMascot: false,
     },
     {
         id: 'xp',
@@ -69,7 +71,7 @@ const ONBOARDING_STEPS = [
             { action: 'Missie afronden', xp: '+100 XP' },
         ],
         animation: 'sparkle',
-        color: 'from-lab-coral to-lab-coral',
+        showMascot: false,
     },
 ];
 
@@ -79,10 +81,6 @@ export const StudentOnboarding: React.FC<StudentOnboardingProps> = ({ onComplete
 
     const step = ONBOARDING_STEPS[currentStep];
     const isLastStep = currentStep === ONBOARDING_STEPS.length - 1;
-
-
-
-
 
     const handleNext = () => {
         if (!canProceed) return;
@@ -102,38 +100,43 @@ export const StudentOnboarding: React.FC<StudentOnboardingProps> = ({ onComplete
     const isFirstStep = currentStep === 0;
 
     return (
-        <div className="fixed inset-0 z-[200] bg-lab-ink overflow-hidden">
-            {/* Animated Background */}
-            <div className="absolute inset-0">
-                {/* Gradient orbs */}
-                <div className={`absolute top-1/4 -left-20 w-96 h-96 rounded-full bg-gradient-to-br ${step.color} opacity-20 blur-3xl animate-pulse motion-reduce:animate-none`} />
-                <div className={`absolute bottom-1/4 -right-20 w-96 h-96 rounded-full bg-gradient-to-br ${step.color} opacity-20 blur-3xl animate-pulse motion-reduce:animate-none`} style={{ animationDelay: '1s' }} />
-
+        <div className="fixed inset-0 z-[200] bg-duck-ink overflow-hidden">
+            {/* Background: subtle grid + floating particles */}
+            <div className="absolute inset-0" aria-hidden="true">
                 {/* Grid pattern */}
                 <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px]" />
+
+                {/* Acid glow blob (achtergrond, niet als tekst) */}
+                <div className="absolute top-1/4 -left-20 w-96 h-96 rounded-full bg-duck-acid opacity-5 blur-3xl animate-duck-enter motion-reduce:animate-none" />
+                <div className="absolute bottom-1/4 -right-20 w-96 h-96 rounded-full bg-duck-acid opacity-5 blur-3xl" style={{ animationDelay: '1s' }} />
 
                 {/* Floating particles */}
                 {[...Array(20)].map((_, i) => (
                     <div
                         key={i}
-                        className="absolute w-1 h-1 bg-white/20 rounded-full animate-float"
+                        className="absolute w-1 h-1 bg-white/20 rounded-full animate-duck-float motion-reduce:animate-none"
                         style={{
-                            left: `${Math.random() * 100}%`,
-                            top: `${Math.random() * 100}%`,
-                            animationDelay: `${Math.random() * 5}s`,
-                            animationDuration: `${3 + Math.random() * 4}s`,
+                            left: `${(i * 5.3 + 7) % 100}%`,
+                            top: `${(i * 7.1 + 3) % 100}%`,
+                            animationDelay: `${(i * 0.37) % 5}s`,
+                            animationDuration: `${3 + (i % 4)}s`,
                         }}
                     />
                 ))}
             </div>
 
-            {/* Progress Dots (non-clickable) */}
-            <div className="absolute top-6 left-1/2 -translate-x-1/2 z-50 flex gap-2">
+            {/* Progress dots — acid actief, ink/10 inactief */}
+            <div className="absolute top-6 left-1/2 -translate-x-1/2 z-50 flex gap-2" role="progressbar" aria-valuenow={currentStep + 1} aria-valuemin={1} aria-valuemax={ONBOARDING_STEPS.length}>
                 {ONBOARDING_STEPS.map((_, i) => (
                     <div
                         key={i}
-                        className={`h-2 rounded-full transition-all duration-500 ${i === currentStep ? 'w-8 bg-white' : i < currentStep ? 'w-2 bg-white/50' : 'w-2 bg-white/20'
-                            }`}
+                        className={`h-2 rounded-full transition-all duration-500 ${
+                            i === currentStep
+                                ? 'w-8 bg-duck-acid ring-1 ring-duck-ink/15'
+                                : i < currentStep
+                                ? 'w-2 bg-white/50'
+                                : 'w-2 bg-white/20'
+                        }`}
                     />
                 ))}
             </div>
@@ -142,20 +145,26 @@ export const StudentOnboarding: React.FC<StudentOnboardingProps> = ({ onComplete
             <div className="relative z-10 h-full flex flex-col items-center justify-center p-6 md:p-12 pt-20 md:pt-24 overflow-y-auto">
                 <div className="max-w-lg md:max-w-xl lg:max-w-2xl w-full flex flex-col items-center">
 
-                    {/* Icon */}
-                    <div className={`mx-auto mb-6 w-20 h-20 md:w-24 md:h-24 rounded-3xl bg-gradient-to-br ${step.color} flex items-center justify-center text-white shadow-2xl shrink-0`}>
-                        {step.icon}
-                    </div>
+                    {/* Mascot op welkomstscherm — acid vlak met DuckMascot */}
+                    {step.showMascot ? (
+                        <div className="mx-auto mb-6 w-24 h-24 md:w-28 md:h-28 bg-duck-acid rounded-[1.5rem] flex items-center justify-center shadow-duck-soft shrink-0">
+                            <DuckMascot className="w-16 h-16 md:w-20 md:h-20" />
+                        </div>
+                    ) : (
+                        <div className="mx-auto mb-6 w-20 h-20 md:w-24 md:h-24 bg-duck-acid rounded-3xl flex items-center justify-center text-duck-ink shadow-duck-soft shrink-0">
+                            {step.icon}
+                        </div>
+                    )}
 
                     {/* Text Content */}
                     <div className="text-center mb-6 shrink-0">
-                        <p className="text-xs md:text-sm font-bold text-white/50 uppercase tracking-widest mb-1 md:mb-2">
+                        <p className="text-xs md:text-sm font-extrabold text-white/50 uppercase tracking-widest mb-1 md:mb-2">
                             {step.subtitle}
                         </p>
-                        <h1 className="text-2xl md:text-4xl font-black text-white mb-2 md:mb-4 tracking-tight">
+                        <h1 className="font-display text-2xl md:text-4xl font-black text-white mb-2 md:mb-4 tracking-tight">
                             {step.title}
                         </h1>
-                        <p className="text-base md:text-lg text-lab-muted leading-relaxed max-w-md mx-auto">
+                        <p className="text-base md:text-lg text-white/65 leading-relaxed max-w-md mx-auto">
                             {step.description}
                         </p>
                     </div>
@@ -166,7 +175,7 @@ export const StudentOnboarding: React.FC<StudentOnboardingProps> = ({ onComplete
                             {step.features.map((feature, i) => (
                                 <div
                                     key={i}
-                                    className="flex flex-col items-center gap-1 bg-white/5 backdrop-blur border border-white/10 rounded-xl p-3 animate-in zoom-in"
+                                    className="flex flex-col items-center gap-1 bg-white/5 backdrop-blur border border-white/10 rounded-[1rem] p-3 animate-in zoom-in"
                                     style={{ animationDelay: `${i * 100}ms` }}
                                 >
                                     <span className="text-2xl">{feature.icon}</span>
@@ -177,14 +186,14 @@ export const StudentOnboarding: React.FC<StudentOnboardingProps> = ({ onComplete
                     )}
 
                     {step.demoChat && (
-                        <div className="bg-white/5 backdrop-blur border border-white/10 rounded-2xl p-4 mb-6 space-y-3 w-full">
+                        <div className="bg-white/5 backdrop-blur border border-white/10 rounded-[1rem] p-4 mb-6 space-y-3 w-full">
                             {step.demoChat.map((msg, i) => (
                                 <div
                                     key={i}
                                     className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} animate-in ${msg.role === 'user' ? 'slide-in-from-right' : 'slide-in-from-left'}`}
                                     style={{ animationDelay: `${i * 300}ms` }}
                                 >
-                                    <div className={`px-4 py-2 rounded-2xl ${msg.role === 'user' ? 'bg-lab-coral text-white' : 'bg-white/10 text-white'}`}>
+                                    <div className={`px-4 py-2 rounded-2xl ${msg.role === 'user' ? 'bg-duck-acid text-duck-ink font-semibold' : 'bg-white/10 text-white'}`}>
                                         {msg.text}
                                     </div>
                                 </div>
@@ -197,11 +206,11 @@ export const StudentOnboarding: React.FC<StudentOnboardingProps> = ({ onComplete
                             {step.stats.map((stat, i) => (
                                 <div
                                     key={i}
-                                    className="bg-white/5 backdrop-blur border border-white/10 rounded-xl p-4 text-center animate-in zoom-in"
+                                    className="bg-white/5 backdrop-blur border border-white/10 rounded-[1rem] p-4 text-center animate-in zoom-in"
                                     style={{ animationDelay: `${i * 200}ms` }}
                                 >
-                                    <div className="text-3xl font-black text-white mb-1">{stat.value}</div>
-                                    <div className="text-xs text-lab-muted font-medium">{stat.label}</div>
+                                    <div className="font-display text-3xl font-black text-white mb-1">{stat.value}</div>
+                                    <div className="text-xs text-white/65 font-medium">{stat.label}</div>
                                 </div>
                             ))}
                         </div>
@@ -212,11 +221,11 @@ export const StudentOnboarding: React.FC<StudentOnboardingProps> = ({ onComplete
                             {step.xpExamples.map((ex, i) => (
                                 <div
                                     key={i}
-                                    className="flex items-center justify-between bg-white/5 backdrop-blur border border-white/10 rounded-xl px-4 py-3 animate-in slide-in-from-bottom"
+                                    className="flex items-center justify-between bg-white/5 backdrop-blur border border-white/10 rounded-[1rem] px-4 py-3 animate-in slide-in-from-bottom"
                                     style={{ animationDelay: `${i * 100}ms` }}
                                 >
                                     <span className="text-white font-medium">{ex.action}</span>
-                                    <span className="text-lab-sage font-bold text-sm bg-lab-sage/10 px-2 py-1 rounded">{ex.xp}</span>
+                                    <span className="font-extrabold text-sm bg-duck-acid text-duck-ink px-3 py-1 rounded-full">{ex.xp}</span>
                                 </div>
                             ))}
                         </div>
@@ -227,7 +236,7 @@ export const StudentOnboarding: React.FC<StudentOnboardingProps> = ({ onComplete
                         {!isFirstStep && (
                             <button
                                 onClick={handlePrevious}
-                                className="px-6 py-4 md:py-5 rounded-2xl font-bold text-lg flex items-center justify-center gap-2 transition-all duration-300 bg-white/10 text-white hover:bg-white/20 active:scale-95"
+                                className="min-h-[44px] px-6 py-3 md:py-4 rounded-full font-extrabold text-base flex items-center justify-center gap-2 transition-all duration-300 bg-white/10 text-white hover:bg-white/20 active:scale-95 border border-white/20"
                             >
                                 <ChevronLeft size={20} />
                                 <span className="hidden md:inline">Vorige</span>
@@ -237,7 +246,11 @@ export const StudentOnboarding: React.FC<StudentOnboardingProps> = ({ onComplete
                         <button
                             onClick={handleNext}
                             disabled={!canProceed}
-                            className={`flex-1 py-4 md:py-5 rounded-2xl font-bold text-lg flex items-center justify-center gap-3 transition-all duration-300 shadow-2xl bg-gradient-to-r ${step.color} text-white ${canProceed ? 'hover:shadow-lg hover:scale-[1.02] active:scale-95' : 'opacity-50 cursor-not-allowed'}`}
+                            className={`flex-1 min-h-[44px] py-3 md:py-4 rounded-full font-extrabold text-base flex items-center justify-center gap-3 transition-all duration-300 ${
+                                canProceed
+                                    ? 'bg-duck-acid text-duck-ink border border-duck-acid hover:scale-[1.02] active:scale-95 shadow-duck-soft'
+                                    : 'bg-duck-acid/50 text-duck-ink/50 border border-transparent cursor-not-allowed'
+                            }`}
                         >
                             {isLastStep ? (
                                 <>
@@ -254,22 +267,11 @@ export const StudentOnboarding: React.FC<StudentOnboardingProps> = ({ onComplete
                     </div>
 
                     {/* Step counter */}
-                    <p className="text-center text-lab-muted text-sm mt-2 font-medium pb-4 md:pb-0">
+                    <p className="text-center text-white/50 text-sm mt-2 font-medium pb-4 md:pb-0">
                         Stap {currentStep + 1} van {ONBOARDING_STEPS.length}
                     </p>
                 </div>
             </div>
-
-            {/* CSS for floating animation */}
-            <style>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.3; }
-          50% { transform: translateY(-20px) rotate(180deg); opacity: 0.6; }
-        }
-        .animate-float {
-          animation: float ease-in-out infinite;
-        }
-      `}</style>
         </div>
     );
 };

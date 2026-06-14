@@ -3,6 +3,16 @@ export const sharedTailwindConfig = {
     theme: {
         extend: {
             colors: {
+                // DUCK-stijl homepage tokens (duck.school-geïnspireerd) — alleen
+                // gebruikt door de publieke landing; lab-* blijft voor de app.
+                duck: {
+                    bg: '#f2f1ec',
+                    bgLight: '#f8f8f5',
+                    ink: '#202023',
+                    acid: '#e1ff01',
+                    gray: '#c2c1bd',
+                    error: '#ff3c21',
+                },
                 lab: {
                     cream: '#FCF6EA',
                     paper: '#FFFDF7',
@@ -69,9 +79,13 @@ export const sharedTailwindConfig = {
             },
             fontFamily: {
                 sans: ['Outfit', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
+                display: ['Fraunces', 'Georgia', 'Times New Roman', 'serif'],
             },
             backgroundImage: {
                 'grid-pattern': "linear-gradient(to right, #E7D8BD 1px, transparent 1px), linear-gradient(to bottom, #E7D8BD 1px, transparent 1px)",
+            },
+            boxShadow: {
+                'duck-soft': '2px 4px 24px rgba(199,197,188,0.30)',
             },
             animation: {
                 'float': 'float 6s ease-in-out infinite',
@@ -88,6 +102,12 @@ export const sharedTailwindConfig = {
                 'typing-bounce': 'typingBounce 1.4s ease-in-out infinite',
                 'sound-pulse': 'soundPulse 1.2s ease-out infinite',
                 'blob-morph': 'blobMorph 12s ease-in-out infinite',
+                'duck-marquee': 'duckMarquee 36s linear infinite',
+                'duck-spin-slow': 'duckSpin 16s linear infinite',
+                'duck-float': 'duckFloat 7s ease-in-out infinite',
+                'duck-float-delayed': 'duckFloat 7s ease-in-out 2.4s infinite',
+                'duck-blink': 'duckBlink 5.2s ease-in-out infinite',
+                'duck-rise': 'duckRise 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards',
             },
             keyframes: {
                 float: {
@@ -130,6 +150,26 @@ export const sharedTailwindConfig = {
                     '0%, 100%': { borderRadius: '42% 58% 45% 55% / 50% 42% 58% 50%' },
                     '33%': { borderRadius: '55% 45% 60% 40% / 45% 55% 40% 60%' },
                     '66%': { borderRadius: '38% 62% 42% 58% / 58% 38% 62% 42%' },
+                },
+                duckMarquee: {
+                    '0%': { transform: 'translateX(0)' },
+                    '100%': { transform: 'translateX(-50%)' },
+                },
+                duckSpin: {
+                    '0%': { transform: 'rotate(0deg)' },
+                    '100%': { transform: 'rotate(360deg)' },
+                },
+                duckFloat: {
+                    '0%, 100%': { transform: 'translateY(0)' },
+                    '50%': { transform: 'translateY(-12px)' },
+                },
+                duckBlink: {
+                    '0%, 94%, 100%': { transform: 'scaleY(1)' },
+                    '96%, 98%': { transform: 'scaleY(0.08)' },
+                },
+                duckRise: {
+                    '0%': { transform: 'translateY(115%)' },
+                    '100%': { transform: 'translateY(0)' },
                 },
             }
         },

@@ -64,10 +64,10 @@ const EindmetingFlow = lazyWithRetry(() => import('@/features/assessment/escaper
 const TemplateMissionRouter = lazyWithRetry(() => import('@/features/missions/templates/TemplateMissionRouter').then(m => ({ default: m.TemplateMissionRouter })));
 
 const LoadingFallback = () => (
-    <div className="flex-1 flex items-center justify-center bg-lab-cream" role="status" aria-live="polite">
+    <div className="flex-1 flex items-center justify-center bg-duck-bg" role="status" aria-live="polite">
         <div className="flex flex-col items-center gap-4">
-            <Loader2 size={48} className="animate-spin text-lab-coral" aria-hidden="true" />
-            <p className="text-lab-muted font-medium">Laden...</p>
+            <Loader2 size={48} className="animate-spin text-duck-ink" aria-hidden="true" />
+            <p className="text-duck-ink/65 font-medium">Laden...</p>
         </div>
     </div>
 );
@@ -261,10 +261,10 @@ export function AuthenticatedApp() {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-[#FCF6EA] flex flex-col items-center justify-center gap-4">
-                <Loader2 size={48} className="animate-spin text-lab-coral" aria-hidden="true" />
+            <div className="min-h-screen bg-duck-bg flex flex-col items-center justify-center gap-4">
+                <Loader2 size={48} className="animate-spin text-duck-ink" aria-hidden="true" />
                 <span className="sr-only">Laden...</span>
-                <p className="text-lab-muted font-medium">Laden...</p>
+                <p className="text-duck-ink/65 font-medium">Laden...</p>
             </div>
         );
     }
@@ -399,36 +399,36 @@ export function AuthenticatedApp() {
 
     if (user.role === 'student' && focusMode && !activeModule && !focusModeAcknowledged && !hasCompletedFocusMission) {
         return (
-            <div className="min-h-screen bg-lab-ink flex items-center justify-center p-6 overflow-hidden">
+            <div className="min-h-screen bg-duck-ink flex items-center justify-center p-6 overflow-hidden">
                 <div className="absolute inset-0 opacity-20 pointer-events-none">
-                    <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-lab-coral/20 via-transparent to-transparent animate-pulse"></div>
+                    <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-duck-acid/20 via-transparent to-transparent animate-pulse"></div>
                 </div>
                 <div className="max-w-md w-full text-center space-y-8 relative z-10">
                     <div className="relative inline-block">
-                        <div className={`w-24 h-24 ${focusMissionId ? 'bg-lab-sage' : 'bg-lab-coral'} rounded-[2.5rem] flex items-center justify-center shadow-2xl ${focusMissionId ? 'shadow-lab-coral/40' : 'shadow-lab-coral/40'} animate-bounce`}>
-                            <Lock size={48} className="text-white" />
+                        <div className="w-24 h-24 bg-duck-acid rounded-[2.5rem] flex items-center justify-center shadow-2xl animate-bounce">
+                            <Lock size={48} className="text-duck-ink" />
                         </div>
-                        <div className="absolute -top-2 -right-2 w-8 h-8 bg-lab-coral rounded-full border-4 border-lab-line flex items-center justify-center animate-pulse">
-                            <div className="w-2 h-2 bg-white rounded-full"></div>
+                        <div className="absolute -top-2 -right-2 w-8 h-8 bg-duck-acid rounded-full border-4 border-duck-ink flex items-center justify-center animate-pulse">
+                            <div className="w-2 h-2 bg-duck-ink rounded-full"></div>
                         </div>
                     </div>
                     <div className="space-y-4">
                         {focusMissionId && focusMissionTitle ? (
                             <>
                                 <h1 className="text-3xl font-black text-white uppercase tracking-tight">Opdracht Verplicht</h1>
-                                <p className="text-lab-muted font-medium leading-relaxed">
-                                    De docent heeft een specifieke opdracht geselecteerd die je <span className="text-lab-sage font-bold">nu moet maken</span>.
+                                <p className="text-white/65 font-medium leading-relaxed">
+                                    De docent heeft een specifieke opdracht geselecteerd die je <span className="text-duck-acid font-bold">nu moet maken</span>.
                                 </p>
                                 <div className="mt-6 p-4 bg-white/5 border border-white/10 rounded-2xl">
-                                    <p className="text-xs text-lab-muted uppercase tracking-widest font-bold mb-2">Je opdracht</p>
+                                    <p className="text-xs text-white/65 uppercase tracking-widest font-bold mb-2">Je opdracht</p>
                                     <h2 className="text-xl font-black text-white">{focusMissionTitle}</h2>
                                 </div>
                             </>
                         ) : (
                             <>
                                 <h1 className="text-3xl font-black text-white uppercase tracking-tight">Ogen op de docent!</h1>
-                                <p className="text-lab-muted font-medium leading-relaxed">
-                                    De docent heeft de <span className="text-lab-coral font-bold">Focus Modus</span> geactiveerd.
+                                <p className="text-white/65 font-medium leading-relaxed">
+                                    De docent heeft de <span className="text-duck-acid font-bold">Focus Modus</span> geactiveerd.
                                     {focusMissionTitle ? (
                                         <> Tijd voor de opdracht: <span className="text-white font-bold">{focusMissionTitle}</span>.</>
                                     ) : (
@@ -454,15 +454,15 @@ export function AuthenticatedApp() {
                                 setFocusModeAcknowledged(true);
                                 handleSelectModule(focusMissionId);
                             }}
-                            className="w-full py-4 bg-gradient-to-r from-lab-coral to-lab-teal text-white rounded-2xl font-black uppercase tracking-widest hover:shadow-lg hover:shadow-lab-coral/30 hover:scale-[1.02] transition-all active:scale-95 flex items-center justify-center gap-3"
+                            className="w-full py-4 bg-duck-acid text-duck-ink border border-duck-ink rounded-full font-black uppercase tracking-widest hover:-translate-y-0.5 hover:shadow-lg transition-all active:scale-95 flex items-center justify-center gap-3"
                         >
                             Bekijk Opdracht
                             <Rocket size={20} />
                         </button>
                     ) : (
                         <div className="pt-4">
-                            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-full text-[10px] font-black text-lab-coral uppercase tracking-widest">
-                                <div className="w-1.5 h-1.5 bg-lab-coral rounded-full animate-pulse"></div>
+                            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-full text-[10px] font-black text-duck-acid uppercase tracking-widest">
+                                <div className="w-1.5 h-1.5 bg-duck-acid rounded-full animate-pulse"></div>
                                 Wachten op vrijgave...
                             </div>
                         </div>
@@ -560,7 +560,7 @@ export function AuthenticatedApp() {
         if (peerFeedbackMissionId && user) {
             const cls = user.stats?.studentClass || user.studentClass || '';
             return (
-                <div className="min-h-screen bg-[#FCF6EA] flex flex-col items-center justify-center p-4">
+                <div className="min-h-screen bg-duck-bg flex flex-col items-center justify-center p-4">
                     <div className="w-full max-w-md space-y-4">
                         <Suspense fallback={<LoadingFallback />}>
                             <PeerFeedbackPanel
@@ -575,7 +575,7 @@ export function AuthenticatedApp() {
                                 setPeerFeedbackMissionId(null);
                                 handleExitModule();
                             }}
-                            className="w-full py-3 bg-[#445865] hover:bg-[#08283B] text-white rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2"
+                            className="w-full py-3 bg-duck-ink hover:opacity-90 text-white rounded-full font-bold text-sm transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2"
                         >
                             <ArrowLeft size={16} />
                             Terug naar dashboard
@@ -768,7 +768,7 @@ export function AuthenticatedApp() {
 
         if (showGames) {
             return (
-                <div className="flex-1 w-full flex flex-col font-sans text-lab-ink pb-safe relative">
+                <div className="flex-1 w-full flex flex-col font-sans text-duck-ink pb-safe relative">
                     <GamesSection
                         userRole={user?.role || 'student'}
                         avatarConfig={user?.stats?.avatarConfig}
@@ -806,7 +806,7 @@ export function AuthenticatedApp() {
                     <div className="relative">
                         <button
                             onClick={() => setDevViewOverride('developer')}
-                            className="fixed bottom-20 sm:bottom-6 right-4 sm:right-6 z-50 flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 sm:py-3 bg-lab-teal text-white rounded-xl font-bold text-xs sm:text-sm shadow-lg shadow-lab-teal/25 hover:bg-lab-teal hover:text-white transition-colors"
+                            className="fixed bottom-20 sm:bottom-6 right-4 sm:right-6 z-50 flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 sm:py-3 bg-duck-ink text-white rounded-full font-bold text-xs sm:text-sm shadow-duck-soft hover:opacity-90 transition-colors"
                         >
                             <Code2 size={16} />
                             <span className="hidden sm:inline">Terug naar Developer</span>
@@ -830,7 +830,7 @@ export function AuthenticatedApp() {
                     <div className="relative">
                         <button
                             onClick={() => setDevViewOverride('developer')}
-                            className="fixed bottom-20 sm:bottom-6 right-4 sm:right-6 z-50 flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 sm:py-3 bg-lab-teal text-white rounded-xl font-bold text-xs sm:text-sm shadow-lg shadow-lab-teal/25 hover:bg-lab-teal hover:text-white transition-colors"
+                            className="fixed bottom-20 sm:bottom-6 right-4 sm:right-6 z-50 flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 sm:py-3 bg-duck-ink text-white rounded-full font-bold text-xs sm:text-sm shadow-duck-soft hover:opacity-90 transition-colors"
                         >
                             <Code2 size={16} />
                             <span className="hidden sm:inline">Terug naar Developer</span>
@@ -897,12 +897,12 @@ export function AuthenticatedApp() {
     const showFooter = !activeModule && !isProfileOpen && !showGames && viewMode !== 'monitoring';
 
     const appShell = (
-        <div className="w-full min-h-screen bg-[#FCF6EA] pb-safe flex flex-col relative">
+        <div className="w-full min-h-screen bg-duck-bg pb-safe flex flex-col relative">
             <a href="#main-content" className="skip-link">Naar hoofdinhoud</a>
 
             {/* Offline indicator */}
             {!isOnline && (
-                <div className="fixed top-0 left-0 right-0 z-[100] bg-lab-coral text-white text-[10px] font-black uppercase tracking-widest py-1.5 text-center shadow-md animate-in slide-in-from-top duration-300">
+                <div className="fixed top-0 left-0 right-0 z-[100] bg-duck-ink text-duck-acid text-[10px] font-black uppercase tracking-widest py-1.5 text-center shadow-md animate-in slide-in-from-top duration-300">
                     Je bent offline. Sommige functies (zoals AI) werken mogelijk niet.
                 </div>
             )}
@@ -923,14 +923,14 @@ export function AuthenticatedApp() {
             <div className="fixed top-4 right-4 pr-safe pt-safe flex items-center gap-3 z-50" />
             {user.role === 'teacher' && viewMode === 'assignments' && (
                 <div className="fixed bottom-8 left-8 pointer-events-auto z-50 flex flex-col items-start gap-2">
-                    <div className="bg-lab-teal/10 backdrop-blur-md border border-lab-teal px-3 py-1.5 rounded-full flex items-center gap-2 shadow-sm mb-1">
-                        <div className="w-2 h-2 rounded-full bg-lab-coral animate-pulse"></div>
-                        <span className="text-[10px] font-black text-lab-teal uppercase tracking-widest">Docent Mode Actief</span>
+                    <div className="bg-duck-ink/10 backdrop-blur-md border border-duck-ink/30 px-3 py-1.5 rounded-full flex items-center gap-2 shadow-sm mb-1">
+                        <div className="w-2 h-2 rounded-full bg-duck-ink animate-pulse"></div>
+                        <span className="text-[10px] font-black text-duck-ink uppercase tracking-widest">Docent Mode Actief</span>
                     </div>
                     {!activeModule && !isProfileOpen && (
                         <button
                             onClick={() => setViewMode('monitoring')}
-                            className="group bg-lab-ink text-white pl-3 pr-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-lab-coral hover:text-white transition-all shadow-xl hover:shadow-lab-coral/30 flex items-center gap-2.5 active:scale-95"
+                            className="group bg-duck-ink text-white pl-3 pr-5 py-2.5 rounded-full text-xs font-black uppercase tracking-widest hover:opacity-90 transition-all shadow-duck-soft flex items-center gap-2.5 active:scale-95"
                         >
                             <div className="bg-white/20 p-1.5 rounded-lg group-hover:bg-white/30 transition-colors">
                                 <ArrowLeft size={16} />
@@ -965,18 +965,18 @@ export function AuthenticatedApp() {
                 onCancel={() => setShowExitConfirm(false)}
             />
             {showInactivityWarning && (
-                <div className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4" role="alertdialog" aria-modal="true" aria-label="Inactiviteits-waarschuwing">
-                    <div className="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 text-center">
-                        <div className="w-14 h-14 bg-lab-gold rounded-full flex items-center justify-center mx-auto mb-4">
-                            <Lock size={28} className="text-lab-gold" />
+                <div className="fixed inset-0 z-[100] bg-duck-ink/40 backdrop-blur-[2px] flex items-center justify-center p-4" role="alertdialog" aria-modal="true" aria-label="Inactiviteits-waarschuwing">
+                    <div className="rounded-[1.5rem] bg-white shadow-duck-soft max-w-sm w-full p-6 text-center">
+                        <div className="w-14 h-14 bg-duck-ink rounded-full flex items-center justify-center mx-auto mb-4">
+                            <Lock size={28} className="text-duck-acid" />
                         </div>
-                        <h2 className="text-lg font-black text-lab-ink mb-2">Ben je er nog?</h2>
-                        <p className="text-lab-muted text-sm mb-4">
-                            Je wordt automatisch uitgelogd over <span className="font-bold text-lab-gold">{Math.ceil(secondsLeft / 60)} min</span> wegens inactiviteit.
+                        <h2 className="text-lg font-black text-duck-ink mb-2">Ben je er nog?</h2>
+                        <p className="text-duck-ink/65 text-sm mb-4">
+                            Je wordt automatisch uitgelogd over <span className="font-bold text-duck-ink">{Math.ceil(secondsLeft / 60)} min</span> wegens inactiviteit.
                         </p>
                         <button
                             onClick={dismissWarning}
-                            className="w-full px-4 py-3 bg-lab-coral text-white font-bold rounded-xl hover:bg-lab-coral hover:text-white transition-colors"
+                            className="w-full inline-flex items-center justify-center rounded-full border border-duck-ink bg-duck-acid px-6 py-3 font-extrabold text-sm text-duck-ink hover:-translate-y-0.5 transition-transform"
                         >
                             Ik ben er nog
                         </button>

@@ -25,8 +25,7 @@ function Toggle({
         <div className="flex items-center justify-between gap-4 py-2">
             <label
                 htmlFor={id}
-                className="text-sm cursor-pointer select-none"
-                style={{ color: '#08283B', fontFamily: "'Outfit', system-ui, sans-serif" }}
+                className="font-sans text-sm font-semibold text-duck-ink cursor-pointer select-none"
             >
                 {label}
             </label>
@@ -35,11 +34,7 @@ function Toggle({
                 role="switch"
                 aria-checked={checked}
                 onClick={onToggle}
-                className="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-                style={{
-                    backgroundColor: checked ? '#D97848' : '#E7D8BD',
-                    outlineColor: '#D97848',
-                }}
+                className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2 ${checked ? 'bg-duck-ink' : 'bg-duck-ink/15'}`}
             >
                 <span className="sr-only">{label}</span>
                 <span
@@ -90,7 +85,7 @@ export function AccessibilityPanel() {
         settings.fontSize !== 'normal';
 
     return (
-        <div ref={panelRef} className="relative" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+        <div ref={panelRef} className="relative font-sans">
             {/* Trigger button */}
             <button
                 ref={buttonRef}
@@ -98,12 +93,7 @@ export function AccessibilityPanel() {
                 aria-label="Toegankelijkheidsopties openen"
                 aria-expanded={open}
                 aria-haspopup="dialog"
-                className="relative flex items-center justify-center w-9 h-9 rounded-full transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-                style={{
-                    backgroundColor: open ? '#F0EDE0' : 'transparent',
-                    outlineColor: '#D97848',
-                    color: '#445865',
-                }}
+                className={`relative flex items-center justify-center h-11 w-11 rounded-full text-duck-ink/70 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2 ${open ? 'bg-duck-ink/10' : 'bg-transparent hover:bg-duck-ink/5'}`}
                 title="Toegankelijkheid"
             >
                 {/* Universeel toegankelijkheidsicoontje (SVG) */}
@@ -128,8 +118,7 @@ export function AccessibilityPanel() {
                 {hasActiveSettings && (
                     <span
                         aria-hidden="true"
-                        className="absolute top-1 right-1 w-2 h-2 rounded-full"
-                        style={{ backgroundColor: '#D97848' }}
+                        className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-duck-ink ring-2 ring-duck-acid"
                     />
                 )}
             </button>
@@ -140,18 +129,10 @@ export function AccessibilityPanel() {
                     role="dialog"
                     aria-label="Toegankelijkheidsopties"
                     aria-modal="false"
-                    className="absolute right-0 mt-2 w-64 rounded-xl shadow-lg border z-50 p-4"
-                    style={{
-                        backgroundColor: '#FCF6EA',
-                        borderColor: '#E8E5D8',
-                        color: '#08283B',
-                        top: '100%',
-                    }}
+                    className="absolute right-0 mt-2 w-64 rounded-[1.25rem] bg-white text-duck-ink shadow-duck-soft border border-duck-ink/10 z-50 p-4"
+                    style={{ top: '100%' }}
                 >
-                    <p
-                        className="text-xs font-semibold uppercase tracking-wide mb-3"
-                        style={{ color: '#445865' }}
-                    >
+                    <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-duck-ink/60 mb-3">
                         Toegankelijkheid
                     </p>
 
@@ -175,8 +156,8 @@ export function AccessibilityPanel() {
                     />
 
                     {/* Font size */}
-                    <div className="mt-3 pt-3" style={{ borderTop: '1px solid #E8E5D8' }}>
-                        <p className="text-xs font-medium mb-2" style={{ color: '#445865' }}>
+                    <div className="mt-3 pt-3 border-t border-duck-ink/10">
+                        <p className="text-xs font-bold text-duck-ink/65 mb-2">
                             Tekstgrootte
                         </p>
                         <div className="flex gap-2">
@@ -185,13 +166,7 @@ export function AccessibilityPanel() {
                                     key={size}
                                     onClick={() => setFontSize(size)}
                                     aria-pressed={settings.fontSize === size}
-                                    className="flex-1 py-1.5 text-xs rounded-lg border transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1"
-                                    style={{
-                                        backgroundColor: settings.fontSize === size ? '#D97848' : 'transparent',
-                                        borderColor: settings.fontSize === size ? '#D97848' : '#E7D8BD',
-                                        color: settings.fontSize === size ? '#fff' : '#08283B',
-                                        outlineColor: '#D97848',
-                                    }}
+                                    className={`flex-1 py-2 text-xs font-bold rounded-lg border transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-1 ${settings.fontSize === size ? 'bg-duck-ink border-duck-ink text-duck-acid' : 'bg-transparent border-duck-ink/15 text-duck-ink hover:border-duck-ink'}`}
                                 >
                                     {FONT_SIZE_LABELS[size]}
                                 </button>

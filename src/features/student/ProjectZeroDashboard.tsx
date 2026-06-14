@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 
 import { Rocket, BrainCircuit, ShieldCheck, Gamepad2, Stars, Info, Play, Feather, Puzzle, Database, ChevronRight, ChevronLeft, ChevronDown, ChevronUp, Calendar, Pencil, Map, Lightbulb, Trophy, LogOut, User, RotateCcw, Search, Scale, Lock, Settings2, Cloud, Folder, FileText, Monitor, Printer, AlertTriangle, Sparkles, MessageSquare, Send, Loader2, BookOpen, BarChart2, Eye, CheckCircle2, MonitorSmartphone, Home, Bell, Flame, Award } from 'lucide-react';
 import { getLevelProgress, getXPToNextLevel, LEVEL_THRESHOLDS } from '@/utils/xp';
+import { DuckMark } from '@/components/brand/DuckMark';
 import { LazyAvatarViewer } from '@/features/profile/avatar/LazyAvatarViewer';
 import { DEFAULT_AVATAR_CONFIG, UserStats, EducationLevel } from '@/types';
 import { subscribeToPermissions, GamePermissions } from '@/services/PermissionService';
@@ -14,7 +15,7 @@ import { SLO_KERNDOELEN, getKerndoelBadgeClasses, SloKerndoelCode } from '@/conf
 import { CURRICULUM, getYearConfig, getPeriodConfig } from '@/config/curriculum';
 import { ROLES } from '@/config/agents';
 import { ContainerConfig } from '@/config/containerTypes';
-import { getContainerTheme, getAutoTheme } from '@/config/containerThemes';
+import { getContainerThemeDuck, getAutoTheme } from '@/config/containerThemes';
 import { AdaptiveMissionSuggestions } from '@/features/dashboard/AdaptiveMissionSuggestions';
 import { DashboardHero } from '@/features/dashboard/DashboardHero';
 import { ProgressStrip } from '@/features/dashboard/ProgressStrip';
@@ -176,15 +177,12 @@ interface DashboardStatCardProps {
 const DashboardStatCard: React.FC<DashboardStatCardProps> = ({ icon, value, label, accent, onClick }) => {
     const content = (
         <div className="flex items-center gap-3">
-            <span
-                className="flex size-11 shrink-0 items-center justify-center rounded-2xl border"
-                style={{ backgroundColor: `${accent}1A`, borderColor: `${accent}55`, color: accent }}
-            >
+            <span className="flex size-11 shrink-0 items-center justify-center rounded-2xl border border-duck-ink bg-duck-acid text-duck-ink">
                 {icon}
             </span>
             <span className="min-w-0">
-                <span className="block text-xl font-black tabular-nums leading-none text-[#08283B]">{value}</span>
-                <span className="mt-1 block text-xs font-semibold text-[#445865] text-pretty">{label}</span>
+                <span className="block font-display text-2xl leading-none text-duck-ink">{value}</span>
+                <span className="mt-1.5 block text-[11px] font-extrabold uppercase tracking-[0.14em] text-duck-ink/65 text-pretty">{label}</span>
             </span>
         </div>
     );
@@ -194,8 +192,7 @@ const DashboardStatCard: React.FC<DashboardStatCardProps> = ({ icon, value, labe
             <button
                 type="button"
                 onClick={onClick}
-                className="min-h-[74px] min-w-0 rounded-3xl border bg-[#FFFDF7] px-4 py-3 text-left shadow-sm transition-transform duration-200 hover:-translate-y-0.5 active:translate-y-0"
-                style={{ borderColor: STUDENT_DASHBOARD_COLORS.line }}
+                className="min-h-[74px] min-w-0 rounded-[1.5rem] border border-duck-ink/10 bg-white px-4 py-3 text-left shadow-duck-soft transition-transform duration-200 hover:-translate-y-0.5 active:translate-y-0 motion-reduce:transition-none"
             >
                 {content}
             </button>
@@ -203,10 +200,7 @@ const DashboardStatCard: React.FC<DashboardStatCardProps> = ({ icon, value, labe
     }
 
     return (
-        <div
-            className="min-h-[74px] min-w-0 rounded-3xl border bg-[#FFFDF7] px-4 py-3 text-left shadow-sm transition-transform duration-200 hover:-translate-y-0.5 active:translate-y-0"
-            style={{ borderColor: STUDENT_DASHBOARD_COLORS.line }}
-        >
+        <div className="min-h-[74px] min-w-0 rounded-[1.5rem] border border-duck-ink/10 bg-white px-4 py-3 text-left shadow-duck-soft transition-transform duration-200 hover:-translate-y-0.5 active:translate-y-0 motion-reduce:transition-none">
             {content}
         </div>
     );
@@ -228,11 +222,10 @@ const StudentProjectCard: React.FC<StudentProjectCardProps> = ({ mission, isComp
 
     return (
         <article
-            className={`group flex h-full flex-col overflow-hidden rounded-[1.75rem] border shadow-sm transition-all duration-200
-                ${isCompleted ? 'ring-2 ring-[#5F947D]/30' : ''}
-                ${canOpen && !isCompleted ? 'hover:-translate-y-1 hover:shadow-md' : ''}
+            className={`group flex h-full flex-col overflow-hidden rounded-[1.5rem] border bg-white shadow-duck-soft transition-all duration-200 motion-reduce:transition-none
+                ${isCompleted ? 'border-duck-ink ring-2 ring-duck-ink/15' : 'border-duck-ink/10'}
+                ${canOpen && !isCompleted ? 'hover:-translate-y-1 motion-reduce:hover:translate-y-0' : ''}
                 ${isLocked ? 'opacity-60 grayscale-[0.3]' : ''}`}
-            style={{ borderColor: isCompleted ? STUDENT_DASHBOARD_COLORS.sage : STUDENT_DASHBOARD_COLORS.line, backgroundColor: STUDENT_DASHBOARD_COLORS.paper }}
         >
             <MissionPreviewVisual mission={mission} index={index} isCompleted={isCompleted} />
             <div className="flex flex-1 flex-col p-4">
@@ -245,10 +238,10 @@ const StudentProjectCard: React.FC<StudentProjectCardProps> = ({ mission, isComp
                         aria-label={`${mission.title} openen`}
                     >
                         <span className="block min-w-0">
-                            <h3 className="line-clamp-2 text-lg font-black leading-tight text-balance" style={{ color: STUDENT_DASHBOARD_COLORS.ink }}>
+                            <h3 className="line-clamp-2 font-display text-lg leading-tight text-balance text-duck-ink">
                                 {mission.title}
                             </h3>
-                            <p className="mt-2 line-clamp-2 text-sm font-medium leading-relaxed text-pretty" style={{ color: STUDENT_DASHBOARD_COLORS.muted }}>
+                            <p className="mt-2 line-clamp-2 text-sm font-semibold leading-relaxed text-pretty text-duck-ink/65">
                                 {mission.description || mission.info || 'Werk aan een digitale skill en voeg bewijs toe aan je portfolio.'}
                             </p>
                         </span>
@@ -258,8 +251,7 @@ const StudentProjectCard: React.FC<StudentProjectCardProps> = ({ mission, isComp
                             type="button"
                             onClick={() => onInfoClick(mission.info!, displayKerndoelen)}
                             aria-label={`Meer informatie over ${mission.title}`}
-                            className="flex size-11 shrink-0 items-center justify-center rounded-2xl border transition-colors hover:bg-[#FCF6EA]"
-                            style={{ borderColor: STUDENT_DASHBOARD_COLORS.line, color: STUDENT_DASHBOARD_COLORS.muted }}
+                            className="flex size-11 shrink-0 items-center justify-center rounded-2xl border border-duck-ink/15 text-duck-ink transition-colors hover:border-duck-ink hover:bg-duck-bgLight"
                         >
                             <Info size={18} />
                         </button>
@@ -268,18 +260,18 @@ const StudentProjectCard: React.FC<StudentProjectCardProps> = ({ mission, isComp
 
                 <div className="mt-auto flex items-center justify-end gap-3 pt-4">
                     {isCompleted ? (
-                        <span className="inline-flex min-h-[44px] items-center gap-2 rounded-2xl bg-[#5F947D]/10 px-4 text-sm font-black text-[#5F947D]">
+                        <span className="inline-flex min-h-[44px] items-center gap-2 rounded-full bg-duck-ink px-4 text-sm font-extrabold text-duck-acid">
                             <ShieldCheck size={16} /> Voltooid
                         </span>
                     ) : isLocked ? (
-                        <span className="inline-flex min-h-[44px] items-center gap-2 rounded-2xl bg-[#E7D8BD]/50 px-4 text-sm font-bold text-[#445865]">
+                        <span className="inline-flex min-h-[44px] items-center gap-2 rounded-full border border-duck-ink/10 bg-duck-bgLight px-4 text-sm font-bold text-duck-ink/65">
                             <Lock size={14} /> Voltooi eerst de herhalingen
                         </span>
                     ) : (
                         <button
                             type="button"
                             onClick={() => onSelectModule(mission.id)}
-                            className="inline-flex min-h-[44px] items-center gap-2 rounded-2xl bg-[#D7C95F] px-5 text-sm font-black text-[#08283B] shadow-[0_4px_0_#99984D] transition-all hover:-translate-y-0.5 hover:bg-[#99984D] active:translate-y-0 active:shadow-[0_2px_0_#99984D]"
+                            className="inline-flex min-h-[44px] items-center gap-2 rounded-full border border-duck-ink bg-duck-acid px-5 text-sm font-extrabold text-duck-ink transition-all duration-300 hover:-translate-y-0.5 hover:bg-duck-ink hover:text-duck-acid active:translate-y-0 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
                         >
                             Start missie <ChevronRight size={16} />
                         </button>
@@ -318,7 +310,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
     const yearConfig = getYearConfig(currentYearGroup);
     const currentPeriodConfig = getPeriodConfig(currentYearGroup, activeWeek);
     const periodTheme = containers?.length
-        ? getContainerTheme(containers.find(c => c.sortOrder === activeWeek)?.colorKey)
+        ? getContainerThemeDuck(containers.find(c => c.sortOrder === activeWeek)?.colorKey)
         : (PERIOD_THEME[activeWeek] || DEFAULT_PERIOD_THEME);
     const periodLeerdoel = PERIOD_LEERDOELEN[`${currentYearGroup}-${activeWeek}`];
     const [showXPPopup, setShowXPPopup] = useState(false);
@@ -644,18 +636,19 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                     type="button"
                     onClick={onGoHome}
                     aria-label="Ga naar de startpagina"
-                    className="inline-flex min-h-[52px] min-w-[52px] shrink-0 items-center justify-center bg-transparent p-0 text-left transition-transform duration-200 hover:-translate-y-0.5"
+                    className="inline-flex min-h-[52px] shrink-0 items-center gap-3 bg-transparent p-0 text-left transition-transform duration-200 hover:-translate-y-0.5 motion-reduce:transition-none"
                 >
-                    <img src="/assets/brand/dgskills-beaver-laptop.webp" alt="DGSkills bever werkt op laptop" className="size-9 object-contain" width={36} height={36} decoding="async" />
+                    <DuckMark className="size-9" />
+                    <span className="text-xl font-extrabold tracking-tight text-duck-ink">DGSkills</span>
                 </button>
 
-                <nav aria-label="Dashboard navigatie" className="flex min-h-[52px] min-w-0 flex-1 items-center gap-2 rounded-3xl border bg-[#FFFDF7] p-1.5 shadow-sm" style={{ borderColor: STUDENT_DASHBOARD_COLORS.line }}>
+                <nav aria-label="Dashboard navigatie" className="flex min-h-[52px] min-w-0 flex-1 items-center gap-2 rounded-full border border-duck-ink/10 bg-white p-1.5 shadow-duck-soft">
                     {dashboardNavItems.map(item => (
                         <button
                             key={item.label}
                             type="button"
                             onClick={item.onClick}
-                            className={`inline-flex min-h-[44px] min-w-0 flex-1 items-center justify-center gap-2 rounded-2xl px-4 text-sm font-black transition-colors ${item.active ? 'bg-[#D7C95F] text-[#08283B]' : 'text-[#445865] hover:bg-[#FCF6EA]'}`}
+                            className={`inline-flex min-h-[44px] min-w-0 flex-1 items-center justify-center gap-2 rounded-full px-4 text-sm font-extrabold transition-colors ${item.active ? 'border border-duck-ink bg-duck-acid text-duck-ink' : 'text-duck-ink/65 hover:bg-duck-bgLight hover:text-duck-ink'}`}
                         >
                             {item.icon}
                             <span className="truncate">{item.label}</span>
@@ -666,12 +659,11 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                 <button
                     type="button"
                     onClick={() => setShowFeedbackModal(true)}
-                    className="inline-flex min-h-[52px] shrink-0 items-center gap-2 rounded-3xl border bg-[#FFFDF7] px-4 text-sm font-black text-[#08283B] shadow-sm transition-transform duration-200 hover:-translate-y-0.5"
-                    style={{ borderColor: STUDENT_DASHBOARD_COLORS.line }}
+                    className="inline-flex min-h-[52px] shrink-0 items-center gap-2 rounded-full border border-duck-ink/10 bg-white px-5 text-sm font-extrabold text-duck-ink shadow-duck-soft transition-transform duration-200 hover:-translate-y-0.5 motion-reduce:transition-none"
                     aria-label="Geef feedback aan de ontwikkelaar"
                     data-tutorial="student-feedback-btn"
                 >
-                    <MessageSquare size={17} className="text-[#99984D]" />
+                    <MessageSquare size={17} className="text-duck-ink" />
                     Feedback
                 </button>
             </section>
@@ -686,30 +678,29 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                 aria-expanded={showYearGroupMenu}
                                 aria-label="Kies digitale leerlijn"
                                 onClick={() => setShowYearGroupMenu(prev => !prev)}
-                                className={`flex min-h-[56px] w-full items-center gap-3 rounded-3xl border-2 px-4 text-left shadow-sm transition-all duration-200 hover:-translate-y-0.5 focus:outline-none focus:ring-4 sm:w-[304px] ${activeYearTheme.triggerBg} ${activeYearTheme.activeBorder} ${activeYearTheme.focusRing}`}
+                                className={`flex min-h-[56px] w-full items-center gap-3 rounded-3xl border-2 px-4 text-left shadow-duck-soft transition-all duration-200 hover:-translate-y-0.5 focus:outline-none focus:ring-4 motion-reduce:transition-none sm:w-[304px] ${activeYearTheme.triggerBg} ${activeYearTheme.activeBorder} ${activeYearTheme.focusRing}`}
                             >
                                 <span className={`flex size-10 shrink-0 items-center justify-center rounded-2xl ${activeYearTheme.badgeBg} ${activeYearTheme.badgeText}`}>
                                     <activeYearTheme.Icon size={16} />
                                 </span>
                                 <span className="min-w-0 flex-1">
-                                    <span className="flex items-center gap-2 text-xs font-semibold text-[#445865]">
+                                    <span className={`flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-[0.14em] ${activeYearTheme.activeText} opacity-80`}>
                                         <span className={`size-1.5 rounded-full ${activeYearTheme.accentDot}`} aria-hidden="true" />
                                         Leerlijn
                                     </span>
-                                    <span className={`block truncate text-sm font-black ${activeYearTheme.activeText}`}>{selectedYearGroupTitle}</span>
+                                    <span className={`block truncate text-sm font-extrabold ${activeYearTheme.activeText}`}>{selectedYearGroupTitle}</span>
                                 </span>
-                                <span className={`hidden rounded-full px-2 py-1 text-[11px] font-black sm:inline-flex ${activeYearTheme.badgeBg} ${activeYearTheme.badgeText}`}>
+                                <span className={`hidden rounded-full px-2.5 py-1 text-[11px] font-extrabold sm:inline-flex ${activeYearTheme.badgeBg} ${activeYearTheme.badgeText}`}>
                                     {selectedYearGroupSubtitle}
                                 </span>
-                                <ChevronRight size={16} className={`shrink-0 text-[#445865] transition-transform duration-200 ${showYearGroupMenu ? '-rotate-90' : 'rotate-90'}`} />
+                                <ChevronRight size={16} className={`shrink-0 transition-transform duration-200 ${activeYearTheme.activeText} ${showYearGroupMenu ? '-rotate-90' : 'rotate-90'}`} />
                             </button>
 
                             {showYearGroupMenu && (
                                 <div
                                     role="listbox"
                                     aria-label="Digitale leerlijnen"
-                                    className="absolute left-0 top-[calc(100%+0.5rem)] z-40 w-[min(92vw,320px)] rounded-3xl border bg-[#FFFDF7] p-2 shadow-xl"
-                                    style={{ borderColor: STUDENT_DASHBOARD_COLORS.line }}
+                                    className="absolute left-0 top-[calc(100%+0.5rem)] z-40 w-[min(92vw,320px)] rounded-[1.5rem] border border-duck-ink/10 bg-white p-2 shadow-duck-soft"
                                 >
                                     {availableYearGroups.map(({ year, config }) => {
                                         const isActive = year === currentYearGroup;
@@ -725,13 +716,13 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                                     setActiveWeek(1);
                                                     setShowYearGroupMenu(false);
                                                 }}
-                                                className={`flex min-h-[52px] w-full items-center gap-3 rounded-2xl border px-3 text-left text-sm transition-colors ${isActive ? `${optionTheme.triggerBg} ${optionTheme.activeBorder} ${optionTheme.activeText}` : 'border-transparent text-[#445865] hover:bg-[#FCF6EA]'}`}
+                                                className={`flex min-h-[52px] w-full items-center gap-3 rounded-2xl border px-3 text-left text-sm transition-colors ${isActive ? `${optionTheme.triggerBg} ${optionTheme.activeBorder} ${optionTheme.activeText}` : 'border-transparent text-duck-ink/65 hover:bg-duck-bgLight hover:text-duck-ink'}`}
                                             >
                                                 <span className={`flex size-8 shrink-0 items-center justify-center rounded-xl ${optionTheme.badgeBg} ${optionTheme.badgeText}`}>
                                                     <optionTheme.Icon size={14} />
                                                 </span>
                                                 <span className="min-w-0 flex-1">
-                                                    <span className="block truncate font-black">{config.title}</span>
+                                                    <span className="block truncate font-extrabold">{config.title}</span>
                                                     <span className="block text-xs font-semibold opacity-70">Leerjaar {year}</span>
                                                 </span>
                                                 {isActive && <CheckCircle2 size={16} className={optionTheme.activeText} />}
@@ -743,7 +734,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                         </div>
                     )}
 
-                    <div className="grid min-w-0 grid-cols-2 gap-2 rounded-3xl border bg-[#FFFDF7] p-1.5 shadow-sm sm:flex-1 sm:grid-cols-4" style={{ borderColor: STUDENT_DASHBOARD_COLORS.line }}>
+                    <div className="grid min-w-0 grid-cols-2 gap-2 rounded-full border border-duck-ink/10 bg-white p-1.5 shadow-duck-soft sm:flex-1 sm:grid-cols-4">
                         {Object.keys(yearConfig?.periods || {}).map(Number).sort((a, b) => a - b).map((period) => {
                             const pConf = yearConfig?.periods[period];
                             return (
@@ -751,7 +742,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                     key={period}
                                     onClick={() => setActiveWeek(period)}
                                     title={pConf?.title}
-                                    className={`min-h-[44px] min-w-0 rounded-2xl px-3 text-sm font-black transition-colors ${activeWeek === period ? 'bg-[#D7C95F] text-[#08283B]' : 'text-[#445865] hover:bg-[#FCF6EA]'}`}
+                                    className={`min-h-[44px] min-w-0 rounded-full px-3 text-sm font-extrabold transition-colors ${activeWeek === period ? 'border border-duck-ink bg-duck-acid text-duck-ink' : 'text-duck-ink/65 hover:bg-duck-bgLight hover:text-duck-ink'}`}
                                 >
                                     <span className="block truncate">{periodNaming} {period}</span>
                                 </button>
@@ -764,21 +755,20 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                     <button
                         type="button"
                         onClick={() => setLeerdoelenOpen(!leerdoelenOpen)}
-                        className="inline-flex min-h-[48px] items-center justify-between gap-3 rounded-3xl border bg-[#FFFDF7] px-4 text-left text-sm font-black text-[#08283B] shadow-sm transition-transform duration-200 hover:-translate-y-0.5"
-                        style={{ borderColor: STUDENT_DASHBOARD_COLORS.line }}
+                        className="inline-flex min-h-[48px] items-center justify-between gap-3 rounded-full border border-duck-ink/10 bg-white px-5 text-left text-sm font-extrabold text-duck-ink shadow-duck-soft transition-transform duration-200 hover:-translate-y-0.5 motion-reduce:transition-none"
                     >
-                        <span className="inline-flex items-center gap-2"><CheckCircle2 size={17} className="text-[#5F947D]" /> Leerdoelen</span>
-                        <ChevronRight size={16} className={`text-[#445865] transition-transform duration-200 ${leerdoelenOpen ? 'rotate-90' : ''}`} />
+                        <span className="inline-flex items-center gap-2"><CheckCircle2 size={17} className="text-duck-ink" /> Leerdoelen</span>
+                        <ChevronRight size={16} className={`text-duck-ink/65 transition-transform duration-200 ${leerdoelenOpen ? 'rotate-90' : ''}`} />
                     </button>
                 )}
             </section>
 
             {leerdoelenOpen && currentPeriodConfig && (
-                <section className="mb-6 rounded-3xl border bg-[#FFFDF7] p-5 shadow-sm" style={{ borderColor: STUDENT_DASHBOARD_COLORS.line }}>
+                <section className="mb-6 rounded-[1.5rem] border border-duck-ink/10 bg-white p-5 shadow-duck-soft">
                     <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
                         <div>
-                            <h2 className="text-lg font-black text-[#08283B] text-balance">Leerdoelen {periodNaming} {activeWeek}</h2>
-                            <p className="mt-2 max-w-3xl text-sm font-medium leading-relaxed text-[#445865] text-pretty">
+                            <h2 className="font-display text-lg text-balance text-duck-ink">Leerdoelen {periodNaming} {activeWeek}</h2>
+                            <p className="mt-2 max-w-3xl text-sm font-semibold leading-relaxed text-pretty text-duck-ink/65">
                                 {periodLeerdoel
                                     ? (stats?.vsoProfile && periodLeerdoel.descriptionVso ? periodLeerdoel.descriptionVso : periodLeerdoel.description)
                                     : currentPeriodConfig.subtitle}
@@ -786,7 +776,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                         </div>
                         <div className="flex flex-wrap gap-2">
                             {(stats?.vsoProfile && currentPeriodConfig.sloFocusVso ? currentPeriodConfig.sloFocusVso : currentPeriodConfig.sloFocus).map(code => (
-                                <span key={code} className={`rounded-xl border px-2.5 py-1 text-xs font-black ${getKerndoelBadgeClasses(code)}`}>
+                                <span key={code} className={`rounded-full border px-2.5 py-1 text-xs font-extrabold ${getKerndoelBadgeClasses(code)}`}>
                                     {code}
                                 </span>
                             ))}
@@ -796,13 +786,13 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
             )}
 
             {reviewMissions.length > 0 && !allReviewsDone && !canBypassMissionLocks && (
-                <section className="mb-6 flex items-center gap-3 rounded-3xl border bg-[#5F947D] px-5 py-4 shadow-sm" style={{ borderColor: STUDENT_DASHBOARD_COLORS.sage }}>
-                    <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-[#FFFDF7] text-[#0B453F]">
+                <section className="mb-6 flex items-center gap-3 rounded-[1.5rem] bg-duck-ink px-5 py-4 shadow-duck-soft">
+                    <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-duck-acid text-duck-ink">
                         <AlertTriangle size={18} />
                     </div>
                     <div className="flex-1">
-                        <p className="text-sm font-black text-white">Eerst de herhalingsopdrachten</p>
-                        <p className="text-xs font-semibold text-white/85">Voltooi {completedReviewCount}/{reviewMissions.length} herhalingen om de nieuwe missies vrij te spelen.</p>
+                        <p className="text-sm font-extrabold text-white">Eerst de herhalingsopdrachten</p>
+                        <p className="text-xs font-semibold text-white/70">Voltooi {completedReviewCount}/{reviewMissions.length} herhalingen om de nieuwe missies vrij te spelen.</p>
                     </div>
                 </section>
             )}
@@ -810,7 +800,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
     );
 
     return (
-        <div className="relative min-h-dvh w-full bg-[#FCF6EA] pb-safe font-['Outfit',system-ui,sans-serif] text-[#08283B] lg:h-dvh lg:overflow-hidden">
+        <div className="relative min-h-dvh w-full bg-duck-bg pb-safe font-sans text-duck-ink lg:h-dvh lg:overflow-hidden">
 
                 {/* Student Library Modal */}
                 {userUid && (
@@ -833,19 +823,19 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
 
                 {/* FOCUS MODE OVERLAY */}
                 {focusMode && (
-                    <div className="fixed inset-0 z-[200] bg-[#08283B]/95 backdrop-blur-md flex items-center justify-center p-6 text-center animate-in fade-in duration-500">
+                    <div className="fixed inset-0 z-[200] bg-duck-ink/95 backdrop-blur-md flex items-center justify-center p-6 text-center animate-in fade-in duration-500">
                         <div className="max-w-md">
-                            <div className="w-24 h-24 bg-[#D7C95F]/20 rounded-[2rem] flex items-center justify-center text-[#D7C95F] mx-auto mb-8 shadow-2xl shadow-[#0B453F]/50">
+                            <div className="w-24 h-24 bg-duck-acid rounded-[2rem] flex items-center justify-center text-duck-ink mx-auto mb-8 shadow-2xl shadow-black/40">
                                 <Lock size={48} />
                             </div>
-                            <h2 className="text-3xl font-black text-white mb-4 uppercase tracking-tight">Focus Modus Actief</h2>
-                            <p className="text-[#E7D8BD] font-medium text-lg leading-relaxed">
+                            <h2 className="font-display text-4xl text-white mb-4">Focus modus actief</h2>
+                            <p className="text-white/70 font-semibold text-lg leading-relaxed">
                                 De docent vraagt nu je aandacht. <br />
                                 Kijk naar het bord en luister naar de instructies.
                             </p>
                             <div className="mt-12 flex gap-2 justify-center">
                                 {[1, 2, 3].map(i => (
-                                    <div key={i} className="w-2 h-2 bg-[#D7C95F] rounded-full animate-pulse" style={{ animationDelay: `${i * 0.2}s` }}></div>
+                                    <div key={i} className="w-2 h-2 bg-duck-acid rounded-full animate-pulse motion-reduce:animate-none" style={{ animationDelay: `${i * 0.2}s` }}></div>
                                 ))}
                             </div>
                         </div>
@@ -856,32 +846,32 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                 {showXPPopup && (
                     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
                         <div
-                            className="absolute inset-0 bg-[#08283B]/40 backdrop-blur-sm transition-opacity"
+                            className="absolute inset-0 bg-duck-ink/40 backdrop-blur-[2px] transition-opacity"
                             onClick={() => setShowXPPopup(false)}
                         />
-                        <div className="bg-[#FFFDF7] rounded-[2.5rem] p-8 shadow-2xl border border-[#E7D8BD] w-full max-w-sm relative z-10 animate-in zoom-in duration-300">
+                        <div className="bg-white rounded-[1.5rem] p-8 shadow-duck-soft border border-duck-ink/10 w-full max-w-sm relative z-10 animate-in zoom-in duration-300 motion-reduce:animate-none">
                             <div className="flex flex-col items-center text-center">
-                                <div className="bg-[#D7C95F] w-20 h-20 rounded-3xl flex items-center justify-center text-[#08283B] shadow-xl mb-6 transform rotate-3">
+                                <div className="bg-duck-acid border border-duck-ink w-20 h-20 rounded-3xl flex items-center justify-center text-duck-ink shadow-lg mb-6 transform rotate-3">
                                     <Trophy size={40} />
                                 </div>
-                                <h3 className="text-2xl font-black text-[#08283B] mb-1 uppercase tracking-tight">Level {level}</h3>
-                                <p className="text-[#445865] font-bold uppercase tracking-widest text-[10px] mb-6">Jouw Voortgang</p>
+                                <h3 className="font-display text-3xl text-duck-ink mb-1">Level {level}</h3>
+                                <p className="text-duck-ink/65 font-extrabold uppercase tracking-[0.16em] text-[10px] mb-6">Jouw voortgang</p>
 
-                                <div className="w-full bg-[#F3E4CB] h-4 rounded-full overflow-hidden mb-4 p-1 border border-[#E7D8BD]">
+                                <div className="w-full bg-duck-ink/10 h-4 rounded-full overflow-hidden mb-4 p-1">
                                     <div
-                                        className="h-full bg-[#D97848] rounded-full transition-all duration-1000 shadow-[0_0_15px_rgba(217,120,72,0.4)]"
+                                        className="h-full bg-duck-acid ring-1 ring-duck-ink/15 rounded-full transition-all duration-1000 motion-reduce:transition-none"
                                         style={{ width: `${progressPercentage}%` }}
                                     />
                                 </div>
 
-                                <div className="flex justify-between w-full text-sm font-black text-[#08283B] mb-8 lowercase">
+                                <div className="flex justify-between w-full text-sm font-extrabold text-duck-ink mb-8 lowercase">
                                     <span>{xp} xp</span>
-                                    <span className="text-[#445865]">nog {xpToNext} xp voor lvl {level + 1}</span>
+                                    <span className="text-duck-ink/65">nog {xpToNext} xp voor lvl {level + 1}</span>
                                 </div>
 
                                 <button
                                     onClick={() => setShowXPPopup(false)}
-                                    className="w-full py-4 bg-[#08283B] text-white rounded-2xl font-bold uppercase tracking-widest hover:bg-[#08283B] transition-all active:scale-95 shadow-lg"
+                                    className="w-full py-4 bg-duck-ink text-duck-acid rounded-full font-extrabold uppercase tracking-[0.12em] transition-transform duration-300 hover:-translate-y-0.5 active:translate-y-0 motion-reduce:transition-none"
                                 >
                                     Begrepen!
                                 </button>
@@ -894,25 +884,19 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                 {showGameNotification && (
                     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
                         <div
-                            className="absolute inset-0 bg-[#08283B]/50 backdrop-blur-sm transition-opacity"
+                            className="absolute inset-0 bg-duck-ink/40 backdrop-blur-[2px] transition-opacity"
                             onClick={() => setShowGameNotification(false)}
                         />
-                        <div
-                            className="rounded-2xl p-8 shadow-2xl w-full max-w-sm relative z-10 animate-in zoom-in duration-300"
-                            style={{
-                                backgroundColor: STUDENT_DASHBOARD_COLORS.paper,
-                                border: `1px solid ${STUDENT_DASHBOARD_COLORS.line}`,
-                            }}
-                        >
+                        <div className="rounded-[1.5rem] p-8 shadow-duck-soft border border-duck-ink/10 bg-white w-full max-w-sm relative z-10 animate-in zoom-in duration-300 motion-reduce:animate-none">
                             <div className="flex flex-col items-center text-center">
-                                <div className="w-20 h-20 rounded-2xl flex items-center justify-center text-white shadow-lg mb-5" style={{ backgroundColor: STUDENT_DASHBOARD_COLORS.coral }}>
+                                <div className="w-20 h-20 rounded-2xl flex items-center justify-center bg-duck-ink text-duck-acid shadow-lg mb-5">
                                     <Gamepad2 size={40} />
                                 </div>
-                                <h3 className="text-xl font-black mb-2" style={{ color: STUDENT_DASHBOARD_COLORS.ink }}>Game geactiveerd!</h3>
-                                <p className="text-sm font-medium mb-1" style={{ color: STUDENT_DASHBOARD_COLORS.muted }}>
+                                <h3 className="font-display text-2xl mb-2 text-duck-ink">Game geactiveerd!</h3>
+                                <p className="text-sm font-semibold mb-1 text-duck-ink/65">
                                     De docent heeft {activatedGameName || 'een game'} geactiveerd!
                                 </p>
-                                <p className="text-xs mb-6" style={{ color: STUDENT_DASHBOARD_COLORS.muted }}>
+                                <p className="text-xs mb-6 text-duck-ink/65">
                                     Je kunt nu meedoen aan de game-sessie met je klasgenoten.
                                 </p>
 
@@ -922,19 +906,14 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                             setShowGameNotification(false);
                                             if (onOpenGames) onOpenGames();
                                         }}
-                                        className="w-full py-3.5 rounded-full font-semibold text-sm hover:shadow-lg hover:scale-[1.02] transition-all active:scale-95 flex items-center justify-center gap-2"
-                                        style={{
-                                            backgroundColor: STUDENT_DASHBOARD_COLORS.gold,
-                                            color: STUDENT_DASHBOARD_COLORS.ink,
-                                        }}
+                                        className="w-full py-3.5 rounded-full border border-duck-ink bg-duck-acid text-duck-ink font-extrabold text-sm transition-transform duration-300 hover:-translate-y-0.5 active:translate-y-0 motion-reduce:transition-none flex items-center justify-center gap-2"
                                     >
                                         <Play size={16} fill="currentColor" />
-                                        Naar Games
+                                        Naar games
                                     </button>
                                     <button
                                         onClick={() => setShowGameNotification(false)}
-                                        className="w-full py-2.5 font-medium text-sm transition-colors"
-                                        style={{ color: STUDENT_DASHBOARD_COLORS.muted }}
+                                        className="w-full py-2.5 font-semibold text-sm transition-colors text-duck-ink/65 hover:text-duck-ink"
                                     >
                                         Later, ik ben nog bezig
                                     </button>
@@ -948,22 +927,22 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                 {dashboardModal && (
                     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="dashboard-action-title">
                         <div
-                            className="absolute inset-0 bg-[#08283B]/50 backdrop-blur-sm transition-opacity"
+                            className="absolute inset-0 bg-duck-ink/40 backdrop-blur-[2px] transition-opacity"
                             onClick={() => setDashboardModal(null)}
                         />
-                        <div className="relative z-10 w-full max-w-md rounded-[2rem] border bg-[#FFFDF7] p-7 shadow-2xl animate-in zoom-in duration-200" style={{ borderColor: STUDENT_DASHBOARD_COLORS.line }}>
+                        <div className="relative z-10 w-full max-w-md rounded-[1.5rem] border border-duck-ink/10 bg-white p-7 shadow-duck-soft animate-in zoom-in duration-200 motion-reduce:animate-none">
                             {dashboardModal === 'notifications' && (
                                 <>
                                     <div className="mb-5 flex items-center gap-3">
-                                        <div className="flex size-12 items-center justify-center rounded-2xl bg-[#D7C95F]/25 text-[#08283B]">
+                                        <div className="flex size-12 items-center justify-center rounded-2xl border border-duck-ink bg-duck-acid text-duck-ink">
                                             <Bell size={22} />
                                         </div>
                                         <div>
-                                            <h3 id="dashboard-action-title" className="text-xl font-black text-[#08283B]">Geen nieuwe meldingen</h3>
-                                            <p className="text-sm font-medium text-[#445865]">Je bent helemaal bij.</p>
+                                            <h3 id="dashboard-action-title" className="font-display text-2xl text-duck-ink">Geen nieuwe meldingen</h3>
+                                            <p className="text-sm font-semibold text-duck-ink/65">Je bent helemaal bij.</p>
                                         </div>
                                     </div>
-                                    <p className="text-sm leading-relaxed text-[#445865]">
+                                    <p className="text-sm leading-relaxed text-duck-ink/65">
                                         Als je docent een game, opdracht of bericht klaarzet, zie je dat hier terug.
                                     </p>
                                 </>
@@ -971,15 +950,15 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                             {dashboardModal === 'privacy' && (
                                 <>
                                     <div className="mb-5 flex items-center gap-3">
-                                        <div className="flex size-12 items-center justify-center rounded-2xl bg-[#5F947D]/15 text-[#0B453F]">
+                                        <div className="flex size-12 items-center justify-center rounded-2xl bg-duck-ink text-duck-acid">
                                             <Lock size={22} />
                                         </div>
                                         <div>
-                                            <h3 id="dashboard-action-title" className="text-xl font-black text-[#08283B]">Veiligheid & privacy</h3>
-                                            <p className="text-sm font-medium text-[#445865]">Jij houdt controle over je data.</p>
+                                            <h3 id="dashboard-action-title" className="font-display text-2xl text-duck-ink">Veiligheid & privacy</h3>
+                                            <p className="text-sm font-semibold text-duck-ink/65">Jij houdt controle over je data.</p>
                                         </div>
                                     </div>
-                                    <div className="space-y-3 text-sm leading-relaxed text-[#445865]">
+                                    <div className="space-y-3 text-sm leading-relaxed text-duck-ink/65">
                                         <p>DGSkills gebruikt je voortgang alleen om jou en je docent te helpen bij de opdrachten.</p>
                                         <p>We tonen geen persoonlijke gegevens aan andere leerlingen en delen je werk niet zonder toestemming.</p>
                                     </div>
@@ -988,7 +967,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                             <button
                                 type="button"
                                 onClick={() => setDashboardModal(null)}
-                                className="mt-7 inline-flex min-h-[44px] w-full items-center justify-center rounded-2xl bg-[#08283B] px-5 text-sm font-black text-white transition-colors hover:bg-[#0B453F]"
+                                className="mt-7 inline-flex min-h-[44px] w-full items-center justify-center rounded-full bg-duck-ink px-5 text-sm font-extrabold text-duck-acid transition-transform duration-300 hover:-translate-y-0.5 active:translate-y-0 motion-reduce:transition-none"
                             >
                                 Begrepen
                             </button>
@@ -1000,23 +979,23 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                 {showFeedbackModal && (
                     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
                         <div
-                            className="absolute inset-0 bg-[#08283B]/60 backdrop-blur-sm transition-opacity"
+                            className="absolute inset-0 bg-duck-ink/40 backdrop-blur-[2px] transition-opacity"
                             onClick={() => { if (!feedbackSubmitting && !feedbackSuccess) { setShowFeedbackModal(false); setFeedbackError(null); } }}
                         />
-                        <div className="bg-[#FFFDF7] rounded-[2rem] p-8 shadow-2xl border border-[#E7D8BD] w-full max-w-md relative z-10 animate-in zoom-in duration-300">
+                        <div className="bg-white rounded-[1.5rem] p-8 shadow-duck-soft border border-duck-ink/10 w-full max-w-md relative z-10 animate-in zoom-in duration-300 motion-reduce:animate-none">
                             {feedbackSuccess ? (
                                 <div className="flex flex-col items-center text-center py-8">
-                                    <div className="w-24 h-24 bg-[#5F947D]/15 rounded-full flex items-center justify-center mb-6 animate-in zoom-in duration-500">
+                                    <div className="w-24 h-24 bg-duck-acid border border-duck-ink rounded-full flex items-center justify-center mb-6 animate-in zoom-in duration-500 motion-reduce:animate-none">
                                         <span className="text-5xl">✅</span>
                                     </div>
-                                    <h3 className="text-2xl font-black text-[#08283B] mb-3">Bedankt!</h3>
-                                    <p className="text-[#445865] text-sm mb-6">Je feedback is succesvol verzonden naar de ontwikkelaar.</p>
+                                    <h3 className="font-display text-3xl text-duck-ink mb-3">Bedankt!</h3>
+                                    <p className="text-duck-ink/65 text-sm mb-6">Je feedback is succesvol verzonden naar de ontwikkelaar.</p>
                                     <button
                                         onClick={() => {
                                             setShowFeedbackModal(false);
                                             setFeedbackSuccess(false);
                                         }}
-                                        className="px-8 py-3 bg-[#5F947D] hover:bg-[#0B453F] text-white rounded-xl font-bold text-sm transition-colors"
+                                        className="px-8 py-3 bg-duck-ink text-duck-acid rounded-full font-extrabold text-sm transition-transform duration-300 hover:-translate-y-0.5 active:translate-y-0 motion-reduce:transition-none"
                                     >
                                         Sluiten
                                     </button>
@@ -1024,12 +1003,12 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                             ) : (
                                 <>
                                     <div className="flex items-center gap-3 mb-6">
-                                        <div className="w-12 h-12 bg-[#D7C95F]/25 rounded-xl flex items-center justify-center">
-                                            <MessageSquare size={24} className="text-[#08283B]" />
+                                        <div className="w-12 h-12 bg-duck-acid border border-duck-ink rounded-xl flex items-center justify-center">
+                                            <MessageSquare size={24} className="text-duck-ink" />
                                         </div>
                                         <div>
-                                            <h3 className="text-lg font-black text-[#08283B]">Feedback Geven</h3>
-                                            <p className="text-xs text-[#445865]">Wat kan er beter aan de website?</p>
+                                            <h3 className="font-display text-2xl text-duck-ink">Feedback geven</h3>
+                                            <p className="text-xs text-duck-ink/65">Wat kan er beter aan de website?</p>
                                         </div>
                                     </div>
 
@@ -1040,16 +1019,16 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                             if (feedbackError) setFeedbackError(null);
                                         }}
                                         placeholder="Beschrijf hier wat je graag verbeterd zou zien, of deel een bug die je hebt gevonden..."
-                                        className="w-full h-32 p-4 bg-[#FCF6EA] border border-[#E7D8BD] rounded-xl text-sm text-[#445865] resize-none focus:outline-none focus:ring-2 focus:ring-[#D97848] focus:border-[#D97848]"
+                                        className="w-full h-32 p-4 bg-white border-2 border-duck-ink/15 rounded-xl text-sm font-semibold text-duck-ink resize-none outline-none focus:border-duck-ink placeholder:text-duck-ink/40"
                                         maxLength={500}
                                         disabled={feedbackSubmitting}
                                     />
                                     <div className="flex justify-between items-center mt-2 mb-4">
-                                        <span className="text-[10px] text-[#445865]">{feedbackText.length}/500 tekens</span>
+                                        <span className="text-[10px] text-duck-ink/65">{feedbackText.length}/500 tekens</span>
                                     </div>
 
                                     {feedbackError && (
-                                        <div className="mb-4 p-3 bg-[#D97848]/10 border border-[#D97848]/30 rounded-xl text-[#D97848] text-sm flex items-start gap-2">
+                                        <div className="mb-4 p-3 bg-duck-error/10 border border-duck-error/30 rounded-xl text-duck-error text-sm flex items-start gap-2">
                                             <AlertTriangle size={16} className="mt-0.5 shrink-0" />
                                             <span>{feedbackError}</span>
                                         </div>
@@ -1059,17 +1038,17 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                         <button
                                             onClick={() => setShowFeedbackModal(false)}
                                             disabled={feedbackSubmitting}
-                                            className="flex-1 py-3 text-[#445865] font-bold text-sm hover:bg-[#F3E4CB] rounded-xl transition-colors disabled:opacity-50"
+                                            className="flex-1 py-3 text-duck-ink/65 font-extrabold text-sm hover:bg-duck-bgLight hover:text-duck-ink rounded-full transition-colors disabled:opacity-50"
                                         >
                                             Annuleren
                                         </button>
                                         <button
                                             onClick={handleSubmitFeedback}
                                             disabled={!feedbackText.trim() || feedbackSubmitting}
-                                            className="flex-1 py-3 bg-[#D97848] hover:bg-[#0B453F] text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                            className="flex-1 py-3 border border-duck-ink bg-duck-acid text-duck-ink rounded-full font-extrabold text-sm flex items-center justify-center gap-2 transition-all duration-300 hover:-translate-y-0.5 hover:bg-duck-ink hover:text-duck-acid disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:bg-duck-acid disabled:hover:text-duck-ink motion-reduce:transition-none"
                                         >
                                             {feedbackSubmitting ? (
-                                                <Loader2 size={16} className="animate-spin" />
+                                                <Loader2 size={16} className="animate-spin motion-reduce:animate-none" />
                                             ) : (
                                                 <>
                                                     <Send size={16} />
@@ -1086,34 +1065,34 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                 <div className="lg:h-dvh lg:overflow-hidden">
                     <div ref={dashboardScrollRef} className="min-w-0 lg:h-dvh lg:overflow-y-auto lg:overscroll-contain">
                 {/* HEADER */}
-                <header className="sticky top-0 z-50 flex items-center justify-between border-b bg-[#FFFDF7]/90 px-4 py-3 sm:px-8 sm:py-5 lg:hidden" style={{ borderColor: STUDENT_DASHBOARD_COLORS.line }}>
+                <header className="sticky top-0 z-50 flex items-center justify-between border-b border-duck-ink/10 bg-white/90 backdrop-blur-md px-4 py-3 sm:px-8 sm:py-5 lg:hidden">
                     <button
                         onClick={onGoHome}
                         aria-label="Ga naar de startpagina"
                         className="flex min-h-[44px] min-w-[44px] items-center gap-3 hover:opacity-80 transition-opacity text-left bg-transparent border-none p-1 cursor-pointer focus:outline-none"
                     >
-                        <img src="/assets/brand/dgskills-beaver-laptop.webp" alt="DGSkills bever werkt op laptop" className="w-9 h-9 object-contain" width={36} height={36} decoding="async" />
-                        <span className="text-[15px] font-semibold tracking-tight text-[#08283B] hidden sm:inline">DGSkills</span>
+                        <DuckMark className="size-9" />
+                        <span className="text-[15px] font-extrabold tracking-tight text-duck-ink hidden sm:inline">DGSkills</span>
                     </button>
 
                     {/* FEEDBACK BUTTON */}
                     <button
                         onClick={() => setShowFeedbackModal(true)}
-                        className="hidden sm:flex items-center gap-2 px-3 py-2 bg-[#D7C95F]/20 hover:bg-[#D7C95F]/30 text-[#08283B] rounded-xl border border-[#E7D8BD] transition-all hover:scale-105 active:scale-95"
+                        className="hidden sm:flex items-center gap-2 px-4 py-2 bg-duck-acid hover:bg-duck-ink hover:text-duck-acid text-duck-ink rounded-full border border-duck-ink transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 motion-reduce:transition-none"
                         aria-label="Geef feedback aan de ontwikkelaar"
                         data-tutorial="student-feedback-btn"
                     >
                         <MessageSquare size={16} />
-                        <span className="text-xs font-bold">Feedback</span>
+                        <span className="text-xs font-extrabold">Feedback</span>
                     </button>
 
                     <div className="flex items-center gap-4">
                         {/* DAILY STREAK BADGE */}
                         {dailyStreak > 0 && (
-                            <div className={`flex items-center gap-1 px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs sm:text-sm font-bold
-                                ${dailyStreak >= 7 ? 'bg-[#D97848] text-white animate-pulse shadow-lg shadow-[#D97848]/30' :
-                                  dailyStreak >= 3 ? 'bg-[#D97848]/10 text-[#D97848]' :
-                                  'bg-[#F3E4CB] text-[#445865]'}`}>
+                            <div className={`flex items-center gap-1 px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs sm:text-sm font-extrabold
+                                ${dailyStreak >= 7 ? 'bg-duck-ink text-duck-acid' :
+                                  dailyStreak >= 3 ? 'bg-duck-acid text-duck-ink border border-duck-ink' :
+                                  'bg-duck-bgLight text-duck-ink/65'}`}>
                                 <span role="img" aria-label="streak">&#x1F525;</span>
                                 <span>{dailyStreak}</span>
                                 <span className="hidden sm:inline">{dailyStreak === 1 ? 'dag' : 'dagen'}</span>
@@ -1125,13 +1104,13 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                             <button
                                 onClick={() => setShowXPPopup(true)}
                                 aria-label={`Level ${level}, ${xp} XP - Klik voor details`}
-                                className="flex min-h-[44px] flex-col items-end justify-center gap-1.5 hover:opacity-80 transition-opacity p-2 rounded-2xl hover:bg-[#FCF6EA] border border-transparent hover:border-[#E7D8BD] group"
+                                className="flex min-h-[44px] flex-col items-end justify-center gap-1.5 hover:opacity-80 transition-opacity p-2 rounded-2xl hover:bg-duck-bgLight border border-transparent hover:border-duck-ink/10 group"
                             >
                                 <div className="flex items-center gap-3">
-                                    <span className="text-[10px] font-bold text-[#445865] uppercase tracking-widest group-hover:text-[#0B453F] transition-colors">Lvl {level}</span>
-                                    <div className="w-20 sm:w-32 h-2.5 bg-[#F3E4CB] rounded-full overflow-hidden border border-[#E7D8BD] p-[1px]">
+                                    <span className="text-[10px] font-extrabold text-duck-ink/65 uppercase tracking-[0.16em] group-hover:text-duck-ink transition-colors">Lvl {level}</span>
+                                    <div className="w-20 sm:w-32 h-2.5 bg-duck-ink/10 rounded-full overflow-hidden p-[1px]">
                                         <div
-                                            className="h-full bg-[#D97848] rounded-full transition-all duration-700 shadow-[0_0_8px_rgba(217,120,72,0.3)]"
+                                            className="h-full bg-duck-acid ring-1 ring-duck-ink/15 rounded-full transition-all duration-700 motion-reduce:transition-none"
                                             style={{ width: `${progressPercentage}%` }}
                                         />
                                     </div>
@@ -1141,21 +1120,21 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
 
                         <div className="flex items-center gap-4 relative">
                             <div className="text-right hidden sm:block">
-                                <div className="text-[9px] text-[#445865] font-bold uppercase tracking-tighter leading-none text-[#0B453F]">Mijn Profiel</div>
-                                <div className="font-black text-[#08283B] text-sm tracking-tight">{userDisplayName || 'Gast'}</div>
+                                <div className="text-[9px] text-duck-ink/65 font-extrabold uppercase tracking-[0.14em] leading-none">Mijn profiel</div>
+                                <div className="font-extrabold text-duck-ink text-sm tracking-tight">{userDisplayName || 'Gast'}</div>
                             </div>
                             <button
                                 onClick={() => setShowProfileMenu(!showProfileMenu)}
                                 aria-label="Profiel menu openen"
                                 aria-expanded={showProfileMenu}
                                 aria-haspopup="true"
-                                className="w-12 h-12 bg-[#FCF6EA] rounded-2xl border border-[#E7D8BD] flex items-center justify-center text-[#0B453F] font-bold text-sm shadow-sm transition-all hover:scale-105 hover:bg-[#0B453F] hover:text-white cursor-pointer overflow-hidden p-0"
+                                className="w-12 h-12 bg-duck-bgLight rounded-2xl border border-duck-ink/10 flex items-center justify-center text-duck-ink font-extrabold text-sm shadow-duck-soft transition-all duration-300 hover:-translate-y-0.5 hover:border-duck-ink cursor-pointer overflow-hidden p-0"
                                 data-tutorial="student-profile-btn"
                             >
                                 {/* Show Avatar Headshot if available, otherwise fallback */}
                                 <div className="w-full h-full">
                                     {isVisualCapture ? (
-                                        <div className="flex size-full items-center justify-center bg-[#FCF6EA] text-[#0B453F]">
+                                        <div className="flex size-full items-center justify-center bg-duck-bgLight text-duck-ink">
                                             {profileInitial}
                                         </div>
                                     ) : (
@@ -1175,10 +1154,10 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                         className="fixed inset-0 z-40"
                                         onClick={() => setShowProfileMenu(false)}
                                     />
-                                    <div className="absolute right-0 sm:right-0 top-14 z-50 bg-[#FFFDF7] rounded-2xl shadow-2xl border border-[#E7D8BD] overflow-hidden min-w-[200px] max-w-[calc(100vw-2rem)] animate-in fade-in slide-in-from-top-2 duration-200">
-                                        <div className="p-3 border-b border-[#E7D8BD] bg-[#FCF6EA]">
-                                            <div className="font-bold text-[#08283B] text-sm">{userDisplayName || 'Gast'}</div>
-                                            <div className="text-[10px] text-[#445865] font-medium">Leerling Account</div>
+                                    <div className="absolute right-0 sm:right-0 top-14 z-50 bg-white rounded-[1.5rem] shadow-duck-soft border border-duck-ink/10 overflow-hidden min-w-[200px] max-w-[calc(100vw-2rem)] animate-in fade-in slide-in-from-top-2 duration-200 motion-reduce:animate-none">
+                                        <div className="p-3 border-b border-duck-ink/10 bg-duck-bgLight">
+                                            <div className="font-extrabold text-duck-ink text-sm">{userDisplayName || 'Gast'}</div>
+                                            <div className="text-[10px] text-duck-ink/65 font-semibold">Leerling-account</div>
                                         </div>
                                         <div className="p-2">
                                             <button
@@ -1186,11 +1165,11 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                                     setShowProfileMenu(false);
                                                     onOpenProfile();
                                                 }}
-                                                className="w-full flex items-center gap-3 px-4 py-3 min-h-[48px] rounded-xl text-left hover:bg-[#FCF6EA] transition-colors group"
+                                                className="w-full flex items-center gap-3 px-4 py-3 min-h-[48px] rounded-xl text-left hover:bg-duck-bgLight transition-colors group"
                                                 data-tutorial="student-avatar-btn"
                                             >
-                                                <User size={18} className="text-[#0B453F]" />
-                                                <span className="font-bold text-[#445865] text-sm group-hover:text-[#0B453F]">Avatar Aanpassen</span>
+                                                <User size={18} className="text-duck-ink" />
+                                                <span className="font-extrabold text-duck-ink/65 text-sm group-hover:text-duck-ink">Avatar aanpassen</span>
                                             </button>
                                             {/* Trofeeënhal Button */}
                                             <button
@@ -1198,10 +1177,10 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                                     setShowProfileMenu(false);
                                                     onOpenProfile('trophies');
                                                 }}
-                                                className="w-full flex items-center gap-3 px-4 py-3 min-h-[48px] rounded-xl text-left hover:bg-[#D7C95F]/15 transition-colors group"
+                                                className="w-full flex items-center gap-3 px-4 py-3 min-h-[48px] rounded-xl text-left hover:bg-duck-bgLight transition-colors group"
                                             >
-                                                <Trophy size={18} className="text-[#D7C95F]" />
-                                                <span className="font-bold text-[#445865] text-sm group-hover:text-[#08283B]">Trofeeënhal</span>
+                                                <Trophy size={18} className="text-duck-ink" />
+                                                <span className="font-extrabold text-duck-ink/65 text-sm group-hover:text-duck-ink">Trofeeënhal</span>
                                             </button>
                                             {/* Bibliotheek Button */}
                                             <button
@@ -1209,10 +1188,10 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                                     setShowProfileMenu(false);
                                                     setShowLibrary(true);
                                                 }}
-                                                className="w-full flex items-center gap-3 px-4 py-3 min-h-[48px] rounded-xl text-left hover:bg-[#5F947D]/10 transition-colors group"
+                                                className="w-full flex items-center gap-3 px-4 py-3 min-h-[48px] rounded-xl text-left hover:bg-duck-bgLight transition-colors group"
                                             >
-                                                <BookOpen size={18} className="text-[#5F947D]" />
-                                                <span className="font-bold text-[#445865] text-sm group-hover:text-[#0B453F]">Bibliotheek</span>
+                                                <BookOpen size={18} className="text-duck-ink" />
+                                                <span className="font-extrabold text-duck-ink/65 text-sm group-hover:text-duck-ink">Bibliotheek</span>
                                             </button>
                                             {/* Games Button in Profile Menu */}
                                             <button
@@ -1224,15 +1203,15 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                                 }}
                                                 disabled={!gamesEnabled}
                                                 className={`w-full flex items-center gap-3 px-4 py-3 min-h-[48px] rounded-xl text-left transition-colors group ${gamesEnabled
-                                                    ? 'hover:bg-[#5F947D]/10 cursor-pointer'
+                                                    ? 'hover:bg-duck-bgLight cursor-pointer'
                                                     : 'opacity-50 cursor-not-allowed'
                                                     }`}
                                             >
-                                                <Gamepad2 size={18} className={gamesEnabled ? 'text-[#5F947D]' : 'text-[#445865]'} />
+                                                <Gamepad2 size={18} className="text-duck-ink" />
                                                 <div className="flex flex-col">
-                                                    <span className={`font-bold text-sm ${gamesEnabled ? 'text-[#445865] group-hover:text-[#0B453F]' : 'text-[#445865]'}`}>Games</span>
+                                                    <span className={`font-extrabold text-sm ${gamesEnabled ? 'text-duck-ink/65 group-hover:text-duck-ink' : 'text-duck-ink/65'}`}>Games</span>
                                                     {!gamesEnabled && (
-                                                        <span className="text-[9px] text-[#445865]">Wacht op activatie van de docent</span>
+                                                        <span className="text-[9px] text-duck-ink/65">Wacht op activatie van de docent</span>
                                                     )}
                                                 </div>
                                             </button>
@@ -1243,10 +1222,10 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                                         setShowProfileMenu(false);
                                                         onLogout();
                                                     }}
-                                                    className="w-full flex items-center gap-3 px-4 py-3 min-h-[48px] rounded-xl text-left hover:bg-[#D97848]/10 transition-colors group"
+                                                    className="w-full flex items-center gap-3 px-4 py-3 min-h-[48px] rounded-xl text-left hover:bg-duck-bgLight transition-colors group"
                                                 >
-                                                    <LogOut size={18} className="text-[#D97848]" />
-                                                    <span className="font-bold text-[#445865] text-sm group-hover:text-[#D97848]">Uitloggen</span>
+                                                    <LogOut size={18} className="text-duck-ink" />
+                                                    <span className="font-extrabold text-duck-ink/65 text-sm group-hover:text-duck-ink">Uitloggen</span>
                                                 </button>
                                             )}
                                         </div>
@@ -1289,8 +1268,8 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
 
                     {reviewMissions.length > 0 && (
                         <section id="review-missions-container" className="mb-6" data-tutorial="student-review-missions">
-                            <h2 className="mb-3 flex items-center gap-2 text-lg font-black text-[#08283B] text-balance">
-                                <RotateCcw size={18} className="text-[#99984D]" /> Herhaling &amp; basics
+                            <h2 className="mb-3 flex items-center gap-2 font-display text-xl text-balance text-duck-ink">
+                                <RotateCcw size={18} className="text-duck-ink" /> Herhaling &amp; basics
                             </h2>
                             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
                                 {reviewMissions.map((mission, index) => (
@@ -1316,13 +1295,12 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
 
                     <section
                         id="mission-grid-container"
-                        className="relative mb-6 overflow-hidden rounded-[2rem] border p-4 shadow-sm sm:p-6"
-                        style={{ backgroundColor: STUDENT_DASHBOARD_COLORS.creamDeep, borderColor: STUDENT_DASHBOARD_COLORS.line }}
+                        className="relative mb-6 overflow-hidden rounded-[1.5rem] border border-duck-ink/10 bg-duck-bgLight p-4 shadow-duck-soft sm:p-6"
                         data-tutorial="student-main-missions"
                     >
                         <div className="mb-5">
-                            <h2 className="text-xl font-black leading-tight text-[#08283B] text-balance md:text-2xl">Mijn projecten</h2>
-                            <p className="mt-2 text-sm font-medium text-[#445865] text-pretty">Echte DGSkills-missies met screenshots, badges en portfolio-bewijs.</p>
+                            <h2 className="font-display text-2xl leading-tight text-balance text-duck-ink md:text-3xl">Mijn projecten</h2>
+                            <p className="mt-2 text-sm font-semibold text-pretty text-duck-ink/65">Echte DGSkills-missies met screenshots, badges en portfolio-bewijs.</p>
                         </div>
 
                         {projectMissions.length > 0 ? (
@@ -1353,8 +1331,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                             type="button"
                                             onClick={() => setShowAllProjects(prev => !prev)}
                                             aria-expanded={showAllProjects}
-                                            className="inline-flex min-h-[44px] items-center gap-2 rounded-full border bg-[#FFFDF7] px-5 text-sm font-black text-[#08283B] transition-transform duration-200 hover:-translate-y-0.5"
-                                            style={{ borderColor: STUDENT_DASHBOARD_COLORS.line }}
+                                            className="inline-flex min-h-[44px] items-center gap-2 rounded-full border border-duck-ink/20 bg-white px-5 text-sm font-extrabold text-duck-ink transition-all duration-300 hover:-translate-y-0.5 hover:border-duck-ink motion-reduce:transition-none"
                                         >
                                             {showAllProjects
                                                 ? <>Toon minder <ChevronUp size={16} /></>
@@ -1364,17 +1341,10 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                 )}
                             </>
                         ) : (
-                            <div className="flex flex-col items-center justify-center rounded-3xl border border-dashed bg-[#FFFDF7] py-16 text-center" style={{ borderColor: STUDENT_DASHBOARD_COLORS.line }}>
-                                <img
-                                    src="/assets/storytelling/beaver-storyteller.webp"
-                                    alt=""
-                                    aria-hidden="true"
-                                    className="mb-4 h-16 w-16 object-contain"
-                                    loading="lazy"
-                                    decoding="async"
-                                />
-                                <p className="font-black text-[#08283B]">Nieuwe missies worden voorbereid...</p>
-                                <p className="mt-1 text-sm text-[#445865]">Je docent opent binnenkort nieuwe projecten.</p>
+                            <div className="flex flex-col items-center justify-center rounded-[1.5rem] border border-dashed border-duck-ink/20 bg-white py-16 text-center">
+                                <DuckMark className="mb-4 size-16" />
+                                <p className="font-display text-xl text-duck-ink">Nieuwe missies worden voorbereid...</p>
+                                <p className="mt-1 text-sm text-duck-ink/65">Je docent opent binnenkort nieuwe projecten.</p>
                             </div>
                         )}
                     </section>
@@ -1391,44 +1361,46 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                     {selectedMissionInfo && (
                         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
                             <div
-                                className="absolute inset-0 bg-[#08283B]/60 backdrop-blur-sm transition-opacity"
+                                className="absolute inset-0 bg-duck-ink/40 backdrop-blur-[2px] transition-opacity"
                                 onClick={() => setSelectedMissionInfo(null)}
                             />
-                            <div className="bg-white rounded-[2rem] p-8 max-w-lg w-full relative z-10 shadow-2xl animate-in zoom-in duration-200">
+                            <div className="bg-white rounded-[1.5rem] p-8 max-w-lg w-full relative z-10 shadow-duck-soft border border-duck-ink/10 animate-in zoom-in duration-200 motion-reduce:animate-none">
                                 <div className="flex items-start gap-4 mb-4">
-                                    <div className="p-3 bg-[#FCF6EA] text-[#0B453F] rounded-xl">
+                                    <div className="p-3 bg-duck-acid border border-duck-ink text-duck-ink rounded-xl">
                                         <Info size={24} />
                                     </div>
                                     <div>
-                                        <h3 className="text-xl font-black text-[#08283B] mb-2">Over deze Missie</h3>
-                                        <p className="text-[#445865] leading-relaxed">
+                                        <h3 className="font-display text-2xl text-duck-ink mb-2">Over deze missie</h3>
+                                        <p className="text-duck-ink/65 leading-relaxed">
                                             {typeof selectedMissionInfo === 'string' ? selectedMissionInfo : (selectedMissionInfo as any)?.info}
                                         </p>
                                     </div>
                                 </div>
                                 {/* SLO Kerndoelen in info modal */}
                                 {typeof selectedMissionInfo === 'object' && (selectedMissionInfo as any)?.kerndoelen?.length > 0 && (
-                                    <div className="mt-4 pt-4 border-t border-[#E7D8BD]">
-                                        <p className="text-[10px] font-bold text-[#445865] uppercase tracking-widest mb-2">SLO Kerndoelen</p>
+                                    <div className="mt-4 pt-4 border-t border-duck-ink/10">
+                                        <p className="text-[10px] font-extrabold text-duck-ink/65 uppercase tracking-[0.16em] mb-2">SLO Kerndoelen</p>
                                         <div className="space-y-1.5">
                                             {(selectedMissionInfo as any).kerndoelen.map((code: SloKerndoelCode) => {
                                                 const kd = SLO_KERNDOELEN[code];
                                                 if (!kd) return null;
-                                                const modalColor = kd.kleur === 'amber'
-                                                    ? STUDENT_DASHBOARD_COLORS.olive
+                                                // DUCK-stijl: drie domein-categorieën via vlak-variant.
+                                                // Acid nooit als tekst op licht; acid-tekst mag op ink.
+                                                const modalClasses = kd.kleur === 'amber'
+                                                    ? 'bg-duck-acid border-duck-ink text-duck-ink'
                                                     : kd.kleur === 'purple'
-                                                        ? STUDENT_DASHBOARD_COLORS.coral
-                                                        : STUDENT_DASHBOARD_COLORS.teal;
+                                                        ? 'bg-duck-bgLight border-duck-ink text-duck-ink'
+                                                        : 'bg-duck-ink border-duck-ink text-duck-acid';
+                                                const isInk = kd.kleur === 'blue';
                                                 return (
                                                     <div
                                                         key={code}
-                                                        className="flex items-start gap-2 rounded-lg border p-2 text-white shadow-sm"
-                                                        style={{ backgroundColor: modalColor, borderColor: modalColor }}
+                                                        className={`flex items-start gap-2 rounded-lg border p-2 shadow-sm ${modalClasses}`}
                                                     >
-                                                        <span className="mt-0.5 shrink-0 text-[10px] font-black text-white">{code}</span>
+                                                        <span className="mt-0.5 shrink-0 text-[10px] font-extrabold">{code}</span>
                                                         <div>
-                                                            <span className="text-[11px] font-bold text-white">{kd.label}</span>
-                                                            <p className="text-[10px] leading-tight text-white/85">{kd.omschrijving}</p>
+                                                            <span className="text-[11px] font-extrabold">{kd.label}</span>
+                                                            <p className={`text-[10px] leading-tight ${isInk ? 'text-duck-acid/80' : 'text-duck-ink/70'}`}>{kd.omschrijving}</p>
                                                         </div>
                                                     </div>
                                                 );
@@ -1439,7 +1411,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
                                 <div className="flex justify-end mt-6">
                                     <button
                                         onClick={() => setSelectedMissionInfo(null)}
-                                        className="px-6 py-2 bg-[#0B453F] text-white rounded-xl font-bold hover:bg-[#08283B] transition-colors"
+                                        className="px-6 py-2.5 bg-duck-ink text-duck-acid rounded-full font-extrabold transition-transform duration-300 hover:-translate-y-0.5 active:translate-y-0 motion-reduce:transition-none"
                                     >
                                         Begrepen
                                     </button>
