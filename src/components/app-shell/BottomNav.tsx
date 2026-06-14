@@ -18,7 +18,7 @@ const NAV_ITEMS: { id: BottomNavProps['activeTab']; label: string; icon: React.R
 export const BottomNav: React.FC<BottomNavProps> = ({ activeTab, onNavigate, gamesEnabled = false }) => {
     return (
         <nav
-            className="fixed bottom-0 left-0 right-0 z-[60] bg-white/95 backdrop-blur-lg border-t border-lab-line pb-safe sm:hidden"
+            className="fixed bottom-0 left-0 right-0 z-[60] bg-white border-t border-duck-ink/10 pb-safe sm:hidden"
             role="navigation"
             aria-label="Hoofdnavigatie"
         >
@@ -38,8 +38,8 @@ export const BottomNav: React.FC<BottomNavProps> = ({ activeTab, onNavigate, gam
                                 flex flex-col items-center justify-center gap-0.5 py-2 px-3 min-w-[60px] min-h-[48px]
                                 rounded-xl transition-all duration-200
                                 ${isActive
-                                    ? 'text-white bg-lab-coral ring-2 ring-lab-coral/40 shadow-sm shadow-lab-coral/20'
-                                    : 'text-lab-muted hover:text-lab-muted active:bg-lab-cream'
+                                    ? 'text-duck-acid bg-duck-ink'
+                                    : 'text-duck-ink/65 hover:text-duck-ink active:bg-duck-bg'
                                 }
                             `}
                         >

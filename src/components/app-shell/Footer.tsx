@@ -12,27 +12,27 @@ export const Footer: React.FC<FooterProps> = ({ onAccountDeleted, schoolId }) =>
 
     return (
         <>
-            <footer className="w-full py-4 px-6 bg-white/80 backdrop-blur-sm border-t border-lab-line">
+            <footer className="w-full py-4 px-6 bg-duck-ink border-t border-duck-ink">
                 <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
                     {/* Left side - Branding */}
-                    <div className="flex items-center gap-2 text-lab-muted text-xs">
+                    <div className="flex items-center gap-2 text-white/65 text-xs">
                         <span className="font-medium">Project 0 DG</span>
                         <span className="hidden sm:inline">•</span>
                         <span className="hidden sm:inline">AI Lab Experience</span>
                     </div>
 
                     {/* Center - Made with love */}
-                    <div className="flex items-center gap-1.5 text-lab-muted text-xs">
+                    <div className="flex items-center gap-1.5 text-white/65 text-xs">
                         <span>Gemaakt met</span>
-                        <Heart size={12} className="text-lab-coral fill-lab-coral" />
+                        <Heart size={12} className="text-duck-acid fill-duck-acid" />
                         <span>voor het onderwijs</span>
                     </div>
 
                     <div className="flex items-center gap-4">
-                        <a href="/ict/privacy/policy" className="hidden sm:inline text-lab-muted hover:text-lab-muted text-[10px] uppercase tracking-wider transition-colors">Privacy</a>
-                        <a href="/ict/privacy/cookies" className="hidden sm:inline text-lab-muted hover:text-lab-muted text-[10px] uppercase tracking-wider transition-colors">Cookies</a>
-                        <a href="/ict/privacy/ai" className="hidden sm:inline text-lab-muted hover:text-lab-muted text-[10px] uppercase tracking-wider transition-colors">AI Act</a>
-                        <div className="hidden sm:block w-px h-3 bg-lab-creamDeep" />
+                        <a href="/ict/privacy/policy" className="hidden sm:inline text-white/65 hover:text-duck-acid text-[10px] uppercase tracking-wider transition-colors">Privacy</a>
+                        <a href="/ict/privacy/cookies" className="hidden sm:inline text-white/65 hover:text-duck-acid text-[10px] uppercase tracking-wider transition-colors">Cookies</a>
+                        <a href="/ict/privacy/ai" className="hidden sm:inline text-white/65 hover:text-duck-acid text-[10px] uppercase tracking-wider transition-colors">AI Act</a>
+                        <div className="hidden sm:block w-px h-3 bg-white/20" />
                         <button
                             onClick={() => {
                                 if (window.confirm('Wil je de app volledig verversen? Dit lost vaak problemen op met updates.')) {
@@ -52,7 +52,7 @@ export const Footer: React.FC<FooterProps> = ({ onAccountDeleted, schoolId }) =>
                                     window.location.href = window.location.pathname + '?t=' + Date.now();
                                 }
                             }}
-                            className="flex items-center gap-2 text-lab-muted hover:text-lab-coral text-xs font-medium transition-colors group"
+                            className="flex items-center gap-2 text-white/65 hover:text-duck-acid text-xs font-medium transition-colors group"
                             title="Gebruik dit als de app niet goed laadt of update"
                         >
                             {/* RefreshCw icon embedded directly or imported if preferred, using svg for zero-dep if needed, but we have lucide */}
@@ -68,7 +68,7 @@ export const Footer: React.FC<FooterProps> = ({ onAccountDeleted, schoolId }) =>
                         {/* Privacy link */}
                         <button
                             onClick={() => setIsPrivacyOpen(true)}
-                            className="flex items-center gap-2 text-lab-muted hover:text-lab-coral text-xs font-medium transition-colors group"
+                            className="flex items-center gap-2 text-white/65 hover:text-duck-acid text-xs font-medium transition-colors group"
                         >
                             <Shield size={14} className="group-hover:scale-110 transition-transform" />
                             <span>Privacy & Instellingen</span>

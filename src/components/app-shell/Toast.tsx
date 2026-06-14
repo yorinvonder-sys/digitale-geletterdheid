@@ -27,15 +27,15 @@ export const Toast: React.FC<ToastProps> = ({
   }, [onDismiss, duration]);
 
   const styles = {
-    error: 'bg-lab-coral border-lab-coral text-lab-coral',
-    success: 'bg-lab-sage border-lab-sage text-lab-sage',
-    info: 'bg-lab-coral border-lab-coral text-lab-coral',
+    error: 'bg-white border border-duck-error text-duck-ink shadow-duck-soft',
+    success: 'bg-duck-ink text-white border border-duck-ink shadow-duck-soft',
+    info: 'bg-duck-ink text-white border border-duck-ink shadow-duck-soft',
   };
 
   const iconStyles = {
-    error: 'bg-lab-coral text-white',
-    success: 'bg-lab-sage text-white',
-    info: 'bg-lab-coral text-white',
+    error: 'bg-duck-error text-white',
+    success: 'bg-duck-acid text-duck-ink',
+    info: 'bg-white/15 text-white',
   };
 
   const Icon = type === 'error' ? AlertTriangle : type === 'success' ? CheckCircle2 : Info;
@@ -43,7 +43,7 @@ export const Toast: React.FC<ToastProps> = ({
   return (
     <div
       role="alert"
-      className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-[300] flex items-center gap-3 px-4 py-3 rounded-xl border shadow-lg animate-in fade-in slide-in-from-bottom-4 duration-300 ${styles[type]}`}
+      className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-[300] flex items-center gap-3 px-4 py-3 rounded-[1rem] animate-in fade-in slide-in-from-bottom-4 duration-300 ${styles[type]}`}
     >
       <div className={`p-2 rounded-lg ${iconStyles[type]}`}>
         <Icon size={18} />

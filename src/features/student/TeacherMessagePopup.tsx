@@ -34,7 +34,7 @@ export const TeacherMessagePopup: React.FC<TeacherMessagePopupProps> = ({
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="fixed inset-0 bg-black/30 backdrop-blur-sm z-[100]"
+                        className="fixed inset-0 bg-duck-ink/40 backdrop-blur-[2px] z-[100]"
                         onClick={onDismiss}
                     />
 
@@ -46,16 +46,16 @@ export const TeacherMessagePopup: React.FC<TeacherMessagePopupProps> = ({
                         transition={{ type: 'spring', bounce: 0.3 }}
                         className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-md z-[101]"
                     >
-                        <div className="bg-white rounded-3xl shadow-2xl overflow-hidden border border-lab-coral">
+                        <div className="rounded-[1.5rem] bg-white shadow-duck-soft overflow-hidden border border-duck-ink/10">
                             {/* Header */}
-                            <div className="bg-gradient-to-r from-lab-coral to-lab-teal p-4 flex items-center justify-between">
+                            <div className="bg-duck-ink p-4 flex items-center justify-between">
                                 <div className="flex items-center gap-3">
-                                    <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
-                                        <Bell className="w-5 h-5 text-white" />
+                                    <div className="w-10 h-10 bg-duck-acid rounded-full flex items-center justify-center">
+                                        <Bell className="w-5 h-5 text-duck-ink" />
                                     </div>
                                     <div>
                                         <h3 className="text-white font-bold text-lg">Bericht van Docent</h3>
-                                        <p className="text-white/70 text-xs">{message.sender_name}</p>
+                                        <p className="text-white/65 text-xs">{message.sender_name}</p>
                                     </div>
                                 </div>
                                 <button
@@ -69,14 +69,14 @@ export const TeacherMessagePopup: React.FC<TeacherMessagePopupProps> = ({
                             {/* Content */}
                             <div className="p-6">
                                 <div className="flex items-start gap-3">
-                                    <div className="w-10 h-10 bg-lab-coral rounded-full flex items-center justify-center shrink-0">
-                                        <MessageSquare className="w-5 h-5 text-lab-coral" />
+                                    <div className="w-10 h-10 bg-duck-ink rounded-full flex items-center justify-center shrink-0">
+                                        <MessageSquare className="w-5 h-5 text-duck-acid" />
                                     </div>
                                     <div className="flex-1">
-                                        <p className="text-lab-muted text-base leading-relaxed whitespace-pre-wrap">
+                                        <p className="text-duck-ink/65 text-base leading-relaxed whitespace-pre-wrap">
                                             {message.text}
                                         </p>
-                                        <p className="text-lab-muted text-xs mt-3">
+                                        <p className="text-duck-ink/65 text-xs mt-3">
                                             {message.created_at ? new Date(message.created_at).toLocaleString('nl-NL', {
                                                 day: 'numeric',
                                                 month: 'short',
@@ -92,13 +92,13 @@ export const TeacherMessagePopup: React.FC<TeacherMessagePopupProps> = ({
                             <div className="px-6 pb-6 flex gap-3">
                                 <button
                                     onClick={onDismiss}
-                                    className="flex-1 py-3 bg-lab-cream text-lab-muted rounded-xl font-bold text-sm hover:bg-lab-creamDeep transition-colors"
+                                    className="flex-1 inline-flex items-center justify-center rounded-full border border-duck-ink/20 bg-duck-bgLight px-6 py-2.5 font-extrabold text-sm text-duck-ink hover:border-duck-ink transition-all"
                                 >
                                     Later lezen
                                 </button>
                                 <button
                                     onClick={handleMarkRead}
-                                    className="flex-1 py-3 bg-lab-coral text-white rounded-xl font-bold text-sm hover:bg-lab-coral hover:text-white transition-colors shadow-lg shadow-lab-coral"
+                                    className="flex-1 inline-flex items-center justify-center rounded-full border border-duck-ink bg-duck-acid px-6 py-2.5 font-extrabold text-sm text-duck-ink hover:-translate-y-0.5 transition-transform"
                                 >
                                     Gelezen ✓
                                 </button>
