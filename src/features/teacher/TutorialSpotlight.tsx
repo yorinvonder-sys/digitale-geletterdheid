@@ -256,7 +256,7 @@ const TutorialSpotlight: React.FC = () => {
                         <div className="flex justify-center pt-4 pb-1">
                             <div className="w-16 h-16 rounded-full flex items-center justify-center" style={{ backgroundColor: '#FCF6EA' }}>
                                     <motion.img
-                                        src="/assets/storytelling/beaver-storyteller.webp"
+                                        src="/assets/brand/dgskills-duck-guide-v3.png"
                                     alt=""
                                     className="w-12 h-12 object-contain"
                                     aria-hidden="true"
@@ -273,7 +273,7 @@ const TutorialSpotlight: React.FC = () => {
                             <div className="shrink-0 mt-0.5">
                                 <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ backgroundColor: '#FCF6EA' }}>
                                     <motion.img
-                                        src="/assets/storytelling/beaver-storyteller.webp"
+                                        src="/assets/brand/dgskills-duck-guide-v3.png"
                                         alt=""
                                         className="w-8 h-8 object-contain"
                                         aria-hidden="true"

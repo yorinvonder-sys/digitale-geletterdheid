@@ -16,14 +16,14 @@ import React, { useEffect } from 'react';
 type PipPose = 'flying' | 'concerned' | 'excited' | 'thinking' | 'checkmark' | 'waving' | 'celebrating' | 'reading';
 
 const POSE_SRC: Record<PipPose, string> = {
-    flying: '/assets/storytelling/beaver-storyteller.webp',
-    concerned: '/assets/storytelling/beaver-storyteller.webp',
-    excited: '/assets/storytelling/beaver-storyteller.webp',
-    thinking: '/assets/storytelling/beaver-storyteller.webp',
-    checkmark: '/assets/storytelling/beaver-storyteller.webp',
-    waving: '/assets/storytelling/beaver-storyteller.webp',
-    celebrating: '/assets/storytelling/beaver-storyteller.webp',
-    reading: '/assets/storytelling/beaver-storyteller.webp',
+    flying: '/assets/brand/dgskills-duck-guide-v3.png',
+    concerned: '/assets/brand/dgskills-duck-guide-v3.png',
+    excited: '/assets/brand/dgskills-duck-guide-v3.png',
+    thinking: '/assets/brand/dgskills-duck-guide-v3.png',
+    checkmark: '/assets/brand/dgskills-duck-guide-v3.png',
+    waving: '/assets/brand/dgskills-duck-guide-v3.png',
+    celebrating: '/assets/brand/dgskills-duck-guide-v3.png',
+    reading: '/assets/brand/dgskills-duck-guide-v3.png',
 };
 
 interface HeroPipNestProps {
@@ -150,11 +150,11 @@ export function HeroPipNest(_props: HeroPipNestProps) {
         <aside
             className="mt-10 hidden xl:block"
             role="note"
-            aria-label="DGSkills bever rust uit"
+            aria-label="DGSkills eend rust uit"
         >
             <img
-                src="/assets/storytelling/beaver-storyteller.webp"
-                alt="DGSkills bever rust uit"
+                src="/assets/brand/dgskills-duck-guide-v3.png"
+                alt="DGSkills eend rust uit"
                 style={{
                     width: 160,
                     height: 'auto',

@@ -220,7 +220,7 @@ export const PilotAanmelden: React.FC = () => {
                 <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
                     <a href="/" aria-label="DGSkills homepage">
                         <img
-                            src="/logo-lockup.svg"
+                            src="/logo-lockup.webp"
                             alt="DGSkills"
                             className="h-10 w-auto max-w-[180px] sm:h-12 sm:max-w-[200px] object-contain"
                         />
@@ -412,7 +412,7 @@ export const PilotAanmelden: React.FC = () => {
                             <Reveal delay={0.14}>
                                 <div className="bg-lab-paper rounded-2xl border border-lab-line border-l-4 border-l-lab-coral p-6">
                                     <img
-                                        src="/logo-lockup.svg"
+                                        src="/logo-lockup.webp"
                                         alt=""
                                         className="h-8 w-auto mb-4"
                                         aria-hidden="true"

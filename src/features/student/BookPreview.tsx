@@ -867,7 +867,7 @@ Maak nu de titel met [TITLE] tags en de tekst van de eerste pagina met [PAGE] ta
                         />
                     ) : (
                         <div className="bg-[#FFFDF7] rounded-3xl shadow-xl overflow-hidden text-center p-8 animate-in zoom-in-95 duration-500" style={{ borderColor: '#E7D8BD', borderWidth: 1 }}>
-                            <img src="/assets/storytelling/beaver-storyteller.webp" alt="DGSkills bever" className="w-24 h-24 object-contain mx-auto mb-4" />
+                            <img src="/assets/brand/dgskills-duck-guide-v3.png" alt="DGSkills eend" className="w-24 h-24 object-contain mx-auto mb-4" />
                             <h1 className="text-3xl font-black mb-2" style={{ color: '#08283B' }}>Verhalen Ontwerper</h1>
                             <p className="font-medium mb-8" style={{ color: '#445865' }}>
                                 Word een echte auteur! Samen met AI ga je je eigen prentenboek schrijven en illustreren.

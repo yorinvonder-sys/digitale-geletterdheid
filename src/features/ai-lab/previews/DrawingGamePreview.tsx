@@ -695,7 +695,7 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
                 {challengeToast}
                 <div className="flex-1 flex flex-col items-center justify-center p-6 md:p-8 relative z-10 overflow-y-auto">
                     <div className="relative mb-5 flex w-full max-w-xl items-start justify-center gap-4">
-                        <img src="/assets/storytelling/beaver-storyteller.webp" alt="DGSkills bever" className="w-24 h-24 object-contain shrink-0" loading="lazy" />
+                        <img src="/assets/brand/dgskills-duck-guide-v3.png" alt="DGSkills eend" className="w-24 h-24 object-contain shrink-0" loading="lazy" />
                         <div
                             className="relative mt-2 rounded-2xl px-5 py-4 text-left text-base md:text-lg font-bold leading-snug shadow-sm"
                             style={{ backgroundColor: '#FFFDF7', border: '1px solid #E7D8BD', color: '#445865' }}

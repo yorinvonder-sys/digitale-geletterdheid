@@ -300,16 +300,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
     return (
         <div className="fixed inset-0 overflow-hidden bg-[#FCF6EA] font-sans text-[#08283B]">
             <div className="absolute inset-0 pointer-events-none">
-                <img
-                    src="/brand-redesign/otter/login-background-calm.png"
-                    alt=""
-                    className="h-full w-full object-cover opacity-90"
-                    width={1536}
-                    height={864}
-                    aria-hidden="true"
-                    decoding="async"
-                />
-                <div className="absolute inset-0 bg-[#FCF6EA]/20" />
+                <div className="absolute inset-0 bg-[#FCF6EA]" />
             </div>
 
             <div className="absolute inset-0 overflow-y-auto overflow-x-hidden">
@@ -319,7 +310,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
 
                         <div className="mb-3 text-center">
                             <div className="mx-auto mb-2 flex w-full max-w-[150px] justify-center">
-                                <img src="/logo-lockup.svg" alt="DGSkills.app" className="h-auto w-full object-contain" width={320} height={96} fetchPriority="high" decoding="async" />
+                                <img src="/logo-lockup.webp" alt="DGSkills.app" className="h-auto w-full object-contain" width={320} height={96} fetchPriority="high" decoding="async" />
                             </div>
                             <h1 className="mb-1 text-xl font-black leading-tight tracking-tight text-[#08283B]">
                                 {mode === 'register' ? 'Maak je account aan' : mode === 'forgot-password' ? 'Reset je wachtwoord' : 'Welkom terug'}

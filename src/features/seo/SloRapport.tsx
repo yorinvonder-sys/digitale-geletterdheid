@@ -56,7 +56,7 @@ export const SloRapport: React.FC = () => {
             <nav className="fixed top-0 left-0 right-0 z-50 bg-lab-paper/95 backdrop-blur border-b border-lab-line">
                 <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
                     <a href="/" className="flex items-center" aria-label="DGSkills homepage">
-                        <img src="/logo-lockup.svg" alt="DGSkills" className="h-10 w-auto max-w-[180px] sm:h-12 sm:max-w-[200px] object-contain" />
+                        <img src="/logo-lockup.webp" alt="DGSkills" className="h-10 w-auto max-w-[180px] sm:h-12 sm:max-w-[200px] object-contain" />
                     </a>
                     <div className="flex items-center gap-5 text-sm">
                         <a href="/scholen" className="text-lab-muted hover:text-lab-coral transition-colors hidden sm:inline">Voor scholen</a>
@@ -85,7 +85,7 @@ export const SloRapport: React.FC = () => {
                                     </p>
                                 </div>
                                 <img
-                                    src="/logo-lockup.svg"
+                                    src="/logo-lockup.webp"
                                     alt="DGSkills"
                                     className="h-10 w-auto max-w-[140px] object-contain opacity-20 hidden sm:block"
                                 />

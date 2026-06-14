@@ -810,7 +810,7 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
           title="Terug naar Dashboard"
         >
           <div className="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center transform rotate-3">
-            <img src="/assets/brand/dgskills-beaver-laptop.webp" alt="DGSkills bever werkt op laptop" className="w-full h-full object-contain" loading="lazy" />
+            <img src="/assets/brand/dgskills-duck-logo-mark.webp" alt="DGSkills eend werkt mee" className="w-full h-full object-contain" loading="lazy" />
           </div>
           <div className="flex flex-col text-left">
             {/* Breadcrumb: Dashboard > AI Lab > missienaam */}

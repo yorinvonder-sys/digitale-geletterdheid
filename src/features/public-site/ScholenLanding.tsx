@@ -670,29 +670,78 @@ export const ScholenLanding: React.FC = () => {
                     </div>
                 </section>
 
-                <section id="productbewijs" className="relative scroll-mt-24 bg-duck-bgLight px-5 py-20 md:px-10 md:py-28">
-                    <div className="relative z-10 mx-auto max-w-6xl">
-                        <Reveal y={30}>
-                            <div className="mb-10 flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
+                <section id="productbewijs" className="scroll-mt-24">
+                    {/* Panel 1 — Leerling */}
+                    <div className="bg-duck-bgLight px-5 py-20 md:px-10 md:py-28">
+                        <Reveal y={24} className="mx-auto max-w-6xl">
+                            <p className="flex items-center gap-2.5 text-[11px] font-extrabold uppercase tracking-[0.1em] text-duck-ink/40">
+                                <span>01</span>
+                                <span className="h-px w-7 bg-duck-ink/20" />
+                                <span>Voor leerlingen</span>
+                            </p>
+                            <div className="mt-10 grid gap-10 lg:grid-cols-2 lg:items-center">
                                 <div>
-                                    <SectionLabel>Product in beeld</SectionLabel>
-                                    <h2 className="mt-4 text-balance font-display text-[clamp(2.1rem,4.5vw,4rem)] leading-[1.05]">Dit is hoe het eruit ziet. Kijk zelf.</h2>
+                                    <span className="inline-block rounded-full bg-duck-acid px-3.5 py-1.5 text-[11px] font-extrabold uppercase tracking-[0.14em]">Leerlingmissie</span>
+                                    <h2 className="mt-5 text-balance font-display text-[clamp(2rem,4vw,3.5rem)] leading-[1.05]">Gewoon beginnen, ook zonder plan.</h2>
+                                    <p className="mt-5 max-w-md text-pretty text-base font-semibold leading-7 text-duck-ink/65">
+                                        Leerlingen starten een missie zelfstandig. De stappen zijn duidelijk, het eindproduct concreet. Motivatie hoef je niet af te dwingen.
+                                    </p>
                                 </div>
-                                <p className="max-w-md text-pretty text-base font-semibold leading-7 text-duck-ink/65">
-                                    Elk scherm laat een ander beslispunt zien: motivatie voor leerlingen, grip voor docenten en vertrouwen voor schoolteams.
-                                </p>
+                                <div className="rounded-[1.6rem] bg-duck-bg p-4 md:p-5">
+                                    <BrowserFrame url="dgskills.app">
+                                        <ScreenMissieDetail />
+                                    </BrowserFrame>
+                                </div>
                             </div>
-                            <div className="grid gap-5 md:grid-cols-2">
-                                {screenshotProofPanels.map((panel, index) => (
-                                    <ProductProofFrame
-                                        key={panel.label}
-                                        label={panel.label}
-                                        title={panel.title}
-                                        screen={panel.screen}
-                                        caption={panel.copy}
-                                        featured={index === 1}
-                                    />
-                                ))}
+                        </Reveal>
+                    </div>
+
+                    {/* Panel 2 — Docent (omgekeerd) */}
+                    <div className="border-t border-duck-ink/10 bg-duck-bg px-5 py-20 md:px-10 md:py-28">
+                        <Reveal y={24} className="mx-auto max-w-6xl">
+                            <p className="flex items-center gap-2.5 text-[11px] font-extrabold uppercase tracking-[0.1em] text-duck-ink/40">
+                                <span>02</span>
+                                <span className="h-px w-7 bg-duck-ink/20" />
+                                <span>Voor docenten</span>
+                            </p>
+                            <div className="mt-10 grid gap-10 lg:grid-cols-2 lg:items-center">
+                                <div className="rounded-[1.6rem] bg-duck-bgLight p-4 md:p-5 lg:order-first">
+                                    <BrowserFrame url="dgskills.app/klas">
+                                        <ScreenDocent />
+                                    </BrowserFrame>
+                                </div>
+                                <div>
+                                    <span className="inline-block rounded-full bg-duck-acid px-3.5 py-1.5 text-[11px] font-extrabold uppercase tracking-[0.14em]">Docentdashboard</span>
+                                    <h2 className="mt-5 text-balance font-display text-[clamp(2rem,4vw,3.5rem)] leading-[1.05]">Grip op de klas, zonder bij te houden.</h2>
+                                    <p className="mt-5 max-w-md text-pretty text-base font-semibold leading-7 text-duck-ink/65">
+                                        Je ziet wie vastzit en wie klaar is. Geen Excel, geen rondje langs alle tafels.
+                                    </p>
+                                </div>
+                            </div>
+                        </Reveal>
+                    </div>
+
+                    {/* Panel 3 — Schoolteam */}
+                    <div className="border-t border-duck-ink/10 bg-duck-bgLight px-5 py-20 md:px-10 md:py-28">
+                        <Reveal y={24} className="mx-auto max-w-6xl">
+                            <p className="flex items-center gap-2.5 text-[11px] font-extrabold uppercase tracking-[0.1em] text-duck-ink/40">
+                                <span>03</span>
+                                <span className="h-px w-7 bg-duck-ink/20" />
+                                <span>Voor schoolteams</span>
+                            </p>
+                            <div className="mt-10 grid gap-10 lg:grid-cols-2 lg:items-center">
+                                <div>
+                                    <span className="inline-block rounded-full bg-duck-acid px-3.5 py-1.5 text-[11px] font-extrabold uppercase tracking-[0.14em]">SLO-bewijs</span>
+                                    <h2 className="mt-5 text-balance font-display text-[clamp(2rem,4vw,3.5rem)] leading-[1.05]">Aantonen dat het werkt, zonder rapporten schrijven.</h2>
+                                    <p className="mt-5 max-w-md text-pretty text-base font-semibold leading-7 text-duck-ink/65">
+                                        Schoolteams zien wat er schoolbreed geleerd wordt. Klaar voor het directieoverleg.
+                                    </p>
+                                </div>
+                                <div className="rounded-[1.6rem] bg-duck-bg p-4 md:p-5">
+                                    <BrowserFrame url="dgskills.app/voortgang">
+                                        <ScreenVoortgang />
+                                    </BrowserFrame>
+                                </div>
                             </div>
                         </Reveal>
                     </div>
@@ -1777,7 +1826,7 @@ function FooterCta({ startPilot, scrollTo }: { startPilot: () => void; scrollTo:
                             <textPath href="#dg-cta-circle">Plan een schoolpilot • Samen starten • </textPath>
                         </text>
                     </svg>
-                    <DuckMascot className="size-16 md:size-[4.5rem]" />
+                    <DuckMark className="size-16 md:size-[4.5rem]" />
                 </div>
                 <h2 className="mt-8 text-balance font-display text-[clamp(2.4rem,6vw,5rem)] leading-[1.04]">
                     Klaar om iets{' '}

@@ -37,10 +37,10 @@ const SHOE_COLORS = [
 ];
 
 const EXPRESSIONS = [
-    { value: 'happy', label: 'Blij', emoji: '😊' },
-    { value: 'cool', label: 'Cool', emoji: '😎' },
-    { value: 'neutral', label: 'Neutraal', emoji: '🙂' },
-    { value: 'surprised', label: 'Verrast', emoji: '😮' },
+    { value: 'happy', label: 'Blij', iconSrc: '/assets/brand/ui-icons/dgskills-duck-happy.webp' },
+    { value: 'cool', label: 'Cool', iconSrc: '/assets/brand/ui-icons/dgskills-duck-default.webp' },
+    { value: 'neutral', label: 'Neutraal', iconSrc: '/assets/brand/ui-icons/dgskills-duck-neutral.webp' },
+    { value: 'surprised', label: 'Verrast', iconSrc: '/assets/brand/ui-icons/dgskills-duck-surprised.webp' },
 ] as const;
 
 const SHIRT_STYLES = [
@@ -249,7 +249,15 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
                                                         : 'border-duck-ink/10 bg-white text-duck-ink hover:border-duck-ink/40'
                                                         }`}
                                                 >
-                                                    <span className="text-xl">{expression.emoji}</span>
+                                                    <img
+                                                        src={expression.iconSrc}
+                                                        alt=""
+                                                        className="h-6 w-6 object-contain"
+                                                        width={24}
+                                                        height={24}
+                                                        loading="lazy"
+                                                        decoding="async"
+                                                    />
                                                     <span className="font-bold text-[11px]">{expression.label}</span>
                                                 </button>
                                             ))}

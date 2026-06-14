@@ -530,7 +530,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                 <div className="min-h-screen lg:grid lg:grid-cols-[216px_minmax(0,1fr)]">
                     <aside className="hidden border-r border-lab-line bg-lab-paper lg:flex lg:flex-col">
                         <div className="flex h-[76px] items-center gap-3 border-b border-lab-line px-5">
-                            <img src="/logo.svg" alt="" className="size-11 shrink-0 object-contain" width={44} height={44} decoding="async" />
+                            <img src="/logo.webp" alt="" className="size-11 shrink-0 object-contain" width={44} height={44} decoding="async" />
                             <span className="text-2xl font-black text-lab-ink">DGSkills</span>
                         </div>
                         <nav className="flex-1 space-y-2 px-4 py-5">
@@ -572,7 +572,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                         <header className="sticky top-0 z-40 border-b border-lab-line bg-lab-paper/95 backdrop-blur">
                             <div className="flex min-h-[76px] min-w-0 flex-wrap items-center gap-2 px-4 py-3 sm:flex-nowrap lg:px-7 lg:py-0">
                                 <div className="flex min-w-0 flex-1 items-center gap-3 lg:hidden">
-                                    <img src="/logo.svg" alt="" className="size-10 shrink-0 object-contain" width={40} height={40} decoding="async" />
+                                    <img src="/logo.webp" alt="" className="size-10 shrink-0 object-contain" width={40} height={40} decoding="async" />
                                     <span className="truncate text-xl font-black text-lab-ink">DGSkills</span>
                                 </div>
 

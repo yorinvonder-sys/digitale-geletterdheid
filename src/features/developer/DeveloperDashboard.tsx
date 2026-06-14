@@ -331,8 +331,8 @@ export function DeveloperDashboard({ user, onLogout, onSwitchView }: DeveloperDa
                     <div className="flex items-center gap-3">
                         <div className="w-12 h-12 rounded-xl overflow-hidden bg-lab-cream border border-lab-line shadow-sm shrink-0">
                             <img
-                                src="/logo.svg"
-                                alt="DGSkills bever logo"
+                                src="/logo.webp"
+                                alt="DGSkills eend logo"
                                 className="w-full h-full object-cover"
                             />
                         </div>

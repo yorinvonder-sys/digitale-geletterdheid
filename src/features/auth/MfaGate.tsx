@@ -97,7 +97,7 @@ export function MfaGate({ onVerified }: MfaGateProps) {
             <div className="fixed inset-0 flex items-center justify-center bg-[#FCF6EA] text-[#08283B]">
                 <div className="flex flex-col items-center gap-4 relative z-10">
                     <div className="w-16 h-16 mx-auto">
-                        <img src="/logo.svg" alt="DGSkills" className="w-full h-full object-contain" width={64} height={64} decoding="async" />
+                        <img src="/logo.webp" alt="DGSkills" className="w-full h-full object-contain" width={64} height={64} decoding="async" />
                     </div>
                     <div className="h-6 w-6 animate-spin rounded-full border-2 border-[#E7D8BD] border-t-[#0B453F]" />
                     <p className="text-sm font-semibold text-[#445865]">MFA-status controleren...</p>
@@ -110,7 +110,7 @@ export function MfaGate({ onVerified }: MfaGateProps) {
         <div className="fixed inset-0 overflow-hidden bg-[#FCF6EA] font-sans text-[#08283B]">
             <div className="absolute inset-0 pointer-events-none">
                 <img
-                    src="/brand-redesign/otter/login-background-calm.png"
+                    src="/assets/brand/dgskills-duck-guide-v3.png"
                     alt=""
                     className="h-full w-full object-cover opacity-80"
                     width={1536}
@@ -128,7 +128,7 @@ export function MfaGate({ onVerified }: MfaGateProps) {
                         {/* Header met logo */}
                         <div className="text-center mb-8">
                             <div className="w-24 h-24 mx-auto mb-4">
-                                <img src="/assets/storytelling/beaver-storyteller.webp" alt="Bevermentor met 2FA" className="w-full h-full object-contain" width={96} height={96} decoding="async" />
+                                <img src="/assets/brand/dgskills-duck-guide-v3.png" alt="DGSkills eend met 2FA" className="w-full h-full object-contain" width={96} height={96} decoding="async" />
                             </div>
                             <h1 className="text-2xl font-black tracking-tight text-[#08283B]">
                                 Verificatie <span className="text-[#D97848]">vereist</span>
