@@ -129,16 +129,6 @@ const heroProofItems = [
     { label: 'Veilig', value: 'AVG-bewust en AI Act-roadmap 2026' },
 ] as const;
 
-const trustChips = [
-    { label: '20+ AI-missies', tone: 'acid', pos: 'left-[4%] top-[20%] xl:left-[6%]', rotate: '-rotate-[9deg]' },
-    { label: 'SLO-mapping', tone: 'paper', pos: 'left-[2%] top-[46%] xl:left-[4%]', rotate: 'rotate-[7deg]' },
-    { label: 'Microsoft 365', tone: 'paper', pos: 'left-[7%] top-[68%] xl:left-[10%]', rotate: 'rotate-[4deg]' },
-    { label: 'AVG-bewust', tone: 'paper', pos: 'right-[4%] top-[18%] xl:right-[7%]', rotate: 'rotate-[8deg]' },
-    { label: 'AI Act-roadmap 2026', tone: 'ink', pos: 'right-[1%] top-[44%] xl:right-[3%]', rotate: '-rotate-[7deg]' },
-    { label: 'Pilot binnen 10 werkdagen', tone: 'ink', pos: 'right-[6%] top-[66%] xl:right-[9%]', rotate: '-rotate-[4deg]' },
-    { label: 'Geen creditcard', tone: 'acid', pos: 'left-[40%] top-[78%]', rotate: 'rotate-[3deg]' },
-] as const;
-
 const lessonSteps = [
     {
         step: '01',
@@ -477,16 +467,6 @@ export const ScholenLanding: React.FC = () => {
 
             <main>
                 <section data-home-hero className="relative overflow-hidden px-5 pb-16 pt-32 md:px-10 md:pt-40">
-                    <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-20 hidden lg:block">
-                        {trustChips.map((chip) => (
-                            <span key={chip.label} data-chip-pop className={`absolute ${chip.pos}`}>
-                                <span className={`inline-flex items-center whitespace-nowrap rounded-full border border-duck-ink px-4 py-2 text-xs font-bold ${chip.rotate} ${chip.tone === 'acid' ? 'bg-duck-acid text-duck-ink' : chip.tone === 'ink' ? 'bg-duck-ink text-duck-acid' : 'bg-duck-bgLight text-duck-ink'}`}>
-                                    {chip.label}
-                                </span>
-                            </span>
-                        ))}
-                    </div>
-
                     <div className="relative z-10 mx-auto max-w-5xl text-center">
                         <p className={`inline-flex items-center gap-2 rounded-full border border-duck-ink bg-duck-acid px-4 py-2 text-xs font-extrabold uppercase tracking-[0.16em] opacity-0 motion-reduce:animate-none motion-reduce:opacity-100 ${introReady ? 'animate-fade-in-up' : ''}`}>
                             Digitale geletterdheid voor VO &amp; VSO
@@ -515,14 +495,6 @@ export const ScholenLanding: React.FC = () => {
                         <p className={`mx-auto mt-6 max-w-xl text-pretty text-sm font-bold leading-6 text-duck-ink/60 opacity-0 motion-reduce:animate-none motion-reduce:opacity-100 ${introReady ? 'animate-fade-in-up-delay-3' : ''}`}>
                             Voor VO en VSO: AI-missies, SLO-voortgang en portfolio-bewijs in een veilige leeromgeving.
                         </p>
-
-                        <ul className="mx-auto mt-8 flex max-w-2xl flex-wrap items-center justify-center gap-2 lg:sr-only">
-                            {trustChips.map((chip) => (
-                                <li key={chip.label} className={`rounded-full border border-duck-ink px-3.5 py-1.5 text-xs font-bold ${chip.tone === 'acid' ? 'bg-duck-acid text-duck-ink' : chip.tone === 'ink' ? 'bg-duck-ink text-duck-acid' : 'bg-duck-bgLight text-duck-ink'}`}>
-                                    {chip.label}
-                                </li>
-                            ))}
-                        </ul>
 
                         <div className="pointer-events-none absolute -top-12 right-[6%] hidden rotate-6 md:block lg:-top-16 lg:right-[4%]" aria-hidden="true">
                             <DuckMascot className="size-16 lg:size-20 animate-duck-float motion-reduce:animate-none" />
