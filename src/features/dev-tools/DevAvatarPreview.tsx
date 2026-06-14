@@ -1,5 +1,4 @@
 import React, { useMemo, useState } from 'react';
-import { AvatarViewer } from '@/features/profile/avatar/AvatarViewer';
 import { AvatarViewer2D } from '@/features/profile/avatar/AvatarViewer2D';
 import { AvatarConfig, DEFAULT_AVATAR_CONFIG } from '@/types';
 import { AVATAR_HAIR_CATALOG, AVATAR_PET_CATALOG } from '@/config/avatarCatalog';
@@ -258,19 +257,10 @@ const DevAvatarPreview: React.FC = () => {
                             <div className="space-y-5">
                                 <div>
                                     <div className="text-xs font-black uppercase tracking-[0.16em] mb-2" style={{ color: '#D97848' }}>
-                                        3D Renderer
+                                        Avatar Preview
                                     </div>
-                                    <div className="h-[420px] rounded-[1.5rem] overflow-hidden" style={{ backgroundColor: '#FCF6EA', border: '1px solid #E7D8BD' }}>
-                                        <AvatarViewer config={selectedPreset.config} interactive={true} />
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <div className="text-xs font-black uppercase tracking-[0.16em] mb-2" style={{ color: '#445865' }}>
-                                        2D Fallback
-                                    </div>
-                                    <div className="h-[360px] rounded-[1.5rem] overflow-hidden" style={{ backgroundColor: '#FCF6EA', border: '1px solid #E7D8BD' }}>
-                                        <AvatarViewer2D config={selectedPreset.config} interactive={false} />
+                                    <div className="h-[420px] rounded-[1.5rem] overflow-hidden" style={{ backgroundColor: '#f2f1ec', border: '1px solid #E7D8BD' }}>
+                                        <AvatarViewer2D config={selectedPreset.config} interactive={true} variant="full" />
                                     </div>
                                 </div>
                             </div>

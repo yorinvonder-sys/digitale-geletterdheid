@@ -11,13 +11,13 @@ interface AvatarSetupProps {
 }
 
 const SKIN_COLORS = [
-    { id: 'pale', value: '#f5d0b0', label: 'Licht' },
-    { id: 'fair', value: '#ffe0bd', label: 'Crème' },
-    { id: 'tan', value: '#d18a6a', label: 'Getint' },
-    { id: 'olive', value: '#c68642', label: 'Olijf' },
-    { id: 'brown', value: '#a0522d', label: 'Bruin' },
-    { id: 'dark', value: '#8d5524', label: 'Donker' },
-    { id: 'ebony', value: '#614335', label: 'Ebben' },
+    { id: 'acid', value: '#e1ff01', label: 'Acid Geel' },
+    { id: 'orange', value: '#F2A23C', label: 'Oranje' },
+    { id: 'mint', value: '#A8E6CF', label: 'Mint' },
+    { id: 'sky', value: '#87CEEB', label: 'Hemelsblauw' },
+    { id: 'lavender', value: '#C9B1FF', label: 'Lavendel' },
+    { id: 'coral', value: '#FF6B6B', label: 'Koraal' },
+    { id: 'white', value: '#F8F8F0', label: 'Wit' },
 ];
 
 const SHIRT_COLORS = [
@@ -101,8 +101,8 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
 
     const STEPS = [
         { id: 'welcome', title: 'Kies je karakter', subtitle: 'Welkom!' },
-        { id: 'face', title: 'Gezicht & Haar', subtitle: 'Maak het uniek' },
-        { id: 'clothing', title: 'Kleding & Extras', subtitle: 'Personaliseer verder' },
+        { id: 'face', title: 'Snavel & Kuif', subtitle: 'Maak het uniek' },
+        { id: 'clothing', title: 'Outfit & Accessoires', subtitle: 'Personaliseer verder' },
         { id: 'done', title: 'Klaar!', subtitle: 'Je avatar is af' },
     ];
 
@@ -212,7 +212,7 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
 
                                     {/* Skin Color Selection */}
                                     <div>
-                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2 text-duck-ink/65">Huidskleur</p>
+                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2 text-duck-ink/65">Verenkleur</p>
                                         <div className="flex flex-wrap gap-2.5 justify-center">
                                             {SKIN_COLORS.map(skin => (
                                                 <button
@@ -238,7 +238,7 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
                                 <div className="space-y-4 animate-in fade-in">
                                     {/* Expression */}
                                     <div>
-                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2 text-duck-ink/65">Gezicht</p>
+                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2 text-duck-ink/65">Snavel & Ogen</p>
                                         <div className="grid grid-cols-4 gap-2">
                                             {EXPRESSIONS.map(expression => (
                                                 <button
@@ -258,7 +258,7 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
 
                                     {/* Hair Style */}
                                     <div>
-                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2 text-duck-ink/65">Kapsel</p>
+                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2 text-duck-ink/65">Kuif</p>
                                         <div className="grid grid-cols-4 gap-2">
                                             {hairStyles.map(hair => (
                                                 <button
@@ -283,7 +283,7 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
 
                                     {/* Hair Color */}
                                     <div>
-                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2 text-duck-ink/65">Haar kleur</p>
+                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2 text-duck-ink/65">Kuifkleur</p>
                                         <div className="flex flex-wrap gap-2.5 justify-center">
                                             {HAIR_COLORS.map(color => (
                                                 <button
@@ -306,7 +306,7 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
                                 <div className="space-y-4 animate-in fade-in">
                                     {/* Shirt Style */}
                                     <div>
-                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2 text-duck-ink/65">Shirt stijl</p>
+                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2 text-duck-ink/65">Outfit</p>
                                         <div className="grid grid-cols-4 gap-2">
                                             {SHIRT_STYLES.map(shirt => (
                                                 <button
@@ -331,7 +331,7 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
 
                                     {/* Shirt Color */}
                                     <div>
-                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2 text-duck-ink/65">Shirt kleur</p>
+                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2 text-duck-ink/65">Outfit kleur</p>
                                         <div className="flex flex-wrap gap-2.5 justify-center">
                                             {SHIRT_COLORS.map(color => (
                                                 <button
@@ -392,7 +392,7 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
 
                                     {/* Shoe Color */}
                                     <div>
-                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2 text-duck-ink/65">Schoenen kleur</p>
+                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2 text-duck-ink/65">Voetjes kleur</p>
                                         <div className="flex flex-wrap gap-2.5 justify-center">
                                             {SHOE_COLORS.map(color => (
                                                 <button

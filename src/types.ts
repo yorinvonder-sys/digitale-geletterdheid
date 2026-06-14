@@ -157,7 +157,7 @@ export interface AvatarConfig {
 
 export const DEFAULT_AVATAR_CONFIG: AvatarConfig = {
   baseModel: 'standard',
-  skinColor: '#f5d0b0',
+  skinColor: '#e1ff01',
   shirtColor: '#D97848',
   pantsColor: '#08283B',
   accessory: 'none',
