@@ -126,8 +126,8 @@ export function HoursPanel({ userId, year }: HoursPanelProps) {
         return (
             <div className="flex items-center justify-center py-24">
                 <div className="space-y-4 text-center">
-                    <div className="w-12 h-12 border-4 border-lab-coral border-t-transparent rounded-full animate-spin mx-auto" />
-                    <p className="text-lab-muted text-sm font-medium">Uren laden...</p>
+                    <div className="w-12 h-12 border-4 border-duck-coral border-t-transparent rounded-full animate-spin mx-auto" />
+                    <p className="text-duck-muted text-sm font-medium">Uren laden...</p>
                 </div>
             </div>
         );
@@ -135,11 +135,11 @@ export function HoursPanel({ userId, year }: HoursPanelProps) {
 
     if (error && entries.length === 0) {
         return (
-            <div className="bg-lab-coral border border-lab-coral rounded-2xl p-8 text-center">
-                <p className="text-lab-coral font-bold">{error}</p>
+            <div className="bg-duck-coral border border-duck-coral rounded-2xl p-8 text-center">
+                <p className="text-duck-coral font-bold">{error}</p>
                 <button
                     onClick={loadEntries}
-                    className="mt-4 px-4 py-2 bg-lab-coral text-white rounded-xl text-sm font-bold hover:bg-lab-coral hover:text-white"
+                    className="mt-4 px-4 py-2 bg-duck-coral text-white rounded-xl text-sm font-bold hover:bg-duck-coral hover:text-white"
                 >
                     Opnieuw proberen
                 </button>
@@ -151,13 +151,13 @@ export function HoursPanel({ userId, year }: HoursPanelProps) {
         <div className="space-y-8">
 
             {/* ===== SECTIE 1: Voortgang urencriterium ===== */}
-            <div className="bg-lab-ink text-white rounded-[2rem] p-4 sm:p-8">
+            <div className="bg-duck-ink text-white rounded-[2rem] p-4 sm:p-8">
                 <div className="flex items-center gap-3 mb-6">
                     <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center">
                         <TrendingUp size={20} className="text-white" />
                     </div>
                     <div>
-                        <h3 className="text-sm font-black uppercase tracking-widest text-lab-muted">
+                        <h3 className="text-sm font-black uppercase tracking-widest text-duck-muted">
                             Urencriterium {year}
                         </h3>
                         <p className="text-2xl font-black text-white tabular-nums">
@@ -165,13 +165,13 @@ export function HoursPanel({ userId, year }: HoursPanelProps) {
                         </p>
                     </div>
                     {criteriumHaald && (
-                        <div className="ml-auto flex items-center gap-2 bg-lab-coral/20 text-lab-sage rounded-xl px-4 py-2">
+                        <div className="ml-auto flex items-center gap-2 bg-duck-coral/20 text-duck-ink rounded-xl px-4 py-2">
                             <CheckCircle size={16} />
                             <span className="text-xs font-black uppercase tracking-wide">Gehaald</span>
                         </div>
                     )}
                     {!criteriumHaald && totalHours > 0 && (
-                        <div className="ml-auto flex items-center gap-2 bg-lab-coral/20 text-lab-gold rounded-xl px-4 py-2">
+                        <div className="ml-auto flex items-center gap-2 bg-duck-coral/20 text-duck-ink rounded-xl px-4 py-2">
                             <AlertCircle size={16} />
                             <span className="text-xs font-black uppercase tracking-wide">
                                 Nog {(URENCRITERIUM - totalHours).toLocaleString('nl-NL', { maximumFractionDigits: 1 })} uur
@@ -184,15 +184,15 @@ export function HoursPanel({ userId, year }: HoursPanelProps) {
                 <div className="mb-3">
                     <div className="h-4 bg-white/10 rounded-full overflow-hidden">
                         <div
-                            className={`h-full rounded-full transition-all duration-500 ${criteriumHaald ? 'bg-lab-coral' : 'bg-lab-gold'}`}
+                            className={`h-full rounded-full transition-all duration-500 ${criteriumHaald ? 'bg-duck-coral' : 'bg-duck-acid'}`}
                             style={{ width: `${progress}%` }}
                         />
                     </div>
                     <div className="flex justify-between mt-1.5">
-                        <span className="text-[10px] font-black text-lab-muted uppercase tracking-widest">
+                        <span className="text-[10px] font-black text-duck-muted uppercase tracking-widest">
                             {progress.toFixed(1)}% van urencriterium
                         </span>
-                        <span className="text-[10px] font-black text-lab-muted uppercase tracking-widest">
+                        <span className="text-[10px] font-black text-duck-muted uppercase tracking-widest">
                             Min. 1.225 uur voor zelfstandigenaftrek (€5.030)
                         </span>
                     </div>
@@ -201,20 +201,20 @@ export function HoursPanel({ userId, year }: HoursPanelProps) {
                 {/* 3 stats */}
                 <div className="grid grid-cols-3 gap-4 mt-6 pt-6 border-t border-white/10">
                     <div className="text-center">
-                        <p className="text-[10px] font-black text-lab-muted uppercase tracking-widest mb-1">Totaal uren</p>
+                        <p className="text-[10px] font-black text-duck-muted uppercase tracking-widest mb-1">Totaal uren</p>
                         <p className="text-xl font-black text-white tabular-nums">
                             {totalHours.toLocaleString('nl-NL', { maximumFractionDigits: 1 })}
                         </p>
                     </div>
                     <div className="text-center border-x border-white/10">
-                        <p className="text-[10px] font-black text-lab-muted uppercase tracking-widest mb-1">Declarabel</p>
-                        <p className="text-xl font-black text-lab-sage tabular-nums">
+                        <p className="text-[10px] font-black text-duck-muted uppercase tracking-widest mb-1">Declarabel</p>
+                        <p className="text-xl font-black text-duck-ink tabular-nums">
                             {billableHours.toLocaleString('nl-NL', { maximumFractionDigits: 1 })}
                         </p>
                     </div>
                     <div className="text-center">
-                        <p className="text-[10px] font-black text-lab-muted uppercase tracking-widest mb-1">Niet declarabel</p>
-                        <p className="text-xl font-black text-lab-muted tabular-nums">
+                        <p className="text-[10px] font-black text-duck-muted uppercase tracking-widest mb-1">Niet declarabel</p>
+                        <p className="text-xl font-black text-duck-muted tabular-nums">
                             {nonBillable.toLocaleString('nl-NL', { maximumFractionDigits: 1 })}
                         </p>
                     </div>
@@ -222,16 +222,16 @@ export function HoursPanel({ userId, year }: HoursPanelProps) {
             </div>
 
             {/* ===== SECTIE 2: Snelle toevoeg-kaart ===== */}
-            <div className="bg-white rounded-[2rem] border border-lab-line shadow-sm p-4 sm:p-8">
+            <div className="bg-white rounded-[2rem] border border-duck-line shadow-sm p-4 sm:p-8">
                 <div className="flex items-center gap-3 mb-6">
-                    <div className="w-10 h-10 bg-lab-coral rounded-xl flex items-center justify-center">
-                        <Plus size={20} className="text-lab-coral" />
+                    <div className="w-10 h-10 bg-duck-coral rounded-xl flex items-center justify-center">
+                        <Plus size={20} className="text-duck-coral" />
                     </div>
-                    <h3 className="text-lg font-black text-lab-ink uppercase tracking-tight">Uren registreren</h3>
+                    <h3 className="text-lg font-black text-duck-ink uppercase tracking-tight">Uren registreren</h3>
                 </div>
 
                 {formError && (
-                    <div className="flex items-center gap-2 text-white bg-lab-coral border border-lab-coral rounded-xl px-4 py-3 text-sm mb-5">
+                    <div className="flex items-center gap-2 text-white bg-duck-coral border border-duck-coral rounded-xl px-4 py-3 text-sm mb-5">
                         <AlertCircle size={14} />
                         {formError}
                     </div>
@@ -240,20 +240,20 @@ export function HoursPanel({ userId, year }: HoursPanelProps) {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     {/* Datum */}
                     <div>
-                        <label className="block text-[10px] font-black text-lab-muted uppercase tracking-widest mb-1">
+                        <label className="block text-[10px] font-black text-duck-muted uppercase tracking-widest mb-1">
                             Datum *
                         </label>
                         <input
                             type="date"
                             value={form.date}
                             onChange={e => setForm(f => ({ ...f, date: e.target.value }))}
-                            className="w-full px-3 py-2.5 border border-lab-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-lab-coral"
+                            className="w-full px-3 py-2.5 border border-duck-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-duck-coral"
                         />
                     </div>
 
                     {/* Uren */}
                     <div>
-                        <label className="block text-[10px] font-black text-lab-muted uppercase tracking-widest mb-1">
+                        <label className="block text-[10px] font-black text-duck-muted uppercase tracking-widest mb-1">
                             Uren *
                         </label>
                         <input
@@ -264,13 +264,13 @@ export function HoursPanel({ userId, year }: HoursPanelProps) {
                             value={form.hours}
                             onChange={e => setForm(f => ({ ...f, hours: e.target.value }))}
                             placeholder="8"
-                            className="w-full px-3 py-2.5 border border-lab-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-lab-coral"
+                            className="w-full px-3 py-2.5 border border-duck-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-duck-coral"
                         />
                     </div>
 
                     {/* Opdrachtgever */}
                     <div>
-                        <label className="block text-[10px] font-black text-lab-muted uppercase tracking-widest mb-1">
+                        <label className="block text-[10px] font-black text-duck-muted uppercase tracking-widest mb-1">
                             Opdrachtgever
                         </label>
                         <input
@@ -278,13 +278,13 @@ export function HoursPanel({ userId, year }: HoursPanelProps) {
                             value={form.client}
                             onChange={e => setForm(f => ({ ...f, client: e.target.value }))}
                             placeholder="Bedrijf BV (optioneel)"
-                            className="w-full px-3 py-2.5 border border-lab-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-lab-coral"
+                            className="w-full px-3 py-2.5 border border-duck-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-duck-coral"
                         />
                     </div>
 
                     {/* Omschrijving */}
                     <div>
-                        <label className="block text-[10px] font-black text-lab-muted uppercase tracking-widest mb-1">
+                        <label className="block text-[10px] font-black text-duck-muted uppercase tracking-widest mb-1">
                             Omschrijving *
                         </label>
                         <input
@@ -292,7 +292,7 @@ export function HoursPanel({ userId, year }: HoursPanelProps) {
                             value={form.description}
                             onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
                             placeholder="Frontend ontwikkeling"
-                            className="w-full px-3 py-2.5 border border-lab-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-lab-coral"
+                            className="w-full px-3 py-2.5 border border-duck-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-duck-coral"
                         />
                     </div>
                 </div>
@@ -302,13 +302,13 @@ export function HoursPanel({ userId, year }: HoursPanelProps) {
                     <label className="flex items-center gap-3 cursor-pointer select-none">
                         <div
                             onClick={() => setForm(f => ({ ...f, billable: !f.billable }))}
-                            className={`relative w-11 h-6 rounded-full transition-colors ${form.billable ? 'bg-lab-coral' : 'bg-lab-creamDeep'}`}
+                            className={`relative w-11 h-6 rounded-full transition-colors ${form.billable ? 'bg-duck-coral' : 'bg-duck-creamDeep'}`}
                         >
                             <span
                                 className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${form.billable ? 'translate-x-5' : 'translate-x-0'}`}
                             />
                         </div>
-                        <span className="text-sm font-bold text-lab-muted">
+                        <span className="text-sm font-bold text-duck-muted">
                             {form.billable ? 'Declarabel' : 'Niet declarabel'}
                         </span>
                     </label>
@@ -316,7 +316,7 @@ export function HoursPanel({ userId, year }: HoursPanelProps) {
                     <button
                         onClick={handleSave}
                         disabled={saving}
-                        className="flex items-center gap-2 px-6 py-2.5 bg-lab-coral text-white rounded-xl font-bold text-sm hover:bg-lab-coral hover:text-white disabled:opacity-50 transition-colors"
+                        className="flex items-center gap-2 px-6 py-2.5 bg-duck-coral text-white rounded-xl font-bold text-sm hover:bg-duck-coral hover:text-white disabled:opacity-50 transition-colors"
                     >
                         <Clock size={16} />
                         {saving ? 'Opslaan...' : 'Uren opslaan'}
@@ -325,8 +325,8 @@ export function HoursPanel({ userId, year }: HoursPanelProps) {
             </div>
 
             {/* ===== SECTIE 3: Uren per maand (mini bar chart) ===== */}
-            <div className="bg-white rounded-[2rem] border border-lab-line shadow-sm p-4 sm:p-8">
-                <h3 className="text-[10px] font-black text-lab-muted uppercase tracking-widest mb-6">
+            <div className="bg-white rounded-[2rem] border border-duck-line shadow-sm p-4 sm:p-8">
+                <h3 className="text-[10px] font-black text-duck-muted uppercase tracking-widest mb-6">
                     Uren per maand — {year}
                 </h3>
 
@@ -340,18 +340,18 @@ export function HoursPanel({ userId, year }: HoursPanelProps) {
                         return (
                             <div key={month} className="flex-1 flex flex-col items-center gap-1">
                                 {/* Maandafkorting */}
-                                <span className={`text-[9px] font-black uppercase tracking-wide ${isCurrentMonth ? 'text-lab-coral' : 'text-lab-muted'}`}>
+                                <span className={`text-[9px] font-black uppercase tracking-wide ${isCurrentMonth ? 'text-duck-coral' : 'text-duck-muted'}`}>
                                     {MAAND_AFKORTINGEN[month - 1]}
                                 </span>
                                 {/* Bar container */}
                                 <div className="w-full flex items-end justify-center" style={{ height: '64px' }}>
                                     <div
-                                        className={`w-full rounded-t-lg transition-all duration-300 ${hours > 0 ? (isCurrentMonth ? 'bg-lab-coral' : 'bg-lab-coral') : 'bg-lab-cream'}`}
+                                        className={`w-full rounded-t-lg transition-all duration-300 ${hours > 0 ? (isCurrentMonth ? 'bg-duck-coral' : 'bg-duck-coral') : 'bg-duck-bg'}`}
                                         style={{ height: `${barHeight}px` }}
                                     />
                                 </div>
                                 {/* Urenteller */}
-                                <span className={`text-[9px] font-black tabular-nums ${hours > 0 ? 'text-lab-muted' : 'text-lab-muted'}`}>
+                                <span className={`text-[9px] font-black tabular-nums ${hours > 0 ? 'text-duck-muted' : 'text-duck-muted'}`}>
                                     {hours > 0 ? hours.toLocaleString('nl-NL', { maximumFractionDigits: 1 }) : '—'}
                                 </span>
                             </div>
@@ -361,13 +361,13 @@ export function HoursPanel({ userId, year }: HoursPanelProps) {
             </div>
 
             {/* ===== SECTIE 4: Urentabel ===== */}
-            <div className="bg-white rounded-[2rem] border border-lab-line shadow-sm overflow-hidden">
-                <div className="px-6 py-5 border-b border-lab-line flex items-center justify-between">
-                    <h3 className="text-[10px] font-black text-lab-muted uppercase tracking-widest">
+            <div className="bg-white rounded-[2rem] border border-duck-line shadow-sm overflow-hidden">
+                <div className="px-6 py-5 border-b border-duck-line flex items-center justify-between">
+                    <h3 className="text-[10px] font-black text-duck-muted uppercase tracking-widest">
                         Urenregistraties ({entries.length})
                     </h3>
                     {error && (
-                        <span className="flex items-center gap-1.5 text-lab-coral text-xs font-bold">
+                        <span className="flex items-center gap-1.5 text-duck-coral text-xs font-bold">
                             <AlertCircle size={12} />
                             {error}
                         </span>
@@ -376,11 +376,11 @@ export function HoursPanel({ userId, year }: HoursPanelProps) {
 
                 {entries.length === 0 ? (
                     <div className="py-16 text-center">
-                        <div className="w-14 h-14 bg-lab-cream rounded-2xl flex items-center justify-center mx-auto mb-4">
-                            <Clock size={28} className="text-lab-muted" />
+                        <div className="w-14 h-14 bg-duck-bg rounded-2xl flex items-center justify-center mx-auto mb-4">
+                            <Clock size={28} className="text-duck-muted" />
                         </div>
-                        <p className="text-lab-muted text-sm font-medium">Nog geen uren geregistreerd</p>
-                        <p className="text-lab-muted text-xs mt-1">
+                        <p className="text-duck-muted text-sm font-medium">Nog geen uren geregistreerd</p>
+                        <p className="text-duck-muted text-xs mt-1">
                             Gebruik het formulier hierboven om uren toe te voegen.
                         </p>
                     </div>
@@ -388,20 +388,20 @@ export function HoursPanel({ userId, year }: HoursPanelProps) {
                     <div className="overflow-x-auto">
                         <table className="w-full">
                             <thead>
-                                <tr className="border-b border-lab-line">
-                                    <th className="text-left text-[10px] font-black text-lab-muted uppercase tracking-widest px-6 py-4">
+                                <tr className="border-b border-duck-line">
+                                    <th className="text-left text-[10px] font-black text-duck-muted uppercase tracking-widest px-6 py-4">
                                         Datum
                                     </th>
-                                    <th className="text-left text-[10px] font-black text-lab-muted uppercase tracking-widest px-6 py-4">
+                                    <th className="text-left text-[10px] font-black text-duck-muted uppercase tracking-widest px-6 py-4">
                                         Omschrijving
                                     </th>
-                                    <th className="text-left text-[10px] font-black text-lab-muted uppercase tracking-widest px-6 py-4">
+                                    <th className="text-left text-[10px] font-black text-duck-muted uppercase tracking-widest px-6 py-4">
                                         Opdrachtgever
                                     </th>
-                                    <th className="text-right text-[10px] font-black text-lab-muted uppercase tracking-widest px-6 py-4">
+                                    <th className="text-right text-[10px] font-black text-duck-muted uppercase tracking-widest px-6 py-4">
                                         Uren
                                     </th>
-                                    <th className="text-center text-[10px] font-black text-lab-muted uppercase tracking-widest px-6 py-4">
+                                    <th className="text-center text-[10px] font-black text-duck-muted uppercase tracking-widest px-6 py-4">
                                         Declarabel
                                     </th>
                                     <th className="px-6 py-4 w-12" />
@@ -411,45 +411,45 @@ export function HoursPanel({ userId, year }: HoursPanelProps) {
                                 {entries.map(entry => (
                                     <tr
                                         key={entry.id}
-                                        className="hover:bg-lab-cream transition-colors group"
+                                        className="hover:bg-duck-bg transition-colors group"
                                         onMouseEnter={() => setHoveredRow(entry.id || null)}
                                         onMouseLeave={() => setHoveredRow(null)}
                                     >
                                         <td className="px-6 py-4 whitespace-nowrap">
-                                            <span className="text-sm font-bold text-lab-muted">
+                                            <span className="text-sm font-bold text-duck-muted">
                                                 {formatDate(entry.date)}
                                             </span>
                                         </td>
                                         <td className="px-6 py-4">
-                                            <span className="text-sm text-lab-muted line-clamp-1">
+                                            <span className="text-sm text-duck-muted line-clamp-1">
                                                 {entry.description}
                                             </span>
                                         </td>
                                         <td className="px-6 py-4">
                                             {entry.client ? (
-                                                <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-[10px] font-black bg-lab-coral text-white uppercase tracking-wide">
+                                                <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-[10px] font-black bg-duck-coral text-white uppercase tracking-wide">
                                                     {entry.client}
                                                 </span>
                                             ) : (
-                                                <span className="text-lab-muted text-xs">—</span>
+                                                <span className="text-duck-muted text-xs">—</span>
                                             )}
                                         </td>
                                         <td className="px-6 py-4 text-right">
-                                            <span className="text-sm font-black text-lab-ink tabular-nums">
+                                            <span className="text-sm font-black text-duck-ink tabular-nums">
                                                 {entry.hours.toLocaleString('nl-NL', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
                                             </span>
                                         </td>
                                         <td className="px-6 py-4 text-center">
                                             {entry.billable ? (
-                                                <CheckCircle size={18} className="text-lab-muted mx-auto" />
+                                                <CheckCircle size={18} className="text-duck-muted mx-auto" />
                                             ) : (
-                                                <XCircle size={18} className="text-lab-muted mx-auto" />
+                                                <XCircle size={18} className="text-duck-muted mx-auto" />
                                             )}
                                         </td>
                                         <td className="px-6 py-4 text-right">
                                             <button
                                                 onClick={() => entry.id && handleDelete(entry.id)}
-                                                className={`p-2.5 rounded-lg text-lab-muted hover:text-lab-muted hover:bg-lab-coral hover:text-white transition-all ${hoveredRow === entry.id ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}
+                                                className={`p-2.5 rounded-lg text-duck-muted hover:text-duck-muted hover:bg-duck-coral hover:text-white transition-all ${hoveredRow === entry.id ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}
                                                 title="Verwijderen"
                                             >
                                                 <Trash2 size={16} />
@@ -460,14 +460,14 @@ export function HoursPanel({ userId, year }: HoursPanelProps) {
                             </tbody>
                             {entries.length > 0 && (
                                 <tfoot>
-                                    <tr className="border-t-2 border-lab-line bg-lab-cream">
+                                    <tr className="border-t-2 border-duck-line bg-duck-bg">
                                         <td colSpan={3} className="px-6 py-4">
-                                            <span className="text-[10px] font-black text-lab-muted uppercase tracking-widest">
+                                            <span className="text-[10px] font-black text-duck-muted uppercase tracking-widest">
                                                 Totaal {year}
                                             </span>
                                         </td>
                                         <td className="px-6 py-4 text-right">
-                                            <span className="text-sm font-black text-lab-ink tabular-nums">
+                                            <span className="text-sm font-black text-duck-ink tabular-nums">
                                                 {totalHours.toLocaleString('nl-NL', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
                                             </span>
                                         </td>
@@ -511,39 +511,39 @@ export function HoursPanel({ userId, year }: HoursPanelProps) {
 //    const hoursProgress = Math.min((totalHours / URENCRITERIUM) * 100, 100);
 //
 // 4. JSX-SECTIE (invoegen vóór de BTW-sectie, na de IB-berekening grid):
-//    <div className="bg-white rounded-[2rem] border border-lab-line shadow-sm p-8">
+//    <div className="bg-white rounded-[2rem] border border-duck-line shadow-sm p-8">
 //        <div className="flex items-center gap-3 mb-6">
-//            <div className="w-10 h-10 bg-lab-gold rounded-xl flex items-center justify-center">
-//                <Clock size={20} className="text-lab-gold" />
+//            <div className="w-10 h-10 bg-duck-acid rounded-xl flex items-center justify-center">
+//                <Clock size={20} className="text-duck-ink" />
 //            </div>
-//            <h3 className="text-lg font-black text-lab-ink uppercase tracking-tight">
+//            <h3 className="text-lg font-black text-duck-ink uppercase tracking-tight">
 //                Urenregistratie & Zelfstandigenaftrek
 //            </h3>
 //        </div>
 //        <div className="mb-4">
 //            <div className="flex justify-between mb-2">
-//                <span className="text-sm font-bold text-lab-muted">
+//                <span className="text-sm font-bold text-duck-muted">
 //                    {totalHours.toLocaleString('nl-NL', { maximumFractionDigits: 1 })} / {URENCRITERIUM} uur geregistreerd
 //                </span>
-//                <span className={`text-sm font-black ${criteriumHaald ? 'text-lab-sage' : 'text-lab-gold'}`}>
+//                <span className={`text-sm font-black ${criteriumHaald ? 'text-duck-ink' : 'text-duck-ink'}`}>
 //                    {hoursProgress.toFixed(1)}%
 //                </span>
 //            </div>
-//            <div className="h-3 bg-lab-cream rounded-full overflow-hidden">
+//            <div className="h-3 bg-duck-bg rounded-full overflow-hidden">
 //                <div
-//                    className={`h-full rounded-full transition-all ${criteriumHaald ? 'bg-lab-coral' : 'bg-lab-gold'}`}
+//                    className={`h-full rounded-full transition-all ${criteriumHaald ? 'bg-duck-coral' : 'bg-duck-acid'}`}
 //                    style={{ width: `${hoursProgress}%` }}
 //                />
 //            </div>
 //        </div>
 //        {!criteriumHaald && (
-//            <div className="flex items-start gap-3 bg-lab-gold border border-lab-gold rounded-2xl px-5 py-4">
-//                <AlertCircle size={18} className="text-lab-muted shrink-0 mt-0.5" />
+//            <div className="flex items-start gap-3 bg-duck-acid border border-duck-acid rounded-2xl px-5 py-4">
+//                <AlertCircle size={18} className="text-duck-muted shrink-0 mt-0.5" />
 //                <div>
-//                    <p className="text-sm font-black text-lab-gold">
+//                    <p className="text-sm font-black text-duck-ink">
 //                        Urencriterium nog niet gehaald
 //                    </p>
-//                    <p className="text-xs text-lab-gold mt-0.5">
+//                    <p className="text-xs text-duck-ink mt-0.5">
 //                        Je hebt minimaal 1.225 uur per jaar nodig voor de zelfstandigenaftrek (€5.030).
 //                        Nog {(URENCRITERIUM - totalHours).toLocaleString('nl-NL', { maximumFractionDigits: 1 })} uur te gaan.
 //                        Registreer uren via het tabblad "Uren".
@@ -552,13 +552,13 @@ export function HoursPanel({ userId, year }: HoursPanelProps) {
 //            </div>
 //        )}
 //        {criteriumHaald && (
-//            <div className="flex items-start gap-3 bg-lab-sage border border-lab-sage rounded-2xl px-5 py-4">
-//                <CheckCircle size={18} className="text-lab-muted shrink-0 mt-0.5" />
+//            <div className="flex items-start gap-3 bg-duck-ink border border-duck-ink rounded-2xl px-5 py-4">
+//                <CheckCircle size={18} className="text-duck-muted shrink-0 mt-0.5" />
 //                <div>
-//                    <p className="text-sm font-black text-lab-sage">
+//                    <p className="text-sm font-black text-duck-ink">
 //                        Urencriterium gehaald — zelfstandigenaftrek van toepassing
 //                    </p>
-//                    <p className="text-xs text-lab-sage mt-0.5">
+//                    <p className="text-xs text-duck-ink mt-0.5">
 //                        Je hebt {totalHours.toLocaleString('nl-NL', { maximumFractionDigits: 1 })} uur geregistreerd.
 //                        De zelfstandigenaftrek van €5.030 is verwerkt in de IB-berekening hierboven.
 //                    </p>

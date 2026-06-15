@@ -16,9 +16,15 @@ import {
     createContainer,
     deleteContainer,
     reorderContainers,
-    seedDefaultContainersForSchool,
+    seedTemplateContainersForSchool,
     resetToDefaultScheduling,
+    updateContainer,
+    assignMissionToContainer,
+    removeMissionFromContainer,
+    reorderContainerMissions,
 } from '@/services/containerService';
+import { ContainerEditor } from './ContainerEditor';
+import { getMissionsForYear } from '@/config/missions';
 import { SCHEDULING_TEMPLATES, SchedulingTemplate } from '@/config/containerTypes';
 import { getContainerTheme, getAutoTheme } from '@/config/containerThemes';
 import { supabase } from '@/services/supabase';
@@ -124,7 +130,7 @@ const TemplateSelector: React.FC<TemplateSelectorProps> = ({
         setSeeding(template.id);
         setError(null);
         try {
-            await seedDefaultContainersForSchool(schoolId, yearGroup);
+            await seedTemplateContainersForSchool(schoolId, yearGroup, template);
             onTemplateChosen();
         } catch (e) {
             setError(e instanceof Error ? e.message : 'Onbekende fout');
@@ -491,20 +497,52 @@ export const SchedulingConfigurator: React.FC<SchedulingConfiguratorProps> = ({
                                 />
                             ))}
 
-                            {/* ContainerEditor placeholder — shown when editing */}
-                            {editingContainerId && (
-                                <div className="p-4 bg-lab-coral border border-lab-coral rounded-2xl text-sm text-lab-coral flex items-center justify-between">
-                                    <span>
-                                        ContainerEditor wordt hier geopend voor container <code className="font-mono text-xs">{editingContainerId}</code>
-                                    </span>
-                                    <button
-                                        onClick={() => setEditingContainerId(null)}
-                                        className="text-lab-coral hover:text-lab-coral ml-4 flex-shrink-0"
-                                    >
-                                        <X size={14} />
-                                    </button>
-                                </div>
-                            )}
+                            {/* ContainerEditor — shown when editing */}
+                            {(() => {
+                                const editing = editingContainerId
+                                    ? containers.find(c => c.id === editingContainerId)
+                                    : undefined;
+                                if (!editing) return null;
+                                return (
+                                    <ContainerEditor
+                                        container={editing}
+                                        yearGroup={yearGroup}
+                                        allMissions={getMissionsForYear(yearGroup)}
+                                        assignedMissionIds={new Set(
+                                            containers
+                                                .filter(c => c.id !== editingContainerId)
+                                                .flatMap(c => c.missions.map(m => m.missionId))
+                                        )}
+                                        onAssignMission={async (missionId) => {
+                                            await assignMissionToContainer(editingContainerId, missionId, editing.missions.length);
+                                            await refreshContainers();
+                                        }}
+                                        onRemoveMission={async (missionId) => {
+                                            await removeMissionFromContainer(editingContainerId, missionId);
+                                            await refreshContainers();
+                                        }}
+                                        onReorderMissions={async (ids) => {
+                                            await reorderContainerMissions(editingContainerId, ids);
+                                            await refreshContainers();
+                                        }}
+                                        onClose={() => setEditingContainerId(null)}
+                                        onSave={async (updated) => {
+                                            await updateContainer(editingContainerId, updated);
+                                            if (updated.missions) {
+                                                for (const m of updated.missions) {
+                                                    await assignMissionToContainer(
+                                                        editingContainerId,
+                                                        m.missionId,
+                                                        m.sortOrder,
+                                                        m.isReview
+                                                    );
+                                                }
+                                            }
+                                            await refreshContainers();
+                                        }}
+                                    />
+                                );
+                            })()}
 
                             {/* Add button */}
                             <button

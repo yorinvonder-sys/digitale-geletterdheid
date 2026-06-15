@@ -224,7 +224,7 @@ export function ReceiptsPanel({ receipts, userId, onRefresh }: ReceiptsPanelProp
         <div className="space-y-8">
             {/* Foutmelding buiten formulier (bijv. van handleDelete) */}
             {error && !form && (
-                <div className="flex items-center gap-2 text-white bg-lab-coral border border-lab-coral rounded-xl px-4 py-3 text-sm">
+                <div className="flex items-center gap-2 text-white bg-duck-coral border border-duck-coral rounded-xl px-4 py-3 text-sm">
                     <AlertCircle size={14} />
                     {error}
                 </div>
@@ -233,7 +233,7 @@ export function ReceiptsPanel({ receipts, userId, onRefresh }: ReceiptsPanelProp
             {!form ? (
                 <div
                     ref={dropRef}
-                    className="border-2 border-dashed border-lab-line rounded-[2rem] p-6 sm:p-12 text-center cursor-pointer hover:border-lab-coral hover:bg-lab-coral/50 transition-all group"
+                    className="border-2 border-dashed border-duck-line rounded-[2rem] p-6 sm:p-12 text-center cursor-pointer hover:border-duck-coral hover:bg-duck-coral/50 transition-all group"
                     onClick={() => fileRef.current?.click()}
                     onDragOver={e => e.preventDefault()}
                     onDrop={e => {
@@ -249,23 +249,23 @@ export function ReceiptsPanel({ receipts, userId, onRefresh }: ReceiptsPanelProp
                         className="hidden"
                         onChange={e => { const f = e.target.files?.[0]; if (f) handleFile(f); }}
                     />
-                    <div className="w-16 h-16 bg-lab-coral rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:bg-lab-coral hover:text-white transition-colors">
-                        <Upload size={28} className="text-lab-coral" />
+                    <div className="w-16 h-16 bg-duck-coral rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:bg-duck-coral hover:text-white transition-colors">
+                        <Upload size={28} className="text-duck-coral" />
                     </div>
-                    <h3 className="text-lg font-black text-lab-ink mb-2">Bonnetje uploaden</h3>
-                    <p className="text-sm text-lab-muted">
+                    <h3 className="text-lg font-black text-duck-ink mb-2">Bonnetje uploaden</h3>
+                    <p className="text-sm text-duck-muted">
                         Sleep een foto of PDF van je bonnetje hierheen of klik om te selecteren
                     </p>
-                    <p className="text-xs text-lab-muted mt-2">
+                    <p className="text-xs text-duck-muted mt-2">
                         JPG, PNG, WEBP, GIF, HEIC, PDF — max 10 MB — Claude AI scant automatisch
                     </p>
                 </div>
             ) : (
                 /* Scan resultaat + formulier */
-                <div className="bg-white rounded-[2rem] border border-lab-line shadow-sm overflow-hidden">
+                <div className="bg-white rounded-[2rem] border border-duck-line shadow-sm overflow-hidden">
                     <div className="grid grid-cols-1 md:grid-cols-2">
                         {/* Preview */}
-                        <div className="bg-lab-cream p-4 sm:p-8 flex flex-col items-center justify-center min-h-64">
+                        <div className="bg-duck-bg p-4 sm:p-8 flex flex-col items-center justify-center min-h-64">
                             {previewUrl ? (
                                 <img
                                     src={previewUrl}
@@ -274,18 +274,18 @@ export function ReceiptsPanel({ receipts, userId, onRefresh }: ReceiptsPanelProp
                                 />
                             ) : (
                                 <div className="flex flex-col items-center gap-3">
-                                    <FileText size={48} className="text-lab-muted" />
-                                    <p className="text-sm text-lab-muted">{uploadedFile?.name}</p>
+                                    <FileText size={48} className="text-duck-muted" />
+                                    <p className="text-sm text-duck-muted">{uploadedFile?.name}</p>
                                 </div>
                             )}
                             {scanning && (
-                                <div className="mt-4 flex items-center gap-2 text-white bg-lab-coral rounded-xl px-4 py-2">
+                                <div className="mt-4 flex items-center gap-2 text-white bg-duck-coral rounded-xl px-4 py-2">
                                     <Sparkles size={16} className="animate-pulse" />
                                     <span className="text-xs font-bold animate-pulse">AI scant bonnetje...</span>
                                 </div>
                             )}
                             {scanSuccess && !scanning && (
-                                <div className="mt-4 flex items-center gap-2 text-white bg-lab-sage rounded-xl px-4 py-2">
+                                <div className="mt-4 flex items-center gap-2 text-white bg-duck-ink rounded-xl px-4 py-2">
                                     <Check size={16} />
                                     <span className="text-xs font-bold">Automatisch uitgelezen</span>
                                 </div>
@@ -295,14 +295,14 @@ export function ReceiptsPanel({ receipts, userId, onRefresh }: ReceiptsPanelProp
                         {/* Formulier */}
                         <div className="p-4 sm:p-8 space-y-4">
                             <div className="flex items-center justify-between mb-2">
-                                <h3 className="font-black text-lab-ink uppercase tracking-tight">Gegevens controleren</h3>
-                                <button onClick={handleReset} className="p-2 hover:bg-lab-cream rounded-xl">
-                                    <X size={18} className="text-lab-muted" />
+                                <h3 className="font-black text-duck-ink uppercase tracking-tight">Gegevens controleren</h3>
+                                <button onClick={handleReset} className="p-2 hover:bg-duck-bg rounded-xl">
+                                    <X size={18} className="text-duck-muted" />
                                 </button>
                             </div>
 
                             {error && (
-                                <div className="flex items-center gap-2 text-white bg-lab-coral rounded-xl px-3 py-2 text-xs">
+                                <div className="flex items-center gap-2 text-white bg-duck-coral rounded-xl px-3 py-2 text-xs">
                                     <AlertCircle size={14} />
                                     {error}
                                 </div>
@@ -310,31 +310,31 @@ export function ReceiptsPanel({ receipts, userId, onRefresh }: ReceiptsPanelProp
 
                             {/* Leverancier */}
                             <div>
-                                <label className="block text-[10px] font-black text-lab-muted uppercase tracking-widest mb-1">Leverancier</label>
+                                <label className="block text-[10px] font-black text-duck-muted uppercase tracking-widest mb-1">Leverancier</label>
                                 <input
                                     type="text"
                                     value={form.supplier}
                                     onChange={e => setForm(f => f ? { ...f, supplier: e.target.value } : f)}
                                     placeholder="Albert Heijn, Coolblue..."
-                                    className="w-full px-3 py-2 border border-lab-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-lab-coral"
+                                    className="w-full px-3 py-2 border border-duck-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-duck-coral"
                                 />
                             </div>
 
                             {/* Datum */}
                             <div>
-                                <label className="block text-[10px] font-black text-lab-muted uppercase tracking-widest mb-1">Datum *</label>
+                                <label className="block text-[10px] font-black text-duck-muted uppercase tracking-widest mb-1">Datum *</label>
                                 <input
                                     type="date"
                                     value={form.date}
                                     onChange={e => setForm(f => f ? { ...f, date: e.target.value } : f)}
-                                    className="w-full px-3 py-2 border border-lab-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-lab-coral"
+                                    className="w-full px-3 py-2 border border-duck-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-duck-coral"
                                 />
                             </div>
 
                             {/* Bedrag + BTW */}
                             <div className="grid grid-cols-2 gap-3">
                                 <div>
-                                    <label className="block text-[10px] font-black text-lab-muted uppercase tracking-widest mb-1">Totaalbedrag (€) *</label>
+                                    <label className="block text-[10px] font-black text-duck-muted uppercase tracking-widest mb-1">Totaalbedrag (€) *</label>
                                     <input
                                         type="number"
                                         step="0.01"
@@ -342,11 +342,11 @@ export function ReceiptsPanel({ receipts, userId, onRefresh }: ReceiptsPanelProp
                                         value={form.amount}
                                         onChange={e => setForm(f => f ? { ...f, amount: e.target.value } : f)}
                                         placeholder="0.00"
-                                        className="w-full px-3 py-2 border border-lab-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-lab-coral"
+                                        className="w-full px-3 py-2 border border-duck-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-duck-coral"
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-[10px] font-black text-lab-muted uppercase tracking-widest mb-1">BTW-bedrag (€)</label>
+                                    <label className="block text-[10px] font-black text-duck-muted uppercase tracking-widest mb-1">BTW-bedrag (€)</label>
                                     <input
                                         type="number"
                                         step="0.01"
@@ -354,22 +354,22 @@ export function ReceiptsPanel({ receipts, userId, onRefresh }: ReceiptsPanelProp
                                         value={form.vatAmount}
                                         onChange={e => setForm(f => f ? { ...f, vatAmount: e.target.value } : f)}
                                         placeholder="0.00"
-                                        className="w-full px-3 py-2 border border-lab-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-lab-coral"
+                                        className="w-full px-3 py-2 border border-duck-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-duck-coral"
                                     />
                                 </div>
                             </div>
 
                             {/* BTW-tarief */}
                             <div>
-                                <label className="block text-[10px] font-black text-lab-muted uppercase tracking-widest mb-1">BTW-tarief</label>
+                                <label className="block text-[10px] font-black text-duck-muted uppercase tracking-widest mb-1">BTW-tarief</label>
                                 <div className="flex gap-2">
                                     {([0, 9, 21] as const).map(rate => (
                                         <button
                                             key={rate}
                                             onClick={() => setForm(f => f ? { ...f, vatRate: rate } : f)}
                                             className={`flex-1 py-2 text-sm font-bold rounded-xl transition-colors ${form.vatRate === rate
-                                                ? 'bg-lab-coral text-white'
-                                                : 'bg-lab-cream text-lab-muted hover:bg-lab-creamDeep'
+                                                ? 'bg-duck-coral text-white'
+                                                : 'bg-duck-bg text-duck-muted hover:bg-duck-creamDeep'
                                                 }`}
                                         >
                                             {rate}%
@@ -380,11 +380,11 @@ export function ReceiptsPanel({ receipts, userId, onRefresh }: ReceiptsPanelProp
 
                             {/* Categorie */}
                             <div>
-                                <label className="block text-[10px] font-black text-lab-muted uppercase tracking-widest mb-1">Categorie</label>
+                                <label className="block text-[10px] font-black text-duck-muted uppercase tracking-widest mb-1">Categorie</label>
                                 <select
                                     value={form.category}
                                     onChange={e => setForm(f => f ? { ...f, category: e.target.value as TransactionCategory } : f)}
-                                    className="w-full px-3 py-2 border border-lab-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-lab-coral"
+                                    className="w-full px-3 py-2 border border-duck-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-duck-coral"
                                 >
                                     {EXPENSE_CATEGORIES.map(cat => (
                                         <option key={cat} value={cat}>{CATEGORY_LABELS[cat]}</option>
@@ -394,27 +394,27 @@ export function ReceiptsPanel({ receipts, userId, onRefresh }: ReceiptsPanelProp
 
                             {/* Omschrijving */}
                             <div>
-                                <label className="block text-[10px] font-black text-lab-muted uppercase tracking-widest mb-1">Omschrijving</label>
+                                <label className="block text-[10px] font-black text-duck-muted uppercase tracking-widest mb-1">Omschrijving</label>
                                 <input
                                     type="text"
                                     value={form.description}
                                     onChange={e => setForm(f => f ? { ...f, description: e.target.value } : f)}
                                     placeholder="Korte omschrijving van de aankoop"
-                                    className="w-full px-3 py-2 border border-lab-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-lab-coral"
+                                    className="w-full px-3 py-2 border border-duck-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-duck-coral"
                                 />
                             </div>
 
                             <div className="flex gap-3 pt-2">
                                 <button
                                     onClick={handleReset}
-                                    className="flex-1 py-2.5 border border-lab-line rounded-xl text-sm font-bold text-lab-muted hover:bg-lab-cream"
+                                    className="flex-1 py-2.5 border border-duck-line rounded-xl text-sm font-bold text-duck-muted hover:bg-duck-bg"
                                 >
                                     Annuleren
                                 </button>
                                 <button
                                     onClick={handleSave}
                                     disabled={saving || scanning}
-                                    className="flex-1 py-2.5 bg-lab-coral text-white rounded-xl text-sm font-bold hover:bg-lab-coral hover:text-white disabled:opacity-50 transition-colors"
+                                    className="flex-1 py-2.5 bg-duck-coral text-white rounded-xl text-sm font-bold hover:bg-duck-coral hover:text-white disabled:opacity-50 transition-colors"
                                 >
                                     {saving ? 'Opslaan...' : 'Opslaan'}
                                 </button>
@@ -426,31 +426,31 @@ export function ReceiptsPanel({ receipts, userId, onRefresh }: ReceiptsPanelProp
 
             {/* Galerij */}
             <div>
-                <h3 className="text-[10px] font-black text-lab-muted uppercase tracking-widest mb-4">
+                <h3 className="text-[10px] font-black text-duck-muted uppercase tracking-widest mb-4">
                     Gescande Bonnetjes ({receipts.length})
                 </h3>
 
                 {receipts.length === 0 ? (
-                    <div className="bg-white rounded-[2rem] border border-lab-line py-12 text-center">
-                        <ImageIcon size={32} className="mx-auto text-lab-muted mb-3" />
-                        <p className="text-lab-muted text-sm italic">Nog geen bonnetjes opgeslagen.</p>
+                    <div className="bg-white rounded-[2rem] border border-duck-line py-12 text-center">
+                        <ImageIcon size={32} className="mx-auto text-duck-muted mb-3" />
+                        <p className="text-duck-muted text-sm italic">Nog geen bonnetjes opgeslagen.</p>
                     </div>
                 ) : (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         {receipts.map(r => (
                             <div
                                 key={r.id}
-                                className="bg-white rounded-2xl border border-lab-line shadow-sm overflow-hidden group cursor-pointer hover:border-lab-coral hover:shadow-md transition-all"
+                                className="bg-white rounded-2xl border border-duck-line shadow-sm overflow-hidden group cursor-pointer hover:border-duck-coral hover:shadow-md transition-all"
                                 onClick={() => setDetailReceipt(r)}
                             >
                                 {r.image_url ? (
                                     r.image_url.endsWith('.pdf') ? (
-                                        <div className="h-32 bg-lab-cream flex flex-col items-center justify-center">
-                                            <FileText size={32} className="text-lab-coral" />
-                                            <span className="text-[10px] text-lab-muted font-bold mt-1 uppercase">PDF</span>
+                                        <div className="h-32 bg-duck-bg flex flex-col items-center justify-center">
+                                            <FileText size={32} className="text-duck-coral" />
+                                            <span className="text-[10px] text-duck-muted font-bold mt-1 uppercase">PDF</span>
                                         </div>
                                     ) : (
-                                        <div className="block h-32 bg-lab-cream overflow-hidden">
+                                        <div className="block h-32 bg-duck-bg overflow-hidden">
                                             <img
                                                 src={r.image_url}
                                                 alt={r.supplier || 'Bonnetje'}
@@ -459,37 +459,37 @@ export function ReceiptsPanel({ receipts, userId, onRefresh }: ReceiptsPanelProp
                                         </div>
                                     )
                                 ) : (
-                                    <div className="h-32 bg-lab-cream flex items-center justify-center">
-                                        <FileText size={32} className="text-lab-muted" />
+                                    <div className="h-32 bg-duck-bg flex items-center justify-center">
+                                        <FileText size={32} className="text-duck-muted" />
                                     </div>
                                 )}
                                 <div className="p-4">
                                     <div className="flex items-start justify-between gap-2">
                                         <div className="min-w-0">
-                                            <p className="font-bold text-lab-ink text-sm truncate">
+                                            <p className="font-bold text-duck-ink text-sm truncate">
                                                 {r.supplier || r.description || 'Onbekende leverancier'}
                                             </p>
-                                            <p className="text-xs text-lab-muted">{formatDate(r.date)}</p>
+                                            <p className="text-xs text-duck-muted">{formatDate(r.date)}</p>
                                         </div>
                                         <button
                                             onClick={e => { e.stopPropagation(); r.id && handleDelete(r.id, r.image_url); }}
-                                            className="opacity-0 group-hover:opacity-100 p-2.5 text-lab-muted hover:text-lab-muted hover:bg-lab-coral hover:text-white rounded-lg transition-all shrink-0"
+                                            className="opacity-0 group-hover:opacity-100 p-2.5 text-duck-muted hover:text-duck-muted hover:bg-duck-coral hover:text-white rounded-lg transition-all shrink-0"
                                         >
                                             <Trash2 size={16} />
                                         </button>
                                     </div>
                                     <div className="flex items-center justify-between mt-3">
-                                        <span className="text-[10px] bg-lab-coral text-white px-2 py-1 rounded-lg font-bold">
+                                        <span className="text-[10px] bg-duck-coral text-white px-2 py-1 rounded-lg font-bold">
                                             {CATEGORY_LABELS[r.category] || r.category}
                                         </span>
-                                        <span className="font-black text-lab-ink text-sm">
+                                        <span className="font-black text-duck-ink text-sm">
                                             {formatEuro(r.amount)}
                                         </span>
                                     </div>
                                     {r.ai_scanned && (
                                         <div className="flex items-center gap-1 mt-2">
-                                            <Sparkles size={10} className="text-lab-coral" />
-                                            <span className="text-[9px] text-lab-coral font-bold uppercase tracking-wide">AI gescand</span>
+                                            <Sparkles size={10} className="text-duck-coral" />
+                                            <span className="text-[9px] text-duck-coral font-bold uppercase tracking-wide">AI gescand</span>
                                         </div>
                                     )}
                                 </div>
@@ -511,7 +511,7 @@ export function ReceiptsPanel({ receipts, userId, onRefresh }: ReceiptsPanelProp
                     >
                         <div className="grid grid-cols-1 md:grid-cols-2 max-h-[90vh]">
                             {/* Bestand preview */}
-                            <div className="bg-lab-cream p-3 sm:p-6 flex flex-col items-center justify-center min-h-64 max-h-[45vh] md:max-h-[90vh] overflow-auto">
+                            <div className="bg-duck-bg p-3 sm:p-6 flex flex-col items-center justify-center min-h-64 max-h-[45vh] md:max-h-[90vh] overflow-auto">
                                 {detailReceipt.image_url ? (
                                     detailReceipt.image_url.endsWith('.pdf') ? (
                                         <a
@@ -520,8 +520,8 @@ export function ReceiptsPanel({ receipts, userId, onRefresh }: ReceiptsPanelProp
                                             rel="noopener noreferrer"
                                             className="flex flex-col items-center gap-3 hover:opacity-80 transition-opacity"
                                         >
-                                            <FileText size={64} className="text-lab-coral" />
-                                            <span className="text-sm text-lab-coral font-bold">PDF openen in nieuw tabblad</span>
+                                            <FileText size={64} className="text-duck-coral" />
+                                            <span className="text-sm text-duck-coral font-bold">PDF openen in nieuw tabblad</span>
                                         </a>
                                     ) : (
                                         <a href={detailReceipt.image_url} target="_blank" rel="noopener noreferrer">
@@ -534,8 +534,8 @@ export function ReceiptsPanel({ receipts, userId, onRefresh }: ReceiptsPanelProp
                                     )
                                 ) : (
                                     <div className="flex flex-col items-center gap-3">
-                                        <FileText size={64} className="text-lab-muted" />
-                                        <p className="text-sm text-lab-muted">Geen bestand beschikbaar</p>
+                                        <FileText size={64} className="text-duck-muted" />
+                                        <p className="text-sm text-duck-muted">Geen bestand beschikbaar</p>
                                     </div>
                                 )}
                             </div>
@@ -543,59 +543,59 @@ export function ReceiptsPanel({ receipts, userId, onRefresh }: ReceiptsPanelProp
                             {/* Gegevens */}
                             <div className="p-4 sm:p-8 space-y-5 overflow-auto max-h-[45vh] md:max-h-[90vh]">
                                 <div className="flex items-center justify-between">
-                                    <h3 className="font-black text-lab-ink uppercase tracking-tight text-lg">Bonnetje details</h3>
+                                    <h3 className="font-black text-duck-ink uppercase tracking-tight text-lg">Bonnetje details</h3>
                                     <button
                                         onClick={() => setDetailReceipt(null)}
-                                        className="p-2 hover:bg-lab-cream rounded-xl transition-colors"
+                                        className="p-2 hover:bg-duck-bg rounded-xl transition-colors"
                                     >
-                                        <X size={20} className="text-lab-muted" />
+                                        <X size={20} className="text-duck-muted" />
                                     </button>
                                 </div>
 
                                 <div className="space-y-4">
                                     <div>
-                                        <p className="text-[10px] font-black text-lab-muted uppercase tracking-widest mb-1">Leverancier</p>
-                                        <p className="font-bold text-lab-ink text-lg">{detailReceipt.supplier || 'Onbekend'}</p>
+                                        <p className="text-[10px] font-black text-duck-muted uppercase tracking-widest mb-1">Leverancier</p>
+                                        <p className="font-bold text-duck-ink text-lg">{detailReceipt.supplier || 'Onbekend'}</p>
                                     </div>
 
                                     <div className="grid grid-cols-2 gap-4">
                                         <div>
-                                            <p className="text-[10px] font-black text-lab-muted uppercase tracking-widest mb-1">Datum</p>
-                                            <p className="font-bold text-lab-ink">{formatDate(detailReceipt.date)}</p>
+                                            <p className="text-[10px] font-black text-duck-muted uppercase tracking-widest mb-1">Datum</p>
+                                            <p className="font-bold text-duck-ink">{formatDate(detailReceipt.date)}</p>
                                         </div>
                                         <div>
-                                            <p className="text-[10px] font-black text-lab-muted uppercase tracking-widest mb-1">Bedrag</p>
-                                            <p className="font-black text-lab-ink text-xl">{formatEuro(detailReceipt.amount)}</p>
+                                            <p className="text-[10px] font-black text-duck-muted uppercase tracking-widest mb-1">Bedrag</p>
+                                            <p className="font-black text-duck-ink text-xl">{formatEuro(detailReceipt.amount)}</p>
                                         </div>
                                     </div>
 
                                     <div className="grid grid-cols-2 gap-4">
                                         <div>
-                                            <p className="text-[10px] font-black text-lab-muted uppercase tracking-widest mb-1">BTW-bedrag</p>
-                                            <p className="font-bold text-lab-ink">{formatEuro(detailReceipt.vat_amount)}</p>
+                                            <p className="text-[10px] font-black text-duck-muted uppercase tracking-widest mb-1">BTW-bedrag</p>
+                                            <p className="font-bold text-duck-ink">{formatEuro(detailReceipt.vat_amount)}</p>
                                         </div>
                                         <div>
-                                            <p className="text-[10px] font-black text-lab-muted uppercase tracking-widest mb-1">BTW-tarief</p>
-                                            <p className="font-bold text-lab-ink">{detailReceipt.vat_rate}%</p>
+                                            <p className="text-[10px] font-black text-duck-muted uppercase tracking-widest mb-1">BTW-tarief</p>
+                                            <p className="font-bold text-duck-ink">{detailReceipt.vat_rate}%</p>
                                         </div>
                                     </div>
 
                                     <div>
-                                        <p className="text-[10px] font-black text-lab-muted uppercase tracking-widest mb-1">Categorie</p>
-                                        <span className="inline-block text-xs bg-lab-coral text-white px-3 py-1.5 rounded-lg font-bold">
+                                        <p className="text-[10px] font-black text-duck-muted uppercase tracking-widest mb-1">Categorie</p>
+                                        <span className="inline-block text-xs bg-duck-coral text-white px-3 py-1.5 rounded-lg font-bold">
                                             {CATEGORY_LABELS[detailReceipt.category] || detailReceipt.category}
                                         </span>
                                     </div>
 
                                     {detailReceipt.description && (
                                         <div>
-                                            <p className="text-[10px] font-black text-lab-muted uppercase tracking-widest mb-1">Omschrijving</p>
-                                            <p className="text-sm text-lab-muted">{detailReceipt.description}</p>
+                                            <p className="text-[10px] font-black text-duck-muted uppercase tracking-widest mb-1">Omschrijving</p>
+                                            <p className="text-sm text-duck-muted">{detailReceipt.description}</p>
                                         </div>
                                     )}
 
                                     {detailReceipt.ai_scanned && (
-                                        <div className="flex items-center gap-2 text-white bg-lab-coral rounded-xl px-3 py-2">
+                                        <div className="flex items-center gap-2 text-white bg-duck-coral rounded-xl px-3 py-2">
                                             <Sparkles size={14} />
                                             <span className="text-xs font-bold">Automatisch gescand door AI</span>
                                         </div>
@@ -608,7 +608,7 @@ export function ReceiptsPanel({ receipts, userId, onRefresh }: ReceiptsPanelProp
                                             href={detailReceipt.image_url}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="flex-1 py-2.5 border border-lab-line rounded-xl text-sm font-bold text-lab-muted hover:bg-lab-cream text-center"
+                                            className="flex-1 py-2.5 border border-duck-line rounded-xl text-sm font-bold text-duck-muted hover:bg-duck-bg text-center"
                                         >
                                             Bestand openen
                                         </a>
@@ -618,7 +618,7 @@ export function ReceiptsPanel({ receipts, userId, onRefresh }: ReceiptsPanelProp
                                             if (detailReceipt.id) handleDelete(detailReceipt.id, detailReceipt.image_url);
                                             setDetailReceipt(null);
                                         }}
-                                        className="flex-1 py-2.5 border border-lab-coral rounded-xl text-sm font-bold text-lab-coral hover:bg-lab-coral hover:text-white"
+                                        className="flex-1 py-2.5 border border-duck-coral rounded-xl text-sm font-bold text-duck-coral hover:bg-duck-coral hover:text-white"
                                     >
                                         Verwijderen
                                     </button>

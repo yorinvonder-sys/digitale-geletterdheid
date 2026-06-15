@@ -318,7 +318,7 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
     if (loading) {
         return (
             <div className="flex items-center justify-center p-20">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-lab-coral"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-duck-coral"></div>
             </div>
         );
     }
@@ -329,17 +329,17 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
             <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
                 <div className="flex items-center gap-3 w-full md:w-auto">
                     <div className="relative flex-1 md:w-64">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-lab-muted" size={18} />
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-duck-muted" size={18} />
                         <input 
                             type="text" 
                             placeholder="Zoek taken..."
-                            className="w-full pl-10 pr-4 py-2 bg-white border border-lab-line rounded-xl text-sm focus:ring-2 focus:ring-lab-coral outline-none"
+                            className="w-full pl-10 pr-4 py-2 bg-white border border-duck-line rounded-xl text-sm focus:ring-2 focus:ring-duck-coral outline-none"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                         />
                     </div>
                     <select 
-                        className="px-4 py-2 bg-white border border-lab-line rounded-xl text-sm focus:ring-2 focus:ring-lab-coral outline-none"
+                        className="px-4 py-2 bg-white border border-duck-line rounded-xl text-sm focus:ring-2 focus:ring-duck-coral outline-none"
                         value={filter}
                         onChange={(e) => setFilter(e.target.value as any)}
                     >
@@ -353,7 +353,7 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
                     <button 
                         onClick={() => setShowSettings(!showSettings)}
                         className={`flex-1 md:w-auto flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-bold transition-all ${
-                            showSettings ? 'bg-lab-creamDeep text-lab-ink' : 'bg-lab-cream text-lab-muted hover:bg-lab-creamDeep'
+                            showSettings ? 'bg-duck-creamDeep text-duck-ink' : 'bg-duck-bg text-duck-muted hover:bg-duck-creamDeep'
                         }`}
                         title="AI Beleid Instellingen"
                     >
@@ -363,7 +363,7 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
                     <button 
                         onClick={handleAIValidation}
                         disabled={isValidating}
-                        className="flex-1 md:w-auto flex items-center justify-center gap-2 px-4 py-2.5 bg-lab-coral text-white rounded-xl font-bold hover:bg-lab-coral hover:text-white transition-all disabled:opacity-50"
+                        className="flex-1 md:w-auto flex items-center justify-center gap-2 px-4 py-2.5 bg-duck-coral text-white rounded-xl font-bold hover:bg-duck-coral hover:text-white transition-all disabled:opacity-50"
                     >
                         {isValidating ? <Loader2 className="animate-spin" size={18} /> : <Shield size={18} />}
                         AI Check
@@ -371,15 +371,15 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
                     <button 
                         onClick={() => handleAIPlanning(false)}
                         disabled={isPlanning || isAutoPlanning}
-                        className="flex-1 md:w-auto flex items-center justify-center gap-2 px-4 py-2.5 bg-lab-coral text-white rounded-xl font-bold hover:bg-lab-coral hover:text-white transition-all shadow-lg shadow-lab-coral disabled:opacity-50"
+                        className="flex-1 md:w-auto flex items-center justify-center gap-2 px-4 py-2.5 bg-duck-coral text-white rounded-xl font-bold hover:bg-duck-coral hover:text-white transition-all shadow-lg shadow-duck-coral disabled:opacity-50"
                     >
                         {isPlanning || isAutoPlanning ? <Loader2 className="animate-spin" size={18} /> : <BookOpen size={18} />}
                         AI Plan
                     </button>
-                    <div className="w-px h-10 bg-lab-creamDeep mx-1 hidden md:block" />
+                    <div className="w-px h-10 bg-duck-creamDeep mx-1 hidden md:block" />
                     <button 
                         onClick={() => setIsAdding(true)}
-                        className="flex-1 md:w-auto flex items-center justify-center gap-2 px-4 py-2.5 bg-lab-ink text-white rounded-xl font-bold hover:bg-lab-ink transition-all shadow-lg shadow-lab-line"
+                        className="flex-1 md:w-auto flex items-center justify-center gap-2 px-4 py-2.5 bg-duck-ink text-white rounded-xl font-bold hover:bg-duck-ink transition-all shadow-lg shadow-duck-line"
                     >
                         <Plus size={18} />
                         Taak
@@ -389,37 +389,37 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
 
             {/* AI Policy & Tweak Prompt Settings */}
             {showSettings && (
-                <div className="bg-white border border-lab-line rounded-3xl p-6 shadow-sm space-y-4 animate-in slide-in-from-top-4 duration-300">
+                <div className="bg-white border border-duck-line rounded-3xl p-6 shadow-sm space-y-4 animate-in slide-in-from-top-4 duration-300">
                     <div className="flex items-center justify-between">
-                        <h4 className="text-sm font-black text-lab-ink uppercase tracking-tight flex items-center gap-2">
-                            <BookOpen size={16} className="text-lab-muted" />
+                        <h4 className="text-sm font-black text-duck-ink uppercase tracking-tight flex items-center gap-2">
+                            <BookOpen size={16} className="text-duck-muted" />
                             AI Takenbeleid Instellingen
                         </h4>
-                        <button onClick={() => setShowSettings(false)} className="text-lab-muted hover:text-lab-muted">
+                        <button onClick={() => setShowSettings(false)} className="text-duck-muted hover:text-duck-muted">
                             <X size={18} />
                         </button>
                     </div>
                     
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-2">
-                            <label className="text-[10px] font-black text-lab-muted uppercase tracking-widest flex items-center justify-between">
+                            <label className="text-[10px] font-black text-duck-muted uppercase tracking-widest flex items-center justify-between">
                                 <span>Globaal Beleid (Permanent)</span>
-                                <span className="text-lab-coral text-[8px] border border-lab-coral px-1.5 rounded-full lowercase font-medium">Blijft gelden</span>
+                                <span className="text-duck-coral text-[8px] border border-duck-coral px-1.5 rounded-full lowercase font-medium">Blijft gelden</span>
                             </label>
                             <textarea 
-                                className="w-full px-4 py-3 bg-lab-cream border border-lab-line rounded-xl text-xs focus:ring-2 focus:ring-lab-coral outline-none min-h-[80px]"
+                                className="w-full px-4 py-3 bg-duck-bg border border-duck-line rounded-xl text-xs focus:ring-2 focus:ring-duck-coral outline-none min-h-[80px]"
                                 placeholder="Bijv: Focus op security en GDPR in alle taken. Gebruik altijd Typescript voor codevoorbeelden."
                                 value={globalPolicy}
                                 onChange={e => setGlobalPolicy(e.target.value)}
                             />
                         </div>
                         <div className="space-y-2">
-                            <label className="text-[10px] font-black text-lab-muted uppercase tracking-widest flex items-center justify-between">
+                            <label className="text-[10px] font-black text-duck-muted uppercase tracking-widest flex items-center justify-between">
                                 <span>Huidige Tweak Prompt (Eenmalig)</span>
-                                <span className="text-lab-gold text-[8px] border border-lab-gold px-1.5 rounded-full lowercase font-medium">Alleen volgend plan</span>
+                                <span className="text-duck-ink text-[8px] border border-duck-acid px-1.5 rounded-full lowercase font-medium">Alleen volgend plan</span>
                             </label>
                             <textarea 
-                                className="w-full px-4 py-3 bg-lab-gold/30 border border-lab-gold/50 rounded-xl text-xs focus:ring-2 focus:ring-lab-coral outline-none min-h-[80px]"
+                                className="w-full px-4 py-3 bg-duck-acid/30 border border-duck-acid/50 rounded-xl text-xs focus:ring-2 focus:ring-duck-coral outline-none min-h-[80px]"
                                 placeholder="Bijv: Maak dit plan specifiek voor de Almere College pilot. Voeg een extra taak toe voor data migratie."
                                 value={tweakPrompt}
                                 onChange={e => setTweakPrompt(e.target.value)}
@@ -438,7 +438,7 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
                                     alert("Opslaan mislukt.");
                                 }
                             }}
-                            className="text-xs font-bold text-white bg-lab-coral px-4 py-2 rounded-lg hover:bg-lab-coral hover:text-white transition-all"
+                            className="text-xs font-bold text-white bg-duck-coral px-4 py-2 rounded-lg hover:bg-duck-coral hover:text-white transition-all"
                         >
                             Beleid opslaan
                         </button>
@@ -449,17 +449,17 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
             {/* Tasks Grid */}
             <div className="grid grid-cols-1 gap-4">
                 {filteredTasks.length === 0 ? (
-                    <div className="text-center py-20 bg-white rounded-3xl border-2 border-dashed border-lab-line">
-                        <div className="w-16 h-16 bg-lab-cream rounded-full flex items-center justify-center mx-auto mb-4 text-lab-muted">
+                    <div className="text-center py-20 bg-white rounded-3xl border-2 border-dashed border-duck-line">
+                        <div className="w-16 h-16 bg-duck-bg rounded-full flex items-center justify-center mx-auto mb-4 text-duck-muted">
                             <CheckSquare size={32} />
                         </div>
-                        <h3 className="text-lg font-bold text-lab-ink">Geen taken gevonden</h3>
-                        <p className="text-lab-muted mb-6">Begin met het toevoegen van je eerste developer taak.</p>
+                        <h3 className="text-lg font-bold text-duck-ink">Geen taken gevonden</h3>
+                        <p className="text-duck-muted mb-6">Begin met het toevoegen van je eerste developer taak.</p>
                         
                         {aiProposal ? (
                             <button 
                                 onClick={() => approveAIPlan()}
-                                className="px-6 py-3 bg-lab-coral text-white rounded-xl font-bold hover:bg-lab-coral hover:text-white transition-all shadow-lg shadow-lab-coral"
+                                className="px-6 py-3 bg-duck-coral text-white rounded-xl font-bold hover:bg-duck-coral hover:text-white transition-all shadow-lg shadow-duck-coral"
                             >
                                 Gebruik AI Voorstel
                             </button>
@@ -467,7 +467,7 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
                             <button 
                                 onClick={() => handleAIPlanning(false)}
                                 disabled={isPlanning || isAutoPlanning}
-                                className="px-6 py-3 bg-lab-coral text-white rounded-xl font-bold hover:bg-lab-coral hover:text-white transition-all"
+                                className="px-6 py-3 bg-duck-coral text-white rounded-xl font-bold hover:bg-duck-coral hover:text-white transition-all"
                             >
                                 {isPlanning || isAutoPlanning ? <Loader2 className="animate-spin" size={18} /> : 'Genereer Plan met AI'}
                             </button>
@@ -478,19 +478,19 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
                         <div 
                             key={task.id}
                             className={`group bg-white p-5 rounded-2xl border transition-all duration-300 flex gap-4 ${
-                                task.checked ? 'border-lab-line opacity-75' : 'border-lab-line hover:border-lab-coral hover:shadow-md'
+                                task.checked ? 'border-duck-line opacity-75' : 'border-duck-line hover:border-duck-coral hover:shadow-md'
                             }`}
                         >
                             <button 
                                 onClick={() => toggleTask(task)}
-                                className={`mt-1 transition-colors ${task.checked ? 'text-lab-muted' : 'text-lab-muted hover:text-lab-muted'}`}
+                                className={`mt-1 transition-colors ${task.checked ? 'text-duck-muted' : 'text-duck-muted hover:text-duck-muted'}`}
                             >
                                 {task.checked ? <CheckCircle2 size={24} /> : <Circle size={24} />}
                             </button>
 
                             <div className="flex-1 min-w-0">
                                 <div className="flex items-start justify-between gap-4 mb-2">
-                                    <h4 className={`font-bold text-lg truncate ${task.checked ? 'text-lab-muted line-through' : 'text-lab-ink'}`}>
+                                    <h4 className={`font-bold text-lg truncate ${task.checked ? 'text-duck-muted line-through' : 'text-duck-ink'}`}>
                                         {task.title}
                                     </h4>
                                     <div className="flex items-center gap-2 shrink-0">
@@ -498,11 +498,11 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
                                             value={task.status}
                                             onChange={(e) => updateTaskStatus(task.id!, e.target.value as any)}
                                             className={`text-[10px] font-black uppercase tracking-widest px-2 py-1 rounded-full border transition-all outline-none ${
-                                                task.status === 'completed' ? 'bg-lab-sage text-white border-lab-sage' :
-                                                task.status === 'in_progress' ? 'bg-lab-coral text-white border-lab-coral' :
-                                                task.status === 'blocked' ? 'bg-lab-coral text-white border-lab-coral' :
-                                                task.status === 'waiting_external' ? 'bg-lab-teal text-white border-lab-teal' :
-                                                'bg-lab-cream text-lab-muted border-lab-line'
+                                                task.status === 'completed' ? 'bg-duck-ink text-white border-duck-ink' :
+                                                task.status === 'in_progress' ? 'bg-duck-coral text-white border-duck-coral' :
+                                                task.status === 'blocked' ? 'bg-duck-coral text-white border-duck-coral' :
+                                                task.status === 'waiting_external' ? 'bg-duck-ink text-white border-duck-ink' :
+                                                'bg-duck-bg text-duck-muted border-duck-line'
                                             }`}
                                         >
                                             <option value="pending">Wachten</option>
@@ -512,33 +512,33 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
                                             <option value="completed">Gereed</option>
                                         </select>
                                         <span className={`px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${
-                                            task.priority === 'high' ? 'bg-lab-coral text-white' :
-                                            task.priority === 'medium' ? 'bg-lab-gold text-lab-ink' :
-                                            'bg-lab-cream text-lab-muted'
+                                            task.priority === 'high' ? 'bg-duck-coral text-white' :
+                                            task.priority === 'medium' ? 'bg-duck-acid text-duck-ink' :
+                                            'bg-duck-bg text-duck-muted'
                                         }`}>
                                             {task.priority}
                                         </span>
                                         <button 
                                             onClick={() => deleteTask(task.id)}
-                                            className="p-1.5 text-lab-muted hover:text-lab-muted transition-colors opacity-0 group-hover:opacity-100"
+                                            className="p-1.5 text-duck-muted hover:text-duck-muted transition-colors opacity-0 group-hover:opacity-100"
                                         >
                                             <Trash2 size={16} />
                                         </button>
                                     </div>
                                 </div>
-                                <p className={`text-sm mb-4 leading-relaxed ${task.checked ? 'text-lab-muted' : 'text-lab-muted'}`}>
+                                <p className={`text-sm mb-4 leading-relaxed ${task.checked ? 'text-duck-muted' : 'text-duck-muted'}`}>
                                     {task.description}
                                 </p>
 
                                 <div className="flex flex-wrap gap-4 items-center">
                                     {task.dueDate && (
-                                        <div className="flex items-center gap-1.5 text-xs font-medium text-lab-muted">
-                                            <Clock size={14} className="text-lab-coral" />
+                                        <div className="flex items-center gap-1.5 text-xs font-medium text-duck-muted">
+                                            <Clock size={14} className="text-duck-coral" />
                                             Deadline: {new Date(task.dueDate).toLocaleDateString('nl-NL')}
                                         </div>
                                     )}
                                     {task.learningNote && (
-                                        <div className="flex items-center gap-1.5 text-xs font-medium text-white bg-lab-coral px-3 py-1 rounded-full">
+                                        <div className="flex items-center gap-1.5 text-xs font-medium text-white bg-duck-coral px-3 py-1 rounded-full">
                                             <BookOpen size={14} />
                                             <span>Leerdoel: {task.learningNote}</span>
                                         </div>
@@ -546,14 +546,14 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
                                 </div>
 
                                 {task.evidence && (
-                                    <div className="mt-4 p-4 bg-lab-cream rounded-xl border border-lab-line space-y-3">
+                                    <div className="mt-4 p-4 bg-duck-bg rounded-xl border border-duck-line space-y-3">
                                         <div className="flex items-center justify-between">
-                                            <span className="text-[10px] font-black text-lab-muted uppercase tracking-widest">Bewijs & Reflectie</span>
+                                            <span className="text-[10px] font-black text-duck-muted uppercase tracking-widest">Bewijs & Reflectie</span>
                                             {task.evidence.aiValidationStatus && task.evidence.aiValidationStatus !== 'none' && (
                                                 <div className={`flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase ${
-                                                    task.evidence.aiValidationStatus === 'validated' ? 'bg-lab-sage text-white' :
-                                                    task.evidence.aiValidationStatus === 'rejected' ? 'bg-lab-coral text-white' :
-                                                    'bg-lab-gold text-lab-ink'
+                                                    task.evidence.aiValidationStatus === 'validated' ? 'bg-duck-ink text-white' :
+                                                    task.evidence.aiValidationStatus === 'rejected' ? 'bg-duck-coral text-white' :
+                                                    'bg-duck-acid text-duck-ink'
                                                 }`}>
                                                     {task.evidence.aiValidationStatus === 'validated' ? <CheckCircle2 size={10} /> : <AlertCircle size={10} />}
                                                     AI {task.evidence.aiValidationStatus}
@@ -565,21 +565,21 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
                                                 href={task.evidence.url} 
                                                 target="_blank" 
                                                 rel="noopener noreferrer"
-                                                className="flex items-center gap-2 text-xs font-bold text-lab-coral hover:text-lab-coral transition-colors"
+                                                className="flex items-center gap-2 text-xs font-bold text-duck-coral hover:text-duck-coral transition-colors"
                                             >
                                                 <ExternalLink size={14} />
                                                 Bekijk resultaat
                                             </a>
                                         )}
                                         {task.evidence.reflection && (
-                                            <p className="text-xs text-lab-muted italic leading-relaxed">
+                                            <p className="text-xs text-duck-muted italic leading-relaxed">
                                                 "{task.evidence.reflection}"
                                             </p>
                                         )}
                                         {task.evidence.aiFeedback && (
-                                            <div className="pt-2 border-t border-lab-line mt-2">
-                                                <p className="text-[10px] text-lab-coral font-bold mb-1 uppercase">AI Feedback</p>
-                                                <p className="text-[11px] text-lab-muted">{task.evidence.aiFeedback}</p>
+                                            <div className="pt-2 border-t border-duck-line mt-2">
+                                                <p className="text-[10px] text-duck-coral font-bold mb-1 uppercase">AI Feedback</p>
+                                                <p className="text-[11px] text-duck-muted">{task.evidence.aiFeedback}</p>
                                             </div>
                                         )}
                                     </div>
@@ -598,7 +598,7 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
                                                 });
                                             }
                                         }}
-                                        className="mt-4 flex items-center gap-2 text-[10px] font-black text-lab-muted uppercase tracking-widest hover:text-lab-coral transition-colors"
+                                        className="mt-4 flex items-center gap-2 text-[10px] font-black text-duck-muted uppercase tracking-widest hover:text-duck-coral transition-colors"
                                     >
                                         <Plus size={12} />
                                         Voeg bewijs toe voor AI-check
@@ -612,42 +612,42 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
 
             {/* AI Proposal Modal */}
             {aiProposal && (
-                <div className="fixed inset-0 bg-lab-ink/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                <div className="fixed inset-0 bg-duck-ink/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
                     <div className="bg-white w-full max-w-2xl rounded-3xl shadow-2xl animate-in zoom-in-95 duration-200 flex flex-col max-h-[90vh]">
-                        <div className="p-6 border-b border-lab-line flex items-center justify-between">
+                        <div className="p-6 border-b border-duck-line flex items-center justify-between">
                             <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 bg-lab-coral rounded-xl flex items-center justify-center text-white">
+                                <div className="w-10 h-10 bg-duck-coral rounded-xl flex items-center justify-center text-white">
                                     <BookOpen size={24} />
                                 </div>
                                 <div>
-                                    <h3 className="text-xl font-black text-lab-ink uppercase tracking-tight">AI Voorstel: Volgende Stap</h3>
-                                    <p className="text-xs text-lab-muted font-bold uppercase tracking-widest">Nieuwe taken en mijlpalen</p>
+                                    <h3 className="text-xl font-black text-duck-ink uppercase tracking-tight">AI Voorstel: Volgende Stap</h3>
+                                    <p className="text-xs text-duck-muted font-bold uppercase tracking-widest">Nieuwe taken en mijlpalen</p>
                                 </div>
                             </div>
-                            <button onClick={() => setAiProposal(null)} className="text-lab-muted hover:text-lab-muted p-2">
+                            <button onClick={() => setAiProposal(null)} className="text-duck-muted hover:text-duck-muted p-2">
                                 <X size={24} />
                             </button>
                         </div>
                         
                         <div className="flex-1 overflow-y-auto p-6 space-y-8">
                             {aiProposal.rationale && (
-                                <div className="p-4 bg-lab-gold rounded-2xl border border-lab-gold">
-                                    <p className="text-[10px] font-black text-lab-ink uppercase tracking-widest mb-1 flex items-center gap-1.5">
+                                <div className="p-4 bg-duck-acid rounded-2xl border border-duck-acid">
+                                    <p className="text-[10px] font-black text-duck-ink uppercase tracking-widest mb-1 flex items-center gap-1.5">
                                         <AlertCircle size={12} />
                                         AI Rationale
                                     </p>
-                                    <p className="text-xs text-lab-ink/80 leading-relaxed italic">{aiProposal.rationale}</p>
+                                    <p className="text-xs text-duck-ink/80 leading-relaxed italic">{aiProposal.rationale}</p>
                                 </div>
                             )}
 
                             <div>
-                                <h4 className="text-xs font-black text-lab-muted uppercase tracking-widest mb-4 border-b border-lab-line pb-2">Nieuwe Taken</h4>
+                                <h4 className="text-xs font-black text-duck-muted uppercase tracking-widest mb-4 border-b border-duck-line pb-2">Nieuwe Taken</h4>
                                 <div className="space-y-3">
                                     {aiProposal.tasks.map((task, i) => (
-                                        <div key={i} className="p-4 bg-lab-cream rounded-2xl border border-lab-line">
+                                        <div key={i} className="p-4 bg-duck-bg rounded-2xl border border-duck-line">
                                             <div className="flex items-start justify-between gap-4 mb-1">
                                                 <input 
-                                                    className="font-bold text-lab-ink bg-transparent border-none p-0 focus:ring-0 w-full"
+                                                    className="font-bold text-duck-ink bg-transparent border-none p-0 focus:ring-0 w-full"
                                                     value={task.title}
                                                     onChange={e => {
                                                         const newTasks = [...aiProposal.tasks];
@@ -655,10 +655,10 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
                                                         setAiProposal({...aiProposal, tasks: newTasks});
                                                     }}
                                                 />
-                                                <span className="px-2 py-0.5 bg-white border border-lab-line rounded-full text-[9px] font-black text-lab-muted uppercase">{task.priority}</span>
+                                                <span className="px-2 py-0.5 bg-white border border-duck-line rounded-full text-[9px] font-black text-duck-muted uppercase">{task.priority}</span>
                                             </div>
                                             <textarea 
-                                                className="text-xs text-lab-muted bg-transparent border-none p-0 focus:ring-0 w-full min-h-[40px] resize-none"
+                                                className="text-xs text-duck-muted bg-transparent border-none p-0 focus:ring-0 w-full min-h-[40px] resize-none"
                                                 value={task.description}
                                                 onChange={e => {
                                                     const newTasks = [...aiProposal.tasks];
@@ -672,16 +672,16 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
                             </div>
 
                             <div>
-                                <h4 className="text-xs font-black text-lab-muted uppercase tracking-widest mb-4 border-b border-lab-line pb-2">Nieuwe Mijlpalen</h4>
+                                <h4 className="text-xs font-black text-duck-muted uppercase tracking-widest mb-4 border-b border-duck-line pb-2">Nieuwe Mijlpalen</h4>
                                 <div className="space-y-3">
                                     {aiProposal.milestones.map((ms, i) => (
-                                        <div key={i} className="p-4 bg-lab-coral/50 rounded-2xl border border-lab-coral/50 flex gap-4">
-                                            <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-lab-muted shrink-0 border border-lab-coral shadow-sm">
+                                        <div key={i} className="p-4 bg-duck-coral/50 rounded-2xl border border-duck-coral/50 flex gap-4">
+                                            <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-duck-muted shrink-0 border border-duck-coral shadow-sm">
                                                 <Flag size={20} />
                                             </div>
                                             <div className="flex-1">
                                                 <input 
-                                                    className="font-bold text-lab-ink text-sm bg-transparent border-none p-0 focus:ring-0 w-full"
+                                                    className="font-bold text-duck-ink text-sm bg-transparent border-none p-0 focus:ring-0 w-full"
                                                     value={ms.title}
                                                     onChange={e => {
                                                         const newMilestones = [...aiProposal.milestones];
@@ -690,8 +690,8 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
                                                     }}
                                                 />
                                                 <div className="flex items-center gap-3 mt-1">
-                                                    <span className="text-[10px] font-black text-lab-coral uppercase tracking-widest">{ms.phase}</span>
-                                                    <span className="text-[10px] font-medium text-lab-muted italic">{new Date(ms.startDate).toLocaleDateString('nl-NL')} - {new Date(ms.endDate).toLocaleDateString('nl-NL')}</span>
+                                                    <span className="text-[10px] font-black text-duck-coral uppercase tracking-widest">{ms.phase}</span>
+                                                    <span className="text-[10px] font-medium text-duck-muted italic">{new Date(ms.startDate).toLocaleDateString('nl-NL')} - {new Date(ms.endDate).toLocaleDateString('nl-NL')}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -700,16 +700,16 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
                             </div>
                         </div>
 
-                        <div className="p-6 bg-lab-cream border-t border-lab-line flex gap-3">
+                        <div className="p-6 bg-duck-bg border-t border-duck-line flex gap-3">
                             <button 
                                 onClick={rejectAIPlan}
-                                className="flex-1 py-3 border border-lab-line bg-white rounded-xl font-bold text-lab-muted hover:bg-lab-cream transition-colors"
+                                className="flex-1 py-3 border border-duck-line bg-white rounded-xl font-bold text-duck-muted hover:bg-duck-bg transition-colors"
                             >
                                 Nee, verwerpen
                             </button>
                             <button 
                                 onClick={approveAIPlan}
-                                className="flex-1 py-3 bg-lab-coral text-white rounded-xl font-bold hover:bg-lab-coral hover:text-white transition-all shadow-lg shadow-lab-coral"
+                                className="flex-1 py-3 bg-duck-coral text-white rounded-xl font-bold hover:bg-duck-coral hover:text-white transition-all shadow-lg shadow-duck-coral"
                             >
                                 Ja, toevoegen
                             </button>
@@ -720,22 +720,22 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
 
             {/* Add Task Modal */}
             {isAdding && (
-                <div className="fixed inset-0 bg-lab-ink/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                <div className="fixed inset-0 bg-duck-ink/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
                     <div className="bg-white w-full max-w-lg rounded-3xl shadow-2xl animate-in zoom-in-95 duration-200">
-                        <div className="p-6 border-b border-lab-line flex items-center justify-between">
-                            <h3 className="text-xl font-black text-lab-ink uppercase tracking-tight">Nieuwe Taak</h3>
-                            <button onClick={() => setIsAdding(false)} className="text-lab-muted hover:text-lab-muted p-2">
+                        <div className="p-6 border-b border-duck-line flex items-center justify-between">
+                            <h3 className="text-xl font-black text-duck-ink uppercase tracking-tight">Nieuwe Taak</h3>
+                            <button onClick={() => setIsAdding(false)} className="text-duck-muted hover:text-duck-muted p-2">
                                 <X size={24} />
                             </button>
                         </div>
                         <form onSubmit={handleAddTask} className="p-6 space-y-5">
                             <div className="space-y-2">
-                                <label className="text-xs font-black text-lab-muted uppercase tracking-widest">Titel</label>
+                                <label className="text-xs font-black text-duck-muted uppercase tracking-widest">Titel</label>
                                 <input 
                                     autoFocus
                                     required
                                     type="text" 
-                                    className="w-full px-4 py-3 bg-lab-cream border border-lab-line rounded-xl focus:ring-2 focus:ring-lab-coral outline-none"
+                                    className="w-full px-4 py-3 bg-duck-bg border border-duck-line rounded-xl focus:ring-2 focus:ring-duck-coral outline-none"
                                     placeholder="Bijv: Pitch deck voor scholen afmaken"
                                     value={newTitle}
                                     onChange={e => setNewTitle(e.target.value)}
@@ -743,9 +743,9 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
                             </div>
 
                             <div className="space-y-2">
-                                <label className="text-xs font-black text-lab-muted uppercase tracking-widest">Omschrijving</label>
+                                <label className="text-xs font-black text-duck-muted uppercase tracking-widest">Omschrijving</label>
                                 <textarea 
-                                    className="w-full px-4 py-3 bg-lab-cream border border-lab-line rounded-xl focus:ring-2 focus:ring-lab-coral outline-none min-h-[100px]"
+                                    className="w-full px-4 py-3 bg-duck-bg border border-duck-line rounded-xl focus:ring-2 focus:ring-duck-coral outline-none min-h-[100px]"
                                     placeholder="Wat moet er precies gebeuren?"
                                     value={newDesc}
                                     onChange={e => setNewDesc(e.target.value)}
@@ -754,9 +754,9 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
 
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-2">
-                                    <label className="text-xs font-black text-lab-muted uppercase tracking-widest">Prioriteit</label>
+                                    <label className="text-xs font-black text-duck-muted uppercase tracking-widest">Prioriteit</label>
                                     <select 
-                                        className="w-full px-4 py-3 bg-lab-cream border border-lab-line rounded-xl focus:ring-2 focus:ring-lab-coral outline-none"
+                                        className="w-full px-4 py-3 bg-duck-bg border border-duck-line rounded-xl focus:ring-2 focus:ring-duck-coral outline-none"
                                         value={newPriority}
                                         onChange={e => setNewPriority(e.target.value as any)}
                                     >
@@ -766,9 +766,9 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
                                     </select>
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-xs font-black text-lab-muted uppercase tracking-widest">Status</label>
+                                    <label className="text-xs font-black text-duck-muted uppercase tracking-widest">Status</label>
                                     <select 
-                                        className="w-full px-4 py-3 bg-lab-cream border border-lab-line rounded-xl focus:ring-2 focus:ring-lab-coral outline-none"
+                                        className="w-full px-4 py-3 bg-duck-bg border border-duck-line rounded-xl focus:ring-2 focus:ring-duck-coral outline-none"
                                         value={newStatus}
                                         onChange={e => setNewStatus(e.target.value as any)}
                                     >
@@ -783,22 +783,22 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
 
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-2">
-                                    <label className="text-xs font-black text-lab-muted uppercase tracking-widest">Deadline</label>
+                                    <label className="text-xs font-black text-duck-muted uppercase tracking-widest">Deadline</label>
                                     <input 
                                         type="date" 
-                                        className="w-full px-4 py-3 bg-lab-cream border border-lab-line rounded-xl focus:ring-2 focus:ring-lab-coral outline-none"
+                                        className="w-full px-4 py-3 bg-duck-bg border border-duck-line rounded-xl focus:ring-2 focus:ring-duck-coral outline-none"
                                         value={newDueDate}
                                         onChange={e => setNewDueDate(e.target.value)}
                                     />
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-xs font-black text-lab-muted uppercase tracking-widest flex items-center gap-2">
+                                    <label className="text-xs font-black text-duck-muted uppercase tracking-widest flex items-center gap-2">
                                         <BookOpen size={14} />
                                         Leerdoel
                                     </label>
                                     <input 
                                         type="text" 
-                                        className="w-full px-4 py-3 bg-lab-coral/50 border border-lab-coral rounded-xl focus:ring-2 focus:ring-lab-coral outline-none"
+                                        className="w-full px-4 py-3 bg-duck-coral/50 border border-duck-coral rounded-xl focus:ring-2 focus:ring-duck-coral outline-none"
                                         placeholder="Wat leer je?"
                                         value={newLearning}
                                         onChange={e => setNewLearning(e.target.value)}
@@ -807,28 +807,28 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
                             </div>
 
                             <div className="space-y-2">
-                                <label className="text-xs font-black text-lab-muted uppercase tracking-widest">Afhankelijkheden (Task IDs, komma-gescheiden)</label>
+                                <label className="text-xs font-black text-duck-muted uppercase tracking-widest">Afhankelijkheden (Task IDs, komma-gescheiden)</label>
                                 <input 
                                     type="text" 
-                                    className="w-full px-4 py-3 bg-lab-cream border border-lab-line rounded-xl focus:ring-2 focus:ring-lab-coral outline-none"
+                                    className="w-full px-4 py-3 bg-duck-bg border border-duck-line rounded-xl focus:ring-2 focus:ring-duck-coral outline-none"
                                     placeholder="Bijv: id1, id2"
                                     value={newDependencies}
                                     onChange={e => setNewDependencies(e.target.value)}
                                 />
                             </div>
 
-                            <div className="space-y-4 pt-2 border-t border-lab-line">
-                                <p className="text-[10px] font-black text-lab-muted uppercase tracking-widest">Bewijs (Optioneel)</p>
+                            <div className="space-y-4 pt-2 border-t border-duck-line">
+                                <p className="text-[10px] font-black text-duck-muted uppercase tracking-widest">Bewijs (Optioneel)</p>
                                 <div className="space-y-2">
                                     <input 
                                         type="url" 
-                                        className="w-full px-4 py-3 bg-lab-cream border border-lab-line rounded-xl focus:ring-2 focus:ring-lab-coral outline-none"
+                                        className="w-full px-4 py-3 bg-duck-bg border border-duck-line rounded-xl focus:ring-2 focus:ring-duck-coral outline-none"
                                         placeholder="URL naar resultaat (bijv. GitHub, Doc)"
                                         value={newEvidenceUrl}
                                         onChange={e => setNewEvidenceUrl(e.target.value)}
                                     />
                                     <textarea 
-                                        className="w-full px-4 py-3 bg-lab-cream border border-lab-line rounded-xl focus:ring-2 focus:ring-lab-coral outline-none min-h-[60px]"
+                                        className="w-full px-4 py-3 bg-duck-bg border border-duck-line rounded-xl focus:ring-2 focus:ring-duck-coral outline-none min-h-[60px]"
                                         placeholder="Korte reflectie..."
                                         value={newReflection}
                                         onChange={e => setNewReflection(e.target.value)}
@@ -840,13 +840,13 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
                                 <button 
                                     type="button"
                                     onClick={() => setIsAdding(false)}
-                                    className="flex-1 py-3 border border-lab-line rounded-xl font-bold text-lab-muted hover:bg-lab-cream transition-colors"
+                                    className="flex-1 py-3 border border-duck-line rounded-xl font-bold text-duck-muted hover:bg-duck-bg transition-colors"
                                 >
                                     Annuleren
                                 </button>
                                 <button 
                                     type="submit"
-                                    className="flex-1 py-3 bg-lab-coral text-white rounded-xl font-bold hover:bg-lab-coral hover:text-white transition-all shadow-lg shadow-lab-coral"
+                                    className="flex-1 py-3 bg-duck-coral text-white rounded-xl font-bold hover:bg-duck-coral hover:text-white transition-all shadow-lg shadow-duck-coral"
                                 >
                                     Opslaan
                                 </button>

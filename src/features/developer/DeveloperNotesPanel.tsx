@@ -32,29 +32,29 @@ const LABEL_CONFIG: Record<DeveloperNoteLabel, {
     gedachte: {
         label: 'Gedachte',
         icon: Brain,
-        bg: 'bg-lab-teal/15',
-        text: 'text-lab-teal',
-        border: 'border-lab-teal/35',
-        btnActive: 'bg-lab-teal text-white',
-        btnInactive: 'bg-lab-cream text-lab-teal hover:bg-lab-teal hover:text-white',
+        bg: 'bg-duck-ink/15',
+        text: 'text-duck-ink',
+        border: 'border-duck-ink/35',
+        btnActive: 'bg-duck-ink text-white',
+        btnInactive: 'bg-duck-bg text-duck-ink hover:bg-duck-ink hover:text-white',
     },
     werklog: {
         label: 'Werklog',
         icon: CheckCircle2,
-        bg: 'bg-lab-sage/15',
-        text: 'text-lab-sage',
-        border: 'border-lab-sage/35',
-        btnActive: 'bg-lab-sage text-white',
-        btnInactive: 'bg-lab-cream text-lab-sage hover:bg-lab-sage hover:text-white',
+        bg: 'bg-duck-ink/15',
+        text: 'text-duck-ink',
+        border: 'border-duck-ink/35',
+        btnActive: 'bg-duck-ink text-white',
+        btnInactive: 'bg-duck-bg text-duck-ink hover:bg-duck-ink hover:text-white',
     },
     handoff: {
         label: 'Handoff',
         icon: ArrowRightCircle,
-        bg: 'bg-lab-coral/15',
-        text: 'text-lab-coral',
-        border: 'border-lab-coral/35',
-        btnActive: 'bg-lab-coral text-white',
-        btnInactive: 'bg-lab-cream text-lab-coral hover:bg-lab-coral hover:text-white',
+        bg: 'bg-duck-coral/15',
+        text: 'text-duck-coral',
+        border: 'border-duck-coral/35',
+        btnActive: 'bg-duck-coral text-white',
+        btnInactive: 'bg-duck-bg text-duck-coral hover:bg-duck-coral hover:text-white',
     },
 };
 
@@ -171,7 +171,7 @@ export const DeveloperNotesPanel: React.FC = () => {
     if (loading) {
         return (
             <div className="flex items-center justify-center py-24">
-                <div className="w-8 h-8 border-3 border-lab-coral border-t-transparent rounded-full animate-spin" />
+                <div className="w-8 h-8 border-3 border-duck-coral border-t-transparent rounded-full animate-spin" />
             </div>
         );
     }
@@ -181,7 +181,7 @@ export const DeveloperNotesPanel: React.FC = () => {
 
             {/* Laatste handoff banner */}
             {lastHandoff && (
-                <div className="bg-lab-coral border border-lab-coral rounded-2xl p-5 flex gap-4 items-start text-white">
+                <div className="bg-duck-coral border border-duck-coral rounded-2xl p-5 flex gap-4 items-start text-white">
                     <div className="w-10 h-10 bg-white/15 rounded-xl flex items-center justify-center shrink-0">
                         <ArrowRightCircle size={20} className="text-white" />
                     </div>
@@ -198,8 +198,8 @@ export const DeveloperNotesPanel: React.FC = () => {
             )}
 
             {/* Invoergedeelte */}
-            <div className="bg-white rounded-3xl border border-lab-line shadow-sm p-6 space-y-4">
-                <h3 className="text-sm font-black text-lab-ink uppercase tracking-widest">Nieuwe notitie</h3>
+            <div className="bg-white rounded-3xl border border-duck-line shadow-sm p-6 space-y-4">
+                <h3 className="text-sm font-black text-duck-ink uppercase tracking-widest">Nieuwe notitie</h3>
 
                 <textarea
                     value={body}
@@ -207,7 +207,7 @@ export const DeveloperNotesPanel: React.FC = () => {
                     onKeyDown={handleKeyDown}
                     placeholder="Schrijf een gedachte, werklog of handoff... (Cmd+Enter om op te slaan)"
                     rows={4}
-                    className="w-full px-4 py-3 bg-lab-cream border border-lab-line rounded-xl text-sm text-lab-ink placeholder-slate-400 focus:ring-2 focus:ring-lab-coral outline-none resize-none transition-all"
+                    className="w-full px-4 py-3 bg-duck-bg border border-duck-line rounded-xl text-sm text-duck-ink placeholder-slate-400 focus:ring-2 focus:ring-duck-coral outline-none resize-none transition-all"
                 />
 
                 <div className="flex flex-wrap items-center gap-2">
@@ -232,7 +232,7 @@ export const DeveloperNotesPanel: React.FC = () => {
                     <button
                         onClick={handleSave}
                         disabled={!body.trim() || saving}
-                        className="ml-auto inline-flex items-center gap-2 px-4 py-2 bg-lab-coral text-white rounded-xl text-xs font-bold hover:bg-lab-coral hover:text-white disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+                        className="ml-auto inline-flex items-center gap-2 px-4 py-2 bg-duck-coral text-white rounded-xl text-xs font-bold hover:bg-duck-coral hover:text-white disabled:opacity-40 disabled:cursor-not-allowed transition-all"
                     >
                         <Save size={14} />
                         {saving ? 'Opslaan...' : 'Opslaan'}
@@ -251,8 +251,8 @@ export const DeveloperNotesPanel: React.FC = () => {
                             onClick={() => setFilterLabel(lbl)}
                             className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all capitalize ${
                                 isActive
-                                    ? (cfg ? cfg.btnActive : 'bg-lab-ink text-white')
-                                    : (cfg ? cfg.btnInactive : 'bg-lab-cream text-lab-muted hover:bg-lab-creamDeep')
+                                    ? (cfg ? cfg.btnActive : 'bg-duck-ink text-white')
+                                    : (cfg ? cfg.btnInactive : 'bg-duck-bg text-duck-muted hover:bg-duck-creamDeep')
                             }`}
                         >
                             {lbl === 'alle' ? 'Alle' : LABEL_CONFIG[lbl].label}
@@ -268,13 +268,13 @@ export const DeveloperNotesPanel: React.FC = () => {
 
             {/* Lijst */}
             {filtered.length === 0 ? (
-                <div className="bg-white rounded-2xl border border-lab-line p-12 text-center">
+                <div className="bg-white rounded-2xl border border-duck-line p-12 text-center">
                     <div className="space-y-3">
-                        <p className="text-lab-muted font-bold">Nog geen notities</p>
-                        <p className="text-sm text-lab-muted max-w-sm mx-auto leading-relaxed">
-                            Gebruik <span className="font-bold text-lab-teal">Gedachte</span> voor ideeën en twijfels,{' '}
-                            <span className="font-bold text-lab-sage">Werklog</span> voor wat je gedaan hebt, en{' '}
-                            <span className="font-bold text-lab-muted">Handoff</span> om morgen meteen te weten hoe je verder gaat.
+                        <p className="text-duck-muted font-bold">Nog geen notities</p>
+                        <p className="text-sm text-duck-muted max-w-sm mx-auto leading-relaxed">
+                            Gebruik <span className="font-bold text-duck-ink">Gedachte</span> voor ideeën en twijfels,{' '}
+                            <span className="font-bold text-duck-ink">Werklog</span> voor wat je gedaan hebt, en{' '}
+                            <span className="font-bold text-duck-muted">Handoff</span> om morgen meteen te weten hoe je verder gaat.
                         </p>
                     </div>
                 </div>
@@ -303,7 +303,7 @@ export const DeveloperNotesPanel: React.FC = () => {
                                                 {cfg.label}
                                             </span>
                                             <span
-                                                className="text-[10px] text-lab-muted font-medium"
+                                                className="text-[10px] text-duck-muted font-medium"
                                                 title={fullDate(note.createdAt)}
                                             >
                                                 {relativeTime(note.createdAt)}
@@ -340,21 +340,21 @@ export const DeveloperNotesPanel: React.FC = () => {
                                                     value={editBody}
                                                     onChange={(e) => setEditBody(e.target.value)}
                                                     rows={4}
-                                                    className="w-full px-3 py-2 bg-lab-cream border border-lab-line rounded-xl text-sm text-lab-ink focus:ring-2 focus:ring-lab-coral outline-none resize-none transition-all"
+                                                    className="w-full px-3 py-2 bg-duck-bg border border-duck-line rounded-xl text-sm text-duck-ink focus:ring-2 focus:ring-duck-coral outline-none resize-none transition-all"
                                                     autoFocus
                                                 />
                                                 <div className="flex gap-2">
                                                     <button
                                                         onClick={() => handleEditSave(note.id)}
                                                         disabled={!editBody.trim() || editSaving}
-                                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-lab-coral text-white rounded-lg text-xs font-bold hover:bg-lab-coral hover:text-white disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+                                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-duck-coral text-white rounded-lg text-xs font-bold hover:bg-duck-coral hover:text-white disabled:opacity-40 disabled:cursor-not-allowed transition-all"
                                                     >
                                                         <Save size={12} />
                                                         {editSaving ? 'Opslaan...' : 'Opslaan'}
                                                     </button>
                                                     <button
                                                         onClick={cancelEdit}
-                                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-lab-cream text-lab-muted rounded-lg text-xs font-bold hover:bg-lab-creamDeep transition-all"
+                                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-duck-bg text-duck-muted rounded-lg text-xs font-bold hover:bg-duck-creamDeep transition-all"
                                                     >
                                                         <X size={12} />
                                                         Annuleren
@@ -363,7 +363,7 @@ export const DeveloperNotesPanel: React.FC = () => {
                                             </div>
                                         ) : (
                                             <p
-                                                className="text-sm text-lab-ink leading-relaxed whitespace-pre-wrap cursor-pointer hover:text-lab-muted transition-colors"
+                                                className="text-sm text-duck-ink leading-relaxed whitespace-pre-wrap cursor-pointer hover:text-duck-muted transition-colors"
                                                 onClick={() => startEdit(note)}
                                                 title="Klik om te bewerken"
                                             >
@@ -377,14 +377,14 @@ export const DeveloperNotesPanel: React.FC = () => {
                                         <div className="flex gap-1 shrink-0">
                                             <button
                                                 onClick={() => startEdit(note)}
-                                                className="p-1.5 text-lab-muted hover:text-lab-muted hover:bg-lab-cream rounded-lg transition-all"
+                                                className="p-1.5 text-duck-muted hover:text-duck-muted hover:bg-duck-bg rounded-lg transition-all"
                                                 title="Bewerken"
                                             >
                                                 <Edit2 size={14} />
                                             </button>
                                             <button
                                                 onClick={() => handleDelete(note.id)}
-                                                className="p-1.5 text-lab-muted hover:text-lab-muted hover:bg-lab-coral hover:text-white rounded-lg transition-all"
+                                                className="p-1.5 text-duck-muted hover:text-duck-muted hover:bg-duck-coral hover:text-white rounded-lg transition-all"
                                                 title="Verwijderen"
                                             >
                                                 <Trash2 size={14} />

@@ -10,10 +10,10 @@ interface ContainerEditorProps {
     yearGroup: number;
     allMissions: MissionInfo[];
     assignedMissionIds: Set<string>;
-    onSave: (updated: Partial<ContainerConfig>) => void;
-    onAssignMission: (missionId: string) => void;
-    onRemoveMission: (missionId: string) => void;
-    onReorderMissions: (missionIds: string[]) => void;
+    onSave: (updated: Partial<ContainerConfig>) => void | Promise<void>;
+    onAssignMission: (missionId: string) => void | Promise<void>;
+    onRemoveMission: (missionId: string) => void | Promise<void>;
+    onReorderMissions: (missionIds: string[]) => void | Promise<void>;
     onClose: () => void;
 }
 
@@ -58,6 +58,16 @@ export const ContainerEditor: React.FC<ContainerEditorProps> = ({
     const [reviewStates, setReviewStates] = useState<Record<string, boolean>>(
         Object.fromEntries(container.missions.map(m => [m.missionId, m.isReview]))
     );
+    const [actionError, setActionError] = useState<string | null>(null);
+
+    const runAction = async (fn: () => void | Promise<void>, fallback: string) => {
+        setActionError(null);
+        try {
+            await fn();
+        } catch (e) {
+            setActionError(e instanceof Error ? e.message : fallback);
+        }
+    };
 
     const assignedInThisContainer = new Set(container.missions.map(m => m.missionId));
 
@@ -66,20 +76,25 @@ export const ContainerEditor: React.FC<ContainerEditorProps> = ({
         (a, b) => a.sortOrder - b.sortOrder
     );
 
-    const handleSave = () => {
-        onSave({
-            label: label.trim(),
-            subtitle: subtitle.trim() || undefined,
-            colorKey,
-            containerType,
-            startDate: startDate || undefined,
-            endDate: endDate || undefined,
-            missions: sortedAssigned.map(m => ({
-                ...m,
-                isReview: reviewStates[m.missionId] ?? m.isReview,
-            })),
-        });
-        onClose();
+    const handleSave = async () => {
+        setActionError(null);
+        try {
+            await onSave({
+                label: label.trim(),
+                subtitle: subtitle.trim() || undefined,
+                colorKey,
+                containerType,
+                startDate: startDate || undefined,
+                endDate: endDate || undefined,
+                missions: sortedAssigned.map(m => ({
+                    ...m,
+                    isReview: reviewStates[m.missionId] ?? m.isReview,
+                })),
+            });
+            onClose();
+        } catch (e) {
+            setActionError(e instanceof Error ? e.message : 'Opslaan mislukt');
+        }
     };
 
     const handleMoveUp = (index: number) => {
@@ -87,7 +102,7 @@ export const ContainerEditor: React.FC<ContainerEditorProps> = ({
         const ids = sortedAssigned.map(m => m.missionId);
         const swapped = [...ids];
         [swapped[index - 1], swapped[index]] = [swapped[index], swapped[index - 1]];
-        onReorderMissions(swapped);
+        runAction(() => onReorderMissions(swapped), 'Volgorde opslaan mislukt');
     };
 
     const handleMoveDown = (index: number) => {
@@ -95,7 +110,7 @@ export const ContainerEditor: React.FC<ContainerEditorProps> = ({
         const ids = sortedAssigned.map(m => m.missionId);
         const swapped = [...ids];
         [swapped[index + 1], swapped[index]] = [swapped[index], swapped[index + 1]];
-        onReorderMissions(swapped);
+        runAction(() => onReorderMissions(swapped), 'Volgorde opslaan mislukt');
     };
 
     const toggleReview = (missionId: string) => {
@@ -268,7 +283,7 @@ export const ContainerEditor: React.FC<ContainerEditorProps> = ({
                                                     return (
                                                         <li key={mission.id}>
                                                             <button
-                                                                onClick={() => !isElsewhere && onAssignMission(mission.id)}
+                                                                onClick={() => !isElsewhere && runAction(() => onAssignMission(mission.id), 'Opdracht toevoegen mislukt')}
                                                                 disabled={isElsewhere}
                                                                 title={isElsewhere ? 'Al toegewezen aan een andere container' : `Voeg ${mission.name} toe`}
                                                                 className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-colors ${
@@ -361,7 +376,7 @@ export const ContainerEditor: React.FC<ContainerEditorProps> = ({
 
                                                             {/* Remove */}
                                                             <button
-                                                                onClick={() => onRemoveMission(mc.missionId)}
+                                                                onClick={() => runAction(() => onRemoveMission(mc.missionId), 'Opdracht verwijderen mislukt')}
                                                                 className="flex-shrink-0 p-1 text-lab-muted hover:text-lab-muted hover:bg-lab-coral hover:text-white rounded-lg transition-colors"
                                                             >
                                                                 <X size={13} />
@@ -400,7 +415,13 @@ export const ContainerEditor: React.FC<ContainerEditorProps> = ({
                     </div>
 
                     {/* Footer */}
-                    <div className="flex-shrink-0 flex items-center justify-end gap-3 px-6 py-4 border-t border-lab-line bg-lab-cream">
+                    <div className="flex-shrink-0 flex flex-col gap-3 px-6 py-4 border-t border-lab-line bg-lab-cream">
+                        {actionError && (
+                            <div className="px-4 py-2.5 bg-white border border-lab-coral rounded-xl text-sm font-bold text-lab-coral">
+                                {actionError}
+                            </div>
+                        )}
+                        <div className="flex items-center justify-end gap-3">
                         <button
                             onClick={onClose}
                             className="px-5 py-2.5 text-sm font-bold text-lab-muted hover:text-lab-ink hover:bg-lab-cream rounded-xl transition-colors"
@@ -414,6 +435,7 @@ export const ContainerEditor: React.FC<ContainerEditorProps> = ({
                         >
                             Opslaan
                         </button>
+                        </div>
                     </div>
                 </motion.div>
             </div>

@@ -250,7 +250,7 @@ export function SubscriptionsPanel({ userId, onRefresh }: SubscriptionsPanelProp
     if (loading) {
         return (
             <div className="flex items-center justify-center py-16">
-                <div className="w-8 h-8 border-4 border-lab-coral border-t-transparent rounded-full animate-spin" />
+                <div className="w-8 h-8 border-4 border-duck-coral border-t-transparent rounded-full animate-spin" />
             </div>
         );
     }
@@ -258,24 +258,24 @@ export function SubscriptionsPanel({ userId, onRefresh }: SubscriptionsPanelProp
     return (
         <div className="space-y-6">
             {error && !showForm && (
-                <div className="flex items-center gap-2 text-white bg-lab-coral border border-lab-coral rounded-xl px-4 py-3 text-sm">
+                <div className="flex items-center gap-2 text-white bg-duck-coral border border-duck-coral rounded-xl px-4 py-3 text-sm">
                     <AlertCircle size={16} />
                     {error}
-                    <button onClick={() => setError('')} className="ml-auto p-1 hover:bg-lab-coral hover:text-white rounded-lg">
+                    <button onClick={() => setError('')} className="ml-auto p-1 hover:bg-duck-coral hover:text-white rounded-lg">
                         <X size={12} />
                     </button>
                 </div>
             )}
 
             {genResult !== null && (
-                <div className="flex items-center gap-2 text-white bg-lab-sage border border-lab-sage rounded-xl px-4 py-3 text-sm">
+                <div className="flex items-center gap-2 text-white bg-duck-ink border border-duck-ink rounded-xl px-4 py-3 text-sm">
                     <RefreshCw size={16} />
                     <span className="font-bold">
                         {genResult === 0
                             ? 'Alle transacties zijn up-to-date, niks te genereren.'
                             : `${genResult} transactie${genResult > 1 ? 's' : ''} automatisch aangemaakt.`}
                     </span>
-                    <button onClick={() => setGenResult(null)} className="ml-auto p-1 hover:bg-lab-sage hover:text-white rounded-lg">
+                    <button onClick={() => setGenResult(null)} className="ml-auto p-1 hover:bg-duck-ink hover:text-white rounded-lg">
                         <X size={12} />
                     </button>
                 </div>
@@ -285,7 +285,7 @@ export function SubscriptionsPanel({ userId, onRefresh }: SubscriptionsPanelProp
             <div className="flex flex-wrap items-center gap-3">
                 <button
                     onClick={() => setShowForm(true)}
-                    className="flex items-center gap-2 px-4 py-2.5 bg-lab-coral text-white rounded-xl font-bold text-sm hover:bg-lab-coral hover:text-white transition-colors shadow-sm"
+                    className="flex items-center gap-2 px-4 py-2.5 bg-duck-coral text-white rounded-xl font-bold text-sm hover:bg-duck-coral hover:text-white transition-colors shadow-sm"
                 >
                     <Plus size={16} />
                     Abonnement toevoegen
@@ -293,7 +293,7 @@ export function SubscriptionsPanel({ userId, onRefresh }: SubscriptionsPanelProp
                 <button
                     onClick={handleGenerate}
                     disabled={generating || activeSubs.length === 0}
-                    className="flex items-center gap-2 px-4 py-2.5 bg-white border border-lab-line text-lab-muted rounded-xl font-bold text-sm hover:bg-lab-cream transition-colors disabled:opacity-50"
+                    className="flex items-center gap-2 px-4 py-2.5 bg-white border border-duck-line text-duck-muted rounded-xl font-bold text-sm hover:bg-duck-bg transition-colors disabled:opacity-50"
                 >
                     <RefreshCw size={16} className={generating ? 'animate-spin' : ''} />
                     {generating ? 'Genereren...' : 'Transacties genereren'}
@@ -302,11 +302,11 @@ export function SubscriptionsPanel({ userId, onRefresh }: SubscriptionsPanelProp
                 {/* Totalen */}
                 {activeSubs.length > 0 && (
                     <div className="ml-auto flex gap-4 text-sm">
-                        <span className="text-lab-muted">
-                            <span className="font-bold text-lab-muted">{formatEuro(monthlyTotal)}</span>/maand
+                        <span className="text-duck-muted">
+                            <span className="font-bold text-duck-muted">{formatEuro(monthlyTotal)}</span>/maand
                         </span>
-                        <span className="text-lab-muted">
-                            <span className="font-bold text-lab-muted">{formatEuro(yearlyTotal)}</span>/jaar
+                        <span className="text-duck-muted">
+                            <span className="font-bold text-duck-muted">{formatEuro(yearlyTotal)}</span>/jaar
                         </span>
                     </div>
                 )}
@@ -314,10 +314,10 @@ export function SubscriptionsPanel({ userId, onRefresh }: SubscriptionsPanelProp
 
             {/* Lijst */}
             {subs.length === 0 ? (
-                <div className="bg-white rounded-[2rem] border border-lab-line py-16 text-center">
-                    <CreditCard size={32} className="mx-auto text-lab-muted mb-3" />
-                    <p className="text-lab-muted text-sm italic">Nog geen abonnementen toegevoegd.</p>
-                    <p className="text-lab-muted text-xs mt-1">
+                <div className="bg-white rounded-[2rem] border border-duck-line py-16 text-center">
+                    <CreditCard size={32} className="mx-auto text-duck-muted mb-3" />
+                    <p className="text-duck-muted text-sm italic">Nog geen abonnementen toegevoegd.</p>
+                    <p className="text-duck-muted text-xs mt-1">
                         Voeg abonnementen toe zoals Claude, Vercel, hosting, etc.
                     </p>
                 </div>
@@ -333,7 +333,7 @@ export function SubscriptionsPanel({ userId, onRefresh }: SubscriptionsPanelProp
                     ))}
                     {inactiveSubs.length > 0 && (
                         <>
-                            <p className="text-[10px] font-black text-lab-muted uppercase tracking-widest mt-6">
+                            <p className="text-[10px] font-black text-duck-muted uppercase tracking-widest mt-6">
                                 Gepauzeerd ({inactiveSubs.length})
                             </p>
                             {inactiveSubs.map(sub => (
@@ -354,9 +354,9 @@ export function SubscriptionsPanel({ userId, onRefresh }: SubscriptionsPanelProp
                 <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
                     <div className="bg-white rounded-3xl shadow-2xl w-full max-w-md p-5 sm:p-8 max-h-[90vh] overflow-y-auto">
                         <div className="flex items-center justify-between mb-6">
-                            <h3 className="text-lg font-black text-lab-ink uppercase tracking-tight">Abonnement Toevoegen</h3>
-                            <button onClick={() => { setShowForm(false); setError(''); }} className="p-2 hover:bg-lab-cream rounded-xl">
-                                <X size={20} className="text-lab-muted" />
+                            <h3 className="text-lg font-black text-duck-ink uppercase tracking-tight">Abonnement Toevoegen</h3>
+                            <button onClick={() => { setShowForm(false); setError(''); }} className="p-2 hover:bg-duck-bg rounded-xl">
+                                <X size={20} className="text-duck-muted" />
                             </button>
                         </div>
 
@@ -375,12 +375,12 @@ export function SubscriptionsPanel({ userId, onRefresh }: SubscriptionsPanelProp
                             <button
                                 onClick={() => fileInputRef.current?.click()}
                                 disabled={scanning}
-                                className="w-full flex items-center justify-center gap-2 px-4 py-3 border-2 border-dashed border-lab-line rounded-xl text-sm font-bold text-lab-muted hover:border-lab-coral hover:text-lab-coral hover:bg-lab-coral/10 transition-all disabled:opacity-60 disabled:cursor-wait"
+                                className="w-full flex items-center justify-center gap-2 px-4 py-3 border-2 border-dashed border-duck-line rounded-xl text-sm font-bold text-duck-muted hover:border-duck-coral hover:text-duck-coral hover:bg-duck-coral/10 transition-all disabled:opacity-60 disabled:cursor-wait"
                             >
                                 {scanning ? (
                                     <>
-                                        <Sparkles size={16} className="animate-pulse text-lab-muted" />
-                                        <span className="text-lab-coral">Claude AI scant bestand...</span>
+                                        <Sparkles size={16} className="animate-pulse text-duck-muted" />
+                                        <span className="text-duck-coral">Claude AI scant bestand...</span>
                                     </>
                                 ) : (
                                     <>
@@ -389,13 +389,13 @@ export function SubscriptionsPanel({ userId, onRefresh }: SubscriptionsPanelProp
                                     </>
                                 )}
                             </button>
-                            <p className="text-[10px] text-lab-muted mt-1 text-center">
+                            <p className="text-[10px] text-duck-muted mt-1 text-center">
                                 JPEG, PNG, WebP, GIF of PDF — max 10 MB
                             </p>
                         </div>
 
                         {error && (
-                            <div className="flex items-center gap-2 text-white bg-lab-coral rounded-xl px-4 py-3 mb-4 text-sm">
+                            <div className="flex items-center gap-2 text-white bg-duck-coral rounded-xl px-4 py-3 mb-4 text-sm">
                                 <AlertCircle size={16} />
                                 {error}
                             </div>
@@ -404,32 +404,32 @@ export function SubscriptionsPanel({ userId, onRefresh }: SubscriptionsPanelProp
                         <div className="space-y-4">
                             {/* Naam */}
                             <div>
-                                <label className="block text-xs font-bold text-lab-muted uppercase tracking-widest mb-1">Naam *</label>
+                                <label className="block text-xs font-bold text-duck-muted uppercase tracking-widest mb-1">Naam *</label>
                                 <input
                                     type="text"
                                     value={form.name}
                                     onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
                                     placeholder="Claude Pro, Vercel Pro, Netlify..."
-                                    className="w-full px-4 py-2.5 border border-lab-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-lab-coral"
+                                    className="w-full px-4 py-2.5 border border-duck-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-duck-coral"
                                 />
                             </div>
 
                             {/* Leverancier */}
                             <div>
-                                <label className="block text-xs font-bold text-lab-muted uppercase tracking-widest mb-1">Leverancier</label>
+                                <label className="block text-xs font-bold text-duck-muted uppercase tracking-widest mb-1">Leverancier</label>
                                 <input
                                     type="text"
                                     value={form.supplier}
                                     onChange={e => setForm(f => ({ ...f, supplier: e.target.value }))}
                                     placeholder="Anthropic, Vercel Inc..."
-                                    className="w-full px-4 py-2.5 border border-lab-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-lab-coral"
+                                    className="w-full px-4 py-2.5 border border-duck-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-duck-coral"
                                 />
                             </div>
 
                             {/* Bedrag + BTW */}
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                 <div>
-                                    <label className="block text-xs font-bold text-lab-muted uppercase tracking-widest mb-1">Bedrag excl. BTW *</label>
+                                    <label className="block text-xs font-bold text-duck-muted uppercase tracking-widest mb-1">Bedrag excl. BTW *</label>
                                     <input
                                         type="number"
                                         step="0.01"
@@ -437,11 +437,11 @@ export function SubscriptionsPanel({ userId, onRefresh }: SubscriptionsPanelProp
                                         value={form.amount}
                                         onChange={e => setForm(f => ({ ...f, amount: e.target.value }))}
                                         placeholder="0.00"
-                                        className="w-full px-4 py-2.5 border border-lab-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-lab-coral"
+                                        className="w-full px-4 py-2.5 border border-duck-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-duck-coral"
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-xs font-bold text-lab-muted uppercase tracking-widest mb-1">BTW-bedrag</label>
+                                    <label className="block text-xs font-bold text-duck-muted uppercase tracking-widest mb-1">BTW-bedrag</label>
                                     <input
                                         type="number"
                                         step="0.01"
@@ -449,22 +449,22 @@ export function SubscriptionsPanel({ userId, onRefresh }: SubscriptionsPanelProp
                                         value={form.vatAmount}
                                         onChange={e => setForm(f => ({ ...f, vatAmount: e.target.value }))}
                                         placeholder="0.00"
-                                        className="w-full px-4 py-2.5 border border-lab-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-lab-coral"
+                                        className="w-full px-4 py-2.5 border border-duck-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-duck-coral"
                                     />
                                 </div>
                             </div>
 
                             {/* BTW-tarief */}
                             <div>
-                                <label className="block text-xs font-bold text-lab-muted uppercase tracking-widest mb-1">BTW-tarief</label>
+                                <label className="block text-xs font-bold text-duck-muted uppercase tracking-widest mb-1">BTW-tarief</label>
                                 <div className="flex gap-2">
                                     {([0, 9, 21] as const).map(rate => (
                                         <button
                                             key={rate}
                                             onClick={() => setForm(f => ({ ...f, vatRate: rate, vatAmount: rate === 0 ? '0' : f.vatAmount }))}
                                             className={`flex-1 py-2 text-sm font-bold rounded-xl transition-colors ${form.vatRate === rate
-                                                ? 'bg-lab-coral text-white'
-                                                : 'bg-lab-cream text-lab-muted hover:bg-lab-creamDeep'
+                                                ? 'bg-duck-coral text-white'
+                                                : 'bg-duck-bg text-duck-muted hover:bg-duck-creamDeep'
                                             }`}
                                         >
                                             {rate}%
@@ -472,16 +472,16 @@ export function SubscriptionsPanel({ userId, onRefresh }: SubscriptionsPanelProp
                                     ))}
                                 </div>
                                 {form.vatRate === 0 && (
-                                    <div className="flex items-start gap-2 mt-2 bg-lab-gold border border-lab-gold rounded-xl px-3 py-2">
-                                        <AlertCircle size={12} className="text-lab-muted mt-0.5 shrink-0" />
-                                        <p className="text-[10px] text-lab-gold leading-relaxed">
+                                    <div className="flex items-start gap-2 mt-2 bg-duck-acid border border-duck-acid rounded-xl px-3 py-2">
+                                        <AlertCircle size={12} className="text-duck-muted mt-0.5 shrink-0" />
+                                        <p className="text-[10px] text-duck-ink leading-relaxed">
                                             <strong>BTW verlegd:</strong> Bij buitenlandse SaaS-diensten (Claude, Vercel, GitHub, AWS, Google) betaal je 0% BTW.
                                             De BTW wordt verlegd naar jou als afnemer — vermeld dit op je BTW-aangifte.
                                         </p>
                                     </div>
                                 )}
                                 {form.vatRate > 0 && (
-                                    <p className="text-[10px] text-lab-muted mt-1">
+                                    <p className="text-[10px] text-duck-muted mt-1">
                                         Nederlandse diensten: 21% standaard, 9% laag tarief. Buitenlandse SaaS = 0% verlegd.
                                     </p>
                                 )}
@@ -489,15 +489,15 @@ export function SubscriptionsPanel({ userId, onRefresh }: SubscriptionsPanelProp
 
                             {/* Frequentie */}
                             <div>
-                                <label className="block text-xs font-bold text-lab-muted uppercase tracking-widest mb-1">Frequentie</label>
+                                <label className="block text-xs font-bold text-duck-muted uppercase tracking-widest mb-1">Frequentie</label>
                                 <div className="flex gap-2">
                                     {(['monthly', 'quarterly', 'yearly'] as const).map(freq => (
                                         <button
                                             key={freq}
                                             onClick={() => setForm(f => ({ ...f, frequency: freq }))}
                                             className={`flex-1 py-2 text-sm font-bold rounded-xl transition-colors ${form.frequency === freq
-                                                ? 'bg-lab-coral text-white'
-                                                : 'bg-lab-cream text-lab-muted hover:bg-lab-creamDeep'
+                                                ? 'bg-duck-coral text-white'
+                                                : 'bg-duck-bg text-duck-muted hover:bg-duck-creamDeep'
                                             }`}
                                         >
                                             {FREQUENCY_LABELS[freq]}
@@ -508,11 +508,11 @@ export function SubscriptionsPanel({ userId, onRefresh }: SubscriptionsPanelProp
 
                             {/* Categorie */}
                             <div>
-                                <label className="block text-xs font-bold text-lab-muted uppercase tracking-widest mb-1">Categorie</label>
+                                <label className="block text-xs font-bold text-duck-muted uppercase tracking-widest mb-1">Categorie</label>
                                 <select
                                     value={form.category}
                                     onChange={e => setForm(f => ({ ...f, category: e.target.value as TransactionCategory }))}
-                                    className="w-full px-4 py-2.5 border border-lab-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-lab-coral"
+                                    className="w-full px-4 py-2.5 border border-duck-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-duck-coral"
                                 >
                                     {EXPENSE_CATEGORIES.map(cat => (
                                         <option key={cat} value={cat}>{CATEGORY_LABELS[cat]}</option>
@@ -523,35 +523,35 @@ export function SubscriptionsPanel({ userId, onRefresh }: SubscriptionsPanelProp
                             {/* Startdatum */}
                             <div className="grid grid-cols-2 gap-3">
                                 <div>
-                                    <label className="block text-xs font-bold text-lab-muted uppercase tracking-widest mb-1">Startdatum *</label>
+                                    <label className="block text-xs font-bold text-duck-muted uppercase tracking-widest mb-1">Startdatum *</label>
                                     <input
                                         type="date"
                                         value={form.startDate}
                                         onChange={e => setForm(f => ({ ...f, startDate: e.target.value }))}
-                                        className="w-full px-4 py-2.5 border border-lab-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-lab-coral"
+                                        className="w-full px-4 py-2.5 border border-duck-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-duck-coral"
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-xs font-bold text-lab-muted uppercase tracking-widest mb-1">Einddatum</label>
+                                    <label className="block text-xs font-bold text-duck-muted uppercase tracking-widest mb-1">Einddatum</label>
                                     <input
                                         type="date"
                                         value={form.endDate}
                                         onChange={e => setForm(f => ({ ...f, endDate: e.target.value }))}
-                                        className="w-full px-4 py-2.5 border border-lab-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-lab-coral"
+                                        className="w-full px-4 py-2.5 border border-duck-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-duck-coral"
                                     />
-                                    <p className="text-[10px] text-lab-muted mt-1">Leeg = doorlopend</p>
+                                    <p className="text-[10px] text-duck-muted mt-1">Leeg = doorlopend</p>
                                 </div>
                             </div>
 
                             {/* Notities */}
                             <div>
-                                <label className="block text-xs font-bold text-lab-muted uppercase tracking-widest mb-1">Notities</label>
+                                <label className="block text-xs font-bold text-duck-muted uppercase tracking-widest mb-1">Notities</label>
                                 <input
                                     type="text"
                                     value={form.notes}
                                     onChange={e => setForm(f => ({ ...f, notes: e.target.value }))}
                                     placeholder="Bijv. betaald via creditcard, jaarcontract..."
-                                    className="w-full px-4 py-2.5 border border-lab-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-lab-coral"
+                                    className="w-full px-4 py-2.5 border border-duck-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-duck-coral"
                                 />
                             </div>
                         </div>
@@ -559,14 +559,14 @@ export function SubscriptionsPanel({ userId, onRefresh }: SubscriptionsPanelProp
                         <div className="flex gap-3 mt-6">
                             <button
                                 onClick={() => { setShowForm(false); setError(''); }}
-                                className="flex-1 py-3 border border-lab-line rounded-xl text-sm font-bold text-lab-muted hover:bg-lab-cream transition-colors"
+                                className="flex-1 py-3 border border-duck-line rounded-xl text-sm font-bold text-duck-muted hover:bg-duck-bg transition-colors"
                             >
                                 Annuleren
                             </button>
                             <button
                                 onClick={handleSave}
                                 disabled={saving}
-                                className="flex-1 py-3 bg-lab-coral text-white rounded-xl text-sm font-bold hover:bg-lab-coral hover:text-white disabled:opacity-50 transition-colors"
+                                className="flex-1 py-3 bg-duck-coral text-white rounded-xl text-sm font-bold hover:bg-duck-coral hover:text-white disabled:opacity-50 transition-colors"
                             >
                                 {saving ? 'Opslaan...' : 'Opslaan'}
                             </button>
@@ -594,30 +594,30 @@ function SubscriptionCard({
     const totalAmount = sub.amount + sub.vat_amount;
 
     return (
-        <div className={`bg-white rounded-2xl border border-lab-line shadow-sm p-5 flex items-center gap-4 group transition-opacity ${!sub.is_active ? 'opacity-50' : ''}`}>
+        <div className={`bg-white rounded-2xl border border-duck-line shadow-sm p-5 flex items-center gap-4 group transition-opacity ${!sub.is_active ? 'opacity-50' : ''}`}>
             {/* Icoon */}
-            <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${sub.is_active ? 'bg-lab-coral' : 'bg-lab-cream'}`}>
-                <CreditCard size={18} className={sub.is_active ? 'text-lab-coral' : 'text-lab-muted'} />
+            <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${sub.is_active ? 'bg-duck-coral' : 'bg-duck-bg'}`}>
+                <CreditCard size={18} className={sub.is_active ? 'text-duck-coral' : 'text-duck-muted'} />
             </div>
 
             {/* Info */}
             <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
-                    <p className="font-bold text-lab-ink text-sm truncate">{sub.name}</p>
+                    <p className="font-bold text-duck-ink text-sm truncate">{sub.name}</p>
                     {sub.supplier && (
-                        <span className="text-[10px] text-lab-muted">{sub.supplier}</span>
+                        <span className="text-[10px] text-duck-muted">{sub.supplier}</span>
                     )}
                 </div>
                 <div className="flex items-center gap-3 mt-1">
-                    <span className="text-[10px] bg-lab-coral text-white px-2 py-0.5 rounded-lg font-bold">
+                    <span className="text-[10px] bg-duck-coral text-white px-2 py-0.5 rounded-lg font-bold">
                         {CATEGORY_LABELS[sub.category] || sub.category}
                     </span>
-                    <span className="text-[10px] text-lab-muted flex items-center gap-1">
+                    <span className="text-[10px] text-duck-muted flex items-center gap-1">
                         <CalendarClock size={10} />
                         {FREQUENCY_LABELS[sub.frequency]}
                     </span>
                     {sub.last_generated && (
-                        <span className="text-[10px] text-lab-muted">
+                        <span className="text-[10px] text-duck-muted">
                             Laatst: {formatDate(sub.last_generated)}
                         </span>
                     )}
@@ -626,9 +626,9 @@ function SubscriptionCard({
 
             {/* Bedrag */}
             <div className="text-right shrink-0">
-                <p className="font-black text-lab-ink text-sm">{formatEuro(totalAmount)}</p>
+                <p className="font-black text-duck-ink text-sm">{formatEuro(totalAmount)}</p>
                 {sub.vat_amount > 0 && (
-                    <p className="text-[10px] text-lab-muted">
+                    <p className="text-[10px] text-duck-muted">
                         {formatEuro(sub.vat_amount)} BTW ({sub.vat_rate}%)
                     </p>
                 )}
@@ -639,13 +639,13 @@ function SubscriptionCard({
                 <button
                     onClick={onToggle}
                     title={sub.is_active ? 'Pauzeren' : 'Heractiveren'}
-                    className="p-2 text-lab-muted hover:text-lab-coral hover:bg-lab-coral hover:text-white rounded-lg transition-all"
+                    className="p-2 text-duck-muted hover:text-duck-coral hover:bg-duck-coral hover:text-white rounded-lg transition-all"
                 >
                     {sub.is_active ? <Pause size={14} /> : <Play size={14} />}
                 </button>
                 <button
                     onClick={onDelete}
-                    className="opacity-0 group-hover:opacity-100 p-2 text-lab-muted hover:text-lab-muted hover:bg-lab-coral hover:text-white rounded-lg transition-all"
+                    className="opacity-0 group-hover:opacity-100 p-2 text-duck-muted hover:text-duck-muted hover:bg-duck-coral hover:text-white rounded-lg transition-all"
                 >
                     <Trash2 size={14} />
                 </button>

@@ -242,12 +242,24 @@ const buildRequestHref = (subject: string): string =>
 const TOTAL_DOCS = SECTIONS.reduce((acc, s) => acc + s.docs.length, 0);
 
 const DocRow: React.FC<{ doc: ComplianceDoc; sectionId: string }> = ({ doc, sectionId }) => {
+    const [copied, setCopied] = useState(false);
+
     const handleClick = () => {
         trackEvent('ict_document_download', {
             page: 'compliance-hub',
             cta: `${sectionId}:${doc.id}`,
             type: doc.access.type,
         });
+    };
+
+    const handleCopyEmail = async () => {
+        try {
+            await navigator.clipboard.writeText(PRIVACY_EMAIL);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000);
+        } catch {
+            // clipboard not available — email address is still visible
+        }
     };
 
     const baseWrapperClasses =
@@ -290,9 +302,20 @@ const DocRow: React.FC<{ doc: ComplianceDoc; sectionId: string }> = ({ doc, sect
                     <p className="text-sm text-lab-muted max-w-xl">{doc.description}</p>
                 </div>
             </div>
-            <a href={href} className={baseButtonClasses} onClick={handleClick} {...externalProps}>
-                {cta}
-            </a>
+            <div className="flex flex-col items-end gap-1">
+                <a href={href} className={baseButtonClasses} onClick={handleClick} {...externalProps}>
+                    {cta}
+                </a>
+                {doc.access.type === 'request' && (
+                    <button
+                        type="button"
+                        onClick={handleCopyEmail}
+                        className="text-[11px] text-lab-mutedSoft hover:text-lab-coral transition-colors"
+                    >
+                        {copied ? 'Gekopieerd!' : PRIVACY_EMAIL}
+                    </button>
+                )}
+            </div>
         </div>
     );
 };
