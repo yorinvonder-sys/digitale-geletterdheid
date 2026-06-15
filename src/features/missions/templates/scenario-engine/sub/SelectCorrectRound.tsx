@@ -68,7 +68,7 @@ export const SelectCorrectRound: React.FC<{
                                         {item.title}
                                     </span>
                                     {isSelected && !submitted && (
-                                        <span className="shrink-0 text-[10px] bg-duck-acid/10 text-duck-acid px-2 py-0.5 rounded-full font-bold">geselecteerd</span>
+                                        <span className="shrink-0 text-[10px] bg-duck-acid/10 text-duck-ink px-2 py-0.5 rounded-full font-bold">geselecteerd</span>
                                     )}
                                     {submitted && isSelected && (
                                         item.correct

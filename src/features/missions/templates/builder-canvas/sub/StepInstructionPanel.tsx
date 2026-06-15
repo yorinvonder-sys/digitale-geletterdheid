@@ -46,7 +46,7 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
                 </div>
                 <div>
                     <span
-                        className="text-[10px] font-black text-duck-acid uppercase tracking-widest block"
+                        className="text-[10px] font-black text-duck-ink uppercase tracking-widest block"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         Stap {stepIndex + 1} van {totalSteps}
@@ -81,9 +81,9 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
             {/* Optional tip */}
             {stepData.tip && (
                 <div className="flex items-start gap-2 bg-duck-acid/8 border border-duck-acid/20 rounded-xl p-3 mb-4">
-                    <Lightbulb size={14} className="text-duck-acid mt-0.5 shrink-0" />
+                    <Lightbulb size={14} className="text-duck-ink mt-0.5 shrink-0" />
                     <p
-                        className="text-xs text-duck-acid leading-relaxed"
+                        className="text-xs text-duck-ink leading-relaxed"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         {stepData.tip}

@@ -49,7 +49,7 @@ export const ReceivedFeedbackCard: React.FC<Props> = ({ feedback, onVoted }) => 
         <Star
           key={i}
           size={12}
-          className={i <= count ? 'text-duck-acid fill-duck-acid' : 'text-duck-gray'}
+          className={i <= count ? 'text-duck-ink fill-duck-ink' : 'text-duck-gray'}
         />
       ))}
     </div>
@@ -72,7 +72,7 @@ export const ReceivedFeedbackCard: React.FC<Props> = ({ feedback, onVoted }) => 
           </span>
         </div>
         <div className="flex items-center gap-1.5 bg-white px-2.5 py-1 rounded-full">
-          <Star size={12} className="text-duck-acid fill-duck-acid" />
+          <Star size={12} className="text-duck-ink fill-duck-ink" />
           <span className="text-xs font-bold text-duck-ink/60">{avgScore}</span>
         </div>
       </div>

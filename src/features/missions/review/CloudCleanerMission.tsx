@@ -103,7 +103,7 @@ const FOLDERS: FolderItem[] = [
     { id: 'wiskunde', name: 'Wiskunde', icon: <Folder className="text-duck-ink" fill="currentColor" fillOpacity={0.2} /> },
     { id: 'aardrijkskunde', name: 'Aardrijkskunde', icon: <Folder className="text-duck-ink" fill="currentColor" fillOpacity={0.2} /> },
     { id: 'school_algemeen', name: 'School Algemeen', icon: <Folder className="text-duck-ink" fill="currentColor" fillOpacity={0.2} /> },
-    { id: 'prive', name: "Privé & Foto's", icon: <Folder className="text-duck-acid" fill="currentColor" fillOpacity={0.2} /> },
+    { id: 'prive', name: "Privé & Foto's", icon: <Folder className="text-duck-ink" fill="currentColor" fillOpacity={0.2} /> },
 ];
 
 export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, onBack }) => {
@@ -342,7 +342,7 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
                     }}
                 >
                     <div className="w-20 h-20 bg-duck-acid/20 backdrop-blur-sm rounded-2xl border-2 border-duck-acid flex items-center justify-center shadow-xl">
-                        <FileText size={32} className="text-duck-acid" />
+                        <FileText size={32} className="text-duck-ink" />
                     </div>
                 </div>
             )}
@@ -567,7 +567,7 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
                             {files.length} van {FILES.length} bestanden over
                         </p>
                         {mistakes > 0 && (
-                            <p className="text-xs text-duck-acid mt-1 font-medium flex items-center gap-1">
+                            <p className="text-xs text-duck-ink mt-1 font-medium flex items-center gap-1">
                                 <AlertCircle size={12} /> {mistakes} fouten
                             </p>
                         )}

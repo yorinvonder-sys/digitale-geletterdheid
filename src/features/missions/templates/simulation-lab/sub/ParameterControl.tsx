@@ -18,7 +18,7 @@ export const ParameterControl: React.FC<{
                         {param.label}
                     </label>
                     <span
-                        className="text-xs font-black text-duck-acid bg-duck-acid/10 px-2 py-0.5 rounded-full"
+                        className="text-xs font-black text-duck-ink bg-duck-acid/10 px-2 py-0.5 rounded-full"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         {v}
@@ -85,7 +85,7 @@ export const ParameterControl: React.FC<{
                             onClick={() => onChange(opt)}
                             className={`text-left px-3 py-2 rounded-lg text-xs font-medium transition-all duration-200 border ${
                                 v === opt
-                                    ? 'bg-duck-acid/10 border-duck-acid text-duck-acid font-bold'
+                                    ? 'bg-duck-acid/10 border-duck-acid text-duck-ink font-bold'
                                     : 'bg-white border-duck-gray text-duck-ink/60 hover:border-duck-acid/50'
                             }`}
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}

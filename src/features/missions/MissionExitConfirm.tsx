@@ -44,7 +44,7 @@ export const MissionExitConfirm: React.FC<MissionExitConfirmProps> = ({
           >
             {/* Icon */}
             <div className="w-12 h-12 rounded-xl bg-duck-bg flex items-center justify-center mx-auto">
-              <LogOut size={24} className="text-duck-acid" />
+              <LogOut size={24} className="text-duck-ink" />
             </div>
 
             {/* Text */}

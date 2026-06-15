@@ -359,7 +359,7 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
 
                     {/* Instructions Card — compact */}
                     <div className="bg-white border border-duck-gray rounded-xl p-5 mb-5 text-left shadow-sm">
-                        <h3 className="text-xs font-black text-duck-acid uppercase tracking-widest mb-3 flex items-center gap-2">
+                        <h3 className="text-xs font-black text-duck-ink uppercase tracking-widest mb-3 flex items-center gap-2">
                             <Zap size={14} /> Hoe werkt het?
                         </h3>
                         <div className="grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
@@ -596,7 +596,7 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
                                 Politie Rapport
                             </h3>
                             <div className="bg-duck-bg p-4 rounded-2xl border border-duck-ink/15">
-                                <p className="text-duck-acid font-bold text-xs uppercase mb-1 flex items-center gap-1">
+                                <p className="text-duck-ink font-bold text-xs uppercase mb-1 flex items-center gap-1">
                                     <AlertTriangle size={12} /> Overtreding:
                                 </p>
                                 <p className="text-duck-ink/60 text-sm leading-relaxed">
@@ -638,7 +638,7 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
                                     Politie Rapport
                                 </h3>
                                 <div className="bg-duck-bg p-4 rounded-2xl border border-duck-ink/15">
-                                    <p className="text-duck-acid font-bold text-xs uppercase mb-1 flex items-center gap-1">
+                                    <p className="text-duck-ink font-bold text-xs uppercase mb-1 flex items-center gap-1">
                                         <AlertTriangle size={12} /> Overtreding:
                                     </p>
                                     <p className="text-duck-ink/60 text-sm leading-relaxed">

@@ -55,7 +55,7 @@ export const ArguePhase: React.FC<ArguePhaseProps> = ({ config, state, onUpdateA
                             onClick={() => onSetActiveIndex(i)}
                             className={`flex-1 py-2 rounded-xl border text-xs font-bold transition-all ${
                                 isActive
-                                    ? 'border-duck-acid bg-duck-acid/10 text-duck-acid'
+                                    ? 'border-duck-acid bg-duck-acid/10 text-duck-ink'
                                     : valid
                                       ? 'border-duck-ink bg-duck-ink/5 text-duck-ink'
                                       : 'border-duck-gray bg-white text-duck-ink/60'
@@ -70,7 +70,7 @@ export const ArguePhase: React.FC<ArguePhaseProps> = ({ config, state, onUpdateA
 
             {/* Argument card */}
             <div className="bg-white rounded-2xl border border-duck-gray p-4 mb-4">
-                <div className="text-xs font-black text-duck-acid uppercase tracking-widest mb-3" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                <div className="text-xs font-black text-duck-ink uppercase tracking-widest mb-3" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                     Argument {state.activeArgumentIndex + 1}
                 </div>
 
@@ -139,7 +139,7 @@ export const ArguePhase: React.FC<ArguePhaseProps> = ({ config, state, onUpdateA
                                 onClick={() => onUpdateArgument(state.activeArgumentIndex, 'stakeholderId', sh.id)}
                                 className={`px-3 py-1.5 rounded-xl border text-xs font-bold transition-all ${
                                     activeArg.stakeholderId === sh.id
-                                        ? 'border-duck-acid bg-duck-acid/10 text-duck-acid'
+                                        ? 'border-duck-acid bg-duck-acid/10 text-duck-ink'
                                         : 'border-duck-gray bg-duck-bg text-duck-ink/60 hover:border-duck-acid/40'
                                 }`}
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}

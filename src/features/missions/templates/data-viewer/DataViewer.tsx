@@ -162,7 +162,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                     {q.question}
                 </p>
                 <span
-                    className="text-xs font-bold text-duck-acid bg-duck-acid/10 px-2 py-0.5 rounded-full flex-shrink-0"
+                    className="text-xs font-bold text-duck-ink bg-duck-acid/10 px-2 py-0.5 rounded-full flex-shrink-0"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     {q.points} pt
@@ -254,7 +254,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                     {correct ? (
                         <CheckCircle size={16} className="text-duck-ink mt-0.5 flex-shrink-0" />
                     ) : (
-                        <XCircle size={16} className="text-duck-acid mt-0.5 flex-shrink-0" />
+                        <XCircle size={16} className="text-duck-ink mt-0.5 flex-shrink-0" />
                     )}
                     <div>
                         {q.type === 'text-observation' ? (
@@ -273,7 +273,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                             </p>
                         ) : (
                             <p
-                                className="text-xs font-semibold text-duck-acid mb-1"
+                                className="text-xs font-semibold text-duck-ink mb-1"
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                             >
                                 Niet helemaal — het juiste antwoord: <strong>{q.correctAnswer}</strong>
@@ -340,7 +340,7 @@ const DatasetView: React.FC<DatasetViewProps> = ({
         <div className="mb-4">
             <div className="flex items-center gap-2 mb-1">
                 <span
-                    className="text-xs font-black text-duck-acid uppercase tracking-widest"
+                    className="text-xs font-black text-duck-ink uppercase tracking-widest"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     Dataset {datasetIndex + 1} / {totalDatasets}
@@ -405,9 +405,9 @@ const DatasetView: React.FC<DatasetViewProps> = ({
 
         {/* Hint */}
         <div className="flex items-center gap-2 mb-4 p-2.5 bg-duck-acid/6 rounded-xl border border-duck-acid/15">
-            <BookOpen size={14} className="text-duck-acid flex-shrink-0" />
+            <BookOpen size={14} className="text-duck-ink flex-shrink-0" />
             <p
-                className="text-xs text-duck-acid"
+                className="text-xs text-duck-ink"
                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
             >
                 Gebruik de data hierboven om de vragen te beantwoorden. Sorteer of filter om antwoorden te vinden.

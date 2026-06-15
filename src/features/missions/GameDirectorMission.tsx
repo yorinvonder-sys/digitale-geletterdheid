@@ -753,8 +753,8 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                     {/* Reflectie */}
                     <div className="bg-duck-bg rounded-2xl p-4 border border-duck-acid/20 text-left space-y-3 mt-6">
                         <div className="flex items-center gap-2">
-                            <Sparkles size={16} className="text-duck-acid" />
-                            <p className="text-xs font-black uppercase tracking-widest text-duck-acid" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Reflectie</p>
+                            <Sparkles size={16} className="text-duck-ink" />
+                            <p className="text-xs font-black uppercase tracking-widest text-duck-ink" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Reflectie</p>
                         </div>
                         <p className="text-xs text-duck-ink/60" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Wat heb je geleerd in deze missie? Waar zou je dit in het dagelijks leven tegenkomen?</p>
                         <textarea
@@ -776,18 +776,18 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                 <div className="flex w-full md:w-auto items-center gap-3 md:gap-6">
                     <button
                         onClick={onBack}
-                        className="flex shrink-0 items-center gap-2 text-duck-ink/60 hover:text-duck-acid transition-all duration-300 font-bold text-xs uppercase tracking-widest"
+                        className="flex shrink-0 items-center gap-2 text-duck-ink/60 hover:text-duck-ink transition-all duration-300 font-bold text-xs uppercase tracking-widest"
                     >
                         <ArrowLeft size={16} /> Terug
                     </button>
                     <div className="hidden md:block h-8 w-px bg-duck-gray"></div>
                     <div className="flex min-w-0 items-center gap-3">
-                        <div className="p-2 bg-duck-acid/10 text-duck-acid rounded-xl">
+                        <div className="p-2 bg-duck-acid/10 text-duck-ink rounded-xl">
                             <Settings2 size={20} />
                         </div>
                         <div>
                             <h1 className="text-sm font-black uppercase tracking-tight flex items-center gap-2 font-['Newsreader',Georgia,serif] text-duck-ink">
-                                Game Director <Sparkles size={14} className="text-duck-acid" />
+                                Game Director <Sparkles size={14} className="text-duck-ink" />
                             </h1>
                             <p className="text-[10px] text-duck-ink/60 uppercase tracking-widest font-bold">
                                 Programmeer Robbie de Speurhond
@@ -849,7 +849,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                             ) : (
                                 <button
                                     onClick={() => setShowHint(!showHint)}
-                                    className="flex items-center gap-1 text-[10px] text-duck-acid hover:text-duck-acid font-bold px-2 py-1.5 bg-white hover:bg-duck-bg rounded-full transition-all duration-300 border border-duck-acid/20"
+                                    className="flex items-center gap-1 text-[10px] text-duck-ink hover:text-duck-ink font-bold px-2 py-1.5 bg-white hover:bg-duck-bg rounded-full transition-all duration-300 border border-duck-acid/20"
                                 >
                                     <HelpCircle size={12} /> {showHint ? 'Verberg Hint' : 'Hint'}
                                 </button>
@@ -887,7 +887,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
             />
 
             {showHint && !challengeComplete && currentChallenge && (
-                <div className="bg-duck-acid/10 border-b border-duck-acid/20 px-6 py-2 text-center text-xs font-medium text-duck-acid animate-in slide-in-from-top-2">
+                <div className="bg-duck-acid/10 border-b border-duck-acid/20 px-6 py-2 text-center text-xs font-medium text-duck-ink animate-in slide-in-from-top-2">
                     💡 <span className="font-bold">HINT:</span> {currentChallenge.hint}
                 </div>
             )}
@@ -904,7 +904,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                         onClick={() => setMobileTab(tab.key)}
                         className={`flex-1 flex items-center justify-center gap-2 py-3 text-xs font-bold uppercase tracking-wider transition-all duration-300 ${
                             mobileTab === tab.key
-                                ? 'text-duck-acid border-b-2 border-duck-acid bg-duck-acid/5'
+                                ? 'text-duck-ink border-b-2 border-duck-acid bg-duck-acid/5'
                                 : 'text-duck-ink/60 hover:text-duck-ink'
                         }`}
                     >
@@ -966,7 +966,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                                     onClick={handleTogglePlay}
                                     className={`p-3 rounded-full transition-all duration-300 active:scale-95 ${isPlaying
                                         ? 'bg-duck-acid/20 text-duck-ink/60 hover:bg-duck-acid hover:text-duck-ink'
-                                        : 'bg-duck-acid/20 text-duck-acid hover:bg-duck-acid hover:text-duck-ink'}`}
+                                        : 'bg-duck-acid/20 text-duck-ink hover:bg-duck-acid hover:text-duck-ink'}`}
                                 >
                                     {isPlaying ? <RotateCcw size={20} /> : <Play size={20} fill="currentColor" />}
                                 </button>
@@ -977,7 +977,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                         <div className="h-32 bg-white rounded-2xl border border-duck-gray flex flex-col shrink-0 overflow-hidden">
                             <div className="px-3 py-2 bg-duck-bg border-b border-duck-gray flex justify-between items-center">
                                 <span className="text-[10px] font-bold text-duck-ink/60 uppercase tracking-widest">Systeem Console</span>
-                                <button onClick={() => setLogs([])} className="text-[10px] text-duck-ink/60 hover:text-duck-acid transition-all duration-300">Wis</button>
+                                <button onClick={() => setLogs([])} className="text-[10px] text-duck-ink/60 hover:text-duck-ink transition-all duration-300">Wis</button>
                             </div>
                             <div className="flex-1 p-2 overflow-y-auto font-mono text-xs space-y-1 custom-scrollbar">
                                 {logs.length === 0 ? (
@@ -1000,7 +1000,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
             <div className="lg:hidden flex items-center justify-between px-4 py-2 bg-white border-t border-duck-gray shrink-0 gap-2">
                 <button
                     onClick={handleReset}
-                    className="flex items-center gap-2 px-4 py-2.5 rounded-full text-duck-ink/60 hover:text-duck-acid bg-duck-bg border border-duck-gray font-bold text-xs transition-all duration-300"
+                    className="flex items-center gap-2 px-4 py-2.5 rounded-full text-duck-ink/60 hover:text-duck-ink bg-duck-bg border border-duck-gray font-bold text-xs transition-all duration-300"
                 >
                     <RotateCcw size={14} /> Reset
                 </button>

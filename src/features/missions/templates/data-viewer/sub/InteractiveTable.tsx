@@ -83,9 +83,9 @@ export const InteractiveTable: React.FC<InteractiveTableProps> = ({ columns, row
                                     key={col.key}
                                     className={`px-4 py-2.5 text-left text-xs font-black text-duck-ink uppercase tracking-wide select-none ${
                                         col.sortable !== false
-                                            ? 'cursor-pointer hover:text-duck-acid transition-colors'
+                                            ? 'cursor-pointer hover:text-duck-ink transition-colors'
                                             : ''
-                                    } ${sortKey === col.key ? 'text-duck-acid bg-duck-acid/5' : ''}`}
+                                    } ${sortKey === col.key ? 'text-duck-ink bg-duck-acid/5' : ''}`}
                                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                                     onClick={() => col.sortable !== false && handleSort(col.key)}
                                 >
@@ -94,9 +94,9 @@ export const InteractiveTable: React.FC<InteractiveTableProps> = ({ columns, row
                                         {col.sortable !== false && (
                                             <span className="text-duck-ink/60">
                                                 {sortKey === col.key && sortDir === 'asc' ? (
-                                                    <ChevronUp size={12} className="text-duck-acid" />
+                                                    <ChevronUp size={12} className="text-duck-ink" />
                                                 ) : sortKey === col.key && sortDir === 'desc' ? (
-                                                    <ChevronDown size={12} className="text-duck-acid" />
+                                                    <ChevronDown size={12} className="text-duck-ink" />
                                                 ) : (
                                                     <ChevronsUpDown size={12} />
                                                 )}
@@ -152,7 +152,7 @@ export const InteractiveTable: React.FC<InteractiveTableProps> = ({ columns, row
                 >
                     {sortedRows.length} van {rows.length} rijen
                     {sortKey && sortDir && (
-                        <span className="ml-2 text-duck-acid">
+                        <span className="ml-2 text-duck-ink">
                             Gesorteerd op {columns.find(c => c.key === sortKey)?.label} ({sortDir === 'asc' ? 'oplopend' : 'aflopend'})
                         </span>
                     )}

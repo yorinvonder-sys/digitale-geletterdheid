@@ -35,7 +35,7 @@ export const OrderPriorityRound: React.FC<{
                         {!submitted && (
                             <button
                                 onClick={onReset}
-                                className="min-h-[44px] min-w-[44px] inline-flex items-center justify-center rounded-lg text-duck-ink/60 hover:text-duck-acid transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid/40"
+                                className="min-h-[44px] min-w-[44px] inline-flex items-center justify-center rounded-lg text-duck-ink/60 hover:text-duck-ink transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid/40"
                                 aria-label="Opnieuw beginnen"
                             >
                                 <RotateCcw size={14} />
@@ -66,7 +66,7 @@ export const OrderPriorityRound: React.FC<{
                                                 ? isCorrect ? 'bg-duck-ink text-white'
                                                 : isClose ? 'bg-duck-acid text-duck-ink'
                                                 : 'bg-duck-error text-white'
-                                                : 'bg-duck-acid/20 text-duck-acid'
+                                                : 'bg-duck-acid/20 text-duck-ink'
                                         }`}
                                     >
                                         {i + 1}

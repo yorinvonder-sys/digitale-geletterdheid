@@ -266,7 +266,7 @@ export const CodeWorkspace: React.FC<CodeWorkspaceProps> = ({
                         }}
                         onDrop={(e) => handleDrop(e, null, currentBlocks.length)}
                     >
-                        {dragOverIndex === currentBlocks.length && <span className="text-duck-acid font-bold text-xs">Drop hier</span>}
+                        {dragOverIndex === currentBlocks.length && <span className="text-duck-ink font-bold text-xs">Drop hier</span>}
                     </div>
                 )}
             </div>
@@ -294,14 +294,14 @@ export const CodeWorkspace: React.FC<CodeWorkspaceProps> = ({
                     <button
                         onClick={handleClearAll}
                         disabled={blocks.length === 0}
-                        className="p-2 rounded-full text-duck-ink/60 hover:bg-duck-bg hover:text-duck-acid transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed"
+                        className="p-2 rounded-full text-duck-ink/60 hover:bg-duck-bg hover:text-duck-ink transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed"
                         title="Verwijder alles"
                     >
                         <Trash2 size={16} />
                     </button>
                     <button
                         onClick={onReset}
-                        className="p-2 rounded-full text-duck-ink/60 hover:bg-duck-bg hover:text-duck-acid transition-all duration-300"
+                        className="p-2 rounded-full text-duck-ink/60 hover:bg-duck-bg hover:text-duck-ink transition-all duration-300"
                         title="Reset game"
                     >
                         <RotateCcw size={16} />
@@ -335,12 +335,12 @@ export const CodeWorkspace: React.FC<CodeWorkspaceProps> = ({
                         }`}>
                         {/* Placeholder box for visual guidance */}
                         <div className={`w-48 h-16 mb-4 border-2 border-dashed rounded-2xl flex items-center justify-center transition-all duration-300 ${isDraggingOver ? 'border-duck-acid bg-duck-acid/10' : 'border-duck-gray bg-white'}`}>
-                            <Plus size={24} className={`${isDraggingOver ? 'text-duck-acid' : 'text-duck-ink/60'}`} />
+                            <Plus size={24} className={`${isDraggingOver ? 'text-duck-ink' : 'text-duck-ink/60'}`} />
                         </div>
                         <div className="text-5xl mb-4">🧩</div>
                         <h4 className="font-bold text-duck-ink mb-2">Sleep blokken hierheen</h4>
                         <p className="text-sm text-duck-ink/60 max-w-xs">
-                            Begin met een <span className="text-duck-acid font-bold">gele gebeurtenis</span> blok en voeg daarna andere blokken toe.
+                            Begin met een <span className="text-duck-ink font-bold">gele gebeurtenis</span> blok en voeg daarna andere blokken toe.
                         </p>
                         {/* iPad hint */}
                         <p className="text-xs text-duck-ink/60 mt-4 bg-white px-3 py-1.5 rounded-full border border-duck-gray">
@@ -358,7 +358,7 @@ export const CodeWorkspace: React.FC<CodeWorkspaceProps> = ({
                     <div className="bg-white rounded-2xl shadow-2xl border border-duck-gray p-6 mx-4 max-w-sm w-full">
                         <div className="flex items-center gap-3 mb-3">
                             <div className="p-2 bg-duck-acid/10 rounded-xl">
-                                <AlertTriangle size={20} className="text-duck-acid" />
+                                <AlertTriangle size={20} className="text-duck-ink" />
                             </div>
                             <h4 className="font-bold text-duck-ink text-sm font-['Newsreader',Georgia,serif]">Alles verwijderen?</h4>
                         </div>

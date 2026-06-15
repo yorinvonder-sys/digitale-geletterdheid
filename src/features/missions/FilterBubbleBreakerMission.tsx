@@ -106,7 +106,7 @@ export const FilterBubbleBreakerMission: React.FC<Props> = ({ onBack, onComplete
                     <p className="text-xs font-bold text-duck-ink leading-tight" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{item.title}</p>
                     <div className="flex items-center gap-2 mt-1">
                         <span className="text-[10px] text-duck-ink/60">{item.source}</span>
-                        <span className={`text-[9px] px-1.5 py-0.5 rounded-full font-bold ${item.engagement === 'Ad' || item.engagement === 'Gesponsord' ? 'bg-duck-acid/10 text-duck-acid' : 'bg-duck-gray text-duck-ink/60'}`}>{item.engagement}</span>
+                        <span className={`text-[9px] px-1.5 py-0.5 rounded-full font-bold ${item.engagement === 'Ad' || item.engagement === 'Gesponsord' ? 'bg-duck-acid/10 text-duck-ink' : 'bg-duck-gray text-duck-ink/60'}`}>{item.engagement}</span>
                     </div>
                     <span className={`inline-flex mt-1 text-[8px] px-2 py-0.5 rounded-full font-bold border ${isB ? 'bg-duck-ink/10 text-duck-ink border-duck-ink/20' : 'bg-duck-ink/10 text-duck-ink border-duck-ink/20'}`}>{item.category}</span>
                 </div>
@@ -121,7 +121,7 @@ export const FilterBubbleBreakerMission: React.FC<Props> = ({ onBack, onComplete
                 <div className="max-w-lg mx-auto text-center space-y-6">
                     <div className="w-20 h-20 bg-duck-ink/10 rounded-3xl flex items-center justify-center mx-auto border border-duck-ink/20 animate-bounce"><span className="text-4xl">🫧</span></div>
                     <h1 className="text-3xl font-black" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Filter Bubble Breaker</h1>
-                    <p className="text-duck-ink/60 text-sm leading-relaxed max-w-sm mx-auto" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Twee mensen openen dezelfde app — maar zien <span className="text-duck-acid font-bold">totaal andere content</span>. Hoe kan dat?</p>
+                    <p className="text-duck-ink/60 text-sm leading-relaxed max-w-sm mx-auto" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Twee mensen openen dezelfde app — maar zien <span className="text-duck-ink font-bold">totaal andere content</span>. Hoe kan dat?</p>
                     <MissionGoalBanner goal={getMissionGoal('filter-bubble-breaker')!} compact />
                     <div className="flex gap-4 justify-center">
                         <div className="bg-duck-ink/10 border border-duck-ink/20 rounded-2xl p-4 text-center w-36">
@@ -196,7 +196,7 @@ export const FilterBubbleBreakerMission: React.FC<Props> = ({ onBack, onComplete
                         </div>
                         <h2 className="text-xl font-black text-duck-ink" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Analyseer de bubbel</h2>
                         <p className="text-sm text-duck-ink/60" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
-                            Zoek <span className="font-black text-duck-acid">1 onderwerp</span> dat {PROFILE_A.name} zou missen in zijn feed.
+                            Zoek <span className="font-black text-duck-ink">1 onderwerp</span> dat {PROFILE_A.name} zou missen in zijn feed.
                             Leg in 1-2 zinnen uit waarom dit onderwerp belangrijk is om te weten.
                         </p>
                     </div>
@@ -244,7 +244,7 @@ export const FilterBubbleBreakerMission: React.FC<Props> = ({ onBack, onComplete
                     <div className="flex items-center justify-between mb-6">
                         <button onClick={() => setPhase('compare')} className="text-duck-ink/60 hover:text-duck-ink transition-all duration-300"><ArrowLeft size={18} /></button>
                         <div className="flex gap-1.5">{CHALLENGES.map((_, i) => (<div key={i} className={`w-8 h-1.5 rounded-full transition-all duration-300 ${i < currentChallenge ? 'bg-duck-ink' : i === currentChallenge ? 'bg-gradient-to-r from-duck-acid to-duck-acid' : 'bg-duck-gray'}`} />))}</div>
-                        <div className="bg-duck-acid/10 px-3 py-1 rounded-full border border-duck-acid/20"><span className="text-xs font-black text-duck-acid">{score} pts</span></div>
+                        <div className="bg-duck-acid/10 px-3 py-1 rounded-full border border-duck-acid/20"><span className="text-xs font-black text-duck-ink">{score} pts</span></div>
                     </div>
                     <div className="bg-white rounded-2xl shadow-xl border border-duck-gray p-6 mb-6">
                         <div className="flex items-center gap-2 mb-4"><div className="w-8 h-8 bg-duck-acid rounded-xl flex items-center justify-center"><Brain size={16} className="text-duck-ink" /></div><span className="text-[10px] font-black text-duck-ink/60 uppercase tracking-widest" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Vraag {currentChallenge + 1}/{CHALLENGES.length}</span></div>
@@ -269,7 +269,7 @@ export const FilterBubbleBreakerMission: React.FC<Props> = ({ onBack, onComplete
                     </div>
                     {showExplanation && (
                         <div className="mt-6 bg-duck-acid/5 border border-duck-acid/20 rounded-2xl p-4">
-                            <div className="flex items-start gap-2"><Sparkles size={16} className="text-duck-acid mt-0.5 flex-shrink-0" /><p className="text-sm text-duck-ink/60" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{ch.explanation}</p></div>
+                            <div className="flex items-start gap-2"><Sparkles size={16} className="text-duck-ink mt-0.5 flex-shrink-0" /><p className="text-sm text-duck-ink/60" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{ch.explanation}</p></div>
                             <button onClick={nextChallenge} className="w-full mt-4 py-3 bg-duck-acid hover:bg-duck-acid text-duck-ink rounded-full font-black text-sm flex items-center justify-center gap-2 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-duck-acid">{currentChallenge < CHALLENGES.length - 1 ? <>Volgende <ChevronRight size={16} /></> : <>Resultaat <Trophy size={16} /></>}</button>
                         </div>
                     )}

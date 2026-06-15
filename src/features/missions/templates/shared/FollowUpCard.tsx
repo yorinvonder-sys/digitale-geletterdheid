@@ -42,7 +42,7 @@ export const FollowUpCard: React.FC<FollowUpCardProps> = ({ followUp, onComplete
                 <span className={`text-xs font-black ${textMain}`} style={fontBody}>
                     Verdiepingsvraag
                     {followUp.bonusPoints > 0 && (
-                        <span className={`ml-1.5 font-bold ${isLight ? 'text-duck-acid' : 'text-duck-acid'}`}>
+                        <span className={`ml-1.5 font-bold ${isLight ? 'text-duck-ink' : 'text-duck-ink'}`}>
                             +{followUp.bonusPoints} bonus
                         </span>
                     )}
@@ -98,7 +98,7 @@ export const FollowUpCard: React.FC<FollowUpCardProps> = ({ followUp, onComplete
                         className={`text-xs px-3 py-2 rounded-xl ${
                             correct
                                 ? isLight ? 'bg-duck-ink/10 text-duck-ink' : 'bg-duck-ink/20 text-duck-acid'
-                                : isLight ? 'bg-duck-acid/10 text-duck-acid' : 'bg-duck-error/30 text-duck-error'
+                                : isLight ? 'bg-duck-acid/10 text-duck-ink' : 'bg-duck-error/30 text-duck-error'
                         }`}
                         style={fontBody}
                     >

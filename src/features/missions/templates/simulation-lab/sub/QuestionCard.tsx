@@ -28,7 +28,7 @@ export const QuestionCard: React.FC<{
             }`}
         >
             <div className="flex items-start gap-2 mb-3">
-                <Lightbulb size={14} className="text-duck-acid mt-0.5 flex-shrink-0" />
+                <Lightbulb size={14} className="text-duck-ink mt-0.5 flex-shrink-0" />
                 <p
                     className="text-sm font-bold text-duck-ink"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
@@ -53,9 +53,9 @@ export const QuestionCard: React.FC<{
                                     isThisCorrect
                                         ? 'bg-duck-ink/10 border-duck-ink text-duck-ink font-bold'
                                         : isThisWrong
-                                        ? 'bg-duck-acid/10 border-duck-acid text-duck-acid font-bold'
+                                        ? 'bg-duck-acid/10 border-duck-acid text-duck-ink font-bold'
                                         : isSelected
-                                        ? 'bg-duck-acid/10 border-duck-acid text-duck-acid font-bold'
+                                        ? 'bg-duck-acid/10 border-duck-acid text-duck-ink font-bold'
                                         : 'bg-white border-duck-gray text-duck-ink/60 hover:border-duck-acid/40 disabled:opacity-70'
                                 }`}
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}

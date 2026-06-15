@@ -240,7 +240,7 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
                             <span className="font-[Comic_Sans_MS] text-lg text-duck-ink/60">Aa</span> <span className="text-[10px] text-duck-ink/60">Basis</span>
                         </button>
                         <button onClick={() => { setBodyFont('sans'); setPageColor('#f2f1ec'); }} className="flex flex-col items-center hover:bg-duck-bg p-2 rounded-lg transition-all duration-300">
-                            <span className="font-sans font-bold text-lg text-duck-acid">Aa</span> <span className="text-[10px] text-duck-ink/60">Retro</span>
+                            <span className="font-sans font-bold text-lg text-duck-ink">Aa</span> <span className="text-[10px] text-duck-ink/60">Retro</span>
                         </button>
                         <div className="h-full w-px bg-duck-gray mx-2"></div>
                         <button onClick={() => setShowWatermark(!showWatermark)} className={`flex flex-col items-center hover:bg-duck-bg p-2 rounded-lg transition-all duration-300 ${showWatermark ? 'bg-duck-gray' : ''}`}>
@@ -348,7 +348,7 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
                         onClick={() => setShowAssignment(!showAssignment)}
                         className="w-full flex items-center justify-between bg-white border border-duck-gray rounded-t-2xl px-4 py-3 text-left shadow-sm hover:bg-duck-bg transition-colors"
                     >
-                        <span className="font-bold text-sm text-duck-acid flex items-center gap-2" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
+                        <span className="font-bold text-sm text-duck-ink flex items-center gap-2" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
                             <FileText size={16} /> Opdracht: Maak dit document professioneel
                         </span>
                         {showAssignment ? <ChevronUp size={16} className="text-duck-ink/60" /> : <ChevronDown size={16} className="text-duck-ink/60" />}

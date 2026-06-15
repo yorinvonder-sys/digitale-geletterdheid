@@ -259,7 +259,7 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
                             <div>$ initializing puzzle-lab v2.4...</div>
                             <div>$ loading mission: {config.missionId}</div>
                             <div>$ {config.puzzles.length} puzzles queued</div>
-                            <div className="text-duck-acid">$ ready.</div>
+                            <div className="text-duck-ink">$ ready.</div>
                         </div>
 
                         <div className="text-4xl mb-3 text-center">{config.introEmoji}</div>
@@ -390,7 +390,7 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
                                 />
                             ))}
                         </div>
-                        <div className="font-mono text-[11px] text-duck-acid font-bold">
+                        <div className="font-mono text-[11px] text-duck-ink font-bold">
                             +{pointsForPuzzle} pts
                         </div>
                     </div>
@@ -434,7 +434,7 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
                                     EXTRA AANWIJZINGEN (ontgrendeld)
                                 </div>
                                 {puzzle.extraClues.map((clue, i) => (
-                                    <div key={i} className="flex items-start gap-2 font-mono text-xs text-duck-acid/80 mb-1">
+                                    <div key={i} className="flex items-start gap-2 font-mono text-xs text-duck-ink/80 mb-1">
                                         <span className="text-duck-gray shrink-0 mt-0.5">!</span>
                                         <span>{clue}</span>
                                     </div>
@@ -479,7 +479,7 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
                                             onKeyDown={handleKeyDown}
                                             disabled={celebrating}
                                             placeholder="antwoord..."
-                                            className="flex-1 bg-transparent font-mono text-xs text-duck-acid placeholder:text-duck-gray/50 outline-none"
+                                            className="flex-1 bg-transparent font-mono text-xs text-duck-ink placeholder:text-duck-gray/50 outline-none"
                                         />
                                         <BlinkingCursor />
                                     </div>
@@ -506,7 +506,7 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
                                     {visibleClues.length > puzzle.clues.length + hintsUsed && (
                                         <button
                                             onClick={handleHint}
-                                            className="flex items-center gap-1 font-mono text-[10px] text-duck-gray/70 hover:text-duck-acid transition-colors"
+                                            className="flex items-center gap-1 font-mono text-[10px] text-duck-gray/70 hover:text-duck-ink transition-colors"
                                         >
                                             <Eye size={10} />
                                             hint (-{puzzle.hintCost} pts)
@@ -558,7 +558,7 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
                     {/* Score footer */}
                     <div className="mt-5 pt-4 border-t border-duck-gray/30 flex items-center justify-between">
                         <span className="font-mono text-[10px] text-duck-gray">TOTAAL SCORE</span>
-                        <span className="font-mono text-xs font-bold text-duck-acid">{totalScore} pts</span>
+                        <span className="font-mono text-xs font-bold text-duck-ink">{totalScore} pts</span>
                     </div>
                 </div>
             </div>

@@ -185,7 +185,7 @@ const PhaseHeader: React.FC<{
             ))}
         </div>
         <div className="bg-duck-acid/10 px-3 py-1 rounded-full border border-duck-acid/20">
-            <span className="text-xs font-black text-duck-acid">{totalScore} pts</span>
+            <span className="text-xs font-black text-duck-ink">{totalScore} pts</span>
         </div>
     </div>
 );
@@ -200,11 +200,11 @@ const PhaseCard: React.FC<{
 }> = ({ icon, phaseNumber, totalPhases, title, description, children }) => (
     <div className="bg-white rounded-2xl border border-duck-gray p-5 mb-6">
         <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 bg-duck-acid/10 rounded-xl flex items-center justify-center text-duck-acid">
+            <div className="w-10 h-10 bg-duck-acid/10 rounded-xl flex items-center justify-center text-duck-ink">
                 {icon}
             </div>
             <div>
-                <span className="text-[10px] font-black text-duck-acid uppercase tracking-widest" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                <span className="text-[10px] font-black text-duck-ink uppercase tracking-widest" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                     Fase {phaseNumber}/{totalPhases}
                 </span>
                 <h3 className="text-lg font-black text-duck-ink" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
@@ -265,7 +265,7 @@ const EvidencePhase: React.FC<{
                                         {item.title}
                                     </span>
                                     {isSelected && !showResult && (
-                                        <span className="text-[10px] bg-duck-acid/10 text-duck-acid px-2 py-0.5 rounded-full font-bold">geselecteerd</span>
+                                        <span className="text-[10px] bg-duck-acid/10 text-duck-ink px-2 py-0.5 rounded-full font-bold">geselecteerd</span>
                                     )}
                                     {showResult && isSelected && (
                                         item.relevant
@@ -331,7 +331,7 @@ const PrioritiesPhase: React.FC<{
                             Jouw volgorde
                         </span>
                         {!submitted && (
-                            <button onClick={onReset} className="text-duck-ink/60 hover:text-duck-acid transition-colors">
+                            <button onClick={onReset} className="text-duck-ink/60 hover:text-duck-ink transition-colors">
                                 <RotateCcw size={14} />
                             </button>
                         )}
@@ -349,7 +349,7 @@ const PrioritiesPhase: React.FC<{
                                         : 'bg-duck-error text-white'
                                         : 'bg-white text-duck-ink/60'
                                 }`} style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
-                                    <span className="w-5 h-5 rounded-full bg-duck-acid/10 text-duck-acid flex items-center justify-center text-[10px] font-black shrink-0">
+                                    <span className="w-5 h-5 rounded-full bg-duck-acid/10 text-duck-ink flex items-center justify-center text-[10px] font-black shrink-0">
                                         {i + 1}
                                     </span>
                                     <span>{action.icon} {action.text}</span>
@@ -420,7 +420,7 @@ const LetterPhase: React.FC<{
             {selectedBlocks.length > 0 && (
                 <div className="bg-white rounded-xl p-4 mb-4 border-2 border-dashed border-duck-gray">
                     <div className="flex items-center gap-2 mb-3">
-                        <Mail size={14} className="text-duck-acid" />
+                        <Mail size={14} className="text-duck-ink" />
                         <span className="text-[10px] font-black text-duck-ink/60 uppercase tracking-widest" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                             Jouw brief aan ouders
                         </span>
@@ -533,7 +533,7 @@ const BudgetPhase: React.FC<{
                     <span className="text-[10px] font-black text-duck-ink/60 uppercase tracking-widest" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                         Beschikbaar budget
                     </span>
-                    <span className={`text-sm font-black ${remaining < 0 ? 'text-duck-error' : remaining === 0 ? 'text-duck-ink' : 'text-duck-acid'}`} style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                    <span className={`text-sm font-black ${remaining < 0 ? 'text-duck-error' : remaining === 0 ? 'text-duck-ink' : 'text-duck-ink'}`} style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                         €{remaining.toLocaleString('nl-NL')} van €{TOTAL_BUDGET.toLocaleString('nl-NL')}
                     </span>
                 </div>
@@ -573,7 +573,7 @@ const BudgetPhase: React.FC<{
                                         <span className="text-sm font-bold text-duck-ink" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                             {item.title}
                                         </span>
-                                        <span className={`text-xs font-bold ${isAllocated ? 'text-duck-acid' : 'text-duck-ink/60'}`} style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                        <span className={`text-xs font-bold ${isAllocated ? 'text-duck-ink' : 'text-duck-ink/60'}`} style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                             €{item.cost.toLocaleString('nl-NL')}
                                         </span>
                                     </div>
@@ -594,7 +594,7 @@ const BudgetPhase: React.FC<{
                                 </div>
                                 {isAllocated && (
                                     <div className="shrink-0">
-                                        <Check size={16} className={submitted ? 'text-duck-ink' : 'text-duck-acid'} />
+                                        <Check size={16} className={submitted ? 'text-duck-ink' : 'text-duck-ink'} />
                                     </div>
                                 )}
                             </div>
@@ -696,7 +696,7 @@ export const DatalekkenRampenplanMission: React.FC<Props> = ({ onBack, onComplet
                         Datalekken Rampenplan
                     </h1>
                     <p className="text-duck-ink/60 text-sm leading-relaxed max-w-sm mx-auto" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
-                        <span className="text-duck-acid font-bold">BREAKING:</span> De school is gehackt! 800 leerlinggegevens liggen op straat.
+                        <span className="text-duck-ink font-bold">BREAKING:</span> De school is gehackt! 800 leerlinggegevens liggen op straat.
                         Analyseer bewijs, stel prioriteiten, schrijf de crisiscommunicatie en verdeel het beveiligingsbudget.
                     </p>
                     <MissionGoalBanner goal={getMissionGoal('datalekken-rampenplan')!} compact />
@@ -708,7 +708,7 @@ export const DatalekkenRampenplanMission: React.FC<Props> = ({ onBack, onComplet
                             { icon: <PiggyBank size={16} />, label: 'Budget verdelen' },
                         ].map((item, i) => (
                             <div key={i} className="bg-white border border-duck-gray rounded-2xl p-3 flex items-center gap-2">
-                                <div className="text-duck-acid">{item.icon}</div>
+                                <div className="text-duck-ink">{item.icon}</div>
                                 <span className="text-xs font-bold text-duck-ink/60" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                     {item.label}
                                 </span>
@@ -775,7 +775,7 @@ export const DatalekkenRampenplanMission: React.FC<Props> = ({ onBack, onComplet
                                             <span className="text-xs text-duck-ink/60" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                                 {p.title}
                                             </span>
-                                            <span className="text-xs font-bold text-duck-acid">{p.score}/{p.max}</span>
+                                            <span className="text-xs font-bold text-duck-ink">{p.score}/{p.max}</span>
                                         </div>
                                         <div className="h-1.5 bg-duck-gray rounded-full overflow-hidden">
                                             <div

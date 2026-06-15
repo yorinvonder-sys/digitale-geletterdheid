@@ -136,7 +136,7 @@ export const RapidFire: React.FC<RapidFireProps> = ({
                                 }`}
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                             >
-                                <span className={`font-bold ${result.correct ? 'text-duck-ink' : 'text-duck-acid'}`}>
+                                <span className={`font-bold ${result.correct ? 'text-duck-ink' : 'text-duck-ink'}`}>
                                     {result.correct ? '✓' : '✗'}
                                 </span>{' '}
                                 <span className="font-medium">{q.question}</span>
@@ -152,7 +152,7 @@ export const RapidFire: React.FC<RapidFireProps> = ({
                     className={`p-3 rounded-xl text-sm font-medium ${
                         correctCount === questions.length
                             ? 'bg-duck-ink/10 text-duck-ink'
-                            : 'bg-duck-acid/10 text-duck-acid'
+                            : 'bg-duck-acid/10 text-duck-ink'
                     }`}
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
@@ -278,7 +278,7 @@ export const RapidFire: React.FC<RapidFireProps> = ({
                                 ? 'bg-duck-ink/10 text-duck-ink'
                                 : answered === 'timeout'
                                     ? 'bg-duck-acid/20 text-duck-ink'
-                                : 'bg-duck-acid/10 text-duck-acid'
+                                : 'bg-duck-acid/10 text-duck-ink'
                         }`}
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >

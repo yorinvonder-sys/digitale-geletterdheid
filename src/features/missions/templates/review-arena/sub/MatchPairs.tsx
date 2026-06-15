@@ -126,7 +126,7 @@ export const MatchPairs: React.FC<MatchPairsProps> = ({
                                     ${isMatched
                                         ? 'bg-duck-ink/10 border-duck-ink text-duck-ink opacity-60 cursor-default'
                                         : isSelected
-                                            ? 'bg-duck-acid/10 border-duck-acid text-duck-acid'
+                                            ? 'bg-duck-acid/10 border-duck-acid text-duck-ink'
                                             : 'bg-white border-duck-gray text-duck-ink/60 hover:border-duck-acid/40'
                                     }`}
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
@@ -153,7 +153,7 @@ export const MatchPairs: React.FC<MatchPairsProps> = ({
                                     ${isMatched
                                         ? 'bg-duck-ink/10 border-duck-ink text-duck-ink opacity-60 cursor-default'
                                         : isFlashing
-                                            ? 'bg-duck-acid/10 border-duck-acid text-duck-acid'
+                                            ? 'bg-duck-acid/10 border-duck-acid text-duck-ink'
                                             : selectedLeft !== null
                                                 ? 'bg-white border-duck-gray text-duck-ink/60 hover:border-duck-acid/40 cursor-pointer'
                                                 : 'bg-white border-duck-gray text-duck-ink/60'

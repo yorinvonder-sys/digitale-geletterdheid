@@ -297,7 +297,7 @@ const SimulationLabInner: React.FC<SimulationLabProps> = ({ onBack, onComplete, 
                 <div className="mb-4">
                     <div className="flex items-center gap-2 mb-1">
                         <span
-                            className="text-xs font-black text-duck-acid uppercase tracking-widest"
+                            className="text-xs font-black text-duck-ink uppercase tracking-widest"
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         >
                             Simulatie {state.currentSim + 1} / {config.simulations.length}
@@ -322,7 +322,7 @@ const SimulationLabInner: React.FC<SimulationLabProps> = ({ onBack, onComplete, 
                     <div className="bg-duck-acid/8 border border-duck-acid/20 rounded-xl px-4 py-3 mb-4 flex items-center gap-3">
                         <span className="text-lg">🔬</span>
                         <p
-                            className="text-xs text-duck-acid font-bold"
+                            className="text-xs text-duck-ink font-bold"
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         >
                             Probeer het! Speel met de instellingen en kijk wat er gebeurt.

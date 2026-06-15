@@ -39,7 +39,7 @@ export const PhaseHeader: React.FC<PhaseHeaderProps> = ({
             ))}
         </div>
         <div className="bg-duck-acid/10 px-3 py-1 rounded-full border border-duck-acid/20">
-            <span className="text-xs font-black text-duck-acid">
+            <span className="text-xs font-black text-duck-ink">
                 {totalScore} {scoreLabel}
             </span>
         </div>

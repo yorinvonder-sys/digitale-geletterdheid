@@ -46,9 +46,9 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({ config, state }) => 
         return (
             <div className="h-full overflow-y-auto p-6 space-y-4">
                 <div className="flex items-center gap-2 mb-4">
-                    <Eye size={16} className="text-duck-acid" />
+                    <Eye size={16} className="text-duck-ink" />
                     <span
-                        className="text-xs font-black text-duck-acid uppercase tracking-widest"
+                        className="text-xs font-black text-duck-ink uppercase tracking-widest"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         Wat je bouwt
@@ -151,9 +151,9 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({ config, state }) => 
         return (
             <div className="h-full overflow-y-auto p-6">
                 <div className="flex items-center gap-2 mb-6">
-                    <Layers size={16} className="text-duck-acid" />
+                    <Layers size={16} className="text-duck-ink" />
                     <span
-                        className="text-xs font-black text-duck-acid uppercase tracking-widest"
+                        className="text-xs font-black text-duck-ink uppercase tracking-widest"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         Voortgang
@@ -168,7 +168,7 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({ config, state }) => 
                         >
                             Totaal voltooid
                         </span>
-                        <span className="text-sm font-black text-duck-acid">{percentage}%</span>
+                        <span className="text-sm font-black text-duck-ink">{percentage}%</span>
                     </div>
                     <div className="w-full h-2 bg-duck-gray rounded-full overflow-hidden">
                         <div
@@ -244,9 +244,9 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({ config, state }) => 
     return (
         <div className="h-full overflow-y-auto p-6">
             <div className="flex items-center gap-2 mb-4">
-                <Eye size={16} className="text-duck-acid" />
+                <Eye size={16} className="text-duck-ink" />
                 <span
-                    className="text-xs font-black text-duck-acid uppercase tracking-widest"
+                    className="text-xs font-black text-duck-ink uppercase tracking-widest"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     Live voorbeeld

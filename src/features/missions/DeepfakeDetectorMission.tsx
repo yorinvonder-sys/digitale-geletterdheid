@@ -203,7 +203,7 @@ const ContentCard: React.FC<{
         switch (challenge.type) {
             case 'image': return <Camera className="text-duck-ink" size={20} />;
             case 'text': return <FileText className="text-duck-ink" size={20} />;
-            case 'claim': return <MessageSquare className="text-duck-acid" size={20} />;
+            case 'claim': return <MessageSquare className="text-duck-ink" size={20} />;
         }
     };
 
@@ -236,9 +236,9 @@ const ContentCard: React.FC<{
             {showHints && (
                 <div className="bg-duck-acid/10 rounded-xl p-4 border border-duck-acid/20 animate-in fade-in">
                     <div className="flex items-start gap-2">
-                        <HelpCircle size={18} className="text-duck-acid flex-shrink-0 mt-0.5" />
+                        <HelpCircle size={18} className="text-duck-ink flex-shrink-0 mt-0.5" />
                         <div>
-                            <p className="text-duck-acid font-bold text-sm mb-1">Hints:</p>
+                            <p className="text-duck-ink font-bold text-sm mb-1">Hints:</p>
                             <ul className="text-duck-ink/60 text-sm space-y-1">
                                 {challenge.hints.map((hint, i) => (
                                     <li key={i}>- {hint}</li>
@@ -370,7 +370,7 @@ export const DeepfakeDetectorMission: React.FC<Props> = ({ onBack, onComplete, v
 
                     <div className="bg-duck-acid/10 rounded-xl p-4 border border-duck-acid/20">
                         <p className="text-duck-ink/60 text-sm">
-                            <strong className="text-duck-acid">Let op:</strong> In deze missie beschrijven we afbeeldingen met tekst
+                            <strong className="text-duck-ink">Let op:</strong> In deze missie beschrijven we afbeeldingen met tekst
                             in plaats van echte foto's te tonen. Dit helpt je te focussen op de details!
                         </p>
                     </div>
@@ -416,11 +416,11 @@ export const DeepfakeDetectorMission: React.FC<Props> = ({ onBack, onComplete, v
                                 <p className="text-duck-ink/60 text-sm">Correct</p>
                             </div>
                             <div>
-                                <p className="text-3xl font-black text-duck-acid">{score}</p>
+                                <p className="text-3xl font-black text-duck-ink">{score}</p>
                                 <p className="text-duck-ink/60 text-sm">Punten</p>
                             </div>
                             <div>
-                                <p className="text-3xl font-black text-duck-acid">{streak}</p>
+                                <p className="text-3xl font-black text-duck-ink">{streak}</p>
                                 <p className="text-duck-ink/60 text-sm">Max Streak</p>
                             </div>
                         </div>
@@ -477,7 +477,7 @@ export const DeepfakeDetectorMission: React.FC<Props> = ({ onBack, onComplete, v
                                 <p className="text-duck-ink/60 text-sm">Correct</p>
                             </div>
                             <div>
-                                <p className="text-3xl font-black text-duck-acid">{score}</p>
+                                <p className="text-3xl font-black text-duck-ink">{score}</p>
                                 <p className="text-duck-ink/60 text-sm">Totaal Punten</p>
                             </div>
                         </div>
@@ -524,7 +524,7 @@ export const DeepfakeDetectorMission: React.FC<Props> = ({ onBack, onComplete, v
                     <div className="flex items-center gap-4">
                         <div className="flex items-center gap-2">
                             <span className={`px-3 py-1 rounded-full text-xs font-bold border inline-flex ${currentLevel === 'beginner' ? 'bg-duck-ink/10 text-duck-ink border-duck-ink/30' :
-                                    currentLevel === 'gevorderd' ? 'bg-duck-acid/10 text-duck-acid border-duck-acid/30' :
+                                    currentLevel === 'gevorderd' ? 'bg-duck-acid/10 text-duck-ink border-duck-acid/30' :
                                         'bg-duck-ink/10 text-duck-ink border-duck-ink/30'
                                 }`}>
                                 {currentLevel === 'beginner' ? 'Beginner' :
@@ -539,13 +539,13 @@ export const DeepfakeDetectorMission: React.FC<Props> = ({ onBack, onComplete, v
 
                         {streak >= 2 && (
                             <div className="flex items-center gap-1 bg-duck-acid/10 px-2 py-1 rounded-full animate-pulse border border-duck-acid/30">
-                                <Zap size={14} className="text-duck-acid" />
-                                <span className="text-duck-acid font-bold text-xs">{streak}x</span>
+                                <Zap size={14} className="text-duck-ink" />
+                                <span className="text-duck-ink font-bold text-xs">{streak}x</span>
                             </div>
                         )}
 
                         <div className="flex items-center gap-1 bg-white px-3 py-1.5 rounded-full border border-duck-gray">
-                            <Sparkles size={14} className="text-duck-acid" />
+                            <Sparkles size={14} className="text-duck-ink" />
                             <span className="text-duck-ink font-bold text-sm">{score}</span>
                         </div>
 
@@ -615,7 +615,7 @@ export const DeepfakeDetectorMission: React.FC<Props> = ({ onBack, onComplete, v
                     <div className="text-center">
                         <button
                             onClick={() => setShowHints(true)}
-                            className="text-duck-ink/60 text-sm font-medium hover:text-duck-acid transition-all duration-300 flex items-center gap-2 mx-auto"
+                            className="text-duck-ink/60 text-sm font-medium hover:text-duck-ink transition-all duration-300 flex items-center gap-2 mx-auto"
                         >
                             <HelpCircle size={16} />
                             Hint nodig?
@@ -669,8 +669,8 @@ export const DeepfakeDetectorMission: React.FC<Props> = ({ onBack, onComplete, v
                                 </div>
                                 {isCorrect && streak >= 2 && (
                                     <div className="text-right">
-                                        <p className="text-duck-acid font-bold text-sm">+50 bonus!</p>
-                                        <p className="text-duck-acid/60 text-xs">{streak}x streak</p>
+                                        <p className="text-duck-ink font-bold text-sm">+50 bonus!</p>
+                                        <p className="text-duck-ink/60 text-xs">{streak}x streak</p>
                                     </div>
                                 )}
                             </div>

@@ -16,7 +16,7 @@ const ToolGuide = lazy(() => import('./tool-guide/ToolGuide').then(m => ({ defau
 const TemplateLoadingFallback = () => (
     <div className="min-h-screen bg-duck-bg flex items-center justify-center">
         <div className="flex flex-col items-center gap-3">
-            <Loader2 size={32} className="animate-spin text-duck-acid" />
+            <Loader2 size={32} className="animate-spin text-duck-ink" />
             <p className="text-sm text-duck-ink/60" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                 Missie laden...
             </p>

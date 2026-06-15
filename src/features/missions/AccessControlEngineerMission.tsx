@@ -469,7 +469,7 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                                             <div className="px-3 pb-3">
                                                 <button
                                                     onClick={() => setShowUitleg(toonUitleg ? null : regel.id)}
-                                                    className="flex min-h-[44px] items-center rounded-lg px-2 text-xs text-duck-acid hover:underline"
+                                                    className="flex min-h-[44px] items-center rounded-lg px-2 text-xs text-duck-ink hover:underline"
                                                 >
                                                     {toonUitleg ? 'Verberg uitleg' : 'Bekijk uitleg'}
                                                 </button>
@@ -644,7 +644,7 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                                                 )}
                                                 <button
                                                     onClick={() => setShowTestResult(toonDetail ? null : scenario.id)}
-                                                    className="ml-auto flex min-h-[44px] items-center rounded-full px-3 text-xs text-duck-acid hover:underline"
+                                                    className="ml-auto flex min-h-[44px] items-center rounded-full px-3 text-xs text-duck-ink hover:underline"
                                                 >
                                                     {toonDetail ? 'Verberg' : 'Uitleg'}
                                                 </button>
@@ -685,7 +685,7 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                                 </button>
                             )}
                             {!stap3Klaar && aantalTestsGedaan > 0 && (
-                                <p className="text-xs text-duck-acid mt-1">
+                                <p className="text-xs text-duck-ink mt-1">
                                     {aantalTestsCorrect < 4
                                         ? 'Sommige tests mislukken. Ga terug naar Stap 2 en pas de rechten aan.'
                                         : `Voer minstens 5 tests uit (nu: ${aantalTestsGedaan}).`
@@ -702,7 +702,7 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                 <div className="fixed bottom-4 left-4 right-4 max-w-lg mx-auto z-30 animate-in slide-in-from-bottom-4">
                     <div className="bg-duck-acid border border-duck-acid rounded-xl p-3 shadow-duck-soft flex items-start gap-3">
                         <div className="w-8 h-8 bg-duck-ink rounded-full flex items-center justify-center shrink-0">
-                            <MessageCircle size={16} className="text-duck-acid" />
+                            <MessageCircle size={16} className="text-duck-ink" />
                         </div>
                         <div className="flex-1 min-w-0">
                             <p className="text-xs font-semibold text-duck-ink mb-0.5">Security Coach</p>

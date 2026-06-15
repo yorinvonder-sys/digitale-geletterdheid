@@ -58,7 +58,7 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({
                             }`}
                         >
                             <div className="w-6 h-6 bg-duck-acid/10 rounded-lg flex items-center justify-center">
-                                <span className="text-xs font-black text-duck-acid">{i + 1}</span>
+                                <span className="text-xs font-black text-duck-ink">{i + 1}</span>
                             </div>
                             <span
                                 className="text-sm font-semibold text-duck-ink/60"

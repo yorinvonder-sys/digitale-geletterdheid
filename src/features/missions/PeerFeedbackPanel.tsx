@@ -144,8 +144,8 @@ export const PeerFeedbackPanel: React.FC<Props> = ({ missionId, studentId, schoo
                 size={20}
                 className={`transition-colors ${
                   i <= criteria[key]
-                    ? 'text-duck-acid fill-duck-acid'
-                    : 'text-duck-gray hover:text-duck-acid'
+                    ? 'text-duck-ink fill-duck-ink'
+                    : 'text-duck-gray hover:text-duck-ink'
                 }`}
               />
             </button>

@@ -56,7 +56,7 @@ export const MissionIntro: React.FC<MissionIntroProps> = ({ weekNumber, projects
                                 <>
                                     {imageLoading && (
                                         <div className="absolute inset-0 z-20 flex items-center justify-center">
-                                            <Loader2 size={32} className="text-duck-acid animate-spin" />
+                                            <Loader2 size={32} className="text-duck-ink animate-spin" />
                                         </div>
                                     )}
                                     <img

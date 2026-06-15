@@ -30,7 +30,7 @@ export const ChallengePhase: React.FC<ChallengePhaseProps> = ({ config, state, o
                     <div className="w-8 h-8 bg-duck-acid/10 rounded-xl flex items-center justify-center text-base">
                         ⚡
                     </div>
-                    <div className="text-xs font-black text-duck-acid uppercase tracking-widest" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                    <div className="text-xs font-black text-duck-ink uppercase tracking-widest" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                         Tegenargument
                     </div>
                 </div>

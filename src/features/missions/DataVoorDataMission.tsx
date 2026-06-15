@@ -192,7 +192,7 @@ export const DataVoorDataMission: React.FC<Props> = ({ onBack, onComplete }) => 
                     <div className="w-20 h-20 bg-duck-acid/10 rounded-3xl flex items-center justify-center mx-auto border border-duck-acid/20 animate-bounce"><span className="text-4xl">💰</span></div>
                     <h1 className="text-3xl font-black" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Data voor Data</h1>
                     <p className="text-duck-ink/60 text-sm leading-relaxed max-w-sm mx-auto" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
-                        Hoeveel van je persoonlijke data zou jij inruilen voor gratis diensten? In deze veiling bepaal jij je prijs — maar elke <span className="text-duck-acid font-bold">deal heeft een keerzijde</span>.
+                        Hoeveel van je persoonlijke data zou jij inruilen voor gratis diensten? In deze veiling bepaal jij je prijs — maar elke <span className="text-duck-ink font-bold">deal heeft een keerzijde</span>.
                     </p>
                     <MissionGoalBanner goal={getMissionGoal('data-voor-data')!} compact />
                     <div className="bg-white border border-duck-gray rounded-2xl p-4 max-w-sm mx-auto">
@@ -209,7 +209,7 @@ export const DataVoorDataMission: React.FC<Props> = ({ onBack, onComplete }) => 
                             </div>
                             <div className="text-2xl text-duck-gray">of</div>
                             <div className="text-center">
-                                <ThumbsDown size={24} className="text-duck-acid mx-auto" />
+                                <ThumbsDown size={24} className="text-duck-ink mx-auto" />
                                 <p className="text-[10px] text-duck-ink/60 mt-1" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>NO DEAL!</p>
                             </div>
                         </div>
@@ -233,7 +233,7 @@ export const DataVoorDataMission: React.FC<Props> = ({ onBack, onComplete }) => 
                         </div>
                         <h2 className="text-2xl font-black" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Even pauzeren...</h2>
                         <p className="text-sm text-duck-ink/60" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
-                            Je hebt tot nu toe <span className="font-black text-duck-acid">{dealCount}x</span> je data gedeeld.
+                            Je hebt tot nu toe <span className="font-black text-duck-ink">{dealCount}x</span> je data gedeeld.
                             Kijk terug: zou je een eerdere ronde nu anders beantwoorden?
                         </p>
                     </div>
@@ -326,8 +326,8 @@ export const DataVoorDataMission: React.FC<Props> = ({ onBack, onComplete }) => 
                                 <span className="text-duck-ink">DEAL!</span>
                             </button>
                             <button onClick={() => handleChoice('no-deal')} className="py-5 bg-duck-acid/10 hover:bg-duck-acid/20 border-2 border-duck-acid/30 rounded-2xl font-black text-lg transition-all duration-300 active:scale-95 flex flex-col items-center gap-1 focus-visible:ring-2 focus-visible:ring-duck-acid">
-                                <ThumbsDown size={28} className="text-duck-acid" />
-                                <span className="text-duck-acid">NO DEAL!</span>
+                                <ThumbsDown size={28} className="text-duck-ink" />
+                                <span className="text-duck-ink">NO DEAL!</span>
                             </button>
                         </div>
                     )}
@@ -335,7 +335,7 @@ export const DataVoorDataMission: React.FC<Props> = ({ onBack, onComplete }) => 
                     {showExplanation && (
                         <div className="mt-6 space-y-4">
                             <div className="bg-duck-acid/5 border border-duck-acid/20 rounded-2xl p-4">
-                                <div className="flex items-start gap-2"><Sparkles size={16} className="text-duck-acid mt-0.5 flex-shrink-0" /><p className="text-sm text-duck-ink/60" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{round.explanation}</p></div>
+                                <div className="flex items-start gap-2"><Sparkles size={16} className="text-duck-ink mt-0.5 flex-shrink-0" /><p className="text-sm text-duck-ink/60" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{round.explanation}</p></div>
                             </div>
                             {currentStat ? (
                                 <div className="bg-white rounded-2xl border border-duck-gray p-3 flex items-center justify-between gap-3">
@@ -345,7 +345,7 @@ export const DataVoorDataMission: React.FC<Props> = ({ onBack, onComplete }) => 
                                     </div>
                                     <div className="flex items-center gap-2">
                                         <div className="w-24 h-2 bg-duck-gray rounded-full overflow-hidden"><div className="h-full bg-gradient-to-r from-duck-acid to-duck-acid rounded-full" style={{ width: `${currentStat.dealPercentage}%` }} /></div>
-                                        <span className="text-xs font-black text-duck-acid">{currentStat.dealPercentage}%</span>
+                                        <span className="text-xs font-black text-duck-ink">{currentStat.dealPercentage}%</span>
                                     </div>
                                 </div>
                             ) : (

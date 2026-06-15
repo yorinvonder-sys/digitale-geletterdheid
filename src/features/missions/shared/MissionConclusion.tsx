@@ -46,7 +46,7 @@ export const MissionConclusion: React.FC<MissionConclusionProps> = ({
                         ))}
                     </div>
                     <div className={`transform transition-all duration-700 ${showContent ? 'scale-100 translate-y-0' : 'scale-50 translate-y-10 opacity-0'}`}>
-                        <div className="bg-white text-duck-acid px-6 py-2 rounded-full font-black uppercase tracking-widest shadow-lg flex items-center gap-2">
+                        <div className="bg-white text-duck-ink px-6 py-2 rounded-full font-black uppercase tracking-widest shadow-lg flex items-center gap-2">
                             <CheckCircle2 size={24} className="text-duck-ink" />
                             {title}
                         </div>
@@ -91,7 +91,7 @@ export const MissionConclusion: React.FC<MissionConclusionProps> = ({
                             {onPrint && (
                                 <button
                                     onClick={onPrint}
-                                    className="px-6 py-3 bg-duck-bg text-duck-ink/60 rounded-full font-bold uppercase tracking-widest hover:bg-duck-gray hover:text-duck-acid transition-all duration-300 flex items-center gap-2 border border-duck-gray focus-visible:ring-2 focus-visible:ring-duck-acid"
+                                    className="px-6 py-3 bg-duck-bg text-duck-ink/60 rounded-full font-bold uppercase tracking-widest hover:bg-duck-gray hover:text-duck-ink transition-all duration-300 flex items-center gap-2 border border-duck-gray focus-visible:ring-2 focus-visible:ring-duck-acid"
                                 >
                                     <Share2 size={18} /> Print
                                 </button>
@@ -99,7 +99,7 @@ export const MissionConclusion: React.FC<MissionConclusionProps> = ({
                             {onDownload && (
                                 <button
                                     onClick={onDownload}
-                                    className="px-6 py-3 bg-duck-bg text-duck-ink/60 rounded-full font-bold uppercase tracking-widest hover:bg-duck-gray hover:text-duck-acid transition-all duration-300 flex items-center gap-2 border border-duck-gray focus-visible:ring-2 focus-visible:ring-duck-acid"
+                                    className="px-6 py-3 bg-duck-bg text-duck-ink/60 rounded-full font-bold uppercase tracking-widest hover:bg-duck-gray hover:text-duck-ink transition-all duration-300 flex items-center gap-2 border border-duck-gray focus-visible:ring-2 focus-visible:ring-duck-acid"
                                 >
                                     <Share2 size={18} /> PDF
                                 </button>

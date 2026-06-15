@@ -78,7 +78,7 @@ export const BlockPalette: React.FC<BlockPaletteProps> = ({ onDragStart, onAddBl
                                             {onAddBlock && (
                                                 <button
                                                     onClick={() => onAddBlock(block)}
-                                                    className="p-1.5 rounded-lg bg-white border border-duck-gray text-duck-ink/60 hover:text-duck-acid hover:border-duck-acid/30 hover:bg-duck-acid/5 transition-all duration-300 shrink-0"
+                                                    className="p-1.5 rounded-lg bg-white border border-duck-gray text-duck-ink/60 hover:text-duck-ink hover:border-duck-acid/30 hover:bg-duck-acid/5 transition-all duration-300 shrink-0"
                                                     aria-label={`Voeg ${block.label.replace(/[{}]/g, '')} toe aan werkgebied`}
                                                     title="Toevoegen"
                                                 >
@@ -96,7 +96,7 @@ export const BlockPalette: React.FC<BlockPaletteProps> = ({ onDragStart, onAddBl
 
             {/* Help footer */}
             <div className="p-3 bg-duck-acid/5 border-t border-duck-acid/10">
-                <p className="text-[10px] text-duck-acid font-medium text-center">
+                <p className="text-[10px] text-duck-ink font-medium text-center">
                     💡 Tip: Begin met een gele <strong>gebeurtenis</strong> blok!
                 </p>
             </div>

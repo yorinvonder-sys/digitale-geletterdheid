@@ -268,7 +268,7 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
                 <div className="flex items-center gap-2 mb-4">
                     <span className="text-lg">{ROUND_ICONS[round.type]}</span>
                     <span
-                        className="text-xs font-black text-duck-acid uppercase tracking-widest"
+                        className="text-xs font-black text-duck-ink uppercase tracking-widest"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         Ronde {state.currentRound + 1} — {

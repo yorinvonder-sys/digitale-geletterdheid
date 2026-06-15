@@ -613,7 +613,7 @@ export const NeuralNavigatorMission: React.FC<Props> = ({ onBack, onComplete }) 
 
           <h1 className="text-3xl font-black text-duck-ink" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Neural Navigator</h1>
           <p className="text-duck-ink/60 text-sm leading-relaxed max-w-sm mx-auto">
-            Ontdek hoe een <span className="text-duck-acid font-bold">neuraal netwerk</span> werkt!
+            Ontdek hoe een <span className="text-duck-ink font-bold">neuraal netwerk</span> werkt!
             Dit is het bouwblok achter AI zoals ChatGPT, gezichtsherkenning en zelfrijdende auto's.
           </p>
 
@@ -622,10 +622,10 @@ export const NeuralNavigatorMission: React.FC<Props> = ({ onBack, onComplete }) 
             <div className="bg-white rounded-2xl p-5 border border-duck-gray text-left space-y-3">
               <div className="flex items-start gap-3">
                 <div className="w-8 h-8 bg-duck-acid/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <Lightbulb size={16} className="text-duck-acid" />
+                  <Lightbulb size={16} className="text-duck-ink" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-duck-acid" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Wat is een neuron?</h3>
+                  <h3 className="text-sm font-bold text-duck-ink" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Wat is een neuron?</h3>
                   <p className="text-xs text-duck-ink/60 mt-1 leading-relaxed">
                     Stel je voor dat je een <span className="font-bold">recept</span> maakt.
                     Je hebt ingredienten (inputs) en je bepaalt <span className="font-bold">hoeveel</span> je van elk gebruikt (gewichten).
@@ -651,8 +651,8 @@ export const NeuralNavigatorMission: React.FC<Props> = ({ onBack, onComplete }) 
                 <p className="text-[11px] text-duck-ink/60 leading-relaxed">
                   <span className="font-bold text-duck-ink">Input 1 = 1</span> wordt vermenigvuldigd met
                   <span className="font-bold text-duck-ink"> gewicht 1.5</span> = 1.5 (sterk signaal)<br />
-                  <span className="font-bold text-duck-acid">Input 2 = 0</span> wordt vermenigvuldigd met
-                  <span className="font-bold text-duck-acid"> gewicht -0.5</span> = 0.0 (geen effect)<br />
+                  <span className="font-bold text-duck-ink">Input 2 = 0</span> wordt vermenigvuldigd met
+                  <span className="font-bold text-duck-ink"> gewicht -0.5</span> = 0.0 (geen effect)<br />
                   Totaal: 1.5 → door de <span className="font-bold">sigmoid functie</span> → <span className="font-bold text-duck-ink">0.82</span> (hoog!)
                 </p>
               </div>
@@ -750,7 +750,7 @@ export const NeuralNavigatorMission: React.FC<Props> = ({ onBack, onComplete }) 
             <button onClick={onBack} className="p-2 text-duck-ink/60 hover:text-duck-ink transition-all duration-300"><ArrowLeft size={20} /></button>
             <div className="flex items-center gap-3">
               <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border ${difficultyColor}`}>{difficultyLabel}</span>
-              <span className="text-xs font-bold text-duck-acid uppercase tracking-wider">Uitdaging {currentChallenge + 1}/{CHALLENGES.length}</span>
+              <span className="text-xs font-bold text-duck-ink uppercase tracking-wider">Uitdaging {currentChallenge + 1}/{CHALLENGES.length}</span>
               <div className="flex gap-1">
                 {CHALLENGES.map((_, i) => (
                   <div key={i} className={`w-8 h-1.5 rounded-full ${i < currentChallenge ? (challengeResults[i] ? 'bg-duck-ink' : 'bg-duck-error') : i === currentChallenge ? 'bg-duck-acid' : 'bg-duck-gray'}`} />
@@ -854,7 +854,7 @@ export const NeuralNavigatorMission: React.FC<Props> = ({ onBack, onComplete }) 
           {!showFeedback && (
             <button
               onClick={() => setShowHint(!showHint)}
-              className="flex items-center gap-2 mx-auto text-sm text-duck-ink/60 hover:text-duck-acid transition-all duration-300"
+              className="flex items-center gap-2 mx-auto text-sm text-duck-ink/60 hover:text-duck-ink transition-all duration-300"
             >
               <HelpCircle size={16} />
               {showHint ? 'Verberg hint' : 'Ik zit vast — toon hint'}
@@ -865,7 +865,7 @@ export const NeuralNavigatorMission: React.FC<Props> = ({ onBack, onComplete }) 
           {showHint && !showFeedback && (
             <div className="bg-duck-acid/10 border border-duck-acid/20 rounded-xl p-4">
               <div className="flex items-start gap-2">
-                <Lightbulb size={16} className="text-duck-acid mt-0.5 flex-shrink-0" />
+                <Lightbulb size={16} className="text-duck-ink mt-0.5 flex-shrink-0" />
                 <p className="text-sm text-duck-ink/60">{challenge.hint}</p>
               </div>
             </div>
@@ -934,9 +934,9 @@ export const NeuralNavigatorMission: React.FC<Props> = ({ onBack, onComplete }) 
           <div className="text-center space-y-2">
             <h2 className="text-2xl font-black text-duck-ink" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Bekijk het netwerk trainen!</h2>
             <p className="text-duck-ink/60 text-sm">
-              Jij paste de gewichten handmatig aan. In het echt doet een AI dat <span className="text-duck-acid font-bold">automatisch</span>.
+              Jij paste de gewichten handmatig aan. In het echt doet een AI dat <span className="text-duck-ink font-bold">automatisch</span>.
               Het netwerk berekent hoe ver het ernaast zit en past de gewichten een beetje aan. Dit herhaalt zich duizenden keren.
-              Dit heet <span className="text-duck-acid font-bold">backpropagation</span>.
+              Dit heet <span className="text-duck-ink font-bold">backpropagation</span>.
             </p>
           </div>
 
@@ -974,12 +974,12 @@ export const NeuralNavigatorMission: React.FC<Props> = ({ onBack, onComplete }) 
           <div className="grid grid-cols-2 gap-4">
             <div className="bg-white rounded-xl p-4 text-center border border-duck-gray">
               <p className="text-[10px] text-duck-ink/60 uppercase tracking-wider font-bold">Epoch</p>
-              <p className="text-3xl font-black text-duck-acid">{trainingEpoch}</p>
+              <p className="text-3xl font-black text-duck-ink">{trainingEpoch}</p>
               <p className="text-[10px] text-duck-ink/60">van 50</p>
             </div>
             <div className="bg-white rounded-xl p-4 text-center border border-duck-gray">
               <p className="text-[10px] text-duck-ink/60 uppercase tracking-wider font-bold">Nauwkeurigheid</p>
-              <p className={`text-3xl font-black ${trainingAccuracy >= 100 ? 'text-duck-ink' : trainingAccuracy >= 50 ? 'text-duck-acid' : 'text-duck-ink/60'}`}>
+              <p className={`text-3xl font-black ${trainingAccuracy >= 100 ? 'text-duck-ink' : trainingAccuracy >= 50 ? 'text-duck-ink' : 'text-duck-ink/60'}`}>
                 {trainingAccuracy.toFixed(0)}%
               </p>
             </div>
@@ -1033,7 +1033,7 @@ export const NeuralNavigatorMission: React.FC<Props> = ({ onBack, onComplete }) 
           {isTraining && (
             <div className="bg-duck-acid/10 border border-duck-acid/20 rounded-xl p-4 animate-pulse">
               <div className="flex items-start gap-2">
-                <Sparkles size={16} className="text-duck-acid mt-0.5 flex-shrink-0" />
+                <Sparkles size={16} className="text-duck-ink mt-0.5 flex-shrink-0" />
                 <p className="text-sm text-duck-ink/60">
                   Het netwerk berekent steeds opnieuw hoe ver het antwoord afzit van het doel.
                   Dan past het de gewichten een klein beetje aan. Dit herhaalt zich duizenden keren!

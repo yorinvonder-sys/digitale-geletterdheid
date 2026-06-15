@@ -153,7 +153,7 @@ export const Categorize: React.FC<CategorizeProps> = ({
                                                 ${submitted
                                                     ? isCorrect
                                                         ? 'bg-duck-ink/15 border-duck-ink text-duck-ink'
-                                                        : 'bg-duck-acid/15 border-duck-acid/60 text-duck-acid'
+                                                        : 'bg-duck-acid/15 border-duck-acid/60 text-duck-ink'
                                                     : 'bg-white border-duck-gray text-duck-ink/60 cursor-pointer hover:border-duck-acid/40'
                                                 }`}
                                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
@@ -190,7 +190,7 @@ export const Categorize: React.FC<CategorizeProps> = ({
                                 onClick={() => handleItemClick(item.id)}
                                 className={`px-3 py-1.5 rounded-lg border text-xs font-medium transition-all duration-200
                                     ${selectedItem === item.id
-                                        ? 'bg-duck-acid/15 border-duck-acid text-duck-acid scale-105'
+                                        ? 'bg-duck-acid/15 border-duck-acid text-duck-ink scale-105'
                                         : 'bg-white border-duck-gray text-duck-ink/60 hover:border-duck-acid/40'
                                     }`}
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
@@ -211,7 +211,7 @@ export const Categorize: React.FC<CategorizeProps> = ({
                         className={`p-3 rounded-xl text-sm font-medium ${
                             score === maxScore
                                 ? 'bg-duck-ink/10 text-duck-ink'
-                                : 'bg-duck-acid/10 text-duck-acid'
+                                : 'bg-duck-acid/10 text-duck-ink'
                         }`}
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >

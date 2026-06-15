@@ -205,7 +205,7 @@ const StepCard: React.FC<StepCardProps> = ({
             {/* Tip */}
             {step.tip && (
                 <div className="flex gap-2 bg-duck-acid/8 border border-duck-acid/20 rounded-xl p-3 mb-3">
-                    <Lightbulb size={15} className="text-duck-acid shrink-0 mt-0.5" />
+                    <Lightbulb size={15} className="text-duck-ink shrink-0 mt-0.5" />
                     <p
                         className="text-xs text-duck-ink/60 leading-relaxed"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
@@ -218,7 +218,7 @@ const StepCard: React.FC<StepCardProps> = ({
             {/* Checklist */}
             <div className="bg-white rounded-2xl border border-duck-gray p-4 mb-3">
                 <p
-                    className="text-xs font-black text-duck-acid uppercase tracking-widest mb-3"
+                    className="text-xs font-black text-duck-ink uppercase tracking-widest mb-3"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     Bewijs voor jezelf
@@ -303,7 +303,7 @@ const StepCard: React.FC<StepCardProps> = ({
             {step.verificationQuestion && allChecked && (
                 <div className="bg-white rounded-2xl border border-duck-gray p-4 mb-3">
                     <p
-                        className="text-xs font-black text-duck-acid uppercase tracking-widest mb-2"
+                        className="text-xs font-black text-duck-ink uppercase tracking-widest mb-2"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         Checkpunt
@@ -371,7 +371,7 @@ const StepCard: React.FC<StepCardProps> = ({
                     {!verificationSubmitted && verificationAnswer !== undefined && (
                         <button
                             onClick={() => onSubmitAnswer(step.id)}
-                            className="w-full py-2.5 bg-duck-acid/10 hover:bg-duck-acid/20 text-duck-acid rounded-xl text-sm font-bold transition-all duration-200 border border-duck-acid/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid focus-visible:ring-offset-2"
+                            className="w-full py-2.5 bg-duck-acid/10 hover:bg-duck-acid/20 text-duck-ink rounded-xl text-sm font-bold transition-all duration-200 border border-duck-acid/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid focus-visible:ring-offset-2"
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         >
                             Controleer antwoord

@@ -479,12 +479,12 @@ const ResultVisual: React.FC<{
                             <div className="absolute inset-0 bg-gradient-to-br from-duck-bg to-duck-gray" />
                             <div className="relative z-10 flex flex-col items-center gap-3 px-4">
                                 {isGeneratingImage && (
-                                    <div className="rounded-full bg-white/90 p-3 text-duck-acid shadow-sm">
+                                    <div className="rounded-full bg-white/90 p-3 text-duck-ink shadow-sm">
                                         <Loader2 size={24} className="animate-spin" />
                                     </div>
                                 )}
                                 <div className="bg-white/90 backdrop-blur-sm rounded-xl px-4 py-3 border border-duck-gray max-w-[90%]">
-                                    <p className="mb-2 text-[12px] font-black uppercase tracking-wide text-duck-acid" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                    <p className="mb-2 text-[12px] font-black uppercase tracking-wide text-duck-ink" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                         {missingImageTitle}
                                     </p>
                                     <p className="text-[13px] text-duck-ink/60 font-medium text-center leading-relaxed" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
@@ -492,7 +492,7 @@ const ResultVisual: React.FC<{
                                     </p>
                                 </div>
                                 {!isIdeal && (
-                                    <p className="rounded-full border border-duck-acid/25 bg-duck-acid/10 px-3 py-1 text-[10px] font-bold text-duck-acid">
+                                    <p className="rounded-full border border-duck-acid/25 bg-duck-acid/10 px-3 py-1 text-[10px] font-bold text-duck-ink">
                                         Echte beeldgeneratie vereist een geldig AI-provider-antwoord.
                                     </p>
                                 )}
@@ -517,7 +517,7 @@ const ResultVisual: React.FC<{
                         <div className="w-2.5 h-2.5 rounded-full bg-duck-ink" />
                     </div>
                     <code className="text-duck-gray block leading-relaxed">
-                        <span className="text-duck-ink">def</span> <span className="text-duck-acid">calculator</span>():<br />
+                        <span className="text-duck-ink">def</span> <span className="text-duck-ink">calculator</span>():<br />
                         &nbsp;&nbsp;<span className="text-duck-ink/60"># {content.substring(0, 50)}...</span><br />
                         &nbsp;&nbsp;<span className="text-duck-ink">return</span> result
                     </code>
@@ -579,7 +579,7 @@ const ResultFeedbackRail: React.FC<{
 
         <div className="bg-white rounded-2xl p-4 border border-duck-gray">
             <h4 className="font-bold mb-3 flex items-center gap-2 text-duck-ink">
-                <Target size={18} className="text-duck-acid" />
+                <Target size={18} className="text-duck-ink" />
                 Wat zat er in je prompt?
             </h4>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-2">
@@ -616,13 +616,13 @@ const ResultFeedbackRail: React.FC<{
 
         {!passed && (
             <div className="bg-duck-acid/5 rounded-2xl p-4 border border-duck-acid/20">
-                <h4 className="font-bold mb-3 flex items-center gap-2 text-duck-acid">
+                <h4 className="font-bold mb-3 flex items-center gap-2 text-duck-ink">
                     <Lightbulb size={18} /> Tips om te verbeteren:
                 </h4>
                 <ul className="space-y-2">
                     {tips.map((tip, i) => (
                         <li key={i} className="flex items-start gap-2 text-sm text-duck-ink/60">
-                            <ChevronRight size={14} className="mt-1 text-duck-acid flex-shrink-0" />
+                            <ChevronRight size={14} className="mt-1 text-duck-ink flex-shrink-0" />
                             {tip}
                         </li>
                     ))}
@@ -680,7 +680,7 @@ const PromptExampleComparison: React.FC<{ challenge: Challenge }> = ({ challenge
                         <ResultImage src={comparisonImages.weak} />
                     )}
                     <div className="mt-3">
-                        <p className="text-[10px] font-black uppercase text-duck-acid">Slechte prompt</p>
+                        <p className="text-[10px] font-black uppercase text-duck-ink">Slechte prompt</p>
                         <p className="mt-1 rounded-xl bg-white p-3 text-sm font-bold text-duck-ink">"{weakPrompt}"</p>
                         <p className="mt-2 text-xs font-semibold leading-relaxed text-duck-ink/60">{challenge.badOutputExample}</p>
                     </div>
@@ -913,7 +913,7 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                         </div>
                         <div>
                             <h1 className="text-lg font-black uppercase flex items-center gap-2">
-                                Prompt Lab <Zap size={16} className="text-duck-acid" />
+                                Prompt Lab <Zap size={16} className="text-duck-ink" />
                             </h1>
                             <p className="text-[10px] text-duck-ink/60 uppercase font-bold">
                                 Prompt Engineering
@@ -977,7 +977,7 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                             </div>
                             <div className="bg-white rounded-2xl p-3 md:p-4 border border-duck-gray">
                                 <div className="text-2xl mb-1">⚡</div>
-                                <h3 className="font-bold mb-1 text-duck-acid">Gevorderd</h3>
+                                <h3 className="font-bold mb-1 text-duck-ink">Gevorderd</h3>
                                 <p className="text-xs text-duck-ink/60">Structuur, format, toon</p>
                             </div>
                             <div className="bg-white rounded-2xl p-3 md:p-4 border border-duck-gray">
@@ -1058,7 +1058,7 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                                 </span>
                             </div>
                         </div>
-                        <div className="flex items-center gap-2 text-duck-acid">
+                        <div className="flex items-center gap-2 text-duck-ink">
                             <Star size={16} fill="currentColor" />
                             <span className="font-bold">{progress.totalScore}</span>
                         </div>
@@ -1119,7 +1119,7 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                                     <div className="relative">
                                         <div className="absolute inset-0 bg-duck-acid/20 blur-xl rounded-full animate-pulse"></div>
                                         <div className="relative z-10 p-4 bg-white rounded-full border-2 border-duck-acid/50 shadow-lg">
-                                            <Brain size={32} className="text-duck-acid animate-pulse" />
+                                            <Brain size={32} className="text-duck-ink animate-pulse" />
                                         </div>
                                     </div>
                                     <div className="text-center">
@@ -1169,7 +1169,7 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                             {attempts > 0 && aiResponse && (
                                 <div className="mt-8 space-y-4 animate-in fade-in slide-in-from-top-4">
                                     <h4 className="font-bold flex items-center gap-2 text-duck-ink/60">
-                                        <Target size={18} className="text-duck-acid" />
+                                        <Target size={18} className="text-duck-ink" />
                                         Wat moet je nog toevoegen?
                                     </h4>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -1205,7 +1205,7 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                                     </div>
 
                                     <div className="mt-6 bg-duck-acid/5 rounded-2xl p-5 border border-duck-acid/20">
-                                        <h4 className="font-bold mb-3 flex items-center gap-2 text-duck-acid text-sm">
+                                        <h4 className="font-bold mb-3 flex items-center gap-2 text-duck-ink text-sm">
                                             <Lightbulb size={16} /> Tips voor dit niveau:
                                         </h4>
                                         <ul className="space-y-2">
@@ -1325,7 +1325,7 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                                 <div className="text-duck-ink">{progress.completedChallenges.filter(id => CHALLENGES.find(c => c.id === id)?.level === 'beginner').length}/2</div>
                             </div>
                             <div className="rounded-xl p-3 border" style={{ backgroundColor: 'rgba(217, 120, 72,0.05)', borderColor: 'rgba(217, 120, 72,0.2)' }}>
-                                <div className="font-bold text-duck-acid">Gevorderd</div>
+                                <div className="font-bold text-duck-ink">Gevorderd</div>
                                 <div className="text-duck-ink">{progress.completedChallenges.filter(id => CHALLENGES.find(c => c.id === id)?.level === 'gevorderd').length}/2</div>
                             </div>
                             <div className="rounded-xl p-3 border" style={{ backgroundColor: 'rgba(11, 69, 63,0.05)', borderColor: 'rgba(11, 69, 63,0.2)' }}>
@@ -1338,7 +1338,7 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                     {/* Key Learnings */}
                     <div className="bg-white rounded-2xl p-4 md:p-5 mb-4 md:mb-6 text-left border border-duck-gray">
                         <h4 className="font-bold mb-3 flex items-center gap-2 text-duck-ink">
-                            <Lightbulb size={18} className="text-duck-acid" /> Wat je geleerd hebt:
+                            <Lightbulb size={18} className="text-duck-ink" /> Wat je geleerd hebt:
                         </h4>
                         <ul className="space-y-2 text-sm text-duck-ink/60">
                             <li className="flex items-start gap-2">

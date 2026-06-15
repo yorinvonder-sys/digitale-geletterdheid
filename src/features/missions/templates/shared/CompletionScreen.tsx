@@ -49,8 +49,8 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
                         {badge.title}
                     </h2>
                     <div className="flex items-center justify-center gap-2 mt-3">
-                        <Trophy size={16} className="text-duck-acid" />
-                        <span className="text-lg font-black text-duck-acid">
+                        <Trophy size={16} className="text-duck-ink" />
+                        <span className="text-lg font-black text-duck-ink">
                             {score}/{maxScore} punten ({percentage}%)
                         </span>
                     </div>
@@ -75,7 +75,7 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
                                         {phase.title}
                                     </span>
                                 </div>
-                                <span className="text-sm font-bold text-duck-acid">
+                                <span className="text-sm font-bold text-duck-ink">
                                     {phase.score}/{phase.max}
                                 </span>
                             </div>
@@ -95,9 +95,9 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
                 {/* Takeaways */}
                 <div className="bg-white rounded-2xl border border-duck-gray p-4">
                     <div className="flex items-center gap-2 mb-3">
-                        <Sparkles size={16} className="text-duck-acid" />
+                        <Sparkles size={16} className="text-duck-ink" />
                         <span
-                            className="text-xs font-black text-duck-acid uppercase tracking-widest"
+                            className="text-xs font-black text-duck-ink uppercase tracking-widest"
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         >
                             Wat je hebt geleerd
