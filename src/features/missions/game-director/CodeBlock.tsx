@@ -52,7 +52,7 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
                             disabled={isInPalette}
                         >
                             {inputDef.options?.map(opt => (
-                                <option key={opt.value} value={opt.value} className="text-lab-ink">
+                                <option key={opt.value} value={opt.value} className="text-duck-ink">
                                     {opt.label}
                                 </option>
                             ))}

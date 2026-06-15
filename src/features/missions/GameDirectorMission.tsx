@@ -965,7 +965,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                                 <button
                                     onClick={handleTogglePlay}
                                     className={`p-3 rounded-full transition-all duration-300 active:scale-95 ${isPlaying
-                                        ? 'bg-lab-coral/20 text-lab-muted hover:bg-lab-coral hover:text-white'
+                                        ? 'bg-duck-acid/20 text-duck-ink/60 hover:bg-duck-acid hover:text-duck-ink'
                                         : 'bg-duck-coral/20 text-duck-coral hover:bg-duck-coral hover:text-white'}`}
                                 >
                                     {isPlaying ? <RotateCcw size={20} /> : <Play size={20} fill="currentColor" />}
@@ -1011,7 +1011,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                     onClick={handleTogglePlay}
                     disabled={blocks.length === 0}
                     className={`flex items-center gap-2 px-6 py-2.5 rounded-full font-bold text-sm text-white transition-all duration-300 ${isPlaying
-                        ? 'bg-lab-coral hover:bg-lab-coral hover:text-white'
+                        ? 'bg-duck-acid hover:bg-duck-acid hover:text-duck-ink'
                         : 'bg-duck-coral hover:bg-duck-coral disabled:bg-duck-line disabled:text-duck-muted'
                     }`}
                 >

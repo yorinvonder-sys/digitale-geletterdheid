@@ -116,7 +116,7 @@ export const GamesPanel: React.FC<GamesPanelProps> = ({ onOpenGame }) => {
     return (
         <div className="space-y-6">
             {/* Header */}
-            <div className="bg-gradient-to-br from-lab-coral via-lab-teal to-lab-coral rounded-[2rem] p-6 md:p-8 text-white shadow-xl">
+            <div className="bg-gradient-to-br from-duck-acid via-duck-ink to-duck-acid rounded-[2rem] p-6 md:p-8 text-white shadow-xl">
                 <div className="flex items-center gap-4">
                     <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
                         <Gamepad2 size={32} />
@@ -130,26 +130,26 @@ export const GamesPanel: React.FC<GamesPanelProps> = ({ onOpenGame }) => {
 
             {/* Active Lobbies Section - Only show if there are active lobbies */}
             {activeLobbies.length > 0 && (
-                <div className="bg-gradient-to-br from-lab-gold to-lab-coral rounded-2xl border-2 border-lab-gold p-6 shadow-lg">
+                <div className="bg-gradient-to-br from-duck-acid to-duck-acid rounded-2xl border-2 border-duck-acid p-6 shadow-lg">
                     <div className="flex items-center justify-between mb-4">
                         <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 bg-lab-coral rounded-xl flex items-center justify-center text-white">
+                            <div className="w-10 h-10 bg-duck-acid rounded-xl flex items-center justify-center text-duck-ink">
                                 <Users size={20} />
                             </div>
                             <div>
-                                <h3 className="font-black text-lab-ink">Actieve Bomberman Lobbies</h3>
-                                <p className="text-sm text-lab-muted">{activeLobbies.length} lobby(s) • {totalPlayersInLobbies} spelers wachten</p>
+                                <h3 className="font-black text-duck-ink">Actieve Bomberman Lobbies</h3>
+                                <p className="text-sm text-duck-ink/60">{activeLobbies.length} lobby(s) • {totalPlayersInLobbies} spelers wachten</p>
                             </div>
                         </div>
                         <div className="flex items-center gap-2">
-                            <div className="w-3 h-3 bg-lab-coral rounded-full animate-pulse" />
-                            <span className="text-xs font-bold text-lab-sage uppercase tracking-widest">Live</span>
+                            <div className="w-3 h-3 bg-duck-acid rounded-full animate-pulse" />
+                            <span className="text-xs font-bold text-duck-ink/60 uppercase tracking-widest">Live</span>
                         </div>
                     </div>
 
                     {/* Force Start Controls - FIRST/PROMINENT */}
-                    <div className="bg-white/70 rounded-xl p-4 border border-lab-gold mb-4">
-                        <h4 className="text-xs font-bold text-lab-gold uppercase tracking-widest mb-3 flex items-center gap-2">
+                    <div className="bg-white/70 rounded-xl p-4 border border-duck-acid mb-4">
+                        <h4 className="text-xs font-bold text-duck-ink uppercase tracking-widest mb-3 flex items-center gap-2">
                             <Zap size={14} />
                             Docent Controls
                         </h4>
@@ -158,7 +158,7 @@ export const GamesPanel: React.FC<GamesPanelProps> = ({ onOpenGame }) => {
                             <button
                                 onClick={handleForceStartAll}
                                 disabled={forceStarting || activeLobbies.length === 0}
-                                className="flex items-center gap-2 px-4 py-2.5 bg-lab-sage hover:bg-lab-sage hover:text-white text-white font-bold rounded-xl shadow-lg shadow-lab-sage transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="flex items-center gap-2 px-4 py-2.5 bg-duck-ink hover:bg-duck-ink text-white font-bold rounded-full shadow-duck-soft transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 {forceStarting ? (
                                     <Loader2 size={16} className="animate-spin" />
@@ -173,7 +173,7 @@ export const GamesPanel: React.FC<GamesPanelProps> = ({ onOpenGame }) => {
                                 <select
                                     value={selectedClass}
                                     onChange={(e) => setSelectedClass(e.target.value)}
-                                    className="px-3 py-2 bg-white border border-lab-line rounded-xl text-sm font-medium text-lab-muted focus:ring-2 focus:ring-lab-coral focus:border-lab-coral"
+                                    className="px-3 py-2 bg-white border border-duck-ink/15 rounded-xl text-sm font-medium text-duck-ink/60 focus:ring-2 focus:ring-duck-acid focus:border-duck-acid"
                                 >
                                     <option value="">Kies klas...</option>
                                     {CLASSES.map(c => (
@@ -183,7 +183,7 @@ export const GamesPanel: React.FC<GamesPanelProps> = ({ onOpenGame }) => {
                                 <button
                                     onClick={handleForceStartByClass}
                                     disabled={forceStarting || !selectedClass}
-                                    className="flex items-center gap-2 px-4 py-2.5 bg-lab-coral hover:bg-lab-gold hover:text-lab-ink text-white font-bold rounded-xl shadow-lg shadow-lab-gold transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                                    className="flex items-center gap-2 px-4 py-2.5 bg-duck-acid hover:bg-duck-ink hover:text-white text-duck-ink font-bold rounded-full shadow-duck-soft transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                     <Play size={16} fill="currentColor" />
                                     Start {selectedClass || 'Klas'}
@@ -194,23 +194,23 @@ export const GamesPanel: React.FC<GamesPanelProps> = ({ onOpenGame }) => {
 
                     {/* Collapsible Lobby List - Hidden by default */}
                     <details className="group">
-                        <summary className="cursor-pointer flex items-center gap-2 text-sm font-bold text-lab-muted hover:text-lab-ink transition-colors py-2">
+                        <summary className="cursor-pointer flex items-center gap-2 text-sm font-bold text-duck-ink/60 hover:text-duck-ink transition-colors py-2">
                             <span className="group-open:rotate-90 transition-transform">▶</span>
                             Bekijk {activeLobbies.length} wachtende lobby(s)
                         </summary>
                         <div className="space-y-2 mt-3 animate-in slide-in-from-top-2 duration-200">
                             {activeLobbies.map((lobby) => (
-                                <div key={lobby.id} className="bg-white rounded-xl p-3 border border-lab-gold flex items-center justify-between">
+                                <div key={lobby.id} className="bg-white rounded-xl p-3 border border-duck-acid flex items-center justify-between">
                                     <div className="flex items-center gap-3">
                                         <span className="text-2xl">💣</span>
                                         <div>
-                                            <div className="font-bold text-lab-ink text-sm">{lobby.playerCount} speler{lobby.playerCount !== 1 ? 's' : ''}</div>
-                                            <div className="text-xs text-lab-muted truncate max-w-[200px]">{lobby.playerNames.join(', ')}</div>
+                                            <div className="font-bold text-duck-ink text-sm">{lobby.playerCount} speler{lobby.playerCount !== 1 ? 's' : ''}</div>
+                                            <div className="text-xs text-duck-ink/60 truncate max-w-[200px]">{lobby.playerNames.join(', ')}</div>
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-2">
                                         {lobby.lobbyStartTime && (
-                                            <span className="text-[10px] bg-lab-sage text-white px-2 py-1 rounded-full font-bold">
+                                            <span className="text-[10px] bg-duck-ink text-white px-2 py-1 rounded-full font-bold">
                                                 Auto-start actief
                                             </span>
                                         )}
@@ -235,33 +235,33 @@ export const GamesPanel: React.FC<GamesPanelProps> = ({ onOpenGame }) => {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: index * 0.1 }}
-                            className={`bg-white rounded-2xl border-2 shadow-lg p-6 hover:shadow-xl transition-all group ${enabled ? 'border-lab-sage bg-lab-sage/30' : 'border-lab-line'
+                            className={`bg-white rounded-[1.6rem] border-2 shadow-duck-soft p-6 hover:shadow-duck-soft transition-all group ${enabled ? 'border-duck-ink/20 bg-duck-ink/10' : 'border-duck-ink/15'
                                 }`}
                         >
                             <div className="flex items-start justify-between mb-4">
                                 <div className="text-4xl">{game.icon}</div>
                                 <div className="flex items-center gap-2">
                                     {isAlwaysEnabled ? (
-                                        <span className="text-[10px] font-bold uppercase tracking-widest text-white bg-lab-teal px-2 py-1 rounded-full flex items-center gap-1">
+                                        <span className="text-[10px] font-bold uppercase tracking-widest text-duck-ink bg-duck-acid px-2 py-1 rounded-full flex items-center gap-1">
                                             ⚡ Altijd Actief
                                         </span>
                                     ) : enabled && (
-                                        <span className="text-[10px] font-bold uppercase tracking-widest text-white bg-lab-sage px-2 py-1 rounded-full flex items-center gap-1">
+                                        <span className="text-[10px] font-bold uppercase tracking-widest text-white bg-duck-ink px-2 py-1 rounded-full flex items-center gap-1">
                                             <Check size={10} /> Actief
                                         </span>
                                     )}
-                                    <span className="text-[10px] font-bold uppercase tracking-widest text-lab-muted bg-lab-cream px-2 py-1 rounded-full">
+                                    <span className="text-[10px] font-bold uppercase tracking-widest text-duck-ink/60 bg-duck-bg px-2 py-1 rounded-full">
                                         {game.category}
                                     </span>
                                 </div>
                             </div>
 
-                            <h3 className="text-lg font-black text-lab-ink mb-2">{game.name}</h3>
-                            <p className="text-sm text-lab-muted mb-4 line-clamp-2">{game.description}</p>
+                            <h3 className="text-lg font-black text-duck-ink mb-2">{game.name}</h3>
+                            <p className="text-sm text-duck-ink/60 mb-4 line-clamp-2">{game.description}</p>
 
                             <div className="flex gap-2">
                                 {isAlwaysEnabled ? (
-                                    <div className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold bg-lab-teal text-white">
+                                    <div className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-full text-xs font-bold bg-duck-ink text-white">
                                         <Check size={16} />
                                         Altijd beschikbaar voor leerlingen
                                     </div>
@@ -269,9 +269,9 @@ export const GamesPanel: React.FC<GamesPanelProps> = ({ onOpenGame }) => {
                                     <button
                                         onClick={() => handleToggleGame(game.permissionId, enabled)}
                                         disabled={isLoading}
-                                        className={`flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${enabled
-                                            ? 'bg-lab-coral text-white hover:bg-lab-coral hover:text-white'
-                                            : 'bg-lab-sage text-white hover:bg-lab-sage hover:text-white shadow-lg shadow-lab-sage'
+                                        className={`flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-full text-xs font-bold transition-all ${enabled
+                                            ? 'bg-duck-error text-white hover:bg-duck-error hover:text-white'
+                                            : 'bg-duck-ink text-white hover:bg-duck-ink hover:text-white shadow-duck-soft'
                                             } ${isLoading ? 'opacity-50 cursor-wait' : ''}`}
                                     >
                                         {isLoading ? (
@@ -296,34 +296,34 @@ export const GamesPanel: React.FC<GamesPanelProps> = ({ onOpenGame }) => {
             </div>
 
             {/* Quick Actions */}
-            <div className="bg-lab-cream rounded-2xl border border-lab-line p-6">
-                <h3 className="text-sm font-black text-lab-ink uppercase tracking-widest mb-4 flex items-center gap-2">
-                    <Settings size={16} className="text-lab-muted" />
+            <div className="bg-duck-bg rounded-[1.6rem] border border-duck-ink/15 p-6">
+                <h3 className="text-sm font-black text-duck-ink uppercase tracking-widest mb-4 flex items-center gap-2">
+                    <Settings size={16} className="text-duck-ink/60" />
                     Snelle Acties
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     <button
                         onClick={() => onOpenGame()}
-                        className="flex items-center gap-3 px-4 py-3 bg-white rounded-xl border border-lab-line hover:border-lab-coral hover:bg-lab-coral hover:text-white transition-all text-left group"
+                        className="flex items-center gap-3 px-4 py-3 bg-white rounded-xl border border-duck-ink/15 hover:border-duck-acid hover:bg-duck-acid hover:text-duck-ink transition-all text-left group"
                     >
-                        <div className="w-10 h-10 bg-lab-coral rounded-xl flex items-center justify-center text-lab-coral group-hover:bg-lab-coral hover:text-white transition-colors">
+                        <div className="w-10 h-10 bg-duck-acid rounded-xl flex items-center justify-center text-duck-ink group-hover:bg-duck-acid transition-colors">
                             <Gamepad2 size={20} />
                         </div>
                         <div>
-                            <div className="font-bold text-lab-ink text-sm">Open Games Menu</div>
-                            <div className="text-xs text-lab-muted">Bekijk alle beschikbare games</div>
+                            <div className="font-bold text-duck-ink text-sm">Open Games Menu</div>
+                            <div className="text-xs text-duck-ink/60">Bekijk alle beschikbare games</div>
                         </div>
                     </button>
                     <button
                         onClick={() => onOpenGame()}
-                        className="flex items-center gap-3 px-4 py-3 bg-white rounded-xl border border-lab-line hover:border-lab-sage hover:bg-lab-sage hover:text-white transition-all text-left group"
+                        className="flex items-center gap-3 px-4 py-3 bg-white rounded-xl border border-duck-ink/15 hover:border-duck-ink hover:bg-duck-ink hover:text-white transition-all text-left group"
                     >
-                        <div className="w-10 h-10 bg-lab-sage rounded-xl flex items-center justify-center text-lab-sage group-hover:bg-lab-sage hover:text-white transition-colors">
+                        <div className="w-10 h-10 bg-duck-ink rounded-xl flex items-center justify-center text-white group-hover:bg-duck-ink transition-colors">
                             <Users size={20} />
                         </div>
                         <div>
-                            <div className="font-bold text-lab-ink text-sm">Speel met Klas</div>
-                            <div className="text-xs text-lab-muted">Start een klassikale game-sessie</div>
+                            <div className="font-bold text-duck-ink text-sm">Speel met Klas</div>
+                            <div className="text-xs text-duck-ink/60">Start een klassikale game-sessie</div>
                         </div>
                     </button>
                 </div>

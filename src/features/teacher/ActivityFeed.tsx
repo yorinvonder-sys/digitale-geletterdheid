@@ -66,17 +66,17 @@ export const ActivityFeed: React.FC<ActivityFeedProps> = ({ schoolId }) => {
 
     const getIcon = (type: string) => {
         switch (type) {
-            case 'mission_start': return <Play size={14} className="text-lab-muted" />;
-            case 'mission_complete': return <Target size={14} className="text-lab-muted" />;
-            case 'xp_earned': return <Zap size={14} className="text-lab-muted" />;
-            case 'badge_earned': return <Award size={14} className="text-lab-muted" />;
-            case 'focus_lost': return <ShieldAlert size={14} className="text-lab-muted" />;
-            case 'test_taken': return <ClipboardCheck size={14} className="text-lab-muted" />;
-            default: return <MousePointer2 size={14} className="text-lab-muted" />;
+            case 'mission_start': return <Play size={14} className="text-duck-ink/60" />;
+            case 'mission_complete': return <Target size={14} className="text-duck-ink/60" />;
+            case 'xp_earned': return <Zap size={14} className="text-duck-ink/60" />;
+            case 'badge_earned': return <Award size={14} className="text-duck-ink/60" />;
+            case 'focus_lost': return <ShieldAlert size={14} className="text-duck-ink/60" />;
+            case 'test_taken': return <ClipboardCheck size={14} className="text-duck-ink/60" />;
+            default: return <MousePointer2 size={14} className="text-duck-ink/60" />;
         }
     };
 
-    if (loading) return <div className="p-8 text-center text-lab-muted text-xs font-bold uppercase tracking-widest animate-pulse">Activiteit laden...</div>;
+    if (loading) return <div className="p-8 text-center text-duck-ink/60 text-xs font-bold uppercase tracking-widest animate-pulse">Activiteit laden...</div>;
 
     return (
         <div className="bg-white rounded-3xl border border-lab-line shadow-sm overflow-hidden flex flex-col h-full">

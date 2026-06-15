@@ -9,9 +9,9 @@ interface MissionWelcomeCardProps {
 }
 
 const difficultyLabel: Record<string, { text: string; bg: string }> = {
-    Easy: { text: 'Makkelijk', bg: 'bg-lab-sage text-white' },
-    Medium: { text: 'Gemiddeld', bg: 'bg-lab-gold text-lab-ink' },
-    Hard: { text: 'Uitdagend', bg: 'bg-lab-coral text-white' },
+    Easy: { text: 'Makkelijk', bg: 'bg-duck-ink/10 text-duck-ink' },
+    Medium: { text: 'Gemiddeld', bg: 'bg-duck-acid text-duck-ink' },
+    Hard: { text: 'Uitdagend', bg: 'bg-duck-acid text-duck-ink' },
 };
 
 const MissionWelcomeCard: React.FC<MissionWelcomeCardProps> = ({ role }) => {
@@ -23,7 +23,7 @@ const MissionWelcomeCard: React.FC<MissionWelcomeCardProps> = ({ role }) => {
 
     return (
         <div className={`${isCompactBriefing ? 'max-w-[96%] md:max-w-[92%]' : 'max-w-[92%] md:max-w-[80%]'} w-full animate-fade-in-up`}>
-            <div className="rounded-2xl overflow-hidden shadow-lg border border-lab-line bg-white">
+            <div className="rounded-[1.6rem] overflow-hidden shadow-lg border border-duck-ink/15 bg-white">
                 {/* ── Gradient Header ── */}
                 <div
                     className={`${isCompactBriefing ? 'px-4 py-3' : 'px-5 py-4'} flex items-center gap-3`}
@@ -50,24 +50,24 @@ const MissionWelcomeCard: React.FC<MissionWelcomeCardProps> = ({ role }) => {
                 <div className={`${isCompactBriefing ? 'p-3 md:p-4 space-y-3' : 'p-4 md:p-5 space-y-4'}`}>
                     {/* ── Scenario ── */}
                     <div
-                        className={`${isCompactBriefing ? 'rounded-xl p-3' : 'rounded-xl p-3.5'} bg-lab-bg border-l-4`}
+                        className={`${isCompactBriefing ? 'rounded-xl p-3' : 'rounded-xl p-3.5'} bg-duck-bg border-l-4`}
                         style={{ borderLeftColor: role.color }}
                     >
                         <div className="flex items-center gap-1.5 mb-1.5">
-                            <BookOpen size={14} className="text-lab-textLight" />
-                            <span className="text-[10px] font-bold uppercase tracking-wider text-lab-textLight">
+                            <BookOpen size={14} className="text-duck-ink/60" />
+                            <span className="text-[10px] font-bold uppercase tracking-wider text-duck-ink/60">
                                 De situatie
                             </span>
                         </div>
-                        <p className={`${isCompactBriefing ? 'text-[13px] leading-snug' : 'text-sm leading-relaxed'} text-lab-text`}>
+                        <p className={`${isCompactBriefing ? 'text-[13px] leading-snug' : 'text-sm leading-relaxed'} text-duck-ink`}>
                             {role.problemScenario}
                         </p>
                     </div>
 
                     {/* ── Objective ── */}
-                    <div className={`${isCompactBriefing ? 'px-3 py-2.5' : 'px-3.5 py-3'} flex items-start gap-2.5 rounded-xl bg-lab-cream border border-lab-line`}>
+                    <div className={`${isCompactBriefing ? 'px-3 py-2.5' : 'px-3.5 py-3'} flex items-start gap-2.5 rounded-xl bg-duck-bg border border-duck-ink/15`}>
                         <Target size={16} className="mt-0.5 shrink-0" style={{ color: role.color }} />
-                        <p className={`${isCompactBriefing ? 'text-[13px]' : 'text-sm'} font-semibold text-lab-dark leading-snug`}>
+                        <p className={`${isCompactBriefing ? 'text-[13px]' : 'text-sm'} font-semibold text-duck-ink leading-snug`}>
                             {role.missionObjective}
                         </p>
                     </div>
@@ -78,11 +78,11 @@ const MissionWelcomeCard: React.FC<MissionWelcomeCardProps> = ({ role }) => {
 
                     {/* ── First Step ── */}
                     {firstStep && (
-                        <div className={`${isCompactBriefing ? 'p-3' : 'p-3.5'} rounded-xl border-2 border-lab-line`}>
-                            <p className="text-[10px] font-bold uppercase tracking-wider text-lab-textLight mb-1">
+                        <div className={`${isCompactBriefing ? 'p-3' : 'p-3.5'} rounded-xl border-2 border-duck-ink/15`}>
+                            <p className="text-[10px] font-bold uppercase tracking-wider text-duck-ink/60 mb-1">
                                 Stap 1: {firstStep.title}
                             </p>
-                            <p className={`${isCompactBriefing ? 'text-[13px] mb-2' : 'text-sm mb-2.5'} text-lab-text`}>
+                            <p className={`${isCompactBriefing ? 'text-[13px] mb-2' : 'text-sm mb-2.5'} text-duck-ink`}>
                                 {firstStep.description}
                             </p>
                             <div
@@ -99,10 +99,10 @@ const MissionWelcomeCard: React.FC<MissionWelcomeCardProps> = ({ role }) => {
 
                     {/* ── CTA ── */}
                     <div className="flex items-center justify-center gap-1.5 pt-1 pb-0.5">
-                        <p className="text-xs text-lab-textLight font-medium">
+                        <p className="text-xs text-duck-ink/60 font-medium">
                             Typ je eerste bericht om te beginnen
                         </p>
-                        <ChevronDown size={14} className="text-lab-textLight animate-bounce" />
+                        <ChevronDown size={14} className="text-duck-ink/60 animate-bounce" />
                     </div>
                 </div>
             </div>

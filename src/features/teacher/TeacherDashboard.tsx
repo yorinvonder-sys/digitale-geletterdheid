@@ -520,9 +520,9 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                 <div className="fixed top-4 right-4 z-[200] flex flex-col gap-2 pointer-events-none">
                     <AnimatePresence>
                         {toasts.map(t => (
-                            <motion.div key={t.id} initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }} className="pointer-events-auto min-w-[300px] p-4 rounded-xl shadow-xl bg-white border border-[#E7D8BD] flex items-start gap-3">
-                                <div className={`p-2 rounded-lg ${t.type === 'error' ? 'bg-lab-coral text-white' : 'bg-[#F3E4CB] text-[#D97848]'}`}><Stars size={20} /></div>
-                                <div><h4 className="font-bold text-[#08283B] text-sm">{t.title}</h4><p className="text-[#445865] text-xs mt-0.5">{t.message}</p></div>
+                            <motion.div key={t.id} initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }} className="pointer-events-auto min-w-[300px] p-4 rounded-xl shadow-xl bg-white border border-lab-line flex items-start gap-3">
+                                <div className={`p-2 rounded-lg ${t.type === 'error' ? 'bg-lab-coral/10 text-lab-coral' : 'bg-lab-cream text-lab-coral'}`}><Stars size={20} /></div>
+                                <div><h4 className="font-bold text-lab-ink text-sm">{t.title}</h4><p className="text-lab-muted text-xs mt-0.5">{t.message}</p></div>
                             </motion.div>
                         ))}
                     </AnimatePresence>
@@ -688,12 +688,12 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
 
                         {activeTab === 'students' && (
                             <PageTransition key="students" className="space-y-4">
-                                <div className="bg-white rounded-xl border border-[#E7D8BD] p-3 flex items-center justify-between gap-3">
+                                <div className="bg-lab-paper rounded-xl border border-lab-line p-3 flex items-center justify-between gap-3">
                                     <div className="flex items-center gap-2">
-                                        <button onClick={() => setRetryCount(prev => prev + 1)} className="p-2 text-[#445865] hover:bg-[#FCF6EA] rounded-lg"><RotateCcw size={16} /></button>
-                                        <button onClick={exportCSV} className="p-2 text-[#445865] hover:bg-[#FCF6EA] rounded-lg"><Download size={16} /></button>
+                                        <button onClick={() => setRetryCount(prev => prev + 1)} className="p-2 text-lab-muted hover:bg-lab-cream rounded-lg"><RotateCcw size={16} /></button>
+                                        <button onClick={exportCSV} className="p-2 text-lab-muted hover:bg-lab-cream rounded-lg"><Download size={16} /></button>
                                     </div>
-                                    <button data-tutorial="students-message-btn" onClick={() => setShowMessageModal(true)} className="px-4 py-2 bg-[#D97848] text-white rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-[#D97848]"><Send size={14} /> Bericht</button>
+                                    <button data-tutorial="students-message-btn" onClick={() => setShowMessageModal(true)} className="px-4 py-2 bg-lab-tealDark text-white rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-lab-ink"><Send size={14} /> Bericht</button>
                                 </div>
                                 <StudentList
                                     students={students.filter(s => {
@@ -750,7 +750,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                         {activeTab === 'nulmeting' && (
                             <PageTransition key="nulmeting" className="space-y-6">
                                 <EindmetingReleaseButton classFilter={classFilter} schoolId={user?.schoolId} availableClasses={classGroups} />
-                                <Suspense fallback={<div className="flex items-center justify-center py-12"><div className="h-8 w-8 animate-spin rounded-full border-b-2 border-[#0B453F]" /></div>}>
+                                <Suspense fallback={<div className="flex items-center justify-center py-12"><div className="h-8 w-8 animate-spin rounded-full border-b-2 border-lab-tealDark" /></div>}>
                                     <LazyDigitaalPaspoortTeacher
                                         klasResults={students
                                             .filter(s => {
@@ -768,7 +768,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                         )}
                         {activeTab === 'samenhang' && (
                             <PageTransition key="samenhang">
-                                <Suspense fallback={<div className="flex items-center justify-center py-12"><div className="h-8 w-8 animate-spin rounded-full border-b-2 border-[#0B453F]" /></div>}>
+                                <Suspense fallback={<div className="flex items-center justify-center py-12"><div className="h-8 w-8 animate-spin rounded-full border-b-2 border-lab-tealDark" /></div>}>
                                     <LazySamenhangMatrix selectedYear={yearGroupFilter} schoolId={user?.schoolId} />
                                 </Suspense>
                             </PageTransition>
@@ -816,7 +816,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
 
                 {showSchedulingConfig && user?.schoolId && (
                     <div className="fixed inset-0 z-50 bg-black/40 flex items-start justify-center overflow-y-auto p-4 pt-12">
-                        <div className="bg-[#FCF6EA] rounded-[2rem] shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+                        <div className="bg-lab-cream rounded-[2rem] shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
                             <SchedulingConfigurator
                                 schoolId={user.schoolId}
                                 yearGroup={yearGroupFilter}

@@ -30,7 +30,7 @@ const SubTabBar: React.FC<{
                 onClick={() => setActiveTab(sub.id as MainTab)}
                 title={sub.tooltip}
                 className={`px-3 py-2 min-h-[36px] rounded-lg text-xs font-bold transition-all flex-shrink-0 ${activeTab === sub.id
-                    ? 'bg-[#F3E4CB] text-[#D9471E]'
+                    ? 'bg-lab-creamDeep text-lab-coral'
                     : 'text-lab-muted hover:text-lab-muted hover:bg-lab-cream'
                     }`}
             >
@@ -89,7 +89,7 @@ export const TeacherNavigation: React.FC<TeacherNavigationProps> = ({ activeTab,
                             onClick={() => setActiveTab(tab.subTabIds[0] as MainTab)}
                             title={tab.tooltip}
                             className={`relative flex items-center gap-2 px-2 sm:px-3 md:px-6 py-3 min-h-[44px] rounded-xl text-sm font-bold transition-all flex-shrink-0 ${isActive
-                                ? 'bg-[#D9471E] text-white shadow-lg shadow-[#F3E4CB]'
+                                ? 'bg-lab-ink text-white shadow-lg shadow-lab-ink/10'
                                 : 'text-lab-muted hover:text-lab-muted hover:bg-lab-cream'
                                 }`}
                         >

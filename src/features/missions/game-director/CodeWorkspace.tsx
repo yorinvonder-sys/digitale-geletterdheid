@@ -309,9 +309,9 @@ export const CodeWorkspace: React.FC<CodeWorkspaceProps> = ({
                     <button
                         onClick={onRun}
                         disabled={blocks.length === 0}
-                        className={`px-4 py-2 rounded-full font-bold text-sm text-white flex items-center gap-2 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-duck-coral ${isRunning
-                            ? 'bg-lab-coral hover:bg-lab-coral hover:text-white'
-                            : 'bg-duck-coral hover:bg-duck-coral disabled:bg-duck-line disabled:text-duck-muted disabled:cursor-not-allowed'
+                        className={`px-4 py-2 rounded-full font-bold text-sm flex items-center gap-2 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-duck-coral ${isRunning
+                            ? 'bg-duck-acid text-duck-ink hover:bg-duck-acid'
+                            : 'bg-duck-coral text-white hover:bg-duck-coral disabled:bg-duck-line disabled:text-duck-muted disabled:cursor-not-allowed'
                             }`}
                     >
                         <Play size={14} fill="currentColor" />

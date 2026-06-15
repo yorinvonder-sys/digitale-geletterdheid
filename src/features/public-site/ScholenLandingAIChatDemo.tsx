@@ -48,7 +48,7 @@ const STEPS: DemoStep[] = [
             confetti: false,
         },
         label: 'Apps',
-        accentClass: 'border-lab-teal bg-lab-teal text-white',
+        accentClass: 'border-duck-ink bg-duck-ink text-white',
     },
     {
         studentMessage: 'Ehm... mijn foto\'s en berichten?',
@@ -61,7 +61,7 @@ const STEPS: DemoStep[] = [
             confetti: false,
         },
         label: 'Data',
-        accentClass: 'border-lab-gold bg-lab-gold text-lab-ink',
+        accentClass: 'border-duck-acid bg-duck-acid text-duck-ink',
     },
     {
         studentMessage: 'Ik wil mijn locatie uitzetten en privé-account instellen',
@@ -74,7 +74,7 @@ const STEPS: DemoStep[] = [
             confetti: true,
         },
         label: 'Regels',
-        accentClass: 'border-lab-sage bg-lab-sage text-white',
+        accentClass: 'border-duck-ink/30 bg-duck-ink/10 text-duck-ink',
     },
 ];
 
@@ -413,7 +413,7 @@ function PrivacyIllustration({ state }: { state: PrivacyVisualState }) {
 function TypingDots() {
     return (
         <span className="inline-flex gap-1 items-center px-3 py-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-lab-muted animate-typing-bounce" />
+            <span className="w-1.5 h-1.5 rounded-full bg-duck-ink/60 animate-typing-bounce" />
             <span className="w-1.5 h-1.5 rounded-full bg-lab-muted animate-typing-bounce [animation-delay:0.2s]" />
             <span className="w-1.5 h-1.5 rounded-full bg-lab-muted animate-typing-bounce [animation-delay:0.4s]" />
         </span>
@@ -424,7 +424,7 @@ function ChatBubble({ text, isStudent, visible }: { text: string; isStudent: boo
     return (
         <div className={`flex ${isStudent ? 'justify-end' : 'justify-start'} transition-all duration-500 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'}`}>
             {!isStudent && (
-                <div className="w-7 h-7 rounded-full bg-lab-teal flex items-center justify-center mr-2 mt-1 shrink-0">
+                <div className="w-7 h-7 rounded-full bg-duck-ink flex items-center justify-center mr-2 mt-1 shrink-0">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                     </svg>
@@ -433,7 +433,7 @@ function ChatBubble({ text, isStudent, visible }: { text: string; isStudent: boo
             <div className={`max-w-[80%] px-3.5 py-2 text-sm leading-relaxed ${
                 isStudent
                     ? 'text-white rounded-2xl rounded-br-sm'
-                    : 'bg-lab-ink text-white/75 rounded-2xl rounded-bl-sm'
+                    : 'bg-duck-ink text-white/75 rounded-2xl rounded-bl-sm'
             }`}
                 style={isStudent ? { backgroundColor: '#ff3c21' } : undefined}
             >
@@ -545,16 +545,16 @@ export const ScholenLandingAIChatDemo: React.FC = () => {
                 onMouseLeave={() => setIsPaused(false)}
             >
                 {/* Chat panel */}
-                <div className="lg:col-span-2 bg-lab-ink flex flex-col min-h-[360px] lg:min-h-[420px] order-2 lg:order-1">
-                    <div className="flex items-center gap-3 px-4 py-3 border-b border-lab-line">
-                        <div className="w-8 h-8 rounded-lg bg-lab-teal flex items-center justify-center">
+                <div className="lg:col-span-2 bg-duck-ink flex flex-col min-h-[360px] lg:min-h-[420px] order-2 lg:order-1">
+                    <div className="flex items-center gap-3 px-4 py-3 border-b border-duck-ink/15">
+                        <div className="w-8 h-8 rounded-lg bg-duck-acid flex items-center justify-center">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                             </svg>
                         </div>
                         <div>
                             <p className="text-white text-sm font-semibold">AI Spiegel</p>
-                            <p className="text-lab-muted text-xs">Privacy coach</p>
+                            <p className="text-duck-ink/60 text-xs">Privacy coach</p>
                         </div>
                     </div>
 
@@ -588,12 +588,12 @@ export const ScholenLandingAIChatDemo: React.FC = () => {
 
                         {currentPhaseIdx === phaseIndex('ai-typing') && (
                             <div className="flex justify-start" role="listitem">
-                                <div className="w-7 h-7 rounded-full bg-lab-teal flex items-center justify-center mr-2 mt-1 shrink-0">
+                                <div className="w-7 h-7 rounded-full bg-duck-ink flex items-center justify-center mr-2 mt-1 shrink-0">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                                         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                                     </svg>
                                 </div>
-                                <div className="bg-lab-ink/60 rounded-2xl rounded-bl-sm">
+                                <div className="bg-duck-ink/60 rounded-2xl rounded-bl-sm">
                                     <TypingDots />
                                 </div>
                             </div>
@@ -607,8 +607,8 @@ export const ScholenLandingAIChatDemo: React.FC = () => {
                     </div>
 
                     <div className="px-4 pb-4">
-                        <div className="flex items-center gap-2 bg-lab-ink rounded-xl px-3 py-2.5">
-                            <span className="text-lab-muted text-sm flex-1 truncate">Typ een bericht...</span>
+                        <div className="flex items-center gap-2 bg-duck-ink/80 rounded-xl px-3 py-2.5">
+                            <span className="text-duck-ink/60 text-sm flex-1 truncate">Typ een bericht...</span>
                             <div className="w-7 h-7 rounded-lg flex items-center justify-center opacity-50" style={{ backgroundColor: '#ff3c21' }}>
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                                     <path d="m5 12 7-7 7 7" /><path d="M12 19V5" />
@@ -619,7 +619,7 @@ export const ScholenLandingAIChatDemo: React.FC = () => {
                 </div>
 
                 {/* Privacy illustration */}
-                <div className="lg:col-span-3 relative order-1 lg:order-2 bg-lab-cream">
+                <div className="lg:col-span-3 relative order-1 lg:order-2 bg-duck-bg">
                     <PrivacyIllustration state={visualState} />
 
                     {isPaused && (

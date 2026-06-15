@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { DuckMark } from '@/components/brand/DuckMark';
 import { DuckMascot } from '@/components/brand/DuckMascot';
+import { HeroEyes } from '@/components/brand/HeroEyes';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 
 type NavItem = { label: string; target: string };
@@ -462,7 +463,7 @@ export const ScholenLanding: React.FC = () => {
             <main>
                 <section data-home-hero className="relative overflow-hidden px-5 pb-16 pt-32 md:px-10 md:pt-40">
                     <div className="relative z-10 mx-auto max-w-5xl text-center">
-                        <p className={`inline-flex items-center gap-2 rounded-full border border-duck-ink bg-duck-acid px-4 py-2 text-xs font-extrabold uppercase tracking-[0.16em] opacity-0 motion-reduce:animate-none motion-reduce:opacity-100 ${introReady ? 'animate-fade-in-up' : ''}`}>
+                        <p className={`inline-flex items-center gap-2 rounded-full border border-duck-ink bg-duck-acid px-4 py-2 text-xs font-extrabold uppercase tracking-[0.16em] opacity-0 motion-reduce:animate-none motion-reduce:opacity-100 mt-6 md:mt-8 ${introReady ? 'animate-fade-in-up' : ''}`}>
                             Digitale geletterdheid voor VO &amp; VSO
                         </p>
                         <HeroHeadline introReady={introReady} />
@@ -490,8 +491,8 @@ export const ScholenLanding: React.FC = () => {
                             Voor VO en VSO: AI-missies, SLO-voortgang en portfolio-bewijs in een veilige leeromgeving.
                         </p>
 
-                        <div className="pointer-events-none absolute -top-12 right-[6%] hidden rotate-6 md:block lg:-top-16 lg:right-[4%]" aria-hidden="true">
-                            <DuckMascot className="size-16 lg:size-20 animate-duck-float motion-reduce:animate-none" />
+                        <div className="pointer-events-none absolute inset-x-0 -top-14 hidden justify-center md:flex lg:-top-16" aria-hidden="true">
+                            <HeroEyes />
                         </div>
                     </div>
 
@@ -636,81 +637,103 @@ export const ScholenLanding: React.FC = () => {
                     </div>
                 </section>
 
-                <section id="productbewijs" className="scroll-mt-24">
-                    {/* Panel 1 — Leerling */}
-                    <div className="bg-duck-bgLight px-5 py-20 md:px-10 md:py-28">
-                        <Reveal y={24} className="mx-auto max-w-6xl">
-                            <p className="flex items-center gap-2.5 text-[11px] font-extrabold uppercase tracking-[0.1em] text-duck-ink/40">
-                                <span>01</span>
-                                <span className="h-px w-7 bg-duck-ink/20" />
-                                <span>Voor leerlingen</span>
-                            </p>
-                            <div className="mt-10 grid gap-10 lg:grid-cols-2 lg:items-center">
-                                <div>
-                                    <span className="inline-block rounded-full bg-duck-acid px-3.5 py-1.5 text-[11px] font-extrabold uppercase tracking-[0.14em]">Leerlingmissie</span>
-                                    <h2 className="mt-5 text-balance font-display text-[clamp(2rem,4vw,3.5rem)] leading-[1.05]">Gewoon beginnen, ook zonder plan.</h2>
-                                    <p className="mt-5 max-w-md text-pretty text-base font-semibold leading-7 text-duck-ink/65">
-                                        Leerlingen starten een missie zelfstandig. De stappen zijn duidelijk, het eindproduct concreet. Motivatie hoef je niet af te dwingen.
-                                    </p>
-                                </div>
-                                <div className="rounded-[1.6rem] bg-duck-bg p-4 md:p-5">
-                                    <BrowserFrame url="dgskills.app">
-                                        <ScreenMissieDetail />
-                                    </BrowserFrame>
-                                </div>
-                            </div>
-                        </Reveal>
-                    </div>
+                <section id="productbewijs" className="scroll-mt-24 bg-duck-bgLight px-5 py-20 md:px-10 md:py-28">
+                    <Reveal y={24} className="mx-auto max-w-6xl">
+                        <p className="mb-10 text-center text-[11px] font-extrabold uppercase tracking-[0.14em] text-duck-ink/35">Voor de hele school</p>
+                        <div className="grid gap-5 lg:grid-cols-3">
 
-                    {/* Panel 2 — Docent (omgekeerd) */}
-                    <div className="border-t border-duck-ink/10 bg-duck-bg px-5 py-20 md:px-10 md:py-28">
-                        <Reveal y={24} className="mx-auto max-w-6xl">
-                            <p className="flex items-center gap-2.5 text-[11px] font-extrabold uppercase tracking-[0.1em] text-duck-ink/40">
-                                <span>02</span>
-                                <span className="h-px w-7 bg-duck-ink/20" />
-                                <span>Voor docenten</span>
-                            </p>
-                            <div className="mt-10 grid gap-10 lg:grid-cols-2 lg:items-center">
-                                <div className="rounded-[1.6rem] bg-duck-bgLight p-4 md:p-5 lg:order-first">
-                                    <BrowserFrame url="dgskills.app/klas">
-                                        <ScreenDocent />
-                                    </BrowserFrame>
-                                </div>
-                                <div>
-                                    <span className="inline-block rounded-full bg-duck-acid px-3.5 py-1.5 text-[11px] font-extrabold uppercase tracking-[0.14em]">Docentdashboard</span>
-                                    <h2 className="mt-5 text-balance font-display text-[clamp(2rem,4vw,3.5rem)] leading-[1.05]">Grip op de klas, zonder bij te houden.</h2>
-                                    <p className="mt-5 max-w-md text-pretty text-base font-semibold leading-7 text-duck-ink/65">
-                                        Je ziet wie vastzit en wie klaar is. Geen Excel, geen rondje langs alle tafels.
-                                    </p>
+                            {/* Kaart 1 — Leerlingen */}
+                            <div className="relative overflow-hidden rounded-[1.6rem] bg-duck-bg">
+                                <div
+                                    className="absolute inset-0 bg-duck-acid"
+                                    style={{ clipPath: 'polygon(0 0, 100% 0, 100% 38%, 0 56%)' }}
+                                    aria-hidden="true"
+                                />
+                                <div className="relative z-10 flex h-full flex-col p-7">
+                                    <div>
+                                        <p className="flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.1em] text-duck-ink/50">
+                                            <span>01</span>
+                                            <span className="h-px w-5 bg-duck-ink/25" />
+                                            <span>Voor leerlingen</span>
+                                        </p>
+                                        <span className="mt-4 inline-block rounded-full bg-duck-ink px-3 py-1 text-[10px] font-extrabold uppercase tracking-[0.12em] text-duck-acid">Leerlingmissie</span>
+                                        <h2 className="mt-3 font-display text-2xl leading-[1.1] text-duck-ink">Gewoon beginnen.</h2>
+                                        <p className="mt-2 text-sm font-semibold leading-6 text-duck-ink/60">
+                                            Stappen zijn duidelijk, eindproduct concreet. Motivatie hoef je niet af te dwingen.
+                                        </p>
+                                    </div>
+                                    <div className="mt-auto pt-6">
+                                        <div className="rounded-xl bg-duck-bgLight p-3">
+                                            <BrowserFrame url="dgskills.app">
+                                                <ScreenMissieDetail />
+                                            </BrowserFrame>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </Reveal>
-                    </div>
 
-                    {/* Panel 3 — Schoolteam */}
-                    <div className="border-t border-duck-ink/10 bg-duck-bgLight px-5 py-20 md:px-10 md:py-28">
-                        <Reveal y={24} className="mx-auto max-w-6xl">
-                            <p className="flex items-center gap-2.5 text-[11px] font-extrabold uppercase tracking-[0.1em] text-duck-ink/40">
-                                <span>03</span>
-                                <span className="h-px w-7 bg-duck-ink/20" />
-                                <span>Voor schoolteams</span>
-                            </p>
-                            <div className="mt-10 grid gap-10 lg:grid-cols-2 lg:items-center">
-                                <div>
-                                    <span className="inline-block rounded-full bg-duck-acid px-3.5 py-1.5 text-[11px] font-extrabold uppercase tracking-[0.14em]">SLO-bewijs</span>
-                                    <h2 className="mt-5 text-balance font-display text-[clamp(2rem,4vw,3.5rem)] leading-[1.05]">Aantonen dat het werkt, zonder rapporten schrijven.</h2>
-                                    <p className="mt-5 max-w-md text-pretty text-base font-semibold leading-7 text-duck-ink/65">
-                                        Schoolteams zien wat er schoolbreed geleerd wordt. Klaar voor het directieoverleg.
-                                    </p>
-                                </div>
-                                <div className="rounded-[1.6rem] bg-duck-bg p-4 md:p-5">
-                                    <BrowserFrame url="dgskills.app/voortgang">
-                                        <ScreenVoortgang />
-                                    </BrowserFrame>
+                            {/* Kaart 2 — Docenten */}
+                            <div className="relative overflow-hidden rounded-[1.6rem] bg-duck-bg">
+                                <div
+                                    className="absolute inset-0 bg-duck-ink"
+                                    style={{ clipPath: 'polygon(0 0, 100% 0, 100% 38%, 0 56%)' }}
+                                    aria-hidden="true"
+                                />
+                                <div className="relative z-10 flex h-full flex-col p-7">
+                                    <div>
+                                        <p className="flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.1em] text-white/50">
+                                            <span>02</span>
+                                            <span className="h-px w-5 bg-white/20" />
+                                            <span>Voor docenten</span>
+                                        </p>
+                                        <span className="mt-4 inline-block rounded-full bg-duck-acid px-3 py-1 text-[10px] font-extrabold uppercase tracking-[0.12em] text-duck-ink">Docentdashboard</span>
+                                        <h2 className="mt-3 font-display text-2xl leading-[1.1] text-white">Grip op de klas.</h2>
+                                        <p className="mt-2 text-sm font-semibold leading-6 text-white/65">
+                                            Je ziet wie vastzit en wie klaar is. Geen Excel, geen rondje langs alle tafels.
+                                        </p>
+                                    </div>
+                                    <div className="mt-auto pt-6">
+                                        <div className="rounded-xl bg-duck-bgLight p-3">
+                                            <BrowserFrame url="dgskills.app/klas">
+                                                <ScreenDocent />
+                                            </BrowserFrame>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </Reveal>
-                    </div>
+
+                            {/* Kaart 3 — Schoolteams */}
+                            <div className="relative overflow-hidden rounded-[1.6rem] bg-duck-bg">
+                                <div
+                                    className="absolute inset-0 bg-duck-acid"
+                                    style={{ clipPath: 'polygon(0 0, 100% 0, 100% 38%, 0 56%)' }}
+                                    aria-hidden="true"
+                                />
+                                <div className="relative z-10 flex h-full flex-col p-7">
+                                    <div>
+                                        <p className="flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.1em] text-duck-ink/50">
+                                            <span>03</span>
+                                            <span className="h-px w-5 bg-duck-ink/25" />
+                                            <span>Voor schoolteams</span>
+                                        </p>
+                                        <span className="mt-4 inline-block rounded-full bg-duck-ink px-3 py-1 text-[10px] font-extrabold uppercase tracking-[0.12em] text-duck-acid">SLO-bewijs</span>
+                                        <h2 className="mt-3 font-display text-2xl leading-[1.1] text-duck-ink">Aantonen dat het werkt.</h2>
+                                        <p className="mt-2 text-sm font-semibold leading-6 text-duck-ink/60">
+                                            Schoolteams zien wat er schoolbreed geleerd wordt. Klaar voor het directieoverleg.
+                                        </p>
+                                    </div>
+                                    <div className="mt-auto pt-6">
+                                        <div className="rounded-xl bg-duck-bgLight p-3">
+                                            <BrowserFrame url="dgskills.app/voortgang">
+                                                <ScreenVoortgang />
+                                            </BrowserFrame>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </Reveal>
                 </section>
 
                 <section id="schoolpilot" className="relative scroll-mt-24 bg-duck-bg px-5 py-20 md:px-10 md:py-28">
@@ -1017,7 +1040,7 @@ function JourneySection() {
 function SkillsSection({ scrollTo }: { scrollTo: (target: string) => void }) {
     return (
         <section id="skills" className="relative scroll-mt-24 overflow-x-clip bg-duck-bg">
-            <div data-skills-stage className="py-16 md:py-24 lg:flex lg:flex-col lg:justify-center lg:py-12">
+            <div data-skills-stage className="py-16 md:py-24 lg:flex lg:flex-col lg:justify-center lg:py-12 lg:min-h-[100svh]">
                 <div className="mx-auto w-full max-w-6xl px-5 md:px-10">
                     <Reveal className="flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
                         <div>
@@ -1128,6 +1151,14 @@ function ScreenLeerling({ reduceMotion }: { reduceMotion: boolean }) {
     const [startedMissions, setStartedMissions] = useState<Set<string>>(new Set());
     const [fillingMission, setFillingMission] = useState<string | null>(null);
     const [fillPct, setFillPct] = useState(0);
+    const [activePanel, setActivePanel] = useState<string | null>(null);
+    const toggle = (key: string) => setActivePanel(p => p === key ? null : key);
+    const missionXP: Record<string, number> = {
+        'Prompt Perfectionist': 120, 'Factchecker': 80, 'Data Journalist': 150,
+        'Deepfake Detector': 140, 'Algoritmische Assistent': 90, 'Web Developer': 200,
+        'Privacy Detective': 110, 'Spreadsheet Specialist': 85, 'AI Bias Detective': 130,
+        'Game Programmeur': 175, 'Dashboard Designer': 160, 'App Prototyper': 195,
+    };
 
     const week = LEERLING_WEEKS[activeWeek];
 
@@ -1177,24 +1208,55 @@ function ScreenLeerling({ reduceMotion }: { reduceMotion: boolean }) {
                 </div>
             </div>
 
-            {/* Stat chips row */}
-            <div className="grid grid-cols-4 gap-2 bg-duck-bgLight px-4 py-3">
-                <div className="flex flex-col items-center rounded-xl bg-white px-1.5 py-2 text-center">
-                    <span className="text-[10px] font-extrabold text-duck-ink">{xp}</span>
-                    <span className="mt-0.5 text-[8px] font-bold text-duck-ink/50 leading-none">XP punten</span>
+            {/* Stat chips row — klikbaar voor meer uitleg */}
+            <div className="bg-duck-bgLight px-4 py-3">
+                <div className="grid grid-cols-4 gap-2">
+                    {([
+                        { key: 'stat:xp' as const, label: String(xp), sub: 'XP punten', cls: 'bg-white' },
+                        { key: 'stat:streak' as const, label: String(streak), sub: 'dag streak', cls: 'bg-duck-acid' },
+                        { key: 'stat:level' as const, label: `Lvl ${level}`, sub: 'Creator', cls: 'bg-white' },
+                        { key: 'stat:badges' as const, label: String(badges), sub: 'badges', cls: 'bg-white' },
+                    ]).map((chip) => (
+                        <button
+                            key={chip.key}
+                            type="button"
+                            aria-pressed={activePanel === chip.key}
+                            aria-label={`Meer info over ${chip.sub}`}
+                            onClick={() => toggle(chip.key)}
+                            className={`flex flex-col items-center rounded-xl ${chip.cls} px-1.5 py-2 text-center transition-shadow duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink hover:ring-1 hover:ring-duck-ink/20 ${activePanel === chip.key ? 'ring-1 ring-duck-ink/30 shadow-[0_2px_6px_rgba(32,32,35,0.12)]' : ''}`}
+                        >
+                            <span className="text-[10px] font-extrabold text-duck-ink">{chip.label}</span>
+                            <span className="mt-0.5 text-[8px] font-bold text-duck-ink/50 leading-none">{chip.sub}</span>
+                        </button>
+                    ))}
                 </div>
-                <div className="flex flex-col items-center rounded-xl bg-duck-acid px-1.5 py-2 text-center">
-                    <span className="text-[10px] font-extrabold text-duck-ink">{streak}</span>
-                    <span className="mt-0.5 text-[8px] font-bold text-duck-ink/60 leading-none">dag streak</span>
-                </div>
-                <div className="flex flex-col items-center rounded-xl bg-white px-1.5 py-2 text-center">
-                    <span className="text-[10px] font-extrabold text-duck-ink">Lvl {level}</span>
-                    <span className="mt-0.5 text-[8px] font-bold text-duck-ink/50 leading-none">Creator</span>
-                </div>
-                <div className="flex flex-col items-center rounded-xl bg-white px-1.5 py-2 text-center">
-                    <span className="text-[10px] font-extrabold text-duck-ink">{badges}</span>
-                    <span className="mt-0.5 text-[8px] font-bold text-duck-ink/50 leading-none">badges</span>
-                </div>
+                {activePanel === 'stat:xp' && (
+                    <div className="mt-2 rounded-xl bg-duck-ink px-3 py-2.5">
+                        <p className="text-[9px] font-bold leading-snug text-white/85">Elke missie levert 50–250 XP op. Je bent 62% op weg naar level 5 (Specialist) — nog 160 XP te gaan!</p>
+                    </div>
+                )}
+                {activePanel === 'stat:streak' && (
+                    <div className="mt-2 rounded-xl bg-duck-ink px-3 py-2.5">
+                        <p className="text-[9px] font-bold leading-snug text-white/85">7 dagen op rij actief! DGSkills telt elke dag dat je inlogt en werkt. Bij 14 dagen ontvang je een bonus-badge.</p>
+                    </div>
+                )}
+                {activePanel === 'stat:level' && (
+                    <div className="mt-2 rounded-xl bg-duck-ink px-3 py-2.5">
+                        <p className="text-[9px] font-bold leading-snug text-white/85">Level 4 · Creator — je hebt 3+ missies afgerond. Volgende: Level 5 · Specialist (bij 1.400 XP).</p>
+                    </div>
+                )}
+                {activePanel === 'stat:badges' && (
+                    <div className="mt-2 rounded-xl bg-duck-ink px-3 py-2.5">
+                        <div className="flex flex-col gap-1">
+                            {['Prompt Expert', 'AI Analyst', 'Mediawijsheid Basis'].map((badge) => (
+                                <div key={badge} className="flex items-center gap-1.5">
+                                    <span className="size-2 shrink-0 rounded-full bg-duck-acid" />
+                                    <span className="text-[9px] font-bold text-white/85">{badge}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
             </div>
 
             {/* XP to next level bar */}
@@ -1247,9 +1309,15 @@ function ScreenLeerling({ reduceMotion }: { reduceMotion: boolean }) {
                                     <span className="mt-0.5 inline-block rounded-full bg-duck-bgLight px-1.5 py-0.5 text-[7px] font-bold text-duck-ink/60">{mission.slo}</span>
                                 </div>
                                 {isDone ? (
-                                    <span className="shrink-0 rounded-full bg-duck-acid px-2 py-1 text-[8px] font-extrabold text-duck-ink">
+                                    <button
+                                        type="button"
+                                        aria-pressed={activePanel === `mission:${mission.title}`}
+                                        aria-label={`Details voor ${mission.title}`}
+                                        onClick={() => toggle(`mission:${mission.title}`)}
+                                        className="shrink-0 rounded-full bg-duck-acid px-2 py-1 text-[8px] font-extrabold text-duck-ink transition-opacity hover:opacity-75 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-1"
+                                    >
                                         Voltooid ✓
-                                    </span>
+                                    </button>
                                 ) : (
                                     <button
                                         type="button"
@@ -1268,6 +1336,13 @@ function ScreenLeerling({ reduceMotion }: { reduceMotion: boolean }) {
                                     style={{ width: `${effectivePct}%` }}
                                 />
                             </div>
+                            {isDone && activePanel === `mission:${mission.title}` && (
+                                <div className="mt-1.5 flex items-center gap-2 rounded-lg bg-duck-bgLight px-2 py-1.5">
+                                    <span className="text-[8px] font-extrabold text-duck-ink">＋{missionXP[mission.title] ?? 100} XP</span>
+                                    <span className="h-2.5 w-px bg-duck-ink/15" />
+                                    <span className="text-[8px] font-bold text-duck-ink/60">{mission.slo} · afgerond</span>
+                                </div>
+                            )}
                         </div>
                     );
                 })}
@@ -1417,7 +1492,7 @@ function PortfolioStorySection({ startPilot }: { startPilot: () => void }) {
         <section
             id="portfolio"
             ref={sectionRef}
-            className={`relative scroll-mt-24 bg-duck-bgLight px-5 py-20 md:px-10 ${reduceMotion ? '' : 'lg:min-h-[420svh] lg:py-0'}`}
+            className={`relative scroll-mt-24 overflow-x-clip bg-duck-bgLight px-5 py-20 md:px-10 ${reduceMotion ? '' : 'lg:min-h-[420svh] lg:py-0'}`}
         >
             <div className={`mx-auto grid max-w-6xl gap-10 lg:grid-cols-[0.72fr_1.28fr] ${reduceMotion ? 'lg:items-start' : 'lg:sticky lg:top-20 lg:h-[calc(100svh-80px)] lg:items-center'}`}>
                 <Reveal className="lg:h-fit lg:self-center">
@@ -1884,6 +1959,8 @@ function ScreenPortfolio() {
 }
 
 function ScreenDocent() {
+    const [view, setView] = useState<string>('overview');
+
     const rows = [
         { name: 'Mila V.', initials: 'MV', pct: 82, status: 'ok' as const },
         { name: 'Noah K.', initials: 'NK', pct: 64, status: 'ok' as const },
@@ -1892,25 +1969,175 @@ function ScreenDocent() {
     ] as const;
 
     const sloDomains = [
-        { label: 'Inform.vaardigh.', pct: 68 },
-        { label: 'Digitale veiligheid', pct: 51 },
-        { label: 'Creatie & maken', pct: 84 },
+        { label: 'Inform.vaardigh.', fullLabel: 'Informatievaardigheden', pct: 68, codes: ['21A', '21B', '21C'] },
+        { label: 'Digitale veiligheid', fullLabel: 'Digitale veiligheid', pct: 51, codes: ['23A', '23B'] },
+        { label: 'Creatie & maken', fullLabel: 'Creatie & maken', pct: 84, codes: ['22.1A', '22.1B'] },
     ] as const;
 
+    const studentInfo: Record<string, { missions: { title: string; status: 'done' | 'active' | 'open'; pct: number }[]; note: string }> = {
+        MV: {
+            missions: [
+                { title: 'Prompt Perfectionist', status: 'done', pct: 100 },
+                { title: 'Factchecker', status: 'done', pct: 100 },
+                { title: 'Data Journalist', status: 'done', pct: 100 },
+                { title: 'Deepfake Detector', status: 'done', pct: 100 },
+            ],
+            note: 'Periode 1 volledig afgerond',
+        },
+        NK: {
+            missions: [
+                { title: 'Prompt Perfectionist', status: 'done', pct: 100 },
+                { title: 'Factchecker', status: 'done', pct: 100 },
+                { title: 'Data Journalist', status: 'done', pct: 100 },
+                { title: 'Deepfake Detector', status: 'active', pct: 64 },
+            ],
+            note: 'Bezig met Deepfake Detector',
+        },
+        SB: {
+            missions: [
+                { title: 'Prompt Perfectionist', status: 'done', pct: 100 },
+                { title: 'Factchecker', status: 'active', pct: 47 },
+                { title: 'Data Journalist', status: 'open', pct: 0 },
+                { title: 'Deepfake Detector', status: 'open', pct: 0 },
+            ],
+            note: '2 hulpvragen open · aandacht nodig',
+        },
+        LJ: {
+            missions: [
+                { title: 'Prompt Perfectionist', status: 'active', pct: 29 },
+                { title: 'Factchecker', status: 'open', pct: 0 },
+                { title: 'Data Journalist', status: 'open', pct: 0 },
+                { title: 'Deepfake Detector', status: 'open', pct: 0 },
+            ],
+            note: 'Inactief — 5 dagen geleden actief',
+        },
+    };
+
+    const BackButton = () => (
+        <button
+            type="button"
+            onClick={() => setView('overview')}
+            className="flex items-center gap-1 text-[8px] font-extrabold text-duck-ink/55 transition-colors hover:text-duck-ink focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-duck-ink"
+            aria-label="Terug naar overzicht"
+        >
+            <svg viewBox="0 0 20 20" className="size-2.5" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M12 4 6 10l6 6" />
+            </svg>
+            Terug
+        </button>
+    );
+
+    // Hulpvragen detail view
+    if (view === 'help') {
+        return (
+            <div className="aspect-[16/10] bg-duck-bgLight p-[4%] text-duck-ink">
+                <div className="mb-[3%] flex items-center justify-between gap-2">
+                    <BackButton />
+                    <span className="rounded-full bg-duck-acid px-2.5 py-1 text-[8px] font-extrabold">2 hulpvragen</span>
+                </div>
+                <div className="space-y-2">
+                    {[
+                        { initials: 'SB', name: 'Sara B.', question: 'Hoe zorg ik dat mijn prompt elke keer een ander antwoord geeft?' },
+                        { initials: 'LJ', name: 'Liam J.', question: 'Mijn code werkt niet — wat is precies een variabele?' },
+                    ].map((q) => (
+                        <div key={q.name} className="rounded-xl bg-white p-2.5">
+                            <div className="mb-1 flex items-center gap-1.5">
+                                <span className="flex size-4 items-center justify-center rounded-full bg-duck-acid text-[7px] font-extrabold ring-1 ring-duck-ink">{q.initials}</span>
+                                <span className="text-[9px] font-extrabold">{q.name}</span>
+                            </div>
+                            <p className="text-[8px] font-bold italic leading-snug text-duck-ink/65">"{q.question}"</p>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        );
+    }
+
+    // Leerling detail view
+    const studentInitials = view.startsWith('student:') ? view.replace('student:', '') : '';
+    if (view.startsWith('student:') && studentInfo[studentInitials]) {
+        const info = studentInfo[studentInitials];
+        const row = rows.find((r) => r.initials === studentInitials);
+        return (
+            <div className="aspect-[16/10] bg-duck-bgLight p-[4%] text-duck-ink">
+                <div className="mb-[2%] flex items-center justify-between gap-2">
+                    <BackButton />
+                    <span className={`rounded-full px-2 py-0.5 text-[8px] font-extrabold ${row?.status === 'help' ? 'bg-duck-acid text-duck-ink' : 'bg-duck-ink/10 text-duck-ink/60'}`}>
+                        {row?.pct}%
+                    </span>
+                </div>
+                <p className="mb-[2%] font-display text-[12px]">{row?.name ?? studentInitials}</p>
+                <div className="overflow-hidden rounded-xl bg-white">
+                    {info.missions.map((m, i) => (
+                        <div key={m.title} className={`flex items-center gap-2 px-2.5 py-1 ${i > 0 ? 'border-t border-duck-ink/5' : ''}`}>
+                            <span className={`w-2 shrink-0 text-[7px] font-extrabold ${m.status === 'done' ? 'text-duck-ink' : m.status === 'active' ? 'text-duck-ink/55' : 'text-duck-ink/20'}`}>
+                                {m.status === 'done' ? '✓' : m.status === 'active' ? '→' : '○'}
+                            </span>
+                            <span className="flex-1 truncate text-[8px] font-bold text-duck-ink/80">{m.title}</span>
+                            <span className="text-[7px] font-extrabold text-duck-ink/40">{m.status === 'done' ? '100%' : m.pct > 0 ? `${m.pct}%` : ''}</span>
+                        </div>
+                    ))}
+                </div>
+                <p className="mt-[2%] text-[8px] font-bold text-duck-ink/50">{info.note}</p>
+            </div>
+        );
+    }
+
+    // SLO detail view
+    if (view === 'slo') {
+        return (
+            <div className="aspect-[16/10] bg-duck-bgLight p-[4%] text-duck-ink">
+                <div className="mb-[3%] flex items-center justify-between gap-2">
+                    <BackButton />
+                    <span className="rounded-full bg-duck-ink px-2.5 py-1 text-[8px] font-extrabold text-duck-acid">9 kerndoelen</span>
+                </div>
+                <div className="space-y-2">
+                    {sloDomains.map((domain) => (
+                        <div key={domain.label} className="rounded-xl bg-white p-2">
+                            <div className="mb-1 flex items-center justify-between">
+                                <span className="text-[8px] font-extrabold">{domain.fullLabel}</span>
+                                <span className="text-[7px] font-extrabold text-duck-ink/45">{domain.pct}%</span>
+                            </div>
+                            <div className="flex flex-wrap gap-1">
+                                {domain.codes.map((code) => (
+                                    <span key={code} className="rounded-full bg-duck-acid px-1.5 py-0.5 text-[7px] font-extrabold text-duck-ink">{code}</span>
+                                ))}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        );
+    }
+
+    // Overzicht (default)
     return (
         <div className="aspect-[16/10] bg-duck-bgLight p-[4%] text-duck-ink">
             <div className="flex items-center justify-between gap-2">
                 <p className="font-display text-[14px] leading-tight">Klas 3D · Periode 1</p>
-                <span className="rounded-full bg-duck-acid px-2.5 py-1 text-[8px] font-extrabold">2 hulpvragen</span>
+                <button
+                    type="button"
+                    aria-label="Bekijk hulpvragen"
+                    onClick={() => setView('help')}
+                    className="rounded-full bg-duck-acid px-2.5 py-1 text-[8px] font-extrabold transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink"
+                >
+                    2 hulpvragen
+                </button>
             </div>
 
-            {/* Roster */}
+            {/* Roster — klikbaar per leerling */}
             <div className="mt-[3%] overflow-hidden rounded-xl bg-white">
                 {rows.map((row, index) => (
-                    <div key={row.name} className={`flex items-center gap-2 px-2.5 py-1.5 ${index > 0 ? 'border-t border-duck-ink/5' : ''}`}>
+                    <button
+                        key={row.name}
+                        type="button"
+                        aria-label={`Bekijk details van ${row.name}`}
+                        onClick={() => setView(`student:${row.initials}`)}
+                        className={`flex w-full items-center gap-2 px-2.5 py-1.5 text-left transition-colors hover:bg-duck-bgLight/70 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-duck-ink ${index > 0 ? 'border-t border-duck-ink/5' : ''}`}
+                    >
                         <span
                             className={`flex size-4 shrink-0 items-center justify-center rounded-full text-[7px] font-extrabold leading-none ${row.status === 'help' ? 'bg-duck-acid text-duck-ink ring-1 ring-duck-ink' : row.status === 'inactive' ? 'bg-duck-ink/15 text-duck-ink/60' : 'bg-duck-bgLight text-duck-ink/70'}`}
-                            aria-label={row.name}
+                            aria-hidden="true"
                         >
                             {row.initials}
                         </span>
@@ -1921,12 +2148,17 @@ function ScreenDocent() {
                         {row.status === 'help' && (
                             <span className="shrink-0 rounded-full bg-duck-acid px-1.5 py-0.5 text-[7px] font-extrabold text-duck-ink">Hulp</span>
                         )}
-                    </div>
+                    </button>
                 ))}
             </div>
 
-            {/* SLO dekking strip */}
-            <div className="mt-[3%] rounded-xl bg-white p-2">
+            {/* SLO dekking strip — klikbaar voor kerndoelen */}
+            <button
+                type="button"
+                aria-label="Bekijk SLO-kerndoelen"
+                onClick={() => setView('slo')}
+                className="mt-[3%] w-full rounded-xl bg-white p-2 text-left transition-colors hover:bg-duck-ink/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink"
+            >
                 <p className="mb-1.5 text-[7px] font-extrabold uppercase tracking-[0.12em] text-duck-ink/40">SLO dekking</p>
                 <div className="space-y-1.5">
                     {sloDomains.map((domain) => (
@@ -1939,9 +2171,16 @@ function ScreenDocent() {
                         </div>
                     ))}
                 </div>
-            </div>
+            </button>
 
-            <p className="mt-[3%] w-fit rounded-full bg-duck-ink px-2.5 py-1 text-[8px] font-extrabold text-duck-acid">9 SLO-kerndoelen zichtbaar</p>
+            <button
+                type="button"
+                aria-label="Bekijk alle SLO-kerndoelen"
+                onClick={() => setView('slo')}
+                className="mt-[3%] w-fit rounded-full bg-duck-ink px-2.5 py-1 text-[8px] font-extrabold text-duck-acid transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-1"
+            >
+                9 SLO-kerndoelen zichtbaar
+            </button>
         </div>
     );
 }

@@ -97,7 +97,7 @@ export const WordWizardPreview: React.FC<WordWizardPreviewProps> = ({ onTaskComp
 
     if (showIntro) {
         return (
-            <div className="w-full h-full flex flex-col items-center justify-start overflow-y-auto bg-lab-cream font-sans p-6">
+            <div className="w-full h-full flex flex-col items-center justify-start overflow-y-auto bg-duck-bg font-sans p-6">
                 <div className="bg-white rounded-2xl shadow-xl max-w-md w-full p-8 flex flex-col gap-6">
                     <div className="flex items-center gap-3">
                         <div className="bg-[#0B453F] p-3 rounded-xl">
@@ -105,28 +105,28 @@ export const WordWizardPreview: React.FC<WordWizardPreviewProps> = ({ onTaskComp
                         </div>
                         <div>
                             <h2 className="text-xl font-bold text-[#0B453F]">Word Wizard</h2>
-                            <p className="text-sm text-lab-muted">Leer werken met een tekstverwerker</p>
+                            <p className="text-sm text-duck-ink/60">Leer werken met een tekstverwerker</p>
                         </div>
                     </div>
 
-                    <div className="bg-lab-cream rounded-xl p-5">
-                        <p className="font-semibold text-lab-muted mb-4">Zo werkt het:</p>
+                    <div className="bg-duck-bg rounded-xl p-5">
+                        <p className="font-semibold text-duck-ink/60 mb-4">Zo werkt het:</p>
                         <ol className="space-y-3">
                             <li className="flex gap-3 items-start">
                                 <span className="bg-[#0B453F] text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center shrink-0 mt-0.5">1</span>
-                                <span className="text-sm text-lab-muted">Je ziet een document met tekst. Klik op een blok om het te bewerken.</span>
+                                <span className="text-sm text-duck-ink/60">Je ziet een document met tekst. Klik op een blok om het te bewerken.</span>
                             </li>
                             <li className="flex gap-3 items-start">
                                 <span className="bg-[#0B453F] text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center shrink-0 mt-0.5">2</span>
-                                <span className="text-sm text-lab-muted">Gebruik de knop <strong>Kop 1</strong> om een titel te maken, of <strong>Normaal</strong> voor gewone tekst.</span>
+                                <span className="text-sm text-duck-ink/60">Gebruik de knop <strong>Kop 1</strong> om een titel te maken, of <strong>Normaal</strong> voor gewone tekst.</span>
                             </li>
                             <li className="flex gap-3 items-start">
                                 <span className="bg-[#0B453F] text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center shrink-0 mt-0.5">3</span>
-                                <span className="text-sm text-lab-muted">Ga naar het tabblad <strong>Invoegen</strong> om een afbeelding of inhoudsopgave toe te voegen.</span>
+                                <span className="text-sm text-duck-ink/60">Ga naar het tabblad <strong>Invoegen</strong> om een afbeelding of inhoudsopgave toe te voegen.</span>
                             </li>
                             <li className="flex gap-3 items-start">
                                 <span className="bg-[#0B453F] text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center shrink-0 mt-0.5">4</span>
-                                <span className="text-sm text-lab-muted">Druk op <strong>Enter</strong> om een nieuw blok toe te voegen. Gebruik de <strong>+</strong> knop onderaan voor meer ruimte.</span>
+                                <span className="text-sm text-duck-ink/60">Druk op <strong>Enter</strong> om een nieuw blok toe te voegen. Gebruik de <strong>+</strong> knop onderaan voor meer ruimte.</span>
                             </li>
                         </ol>
                     </div>
@@ -143,11 +143,11 @@ export const WordWizardPreview: React.FC<WordWizardPreviewProps> = ({ onTaskComp
     }
 
     return (
-        <div className="w-full h-full flex flex-col bg-lab-cream font-sans">
+        <div className="w-full h-full flex flex-col bg-duck-bg font-sans">
             {/* WORD UI HEADER */}
             <div className="bg-[#0B453F] text-white shrink-0">
                 {/* Top Bar */}
-                <div className="flex items-center justify-between px-4 py-2 border-b border-lab-teal/30">
+                <div className="flex items-center justify-between px-4 py-2 border-b border-duck-ink/30">
                     <div className="flex items-center gap-4">
                         <div className="bg-white/10 p-2 rounded-lg">
                             <AlignLeft size={20} />
@@ -159,7 +159,7 @@ export const WordWizardPreview: React.FC<WordWizardPreviewProps> = ({ onTaskComp
                     </div>
                     <div className="flex gap-2">
                         <button className="p-2 hover:bg-white/10 rounded-full transition-colors">
-                            <div className="w-6 h-6 rounded-full bg-lab-gold text-[#0B453F] font-bold flex items-center justify-center text-xs">JS</div>
+                            <div className="w-6 h-6 rounded-full bg-duck-acid text-duck-ink font-bold flex items-center justify-center text-xs">JS</div>
                         </button>
                     </div>
                 </div>
@@ -181,24 +181,24 @@ export const WordWizardPreview: React.FC<WordWizardPreviewProps> = ({ onTaskComp
                 </div>
 
                 {/* Ribbon / Toolbar */}
-                <div className="bg-[#f3f4f6] text-lab-muted px-4 py-3 h-24 flex gap-4 shadow-sm border-b border-lab-line overflow-x-auto">
+                <div className="bg-[#f3f4f6] text-duck-ink/60 px-4 py-3 h-24 flex gap-4 shadow-sm border-b border-duck-ink/15 overflow-x-auto">
 
                     {activeTab === 'start' && (
                         <>
                             {/* STYLES SECTION */}
-                            <div className="flex flex-col justify-between gap-1 pr-4 border-r border-lab-line min-w-[140px] md:min-w-[200px]">
-                                <span className="text-[10px] text-lab-muted font-bold uppercase text-center w-full">Stijlen</span>
+                            <div className="flex flex-col justify-between gap-1 pr-4 border-r border-duck-ink/15 min-w-[140px] md:min-w-[200px]">
+                                <span className="text-[10px] text-duck-ink/60 font-bold uppercase text-center w-full">Stijlen</span>
                                 <div className="flex gap-2 h-full items-center">
                                     <button
                                         onClick={() => handleStyleChange('p')}
-                                        className={`flex flex-col items-center justify-center h-16 w-20 bg-white border rounded hover:bg-lab-teal hover:text-white transition-all ${selectedBlockId && blocks.find(b => b.id === selectedBlockId)?.type === 'p' ? 'ring-2 ring-lab-coral bg-lab-teal' : 'border-lab-line'}`}
+                                        className={`flex flex-col items-center justify-center h-16 w-20 bg-white border rounded hover:bg-duck-ink hover:text-white transition-all ${selectedBlockId && blocks.find(b => b.id === selectedBlockId)?.type === 'p' ? 'ring-2 ring-duck-acid bg-duck-ink' : 'border-duck-ink/15'}`}
                                     >
                                         <span className="text-xs">AaBbCc</span>
                                         <span className="text-[10px] font-medium mt-1">Normaal</span>
                                     </button>
                                     <button
                                         onClick={() => handleStyleChange('h1')}
-                                        className={`flex flex-col items-center justify-center h-16 w-20 bg-white border rounded hover:bg-lab-teal hover:text-white transition-all ${selectedBlockId && blocks.find(b => b.id === selectedBlockId)?.type === 'h1' ? 'ring-2 ring-lab-coral bg-lab-teal' : 'border-lab-line'}`}
+                                        className={`flex flex-col items-center justify-center h-16 w-20 bg-white border rounded hover:bg-duck-ink hover:text-white transition-all ${selectedBlockId && blocks.find(b => b.id === selectedBlockId)?.type === 'h1' ? 'ring-2 ring-duck-acid bg-duck-ink' : 'border-duck-ink/15'}`}
                                     >
                                         <span className="text-base font-bold text-[#0B453F]">AaBbCc</span>
                                         <span className="text-[10px] font-medium mt-1">Kop 1</span>
@@ -211,25 +211,25 @@ export const WordWizardPreview: React.FC<WordWizardPreviewProps> = ({ onTaskComp
                     {activeTab === 'invoegen' && (
                         <>
                             {/* INSERT IMAGE */}
-                            <div className="flex flex-col justify-between gap-1 pr-4 border-r border-lab-line">
-                                <span className="text-[10px] text-lab-muted font-bold uppercase text-center w-full">Media</span>
+                            <div className="flex flex-col justify-between gap-1 pr-4 border-r border-duck-ink/15">
+                                <span className="text-[10px] text-duck-ink/60 font-bold uppercase text-center w-full">Media</span>
                                 <button
                                     onClick={handleInsertImage}
-                                    className="flex flex-col items-center justify-center h-full px-4 hover:bg-lab-creamDeep rounded transition-colors gap-1"
+                                    className="flex flex-col items-center justify-center h-full px-4 hover:bg-duck-bg rounded transition-colors gap-1"
                                 >
-                                    <ImageIcon size={24} className="text-lab-muted" />
+                                    <ImageIcon size={24} className="text-duck-ink/60" />
                                     <span className="text-xs font-medium">Afbeelding</span>
                                 </button>
                             </div>
 
                             {/* INSERT TOC */}
-                            <div className="flex flex-col justify-between gap-1 pr-4 border-r border-lab-line">
-                                <span className="text-[10px] text-lab-muted font-bold uppercase text-center w-full">Referenties</span>
+                            <div className="flex flex-col justify-between gap-1 pr-4 border-r border-duck-ink/15">
+                                <span className="text-[10px] text-duck-ink/60 font-bold uppercase text-center w-full">Referenties</span>
                                 <button
                                     onClick={generateToC}
-                                    className="flex flex-col items-center justify-center h-full px-4 hover:bg-lab-creamDeep rounded transition-colors gap-1"
+                                    className="flex flex-col items-center justify-center h-full px-4 hover:bg-duck-bg rounded transition-colors gap-1"
                                 >
-                                    <LayoutList size={24} className="text-lab-muted" />
+                                    <LayoutList size={24} className="text-duck-ink/60" />
                                     <span className="text-xs font-medium">Inhoudsopgave</span>
                                 </button>
                             </div>
@@ -240,21 +240,21 @@ export const WordWizardPreview: React.FC<WordWizardPreviewProps> = ({ onTaskComp
             </div>
 
             {/* DOCUMENT CANVAS */}
-            <div className="flex-1 overflow-y-auto bg-lab-creamDeep p-4 md:p-8 flex justify-center">
+            <div className="flex-1 overflow-y-auto bg-duck-bg p-4 md:p-8 flex justify-center">
                 <div className="bg-white w-full max-w-[21cm] min-h-[29.7cm] shadow-xl p-8 md:p-16 flex flex-col gap-4 relative animate-in zoom-in-95 duration-300">
 
                     {/* GENERATED TABLE OF CONTENTS */}
                     {showToC && (
-                        <div className="mb-8 p-6 bg-lab-cream border border-lab-line rounded-lg animate-in slide-in-from-top-4">
+                        <div className="mb-8 p-6 bg-duck-bg border border-duck-ink/15 rounded-lg animate-in slide-in-from-top-4">
                             <h2 className="text-lg font-bold text-[#0B453F] mb-4 uppercase tracking-wider border-b-2 border-[#0B453F] pb-2">Inhoudsopgave</h2>
                             {tocItems.length === 0 ? (
-                                <p className="text-lab-muted italic text-sm">Geen koppen gevonden. Gebruik 'Kop 1' om hoofdstukken te maken!</p>
+                                <p className="text-duck-ink/60 italic text-sm">Geen koppen gevonden. Gebruik 'Kop 1' om hoofdstukken te maken!</p>
                             ) : (
                                 <div className="space-y-2">
                                     {tocItems.map((item, i) => (
-                                        <div key={i} className="flex justify-between items-end border-b border-dotted border-lab-line pb-1">
-                                            <span className="font-medium text-lab-muted">{item.text}</span>
-                                            <span className="text-lab-muted text-sm font-mono">{item.page}</span>
+                                        <div key={i} className="flex justify-between items-end border-b border-dotted border-duck-ink/15 pb-1">
+                                            <span className="font-medium text-duck-ink/60">{item.text}</span>
+                                            <span className="text-duck-ink/60 text-sm font-mono">{item.page}</span>
                                         </div>
                                     ))}
                                 </div>
@@ -266,12 +266,12 @@ export const WordWizardPreview: React.FC<WordWizardPreviewProps> = ({ onTaskComp
                     {blocks.map((block) => (
                         <div
                             key={block.id}
-                            className={`group relative transition-all rounded-md ${selectedBlockId === block.id ? 'ring-1 ring-lab-teal bg-lab-teal/20' : ''}`}
+                            className={`group relative transition-all rounded-md ${selectedBlockId === block.id ? 'ring-1 ring-duck-ink bg-duck-ink/20' : ''}`}
                             onClick={() => setSelectedBlockId(block.id)}
                         >
                             {/* Hover Controls (Delete) */}
                             <div className="absolute -left-10 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col gap-1">
-                                <button onClick={() => deleteBlock(block.id)} className="p-1.5 text-lab-muted hover:text-lab-muted bg-white shadow-sm border rounded-md">
+                                <button onClick={() => deleteBlock(block.id)} className="p-1.5 text-duck-ink/60 hover:text-duck-ink/60 bg-white shadow-sm border rounded-md">
                                     <Trash2 size={14} />
                                 </button>
                             </div>
@@ -282,13 +282,13 @@ export const WordWizardPreview: React.FC<WordWizardPreviewProps> = ({ onTaskComp
                     `}>
                                 {block.image && (
                                     <div className={`relative group/img ${block.textWrap ? 'w-1/3 float-right ml-4 mb-2' : 'w-full mb-4'}`}>
-                                        <img src={block.image} alt="Inserted" className="w-full rounded shadow-sm border border-lab-line" loading="lazy" />
+                                        <img src={block.image} alt="Inserted" className="w-full rounded shadow-sm border border-duck-ink/15" loading="lazy" />
                                         <button
                                             onClick={(e) => {
                                                 e.stopPropagation();
                                                 updateBlock(block.id, { textWrap: !block.textWrap });
                                             }}
-                                            className="absolute top-2 right-2 bg-white/90 p-1 rounded shadow text-xs font-bold text-lab-muted opacity-0 group-hover/img:opacity-100 transition-opacity"
+                                            className="absolute top-2 right-2 bg-white/90 p-1 rounded shadow text-xs font-bold text-duck-ink/60 opacity-0 group-hover/img:opacity-100 transition-opacity"
                                         >
                                             {block.textWrap ? 'Regel: In Tekst' : 'Regel: Omloop'}
                                         </button>
@@ -303,7 +303,7 @@ export const WordWizardPreview: React.FC<WordWizardPreviewProps> = ({ onTaskComp
                                     placeholder={block.type === 'h1' ? "Hoofdstuk Titel..." : "Typ hier je tekst..."}
                                     className={`
                                 w-full bg-transparent resize-none outline-none overflow-hidden
-                                ${block.type === 'h1' ? 'text-3xl font-bold text-[#0B453F] mb-4' : 'text-base leading-relaxed text-lab-ink'}
+                                ${block.type === 'h1' ? 'text-3xl font-bold text-[#0B453F] mb-4' : 'text-base leading-relaxed text-duck-ink'}
                             `}
                                     rows={1}
                                     style={{ minHeight: '1.5em', height: 'auto' }}
@@ -318,7 +318,7 @@ export const WordWizardPreview: React.FC<WordWizardPreviewProps> = ({ onTaskComp
 
                     {/* Empty State / Add Button at bottom */}
                     <div
-                        className="h-32 border-2 border-dashed border-lab-line rounded-lg flex items-center justify-center text-lab-muted hover:border-lab-teal hover:text-lab-teal cursor-pointer transition-colors mt-4"
+                        className="h-32 border-2 border-dashed border-duck-ink/15 rounded-lg flex items-center justify-center text-duck-ink/60 hover:border-duck-ink hover:text-duck-ink cursor-pointer transition-colors mt-4"
                         onClick={() => addBlock('p')}
                     >
                         <div className="flex flex-col items-center gap-2">

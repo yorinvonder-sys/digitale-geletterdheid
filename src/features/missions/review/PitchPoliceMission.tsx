@@ -66,8 +66,8 @@ const SLIDES: SlideData[] = [
         id: 2,
         title: "Mijn Vakantie",
         content: "In de zomer ging ik naar Spanje",
-        bg: "bg-lab-gold",
-        textColor: "text-white",
+        bg: "bg-duck-acid",
+        textColor: "text-duck-ink",
         issue: "contrast",
         feedback: "Au! Witte tekst op een gele achtergrond is onleesbaar.",
         options: [
@@ -80,22 +80,22 @@ const SLIDES: SlideData[] = [
         id: 3,
         title: "De Kermis",
         content: "Welkom op de kermis!",
-        bg: "bg-lab-teal",
-        textColor: "text-lab-sage",
+        bg: "bg-duck-ink",
+        textColor: "text-duck-ink/60",
         font: "font-serif",
         issue: "chaos",
         feedback: "Wow, rustig aan! Te veel verschillende kleuren en lettertypes maken het onrustig.",
         customRender: (fixed) => (
-            <div className={`p-8 h-full flex flex-col items-center justify-center transition-all duration-500 ${fixed ? 'bg-duck-bg' : 'bg-gradient-to-r from-lab-coral via-lab-coral to-lab-coral'}`}>
-                <h1 className={`text-5xl mb-8 transition-all duration-500 ${fixed ? 'font-bold text-duck-ink' : 'font-[Comic_Sans_MS] text-lab-gold drop-shadow-lg'}`} style={fixed ? { fontFamily: "'Newsreader', Georgia, serif" } : undefined}>
+            <div className={`p-8 h-full flex flex-col items-center justify-center transition-all duration-500 ${fixed ? 'bg-duck-bg' : 'bg-gradient-to-r from-duck-acid via-duck-acid to-duck-acid'}`}>
+                <h1 className={`text-5xl mb-8 transition-all duration-500 ${fixed ? 'font-bold text-duck-ink' : 'font-[Comic_Sans_MS] text-duck-ink drop-shadow-lg'}`} style={fixed ? { fontFamily: "'Newsreader', Georgia, serif" } : undefined}>
                     {fixed ? "Thema: De Kermis" : "~~~ WELKOM OP DE KERMIS!!! ~~~"}
                 </h1>
                 <div className="grid grid-cols-2 gap-8 w-full max-w-2xl">
-                    <div className={`p-6 rounded-2xl transition-all duration-500 ${fixed ? 'bg-white shadow-md text-duck-muted border border-duck-line' : 'bg-lab-sage text-white font-mono rotate-3 border-4 border-lab-coral'}`}>
+                    <div className={`p-6 rounded-2xl transition-all duration-500 ${fixed ? 'bg-white shadow-md text-duck-muted border border-duck-line' : 'bg-duck-ink/60 text-white font-mono rotate-3 border-4 border-duck-acid'}`}>
                         <h3 className="text-xl font-bold mb-2">Attracties</h3>
                         <p>Botsauto's & Reuzenrad</p>
                     </div>
-                    <div className={`p-6 rounded-2xl transition-all duration-500 ${fixed ? 'bg-white shadow-md text-duck-muted border border-duck-line' : 'bg-lab-coral text-white font-serif -rotate-2 border-dashed border-4 border-white'}`}>
+                    <div className={`p-6 rounded-2xl transition-all duration-500 ${fixed ? 'bg-white shadow-md text-duck-muted border border-duck-line' : 'bg-duck-acid text-duck-ink font-serif -rotate-2 border-dashed border-4 border-white'}`}>
                         <h3 className="text-xl font-bold mb-2">Eten</h3>
                         <p>Suikerspin & Popcorn</p>
                     </div>
@@ -131,7 +131,7 @@ const SLIDES: SlideData[] = [
                         <img src="https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif" className="absolute top-4 right-4 w-32 h-32 rotate-12" alt="Distraction" loading="lazy" decoding="async" />
                         <img src="https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif" className="absolute bottom-4 right-20 w-40 h-40 -rotate-6" alt="Cat" loading="lazy" decoding="async" />
                         <img src="https://media.giphy.com/media/l0MYJnJQ4EiYLxvQ4/giphy.gif" className="absolute bottom-10 left-10 w-24 h-24" alt="Dancing" loading="lazy" decoding="async" />
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-6xl opacity-20 rotate-45 font-black text-lab-muted">OMG!!</div>
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-6xl opacity-20 rotate-45 font-black text-duck-ink/60">OMG!!</div>
                     </>
                 )}
 
@@ -189,7 +189,7 @@ const SLIDES: SlideData[] = [
                 <img
                     src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=800&h=500&fit=crop"
                     alt="Sports Car"
-                    className={`transition-all duration-500 shadow-xl ${fixed ? 'w-96 h-64 object-cover rounded-2xl' : 'w-96 h-32 object-fill border-4 border-lab-coral rotate-1'}`}
+                    className={`transition-all duration-500 shadow-xl ${fixed ? 'w-96 h-64 object-cover rounded-2xl' : 'w-96 h-32 object-fill border-4 border-duck-acid rotate-1'}`}
                 />
             </div>
         ),
@@ -234,7 +234,7 @@ const SLIDES: SlideData[] = [
                 ) : (
                     <div className="relative w-72 h-72 flex items-center justify-center">
                         <div className="absolute inset-0 rounded-full border-[40px] border-duck-line animate-spin-slow"></div>
-                        <div className="absolute inset-0 rounded-full border-[40px] border-t-lab-coral border-r-[#5F947D] border-b-[#5F947D] border-l-[#D97848] opacity-80"></div>
+                        <div className="absolute inset-0 rounded-full border-[40px] border-t-duck-acid border-r-duck-ink/60 border-b-duck-ink/60 border-l-duck-acid opacity-80"></div>
                         <div className="absolute inset-8 rounded-full border-[20px] border-duck-ink border-dashed animate-pulse"></div>
                         <span className="font-bold text-6xl rotate-45 text-duck-line">?</span>
                     </div>
@@ -431,9 +431,9 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
     }
 
     return (
-        <div className="min-h-screen bg-lab-cream flex flex-col text-lab-ink" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+        <div className="min-h-screen bg-duck-bg flex flex-col text-duck-ink" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
             {/* PowerPoint-like Header */}
-            <header className="bg-lab-teal px-3 py-2 sm:px-4 flex items-center justify-between gap-2 overflow-hidden shadow-md text-white">
+            <header className="bg-duck-ink px-3 py-2 sm:px-4 flex items-center justify-between gap-2 overflow-hidden shadow-md text-white">
                 <div className="flex min-w-0 items-center gap-2 sm:gap-4">
                     <button onClick={onBack} className="p-1.5 hover:bg-white/10 rounded-lg transition-all duration-300 focus-visible:ring-2 focus-visible:ring-white">
                         <ArrowLeft size={20} />
@@ -448,35 +448,35 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
                         </div>
                     </div>
                 </div>
-                <div className="flex shrink-0 items-center gap-2 bg-lab-gold px-2 py-1.5 sm:px-3 rounded-full text-lab-ink">
+                <div className="flex shrink-0 items-center gap-2 bg-duck-acid px-2 py-1.5 sm:px-3 rounded-full text-duck-ink">
                     <Play size={14} fill="currentColor" />
                     <span className="hidden text-xs font-bold uppercase tracking-wide sm:inline">Diavoorstelling</span>
                 </div>
             </header>
 
             {/* Progress Bar */}
-            <div className="w-full bg-lab-line h-1">
+            <div className="w-full bg-duck-gray h-1">
                 <div
-                    className="h-full bg-lab-gold transition-all duration-500 ease-out"
+                    className="h-full bg-duck-acid transition-all duration-500 ease-out"
                     style={{ width: `${((currentSlideIndex + (isFixed ? 1 : 0)) / SLIDES.length) * 100}%` }}
                 />
             </div>
 
             <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
                 {/* Thumbnails Sidebar - hidden on mobile */}
-                <aside className="w-48 bg-lab-paper border-r border-lab-line p-4 flex-col gap-4 overflow-y-auto hidden lg:flex">
+                <aside className="w-48 bg-duck-bgLight border-r border-duck-ink/15 p-4 flex-col gap-4 overflow-y-auto hidden lg:flex">
                     {SLIDES.map((slide, idx) => (
                         <div
                             key={slide.id}
                             className={`
-                                aspect-video rounded-lg border flex items-center justify-center text-lab-ink text-[10px] p-2 relative transition-all duration-300
-                                ${idx === currentSlideIndex ? 'bg-lab-paper border-lab-coral ring-2 ring-lab-coral scale-105 opacity-100 shadow-sm' : 'bg-lab-cream border-lab-line opacity-70 hover:opacity-100'}
+                                aspect-video rounded-lg border flex items-center justify-center text-duck-ink text-[10px] p-2 relative transition-all duration-300
+                                ${idx === currentSlideIndex ? 'bg-duck-bgLight border-duck-acid ring-2 ring-duck-acid scale-105 opacity-100 shadow-sm' : 'bg-duck-bg border-duck-ink/15 opacity-70 hover:opacity-100'}
                             `}
                         >
-                            <span className="font-bold text-lab-muted">Dia {idx + 1}</span>
+                            <span className="font-bold text-duck-ink/60">Dia {idx + 1}</span>
                             {slideStates[idx] === 'fixed' && (
-                                <div className="absolute top-1 right-1 bg-lab-sage rounded-full p-0.5">
-                                    <CheckCircle size={10} className="text-white" />
+                                <div className="absolute top-1 right-1 bg-duck-ink/10 rounded-full p-0.5">
+                                    <CheckCircle size={10} className="text-duck-ink" />
                                 </div>
                             )}
                         </div>
@@ -484,11 +484,11 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
                 </aside>
 
                 {/* Main Slide Editor */}
-                <main className="flex-1 bg-lab-teal p-4 lg:p-8 flex items-center justify-center relative flex-col gap-4 lg:gap-6">
+                <main className="flex-1 bg-duck-ink p-4 lg:p-8 flex items-center justify-center relative flex-col gap-4 lg:gap-6">
                     {/* The Slide Container */}
                     <div className="relative w-full max-w-4xl aspect-video group">
                         <div className={`
-                            w-full h-full bg-lab-paper shadow-2xl relative overflow-hidden transition-all duration-700
+                            w-full h-full bg-duck-bgLight shadow-2xl relative overflow-hidden transition-all duration-700
                             ${!isFixed && currentSlide.issue === 'chaos' ? 'animate-pulse' : ''}
                             ${currentSlide.bg}
                             ${isFixed && currentSlide.id === 2 ? 'text-duck-ink' : currentSlide.textColor}
@@ -497,7 +497,7 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
                             {currentSlide.customRender ? (
                                 currentSlide.customRender(isFixed)
                             ) : (
-                                <div className="p-12 h-full flex flex-col bg-lab-paper">
+                                <div className="p-12 h-full flex flex-col bg-duck-bgLight">
                                     <h1 className="text-4xl font-bold mb-6" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>{currentSlide.title}</h1>
                                     <div className="text-lg leading-relaxed whitespace-pre-wrap" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                         {isFixed && currentSlide.fixedContent ? currentSlide.fixedContent : currentSlide.content}
@@ -508,7 +508,7 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
                             {/* "Bad Design" Alert Badge - Only show when NOT fixed */}
                             {!isFixed && (
                                 <div className="absolute top-4 right-4 z-10">
-                                    <div className="bg-lab-coral text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg flex items-center gap-2 border border-lab-coral">
+                                    <div className="bg-duck-acid text-duck-ink text-xs font-bold px-3 py-1.5 rounded-full shadow-lg flex items-center gap-2 border border-duck-acid">
                                         <AlertTriangle size={14} />
                                         <span>FOUT!</span>
                                     </div>
@@ -523,14 +523,14 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
                             {currentSlideIndex > 0 && (
                                 <button
                                     onClick={handlePrevSlide}
-                                    className="bg-lab-muted text-white px-4 py-3 rounded-full font-bold text-sm lg:text-lg shadow-lg hover:bg-lab-muted hover:scale-105 transition-all duration-300 flex items-center gap-2 focus-visible:ring-2 focus-visible:ring-lab-muted"
+                                    className="bg-duck-ink/60 text-white px-4 py-3 rounded-full font-bold text-sm lg:text-lg shadow-lg hover:bg-duck-ink/70 hover:scale-105 transition-all duration-300 flex items-center gap-2 focus-visible:ring-2 focus-visible:ring-duck-ink/60"
                                 >
                                     <ChevronLeft size={20} /> <span className="hidden sm:inline">Vorige</span>
                                 </button>
                             )}
                             <button
                                 onClick={handleNextSlide}
-                                className="bg-lab-sage text-white px-6 lg:px-8 py-3 rounded-full font-bold text-sm lg:text-lg shadow-lg hover:bg-lab-sage hover:text-white hover:scale-105 transition-all duration-300 flex items-center gap-2 focus-visible:ring-2 focus-visible:ring-lab-sage"
+                                className="bg-duck-ink text-duck-acid px-6 lg:px-8 py-3 rounded-full font-bold text-sm lg:text-lg shadow-lg hover:bg-duck-ink hover:text-duck-acid hover:scale-105 transition-all duration-300 flex items-center gap-2 focus-visible:ring-2 focus-visible:ring-duck-ink"
                             >
                                 {currentSlideIndex < SLIDES.length - 1 ? 'Volgende Dia' : 'Afronden'} <ArrowRight size={20} />
                             </button>
@@ -544,10 +544,10 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
                                 key={idx}
                                 className={`w-2 h-2 rounded-full transition-all duration-300 ${
                                     idx === currentSlideIndex
-                                        ? 'bg-lab-coral w-6'
+                                        ? 'bg-duck-acid w-6'
                                         : slideStates[idx] === 'fixed'
-                                            ? 'bg-lab-sage'
-                                            : 'bg-lab-muted'
+                                            ? 'bg-duck-ink'
+                                            : 'bg-duck-ink/60'
                                 }`}
                             />
                         ))}
@@ -557,7 +557,7 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
                     {!isFixed && (
                         <button
                             onClick={() => setShowMobileInspector(!showMobileInspector)}
-                            className="lg:hidden bg-lab-gold text-lab-ink px-6 py-3 rounded-full font-bold text-sm shadow-lg hover:bg-lab-gold transition-all duration-300 flex items-center gap-2 focus-visible:ring-2 focus-visible:ring-lab-teal"
+                            className="lg:hidden bg-duck-acid text-duck-ink px-6 py-3 rounded-full font-bold text-sm shadow-lg hover:bg-duck-acid transition-all duration-300 flex items-center gap-2 focus-visible:ring-2 focus-visible:ring-duck-ink"
                         >
                             <AlertTriangle size={16} /> Bekijk Rapport & Opties
                         </button>
@@ -566,20 +566,20 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
                     {/* Feedback Overlay */}
                     {showFeedback === true && (
                         <div className="absolute inset-0 flex items-center justify-center bg-transparent z-50 pointer-events-none">
-                            <div className="bg-lab-sage text-white px-6 py-4 rounded-full shadow-2xl flex items-center gap-3 animate-in zoom-in slide-in-from-bottom-10 fade-in duration-300">
+                            <div className="bg-duck-ink text-duck-acid px-6 py-4 rounded-full shadow-2xl flex items-center gap-3 animate-in zoom-in slide-in-from-bottom-10 fade-in duration-300">
                                 <CheckCircle size={24} />
                                 <span className="font-bold text-lg">Goed Gekozen!</span>
                             </div>
                         </div>
                     )}
                     {showFeedback === false && (
-                        <div className="absolute inset-0 flex items-center justify-center bg-lab-teal/40 z-50 backdrop-blur-[1px] animate-in fade-in cursor-not-allowed">
-                            <div className="bg-lab-paper text-lab-ink px-8 py-8 rounded-2xl shadow-2xl flex flex-col items-center animate-in shake">
-                                <div className="bg-lab-coral p-3 rounded-full mb-4">
-                                    <X size={32} className="text-lab-muted" />
+                        <div className="absolute inset-0 flex items-center justify-center bg-duck-ink/40 z-50 backdrop-blur-[1px] animate-in fade-in cursor-not-allowed">
+                            <div className="bg-duck-bgLight text-duck-ink px-8 py-8 rounded-2xl shadow-2xl flex flex-col items-center animate-in shake">
+                                <div className="bg-duck-acid p-3 rounded-full mb-4">
+                                    <X size={32} className="text-duck-ink/60" />
                                 </div>
                                 <h3 className="text-xl font-black mb-2" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Dat is niet de beste optie</h3>
-                                <p className="text-lab-muted text-center">Probeer het nog eens!</p>
+                                <p className="text-duck-ink/60 text-center">Probeer het nog eens!</p>
                             </div>
                         </div>
                     )}
@@ -587,37 +587,37 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
 
                 {/* Inspector Panel - Desktop: sidebar, Mobile: bottom sheet */}
                 <aside className={`
-                    hidden lg:flex w-80 bg-lab-paper border-l border-lab-line flex-col transition-all duration-500
+                    hidden lg:flex w-80 bg-duck-bgLight border-l border-duck-ink/15 flex-col transition-all duration-500
                     ${isFixed ? 'opacity-30 pointer-events-none grayscale' : 'opacity-100'}
                 `}>
                     <div className="p-6">
                         <div className="mb-6">
-                            <h3 className="text-lg font-black text-lab-ink mb-2 flex items-center gap-2" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
+                            <h3 className="text-lg font-black text-duck-ink mb-2 flex items-center gap-2" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
                                 Politie Rapport
                             </h3>
-                            <div className="bg-lab-cream p-4 rounded-2xl border border-lab-line">
-                                <p className="text-lab-coral font-bold text-xs uppercase mb-1 flex items-center gap-1">
+                            <div className="bg-duck-bg p-4 rounded-2xl border border-duck-ink/15">
+                                <p className="text-duck-acid font-bold text-xs uppercase mb-1 flex items-center gap-1">
                                     <AlertTriangle size={12} /> Overtreding:
                                 </p>
-                                <p className="text-lab-muted text-sm leading-relaxed">
+                                <p className="text-duck-ink/60 text-sm leading-relaxed">
                                     {currentSlide.feedback}
                                 </p>
                             </div>
                         </div>
 
                         <div className="space-y-3">
-                            <h4 className="text-xs font-bold text-lab-muted uppercase tracking-widest pl-1">Jouw Oplossing:</h4>
+                            <h4 className="text-xs font-bold text-duck-ink/60 uppercase tracking-widest pl-1">Jouw Oplossing:</h4>
                             {currentSlide.options.map((opt) => (
                                 <button
                                     key={opt.id}
                                     onClick={() => handleOptionSelect(opt.correct)}
-                                    className="w-full text-left p-4 rounded-2xl bg-lab-cream hover:bg-lab-teal border border-lab-line hover:border-lab-teal transition-all duration-300 group relative overflow-hidden focus-visible:ring-2 focus-visible:ring-lab-teal"
+                                    className="w-full text-left p-4 rounded-2xl bg-duck-bg hover:bg-duck-ink border border-duck-ink/15 hover:border-duck-ink transition-all duration-300 group relative overflow-hidden focus-visible:ring-2 focus-visible:ring-duck-ink"
                                 >
                                     <div className="flex items-start gap-3 relative z-10">
-                                        <div className="w-6 h-6 rounded-full bg-lab-teal text-white flex items-center justify-center text-xs font-bold group-hover:bg-lab-gold group-hover:text-lab-ink transition-all duration-300 shrink-0">
+                                        <div className="w-6 h-6 rounded-full bg-duck-ink text-white flex items-center justify-center text-xs font-bold group-hover:bg-duck-acid group-hover:text-duck-ink transition-all duration-300 shrink-0">
                                             {opt.id.toUpperCase()}
                                         </div>
-                                        <span className="text-sm font-medium text-lab-muted group-hover:text-white">
+                                        <span className="text-sm font-medium text-duck-ink/60 group-hover:text-white">
                                             {opt.text}
                                         </span>
                                     </div>
@@ -630,36 +630,36 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
                 {/* Mobile Inspector Bottom Sheet */}
                 {showMobileInspector && !isFixed && (
                     <div className="lg:hidden fixed inset-0 z-50 flex flex-col justify-end">
-                        <div className="absolute inset-0 bg-lab-teal/40 backdrop-blur-sm" onClick={() => setShowMobileInspector(false)} />
-                        <div className="relative bg-lab-paper rounded-t-3xl p-6 max-h-[80vh] overflow-y-auto animate-in slide-in-from-bottom fade-in duration-300">
-                            <div className="w-10 h-1 bg-lab-line rounded-full mx-auto mb-4" />
+                        <div className="absolute inset-0 bg-duck-ink/40 backdrop-blur-sm" onClick={() => setShowMobileInspector(false)} />
+                        <div className="relative bg-duck-bgLight rounded-t-3xl p-6 max-h-[80vh] overflow-y-auto animate-in slide-in-from-bottom fade-in duration-300">
+                            <div className="w-10 h-1 bg-duck-gray rounded-full mx-auto mb-4" />
                             <div className="mb-4">
-                                <h3 className="text-lg font-black text-lab-ink mb-2 flex items-center gap-2" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
+                                <h3 className="text-lg font-black text-duck-ink mb-2 flex items-center gap-2" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
                                     Politie Rapport
                                 </h3>
-                                <div className="bg-lab-cream p-4 rounded-2xl border border-lab-line">
-                                    <p className="text-lab-coral font-bold text-xs uppercase mb-1 flex items-center gap-1">
+                                <div className="bg-duck-bg p-4 rounded-2xl border border-duck-ink/15">
+                                    <p className="text-duck-acid font-bold text-xs uppercase mb-1 flex items-center gap-1">
                                         <AlertTriangle size={12} /> Overtreding:
                                     </p>
-                                    <p className="text-lab-muted text-sm leading-relaxed">
+                                    <p className="text-duck-ink/60 text-sm leading-relaxed">
                                         {currentSlide.feedback}
                                     </p>
                                 </div>
                             </div>
 
                             <div className="space-y-3">
-                                <h4 className="text-xs font-bold text-lab-muted uppercase tracking-widest pl-1">Jouw Oplossing:</h4>
+                                <h4 className="text-xs font-bold text-duck-ink/60 uppercase tracking-widest pl-1">Jouw Oplossing:</h4>
                                 {currentSlide.options.map((opt) => (
                                     <button
                                         key={opt.id}
                                         onClick={() => handleOptionSelect(opt.correct)}
-                                        className="w-full text-left p-4 rounded-2xl bg-lab-cream hover:bg-lab-teal border border-lab-line hover:border-lab-teal transition-all duration-300 group relative overflow-hidden focus-visible:ring-2 focus-visible:ring-lab-teal"
+                                        className="w-full text-left p-4 rounded-2xl bg-duck-bg hover:bg-duck-ink border border-duck-ink/15 hover:border-duck-ink transition-all duration-300 group relative overflow-hidden focus-visible:ring-2 focus-visible:ring-duck-ink"
                                     >
                                         <div className="flex items-start gap-3 relative z-10">
-                                            <div className="w-6 h-6 rounded-full bg-lab-teal flex items-center justify-center text-xs font-bold group-hover:bg-lab-gold group-hover:text-lab-ink transition-all duration-300 shrink-0 text-white">
+                                            <div className="w-6 h-6 rounded-full bg-duck-ink flex items-center justify-center text-xs font-bold group-hover:bg-duck-acid group-hover:text-duck-ink transition-all duration-300 shrink-0 text-white">
                                                 {opt.id.toUpperCase()}
                                             </div>
-                                            <span className="text-sm font-medium text-lab-muted group-hover:text-white">
+                                            <span className="text-sm font-medium text-duck-ink/60 group-hover:text-white">
                                                 {opt.text}
                                             </span>
                                         </div>

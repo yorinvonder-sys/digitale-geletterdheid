@@ -3,41 +3,41 @@ import { ArrowLeft, Shield, Mail, Lock, Database, UserCheck } from 'lucide-react
 
 export const PrivacyPolicy: React.FC = () => {
     return (
-        <div className="min-h-screen bg-lab-cream py-12 px-6">
+        <div className="min-h-screen bg-duck-bg py-12 px-6">
             <div className="max-w-4xl mx-auto">
-                <a href="/ict/privacy" className="inline-flex items-center gap-2 text-lab-muted hover:text-lab-coral font-medium mb-8 transition-colors">
+                <a href="/ict/privacy" className="inline-flex items-center gap-2 text-duck-ink/60 hover:text-duck-acid font-medium mb-8 transition-colors">
                     <ArrowLeft size={20} />
                     Terug naar Security & Privacy
                 </a>
 
-                <div className="bg-white rounded-3xl shadow-sm border border-lab-line p-8 md:p-12">
+                <div className="bg-white rounded-3xl shadow-sm border border-duck-ink/15 p-8 md:p-12">
                     <div className="flex items-center gap-4 mb-8">
-                        <div className="w-12 h-12 bg-lab-coral rounded-2xl flex items-center justify-center">
-                            <Shield className="text-lab-coral" size={28} />
+                        <div className="w-12 h-12 bg-duck-acid rounded-2xl flex items-center justify-center">
+                            <Shield className="text-duck-ink" size={28} />
                         </div>
                         <div>
-                            <h1 className="text-3xl font-black text-lab-ink">Privacyverklaring</h1>
-                            <p className="text-lab-muted">Laatst bijgewerkt: 14 februari 2026</p>
+                            <h1 className="text-3xl font-black text-duck-ink">Privacyverklaring</h1>
+                            <p className="text-duck-ink/60">Laatst bijgewerkt: 14 februari 2026</p>
                         </div>
                     </div>
 
                     <div className="prose prose-slate max-w-none">
-                        <p className="text-lg leading-relaxed text-lab-muted">
+                        <p className="text-lg leading-relaxed text-duck-ink/60">
                             DGSkills (een product van <strong>Future Architect</strong>) hecht grote waarde aan de bescherming van persoonsgegevens, 
                             zeker in een onderwijsomgeving. In deze verklaring leggen we uit hoe we omgaan met gegevens van leerlingen en docenten.
                         </p>
 
-                        <div className="my-8 p-6 bg-lab-cream rounded-2xl border border-lab-line">
-                            <h3 className="text-sm font-bold uppercase tracking-wider text-lab-muted mb-4">Identiteit van de Verwerker</h3>
+                        <div className="my-8 p-6 bg-duck-bg rounded-2xl border border-duck-ink/15">
+                            <h3 className="text-sm font-bold uppercase tracking-wider text-duck-ink/60 mb-4">Identiteit van de Verwerker</h3>
                             <div className="grid sm:grid-cols-2 gap-4 text-sm">
                                 <div>
-                                    <p className="font-bold text-lab-ink">Future Architect</p>
-                                    <p className="text-lab-muted">De exacte KvK-nummer, adres en vestigingsgegevens staan vermeld in de ondertekende verwerkersovereenkomst (DPA) en/of het contract met uw school. Indien deze niet openbaar beschikbaar zijn, vindt u ze in die documenten.</p>
+                                    <p className="font-bold text-duck-ink">Future Architect</p>
+                                    <p className="text-duck-ink/60">De exacte KvK-nummer, adres en vestigingsgegevens staan vermeld in de ondertekende verwerkersovereenkomst (DPA) en/of het contract met uw school. Indien deze niet openbaar beschikbaar zijn, vindt u ze in die documenten.</p>
                                 </div>
                                 <div>
-                                    <p className="font-bold text-lab-ink">Functionaris Gegevensbescherming (FG)</p>
-                                    <p className="text-lab-muted">Bereikbaar via: privacy@dgskills.app</p>
-                                    <p className="text-lab-muted">T.a.v. Privacy Officer</p>
+                                    <p className="font-bold text-duck-ink">Functionaris Gegevensbescherming (FG)</p>
+                                    <p className="text-duck-ink/60">Bereikbaar via: privacy@dgskills.app</p>
+                                    <p className="text-duck-ink/60">T.a.v. Privacy Officer</p>
                                 </div>
                             </div>
                         </div>
@@ -52,17 +52,17 @@ export const PrivacyPolicy: React.FC = () => {
 
                         <h2 className="text-xl font-bold mt-8 mb-4">2. Welke gegevens verwerken wij?</h2>
                         <div className="grid md:grid-cols-2 gap-4 my-6">
-                            <div className="p-4 bg-lab-cream rounded-xl border border-lab-line">
+                            <div className="p-4 bg-duck-bg rounded-xl border border-duck-ink/15">
                                 <h3 className="font-bold text-sm mb-2 flex items-center gap-2">
-                                    <UserCheck size={16} className="text-lab-muted" /> Accountgegevens
+                                    <UserCheck size={16} className="text-duck-ink/60" /> Accountgegevens
                                 </h3>
-                                <p className="text-xs text-lab-muted">E-mailadres (inlog), weergavenaam, rol (leerling/docent) en klas-ID.</p>
+                                <p className="text-xs text-duck-ink/60">E-mailadres (inlog), weergavenaam, rol (leerling/docent) en klas-ID.</p>
                             </div>
-                            <div className="p-4 bg-lab-cream rounded-xl border border-lab-line">
+                            <div className="p-4 bg-duck-bg rounded-xl border border-duck-ink/15">
                                 <h3 className="font-bold text-sm mb-2 flex items-center gap-2">
-                                    <Database size={16} className="text-lab-muted" /> Leerlingvoortgang
+                                    <Database size={16} className="text-duck-ink/60" /> Leerlingvoortgang
                                 </h3>
-                                <p className="text-xs text-lab-muted">XP, levels, voltooide missies, badges en antwoorden op opdrachten.</p>
+                                <p className="text-xs text-duck-ink/60">XP, levels, voltooide missies, badges en antwoorden op opdrachten.</p>
                             </div>
                         </div>
 
@@ -85,7 +85,7 @@ export const PrivacyPolicy: React.FC = () => {
                         </p>
                         <div className="overflow-x-auto my-4">
                             <table className="min-w-full text-sm text-left">
-                                <thead className="bg-lab-cream">
+                                <thead className="bg-duck-bg">
                                     <tr>
                                         <th className="px-4 py-2 font-bold">Partij</th>
                                         <th className="px-4 py-2 font-bold">Functie</th>
@@ -94,17 +94,17 @@ export const PrivacyPolicy: React.FC = () => {
                                 </thead>
                                 <tbody>
                                     <tr className="border-t">
-                                        <td className="px-4 py-2 italic text-lab-ink font-medium">Supabase (AWS)</td>
+                                        <td className="px-4 py-2 italic text-duck-ink font-medium">Supabase (AWS)</td>
                                         <td className="px-4 py-2">Database, Authenticatie, Storage</td>
                                         <td className="px-4 py-2 font-medium">EER (Ierland)</td>
                                     </tr>
                                     <tr className="border-t">
-                                        <td className="px-4 py-2 italic text-lab-ink font-medium">Mistral AI</td>
+                                        <td className="px-4 py-2 italic text-duck-ink font-medium">Mistral AI</td>
                                         <td className="px-4 py-2">Tekst, vision en OCR via server-side Edge Functions, geen training op klantdata</td>
                                         <td className="px-4 py-2 font-medium">EER/EU API-verwerking</td>
                                     </tr>
                                     <tr className="border-t">
-                                        <td className="px-4 py-2 italic text-lab-ink font-medium">Black Forest Labs</td>
+                                        <td className="px-4 py-2 italic text-duck-ink font-medium">Black Forest Labs</td>
                                         <td className="px-4 py-2">FLUX image generation via server-side Edge Functions, geen provider-URL's naar de browser</td>
                                         <td className="px-4 py-2 font-medium">EU endpoint</td>
                                     </tr>
@@ -153,16 +153,16 @@ export const PrivacyPolicy: React.FC = () => {
                             Wij maken geen gebruik van geautomatiseerde besluitvorming of profilering die een rechtsgevolg of vergelijkbare wezenlijke impact heeft. Indien dit in de toekomst zou veranderen, gelden passende waarborgen en het recht op menselijke tussenkomst.
                         </p>
                         <p className="mt-4">
-                            Mocht u van mening zijn dat wij niet correct omgaan met uw gegevens, dan heeft u het recht om een klacht in te dienen bij de <strong>Autoriteit Persoonsgegevens (AP)</strong> via <a href="https://autoriteitpersoonsgegevens.nl" className="text-lab-coral underline" target="_blank" rel="noopener noreferrer">hun website</a>.
+                            Mocht u van mening zijn dat wij niet correct omgaan met uw gegevens, dan heeft u het recht om een klacht in te dienen bij de <strong>Autoriteit Persoonsgegevens (AP)</strong> via <a href="https://autoriteitpersoonsgegevens.nl" className="text-duck-acid underline" target="_blank" rel="noopener noreferrer">hun website</a>.
                         </p>
 
                         <h2 className="text-xl font-bold mt-8 mb-4">8. Contact</h2>
                         <p>
                             Voor vragen over privacy kunt u contact opnemen met uw school of rechtstreeks met ons via:
                         </p>
-                        <div className="flex items-center gap-2 p-4 bg-lab-coral rounded-xl border border-lab-coral w-fit">
-                            <Mail size={18} className="text-lab-coral" />
-                            <span className="font-bold text-lab-coral underline">privacy@dgskills.app</span>
+                        <div className="flex items-center gap-2 p-4 bg-duck-acid/20 rounded-xl border border-duck-acid w-fit">
+                            <Mail size={18} className="text-duck-ink" />
+                            <span className="font-bold text-duck-ink underline">privacy@dgskills.app</span>
                         </div>
                     </div>
                 </div>

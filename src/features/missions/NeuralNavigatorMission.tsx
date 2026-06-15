@@ -245,7 +245,7 @@ const SingleNeuronVisualization: React.FC<SingleNeuronVizProps> = ({
                 onChange={e => onWeightChange(i, parseFloat(e.target.value))}
                 className="flex-1 h-2 accent-[#D97848] cursor-pointer"
               />
-              <span className={`text-xs font-bold w-10 text-right ${w >= 0 ? 'text-duck-ink' : 'text-lab-muted'}`}>
+              <span className={`text-xs font-bold w-10 text-right ${w >= 0 ? 'text-duck-ink' : 'text-duck-ink/60'}`}>
                 {w.toFixed(1)}
               </span>
             </div>
@@ -376,7 +376,7 @@ const NetworkVisualization: React.FC<NetworkVizProps> = ({
                     onChange={e => onWeightChange('ih', i, j, parseFloat(e.target.value))}
                     className="flex-1 h-1.5 accent-[#D97848] cursor-pointer"
                   />
-                  <span className={`text-xs font-bold w-10 text-right ${weights.inputToHidden[i][j] >= 0 ? 'text-duck-ink' : 'text-lab-muted'}`}>
+                  <span className={`text-xs font-bold w-10 text-right ${weights.inputToHidden[i][j] >= 0 ? 'text-duck-ink' : 'text-duck-ink/60'}`}>
                     {weights.inputToHidden[i][j].toFixed(1)}
                   </span>
                 </div>
@@ -391,7 +391,7 @@ const NetworkVisualization: React.FC<NetworkVizProps> = ({
                   onChange={e => onWeightChange('ho', i, 0, parseFloat(e.target.value))}
                   className="flex-1 h-1.5 accent-[#D97848] cursor-pointer"
                 />
-                <span className={`text-xs font-bold w-10 text-right ${weights.hiddenToOutput[i] >= 0 ? 'text-duck-ink' : 'text-lab-muted'}`}>
+                <span className={`text-xs font-bold w-10 text-right ${weights.hiddenToOutput[i] >= 0 ? 'text-duck-ink' : 'text-duck-ink/60'}`}>
                   {weights.hiddenToOutput[i].toFixed(1)}
                 </span>
               </div>
@@ -753,7 +753,7 @@ export const NeuralNavigatorMission: React.FC<Props> = ({ onBack, onComplete }) 
               <span className="text-xs font-bold text-duck-coral uppercase tracking-wider">Uitdaging {currentChallenge + 1}/{CHALLENGES.length}</span>
               <div className="flex gap-1">
                 {CHALLENGES.map((_, i) => (
-                  <div key={i} className={`w-8 h-1.5 rounded-full ${i < currentChallenge ? (challengeResults[i] ? 'bg-duck-ink' : 'bg-lab-coral') : i === currentChallenge ? 'bg-duck-coral' : 'bg-duck-line'}`} />
+                  <div key={i} className={`w-8 h-1.5 rounded-full ${i < currentChallenge ? (challengeResults[i] ? 'bg-duck-ink' : 'bg-duck-error') : i === currentChallenge ? 'bg-duck-coral' : 'bg-duck-line'}`} />
                 ))}
               </div>
             </div>
@@ -802,7 +802,7 @@ export const NeuralNavigatorMission: React.FC<Props> = ({ onBack, onComplete }) 
               <ChevronRight size={20} className="text-duck-line" />
               <div className="text-center">
                 <p className="text-[10px] text-duck-muted uppercase tracking-wider font-bold">Doel</p>
-                <span className={`inline-flex px-3 py-1 rounded-full text-sm font-bold mt-1 border ${challenge.target >= 0.5 ? 'bg-duck-ink/10 text-duck-ink border-duck-ink/30' : 'bg-lab-coral/10 text-lab-muted border-lab-coral/30'}`}>
+                <span className={`inline-flex px-3 py-1 rounded-full text-sm font-bold mt-1 border ${challenge.target >= 0.5 ? 'bg-duck-ink/10 text-duck-ink border-duck-ink/30' : 'bg-duck-error/10 text-duck-ink/60 border-duck-error/30'}`}>
                   {challenge.target >= 0.5 ? 'HOOG (>0.7)' : 'LAAG (<0.3)'}
                 </span>
               </div>
@@ -838,7 +838,7 @@ export const NeuralNavigatorMission: React.FC<Props> = ({ onBack, onComplete }) 
               <div className="flex-1 max-w-[200px]">
                 <div className="w-full bg-duck-line rounded-full h-3 overflow-hidden">
                   <div
-                    className={`h-full rounded-full transition-all duration-200 ${output > 0.7 ? 'bg-duck-ink' : output < 0.3 ? 'bg-lab-coral' : 'bg-duck-coral'}`}
+                    className={`h-full rounded-full transition-all duration-200 ${output > 0.7 ? 'bg-duck-ink' : output < 0.3 ? 'bg-duck-error' : 'bg-duck-coral'}`}
                     style={{ width: `${output * 100}%` }}
                   />
                 </div>
@@ -873,15 +873,15 @@ export const NeuralNavigatorMission: React.FC<Props> = ({ onBack, onComplete }) 
 
           {/* Feedback after checking */}
           {showFeedback && (
-            <div className={`rounded-2xl p-4 border-2 ${lastFeedbackCorrect ? 'bg-duck-ink/10 border-duck-ink/30' : 'bg-lab-coral/5 border-lab-coral/20'}`}>
+            <div className={`rounded-2xl p-4 border-2 ${lastFeedbackCorrect ? 'bg-duck-ink/10 border-duck-ink/30' : 'bg-duck-error/5 border-duck-error/20'}`}>
               <div className="flex items-start gap-3">
                 {lastFeedbackCorrect ? (
                   <CheckCircle size={20} className="text-duck-ink mt-0.5 flex-shrink-0" />
                 ) : (
-                  <XCircle size={20} className="text-lab-muted mt-0.5 flex-shrink-0" />
+                  <XCircle size={20} className="text-duck-ink/60 mt-0.5 flex-shrink-0" />
                 )}
                 <div>
-                  <h3 className={`text-sm font-bold ${lastFeedbackCorrect ? 'text-duck-ink' : 'text-lab-muted'}`}>
+                  <h3 className={`text-sm font-bold ${lastFeedbackCorrect ? 'text-duck-ink' : 'text-duck-ink/60'}`}>
                     {lastFeedbackCorrect ? 'Goed gedaan!' : 'Nog niet helemaal'}
                   </h3>
                   <p className="text-sm text-duck-muted mt-1">
@@ -953,7 +953,7 @@ export const NeuralNavigatorMission: React.FC<Props> = ({ onBack, onComplete }) 
               ].map(({ i, t }, idx) => (
                 <div key={idx} className="bg-duck-bg rounded-lg p-2 border border-duck-line">
                   <p className="text-[10px] text-duck-muted">[{i.join(', ')}]</p>
-                  <p className={`text-sm font-bold ${t ? 'text-duck-ink' : 'text-lab-muted'}`}>{t}</p>
+                  <p className={`text-sm font-bold ${t ? 'text-duck-ink' : 'text-duck-ink/60'}`}>{t}</p>
                 </div>
               ))}
             </div>
@@ -979,7 +979,7 @@ export const NeuralNavigatorMission: React.FC<Props> = ({ onBack, onComplete }) 
             </div>
             <div className="bg-white rounded-xl p-4 text-center border border-duck-line">
               <p className="text-[10px] text-duck-muted uppercase tracking-wider font-bold">Nauwkeurigheid</p>
-              <p className={`text-3xl font-black ${trainingAccuracy >= 100 ? 'text-duck-ink' : trainingAccuracy >= 50 ? 'text-duck-coral' : 'text-lab-muted'}`}>
+              <p className={`text-3xl font-black ${trainingAccuracy >= 100 ? 'text-duck-ink' : trainingAccuracy >= 50 ? 'text-duck-coral' : 'text-duck-ink/60'}`}>
                 {trainingAccuracy.toFixed(0)}%
               </p>
             </div>
@@ -1006,7 +1006,7 @@ export const NeuralNavigatorMission: React.FC<Props> = ({ onBack, onComplete }) 
             {isTraining && (
               <button
                 onClick={stopTraining}
-                className="flex-1 py-4 bg-lab-coral hover:bg-lab-coral hover:text-white rounded-full font-black text-lg text-white flex items-center justify-center gap-2 hover:scale-105 transition-all duration-300 active:scale-95 shadow-xl"
+                className="flex-1 py-4 bg-duck-ink hover:bg-duck-ink rounded-full font-black text-lg text-white flex items-center justify-center gap-2 hover:scale-105 transition-all duration-300 active:scale-95 shadow-xl"
               >
                 <Pause size={20} /> Pauzeer
               </button>
@@ -1101,10 +1101,10 @@ export const NeuralNavigatorMission: React.FC<Props> = ({ onBack, onComplete }) 
               <div className="flex gap-1 mt-2">
                 {challengeResults.map((r, i) => (
                   <div key={i} className="flex items-center gap-1">
-                    <span className={`text-[10px] font-bold ${r ? 'text-duck-ink' : 'text-lab-muted'}`}>
+                    <span className={`text-[10px] font-bold ${r ? 'text-duck-ink' : 'text-duck-ink/60'}`}>
                       {CHALLENGES[i]?.difficulty === 'easy' ? 'Basis' : CHALLENGES[i]?.difficulty === 'medium' ? 'Gem.' : 'Expert'}
                     </span>
-                    {r ? <CheckCircle size={12} className="text-duck-ink" /> : <XCircle size={12} className="text-lab-muted" />}
+                    {r ? <CheckCircle size={12} className="text-duck-ink" /> : <XCircle size={12} className="text-duck-ink/60" />}
                   </div>
                 ))}
               </div>

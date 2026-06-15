@@ -77,9 +77,9 @@ const CATEGORIES = [
         id: 'regels' as const,
         label: 'Regels',
         description: 'Wat mag wel/niet met AI?',
-        color: 'from-lab-coral to-lab-teal',
-        bgColor: 'bg-lab-teal',
-        borderColor: 'border-lab-teal',
+        color: 'from-duck-acid to-duck-ink',
+        bgColor: 'bg-duck-ink',
+        borderColor: 'border-duck-ink',
         icon: ShieldCheck,
         prompt: 'Welke regels moeten er zijn voor AI op school?'
     },
@@ -87,9 +87,9 @@ const CATEGORIES = [
         id: 'mogelijkheden' as const,
         label: 'Mogelijkheden',
         description: 'Hoe kan AI helpen?',
-        color: 'from-lab-coral to-lab-sage',
-        bgColor: 'bg-lab-sage',
-        borderColor: 'border-lab-sage',
+        color: 'from-duck-acid to-duck-ink',
+        bgColor: 'bg-duck-ink',
+        borderColor: 'border-duck-ink',
         icon: Lightbulb,
         prompt: 'Hoe zou AI kunnen helpen bij leren?'
     },
@@ -97,9 +97,9 @@ const CATEGORIES = [
         id: 'zorgen' as const,
         label: 'Zorgen',
         description: 'Waar maak je je zorgen over?',
-        color: 'from-lab-coral to-lab-gold',
-        bgColor: 'bg-lab-gold',
-        borderColor: 'border-lab-gold',
+        color: 'from-duck-acid to-duck-ink',
+        bgColor: 'bg-duck-ink',
+        borderColor: 'border-duck-ink',
         icon: AlertTriangle,
         prompt: 'Welke risicos zie je bij AI gebruik?'
     },
@@ -107,9 +107,9 @@ const CATEGORIES = [
         id: 'suggesties' as const,
         label: 'Suggesties',
         description: 'Ideeën voor de school',
-        color: 'from-lab-coral to-lab-teal',
-        bgColor: 'bg-lab-teal',
-        borderColor: 'border-lab-teal',
+        color: 'from-duck-acid to-duck-ink',
+        bgColor: 'bg-duck-ink',
+        borderColor: 'border-duck-ink',
         icon: Sparkles,
         prompt: 'Welke concrete suggesties heb je?'
     }
@@ -260,24 +260,24 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
     // Survey Phase (Now SECOND, after intro)
     if (phase === 'survey') {
         return (
-            <div className="min-h-full h-full overflow-y-auto bg-gradient-to-br from-lab-coral via-white to-lab-teal flex flex-col items-center p-6 py-12">
+            <div className="min-h-full h-full overflow-y-auto bg-gradient-to-br from-duck-acid via-white to-duck-ink flex flex-col items-center p-6 py-12">
                 <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className="bg-white rounded-3xl p-8 shadow-2xl border border-lab-coral max-w-2xl w-full"
+                    className="bg-white rounded-3xl p-8 shadow-2xl border border-duck-acid max-w-2xl w-full"
                 >
                     <div className="text-center mb-8">
-                        <div className="w-16 h-16 bg-lab-coral rounded-2xl flex items-center justify-center mx-auto mb-4 text-white">
+                        <div className="w-16 h-16 bg-duck-acid rounded-2xl flex items-center justify-center mx-auto mb-4 text-duck-ink">
                             <Users size={32} />
                         </div>
-                        <h1 className="text-2xl font-black text-lab-ink mb-2">Eerst even dit...</h1>
-                        <p className="text-lab-muted">We zijn benieuwd hoe jij AI gebruikt! Deze gegevens worden <span className="font-bold text-lab-coral">anoniem</span> verwerkt.</p>
+                        <h1 className="text-2xl font-black text-duck-ink mb-2">Eerst even dit...</h1>
+                        <p className="text-duck-ink/60">We zijn benieuwd hoe jij AI gebruikt! Deze gegevens worden <span className="font-bold text-duck-acid">anoniem</span> verwerkt.</p>
                     </div>
 
                     <div className="space-y-6">
                         {/* Question 1 */}
                         <div>
-                            <label className="block text-sm font-bold text-lab-muted mb-3">
+                            <label className="block text-sm font-bold text-duck-ink/60 mb-3">
                                 1. Hoe vaak gebruik jij AI voor school?
                             </label>
                             <div className="grid grid-cols-2 gap-3">
@@ -285,9 +285,9 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
                                     <button
                                         key={option}
                                         onClick={() => setSurveyData(prev => ({ ...prev, freqUse: option }))}
-                                        className={`p-3 rounded-xl border-2 text-sm font-medium transition-all ${surveyData.freqUse === option
-                                            ? 'border-lab-coral bg-lab-coral text-white'
-                                            : 'border-lab-line hover:border-lab-coral hover:bg-lab-cream text-lab-muted'
+                                        className={`p-3 rounded-full border-2 text-sm font-medium transition-all ${surveyData.freqUse === option
+                                            ? 'border-duck-acid bg-duck-acid text-duck-ink'
+                                            : 'border-duck-ink/15 hover:border-duck-acid hover:bg-duck-bg text-duck-ink/60'
                                             }`}
                                     >
                                         {option}
@@ -298,7 +298,7 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
 
                         {/* Question 2 */}
                         <div>
-                            <label className="block text-sm font-bold text-lab-muted mb-2">
+                            <label className="block text-sm font-bold text-duck-ink/60 mb-2">
                                 2. Waar gebruik je dit voor?
                             </label>
                             <input
@@ -306,13 +306,13 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
                                 placeholder="Bijv. tekst samenvatten, ideeën bedenken..."
                                 value={surveyData.purpose}
                                 onChange={e => setSurveyData(prev => ({ ...prev, purpose: e.target.value }))}
-                                className="w-full p-3 bg-lab-cream border border-lab-line rounded-xl focus:ring-2 focus:ring-lab-coral focus:border-lab-coral outline-none transition-all"
+                                className="w-full p-3 bg-duck-bg border border-duck-ink/15 rounded-xl focus:ring-2 focus:ring-duck-acid focus:border-duck-acid outline-none transition-all"
                             />
                         </div>
 
                         {/* Question 3 */}
                         <div>
-                            <label className="block text-sm font-bold text-lab-muted mb-2">
+                            <label className="block text-sm font-bold text-duck-ink/60 mb-2">
                                 3. Wat vind je er handig aan?
                             </label>
                             <input
@@ -320,13 +320,13 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
                                 placeholder="Bijv. het gaat sneller, het helpt bij..."
                                 value={surveyData.useful}
                                 onChange={e => setSurveyData(prev => ({ ...prev, useful: e.target.value }))}
-                                className="w-full p-3 bg-lab-cream border border-lab-line rounded-xl focus:ring-2 focus:ring-lab-coral focus:border-lab-coral outline-none transition-all"
+                                className="w-full p-3 bg-duck-bg border border-duck-ink/15 rounded-xl focus:ring-2 focus:ring-duck-acid focus:border-duck-acid outline-none transition-all"
                             />
                         </div>
 
                         {/* Question 4 */}
                         <div>
-                            <label className="block text-sm font-bold text-lab-muted mb-2">
+                            <label className="block text-sm font-bold text-duck-ink/60 mb-2">
                                 4. Wat vind jij dat er nog ontbreekt op school wat betreft AI?
                             </label>
                             <textarea
@@ -334,23 +334,23 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
                                 placeholder="Bijv. meer uitleg, betere tools..."
                                 value={surveyData.missing}
                                 onChange={e => setSurveyData(prev => ({ ...prev, missing: e.target.value }))}
-                                className="w-full p-3 bg-lab-cream border border-lab-line rounded-xl focus:ring-2 focus:ring-lab-coral focus:border-lab-coral outline-none transition-all resize-none"
+                                className="w-full p-3 bg-duck-bg border border-duck-ink/15 rounded-xl focus:ring-2 focus:ring-duck-acid focus:border-duck-acid outline-none transition-all resize-none"
                             />
                         </div>
                     </div>
 
                     {surveyError && (
-                        <div className="mt-6 p-3 bg-lab-coral/10 border border-lab-coral rounded-xl flex items-start gap-2">
-                            <XCircle className="text-lab-coral shrink-0 mt-0.5" size={18} />
-                            <p className="text-lab-ink text-sm font-medium">{surveyError}</p>
+                        <div className="mt-6 p-3 bg-duck-error/10 border border-duck-error rounded-xl flex items-start gap-2">
+                            <XCircle className="text-duck-error shrink-0 mt-0.5" size={18} />
+                            <p className="text-duck-ink text-sm font-medium">{surveyError}</p>
                         </div>
                     )}
 
-                    <div className="mt-8 pt-6 border-t border-lab-line flex justify-end">
+                    <div className="mt-8 pt-6 border-t border-duck-ink/15 flex justify-end">
                         <button
                             onClick={handleSurveySubmit}
                             disabled={!surveyData.freqUse || !surveyData.purpose || surveySubmitting}
-                            className="px-8 py-3 bg-gradient-to-r from-lab-coral to-lab-coral text-white font-bold rounded-xl shadow-lg shadow-lab-coral/20 hover:shadow-xl hover:scale-[1.02] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center gap-2"
+                            className="px-8 py-3 bg-duck-acid text-duck-ink font-bold rounded-full shadow-duck-soft hover:shadow-xl hover:scale-[1.02] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center gap-2"
                         >
                             {surveySubmitting ? (
                                 <>Versturen...</>
@@ -370,17 +370,17 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
     // Intro Phase (Now FIRST)
     if (phase === 'intro') {
         return (
-            <div className="min-h-full bg-gradient-to-br from-lab-coral via-white to-lab-teal flex flex-col items-center justify-center p-6 text-center">
+            <div className="min-h-full bg-gradient-to-br from-duck-acid via-white to-duck-ink flex flex-col items-center justify-center p-6 text-center">
                 <motion.div
                     initial={{ scale: 0.8, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     className="mb-8"
                 >
-                    <div className="w-24 h-24 bg-gradient-to-br from-lab-coral to-lab-teal rounded-3xl flex items-center justify-center shadow-2xl shadow-lab-coral/30 mb-6 mx-auto">
-                        <Scale className="w-12 h-12 text-white" />
+                    <div className="w-24 h-24 bg-gradient-to-br from-duck-acid to-duck-ink rounded-3xl flex items-center justify-center shadow-2xl shadow-duck-soft mb-6 mx-auto">
+                        <Scale className="w-12 h-12 text-duck-ink" />
                     </div>
-                    <h1 className="text-3xl font-black text-lab-ink mb-3">AI Beleid Brainstorm</h1>
-                    <p className="text-lab-muted max-w-md mx-auto text-lg">
+                    <h1 className="text-3xl font-black text-duck-ink mb-3">AI Beleid Brainstorm</h1>
+                    <p className="text-duck-ink/60 max-w-md mx-auto text-lg">
                         Jouw mening telt! Help mee met het vormgeven van de AI-regels op school.
                     </p>
                 </motion.div>
@@ -389,23 +389,23 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: 0.2 }}
-                    className="bg-white rounded-3xl p-8 shadow-xl border border-lab-line max-w-lg w-full mb-8"
+                    className="bg-white rounded-3xl p-8 shadow-xl border border-duck-ink/15 max-w-lg w-full mb-8"
                 >
-                    <h3 className="font-bold text-lab-ink mb-4 flex items-center gap-2">
-                        <Users size={20} className="text-lab-muted" />
+                    <h3 className="font-bold text-duck-ink mb-4 flex items-center gap-2">
+                        <Users size={20} className="text-duck-ink/60" />
                         Hoe werkt het?
                     </h3>
-                    <ul className="text-left space-y-3 text-lab-muted">
+                    <ul className="text-left space-y-3 text-duck-ink/60">
                         <li className="flex items-start gap-3">
-                            <span className="w-6 h-6 bg-lab-coral text-white rounded-full flex items-center justify-center font-bold text-sm shrink-0">1</span>
+                            <span className="w-6 h-6 bg-duck-acid text-duck-ink rounded-full flex items-center justify-center font-bold text-sm shrink-0">1</span>
                             <span>Eerst vullen we een korte enquête in over jouw AI-gebruik</span>
                         </li>
                         <li className="flex items-start gap-3">
-                            <span className="w-6 h-6 bg-lab-coral text-white rounded-full flex items-center justify-center font-bold text-sm shrink-0">2</span>
+                            <span className="w-6 h-6 bg-duck-acid text-duck-ink rounded-full flex items-center justify-center font-bold text-sm shrink-0">2</span>
                             <span>Kies een categorie en deel jouw idee of mening</span>
                         </li>
                         <li className="flex items-start gap-3">
-                            <span className="w-6 h-6 bg-lab-coral text-white rounded-full flex items-center justify-center font-bold text-sm shrink-0">3</span>
+                            <span className="w-6 h-6 bg-duck-acid text-duck-ink rounded-full flex items-center justify-center font-bold text-sm shrink-0">3</span>
                             <span>Bekijk ideeën van anderen en stem op de beste!</span>
                         </li>
                     </ul>
@@ -416,7 +416,7 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: 0.4 }}
                     onClick={() => setPhase('survey')}
-                    className="px-8 py-4 bg-gradient-to-r from-lab-coral to-lab-teal text-white font-bold text-lg rounded-2xl shadow-lg shadow-lab-coral/30 hover:shadow-xl hover:scale-105 transition-all flex items-center gap-2"
+                    className="px-8 py-4 bg-duck-acid text-duck-ink font-bold text-lg rounded-full shadow-duck-soft hover:shadow-xl hover:scale-105 transition-all flex items-center gap-2"
                 >
                     Start de Enquête
                     <ChevronRight size={24} />
@@ -428,10 +428,10 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
     // Survey Phase (Now SECOND)
     if (phase === 'categories') {
         return (
-            <div className="min-h-full bg-gradient-to-br from-lab-coral via-white to-lab-teal p-6">
+            <div className="min-h-full bg-gradient-to-br from-duck-acid via-white to-duck-ink p-6">
                 <div className="max-w-2xl mx-auto">
-                    <h2 className="text-2xl font-black text-lab-ink mb-2 text-center">Kies een Categorie</h2>
-                    <p className="text-lab-muted text-center mb-8">Waar wil je over nadenken?</p>
+                    <h2 className="text-2xl font-black text-duck-ink mb-2 text-center">Kies een Categorie</h2>
+                    <p className="text-duck-ink/60 text-center mb-8">Waar wil je over nadenken?</p>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
                         {CATEGORIES.map((cat, idx) => (
@@ -444,13 +444,13 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
                                     setSelectedCategory(cat);
                                     setPhase('submit');
                                 }}
-                                className={`bg-white ${cat.borderColor} border-2 rounded-2xl p-6 text-left shadow-sm hover:shadow-lg hover:scale-[1.02] transition-all group`}
+                                className={`bg-white ${cat.borderColor} border-2 rounded-[1.6rem] p-6 text-left shadow-duck-soft hover:shadow-lg hover:scale-[1.02] transition-all group`}
                             >
-                                <div className={`w-12 h-12 bg-gradient-to-br ${cat.color} rounded-xl flex items-center justify-center mb-4 text-white shadow-lg group-hover:scale-110 transition-transform`}>
+                                <div className={`w-12 h-12 bg-gradient-to-br ${cat.color} rounded-xl flex items-center justify-center mb-4 text-duck-ink shadow-duck-soft group-hover:scale-110 transition-transform`}>
                                     <cat.icon size={24} />
                                 </div>
-                                <h3 className="font-bold text-lab-ink text-lg mb-1">{cat.label}</h3>
-                                <p className="text-lab-muted text-sm">{cat.description}</p>
+                                <h3 className="font-bold text-duck-ink text-lg mb-1">{cat.label}</h3>
+                                <p className="text-duck-ink/60 text-sm">{cat.description}</p>
                             </motion.button>
                         ))}
                     </div>
@@ -459,7 +459,7 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
                         <div className="text-center">
                             <button
                                 onClick={() => setPhase('browse')}
-                                className="text-lab-coral font-bold hover:underline flex items-center gap-2 mx-auto"
+                                className="text-duck-acid font-bold hover:underline flex items-center gap-2 mx-auto"
                             >
                                 Bekijk alle ideeën ({ideeen.length})
                                 <ChevronRight size={18} />
@@ -474,11 +474,11 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
     // Submit Phase
     if (phase === 'submit' && selectedCategory) {
         return (
-            <div className="min-h-full bg-gradient-to-br from-lab-coral via-white to-lab-teal p-6">
+            <div className="min-h-full bg-gradient-to-br from-duck-acid via-white to-duck-ink p-6">
                 <div className="max-w-lg mx-auto">
                     <button
                         onClick={() => setPhase('categories')}
-                        className="flex items-center gap-2 text-lab-muted hover:text-lab-muted mb-6 font-medium"
+                        className="flex items-center gap-2 text-duck-ink/60 hover:text-duck-ink mb-6 font-medium"
                     >
                         <ArrowLeft size={18} />
                         Terug naar categorieën
@@ -502,20 +502,20 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
                                 initial={{ scale: 0.8, opacity: 0 }}
                                 animate={{ scale: 1, opacity: 1 }}
                                 exit={{ scale: 0.8, opacity: 0 }}
-                                className="bg-white border-2 border-lab-sage rounded-2xl p-8 text-center"
+                                className="bg-white border-2 border-duck-ink/20 rounded-2xl p-8 text-center"
                             >
-                                <CheckCircle2 className="w-16 h-16 text-lab-sage mx-auto mb-4" />
-                                <h3 className="text-xl font-bold text-lab-ink">Idee Ingediend!</h3>
-                                <p className="text-lab-muted">Bedankt voor je bijdrage.</p>
+                                <CheckCircle2 className="w-16 h-16 text-duck-ink mx-auto mb-4" />
+                                <h3 className="text-xl font-bold text-duck-ink">Idee Ingediend!</h3>
+                                <p className="text-duck-ink/60">Bedankt voor je bijdrage.</p>
                             </motion.div>
                         ) : (
                             <motion.div
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 exit={{ opacity: 0 }}
-                                className="bg-white rounded-2xl p-6 shadow-xl border border-lab-line"
+                                className="bg-white rounded-2xl p-6 shadow-duck-soft border border-duck-ink/15"
                             >
-                                <label className="block text-sm font-bold text-lab-muted mb-2">
+                                <label className="block text-sm font-bold text-duck-ink/60 mb-2">
                                     Jouw idee
                                 </label>
                                 <textarea
@@ -526,9 +526,9 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
                                         if (submitError) setSubmitError(null);
                                     }}
                                     placeholder="Schrijf hier je gedachte, regel of suggestie..."
-                                    className={`w-full h-32 p-4 border-2 rounded-xl focus:ring-2 outline-none resize-none text-lab-muted transition-colors ${contentError
-                                        ? 'border-lab-coral focus:border-lab-coral focus:ring-lab-coral/20'
-                                        : 'border-lab-line focus:border-lab-coral focus:ring-lab-coral/20'
+                                    className={`w-full h-32 p-4 border-2 rounded-xl focus:ring-2 outline-none resize-none text-duck-ink/60 transition-colors ${contentError
+                                        ? 'border-duck-error focus:border-duck-error focus:ring-duck-error/20'
+                                        : 'border-duck-ink/15 focus:border-duck-acid focus:ring-duck-acid/20'
                                         }`}
                                 />
 
@@ -537,10 +537,10 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
                                     <motion.div
                                         initial={{ opacity: 0, y: -10 }}
                                         animate={{ opacity: 1, y: 0 }}
-                                        className="mt-3 p-3 bg-lab-coral/10 border border-lab-coral rounded-xl flex items-start gap-2"
+                                        className="mt-3 p-3 bg-duck-error/10 border border-duck-error rounded-xl flex items-start gap-2"
                                     >
-                                        <XCircle className="text-lab-coral shrink-0 mt-0.5" size={18} />
-                                        <p className="text-lab-ink text-sm font-medium">{contentError}</p>
+                                        <XCircle className="text-duck-error shrink-0 mt-0.5" size={18} />
+                                        <p className="text-duck-ink text-sm font-medium">{contentError}</p>
                                     </motion.div>
                                 )}
 
@@ -548,21 +548,21 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
                                     <motion.div
                                         initial={{ opacity: 0, y: -10 }}
                                         animate={{ opacity: 1, y: 0 }}
-                                        className="mt-3 p-3 bg-lab-coral/10 border border-lab-coral rounded-xl flex items-start gap-2"
+                                        className="mt-3 p-3 bg-duck-error/10 border border-duck-error rounded-xl flex items-start gap-2"
                                     >
-                                        <XCircle className="text-lab-coral shrink-0 mt-0.5" size={18} />
-                                        <p className="text-lab-ink text-sm font-medium">{submitError}</p>
+                                        <XCircle className="text-duck-error shrink-0 mt-0.5" size={18} />
+                                        <p className="text-duck-ink text-sm font-medium">{submitError}</p>
                                     </motion.div>
                                 )}
 
                                 <div className="flex items-center justify-between mt-3">
-                                    <span className={`text-sm font-medium ${ideeText.length >= 250 ? 'text-lab-muted' : 'text-lab-muted'}`}>
+                                    <span className={`text-sm font-medium text-duck-ink/60`}>
                                         {ideeText.length}/280
                                     </span>
                                     <button
                                         onClick={handleSubmitIdee}
                                         disabled={!ideeText.trim() || submitting}
-                                        className="px-6 py-3 bg-gradient-to-r from-lab-coral to-lab-teal text-white font-bold rounded-xl shadow-lg disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-xl hover:scale-105 transition-all flex items-center gap-2"
+                                        className="px-6 py-3 bg-duck-acid text-duck-ink font-bold rounded-full shadow-duck-soft disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-xl hover:scale-105 transition-all flex items-center gap-2"
                                     >
                                         {submitting ? (
                                             <>
@@ -592,12 +592,12 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
         const canComplete = myIdeeen.length > 0 || votedIds.size > 0;
 
         return (
-            <div className="min-h-full bg-gradient-to-br from-lab-coral via-white to-lab-teal p-6">
+            <div className="min-h-full bg-gradient-to-br from-duck-acid via-white to-duck-ink p-6">
                 <div className="max-w-2xl mx-auto">
                     <div className="flex items-center justify-between mb-6">
                         <button
                             onClick={() => setPhase('categories')}
-                            className="flex items-center gap-2 text-lab-muted hover:text-lab-muted font-medium"
+                            className="flex items-center gap-2 text-duck-ink/60 hover:text-duck-ink font-medium"
                         >
                             <ArrowLeft size={18} />
                             Nieuw idee
@@ -605,7 +605,7 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
                         <button
                             onClick={() => setPhase('complete')}
                             disabled={!canComplete}
-                            className="px-4 py-2 bg-lab-coral text-white font-bold rounded-xl hover:bg-lab-sage hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="px-4 py-2 bg-duck-acid text-duck-ink font-bold rounded-full hover:bg-duck-ink hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             Afronden ✓
                         </button>
@@ -613,9 +613,9 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
 
                     {/* Top 3 Leaderboard */}
                     {topThree.length > 0 && (
-                        <div className="bg-gradient-to-br from-lab-gold to-lab-coral rounded-2xl p-6 mb-6 border-2 border-lab-gold">
-                            <h3 className="font-bold text-white flex items-center gap-2 mb-4">
-                                <Trophy className="text-white" size={20} />
+                        <div className="bg-gradient-to-br from-duck-acid to-duck-ink rounded-2xl p-6 mb-6 border-2 border-duck-acid">
+                            <h3 className="font-bold text-duck-ink flex items-center gap-2 mb-4">
+                                <Trophy className="text-duck-ink" size={20} />
                                 Top Ideeën
                             </h3>
                             <div className="space-y-3">
@@ -623,15 +623,14 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
                                     const cat = getCategoryById(idee.categorie);
                                     return (
                                         <div key={idee.id} className="flex items-center gap-3 bg-white/80 rounded-xl p-3">
-                                            <span className={`w-8 h-8 flex items-center justify-center font-black text-lg ${idx === 0 ? 'text-lab-muted' : idx === 1 ? 'text-lab-muted' : 'text-lab-gold'
-                                                }`}>
+                                            <span className={`w-8 h-8 flex items-center justify-center font-black text-lg text-duck-ink`}>
                                                 {idx === 0 ? '🥇' : idx === 1 ? '🥈' : '🥉'}
                                             </span>
                                             <div className="flex-1 min-w-0">
-                                                <p className="text-lab-muted font-medium truncate">{idee.idee}</p>
-                                                <span className="text-xs text-lab-muted">{cat?.label}</span>
+                                                <p className="text-duck-ink/60 font-medium truncate">{idee.idee}</p>
+                                                <span className="text-xs text-duck-ink/60">{cat?.label}</span>
                                             </div>
-                                            <span className="text-lab-gold font-bold flex items-center gap-1">
+                                            <span className="text-duck-acid font-bold flex items-center gap-1">
                                                 <ThumbsUp size={14} /> {idee.stemmen || 0}
                                             </span>
                                         </div>
@@ -642,12 +641,12 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
                     )}
 
                     {/* All Ideas */}
-                    <h3 className="font-bold text-lab-ink mb-4">Alle Ideeën ({ideeen.length})</h3>
+                    <h3 className="font-bold text-duck-ink mb-4">Alle Ideeën ({ideeen.length})</h3>
 
                     {loading ? (
-                        <div className="text-center py-12 text-lab-muted">Laden...</div>
+                        <div className="text-center py-12 text-duck-ink/60">Laden...</div>
                     ) : ideeen.length === 0 ? (
-                        <div className="text-center py-12 text-lab-muted bg-white rounded-2xl border-2 border-dashed border-lab-line">
+                        <div className="text-center py-12 text-duck-ink/60 bg-white rounded-2xl border-2 border-dashed border-duck-ink/15">
                             Nog geen ideeën. Voeg eerst een idee toe om de missie af te ronden.
                         </div>
                     ) : (
@@ -661,24 +660,24 @@ export const AiBeleidBrainstormPreview: React.FC<AiBeleidBrainstormPreviewProps>
                                         key={idee.id}
                                         initial={{ opacity: 0, y: 10 }}
                                         animate={{ opacity: 1, y: 0 }}
-                                        className={`bg-white rounded-xl p-4 border-2 ${cat?.borderColor || 'border-lab-line'}`}
+                                        className={`bg-white rounded-xl p-4 border-2 ${cat?.borderColor || 'border-duck-ink/15'}`}
                                     >
                                         <div className="flex items-start gap-3">
-                                            <div className={`w-10 h-10 bg-gradient-to-br ${cat?.color || 'from-lab-creamDeep to-lab-coral'} rounded-lg flex items-center justify-center text-white shrink-0`}>
+                                            <div className={`w-10 h-10 bg-gradient-to-br ${cat?.color || 'from-duck-bg to-duck-acid'} rounded-lg flex items-center justify-center text-duck-ink shrink-0`}>
                                                 {cat && <cat.icon size={18} />}
                                             </div>
                                             <div className="flex-1 min-w-0">
-                                                <p className="text-lab-muted mb-2">{idee.idee}</p>
-                                                <div className="flex items-center gap-2 text-xs text-lab-muted">
+                                                <p className="text-duck-ink/60 mb-2">{idee.idee}</p>
+                                                <div className="flex items-center gap-2 text-xs text-duck-ink/60">
                                                     <span>{cat?.label}</span>
                                                 </div>
                                             </div>
                                             <button
                                                 onClick={() => handleVote(idee.id!)}
                                                 disabled={hasVoted}
-                                                className={`flex items-center gap-1 px-3 py-2 rounded-lg font-bold transition-all ${hasVoted
-                                                    ? 'bg-lab-coral text-white'
-                                                    : 'bg-lab-cream text-lab-muted hover:bg-lab-coral hover:text-white'
+                                                className={`flex items-center gap-1 px-3 py-2 rounded-full font-bold transition-all ${hasVoted
+                                                    ? 'bg-duck-acid text-duck-ink'
+                                                    : 'bg-duck-bg text-duck-ink/60 hover:bg-duck-acid hover:text-duck-ink'
                                                     }`}
                                             >
                                                 <ThumbsUp size={16} />

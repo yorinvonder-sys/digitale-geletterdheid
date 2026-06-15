@@ -22,6 +22,11 @@ const IconArrowRight = (props: { size?: number; className?: string }) => (
         <path d="M5 12h14M12 5l7 7-7 7" />
     </svg>
 );
+const IconArrowLeft = (props: { size?: number; className?: string }) => (
+    <svg width={props.size ?? 18} height={props.size ?? 18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={props.className} aria-hidden="true">
+        <path d="M19 12H5M12 19l-7-7 7-7" />
+    </svg>
+);
 const IconEye = (props: { size?: number; className?: string }) => (
     <svg width={props.size ?? 18} height={props.size ?? 18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={props.className} aria-hidden="true">
         <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" /><circle cx="12" cy="12" r="3" />
@@ -306,11 +311,20 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
             <div className="absolute inset-0 overflow-y-auto overflow-x-hidden">
                 <main className="relative z-10 flex min-h-full items-center justify-center px-4 py-2 sm:px-6 lg:px-8">
                         <div className="relative mx-auto w-full max-w-[28rem]">
+                            <div className="mb-2">
+                                <a
+                                    href="/"
+                                    className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-black text-duck-ink/60 transition-colors hover:bg-duck-ink/5 hover:text-duck-ink"
+                                >
+                                    <IconArrowLeft size={14} />
+                                    Terug naar homepage
+                                </a>
+                            </div>
                             <div className="rounded-[1.75rem] border border-duck-ink/15 bg-white p-4 shadow-duck-soft">
 
                         <div className="mb-3 text-center">
-                            <div className="mx-auto mb-2 flex w-full max-w-[150px] justify-center">
-                                <img src="/logo-lockup.webp" alt="DGSkills.app" className="h-auto w-full object-contain" width={320} height={96} fetchPriority="high" decoding="async" />
+                            <div className="mx-auto mb-2 flex w-full max-w-[80px] justify-center">
+                                <img src="/assets/brand/dgskills-duck-logo-mark.webp" alt="DGSkills" className="h-auto w-full object-contain" width={80} height={80} fetchPriority="high" decoding="async" />
                             </div>
                             <h1 className="mb-1 font-display text-xl font-black leading-tight tracking-tight text-duck-ink">
                                 {mode === 'register' ? 'Maak je account aan' : mode === 'forgot-password' ? 'Reset je wachtwoord' : 'Welkom terug'}

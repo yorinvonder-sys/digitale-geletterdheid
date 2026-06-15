@@ -59,7 +59,7 @@ const ROUNDS: AuctionRound[] = [
     }
 ];
 
-const RISK_COLORS = { low: 'bg-duck-ink', medium: 'bg-duck-coral', high: 'bg-lab-coral', extreme: 'bg-lab-coral' };
+const RISK_COLORS = { low: 'bg-duck-ink', medium: 'bg-duck-coral', high: 'bg-duck-error', extreme: 'bg-duck-error' };
 const RISK_LABELS = { low: 'Laag risico', medium: 'Gemiddeld risico', high: 'Hoog risico', extreme: 'Extreem risico' };
 const SCOPE_LABELS = { class: 'jouw klas', school: 'jouw school' } as const;
 

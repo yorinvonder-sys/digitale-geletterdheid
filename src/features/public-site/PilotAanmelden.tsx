@@ -214,9 +214,9 @@ export const PilotAanmelden: React.FC = () => {
     };
 
     return (
-        <div className="min-h-screen bg-lab-cream">
+        <div className="min-h-screen bg-duck-bg">
             {/* Nav */}
-            <nav className="fixed top-0 left-0 right-0 z-50 bg-lab-paper/95 backdrop-blur border-b border-lab-line">
+            <nav className="fixed top-0 left-0 right-0 z-50 bg-duck-bgLight/95 backdrop-blur border-b border-duck-ink/15">
                 <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
                     <a href="/" aria-label="DGSkills homepage">
                         <img
@@ -228,19 +228,19 @@ export const PilotAanmelden: React.FC = () => {
                     <div className="flex items-center gap-5 text-sm">
                         <a
                             href="/compliance-hub"
-                            className="text-lab-muted hover:text-lab-coral transition-colors hidden sm:inline"
+                            className="text-duck-ink/60 hover:text-duck-acid transition-colors hidden sm:inline"
                         >
                             Compliance
                         </a>
                         <a
                             href="/scholen"
-                            className="text-lab-muted hover:text-lab-coral transition-colors hidden sm:inline"
+                            className="text-duck-ink/60 hover:text-duck-acid transition-colors hidden sm:inline"
                         >
                             Voor scholen
                         </a>
                         <a
                             href="mailto:info@dgskills.app"
-                            className="text-lab-muted hover:text-lab-coral transition-colors"
+                            className="text-duck-ink/60 hover:text-duck-acid transition-colors"
                         >
                             Contact
                         </a>
@@ -254,16 +254,16 @@ export const PilotAanmelden: React.FC = () => {
                     {/* Hero */}
                     <Reveal delay={0}>
                         <header className="mb-12 text-center max-w-3xl mx-auto">
-                            <span className="inline-block px-3 py-1 bg-lab-coral/10 text-lab-coral text-[11px] font-bold rounded-full uppercase tracking-wider mb-4">
+                            <span className="inline-block px-3 py-1 bg-duck-acid/10 text-duck-acid text-[11px] font-bold rounded-full uppercase tracking-wider mb-4">
                                 Gratis pilot · schooljaar 2025-2026
                             </span>
-                            <h1 className="font-black text-balance text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-lab-ink mb-5 leading-tight">
+                            <h1 className="font-black text-balance text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-duck-ink mb-5 leading-tight">
                                 Je school live met digitale geletterdheid in{' '}
-                                <span className="underline decoration-lab-coral decoration-4 underline-offset-4">
+                                <span className="underline decoration-duck-acid decoration-4 underline-offset-4">
                                     10 werkdagen
                                 </span>
                             </h1>
-                            <p className="text-lab-muted text-base md:text-lg leading-relaxed max-w-2xl mx-auto mb-8">
+                            <p className="text-duck-ink/60 text-base md:text-lg leading-relaxed max-w-2xl mx-auto mb-8">
                                 Drie maanden volledige toegang, AVG-compliant, max. 250 leerlingen, live binnen tien
                                 werkdagen. Vul het formulier in en we nemen binnen twee werkdagen contact met je op.
                             </p>
@@ -271,13 +271,13 @@ export const PilotAanmelden: React.FC = () => {
                                 <a
                                     href="#aanvraagformulier"
                                     onClick={scrollToForm}
-                                    className="inline-flex items-center justify-center px-7 min-h-[44px] bg-lab-gold hover:bg-lab-oliveDeep text-lab-ink font-black rounded-full transition-colors text-sm"
+                                    className="inline-flex items-center justify-center px-7 min-h-[44px] bg-duck-acid hover:bg-duck-acid/80 text-duck-ink font-black rounded-full transition-colors text-sm"
                                 >
                                     Vraag pilot aan
                                 </a>
                                 <a
                                     href="/compliance-hub"
-                                    className="inline-flex items-center justify-center px-7 min-h-[44px] border border-lab-ink text-lab-ink hover:bg-lab-ink hover:text-lab-paper font-semibold rounded-full transition-colors text-sm"
+                                    className="inline-flex items-center justify-center px-7 min-h-[44px] border border-duck-ink text-duck-ink hover:bg-duck-ink hover:text-duck-bg font-semibold rounded-full transition-colors text-sm"
                                 >
                                     Bekijk compliance
                                 </a>
@@ -287,7 +287,7 @@ export const PilotAanmelden: React.FC = () => {
 
                     {/* Trust-row */}
                     <Reveal delay={0.06}>
-                        <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-0 text-xs text-lab-muted mb-14 flex-wrap">
+                        <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-0 text-xs text-duck-ink/60 mb-14 flex-wrap">
                             {[
                                 { icon: <IconShield />, label: 'KvK 81819889' },
                                 { icon: <IconShield />, label: 'AVG-compliant' },
@@ -296,12 +296,12 @@ export const PilotAanmelden: React.FC = () => {
                             ].map((item, i) => (
                                 <React.Fragment key={item.label}>
                                     {i > 0 && (
-                                        <span className="hidden sm:inline mx-3 text-lab-line" aria-hidden="true">
+                                        <span className="hidden sm:inline mx-3 text-duck-gray" aria-hidden="true">
                                             ·
                                         </span>
                                     )}
                                     <span className="inline-flex items-center gap-1.5 font-medium">
-                                        <span className="text-lab-sage">{item.icon}</span>
+                                        <span className="text-duck-ink/60">{item.icon}</span>
                                         {item.label}
                                     </span>
                                 </React.Fragment>
@@ -322,16 +322,16 @@ export const PilotAanmelden: React.FC = () => {
                                         {HIGHLIGHTS.map((item) => (
                                             <div
                                                 key={item.title}
-                                                className="flex gap-3 p-5 bg-lab-paper rounded-2xl border border-lab-line"
+                                                className="flex gap-3 p-5 bg-duck-bgLight rounded-2xl border border-duck-ink/15"
                                             >
-                                                <div className="mt-0.5 text-lab-sage shrink-0">
+                                                <div className="mt-0.5 text-duck-ink/60 shrink-0">
                                                     <IconCheck />
                                                 </div>
                                                 <div>
-                                                    <h3 className="font-bold text-lab-ink text-sm mb-1">
+                                                    <h3 className="font-bold text-duck-ink text-sm mb-1">
                                                         {item.title}
                                                     </h3>
-                                                    <p className="text-sm text-lab-muted">{item.description}</p>
+                                                    <p className="text-sm text-duck-ink/60">{item.description}</p>
                                                 </div>
                                             </div>
                                         ))}
@@ -342,22 +342,22 @@ export const PilotAanmelden: React.FC = () => {
                             {/* Tijdlijn */}
                             <Reveal delay={0.10}>
                                 <section aria-label="Tijdlijn van aanmelding tot livegang">
-                                    <h2 className="text-lg font-black text-lab-ink mb-5">
+                                    <h2 className="text-lg font-black text-duck-ink mb-5">
                                         Van aanmelding tot live: 10 werkdagen
                                     </h2>
                                     {/* Mobile: vertical stack */}
                                     <ol className="md:hidden space-y-4">
                                         {TIJDLIJN.map((stap, i) => (
                                             <li key={stap.dag} className="flex gap-4 items-start">
-                                                <div className="flex-shrink-0 w-9 h-9 rounded-full bg-lab-paper border border-lab-line flex items-center justify-center text-lab-ink font-bold text-sm">
+                                                <div className="flex-shrink-0 w-9 h-9 rounded-full bg-duck-bgLight border border-duck-ink/15 flex items-center justify-center text-duck-ink font-bold text-sm">
                                                     {i + 1}
                                                 </div>
                                                 <div>
-                                                    <p className="text-xs font-bold uppercase tracking-wider text-lab-coral mb-0.5">
+                                                    <p className="text-xs font-bold uppercase tracking-wider text-duck-acid mb-0.5">
                                                         {stap.dag}
                                                     </p>
-                                                    <p className="font-bold text-lab-ink text-sm">{stap.titel}</p>
-                                                    <p className="text-xs text-lab-muted">{stap.omschrijving}</p>
+                                                    <p className="font-bold text-duck-ink text-sm">{stap.titel}</p>
+                                                    <p className="text-xs text-duck-ink/60">{stap.omschrijving}</p>
                                                 </div>
                                             </li>
                                         ))}
@@ -368,18 +368,18 @@ export const PilotAanmelden: React.FC = () => {
                                             <li key={stap.dag} className="flex-1 flex flex-col items-center text-center relative">
                                                 {i < TIJDLIJN.length - 1 && (
                                                     <div
-                                                        className="absolute top-[18px] left-1/2 w-full border-t-2 border-dashed border-lab-line"
+                                                        className="absolute top-[18px] left-1/2 w-full border-t-2 border-dashed border-duck-ink/15"
                                                         aria-hidden="true"
                                                     />
                                                 )}
-                                                <div className="relative z-10 w-9 h-9 rounded-full bg-lab-paper border border-lab-line flex items-center justify-center text-lab-ink font-bold text-sm mb-2">
+                                                <div className="relative z-10 w-9 h-9 rounded-full bg-duck-bgLight border border-duck-ink/15 flex items-center justify-center text-duck-ink font-bold text-sm mb-2">
                                                     {i + 1}
                                                 </div>
-                                                <p className="text-[10px] font-bold uppercase tracking-wider text-lab-coral mb-0.5">
+                                                <p className="text-[10px] font-bold uppercase tracking-wider text-duck-acid mb-0.5">
                                                     {stap.dag}
                                                 </p>
-                                                <p className="font-bold text-lab-ink text-xs">{stap.titel}</p>
-                                                <p className="text-[11px] text-lab-muted leading-tight px-1">{stap.omschrijving}</p>
+                                                <p className="font-bold text-duck-ink text-xs">{stap.titel}</p>
+                                                <p className="text-[11px] text-duck-ink/60 leading-tight px-1">{stap.omschrijving}</p>
                                             </li>
                                         ))}
                                     </ol>
@@ -388,17 +388,17 @@ export const PilotAanmelden: React.FC = () => {
 
                             {/* Checklist */}
                             <Reveal delay={0.12}>
-                                <section aria-label="Wat krijg je tijdens de pilot" className="bg-lab-paper rounded-2xl border border-lab-line p-6">
-                                    <h2 className="text-sm font-bold text-lab-ink mb-3">
+                                <section aria-label="Wat krijg je tijdens de pilot" className="bg-duck-bgLight rounded-2xl border border-duck-ink/15 p-6">
+                                    <h2 className="text-sm font-bold text-duck-ink mb-3">
                                         Wat krijg je tijdens de pilot?
                                     </h2>
                                     <ul className="space-y-2.5">
                                         {CHECKLIST_ITEMS.map((item) => (
                                             <li
                                                 key={item}
-                                                className="flex items-start gap-2.5 text-sm text-lab-bodyDark"
+                                                className="flex items-start gap-2.5 text-sm text-duck-ink"
                                             >
-                                                <span className="flex-shrink-0 mt-0.5 w-4 h-4 bg-lab-sage/15 text-lab-sage rounded-full flex items-center justify-center">
+                                                <span className="flex-shrink-0 mt-0.5 w-4 h-4 bg-duck-ink/10 text-duck-ink/60 rounded-full flex items-center justify-center">
                                                     <IconCheck />
                                                 </span>
                                                 {item}
@@ -410,20 +410,20 @@ export const PilotAanmelden: React.FC = () => {
 
                             {/* Founder-note */}
                             <Reveal delay={0.14}>
-                                <div className="bg-lab-paper rounded-2xl border border-lab-line border-l-4 border-l-lab-coral p-6">
+                                <div className="bg-duck-bgLight rounded-2xl border border-duck-ink/15 border-l-4 border-l-duck-acid p-6">
                                     <img
                                         src="/logo-lockup.webp"
                                         alt=""
                                         className="h-8 w-auto mb-4"
                                         aria-hidden="true"
                                     />
-                                    <blockquote className="text-sm text-lab-bodyDark leading-relaxed mb-4 italic">
+                                    <blockquote className="text-sm text-duck-ink leading-relaxed mb-4 italic">
                                         "Ik bouw DGSkills als fulltime VO-docent omdat ik mijn eigen leerlingen kwalitatief
                                         AI-onderwijs en digitale geletterdheid wilde geven — en dat in geen enkel bestaand platform
                                         vond. Elke missie test ik eerst zelf in de klas. Dat doe ik liever met jouw leerlingen er
                                         ook bij."
                                     </blockquote>
-                                    <p className="text-xs font-bold text-lab-muted">
+                                    <p className="text-xs font-bold text-duck-ink/60">
                                         — Yorin Vonder, oprichter &amp; docent informatica
                                     </p>
                                 </div>
@@ -431,17 +431,17 @@ export const PilotAanmelden: React.FC = () => {
 
                             {/* Compliance callout */}
                             <Reveal delay={0.16}>
-                                <div className="bg-lab-creamWarm rounded-2xl p-6">
-                                    <h3 className="text-sm font-bold text-lab-ink mb-2">
+                                <div className="bg-duck-bg rounded-2xl p-6">
+                                    <h3 className="text-sm font-bold text-duck-ink mb-2">
                                         Eerst het compliance-dossier bekijken?
                                     </h3>
-                                    <p className="text-sm text-lab-muted mb-4 leading-relaxed">
+                                    <p className="text-sm text-duck-ink/60 mb-4 leading-relaxed">
                                         Onze volledige privacy- en AI Act-documentatie staat open op de Compliance Hub —
                                         inclusief DPA, DPIA, Annex IV en het risicoregister.
                                     </p>
                                     <a
                                         href="/compliance-hub"
-                                        className="inline-flex items-center gap-1 text-sm font-semibold text-lab-coral hover:underline"
+                                        className="inline-flex items-center gap-1 text-sm font-semibold text-duck-acid hover:underline"
                                     >
                                         Naar Compliance Hub →
                                     </a>
@@ -455,25 +455,25 @@ export const PilotAanmelden: React.FC = () => {
                                 <section
                                     id="aanvraagformulier"
                                     aria-label="Pilot aanvraagformulier"
-                                    className="bg-lab-paper rounded-3xl border border-lab-line p-8 md:p-10 shadow-[0_24px_60px_-30px_rgba(8,40,59,0.18)]"
+                                    className="bg-duck-bgLight rounded-3xl border border-duck-ink/15 p-8 md:p-10 shadow-[0_24px_60px_-30px_rgba(8,40,59,0.18)]"
                                 >
                                     {isSubmitted ? (
                                         <div className="text-center py-8">
-                                            <div className="w-14 h-14 bg-lab-sage/15 text-lab-sage rounded-full flex items-center justify-center mx-auto mb-5">
+                                            <div className="w-14 h-14 bg-duck-ink/10 text-duck-ink/60 rounded-full flex items-center justify-center mx-auto mb-5">
                                                 <IconCheck />
                                             </div>
-                                            <h2 className="text-xl font-bold text-lab-ink mb-2">
+                                            <h2 className="text-xl font-bold text-duck-ink mb-2">
                                                 Aanvraag ontvangen
                                             </h2>
-                                            <p className="text-sm text-lab-muted mb-6 max-w-md mx-auto">
+                                            <p className="text-sm text-duck-ink/60 mb-6 max-w-md mx-auto">
                                                 We nemen binnen twee werkdagen contact met je op om de pilot in
                                                 te plannen. Je ontvangt ook een bevestiging per e-mail.
                                             </p>
-                                            <div className="bg-lab-cream rounded-2xl p-5 text-left max-w-md mx-auto">
-                                                <p className="text-xs font-bold text-lab-ink mb-2 uppercase tracking-wide">
+                                            <div className="bg-duck-bg rounded-2xl p-5 text-left max-w-md mx-auto">
+                                                <p className="text-xs font-bold text-duck-ink mb-2 uppercase tracking-wide">
                                                     Wat kun je verwachten?
                                                 </p>
-                                                <ol className="space-y-1 text-sm text-lab-muted list-decimal list-inside">
+                                                <ol className="space-y-1 text-sm text-duck-ink/60 list-decimal list-inside">
                                                     <li>Kennismakingsgesprek (15 minuten)</li>
                                                     <li>Onboarding voor docenten (30 minuten)</li>
                                                     <li>Leerlingen starten binnen tien werkdagen</li>
@@ -499,10 +499,10 @@ export const PilotAanmelden: React.FC = () => {
                                             />
 
                                             <div className="mb-2">
-                                                <h2 className="text-lg font-bold text-lab-ink">
+                                                <h2 className="text-lg font-bold text-duck-ink">
                                                     Pilot aanvragen
                                                 </h2>
-                                                <p className="text-sm text-lab-muted">
+                                                <p className="text-sm text-duck-ink/60">
                                                     Reactie binnen twee werkdagen.
                                                 </p>
                                             </div>
@@ -510,7 +510,7 @@ export const PilotAanmelden: React.FC = () => {
                                             <div>
                                                 <label
                                                     htmlFor="schoolNaam"
-                                                    className="block text-xs font-semibold text-lab-muted mb-1.5"
+                                                    className="block text-xs font-semibold text-duck-ink/60 mb-1.5"
                                                 >
                                                     Schoolnaam
                                                 </label>
@@ -522,14 +522,14 @@ export const PilotAanmelden: React.FC = () => {
                                                     onChange={(e) => handleChange('schoolNaam', e.target.value)}
                                                     placeholder="Naam van je school"
                                                     autoComplete="organization"
-                                                    className="w-full px-3.5 min-h-[44px] bg-lab-cream border border-lab-line rounded-lg outline-none focus:ring-2 focus:ring-lab-gold/30 focus:border-lab-gold transition-all text-sm text-lab-ink placeholder:text-lab-mutedSoft"
+                                                    className="w-full px-3.5 min-h-[44px] bg-duck-bg border border-duck-ink/15 rounded-lg outline-none focus:ring-2 focus:ring-duck-acid/30 focus:border-duck-acid transition-all text-sm text-duck-ink placeholder:text-duck-ink/30"
                                                 />
                                             </div>
 
                                             <div>
                                                 <label
                                                     htmlFor="contactPersoon"
-                                                    className="block text-xs font-semibold text-lab-muted mb-1.5"
+                                                    className="block text-xs font-semibold text-duck-ink/60 mb-1.5"
                                                 >
                                                     Naam
                                                 </label>
@@ -543,14 +543,14 @@ export const PilotAanmelden: React.FC = () => {
                                                     }
                                                     placeholder="Je volledige naam"
                                                     autoComplete="name"
-                                                    className="w-full px-3.5 min-h-[44px] bg-lab-cream border border-lab-line rounded-lg outline-none focus:ring-2 focus:ring-lab-gold/30 focus:border-lab-gold transition-all text-sm text-lab-ink placeholder:text-lab-mutedSoft"
+                                                    className="w-full px-3.5 min-h-[44px] bg-duck-bg border border-duck-ink/15 rounded-lg outline-none focus:ring-2 focus:ring-duck-acid/30 focus:border-duck-acid transition-all text-sm text-duck-ink placeholder:text-duck-ink/30"
                                                 />
                                             </div>
 
                                             <div>
                                                 <label
                                                     htmlFor="email"
-                                                    className="block text-xs font-semibold text-lab-muted mb-1.5"
+                                                    className="block text-xs font-semibold text-duck-ink/60 mb-1.5"
                                                 >
                                                     E-mail
                                                 </label>
@@ -563,7 +563,7 @@ export const PilotAanmelden: React.FC = () => {
                                                     placeholder="naam@school.nl"
                                                     autoComplete="email"
                                                     spellCheck={false}
-                                                    className="w-full px-3.5 min-h-[44px] bg-lab-cream border border-lab-line rounded-lg outline-none focus:ring-2 focus:ring-lab-gold/30 focus:border-lab-gold transition-all text-sm text-lab-ink placeholder:text-lab-mutedSoft"
+                                                    className="w-full px-3.5 min-h-[44px] bg-duck-bg border border-duck-ink/15 rounded-lg outline-none focus:ring-2 focus:ring-duck-acid/30 focus:border-duck-acid transition-all text-sm text-duck-ink placeholder:text-duck-ink/30"
                                                 />
                                             </div>
 
@@ -571,7 +571,7 @@ export const PilotAanmelden: React.FC = () => {
                                                 <div>
                                                     <label
                                                         htmlFor="rol"
-                                                        className="block text-xs font-semibold text-lab-muted mb-1.5"
+                                                        className="block text-xs font-semibold text-duck-ink/60 mb-1.5"
                                                     >
                                                         Rol
                                                     </label>
@@ -579,7 +579,7 @@ export const PilotAanmelden: React.FC = () => {
                                                         id="rol"
                                                         value={formData.rol}
                                                         onChange={(e) => handleChange('rol', e.target.value)}
-                                                        className="w-full px-3.5 min-h-[44px] bg-lab-cream border border-lab-line rounded-lg outline-none focus:ring-2 focus:ring-lab-gold/30 focus:border-lab-gold transition-all text-sm text-lab-ink appearance-none"
+                                                        className="w-full px-3.5 min-h-[44px] bg-duck-bg border border-duck-ink/15 rounded-lg outline-none focus:ring-2 focus:ring-duck-acid/30 focus:border-duck-acid transition-all text-sm text-duck-ink appearance-none"
                                                     >
                                                         <option value="">Selecteer</option>
                                                         {ROLE_OPTIONS.map((opt) => (
@@ -592,7 +592,7 @@ export const PilotAanmelden: React.FC = () => {
                                                 <div>
                                                     <label
                                                         htmlFor="aantalLeerlingen"
-                                                        className="block text-xs font-semibold text-lab-muted mb-1.5"
+                                                        className="block text-xs font-semibold text-duck-ink/60 mb-1.5"
                                                     >
                                                         Leerlingen
                                                     </label>
@@ -602,7 +602,7 @@ export const PilotAanmelden: React.FC = () => {
                                                         onChange={(e) =>
                                                             handleChange('aantalLeerlingen', e.target.value)
                                                         }
-                                                        className="w-full px-3.5 min-h-[44px] bg-lab-cream border border-lab-line rounded-lg outline-none focus:ring-2 focus:ring-lab-gold/30 focus:border-lab-gold transition-all text-sm text-lab-ink appearance-none"
+                                                        className="w-full px-3.5 min-h-[44px] bg-duck-bg border border-duck-ink/15 rounded-lg outline-none focus:ring-2 focus:ring-duck-acid/30 focus:border-duck-acid transition-all text-sm text-duck-ink appearance-none"
                                                     >
                                                         <option value="">Aantal</option>
                                                         {STUDENT_RANGE_OPTIONS.map((opt) => (
@@ -617,10 +617,10 @@ export const PilotAanmelden: React.FC = () => {
                                             <div>
                                                 <label
                                                     htmlFor="bericht"
-                                                    className="block text-xs font-semibold text-lab-muted mb-1.5"
+                                                    className="block text-xs font-semibold text-duck-ink/60 mb-1.5"
                                                 >
                                                     Bericht{' '}
-                                                    <span className="text-lab-mutedSoft font-normal">
+                                                    <span className="text-duck-ink/30 font-normal">
                                                         (optioneel)
                                                     </span>
                                                 </label>
@@ -631,14 +631,14 @@ export const PilotAanmelden: React.FC = () => {
                                                     placeholder="Specifieke wensen, tijdlijn of vragen"
                                                     rows={3}
                                                     maxLength={2000}
-                                                    className="w-full px-3.5 py-3 bg-lab-cream border border-lab-line rounded-lg outline-none focus:ring-2 focus:ring-lab-gold/30 focus:border-lab-gold transition-all text-sm text-lab-ink placeholder:text-lab-mutedSoft resize-none min-h-[96px]"
+                                                    className="w-full px-3.5 py-3 bg-duck-bg border border-duck-ink/15 rounded-lg outline-none focus:ring-2 focus:ring-duck-acid/30 focus:border-duck-acid transition-all text-sm text-duck-ink placeholder:text-duck-ink/30 resize-none min-h-[96px]"
                                                 />
                                             </div>
 
                                             {submitError && (
                                                 <p
                                                     role="alert"
-                                                    className="text-sm text-white bg-lab-coral border border-lab-coral rounded-lg px-3 py-2"
+                                                    className="text-sm text-white bg-duck-error border border-duck-error rounded-lg px-3 py-2"
                                                 >
                                                     {submitError}
                                                 </p>
@@ -648,12 +648,12 @@ export const PilotAanmelden: React.FC = () => {
                                                 type="submit"
                                                 disabled={isSubmitting}
                                                 aria-busy={isSubmitting}
-                                                className="w-full bg-lab-gold hover:bg-lab-oliveDeep text-lab-ink font-black min-h-[48px] rounded-lg flex items-center justify-center gap-2 transition-colors text-sm disabled:opacity-60 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lab-gold"
+                                                className="w-full bg-duck-acid hover:bg-duck-acid/80 text-duck-ink font-black min-h-[48px] rounded-full flex items-center justify-center gap-2 transition-colors text-sm disabled:opacity-60 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-duck-acid"
                                             >
                                                 {isSubmitting ? (
                                                     <>
                                                         <span
-                                                            className="w-4 h-4 border-2 border-lab-ink/30 border-t-lab-ink rounded-full animate-spin"
+                                                            className="w-4 h-4 border-2 border-duck-ink/30 border-t-duck-ink rounded-full animate-spin"
                                                             aria-hidden="true"
                                                         />
                                                         <span className="sr-only">
@@ -665,20 +665,20 @@ export const PilotAanmelden: React.FC = () => {
                                                 )}
                                             </button>
 
-                                            <p className="text-xs text-lab-muted leading-relaxed">
+                                            <p className="text-xs text-duck-ink/60 leading-relaxed">
                                                 Je gegevens worden verwerkt op grond van precontractueel
                                                 contact. Verwerking vindt plaats binnen de EER met passende
                                                 AVG-overeenkomsten. Zie de{' '}
                                                 <a
                                                     href="/ict/privacy/policy"
-                                                    className="text-lab-coral hover:underline"
+                                                    className="text-duck-acid hover:underline"
                                                 >
                                                     privacyverklaring
                                                 </a>{' '}
                                                 en de{' '}
                                                 <a
                                                     href="/compliance-hub"
-                                                    className="text-lab-coral hover:underline"
+                                                    className="text-duck-acid hover:underline"
                                                 >
                                                     Compliance Hub
                                                 </a>
@@ -694,22 +694,22 @@ export const PilotAanmelden: React.FC = () => {
                     {/* FAQ */}
                     <Reveal delay={0.05}>
                         <section className="max-w-3xl mx-auto mt-20" aria-label="Veelgestelde vragen">
-                            <h2 className="text-2xl font-black text-lab-ink mb-6 text-center">
+                            <h2 className="text-2xl font-black text-duck-ink mb-6 text-center">
                                 Veelgestelde vragen
                             </h2>
-                            <div className="bg-lab-paper rounded-2xl border border-lab-line px-6">
+                            <div className="bg-duck-bgLight rounded-2xl border border-duck-ink/15 px-6">
                                 {FAQ_ITEMS.map((item) => (
                                     <details
                                         key={item.q}
-                                        className="group border-b border-lab-line last:border-0 py-4"
+                                        className="group border-b border-duck-ink/15 last:border-0 py-4"
                                     >
-                                        <summary className="cursor-pointer font-medium text-lab-ink text-sm flex items-center justify-between list-none">
+                                        <summary className="cursor-pointer font-medium text-duck-ink text-sm flex items-center justify-between list-none">
                                             <span>{item.q}</span>
-                                            <span className="text-lab-mutedSoft text-xs group-open:rotate-45 transition-transform flex-shrink-0 ml-3">
+                                            <span className="text-duck-ink/30 text-xs group-open:rotate-45 transition-transform flex-shrink-0 ml-3">
                                                 +
                                             </span>
                                         </summary>
-                                        <p className="text-sm text-lab-muted mt-2 leading-relaxed">{item.a}</p>
+                                        <p className="text-sm text-duck-ink/60 mt-2 leading-relaxed">{item.a}</p>
                                     </details>
                                 ))}
                             </div>
@@ -718,15 +718,15 @@ export const PilotAanmelden: React.FC = () => {
 
                     {/* Final CTA */}
                     <Reveal delay={0.05}>
-                        <div className="max-w-3xl mx-auto mt-16 bg-lab-tealDark text-lab-paper rounded-3xl p-10 md:p-14 text-center">
+                        <div className="max-w-3xl mx-auto mt-16 bg-duck-ink text-duck-bg rounded-3xl p-10 md:p-14 text-center">
                             <h2 className="text-xl md:text-2xl font-black mb-3">
                                 Klaar om je school aan te melden?
                             </h2>
-                            <p className="text-lab-paper/70 text-sm mb-8">
+                            <p className="text-duck-bg/70 text-sm mb-8">
                                 Of mail Yorin direct op{' '}
                                 <a
                                     href="mailto:info@dgskills.app"
-                                    className="text-lab-gold font-semibold hover:underline"
+                                    className="text-duck-acid font-semibold hover:underline"
                                 >
                                     info@dgskills.app
                                 </a>
@@ -734,7 +734,7 @@ export const PilotAanmelden: React.FC = () => {
                             <a
                                 href="#aanvraagformulier"
                                 onClick={scrollToForm}
-                                className="inline-flex items-center justify-center bg-lab-gold hover:bg-lab-oliveDeep text-lab-ink font-black px-7 min-h-[48px] rounded-full transition-colors text-sm"
+                                className="inline-flex items-center justify-center bg-duck-acid hover:bg-duck-acid/80 text-duck-ink font-black px-7 min-h-[48px] rounded-full transition-colors text-sm"
                             >
                                 Ga naar het formulier
                             </a>
@@ -743,7 +743,7 @@ export const PilotAanmelden: React.FC = () => {
                 </div>
             </main>
 
-            <footer className="py-12 text-lab-mutedSoft text-center text-xs">
+            <footer className="py-12 text-duck-ink/30 text-center text-xs">
                 <p>© {new Date().getFullYear()} DGSkills — Vragen? info@dgskills.app</p>
             </footer>
         </div>

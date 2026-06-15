@@ -3,59 +3,59 @@ import { ArrowLeft, Cookie, CheckCircle2, ShieldAlert } from 'lucide-react';
 
 export const CookiePolicy: React.FC = () => {
     return (
-        <div className="min-h-screen bg-lab-cream py-12 px-6">
+        <div className="min-h-screen bg-duck-bg py-12 px-6">
             <div className="max-w-4xl mx-auto">
-                <a href="/ict/privacy" className="inline-flex items-center gap-2 text-lab-muted hover:text-lab-coral font-medium mb-8 transition-colors">
+                <a href="/ict/privacy" className="inline-flex items-center gap-2 text-duck-ink/60 hover:text-duck-acid font-medium mb-8 transition-colors">
                     <ArrowLeft size={20} />
                     Terug naar Security & Privacy
                 </a>
 
-                <div className="bg-white rounded-3xl shadow-sm border border-lab-line p-8 md:p-12">
+                <div className="bg-white rounded-3xl shadow-sm border border-duck-ink/15 p-8 md:p-12">
                     <div className="flex items-center gap-4 mb-8">
-                        <div className="w-12 h-12 bg-lab-gold rounded-2xl flex items-center justify-center">
-                            <Cookie className="text-lab-gold" size={28} />
+                        <div className="w-12 h-12 bg-duck-acid rounded-2xl flex items-center justify-center">
+                            <Cookie className="text-duck-ink" size={28} />
                         </div>
                         <div>
-                            <h1 className="text-3xl font-black text-lab-ink">Cookiebeleid</h1>
-                            <p className="text-lab-muted">Versie 1.1 — Laatst bijgewerkt: 14 februari 2026</p>
+                            <h1 className="text-3xl font-black text-duck-ink">Cookiebeleid</h1>
+                            <p className="text-duck-ink/60">Versie 1.1 — Laatst bijgewerkt: 14 februari 2026</p>
                         </div>
                     </div>
 
                     <div className="prose prose-slate max-w-none">
-                        <p className="text-lg leading-relaxed text-lab-muted">
+                        <p className="text-lg leading-relaxed text-duck-ink/60">
                             Wij gebruiken een minimale set aan cookies om het platform te laten werken en om het gebruik anoniem te analyseren. 
                             Wij gebruiken <strong>geen</strong> tracking cookies voor advertenties of profilering.
                         </p>
 
                         <h2 className="text-xl font-bold mt-8 mb-4">1. Soorten Cookies</h2>
                         <div className="overflow-x-auto">
-                            <table className="min-w-full border-collapse border border-lab-line my-6">
+                            <table className="min-w-full border-collapse border border-duck-ink/15 my-6">
                                 <thead>
-                                    <tr className="bg-lab-cream">
-                                        <th className="border border-lab-line p-3 text-left font-bold text-sm">Naam</th>
-                                        <th className="border border-lab-line p-3 text-left font-bold text-sm">Doel</th>
-                                        <th className="border border-lab-line p-3 text-left font-bold text-sm">Type</th>
-                                        <th className="border border-lab-line p-3 text-left font-bold text-sm">Duur</th>
+                                    <tr className="bg-duck-bg">
+                                        <th className="border border-duck-ink/15 p-3 text-left font-bold text-sm">Naam</th>
+                                        <th className="border border-duck-ink/15 p-3 text-left font-bold text-sm">Doel</th>
+                                        <th className="border border-duck-ink/15 p-3 text-left font-bold text-sm">Type</th>
+                                        <th className="border border-duck-ink/15 p-3 text-left font-bold text-sm">Duur</th>
                                     </tr>
                                 </thead>
                                 <tbody className="text-sm">
                                     <tr>
-                                        <td className="border border-lab-line p-3">sb-session</td>
-                                        <td className="border border-lab-line p-3">Inloggen en sessiebeheer.</td>
-                                        <td className="border border-lab-line p-3">Essentieel</td>
-                                        <td className="border border-lab-line p-3">Sessie</td>
+                                        <td className="border border-duck-ink/15 p-3">sb-session</td>
+                                        <td className="border border-duck-ink/15 p-3">Inloggen en sessiebeheer.</td>
+                                        <td className="border border-duck-ink/15 p-3">Essentieel</td>
+                                        <td className="border border-duck-ink/15 p-3">Sessie</td>
                                     </tr>
                                     <tr>
-                                        <td className="border border-lab-line p-3">cookie-consent-status</td>
-                                        <td className="border border-lab-line p-3">Opslaan van jouw cookievoorkeuren. <em>(Opgeslagen in localStorage, geen cookie.)</em></td>
-                                        <td className="border border-lab-line p-3">Essentieel</td>
-                                        <td className="border border-lab-line p-3">Tot intrekking/verwijdering</td>
+                                        <td className="border border-duck-ink/15 p-3">cookie-consent-status</td>
+                                        <td className="border border-duck-ink/15 p-3">Opslaan van jouw cookievoorkeuren. <em>(Opgeslagen in localStorage, geen cookie.)</em></td>
+                                        <td className="border border-duck-ink/15 p-3">Essentieel</td>
+                                        <td className="border border-duck-ink/15 p-3">Tot intrekking/verwijdering</td>
                                     </tr>
                                     <tr>
-                                        <td className="border border-lab-line p-3">Interne klik-analyse</td>
-                                        <td className="border border-lab-line p-3">Anonieme gebruiksstatistieken voor productverbetering (first-party).</td>
-                                        <td className="border border-lab-line p-3">Analytics</td>
-                                        <td className="border border-lab-line p-3">Sessie / Geaggregeerd</td>
+                                        <td className="border border-duck-ink/15 p-3">Interne klik-analyse</td>
+                                        <td className="border border-duck-ink/15 p-3">Anonieme gebruiksstatistieken voor productverbetering (first-party).</td>
+                                        <td className="border border-duck-ink/15 p-3">Analytics</td>
+                                        <td className="border border-duck-ink/15 p-3">Sessie / Geaggregeerd</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -72,23 +72,23 @@ export const CookiePolicy: React.FC = () => {
                             herzien of intrekken. Voor de volledigheid: wij slaan de status van uw toestemming op in uw browser (local storage) 
                             en loggen de actie anoniem in ons audit-systeem om te kunnen voldoen aan de AVG-bewijsplicht.
                         </p>
-                        <div className="flex items-center gap-4 p-6 bg-lab-cream rounded-2xl border border-lab-line my-6">
-                            <ShieldAlert size={24} className="text-lab-muted" />
+                        <div className="flex items-center gap-4 p-6 bg-duck-bg rounded-2xl border border-duck-ink/15 my-6">
+                            <ShieldAlert size={24} className="text-duck-ink/60" />
                             <div>
-                                <p className="font-bold text-lab-ink mb-1">Status: Beheer uw voorkeuren</p>
-                                <button 
+                                <p className="font-bold text-duck-ink mb-1">Status: Beheer uw voorkeuren</p>
+                                <button
                                     onClick={() => {
                                         localStorage.removeItem('cookie-consent-status');
                                         window.location.reload();
                                     }}
-                                    className="text-lab-coral font-bold underline underline-offset-2 hover:text-lab-coral transition-colors"
+                                    className="text-duck-acid font-bold underline underline-offset-2 hover:text-duck-acid transition-colors"
                                 >
                                     Klik hier om de cookie-banner opnieuw te tonen
                                 </button>
                             </div>
                         </div>
 
-                        <p className="text-sm text-lab-muted mt-3">
+                        <p className="text-sm text-duck-ink/60 mt-3">
                             <strong>Minderjarigen:</strong> DGSkills wordt gebruikt binnen de schoolcontext onder verantwoordelijkheid van het schoolbestuur.
                             Voor verwerkingen die juridisch op toestemming rusten, gelden de regels voor minderjarigen conform AVG/UAVG.
                         </p>

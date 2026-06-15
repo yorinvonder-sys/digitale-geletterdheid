@@ -25,11 +25,11 @@ const DataJournalistPreview: React.FC = () => {
     const [hoveredBar, setHoveredBar] = useState<number | null>(null);
 
     return (
-        <div className="w-full h-full bg-gradient-to-br from-lab-sage to-white flex flex-col overflow-hidden">
+        <div className="w-full h-full bg-gradient-to-br from-duck-ink to-duck-bgLight flex flex-col overflow-hidden">
             {/* Header */}
-            <div className="shrink-0 bg-gradient-to-r from-lab-sage to-lab-sage px-4 py-3 flex items-center justify-between">
+            <div className="shrink-0 bg-duck-ink px-4 py-3 flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                    <BarChart2 size={18} className="text-lab-sage" />
+                    <BarChart2 size={18} className="text-duck-acid" />
                     <span className="text-white font-bold text-sm">Data Journalist Werkblad</span>
                 </div>
                 <div className="flex gap-1">
@@ -37,7 +37,7 @@ const DataJournalistPreview: React.FC = () => {
                         <button
                             key={v}
                             onClick={() => setView(v)}
-                            className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${view === v ? 'bg-white text-lab-sage' : 'bg-lab-coral/30 text-lab-sage hover:bg-lab-coral/50'}`}
+                            className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${view === v ? 'bg-duck-acid text-duck-ink' : 'bg-white/20 text-white hover:bg-white/30'}`}
                         >
                             {v === 'tabel' && <Table size={12} className="inline mr-1" />}
                             {v === 'grafiek' && <BarChart2 size={12} className="inline mr-1" />}
@@ -49,9 +49,9 @@ const DataJournalistPreview: React.FC = () => {
             </div>
 
             {/* Title bar */}
-            <div className="shrink-0 px-4 py-3 border-b border-lab-sage">
-                <h3 className="font-black text-lab-ink text-sm">Energieverbruik Scholen Nederland (kWh)</h3>
-                <p className="text-xs text-lab-muted mt-0.5">Bron: Onderzoeksredactie — 12 maanden, 2 schooljaren</p>
+            <div className="shrink-0 px-4 py-3 border-b border-duck-ink/15">
+                <h3 className="font-black text-duck-ink text-sm">Energieverbruik Scholen Nederland (kWh)</h3>
+                <p className="text-xs text-duck-ink/60 mt-0.5">Bron: Onderzoeksredactie — 12 maanden, 2 schooljaren</p>
             </div>
 
             {/* Content */}
@@ -60,11 +60,11 @@ const DataJournalistPreview: React.FC = () => {
                     <div className="overflow-x-auto">
                         <table className="w-full text-xs border-collapse">
                             <thead>
-                                <tr className="bg-lab-sage">
-                                    <th className="text-left p-2 font-bold text-lab-sage border-b-2 border-lab-sage">Maand</th>
-                                    <th className="text-right p-2 font-bold text-lab-sage border-b-2 border-lab-sage">Dit jaar (kWh)</th>
-                                    <th className="text-right p-2 font-bold text-lab-sage border-b-2 border-lab-sage">Vorig jaar</th>
-                                    <th className="text-right p-2 font-bold text-lab-sage border-b-2 border-lab-sage">Verschil</th>
+                                <tr className="bg-duck-ink/10">
+                                    <th className="text-left p-2 font-bold text-duck-ink border-b-2 border-duck-ink/20">Maand</th>
+                                    <th className="text-right p-2 font-bold text-duck-ink border-b-2 border-duck-ink/20">Dit jaar (kWh)</th>
+                                    <th className="text-right p-2 font-bold text-duck-ink border-b-2 border-duck-ink/20">Vorig jaar</th>
+                                    <th className="text-right p-2 font-bold text-duck-ink border-b-2 border-duck-ink/20">Verschil</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -72,11 +72,11 @@ const DataJournalistPreview: React.FC = () => {
                                     const diff = row.verbruik - row.vorig;
                                     const pct = ((diff / row.vorig) * 100).toFixed(0);
                                     return (
-                                        <tr key={i} className={`${i % 2 === 0 ? 'bg-white' : 'bg-lab-sage/50'} hover:bg-lab-sage/50 transition-colors`}>
-                                            <td className="p-2 font-bold text-lab-muted">{row.maand}</td>
-                                            <td className="p-2 text-right font-mono text-lab-ink">{row.verbruik.toLocaleString()}</td>
-                                            <td className="p-2 text-right font-mono text-lab-muted">{row.vorig.toLocaleString()}</td>
-                                            <td className={`p-2 text-right font-bold ${diff > 0 ? 'text-lab-coral' : 'text-lab-sage'}`}>
+                                        <tr key={i} className={`${i % 2 === 0 ? 'bg-white' : 'bg-duck-ink/10'} hover:bg-duck-ink/10 transition-colors`}>
+                                            <td className="p-2 font-bold text-duck-ink/60">{row.maand}</td>
+                                            <td className="p-2 text-right font-mono text-duck-ink">{row.verbruik.toLocaleString()}</td>
+                                            <td className="p-2 text-right font-mono text-duck-ink/60">{row.vorig.toLocaleString()}</td>
+                                            <td className={`p-2 text-right font-bold ${diff > 0 ? 'text-duck-error' : 'text-duck-ink/60'}`}>
                                                 {diff > 0 ? '+' : ''}{pct}%
                                             </td>
                                         </tr>
@@ -102,34 +102,34 @@ const DataJournalistPreview: React.FC = () => {
                                         onMouseLeave={() => setHoveredBar(null)}
                                     >
                                         {hoveredBar === i && (
-                                            <div className="bg-lab-ink text-white text-[10px] px-2 py-1 rounded-lg font-bold whitespace-nowrap shadow-lg">
+                                            <div className="bg-duck-ink text-white text-[10px] px-2 py-1 rounded-lg font-bold whitespace-nowrap shadow-lg">
                                                 {row.verbruik} kWh
                                             </div>
                                         )}
                                         <div className="w-full flex items-end gap-0.5 justify-center">
                                             <div
-                                                className="w-[45%] bg-lab-sage/60 rounded-t-sm transition-all duration-300"
+                                                className="w-[45%] bg-duck-ink/30 rounded-t-sm transition-all duration-300"
                                                 style={{ height: `${prevHeight}%` }}
                                             />
                                             <div
-                                                className="w-[45%] bg-gradient-to-t from-lab-sage to-lab-sage rounded-t-sm transition-all duration-300 group-hover:from-lab-sage group-hover:to-lab-coral"
+                                                className="w-[45%] bg-gradient-to-t from-duck-ink to-duck-ink rounded-t-sm transition-all duration-300 group-hover:from-duck-ink group-hover:to-duck-acid"
                                                 style={{ height: `${height}%` }}
                                             />
                                         </div>
-                                        <span className="text-[10px] font-bold text-lab-muted">{row.maand}</span>
+                                        <span className="text-[10px] font-bold text-duck-ink/60">{row.maand}</span>
                                     </div>
                                 );
                             })}
                         </div>
                         {/* Legend */}
-                        <div className="flex justify-center gap-4 pt-2 border-t border-lab-sage">
+                        <div className="flex justify-center gap-4 pt-2 border-t border-duck-ink/15">
                             <div className="flex items-center gap-1.5">
-                                <div className="w-3 h-3 bg-lab-coral rounded-sm" />
-                                <span className="text-[10px] text-lab-muted font-medium">Dit schooljaar</span>
+                                <div className="w-3 h-3 bg-duck-acid rounded-sm" />
+                                <span className="text-[10px] text-duck-ink/60 font-medium">Dit schooljaar</span>
                             </div>
                             <div className="flex items-center gap-1.5">
-                                <div className="w-3 h-3 bg-lab-sage rounded-sm" />
-                                <span className="text-[10px] text-lab-muted font-medium">Vorig schooljaar</span>
+                                <div className="w-3 h-3 bg-duck-ink/30 rounded-sm" />
+                                <span className="text-[10px] text-duck-ink/60 font-medium">Vorig schooljaar</span>
                             </div>
                         </div>
                     </div>
@@ -139,37 +139,37 @@ const DataJournalistPreview: React.FC = () => {
                     <div className="space-y-4">
                         {/* KPI cards */}
                         <div className="grid grid-cols-3 gap-2">
-                            <div className="bg-white rounded-xl p-3 border border-lab-sage shadow-sm text-center">
-                                <Eye size={16} className="mx-auto text-lab-muted mb-1" />
-                                <div className="text-lg font-black text-lab-ink">17.950</div>
-                                <div className="text-[10px] text-lab-muted font-medium">Totaal kWh dit jaar</div>
+                            <div className="bg-white rounded-xl p-3 border border-duck-ink/15 shadow-sm text-center">
+                                <Eye size={16} className="mx-auto text-duck-ink/60 mb-1" />
+                                <div className="text-lg font-black text-duck-ink">17.950</div>
+                                <div className="text-[10px] text-duck-ink/60 font-medium">Totaal kWh dit jaar</div>
                             </div>
-                            <div className="bg-white rounded-xl p-3 border border-lab-sage shadow-sm text-center">
-                                <TrendingDown size={16} className="mx-auto text-lab-muted mb-1" />
-                                <div className="text-lg font-black text-lab-sage">-3.2%</div>
-                                <div className="text-[10px] text-lab-muted font-medium">vs. vorig jaar</div>
+                            <div className="bg-white rounded-xl p-3 border border-duck-ink/15 shadow-sm text-center">
+                                <TrendingDown size={16} className="mx-auto text-duck-ink/60 mb-1" />
+                                <div className="text-lg font-black text-duck-ink/60">-3.2%</div>
+                                <div className="text-[10px] text-duck-ink/60 font-medium">vs. vorig jaar</div>
                             </div>
-                            <div className="bg-white rounded-xl p-3 border border-lab-sage shadow-sm text-center">
-                                <TrendingUp size={16} className="mx-auto text-lab-muted mb-1" />
-                                <div className="text-lg font-black text-lab-coral">Dec</div>
-                                <div className="text-[10px] text-lab-muted font-medium">Piekmaand</div>
+                            <div className="bg-white rounded-xl p-3 border border-duck-ink/15 shadow-sm text-center">
+                                <TrendingUp size={16} className="mx-auto text-duck-ink/60 mb-1" />
+                                <div className="text-lg font-black text-duck-acid">Dec</div>
+                                <div className="text-[10px] text-duck-ink/60 font-medium">Piekmaand</div>
                             </div>
                         </div>
 
                         {/* Insight box */}
-                        <div className="bg-lab-sage border-2 border-lab-sage rounded-xl p-4">
-                            <h4 className="font-bold text-lab-sage text-sm flex items-center gap-1.5">
+                        <div className="bg-duck-ink/10 border-2 border-duck-ink/20 rounded-xl p-4">
+                            <h4 className="font-bold text-duck-ink text-sm flex items-center gap-1.5">
                                 <ArrowRight size={14} />
                                 Jouw bevinding hier
                             </h4>
-                            <p className="text-xs text-lab-sage mt-1 leading-relaxed">
+                            <p className="text-xs text-duck-ink/60 mt-1 leading-relaxed">
                                 Bespreek in de chat welke patronen je ziet. Welke maand valt op? Waarom denk je dat het verbruik in de winter hoger is?
                             </p>
                         </div>
 
                         {/* Mini trend line */}
-                        <div className="bg-white rounded-xl p-3 border border-lab-sage shadow-sm">
-                            <div className="text-xs font-bold text-lab-muted mb-2">Trend: verbruik per maand</div>
+                        <div className="bg-white rounded-xl p-3 border border-duck-ink/15 shadow-sm">
+                            <div className="text-xs font-bold text-duck-ink/60 mb-2">Trend: verbruik per maand</div>
                             <svg viewBox="0 0 240 60" className="w-full h-auto">
                                 <polyline
                                     fill="none"

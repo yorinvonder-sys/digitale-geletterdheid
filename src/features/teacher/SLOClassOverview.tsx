@@ -352,37 +352,37 @@ export const SLOClassOverview: React.FC<SLOClassOverviewProps> = ({ students, sc
         <div className="space-y-6">
             <div className="flex items-center justify-between gap-4">
                 <div className="min-w-0">
-                    <h2 className="text-xl font-black text-lab-ink flex items-center gap-2">
-                        <School size={24} className="text-lab-coral" />
+                    <h2 className="text-xl font-black text-duck-ink flex items-center gap-2">
+                        <School size={24} className="text-duck-acid" />
                         SLO Kerndoelen per Klas
                     </h2>
-                    <p className="text-sm text-lab-muted mt-1">
+                    <p className="text-sm text-duck-ink/60 mt-1">
                         Klik op een leerling om het individuele SLO-rapport te openen — printbaar en als CSV te exporteren. Deze weergave toont dekking op basis van afgeronde missies voor {yearScopeLabel}.
                     </p>
                     {exportError && (
-                        <p className="text-sm text-lab-coral mt-2">{exportError}</p>
+                        <p className="text-sm text-duck-error mt-2">{exportError}</p>
                     )}
                 </div>
                 <button
                     onClick={exportToExcel}
                     disabled={exporting}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-xl font-bold text-sm transition-colors shadow-lg ${exporting ? 'bg-lab-sage text-white cursor-not-allowed' : 'bg-lab-sage text-white hover:bg-lab-sage hover:text-white shadow-lab-coral/20'}`}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-xl font-bold text-sm transition-colors shadow-duck-soft ${exporting ? 'bg-duck-ink text-white cursor-not-allowed' : 'bg-duck-ink text-white hover:bg-duck-ink hover:text-white'}`}
                 >
                     {exporting ? <Loader2 size={16} className="animate-spin" /> : <Download size={16} />}
                     {exporting ? 'Exporteren...' : 'Exporteer naar Excel'}
                 </button>
             </div>
 
-            <div className="bg-lab-cream rounded-xl p-4 border border-lab-line">
-                <p className="text-xs font-bold text-lab-muted uppercase mb-2">Legenda</p>
+            <div className="bg-duck-bg rounded-xl p-4 border border-duck-ink/15">
+                <p className="text-xs font-bold text-duck-ink/60 uppercase mb-2">Legenda</p>
                 <div className="space-y-4">
                     <div>
-                        <p className="text-[10px] font-black text-lab-muted uppercase tracking-wider mb-1">Regulier (PO/VO)</p>
+                        <p className="text-[10px] font-black text-duck-ink/60 uppercase tracking-wider mb-1">Regulier (PO/VO)</p>
                         <div className="flex flex-wrap gap-4">
                             {KERNDOEL_CODES.filter(code => !SLO_KERNDOELEN[code].isVso).map(code => (
                                 <div key={code} className="flex items-center gap-2">
-                                    <div className="w-2 h-2 rounded-full bg-lab-coral"></div>
-                                    <span className="text-[11px] text-lab-muted">
+                                    <div className="w-2 h-2 rounded-full bg-duck-acid"></div>
+                                    <span className="text-[11px] text-duck-ink/60">
                                         <span className="font-bold">{code}</span> {SLO_KERNDOELEN[code].label}
                                     </span>
                                 </div>
@@ -390,12 +390,12 @@ export const SLOClassOverview: React.FC<SLOClassOverviewProps> = ({ students, sc
                         </div>
                     </div>
                     <div>
-                        <p className="text-[10px] font-black text-lab-muted uppercase tracking-wider mb-1">VSO (Functioneel)</p>
+                        <p className="text-[10px] font-black text-duck-ink/60 uppercase tracking-wider mb-1">VSO (Functioneel)</p>
                         <div className="flex flex-wrap gap-4">
                             {KERNDOEL_CODES.filter(code => SLO_KERNDOELEN[code].isVso).map(code => (
                                 <div key={code} className="flex items-center gap-2">
-                                    <div className="w-2 h-2 rounded-full bg-lab-coral"></div>
-                                    <span className="text-[11px] text-lab-muted">
+                                    <div className="w-2 h-2 rounded-full bg-duck-acid"></div>
+                                    <span className="text-[11px] text-duck-ink/60">
                                         <span className="font-bold">{code}</span> {SLO_KERNDOELEN[code].label}
                                     </span>
                                 </div>

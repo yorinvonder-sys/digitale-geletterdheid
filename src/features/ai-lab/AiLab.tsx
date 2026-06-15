@@ -602,31 +602,31 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
   if (view === 'intro') {
 
     return (
-      <div className="fixed inset-0 bg-lab-ink flex flex-col items-center justify-center p-6 text-center z-50 pt-safe pb-safe pl-safe pr-safe" role="status" aria-live="polite">
-        <Loader2 size={48} className="animate-spin text-lab-primary mb-4" aria-hidden="true" />
-        <h1 className="text-xl font-mono text-lab-primary animate-pulse tracking-widest uppercase">AI Lab Opstarten...</h1>
+      <div className="fixed inset-0 bg-duck-ink flex flex-col items-center justify-center p-6 text-center z-50 pt-safe pb-safe pl-safe pr-safe" role="status" aria-live="polite">
+        <Loader2 size={48} className="animate-spin text-duck-acid mb-4" aria-hidden="true" />
+        <h1 className="text-xl font-mono text-duck-acid animate-pulse tracking-widest uppercase">AI Lab Opstarten...</h1>
       </div>
     );
   }
 
   if (view === 'home') {
     return (
-      <div className="flex-1 w-full flex flex-col justify-center items-center p-6 relative overflow-hidden pt-safe pb-safe pl-safe pr-safe bg-lab-cream/50">
+      <div className="flex-1 w-full flex flex-col justify-center items-center p-6 relative overflow-hidden pt-safe pb-safe pl-safe pr-safe bg-duck-bg">
         <div className="absolute inset-0 bg-[radial-gradient(#E7D8BD_1px,transparent_1px)] [background-size:20px_20px] opacity-40 pointer-events-none"></div>
 
         <div className="glass-panel p-8 md:p-16 rounded-[3rem] shadow-2xl max-w-4xl w-full text-center relative z-10 border border-white mx-auto">
-          <h1 className="text-4xl md:text-7xl font-extrabold text-lab-ink mb-6 tracking-tight">
-            Future <span className="text-transparent bg-clip-text bg-gradient-to-r from-lab-primary to-lab-accent">Architect</span>
+          <h1 className="text-4xl md:text-7xl font-extrabold text-duck-ink mb-6 tracking-tight">
+            Future <span className="text-transparent bg-clip-text bg-gradient-to-r from-duck-acid to-duck-acid">Architect</span>
           </h1>
-          <p className="text-lg text-lab-muted mb-10 max-w-xl mx-auto font-medium">Bouw je eigen toekomst met behulp van AI.</p>
+          <p className="text-lg text-duck-ink/60 mb-10 max-w-xl mx-auto font-medium">Bouw je eigen toekomst met behulp van AI.</p>
 
           <div className="flex flex-col gap-4">
-            <button onClick={handleEnterLab} className="group px-10 py-5 bg-lab-ink text-white text-xl font-bold rounded-2xl shadow-xl hover:shadow-2xl transition-all flex items-center gap-3 mx-auto active:scale-95 cursor-pointer">
+            <button onClick={handleEnterLab} className="group px-10 py-5 bg-duck-ink text-white text-xl font-bold rounded-full shadow-xl hover:shadow-2xl transition-all flex items-center gap-3 mx-auto active:scale-95 cursor-pointer">
               Betreed het Lab <ChevronRight className="group-hover:translate-x-1 transition-transform" />
             </button>
 
             {hasSavedSession && (
-              <button onClick={handleContinueSession} className="px-8 py-3 bg-white text-lab-muted text-base font-bold rounded-xl shadow-md hover:bg-lab-cream border border-lab-line transition-all flex items-center gap-2 mx-auto active:scale-95">
+              <button onClick={handleContinueSession} className="px-8 py-3 bg-white text-duck-ink/60 text-base font-bold rounded-full shadow-md hover:bg-duck-bg border border-duck-ink/15 transition-all flex items-center gap-2 mx-auto active:scale-95">
                 <RotateCcw size={16} /> Verdergaan met vorige missie
               </button>
             )}
@@ -645,13 +645,13 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
       <div className="fixed inset-0 flex flex-col justify-center items-center p-6 relative overflow-hidden pt-safe pb-safe pl-safe pr-safe">
         <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(#E7D8BD_1px,transparent_1px)] [background-size:20px_20px] opacity-40"></div>
         <div className="max-w-xl w-full animate-in fade-in zoom-in-95 duration-500 z-10">
-          <div className="bg-white rounded-[2.5rem] shadow-2xl border border-lab-line p-8 md:p-12 text-center overflow-hidden relative">
-            <h2 className="text-3xl font-black text-lab-ink mb-1 tracking-tight">Dit ga jij bouwen!</h2>
-            <h3 className="text-2xl font-bold text-lab-primary mb-4">{showcaseRole.title}</h3>
-            <p className="text-lab-muted font-medium mb-8">{showcaseRole.description}</p>
-            <div className="w-64 h-64 mx-auto mb-8 rounded-[2rem] overflow-hidden shadow-xl border-4 border-lab-line transform transition-transform hover:scale-105 duration-300 relative group">
+          <div className="bg-white rounded-[2.5rem] shadow-2xl border border-duck-ink/15 p-8 md:p-12 text-center overflow-hidden relative">
+            <h2 className="text-3xl font-black text-duck-ink mb-1 tracking-tight">Dit ga jij bouwen!</h2>
+            <h3 className="text-2xl font-bold text-duck-acid mb-4">{showcaseRole.title}</h3>
+            <p className="text-duck-ink/60 font-medium mb-8">{showcaseRole.description}</p>
+            <div className="w-64 h-64 mx-auto mb-8 rounded-[2rem] overflow-hidden shadow-xl border-4 border-duck-ink/15 transform transition-transform hover:scale-105 duration-300 relative group">
               {showcaseRole.visualPreview}
-              <div className="absolute bottom-0 left-0 w-full bg-lab-ink/80 backdrop-blur p-3 text-white">
+              <div className="absolute bottom-0 left-0 w-full bg-duck-ink/80 backdrop-blur p-3 text-white">
                 <div className="flex items-center justify-center gap-2 font-bold">
                   {showcaseRole.icon} {showcaseRole.title}
                 </div>
@@ -660,11 +660,11 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
             {!selectedRole && (
               <div className="flex justify-center gap-2 mb-8">
                 {ROLES.map((_, i) => (
-                  <div key={i} className={`h-2 rounded-full transition-all duration-300 ${i === tutorialStep ? 'w-8 bg-lab-primary' : 'w-2 bg-lab-creamDeep'}`} />
+                  <div key={i} className={`h-2 rounded-full transition-all duration-300 ${i === tutorialStep ? 'w-8 bg-duck-acid' : 'w-2 bg-duck-bg'}`} />
                 ))}
               </div>
             )}
-            <button onClick={handleNextTutorial} className="w-full py-5 bg-lab-ink text-white rounded-2xl font-bold text-lg shadow-lg hover:bg-lab-ink transition-all flex items-center justify-center gap-2 group active:scale-95">
+            <button onClick={handleNextTutorial} className="w-full py-5 bg-duck-ink text-white rounded-full font-bold text-lg shadow-lg hover:bg-duck-ink transition-all flex items-center justify-center gap-2 group active:scale-95">
               {selectedRole ? 'Naar de Missie' : (isLastStep ? 'Start het Avontuur' : 'Volgend Project')}
               <ChevronRight className="group-hover:translate-x-1 transition-transform" />
             </button>
@@ -699,32 +699,32 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
       {showXPPopup && (
         <div className="fixed inset-0 z-[110] flex items-center justify-center p-4">
           <div
-            className="absolute inset-0 bg-lab-ink/40 backdrop-blur-sm transition-opacity"
+            className="absolute inset-0 bg-duck-ink/40 backdrop-blur-sm transition-opacity"
             onClick={() => setShowXPPopup(false)}
           />
-          <div className="bg-white rounded-[2.5rem] p-8 shadow-2xl border border-lab-line w-full max-w-sm relative z-10 animate-in zoom-in duration-300">
+          <div className="bg-white rounded-[2.5rem] p-8 shadow-2xl border border-duck-ink/15 w-full max-w-sm relative z-10 animate-in zoom-in duration-300">
             <div className="flex flex-col items-center text-center">
-              <div className="bg-gradient-to-br from-lab-coral to-lab-teal w-20 h-20 rounded-3xl flex items-center justify-center text-white shadow-xl mb-6 transform rotate-3">
+              <div className="bg-duck-ink w-20 h-20 rounded-3xl flex items-center justify-center text-duck-acid shadow-xl mb-6 transform rotate-3">
                 <Trophy size={40} />
               </div>
-              <h3 className="text-2xl font-black text-lab-ink mb-1 uppercase tracking-tight">Level {stats.level}</h3>
-              <p className="text-lab-muted font-bold uppercase tracking-widest text-[10px] mb-6">Jouw Voortgang</p>
+              <h3 className="text-2xl font-black text-duck-ink mb-1 uppercase tracking-tight">Level {stats.level}</h3>
+              <p className="text-duck-ink/60 font-bold uppercase tracking-widest text-[10px] mb-6">Jouw Voortgang</p>
 
-              <div className="w-full bg-lab-cream h-4 rounded-full overflow-hidden mb-4 p-1 border border-lab-line">
+              <div className="w-full bg-duck-bg h-4 rounded-full overflow-hidden mb-4 p-1 border border-duck-ink/15">
                 <div
-                  className="h-full bg-lab-coral rounded-full transition-all duration-1000 shadow-[0_0_15px_rgba(79,70,229,0.4)]"
+                  className="h-full bg-duck-acid rounded-full transition-all duration-1000 shadow-[0_0_15px_rgba(79,70,229,0.4)]"
                   style={{ width: `${progressPercentage}%` }}
                 />
               </div>
 
-              <div className="flex justify-between w-full text-sm font-black text-lab-ink mb-8 lowercase">
+              <div className="flex justify-between w-full text-sm font-black text-duck-ink mb-8 lowercase">
                 <span>{stats.xp} xp</span>
-                <span className="text-lab-muted">nog {xpToNext} xp voor lvl {stats.level + 1}</span>
+                <span className="text-duck-ink/60">nog {xpToNext} xp voor lvl {stats.level + 1}</span>
               </div>
 
               <button
                 onClick={() => setShowXPPopup(false)}
-                className="w-full py-4 bg-lab-ink text-white rounded-2xl font-bold uppercase tracking-widest hover:bg-lab-ink transition-all active:scale-95 shadow-lg"
+                className="w-full py-4 bg-duck-ink text-white rounded-full font-bold uppercase tracking-widest hover:bg-duck-ink transition-all active:scale-95 shadow-lg"
               >
                 Begrepen!
               </button>
@@ -737,27 +737,27 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
       {showGoalModal && (
         <div className="fixed inset-0 z-[110] flex items-center justify-center p-4">
           <div
-            className="absolute inset-0 bg-lab-ink/60 backdrop-blur-sm transition-opacity"
+            className="absolute inset-0 bg-duck-ink/60 backdrop-blur-sm transition-opacity"
             onClick={() => setShowGoalModal(false)}
           />
-          <div className="bg-white rounded-[2.5rem] p-8 shadow-2xl border-4 border-lab-sage w-full max-w-md relative z-10 animate-in zoom-in duration-300">
+          <div className="bg-white rounded-[2.5rem] p-8 shadow-2xl border-4 border-duck-ink/20 w-full max-w-md relative z-10 animate-in zoom-in duration-300">
             <div className="flex flex-col items-center text-center">
               {/* Confetti Effect */}
               <div className="absolute -top-4 left-1/2 -translate-x-1/2 text-5xl animate-bounce">🎉</div>
 
-              <div className="bg-gradient-to-br from-lab-sage to-lab-teal w-24 h-24 rounded-3xl flex items-center justify-center text-white shadow-xl mb-6 transform -rotate-3">
+              <div className="bg-duck-ink w-24 h-24 rounded-3xl flex items-center justify-center text-duck-acid shadow-xl mb-6 transform -rotate-3">
                 <CheckCircle2 size={48} />
               </div>
-              <h3 className="text-3xl font-black text-lab-ink mb-2">Doel Behaald!</h3>
-              <p className="text-lab-muted font-medium mb-2">
+              <h3 className="text-3xl font-black text-duck-ink mb-2">Doel Behaald!</h3>
+              <p className="text-duck-ink/60 font-medium mb-2">
                 Je hebt het hoofddoel van deze missie voltooid.
               </p>
-              <p className="text-lab-sage font-bold text-lg mb-6">+50 XP verdiend!</p>
+              <p className="text-duck-ink/60 font-bold text-lg mb-6">+50 XP verdiend!</p>
 
               <div className="w-full space-y-3">
                 <button
                   onClick={() => setShowGoalModal(false)}
-                  className="w-full py-4 bg-gradient-to-r from-lab-coral to-lab-teal text-white rounded-2xl font-bold text-lg shadow-lg hover:shadow-xl transition-all active:scale-95 flex items-center justify-center gap-2"
+                  className="w-full py-4 bg-duck-ink text-duck-acid rounded-full font-bold text-lg shadow-lg hover:shadow-xl transition-all active:scale-95 flex items-center justify-center gap-2"
                 >
                   <Sparkles size={20} /> Verder Experimenteren
                 </button>
@@ -766,7 +766,7 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
                     setShowGoalModal(false);
                     if (onExit) onExit();
                   }}
-                  className="w-full py-3 bg-lab-cream text-lab-muted rounded-2xl font-bold hover:bg-lab-creamDeep transition-all active:scale-95"
+                  className="w-full py-3 bg-duck-bg text-duck-ink/60 rounded-full font-bold hover:bg-duck-bg transition-all active:scale-95"
                 >
                   Afsluiten naar Dashboard
                 </button>
@@ -783,19 +783,19 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
 
       {showLevelUp && (
         <div className="fixed top-6 left-1/2 -translate-x-1/2 z-[100] animate-bounce">
-          <div className="bg-lab-primary text-white px-8 py-3 rounded-full shadow-2xl border-4 border-white font-bold flex items-center gap-3">
-            <Trophy className="text-lab-gold" /> LEVEL {stats.level} BEREIKT!
+          <div className="bg-duck-acid text-duck-ink px-8 py-3 rounded-full shadow-2xl border-4 border-white font-bold flex items-center gap-3">
+            <Trophy className="text-duck-ink" /> LEVEL {stats.level} BEREIKT!
           </div>
         </div>
       )}
 
       {xpNotification && (
         <div className="fixed bottom-24 left-1/2 -translate-x-1/2 z-[90] animate-in fade-in slide-in-from-bottom-2 duration-300">
-          <div className={`backdrop-blur text-white px-4 py-2 rounded-xl shadow-xl flex items-center gap-3 border border-lab-line ${xpNotification.amount < 0 ? 'bg-lab-coral/90' : 'bg-lab-ink/90'}`}>
-            <span className={`font-black text-lg ${xpNotification.amount < 0 ? 'text-lab-coral' : 'text-lab-sage'}`}>
+          <div className={`backdrop-blur text-white px-4 py-2 rounded-xl shadow-xl flex items-center gap-3 border border-duck-ink/15 ${xpNotification.amount < 0 ? 'bg-duck-error/90' : 'bg-duck-ink/90'}`}>
+            <span className={`font-black text-lg ${xpNotification.amount < 0 ? 'text-duck-error' : 'text-duck-acid'}`}>
               {xpNotification.amount > 0 ? '+' : ''}{xpNotification.amount} XP
             </span>
-            <span className="text-lab-muted text-sm font-medium border-l border-lab-line pl-3">{xpNotification.label}</span>
+            <span className="text-duck-ink/60 text-sm font-medium border-l border-duck-ink/15 pl-3">{xpNotification.label}</span>
           </div>
         </div>
       )}
@@ -814,35 +814,35 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
           </div>
           <div className="flex flex-col text-left">
             {/* Breadcrumb: Dashboard > AI Lab > missienaam */}
-            <div className="hidden sm:flex items-center gap-1.5 text-[10px] font-bold text-lab-muted uppercase tracking-wider leading-none">
+            <div className="hidden sm:flex items-center gap-1.5 text-[10px] font-bold text-duck-ink/60 uppercase tracking-wider leading-none">
               <span>Dashboard</span>
               <ChevronRight size={10} className="opacity-60" />
               <span style={{ color: selectedRole?.color || '#202023' }}>AI Lab</span>
               {selectedRole && (
                 <>
                   <ChevronRight size={10} className="opacity-60" />
-                  <span className="text-lab-muted truncate max-w-[120px] sm:max-w-[180px]">{selectedRole.title}</span>
+                  <span className="text-duck-ink/60 truncate max-w-[120px] sm:max-w-[180px]">{selectedRole.title}</span>
                 </>
               )}
             </div>
-            <span className="max-w-[190px] truncate text-sm font-black text-lab-ink leading-none mt-0.5 sm:max-w-none">
+            <span className="max-w-[190px] truncate text-sm font-black text-duck-ink leading-none mt-0.5 sm:max-w-none">
               {selectedRole ? selectedRole.title : 'Mission Control'}
             </span>
           </div>
           {/* Step Progress Dots */}
           {selectedRole?.steps && selectedRole.steps.length > 0 && (
-            <div className="hidden sm:flex items-center gap-1.5 ml-3 bg-lab-cream px-2.5 py-1.5 rounded-full border border-lab-line">
+            <div className="hidden sm:flex items-center gap-1.5 ml-3 bg-duck-bg px-2.5 py-1.5 rounded-full border border-duck-ink/15">
               {selectedRole.steps.map((_, idx) => (
                 <div
                   key={idx}
                   className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${completedSteps.includes(idx)
-                    ? 'bg-lab-coral shadow-sm shadow-lab-sage'
-                    : 'bg-lab-creamDeep'
+                    ? 'bg-duck-acid shadow-sm'
+                    : 'bg-duck-bg'
                     }`}
                   title={completedSteps.includes(idx) ? `Stap ${idx + 1} ✓` : `Stap ${idx + 1}`}
                 />
               ))}
-              <span className="text-[9px] font-bold text-lab-muted ml-1">{completedSteps.length}/{selectedRole.steps.length}</span>
+              <span className="text-[9px] font-bold text-duck-ink/60 ml-1">{completedSteps.length}/{selectedRole.steps.length}</span>
             </div>
           )}
         </button>
@@ -850,13 +850,13 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
         <div className="flex-1 max-w-xs mx-4 hidden sm:block">
           <button
             onClick={() => setShowXPPopup(true)}
-            className="w-full flex flex-col items-end gap-1.5 hover:opacity-80 transition-opacity p-2 rounded-2xl hover:bg-lab-cream border border-transparent hover:border-lab-line group"
+            className="w-full flex flex-col items-end gap-1.5 hover:opacity-80 transition-opacity p-2 rounded-2xl hover:bg-duck-bg border border-transparent hover:border-duck-ink/15 group"
           >
             <div className="flex items-center gap-3">
-              <span className="text-[10px] font-black text-lab-ink uppercase tracking-widest transition-colors">Lvl {stats.level}</span>
-              <div className="w-32 h-2.5 bg-lab-cream rounded-full overflow-hidden border border-lab-line p-[1px]">
+              <span className="text-[10px] font-black text-duck-ink uppercase tracking-widest transition-colors">Lvl {stats.level}</span>
+              <div className="w-32 h-2.5 bg-duck-bg rounded-full overflow-hidden border border-duck-ink/15 p-[1px]">
                 <div
-                  className="h-full bg-lab-gold rounded-full transition-all duration-700 shadow-[0_0_8px_rgba(215,201,95,0.35)]"
+                  className="h-full bg-duck-acid rounded-full transition-all duration-700 shadow-[0_0_8px_rgba(215,201,95,0.35)]"
                   style={{ width: `${progressPercentage}%` }}
                 />
               </div>
@@ -865,7 +865,7 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
         </div>
 
         {selectedRole && (
-          <button onClick={() => onExit && onExit()} className="p-3 bg-white text-lab-muted rounded-2xl border border-lab-line shadow-sm flex items-center gap-2 font-bold hover:text-lab-ink transition-colors active:scale-95 touch-friendly-btn min-h-[44px]">
+          <button onClick={() => onExit && onExit()} className="p-3 bg-white text-duck-ink/60 rounded-[1.6rem] border border-duck-ink/15 shadow-sm flex items-center gap-2 font-bold hover:text-duck-ink transition-colors active:scale-95 touch-friendly-btn min-h-[44px]">
             <ArrowLeft size={22} /> <span className="hidden lg:inline">Dashboard</span>
           </button>
         )}
@@ -874,7 +874,7 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
         {!selectedRole && (
           <button
             onClick={() => setView('games')}
-            className="p-2 bg-gradient-to-r from-lab-coral to-lab-teal text-white rounded-2xl shadow-lg flex items-center gap-2 font-bold hover:shadow-xl transition-all active:scale-95"
+            className="p-2 bg-duck-ink text-duck-acid rounded-[1.6rem] shadow-lg flex items-center gap-2 font-bold hover:shadow-xl transition-all active:scale-95"
           >
             <Gamepad2 size={20} />
             <span className="hidden sm:inline">Games</span>
@@ -912,7 +912,7 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
         {selectedRole && missionStarted && (
           (hasAssessment(selectedRole.id) || selectedRole.id === 'ai-tekengame' || selectedRole.id === 'chatbot-trainer' || selectedRole.id === 'ai-beleid-brainstorm' || selectedRole.id === 'data-detective' || selectedRole.id === 'deepfake-detector' || selectedRole.id === 'filter-bubble-breaker' || selectedRole.id === 'datalekken-rampenplan' || selectedRole.id === 'data-voor-data' || selectedRole.id === 'access-control-engineer') ? (
             // Full Screen Game Mode fo Review Missions & Tekengame & Chatbot Trainer
-            <div className="flex-1 w-full h-full min-h-0 relative animate-in zoom-in-95 duration-500 rounded-3xl overflow-hidden shadow-2xl border-4 border-lab-line bg-lab-ink">
+            <div className="flex-1 w-full h-full min-h-0 relative animate-in zoom-in-95 duration-500 rounded-3xl overflow-hidden shadow-2xl border-4 border-duck-ink/15 bg-duck-ink">
               {selectedRole.id === 'chatbot-trainer' ? (
                 <ChatbotTrainerPreview
                   onLevelComplete={(level) => handleAwardXP(100, `Chatbot Level ${level} Voltooid`)}
@@ -1087,9 +1087,9 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
             <div className={`flex-1 flex flex-col ${showRightPanel ? 'md:flex-row ipad-stack' : ''} gap-3 h-full min-h-0 pb-1 animate-in fade-in slide-in-from-right-4 duration-500`}>
 
               {/* Chat Column */}
-              <section className={`chat-column ${selectedRole.id === 'game-programmeur' ? 'game-programmeur-chat' : ''} ${selectedRole.id === 'ai-trainer' ? 'ai-trainer-chat' : ''} flex flex-col bg-white rounded-2xl shadow-sm border border-lab-line overflow-hidden min-h-0 h-full max-h-full ${chatWidthClass} print:hidden`}>
+              <section className={`chat-column ${selectedRole.id === 'game-programmeur' ? 'game-programmeur-chat' : ''} ${selectedRole.id === 'ai-trainer' ? 'ai-trainer-chat' : ''} flex flex-col bg-white rounded-2xl shadow-sm border border-duck-ink/15 overflow-hidden min-h-0 h-full max-h-full ${chatWidthClass} print:hidden`}>
                 {/* Goal Banner - Show primaryGoal prominently */}
-                <div className={`px-4 py-3 backdrop-blur border-b flex items-center gap-3 shrink-0 transition-all ${goalAchieved ? 'bg-lab-sage/90 border-lab-sage' : 'bg-lab-cream/80 border-lab-line'}`}>
+                <div className={`px-4 py-3 backdrop-blur border-b flex items-center gap-3 shrink-0 transition-all ${goalAchieved ? 'bg-duck-ink/10 border-duck-ink/20' : 'bg-duck-bg/80 border-duck-ink/15'}`}>
                   <div
                     className="p-2 rounded-lg text-white"
                     style={{ backgroundColor: goalAchieved ? '#202023' : selectedRole.color }}
@@ -1097,10 +1097,10 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
                     {goalAchieved ? <CheckCircle2 size={16} /> : <Target size={16} />}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h4 className={`text-[10px] font-bold uppercase tracking-wider ${goalAchieved ? 'text-lab-sage' : 'text-lab-muted'}`}>
+                    <h4 className={`text-[10px] font-bold uppercase tracking-wider ${goalAchieved ? 'text-duck-ink/60' : 'text-duck-ink/60'}`}>
                       {goalAchieved ? '✅ Doel Behaald!' : 'Jouw Doel'}
                     </h4>
-                    <p className={`text-sm font-bold leading-tight break-words ${goalAchieved ? 'text-lab-sage' : 'text-lab-ink'}`}>
+                    <p className={`text-sm font-bold leading-tight break-words ${goalAchieved ? 'text-duck-ink/60' : 'text-duck-ink'}`}>
                       {selectedRole.primaryGoal || selectedRole.missionObjective}
                     </p>
                   </div>
@@ -1109,7 +1109,7 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
                   <button
                     onClick={() => setShowResetConfirm(true)}
                     aria-label="Missie resetten"
-                    className="p-3 text-lab-muted hover:text-lab-muted hover:bg-lab-coral hover:text-white rounded-xl transition-colors touch-friendly-btn"
+                    className="p-3 text-duck-ink/60 hover:text-duck-ink hover:bg-duck-acid hover:text-duck-ink rounded-xl transition-colors touch-friendly-btn"
                   >
                     <RotateCcw size={18} aria-hidden="true" />
                   </button>
@@ -1117,14 +1117,14 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
 
                 {/* Bonus Challenges Display */}
                 {activeBonusChallenges.length > 0 && (
-                  <div className="px-4 py-2 bg-lab-gold/50 border-b border-lab-gold flex flex-col gap-1 animate-in slide-in-from-top-2">
-                    <h4 className="text-[10px] font-bold text-lab-gold uppercase tracking-wider flex items-center gap-1">
+                  <div className="px-4 py-2 bg-duck-acid/50 border-b border-duck-acid flex flex-col gap-1 animate-in slide-in-from-top-2">
+                    <h4 className="text-[10px] font-bold text-duck-ink uppercase tracking-wider flex items-center gap-1">
                       <Trophy size={10} /> Bonus Missies
                     </h4>
                     <div className="flex flex-wrap gap-1">
                       {activeBonusChallenges.map(c => (
-                        <span key={c.id} className="text-[10px] font-bold text-lab-gold bg-white/80 px-2 py-0.5 rounded border border-lab-gold shadow-sm flex items-center gap-1">
-                          {c.title} <span className="text-lab-muted">+{c.xpReward}</span>
+                        <span key={c.id} className="text-[10px] font-bold text-duck-ink bg-white/80 px-2 py-0.5 rounded border border-duck-acid shadow-sm flex items-center gap-1">
+                          {c.title} <span className="text-duck-ink/60">+{c.xpReward}</span>
                         </span>
                       ))}
                     </div>
@@ -1151,19 +1151,19 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
 
                   {isLoading && (
                     <div className="flex justify-start animate-in slide-in-from-left-4" role="status" aria-live="polite">
-                      <div className="bg-lab-cream px-5 py-4 rounded-3xl rounded-bl-none border border-lab-line flex items-center gap-4 shadow-sm min-w-[200px]">
+                      <div className="bg-duck-bg px-5 py-4 rounded-3xl rounded-bl-none border border-duck-ink/15 flex items-center gap-4 shadow-sm min-w-[200px]">
                         <div className="relative">
                           {/* Dynamic Icon based on step */}
                           {thinkingStep.includes("schrijven") ? (
-                            <PenTool className="text-lab-muted" size={24} aria-hidden="true" />
+                            <PenTool className="text-duck-ink/60" size={24} aria-hidden="true" />
                           ) : thinkingStep.includes("Illustratie") ? (
-                            <Palette className="animate-pulse text-lab-muted" size={24} aria-hidden="true" />
+                            <Palette className="animate-pulse text-duck-ink/60" size={24} aria-hidden="true" />
                           ) : thinkingStep.includes("Magie") ? (
-                            <Sparkles className="animate-spin text-lab-muted" size={24} aria-hidden="true" />
+                            <Sparkles className="animate-spin text-duck-ink/60" size={24} aria-hidden="true" />
                           ) : thinkingStep.includes("Analyseren") ? (
-                            <BrainCircuit className="animate-pulse text-lab-muted" size={24} aria-hidden="true" />
+                            <BrainCircuit className="animate-pulse text-duck-ink/60" size={24} aria-hidden="true" />
                           ) : (
-                            <Loader2 className="animate-spin text-lab-primary" size={24} aria-hidden="true" />
+                            <Loader2 className="animate-spin text-duck-acid" size={24} aria-hidden="true" />
                           )}
 
                           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -1171,13 +1171,13 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
                           </div>
                         </div>
                         <div className="text-left flex flex-col">
-                          <span className="text-sm font-bold text-lab-muted animate-pulse">
+                          <span className="text-sm font-bold text-duck-ink/60 animate-pulse">
                             {thinkingStep}
                           </span>
                           <div className="flex gap-1 mt-1">
                             {/* Progress Bars - Logic fixed for both Story and Coding modes */}
                             <div className={`h-1 w-4 rounded-full transition-colors duration-500 ${true // Always active (Start)
-                              ? 'bg-lab-primary' : 'bg-lab-creamDeep'
+                              ? 'bg-duck-acid' : 'bg-duck-bg'
                               }`}></div>
 
                             <div className={`h-1 w-4 rounded-full transition-colors duration-500 ${thinkingStep.includes("Redeneren") ||
@@ -1185,19 +1185,19 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
                               thinkingStep.includes("Genereren") ||
                               thinkingStep.includes("Illustratie") ||
                               thinkingStep.includes("Magie")
-                              ? 'bg-lab-primary' : 'bg-lab-creamDeep'
+                              ? 'bg-duck-acid' : 'bg-duck-bg'
                               }`}></div>
 
                             <div className={`h-1 w-4 rounded-full transition-colors duration-500 ${thinkingStep.includes("Genereren") ||
                               thinkingStep.includes("Illustratie") ||
                               thinkingStep.includes("Magie")
-                              ? 'bg-lab-primary' : 'bg-lab-creamDeep'
+                              ? 'bg-duck-acid' : 'bg-duck-bg'
                               }`}></div>
 
                             {/* Extra bar for "Magic" step in Story Mode */}
                             {(thinkingStep.includes("Illustratie") || thinkingStep.includes("Magie")) && (
                               <div className={`h-1 w-4 rounded-full transition-colors duration-500 ${thinkingStep.includes("Magie")
-                                ? 'bg-lab-gold' : 'bg-lab-creamDeep'
+                                ? 'bg-duck-acid' : 'bg-duck-bg'
                                 }`}></div>
                             )}
                           </div>
@@ -1208,9 +1208,9 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
                   <div ref={messagesEndRef} />
                 </div>
 
-                <div className="p-3 border-t border-lab-line relative keyboard-safe">
+                <div className="p-3 border-t border-duck-ink/15 relative keyboard-safe">
                   {error && (
-                    <div className="mb-3 px-4 py-3 bg-lab-coral border border-lab-coral text-lab-coral rounded-xl text-sm flex items-center gap-2 animate-in fade-in">
+                    <div className="mb-3 px-4 py-3 bg-duck-error border border-duck-error text-white rounded-xl text-sm flex items-center gap-2 animate-in fade-in">
                       <AlertCircle size={16} /> <span className="font-bold">{error}</span>
                     </div>
                   )}
@@ -1226,7 +1226,7 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
                         <button
                           key={idx}
                           onClick={() => handleSuggestionClick(suggestion)}
-                          className="group relative px-3 py-2 bg-white border border-lab-line hover:border-lab-gold text-lab-muted hover:text-lab-ink rounded-xl text-xs font-medium shadow-sm transition-all active:scale-95 flex items-center gap-2 hover:shadow-md text-left"
+                          className="group relative px-3 py-2 bg-white border border-duck-ink/15 hover:border-duck-acid text-duck-ink/60 hover:text-duck-ink rounded-xl text-xs font-medium shadow-sm transition-all active:scale-95 flex items-center gap-2 hover:shadow-md text-left"
                         >
                           <span className="whitespace-normal leading-tight">{suggestion}</span>
                           <span
@@ -1246,10 +1246,10 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
                       onChange={(e) => setInput(e.target.value)}
                       onKeyDown={(e) => e.key === 'Enter' && handleSendWithTipCheck()}
                       placeholder={selectedRole.id === 'game-programmeur' ? "Typ bijv: Maak de speler groen..." : "Typ je antwoord..."}
-                      className="chat-input flex-1 h-14 bg-white border border-lab-line rounded-xl px-4 focus:ring-4 focus:ring-lab-primary/10 transition-all outline-none shadow-sm text-base"
+                      className="chat-input flex-1 h-14 bg-white border border-duck-ink/15 rounded-xl px-4 focus:ring-4 focus:ring-duck-acid/10 transition-all outline-none shadow-sm text-base"
                       disabled={isLoading}
                     />
-                    <button onClick={() => handleSendWithTipCheck()} disabled={!input.trim() || isLoading} aria-label="Verstuur bericht" className="touch-friendly-btn h-14 w-14 bg-lab-ink text-white rounded-xl flex items-center justify-center shadow-lg active:scale-90 disabled:opacity-30 transition-all">
+                    <button onClick={() => handleSendWithTipCheck()} disabled={!input.trim() || isLoading} aria-label="Verstuur bericht" className="touch-friendly-btn h-14 w-14 bg-duck-ink text-white rounded-xl flex items-center justify-center shadow-lg active:scale-90 disabled:opacity-30 transition-all">
                       <Send size={22} aria-hidden="true" />
                     </button>
                   </div>
@@ -1259,7 +1259,7 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
               {/* Preview Column */}
               {showRightPanel && (
                 <section className="preview-column flex-1 h-full min-h-0 min-w-0 flex flex-col animate-in slide-in-from-right-8 duration-500">
-                  <div className={`flex-1 rounded-2xl overflow-hidden relative h-full w-full ${selectedRole?.id === 'verhalen-ontwerper' ? 'ambient-glow border-4 border-lab-gold/50 shadow-inner' : 'bg-lab-ink border-4 border-lab-line shadow-2xl'}`}>
+                  <div className={`flex-1 rounded-2xl overflow-hidden relative h-full w-full ${selectedRole?.id === 'verhalen-ontwerper' ? 'ambient-glow border-4 border-duck-acid/50 shadow-inner' : 'bg-duck-ink border-4 border-duck-ink/15 shadow-2xl'}`}>
                     {selectedRole?.id === 'word-wizard' && (
                       <WordWizardPreview
                         onTaskComplete={(task) => {
@@ -1336,28 +1336,28 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
                     ) : selectedRole?.id === 'data-verzamelaar' ? (
                       <DataVerzamelaarPreview currentStep={completedSteps?.length || 0} />
                     ) : selectedRole?.id === 'data-journalist' ? (
-                      <Suspense fallback={<div className="w-full h-full flex items-center justify-center"><Loader2 className="animate-spin text-lab-muted" size={32} /></div>}>
+                      <Suspense fallback={<div className="w-full h-full flex items-center justify-center"><Loader2 className="animate-spin text-duck-ink/60" size={32} /></div>}>
                         <DataJournalistPreview />
                       </Suspense>
                     ) : selectedRole?.id === 'factchecker' ? (
-                      <Suspense fallback={<div className="w-full h-full flex items-center justify-center"><Loader2 className="animate-spin text-lab-muted" size={32} /></div>}>
+                      <Suspense fallback={<div className="w-full h-full flex items-center justify-center"><Loader2 className="animate-spin text-duck-ink/60" size={32} /></div>}>
                         <FactcheckerPreview />
                       </Suspense>
                     ) : selectedRole?.id === 'api-verkenner' ? (
-                      <Suspense fallback={<div className="w-full h-full flex items-center justify-center"><Loader2 className="animate-spin text-lab-muted" size={32} /></div>}>
+                      <Suspense fallback={<div className="w-full h-full flex items-center justify-center"><Loader2 className="animate-spin text-duck-ink/60" size={32} /></div>}>
                         <ApiVerkennerPreview />
                       </Suspense>
                     ) : selectedRole?.id === 'dashboard-designer' ? (
-                      <Suspense fallback={<div className="w-full h-full flex items-center justify-center"><Loader2 className="animate-spin text-lab-muted" size={32} /></div>}>
+                      <Suspense fallback={<div className="w-full h-full flex items-center justify-center"><Loader2 className="animate-spin text-duck-ink/60" size={32} /></div>}>
                         <DashboardDesignerPreview />
                       </Suspense>
                     ) : selectedRole?.id === 'ai-bias-detective' ? (
-                      <Suspense fallback={<div className="w-full h-full flex items-center justify-center"><Loader2 className="animate-spin text-lab-muted" size={32} /></div>}>
+                      <Suspense fallback={<div className="w-full h-full flex items-center justify-center"><Loader2 className="animate-spin text-duck-ink/60" size={32} /></div>}>
                         <AiBiasDetectivePreview />
                       </Suspense>
                     ) : (
-                      <div className="w-full h-full bg-lab-cream flex items-center justify-center p-4">
-                        <div className="w-full h-full max-w-lg max-h-lg rounded-3xl overflow-hidden shadow-2xl border-8 border-lab-line transform scale-90 md:scale-100">
+                      <div className="w-full h-full bg-duck-bg flex items-center justify-center p-4">
+                        <div className="w-full h-full max-w-lg max-h-lg rounded-3xl overflow-hidden shadow-2xl border-8 border-duck-ink/15 transform scale-90 md:scale-100">
                           {selectedRole?.visualPreview}
                         </div>
                       </div>
@@ -1371,28 +1371,28 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
         {/* Tip Confirmation Modal */}
         {tipToConfirm && (
           <div className="fixed inset-0 z-[100] bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-200">
-            <div className="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 transform scale-100 animate-in zoom-in-95 duration-200 border-2 border-lab-gold">
+            <div className="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 transform scale-100 animate-in zoom-in-95 duration-200 border-2 border-duck-acid">
               <div className="flex flex-col items-center text-center gap-4">
-                <div className="w-16 h-16 bg-lab-gold rounded-full flex items-center justify-center text-lab-gold mb-2 shadow-inner">
+                <div className="w-16 h-16 bg-duck-acid rounded-full flex items-center justify-center text-duck-ink mb-2 shadow-inner">
                   <Lightbulb size={32} fill="currentColor" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-black text-lab-ink mb-1">Tip gebruiken?</h3>
-                  <p className="text-lab-muted font-medium text-sm leading-relaxed">"{tipToConfirm}"</p>
+                  <h3 className="text-xl font-black text-duck-ink mb-1">Tip gebruiken?</h3>
+                  <p className="text-duck-ink/60 font-medium text-sm leading-relaxed">"{tipToConfirm}"</p>
                 </div>
-                <div className="bg-lab-gold text-lab-ink px-4 py-2 rounded-lg font-bold text-xs uppercase tracking-widest border border-lab-gold">
+                <div className="bg-duck-acid text-duck-ink px-4 py-2 rounded-lg font-bold text-xs uppercase tracking-widest border border-duck-acid">
                   Kost {TIP_COST} XP
                 </div>
                 <div className="flex gap-3 w-full mt-2">
                   <button
                     onClick={() => setTipToConfirm(null)}
-                    className="flex-1 py-3 bg-lab-cream hover:bg-lab-creamDeep text-lab-muted font-bold rounded-xl transition-colors"
+                    className="flex-1 py-3 bg-duck-bg hover:bg-duck-bg text-duck-ink/60 font-bold rounded-full transition-colors"
                   >
                     Nee, wacht
                   </button>
                   <button
                     onClick={confirmTipPurchase}
-                    className="flex-1 py-3 bg-lab-coral hover:bg-lab-gold hover:text-lab-ink text-white font-bold rounded-xl shadow-lg shadow-lab-gold transition-all active:scale-95"
+                    className="flex-1 py-3 bg-duck-acid hover:bg-duck-acid hover:text-duck-ink text-duck-ink font-bold rounded-full shadow-lg shadow-duck-acid/30 transition-all active:scale-95"
                   >
                     Ja, doe het!
                   </button>
@@ -1407,11 +1407,11 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4 animate-in fade-in duration-200">
           <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden animate-in zoom-in-95 duration-200">
             <div className="p-6 text-center">
-              <div className="w-16 h-16 bg-lab-coral rounded-full flex items-center justify-center mx-auto mb-4 text-lab-muted">
+              <div className="w-16 h-16 bg-duck-error rounded-full flex items-center justify-center mx-auto mb-4 text-white">
                 <AlertCircle size={32} />
               </div>
-              <h3 className="text-2xl font-black text-lab-ink mb-2">Weet je het zeker?</h3>
-              <p className="text-lab-muted mb-6">
+              <h3 className="text-2xl font-black text-duck-ink mb-2">Weet je het zeker?</h3>
+              <p className="text-duck-ink/60 mb-6">
                 Je staat op het punt om je voortgang voor <strong>"{selectedRole?.title}"</strong> te resetten.
                 <br /><br />
                 Alle code, verhalen en opgeslagen data voor deze missie worden permanent verwijderd. Dit kan niet ongedaan worden gemaakt.
@@ -1420,7 +1420,7 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
               <div className="flex gap-3">
                 <button
                   onClick={() => setShowResetConfirm(false)}
-                  className="flex-1 py-3 px-4 bg-lab-cream hover:bg-lab-creamDeep text-lab-muted font-bold rounded-xl transition-colors"
+                  className="flex-1 py-3 px-4 bg-duck-bg hover:bg-duck-bg text-duck-ink/60 font-bold rounded-full transition-colors"
                 >
                   Annuleren
                 </button>
@@ -1429,7 +1429,7 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
                     resetCurrentMission();
                     setShowResetConfirm(false);
                   }}
-                  className="flex-1 py-3 px-4 bg-lab-coral hover:bg-lab-coral hover:text-white text-white font-bold rounded-xl transition-colors shadow-lg shadow-lab-coral/20"
+                  className="flex-1 py-3 px-4 bg-duck-error hover:bg-duck-error hover:text-white text-white font-bold rounded-full transition-colors shadow-lg shadow-duck-error/20"
                 >
                   Ja, Reset Alles
                 </button>
@@ -1444,7 +1444,7 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
         const assessmentData = getAssessment('review-week-1');
         if (!assessmentData) return null;
         return (
-          <div className="absolute inset-0 z-50 bg-lab-ink">
+          <div className="absolute inset-0 z-50 bg-duck-ink">
             <AssessmentEngine
               tasks={assessmentData.tasks}
               config={assessmentData.config}

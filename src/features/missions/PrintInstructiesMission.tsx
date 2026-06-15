@@ -141,9 +141,9 @@ const PrinterVisual: React.FC<{ scenario: Scenario; showCorrect: boolean }> = ({
                 {scenario.visual === 'grayscale' && (
                     <div className="flex flex-col items-center gap-2">
                         <div className="flex gap-1">
-                            <div className="w-6 h-6 rounded bg-lab-ink" />
-                            <div className="w-6 h-6 rounded bg-lab-coral" />
-                            <div className="w-6 h-6 rounded bg-lab-creamDeep" />
+                            <div className="w-6 h-6 rounded bg-duck-ink" />
+                            <div className="w-6 h-6 rounded bg-duck-acid" />
+                            <div className="w-6 h-6 rounded bg-duck-bg" />
                         </div>
                         <div className="text-[10px] font-bold" style={{ color: '#6f6e69', fontFamily: "'Outfit', system-ui, sans-serif" }}>
                             Alleen grijstinten...

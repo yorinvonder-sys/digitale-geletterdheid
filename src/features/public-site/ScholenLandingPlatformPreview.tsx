@@ -195,9 +195,9 @@ export const ScholenLandingPlatformPreview: React.FC = () => {
                             <div className="absolute -inset-4 rounded-3xl blur-2xl pointer-events-none" style={{ backgroundColor: 'rgba(232, 230, 223, 0.4)' }} />
 
                             {/* Image frame */}
-                            <div className="relative rounded-2xl overflow-hidden shadow-2xl shadow-lab-ink/10 ring-1 ring-lab-line/5 bg-lab-ink">
+                            <div className="relative rounded-2xl overflow-hidden shadow-2xl shadow-duck-soft ring-1 ring-duck-ink/5 bg-duck-ink">
                                 {/* Browser chrome */}
-                                <div className="flex items-center gap-1.5 px-4 py-2.5 bg-lab-ink/80 border-b border-white/5">
+                                <div className="flex items-center gap-1.5 px-4 py-2.5 bg-duck-ink/80 border-b border-white/5">
                                     <div className="w-2 h-2 rounded-full bg-white/15" />
                                     <div className="w-2 h-2 rounded-full bg-white/15" />
                                     <div className="w-2 h-2 rounded-full bg-white/15" />

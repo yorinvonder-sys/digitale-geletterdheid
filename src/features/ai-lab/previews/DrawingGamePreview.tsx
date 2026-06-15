@@ -776,7 +776,7 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
                     {gamePhase === 'draw' && (
-                        <div className={`flex items-center gap-1 px-3 py-1 rounded-full font-mono font-bold text-white ${timeLeft <= 5 ? 'bg-lab-coral animate-pulse' : ''}`} style={timeLeft > 5 ? { backgroundColor: '#202023' } : {}}>
+                        <div className={`flex items-center gap-1 px-3 py-1 rounded-full font-mono font-bold text-white ${timeLeft <= 5 ? 'bg-duck-error animate-pulse' : ''}`} style={timeLeft > 5 ? { backgroundColor: '#202023' } : {}}>
                             <Clock size={16} /> {timeLeft}s
                         </div>
                     )}
@@ -904,7 +904,7 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
                                 <div className="w-full max-w-md p-6 rounded-2xl shadow-2xl animate-in zoom-in-95 duration-300" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
                                     <div className="flex items-center justify-between mb-4">
                                         <h3 className="text-lg font-bold flex items-center gap-2" style={{ color: '#202023' }}>
-                                            {result.success ? <Check style={{ color: '#202023' }} /> : <X className="text-lab-muted" />}
+                                            {result.success ? <Check style={{ color: '#202023' }} /> : <X className="text-duck-ink/60" />}
                                             {result.success ? 'Correct Herkend!' : 'Niet Helemaal...'}
                                         </h3>
                                         <div className="text-xs font-bold uppercase" style={{ color: '#6f6e69' }}>AI Confidence</div>

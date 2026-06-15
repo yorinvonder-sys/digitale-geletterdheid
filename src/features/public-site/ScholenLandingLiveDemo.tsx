@@ -286,7 +286,7 @@ function TypingDots() {
             {[0, 0.2, 0.4].map((delay, i) => (
                 <span
                     key={i}
-                    className="w-1.5 h-1.5 rounded-full bg-lab-muted"
+                    className="w-1.5 h-1.5 rounded-full bg-duck-ink/60"
                     style={{ animation: `typing-bounce 1.2s ease-in-out ${delay}s infinite` }}
                 />
             ))}
@@ -436,9 +436,9 @@ export const ScholenLandingLiveDemo: React.FC = () => {
                 style={{ border: `1px solid ${C.border}` }}
             >
                 {/* Chat panel */}
-                <div className="lg:col-span-2 bg-lab-ink flex flex-col min-h-[400px] lg:min-h-[460px] order-2 lg:order-1">
+                <div className="lg:col-span-2 bg-duck-ink flex flex-col min-h-[400px] lg:min-h-[460px] order-2 lg:order-1">
                     {/* Chat header */}
-                    <div className="flex items-center gap-3 px-4 py-3 border-b border-lab-line">
+                    <div className="flex items-center gap-3 px-4 py-3 border-b border-duck-ink/15">
                         <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: C.accent }}>
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <path d="M12 8V4H8" /><rect width="16" height="12" x="4" y="8" rx="2" /><path d="m2 14 6-6 6 6" />
@@ -446,11 +446,11 @@ export const ScholenLandingLiveDemo: React.FC = () => {
                         </div>
                         <div>
                             <p className="text-white text-sm font-semibold">AI Coach — Game Builder</p>
-                            <p className="text-lab-muted text-xs">AI-mentor</p>
+                            <p className="text-duck-ink/60 text-xs">AI-mentor</p>
                         </div>
                         <div className="ml-auto flex items-center gap-1.5">
-                            <span className="w-2 h-2 rounded-full bg-lab-sage animate-pulse" />
-                            <span className="text-lab-sage text-xs">Online</span>
+                            <span className="w-2 h-2 rounded-full bg-duck-acid animate-pulse" />
+                            <span className="text-duck-acid text-xs">Online</span>
                         </div>
                     </div>
 
@@ -467,7 +467,7 @@ export const ScholenLandingLiveDemo: React.FC = () => {
                                     className={`max-w-[85%] px-3.5 py-2.5 text-sm leading-relaxed ${
                                         msg.role === 'user'
                                             ? 'text-white rounded-2xl rounded-br-sm'
-                                            : 'bg-lab-ink text-white/75 rounded-2xl rounded-bl-sm'
+                                            : 'bg-duck-ink text-white/75 rounded-2xl rounded-bl-sm'
                                     }`}
                                     style={msg.role === 'user' ? { backgroundColor: C.accent } : undefined}
                                 >
@@ -481,7 +481,7 @@ export const ScholenLandingLiveDemo: React.FC = () => {
                                 <div className="w-7 h-7 rounded-full flex items-center justify-center mr-2 mt-1 shrink-0" style={{ backgroundColor: C.accent }}>
                                     <DuckMark className="size-5" />
                                 </div>
-                                <div className="bg-lab-ink/60 rounded-2xl rounded-bl-sm">
+                                <div className="bg-duck-ink/60 rounded-2xl rounded-bl-sm">
                                     <TypingDots />
                                 </div>
                             </div>
@@ -489,7 +489,7 @@ export const ScholenLandingLiveDemo: React.FC = () => {
 
                         {error && (
                             <div className="flex justify-center">
-                                <p className="text-xs text-white bg-lab-coral/30 px-3 py-1.5 rounded-lg">{error}</p>
+                                <p className="text-xs text-white bg-duck-acid/30 px-3 py-1.5 rounded-lg">{error}</p>
                             </div>
                         )}
 
@@ -499,7 +499,7 @@ export const ScholenLandingLiveDemo: React.FC = () => {
                     <div className="px-4 pb-4">
                         {isLocked ? (
                             <div className="text-center space-y-3 py-2">
-                                <p className="text-lab-muted text-sm">
+                                <p className="text-duck-ink/60 text-sm">
                                     Demo afgelopen! Maak een gratis account om verder te bouwen.
                                 </p>
                                 <a
@@ -516,7 +516,7 @@ export const ScholenLandingLiveDemo: React.FC = () => {
                                 </a>
                             </div>
                         ) : (
-                            <div className="flex items-center gap-2 bg-lab-ink rounded-xl px-3 py-2">
+                            <div className="flex items-center gap-2 bg-duck-ink rounded-xl px-3 py-2">
                                 <input
                                     ref={inputRef}
                                     type="text"
@@ -546,7 +546,7 @@ export const ScholenLandingLiveDemo: React.FC = () => {
                 </div>
 
                 {/* Game preview */}
-                <div className="lg:col-span-3 relative order-1 lg:order-2 bg-lab-cream">
+                <div className="lg:col-span-3 relative order-1 lg:order-2 bg-duck-bg">
                     <GameIllustration state={gameState} />
 
                     {/* Locked overlay */}

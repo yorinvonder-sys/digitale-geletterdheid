@@ -97,44 +97,44 @@ export const GrowthOverviewPanel: React.FC<GrowthOverviewPanelProps> = ({
   const hasData = completeCount > 0;
 
   return (
-    <div className="bg-lab-ink/50 border border-lab-line/50 rounded-2xl overflow-hidden">
+    <div className="bg-duck-ink/50 border border-duck-ink/15 rounded-2xl overflow-hidden">
       {/* Header */}
-      <div className="px-5 py-4 border-b border-lab-line/50 flex items-center justify-between">
+      <div className="px-5 py-4 border-b border-duck-ink/15 flex items-center justify-between">
         <h3 className="text-sm font-black text-white uppercase tracking-widest flex items-center gap-2">
-          <BarChart3 size={16} className="text-lab-coral" />
+          <BarChart3 size={16} className="text-duck-acid" />
           Groei-overzicht
         </h3>
-        <span className="text-xs text-lab-muted">
+        <span className="text-xs text-duck-ink/60">
           Schooljaar {year}–{year + 1}
         </span>
       </div>
 
       {loading ? (
-        <div className="p-8 text-center text-lab-muted text-sm">Laden…</div>
+        <div className="p-8 text-center text-duck-ink/60 text-sm">Laden…</div>
       ) : (
         <>
           {/* Summary stats */}
-          <div className="px-5 py-4 flex items-center gap-6 border-b border-lab-line/30">
+          <div className="px-5 py-4 flex items-center gap-6 border-b border-duck-ink/15">
             <div>
               <div className="text-2xl font-black text-white">{completeCount}</div>
-              <div className="text-xs text-lab-muted mt-0.5">leerlingen met beide metingen</div>
+              <div className="text-xs text-duck-ink/60 mt-0.5">leerlingen met beide metingen</div>
             </div>
             {hasData && !kAnonymityWarning && (
               <div>
-                <div className={`text-2xl font-black flex items-center gap-1 ${avgOverallGroei >= 0 ? 'text-lab-sage' : 'text-lab-coral'}`}>
+                <div className={`text-2xl font-black flex items-center gap-1 ${avgOverallGroei >= 0 ? 'text-duck-ink/60' : 'text-duck-acid'}`}>
                   {avgOverallGroei >= 0
                     ? <TrendingUp size={20} />
                     : <TrendingDown size={20} />}
                   {avgOverallGroei >= 0 ? '+' : ''}{avgOverallGroei.toFixed(1)}
                 </div>
-                <div className="text-xs text-lab-muted mt-0.5">gemiddelde totaalgroei</div>
+                <div className="text-xs text-duck-ink/60 mt-0.5">gemiddelde totaalgroei</div>
               </div>
             )}
           </div>
 
           {/* k-anonymity warning */}
           {kAnonymityWarning && (
-            <div className="mx-5 mt-4 flex items-start gap-3 bg-lab-coral/10 border border-lab-coral/30 rounded-xl px-4 py-3 text-sm text-lab-gold">
+            <div className="mx-5 mt-4 flex items-start gap-3 bg-duck-acid/10 border border-duck-acid/30 rounded-xl px-4 py-3 text-sm text-duck-acid">
               <AlertTriangle size={16} className="shrink-0 mt-0.5" />
               <span>Onvoldoende data voor betrouwbare gemiddelden (minder dan 5 leerlingen met nulmeting én eindmeting).</span>
             </div>
@@ -145,7 +145,7 @@ export const GrowthOverviewPanel: React.FC<GrowthOverviewPanelProps> = ({
             <div className="overflow-x-auto px-5 py-4">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="text-lab-muted text-xs uppercase tracking-wider">
+                  <tr className="text-duck-ink/60 text-xs uppercase tracking-wider">
                     <th className="text-left pb-3 font-semibold">Domein</th>
                     <th className="text-right pb-3 font-semibold">Avg Nulmeting</th>
                     <th className="text-right pb-3 font-semibold">Avg Eindmeting</th>
@@ -156,18 +156,18 @@ export const GrowthOverviewPanel: React.FC<GrowthOverviewPanelProps> = ({
                   {domeinGemiddelden.map((row, i) => (
                     <tr
                       key={row.domein}
-                      className={`border-t border-lab-line/30 ${i % 2 === 0 ? '' : 'bg-lab-muted/10'}`}
+                      className={`border-t border-duck-ink/15 ${i % 2 === 0 ? '' : 'bg-duck-ink/10'}`}
                     >
-                      <td className="py-3 pr-4 font-medium text-lab-muted">
+                      <td className="py-3 pr-4 font-medium text-duck-ink/60">
                         {getDomeinLabel(row.domein)}
                       </td>
-                      <td className="py-3 text-right text-lab-muted tabular-nums">
+                      <td className="py-3 text-right text-duck-ink/60 tabular-nums">
                         {row.avgNulmeting.toFixed(1)}
                       </td>
-                      <td className="py-3 text-right text-lab-muted tabular-nums">
+                      <td className="py-3 text-right text-duck-ink/60 tabular-nums">
                         {row.avgEindmeting.toFixed(1)}
                       </td>
-                      <td className={`py-3 text-right font-bold tabular-nums ${row.avgGroei >= 0 ? 'text-lab-sage' : 'text-lab-coral'}`}>
+                      <td className={`py-3 text-right font-bold tabular-nums ${row.avgGroei >= 0 ? 'text-duck-ink/60' : 'text-duck-acid'}`}>
                         {row.avgGroei >= 0 ? '+' : ''}{row.avgGroei.toFixed(1)}
                       </td>
                     </tr>
@@ -178,13 +178,13 @@ export const GrowthOverviewPanel: React.FC<GrowthOverviewPanelProps> = ({
           )}
 
           {!hasData && (
-            <div className="p-8 text-center text-lab-muted text-sm">
+            <div className="p-8 text-center text-duck-ink/60 text-sm">
               Geen leerlingen met nulmeting én eindmeting gevonden.
             </div>
           )}
 
           {/* Footer */}
-          <div className="px-5 py-3 border-t border-lab-line/30 text-xs text-lab-muted">
+          <div className="px-5 py-3 border-t border-duck-ink/15 text-xs text-duck-ink/60">
             Gebaseerd op {completeCount} leerlingen met nulmeting én eindmeting
           </div>
         </>

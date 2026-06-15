@@ -941,11 +941,11 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                                     <div className="flex items-center gap-2.5">
                                         <span className="text-base">{intent.icon}</span>
                                         <span className="font-medium truncate flex-1">{intent.name}</span>
-                                        {status === 'ready' && <CheckCircle2 size={14} className="text-lab-sage shrink-0" />}
-                                        {status === 'partial' && <AlertCircle size={14} className="text-lab-gold shrink-0" />}
+                                        {status === 'ready' && <CheckCircle2 size={14} className="text-duck-ink/60 shrink-0" />}
+                                        {status === 'partial' && <AlertCircle size={14} className="text-duck-acid shrink-0" />}
                                         {status === 'empty' && intent.required && (
-                                            <div className="bg-lab-coral/20 rounded-full p-1 animate-pulse">
-                                                <AlertCircle size={14} className="text-lab-coral shrink-0" />
+                                            <div className="bg-duck-error/20 rounded-full p-1 animate-pulse">
+                                                <AlertCircle size={14} className="text-duck-error shrink-0" />
                                             </div>
                                         )}
                                     </div>
@@ -954,7 +954,7 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                                         {activeScenario.isCustom && !intent.required && (
                                             <div
                                                 onClick={(e) => deleteIntent(intent.id, e)}
-                                                className="opacity-0 group-hover:opacity-100 hover:text-lab-coral p-1"
+                                                className="opacity-0 group-hover:opacity-100 hover:text-duck-error p-1"
                                             >
                                                 <Trash2 size={12} />
                                             </div>
@@ -1070,7 +1070,7 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                                                     <span className="text-sm flex-1" style={{ color: 'var(--chatbot-muted)' }}>"{example.text}"</span>
                                                     <button
                                                         onClick={() => removeExample(example.id)}
-                                                        className="hover:text-lab-coral opacity-0 group-hover/item:opacity-100 transition-all p-1"
+                                                        className="hover:text-duck-error opacity-0 group-hover/item:opacity-100 transition-all p-1"
                                                         style={{ color: 'var(--chatbot-muted)' }}
                                                     >
                                                         <Trash2 size={14} />
@@ -1175,9 +1175,9 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                                     <p>{msg.text}</p>
                                     {msg.sender === 'bot' && msg.confidence !== undefined && (
                                         <div className="flex items-center gap-2 mt-1.5 pt-1.5" style={{ borderTop: '1px solid var(--chatbot-line)' }}>
-                                            {msg.status === 'confident' && <span className="w-2 h-2 rounded-full bg-lab-sage" />}
-                                            {msg.status === 'unsure' && <span className="w-2 h-2 rounded-full bg-lab-gold" />}
-                                            {msg.status === 'no_match' && <span className="w-2 h-2 rounded-full bg-lab-coral" />}
+                                            {msg.status === 'confident' && <span className="w-2 h-2 rounded-full bg-duck-ink/60" />}
+                                            {msg.status === 'unsure' && <span className="w-2 h-2 rounded-full bg-duck-acid" />}
+                                            {msg.status === 'no_match' && <span className="w-2 h-2 rounded-full bg-duck-error" />}
                                             <span className="text-[10px] opacity-70 font-mono">
                                                 {(msg.confidence * 100).toFixed(0)}% • {msg.matchedIntent || 'Geen match'}
                                             </span>

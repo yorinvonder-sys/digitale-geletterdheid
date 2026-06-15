@@ -30,10 +30,10 @@ export const AlertsPanel: React.FC<AlertsPanelProps> = ({ students, onSelectStud
     if (lowXPStudents.length === 0 && inactiveStudents.length === 0 && curriculumAlerts.length === 0) return null;
 
     return (
-        <div className="bg-white rounded-2xl shadow-sm border border-lab-line overflow-hidden p-5 space-y-4">
+        <div className="bg-white rounded-2xl shadow-sm border border-duck-ink/15 overflow-hidden p-5 space-y-4">
             {curriculumAlerts.length > 0 && (
                 <div>
-                    <h3 className="text-xs font-black text-lab-coral uppercase tracking-widest mb-3 flex items-center gap-2">
+                    <h3 className="text-xs font-black text-duck-acid uppercase tracking-widest mb-3 flex items-center gap-2">
                         <Target size={12} />
                         Curriculum Signalen ({curriculumAlerts.length})
                     </h3>
@@ -46,14 +46,14 @@ export const AlertsPanel: React.FC<AlertsPanelProps> = ({ students, onSelectStud
                                     : signal.targetClasses[0];
                             const toneClasses = signal.tone === 'attention'
                                 ? {
-                                    panel: 'bg-lab-gold hover:bg-lab-gold hover:text-lab-ink border-lab-gold',
-                                    text: 'text-lab-gold',
-                                    chip: 'bg-white text-lab-gold border-lab-gold',
+                                    panel: 'bg-duck-acid hover:bg-duck-acid hover:text-duck-ink border-duck-acid',
+                                    text: 'text-duck-acid',
+                                    chip: 'bg-white text-duck-acid border-duck-acid',
                                 }
                                 : {
-                                    panel: 'bg-lab-coral hover:bg-lab-coral hover:text-white border-lab-coral',
-                                    text: 'text-lab-coral',
-                                    chip: 'bg-white text-lab-coral border-lab-coral',
+                                    panel: 'bg-duck-acid hover:bg-duck-acid hover:text-duck-ink border-duck-acid',
+                                    text: 'text-duck-acid',
+                                    chip: 'bg-white text-duck-acid border-duck-acid',
                                 };
 
                             return (
@@ -63,24 +63,24 @@ export const AlertsPanel: React.FC<AlertsPanelProps> = ({ students, onSelectStud
                                 >
                                     <div className="min-w-0">
                                         <div className="flex flex-wrap items-center gap-2">
-                                            <div className="font-bold text-lab-ink text-xs">{signal.title}</div>
+                                            <div className="font-bold text-duck-ink text-xs">{signal.title}</div>
                                             <span className={`inline-flex rounded-full border px-2 py-0.5 text-[9px] font-black uppercase tracking-wider ${toneClasses.chip}`}>
                                                 J{progress.spotlight.yearGroup} • {progress.spotlight.periodLabel}
                                             </span>
                                         </div>
-                                        <div className="text-[10px] text-lab-muted mt-1">{progress.spotlight.title}</div>
+                                        <div className="text-[10px] text-duck-ink/60 mt-1">{progress.spotlight.title}</div>
                                         <div className={`text-[10px] mt-2 ${toneClasses.text}`}>{signal.summary}</div>
-                                        <div className="mt-2 text-[10px] text-lab-muted">
+                                        <div className="mt-2 text-[10px] text-duck-ink/60">
                                             Nudge: {signal.nudge}
                                         </div>
                                         <div className="mt-2 flex flex-wrap gap-2">
-                                            <span className="text-[9px] font-bold text-lab-muted bg-white/80 px-2 py-1 rounded-lg border border-white">
+                                            <span className="text-[9px] font-bold text-duck-ink/60 bg-white/80 px-2 py-1 rounded-lg border border-white">
                                                 Gestart {progress.startedStudents}
                                             </span>
-                                            <span className="text-[9px] font-bold text-lab-muted bg-white/80 px-2 py-1 rounded-lg border border-white">
+                                            <span className="text-[9px] font-bold text-duck-ink/60 bg-white/80 px-2 py-1 rounded-lg border border-white">
                                                 Nog bezig {progress.inProgressStudents}
                                             </span>
-                                            <span className="text-[9px] font-bold text-lab-muted bg-white/80 px-2 py-1 rounded-lg border border-white">
+                                            <span className="text-[9px] font-bold text-duck-ink/60 bg-white/80 px-2 py-1 rounded-lg border border-white">
                                                 Afgerond {progress.completedStudents}
                                             </span>
                                         </div>
@@ -91,7 +91,7 @@ export const AlertsPanel: React.FC<AlertsPanelProps> = ({ students, onSelectStud
                                                     onClick={() => {
                                                         onMessageClass(suggestedClassId, signal.studentMessage);
                                                     }}
-                                                    className="inline-flex items-center gap-1 rounded-lg bg-lab-ink px-3 py-2 text-[10px] font-black uppercase tracking-wider text-white hover:bg-lab-ink transition-colors"
+                                                    className="inline-flex items-center gap-1 rounded-lg bg-duck-ink px-3 py-2 text-[10px] font-black uppercase tracking-wider text-white hover:bg-duck-ink transition-colors"
                                                 >
                                                     Herinner {suggestedClassId}
                                                 </button>
@@ -101,7 +101,7 @@ export const AlertsPanel: React.FC<AlertsPanelProps> = ({ students, onSelectStud
                                                 onClick={() => {
                                                     onNavigateToSlo?.();
                                                 }}
-                                                className="inline-flex items-center gap-1 rounded-lg bg-white px-3 py-2 text-[10px] font-black uppercase tracking-wider text-lab-muted border border-lab-line hover:bg-lab-cream transition-colors"
+                                                className="inline-flex items-center gap-1 rounded-lg bg-white px-3 py-2 text-[10px] font-black uppercase tracking-wider text-duck-ink/60 border border-duck-ink/15 hover:bg-duck-bg transition-colors"
                                             >
                                                 Bekijk detail
                                             </button>
@@ -116,7 +116,7 @@ export const AlertsPanel: React.FC<AlertsPanelProps> = ({ students, onSelectStud
             )}
             {lowXPStudents.length > 0 && (
                 <div>
-                    <h3 className="text-xs font-black text-lab-gold uppercase tracking-widest mb-3 flex items-center gap-2">
+                    <h3 className="text-xs font-black text-duck-acid uppercase tracking-widest mb-3 flex items-center gap-2">
                         <AlertTriangle size={12} />
                         Weinig Voortgang ({lowXPStudents.length})
                     </h3>
@@ -125,13 +125,13 @@ export const AlertsPanel: React.FC<AlertsPanelProps> = ({ students, onSelectStud
                             <button
                                 key={student.uid}
                                 onClick={() => onSelectStudent(student)}
-                                className="flex items-center justify-between p-3 bg-lab-gold hover:bg-lab-gold hover:text-lab-ink rounded-xl border border-lab-gold transition-colors text-left"
+                                className="flex items-center justify-between p-3 bg-duck-acid hover:bg-duck-acid hover:text-duck-ink rounded-xl border border-duck-acid transition-colors text-left"
                             >
                                 <div className="min-w-0">
-                                    <div className="font-bold text-lab-ink text-xs truncate">{student.displayName}</div>
-                                    <div className="text-[10px] text-lab-gold">{student.stats?.xp || 0} XP — {student.stats?.missionsCompleted?.length || 0} missies</div>
+                                    <div className="font-bold text-duck-ink text-xs truncate">{student.displayName}</div>
+                                    <div className="text-[10px] text-duck-acid">{student.stats?.xp || 0} XP — {student.stats?.missionsCompleted?.length || 0} missies</div>
                                 </div>
-                                <ChevronRight size={14} className="text-lab-gold flex-shrink-0" />
+                                <ChevronRight size={14} className="text-duck-acid flex-shrink-0" />
                             </button>
                         ))}
                     </div>
@@ -139,7 +139,7 @@ export const AlertsPanel: React.FC<AlertsPanelProps> = ({ students, onSelectStud
             )}
             {inactiveStudents.length > 0 && (
                 <div>
-                    <h3 className="text-xs font-black text-lab-muted uppercase tracking-widest mb-3 flex items-center gap-2">
+                    <h3 className="text-xs font-black text-duck-ink/60 uppercase tracking-widest mb-3 flex items-center gap-2">
                         <Clock size={12} />
                         Lang Inactief ({inactiveStudents.length})
                     </h3>
@@ -151,13 +151,13 @@ export const AlertsPanel: React.FC<AlertsPanelProps> = ({ students, onSelectStud
                                 <button
                                     key={student.uid}
                                     onClick={() => onSelectStudent(student)}
-                                    className="flex items-center justify-between p-3 bg-lab-cream hover:bg-lab-cream rounded-xl border border-lab-line transition-colors text-left"
+                                    className="flex items-center justify-between p-3 bg-duck-bg hover:bg-duck-bg rounded-xl border border-duck-ink/15 transition-colors text-left"
                                 >
                                     <div className="min-w-0">
-                                        <div className="font-bold text-lab-ink text-xs truncate">{student.displayName}</div>
-                                        <div className="text-[10px] text-lab-muted">{daysAgo}d geleden — {student.stats?.xp || 0} XP</div>
+                                        <div className="font-bold text-duck-ink text-xs truncate">{student.displayName}</div>
+                                        <div className="text-[10px] text-duck-ink/60">{daysAgo}d geleden — {student.stats?.xp || 0} XP</div>
                                     </div>
-                                    <ChevronRight size={14} className="text-lab-muted flex-shrink-0" />
+                                    <ChevronRight size={14} className="text-duck-ink/60 flex-shrink-0" />
                                 </button>
                             );
                         })}

@@ -257,11 +257,11 @@ export const FilterBubbleBreakerMission: React.FC<Props> = ({ onBack, onComplete
                             const done = selectedAnswer !== null;
                             let bg = 'bg-white border-duck-line hover:border-duck-coral/40';
                             if (done && isCorrect) bg = 'bg-duck-ink/5 border-duck-ink';
-                            else if (done && isSelected) bg = 'bg-lab-coral border-lab-coral';
+                            else if (done && isSelected) bg = 'bg-duck-error border-duck-error';
                             else if (done) bg = 'bg-duck-line border-duck-line opacity-50';
                             return (<button key={i} onClick={() => handleAnswer(i)} disabled={done} className={`w-full p-4 rounded-2xl border-2 text-left transition-all duration-300 ${bg}`}>
                                 <div className="flex items-start gap-3">
-                                    <div className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 text-xs font-black ${done && isCorrect ? 'bg-duck-ink text-white' : done && isSelected ? 'bg-lab-coral text-white' : 'bg-duck-line text-duck-muted'}`}>{done && isCorrect ? <Check size={14} /> : done && isSelected ? <X size={14} /> : String.fromCharCode(65 + i)}</div>
+                                    <div className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 text-xs font-black ${done && isCorrect ? 'bg-duck-ink text-white' : done && isSelected ? 'bg-duck-error text-white' : 'bg-duck-line text-duck-muted'}`}>{done && isCorrect ? <Check size={14} /> : done && isSelected ? <X size={14} /> : String.fromCharCode(65 + i)}</div>
                                     <span className="text-sm font-medium text-duck-muted" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{opt}</span>
                                 </div>
                             </button>);

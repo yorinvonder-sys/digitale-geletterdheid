@@ -64,24 +64,24 @@ export const CodeChangeCard: React.FC<CodeChangeCardProps> = ({ changes }) => {
     if (changes.length === 0) return null;
 
     return (
-        <div className="bg-gradient-to-br from-lab-sage/30 to-lab-teal/30 border border-lab-sage/50 rounded-xl p-4 my-3 animate-in slide-in-from-bottom-2">
+        <div className="bg-duck-ink/10 border border-duck-ink/20 rounded-xl p-4 my-3 animate-in slide-in-from-bottom-2">
             <div className="flex items-center gap-2 mb-3">
-                <Sparkles size={16} className="text-lab-sage" />
-                <h4 className="text-sm font-bold text-lab-sage">Wat is er veranderd?</h4>
+                <Sparkles size={16} className="text-duck-ink/60" />
+                <h4 className="text-sm font-bold text-duck-ink">Wat is er veranderd?</h4>
             </div>
 
             <div className="space-y-2">
                 {changes.map((change, idx) => (
-                    <div key={idx} className="flex items-center gap-2 text-sm bg-lab-ink/50 rounded-lg px-3 py-2">
-                        <span className="text-lab-muted font-medium flex-shrink-0">{change.label}</span>
-                        <span className="font-mono text-lab-coral line-through text-xs opacity-70">{change.oldValue}</span>
-                        <ArrowRight size={14} className="text-lab-muted flex-shrink-0" />
-                        <span className="font-mono text-lab-sage font-bold">{change.newValue}</span>
+                    <div key={idx} className="flex items-center gap-2 text-sm bg-duck-ink/50 rounded-lg px-3 py-2">
+                        <span className="text-duck-ink/60 font-medium flex-shrink-0">{change.label}</span>
+                        <span className="font-mono text-duck-acid line-through text-xs opacity-70">{change.oldValue}</span>
+                        <ArrowRight size={14} className="text-duck-ink/60 flex-shrink-0" />
+                        <span className="font-mono text-duck-acid font-bold">{change.newValue}</span>
                     </div>
                 ))}
             </div>
 
-            <p className="text-xs text-lab-muted mt-3 italic">
+            <p className="text-xs text-duck-ink/60 mt-3 italic">
                 💡 Tip: Klik op RUN om de verandering te zien!
             </p>
         </div>

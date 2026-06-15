@@ -63,28 +63,28 @@ export const IctLandingPage: React.FC = () => {
                 <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
                     <a href="/" className="flex items-center gap-2.5">
                         <DuckMark className="size-8" />
-                        <span className="font-bold text-[15px] text-lab-ink tracking-tight">DGSkills</span>
+                        <span className="font-bold text-[15px] text-duck-ink tracking-tight">DGSkills</span>
                     </a>
                     <div className="hidden lg:flex items-center gap-6">
-                        <a href="/#waarom-dgskills" className="text-[13px] font-medium text-lab-muted hover:text-lab-ink transition-colors">Waarom DGSkills</a>
-                        <a href="/#slo-kerndoelen" className="text-[13px] font-medium text-lab-muted hover:text-lab-ink transition-colors">Kerndoelen</a>
-                        <a href="/ict" className="text-[13px] font-semibold text-lab-coral">Voor ICT</a>
-                        <a href="/compliance-hub" className="text-[13px] font-medium text-lab-muted hover:text-lab-ink transition-colors">Compliance Hub</a>
-                        <a href="/login" className="text-[13px] font-medium text-lab-muted hover:text-lab-ink transition-colors">Inloggen</a>
-                        <a href="/#gratis-pilot" className="text-[13px] font-semibold text-white bg-lab-coral hover:bg-lab-coral hover:text-white px-4 py-2 rounded-lg transition-colors">Pilot aanvragen</a>
+                        <a href="/#waarom-dgskills" className="text-[13px] font-medium text-duck-ink/60 hover:text-duck-ink transition-colors">Waarom DGSkills</a>
+                        <a href="/#slo-kerndoelen" className="text-[13px] font-medium text-duck-ink/60 hover:text-duck-ink transition-colors">Kerndoelen</a>
+                        <a href="/ict" className="text-[13px] font-semibold text-duck-acid">Voor ICT</a>
+                        <a href="/compliance-hub" className="text-[13px] font-medium text-duck-ink/60 hover:text-duck-ink transition-colors">Compliance Hub</a>
+                        <a href="/login" className="text-[13px] font-medium text-duck-ink/60 hover:text-duck-ink transition-colors">Inloggen</a>
+                        <a href="/#gratis-pilot" className="text-[13px] font-semibold text-duck-ink bg-duck-acid hover:bg-duck-acid/80 px-4 py-2 rounded-full transition-colors">Pilot aanvragen</a>
                     </div>
                     <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="lg:hidden p-3 -mr-2">
                         {mobileMenuOpen ? <IconX /> : <IconMenu />}
                     </button>
                 </div>
                 {mobileMenuOpen && (
-                    <div className="lg:hidden bg-white border-t border-lab-line px-6 py-4 space-y-1">
-                        <a href="/#waarom-dgskills" className="block py-3 text-sm text-lab-muted">Waarom DGSkills</a>
-                        <a href="/#slo-kerndoelen" className="block py-3 text-sm text-lab-muted">Kerndoelen</a>
-                        <a href="/ict" className="block py-3 text-sm text-lab-coral font-semibold">Voor ICT</a>
-                        <a href="/compliance-hub" className="block py-3 text-sm text-lab-muted">Compliance Hub</a>
-                        <a href="/login" className="block py-3 text-sm text-lab-muted">Inloggen</a>
-                        <a href="/#gratis-pilot" className="block py-3 text-sm font-semibold text-lab-coral">Pilot aanvragen</a>
+                    <div className="lg:hidden bg-white border-t border-duck-ink/15 px-6 py-4 space-y-1">
+                        <a href="/#waarom-dgskills" className="block py-3 text-sm text-duck-ink/60">Waarom DGSkills</a>
+                        <a href="/#slo-kerndoelen" className="block py-3 text-sm text-duck-ink/60">Kerndoelen</a>
+                        <a href="/ict" className="block py-3 text-sm text-duck-acid font-semibold">Voor ICT</a>
+                        <a href="/compliance-hub" className="block py-3 text-sm text-duck-ink/60">Compliance Hub</a>
+                        <a href="/login" className="block py-3 text-sm text-duck-ink/60">Inloggen</a>
+                        <a href="/#gratis-pilot" className="block py-3 text-sm font-semibold text-duck-acid">Pilot aanvragen</a>
                     </div>
                 )}
             </nav>
@@ -93,22 +93,22 @@ export const IctLandingPage: React.FC = () => {
                 <ScholenLandingIct />
             </main>
 
-            <footer className="py-8 px-6 bg-lab-ink">
+            <footer className="py-8 px-6 bg-duck-ink">
                 <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
                     <div className="flex items-center gap-2">
                         <DuckMark className="size-5 opacity-50" />
-                        <span className="text-xs text-lab-muted">DGSkills — Digitale geletterdheid voor het voortgezet onderwijs</span>
+                        <span className="text-xs text-duck-ink/60">DGSkills — Digitale geletterdheid voor het voortgezet onderwijs</span>
                     </div>
-                    <div className="flex flex-wrap items-center gap-5 text-xs text-lab-muted">
+                    <div className="flex flex-wrap items-center gap-5 text-xs text-duck-ink/60">
                         <a href="mailto:info@dgskills.app" className="hover:text-lab-muted transition-colors font-medium">info@dgskills.app</a>
-                        <span className="text-lab-muted">·</span>
+                        <span className="text-duck-ink/60">·</span>
                         <a href="/ict/privacy/policy" className="hover:text-lab-muted transition-colors">Privacy</a>
                         <a href="/ict/privacy/cookies" className="hover:text-lab-muted transition-colors">Cookies</a>
                         <a href="/ict/privacy/ai" className="hover:text-lab-muted transition-colors">AI Act</a>
                         <a href="/compliance-hub" className="hover:text-lab-muted transition-colors">Compliance Hub</a>
-                        <span className="text-lab-muted">·</span>
+                        <span className="text-duck-ink/60">·</span>
                         <a href="/login" className="hover:text-lab-muted transition-colors">Inloggen</a>
-                        <span className="text-lab-muted">·</span>
+                        <span className="text-duck-ink/60">·</span>
                         <span>© {new Date().getFullYear()} DGSkills</span>
                     </div>
                 </div>

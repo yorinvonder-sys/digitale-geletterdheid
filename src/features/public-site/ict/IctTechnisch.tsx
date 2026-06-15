@@ -14,46 +14,46 @@ const IconCheck = () => (
 
 export const IctTechnisch: React.FC = () => {
     return (
-        <div className="min-h-screen bg-lab-cream py-12 px-6">
+        <div className="min-h-screen bg-duck-bg py-12 px-6">
             <div className="max-w-4xl mx-auto">
-                <a href="/ict" className="inline-flex items-center gap-2 text-lab-muted hover:text-lab-coral font-medium mb-12 transition-colors min-h-[44px] py-2">
+                <a href="/ict" className="inline-flex items-center gap-2 text-duck-ink/60 hover:text-duck-acid font-medium mb-12 transition-colors min-h-[44px] py-2">
                     <IconArrowLeft />
                     Terug naar overzicht
                 </a>
 
-                <h1 className="text-4xl font-bold text-lab-ink mb-6">Technische Vereisten & Implementatie</h1>
-                <p className="text-lg text-lab-muted mb-12 max-w-2xl">
+                <h1 className="text-4xl font-bold text-duck-ink mb-6">Technische Vereisten & Implementatie</h1>
+                <p className="text-lg text-duck-ink/60 mb-12 max-w-2xl">
                     DGSkills is een web-based platform. Dit betekent: geen installatie, 
                     geen plugins en minimale configuratie voor de ICT-afdeling.
                 </p>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
                     <div>
-                        <h2 className="text-xl font-bold text-lab-ink mb-6 flex items-center gap-2">
-                            <span className="w-8 h-8 rounded-lg bg-lab-coral text-white flex items-center justify-center text-sm">1</span>
+                        <h2 className="text-xl font-bold text-duck-ink mb-6 flex items-center gap-2">
+                            <span className="w-8 h-8 rounded-lg bg-duck-acid text-duck-ink flex items-center justify-center text-sm">1</span>
                             Systeemvereisten
                         </h2>
-                        <div className="bg-white rounded-2xl p-6 border border-lab-line shadow-sm">
+                        <div className="bg-white rounded-2xl p-6 border border-duck-ink/15 shadow-sm">
                             <ul className="space-y-4">
                                 <li className="flex items-start gap-3">
-                                    <div className="mt-1 text-lab-muted"><IconCheck /></div>
+                                    <div className="mt-1 text-duck-ink/60"><IconCheck /></div>
                                     <div>
-                                        <p className="font-bold text-lab-ink text-sm">Ondersteunde Browsers</p>
-                                        <p className="text-lab-muted text-xs">Recentste 2 versies van Chrome, Edge, Safari en Firefox.</p>
+                                        <p className="font-bold text-duck-ink text-sm">Ondersteunde Browsers</p>
+                                        <p className="text-duck-ink/60 text-xs">Recentste 2 versies van Chrome, Edge, Safari en Firefox.</p>
                                     </div>
                                 </li>
                                 <li className="flex items-start gap-3">
-                                    <div className="mt-1 text-lab-muted"><IconCheck /></div>
+                                    <div className="mt-1 text-duck-ink/60"><IconCheck /></div>
                                     <div>
-                                        <p className="font-bold text-lab-ink text-sm">Devices</p>
-                                        <p className="text-lab-muted text-xs">Chromebooks, iPads (iPadOS 15+), Windows 10/11 en macOS.</p>
+                                        <p className="font-bold text-duck-ink text-sm">Devices</p>
+                                        <p className="text-duck-ink/60 text-xs">Chromebooks, iPads (iPadOS 15+), Windows 10/11 en macOS.</p>
                                     </div>
                                 </li>
                                 <li className="flex items-start gap-3">
-                                    <div className="mt-1 text-lab-muted"><IconCheck /></div>
+                                    <div className="mt-1 text-duck-ink/60"><IconCheck /></div>
                                     <div>
-                                        <p className="font-bold text-lab-ink text-sm">Geen installatie</p>
-                                        <p className="text-lab-muted text-xs">Werkt volledig in de browser. Geen MSI-pakketten of App Store downloads nodig.</p>
+                                        <p className="font-bold text-duck-ink text-sm">Geen installatie</p>
+                                        <p className="text-duck-ink/60 text-xs">Werkt volledig in de browser. Geen MSI-pakketten of App Store downloads nodig.</p>
                                     </div>
                                 </li>
                             </ul>
@@ -61,31 +61,31 @@ export const IctTechnisch: React.FC = () => {
                     </div>
 
                     <div>
-                        <h2 className="text-xl font-bold text-lab-ink mb-6 flex items-center gap-2">
-                            <span className="w-8 h-8 rounded-lg bg-lab-coral text-white flex items-center justify-center text-sm">2</span>
+                        <h2 className="text-xl font-bold text-duck-ink mb-6 flex items-center gap-2">
+                            <span className="w-8 h-8 rounded-lg bg-duck-acid text-duck-ink flex items-center justify-center text-sm">2</span>
                             Netwerk & Firewall
                         </h2>
-                        <div className="bg-white rounded-2xl p-6 border border-lab-line shadow-sm">
+                        <div className="bg-white rounded-2xl p-6 border border-duck-ink/15 shadow-sm">
                             <ul className="space-y-4">
                                 <li className="flex items-start gap-3">
-                                    <div className="mt-1 text-lab-muted"><IconCheck /></div>
+                                    <div className="mt-1 text-duck-ink/60"><IconCheck /></div>
                                     <div>
-                                        <p className="font-bold text-lab-ink text-sm">Protocol</p>
-                                        <p className="text-lab-muted text-xs">HTTPS over poort 443. Al het verkeer is versleuteld via TLS 1.3.</p>
+                                        <p className="font-bold text-duck-ink text-sm">Protocol</p>
+                                        <p className="text-duck-ink/60 text-xs">HTTPS over poort 443. Al het verkeer is versleuteld via TLS 1.3.</p>
                                     </div>
                                 </li>
                                 <li className="flex items-start gap-3">
-                                    <div className="mt-1 text-lab-muted"><IconCheck /></div>
+                                    <div className="mt-1 text-duck-ink/60"><IconCheck /></div>
                                     <div>
-                                        <p className="font-bold text-lab-ink text-sm">Domeinen op de allowlist</p>
-                                        <p className="text-lab-muted text-xs">*.dgskills.app, *.supabase.co, *.googleapis.com.</p>
+                                        <p className="font-bold text-duck-ink text-sm">Domeinen op de allowlist</p>
+                                        <p className="text-duck-ink/60 text-xs">*.dgskills.app, *.supabase.co, *.googleapis.com.</p>
                                     </div>
                                 </li>
                                 <li className="flex items-start gap-3">
-                                    <div className="mt-1 text-lab-muted"><IconCheck /></div>
+                                    <div className="mt-1 text-duck-ink/60"><IconCheck /></div>
                                     <div>
-                                        <p className="font-bold text-lab-ink text-sm">Bandbreedte</p>
-                                        <p className="text-lab-muted text-xs">Geoptimaliseerd voor gemiddelde schoolverbindingen. Laag verbruik per leerling.</p>
+                                        <p className="font-bold text-duck-ink text-sm">Bandbreedte</p>
+                                        <p className="text-duck-ink/60 text-xs">Geoptimaliseerd voor gemiddelde schoolverbindingen. Laag verbruik per leerling.</p>
                                     </div>
                                 </li>
                             </ul>
@@ -93,37 +93,37 @@ export const IctTechnisch: React.FC = () => {
                     </div>
                 </div>
 
-                <div className="bg-lab-coral rounded-3xl p-8 md:p-12 text-white">
+                <div className="bg-duck-ink rounded-3xl p-8 md:p-12 text-white">
                     <h2 className="text-2xl font-bold mb-8">Implementatie stappenplan voor ICT</h2>
                     <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 relative">
                         {/* Connecting line for desktop */}
-                        <div className="hidden sm:block absolute top-6 left-1/4 right-1/4 h-0.5 bg-lab-coral/30 -z-0"></div>
-                        
+                        <div className="hidden sm:block absolute top-6 left-1/4 right-1/4 h-0.5 bg-white/30 -z-0"></div>
+
                         <div className="relative z-10 text-center">
-                            <div className="w-12 h-12 rounded-full bg-lab-coral border-4 border-lab-coral text-white flex items-center justify-center font-bold mx-auto mb-4">1</div>
+                            <div className="w-12 h-12 rounded-full bg-duck-acid border-4 border-duck-acid text-duck-ink flex items-center justify-center font-bold mx-auto mb-4">1</div>
                             <h4 className="font-bold text-sm mb-2">Checklist</h4>
-                            <p className="text-xs text-lab-coral">Doorloop de technische vereisten en allowlist.</p>
+                            <p className="text-xs text-white/70">Doorloop de technische vereisten en allowlist.</p>
                         </div>
                         <div className="relative z-10 text-center">
-                            <div className="w-12 h-12 rounded-full bg-lab-coral border-4 border-lab-coral text-white flex items-center justify-center font-bold mx-auto mb-4">2</div>
+                            <div className="w-12 h-12 rounded-full bg-duck-acid border-4 border-duck-acid text-duck-ink flex items-center justify-center font-bold mx-auto mb-4">2</div>
                             <h4 className="font-bold text-sm mb-2">SSO Koppeling</h4>
-                            <p className="text-xs text-lab-coral">Activeer login via Microsoft of Google (5 min).</p>
+                            <p className="text-xs text-white/70">Activeer login via Microsoft of Google (5 min).</p>
                         </div>
                         <div className="relative z-10 text-center">
-                            <div className="w-12 h-12 rounded-full bg-lab-coral border-4 border-lab-coral text-white flex items-center justify-center font-bold mx-auto mb-4">3</div>
+                            <div className="w-12 h-12 rounded-full bg-duck-acid border-4 border-duck-acid text-duck-ink flex items-center justify-center font-bold mx-auto mb-4">3</div>
                             <h4 className="font-bold text-sm mb-2">Test Run</h4>
-                            <p className="text-xs text-lab-coral">Korte validatie met een test-account of kleine groep.</p>
+                            <p className="text-xs text-white/70">Korte validatie met een test-account of kleine groep.</p>
                         </div>
                         <div className="relative z-10 text-center">
-                            <div className="w-12 h-12 rounded-full bg-lab-coral border-4 border-lab-coral text-white flex items-center justify-center font-bold mx-auto mb-4">4</div>
+                            <div className="w-12 h-12 rounded-full bg-duck-acid border-4 border-duck-acid text-duck-ink flex items-center justify-center font-bold mx-auto mb-4">4</div>
                             <h4 className="font-bold text-sm mb-2">Go-Live</h4>
-                            <p className="text-xs text-lab-coral">Volledige toegang voor docenten en leerlingen.</p>
+                            <p className="text-xs text-white/70">Volledige toegang voor docenten en leerlingen.</p>
                         </div>
                     </div>
                     <div className="mt-12 text-center">
                         <a
                             href="/ict/implementatiegids"
-                            className="inline-block px-8 py-4 bg-lab-coral hover:bg-lab-coral hover:text-white text-white font-bold rounded-2xl transition-colors"
+                            className="inline-block px-8 py-4 bg-duck-acid hover:bg-duck-acid text-duck-ink font-bold rounded-full transition-colors"
                         >
                             Bekijk ICT Implementatiegids
                         </a>

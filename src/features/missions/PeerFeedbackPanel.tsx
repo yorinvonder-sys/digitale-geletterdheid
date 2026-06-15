@@ -144,8 +144,8 @@ export const PeerFeedbackPanel: React.FC<Props> = ({ missionId, studentId, schoo
                 size={20}
                 className={`transition-colors ${
                   i <= criteria[key]
-                    ? 'text-lab-gold fill-lab-gold'
-                    : 'text-duck-line hover:text-lab-gold'
+                    ? 'text-duck-acid fill-duck-acid'
+                    : 'text-duck-line hover:text-duck-acid'
                 }`}
               />
             </button>
@@ -288,7 +288,7 @@ export const PeerFeedbackPanel: React.FC<Props> = ({ missionId, studentId, schoo
         </div>
 
         {error && (
-          <p className="text-sm text-lab-muted font-medium">{error}</p>
+          <p className="text-sm text-duck-ink/60 font-medium">{error}</p>
         )}
 
         <button
@@ -320,7 +320,7 @@ export const PeerFeedbackPanel: React.FC<Props> = ({ missionId, studentId, schoo
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ type: 'spring', delay: 0.2 }}
-            className="w-14 h-14 rounded-2xl bg-duck-creamDeep flex items-center justify-center mx-auto"
+            className="w-14 h-14 rounded-2xl bg-duck-bg flex items-center justify-center mx-auto"
           >
             <Award size={28} className="text-duck-ink" />
           </motion.div>
@@ -342,10 +342,10 @@ export const PeerFeedbackPanel: React.FC<Props> = ({ missionId, studentId, schoo
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 }}
-              className="inline-flex items-center gap-1.5 bg-lab-gold border border-lab-gold px-3 py-1.5 rounded-full"
+              className="inline-flex items-center gap-1.5 bg-duck-acid border border-duck-acid px-3 py-1.5 rounded-full"
             >
-              <Award size={14} className="text-lab-muted" />
-              <span className="text-xs font-bold text-lab-gold">Badge: Peer Reviewer</span>
+              <Award size={14} className="text-duck-ink/60" />
+              <span className="text-xs font-bold text-duck-ink">Badge: Peer Reviewer</span>
             </motion.div>
           )}
         </div>

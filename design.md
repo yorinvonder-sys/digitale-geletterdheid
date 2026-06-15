@@ -1,88 +1,187 @@
-# DGSkills Homepage Redesign
+# DGSkills Design System — DUCK English Style
 
-## Richting
+De visuele taal van DGSkills is gebaseerd op de DUCK English-richting: een strak, modern schooldesign met een karakter. Krachtige contrasten (donker ink op zacht grijs of bijtend zuur-geel), Fraunces serif voor koppen, Outfit voor interface-tekst en afgeronde vormen met een eigenzinnig schaduwpatroon.
 
-De homepage voelt als een digitale skill journey voor leerlingen: warm, speels, projectgericht en duidelijk genoeg voor scholen. De visuele taal is gebaseerd op echte DGSkills-schermen, organische vormen, handgetekende accenten en compacte gamification-kaarten.
+---
 
 ## Kleurpalet
 
-| Token | Hex | Gebruik |
-| --- | --- | --- |
-| `cream` | `#FCF6EA` | Basisachtergrond |
-| `paper` | `#FFFDF7` | Kaarten en witte secties |
-| `creamDeep` | `#F3E4CB` | Warme golvende projectsectie |
-| `ink` | `#08283B` | Headlines, primaire tekst |
-| `muted` | `#445865` | Bodytekst |
-| `olive` | `#99984D` | Skill-highlight en organische accenten |
-| `gold` | `#D7C95F` | Primaire CTA |
-| `sage` | `#5F947D` | Groei, learning, schoolvertrouwen |
-| `coral` | `#D97848` | Creatie, projecttags, energie |
-| `teal` | `#0B453F` | Donkere footer en secundaire CTA |
-| `line` | `#E7D8BD` | Borders en subtiele scheiding |
+| Token (Tailwind) | Hex | Gebruik |
+|---|---|---|
+| `duck-bg` | `#f2f1ec` | Pagina-achtergrond, inputvelden |
+| `duck-bgLight` | `#f8f8f5` | Lichte kaartachtergrond, succes-states |
+| `duck-ink` | `#202023` | Koppen, primaire tekst, knopvulling |
+| `duck-acid` | `#e1ff01` | Primaire CTA-kleur, accenten, selectie |
+| `duck-gray` | `#c2c1bd` | Borders, scheidingslijnen, subtiele details |
+| `duck-error` | `#ff3c21` | Foutmeldingen, validatiefouten |
+
+### Gebruik van opacity op ink
+Gebruik `duck-ink` met opacity-modifiers voor hiërarchie in tekst en borders:
+
+| Klasse | Gebruik |
+|---|---|
+| `text-duck-ink` | Primaire tekst, koppen |
+| `text-duck-ink/60` | Secundaire tekst, subtitels |
+| `text-duck-ink/50` | Placeholder, labels |
+| `text-duck-ink/40` | Iconen in inputvelden |
+| `text-duck-ink/10` | Decoratieve watermerken (bijv. lettermarkeringen) |
+| `border-duck-ink/15` | Standaard kaartranden |
+| `border-duck-ink/10` | Lichte dividers, tab-achtergronden |
+
+### Selectie
+```css
+selection:bg-duck-acid selection:text-duck-ink
+```
+
+---
 
 ## Typografie
 
-- Gebruik `Outfit` voor alle interface- en marketingtekst.
-- Headlines zijn zwaar, compact en afgerond: `font-black`, `text-balance`, ruime line-heightcontrole.
-- Bodytekst blijft kort, actief en leerlinggericht, met schoolargumenten alleen waar ze koopbeslissingen ondersteunen.
+| Rol | Klasse | Lettertype |
+|---|---|---|
+| Koppen (h1–h3, hero) | `font-display font-black` | Fraunces (serif) |
+| Interface, body, labels | `font-sans` | Outfit (sans-serif) |
+| Knoptekst | `font-black` of `font-extrabold` | Outfit |
+| Kleine labels / caps | `font-black uppercase tracking-widest` | Outfit |
+| Code / OTP-invoer | `font-mono tracking-widest` | Systeemfont |
 
-## Logo
+- Headlines gebruiken `text-balance` en nauw regelafstand.
+- Bodytekst is kort, actief en leerlinggericht.
+- Gebruik nooit `font-display` voor interfacetekst — alleen voor koppen en hero-accenten.
 
-- Gebruik de bever/otter-mascotte als merkbasis: speels en herkenbaar voor 12-16 jaar, maar niet kinderachtig.
-- Bronassets: `public/assets/brand/dgskills-beaver-laptop.webp` voor de gekozen compacte dashboardmark en `public/brand-redesign/otter/dgskills-beaver-phone-favicon-512.png` voor favicon/app-icon varianten.
-- Productie-assets: `public/assets/brand/dgskills-beaver-laptop.webp` voor compacte dashboardmark en `public/logo-lockup.svg` voor de homepage-header.
-- Het compacte logo moet op 32px en 48px leesbaar blijven: groot silhouet, duidelijke kop/laptop, geen extra woordmerkfragmenten.
-- De lockup gebruikt de bever/otter-mark plus `DGSkills` met `ink` voor `DG` en teal voor `Skills`.
-- Het logo moet werken op de cream navbar en later ook als basis voor donkere footer/app-icon toepassingen.
+---
 
-## Sectieopbouw
+## Knoppen
 
-1. Hero: leerlingbelofte, twee CTA's, productbrowser met echte missiekaarten, floating cards voor challenge, streak en level.
-2. Cinematic skill journey: pinned scroll-story met vijf hoofdstukken van ontdekken tot delen.
-3. Skills: vijf compacte skillkaarten met icon, checkmarks en projectaantal.
-4. Projecten: vier voorbeeldprojecten met echte DGSkills-screenshots, tag, maker en engagement-signalen.
-5. Portfolio: voorbeeldprofiel, badges en portfolio-preview.
-6. Voor scholen: bestaande propositie samengevat met SLO, privacy, onboarding en implementatie.
-7. Footer CTA: donkere band met duidelijke startknop.
+### Primaire CTA (acid)
+```html
+rounded-full bg-duck-acid px-6 py-2.5 font-extrabold text-duck-ink
+transition-all hover:-translate-y-0.5 hover:bg-duck-ink hover:text-duck-acid
+```
+
+### Primaire CTA (ink — donker variant)
+```html
+rounded-full bg-duck-ink py-3.5 font-black text-duck-acid
+shadow-[0_4px_0_rgba(0,0,0,0.25)]
+transition-all hover:-translate-y-0.5 active:translate-y-0
+```
+
+### Secundaire / ghost knop
+```html
+rounded-full border border-duck-ink bg-transparent px-6 py-2.5 font-extrabold text-duck-ink
+transition-all hover:bg-duck-ink hover:text-duck-acid
+```
+
+### Regels
+- Alle knoppen: `min-h-[44px]` voor toegankelijkheid.
+- Primaire knoppen zijn altijd `rounded-full`.
+- Geen `rounded-xl` of `rounded-2xl` voor primaire acties — dat is de oudere `lab-*`-stijl.
+- Laad-state: spinner met `border-duck-ink/25 border-t-duck-ink`.
+
+---
+
+## Kaarten
+
+```html
+rounded-[1.75rem] border border-duck-ink/15 bg-white shadow-duck-soft
+```
+
+Alternatieven:
+- `rounded-[1.6rem]` voor kleinere kaarten (missiekaarten, skillkaarten)
+- `bg-duck-acid` voor geaccentueerde kaarten
+- `bg-duck-bg` voor achtergrondkaarten
+
+Schaduw: `shadow-duck-soft` = `2px 4px 24px rgba(199,197,188,0.30)`
+
+---
+
+## Inputvelden
+
+```html
+rounded-xl border border-duck-ink/15 bg-duck-bg
+py-3 pl-12 pr-4 text-sm font-bold text-duck-ink
+outline-none placeholder:text-duck-ink/40
+transition-all focus:border-duck-ink focus:ring-2 focus:ring-duck-ink/10
+```
+
+- Fout-staat border: `border-duck-acid` (geel, niet rood — voor waarschuwingen)
+- Foutmeldingen: `bg-duck-error/10 border border-duck-error/25 text-duck-ink`
+- Succes/bevestiging: `bg-duck-bgLight border border-duck-ink/15 text-duck-ink`
+
+---
+
+## Header (navigatie)
+
+- Vast bovenaan: `fixed inset-x-0 top-0 z-50`
+- Transparant bij bovenkant pagina
+- Na scrollen: `bg-duck-bg/95 backdrop-blur-md shadow-[0_1px_0_rgba(32,32,35,0.10)]`
+- Mobiel menu open: `bg-duck-acid`
+- Knoptekst onderstreepingsanimatie:
+  ```html
+  group-hover:scale-x-100 origin-left transition-transform duration-300
+  ```
+
+---
+
+## Animaties
+
+| Klasse | Duur | Gebruik |
+|---|---|---|
+| `animate-duck-float` | 7s ease-in-out infinite | Zwevendde elementen, hero |
+| `animate-duck-float-delayed` | 7s + 2.4s delay | Tweede zweeflaag |
+| `animate-duck-marquee` | 36s linear infinite | Horizontale merkenstrip |
+| `animate-duck-spin-slow` | 16s linear infinite | Roterende labels/badges |
+| `animate-duck-blink` | 5.2s ease-in-out infinite | Cursor-imitatie |
+| `animate-duck-rise` | 0.85s cubic easing, forwards | Inkomend element van onder |
+
+Regels:
+- Respecteer `prefers-reduced-motion`: content blijft direct zichtbaar, animaties worden uitgeschakeld.
+- Gebruik alleen `opacity` en `transform` — geen `filter`, geen `blur`, geen layout-animaties.
+- Geen smooth-scroll override (geen Lenis); ankerlinks blijven werken.
+
+---
+
+## Logo en merk
+
+- **DuckMark component:** `<DuckMark />` in `src/components/brand/DuckMark.tsx` — de primaire merkidentificatie.
+- **Logo lockup:** `/logo-lockup.webp` — gebruikt op loginpagina en auth-schermen.
+- Het merk is de eend-mascotte, niet de eerdere bever/otter. Gebruik geen otter/beaver-assets als primaire merkuitingen.
+- DuckMark op 32px–64px leesbaar: groot silhouet, minimale details.
+
+---
+
+## Sectieopbouw (homepage)
+
+1. **Hero:** Leerlingbelofte, twee CTA's, skill-kaarten-carrousel.
+2. **Marquee-strip:** Horizontale lus met skill/merk-tekst.
+3. **Skills:** Vijf DUCK-stijl skillkaarten met letter-watermerk, icon en beschrijving.
+4. **Projecten / Missies:** Voorbeeldkaarten met echte DGSkills-screenshots.
+5. **Voor scholen:** Propositie, SLO, privacy, onboarding.
+6. **Footer CTA:** Donkere band (`bg-duck-ink`) met acid CTA-knop.
+
+---
 
 ## Componentregels
 
-- Gebruik organische vormen alleen op grote visuele assets en sectie-overgangen.
-- Sectie-overgangen moeten overlappen of vloeiend in elkaar doorlopen; vermijd harde rechthoekige knippen, zichtbare dubbele golfstrepen en grote lege fade-zones tussen hero en journey.
-- Kaarten hebben afgeronde hoeken, maar geen nested cards behalve portfolio/badge-compositie.
-- Doodles zijn decoratief en krijgen `aria-hidden`.
+- Organische vormen alleen op grote visuele assets en sectie-overgangen.
+- Kaarten hebben `rounded-[1.6rem]` of `rounded-[1.75rem]` — geen kleinere waarden voor primaire kaarten.
+- Doodles en decoratieve elementen krijgen `aria-hidden`.
 - Icon-only buttons krijgen een `aria-label`.
-- Alle interactieve doelen hebben minimaal 44px hoogte.
-- Scroll-motion gebruikt GSAP ScrollTrigger als premium animatielaag, dynamisch geladen op de homepage.
-- De motion-regie is: DGSkills als scrollbare digitale vaardigheidsreis, niet losse decoratieve fades.
-- Scroll-motion gebruikt alleen `opacity` en `transform`; geen scrolljacking, geen layout-animaties en geen grote blur/filter-effecten.
-- Pinned scenes blijven native-scroll vriendelijk: geen Lenis/smooth-scroll override, anchorlinks blijven werken.
-- Respecteer `prefers-reduced-motion`: content blijft direct zichtbaar en parallax/reveal-effecten worden uitgeschakeld.
+- Alle interactieve doelen: minimaal `min-h-[44px]`.
+- Nieuwe componenten gebruiken `duck-*` tokens; gebruik geen `lab-*` in nieuw te schrijven publieke of auth-componenten.
 
-## Beeldstijl
+---
 
-De homepage gebruikt echte DGSkills-productbeelden als bron. Geen generieke AI-lifestylebeelden of fictieve schermen als primaire mockup.
+## Scope en transitiestatus
 
-Primaire screenshotbronnen:
+DUCK-tokens zijn de doelstijl voor het volledige platform. De migratie loopt:
 
-- `public/screenshots/new-mission-cards.png`
-- `public/screenshots/new-dashboard-missions.png`
-- `public/screenshots/prompt-master.webp`
-- `public/screenshots/mission-game-programmeur.webp`
-- `public/screenshots/ai-trainer.webp`
-- `public/screenshots/student-progress-xp.webp`
-- `public/screenshots/student-dashboard.webp`
+| Gebied | Status |
+|---|---|
+| Publieke landing (`ScholenLanding.tsx`) | Duck-stijl — volledig |
+| Auth-hoofdscherm (`Login.tsx`, `MfaGate.tsx`, `ChangePassword.tsx`) | Duck-stijl — volledig |
+| Auth-subcomponent (`RoleCard.tsx`) | Lab-stijl — nog niet gemigreerd |
+| Missies en AI-lab (gedeeltelijk) | Gemengd — duck-* en lab-* door elkaar |
+| Overige app (dashboards, portfolio, teacher) | Grotendeels lab-stijl |
 
-Regels:
-
-- Zet screenshots in browser-, kaart- of deviceframes met CSS.
-- Gebruik echte missienamen en echte UI-fragmenten uit het platform.
-- Voeg labels, projecttags en CTA's in HTML/CSS toe, niet in gegenereerde rasterbeelden.
-- Gebruik geen AI-gegenereerde beelden als homepage-asset; productmockups worden opgebouwd uit echte screenshots en CSS-frames.
-
-## Contentregels
-
-- Gebruik bestaande DGSkills-inhoud: AI-missies, projecten, badges, portfolio, SLO-kerndoelen, privacy-first en gratis pilot.
-- Neem geen onverifieerbare claims uit de referentie over.
-- Projectkaarten zijn voorbeeldprojecten, geen echte leerlingstatistieken.
-- Schoolclaims blijven concreet en voorzichtig: `20+ AI-missies`, `9 SLO-kerndoelen`, `10 werkdagen tot live`, gratis pilot.
+Schrijf nieuwe componenten altijd in `duck-*` stijl. `lab-*` tokens zijn legacy — gebruik ze niet in nieuwe code.

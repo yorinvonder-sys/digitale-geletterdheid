@@ -192,14 +192,14 @@ export const TeacherSetupChecklist: React.FC<TeacherSetupChecklistProps> = ({ on
             {/* Header */}
             <div className="flex items-center justify-between gap-3 px-4 py-3 md:px-5">
                 <div className="flex items-center gap-3 min-w-0">
-                    <div className={`flex size-9 flex-shrink-0 items-center justify-center rounded-lg ${allDone ? 'bg-lab-sage/15 text-lab-sage' : 'bg-lab-primary/15 text-lab-primary'}`}>
+                    <div className={`flex size-9 flex-shrink-0 items-center justify-center rounded-lg ${allDone ? 'bg-duck-ink/15 text-duck-ink' : 'bg-duck-acid/15 text-duck-ink'}`}>
                         {allDone ? <Check size={20} /> : <Rocket size={20} />}
                     </div>
                     <div className="min-w-0">
-                        <h2 className="truncate text-sm font-black text-lab-ink md:text-base">
+                        <h2 className="truncate text-sm font-black text-duck-ink md:text-base">
                             {allDone ? 'Je bent klaar voor je eerste les!' : 'Startchecklist voor docenten'}
                         </h2>
-                        <p className="text-xs font-medium text-lab-muted">
+                        <p className="text-xs font-medium text-duck-ink/60">
                             {allDone
                                 ? 'Top. Sluit deze checklist en ga aan de slag.'
                                 : `${completedCount} van ${totalItems} stappen afgerond — nog ${totalItems - completedCount} te gaan.`}
@@ -210,7 +210,7 @@ export const TeacherSetupChecklist: React.FC<TeacherSetupChecklistProps> = ({ on
                     <button
                         type="button"
                         onClick={() => setCollapsed((v) => !v)}
-                        className="rounded-lg p-2 text-lab-muted transition-colors hover:bg-lab-cream hover:text-lab-ink"
+                        className="rounded-lg p-2 text-duck-ink/60 transition-colors hover:bg-duck-bg hover:text-duck-ink"
                         aria-label={collapsed ? 'Checklist uitklappen' : 'Checklist inklappen'}
                         aria-expanded={!collapsed}
                     >
@@ -220,7 +220,7 @@ export const TeacherSetupChecklist: React.FC<TeacherSetupChecklistProps> = ({ on
                         <button
                             type="button"
                             onClick={handleDismiss}
-                            className="rounded-lg p-2 text-lab-muted transition-colors hover:bg-lab-cream hover:text-lab-ink"
+                            className="rounded-lg p-2 text-duck-ink/60 transition-colors hover:bg-duck-bg hover:text-duck-ink"
                             aria-label="Checklist verbergen"
                         >
                             <X size={18} />
@@ -230,9 +230,9 @@ export const TeacherSetupChecklist: React.FC<TeacherSetupChecklistProps> = ({ on
             </div>
 
             {/* Progress bar */}
-            <div className="h-1 bg-lab-cream" aria-hidden="true">
+            <div className="h-1 bg-duck-bg" aria-hidden="true">
                 <div
-                    className={`h-full transition-all duration-500 ${allDone ? 'bg-lab-sage' : 'bg-lab-primary'}`}
+                    className={`h-full transition-all duration-500 ${allDone ? 'bg-duck-ink' : 'bg-duck-acid'}`}
                     style={{ width: `${progressPercent}%` }}
                 />
             </div>

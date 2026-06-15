@@ -49,7 +49,7 @@ export const ReceivedFeedbackCard: React.FC<Props> = ({ feedback, onVoted }) => 
         <Star
           key={i}
           size={12}
-          className={i <= count ? 'text-lab-gold fill-lab-gold' : 'text-duck-line'}
+          className={i <= count ? 'text-duck-acid fill-duck-acid' : 'text-duck-line'}
         />
       ))}
     </div>
@@ -72,7 +72,7 @@ export const ReceivedFeedbackCard: React.FC<Props> = ({ feedback, onVoted }) => 
           </span>
         </div>
         <div className="flex items-center gap-1.5 bg-white px-2.5 py-1 rounded-full">
-          <Star size={12} className="text-lab-gold fill-lab-gold" />
+          <Star size={12} className="text-duck-acid fill-duck-acid" />
           <span className="text-xs font-bold text-duck-muted">{avgScore}</span>
         </div>
       </div>
@@ -99,19 +99,19 @@ export const ReceivedFeedbackCard: React.FC<Props> = ({ feedback, onVoted }) => 
           <button
             onClick={() => handleVote(true)}
             disabled={voting}
-            className="p-1.5 rounded-lg hover:bg-lab-sage text-duck-muted hover:text-lab-sage transition-colors disabled:opacity-50"
+            className="p-1.5 rounded-lg hover:bg-duck-ink/10 text-duck-muted hover:text-duck-ink transition-colors disabled:opacity-50"
           >
             <ThumbsUp size={14} />
           </button>
           <button
             onClick={() => handleVote(false)}
             disabled={voting}
-            className="p-1.5 rounded-lg hover:bg-lab-coral text-duck-muted hover:text-lab-coral transition-colors disabled:opacity-50"
+            className="p-1.5 rounded-lg hover:bg-duck-error/10 text-duck-muted hover:text-duck-error transition-colors disabled:opacity-50"
           >
             <ThumbsDown size={14} />
           </button>
           {voteError && (
-            <span className="text-xs text-lab-muted font-medium ml-1">Stem niet opgeslagen</span>
+            <span className="text-xs text-duck-error font-medium ml-1">Stem niet opgeslagen</span>
           )}
         </div>
       ) : (

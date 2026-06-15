@@ -34,10 +34,10 @@ const ProgressDots: React.FC<{ activeIndex: number }> = ({ activeIndex }) => (
                 key={idx}
                 className={`h-1.5 rounded-full transition-all ${
                     idx === activeIndex
-                        ? 'w-8 bg-lab-coral'
+                        ? 'w-8 bg-duck-acid'
                         : idx < activeIndex
-                        ? 'w-4 bg-lab-coral'
-                        : 'w-4 bg-lab-creamDeep'
+                        ? 'w-4 bg-duck-acid'
+                        : 'w-4 bg-duck-bg'
                 }`}
                 aria-hidden="true"
             />
@@ -98,7 +98,7 @@ export const TeacherFirstLoginWizard: React.FC<TeacherFirstLoginWizardProps> = (
 
     return (
         <div
-            className="fixed inset-0 z-[200] bg-lab-ink/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto"
+            className="fixed inset-0 z-[200] bg-duck-ink/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto"
             role="dialog"
             aria-modal="true"
             aria-labelledby="teacher-wizard-title"

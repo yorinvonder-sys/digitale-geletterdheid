@@ -652,15 +652,15 @@ export const DeepfakeDetectorMission: React.FC<Props> = ({ onBack, onComplete, v
                         {/* Result banner */}
                         <div className={`rounded-2xl p-6 border-2 ${isCorrect
                                 ? 'bg-duck-ink/10 border-duck-ink'
-                                : 'bg-lab-coral/10 border-lab-coral'
+                                : 'bg-duck-error/10 border-duck-error'
                             }`}>
                             <div className="flex items-center gap-4">
-                                <div className={`w-16 h-16 rounded-full flex items-center justify-center ${isCorrect ? 'bg-duck-ink' : 'bg-lab-coral'
+                                <div className={`w-16 h-16 rounded-full flex items-center justify-center ${isCorrect ? 'bg-duck-ink' : 'bg-duck-error'
                                     }`}>
                                     {isCorrect ? <Check size={32} className="text-white" /> : <X size={32} className="text-white" />}
                                 </div>
                                 <div className="flex-1">
-                                    <p className={`font-black text-xl ${isCorrect ? 'text-duck-ink' : 'text-lab-muted'}`}>
+                                    <p className={`font-black text-xl ${isCorrect ? 'text-duck-ink' : 'text-duck-ink/60'}`}>
                                         {isCorrect ? 'Correct!' : 'Helaas!'}
                                     </p>
                                     <p className="text-duck-ink">

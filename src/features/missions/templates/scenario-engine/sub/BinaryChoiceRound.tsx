@@ -40,7 +40,7 @@ export const BinaryChoiceRound: React.FC<{
                                 submitted && isAnswered
                                     ? isCorrectAnswer
                                         ? 'border-duck-ink bg-duck-ink/5'
-                                        : 'border-lab-coral bg-duck-coral/10'
+                                        : 'border-duck-error bg-duck-coral/10'
                                     : 'border-duck-line bg-white'
                             }`}
                         >

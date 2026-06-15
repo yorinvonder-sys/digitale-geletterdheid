@@ -54,8 +54,8 @@ export const OrderPriorityRound: React.FC<{
                                     className={`flex items-center gap-2 p-2 rounded-lg text-xs transition-all ${
                                         submitted
                                             ? isCorrect ? 'bg-duck-ink/10 text-duck-ink'
-                                            : isClose ? 'bg-lab-gold text-lab-ink'
-                                            : 'bg-lab-coral text-white'
+                                            : isClose ? 'bg-duck-acid text-duck-ink'
+                                            : 'bg-duck-error text-white'
                                             : 'bg-white text-duck-muted'
                                     }`}
                                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
@@ -64,8 +64,8 @@ export const OrderPriorityRound: React.FC<{
                                         className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-black shrink-0 ${
                                             submitted
                                                 ? isCorrect ? 'bg-duck-ink text-white'
-                                                : isClose ? 'bg-lab-gold text-white'
-                                                : 'bg-lab-coral text-white'
+                                                : isClose ? 'bg-duck-acid text-duck-ink'
+                                                : 'bg-duck-error text-white'
                                                 : 'bg-duck-coral/20 text-duck-coral'
                                         }`}
                                     >

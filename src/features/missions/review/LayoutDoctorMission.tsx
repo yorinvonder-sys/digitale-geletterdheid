@@ -294,7 +294,7 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
                 </div>
                 <button
                     onClick={() => { if (isComplete) { clearSave(); onComplete(true); } else { setInlineMessage('Nog niet klaar! Check de opdrachtkaart bovenaan.'); setShowAssignment(true); } }}
-                    className={`px-4 py-1.5 rounded-full font-bold text-sm flex items-center gap-2 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-white ${isComplete ? 'bg-duck-ink hover:bg-lab-sage hover:text-white' : 'bg-white/20'}`}
+                    className={`px-4 py-1.5 rounded-full font-bold text-sm flex items-center gap-2 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-white ${isComplete ? 'bg-duck-acid text-duck-ink hover:opacity-90' : 'bg-white/20'}`}
                 >
                     <CheckCircle size={16} /> {isComplete ? 'Inleveren' : 'Nog Bezig'}
                 </button>
@@ -426,7 +426,7 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
                                 {block.type === 'heading' && (
                                     <h1
                                         onClick={(e) => handleSelection(e, block.id, 'heading')}
-                                        className={`cursor-text ${titleStyle === 'comic' ? 'text-2xl text-lab-sage text-center font-[Comic_Sans_MS]' : 'text-4xl font-bold border-b-2 border-[#08283B] pb-2 text-left font-sans'} ${selection === block.id ? 'bg-duck-coral/10' : ''}`}
+                                        className={`cursor-text ${titleStyle === 'comic' ? 'text-2xl text-duck-ink/60 text-center font-[Comic_Sans_MS]' : 'text-4xl font-bold border-b-2 border-[#08283B] pb-2 text-left font-sans'} ${selection === block.id ? 'bg-duck-coral/10' : ''}`}
                                     >
                                         {block.content}
                                     </h1>

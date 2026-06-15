@@ -249,10 +249,10 @@ function getCoachHint(context: string): string {
 }
 
 const ROLLEN_KLEUREN: Record<string, string> = {
-    leerling: 'bg-lab-teal text-white',
-    docent: 'bg-lab-sage text-white',
-    admin: 'bg-lab-teal text-white',
-    gast: 'bg-lab-cream text-lab-muted',
+    leerling: 'bg-duck-ink text-white',
+    docent: 'bg-duck-ink text-white',
+    admin: 'bg-duck-ink text-white',
+    gast: 'bg-duck-bg text-duck-ink/60',
 };
 
 // ---------------------------------------------------------------------------
@@ -360,19 +360,19 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
     // ---------------------------------------------------------------------------
 
     return (
-        <div className="flex h-screen min-h-screen flex-col overflow-hidden bg-lab-cream">
+        <div className="flex h-screen min-h-screen flex-col overflow-hidden bg-duck-bg">
             {/* Header */}
-            <div className="sticky top-0 z-20 flex shrink-0 items-center gap-3 border-b border-lab-line bg-white px-4 py-3">
-                <button onClick={onBack} className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg transition-colors hover:bg-lab-cream focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lab-coral" aria-label="Terug">
-                    <ArrowLeft size={20} className="text-lab-muted" />
+            <div className="sticky top-0 z-20 flex shrink-0 items-center gap-3 border-b border-duck-ink/15 bg-white px-4 py-3">
+                <button onClick={onBack} className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg transition-colors hover:bg-duck-bg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid" aria-label="Terug">
+                    <ArrowLeft size={20} className="text-duck-ink/60" />
                 </button>
                 <div className="flex items-center gap-2 flex-1">
-                    <div className="w-8 h-8 bg-lab-coral rounded-lg flex items-center justify-center">
-                        <Shield size={18} className="text-white" />
+                    <div className="w-8 h-8 bg-duck-acid rounded-lg flex items-center justify-center">
+                        <Shield size={18} className="text-duck-ink" />
                     </div>
                     <div>
-                        <h1 className="font-bold text-lab-ink text-sm leading-tight">Access Control Engineer</h1>
-                        <p className="text-xs text-lab-muted">Beveilig het schoolsysteem</p>
+                        <h1 className="font-bold text-duck-ink text-sm leading-tight">Access Control Engineer</h1>
+                        <p className="text-xs text-duck-ink/60">Beveilig het schoolsysteem</p>
                     </div>
                 </div>
                 {/* Stap-indicator */}
@@ -383,10 +383,10 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                             onClick={() => naarStap(s)}
                             className={`min-h-[44px] min-w-[44px] rounded-full text-xs font-bold transition-all ${
                                 state.currentStep === s
-                                    ? 'bg-lab-coral text-white'
+                                    ? 'bg-duck-acid text-duck-ink'
                                     : (s === 0 && stap1Klaar) || (s === 1 && stap2Klaar) || (s === 2 && stap3Klaar)
-                                    ? 'bg-lab-sage text-white'
-                                    : 'bg-lab-cream text-lab-muted'
+                                    ? 'bg-duck-ink text-white'
+                                    : 'bg-duck-bg text-duck-ink/60'
                             }`}
                             aria-label={`Stap ${s + 1}`}
                         >
@@ -405,12 +405,12 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                     <div className="space-y-4">
                         <MissionGoalBanner goal={MISSION_GOAL} />
 
-                        <div className="bg-lab-gold border border-lab-gold rounded-xl p-4">
+                        <div className="bg-duck-acid/20 border border-duck-acid rounded-xl p-4">
                             <div className="flex items-start gap-3">
-                                <AlertTriangle size={20} className="text-lab-gold shrink-0 mt-0.5" />
+                                <AlertTriangle size={20} className="text-duck-ink shrink-0 mt-0.5" />
                                 <div>
-                                    <h2 className="font-bold text-lab-gold text-sm">Melding van {SCHOOL_NAAM}</h2>
-                                    <p className="text-lab-gold text-sm mt-1">
+                                    <h2 className="font-bold text-duck-ink text-sm">Melding van {SCHOOL_NAAM}</h2>
+                                    <p className="text-duck-ink text-sm mt-1">
                                         {isVso
                                             ? `Het schoolsysteem heeft problemen. Niet iedereen mag alles zien, maar de regels kloppen niet. Kijk welke regels onveilig zijn.`
                                             : `Het inlogportaal van de school is onveilig: leerlingen kunnen bij cijfers van anderen, gasten loggen zonder wachtwoord in, en roosters zijn aanpasbaar door de verkeerde mensen. Analyseer de beveiligingsregels en vind de problemen.`
@@ -420,8 +420,8 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                             </div>
                         </div>
 
-                        <h3 className="font-bold text-lab-ink">Stap 1: Vind de problemen</h3>
-                        <p className="text-sm text-lab-muted">
+                        <h3 className="font-bold text-duck-ink">Stap 1: Vind de problemen</h3>
+                        <p className="text-sm text-duck-ink/60">
                             Hieronder staan de huidige beveiligingsregels van het schoolsysteem.
                             Tik op de regels die <strong>onveilig</strong> zijn.
                             {isVso && ' Tip: kijk welke regels iedereen overal bij laten.'}
@@ -432,34 +432,34 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                                 const geselecteerd = state.gevondenProblemen.includes(regel.id);
                                 const toonUitleg = showUitleg === regel.id;
                                 return (
-                                    <div key={regel.id} className="bg-white rounded-xl border border-lab-line overflow-hidden">
+                                    <div key={regel.id} className="bg-white rounded-xl border border-duck-ink/15 overflow-hidden">
                                         <button
                                             onClick={() => toggleProbleem(regel.id)}
                                             className={`w-full text-left p-3 flex items-center gap-3 transition-colors ${
                                                 geselecteerd
                                                     ? regel.isVeilig
-                                                        ? 'bg-lab-coral border-l-4 border-lab-coral'
-                                                        : 'bg-lab-sage border-l-4 border-lab-sage'
-                                                    : 'hover:bg-lab-cream'
+                                                        ? 'bg-duck-error/10 border-l-4 border-duck-error'
+                                                        : 'bg-duck-ink/10 border-l-4 border-duck-ink'
+                                                    : 'hover:bg-duck-bg'
                                             }`}
                                         >
                                             <div className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 ${
-                                                geselecteerd ? (regel.isVeilig ? 'bg-lab-coral' : 'bg-lab-sage') : 'bg-lab-cream'
+                                                geselecteerd ? (regel.isVeilig ? 'bg-duck-error' : 'bg-duck-ink') : 'bg-duck-bg'
                                             }`}>
                                                 {geselecteerd ? (
                                                     regel.isVeilig
-                                                        ? <XCircle size={14} className="text-lab-muted" />
-                                                        : <CheckCircle2 size={14} className="text-lab-muted" />
+                                                        ? <XCircle size={14} className="text-white" />
+                                                        : <CheckCircle2 size={14} className="text-white" />
                                                 ) : (
-                                                    <Eye size={14} className="text-lab-muted" />
+                                                    <Eye size={14} className="text-duck-ink/60" />
                                                 )}
                                             </div>
                                             <div className="flex-1 min-w-0">
-                                                <p className="text-sm text-lab-ink">{regel.beschrijving}</p>
+                                                <p className="text-sm text-duck-ink">{regel.beschrijving}</p>
                                                 <span className={`inline-block mt-1 text-xs px-2 py-0.5 rounded-full ${
-                                                    regel.risicoType === 'privacy' ? 'bg-lab-teal text-white' :
-                                                    regel.risicoType === 'authenticatie' ? 'bg-lab-coral text-white' :
-                                                    'bg-lab-teal text-white'
+                                                    regel.risicoType === 'privacy' ? 'bg-duck-ink text-white' :
+                                                    regel.risicoType === 'authenticatie' ? 'bg-duck-acid text-duck-ink' :
+                                                    'bg-duck-ink text-white'
                                                 }`}>
                                                     {regel.risicoType}
                                                 </span>
@@ -469,12 +469,12 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                                             <div className="px-3 pb-3">
                                                 <button
                                                     onClick={() => setShowUitleg(toonUitleg ? null : regel.id)}
-                                                    className="flex min-h-[44px] items-center rounded-lg px-2 text-xs text-lab-coral hover:underline"
+                                                    className="flex min-h-[44px] items-center rounded-lg px-2 text-xs text-duck-acid hover:underline"
                                                 >
                                                     {toonUitleg ? 'Verberg uitleg' : 'Bekijk uitleg'}
                                                 </button>
                                                 {toonUitleg && (
-                                                    <p className="text-xs text-lab-muted mt-1 bg-lab-cream rounded-lg p-2">
+                                                    <p className="text-xs text-duck-ink/60 mt-1 bg-duck-bg rounded-lg p-2">
                                                         {geselecteerd && regel.isVeilig
                                                             ? `Oeps! Deze regel is eigenlijk veilig. ${regel.uitleg}`
                                                             : regel.uitleg
@@ -488,14 +488,14 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                             })}
                         </div>
 
-                        <div className="bg-lab-cream rounded-xl p-3 flex items-center justify-between">
-                            <p className="text-sm text-lab-muted">
+                        <div className="bg-duck-bg rounded-xl p-3 flex items-center justify-between">
+                            <p className="text-sm text-duck-ink/60">
                                 Gevonden: <strong>{aantalProblemen}</strong> / minstens 3 problemen
                             </p>
                             {stap1Klaar && (
                                 <button
                                     onClick={() => naarStap(1)}
-                                    className="flex min-h-[44px] items-center gap-1 rounded-lg bg-lab-coral px-4 text-sm font-medium text-white transition-colors hover:bg-lab-coral hover:text-white"
+                                    className="flex min-h-[44px] items-center gap-1 rounded-full bg-duck-acid px-4 text-sm font-medium text-duck-ink transition-colors hover:bg-duck-ink hover:text-white"
                                 >
                                     Volgende <ArrowRight size={16} />
                                 </button>
@@ -507,8 +507,8 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                 {/* Stap 2: Regels aanpassen */}
                 {state.currentStep === 1 && (
                     <div className="space-y-4">
-                        <h3 className="font-bold text-lab-ink">Stap 2: Stel de juiste rechten in</h3>
-                        <p className="text-sm text-lab-muted">
+                        <h3 className="font-bold text-duck-ink">Stap 2: Stel de juiste rechten in</h3>
+                        <p className="text-sm text-duck-ink/60">
                             {isVso
                                 ? 'Kies voor elke actie wie dat mag doen. Vink de juiste rollen aan.'
                                 : 'Nu je de problemen kent, ga je de toegangsrechten correct instellen. Bepaal per resource welke rollen er toegang toe moeten hebben.'
@@ -519,12 +519,12 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                             {RESOURCES.map(resource => {
                                 const huidigeRollen = state.aangepasteRegels[resource.id] ?? [];
                                 return (
-                                    <div key={resource.id} className="bg-white rounded-xl border border-lab-line p-4">
+                                    <div key={resource.id} className="bg-white rounded-xl border border-duck-ink/15 p-4">
                                         <div className="flex items-start gap-2 mb-2">
-                                            <Lock size={16} className="text-lab-muted shrink-0 mt-0.5" />
+                                            <Lock size={16} className="text-duck-ink/60 shrink-0 mt-0.5" />
                                             <div>
-                                                <p className="text-sm font-semibold text-lab-ink">{resource.resource}</p>
-                                                <p className="text-xs text-lab-muted">{resource.beschrijving}</p>
+                                                <p className="text-sm font-semibold text-duck-ink">{resource.resource}</p>
+                                                <p className="text-xs text-duck-ink/60">{resource.beschrijving}</p>
                                             </div>
                                         </div>
                                         <div className="flex flex-wrap gap-2 mt-2">
@@ -541,8 +541,8 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                                                         }}
                                                         className={`min-h-[44px] rounded-full px-3 text-xs font-medium transition-all ${
                                                             actief
-                                                                ? ROLLEN_KLEUREN[rol] + ' ring-2 ring-offset-1 ring-lab-coral'
-                                                                : 'bg-lab-cream text-lab-muted hover:bg-lab-creamDeep'
+                                                                ? ROLLEN_KLEUREN[rol] + ' ring-2 ring-offset-1 ring-duck-acid'
+                                                                : 'bg-duck-bg text-duck-ink/60 hover:bg-duck-ink/10'
                                                         }`}
                                                     >
                                                         {actief ? <Unlock size={12} className="inline mr-1" /> : <Lock size={12} className="inline mr-1" />}
@@ -556,21 +556,21 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                             })}
                         </div>
 
-                        <div className="bg-lab-cream rounded-xl p-3 flex items-center justify-between">
-                            <p className="text-sm text-lab-muted">
+                        <div className="bg-duck-bg rounded-xl p-3 flex items-center justify-between">
+                            <p className="text-sm text-duck-ink/60">
                                 Ingesteld: <strong>{aantalRegelsIngesteld}</strong> / {RESOURCES.length} resources
                             </p>
                             <div className="flex gap-2">
                                 <button
                                     onClick={() => naarStap(0)}
-                                    className="flex min-h-[44px] items-center gap-1 rounded-lg px-3 text-sm text-lab-muted transition-colors hover:bg-lab-creamDeep"
+                                    className="flex min-h-[44px] items-center gap-1 rounded-full px-3 text-sm text-duck-ink/60 transition-colors hover:bg-duck-ink/10"
                                 >
                                     <ArrowLeft size={16} /> Terug
                                 </button>
                                 {stap2Klaar && (
                                     <button
                                         onClick={() => naarStap(2)}
-                                        className="flex min-h-[44px] items-center gap-1 rounded-lg bg-lab-coral px-4 text-sm font-medium text-white transition-colors hover:bg-lab-coral hover:text-white"
+                                        className="flex min-h-[44px] items-center gap-1 rounded-full bg-duck-acid px-4 text-sm font-medium text-duck-ink transition-colors hover:bg-duck-ink hover:text-white"
                                     >
                                         Volgende <ArrowRight size={16} />
                                     </button>
@@ -583,8 +583,8 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                 {/* Stap 3: Testen */}
                 {state.currentStep === 2 && (
                     <div className="space-y-4">
-                        <h3 className="font-bold text-lab-ink">Stap 3: Test je configuratie</h3>
-                        <p className="text-sm text-lab-muted">
+                        <h3 className="font-bold text-duck-ink">Stap 3: Test je configuratie</h3>
+                        <p className="text-sm text-duck-ink/60">
                             {isVso
                                 ? 'Controleer of jouw regels goed werken. Druk op "Test" en kijk of de juiste mensen de juiste toegang krijgen.'
                                 : 'Voer de testscenario\'s uit om te controleren of jouw toegangsregels correct werken. Elke test simuleert een echte gebruiker die iets probeert te doen.'
@@ -597,32 +597,32 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                                 const toonDetail = showTestResult === scenario.id;
                                 return (
                                     <div key={scenario.id} className={`bg-white rounded-xl border overflow-hidden transition-colors ${
-                                        resultaat === 'correct' ? 'border-lab-sage' :
-                                        resultaat === 'fout' ? 'border-lab-coral' :
-                                        'border-lab-line'
+                                        resultaat === 'correct' ? 'border-duck-ink' :
+                                        resultaat === 'fout' ? 'border-duck-error' :
+                                        'border-duck-ink/15'
                                     }`}>
                                         <div className="p-4">
                                             <div className="flex items-center gap-2 mb-2">
                                                 <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${ROLLEN_KLEUREN[scenario.gebruiker.rol]}`}>
                                                     {scenario.gebruiker.rol}
                                                 </span>
-                                                <span className="text-sm font-medium text-lab-muted">{scenario.gebruiker.naam}</span>
+                                                <span className="text-sm font-medium text-duck-ink/60">{scenario.gebruiker.naam}</span>
                                             </div>
-                                            <p className="text-sm text-lab-muted mb-3">
+                                            <p className="text-sm text-duck-ink/60 mb-3">
                                                 Wil: <strong>{scenario.resource}</strong>
                                             </p>
                                             <div className="flex items-center gap-2">
                                                 {resultaat === null || resultaat === undefined ? (
                                                     <button
                                                         onClick={() => voerTestUit(scenario.id)}
-                                                        className="min-h-[44px] rounded-lg bg-lab-coral px-3 text-xs font-medium text-white transition-colors hover:bg-lab-coral hover:text-white"
+                                                        className="min-h-[44px] rounded-full bg-duck-acid px-3 text-xs font-medium text-duck-ink transition-colors hover:bg-duck-ink hover:text-white"
                                                     >
                                                         Test uitvoeren
                                                     </button>
                                                 ) : (
                                                     <>
-                                                        <div className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-bold ${
-                                                            resultaat === 'correct' ? 'bg-lab-sage text-white' : 'bg-lab-coral text-white'
+                                                        <div className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold ${
+                                                            resultaat === 'correct' ? 'bg-duck-ink text-white' : 'bg-duck-error text-white'
                                                         }`}>
                                                             {resultaat === 'correct'
                                                                 ? <><CheckCircle2 size={14} /> Correct</>
@@ -636,7 +636,7 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                                                                     testResultaten: { ...state.testResultaten, [scenario.id]: null },
                                                                 });
                                                             }}
-                                                            className="flex min-h-[44px] items-center gap-1 rounded-lg px-3 text-xs text-lab-muted hover:text-lab-muted"
+                                                            className="flex min-h-[44px] items-center gap-1 rounded-full px-3 text-xs text-duck-ink/60 hover:text-duck-ink"
                                                         >
                                                             <RotateCcw size={12} /> Opnieuw
                                                         </button>
@@ -644,18 +644,18 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                                                 )}
                                                 <button
                                                     onClick={() => setShowTestResult(toonDetail ? null : scenario.id)}
-                                                    className="ml-auto flex min-h-[44px] items-center rounded-lg px-3 text-xs text-lab-coral hover:underline"
+                                                    className="ml-auto flex min-h-[44px] items-center rounded-full px-3 text-xs text-duck-acid hover:underline"
                                                 >
                                                     {toonDetail ? 'Verberg' : 'Uitleg'}
                                                 </button>
                                             </div>
                                         </div>
                                         {toonDetail && (
-                                            <div className="bg-lab-cream px-4 py-3 border-t border-lab-line">
-                                                <p className="text-xs text-lab-muted">
+                                            <div className="bg-duck-bg px-4 py-3 border-t border-duck-ink/15">
+                                                <p className="text-xs text-duck-ink/60">
                                                     <strong>Verwacht:</strong> {scenario.verwachtResultaat === 'toegang' ? 'Toegang verlenen' : 'Geblokkeerd'}
                                                 </p>
-                                                <p className="text-xs text-lab-muted mt-1">{scenario.uitleg}</p>
+                                                <p className="text-xs text-duck-ink/60 mt-1">{scenario.uitleg}</p>
                                             </div>
                                         )}
                                     </div>
@@ -663,14 +663,14 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                             })}
                         </div>
 
-                        <div className="bg-lab-cream rounded-xl p-3">
+                        <div className="bg-duck-bg rounded-xl p-3">
                             <div className="flex items-center justify-between mb-2">
-                                <p className="text-sm text-lab-muted">
+                                <p className="text-sm text-duck-ink/60">
                                     Tests: <strong>{aantalTestsCorrect}</strong> correct / {aantalTestsGedaan} uitgevoerd
                                 </p>
                                 <button
                                     onClick={() => naarStap(1)}
-                                    className="flex min-h-[44px] items-center gap-1 rounded-lg px-3 text-sm text-lab-muted transition-colors hover:bg-lab-creamDeep"
+                                    className="flex min-h-[44px] items-center gap-1 rounded-full px-3 text-sm text-duck-ink/60 transition-colors hover:bg-duck-ink/10"
                                 >
                                     <ArrowLeft size={16} /> Terug
                                 </button>
@@ -678,14 +678,14 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                             {stap3Klaar && (
                                 <button
                                     onClick={handleVoltooi}
-                                    className="flex min-h-[44px] w-full items-center justify-center gap-2 rounded-xl bg-lab-sage px-4 text-sm font-bold text-white transition-colors hover:bg-lab-sage hover:text-white"
+                                    className="flex min-h-[44px] w-full items-center justify-center gap-2 rounded-full bg-duck-acid px-4 text-sm font-bold text-duck-ink transition-colors hover:bg-duck-ink hover:text-white"
                                 >
                                     <Shield size={18} />
                                     Missie afronden — systeem beveiligd!
                                 </button>
                             )}
                             {!stap3Klaar && aantalTestsGedaan > 0 && (
-                                <p className="text-xs text-lab-gold mt-1">
+                                <p className="text-xs text-duck-acid mt-1">
                                     {aantalTestsCorrect < 4
                                         ? 'Sommige tests mislukken. Ga terug naar Stap 2 en pas de rechten aan.'
                                         : `Voer minstens 5 tests uit (nu: ${aantalTestsGedaan}).`
@@ -700,17 +700,17 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
             {/* AI Coach bubble — sticky onderaan */}
             {coachMessage && (
                 <div className="fixed bottom-4 left-4 right-4 max-w-lg mx-auto z-30 animate-in slide-in-from-bottom-4">
-                    <div className="bg-lab-coral border border-lab-coral rounded-xl p-3 shadow-lg flex items-start gap-3">
-                        <div className="w-8 h-8 bg-lab-coral rounded-full flex items-center justify-center shrink-0">
-                            <MessageCircle size={16} className="text-lab-coral" />
+                    <div className="bg-duck-acid border border-duck-acid rounded-xl p-3 shadow-duck-soft flex items-start gap-3">
+                        <div className="w-8 h-8 bg-duck-ink rounded-full flex items-center justify-center shrink-0">
+                            <MessageCircle size={16} className="text-duck-acid" />
                         </div>
                         <div className="flex-1 min-w-0">
-                            <p className="text-xs font-semibold text-lab-coral mb-0.5">Security Coach</p>
-                            <p className="text-sm text-lab-coral">{coachMessage}</p>
+                            <p className="text-xs font-semibold text-duck-ink mb-0.5">Security Coach</p>
+                            <p className="text-sm text-duck-ink">{coachMessage}</p>
                         </div>
                         <button
                             onClick={() => setCoachMessage(null)}
-                            className="flex min-h-[44px] min-w-[44px] shrink-0 items-center justify-center rounded-full text-lab-coral hover:text-lab-coral"
+                            className="flex min-h-[44px] min-w-[44px] shrink-0 items-center justify-center rounded-full text-duck-ink hover:text-duck-ink/60"
                             aria-label="Sluit hint"
                         >
                             <XCircle size={16} />

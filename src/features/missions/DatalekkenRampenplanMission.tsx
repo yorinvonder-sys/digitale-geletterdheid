@@ -239,8 +239,8 @@ const EvidencePhase: React.FC<{
                     bgClass = 'bg-duck-coral/5';
                 }
                 if (showResult && isSelected) {
-                    borderClass = item.relevant ? 'border-duck-ink' : 'border-lab-coral';
-                    bgClass = item.relevant ? 'bg-duck-ink/5' : 'bg-lab-coral';
+                    borderClass = item.relevant ? 'border-duck-ink' : 'border-duck-error';
+                    bgClass = item.relevant ? 'bg-duck-ink/5' : 'bg-duck-error/10';
                 }
                 if (showResult && !isSelected && item.relevant) {
                     borderClass = 'border-duck-ink/40';
@@ -270,7 +270,7 @@ const EvidencePhase: React.FC<{
                                     {showResult && isSelected && (
                                         item.relevant
                                             ? <Check size={14} className="text-duck-ink" />
-                                            : <X size={14} className="text-lab-muted" />
+                                            : <X size={14} className="text-duck-ink/60" />
                                     )}
                                     {showResult && !isSelected && item.relevant && (
                                         <span className="text-[10px] text-duck-ink font-bold">gemist!</span>
@@ -345,8 +345,8 @@ const PrioritiesPhase: React.FC<{
                                 <div key={id} className={`flex items-center gap-2 p-2 rounded-lg text-xs transition-all ${
                                     submitted
                                         ? isCorrectPos ? 'bg-duck-ink/10 text-duck-ink'
-                                        : isClosePos ? 'bg-lab-gold text-lab-ink'
-                                        : 'bg-lab-coral text-white'
+                                        : isClosePos ? 'bg-duck-acid text-duck-ink'
+                                        : 'bg-duck-error text-white'
                                         : 'bg-white text-duck-muted'
                                 }`} style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                     <span className="w-5 h-5 rounded-full bg-duck-coral/10 text-duck-coral flex items-center justify-center text-[10px] font-black shrink-0">
@@ -428,7 +428,7 @@ const LetterPhase: React.FC<{
                     <div className="text-xs text-duck-muted space-y-2 leading-relaxed italic" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                         <p className="text-duck-muted">Geachte ouders/verzorgers,</p>
                         {selectedBlocks.map((block) => (
-                            <p key={block.id} className={submitted ? (block.belongsInLetter ? 'text-duck-ink' : 'text-lab-muted line-through') : ''}>
+                            <p key={block.id} className={submitted ? (block.belongsInLetter ? 'text-duck-ink' : 'text-duck-ink/60 line-through') : ''}>
                                 {block.content}
                             </p>
                         ))}
@@ -452,8 +452,8 @@ const LetterPhase: React.FC<{
                         bgClass = 'bg-duck-coral/5';
                     }
                     if (submitted && isSelected) {
-                        borderClass = block.belongsInLetter ? 'border-duck-ink' : 'border-lab-coral';
-                        bgClass = block.belongsInLetter ? 'bg-duck-ink/5' : 'bg-lab-coral';
+                        borderClass = block.belongsInLetter ? 'border-duck-ink' : 'border-duck-error';
+                        bgClass = block.belongsInLetter ? 'bg-duck-ink/5' : 'bg-duck-error/10';
                     }
                     if (submitted && !isSelected && block.belongsInLetter) {
                         borderClass = 'border-duck-ink/40';
@@ -480,7 +480,7 @@ const LetterPhase: React.FC<{
                                         {submitted && isSelected && (
                                             block.belongsInLetter
                                                 ? <Check size={12} className="text-duck-ink" />
-                                                : <X size={12} className="text-lab-muted" />
+                                                : <X size={12} className="text-duck-ink/60" />
                                         )}
                                         {submitted && !isSelected && block.belongsInLetter && (
                                             <span className="text-[10px] text-duck-ink font-bold">gemist!</span>
@@ -533,13 +533,13 @@ const BudgetPhase: React.FC<{
                     <span className="text-[10px] font-black text-duck-muted uppercase tracking-widest" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                         Beschikbaar budget
                     </span>
-                    <span className={`text-sm font-black ${remaining < 0 ? 'text-lab-muted' : remaining === 0 ? 'text-duck-ink' : 'text-duck-coral'}`} style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                    <span className={`text-sm font-black ${remaining < 0 ? 'text-duck-error' : remaining === 0 ? 'text-duck-ink' : 'text-duck-coral'}`} style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                         €{remaining.toLocaleString('nl-NL')} van €{TOTAL_BUDGET.toLocaleString('nl-NL')}
                     </span>
                 </div>
                 <div className="h-2 bg-duck-line rounded-full overflow-hidden">
                     <div
-                        className={`h-full rounded-full transition-all duration-500 ${remaining < 0 ? 'bg-lab-coral' : 'bg-gradient-to-r from-duck-coral to-duck-coral'}`}
+                        className={`h-full rounded-full transition-all duration-500 ${remaining < 0 ? 'bg-duck-error' : 'bg-gradient-to-r from-duck-coral to-duck-coral'}`}
                         style={{ width: `${Math.min(100, (totalSpent / TOTAL_BUDGET) * 100)}%` }}
                     />
                 </div>
@@ -604,7 +604,7 @@ const BudgetPhase: React.FC<{
             </div>
 
             {remaining < 0 && !submitted && (
-                <p className="text-center text-xs text-lab-muted mb-3 font-bold" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                <p className="text-center text-xs text-duck-error mb-3 font-bold" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                     Je bent over budget! Deselecteer een maatregel.
                 </p>
             )}

@@ -52,10 +52,10 @@ const domains: SloDomain[] = [
     {
         name: 'Digitale producten en programmeren',
         description: 'Ontwerpen, maken en programmeren van digitale producten',
-        accent: 'bg-lab-sage',
-        accentBg: 'bg-lab-sage/60',
-        accentLight: 'bg-lab-sage',
-        color: 'text-lab-sage',
+        accent: 'bg-duck-ink/10',
+        accentBg: 'bg-duck-ink/10',
+        accentLight: 'bg-duck-ink/10',
+        color: 'text-duck-ink/60',
         icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="8" cy="12" r="3"/><circle cx="16" cy="12" r="3"/><path d="M11 12h2"/><path d="M5 12H2"/><path d="M22 12h-3"/><path d="M8 9V4l-2 2"/><path d="M16 15v5l2-2"/></svg>,
         illustration: '/illustrations/slo-domain-programming.webp',
         kerndoelen: [
@@ -66,10 +66,10 @@ const domains: SloDomain[] = [
     {
         name: 'Veiligheid, welzijn en maatschappij',
         description: 'Veilig, verantwoord en bewust omgaan met digitale technologie in de samenleving',
-        accent: 'bg-lab-gold',
-        accentBg: 'bg-lab-gold',
-        accentLight: 'bg-lab-gold',
-        color: 'text-lab-gold',
+        accent: 'bg-duck-acid',
+        accentBg: 'bg-duck-acid',
+        accentLight: 'bg-duck-acid',
+        color: 'text-duck-acid',
         icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><circle cx="12" cy="11" r="2.5"/><path d="M9.5 11c0-1.5 1-3 2.5-3s2.5 1.5 2.5 3" /><line x1="12" y1="13.5" x2="12" y2="15"/></svg>,
         illustration: '/illustrations/slo-domain-safety.webp',
         kerndoelen: [

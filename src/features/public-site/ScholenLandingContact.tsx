@@ -100,7 +100,7 @@ export const ScholenLandingContact: React.FC = () => {
                         <p className="text-sm mb-5" style={{ color: '#202023' }}>3 maanden / max. 250 leerlingen</p>
                         <ul className="space-y-2.5 mb-6">
                             {['20+ AI-missies', 'Docenten-dashboard', 'Onboarding 30 min', 'AVG-compliant', 'Live binnen 10 werkdagen'].map((item, i) => (
-                                <li key={i} className="flex items-center gap-2 text-sm text-lab-muted">
+                                <li key={i} className="flex items-center gap-2 text-sm text-duck-ink/60">
                                     <IconCheckCircle className="flex-shrink-0" style={{ color: '#ff3c21' }} />
                                     {item}
                                 </li>
@@ -129,7 +129,7 @@ export const ScholenLandingContact: React.FC = () => {
                         <p className="text-xs mt-1 mb-5" style={{ color: '#202023' }}>Minder dan €7 per leerling per jaar</p>
                         <ul className="space-y-2.5 mb-6">
                             {['Onbeperkt leerlingen', 'Volledige SLO-koppeling', 'Support-SLA (ma-vr)', 'Geen verborgen kosten'].map((item, i) => (
-                                <li key={i} className="flex items-center gap-2 text-sm text-lab-muted">
+                                <li key={i} className="flex items-center gap-2 text-sm text-duck-ink/60">
                                     <IconCheckCircle className="flex-shrink-0" style={{ color: '#202023' }} />
                                     {item}
                                 </li>
@@ -149,8 +149,8 @@ export const ScholenLandingContact: React.FC = () => {
                         <div className="bg-white rounded-2xl p-7 shadow-2xl shadow-black/10">
                             {isSubmitted ? (
                                 <div className="text-center py-8">
-                                    <div className="w-14 h-14 bg-lab-sage rounded-full flex items-center justify-center mx-auto mb-4">
-                                        <IconCheckCircle className="text-lab-sage w-7 h-7" />
+                                    <div className="w-14 h-14 bg-duck-ink/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                                        <IconCheckCircle className="text-duck-ink/60 w-7 h-7" />
                                     </div>
                                     <h3 className="text-lg font-medium mb-2" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#202023' }}>Aanvraag ontvangen!</h3>
                                     <p className="text-sm mb-4" style={{ color: '#202023' }}>
@@ -274,7 +274,7 @@ export const ScholenLandingContact: React.FC = () => {
                                     </div>
 
                                     {submitError && (
-                                        <p className="text-lab-coral text-xs bg-lab-coral px-3 py-2 rounded-lg" role="alert">{submitError}</p>
+                                        <p className="text-duck-error text-xs bg-duck-error/10 px-3 py-2 rounded-lg" role="alert">{submitError}</p>
                                     )}
 
                                     <button

@@ -44,7 +44,7 @@ import {
 function TabLoader() {
     return (
         <div className="flex items-center justify-center py-24">
-            <div className="w-8 h-8 border-3 border-lab-coral border-t-transparent rounded-full animate-spin" />
+            <div className="w-8 h-8 border-3 border-duck-ink/20 border-t-duck-ink rounded-full animate-spin" />
         </div>
     );
 }
@@ -111,65 +111,65 @@ export function DeveloperDashboard({ user, onLogout, onSwitchView }: DeveloperDa
                     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
                         {/* Weekly Scorecard */}
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                            <div className="bg-white p-6 rounded-3xl border border-lab-line shadow-sm">
-                                <p className="text-[10px] font-black text-lab-muted uppercase tracking-widest mb-1">Voortgang</p>
+                            <div className="bg-white p-6 rounded-3xl border border-duck-ink/15 shadow-sm">
+                                <p className="text-[10px] font-black text-duck-ink/60 uppercase tracking-widest mb-1">Voortgang</p>
                                 <div className="flex items-baseline gap-2">
-                                    <h3 className="text-3xl font-black text-lab-ink">{completionRate}%</h3>
+                                    <h3 className="text-3xl font-black text-duck-ink">{completionRate}%</h3>
                                     {tasksCompletedThisWeek > 0 && (
-                                        <span className="text-xs font-bold text-lab-muted flex items-center gap-0.5">
+                                        <span className="text-xs font-bold text-duck-ink/60 flex items-center gap-0.5">
                                             <TrendingUp size={12} />
                                             +{tasksCompletedThisWeek} deze week
                                         </span>
                                     )}
                                 </div>
-                                <div className="mt-4 h-1.5 bg-lab-cream rounded-full overflow-hidden">
-                                    <div className="h-full bg-lab-coral transition-all duration-1000" style={{ width: `${completionRate}%` }}></div>
+                                <div className="mt-4 h-1.5 bg-duck-ink/10 rounded-full overflow-hidden">
+                                    <div className="h-full bg-duck-acid transition-all duration-1000" style={{ width: `${completionRate}%` }}></div>
                                 </div>
                             </div>
 
-                            <div className="bg-white p-6 rounded-3xl border border-lab-line shadow-sm">
-                                <p className="text-[10px] font-black text-lab-muted uppercase tracking-widest mb-1">Taken Gereed</p>
+                            <div className="bg-white p-6 rounded-3xl border border-duck-ink/15 shadow-sm">
+                                <p className="text-[10px] font-black text-duck-ink/60 uppercase tracking-widest mb-1">Taken Gereed</p>
                                 <div className="flex items-baseline gap-2">
-                                    <h3 className="text-3xl font-black text-lab-ink">{completedTasks.length}</h3>
-                                    <span className="text-xs font-bold text-lab-muted uppercase tracking-widest">/ {tasks.length}</span>
+                                    <h3 className="text-3xl font-black text-duck-ink">{completedTasks.length}</h3>
+                                    <span className="text-xs font-bold text-duck-ink/60 uppercase tracking-widest">/ {tasks.length}</span>
                                 </div>
-                                <p className="text-[10px] text-lab-muted mt-2 font-medium">Deze week</p>
+                                <p className="text-[10px] text-duck-ink/60 mt-2 font-medium">Deze week</p>
                             </div>
 
-                            <div className="bg-white p-6 rounded-3xl border border-lab-line shadow-sm">
-                                <p className="text-[10px] font-black text-lab-muted uppercase tracking-widest mb-1">AI Checks</p>
+                            <div className="bg-white p-6 rounded-3xl border border-duck-ink/15 shadow-sm">
+                                <p className="text-[10px] font-black text-duck-ink/60 uppercase tracking-widest mb-1">AI Checks</p>
                                 <div className="flex items-baseline gap-2">
-                                    <h3 className="text-3xl font-black text-lab-ink">
+                                    <h3 className="text-3xl font-black text-duck-ink">
                                         {validatedTasks.length}
                                     </h3>
-                                    <Shield size={16} className="text-lab-muted" />
+                                    <Shield size={16} className="text-duck-ink/60" />
                                 </div>
-                                <p className="text-[10px] text-lab-muted mt-2 font-medium">Goedgekeurd door Coach</p>
+                                <p className="text-[10px] text-duck-ink/60 mt-2 font-medium">Goedgekeurd door Coach</p>
                             </div>
 
-                            <div className="bg-white p-6 rounded-3xl border border-lab-line shadow-sm">
-                                <p className="text-[10px] font-black text-lab-muted uppercase tracking-widest mb-1">Blokkades</p>
+                            <div className="bg-white p-6 rounded-3xl border border-duck-ink/15 shadow-sm">
+                                <p className="text-[10px] font-black text-duck-ink/60 uppercase tracking-widest mb-1">Blokkades</p>
                                 <div className="flex items-baseline gap-2">
-                                    <h3 className="text-3xl font-black text-lab-coral">
+                                    <h3 className="text-3xl font-black text-duck-error">
                                         {blockedTasks.length}
                                     </h3>
-                                    <AlertCircle size={16} className="text-lab-muted" />
+                                    <AlertCircle size={16} className="text-duck-ink/60" />
                                 </div>
-                                <p className="text-[10px] text-lab-muted mt-2 font-medium">Aandacht nodig</p>
+                                <p className="text-[10px] text-duck-ink/60 mt-2 font-medium">Aandacht nodig</p>
                             </div>
                         </div>
 
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                             {/* AI Reflection Coach */}
-                            <div className="lg:col-span-2 bg-lab-ink rounded-[2rem] p-8 text-white relative overflow-hidden">
+                            <div className="lg:col-span-2 bg-duck-ink rounded-[2rem] p-8 text-white relative overflow-hidden">
                                 <div className="relative z-10">
                                     <div className="flex items-center gap-3 mb-6">
-                                        <div className="w-10 h-10 bg-lab-coral rounded-xl flex items-center justify-center">
+                                        <div className="w-10 h-10 bg-duck-acid rounded-xl flex items-center justify-center text-duck-ink">
                                             <Sparkles size={24} />
                                         </div>
                                         <div>
                                             <h3 className="text-xl font-black uppercase tracking-tight">AI Coach</h3>
-                                            <p className="text-[10px] text-lab-coral font-bold uppercase tracking-widest">Tips op basis van je bewijs</p>
+                                            <p className="text-[10px] text-duck-acid font-bold uppercase tracking-widest">Tips op basis van je bewijs</p>
                                         </div>
                                     </div>
 
@@ -183,9 +183,9 @@ export function DeveloperDashboard({ user, onLogout, onSwitchView }: DeveloperDa
                                                 </div>
                                             </div>
                                             <div className="flex gap-4">
-                                                <div className="w-1 h-auto bg-lab-coral rounded-full" />
+                                                <div className="w-1 h-auto bg-duck-acid rounded-full" />
                                                 <div className="space-y-2">
-                                                    <p className="text-xs font-bold text-lab-coral uppercase tracking-widest">Tip van de Coach</p>
+                                                    <p className="text-xs font-bold text-duck-acid uppercase tracking-widest">Tip van de Coach</p>
                                                     <p className="text-sm text-white/80 leading-relaxed">
                                                         Je focus op {recentReflection.learningNote || 'validatie'} werpt zijn vruchten af.
                                                         Zorg dat je deze week de documentatie volledig afrondt voordat je de sales week ingaat.
@@ -200,34 +200,34 @@ export function DeveloperDashboard({ user, onLogout, onSwitchView }: DeveloperDa
                                         </div>
                                     )}
                                 </div>
-                                <div className="absolute top-0 right-0 w-96 h-96 bg-lab-coral/10 rounded-full blur-3xl -mr-48 -mt-48"></div>
+                                <div className="absolute top-0 right-0 w-96 h-96 bg-duck-acid/10 rounded-full blur-3xl -mr-48 -mt-48"></div>
                             </div>
 
                             {/* Weekly Goal */}
-                            <div className="bg-lab-coral rounded-[2rem] p-8 border border-lab-coral flex flex-col">
+                            <div className="bg-duck-acid rounded-[2rem] p-8 flex flex-col">
                                 <div className="flex items-center gap-3 mb-6">
-                                    <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-lab-coral shadow-sm">
+                                    <div className="w-10 h-10 bg-duck-ink rounded-xl flex items-center justify-center text-white shadow-sm">
                                         <BookOpen size={24} />
                                     </div>
-                                    <h3 className="text-lg font-black text-white uppercase tracking-tight">Weekdoel</h3>
+                                    <h3 className="text-lg font-black text-duck-ink uppercase tracking-tight">Weekdoel</h3>
                                 </div>
-                                <p className="text-white font-bold text-xl leading-tight mb-4">
+                                <p className="text-duck-ink font-bold text-xl leading-tight mb-4">
                                     {tasks.length > 0
                                         ? `${tasks.filter(t => t.status !== 'done').length} taken nog open. Focus op de hoogste prioriteit.`
                                         : 'Start met het aanmaken van taken via de Takenlijst.'
                                     }
                                 </p>
                                 <div className="mt-auto space-y-4">
-                                    <div className="flex items-center justify-between text-xs font-black text-white/80 uppercase tracking-widest">
+                                    <div className="flex items-center justify-between text-xs font-black text-duck-ink/70 uppercase tracking-widest">
                                         <span>Status</span>
                                         <span>{completionRate}% gereed</span>
                                     </div>
-                                    <div className="h-2 bg-white/25 rounded-full overflow-hidden">
-                                        <div className="h-full bg-white transition-all duration-1000" style={{ width: `${completionRate}%` }}></div>
+                                    <div className="h-2 bg-duck-ink/20 rounded-full overflow-hidden">
+                                        <div className="h-full bg-duck-ink transition-all duration-1000" style={{ width: `${completionRate}%` }}></div>
                                     </div>
                                     <button
                                         onClick={() => setActiveTab('tasks')}
-                                        className="w-full py-3 bg-white text-lab-coral rounded-xl font-bold text-xs uppercase tracking-widest shadow-sm hover:bg-lab-creamDeep transition-colors"
+                                        className="w-full py-3 bg-duck-ink text-white rounded-xl font-bold text-xs uppercase tracking-widest shadow-sm hover:opacity-90 transition-opacity"
                                     >
                                         Update Voortgang
                                     </button>
@@ -238,67 +238,67 @@ export function DeveloperDashboard({ user, onLogout, onSwitchView }: DeveloperDa
                         {/* Additional Insights / History */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                             {/* Plan History */}
-                            <div className="bg-white p-8 rounded-[2rem] border border-lab-line shadow-sm">
+                            <div className="bg-white p-8 rounded-[2rem] border border-duck-ink/15 shadow-sm">
                                 <div className="flex items-center justify-between mb-6">
                                     <div className="flex items-center gap-3">
-                                        <div className="w-10 h-10 bg-lab-cream rounded-xl flex items-center justify-center text-lab-muted">
+                                        <div className="w-10 h-10 bg-duck-bgLight rounded-xl flex items-center justify-center text-duck-ink/60">
                                             <History size={20} />
                                         </div>
-                                        <h3 className="text-lg font-black text-lab-ink uppercase tracking-tight">Plan Historie</h3>
+                                        <h3 className="text-lg font-black text-duck-ink uppercase tracking-tight">Plan Historie</h3>
                                     </div>
                                 </div>
 
                                 <div className="space-y-4">
                                     {planHistory.slice(0, 3).map((item, i) => (
-                                        <div key={i} className="flex items-center gap-4 p-4 hover:bg-lab-cream rounded-2xl transition-colors group">
-                                            <div className={`w-2 h-2 rounded-full ${item.status === 'approved' ? 'bg-lab-coral' : 'bg-lab-coral'}`} />
+                                        <div key={i} className="flex items-center gap-4 p-4 hover:bg-duck-bgLight rounded-2xl transition-colors group">
+                                            <div className={`w-2 h-2 rounded-full ${item.status === 'approved' ? 'bg-duck-acid' : 'bg-duck-ink/30'}`} />
                                             <div className="flex-1 min-w-0">
-                                                <p className="text-sm font-bold text-lab-ink truncate">AI Plan v{planHistory.length - i}</p>
-                                                <p className="text-[10px] text-lab-muted font-medium uppercase tracking-widest">
+                                                <p className="text-sm font-bold text-duck-ink truncate">AI Plan v{planHistory.length - i}</p>
+                                                <p className="text-[10px] text-duck-ink/60 font-medium uppercase tracking-widest">
                                                     {item.created_at ? new Date(item.created_at).toLocaleDateString('nl-NL') : ''} • {item.status || 'draft'}
                                                 </p>
                                             </div>
-                                            <ChevronRight size={16} className="text-lab-muted group-hover:text-lab-muted transition-colors" />
+                                            <ChevronRight size={16} className="text-duck-ink/60 group-hover:text-duck-ink/60 transition-colors" />
                                         </div>
                                     ))}
                                     {planHistory.length === 0 && (
-                                        <p className="text-sm text-lab-muted italic text-center py-4">Nog geen plannen gegenereerd.</p>
+                                        <p className="text-sm text-duck-ink/60 italic text-center py-4">Nog geen plannen gegenereerd.</p>
                                     )}
                                 </div>
                             </div>
 
                             {/* Performance KPI's */}
-                            <div className="bg-white p-8 rounded-[2rem] border border-lab-line shadow-sm">
+                            <div className="bg-white p-8 rounded-[2rem] border border-duck-ink/15 shadow-sm">
                                 <div className="flex items-center justify-between mb-6">
                                     <div className="flex items-center gap-3">
-                                        <div className="w-10 h-10 bg-lab-coral rounded-xl flex items-center justify-center text-white">
+                                        <div className="w-10 h-10 bg-duck-acid rounded-xl flex items-center justify-center text-duck-ink">
                                             <Zap size={20} />
                                         </div>
-                                        <h3 className="text-lg font-black text-lab-ink uppercase tracking-tight">Snelheid & Focus</h3>
+                                        <h3 className="text-lg font-black text-duck-ink uppercase tracking-tight">Snelheid & Focus</h3>
                                     </div>
                                 </div>
 
                                 <div className="space-y-6">
                                     <div className="flex justify-between items-center">
                                         <div>
-                                            <p className="text-sm font-bold text-lab-ink">Taken per week</p>
-                                            <p className="text-[10px] text-lab-muted uppercase font-black">Gemiddelde snelheid</p>
+                                            <p className="text-sm font-bold text-duck-ink">Taken per week</p>
+                                            <p className="text-[10px] text-duck-ink/60 uppercase font-black">Gemiddelde snelheid</p>
                                         </div>
-                                        <span className="text-xl font-black text-lab-coral">{avgTasksPerWeek}</span>
+                                        <span className="text-xl font-black text-duck-ink">{avgTasksPerWeek}</span>
                                     </div>
                                     <div className="flex justify-between items-center">
                                         <div>
-                                            <p className="text-sm font-bold text-lab-ink">Leerdoelen ingevuld</p>
-                                            <p className="text-[10px] text-lab-muted uppercase font-black">Taken met leerdoel</p>
+                                            <p className="text-sm font-bold text-duck-ink">Leerdoelen ingevuld</p>
+                                            <p className="text-[10px] text-duck-ink/60 uppercase font-black">Taken met leerdoel</p>
                                         </div>
-                                        <span className="text-xl font-black text-lab-sage">{learningGoalRate}%</span>
+                                        <span className="text-xl font-black text-duck-ink">{learningGoalRate}%</span>
                                     </div>
                                     <div className="flex justify-between items-center">
                                         <div>
-                                            <p className="text-sm font-bold text-lab-ink">AI Validaties</p>
-                                            <p className="text-[10px] text-lab-muted uppercase font-black">Goedgekeurd door Coach</p>
+                                            <p className="text-sm font-bold text-duck-ink">AI Validaties</p>
+                                            <p className="text-[10px] text-duck-ink/60 uppercase font-black">Goedgekeurd door Coach</p>
                                         </div>
-                                        <span className="text-xl font-black text-lab-coral">{validatedTasks.length}</span>
+                                        <span className="text-xl font-black text-duck-ink">{validatedTasks.length}</span>
                                     </div>
                                 </div>
                             </div>
@@ -325,15 +325,15 @@ export function DeveloperDashboard({ user, onLogout, onSwitchView }: DeveloperDa
     };
 
     return (
-        <div className="min-h-screen bg-lab-cream flex flex-col md:flex-row">
+        <div className="min-h-screen bg-duck-bg flex flex-col md:flex-row">
             {/* Sidebar */}
-            <aside className="w-full md:w-72 bg-white border-r border-lab-line flex flex-col z-20">
-                <div className="p-6 border-b border-lab-line">
+            <aside className="w-full md:w-72 bg-white border-r border-duck-ink/15 flex flex-col z-20">
+                <div className="p-6 border-b border-duck-ink/15">
                     <div className="flex items-center gap-3">
-                        <DuckMark className="size-12 rounded-xl border border-lab-line shadow-sm shrink-0" />
+                        <DuckMark className="size-12 rounded-xl border border-duck-ink/15 shadow-sm shrink-0" />
                         <div>
-                            <h1 className="font-black text-lab-ink uppercase tracking-tight leading-none">Developer</h1>
-                            <span className="text-[10px] font-black text-lab-muted uppercase tracking-widest">Portal</span>
+                            <h1 className="font-black text-duck-ink uppercase tracking-tight leading-none">Developer</h1>
+                            <span className="text-[10px] font-black text-duck-ink/60 uppercase tracking-widest">Portal</span>
                         </div>
                     </div>
                 </div>
@@ -347,8 +347,8 @@ export function DeveloperDashboard({ user, onLogout, onSwitchView }: DeveloperDa
                                 key={tab.id}
                                 onClick={() => setActiveTab(tab.id as TabId)}
                                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${isActive
-                                    ? 'bg-lab-teal text-white shadow-sm'
-                                    : 'text-lab-muted hover:bg-lab-cream hover:text-lab-ink'
+                                    ? 'bg-duck-ink text-white shadow-duck-soft'
+                                    : 'text-duck-ink/60 hover:bg-duck-bgLight hover:text-duck-ink'
                                     }`}
                             >
                                 <Icon size={20} />
@@ -361,17 +361,17 @@ export function DeveloperDashboard({ user, onLogout, onSwitchView }: DeveloperDa
 
                 {onSwitchView && (
                     <div className="px-4 pb-2 space-y-2">
-                        <p className="text-[10px] font-black text-lab-muted uppercase tracking-widest px-4 mb-1">Bekijk als</p>
+                        <p className="text-[10px] font-black text-duck-ink/60 uppercase tracking-widest px-4 mb-1">Bekijk als</p>
                         <button
                             onClick={() => onSwitchView('student')}
-                            className="w-full flex items-center gap-3 px-4 py-3 text-white bg-lab-sage hover:bg-lab-sage hover:text-white rounded-xl font-bold text-sm transition-colors"
+                            className="w-full flex items-center gap-3 px-4 py-3 text-duck-ink bg-duck-bgLight border border-duck-ink/20 hover:bg-duck-acid hover:border-duck-ink rounded-xl font-bold text-sm transition-colors"
                         >
                             <GraduationCap size={20} />
                             Leerling Dashboard
                         </button>
                         <button
                             onClick={() => onSwitchView('teacher')}
-                            className="w-full flex items-center gap-3 px-4 py-3 text-white bg-lab-teal hover:bg-lab-teal hover:text-white rounded-xl font-bold text-sm transition-colors"
+                            className="w-full flex items-center gap-3 px-4 py-3 text-white bg-duck-ink hover:opacity-90 rounded-xl font-bold text-sm transition-opacity"
                         >
                             <Users size={20} />
                             Docenten Dashboard
@@ -379,19 +379,19 @@ export function DeveloperDashboard({ user, onLogout, onSwitchView }: DeveloperDa
                     </div>
                 )}
 
-                <div className="p-4 mt-auto border-t border-lab-line">
-                    <div className="flex items-center gap-3 p-3 bg-lab-cream rounded-xl mb-4">
-                        <div className="w-8 h-8 bg-lab-creamDeep rounded-full flex items-center justify-center text-lab-muted font-bold text-xs uppercase">
+                <div className="p-4 mt-auto border-t border-duck-ink/15">
+                    <div className="flex items-center gap-3 p-3 bg-duck-bgLight rounded-xl mb-4">
+                        <div className="w-8 h-8 bg-duck-bgLight rounded-full flex items-center justify-center text-duck-ink/60 font-bold text-xs uppercase">
                             {user.displayName?.charAt(0) || user.role.charAt(0)}
                         </div>
                         <div className="flex-1 min-w-0">
-                            <p className="text-xs font-bold text-lab-ink truncate">{user.displayName}</p>
-                            <p className="text-[10px] text-lab-muted truncate">{user.email}</p>
+                            <p className="text-xs font-bold text-duck-ink truncate">{user.displayName}</p>
+                            <p className="text-[10px] text-duck-ink/60 truncate">{user.email}</p>
                         </div>
                     </div>
                     <button
                         onClick={onLogout}
-                        className="w-full flex items-center gap-3 px-4 py-3 text-lab-muted hover:bg-lab-coral hover:text-white rounded-xl font-bold text-sm transition-colors"
+                        className="w-full flex items-center gap-3 px-4 py-3 text-duck-ink/60 hover:bg-duck-error hover:text-white rounded-xl font-bold text-sm transition-colors"
                     >
                         <LogOut size={20} />
                         Uitloggen
@@ -401,8 +401,8 @@ export function DeveloperDashboard({ user, onLogout, onSwitchView }: DeveloperDa
 
             {/* Main Content */}
             <main className="flex-1 overflow-y-auto max-h-screen">
-                <header className="sticky top-0 bg-lab-cream backdrop-blur-md z-30 px-6 md:px-10 py-6 border-b border-lab-line">
-                    <h2 className="text-2xl font-black text-lab-ink tracking-tight m-0 border-none p-0 flex items-center gap-3">
+                <header className="sticky top-0 bg-duck-bg backdrop-blur-md z-30 px-6 md:px-10 py-6 border-b border-duck-ink/15">
+                    <h2 className="text-2xl font-black text-duck-ink tracking-tight m-0 border-none p-0 flex items-center gap-3">
                         {tabs.find(t => t.id === activeTab)?.label}
                     </h2>
                 </header>

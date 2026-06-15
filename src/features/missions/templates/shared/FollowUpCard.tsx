@@ -16,7 +16,7 @@ export const FollowUpCard: React.FC<FollowUpCardProps> = ({ followUp, onComplete
 
     const isLight = theme === 'light';
     const bg = isLight ? 'bg-duck-bg' : 'bg-duck-ink';
-    const border = isLight ? 'border-duck-coral' : 'border-lab-coral/40';
+    const border = isLight ? 'border-duck-coral' : 'border-duck-acid/40';
     const textMain = isLight ? 'text-duck-ink' : 'text-white';
     const textSub = isLight ? 'text-duck-muted' : 'text-duck-muted';
     const fontMain = isLight
@@ -42,7 +42,7 @@ export const FollowUpCard: React.FC<FollowUpCardProps> = ({ followUp, onComplete
                 <span className={`text-xs font-black ${textMain}`} style={fontBody}>
                     Verdiepingsvraag
                     {followUp.bonusPoints > 0 && (
-                        <span className={`ml-1.5 font-bold ${isLight ? 'text-duck-coral' : 'text-lab-gold'}`}>
+                        <span className={`ml-1.5 font-bold ${isLight ? 'text-duck-coral' : 'text-duck-acid'}`}>
                             +{followUp.bonusPoints} bonus
                         </span>
                     )}
@@ -57,16 +57,16 @@ export const FollowUpCard: React.FC<FollowUpCardProps> = ({ followUp, onComplete
                 {followUp.options.map((opt, i) => {
                     let optStyle = isLight
                         ? 'bg-white border-duck-line hover:border-duck-coral'
-                        : 'bg-duck-ink border-[#08283B] hover:border-lab-coral/40';
+                        : 'bg-duck-ink border-[#08283B] hover:border-duck-acid/40';
 
                     if (answered && i === followUp.correctIndex) {
                         optStyle = isLight
                             ? 'bg-duck-ink/10 border-duck-ink'
-                            : 'bg-lab-sage/30 border-lab-coral';
+                            : 'bg-duck-ink/10 border-duck-acid';
                     } else if (answered && i === selected && !correct) {
                         optStyle = isLight
-                            ? 'bg-lab-coral border-lab-coral'
-                            : 'bg-lab-coral/30 border-lab-coral';
+                            ? 'bg-duck-error border-duck-error'
+                            : 'bg-duck-error/30 border-duck-error';
                     } else if (answered) {
                         optStyle = isLight
                             ? 'bg-duck-line border-duck-line'
@@ -97,8 +97,8 @@ export const FollowUpCard: React.FC<FollowUpCardProps> = ({ followUp, onComplete
                     <div
                         className={`text-xs px-3 py-2 rounded-xl ${
                             correct
-                                ? isLight ? 'bg-duck-ink/10 text-duck-ink' : 'bg-lab-sage/30 text-lab-sage'
-                                : isLight ? 'bg-duck-coral/10 text-duck-coral' : 'bg-lab-coral/30 text-lab-coral'
+                                ? isLight ? 'bg-duck-ink/10 text-duck-ink' : 'bg-duck-ink/20 text-duck-acid'
+                                : isLight ? 'bg-duck-coral/10 text-duck-coral' : 'bg-duck-error/30 text-duck-error'
                         }`}
                         style={fontBody}
                     >
@@ -109,7 +109,7 @@ export const FollowUpCard: React.FC<FollowUpCardProps> = ({ followUp, onComplete
                         className={`w-full py-2.5 rounded-full font-black text-sm transition-all duration-200 ${
                             isLight
                                 ? 'bg-gradient-to-r from-duck-coral to-duck-coral hover:from-duck-coral hover:to-duck-coral text-white'
-                                : 'bg-lab-sage hover:bg-lab-sage hover:text-white text-duck-ink font-mono'
+                                : 'bg-duck-ink hover:bg-duck-ink hover:text-duck-acid text-duck-acid font-mono'
                         }`}
                         style={fontBody}
                     >

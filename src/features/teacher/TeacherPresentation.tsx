@@ -42,7 +42,7 @@ const WEEKS_DATA: WeekConfig[] = [
                 type: 'title',
                 title: 'Week 1: Digital Master 🎓',
                 subtitle: 'Word de baas over je eigen iPad en schoolwerk.',
-                bgColor: 'from-lab-teal to-lab-coral',
+                bgColor: 'from-duck-ink to-duck-acid',
             },
             {
                 type: 'context',
@@ -194,7 +194,7 @@ const WEEKS_DATA: WeekConfig[] = [
                         </motion.button>
                     </div>
                 ),
-                bgColor: 'from-lab-teal to-lab-coral',
+                bgColor: 'from-duck-ink to-duck-acid',
             }
         ]
     },
@@ -255,7 +255,7 @@ const WEEKS_DATA: WeekConfig[] = [
                         </div>
                     </div>
                 ),
-                bgColor: 'from-lab-teal to-lab-coral',
+                bgColor: 'from-duck-ink to-duck-acid',
             },
             {
                 type: 'goals',

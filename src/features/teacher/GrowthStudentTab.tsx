@@ -22,9 +22,9 @@ const NIVEAU_LABEL: Record<'starter' | 'basis' | 'gevorderd', string> = {
 };
 
 const NIVEAU_KLEUR: Record<'starter' | 'basis' | 'gevorderd', string> = {
-  starter: 'text-white bg-lab-coral/10 border-lab-coral/30',
-  basis: 'text-lab-gold bg-lab-coral/10 border-lab-coral/30',
-  gevorderd: 'text-lab-sage bg-lab-coral/10 border-lab-coral/30',
+  starter: 'text-white bg-duck-acid/10 border-duck-acid/30',
+  basis: 'text-duck-acid bg-duck-acid/10 border-duck-acid/30',
+  gevorderd: 'text-duck-ink/60 bg-duck-acid/10 border-duck-acid/30',
 };
 
 interface GrowthRecommendation {
@@ -106,12 +106,12 @@ export const GrowthStudentTab: React.FC<GrowthStudentTabProps> = ({
   };
 
   if (loading) {
-    return <div className="p-6 text-center text-lab-muted text-sm">Laden…</div>;
+    return <div className="p-6 text-center text-duck-ink/60 text-sm">Laden…</div>;
   }
 
   if (!nulmeting) {
     return (
-      <div className="p-6 text-center text-lab-muted text-sm">
+      <div className="p-6 text-center text-duck-ink/60 text-sm">
         Geen assessment data beschikbaar.
       </div>
     );
@@ -119,7 +119,7 @@ export const GrowthStudentTab: React.FC<GrowthStudentTabProps> = ({
 
   if (!eindmeting) {
     return (
-      <div className="p-6 text-center text-lab-muted text-sm">
+      <div className="p-6 text-center text-duck-ink/60 text-sm">
         Eindmeting nog niet afgenomen.
       </div>
     );
@@ -144,10 +144,10 @@ export const GrowthStudentTab: React.FC<GrowthStudentTabProps> = ({
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.05 }}
-              className="bg-lab-ink/50 border border-lab-line/50 rounded-xl p-4"
+              className="bg-duck-ink/50 border border-duck-ink/15 rounded-xl p-4"
             >
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-semibold text-lab-muted">
+                <span className="text-sm font-semibold text-duck-ink/60">
                   {getDomeinLabel(domein)}
                 </span>
                 <div className="flex items-center gap-2">
@@ -166,7 +166,7 @@ export const GrowthStudentTab: React.FC<GrowthStudentTabProps> = ({
               </div>
 
               {/* Bar track */}
-              <div className="relative h-2 bg-lab-muted/60 rounded-full overflow-hidden">
+              <div className="relative h-2 bg-duck-ink/60 rounded-full overflow-hidden">
                 {/* Nulmeting bar */}
                 <div
                   className="absolute left-0 top-0 h-full rounded-full opacity-40"
@@ -185,13 +185,13 @@ export const GrowthStudentTab: React.FC<GrowthStudentTabProps> = ({
                 />
               </div>
 
-              <div className="flex items-center justify-between mt-2 text-xs text-lab-muted">
-                <span>Nulmeting: <span className="text-lab-muted font-medium">{data.nulmeting.toFixed(0)}</span></span>
-                <span className={`font-bold flex items-center gap-1 ${data.groei >= 0 ? 'text-lab-sage' : 'text-lab-coral'}`}>
+              <div className="flex items-center justify-between mt-2 text-xs text-duck-ink/60">
+                <span>Nulmeting: <span className="text-duck-ink/60 font-medium">{data.nulmeting.toFixed(0)}</span></span>
+                <span className={`font-bold flex items-center gap-1 ${data.groei >= 0 ? 'text-duck-ink/60' : 'text-duck-acid'}`}>
                   {data.groei >= 0 ? <TrendingUp size={12} /> : <TrendingDown size={12} />}
                   {data.groei >= 0 ? '+' : ''}{data.groei.toFixed(0)}
                 </span>
-                <span>Eindmeting: <span className="text-lab-muted font-medium">{data.eindmeting.toFixed(0)}</span></span>
+                <span>Eindmeting: <span className="text-duck-ink/60 font-medium">{data.eindmeting.toFixed(0)}</span></span>
               </div>
             </motion.div>
           );
@@ -200,10 +200,10 @@ export const GrowthStudentTab: React.FC<GrowthStudentTabProps> = ({
 
       {/* AI Recommendation */}
       {recommendation && (
-        <div className="bg-lab-ink/50 border border-lab-line/50 rounded-xl p-4">
+        <div className="bg-duck-ink/50 border border-duck-ink/15 rounded-xl p-4">
           <div className="flex items-center justify-between mb-3">
-            <h4 className="text-sm font-semibold text-lab-muted">Aanbeveling</h4>
-            <span className="inline-flex items-center gap-1 text-xs text-lab-teal bg-lab-coral/10 border border-lab-coral/30 px-2 py-0.5 rounded-full">
+            <h4 className="text-sm font-semibold text-duck-ink/60">Aanbeveling</h4>
+            <span className="inline-flex items-center gap-1 text-xs text-duck-ink bg-duck-acid/10 border border-duck-acid/30 px-2 py-0.5 rounded-full">
               <Bot size={11} />
               Gegenereerd door AI (Mistral AI)
             </span>
@@ -211,15 +211,15 @@ export const GrowthStudentTab: React.FC<GrowthStudentTabProps> = ({
 
           {recommendation.teacher_approved === null && (
             <>
-              <p className="text-sm text-lab-muted mb-4 leading-relaxed">
+              <p className="text-sm text-duck-ink/60 mb-4 leading-relaxed">
                 {recommendation.recommendation_text}
               </p>
               <div className="flex items-center gap-2">
-                <span className="text-xs text-lab-muted mr-1">Wacht op goedkeuring</span>
+                <span className="text-xs text-duck-ink/60 mr-1">Wacht op goedkeuring</span>
                 <button
                   onClick={() => handleApprove(true)}
                   disabled={approvingId === recommendation.id}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-lab-coral/20 text-lab-sage border border-lab-coral/30 hover:bg-lab-coral/30 transition-colors disabled:opacity-50"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-duck-acid/20 text-duck-ink border border-duck-acid/30 hover:bg-duck-acid/30 transition-colors disabled:opacity-50"
                 >
                   <Check size={12} />
                   Goedkeuren
@@ -227,7 +227,7 @@ export const GrowthStudentTab: React.FC<GrowthStudentTabProps> = ({
                 <button
                   onClick={() => handleApprove(false)}
                   disabled={approvingId === recommendation.id}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-lab-coral/20 text-lab-coral border border-lab-coral/30 hover:bg-lab-coral/30 transition-colors disabled:opacity-50"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-duck-acid/20 text-duck-acid border border-duck-acid/30 hover:bg-duck-acid/30 transition-colors disabled:opacity-50"
                 >
                   <X size={12} />
                   Afwijzen
@@ -239,12 +239,12 @@ export const GrowthStudentTab: React.FC<GrowthStudentTabProps> = ({
           {recommendation.teacher_approved === true && (
             <>
               <div className="flex items-center gap-2 mb-2">
-                <span className="inline-flex items-center gap-1 text-xs text-lab-sage bg-lab-coral/10 border border-lab-coral/30 px-2 py-0.5 rounded-full font-medium">
+                <span className="inline-flex items-center gap-1 text-xs text-duck-ink bg-duck-acid/10 border border-duck-acid/30 px-2 py-0.5 rounded-full font-medium">
                   <Check size={11} />
                   Goedgekeurd
                 </span>
               </div>
-              <p className="text-sm text-lab-muted leading-relaxed">
+              <p className="text-sm text-duck-ink/60 leading-relaxed">
                 {recommendation.recommendation_text}
               </p>
             </>
@@ -252,10 +252,10 @@ export const GrowthStudentTab: React.FC<GrowthStudentTabProps> = ({
 
           {recommendation.teacher_approved === false && (
             <div className="flex items-center justify-between">
-              <span className="text-xs text-lab-muted italic">Afgewezen</span>
+              <span className="text-xs text-duck-ink/60 italic">Afgewezen</span>
               <button
                 onClick={() => handleApprove(true)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-lab-muted/50 text-lab-muted border border-lab-line/50 hover:bg-lab-muted transition-colors"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-duck-ink/10 text-duck-ink/60 border border-duck-ink/15 hover:bg-duck-ink/20 transition-colors"
               >
                 <RefreshCw size={11} />
                 Opnieuw beoordelen

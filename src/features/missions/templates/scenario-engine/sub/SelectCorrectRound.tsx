@@ -43,7 +43,7 @@ export const SelectCorrectRound: React.FC<{
 
                 if (isSelected && !submitted) { border = 'border-duck-coral ring-1 ring-duck-coral/20'; bg = 'bg-duck-coral/5'; }
                 if (submitted && isSelected && item.correct) { border = 'border-duck-ink'; bg = 'bg-duck-ink/5'; }
-                if (submitted && isSelected && !item.correct) { border = 'border-lab-coral'; bg = 'bg-duck-coral/10'; }
+                if (submitted && isSelected && !item.correct) { border = 'border-duck-error'; bg = 'bg-duck-coral/10'; }
                 if (submitted && !isSelected && item.correct) { border = 'border-duck-ink/40'; bg = 'bg-duck-ink/5'; }
                 if (submitted && !isSelected && !item.correct) { bg = 'bg-duck-line'; }
 
@@ -73,7 +73,7 @@ export const SelectCorrectRound: React.FC<{
                                     {submitted && isSelected && (
                                         item.correct
                                             ? <Check size={14} className="shrink-0 text-duck-ink" />
-                                            : <X size={14} className="shrink-0 text-lab-muted" />
+                                            : <X size={14} className="shrink-0 text-duck-ink/60" />
                                     )}
                                     {submitted && !isSelected && item.correct && (
                                         <span className="shrink-0 text-[10px] text-duck-ink font-bold">gemist!</span>
