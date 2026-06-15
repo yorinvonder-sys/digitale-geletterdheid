@@ -68,7 +68,7 @@ export const FeedbackBanner: React.FC<{
                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
             >
                 Ronde score:{' '}
-                <strong className={good ? 'text-duck-ink' : 'text-duck-ink'}>{score}/25</strong>
+                <strong className={good ? 'text-duck-ink' : 'text-duck-error'}>{score}/25</strong>
             </p>
             {!hideButton && (
                 <button

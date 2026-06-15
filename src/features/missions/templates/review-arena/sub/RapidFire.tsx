@@ -136,7 +136,7 @@ export const RapidFire: React.FC<RapidFireProps> = ({
                                 }`}
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                             >
-                                <span className={`font-bold ${result.correct ? 'text-duck-ink' : 'text-duck-ink'}`}>
+                                <span className={`font-bold ${result.correct ? 'text-duck-ink' : 'text-duck-error'}`}>
                                     {result.correct ? '✓' : '✗'}
                                 </span>{' '}
                                 <span className="font-medium">{q.question}</span>

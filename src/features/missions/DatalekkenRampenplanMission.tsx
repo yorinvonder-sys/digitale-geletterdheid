@@ -594,7 +594,7 @@ const BudgetPhase: React.FC<{
                                 </div>
                                 {isAllocated && (
                                     <div className="shrink-0">
-                                        <Check size={16} className={submitted ? 'text-duck-ink' : 'text-duck-ink'} />
+                                        <Check size={16} className={submitted ? 'text-duck-ink' : 'text-duck-ink/40'} />
                                     </div>
                                 )}
                             </div>
