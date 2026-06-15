@@ -143,47 +143,47 @@ export function DeveloperReviewChecklist({ user }: DeveloperReviewChecklistProps
     if (loading) {
         return (
             <div className="flex items-center justify-center py-24">
-                <div className="w-8 h-8 border-3 border-lab-coral border-t-transparent rounded-full animate-spin" />
+                <div className="w-8 h-8 border-3 border-duck-coral border-t-transparent rounded-full animate-spin" />
             </div>
         );
     }
 
     return (
         <div className="space-y-6 animate-in fade-in duration-300">
-            <section className="bg-white border border-lab-line rounded-3xl p-6 shadow-sm">
+            <section className="bg-white border border-duck-line rounded-3xl p-6 shadow-sm">
                 <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
                     <div className="flex items-start gap-4">
-                        <div className="w-12 h-12 rounded-2xl bg-lab-teal text-white flex items-center justify-center shrink-0">
+                        <div className="w-12 h-12 rounded-2xl bg-duck-ink text-white flex items-center justify-center shrink-0">
                             <ClipboardCheck size={24} />
                         </div>
                         <div>
-                            <p className="text-[10px] font-black text-lab-muted uppercase tracking-widest mb-1">Assignment review</p>
-                            <h3 className="text-2xl font-black text-lab-ink tracking-tight">Review checklist</h3>
-                            <p className="text-sm text-lab-muted mt-1">
+                            <p className="text-[10px] font-black text-duck-muted uppercase tracking-widest mb-1">Assignment review</p>
+                            <h3 className="text-2xl font-black text-duck-ink tracking-tight">Review checklist</h3>
+                            <p className="text-sm text-duck-muted mt-1">
                                 {reviewedCount} van {TOTAL_ASSIGNMENTS} assignments afgevinkt.
                             </p>
                         </div>
                     </div>
 
                     <div className="w-full lg:w-72">
-                        <div className="flex items-center justify-between text-[10px] font-black text-lab-muted uppercase tracking-widest mb-2">
+                        <div className="flex items-center justify-between text-[10px] font-black text-duck-muted uppercase tracking-widest mb-2">
                             <span>Voortgang</span>
                             <span>{reviewPercent}%</span>
                         </div>
-                        <div className="h-2 bg-lab-cream rounded-full overflow-hidden">
+                        <div className="h-2 bg-duck-bg rounded-full overflow-hidden">
                             <div
-                                className="h-full bg-lab-coral transition-all duration-500"
+                                className="h-full bg-duck-coral transition-all duration-500"
                                 style={{ width: `${reviewPercent}%` }}
                             />
                         </div>
-                        <p className="text-[10px] text-lab-muted mt-2">
+                        <p className="text-[10px] text-duck-muted mt-2">
                             {savingKey ? 'Opslaan...' : lastSavedAt ? `Laatst opgeslagen om ${lastSavedAt}` : 'Wordt opgeslagen per vinkje'}
                         </p>
                     </div>
                 </div>
 
                 {saveError && (
-                    <div className="mt-5 flex items-center gap-2 rounded-xl border border-lab-coral bg-lab-coral/10 px-4 py-3 text-sm font-bold text-lab-coral">
+                    <div className="mt-5 flex items-center gap-2 rounded-xl border border-duck-coral bg-duck-coral/10 px-4 py-3 text-sm font-bold text-duck-coral">
                         <AlertCircle size={16} />
                         {saveError}
                     </div>
@@ -191,12 +191,12 @@ export function DeveloperReviewChecklist({ user }: DeveloperReviewChecklistProps
             </section>
 
             <div className="relative">
-                <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-lab-muted" />
+                <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-duck-muted" />
                 <input
                     value={query}
                     onChange={(event) => setQuery(event.target.value)}
                     placeholder="Zoek assignment of periode..."
-                    className="w-full bg-white border border-lab-line rounded-2xl py-3 pl-11 pr-4 text-sm text-lab-ink placeholder:text-lab-muted focus:outline-none focus:ring-2 focus:ring-lab-coral"
+                    className="w-full bg-white border border-duck-line rounded-2xl py-3 pl-11 pr-4 text-sm text-duck-ink placeholder:text-duck-muted focus:outline-none focus:ring-2 focus:ring-duck-coral"
                 />
             </div>
 
@@ -206,13 +206,13 @@ export function DeveloperReviewChecklist({ user }: DeveloperReviewChecklistProps
                     const groupReviewed = group.assignments.filter(assignment => checked[getAssignmentKey(group.id, assignment)]).length;
 
                     return (
-                        <section key={group.id} className="bg-white border border-lab-line rounded-3xl p-5 shadow-sm">
+                        <section key={group.id} className="bg-white border border-duck-line rounded-3xl p-5 shadow-sm">
                             <div className="flex items-center justify-between gap-4 mb-4">
                                 <div>
-                                    <h4 className="text-sm font-black text-lab-ink uppercase tracking-widest">{group.label}</h4>
-                                    <p className="text-xs text-lab-muted font-bold">{groupReviewed} van {groupTotal} reviewed</p>
+                                    <h4 className="text-sm font-black text-duck-ink uppercase tracking-widest">{group.label}</h4>
+                                    <p className="text-xs text-duck-muted font-bold">{groupReviewed} van {groupTotal} reviewed</p>
                                 </div>
-                                <div className="text-xs font-black text-lab-coral bg-lab-coral/10 rounded-full px-3 py-1">
+                                <div className="text-xs font-black text-duck-coral bg-duck-coral/10 rounded-full px-3 py-1">
                                     {groupTotal > 0 ? Math.round((groupReviewed / groupTotal) * 100) : 0}%
                                 </div>
                             </div>
@@ -223,19 +223,19 @@ export function DeveloperReviewChecklist({ user }: DeveloperReviewChecklistProps
                                     const isChecked = !!checked[key];
                                     const isSaving = savingKey === key;
                                     const assignmentTextClass = isChecked
-                                        ? 'text-lab-muted line-through decoration-2 decoration-lab-coral/70'
-                                        : 'text-lab-ink';
+                                        ? 'text-duck-muted line-through decoration-2 decoration-duck-coral/70'
+                                        : 'text-duck-ink';
                                     const assignmentSlugClass = isChecked
-                                        ? 'text-lab-muted line-through decoration-2 decoration-lab-coral/70'
-                                        : 'text-lab-muted';
+                                        ? 'text-duck-muted line-through decoration-2 decoration-duck-coral/70'
+                                        : 'text-duck-muted';
 
                                     return (
                                         <label
                                             key={key}
                                             className={`flex items-center gap-3 rounded-2xl border px-4 py-3 transition-colors cursor-pointer ${
                                                 isChecked
-                                                    ? 'border-lab-sage/35 bg-lab-sage/10'
-                                                    : 'border-lab-line bg-lab-cream hover:bg-lab-creamDeep'
+                                                    ? 'border-duck-ink/35 bg-duck-ink/10'
+                                                    : 'border-duck-line bg-duck-bg hover:bg-duck-creamDeep'
                                             }`}
                                         >
                                             <input
@@ -243,7 +243,7 @@ export function DeveloperReviewChecklist({ user }: DeveloperReviewChecklistProps
                                                 checked={isChecked}
                                                 disabled={!!savingKey}
                                                 onChange={() => toggleAssignment(key)}
-                                                className="h-5 w-5 rounded border-lab-line accent-lab-sage cursor-pointer disabled:cursor-wait disabled:opacity-60"
+                                                className="h-5 w-5 rounded border-duck-line accent-duck-ink cursor-pointer disabled:cursor-wait disabled:opacity-60"
                                             />
                                             <span className="flex-1 min-w-0">
                                                 <span className={`block text-sm font-bold ${assignmentTextClass}`}>
@@ -256,7 +256,7 @@ export function DeveloperReviewChecklist({ user }: DeveloperReviewChecklistProps
                                             <span className={`hidden sm:inline text-[10px] font-black uppercase tracking-widest ${assignmentSlugClass}`}>
                                                 {assignment}
                                             </span>
-                                            {isSaving && <Loader2 size={16} className="animate-spin text-lab-muted shrink-0" />}
+                                            {isSaving && <Loader2 size={16} className="animate-spin text-duck-muted shrink-0" />}
                                         </label>
                                     );
                                 })}
@@ -267,8 +267,8 @@ export function DeveloperReviewChecklist({ user }: DeveloperReviewChecklistProps
             </div>
 
             {filteredGroups.length === 0 && (
-                <div className="text-center py-16 bg-white rounded-3xl border border-dashed border-lab-line">
-                    <p className="text-sm font-bold text-lab-muted">Geen assignments gevonden.</p>
+                <div className="text-center py-16 bg-white rounded-3xl border border-dashed border-duck-line">
+                    <p className="text-sm font-bold text-duck-muted">Geen assignments gevonden.</p>
                 </div>
             )}
         </div>

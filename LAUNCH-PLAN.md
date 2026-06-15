@@ -99,7 +99,7 @@ Drie modellen, elk voor een ander type taak. Gebruik de router hieronder als geh
 
 | # | Taak | Tijd | Status | Model + taak |
 |---|------|------|--------|-------------|
-| 3.1 | UI consistency check: lab-* tokens, typografie, spacing | 2u | ✅ | **Claude** — audit + fixes |
+| 3.1 | UI consistency check: duck-* tokens (DUCK English design), typografie, spacing | 2u | ✅ | **Claude** — audit + fixes |
 | 3.2 | Bug hunt: volledige flow doorlopen (login → missie → afronden) | 3u | ✅ (rapport, 15 bugs gevonden) | **Claude** — testen + fixen |
 | 3.3 | Lighthouse audit + top-5 performance issues fixen | 2u | ✅ | **Claude** — audit + code fixes |
 | 3.4 | Responsive check: mobiel, tablet, desktop | 1u | ✅ | **Claude** — testen + fixen |

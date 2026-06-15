@@ -50,12 +50,12 @@ const PRIORITY_LABELS: Record<string, string> = {
 };
 
 const PRIORITY_COLORS: Record<string, string> = {
-    p1: 'bg-lab-teal/15 text-lab-teal border-lab-teal/35',
-    p2: 'bg-lab-teal/15 text-lab-teal border-lab-teal/35',
-    p3: 'bg-lab-teal/15 text-lab-teal border-lab-teal/35',
-    p4: 'bg-lab-gold/35 text-lab-ink border-lab-gold/60',
-    p5: 'bg-lab-teal/15 text-lab-teal border-lab-teal/35',
-    p6: 'bg-lab-teal/15 text-lab-teal border-lab-teal/35',
+    p1: 'bg-duck-ink/15 text-duck-ink border-duck-ink/35',
+    p2: 'bg-duck-ink/15 text-duck-ink border-duck-ink/35',
+    p3: 'bg-duck-ink/15 text-duck-ink border-duck-ink/35',
+    p4: 'bg-duck-acid/35 text-duck-ink border-duck-acid/60',
+    p5: 'bg-duck-ink/15 text-duck-ink border-duck-ink/35',
+    p6: 'bg-duck-ink/15 text-duck-ink border-duck-ink/35',
 };
 
 const SPRINTS: Sprint[] = [
@@ -460,24 +460,24 @@ export function DeveloperSprintPlan() {
 
             {/* ── Top stats ──────────────────────────────────────────────── */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="bg-white p-5 rounded-2xl border border-lab-line shadow-sm">
-                    <p className="text-[10px] font-black text-lab-muted uppercase tracking-widest mb-1">Voortgang</p>
-                    <p className="text-3xl font-black text-lab-ink">{pct}%</p>
-                    <div className="mt-3 h-1.5 bg-lab-cream rounded-full overflow-hidden">
-                        <div className="h-full bg-lab-coral transition-all duration-700" style={{ width: `${pct}%` }} />
+                <div className="bg-white p-5 rounded-2xl border border-duck-line shadow-sm">
+                    <p className="text-[10px] font-black text-duck-muted uppercase tracking-widest mb-1">Voortgang</p>
+                    <p className="text-3xl font-black text-duck-ink">{pct}%</p>
+                    <div className="mt-3 h-1.5 bg-duck-bg rounded-full overflow-hidden">
+                        <div className="h-full bg-duck-coral transition-all duration-700" style={{ width: `${pct}%` }} />
                     </div>
                 </div>
-                <div className="bg-white p-5 rounded-2xl border border-lab-line shadow-sm">
-                    <p className="text-[10px] font-black text-lab-muted uppercase tracking-widest mb-1">Taken</p>
-                    <p className="text-3xl font-black text-lab-ink">{doneTasks}<span className="text-lg text-lab-muted">/{totalTasks}</span></p>
-                    <p className="text-[10px] text-lab-muted mt-2 font-medium">afgevinkt</p>
+                <div className="bg-white p-5 rounded-2xl border border-duck-line shadow-sm">
+                    <p className="text-[10px] font-black text-duck-muted uppercase tracking-widest mb-1">Taken</p>
+                    <p className="text-3xl font-black text-duck-ink">{doneTasks}<span className="text-lg text-duck-muted">/{totalTasks}</span></p>
+                    <p className="text-[10px] text-duck-muted mt-2 font-medium">afgevinkt</p>
                 </div>
-                <div className={`p-5 rounded-2xl border shadow-sm ${deadlineDays <= 30 ? 'bg-lab-gold border-lab-gold text-lab-ink' : 'bg-white border-lab-line text-lab-ink'}`}>
-                    <p className={`text-[10px] font-black uppercase tracking-widest mb-1 ${deadlineDays <= 30 ? 'text-lab-ink/70' : 'text-lab-muted'}`}>Deadline</p>
+                <div className={`p-5 rounded-2xl border shadow-sm ${deadlineDays <= 30 ? 'bg-duck-acid border-duck-acid text-duck-ink' : 'bg-white border-duck-line text-duck-ink'}`}>
+                    <p className={`text-[10px] font-black uppercase tracking-widest mb-1 ${deadlineDays <= 30 ? 'text-duck-ink/70' : 'text-duck-muted'}`}>Deadline</p>
                     <p className="text-3xl font-black">{deadlineDays}d</p>
-                    <p className={`text-[10px] mt-2 font-medium ${deadlineDays <= 30 ? 'text-lab-ink/75' : 'text-lab-muted'}`}>tot 9 mei 2026</p>
+                    <p className={`text-[10px] mt-2 font-medium ${deadlineDays <= 30 ? 'text-duck-ink/75' : 'text-duck-muted'}`}>tot 9 mei 2026</p>
                 </div>
-                <div className="bg-lab-teal p-5 rounded-2xl shadow-sm">
+                <div className="bg-duck-ink p-5 rounded-2xl shadow-sm">
                     <p className="text-[10px] font-black text-white/80 uppercase tracking-widest mb-1">Harde deadline</p>
                     <p className="text-lg font-black text-white leading-tight">Inkoopvenster scholen</p>
                     <p className="text-[10px] text-white/80 mt-2 font-medium">Feb-mei 2026</p>
@@ -485,9 +485,9 @@ export function DeveloperSprintPlan() {
             </div>
 
             {/* ── Legenda ────────────────────────────────────────────────── */}
-            <div className="p-4 bg-lab-cream border border-lab-line rounded-2xl flex flex-wrap gap-3 items-center">
-                <span className="text-[11px] font-black text-lab-muted uppercase tracking-widest shrink-0">Klik op een taak</span>
-                <span className="text-[11px] text-lab-muted">→ je ziet wat je zelf moet doen en wat Claude doet</span>
+            <div className="p-4 bg-duck-bg border border-duck-line rounded-2xl flex flex-wrap gap-3 items-center">
+                <span className="text-[11px] font-black text-duck-muted uppercase tracking-widest shrink-0">Klik op een taak</span>
+                <span className="text-[11px] text-duck-muted">→ je ziet wat je zelf moet doen en wat Claude doet</span>
             </div>
 
             {/* ── Sprints ────────────────────────────────────────────────── */}
@@ -501,81 +501,81 @@ export function DeveloperSprintPlan() {
 
                     if (sprint.isPause) {
                         return (
-                            <div key={sprint.id} className="flex items-center gap-4 px-6 py-4 bg-lab-gold border border-lab-gold rounded-2xl">
-                                <Palmtree size={20} className="text-lab-ink shrink-0" />
+                            <div key={sprint.id} className="flex items-center gap-4 px-6 py-4 bg-duck-acid border border-duck-acid rounded-2xl">
+                                <Palmtree size={20} className="text-duck-ink shrink-0" />
                                 <div>
-                                    <p className="font-black text-lab-ink text-sm uppercase tracking-tight">Schoolreis - {sprint.dateRange}</p>
-                                    <p className="text-[11px] text-lab-ink/75">{sprint.subtitle}</p>
+                                    <p className="font-black text-duck-ink text-sm uppercase tracking-tight">Schoolreis - {sprint.dateRange}</p>
+                                    <p className="text-[11px] text-duck-ink/75">{sprint.subtitle}</p>
                                 </div>
                             </div>
                         );
                     }
 
                     const statusConfig = {
-                        active: { badge: 'bg-lab-sage text-white border-lab-sage', label: 'Actief nu' },
-                        done:   { badge: 'bg-lab-cream text-lab-muted border-lab-line', label: 'Gereed' },
-                        upcoming: { badge: 'bg-lab-cream text-lab-muted border-lab-line', label: 'Gepland' },
-                        pause:  { badge: 'bg-lab-gold text-lab-ink border-lab-gold', label: 'Pauze' },
+                        active: { badge: 'bg-duck-ink text-white border-duck-ink', label: 'Actief nu' },
+                        done:   { badge: 'bg-duck-bg text-duck-muted border-duck-line', label: 'Gereed' },
+                        upcoming: { badge: 'bg-duck-bg text-duck-muted border-duck-line', label: 'Gepland' },
+                        pause:  { badge: 'bg-duck-acid text-duck-ink border-duck-acid', label: 'Pauze' },
                     }[status];
 
                     return (
-                        <div key={sprint.id} className={`bg-white rounded-2xl border overflow-hidden transition-all duration-300 ${status === 'active' ? 'border-lab-coral shadow-md shadow-lab-coral' : 'border-lab-line'}`}>
+                        <div key={sprint.id} className={`bg-white rounded-2xl border overflow-hidden transition-all duration-300 ${status === 'active' ? 'border-duck-coral shadow-md shadow-duck-coral' : 'border-duck-line'}`}>
                             {/* Sprint header */}
                             <button
                                 onClick={() => toggleCollapse(sprint.id)}
-                                className="w-full flex items-center gap-4 px-6 py-5 text-left hover:bg-lab-cream transition-colors"
+                                className="w-full flex items-center gap-4 px-6 py-5 text-left hover:bg-duck-bg transition-colors"
                             >
-                                <div className={`shrink-0 w-8 h-8 rounded-xl flex items-center justify-center font-black text-sm ${status === 'active' ? 'bg-lab-coral text-white shadow-sm shadow-lab-coral' : status === 'done' ? 'bg-lab-cream text-lab-muted' : 'bg-lab-cream text-lab-muted'}`}>
+                                <div className={`shrink-0 w-8 h-8 rounded-xl flex items-center justify-center font-black text-sm ${status === 'active' ? 'bg-duck-coral text-white shadow-sm shadow-duck-coral' : status === 'done' ? 'bg-duck-bg text-duck-muted' : 'bg-duck-bg text-duck-muted'}`}>
                                     {sprintPct === 100 ? <CheckCircle2 size={16} /> : sprint.number}
                                 </div>
                                 <div className="flex-1 min-w-0">
                                     <div className="flex items-center gap-2 mb-0.5">
-                                        <h3 className={`font-black text-base truncate ${status === 'done' ? 'text-lab-muted' : 'text-lab-ink'}`}>
+                                        <h3 className={`font-black text-base truncate ${status === 'done' ? 'text-duck-muted' : 'text-duck-ink'}`}>
                                             Sprint {sprint.number} — {sprint.title}
                                         </h3>
                                         <span className={`shrink-0 px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest border ${statusConfig.badge}`}>
                                             {statusConfig.label}
                                         </span>
                                     </div>
-                                    <p className="text-xs text-lab-muted font-medium">{sprint.subtitle}</p>
+                                    <p className="text-xs text-duck-muted font-medium">{sprint.subtitle}</p>
                                 </div>
                                 <div className="shrink-0 flex items-center gap-4">
                                     <div className="hidden sm:flex flex-col items-end gap-1">
-                                        <span className="flex items-center gap-1 text-[10px] font-bold text-lab-muted">
+                                        <span className="flex items-center gap-1 text-[10px] font-bold text-duck-muted">
                                             <CalendarDays size={12} />{sprint.dateRange}
                                         </span>
-                                        <span className="flex items-center gap-1 text-[10px] font-bold text-lab-muted">
+                                        <span className="flex items-center gap-1 text-[10px] font-bold text-duck-muted">
                                             <Clock size={12} />{sprint.hours}
                                         </span>
                                     </div>
-                                    <span className="text-xs font-black text-lab-muted">{sprintDone}/{sprintTotal}</span>
-                                    {isCollapsed ? <ChevronRight size={18} className="text-lab-muted" /> : <ChevronDown size={18} className="text-lab-muted" />}
+                                    <span className="text-xs font-black text-duck-muted">{sprintDone}/{sprintTotal}</span>
+                                    {isCollapsed ? <ChevronRight size={18} className="text-duck-muted" /> : <ChevronDown size={18} className="text-duck-muted" />}
                                 </div>
                             </button>
 
                             {/* Sprint tasks */}
                             {!isCollapsed && (
-                                <div className="border-t border-lab-line">
+                                <div className="border-t border-duck-line">
                                     {sprintTotal > 0 && (
                                         <div className="px-6 pt-4 pb-2">
-                                            <div className="h-1 bg-lab-cream rounded-full overflow-hidden">
-                                                <div className="h-full bg-lab-coral transition-all duration-500" style={{ width: `${sprintPct}%` }} />
+                                            <div className="h-1 bg-duck-bg rounded-full overflow-hidden">
+                                                <div className="h-full bg-duck-coral transition-all duration-500" style={{ width: `${sprintPct}%` }} />
                                             </div>
                                         </div>
                                     )}
 
-                                    <ul className="divide-y divide-lab-line">
+                                    <ul className="divide-y divide-duck-line">
                                         {sprint.tasks.map((task) => {
                                             const isDone = !!checked[task.id];
                                             const isExpanded = expandedTask === task.id;
 
                                             return (
-                                                <li key={task.id} className={`transition-colors ${isDone ? 'bg-lab-cream/50' : ''}`}>
+                                                <li key={task.id} className={`transition-colors ${isDone ? 'bg-duck-bg/50' : ''}`}>
                                                     {/* Task row */}
                                                     <div className="flex gap-4 px-6 py-4">
                                                         <button
                                                             onClick={() => toggleTask(task.id)}
-                                                            className={`mt-0.5 shrink-0 transition-colors ${isDone ? 'text-lab-muted' : 'text-lab-muted hover:text-lab-muted'}`}
+                                                            className={`mt-0.5 shrink-0 transition-colors ${isDone ? 'text-duck-muted' : 'text-duck-muted hover:text-duck-muted'}`}
                                                             aria-label={isDone ? 'Markeer als niet gedaan' : 'Markeer als gedaan'}
                                                         >
                                                             {isDone ? <CheckCircle2 size={22} /> : <Circle size={22} />}
@@ -587,7 +587,7 @@ export function DeveloperSprintPlan() {
                                                                 className="w-full text-left group"
                                                             >
                                                                 <div className="flex flex-wrap items-center gap-2 mb-1">
-                                                                    <p className={`font-bold text-sm group-hover:text-lab-teal transition-colors ${isDone ? 'line-through text-lab-muted' : 'text-lab-ink'}`}>
+                                                                    <p className={`font-bold text-sm group-hover:text-duck-ink transition-colors ${isDone ? 'line-through text-duck-muted' : 'text-duck-ink'}`}>
                                                                         {task.title}
                                                                     </p>
                                                                     <span className={`px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest border ${PRIORITY_COLORS[task.priority]}`}>
@@ -595,10 +595,10 @@ export function DeveloperSprintPlan() {
                                                                     </span>
                                                                 </div>
                                                                 <div className="flex flex-wrap items-center gap-4">
-                                                                    <span className="flex items-center gap-1 text-[11px] text-lab-muted font-medium">
+                                                                    <span className="flex items-center gap-1 text-[11px] text-duck-muted font-medium">
                                                                         <Clock size={12} />{task.time}
                                                                     </span>
-                                                                    <span className="flex items-center gap-1 text-[11px] text-lab-muted font-medium group-hover:text-lab-muted transition-colors">
+                                                                    <span className="flex items-center gap-1 text-[11px] text-duck-muted font-medium group-hover:text-duck-muted transition-colors">
                                                                         {isExpanded ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
                                                                         {isExpanded ? 'Minder info' : 'Wat moet ik doen?'}
                                                                     </span>
@@ -609,13 +609,13 @@ export function DeveloperSprintPlan() {
                                                             {isExpanded && (
                                                                 <div className="mt-4 space-y-4 animate-in slide-in-from-top-2 duration-200">
                                                                     {/* Uitleg */}
-                                                                    <div className="p-4 bg-lab-cream rounded-xl border border-lab-line">
-                                                                        <p className="text-[10px] font-black text-lab-muted uppercase tracking-widest mb-2">Wat is dit?</p>
-                                                                        <p className="text-sm text-lab-muted leading-relaxed">{task.description}</p>
+                                                                    <div className="p-4 bg-duck-bg rounded-xl border border-duck-line">
+                                                                        <p className="text-[10px] font-black text-duck-muted uppercase tracking-widest mb-2">Wat is dit?</p>
+                                                                        <p className="text-sm text-duck-muted leading-relaxed">{task.description}</p>
                                                                     </div>
 
                                                                     {/* Jij doet */}
-                                                                    <div className="p-4 bg-lab-coral rounded-xl border border-lab-coral">
+                                                                    <div className="p-4 bg-duck-coral rounded-xl border border-duck-coral">
                                                                         <p className="text-[10px] font-black text-white/75 uppercase tracking-widest mb-2 flex items-center gap-1.5">
                                                                             <User size={12} />
                                                                             Jij doet
@@ -624,7 +624,7 @@ export function DeveloperSprintPlan() {
                                                                     </div>
 
                                                                     {/* Claude doet */}
-                                                                    <div className="p-4 bg-lab-sage rounded-xl border border-lab-sage">
+                                                                    <div className="p-4 bg-duck-ink rounded-xl border border-duck-ink">
                                                                         <p className="text-[10px] font-black text-white/75 uppercase tracking-widest mb-2 flex items-center gap-1.5">
                                                                             <Zap size={12} />
                                                                             Claude doet
@@ -647,7 +647,7 @@ export function DeveloperSprintPlan() {
             </div>
 
             {/* ── AI Act deadline ────────────────────────────────────────── */}
-            <div className="flex items-start gap-4 p-5 bg-lab-coral border border-lab-coral rounded-2xl text-white">
+            <div className="flex items-start gap-4 p-5 bg-duck-coral border border-duck-coral rounded-2xl text-white">
                 <AlertTriangle size={20} className="text-white/85 shrink-0 mt-0.5" />
                 <div>
                     <p className="font-black text-white text-sm uppercase tracking-tight">EU AI Act - 2 augustus 2026</p>
@@ -662,10 +662,10 @@ export function DeveloperSprintPlan() {
             </div>
 
             {/* ── Prioriteiten ───────────────────────────────────────────── */}
-            <div className="bg-white border border-lab-line rounded-2xl p-6">
+            <div className="bg-white border border-duck-line rounded-2xl p-6">
                 <div className="flex items-center gap-2 mb-4">
-                    <Target size={16} className="text-lab-muted" />
-                    <h3 className="font-black text-lab-ink text-sm uppercase tracking-tight">Waarom deze volgorde?</h3>
+                    <Target size={16} className="text-duck-muted" />
+                    <h3 className="font-black text-duck-ink text-sm uppercase tracking-tight">Waarom deze volgorde?</h3>
                 </div>
                 <div className="space-y-2">
                     {[
@@ -680,7 +680,7 @@ export function DeveloperSprintPlan() {
                             <span className={`mt-0.5 shrink-0 px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest border ${PRIORITY_COLORS[key]}`}>
                                 {PRIORITY_LABELS[key]}
                             </span>
-                            <p className="text-xs text-lab-muted font-medium leading-relaxed">{why}</p>
+                            <p className="text-xs text-duck-muted font-medium leading-relaxed">{why}</p>
                         </div>
                     ))}
                 </div>

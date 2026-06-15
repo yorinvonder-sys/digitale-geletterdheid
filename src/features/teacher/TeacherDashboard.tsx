@@ -53,10 +53,12 @@ interface TeacherDashboardProps {
     onViewAssignments?: () => void;
     onLogout?: () => void;
     onOpenGames?: (gameId?: string) => void;
+    demoMode?: boolean;
+    demoStudents?: StudentData[];
 }
 
-export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpdateStats, onViewAssignments, onLogout, onOpenGames }) => {
-    const [students, setStudents] = useState<StudentData[]>([]);
+export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpdateStats, onViewAssignments, onLogout, onOpenGames, demoMode = false, demoStudents }) => {
+    const [students, setStudents] = useState<StudentData[]>(demoMode && demoStudents ? demoStudents : []);
     const [searchTerm, setSearchTerm] = useState('');
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -159,6 +161,11 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
 
     // Supabase Sync
     useEffect(() => {
+        if (demoMode) {
+            setLoading(false);
+            return;
+        }
+
         setLoading(true);
         if (retryCount === 0) setError(null);
 
@@ -205,9 +212,11 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
             supabase.removeChannel(channel);
             if (refetchStudentsTimeoutRef.current) clearTimeout(refetchStudentsTimeoutRef.current);
         };
-    }, [retryCount]);
+    }, [retryCount, demoMode]);
 
     useEffect(() => {
+        if (demoMode) return;
+
         getActiveEvents(user?.schoolId).then(setActiveEvents).catch(console.error);
 
         const fetchAssessments = async () => {
@@ -234,7 +243,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
             supabase.removeChannel(channel);
             if (refetchAssessmentsTimeoutRef.current) clearTimeout(refetchAssessmentsTimeoutRef.current);
         };
-    }, []);
+    }, [demoMode]);
 
     useEffect(() => {
         // Load per-class settings when a class is selected.
@@ -741,7 +750,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ user, onUpda
                             }
                             await updateClassroomConfig(user.schoolId, selectedClassId, u);
                             setClassRoomConfig(p => p ? { ...p, ...u } : null);
-                        }} onOpenSchedulingConfig={(user?.role === 'admin' || user?.role === 'developer') ? () => setShowSchedulingConfig(true) : undefined} />{onLogout && <button onClick={onLogout} className="w-full py-4 border-2 border-lab-coral text-lab-coral rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-lab-coral hover:text-white"><RotateCcw size={18} /> Uitloggen</button>}</PageTransition>}
+                        }} onOpenSchedulingConfig={(user?.role === 'teacher' || user?.role === 'admin' || user?.role === 'developer') ? () => setShowSchedulingConfig(true) : undefined} />{onLogout && <button onClick={onLogout} className="w-full py-4 border-2 border-lab-coral text-lab-coral rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-lab-coral hover:text-white"><RotateCcw size={18} /> Uitloggen</button>}</PageTransition>}
                         {activeTab === 'games' && <PageTransition key="games"><GamesPanel onOpenGame={onOpenGames || (() => { })} /></PageTransition>}
                         {activeTab === 'ai-beleid' && <PageTransition key="ai-beleid"><div className="bg-white rounded-[2rem] border border-lab-line p-6"><AiBeleidFeedbackPanel classFilter={classFilter !== 'all' ? classFilter : undefined} schoolId={user?.schoolId} /></div></PageTransition>}
                         {activeTab === 'feedback' && <PageTransition key="feedback"><FeedbackPanel schoolId={user?.schoolId} /></PageTransition>}

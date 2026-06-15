@@ -22,7 +22,7 @@ does not load long baton, launch, or reference files by default.
 
 - React 19 + TypeScript + Vite.
 - Supabase for auth, database, edge functions, and RLS.
-- Tailwind inline classes, no `@apply`; use existing `lab-*` tokens.
+- Tailwind inline classes, no `@apply`; use `duck-*` tokens (DUCK English design system) for new components; `lab-*` tokens are legacy.
 - Mistral AI en Black Forest Labs calls stay server-side through Supabase Edge Functions.
 - Vercel deployment uses `npm run build:prod`.
 - State is React hooks + Contexts; no Redux.
@@ -32,6 +32,24 @@ does not load long baton, launch, or reference files by default.
   calls.
 - Hooks: `use*` camelCase.
 - Types: PascalCase interfaces in `types/` or local feature types.
+
+## A.L.C.H.E.M.Y. Gate Sequence
+
+For non-trivial design or refactor work, walk these gates in order.
+Gates 1–4 design, 5–6 enforce, 7 optimizes (second iteration only).
+Audits run in reverse (4 → 1).
+
+| # | Gate | Skill | Output |
+|---|---|---|---|
+| 1 | Necessity | `functionality-complexity-tradeoff` | PASS / DROP |
+| 2 | First principles | `architecture-guidelines` | Smallest correct design |
+| 3 | Placement | `geometric-architecture` | Domain / tier / layer per component |
+| 4 | Complexity | `structural-simplification` | Component-kinds / dependency-edges / max-chain-depth / module-count Δ |
+| 5 | Enforcement | `architecture-as-code` | Per-module config |
+| 6 | Shift-left | `defect-shift-left` | Each error path → earliest stage |
+| 7 | Optimize | `system-optimization` | Constraint analysis |
+
+Use `design-and-refactor` as the orchestrating skill that sequences these gates automatically.
 
 ## Claude Workflow Notes
 

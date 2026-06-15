@@ -1,10 +1,11 @@
 import { supabase } from './supabase';
-import type { ContainerConfig, ContainerMissionConfig } from '@/config/containerTypes';
+import type { ContainerConfig, ContainerMissionConfig, SchedulingTemplate } from '@/config/containerTypes';
 import { CURRICULUM } from '@/config/curriculum';
 import {
     DEFAULT_PERIOD_COLOR_KEYS,
     DEFAULT_PERIOD_ICON_KEYS,
 } from '@/config/containerThemes';
+import { getMissionsForYear } from '@/config/missions';
 
 // De tabellen school_containers en school_container_missions zijn nog niet in de
 // gegenereerde database.types.ts (migratie nog niet applied). Cast naar any tot
@@ -210,6 +211,68 @@ export async function seedDefaultContainersForSchool(
                 is_review: true,
             })),
         ];
+
+        if (missionRows.length > 0) {
+            await fromContainerMissions().insert(missionRows);
+        }
+    }
+
+    await supabase
+        .from('school_configs')
+        .update({ scheduling_model: 'custom' } as any)
+        .eq('school_id', schoolId);
+}
+
+export async function seedTemplateContainersForSchool(
+    schoolId: string,
+    yearGroup: number,
+    template: SchedulingTemplate
+): Promise<void> {
+    if (template.id === 'four-periods') {
+        await seedDefaultContainersForSchool(schoolId, yearGroup);
+        return;
+    }
+
+    const missions = getMissionsForYear(yearGroup);
+    const count = template.defaultContainerCount;
+    const perContainer = Math.max(1, Math.ceil(missions.length / count));
+
+    for (let i = 0; i < count; i++) {
+        const label = template.labelPattern.replace('{n}', String(i + 1));
+
+        const { data: containerRow, error: containerError } = await fromContainers()
+            .insert({
+                school_id: schoolId,
+                year_group: yearGroup,
+                sort_order: i,
+                label,
+                subtitle: null,
+                container_type: template.containerType,
+                slo_focus: [],
+                slo_focus_vso: null,
+                color_key: null,
+                icon_key: null,
+                start_date: null,
+                end_date: null,
+                is_review_gate: false,
+                assessment_id: null,
+                metadata: {},
+            })
+            .select('id')
+            .single();
+
+        if (containerError || !containerRow) continue;
+
+        const containerId = containerRow.id;
+        const missionRows = missions
+            .map((m, j) => ({ mission: m, containerIndex: Math.min(count - 1, Math.floor(j / perContainer)), sortOrder: j % perContainer }))
+            .filter(entry => entry.containerIndex === i)
+            .map(entry => ({
+                container_id: containerId,
+                mission_id: entry.mission.id,
+                sort_order: entry.sortOrder,
+                is_review: false,
+            }));
 
         if (missionRows.length > 0) {
             await fromContainerMissions().insert(missionRows);

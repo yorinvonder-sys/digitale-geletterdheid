@@ -6,6 +6,7 @@ import type { NulmetingResult } from '@/features/assessment/escaperoom/types';
 import { isAgentRoleId } from '@/config/agentRoleIds';
 import { isTemplateMission } from '@/config/templateRegistry';
 import { supabase } from '@/services/supabase';
+import { DuckMark } from '@/components/brand/DuckMark';
 import { Rocket, Loader2, ArrowLeft, Lock, GraduationCap, Users, Code2 } from 'lucide-react';
 import { sanitizeForDb } from '@/utils/sanitizeForDb';
 import { logActivity, updateClassroomConfig } from '@/services/teacherService';
@@ -289,7 +290,7 @@ export function AuthenticatedApp() {
     if (loading) {
         return (
             <div className="min-h-screen bg-duck-bg flex flex-col items-center justify-center gap-4">
-                <Loader2 size={48} className="animate-spin text-duck-ink" aria-hidden="true" />
+                <DuckMark className="w-16 h-16 animate-spin" />
                 <span className="sr-only">Laden...</span>
                 <p className="text-duck-ink/65 font-medium">Laden...</p>
             </div>
