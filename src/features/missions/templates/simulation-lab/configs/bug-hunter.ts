@@ -46,27 +46,27 @@ function computeVisuals(
             {
                 label: 'Syntax',
                 value: syntaxFout ? 3 : 0,
-                color: syntaxFout ? '#D97848' : '#E7D8BD',
+                color: syntaxFout ? '#ff3c21' : '#e3e2dc',
             },
             {
                 label: 'Naamgeving',
                 value: naamFout ? 2 : 0,
-                color: naamFout ? '#D97848' : '#E7D8BD',
+                color: naamFout ? '#ff3c21' : '#e3e2dc',
             },
             {
                 label: 'Logica',
                 value: logicaFout ? 5 : 0,
-                color: logicaFout ? '#D97848' : '#E7D8BD',
+                color: logicaFout ? '#ff3c21' : '#e3e2dc',
             },
             {
                 label: 'Off-by-one',
                 value: offByOne ? 4 : 0,
-                color: offByOne ? '#D97848' : '#E7D8BD',
+                color: offByOne ? '#ff3c21' : '#e3e2dc',
             },
             {
                 label: 'Types',
                 value: typesFout ? 4 : 0,
-                color: typesFout ? '#D97848' : '#E7D8BD',
+                color: typesFout ? '#ff3c21' : '#e3e2dc',
             },
         ];
 
@@ -156,7 +156,7 @@ export const bugHunterConfig: SimulationLabConfig = {
     introDescription:
         'Een bug opsporen is een echte vaardigheid. Oefen met debuggen: leer foutmeldingen lezen, soorten bugs herkennen en een slimme strategie kiezen.',
     missionGoal: {
-        primaryGoal: 'Spoor bugs systematisch op door foutmeldingen, bugtypen en debugstrategieen te analyseren.',
+        primaryGoal: 'Ik spoor bugs systematisch op door foutmeldingen, bugtypen en debugstrategieen te analyseren.',
         criteria: {
             type: 'rounds-complete',
             min: 3,
@@ -392,31 +392,31 @@ export const bugHunterConfig: SimulationLabConfig = {
             minScore: 90,
             emoji: '🏆',
             title: 'Master Debugger',
-            color: '#5F947D',
+            color: '#202023',
         },
         {
             minScore: 70,
             emoji: '🐛',
             title: 'Bug Hunter Pro',
-            color: '#D97848',
+            color: '#ff3c21',
         },
         {
             minScore: 50,
             emoji: '🔍',
             title: 'Foutspeurder',
-            color: '#445865',
+            color: '#202023',
         },
         {
             minScore: 25,
             emoji: '💡',
             title: 'Startende Bug Hunter',
-            color: '#0B453F',
+            color: '#202023',
         },
         {
             minScore: 0,
             emoji: '📖',
             title: 'Aan het leren',
-            color: '#445865',
+            color: '#202023',
         },
     ],
     takeaways: [

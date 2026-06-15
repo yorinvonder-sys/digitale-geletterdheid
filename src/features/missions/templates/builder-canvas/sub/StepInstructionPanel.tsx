@@ -41,18 +41,18 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
         <div className="flex min-h-full flex-col p-5">
             {/* Step indicator */}
             <div className="flex items-center gap-2 mb-4">
-                <div className="w-7 h-7 rounded-xl bg-gradient-to-br from-[#D97848] to-[#D97848] flex items-center justify-center">
+                <div className="w-7 h-7 rounded-xl bg-gradient-to-br from-duck-coral to-duck-coral flex items-center justify-center">
                     <span className="text-xs font-black text-white">{stepIndex + 1}</span>
                 </div>
                 <div>
                     <span
-                        className="text-[10px] font-black text-[#D97848] uppercase tracking-widest block"
+                        className="text-[10px] font-black text-duck-coral uppercase tracking-widest block"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         Stap {stepIndex + 1} van {totalSteps}
                     </span>
                     <h2
-                        className="text-lg font-black text-[#08283B] leading-tight"
+                        className="text-lg font-black text-duck-ink leading-tight"
                         style={{ fontFamily: "'Newsreader', Georgia, serif" }}
                     >
                         {stepData.title}
@@ -62,16 +62,16 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
 
             {/* Description */}
             <p
-                className="text-sm text-[#445865] leading-relaxed mb-4"
+                className="text-sm text-duck-muted leading-relaxed mb-4"
                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
             >
                 {stepData.description}
             </p>
 
             {/* Instruction card */}
-            <div className="bg-white rounded-2xl border border-[#E7D8BD] p-4 mb-4">
+            <div className="bg-white rounded-2xl border border-duck-line p-4 mb-4">
                 <p
-                    className="text-sm text-[#445865] leading-relaxed"
+                    className="text-sm text-duck-muted leading-relaxed"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     {stepData.instruction}
@@ -80,10 +80,10 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
 
             {/* Optional tip */}
             {stepData.tip && (
-                <div className="flex items-start gap-2 bg-[#D97848]/8 border border-[#D97848]/20 rounded-xl p-3 mb-4">
-                    <Lightbulb size={14} className="text-[#D97848] mt-0.5 shrink-0" />
+                <div className="flex items-start gap-2 bg-duck-coral/8 border border-duck-coral/20 rounded-xl p-3 mb-4">
+                    <Lightbulb size={14} className="text-duck-coral mt-0.5 shrink-0" />
                     <p
-                        className="text-xs text-[#D97848] leading-relaxed"
+                        className="text-xs text-duck-coral leading-relaxed"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         {stepData.tip}
@@ -94,7 +94,7 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
             {/* Checklist */}
             <div className="mb-4">
                 <span
-                    className="text-[10px] font-black text-[#445865] uppercase tracking-widest mb-2 block"
+                    className="text-[10px] font-black text-duck-muted uppercase tracking-widest mb-2 block"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     Checklist
@@ -116,7 +116,7 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
             {stepData.textPrompt && (
                 <div className="mb-4 flex min-h-[160px] flex-1 flex-col">
                     <label
-                        className="text-[10px] font-black text-[#445865] uppercase tracking-widest mb-2 block"
+                        className="text-[10px] font-black text-duck-muted uppercase tracking-widest mb-2 block"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         htmlFor={`text-${stepData.id}`}
                     >
@@ -128,7 +128,7 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
                         onChange={(e) => onTextChange(stepData.id, e.target.value)}
                         placeholder="Schrijf hier jouw antwoord…"
                         rows={5}
-                        className="w-full min-h-[120px] flex-1 resize-none rounded-xl border border-[#E7D8BD] bg-white px-4 py-3 text-sm leading-relaxed text-[#445865] placeholder:text-[#445865] transition-all duration-200 focus:border-[#D97848]/50 focus:outline-none focus:ring-2 focus:ring-[#D97848]/30"
+                        className="w-full min-h-[120px] flex-1 resize-none rounded-xl border border-duck-line bg-white px-4 py-3 text-sm leading-relaxed text-duck-muted placeholder:text-duck-muted transition-all duration-200 focus:border-duck-coral/50 focus:outline-none focus:ring-2 focus:ring-duck-coral/30"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     />
                 </div>
@@ -149,8 +149,8 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
                 disabled={!canProceed}
                 className={`mt-auto flex min-h-[44px] w-full items-center justify-center gap-2 rounded-xl text-sm font-bold transition-all duration-200 ${
                     canProceed
-                        ? 'bg-gradient-to-r from-[#D97848] to-[#D97848] hover:from-[#D97848] hover:to-[#D97848] text-white active:scale-[0.98]'
-                        : 'bg-[#E7D8BD] text-[#445865] cursor-not-allowed'
+                        ? 'bg-gradient-to-r from-duck-coral to-duck-coral hover:from-duck-coral hover:to-duck-coral text-white active:scale-[0.98]'
+                        : 'bg-duck-line text-duck-muted cursor-not-allowed'
                 }`}
                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
             >
@@ -166,7 +166,7 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
 
             {!textRequirementMet && (
                 <p
-                    className="text-center text-xs text-[#445865] mt-2"
+                    className="text-center text-xs text-duck-muted mt-2"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     Schrijf eerst minimaal {requiredTextLength} tekens als bewijs van je werk
@@ -175,7 +175,7 @@ export const StepInstructionPanel: React.FC<StepInstructionPanelProps> = ({
 
             {!isStepComplete && textRequirementMet && (
                 <p
-                    className="text-center text-xs text-[#445865] mt-2"
+                    className="text-center text-xs text-duck-muted mt-2"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     Vink alle items af om door te gaan

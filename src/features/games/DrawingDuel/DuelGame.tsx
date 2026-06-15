@@ -12,7 +12,7 @@ import {
     updateDuel,
     endDuel
 } from '@/services/duelService';
-import { analyzeDrawingWithAI } from '@/services/geminiService';
+import { analyzeDrawingWithAI } from '@/services/aiProviderService';
 
 // Import PROMPTS from DrawingGamePreview (we'll need to export it)
 const PROMPTS = [

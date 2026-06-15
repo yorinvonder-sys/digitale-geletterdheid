@@ -45,27 +45,27 @@ function computeVisuals(
             {
                 label: 'Herhaalde functies',
                 value: herhaaldeFuncties ? 4 : 0,
-                color: herhaaldeFuncties ? '#D97848' : '#E7D8BD',
+                color: herhaaldeFuncties ? '#ff3c21' : '#e3e2dc',
             },
             {
                 label: 'Gekopieerde blokken',
                 value: gekopieerdeBlokken ? 5 : 0,
-                color: gekopieerdeBlokken ? '#D97848' : '#E7D8BD',
+                color: gekopieerdeBlokken ? '#ff3c21' : '#e3e2dc',
             },
             {
                 label: 'Magische getallen',
                 value: magigeGetallen ? 3 : 0,
-                color: magigeGetallen ? '#D97848' : '#E7D8BD',
+                color: magigeGetallen ? '#ff3c21' : '#e3e2dc',
             },
             {
                 label: 'Duplicate logica',
                 value: duplicateLogica ? 5 : 0,
-                color: duplicateLogica ? '#D97848' : '#E7D8BD',
+                color: duplicateLogica ? '#ff3c21' : '#e3e2dc',
             },
             {
                 label: 'Functies gebruikt',
                 value: functiesGebruikt ? 1 : 0,
-                color: functiesGebruikt ? '#5F947D' : '#E7D8BD',
+                color: functiesGebruikt ? '#202023' : '#e3e2dc',
             },
         ];
 
@@ -154,7 +154,7 @@ export const codeReviewerConfig: SimulationLabConfig = {
     introDescription:
         'Goede code is niet alleen code die werkt — het is code die anderen kunnen begrijpen. Ontdek wat leesbaarheid, het DRY-principe en constructieve feedback betekenen.',
     missionGoal: {
-        primaryGoal: 'Beoordeel codekwaliteit en geef concrete verbeterfeedback op leesbaarheid, herhaling en samenwerking.',
+        primaryGoal: 'Ik beoordeel codekwaliteit en geef concrete verbeterfeedback op leesbaarheid, herhaling en samenwerking.',
         criteria: {
             type: 'rounds-complete',
             min: 3,
@@ -386,31 +386,31 @@ export const codeReviewerConfig: SimulationLabConfig = {
             minScore: 90,
             emoji: '🏆',
             title: 'Senior Reviewer',
-            color: '#5F947D',
+            color: '#202023',
         },
         {
             minScore: 70,
             emoji: '👀',
             title: 'Code Reviewer Pro',
-            color: '#5F947D',
+            color: '#202023',
         },
         {
             minScore: 50,
             emoji: '🔧',
             title: 'Code Kijker',
-            color: '#445865',
+            color: '#202023',
         },
         {
             minScore: 25,
             emoji: '💡',
             title: 'Startende Code Reviewer',
-            color: '#0B453F',
+            color: '#202023',
         },
         {
             minScore: 0,
             emoji: '📖',
             title: 'Aan het leren',
-            color: '#445865',
+            color: '#202023',
         },
     ],
     takeaways: [

@@ -83,11 +83,11 @@ export const digitalStorytellerConfig: BuilderCanvasConfig = {
     ],
     maxScore: 100,
     badges: [
-        { minScore: 90, emoji: '🏆', title: 'Verhalen Architect', color: '#D7C95F' },
-        { minScore: 70, emoji: '📖', title: 'Digital Storyteller', color: '#5F947D' },
-        { minScore: 50, emoji: '✍️', title: 'Verhalen Beginner', color: '#D97848' },
-        { minScore: 25, emoji: '💡', title: 'Beginnende Verhalenverteller', color: '#0B453F' },
-        { minScore: 0, emoji: '🌱', title: 'Op weg', color: '#445865' },
+        { minScore: 90, emoji: '🏆', title: 'Verhalen Architect', color: '#e1ff01' },
+        { minScore: 70, emoji: '📖', title: 'Digital Storyteller', color: '#202023' },
+        { minScore: 50, emoji: '✍️', title: 'Verhalen Beginner', color: '#ff3c21' },
+        { minScore: 25, emoji: '💡', title: 'Beginnende Verhalenverteller', color: '#202023' },
+        { minScore: 0, emoji: '🌱', title: 'Op weg', color: '#202023' },
     ],
     takeaways: [
         'Je weet hoe je een interactief verhaal structureert met vertakkingen en keuzemomenten',

@@ -46,7 +46,7 @@ export interface BadgeConfig {
     minScore: number;
     emoji: string;
     title: string;
-    color: string; // tailwind-compatible color like '#5F947D'
+    color: string; // tailwind-compatible color like '#202023'
 }
 
 // === Follow-up multiple-choice question (used by FollowUpCard in ScenarioEngine, PuzzleLab, etc.) ===

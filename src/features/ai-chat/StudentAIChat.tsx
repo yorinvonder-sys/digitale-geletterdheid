@@ -4,6 +4,7 @@ import { useStudentAssistant } from '@/hooks/useStudentAssistant';
 import { MarkdownRenderer } from '@/components/ui/MarkdownRenderer';
 import { AiDisclosureBadge } from '@/features/ai-chat/AiDisclosureBadge';
 import { WellbeingAlert } from '@/features/student/WellbeingAlert';
+import type { ChatMessage } from '@/types';
 
 /** Context data passed to AI for better responses */
 interface AIContextData {
@@ -31,6 +32,15 @@ interface StudentAIChatProps {
     /** Optionele server-side roleId voor missie-specifieke AI-instructies. Default: 'student-assistant'. */
     roleId?: string;
 }
+
+const formatChatTimestamp = (timestamp: ChatMessage['timestamp'] | string | number | null | undefined): string => {
+    if (!timestamp) return '';
+
+    const date = timestamp instanceof Date ? timestamp : new Date(timestamp);
+    if (Number.isNaN(date.getTime())) return '';
+
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+};
 
 export const StudentAIChat: React.FC<StudentAIChatProps> = ({ userIdentifier, context, isOpen: controlledIsOpen, onOpenChange, roleId }) => {
     const getQuickPromptLabel = () => {
@@ -121,7 +131,8 @@ export const StudentAIChat: React.FC<StudentAIChatProps> = ({ userIdentifier, co
     } = useStudentAssistant({ userIdentifier, context, roleId });
 
     // Resolve controlled vs internal state
-    const isVisible = controlledIsOpen !== undefined ? controlledIsOpen : internalIsOpen;
+    const isControlled = controlledIsOpen !== undefined;
+    const isVisible = isControlled ? controlledIsOpen : internalIsOpen;
     const setIsVisible = onOpenChange || setInternalIsOpen;
 
     // We need to sync with the hook if using controlled state, but the hook manages its own state. 
@@ -163,7 +174,7 @@ export const StudentAIChat: React.FC<StudentAIChatProps> = ({ userIdentifier, co
             {showHulplijn && <WellbeingAlert match={wellbeingMatch} onDismiss={dismissHulplijn} />}
 
             {/* Floating AI coach button */}
-            {!isVisible && (
+            {!isControlled && !isVisible && (
                 <button
                     onClick={handleOpen}
                     className="fixed bottom-20 sm:bottom-6 right-4 sm:right-6 group z-[70] flex items-center gap-0"
@@ -239,7 +250,7 @@ export const StudentAIChat: React.FC<StudentAIChatProps> = ({ userIdentifier, co
                                         msg.text
                                     )}
                                     <div className="text-[10px] mt-1" style={{ color: msg.role === 'user' ? 'rgba(255,255,255,0.7)' : '#445865' }}>
-                                        {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                        {formatChatTimestamp(msg.timestamp)}
                                     </div>
                                 </div>
                             </div>

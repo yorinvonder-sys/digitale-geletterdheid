@@ -3,7 +3,7 @@
  *
  * Biedt functies voor:
  * - Transacties (CRUD + CSV-bankimport)
- * - Bonnetjes (upload naar Storage + Gemini Vision scan)
+ * - Bonnetjes (upload naar Storage + Mistral Vision scan)
  * - Jaaroverzicht voor belastingaangifte (IB Box 1 ZZP)
  * - Instellingen (KvK, bedrijfsnaam, startersaftrek)
  */
@@ -519,7 +519,7 @@ export async function uploadAndScanReceipt(
     const base64 = btoa(binary);
     const mimeType    = file.type || 'image/jpeg';
 
-    // Stuur naar Claude edge function (was Gemini, nu Claude Sonnet 4.6)
+    // Stuur naar Claude edge function (was Mistral, nu Claude Sonnet 4.6)
     const response = await authenticatedFetch(`${EDGE_FUNCTION_URL}/scanSubscriptionClaude`, {
         method: 'POST',
         headers: {

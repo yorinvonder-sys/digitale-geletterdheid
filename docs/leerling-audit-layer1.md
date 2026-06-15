@@ -114,7 +114,7 @@
 - Interactief: klik op de foute prompt
 
 ### Problemen
-- **AI-chat fallback actief** — de Gemini edge function geeft CORS-errors. Er is een lokale simulatie als fallback, maar leerlingen krijgen geen échte AI-interactie.
+- **AI-chat fallback actief** — de AI edge function geeft CORS-errors. Er is een lokale simulatie als fallback, maar leerlingen krijgen geen échte AI-interactie.
 - **"Niet helemaal..."** foutmelding verscheen direct bij het laden van De Code-Criticus, zonder dat ik iets klikte. Mogelijk een state-bug.
 
 ---
@@ -175,7 +175,7 @@
 | 1 | MFA-gate verschijnt voor student-accounts | Hoog | `AuthenticatedApp.tsx` / `authService.ts` — race condition bij session restore |
 | 2 | `[Permissions] Failed to fetch` loop | Medium | `PermissionService.ts:59` — herhaalt zich elke paar seconden |
 | 3 | `developer_plans.version does not exist` | Medium | DB-kolom ontbreekt |
-| 4 | CORS-error naar chat edge function | Medium | Gemini proxy geeft `ERR_FAILED` — fallback naar lokale simulatie actief |
+| 4 | CORS-error naar chat edge function | Medium | AI proxy geeft `ERR_FAILED` — fallback naar lokale simulatie actief |
 | 5 | `classroom_configs` table error | Laag | `select=*&id=eq.Klas+1` geeft 404 — tabel bestaat niet of RLS blokkeert |
 | 6 | `AuthenticatedApp Component Mounting...` loop | Laag | Component mount herhaalt zich 6+ keer — React StrictMode + state issues |
 | 7 | `WebSocket connection` warnings | Laag | Realtime subscriptions falen |

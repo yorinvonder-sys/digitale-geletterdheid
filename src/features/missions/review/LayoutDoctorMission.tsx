@@ -167,7 +167,7 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
         switch (activeTab) {
             case 'Bestand':
                 return (
-                    <div className="px-4 py-2 flex items-center gap-4 overflow-x-auto h-24 bg-[#D97848] text-white w-full absolute top-[88px] left-0 z-50">
+                    <div className="px-4 py-2 flex items-center gap-4 overflow-x-auto h-24 bg-duck-coral text-white w-full absolute top-[88px] left-0 z-50">
                         <button onClick={() => setInlineMessage('Nieuw document wordt gesimuleerd')} className="flex flex-col items-center gap-2 p-2 hover:bg-white/10 rounded-lg min-w-[60px] transition-all duration-300">
                             <FilePlus size={24} /> <span className="text-xs">Nieuw</span>
                         </button>
@@ -180,41 +180,41 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
                 return (
                     <div className="px-4 py-2 flex items-center gap-2 overflow-x-auto h-24">
                         {/* Font & Title Styles logic similar to before but generalized */}
-                        <div className="flex flex-col px-2 border-r border-[#E7D8BD] h-full justify-between pb-1">
+                        <div className="flex flex-col px-2 border-r border-duck-line h-full justify-between pb-1">
                             <div className="flex gap-1 mb-1">
                                 <select
-                                    className="w-32 text-xs border border-[#E7D8BD] rounded focus-visible:ring-2 focus-visible:ring-[#D97848]"
+                                    className="w-32 text-xs border border-duck-line rounded focus-visible:ring-2 focus-visible:ring-duck-coral"
                                     value={bodyFont === 'comic' ? 'Comic Sans MS' : 'Arial'}
                                     onChange={(e) => setBodyFont(e.target.value === 'Arial' ? 'sans' : 'comic')}
                                 >
                                     <option value="Comic Sans MS">Comic Sans MS</option>
                                     <option value="Arial">Arial</option>
                                 </select>
-                                <div className="flex bg-[#FCF6EA] rounded">
-                                    <button onClick={() => setIsBold(!isBold)} className={`p-1 ${isBold ? 'bg-[#E7D8BD]' : ''} rounded hover:bg-[#E7D8BD] transition-all duration-300`}><Bold size={14} /></button>
-                                    <button onClick={() => setIsItalic(!isItalic)} className={`p-1 ${isItalic ? 'bg-[#E7D8BD]' : ''} rounded hover:bg-[#E7D8BD] transition-all duration-300`}><Italic size={14} /></button>
-                                    <button onClick={() => setIsUnderlined(!isUnderlined)} className={`p-1 ${isUnderlined ? 'bg-[#E7D8BD]' : ''} rounded hover:bg-[#E7D8BD] transition-all duration-300`}><div className="underline text-[10px] font-bold">U</div></button>
+                                <div className="flex bg-duck-bg rounded">
+                                    <button onClick={() => setIsBold(!isBold)} className={`p-1 ${isBold ? 'bg-duck-line' : ''} rounded hover:bg-duck-line transition-all duration-300`}><Bold size={14} /></button>
+                                    <button onClick={() => setIsItalic(!isItalic)} className={`p-1 ${isItalic ? 'bg-duck-line' : ''} rounded hover:bg-duck-line transition-all duration-300`}><Italic size={14} /></button>
+                                    <button onClick={() => setIsUnderlined(!isUnderlined)} className={`p-1 ${isUnderlined ? 'bg-duck-line' : ''} rounded hover:bg-duck-line transition-all duration-300`}><div className="underline text-[10px] font-bold">U</div></button>
                                 </div>
                             </div>
-                            <span className="text-[10px] text-center text-[#445865]">Lettertype</span>
+                            <span className="text-[10px] text-center text-duck-muted">Lettertype</span>
                         </div>
-                        <div className="flex flex-col px-2 border-r border-[#E7D8BD] h-full justify-between pb-1">
+                        <div className="flex flex-col px-2 border-r border-duck-line h-full justify-between pb-1">
                             <div className="flex gap-2">
-                                <button onClick={() => setTitleStyle('comic')} className={`p-2 border rounded-lg transition-all duration-300 ${titleStyle === 'comic' ? 'bg-[#D97848]/10 border-[#D97848]' : 'border-[#E7D8BD]'} w-20`}>
+                                <button onClick={() => setTitleStyle('comic')} className={`p-2 border rounded-lg transition-all duration-300 ${titleStyle === 'comic' ? 'bg-duck-coral/10 border-duck-coral' : 'border-duck-line'} w-20`}>
                                     <span className="font-[Comic_Sans_MS] text-xs">Normaal</span>
                                 </button>
-                                <button onClick={() => setTitleStyle('modern')} className={`p-2 border rounded-lg transition-all duration-300 ${titleStyle === 'modern' ? 'bg-[#D97848]/10 border-[#D97848]' : 'border-[#E7D8BD]'} w-20`}>
+                                <button onClick={() => setTitleStyle('modern')} className={`p-2 border rounded-lg transition-all duration-300 ${titleStyle === 'modern' ? 'bg-duck-coral/10 border-duck-coral' : 'border-duck-line'} w-20`}>
                                     <span className="font-sans font-bold text-lg">Kop 1</span>
                                 </button>
                             </div>
-                            <span className="text-[10px] text-center text-[#445865]">Stijlen</span>
+                            <span className="text-[10px] text-center text-duck-muted">Stijlen</span>
                         </div>
                         {selection === 'image' && (
-                            <div className="flex flex-col px-2 border-r border-[#E7D8BD] h-full justify-between pb-1 animate-in fade-in slide-in-from-top-2">
-                                <button onClick={() => setImageAlign('wrap')} className={`flex flex-col items-center p-1 rounded-lg transition-all duration-300 ${imageAlign === 'wrap' ? 'bg-[#E7D8BD]' : ''}`}>
+                            <div className="flex flex-col px-2 border-r border-duck-line h-full justify-between pb-1 animate-in fade-in slide-in-from-top-2">
+                                <button onClick={() => setImageAlign('wrap')} className={`flex flex-col items-center p-1 rounded-lg transition-all duration-300 ${imageAlign === 'wrap' ? 'bg-duck-line' : ''}`}>
                                     <AlignLeft size={20} /> <span className="text-[10px]">Tekstterugloop</span>
                                 </button>
-                                <span className="text-[10px] text-center text-[#0B453F] font-bold">Afbeelding</span>
+                                <span className="text-[10px] text-center text-duck-ink font-bold">Afbeelding</span>
                             </div>
                         )}
                     </div>
@@ -222,54 +222,54 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
             case 'Invoegen':
                 return (
                     <div className="px-4 py-2 flex items-center gap-4 h-24">
-                        <button onClick={() => addBlock('pagebreak')} className="flex flex-col items-center gap-1 hover:bg-[#FCF6EA] p-2 rounded-lg transition-all duration-300">
-                            <FilePlus size={24} className="text-[#445865]" /> <span className="text-[10px] text-[#445865]">Pagina-einde</span>
+                        <button onClick={() => addBlock('pagebreak')} className="flex flex-col items-center gap-1 hover:bg-duck-bg p-2 rounded-lg transition-all duration-300">
+                            <FilePlus size={24} className="text-duck-muted" /> <span className="text-[10px] text-duck-muted">Pagina-einde</span>
                         </button>
-                        <button onClick={() => addBlock('table')} className="flex flex-col items-center gap-1 hover:bg-[#FCF6EA] p-2 rounded-lg transition-all duration-300">
-                            <Table size={24} className="text-[#445865]" /> <span className="text-[10px] text-[#445865]">Tabel</span>
+                        <button onClick={() => addBlock('table')} className="flex flex-col items-center gap-1 hover:bg-duck-bg p-2 rounded-lg transition-all duration-300">
+                            <Table size={24} className="text-duck-muted" /> <span className="text-[10px] text-duck-muted">Tabel</span>
                         </button>
-                        <button onClick={() => addBlock('shape')} className="flex flex-col items-center gap-1 hover:bg-[#FCF6EA] p-2 rounded-lg transition-all duration-300">
-                            <Square size={24} className="text-[#445865]" /> <span className="text-[10px] text-[#445865]">Vormen</span>
+                        <button onClick={() => addBlock('shape')} className="flex flex-col items-center gap-1 hover:bg-duck-bg p-2 rounded-lg transition-all duration-300">
+                            <Square size={24} className="text-duck-muted" /> <span className="text-[10px] text-duck-muted">Vormen</span>
                         </button>
                     </div>
                 );
             case 'Ontwerpen':
                 return (
                     <div className="px-4 py-2 flex items-center gap-4 h-24">
-                        <button onClick={() => { setBodyFont('comic'); setPageColor('white'); }} className="flex flex-col items-center hover:bg-[#FCF6EA] p-2 rounded-lg transition-all duration-300">
-                            <span className="font-[Comic_Sans_MS] text-lg text-[#445865]">Aa</span> <span className="text-[10px] text-[#445865]">Basis</span>
+                        <button onClick={() => { setBodyFont('comic'); setPageColor('white'); }} className="flex flex-col items-center hover:bg-duck-bg p-2 rounded-lg transition-all duration-300">
+                            <span className="font-[Comic_Sans_MS] text-lg text-duck-muted">Aa</span> <span className="text-[10px] text-duck-muted">Basis</span>
                         </button>
-                        <button onClick={() => { setBodyFont('sans'); setPageColor('#FCF6EA'); }} className="flex flex-col items-center hover:bg-[#FCF6EA] p-2 rounded-lg transition-all duration-300">
-                            <span className="font-sans font-bold text-lg text-[#D97848]">Aa</span> <span className="text-[10px] text-[#445865]">Retro</span>
+                        <button onClick={() => { setBodyFont('sans'); setPageColor('#f2f1ec'); }} className="flex flex-col items-center hover:bg-duck-bg p-2 rounded-lg transition-all duration-300">
+                            <span className="font-sans font-bold text-lg text-duck-coral">Aa</span> <span className="text-[10px] text-duck-muted">Retro</span>
                         </button>
-                        <div className="h-full w-px bg-[#E7D8BD] mx-2"></div>
-                        <button onClick={() => setShowWatermark(!showWatermark)} className={`flex flex-col items-center hover:bg-[#FCF6EA] p-2 rounded-lg transition-all duration-300 ${showWatermark ? 'bg-[#E7D8BD]' : ''}`}>
-                            <Type size={20} className="text-[#445865]" /> <span className="text-[10px] text-[#445865]">Watermerk</span>
+                        <div className="h-full w-px bg-duck-line mx-2"></div>
+                        <button onClick={() => setShowWatermark(!showWatermark)} className={`flex flex-col items-center hover:bg-duck-bg p-2 rounded-lg transition-all duration-300 ${showWatermark ? 'bg-duck-line' : ''}`}>
+                            <Type size={20} className="text-duck-muted" /> <span className="text-[10px] text-duck-muted">Watermerk</span>
                         </button>
-                        <button onClick={() => setPageColor(pageColor === 'white' ? '#FCF6EA' : 'white')} className="flex flex-col items-center hover:bg-[#FCF6EA] p-2 rounded-lg transition-all duration-300">
-                            <Droplet size={20} className="text-[#445865]" /> <span className="text-[10px] text-[#445865]">Paginakleur</span>
+                        <button onClick={() => setPageColor(pageColor === 'white' ? '#f2f1ec' : 'white')} className="flex flex-col items-center hover:bg-duck-bg p-2 rounded-lg transition-all duration-300">
+                            <Droplet size={20} className="text-duck-muted" /> <span className="text-[10px] text-duck-muted">Paginakleur</span>
                         </button>
                     </div>
                 );
             case 'Indeling':
                 return (
                     <div className="px-4 py-2 flex items-center gap-4 h-24">
-                        <button onClick={() => setLayout({ ...layout, margins: layout.margins === 'normal' ? 'narrow' : 'normal' })} className="flex flex-col items-center hover:bg-[#FCF6EA] p-2 rounded-lg transition-all duration-300">
-                            <LayoutTemplate size={24} className="text-[#445865]" /> <span className="text-[10px] text-[#445865]">{layout.margins === 'normal' ? 'Normaal' : 'Smal'}</span>
+                        <button onClick={() => setLayout({ ...layout, margins: layout.margins === 'normal' ? 'narrow' : 'normal' })} className="flex flex-col items-center hover:bg-duck-bg p-2 rounded-lg transition-all duration-300">
+                            <LayoutTemplate size={24} className="text-duck-muted" /> <span className="text-[10px] text-duck-muted">{layout.margins === 'normal' ? 'Normaal' : 'Smal'}</span>
                         </button>
-                        <button onClick={() => setLayout({ ...layout, orientation: layout.orientation === 'portrait' ? 'landscape' : 'portrait' })} className="flex flex-col items-center hover:bg-[#FCF6EA] p-2 rounded-lg transition-all duration-300">
-                            <Layout size={24} className={`text-[#445865] ${layout.orientation === 'landscape' ? 'rotate-90' : ''}`} /> <span className="text-[10px] text-[#445865]">Afdrukstand</span>
+                        <button onClick={() => setLayout({ ...layout, orientation: layout.orientation === 'portrait' ? 'landscape' : 'portrait' })} className="flex flex-col items-center hover:bg-duck-bg p-2 rounded-lg transition-all duration-300">
+                            <Layout size={24} className={`text-duck-muted ${layout.orientation === 'landscape' ? 'rotate-90' : ''}`} /> <span className="text-[10px] text-duck-muted">Afdrukstand</span>
                         </button>
-                        <button onClick={() => setLayout({ ...layout, columns: layout.columns === 1 ? 2 : 1 })} className="flex flex-col items-center hover:bg-[#FCF6EA] p-2 rounded-lg transition-all duration-300">
-                            <Columns size={24} className="text-[#445865]" /> <span className="text-[10px] text-[#445865]">Kolommen</span>
+                        <button onClick={() => setLayout({ ...layout, columns: layout.columns === 1 ? 2 : 1 })} className="flex flex-col items-center hover:bg-duck-bg p-2 rounded-lg transition-all duration-300">
+                            <Columns size={24} className="text-duck-muted" /> <span className="text-[10px] text-duck-muted">Kolommen</span>
                         </button>
                     </div>
                 );
             case 'Verwijzingen':
                 return (
                     <div className="px-4 py-2 flex items-center gap-4 h-24">
-                        <button onClick={generateTOC} className="flex flex-col items-center gap-1 hover:bg-[#FCF6EA] p-2 rounded-lg transition-all duration-300">
-                            <List size={24} className="text-[#445865]" /> <span className="text-[10px] text-[#445865]">Inhoudsopgave</span>
+                        <button onClick={generateTOC} className="flex flex-col items-center gap-1 hover:bg-duck-bg p-2 rounded-lg transition-all duration-300">
+                            <List size={24} className="text-duck-muted" /> <span className="text-[10px] text-duck-muted">Inhoudsopgave</span>
                         </button>
                     </div>
                 );
@@ -278,9 +278,9 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
     };
 
     return (
-        <div className="min-h-screen bg-[#FCF6EA] flex flex-col text-[#08283B]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }} onClick={() => setSelection('none')}>
+        <div className="min-h-screen bg-duck-bg flex flex-col text-duck-ink" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }} onClick={() => setSelection('none')}>
             {/* Header */}
-            <header className="bg-[#D97848] text-white px-4 py-2 flex items-center justify-between shadow-md relative z-20">
+            <header className="bg-duck-coral text-white px-4 py-2 flex items-center justify-between shadow-md relative z-20">
                 <div className="flex items-center gap-4">
                     <button onClick={onBack} className="p-1.5 hover:bg-white/10 rounded-lg transition-all duration-300 focus-visible:ring-2 focus-visible:ring-white"><ArrowLeft size={20} /></button>
                     <div className="flex flex-col">
@@ -294,14 +294,14 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
                 </div>
                 <button
                     onClick={() => { if (isComplete) { clearSave(); onComplete(true); } else { setInlineMessage('Nog niet klaar! Check de opdrachtkaart bovenaan.'); setShowAssignment(true); } }}
-                    className={`px-4 py-1.5 rounded-full font-bold text-sm flex items-center gap-2 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-white ${isComplete ? 'bg-[#5F947D] hover:bg-lab-sage hover:text-white' : 'bg-white/20'}`}
+                    className={`px-4 py-1.5 rounded-full font-bold text-sm flex items-center gap-2 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-white ${isComplete ? 'bg-duck-ink hover:bg-lab-sage hover:text-white' : 'bg-white/20'}`}
                 >
                     <CheckCircle size={16} /> {isComplete ? 'Inleveren' : 'Nog Bezig'}
                 </button>
             </header>
 
             {/* Ribbon */}
-            <div className="bg-white border-b border-[#E7D8BD] shadow-sm relative z-10 overflow-x-auto" onClick={(e) => e.stopPropagation()}>
+            <div className="bg-white border-b border-duck-line shadow-sm relative z-10 overflow-x-auto" onClick={(e) => e.stopPropagation()}>
                 <div className="min-w-max">
                     {renderRibbon()}
                 </div>
@@ -314,7 +314,7 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
                         initial={{ opacity: 0, y: -30 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -30 }}
-                        className="fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-[#08283B] text-white px-5 py-3 rounded-full shadow-2xl text-sm font-medium flex items-center gap-2"
+                        className="fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-duck-ink text-white px-5 py-3 rounded-full shadow-2xl text-sm font-medium flex items-center gap-2"
                     >
                         <Info size={16} />
                         {inlineMessage}
@@ -329,7 +329,7 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: 30 }}
-                        className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-[#5F947D] text-white px-5 py-3 rounded-2xl shadow-2xl text-sm font-medium max-w-md flex items-start gap-3"
+                        className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-duck-ink text-white px-5 py-3 rounded-2xl shadow-2xl text-sm font-medium max-w-md flex items-start gap-3"
                     >
                         <Lightbulb size={18} className="shrink-0 mt-0.5" />
                         <span>{CHANGE_EXPLANATIONS[changeExplanation]}</span>
@@ -341,27 +341,27 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
             </AnimatePresence>
 
             {/* Workspace */}
-            <div className="flex-1 overflow-y-auto p-4 lg:p-8 flex flex-col items-center bg-[#FCF6EA] perspective-[1000px]">
+            <div className="flex-1 overflow-y-auto p-4 lg:p-8 flex flex-col items-center bg-duck-bg perspective-[1000px]">
                 {/* Opdrachtkaart */}
                 <div className={`w-full max-w-4xl mb-4 transition-all duration-300 ${showAssignment ? '' : 'mb-2'}`}>
                     <button
                         onClick={() => setShowAssignment(!showAssignment)}
-                        className="w-full flex items-center justify-between bg-white border border-[#E7D8BD] rounded-t-2xl px-4 py-3 text-left shadow-sm hover:bg-[#FCF6EA] transition-colors"
+                        className="w-full flex items-center justify-between bg-white border border-duck-line rounded-t-2xl px-4 py-3 text-left shadow-sm hover:bg-duck-bg transition-colors"
                     >
-                        <span className="font-bold text-sm text-[#D97848] flex items-center gap-2" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
+                        <span className="font-bold text-sm text-duck-coral flex items-center gap-2" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
                             <FileText size={16} /> Opdracht: Maak dit document professioneel
                         </span>
-                        {showAssignment ? <ChevronUp size={16} className="text-[#445865]" /> : <ChevronDown size={16} className="text-[#445865]" />}
+                        {showAssignment ? <ChevronUp size={16} className="text-duck-muted" /> : <ChevronDown size={16} className="text-duck-muted" />}
                     </button>
                     {showAssignment && (
-                        <div className="bg-white border border-t-0 border-[#E7D8BD] rounded-b-2xl px-4 py-4 shadow-sm">
-                            <p className="text-sm text-[#445865] mb-3">Voer alle stappen uit om het document op te knappen:</p>
+                        <div className="bg-white border border-t-0 border-duck-line rounded-b-2xl px-4 py-4 shadow-sm">
+                            <p className="text-sm text-duck-muted mb-3">Voer alle stappen uit om het document op te knappen:</p>
                             <ul className="space-y-2">
                                 {ASSIGNMENT_CRITERIA.map((criterion) => {
                                     const done = criterion.check(savedState);
                                     return (
-                                        <li key={criterion.id} className={`flex items-center gap-3 text-sm transition-all duration-300 ${done ? 'text-[#5F947D]' : 'text-[#445865]'}`}>
-                                            <div className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 ${done ? 'bg-[#5F947D] text-white' : 'border-2 border-[#E7D8BD]'}`}>
+                                        <li key={criterion.id} className={`flex items-center gap-3 text-sm transition-all duration-300 ${done ? 'text-duck-ink' : 'text-duck-muted'}`}>
+                                            <div className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 ${done ? 'bg-duck-ink text-white' : 'border-2 border-duck-line'}`}>
                                                 {done && <CheckCircle size={12} />}
                                             </div>
                                             <span className={done ? 'line-through' : ''}>{criterion.label}</span>
@@ -369,9 +369,9 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
                                     );
                                 })}
                             </ul>
-                            <div className="mt-3 h-2 bg-[#E7D8BD] rounded-full overflow-hidden">
+                            <div className="mt-3 h-2 bg-duck-line rounded-full overflow-hidden">
                                 <div
-                                    className="h-full bg-[#5F947D] rounded-full transition-all duration-500"
+                                    className="h-full bg-duck-ink rounded-full transition-all duration-500"
                                     style={{ width: `${(ASSIGNMENT_CRITERIA.filter(c => c.check(savedState)).length / ASSIGNMENT_CRITERIA.length) * 100}%` }}
                                 />
                             </div>
@@ -390,7 +390,7 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
                 >
                     {/* Watermark */}
                     {showWatermark && (
-                        <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden text-[#E7D8BD]/50 font-black text-[120px] -rotate-45 select-none">
+                        <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden text-duck-line/50 font-black text-[120px] -rotate-45 select-none">
                             VOORBEELD
                         </div>
                     )}
@@ -403,7 +403,7 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
                             if (info.point.x > window.innerWidth / 2) setIsImageRight(true);
                         }}
                         onClick={(e) => handleSelection(e as unknown as React.MouseEvent, 'image', 'image')}
-                        className={`absolute w-32 h-24 lg:w-48 lg:h-32 bg-[#E7D8BD] z-20 cursor-move ${selection === 'image' ? 'ring-2 ring-[#D97848]' : ''}`}
+                        className={`absolute w-32 h-24 lg:w-48 lg:h-32 bg-duck-line z-20 cursor-move ${selection === 'image' ? 'ring-2 ring-duck-coral' : ''}`}
                         style={{ top: 150, left: 100 }}
                         initial={{ opacity: 0.9 }}
                         animate={{ opacity: 1 }}
@@ -413,7 +413,7 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
                             alt="Voorbeeldafbeelding voor opmaakopdracht"
                             className="w-full h-full object-cover pointer-events-none"
                         />
-                        <div className="absolute bottom-0 right-0 bg-[#08283B]/50 text-white text-[9px] px-1">{imageAlign}</div>
+                        <div className="absolute bottom-0 right-0 bg-duck-ink/50 text-white text-[9px] px-1">{imageAlign}</div>
                     </motion.div>
 
                     {/* Content Renderer */}
@@ -426,7 +426,7 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
                                 {block.type === 'heading' && (
                                     <h1
                                         onClick={(e) => handleSelection(e, block.id, 'heading')}
-                                        className={`cursor-text ${titleStyle === 'comic' ? 'text-2xl text-lab-sage text-center font-[Comic_Sans_MS]' : 'text-4xl font-bold border-b-2 border-[#08283B] pb-2 text-left font-sans'} ${selection === block.id ? 'bg-[#D97848]/10' : ''}`}
+                                        className={`cursor-text ${titleStyle === 'comic' ? 'text-2xl text-lab-sage text-center font-[Comic_Sans_MS]' : 'text-4xl font-bold border-b-2 border-[#08283B] pb-2 text-left font-sans'} ${selection === block.id ? 'bg-duck-coral/10' : ''}`}
                                     >
                                         {block.content}
                                     </h1>
@@ -434,16 +434,16 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
                                 {block.type === 'paragraph' && (
                                     <p
                                         onClick={(e) => handleSelection(e, block.id, 'paragraph')}
-                                        className={`text-justify leading-relaxed cursor-text p-1 rounded ${selection === block.id ? 'bg-[#D97848]/10' : ''} ${isBold && selection === block.id ? 'font-bold' : ''} ${isItalic && selection === block.id ? 'italic' : ''} ${isUnderlined && selection === block.id ? 'underline' : ''} ${imageAlign === 'wrap' && isImageRight ? 'w-[65%]' : ''}`}
+                                        className={`text-justify leading-relaxed cursor-text p-1 rounded ${selection === block.id ? 'bg-duck-coral/10' : ''} ${isBold && selection === block.id ? 'font-bold' : ''} ${isItalic && selection === block.id ? 'italic' : ''} ${isUnderlined && selection === block.id ? 'underline' : ''} ${imageAlign === 'wrap' && isImageRight ? 'w-[65%]' : ''}`}
                                         style={{ fontSize: `${fontSize}px` }}
                                     >
                                         {block.content}
                                     </p>
                                 )}
                                 {block.type === 'toc' && (
-                                    <div className="bg-[#FCF6EA] p-4 rounded-2xl border border-[#E7D8BD] mb-6 font-sans">
-                                        <h2 className="font-bold text-lg mb-2 text-[#445865]" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Inhoudsopgave</h2>
-                                        <ul className="list-decimal pl-4 space-y-1 text-[#5F947D] text-sm">
+                                    <div className="bg-duck-bg p-4 rounded-2xl border border-duck-line mb-6 font-sans">
+                                        <h2 className="font-bold text-lg mb-2 text-duck-muted" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Inhoudsopgave</h2>
+                                        <ul className="list-decimal pl-4 space-y-1 text-duck-ink text-sm">
                                             {blocks.filter(b => b.type === 'heading').map(h => (
                                                 <li key={'toc-' + h.id} className="hover:underline cursor-pointer">{h.content}</li>
                                             ))}
@@ -452,12 +452,12 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
                                     </div>
                                 )}
                                 {block.type === 'table' && (
-                                    <table className="w-full border-collapse border border-[#E7D8BD] mb-4">
+                                    <table className="w-full border-collapse border border-duck-line mb-4">
                                         <tbody>
                                             {[1, 2, 3].map(row => (
                                                 <tr key={row}>
                                                     {[1, 2, 3].map(col => (
-                                                        <td key={col} className="border border-[#E7D8BD] p-2 text-sm text-[#445865]">Cel {row},{col}</td>
+                                                        <td key={col} className="border border-duck-line p-2 text-sm text-duck-muted">Cel {row},{col}</td>
                                                     ))}
                                                 </tr>
                                             ))}
@@ -465,14 +465,14 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
                                     </table>
                                 )}
                                 {block.type === 'shape' && (
-                                    <div className="w-32 h-32 bg-[#0B453F] rounded-2xl mx-auto mb-4 flex items-center justify-center text-white font-bold opacity-80">
+                                    <div className="w-32 h-32 bg-duck-ink rounded-2xl mx-auto mb-4 flex items-center justify-center text-white font-bold opacity-80">
                                         Vorm
                                     </div>
                                 )}
                                 {block.type === 'pagebreak' && (
                                     <div className="w-full h-8 flex items-center justify-center my-4">
-                                        <div className="h-px bg-[#E7D8BD] w-full relative">
-                                            <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-2 text-[10px] text-[#445865]">Pagina-einde</span>
+                                        <div className="h-px bg-duck-line w-full relative">
+                                            <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-2 text-[10px] text-duck-muted">Pagina-einde</span>
                                         </div>
                                     </div>
                                 )}

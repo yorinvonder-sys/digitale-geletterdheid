@@ -626,7 +626,6 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
     ];
     const dashboardNavItems = [
         { label: 'Dashboard', icon: <Home size={19} />, active: activeNav === 'Dashboard', onClick: () => { setActiveNav('Dashboard'); scrollDashboardToTop(); } },
-        { label: 'Projecten', icon: <BookOpen size={19} />, active: activeNav === 'Projecten', onClick: () => { setActiveNav('Projecten'); scrollDashboardSectionIntoView('mission-grid-container'); } },
         { label: 'Mijn portfolio', icon: <User size={19} />, active: activeNav === 'Mijn portfolio', onClick: () => { setActiveNav('Mijn portfolio'); onOpenProfile(); } },
     ];
     const learningProgressControls = (

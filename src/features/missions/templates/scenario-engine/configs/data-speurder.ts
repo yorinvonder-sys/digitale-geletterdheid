@@ -8,7 +8,7 @@ const config: ScenarioEngineConfig = {
     introDescription:
         'Data is overal — maar zonder de juiste vaardigheden is het gewoon ruis. Jij leert als Data Speurder hoe je data verzamelt, analyseert en presenteert zodat het een verhaal vertelt. Datageletterdheid is een van de meest gevraagde vaardigheden van de 21e eeuw.',
     missionGoal: {
-        primaryGoal: 'Onderzoek data, kies passende visualisaties en trek een conclusie die je met bewijs kunt uitleggen.',
+        primaryGoal: 'Ik onderzoek data, kies passende visualisaties en trek een conclusie die ik met bewijs kan uitleggen.',
         criteria: {
             type: 'rounds-complete',
             min: 4,
@@ -28,25 +28,25 @@ const config: ScenarioEngineConfig = {
             minScore: 80,
             emoji: '🏆',
             title: 'Data Expert',
-            color: '#0B453F',
+            color: '#202023',
         },
         {
             minScore: 60,
             emoji: '📊',
             title: 'Data Analist',
-            color: '#5F947D',
+            color: '#202023',
         },
         {
             minScore: 40,
             emoji: '📚',
             title: 'Goed Begonnen',
-            color: '#445865',
+            color: '#202023',
         },
         {
             minScore: 0,
             emoji: '🌱',
             title: 'Blijf Oefenen',
-            color: '#445865',
+            color: '#202023',
         },
     ],
     takeaways: [

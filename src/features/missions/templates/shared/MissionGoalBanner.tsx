@@ -22,28 +22,28 @@ export const MissionGoalBanner: React.FC<MissionGoalBannerProps> = ({
         <section
             className={`rounded-2xl border px-4 py-3 text-left ${
                 completed
-                    ? 'border-[#5F947D]/30 bg-[#5F947D]/10'
-                    : 'border-[#D7C95F]/40 bg-[#FFFDF7]'
+                    ? 'border-duck-ink/30 bg-duck-ink/10'
+                    : 'border-duck-acid/40 bg-white'
             } ${className}`}
             aria-label="/goal"
         >
             <div className="flex items-start gap-3">
                 <div
                     className={`mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-xl ${
-                        completed ? 'bg-[#5F947D] text-white' : 'bg-[#D7C95F]/25 text-[#08283B]'
+                        completed ? 'bg-duck-ink text-white' : 'bg-duck-acid/25 text-duck-ink'
                     }`}
                 >
                     {completed ? <CheckCircle2 size={16} /> : <Target size={16} />}
                 </div>
                 <div className="min-w-0">
-                    <p className="text-[10px] font-black uppercase tracking-widest text-[#D97848]">
+                    <p className="text-[10px] font-black uppercase tracking-widest text-duck-coral">
                         /goal
                     </p>
-                    <p className={`font-bold leading-snug text-[#08283B] ${compact ? 'text-sm' : 'text-base'}`}>
+                    <p className={`font-bold leading-snug text-duck-ink ${compact ? 'text-sm' : 'text-base'}`}>
                         {primaryGoal}
                     </p>
                     {evidence && !compact && (
-                        <p className="mt-1 text-xs leading-relaxed text-[#445865]">
+                        <p className="mt-1 text-xs leading-relaxed text-duck-muted">
                             Bewijs: {evidence}
                         </p>
                     )}

@@ -3,7 +3,7 @@ import fs from 'node:fs';
 
 const files = {
   game: fs.readFileSync('src/features/ai-lab/previews/DrawingGamePreview.tsx', 'utf8'),
-  service: fs.readFileSync('src/services/geminiService.ts', 'utf8'),
+  service: fs.readFileSync('src/services/aiProviderService.ts', 'utf8'),
   agent: fs.readFileSync('src/config/agents/year1.tsx', 'utf8'),
 };
 

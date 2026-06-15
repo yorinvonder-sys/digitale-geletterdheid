@@ -223,7 +223,7 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
     const totalSteps = config.steps.length;
 
     return (
-        <div className="flex h-screen min-h-screen flex-col overflow-hidden bg-[#FCF6EA]">
+        <div className="flex h-screen min-h-screen flex-col overflow-hidden bg-duck-bg">
             <MilestoneToast
                 show={state.showMilestone}
                 completedCount={completedStepIndex}
@@ -246,7 +246,7 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
             <div className="min-h-0 flex-1 flex flex-col overflow-hidden md:flex-row">
                 {/* Left panel — instructions */}
                 <div
-                    className={`min-h-0 border-r border-[#E7D8BD] flex flex-col overflow-y-auto md:w-[45%] ${
+                    className={`min-h-0 border-r border-duck-line flex flex-col overflow-y-auto md:w-[45%] ${
                         mobileTab !== 'instructies' ? 'hidden md:flex' : 'flex'
                     }`}
                 >
@@ -302,7 +302,7 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
                     {!isChatOpen && (
                         <button
                             onClick={() => setIsChatOpen(true)}
-                            className="fixed bottom-6 right-6 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-[#D97848] to-[#D97848] text-white shadow-lg transition-all duration-200 hover:brightness-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0B453F] focus-visible:ring-offset-2 active:scale-95"
+                            className="fixed bottom-6 right-6 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-duck-coral to-duck-coral text-white shadow-lg transition-all duration-200 hover:brightness-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2 active:scale-95"
                             aria-label="Open AI-assistent"
                         >
                             <MessageCircle size={22} />
@@ -316,7 +316,7 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
                 <div className="md:hidden fixed bottom-20 left-4 z-30">
                     <button
                         onClick={() => setMobileTab('instructies')}
-                        className="flex min-h-[44px] items-center gap-2 rounded-full border border-[#E7D8BD] bg-white px-4 text-sm font-bold text-[#445865] shadow-sm"
+                        className="flex min-h-[44px] items-center gap-2 rounded-full border border-duck-line bg-white px-4 text-sm font-bold text-duck-muted shadow-sm"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         <ArrowLeft size={14} />
@@ -331,8 +331,8 @@ const BuilderCanvasInner: React.FC<BuilderCanvasProps> = ({
 // ── Public entry point — loads config dynamically ────────────────────────────
 
 const LoadingScreen = () => (
-    <div className="min-h-screen bg-[#FCF6EA] flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-2 border-[#D97848] border-t-transparent" />
+    <div className="min-h-screen bg-duck-bg flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-2 border-duck-coral border-t-transparent" />
     </div>
 );
 
@@ -351,12 +351,12 @@ export const BuilderCanvas: React.FC<TemplateMissionProps> = ({ missionId, onBac
     }, [missionId]);
 
     if (loadError) return (
-        <div className="min-h-screen bg-[#FCF6EA] flex items-center justify-center p-4">
+        <div className="min-h-screen bg-duck-bg flex items-center justify-center p-4">
             <div className="text-center">
-                <p className="text-[#445865] mb-4" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                <p className="text-duck-muted mb-4" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                     Config niet gevonden: {missionId}
                 </p>
-                <button onClick={onBack} className="px-4 py-2 bg-[#D97848] text-white rounded-xl text-sm font-bold">Terug</button>
+                <button onClick={onBack} className="px-4 py-2 bg-duck-coral text-white rounded-xl text-sm font-bold">Terug</button>
             </div>
         </div>
     );

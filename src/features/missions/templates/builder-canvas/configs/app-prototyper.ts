@@ -8,7 +8,7 @@ export const appPrototyperConfig: BuilderCanvasConfig = {
     introDescription:
         'In deze missie leer je hoe professionele designers apps bouwen: van het ontdekken van het probleem, via schetsen en wireframes, naar een klikbaar prototype. Je ontwerpt een app die een echt probleem op school oplost.',
     missionGoal: {
-        primaryGoal: 'Werk een app-idee uit tot een toetsbaar prototype met probleem, schermen, flow en testplan.',
+        primaryGoal: 'Ik werk een app-idee uit tot een toetsbaar prototype met probleem, schermen, flow en testplan.',
         criteria: {
             type: 'steps-complete',
             min: 4,
@@ -97,11 +97,11 @@ export const appPrototyperConfig: BuilderCanvasConfig = {
     ],
     maxScore: 100,
     badges: [
-        { minScore: 90, emoji: '🏆', title: 'UX Maestro', color: '#D7C95F' },
-        { minScore: 70, emoji: '📱', title: 'App Designer', color: '#5F947D' },
-        { minScore: 50, emoji: '✏️', title: 'Wireframe Maker', color: '#D97848' },
-        { minScore: 25, emoji: '💡', title: 'Beginnende App Ontwerper', color: '#0B453F' },
-        { minScore: 0, emoji: '🌱', title: 'Op weg', color: '#445865' },
+        { minScore: 90, emoji: '🏆', title: 'UX Maestro', color: '#e1ff01' },
+        { minScore: 70, emoji: '📱', title: 'App Designer', color: '#202023' },
+        { minScore: 50, emoji: '✏️', title: 'Wireframe Maker', color: '#ff3c21' },
+        { minScore: 25, emoji: '💡', title: 'Beginnende App Ontwerper', color: '#202023' },
+        { minScore: 0, emoji: '🌱', title: 'Op weg', color: '#202023' },
     ],
     takeaways: [
         'Je weet hoe je een gebruikersprobleem analyseert met de 5 W\'s',

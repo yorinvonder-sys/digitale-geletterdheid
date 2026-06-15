@@ -591,7 +591,7 @@ function ChatBubble({ text, isStudent, visible }: { text: string; isStudent: boo
                     ? 'text-white rounded-2xl rounded-br-sm'
                     : 'bg-lab-ink text-white/75 rounded-2xl rounded-bl-sm'
             }`}
-                style={isStudent ? { backgroundColor: '#D97848' } : undefined}
+                style={isStudent ? { backgroundColor: '#ff3c21' } : undefined}
             >
                 {text}
             </div>
@@ -682,11 +682,11 @@ export function ScholenLandingGameDemo() {
         <div className="max-w-6xl mx-auto">
             {/* Header */}
             <div className="text-center mb-10">
-                <p className="font-semibold text-sm mb-3 tracking-wide" style={{ color: '#D97848' }}>Bekijk het in actie</p>
-                <h2 className="text-2xl md:text-3xl font-medium tracking-tight mb-4" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#08283B' }}>
+                <p className="font-semibold text-sm mb-3 tracking-wide" style={{ color: '#ff3c21' }}>Bekijk het in actie</p>
+                <h2 className="text-2xl md:text-3xl font-medium tracking-tight mb-4" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#202023' }}>
                     Leerlingen bouwen hun eigen game
                 </h2>
-                <p className="text-base leading-relaxed max-w-xl mx-auto" style={{ color: '#445865' }}>
+                <p className="text-base leading-relaxed max-w-xl mx-auto" style={{ color: '#202023' }}>
                     Met de AI-mentor passen leerlingen stap voor stap een echte game aan.
                     Elke chat-opdracht verandert direct het resultaat.
                 </p>
@@ -705,7 +705,7 @@ export function ScholenLandingGameDemo() {
                                 ? g.activeTabClass + ' shadow-md'
                                 : 'bg-white hover:shadow-sm'
                         }`}
-                        style={i !== activeGameIdx ? { borderColor: '#E7D8BD', color: '#445865' } : undefined}
+                        style={i !== activeGameIdx ? { borderColor: '#e3e2dc', color: '#202023' } : undefined}
                     >
                         <span className={`transition-transform group-hover:scale-110 ${i === activeGameIdx ? '' : 'opacity-60'}`}>
                             {g.tabIcon}
@@ -716,7 +716,7 @@ export function ScholenLandingGameDemo() {
             </div>
 
             {/* Educational context */}
-            <div className="flex flex-wrap items-center justify-center gap-4 mb-6 text-xs" style={{ color: '#445865' }}>
+            <div className="flex flex-wrap items-center justify-center gap-4 mb-6 text-xs" style={{ color: '#202023' }}>
                 <span className="flex items-center gap-1.5">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                         <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" /><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
@@ -735,7 +735,7 @@ export function ScholenLandingGameDemo() {
             {/* Demo area */}
             <div
                 className="grid grid-cols-1 lg:grid-cols-5 gap-0 rounded-3xl overflow-hidden shadow-xl bg-white"
-                style={{ borderWidth: '1px', borderStyle: 'solid', borderColor: '#E7D8BD' }}
+                style={{ borderWidth: '1px', borderStyle: 'solid', borderColor: '#e3e2dc' }}
                 onMouseEnter={() => { if (!manualRef.current) setIsPaused(true); }}
                 onMouseLeave={() => { if (!manualRef.current) setIsPaused(false); }}
             >
@@ -795,7 +795,7 @@ export function ScholenLandingGameDemo() {
                     <div className="px-4 pb-4">
                         <div className="flex items-center gap-2 bg-lab-ink rounded-xl px-3 py-2.5">
                             <span className="text-lab-muted text-sm flex-1 truncate">Typ een bericht...</span>
-                            <div className="w-7 h-7 rounded-lg flex items-center justify-center opacity-50" style={{ backgroundColor: '#D97848' }}>
+                            <div className="w-7 h-7 rounded-lg flex items-center justify-center opacity-50" style={{ backgroundColor: '#ff3c21' }}>
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                                     <path d="m5 12 7-7 7 7" /><path d="M12 19V5" />
                                 </svg>
@@ -836,7 +836,7 @@ export function ScholenLandingGameDemo() {
                                 ? s.accentClass
                                 : 'bg-white'
                         }`}
-                        style={i !== activeStep ? { borderColor: '#E7D8BD', color: '#445865' } : undefined}
+                        style={i !== activeStep ? { borderColor: '#e3e2dc', color: '#202023' } : undefined}
                     >
                         {game.stepIcons[i]}
                         {s.label}

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { ParentUser } from '@/types';
+import { DuckMark } from '@/components/brand/DuckMark';
 import {
     LayoutDashboard,
     CheckSquare,
@@ -329,13 +330,7 @@ export function DeveloperDashboard({ user, onLogout, onSwitchView }: DeveloperDa
             <aside className="w-full md:w-72 bg-white border-r border-lab-line flex flex-col z-20">
                 <div className="p-6 border-b border-lab-line">
                     <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 rounded-xl overflow-hidden bg-lab-cream border border-lab-line shadow-sm shrink-0">
-                            <img
-                                src="/logo.webp"
-                                alt="DGSkills eend logo"
-                                className="w-full h-full object-cover"
-                            />
-                        </div>
+                        <DuckMark className="size-12 rounded-xl border border-lab-line shadow-sm shrink-0" />
                         <div>
                             <h1 className="font-black text-lab-ink uppercase tracking-tight leading-none">Developer</h1>
                             <span className="text-[10px] font-black text-lab-muted uppercase tracking-widest">Portal</span>

@@ -30,7 +30,7 @@ export const MissionExitConfirm: React.FC<MissionExitConfirmProps> = ({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="absolute inset-0 bg-[#08283B]/40 backdrop-blur-sm"
+            className="absolute inset-0 bg-duck-ink/40 backdrop-blur-sm"
             onClick={onCancel}
           />
 
@@ -40,23 +40,23 @@ export const MissionExitConfirm: React.FC<MissionExitConfirmProps> = ({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 10 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="relative bg-white rounded-2xl border border-[#E7D8BD] shadow-2xl w-full max-w-sm p-6 space-y-5"
+            className="relative bg-white rounded-2xl border border-duck-line shadow-2xl w-full max-w-sm p-6 space-y-5"
           >
             {/* Icon */}
-            <div className="w-12 h-12 rounded-xl bg-[#FCF6EA] flex items-center justify-center mx-auto">
-              <LogOut size={24} className="text-[#D97848]" />
+            <div className="w-12 h-12 rounded-xl bg-duck-bg flex items-center justify-center mx-auto">
+              <LogOut size={24} className="text-duck-coral" />
             </div>
 
             {/* Text */}
             <div className="text-center space-y-2">
               <h3
-                className="text-lg font-black text-[#445865]"
+                className="text-lg font-black text-duck-muted"
                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
               >
                 Missie verlaten?
               </h3>
               <p
-                className="text-sm text-[#445865] leading-relaxed"
+                className="text-sm text-duck-muted leading-relaxed"
                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
               >
                 {hasUnsavedProgress
@@ -69,14 +69,14 @@ export const MissionExitConfirm: React.FC<MissionExitConfirmProps> = ({
             <div className="space-y-2.5">
               <button
                 onClick={onCancel}
-                className="w-full py-3 bg-[#D97848] hover:bg-[#D97848] text-white rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2"
+                className="w-full py-3 bg-duck-coral hover:bg-duck-coral text-white rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2"
               >
                 <ArrowLeft size={16} />
                 Terug naar missie
               </button>
               <button
                 onClick={onConfirm}
-                className="w-full py-3 bg-transparent border border-[#E7D8BD] hover:bg-[#FCF6EA] text-[#445865] hover:text-[#445865] rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98]"
+                className="w-full py-3 bg-transparent border border-duck-line hover:bg-duck-bg text-duck-muted hover:text-duck-muted rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98]"
               >
                 Verlaten
               </button>

@@ -8,7 +8,7 @@ const config: ReviewArenaConfig = {
     introDescription:
         'Je hebt algoritmes, webdevelopment, debugging en automatisering geleerd. In vier ronden test je of je de kernconcepten echt begrijpt.',
     missionGoal: {
-        primaryGoal: 'Bewijs dat je de programmeerconcepten uit periode 2 kunt herkennen, koppelen en uitleggen.',
+        primaryGoal: 'Ik bewijs dat ik de programmeerconcepten uit periode 2 kan herkennen, koppelen en uitleggen.',
         criteria: {
             type: 'rounds-complete',
             min: 4,
@@ -22,31 +22,31 @@ const config: ReviewArenaConfig = {
             minScore: 90,
             emoji: '🏆',
             title: 'Code Master',
-            color: '#D7C95F',
+            color: '#e1ff01',
         },
         {
             minScore: 70,
             emoji: '💻',
             title: 'Solide Programmeur',
-            color: '#5F947D',
+            color: '#202023',
         },
         {
             minScore: 50,
             emoji: '📚',
             title: 'Op de goede weg',
-            color: '#0B453F',
+            color: '#202023',
         },
         {
             minScore: 25,
             emoji: '💡',
             title: 'Kennis in opbouw',
-            color: '#0B453F',
+            color: '#202023',
         },
         {
             minScore: 0,
             emoji: '💪',
             title: 'Goede poging',
-            color: '#D97848',
+            color: '#ff3c21',
         },
     ],
     takeaways: [

@@ -4,24 +4,24 @@ export const ScholenLandingExpertise: React.FC = () => {
     return (
         <div className="max-w-5xl mx-auto">
             <div className="text-center mb-12">
-                <p className="text-sm font-medium tracking-wide mb-3" style={{ color: '#D97848' }}>Over de oprichter</p>
-                <h2 className="text-2xl md:text-3xl font-medium mb-4" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#08283B' }}>Gebouwd door een docent, voor docenten</h2>
-                <p className="max-w-2xl mx-auto leading-relaxed" style={{ color: '#445865' }}>
+                <p className="text-sm font-medium tracking-wide mb-3" style={{ color: '#ff3c21' }}>Over de oprichter</p>
+                <h2 className="text-2xl md:text-3xl font-medium mb-4" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#202023' }}>Gebouwd door een docent, voor docenten</h2>
+                <p className="max-w-2xl mx-auto leading-relaxed" style={{ color: '#202023' }}>
                     DGSkills is ontwikkeld vanuit de lespraktijk — door iemand die zelf
                     voor de klas staat en weet wat er speelt.
                 </p>
             </div>
 
             <div className="max-w-lg mx-auto">
-                <div className="relative bg-white rounded-2xl border p-8 hover:shadow-lg transition-[box-shadow] group overflow-hidden" style={{ borderColor: '#E7D8BD' }}>
-                    <div className="absolute top-0 right-0 w-32 h-32 rounded-full -mr-16 -mt-16 group-hover:scale-110 transition-transform" style={{ backgroundColor: '#FCF6EA' }} />
+                <div className="relative bg-white rounded-2xl border p-8 hover:shadow-lg transition-[box-shadow] group overflow-hidden" style={{ borderColor: '#e3e2dc' }}>
+                    <div className="absolute top-0 right-0 w-32 h-32 rounded-full -mr-16 -mt-16 group-hover:scale-110 transition-transform" style={{ backgroundColor: '#f2f1ec' }} />
                     <div className="relative">
                         <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-5 overflow-hidden" style={{ backgroundColor: '#D9784812' }}>
                             <img src="/illustrations/expertise-founder.webp" alt="" className="w-10 h-10 object-contain" loading="lazy" decoding="async" aria-hidden="true" />
                         </div>
-                        <h3 className="font-medium text-lg mb-1" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#08283B' }}>Yorin Vonder</h3>
-                        <p className="text-xs font-bold uppercase tracking-wider mb-4" style={{ color: '#D97848' }}>Oprichter & Docent</p>
-                        <p className="text-sm leading-relaxed mb-4" style={{ color: '#445865' }}>
+                        <h3 className="font-medium text-lg mb-1" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#202023' }}>Yorin Vonder</h3>
+                        <p className="text-xs font-bold uppercase tracking-wider mb-4" style={{ color: '#ff3c21' }}>Oprichter & Docent</p>
+                        <p className="text-sm leading-relaxed mb-4" style={{ color: '#202023' }}>
                             Als docent geschiedenis, informatievaardigheden en coördinator digitale
                             geletterdheid zag Yorin dat bestaande lesmethodes niet meer aansluiten
                             bij deze generatie: te weinig uitdaging, nauwelijks differentiatie en
@@ -29,9 +29,9 @@ export const ScholenLandingExpertise: React.FC = () => {
                             leerlingen activeert en docenten ontzorgt.
                         </p>
                         <div className="flex flex-wrap gap-1.5">
-                            <span className="text-[10px] font-medium border px-2 py-0.5 rounded-full" style={{ color: '#445865', borderColor: '#E7D8BD' }}>Digitale Geletterdheid</span>
-                            <span className="text-[10px] font-medium border px-2 py-0.5 rounded-full" style={{ color: '#445865', borderColor: '#E7D8BD' }}>Geschiedenis</span>
-                            <span className="text-[10px] font-medium border px-2 py-0.5 rounded-full" style={{ color: '#445865', borderColor: '#E7D8BD' }}>EdTech</span>
+                            <span className="text-[10px] font-medium border px-2 py-0.5 rounded-full" style={{ color: '#202023', borderColor: '#e3e2dc' }}>Digitale Geletterdheid</span>
+                            <span className="text-[10px] font-medium border px-2 py-0.5 rounded-full" style={{ color: '#202023', borderColor: '#e3e2dc' }}>Geschiedenis</span>
+                            <span className="text-[10px] font-medium border px-2 py-0.5 rounded-full" style={{ color: '#202023', borderColor: '#e3e2dc' }}>EdTech</span>
                         </div>
                     </div>
                 </div>

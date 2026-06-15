@@ -23,7 +23,7 @@ does not load long baton, launch, or reference files by default.
 - React 19 + TypeScript + Vite.
 - Supabase for auth, database, edge functions, and RLS.
 - Tailwind inline classes, no `@apply`; use existing `lab-*` tokens.
-- Gemini/Vertex AI calls stay server-side through Supabase Edge Functions.
+- Mistral AI en Black Forest Labs calls stay server-side through Supabase Edge Functions.
 - Vercel deployment uses `npm run build:prod`.
 - State is React hooks + Contexts; no Redux.
 - Components: PascalCase named exports with `React.FC<Props>` where the local
@@ -59,3 +59,4 @@ does not load long baton, launch, or reference files by default.
 - Supabase: schema, logs, migrations, edge function context.
 - Tavily or web search: use only when current external facts are needed.
 - Sequential thinking: use only for genuinely complex reasoning chains.
+- Notion: gebruik altijd het Kanban-board als taaktracker. Bij elke Notion-interactie (lezen of schrijven) de bijbehorende taak naar de juiste kolom verplaatsen: Backlog → In Progress (Coding) → Review → Done. Nieuwe taken starten in Backlog.

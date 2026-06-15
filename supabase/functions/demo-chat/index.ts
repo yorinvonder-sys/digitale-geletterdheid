@@ -9,15 +9,15 @@
  * 2. IP-based rate limiting (5 messages per 24 hours)
  * 3. Prompt injection filtering
  * 4. Fixed system instruction (not configurable by client)
- * 5. Vertex AI safety settings for minors
+ * 5. Mistral safe prompt plus local output constraints
  * 6. No auth required — designed for anonymous demo use
  */
 import { sanitizePrompt } from "../_shared/promptSanitizer.ts";
-import { getAccessToken, getVertexUrl } from "../_shared/vertexAuth.ts";
 import { buildCorsHeaders, rejectDisallowedBrowserRequest } from "../_shared/cors.ts";
 import { buildSafeHistory } from "../_shared/chatHistory.ts";
 import { checkDurableRateLimit, rateLimitHeaders } from "../_shared/rateLimiter.ts";
 import { countTextChars, logAiUsageEvent, resolveAiRequestId } from "../_shared/aiUsageLogger.ts";
+import { buildMistralMessages, completeMistralChat, getMistralTextModel } from "../_shared/mistralClient.ts";
 
 const MAX_REQUEST_BYTES = 8_000;
 
@@ -139,7 +139,8 @@ Deno.serve(async (req: Request) => {
         logAiUsageEvent({
             requestId,
             endpoint: "demo-chat",
-            model: "gemini-3-flash-preview",
+            provider: "mistral",
+            model: getMistralTextModel(),
             status: "rate_limited",
             inputChars: body.message.length,
             metadata: { limit: rateCheck.limit, retry_after_ms: rateCheck.retryAfterMs },
@@ -168,7 +169,8 @@ Deno.serve(async (req: Request) => {
         logAiUsageEvent({
             requestId,
             endpoint: "demo-chat",
-            model: "gemini-3-flash-preview",
+            provider: "mistral",
+            model: getMistralTextModel(),
             status: "blocked",
             inputChars: body.message.length,
             metadata: { reason: "input_sanitizer", detection_label: validation.detectionLabel ?? "unknown" },
@@ -195,7 +197,8 @@ Deno.serve(async (req: Request) => {
         logAiUsageEvent({
             requestId,
             endpoint: "demo-chat",
-            model: "gemini-3-flash-preview",
+            provider: "mistral",
+            model: getMistralTextModel(),
             status: "blocked",
             inputChars: validation.sanitized.length,
             historyChars: countTextChars(safeHistory.history),
@@ -211,69 +214,30 @@ Deno.serve(async (req: Request) => {
         );
     }
 
-    // 4. Send to Gemini via Vertex AI
+    // 4. Send to Mistral
     try {
-        const geminiUrl = getVertexUrl("gemini-3-flash-preview");
-        const accessToken = await getAccessToken();
-
         const contents = [
             ...safeHistory.history,
             { role: "user", parts: [{ text: validation.sanitized }] },
         ];
 
-        const safetySettings = [
-            { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_LOW_AND_ABOVE" },
-            { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_LOW_AND_ABOVE" },
-            { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_LOW_AND_ABOVE" },
-            { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_LOW_AND_ABOVE" },
-        ];
-
-        const geminiResponse = await fetch(geminiUrl, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${accessToken}`,
-            },
-            body: JSON.stringify({
-                contents,
-                safetySettings,
-                systemInstruction: { parts: [{ text: DEMO_SYSTEM_INSTRUCTION }] },
-                generationConfig: { maxOutputTokens: 512 },
-            }),
+        const result = await completeMistralChat({
+            messages: buildMistralMessages(DEMO_SYSTEM_INSTRUCTION, contents),
+            maxTokens: 512,
         });
 
-        if (!geminiResponse.ok) {
-            const status = geminiResponse.status;
-            const errBody = await geminiResponse.text().catch(() => "");
-            console.error(`[demo-chat] Vertex AI error (${status}):`, errBody);
-            logAiUsageEvent({
-                requestId,
-                endpoint: "demo-chat",
-                model: "gemini-3-flash-preview",
-                status: status === 429 ? "rate_limited" : "error",
-                inputChars: countTextChars(contents) + DEMO_SYSTEM_INSTRUCTION.length,
-                historyChars: countTextChars(safeHistory.history),
-                metadata: { http_status: status },
-            }).catch((err) => console.error("[demo-chat] Usage log error:", err));
-
-            return new Response(
-                JSON.stringify({ error: "AI tijdelijk niet beschikbaar. Probeer het later opnieuw." }),
-                { status: 502, headers: responseHeaders }
-            );
-        }
-
-        const geminiData = await geminiResponse.json();
-        const text = geminiData?.candidates?.[0]?.content?.parts?.[0]?.text || "";
+        const text = result.text;
 
         logAiUsageEvent({
             requestId,
             endpoint: "demo-chat",
-            model: "gemini-3-flash-preview",
+            provider: "mistral",
+            model: result.model,
             status: "ok",
             inputChars: countTextChars(contents) + DEMO_SYSTEM_INSTRUCTION.length,
             historyChars: countTextChars(safeHistory.history),
             outputChars: text.length,
-            usagePayload: geminiData,
+            usagePayload: result.usagePayload,
             metadata: { remaining: Math.max(rateCheck.remaining, 0) },
         }).catch((err) => console.error("[demo-chat] Usage log error:", err));
 
@@ -295,7 +259,8 @@ Deno.serve(async (req: Request) => {
         logAiUsageEvent({
             requestId,
             endpoint: "demo-chat",
-            model: "gemini-3-flash-preview",
+            provider: "mistral",
+            model: getMistralTextModel(),
             status: "error",
             inputChars: body.message.length,
             metadata: { error_stage: "unhandled" },

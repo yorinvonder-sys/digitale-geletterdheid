@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { ChatMessage } from '@/types';
-import { createChatSession } from '@/services/geminiService';
+import { createChatSession } from '@/services/aiProviderService';
 import { supabase } from '@/services/supabase';
 import { sanitizePrompt } from '@/utils/promptSanitizer';
 import { useWellbeingMonitor, WellbeingMatch } from './useWellbeingMonitor';

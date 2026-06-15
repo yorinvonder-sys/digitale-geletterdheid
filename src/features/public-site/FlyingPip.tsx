@@ -110,7 +110,7 @@ export function PipGuide({ pose, tooltip, side, topOffset = '8.5rem', xOffset, c
                             fontSize: 13,
                             lineHeight: 1.4,
                             fontFamily: "'Outfit', system-ui, sans-serif",
-                            color: '#08283B',
+                            color: '#202023',
                             background: '#FCF6EA',
                             border: '1px solid #E7D8BD',
                             boxShadow: '0 4px 12px rgba(0,0,0,0.08)',

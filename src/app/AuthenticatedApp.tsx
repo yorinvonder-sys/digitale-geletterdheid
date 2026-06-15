@@ -24,6 +24,7 @@ import { ExitConfirmDialog } from '@/components/app-shell/ExitConfirmDialog';
 import { Toast } from '@/components/app-shell/Toast';
 import { useSchoolContainers } from '@/hooks/useSchoolContainers';
 import { ContainerConfig } from '@/config/containerTypes';
+import { getProjectWeekForDate } from '@/utils/projectWeekSchedule';
 
 
 import '@/styles/app.css';
@@ -97,6 +98,8 @@ export function AuthenticatedApp() {
         initialProfileTab, setInitialProfileTab,
         viewMode, setViewMode,
         activeWeek, setActiveWeek,
+        setActiveWeekFromSystem,
+        hasActiveWeekBeenManuallySelected,
         showGames, setShowGames,
         initialGameId, setInitialGameId,
         gamesEnabled, setGamesEnabled,
@@ -129,6 +132,7 @@ export function AuthenticatedApp() {
 
     // Flexible scheduling: load containers for the current school + year group
     const { containers, loading: containersLoading } = useSchoolContainers(user?.schoolId, activeYearGroup);
+    const initialProjectWeekSyncKeyRef = React.useRef<string | null>(null);
     const [showStudentOnboarding, setShowStudentOnboarding] = useState(false);
     const [showAvatarSetup, setShowAvatarSetup] = useState(false);
     const [showNulmeting, setShowNulmeting] = useState(false);
@@ -146,6 +150,29 @@ export function AuthenticatedApp() {
             window.removeEventListener('offline', handleOffline);
         };
     }, []);
+
+    useEffect(() => {
+        const isStudentDashboardSession =
+            user?.role === 'student' || (user?.role === 'developer' && devViewOverride === 'student');
+
+        if (!isStudentDashboardSession || !user?.uid || containersLoading) return;
+
+        const syncKey = `${user.uid}:${user.role}:${devViewOverride}`;
+        if (initialProjectWeekSyncKeyRef.current === syncKey) return;
+
+        initialProjectWeekSyncKeyRef.current = syncKey;
+        if (hasActiveWeekBeenManuallySelected()) return;
+
+        setActiveWeekFromSystem(getProjectWeekForDate(new Date(), containers));
+    }, [
+        containers,
+        containersLoading,
+        devViewOverride,
+        hasActiveWeekBeenManuallySelected,
+        setActiveWeekFromSystem,
+        user?.role,
+        user?.uid,
+    ]);
 
     const studentClass = user?.stats?.studentClass || user?.studentClass || '';
     const {

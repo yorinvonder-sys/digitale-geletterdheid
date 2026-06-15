@@ -19,7 +19,7 @@ export const PhaseHeader: React.FC<PhaseHeaderProps> = ({
     <div className="flex items-center justify-between mb-6">
         <button
             onClick={onBack}
-            className="-ml-2 flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full text-[#445865] transition-all duration-300 hover:bg-[#E7D8BD]/60 hover:text-[#08283B] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0B453F] focus-visible:ring-offset-2"
+            className="-ml-2 flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full text-duck-muted transition-all duration-300 hover:bg-duck-line/60 hover:text-duck-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
             aria-label="Terug"
         >
             <ArrowLeft size={18} />
@@ -30,16 +30,16 @@ export const PhaseHeader: React.FC<PhaseHeaderProps> = ({
                     key={i}
                     className={`w-8 h-1.5 rounded-full transition-all duration-300 ${
                         i < currentPhase
-                            ? 'bg-[#5F947D]'
+                            ? 'bg-duck-ink'
                             : i === currentPhase
-                              ? 'bg-gradient-to-r from-[#D97848] to-[#D97848]'
-                              : 'bg-[#E7D8BD]'
+                              ? 'bg-gradient-to-r from-duck-coral to-duck-coral'
+                              : 'bg-duck-line'
                     }`}
                 />
             ))}
         </div>
-        <div className="bg-[#D97848]/10 px-3 py-1 rounded-full border border-[#D97848]/20">
-            <span className="text-xs font-black text-[#D97848]">
+        <div className="bg-duck-coral/10 px-3 py-1 rounded-full border border-duck-coral/20">
+            <span className="text-xs font-black text-duck-coral">
                 {totalScore} {scoreLabel}
             </span>
         </div>

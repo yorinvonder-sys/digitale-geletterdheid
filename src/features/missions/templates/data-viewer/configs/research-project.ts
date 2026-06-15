@@ -83,12 +83,12 @@ export const researchProjectConfig: DataViewerConfig = {
                 'Niet elke onderzoeksmethode is even betrouwbaar. Wetenschappers beoordelen methoden op basis van "levels of evidence". Hogere score = sterker bewijs.',
             type: 'bar-chart',
             chartData: [
-                { label: 'Expertmening', value: 15, color: '#445865' },
-                { label: 'Casestudy (1 persoon)', value: 25, color: '#D7C95F' },
-                { label: 'Enquête (zelfrapportage)', value: 45, color: '#0B453F' },
-                { label: 'Cohort-onderzoek', value: 65, color: '#0B453F' },
-                { label: 'Gecontroleerd experiment', value: 80, color: '#5F947D' },
-                { label: 'Meta-analyse', value: 95, color: '#5F947D' },
+                { label: 'Expertmening', value: 15, color: '#202023' },
+                { label: 'Casestudy (1 persoon)', value: 25, color: '#e1ff01' },
+                { label: 'Enquête (zelfrapportage)', value: 45, color: '#202023' },
+                { label: 'Cohort-onderzoek', value: 65, color: '#202023' },
+                { label: 'Gecontroleerd experiment', value: 80, color: '#202023' },
+                { label: 'Meta-analyse', value: 95, color: '#202023' },
             ],
             questions: [
                 {
@@ -195,25 +195,25 @@ export const researchProjectConfig: DataViewerConfig = {
             minScore: 85,
             emoji: '🔬',
             title: 'Wetenschapper in spe!',
-            color: '#0B453F',
+            color: '#202023',
         },
         {
             minScore: 65,
             emoji: '📊',
             title: 'Data Onderzoeker',
-            color: '#0B453F',
+            color: '#202023',
         },
         {
             minScore: 40,
             emoji: '🔍',
             title: 'Kritisch Denker',
-            color: '#5F947D',
+            color: '#202023',
         },
         {
             minScore: 0,
             emoji: '📚',
             title: 'Aan de slag!',
-            color: '#445865',
+            color: '#202023',
         },
     ],
 

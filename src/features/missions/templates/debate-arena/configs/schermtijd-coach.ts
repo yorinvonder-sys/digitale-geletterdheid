@@ -8,7 +8,7 @@ const config: DebateArenaConfig = {
     introDescription:
         'Apps gebruiken ontwerpkeuzes zoals notificaties, autoplay en beloningen om aandacht vast te houden. Welke verantwoordelijkheid ligt bij jou, ouders, school, overheid of techbedrijven? Debatteer mee vanuit meerdere kanten.',
     missionGoal: {
-        primaryGoal: 'Bouw een onderbouwd standpunt over wie verantwoordelijk is voor gezonde schermtijd.',
+        primaryGoal: 'Ik bouw een onderbouwd standpunt over wie verantwoordelijk is voor gezonde schermtijd.',
         criteria: {
             type: 'steps-complete',
             min: 5,
@@ -107,25 +107,25 @@ const config: DebateArenaConfig = {
             minScore: 80,
             emoji: '🏆',
             title: 'Debatmeester',
-            color: '#0B453F',
+            color: '#202023',
         },
         {
             minScore: 60,
             emoji: '⚖️',
             title: 'Scherp Denker',
-            color: '#D97848',
+            color: '#ff3c21',
         },
         {
             minScore: 40,
             emoji: '💬',
             title: 'Goed Bezig',
-            color: '#5F947D',
+            color: '#202023',
         },
         {
             minScore: 0,
             emoji: '🌱',
             title: 'Aan de Start',
-            color: '#445865',
+            color: '#202023',
         },
     ],
     takeaways: [

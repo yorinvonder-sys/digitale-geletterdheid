@@ -28,7 +28,7 @@ const VARIABLE_LABELS: Record<string, string> = {
 export function extractGameVariables(code: string): Record<string, string> {
     const variables: Record<string, string> = {};
 
-    // Match patterns like: let playerColor = '#D97848';
+    // Match patterns like: let playerColor = '#ff3c21';
     const regex = /let\s+(playerColor|jumpForce|gravity|obstacleColor|obstacleSpeed|skyColor1|skyColor2|groundColor|grassColor)\s*=\s*([^;]+);/g;
     let match;
 

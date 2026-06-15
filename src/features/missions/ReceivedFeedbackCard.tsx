@@ -49,7 +49,7 @@ export const ReceivedFeedbackCard: React.FC<Props> = ({ feedback, onVoted }) => 
         <Star
           key={i}
           size={12}
-          className={i <= count ? 'text-lab-gold fill-lab-gold' : 'text-[#E7D8BD]'}
+          className={i <= count ? 'text-lab-gold fill-lab-gold' : 'text-duck-line'}
         />
       ))}
     </div>
@@ -59,21 +59,21 @@ export const ReceivedFeedbackCard: React.FC<Props> = ({ feedback, onVoted }) => 
     <motion.div
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-2xl border border-[#E7D8BD] p-4 space-y-3"
+      className="bg-white rounded-2xl border border-duck-line p-4 space-y-3"
     >
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-full bg-[#FFFDF7] flex items-center justify-center">
-            <User size={14} className="text-[#445865]" />
+          <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center">
+            <User size={14} className="text-duck-muted" />
           </div>
-          <span className="text-sm font-bold text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+          <span className="text-sm font-bold text-duck-muted" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
             Klasgenoot
           </span>
         </div>
-        <div className="flex items-center gap-1.5 bg-[#FFFDF7] px-2.5 py-1 rounded-full">
+        <div className="flex items-center gap-1.5 bg-white px-2.5 py-1 rounded-full">
           <Star size={12} className="text-lab-gold fill-lab-gold" />
-          <span className="text-xs font-bold text-[#445865]">{avgScore}</span>
+          <span className="text-xs font-bold text-duck-muted">{avgScore}</span>
         </div>
       </div>
 
@@ -81,32 +81,32 @@ export const ReceivedFeedbackCard: React.FC<Props> = ({ feedback, onVoted }) => 
       <div className="grid grid-cols-3 gap-2">
         {Object.entries(feedback.criteria || {}).map(([key, value]) => (
           <div key={key} className="text-center">
-            <p className="text-[10px] text-[#445865] mb-0.5">{criteriaLabels[key] || key}</p>
+            <p className="text-[10px] text-duck-muted mb-0.5">{criteriaLabels[key] || key}</p>
             {renderStars(value as number)}
           </div>
         ))}
       </div>
 
       {/* Feedback text */}
-      <p className="text-sm text-[#445865] leading-relaxed bg-[#FCF6EA] rounded-xl p-3" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+      <p className="text-sm text-duck-muted leading-relaxed bg-duck-bg rounded-xl p-3" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
         {feedback.feedbackText}
       </p>
 
       {/* Helpful vote */}
       {localVote === null ? (
         <div className="flex items-center gap-2 pt-1">
-          <span className="text-xs text-[#445865]">Was deze feedback nuttig?</span>
+          <span className="text-xs text-duck-muted">Was deze feedback nuttig?</span>
           <button
             onClick={() => handleVote(true)}
             disabled={voting}
-            className="p-1.5 rounded-lg hover:bg-lab-sage text-[#445865] hover:text-lab-sage transition-colors disabled:opacity-50"
+            className="p-1.5 rounded-lg hover:bg-lab-sage text-duck-muted hover:text-lab-sage transition-colors disabled:opacity-50"
           >
             <ThumbsUp size={14} />
           </button>
           <button
             onClick={() => handleVote(false)}
             disabled={voting}
-            className="p-1.5 rounded-lg hover:bg-lab-coral text-[#445865] hover:text-lab-coral transition-colors disabled:opacity-50"
+            className="p-1.5 rounded-lg hover:bg-lab-coral text-duck-muted hover:text-lab-coral transition-colors disabled:opacity-50"
           >
             <ThumbsDown size={14} />
           </button>

@@ -6,9 +6,9 @@ interface ConfidenceRatingProps {
 }
 
 const levels = [
-    { value: 1 as const, label: 'Gok', emoji: '🎲', color: 'bg-[#D7C95F]/10 text-[#D7C95F] border-[#D7C95F]/30 hover:border-[#D7C95F]' },
-    { value: 2 as const, label: 'Redelijk zeker', emoji: '🤔', color: 'bg-[#0B453F]/10 text-[#0B453F] border-[#0B453F]/30 hover:border-[#0B453F]' },
-    { value: 3 as const, label: 'Heel zeker', emoji: '💪', color: 'bg-[#5F947D]/10 text-[#5F947D] border-[#5F947D]/30 hover:border-[#5F947D]' },
+    { value: 1 as const, label: 'Gok', emoji: '🎲', color: 'bg-duck-acid/10 text-duck-ink border-duck-acid/30 hover:border-duck-acid' },
+    { value: 2 as const, label: 'Redelijk zeker', emoji: '🤔', color: 'bg-duck-ink/10 text-duck-ink border-duck-ink/30 hover:border-duck-ink' },
+    { value: 3 as const, label: 'Heel zeker', emoji: '💪', color: 'bg-duck-ink/10 text-duck-ink border-duck-ink/30 hover:border-duck-ink' },
 ];
 
 export const ConfidenceRating: React.FC<ConfidenceRatingProps> = ({ onSelect }) => (
@@ -18,7 +18,7 @@ export const ConfidenceRating: React.FC<ConfidenceRatingProps> = ({ onSelect }) 
         className="space-y-2"
     >
         <p
-            className="text-xs font-bold text-[#445865] text-center"
+            className="text-xs font-bold text-duck-muted text-center"
             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
         >
             Hoe zeker ben je van je keuze?

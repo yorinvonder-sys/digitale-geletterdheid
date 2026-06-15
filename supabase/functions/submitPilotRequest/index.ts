@@ -359,7 +359,7 @@ serve(async (req: Request) => {
 
                 <p style="margin: 0 0 10px; font-size: 11px; color: #445865; text-transform: uppercase; letter-spacing: 0.08em; font-weight: bold;">Veelgestelde vragen</p>
                 <div style="font-size: 13px; color: #445865; line-height: 1.6;">
-                  <p style="margin: 0 0 10px;"><strong style="color: #445865;">Waar staat onze data?</strong><br />Binnen de Europese Economische Ruimte (europe-west4, Nederland). AI-verwerking via Google Vertex AI in dezelfde regio. Geen data wordt gebruikt voor het trainen van AI-modellen.</p>
+                  <p style="margin: 0 0 10px;"><strong style="color: #445865;">Waar staat onze data?</strong><br />Binnen de Europese Economische Ruimte (europe-west4, Nederland). AI-verwerking via Mistral AI en Black Forest Labs server-side via Supabase Edge Functions. Geen data wordt gebruikt voor het trainen van AI-modellen.</p>
                   <p style="margin: 0 0 10px;"><strong style="color: #445865;">Wat gebeurt er na de pilot?</strong><br />Stoppen (alle data wordt binnen 30 dagen verwijderd), verlengen, of overstappen naar een licentie vanaf €2.000 per schoollocatie per jaar.</p>
                   <p style="margin: 0 0 10px;"><strong style="color: #445865;">Is DGSkills compliant met de EU AI Act?</strong><br />Ja. We zijn geclassificeerd als hoog-risico onder Annex III punt 3(b) en werken naar volledige conformiteit voor 2 augustus 2026. Het volledige conformiteitsbeoordelingsplan is opvraagbaar.</p>
                 </div>

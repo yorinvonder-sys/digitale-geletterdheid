@@ -298,42 +298,42 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
     };
 
     return (
-        <div className="fixed inset-0 overflow-hidden bg-[#FCF6EA] font-sans text-[#08283B]">
+        <div className="fixed inset-0 overflow-hidden bg-duck-bg font-sans text-duck-ink">
             <div className="absolute inset-0 pointer-events-none">
-                <div className="absolute inset-0 bg-[#FCF6EA]" />
+                <div className="absolute inset-0 bg-duck-bg" />
             </div>
 
             <div className="absolute inset-0 overflow-y-auto overflow-x-hidden">
                 <main className="relative z-10 flex min-h-full items-center justify-center px-4 py-2 sm:px-6 lg:px-8">
                         <div className="relative mx-auto w-full max-w-[28rem]">
-                            <div className="rounded-[1.5rem] border border-[#E7D8BD] bg-[#FFFDF7]/95 p-4 shadow-[0_20px_60px_rgba(8,40,59,0.12)]">
+                            <div className="rounded-[1.75rem] border border-duck-ink/15 bg-white p-4 shadow-duck-soft">
 
                         <div className="mb-3 text-center">
                             <div className="mx-auto mb-2 flex w-full max-w-[150px] justify-center">
                                 <img src="/logo-lockup.webp" alt="DGSkills.app" className="h-auto w-full object-contain" width={320} height={96} fetchPriority="high" decoding="async" />
                             </div>
-                            <h1 className="mb-1 text-xl font-black leading-tight tracking-tight text-[#08283B]">
+                            <h1 className="mb-1 font-display text-xl font-black leading-tight tracking-tight text-duck-ink">
                                 {mode === 'register' ? 'Maak je account aan' : mode === 'forgot-password' ? 'Reset je wachtwoord' : 'Welkom terug'}
                             </h1>
-                            <p className="text-xs font-semibold leading-5 text-[#445865]">
+                            <p className="text-xs font-semibold leading-5 text-duck-ink/60">
                                 {mode === 'register' ? 'Start met je klas, missies en portfolio.' : mode === 'forgot-password' ? 'We sturen je een resetlink per e-mail.' : 'Ga verder met je digitale skill journey.'}
                             </p>
                         </div>
 
-                        <div className="mb-3 flex rounded-2xl border border-[#E7D8BD] bg-[#F3E4CB]/55 p-1">
+                        <div className="mb-3 flex rounded-2xl border border-duck-ink/10 bg-duck-bg p-1">
                             <button
                                 onClick={() => { setMode('login'); setError(null); setSuccessMessage(null); }}
-                                className={`min-h-[40px] flex-1 rounded-xl py-1.5 text-[10px] font-black uppercase tracking-[0.1em] transition-all sm:text-xs ${mode === 'login' ? 'border border-[#E7D8BD] bg-[#FFFDF7] text-[#08283B] shadow-sm' : 'text-[#445865] hover:text-[#08283B]'}`}
+                                className={`min-h-[40px] flex-1 rounded-xl py-1.5 text-[10px] font-black uppercase tracking-[0.1em] transition-all sm:text-xs ${mode === 'login' ? 'border border-duck-ink/15 bg-white text-duck-ink shadow-sm' : 'text-duck-ink/50 hover:text-duck-ink'}`}
                             >
                                 Inloggen
                             </button>
                             <button
-                                onClick={() => { 
-                                    setMode('register'); 
-                                    setError(null); 
+                                onClick={() => {
+                                    setMode('register');
+                                    setError(null);
                                     setSuccessMessage(null);
                                 }}
-                                className={`min-h-[40px] flex-1 rounded-xl py-1.5 text-[10px] font-black uppercase tracking-[0.1em] transition-all sm:text-xs ${mode === 'register' ? 'border border-[#E7D8BD] bg-[#FFFDF7] text-[#08283B] shadow-sm' : 'text-[#445865] hover:text-[#08283B]'}`}
+                                className={`min-h-[40px] flex-1 rounded-xl py-1.5 text-[10px] font-black uppercase tracking-[0.1em] transition-all sm:text-xs ${mode === 'register' ? 'border border-duck-ink/15 bg-white text-duck-ink shadow-sm' : 'text-duck-ink/50 hover:text-duck-ink'}`}
                             >
                                 <span className="hidden sm:inline">Account aanmaken</span>
                                 <span className="sm:hidden">Account maken</span>
@@ -344,15 +344,15 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                         {mode === 'forgot-password' ? (
                             <form onSubmit={handlePasswordReset} className="space-y-3">
                                 <div className="mb-4 text-center">
-                                    <h2 className="text-sm font-black text-[#08283B]">Wachtwoord vergeten?</h2>
-                                    <p className="mt-1 text-xs font-semibold text-[#445865]">
+                                    <h2 className="text-sm font-black text-duck-ink">Wachtwoord vergeten?</h2>
+                                    <p className="mt-1 text-xs font-semibold text-duck-ink/60">
                                         Vul het e-mailadres van je account in. We sturen je een link om je wachtwoord opnieuw in te stellen.
                                     </p>
                                 </div>
 
                                 <div className="relative">
                                     <label htmlFor="login-forgot-email" className="sr-only">E-mailadres</label>
-                                    <IconMail className="absolute left-4 top-1/2 -translate-y-1/2 text-[#5F947D]" size={18} />
+                                    <IconMail className="absolute left-4 top-1/2 -translate-y-1/2 text-duck-ink/40" size={18} />
                                     <input
                                         id="login-forgot-email"
                                         type="email"
@@ -362,17 +362,17 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                                         onBlur={handleEmailBlur}
                                         aria-invalid={!!emailHint || (!!error && !error.includes('verstuurd'))}
                                         aria-describedby={emailHint ? 'login-forgot-email-hint' : error ? 'login-forgot-error' : undefined}
-                                        className={`min-h-[46px] w-full rounded-xl border bg-[#FCF6EA] py-2.5 pl-12 pr-4 text-sm font-bold text-[#08283B] outline-none transition-all placeholder:text-[#445865]/55 focus:border-[#5F947D] focus:ring-2 focus:ring-[#5F947D]/20 ${emailHint ? 'border-[#D7C95F]' : 'border-[#E7D8BD]'}`}
+                                        className={`min-h-[46px] w-full rounded-xl border bg-duck-bg py-2.5 pl-12 pr-4 text-sm font-bold text-duck-ink outline-none transition-all placeholder:text-duck-ink/40 focus:border-duck-ink focus:ring-2 focus:ring-duck-ink/10 ${emailHint ? 'border-duck-acid' : 'border-duck-ink/15'}`}
                                         required
                                     />
                                     {emailHint && (
-                                        <div id="login-forgot-email-hint" className="mt-1.5 rounded-lg border border-[#D7C95F]/60 bg-[#D7C95F]/18 px-3 py-2 text-xs font-bold text-[#08283B]">
+                                        <div id="login-forgot-email-hint" className="mt-1.5 rounded-lg border border-duck-acid/60 bg-duck-acid/20 px-3 py-2 text-xs font-bold text-duck-ink">
                                             {emailHint}
                                             {emailSuggestion && (
                                                 <button
                                                     type="button"
                                                     onClick={acceptEmailSuggestion}
-                                                    className="ml-1 text-[#D97848] underline hover:text-[#0B453F]"
+                                                    className="ml-1 text-duck-ink/60 underline hover:text-duck-ink"
                                                 >
                                                     {emailSuggestion}
                                                 </button>
@@ -382,13 +382,13 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                                 </div>
 
                                 {successMessage && (
-                                    <div role="status" className="rounded-xl border border-[#5F947D]/35 bg-[#5F947D]/12 p-3 text-xs font-bold text-[#0B453F]">
+                                    <div role="status" className="rounded-xl border border-duck-ink/15 bg-duck-bgLight p-3 text-xs font-bold text-duck-ink">
                                         {successMessage}
                                     </div>
                                 )}
 
                                 {error && (
-                                    <div id="login-forgot-error" role="alert" className={`animate-in shake rounded-xl border p-3 text-xs font-bold ${error.includes('verstuurd') ? 'border-[#5F947D]/35 bg-[#5F947D]/12 text-[#0B453F]' : 'border-lab-coral bg-lab-coral text-white'}`}>
+                                    <div id="login-forgot-error" role="alert" className={`animate-in shake rounded-xl border p-3 text-xs font-bold ${error.includes('verstuurd') ? 'border-duck-ink/15 bg-duck-bgLight text-duck-ink' : 'border-duck-error/25 bg-duck-error/10 text-duck-ink'}`}>
                                         {error}
                                     </div>
                                 )}
@@ -398,12 +398,12 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                                     disabled={loading}
                                     aria-busy={loading}
                                     aria-live="polite"
-                                    className="flex min-h-[48px] w-full items-center justify-center gap-2 rounded-xl bg-[#D7C95F] py-3 font-black text-[#08283B] shadow-[0_14px_28px_rgba(215,201,95,0.24)] transition-all hover:-translate-y-0.5 hover:bg-[#C9BB52] disabled:cursor-not-allowed disabled:opacity-70"
+                                    className="flex min-h-[48px] w-full items-center justify-center gap-2 rounded-full bg-duck-acid py-3 font-black text-duck-ink shadow-[0_4px_0_rgba(0,0,0,0.25)] transition-all hover:-translate-y-0.5 hover:bg-duck-acid/90 disabled:cursor-not-allowed disabled:opacity-70"
                                 >
                                     {loading ? (
                                         <>
                                             <span className="sr-only">Bezig met versturen...</span>
-                                            <div className="w-5 h-5 border-2 border-[#08283B]/25 border-t-[#08283B] rounded-full animate-spin" aria-hidden="true"></div>
+                                            <div className="w-5 h-5 border-2 border-duck-ink/25 border-t-duck-ink rounded-full animate-spin" aria-hidden="true"></div>
                                         </>
                                     ) : (
                                         <span>Reset Wachtwoord</span>
@@ -413,7 +413,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                                 <button
                                     type="button"
                                     onClick={() => { setMode('login'); setError(null); setSuccessMessage(null); }}
-                                    className="w-full py-2 text-xs font-black text-[#445865] transition-colors hover:text-[#D97848]"
+                                    className="w-full py-2 text-xs font-black text-duck-ink/60 transition-colors hover:text-duck-ink"
                                 >
                                     Terug naar inloggen
                                 </button>
@@ -423,7 +423,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                                 {mode === 'register' && (
                                     <div className="relative animate-in slide-in-from-top-2 duration-300">
                                         <label htmlFor="login-display-name" className="sr-only">Je voor- en achternaam</label>
-                                        <IconUser className="absolute left-4 top-1/2 -translate-y-1/2 text-[#5F947D]" size={18} />
+                                        <IconUser className="absolute left-4 top-1/2 -translate-y-1/2 text-duck-ink/40" size={18} />
                                         <input
                                             id="login-display-name"
                                             type="text"
@@ -432,14 +432,14 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                                             onChange={(e) => setDisplayName(e.target.value)}
                                             aria-invalid={!!error}
                                             aria-describedby={error ? 'login-auth-error' : undefined}
-                                            className="min-h-[46px] w-full rounded-xl border border-[#E7D8BD] bg-[#FCF6EA] py-2.5 pl-12 pr-4 text-sm font-bold text-[#08283B] outline-none transition-all placeholder:text-[#445865]/55 focus:border-[#5F947D] focus:ring-2 focus:ring-[#5F947D]/20"
+                                            className="min-h-[46px] w-full rounded-xl border border-duck-ink/15 bg-duck-bg py-2.5 pl-12 pr-4 text-sm font-bold text-duck-ink outline-none transition-all placeholder:text-duck-ink/40 focus:border-duck-ink focus:ring-2 focus:ring-duck-ink/10"
                                             required
                                         />
                                     </div>
                                 )}
                                 <div className="relative">
                                     <label htmlFor="login-email" className="sr-only">{mode === 'register' ? "Je e-mailadres" : "E-mailadres"}</label>
-                                    <IconMail className="absolute left-4 top-1/2 -translate-y-1/2 text-[#5F947D]" size={18} />
+                                    <IconMail className="absolute left-4 top-1/2 -translate-y-1/2 text-duck-ink/40" size={18} />
                                     <input
                                         id="login-email"
                                         type="email"
@@ -449,17 +449,17 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                                         onBlur={handleEmailBlur}
                                         aria-invalid={!!error || !!emailHint}
                                         aria-describedby={emailHint ? 'login-email-hint' : error ? 'login-auth-error' : undefined}
-                                        className={`min-h-[42px] w-full rounded-xl border bg-[#FCF6EA] py-2 pl-12 pr-4 text-sm font-bold text-[#08283B] outline-none transition-all placeholder:text-[#445865]/55 focus:border-[#5F947D] focus:ring-2 focus:ring-[#5F947D]/20 ${emailHint ? 'border-[#D7C95F]' : 'border-[#E7D8BD]'}`}
+                                        className={`min-h-[42px] w-full rounded-xl border bg-duck-bg py-2 pl-12 pr-4 text-sm font-bold text-duck-ink outline-none transition-all placeholder:text-duck-ink/40 focus:border-duck-ink focus:ring-2 focus:ring-duck-ink/10 ${emailHint ? 'border-duck-acid' : 'border-duck-ink/15'}`}
                                         required
                                     />
                                     {emailHint && (
-                                        <div id="login-email-hint" className="mt-1.5 rounded-lg border border-[#D7C95F]/60 bg-[#D7C95F]/18 px-3 py-2 text-xs font-bold text-[#08283B]">
+                                        <div id="login-email-hint" className="mt-1.5 rounded-lg border border-duck-acid/60 bg-duck-acid/20 px-3 py-2 text-xs font-bold text-duck-ink">
                                             {emailHint}
                                             {emailSuggestion && (
                                                 <button
                                                     type="button"
                                                     onClick={acceptEmailSuggestion}
-                                                    className="ml-1 text-[#D97848] underline hover:text-[#0B453F]"
+                                                    className="ml-1 text-duck-ink/60 underline hover:text-duck-ink"
                                                 >
                                                     {emailSuggestion}
                                                 </button>
@@ -472,14 +472,14 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                                 {mode === 'register' && (
                                     <div className="relative animate-in slide-in-from-top-2 duration-300" style={{ animationDelay: '50ms' }}>
                                         <label htmlFor="login-student-class" className="sr-only">Kies je klas</label>
-                                        <IconGraduationCap className="absolute left-4 top-1/2 -translate-y-1/2 text-[#5F947D]" size={18} />
+                                        <IconGraduationCap className="absolute left-4 top-1/2 -translate-y-1/2 text-duck-ink/40" size={18} />
                                         <select
                                             id="login-student-class"
                                             value={studentClass}
                                             onChange={(e) => setStudentClass(e.target.value)}
                                             aria-invalid={!!error}
                                             aria-describedby={error ? 'login-auth-error' : undefined}
-                                            className="min-h-[46px] w-full cursor-pointer appearance-none rounded-xl border border-[#E7D8BD] bg-[#FCF6EA] py-2.5 pl-12 pr-4 text-sm font-bold text-[#08283B] outline-none transition-all focus:border-[#5F947D] focus:ring-2 focus:ring-[#5F947D]/20"
+                                            className="min-h-[46px] w-full cursor-pointer appearance-none rounded-xl border border-duck-ink/15 bg-duck-bg py-2.5 pl-12 pr-4 text-sm font-bold text-duck-ink outline-none transition-all focus:border-duck-ink focus:ring-2 focus:ring-duck-ink/10"
                                             required
                                         >
                                             {CLASS_OPTIONS.map((cls) => (
@@ -490,7 +490,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                                         </select>
                                         {/* Custom dropdown arrow */}
                                         <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
-                                            <svg className="h-4 w-4 text-[#445865]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <svg className="h-4 w-4 text-duck-ink/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                                             </svg>
                                         </div>
@@ -498,7 +498,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                                 )}
                                 <div className="relative">
                                     <label htmlFor="login-password" className="sr-only">Wachtwoord</label>
-                                    <IconLock className="absolute left-4 top-1/2 -translate-y-1/2 text-[#5F947D]" size={18} />
+                                    <IconLock className="absolute left-4 top-1/2 -translate-y-1/2 text-duck-ink/40" size={18} />
                                     <input
                                         id="login-password"
                                         type={showPassword ? "text" : "password"}
@@ -507,14 +507,14 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                                         onChange={(e) => setPassword(e.target.value)}
                                         aria-invalid={!!error}
                                         aria-describedby={error ? 'login-auth-error' : undefined}
-                                        className="min-h-[42px] w-full rounded-xl border border-[#E7D8BD] bg-[#FCF6EA] py-2 pl-12 pr-12 text-sm font-bold text-[#08283B] outline-none transition-all placeholder:text-[#445865]/55 focus:border-[#5F947D] focus:ring-2 focus:ring-[#5F947D]/20"
+                                        className="min-h-[42px] w-full rounded-xl border border-duck-ink/15 bg-duck-bg py-2 pl-12 pr-12 text-sm font-bold text-duck-ink outline-none transition-all placeholder:text-duck-ink/40 focus:border-duck-ink focus:ring-2 focus:ring-duck-ink/10"
                                         required
                                     />
                                     <button
                                         type="button"
                                         onClick={() => setShowPassword(!showPassword)}
                                         aria-label={showPassword ? 'Verberg wachtwoord' : 'Toon wachtwoord'}
-                                        className="absolute right-2 top-1/2 flex min-h-[44px] min-w-[44px] -translate-y-1/2 items-center justify-center rounded-lg p-2.5 text-[#445865] transition-colors hover:bg-[#F3E4CB] hover:text-[#08283B]"
+                                        className="absolute right-2 top-1/2 flex min-h-[44px] min-w-[44px] -translate-y-1/2 items-center justify-center rounded-lg p-2.5 text-duck-ink/50 transition-colors hover:bg-duck-bg hover:text-duck-ink"
                                     >
                                         {showPassword ? <IconEyeOff size={18} /> : <IconEye size={18} />}
                                     </button>
@@ -526,17 +526,17 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                                             type="button"
                                             onClick={handleMicrosoftAuth}
                                             disabled={loading}
-                                            className="flex min-h-[42px] w-full items-center justify-center gap-2 rounded-xl border border-[#E7D8BD] bg-white py-2 font-black text-[#08283B] transition-all hover:bg-[#FCF6EA] disabled:cursor-not-allowed disabled:opacity-70"
+                                            className="flex min-h-[42px] w-full items-center justify-center gap-2 rounded-xl border border-duck-ink/15 bg-white py-2 font-black text-duck-ink transition-all hover:bg-duck-bg disabled:cursor-not-allowed disabled:opacity-70"
                                         >
                                             <IconMicrosoft size={18} />
                                             <span>Inloggen met Microsoft 365</span>
                                         </button>
                                         <div className="relative">
                                             <div className="absolute inset-0 flex items-center" aria-hidden="true">
-                                                <div className="w-full border-t border-[#E7D8BD]"></div>
+                                                <div className="w-full border-t border-duck-ink/10"></div>
                                             </div>
                                             <div className="relative flex justify-center">
-                                                <span className="bg-[#FFFDF7] px-2 text-[10px] font-black uppercase tracking-widest text-[#445865]">of</span>
+                                                <span className="bg-white px-2 text-[10px] font-black uppercase tracking-widest text-duck-ink/50">of</span>
                                             </div>
                                         </div>
                                     </>
@@ -547,7 +547,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                                         <button
                                             type="button"
                                             onClick={() => { setMode('forgot-password'); setError(null); setSuccessMessage(null); }}
-                                            className="inline-flex min-h-[36px] items-center justify-center px-3 py-1 text-xs font-black text-[#0B453F] transition-colors hover:text-[#08283B]"
+                                            className="inline-flex min-h-[36px] items-center justify-center px-3 py-1 text-xs font-black text-duck-ink/60 transition-colors hover:text-duck-ink"
                                         >
                                             Wachtwoord vergeten? Stuur resetlink
                                         </button>
@@ -555,7 +555,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                                 )}
 
                                 {error && (
-                                    <div id="login-auth-error" role="alert" className="animate-in shake rounded-xl border border-lab-coral bg-lab-coral p-3 text-xs font-bold text-lab-coral">
+                                    <div id="login-auth-error" role="alert" className="animate-in shake rounded-xl border border-duck-error/25 bg-duck-error/10 p-3 text-xs font-bold text-duck-ink">
                                         {error}
                                     </div>
                                 )}
@@ -565,12 +565,12 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                                     disabled={loading}
                                     aria-busy={loading}
                                     aria-live="polite"
-                                    className="flex min-h-[44px] w-full items-center justify-center gap-2 rounded-xl bg-[#D7C95F] py-2.5 font-black text-[#08283B] shadow-[0_10px_22px_rgba(215,201,95,0.22)] transition-all hover:-translate-y-0.5 hover:bg-[#C9BB52] disabled:cursor-not-allowed disabled:opacity-70"
+                                    className="flex min-h-[44px] w-full items-center justify-center gap-2 rounded-full bg-duck-acid py-2.5 font-black text-duck-ink shadow-[0_4px_0_rgba(0,0,0,0.25)] transition-all hover:-translate-y-0.5 hover:bg-duck-acid/90 disabled:cursor-not-allowed disabled:opacity-70"
                                 >
                                     {loading ? (
                                         <>
                                             <span className="sr-only">{mode === 'register' ? 'Bezig met account aanmaken...' : 'Bezig met inloggen...'}</span>
-                                            <div className="w-5 h-5 border-2 border-[#08283B]/25 border-t-[#08283B] rounded-full animate-spin" aria-hidden="true"></div>
+                                            <div className="w-5 h-5 border-2 border-duck-ink/25 border-t-duck-ink rounded-full animate-spin" aria-hidden="true"></div>
                                         </>
                                     ) : (
                                         <>
@@ -580,10 +580,10 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                                     )}
                                 </button>
 
-                                <p className="flex flex-wrap items-center justify-center gap-x-1 text-xs text-[#445865] text-center">
-                                    <a href="/ict/privacy/policy" className="inline-flex min-h-[32px] items-center px-2 font-bold text-[#0B453F] underline hover:text-[#08283B]">Privacy</a>
+                                <p className="flex flex-wrap items-center justify-center gap-x-1 text-center text-xs text-duck-ink/50">
+                                    <a href="/ict/privacy/policy" className="inline-flex min-h-[32px] items-center px-2 font-bold text-duck-ink/70 underline hover:text-duck-ink">Privacy</a>
                                     {' · '}
-                                    <a href="/ict/privacy/cookies" className="inline-flex min-h-[32px] items-center px-2 font-bold text-[#0B453F] underline hover:text-[#08283B]">Cookies</a>
+                                    <a href="/ict/privacy/cookies" className="inline-flex min-h-[32px] items-center px-2 font-bold text-duck-ink/70 underline hover:text-duck-ink">Cookies</a>
                                 </p>
                             </form>
                         )}
@@ -592,10 +592,10 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                             </div>
 
                             <div className="mt-2 flex flex-col items-center gap-1">
-                        <a href="/" className="inline-flex min-h-[32px] items-center justify-center px-3 text-xs font-black text-[#0B453F] transition-colors hover:text-[#D97848]">
+                        <a href="/" className="inline-flex min-h-[32px] items-center justify-center px-3 text-xs font-black text-duck-ink/60 transition-colors hover:text-duck-ink">
                             Voor scholen — Digitale geletterdheid
                         </a>
-                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#445865] opacity-45">
+                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-duck-ink/40">
                             &copy; 2026 Future Architect
                         </span>
                             </div>

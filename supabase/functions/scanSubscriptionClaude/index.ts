@@ -1,7 +1,7 @@
 /**
  * Edge Function: /scanSubscriptionClaude — Claude Opus 4.6 abonnement-scanner
  *
- * Gebruikt Anthropic Claude API i.p.v. Gemini voor hogere nauwkeurigheid.
+ * Gebruikt Anthropic Claude API i.p.v. Mistral AI voor hogere nauwkeurigheid.
  * Alleen beschikbaar in de developer-omgeving (boekhouding).
  *
  * Ondersteunt: afbeeldingen (jpeg, png, webp, heic) + PDF

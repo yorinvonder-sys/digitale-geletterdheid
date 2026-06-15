@@ -89,19 +89,19 @@ export const cloudCommanderConfig: ToolGuideConfig = {
             minScore: 55,
             emoji: '🏆',
             title: 'Cloud Expert',
-            color: '#D97848',
+            color: '#ff3c21',
         },
         {
             minScore: 40,
             emoji: '☁️',
             title: 'Cloud Commander',
-            color: '#0B453F',
+            color: '#202023',
         },
         {
             minScore: 0,
             emoji: '🌱',
             title: 'Aan de slag',
-            color: '#5F947D',
+            color: '#202023',
         },
     ],
     takeaways: [

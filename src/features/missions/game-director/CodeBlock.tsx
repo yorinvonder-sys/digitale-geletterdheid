@@ -119,7 +119,7 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
                             e.stopPropagation();
                             onRemove(block.id);
                         }}
-                        className="ml-auto p-2 min-w-[36px] min-h-[36px] rounded hover:bg-[#08283B]/20 transition-colors opacity-100 md:opacity-0 md:group-hover:opacity-100 flex items-center justify-center"
+                        className="ml-auto p-2 min-w-[36px] min-h-[36px] rounded hover:bg-duck-ink/20 transition-colors opacity-100 md:opacity-0 md:group-hover:opacity-100 flex items-center justify-center"
                     >
                         <X size={16} />
                     </button>
@@ -137,7 +137,7 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
 
                     {/* Children container */}
                     <div
-                        className="pl-4 py-2 min-h-[40px] border-2 border-dashed border-[#E7D8BD] rounded-2xl bg-[#FCF6EA]/50"
+                        className="pl-4 py-2 min-h-[40px] border-2 border-dashed border-duck-line rounded-2xl bg-duck-bg/50"
                         onDragOver={(e) => {
                             e.preventDefault();
                             e.stopPropagation();
@@ -149,7 +149,7 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
                         }}
                     >
                         {children || (
-                            <div className="text-xs text-[#445865] italic text-center py-2">
+                            <div className="text-xs text-duck-muted italic text-center py-2">
                                 Sleep blokken hierheen
                             </div>
                         )}

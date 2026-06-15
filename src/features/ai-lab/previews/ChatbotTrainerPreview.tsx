@@ -16,8 +16,8 @@ const CHATBOT_THEME_VARS = {
     '--chatbot-muted': '#4B6475',
     '--chatbot-primary': '#256D85',
     '--chatbot-primary-strong': '#164E63',
-    '--chatbot-success': '#5F947D',
-    '--chatbot-accent': '#D7C95F',
+    '--chatbot-success': '#202023',
+    '--chatbot-accent': '#e1ff01',
 } as React.CSSProperties & Record<string, string>;
 
 const CHATBOT_INTRO_STEPS = [
@@ -981,7 +981,7 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                                         onClick={addNewIntent}
                                         disabled={!newIntentName.trim()}
                                         className="flex-1 text-white text-xs py-1 rounded"
-                                        style={{ backgroundColor: '#5F947D' }}
+                                        style={{ backgroundColor: '#202023' }}
                                     >
                                         Toevoegen
                                     </button>
@@ -1009,7 +1009,7 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                             }}
                             className="mt-3 py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all cursor-pointer"
                             style={canStartTest()
-                                ? { backgroundColor: '#5F947D', color: '#FFFFFF', boxShadow: '0 4px 6px -1px rgba(95, 148, 125,0.3)' }
+                                ? { backgroundColor: '#202023', color: '#FFFFFF', boxShadow: '0 4px 6px -1px rgba(95, 148, 125,0.3)' }
                                 : { backgroundColor: 'var(--chatbot-soft)', color: 'var(--chatbot-muted)', opacity: 0.7 }
                             }
                         >
@@ -1020,8 +1020,8 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
 
                     {isTesting && !showResults && (
                         <div className="mt-3 py-3 rounded-xl text-center" style={{ backgroundColor: 'rgba(95, 148, 125,0.1)' }}>
-                            <Loader2 size={20} className="animate-spin mx-auto" style={{ color: '#5F947D' }} />
-                            <p className="text-xs mt-1" style={{ color: '#5F947D' }}>De chatbot is aan het testen...</p>
+                            <Loader2 size={20} className="animate-spin mx-auto" style={{ color: '#202023' }} />
+                            <p className="text-xs mt-1" style={{ color: '#202023' }}>De chatbot is aan het testen...</p>
                         </div>
                     )}
                 </div>
@@ -1106,8 +1106,8 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
 
                                 {/* STEP 2: RESPONSE */}
                                 <div className="rounded-2xl p-4 shadow-sm transition-all" style={{ backgroundColor: 'var(--chatbot-surface)', border: '1px solid var(--chatbot-line)' }}>
-                                    <h4 className="flex items-center gap-2 text-xs font-black uppercase tracking-widest mb-2" style={{ color: '#5F947D' }}>
-                                        <span className="w-5 h-5 rounded flex items-center justify-center text-white text-[10px]" style={{ backgroundColor: '#5F947D' }}>2</span>
+                                    <h4 className="flex items-center gap-2 text-xs font-black uppercase tracking-widest mb-2" style={{ color: '#202023' }}>
+                                        <span className="w-5 h-5 rounded flex items-center justify-center text-white text-[10px]" style={{ backgroundColor: '#202023' }}>2</span>
                                         Chatbotantwoord (Output)
                                     </h4>
                                     <p className="text-xs mb-3" style={{ color: 'var(--chatbot-muted)' }}>
@@ -1196,8 +1196,8 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                                 <div
                                     className="px-3 py-1 rounded-full font-black text-sm"
                                     style={scorePercentage >= activeScenario.minScore
-                                        ? { backgroundColor: 'rgba(16,185,129,0.1)', color: '#5F947D' }
-                                        : { backgroundColor: 'rgba(245,158,11,0.1)', color: '#D7C95F' }
+                                        ? { backgroundColor: 'rgba(16,185,129,0.1)', color: '#202023' }
+                                        : { backgroundColor: 'rgba(245,158,11,0.1)', color: '#e1ff01' }
                                     }
                                 >
                                     {scorePercentage}%
@@ -1208,7 +1208,7 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                                 <button
                                     onClick={() => setShowConclusion(true)}
                                     className="w-full py-3 text-white rounded-xl font-bold shadow-lg transition-all flex items-center justify-center gap-2"
-                                    style={{ backgroundColor: '#5F947D' }}
+                                    style={{ backgroundColor: '#202023' }}
                                 >
                                     <Trophy size={18} /> Afronden
                                 </button>

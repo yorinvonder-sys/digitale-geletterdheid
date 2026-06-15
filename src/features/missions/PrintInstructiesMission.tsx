@@ -119,21 +119,21 @@ const SCENARIOS: Scenario[] = [
 ];
 
 const PrinterVisual: React.FC<{ scenario: Scenario; showCorrect: boolean }> = ({ scenario, showCorrect }) => {
-    const borderColor = showCorrect ? '#5F947D' : '#E7D8BD';
+    const borderColor = showCorrect ? '#202023' : '#e3e2dc';
 
     return (
         <div className="rounded-2xl p-5 mx-auto max-w-xs" style={{ backgroundColor: '#FFFFFF', border: `2px solid ${borderColor}` }}>
             <div className="text-center mb-3">
                 <span className="text-5xl">{scenario.emoji}</span>
             </div>
-            <div className="rounded-xl p-3" style={{ backgroundColor: '#FCF6EA', border: '1px solid #E7D8BD' }}>
+            <div className="rounded-xl p-3" style={{ backgroundColor: '#f2f1ec', border: '1px solid #E7D8BD' }}>
                 {scenario.visual === 'wifi-off' && (
                     <div className="flex flex-col items-center gap-2">
                         <div className="flex items-center gap-2">
-                            <Printer size={24} style={{ color: '#445865' }} />
-                            <span className="text-xs font-bold line-through" style={{ color: '#D97848', fontFamily: "'Outfit', system-ui, sans-serif" }}>WiFi</span>
+                            <Printer size={24} style={{ color: '#6f6e69' }} />
+                            <span className="text-xs font-bold line-through" style={{ color: '#ff3c21', fontFamily: "'Outfit', system-ui, sans-serif" }}>WiFi</span>
                         </div>
-                        <div className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ backgroundColor: 'rgba(217, 120, 72, 0.1)', color: '#D97848', fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                        <div className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ backgroundColor: 'rgba(217, 120, 72, 0.1)', color: '#ff3c21', fontFamily: "'Outfit', system-ui, sans-serif" }}>
                             Geen verbinding
                         </div>
                     </div>
@@ -145,7 +145,7 @@ const PrinterVisual: React.FC<{ scenario: Scenario; showCorrect: boolean }> = ({
                             <div className="w-6 h-6 rounded bg-lab-coral" />
                             <div className="w-6 h-6 rounded bg-lab-creamDeep" />
                         </div>
-                        <div className="text-[10px] font-bold" style={{ color: '#445865', fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                        <div className="text-[10px] font-bold" style={{ color: '#6f6e69', fontFamily: "'Outfit', system-ui, sans-serif" }}>
                             Alleen grijstinten...
                         </div>
                     </div>
@@ -153,13 +153,13 @@ const PrinterVisual: React.FC<{ scenario: Scenario; showCorrect: boolean }> = ({
                 {scenario.visual === 'paper-size' && (
                     <div className="flex items-end justify-center gap-3">
                         <div className="flex flex-col items-center">
-                            <div className="w-8 h-10 rounded border-2" style={{ borderColor: '#D97848' }} />
-                            <span className="text-[9px] mt-1 font-bold" style={{ color: '#D97848', fontFamily: "'Outfit', system-ui, sans-serif" }}>Letter</span>
+                            <div className="w-8 h-10 rounded border-2" style={{ borderColor: '#ff3c21' }} />
+                            <span className="text-[9px] mt-1 font-bold" style={{ color: '#ff3c21', fontFamily: "'Outfit', system-ui, sans-serif" }}>Letter</span>
                         </div>
-                        <span className="text-xs font-bold mb-3" style={{ color: '#445865' }}>→</span>
+                        <span className="text-xs font-bold mb-3" style={{ color: '#6f6e69' }}>→</span>
                         <div className="flex flex-col items-center">
-                            <div className="w-7 h-11 rounded border-2" style={{ borderColor: '#5F947D' }} />
-                            <span className="text-[9px] mt-1 font-bold" style={{ color: '#5F947D', fontFamily: "'Outfit', system-ui, sans-serif" }}>A4</span>
+                            <div className="w-7 h-11 rounded border-2" style={{ borderColor: '#202023' }} />
+                            <span className="text-[9px] mt-1 font-bold" style={{ color: '#202023', fontFamily: "'Outfit', system-ui, sans-serif" }}>A4</span>
                         </div>
                     </div>
                 )}
@@ -167,22 +167,22 @@ const PrinterVisual: React.FC<{ scenario: Scenario; showCorrect: boolean }> = ({
                     <div className="flex flex-col items-center gap-1">
                         <div className="flex gap-0.5">
                             {Array.from({ length: 5 }).map((_, i) => (
-                                <div key={i} className="w-4 h-5 rounded-sm bg-white border" style={{ borderColor: '#D97848', marginLeft: i > 0 ? '-2px' : '0' }} />
+                                <div key={i} className="w-4 h-5 rounded-sm bg-white border" style={{ borderColor: '#ff3c21', marginLeft: i > 0 ? '-2px' : '0' }} />
                             ))}
                         </div>
-                        <div className="text-[10px] font-bold" style={{ color: '#D97848', fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                        <div className="text-[10px] font-bold" style={{ color: '#ff3c21', fontFamily: "'Outfit', system-ui, sans-serif" }}>
                             Kopieën: 10 !!
                         </div>
                     </div>
                 )}
                 {scenario.visual === 'margins' && (
                     <div className="flex flex-col items-center gap-1">
-                        <div className="w-12 h-14 rounded border-2 relative" style={{ borderColor: '#D97848' }}>
-                            <div className="absolute inset-2 border border-dashed rounded-sm" style={{ borderColor: '#445865' }}>
-                                <div className="text-[6px] text-center mt-1" style={{ color: '#445865' }}>tabel</div>
+                        <div className="w-12 h-14 rounded border-2 relative" style={{ borderColor: '#ff3c21' }}>
+                            <div className="absolute inset-2 border border-dashed rounded-sm" style={{ borderColor: '#6f6e69' }}>
+                                <div className="text-[6px] text-center mt-1" style={{ color: '#6f6e69' }}>tabel</div>
                             </div>
                         </div>
-                        <div className="text-[10px] font-bold" style={{ color: '#D97848', fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                        <div className="text-[10px] font-bold" style={{ color: '#ff3c21', fontFamily: "'Outfit', system-ui, sans-serif" }}>
                             Marges te groot
                         </div>
                     </div>
@@ -260,13 +260,13 @@ export const PrintInstructiesMission: React.FC<Props> = ({ onBack, onComplete })
     // Intro screen
     if (showIntro) {
         return (
-            <div className="min-h-screen overflow-y-auto" style={{ backgroundColor: '#FCF6EA' }}>
+            <div className="min-h-screen overflow-y-auto" style={{ backgroundColor: '#f2f1ec' }}>
                 <div className="min-h-full flex items-center justify-center p-4">
                     <div className="max-w-lg w-full text-center space-y-8">
                         <button
                             onClick={onBack}
                             className="flex items-center gap-2 transition-all duration-300 font-bold text-sm uppercase tracking-widest mx-auto"
-                            style={{ color: '#445865', fontFamily: "'Outfit', system-ui, sans-serif" }}
+                            style={{ color: '#6f6e69', fontFamily: "'Outfit', system-ui, sans-serif" }}
                         >
                             <ArrowLeft size={16} /> Terug
                         </button>
@@ -279,13 +279,13 @@ export const PrintInstructiesMission: React.FC<Props> = ({ onBack, onComplete })
                         </div>
 
                         <div className="space-y-4">
-                            <h1 className="text-4xl font-black" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#08283B' }}>
+                            <h1 className="text-4xl font-black" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#202023' }}>
                                 Print Troubleshooter
                             </h1>
-                            <p className="text-lg" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#445865' }}>
+                            <p className="text-lg" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#6f6e69' }}>
                                 Er gaat van alles mis met de printer! Kun jij elk probleem oplossen?
                             </p>
-                            <p className="text-sm font-semibold" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#445865' }}>
+                            <p className="text-sm font-semibold" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#6f6e69' }}>
                                 5 printproblemen — diagnosticeer het probleem en kies de juiste oplossing
                             </p>
                         </div>
@@ -295,24 +295,24 @@ export const PrintInstructiesMission: React.FC<Props> = ({ onBack, onComplete })
                         <div className="grid grid-cols-3 gap-4 text-center">
                             <div className="rounded-2xl p-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
                                 <span className="text-2xl block mb-2">🔍</span>
-                                <p className="font-bold text-sm" style={{ color: '#08283B', fontFamily: "'Outfit', system-ui, sans-serif" }}>Diagnose</p>
+                                <p className="font-bold text-sm" style={{ color: '#202023', fontFamily: "'Outfit', system-ui, sans-serif" }}>Diagnose</p>
                             </div>
                             <div className="rounded-2xl p-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
                                 <span className="text-2xl block mb-2">🛠️</span>
-                                <p className="font-bold text-sm" style={{ color: '#08283B', fontFamily: "'Outfit', system-ui, sans-serif" }}>Oplossen</p>
+                                <p className="font-bold text-sm" style={{ color: '#202023', fontFamily: "'Outfit', system-ui, sans-serif" }}>Oplossen</p>
                             </div>
                             <div className="rounded-2xl p-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
                                 <span className="text-2xl block mb-2">💡</span>
-                                <p className="font-bold text-sm" style={{ color: '#08283B', fontFamily: "'Outfit', system-ui, sans-serif" }}>Onthouden</p>
+                                <p className="font-bold text-sm" style={{ color: '#202023', fontFamily: "'Outfit', system-ui, sans-serif" }}>Onthouden</p>
                             </div>
                         </div>
 
                         <button
                             onClick={() => setState(prev => ({ ...prev, showIntro: false }))}
-                            className="w-full py-4 text-white rounded-full font-black uppercase tracking-wide transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#D97848]"
-                            style={{ backgroundColor: '#D97848', fontFamily: "'Outfit', system-ui, sans-serif" }}
-                            onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#D97848')}
-                            onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#D97848')}
+                            className="w-full py-4 text-white rounded-full font-black uppercase tracking-wide transition-all duration-300 focus-visible:ring-2 focus-visible:ring-duck-coral"
+                            style={{ backgroundColor: '#ff3c21', fontFamily: "'Outfit', system-ui, sans-serif" }}
+                            onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#ff3c21')}
+                            onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#ff3c21')}
                         >
                             Start Troubleshooting
                         </button>
@@ -329,7 +329,7 @@ export const PrintInstructiesMission: React.FC<Props> = ({ onBack, onComplete })
         const allCorrect = correctScenarios.length === SCENARIOS.length;
 
         return (
-            <div className="min-h-screen overflow-y-auto" style={{ backgroundColor: '#FCF6EA' }}>
+            <div className="min-h-screen overflow-y-auto" style={{ backgroundColor: '#f2f1ec' }}>
                 <div className="min-h-full flex items-center justify-center p-4">
                     <div className="max-w-lg w-full text-center space-y-8">
                         <div className="relative inline-block">
@@ -340,10 +340,10 @@ export const PrintInstructiesMission: React.FC<Props> = ({ onBack, onComplete })
                         </div>
 
                         <div className="space-y-2">
-                            <h1 className="text-4xl font-black" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#08283B' }}>
+                            <h1 className="text-4xl font-black" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#202023' }}>
                                 {allCorrect ? 'Print Expert!' : 'Missie Voltooid!'}
                             </h1>
-                            <p className="text-lg" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#445865' }}>
+                            <p className="text-lg" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#6f6e69' }}>
                                 {allCorrect
                                     ? 'Alle printproblemen opgelost — je bent een echte troubleshooter!'
                                     : 'Je hebt alle scenario\'s doorlopen. Bekijk de tips hieronder om het te onthouden.'}
@@ -353,29 +353,29 @@ export const PrintInstructiesMission: React.FC<Props> = ({ onBack, onComplete })
                         <div className="rounded-2xl p-6" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
                             <div className="flex justify-around">
                                 <div>
-                                    <p className="text-3xl font-black" style={{ color: '#5F947D' }}>{correctScenarios.length}/{SCENARIOS.length}</p>
-                                    <p className="text-sm" style={{ color: '#445865', fontFamily: "'Outfit', system-ui, sans-serif" }}>Opgelost</p>
+                                    <p className="text-3xl font-black" style={{ color: '#202023' }}>{correctScenarios.length}/{SCENARIOS.length}</p>
+                                    <p className="text-sm" style={{ color: '#6f6e69', fontFamily: "'Outfit', system-ui, sans-serif" }}>Opgelost</p>
                                 </div>
                                 <div>
-                                    <p className="text-3xl font-black" style={{ color: '#D97848' }}>{score}/{maxScore}</p>
-                                    <p className="text-sm" style={{ color: '#445865', fontFamily: "'Outfit', system-ui, sans-serif" }}>Punten</p>
+                                    <p className="text-3xl font-black" style={{ color: '#ff3c21' }}>{score}/{maxScore}</p>
+                                    <p className="text-sm" style={{ color: '#6f6e69', fontFamily: "'Outfit', system-ui, sans-serif" }}>Punten</p>
                                 </div>
                                 <div>
-                                    <p className="text-3xl font-black" style={{ color: '#5F947D' }}>{percentage}%</p>
-                                    <p className="text-sm" style={{ color: '#445865', fontFamily: "'Outfit', system-ui, sans-serif" }}>Score</p>
+                                    <p className="text-3xl font-black" style={{ color: '#202023' }}>{percentage}%</p>
+                                    <p className="text-sm" style={{ color: '#6f6e69', fontFamily: "'Outfit', system-ui, sans-serif" }}>Score</p>
                                 </div>
                             </div>
                         </div>
 
                         <div className="rounded-2xl p-6 text-left" style={{ backgroundColor: 'rgba(95, 148, 125, 0.06)', border: '1px solid rgba(95, 148, 125, 0.2)' }}>
-                            <h3 className="text-lg font-bold mb-3 flex items-center gap-2" style={{ color: '#5F947D', fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                            <h3 className="text-lg font-bold mb-3 flex items-center gap-2" style={{ color: '#202023', fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                 <Lightbulb size={20} /> Tips om te onthouden
                             </h3>
                             <ul className="space-y-2">
                                 {SCENARIOS.map((s, i) => (
                                     <li key={i} className="flex items-start gap-2">
                                         <span className="text-sm flex-shrink-0">{s.emoji}</span>
-                                        <span className="text-sm" style={{ color: '#445865', fontFamily: "'Outfit', system-ui, sans-serif" }}>{s.tip}</span>
+                                        <span className="text-sm" style={{ color: '#6f6e69', fontFamily: "'Outfit', system-ui, sans-serif" }}>{s.tip}</span>
                                     </li>
                                 ))}
                             </ul>
@@ -384,33 +384,33 @@ export const PrintInstructiesMission: React.FC<Props> = ({ onBack, onComplete })
                         {/* Reflectie */}
                         <div className="rounded-2xl p-4 text-left space-y-3" style={{ backgroundColor: '#FFFFFF', border: '1px solid rgba(217, 120, 72, 0.2)' }}>
                             <div className="flex items-center gap-2">
-                                <Sparkles size={16} style={{ color: '#D97848' }} />
-                                <p className="text-xs font-black uppercase tracking-widest" style={{ color: '#D97848', fontFamily: "'Outfit', system-ui, sans-serif" }}>Reflectie</p>
+                                <Sparkles size={16} style={{ color: '#ff3c21' }} />
+                                <p className="text-xs font-black uppercase tracking-widest" style={{ color: '#ff3c21', fontFamily: "'Outfit', system-ui, sans-serif" }}>Reflectie</p>
                             </div>
-                            <p className="text-xs" style={{ color: '#445865', fontFamily: "'Outfit', system-ui, sans-serif" }}>Wat heb je geleerd in deze missie? Waar zou je dit in het dagelijks leven tegenkomen?</p>
+                            <p className="text-xs" style={{ color: '#6f6e69', fontFamily: "'Outfit', system-ui, sans-serif" }}>Wat heb je geleerd in deze missie? Waar zou je dit in het dagelijks leven tegenkomen?</p>
                             <textarea
                                 value={state.reflectie}
                                 onChange={e => setState(prev => ({ ...prev, reflectie: e.target.value }))}
                                 placeholder="Wat heb je geleerd? Waar kom je dit nog meer tegen?"
                                 className="w-full p-3 rounded-xl border-2 resize-none focus:outline-none transition-all duration-300"
-                                style={{ minHeight: '80px', fontFamily: "'Outfit', system-ui, sans-serif", borderColor: '#E7D8BD', backgroundColor: '#FCF6EA', fontSize: '0.875rem' }}
-                                onFocus={e => (e.currentTarget.style.borderColor = '#D97848')}
-                                onBlur={e => (e.currentTarget.style.borderColor = '#E7D8BD')}
+                                style={{ minHeight: '80px', fontFamily: "'Outfit', system-ui, sans-serif", borderColor: '#e3e2dc', backgroundColor: '#f2f1ec', fontSize: '0.875rem' }}
+                                onFocus={e => (e.currentTarget.style.borderColor = '#ff3c21')}
+                                onBlur={e => (e.currentTarget.style.borderColor = '#e3e2dc')}
                             />
                         </div>
 
                         <button
                             onClick={() => { clearSave(); onComplete(true); }}
                             disabled={state.reflectie.trim().length < 10}
-                            className="w-full py-4 text-white rounded-full font-black uppercase tracking-wide transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#D97848]"
+                            className="w-full py-4 text-white rounded-full font-black uppercase tracking-wide transition-all duration-300 focus-visible:ring-2 focus-visible:ring-duck-coral"
                             style={{
-                                backgroundColor: state.reflectie.trim().length < 10 ? '#E7D8BD' : '#D97848',
-                                color: state.reflectie.trim().length < 10 ? '#E7D8BD' : '#FFFFFF',
+                                backgroundColor: state.reflectie.trim().length < 10 ? '#e3e2dc' : '#ff3c21',
+                                color: state.reflectie.trim().length < 10 ? '#e3e2dc' : '#FFFFFF',
                                 cursor: state.reflectie.trim().length < 10 ? 'not-allowed' : 'pointer',
                                 fontFamily: "'Outfit', system-ui, sans-serif",
                             }}
-                            onMouseEnter={e => { if (state.reflectie.trim().length >= 10) e.currentTarget.style.backgroundColor = '#D97848'; }}
-                            onMouseLeave={e => { if (state.reflectie.trim().length >= 10) e.currentTarget.style.backgroundColor = '#D97848'; }}
+                            onMouseEnter={e => { if (state.reflectie.trim().length >= 10) e.currentTarget.style.backgroundColor = '#ff3c21'; }}
+                            onMouseLeave={e => { if (state.reflectie.trim().length >= 10) e.currentTarget.style.backgroundColor = '#ff3c21'; }}
                         >
                             Terug naar Mission Control
                         </button>
@@ -422,16 +422,16 @@ export const PrintInstructiesMission: React.FC<Props> = ({ onBack, onComplete })
 
     // Main game screen
     return (
-        <div className="min-h-screen" style={{ backgroundColor: '#FCF6EA' }}>
+        <div className="min-h-screen" style={{ backgroundColor: '#f2f1ec' }}>
             {/* Header */}
             <div className="sticky top-0 z-20 backdrop-blur-md" style={{ backgroundColor: 'rgba(255, 255, 255, 0.9)', borderBottom: '1px solid #E7D8BD' }}>
                 <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
                     <button
                         onClick={onBack}
                         className="p-2 transition-colors"
-                        style={{ color: '#445865' }}
-                        onMouseEnter={e => (e.currentTarget.style.color = '#08283B')}
-                        onMouseLeave={e => (e.currentTarget.style.color = '#445865')}
+                        style={{ color: '#6f6e69' }}
+                        onMouseEnter={e => (e.currentTarget.style.color = '#202023')}
+                        onMouseLeave={e => (e.currentTarget.style.color = '#6f6e69')}
                     >
                         <ArrowLeft size={24} />
                     </button>
@@ -439,7 +439,7 @@ export const PrintInstructiesMission: React.FC<Props> = ({ onBack, onComplete })
                     <div className="flex items-center gap-4">
                         <span className="px-3 py-1 rounded-full text-xs font-bold" style={{
                             backgroundColor: 'rgba(217, 120, 72, 0.1)',
-                            color: '#D97848',
+                            color: '#ff3c21',
                             border: '1px solid rgba(217, 120, 72, 0.2)',
                             fontFamily: "'Outfit', system-ui, sans-serif",
                         }}>
@@ -447,14 +447,14 @@ export const PrintInstructiesMission: React.FC<Props> = ({ onBack, onComplete })
                         </span>
 
                         <div className="flex items-center gap-1 px-3 py-1.5 rounded-full" style={{ backgroundColor: 'rgba(95, 148, 125, 0.1)', border: '1px solid rgba(95, 148, 125, 0.2)' }}>
-                            <Printer size={14} style={{ color: '#5F947D' }} />
-                            <span className="font-bold text-sm" style={{ color: '#5F947D', fontFamily: "'Outfit', system-ui, sans-serif" }}>{score} pts</span>
+                            <Printer size={14} style={{ color: '#202023' }} />
+                            <span className="font-bold text-sm" style={{ color: '#202023', fontFamily: "'Outfit', system-ui, sans-serif" }}>{score} pts</span>
                         </div>
                     </div>
                 </div>
 
                 {/* Progress bar */}
-                <div className="h-1.5" style={{ backgroundColor: '#E7D8BD' }}>
+                <div className="h-1.5" style={{ backgroundColor: '#e3e2dc' }}>
                     <div
                         className="h-full transition-all duration-500"
                         style={{
@@ -472,15 +472,15 @@ export const PrintInstructiesMission: React.FC<Props> = ({ onBack, onComplete })
                     <div className="flex items-center gap-3 mb-4">
                         <span className="text-3xl">{scenario.emoji}</span>
                         <div>
-                            <span className="text-[10px] font-black uppercase tracking-widest" style={{ color: '#D97848', fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                            <span className="text-[10px] font-black uppercase tracking-widest" style={{ color: '#ff3c21', fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                 Probleem {currentScenario + 1}
                             </span>
-                            <h2 className="text-xl font-black" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#08283B' }}>
+                            <h2 className="text-xl font-black" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#202023' }}>
                                 {scenario.title}
                             </h2>
                         </div>
                     </div>
-                    <p className="text-sm leading-relaxed" style={{ color: '#445865', fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                    <p className="text-sm leading-relaxed" style={{ color: '#6f6e69', fontFamily: "'Outfit', system-ui, sans-serif" }}>
                         {scenario.description}
                     </p>
                 </div>
@@ -490,11 +490,11 @@ export const PrintInstructiesMission: React.FC<Props> = ({ onBack, onComplete })
 
                 {/* Question */}
                 <div className="rounded-2xl p-4 text-center" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
-                    <p className="font-bold" style={{ color: '#08283B', fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                    <p className="font-bold" style={{ color: '#202023', fontFamily: "'Outfit', system-ui, sans-serif" }}>
                         Wat is de juiste oplossing?
                     </p>
                     {currentAttempts === 1 && !isCorrect && showFeedback && (
-                        <p className="text-xs mt-1" style={{ color: '#D97848', fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                        <p className="text-xs mt-1" style={{ color: '#ff3c21', fontFamily: "'Outfit', system-ui, sans-serif" }}>
                             Nog 1 poging over
                         </p>
                     )}
@@ -517,29 +517,29 @@ export const PrintInstructiesMission: React.FC<Props> = ({ onBack, onComplete })
                                         ? option.isCorrect ? 'rgba(95, 148, 125, 0.08)' : 'rgba(217, 120, 72, 0.08)'
                                         : '#FFFFFF',
                                     border: `2px solid ${showResult
-                                        ? option.isCorrect ? '#5F947D' : '#D97848'
-                                        : '#E7D8BD'}`,
+                                        ? option.isCorrect ? '#202023' : '#ff3c21'
+                                        : '#e3e2dc'}`,
                                     opacity: showFeedback && !isSelected ? 0.4 : 1,
                                 }}
                             >
                                 <div className="flex items-start gap-3">
                                     <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{
                                         backgroundColor: showResult
-                                            ? option.isCorrect ? '#5F947D' : '#D97848'
-                                            : '#E7D8BD',
+                                            ? option.isCorrect ? '#202023' : '#ff3c21'
+                                            : '#e3e2dc',
                                     }}>
                                         {showResult ? (
                                             option.isCorrect ? <Check size={16} className="text-white" /> : <X size={16} className="text-white" />
                                         ) : (
-                                            <span className="font-bold text-sm" style={{ color: '#445865', fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                            <span className="font-bold text-sm" style={{ color: '#6f6e69', fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                                 {option.id.toUpperCase()}
                                             </span>
                                         )}
                                     </div>
                                     <div className="flex-1">
-                                        <p className="font-medium" style={{ color: '#08283B', fontFamily: "'Outfit', system-ui, sans-serif" }}>{option.text}</p>
+                                        <p className="font-medium" style={{ color: '#202023', fontFamily: "'Outfit', system-ui, sans-serif" }}>{option.text}</p>
                                         {showResult && (
-                                            <p className="text-sm mt-2" style={{ color: option.isCorrect ? '#5F947D' : '#D97848', fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                            <p className="text-sm mt-2" style={{ color: option.isCorrect ? '#202023' : '#ff3c21', fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                                 {option.feedback}
                                             </p>
                                         )}
@@ -557,10 +557,10 @@ export const PrintInstructiesMission: React.FC<Props> = ({ onBack, onComplete })
                         {isCorrect && (
                             <div className="rounded-2xl p-4" style={{ backgroundColor: 'rgba(95, 148, 125, 0.06)', border: '1px solid rgba(95, 148, 125, 0.2)' }}>
                                 <div className="flex items-start gap-3">
-                                    <Lightbulb className="flex-shrink-0 mt-1" size={20} style={{ color: '#5F947D' }} />
+                                    <Lightbulb className="flex-shrink-0 mt-1" size={20} style={{ color: '#202023' }} />
                                     <div>
-                                        <p className="font-bold text-sm mb-1" style={{ color: '#5F947D', fontFamily: "'Outfit', system-ui, sans-serif" }}>Tip om te onthouden</p>
-                                        <p className="text-sm" style={{ color: '#445865', fontFamily: "'Outfit', system-ui, sans-serif" }}>{scenario.tip}</p>
+                                        <p className="font-bold text-sm mb-1" style={{ color: '#202023', fontFamily: "'Outfit', system-ui, sans-serif" }}>Tip om te onthouden</p>
+                                        <p className="text-sm" style={{ color: '#6f6e69', fontFamily: "'Outfit', system-ui, sans-serif" }}>{scenario.tip}</p>
                                     </div>
                                 </div>
                             </div>
@@ -570,10 +570,10 @@ export const PrintInstructiesMission: React.FC<Props> = ({ onBack, onComplete })
                         {canRetry ? (
                             <button
                                 onClick={handleRetry}
-                                className="w-full py-4 rounded-full font-black uppercase tracking-wide transition-all duration-300 flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-[#D97848]"
-                                style={{ backgroundColor: '#D97848', color: '#FFFFFF', fontFamily: "'Outfit', system-ui, sans-serif" }}
-                                onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#D97848')}
-                                onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#D97848')}
+                                className="w-full py-4 rounded-full font-black uppercase tracking-wide transition-all duration-300 flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-duck-coral"
+                                style={{ backgroundColor: '#ff3c21', color: '#FFFFFF', fontFamily: "'Outfit', system-ui, sans-serif" }}
+                                onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#ff3c21')}
+                                onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#ff3c21')}
                             >
                                 <RotateCcw size={18} /> Probeer opnieuw
                             </button>
@@ -583,22 +583,22 @@ export const PrintInstructiesMission: React.FC<Props> = ({ onBack, onComplete })
                                 {!isCorrect && (
                                     <div className="rounded-2xl p-4" style={{ backgroundColor: 'rgba(95, 148, 125, 0.06)', border: '1px solid rgba(95, 148, 125, 0.2)' }}>
                                         <div className="flex items-start gap-3">
-                                            <Lightbulb className="flex-shrink-0 mt-1" size={20} style={{ color: '#5F947D' }} />
+                                            <Lightbulb className="flex-shrink-0 mt-1" size={20} style={{ color: '#202023' }} />
                                             <div>
-                                                <p className="font-bold text-sm mb-1" style={{ color: '#5F947D', fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                                <p className="font-bold text-sm mb-1" style={{ color: '#202023', fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                                     Het juiste antwoord was: {scenario.options.find(o => o.isCorrect)?.text}
                                                 </p>
-                                                <p className="text-sm" style={{ color: '#445865', fontFamily: "'Outfit', system-ui, sans-serif" }}>{scenario.tip}</p>
+                                                <p className="text-sm" style={{ color: '#6f6e69', fontFamily: "'Outfit', system-ui, sans-serif" }}>{scenario.tip}</p>
                                             </div>
                                         </div>
                                     </div>
                                 )}
                                 <button
                                     onClick={handleNext}
-                                    className="w-full py-4 rounded-full font-black uppercase tracking-wide transition-all duration-300 flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-[#D97848]"
-                                    style={{ backgroundColor: '#D97848', color: '#FFFFFF', fontFamily: "'Outfit', system-ui, sans-serif" }}
-                                    onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#D97848')}
-                                    onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#D97848')}
+                                    className="w-full py-4 rounded-full font-black uppercase tracking-wide transition-all duration-300 flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-duck-coral"
+                                    style={{ backgroundColor: '#ff3c21', color: '#FFFFFF', fontFamily: "'Outfit', system-ui, sans-serif" }}
+                                    onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#ff3c21')}
+                                    onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#ff3c21')}
                                 >
                                     {currentScenario < SCENARIOS.length - 1
                                         ? <>Volgend probleem <ChevronRight size={20} /></>

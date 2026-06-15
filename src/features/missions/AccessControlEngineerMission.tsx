@@ -58,7 +58,7 @@ interface Props {
 }
 
 const MISSION_GOAL: MissionGoal = {
-    primaryGoal: 'Beveilig het schoolsysteem door onveilige toegangsregels te vinden, te verbeteren en te testen.',
+    primaryGoal: 'Ik beveilig het schoolsysteem door onveilige toegangsregels te vinden, te verbeteren en te testen.',
     criteria: {
         type: 'steps-complete',
         min: 3,
