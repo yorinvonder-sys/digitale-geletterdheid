@@ -20,7 +20,7 @@ const config: ToolGuideConfig = {
             id: 'stap-1-nieuw-document',
             title: 'Nieuw document aanmaken',
             instruction:
-                'Open de **Word**-app op je iPad. Tik op **Nieuw** (of het +-icoon) en kies **Leeg document**. Typ de titel van je verslag bovenaan. Sla het document daarna direct op: tik op het **menu linksboven** (de drie streepjes of het Word-logo) en kies **Opslaan als**. Sla het op in OneDrive onder je schoolmap met een duidelijke naam, zoals `Naam_Verslag_Vak.docx`.',
+                'Open de **Word**-app op je iPad. Je hebt een **Microsoft 365-licentie** via school nodig — vraag je docent als de app om betaling vraagt. Tik op **Nieuw** (of het +-icoon) en kies **Leeg document**. Typ de titel van je verslag bovenaan. Sla het document daarna direct op: tik op het **menu linksboven** (de drie streepjes of het Word-logo) en kies **Opslaan als**. Sla het op in OneDrive onder je schoolmap met een duidelijke naam, zoals `Naam_Verslag_Vak.docx`.',
             tip: 'Sla je document altijd meteen op als je begint — niet pas als je klaar bent. Word slaat automatisch op in de cloud als je OneDrive gebruikt, maar alleen als je het bestand een naam hebt gegeven.',
             checklistItems: [
                 { id: 'app-open', label: 'Ik heb de Word-app geopend' },
@@ -44,7 +44,7 @@ const config: ToolGuideConfig = {
             id: 'stap-2-koppen',
             title: 'Kopstijlen gebruiken',
             instruction:
-                'Typ een hoofdstuktitel (bijv. "Inleiding"). Selecteer die tekst door erop te tikken en te slepen. Tik op het **penseel-icoon** rechtsboven (Opmaak) en ga naar het tabblad **Stijlen**. Kies **Kop 1**. Typ dan een paragraaftitel (bijv. "Achtergrond") en geef die de stijl **Kop 2**. Normale alineatekst krijgt automatisch de stijl **Standaard** of **Normale tekst**.',
+                'Typ een hoofdstuktitel (bijv. "Inleiding"). Selecteer die tekst door erop te tikken en te slepen. Tik op de **A-knop** rechtsboven (Opmaak) en ga naar het tabblad **Stijlen**. Kies **Kop 1**. Typ dan een paragraaftitel (bijv. "Achtergrond") en geef die de stijl **Kop 2**. Normale alineatekst krijgt automatisch de stijl **Standaard** of **Normale tekst**.',
             tip: 'Kopstijlen zijn niet alleen voor de opmaak — Word gebruikt ze ook om automatisch een inhoudsopgave te bouwen. Gebruik Kop 1 voor hoofdstukken, Kop 2 voor paragrafen.',
             checklistItems: [
                 { id: 'kop1-gezet', label: 'Ik heb minstens één tekst de stijl "Kop 1" gegeven' },
@@ -68,7 +68,7 @@ const config: ToolGuideConfig = {
             id: 'stap-3-afbeelding',
             title: 'Afbeelding invoegen',
             instruction:
-                'Klik in je document op de plek waar je de afbeelding wilt. Tik op **Invoegen** (tabblad bovenaan) en kies **Afbeeldingen** of **Foto\'s**. Selecteer een foto uit je Fotoalbum of voeg een online afbeelding in. Tik op de afbeelding nadat je hem hebt ingevoegd en zoek in het menu naar **Tekstomloop**. Kies **Strak** of **Vierkant** zodat de tekst netjes om de afbeelding heen loopt.',
+                'Tik in je document op de plek waar je de afbeelding wilt. Tik op **Invoegen** (tabblad bovenaan) en kies **Online afbeelding** voor vrij beschikbare afbeeldingen, of **Foto\'s** voor een eigen schoolfoto — geen willekeurige Google-foto\'s (auteursrecht). Tik op de afbeelding nadat je hem hebt ingevoegd en zoek in het menu naar **Tekstomloop**. Kies **Strak** of **Vierkant** zodat de tekst netjes om de afbeelding heen loopt.',
             tip: 'Met de instelling "Strak" loopt tekst direct om de rand van de afbeelding. Met "Vierkant" loopt tekst om een denkbeeldig vierkant eromheen. Beide zien er professioneler uit dan de standaardinstelling "In lijn met tekst".',
             checklistItems: [
                 { id: 'afbeelding-ingevoegd', label: 'Ik heb een afbeelding in mijn document ingevoegd' },
@@ -101,7 +101,7 @@ const config: ToolGuideConfig = {
             },
         },
     ],
-    maxScore: 60,
+    maxScore: 55,
     badges: [
         {
             minScore: 55,
@@ -121,6 +121,12 @@ const config: ToolGuideConfig = {
             title: 'Aan de slag',
             color: '#5F947D',
         },
+    ],
+    learningObjectives: [
+        'De leerling maakt een Word-document aan, geeft het een naam en slaat het op in OneDrive.',
+        'De leerling past Kop 1 en Kop 2 toe op titels en paragrafen in een verslag.',
+        'De leerling voegt een afbeelding in en stelt de tekstomloop in op "Strak" of "Vierkant".',
+        'De leerling voegt een automatische inhoudsopgave in en werkt deze bij na een wijziging.',
     ],
     takeaways: [
         'Je kunt een nieuw Word-document aanmaken en direct opslaan in OneDrive',

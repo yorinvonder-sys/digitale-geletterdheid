@@ -12,6 +12,10 @@ export const sharedTailwindConfig = {
                     acid: '#e1ff01',
                     gray: '#c2c1bd',
                     error: '#ff3c21',
+                    coral: '#D97848',
+                    muted: '#445865',
+                    line: '#E7D8BD',
+                    creamDeep: '#F3E4CB',
                 },
                 lab: {
                     cream: '#FCF6EA',

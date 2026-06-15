@@ -44,7 +44,7 @@ const config: ToolGuideConfig = {
             id: 'stap-2-verbinden',
             title: 'Printer instellen',
             instruction:
-                'Open de **print-app** van je school (bijv. RICOH myPrint, PaperCut of FollowMe) of gebruik de ingebouwde printfunctie van je apparaat. **iPad:** Open een document en tik op Deel > Afdrukken — kies dan de schoolprinter. **Chromebook:** Open een document en kies Afdrukken (Ctrl+P), selecteer de printer. **Windows:** Ctrl+P in je document, kies de printer in de lijst. Log in met je **schoolaccount** als de app daarom vraagt.',
+                'Open de **print-app** van je school of de ingebouwde printfunctie. **iPad:** tik op Deel > Afdrukken en kies de schoolprinter. **Chromebook/Windows:** Ctrl+P in je document en kies de printer. Log in met je **schoolaccount** als dat gevraagd wordt.',
             tip: 'Veel scholen gebruiken een "FollowMe"-systeem: je verstuurt de print naar de server en haalt hem op bij elke printer op school met je pas of pincode. Zo blijft je document privé.',
             checklistItems: [
                 { id: 'printer-gevonden', label: 'Ik heb de schoolprinter gevonden in de lijst' },
@@ -101,7 +101,7 @@ const config: ToolGuideConfig = {
             },
         },
     ],
-    maxScore: 60,
+    maxScore: 55,
     badges: [
         {
             minScore: 55,
@@ -121,6 +121,12 @@ const config: ToolGuideConfig = {
             title: 'Aan de slag',
             color: '#5F947D',
         },
+    ],
+    learningObjectives: [
+        'De leerling herkent welk printsysteem zijn of haar school gebruikt en weet waar die informatie te vinden is.',
+        'De leerling verbindt zijn of haar apparaat (iPad, Chromebook of laptop) met de schoolprinter via de juiste app of OS-functie.',
+        'De leerling past printinstellingen bewust aan (kleur/zwart-wit, dubbelzijdig, paginabereik) op basis van het document.',
+        'De leerling benoemt waarom direct ophalen van een printopdracht bijdraagt aan privacy en betrouwbaarheid.',
     ],
     takeaways: [
         'Je weet hoe je het printsysteem van je school herkent en instelt',

@@ -114,7 +114,7 @@ const config: ToolGuideConfig = {
             },
         },
     ],
-    maxScore: 60,
+    maxScore: 55,
     badges: [
         {
             minScore: 55,
@@ -134,6 +134,12 @@ const config: ToolGuideConfig = {
             title: 'Aan de slag',
             color: '#5F947D',
         },
+    ],
+    learningObjectives: [
+        'De leerling logt zelfstandig in op de Magister-app met het juiste schoolaccount.',
+        'De leerling vindt het rooster voor vandaag en benoemt vak, lokaal en starttijd van de eerste les.',
+        'De leerling zoekt huiswerk of opdrachten op in de Agenda of ELO.',
+        'De leerling opent het cijferoverzicht en leest de wegingsfactor van het meest recente cijfer.',
     ],
     takeaways: [
         'Je kunt inloggen in de Magister-app met je schoolaccount',

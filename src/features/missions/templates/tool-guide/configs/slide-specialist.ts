@@ -68,7 +68,7 @@ const config: ToolGuideConfig = {
             id: 'stap-3-animatie',
             title: 'Animatie toevoegen',
             instruction:
-                'Selecteer een **element op een slide** (bijv. de titel of een afbeelding) door erop te tikken. Ga naar het tabblad **Animaties** bovenaan. Kies een animatie, bijvoorbeeld **Verschijnen**, **Invliegen** of **Uitzoomen**. Tik op **Animatievenster** of **Afspelen** om je animatie te testen. Pas de timing aan via de opties (bijv. "Bij klikken" of "Na vorig").',
+                'Selecteer een **element op een slide** (bijv. de titel of een afbeelding) door erop te tikken. Ga naar het tabblad **Animaties** bovenaan. Kies een animatie, bijvoorbeeld **Verschijnen**, **Invliegen** of **Uitzoomen**. Tik op **Afspelen** om je animatie te testen, of start de **Diavoorstelling** om hem live te zien. Pas de timing aan via de opties (bijv. "Bij klikken" of "Na vorig").',
             tip: 'Gebruik animaties spaarzaam — maximaal één of twee per slide. Te veel beweging leidt af. Kies animaties die passen bij de sfeer: rustig voor serieuze onderwerpen, dynamisch voor energie.',
             checklistItems: [
                 { id: 'element-geselecteerd', label: 'Ik heb een element op een slide geselecteerd' },
@@ -80,7 +80,7 @@ const config: ToolGuideConfig = {
             id: 'stap-4-overgang',
             title: 'Overgangen instellen',
             instruction:
-                'Tik in het slides-paneel op een **slide** waaraan je een overgang wilt toevoegen. Ga naar het tabblad **Overgangen** bovenaan. Kies een overgang, bijv. **Fade**, **Zetelen** of **Doelwit**. Stel de **duur** in (bijv. 0,5 seconden). Tik op **Toepassen op alle** als je alle slides dezelfde overgang wilt geven. Test je presentatie via **Diavoorstelling > Vanaf begin**.',
+                'Tik in het slides-paneel op een **slide** waaraan je een overgang wilt toevoegen. Ga naar het tabblad **Overgangen** bovenaan. Kies een overgang, bijv. **Vervaag**, **Schuiven** of **Doelwit**. Stel de **duur** in (bijv. 0,5 seconden). Tik op **Toepassen op alle** als je alle slides dezelfde overgang wilt geven. Test je presentatie via **Diavoorstelling > Vanaf begin**.',
             tip: 'Gebruik één type overgang voor de hele presentatie. Verschillende overgangen op elke slide ziet er onprofessioneel en onrustig uit.',
             checklistItems: [
                 { id: 'overgang-gekozen', label: 'Ik heb een overgang gekozen voor een slide' },
@@ -101,7 +101,7 @@ const config: ToolGuideConfig = {
             },
         },
     ],
-    maxScore: 60,
+    maxScore: 55,
     badges: [
         {
             minScore: 55,
@@ -113,7 +113,7 @@ const config: ToolGuideConfig = {
             minScore: 40,
             emoji: '🎨',
             title: 'Slide Specialist',
-            color: '#D97848',
+            color: '#202023',
         },
         {
             minScore: 0,
@@ -121,6 +121,12 @@ const config: ToolGuideConfig = {
             title: 'Aan de slag',
             color: '#5F947D',
         },
+    ],
+    learningObjectives: [
+        'De leerling selecteert een passend thema en legt uit waarom consistente opmaak professioneler oogt.',
+        'De leerling bouwt een slide op met maximaal vijf tekstelementen en één ondersteunende afbeelding.',
+        'De leerling voegt één animatie toe aan een element en stelt de timing in.',
+        'De leerling past één overgangstype toe op alle slides en verklaart waarom consistentie helpt.',
     ],
     takeaways: [
         'Je kunt een professioneel thema kiezen en aanpassen in PowerPoint',

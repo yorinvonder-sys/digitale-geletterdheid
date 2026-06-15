@@ -53,7 +53,8 @@ export const cloudCommanderConfig: ToolGuideConfig = {
             id: 'stap-3-uploaden',
             title: 'Bestand uploaden',
             instruction:
-                'Maak een **foto** met de camera-app van je iPad (of kies een bestaande foto uit je Foto\'s). Ga terug naar OneDrive, open je **School**-map en tik op het **+-icoon**. Kies **Foto\'s uploaden** en selecteer de foto die je net hebt gemaakt. Wacht tot de upload klaar is — je ziet een groen vinkje als het gelukt is.',
+                'Maak een **foto** van een object, je schrift of schoolboek — geen foto\'s van jezelf of klasgenoten. Ga terug naar OneDrive, open je **School**-map en tik op het **+-icoon**. Kies **Foto\'s uploaden** en selecteer de foto die je net hebt gemaakt. Wacht tot de upload klaar is — je ziet een groen vinkje als het gelukt is.',
+            teacherCheck: 'Laat je docent zien welk soort foto je hebt geüpload en dat die in je School-map staat.',
             tip: 'Je kunt ook documenten, pdf\'s en andere bestanden uploaden. Handig voor huiswerk of opdrachten die je later wilt inleveren.',
             checklistItems: [
                 { id: 'foto-gemaakt', label: 'Ik heb een foto gemaakt of gekozen' },
@@ -83,16 +84,16 @@ export const cloudCommanderConfig: ToolGuideConfig = {
             },
         },
     ],
-    maxScore: 60,
+    maxScore: 50,
     badges: [
         {
-            minScore: 55,
+            minScore: 45,
             emoji: '🏆',
             title: 'Cloud Expert',
             color: '#D97848',
         },
         {
-            minScore: 40,
+            minScore: 30,
             emoji: '☁️',
             title: 'Cloud Commander',
             color: '#0B453F',
@@ -103,6 +104,12 @@ export const cloudCommanderConfig: ToolGuideConfig = {
             title: 'Aan de slag',
             color: '#5F947D',
         },
+    ],
+    learningObjectives: [
+        'De leerling herkent het verschil tussen lokale opslag en cloudopslag en benoemt één voordeel.',
+        'De leerling past een mappenstructuur toe door een map aan te maken en een bestand daarin op te slaan.',
+        'De leerling uploadt een bestand naar OneDrive en controleert of het uploaden is geslaagd.',
+        'De leerling deelt een bestand via een link en legt uit waarom dat veiliger is dan een bijlage.',
     ],
     takeaways: [
         'Je kunt OneDrive openen en inloggen met je schoolaccount',
