@@ -1,4 +1,5 @@
 import React, { useState, useRef, useMemo, useEffect } from 'react';
+import { toUserMessage } from '@/utils/errorMessages';
 import {
     Plus, Upload, Trash2, ChevronDown, ChevronUp, X, Check, AlertCircle, Briefcase
 } from 'lucide-react';
@@ -136,8 +137,7 @@ export function TransactionsPanel({ transactions, userId, year, onRefresh }: Tra
             });
             onRefresh();
         } catch (e: unknown) {
-            const err = e as Error;
-            setError(err.message || 'Opslaan mislukt.');
+            setError(toUserMessage(e, 'Opslaan mislukt.'));
         } finally {
             setSaving(false);
         }
@@ -149,8 +149,7 @@ export function TransactionsPanel({ transactions, userId, year, onRefresh }: Tra
             await deleteTransaction(id);
             onRefresh();
         } catch (e: unknown) {
-            const err = e as Error;
-            setError(err.message || 'Verwijderen mislukt.');
+            setError(toUserMessage(e, 'Verwijderen mislukt.'));
             setShowAddModal(false);
         }
     }
@@ -161,8 +160,7 @@ export function TransactionsPanel({ transactions, userId, year, onRefresh }: Tra
             await updateTransaction(tx.id, { is_private: !tx.is_private });
             onRefresh();
         } catch (e: unknown) {
-            const err = e as Error;
-            setError(err.message || 'Bijwerken mislukt.');
+            setError(toUserMessage(e, 'Bijwerken mislukt.'));
         }
     }
 
@@ -175,8 +173,7 @@ export function TransactionsPanel({ transactions, userId, year, onRefresh }: Tra
             setImportResult(result);
             onRefresh();
         } catch (e: unknown) {
-            const err = e as Error;
-            setImportError(err.message || 'Importeren mislukt.');
+            setImportError(toUserMessage(e, 'Importeren mislukt.'));
         } finally {
             setImporting(false);
         }
