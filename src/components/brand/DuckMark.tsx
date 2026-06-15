@@ -1,13 +1,23 @@
 import React from 'react';
 
+/**
+ * DuckMark — renders the DGSkills duck logo.
+ *
+ * ⚠️ Source of truth: /assets/brand/dgskills-duck-logo-mark.webp
+ *    Do NOT replace this with public/favicon.svg or public/logo.svg —
+ *    those are legacy wrapper SVGs pointing to the same raster, not vector sources.
+ *    For new sizes/formats, resize from the WebP above, not from any SVG.
+ */
 export function DuckMark({ className }: { className?: string }) {
     return (
-        <svg viewBox="0 0 64 64" className={className} xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M34 4.5c-3-1.3-6.4.3-7.5 3.4" fill="none" stroke="#202023" strokeWidth="3.8" strokeLinecap="round" />
-            <circle cx="32" cy="34" r="25.5" fill="#e1ff01" stroke="#202023" strokeWidth="4.5" />
-            <ellipse cx="24" cy="31" rx="5.4" ry="9" fill="#202023" />
-            <ellipse cx="40" cy="31" rx="5.4" ry="9" fill="#202023" />
-            <rect x="23" y="44" width="18" height="9" rx="4.5" fill="#ffffff" stroke="#202023" strokeWidth="3.8" />
-        </svg>
+        <img
+            src="/assets/brand/dgskills-duck-logo-mark.webp"
+            alt="DGSkills"
+            className={className}
+            aria-hidden="true"
+            width={64}
+            height={64}
+            decoding="async"
+        />
     );
 }

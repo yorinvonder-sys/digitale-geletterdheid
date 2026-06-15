@@ -84,12 +84,12 @@ export const techImpactAnalystConfig: DataViewerConfig = {
                 'Landen kiezen verschillende posities bij het reguleren van AI. Onderzoekers gaven landen een score van 0-100 voor de strengheid van hun AI-wetgeving (2024).',
             type: 'bar-chart',
             chartData: [
-                { label: 'EU', value: 78, color: '#0B453F' },
-                { label: 'VK', value: 52, color: '#0B453F' },
-                { label: 'VS', value: 38, color: '#D97848' },
-                { label: 'China', value: 65, color: '#D97848' },
-                { label: 'Japan', value: 44, color: '#D7C95F' },
-                { label: 'India', value: 28, color: '#5F947D' },
+                { label: 'EU', value: 78, color: '#202023' },
+                { label: 'VK', value: 52, color: '#202023' },
+                { label: 'VS', value: 38, color: '#ff3c21' },
+                { label: 'China', value: 65, color: '#ff3c21' },
+                { label: 'Japan', value: 44, color: '#e1ff01' },
+                { label: 'India', value: 28, color: '#202023' },
             ],
             questions: [
                 {
@@ -196,25 +196,25 @@ export const techImpactAnalystConfig: DataViewerConfig = {
             minScore: 85,
             emoji: '🔎',
             title: 'Tech Impact Expert!',
-            color: '#5F947D',
+            color: '#202023',
         },
         {
             minScore: 65,
             emoji: '⚖️',
             title: 'Kritisch Analist',
-            color: '#0B453F',
+            color: '#202023',
         },
         {
             minScore: 40,
             emoji: '🔬',
             title: 'Impact Onderzoeker',
-            color: '#D7C95F',
+            color: '#e1ff01',
         },
         {
             minScore: 0,
             emoji: '📚',
             title: 'Aan de slag!',
-            color: '#445865',
+            color: '#202023',
         },
     ],
 

@@ -25,7 +25,7 @@ const chatStream = read('supabase/functions/chatStream/index.ts');
 const generateImage = read('supabase/functions/generateImage/index.ts');
 const analyzeDrawing = read('supabase/functions/analyzeDrawing/index.ts');
 const demoChat = read('supabase/functions/demo-chat/index.ts');
-const client = read('src/services/geminiService.ts');
+const client = read('src/services/aiProviderService.ts');
 const agentLogic = read('src/hooks/useAgentLogic.ts');
 
 assert(migration.includes('create table if not exists public.ai_usage_events'), 'Migration must create public.ai_usage_events.');

@@ -8,7 +8,7 @@ export const webDeveloperConfig: BuilderCanvasConfig = {
     introDescription:
         'In deze missie ga je een stap verder dan HTML en CSS. Je bouwt een interactieve webpagina voor een dierenasiel — met navigatie, een galerij en JavaScript-functies die reageren op klikken. Zo werk je als een echte webdeveloper.',
     missionGoal: {
-        primaryGoal: 'Ontwerp, beschrijf en test een interactieve webpagina met HTML-structuur, CSS-layout en JavaScript-gedrag.',
+        primaryGoal: 'Ik ontwerp, beschrijf en test een interactieve webpagina met HTML-structuur, CSS-layout en JavaScript-gedrag.',
         criteria: {
             type: 'steps-complete',
             min: 4,
@@ -90,11 +90,11 @@ export const webDeveloperConfig: BuilderCanvasConfig = {
     ],
     maxScore: 100,
     badges: [
-        { minScore: 90, emoji: '🏆', title: 'Full Stack Hero', color: '#D7C95F' },
-        { minScore: 70, emoji: '🖥️', title: 'Web Developer', color: '#5F947D' },
-        { minScore: 50, emoji: '🔧', title: 'Code Knutselaar', color: '#D97848' },
-        { minScore: 25, emoji: '💡', title: 'Beginnende Webdeveloper', color: '#0B453F' },
-        { minScore: 0, emoji: '🌱', title: 'Op weg', color: '#445865' },
+        { minScore: 90, emoji: '🏆', title: 'Full Stack Hero', color: '#e1ff01' },
+        { minScore: 70, emoji: '🖥️', title: 'Web Developer', color: '#202023' },
+        { minScore: 50, emoji: '🔧', title: 'Code Knutselaar', color: '#ff3c21' },
+        { minScore: 25, emoji: '💡', title: 'Beginnende Webdeveloper', color: '#202023' },
+        { minScore: 0, emoji: '🌱', title: 'Op weg', color: '#202023' },
     ],
     takeaways: [
         'Je weet hoe je semantische HTML gebruikt voor een overzichtelijke paginastructuur',

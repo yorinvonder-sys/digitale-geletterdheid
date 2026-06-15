@@ -92,13 +92,13 @@ export const MatchPairs: React.FC<MatchPairsProps> = ({
         <div className="space-y-4">
             <div>
                 <h3
-                    className="text-lg font-black text-[#08283B] mb-1"
+                    className="text-lg font-black text-duck-ink mb-1"
                     style={{ fontFamily: "'Newsreader', Georgia, serif" }}
                 >
                     {title}
                 </h3>
                 <p
-                    className="text-sm text-[#445865]"
+                    className="text-sm text-duck-muted"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     {description}
@@ -106,7 +106,7 @@ export const MatchPairs: React.FC<MatchPairsProps> = ({
             </div>
 
             {!done && (
-                <p className="text-xs text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                <p className="text-xs text-duck-muted" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                     Klik een item links aan, dan het bijpassende item rechts.
                 </p>
             )}
@@ -124,10 +124,10 @@ export const MatchPairs: React.FC<MatchPairsProps> = ({
                                 onClick={() => handleLeftClick(item.id)}
                                 className={`w-full text-left p-2.5 rounded-xl border text-xs font-medium transition-all duration-200
                                     ${isMatched
-                                        ? 'bg-[#5F947D]/10 border-[#5F947D] text-[#5F947D] opacity-60 cursor-default'
+                                        ? 'bg-duck-ink/10 border-duck-ink text-duck-ink opacity-60 cursor-default'
                                         : isSelected
-                                            ? 'bg-[#D97848]/10 border-[#D97848] text-[#D97848]'
-                                            : 'bg-white border-[#E7D8BD] text-[#445865] hover:border-[#D97848]/40'
+                                            ? 'bg-duck-coral/10 border-duck-coral text-duck-coral'
+                                            : 'bg-white border-duck-line text-duck-muted hover:border-duck-coral/40'
                                     }`}
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                                 animate={isSelected ? { scale: 1.02 } : { scale: 1 }}
@@ -151,12 +151,12 @@ export const MatchPairs: React.FC<MatchPairsProps> = ({
                                 onClick={() => handleRightClick(item.id)}
                                 className={`w-full text-left p-2.5 rounded-xl border text-xs font-medium transition-all duration-200
                                     ${isMatched
-                                        ? 'bg-[#5F947D]/10 border-[#5F947D] text-[#5F947D] opacity-60 cursor-default'
+                                        ? 'bg-duck-ink/10 border-duck-ink text-duck-ink opacity-60 cursor-default'
                                         : isFlashing
-                                            ? 'bg-[#D97848]/10 border-[#D97848] text-[#D97848]'
+                                            ? 'bg-duck-coral/10 border-duck-coral text-duck-coral'
                                             : selectedLeft !== null
-                                                ? 'bg-white border-[#E7D8BD] text-[#445865] hover:border-[#D97848]/40 cursor-pointer'
-                                                : 'bg-white border-[#E7D8BD] text-[#445865]'
+                                                ? 'bg-white border-duck-line text-duck-muted hover:border-duck-coral/40 cursor-pointer'
+                                                : 'bg-white border-duck-line text-duck-muted'
                                     }`}
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                                 animate={isFlashing ? { x: [0, -4, 4, -4, 0] } : { x: 0 }}
@@ -172,14 +172,14 @@ export const MatchPairs: React.FC<MatchPairsProps> = ({
 
             {/* Progress */}
             <div className="flex items-center gap-2">
-                <div className="flex-1 h-1.5 bg-[#E7D8BD] rounded-full overflow-hidden">
+                <div className="flex-1 h-1.5 bg-duck-line rounded-full overflow-hidden">
                     <motion.div
-                        className="h-full bg-[#5F947D] rounded-full"
+                        className="h-full bg-duck-ink rounded-full"
                         animate={{ width: `${(matched.size / pairs.length) * 100}%` }}
                         transition={{ duration: 0.3 }}
                     />
                 </div>
-                <span className="text-xs text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                <span className="text-xs text-duck-muted" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                     {matched.size}/{pairs.length}
                     {wrongAttempts > 0 && ` · ${wrongAttempts} fout${wrongAttempts === 1 ? '' : 'en'}`}
                 </span>
@@ -193,14 +193,14 @@ export const MatchPairs: React.FC<MatchPairsProps> = ({
                         className="space-y-3"
                     >
                         <div
-                            className="p-3 rounded-xl bg-[#5F947D]/10 text-[#5F947D] text-sm font-medium"
+                            className="p-3 rounded-xl bg-duck-ink/10 text-duck-ink text-sm font-medium"
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         >
                             Alle koppels gevonden! <span className="font-black">{score}/{maxScore} punten</span>
                         </div>
                         <button
                             onClick={handleContinue}
-                            className="w-full py-3 bg-gradient-to-r from-[#5F947D] to-[#5F947D] hover:from-[#5F947D] hover:to-[#5F947D] text-white rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2"
+                            className="w-full py-3 bg-gradient-to-r from-duck-ink to-duck-ink hover:from-duck-ink hover:to-duck-ink text-white rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2"
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         >
                             Volgende ronde

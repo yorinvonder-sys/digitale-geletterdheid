@@ -1,5 +1,6 @@
 import React from 'react';
 import { ChevronRight } from 'lucide-react';
+import { DuckMark } from '@/components/brand/DuckMark';
 import { MissionGoalBanner } from './MissionGoalBanner';
 import type { MissionGoal } from './types';
 
@@ -20,17 +21,17 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({
     features,
     goal,
 }) => (
-    <div className="min-h-screen overflow-y-auto bg-[#FCF6EA] flex items-start justify-center px-4 py-6 sm:py-8" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+    <div className="min-h-screen overflow-y-auto bg-duck-bg flex items-start justify-center px-4 py-6 sm:py-8" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
         <div className="w-full max-w-lg text-center">
-            <div className="mx-auto mb-4 flex size-16 items-center justify-center rounded-2xl border border-[#E7D8BD] bg-[#FFFDF7] text-4xl shadow-sm">{emoji}</div>
+            <DuckMark className="mx-auto mb-4 size-16" />
             <h1
-                className="text-2xl font-black text-[#08283B] mb-3"
+                className="text-2xl font-black text-duck-ink mb-3"
                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
             >
                 {title}
             </h1>
             <p
-                className="text-sm text-[#445865] leading-relaxed mb-5"
+                className="text-sm text-duck-muted leading-relaxed mb-5"
                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
             >
                 {description}
@@ -40,7 +41,7 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({
 
             <button
                 onClick={onStart}
-                className="mb-5 w-full py-3.5 bg-[#D7C95F] hover:bg-[#CBC04F] text-[#08283B] rounded-full font-black text-sm transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2 shadow-lg shadow-[#D7C95F]/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0B453F] focus-visible:ring-offset-2"
+                className="mb-5 w-full py-3.5 bg-duck-acid hover:bg-duck-acid/80 text-duck-ink rounded-full font-black text-sm transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2 shadow-lg shadow-duck-acid/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
             >
                 Start de missie
@@ -48,19 +49,19 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({
             </button>
 
             {features && features.length > 0 && (
-                <div className="bg-[#FFFDF7] rounded-2xl border border-[#E7D8BD] p-4 text-left shadow-sm">
+                <div className="bg-white rounded-2xl border border-duck-line p-4 text-left shadow-sm">
                     {features.map((f, i) => (
                         <div
                             key={i}
                             className={`flex items-center gap-3 py-2.5 ${
-                                i < features.length - 1 ? 'border-b border-[#E7D8BD]' : ''
+                                i < features.length - 1 ? 'border-b border-duck-line' : ''
                             }`}
                         >
-                            <div className="w-6 h-6 bg-[#D97848]/10 rounded-lg flex items-center justify-center">
-                                <span className="text-xs font-black text-[#D97848]">{i + 1}</span>
+                            <div className="w-6 h-6 bg-duck-coral/10 rounded-lg flex items-center justify-center">
+                                <span className="text-xs font-black text-duck-coral">{i + 1}</span>
                             </div>
                             <span
-                                className="text-sm font-semibold text-[#445865]"
+                                className="text-sm font-semibold text-duck-muted"
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                             >
                                 {f}

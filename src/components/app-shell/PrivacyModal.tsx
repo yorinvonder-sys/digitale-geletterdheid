@@ -148,7 +148,7 @@ export const PrivacyModal: React.FC<PrivacyModalProps> = ({ isOpen, onClose, onA
                     <section>
                         <h3 className="text-sm font-bold text-lab-ink uppercase tracking-wider mb-3">AI & Chat</h3>
                         <div className="bg-lab-gold border border-lab-gold rounded-2xl p-4 text-sm text-lab-gold">
-                            <p className="mb-3">De AI-onderwijsassistent wordt aangedreven door <strong>Google Gemini</strong>.</p>
+                            <p className="mb-3">De AI-onderwijsassistent wordt aangedreven door <strong>Mistral AI</strong>.</p>
                             <ul className="list-disc pl-4 space-y-1 text-sm">
                                 <li><strong>Geen Training:</strong> Jouw invoer wordt <u>niet</u> gebruikt om de AI-modellen te trainen.</li>
                                 <li><strong>Dataminimalisatie:</strong> We sturen alleen de inhoud die nodig is voor de gevraagde AI-functie.</li>

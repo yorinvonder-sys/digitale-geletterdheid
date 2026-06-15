@@ -54,6 +54,16 @@ export default defineConfig(({ mode }) => {
       }
     },
     plugins: [react(), asyncCssPlugin()],
+    optimizeDeps: {
+      exclude: [
+        // Keep heavy, lazy feature dependencies out of dev prebundles so the
+        // production bundler can split their real dependency graphs.
+        'exceljs',
+        'three',
+        '@react-three/fiber',
+        '@react-three/drei',
+      ],
+    },
     // SECURITY: API keys removed from client bundle - all AI calls go through Supabase Edge Functions proxy
     resolve: {
       alias: {
@@ -63,7 +73,7 @@ export default defineConfig(({ mode }) => {
     build: {
       // Keep lazy routes lazy: avoid eager modulepreload chains on public landing routes.
       modulePreload: false,
-      rollupOptions: {
+      rolldownOptions: {
         // html2canvas is an optional jsPDF dep — never used, don't bundle it
         external: ['html2canvas'],
         output: {
@@ -82,10 +92,10 @@ export default defineConfig(({ mode }) => {
             if (!pkg) return;
 
             if (pkg === 'react' || pkg === 'react-dom' || pkg.startsWith('react_')) return 'vendor-react';
-            if (pkg === 'three' || pkg.startsWith('@react-three')) return 'vendor-three';
+            if (pkg === 'three') return 'vendor-three-core';
+            if (pkg.startsWith('@react-three')) return 'vendor-react-three';
             if (pkg === 'framer-motion') return 'vendor-framer';
             if (pkg === 'lucide-react') return 'vendor-lucide';
-            if (pkg.startsWith('@google/')) return 'vendor-genai';
             if (pkg === 'exceljs') return 'vendor-exceljs';
             if (pkg === 'dompurify') return 'vendor-dompurify';
             // jspdf: NOT in manualChunks — stays with PDF export flow (BookPreview), avoids preload on landing
@@ -95,7 +105,10 @@ export default defineConfig(({ mode }) => {
           }
         }
       },
-      chunkSizeWarningLimit: 600
+      // Large lazy feature vendors are explicitly budgeted in
+      // config/performance-budgets.json. Keep Vite's warning aligned with that
+      // budget so unexpected >1MB chunks still fail visibly.
+      chunkSizeWarningLimit: 1000
     },
     define: {
       __APP_BUILD_ID__: JSON.stringify(buildId)

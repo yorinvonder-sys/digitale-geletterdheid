@@ -83,11 +83,11 @@ export const meesterproefConfig: BuilderCanvasConfig = {
     ],
     maxScore: 100,
     badges: [
-        { minScore: 90, emoji: '🏆', title: 'Meesterproef Geslaagd', color: '#D7C95F' },
-        { minScore: 70, emoji: '🎓', title: 'Digital Professional', color: '#5F947D' },
-        { minScore: 50, emoji: '💪', title: 'Doorzetters Medaille', color: '#D97848' },
-        { minScore: 25, emoji: '💡', title: 'Beginnende Meesterproef', color: '#0B453F' },
-        { minScore: 0, emoji: '🌱', title: 'Op weg', color: '#445865' },
+        { minScore: 90, emoji: '🏆', title: 'Meesterproef Geslaagd', color: '#e1ff01' },
+        { minScore: 70, emoji: '🎓', title: 'Digital Professional', color: '#202023' },
+        { minScore: 50, emoji: '💪', title: 'Doorzetters Medaille', color: '#ff3c21' },
+        { minScore: 25, emoji: '💡', title: 'Beginnende Meesterproef', color: '#202023' },
+        { minScore: 0, emoji: '🌱', title: 'Op weg', color: '#202023' },
     ],
     takeaways: [
         'Je hebt een compleet projectvoorstel geschreven met een SMART-doelstelling',

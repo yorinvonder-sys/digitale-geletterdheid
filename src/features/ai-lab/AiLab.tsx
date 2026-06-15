@@ -62,7 +62,7 @@ const AiBiasDetectivePreview = lazy(() => import('@/features/ai-lab/previews/AiB
 
 
 const ConfettiExplosion = () => {
-  const colors = ['#D97848', '#D7C95F', '#5F947D', '#D97848', '#D97848', '#D97848'];
+  const colors = ['#ff3c21', '#e1ff01', '#202023', '#ff3c21', '#ff3c21', '#ff3c21'];
   const pieces = Array.from({ length: 30 }, (_, i) => ({
     id: i,
     color: colors[i % colors.length],
@@ -817,7 +817,7 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
             <div className="hidden sm:flex items-center gap-1.5 text-[10px] font-bold text-lab-muted uppercase tracking-wider leading-none">
               <span>Dashboard</span>
               <ChevronRight size={10} className="opacity-60" />
-              <span style={{ color: selectedRole?.color || '#5F947D' }}>AI Lab</span>
+              <span style={{ color: selectedRole?.color || '#202023' }}>AI Lab</span>
               {selectedRole && (
                 <>
                   <ChevronRight size={10} className="opacity-60" />
@@ -1092,7 +1092,7 @@ export const AiLab: React.FC<AiLabProps> = ({ user, onExit, saveProgress, initia
                 <div className={`px-4 py-3 backdrop-blur border-b flex items-center gap-3 shrink-0 transition-all ${goalAchieved ? 'bg-lab-sage/90 border-lab-sage' : 'bg-lab-cream/80 border-lab-line'}`}>
                   <div
                     className="p-2 rounded-lg text-white"
-                    style={{ backgroundColor: goalAchieved ? '#5F947D' : selectedRole.color }}
+                    style={{ backgroundColor: goalAchieved ? '#202023' : selectedRole.color }}
                   >
                     {goalAchieved ? <CheckCircle2 size={16} /> : <Target size={16} />}
                   </div>

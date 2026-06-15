@@ -1,6 +1,6 @@
 /**
  * Pain Points section — illustration-driven urgency cards.
- * Each card has a Gemini-generated pencil-drawn illustration showing the problem visually.
+ * Each card has a Mistral-generated pencil-drawn illustration showing the problem visually.
  */
 import React from 'react';
 

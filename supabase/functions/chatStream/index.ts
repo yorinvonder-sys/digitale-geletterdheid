@@ -1,25 +1,25 @@
 /**
  * Edge Function: /chatStream — Streaming AI Chat Proxy (SSE)
  *
- * Identical security layers as /chat, but streams the Vertex AI response
+ * Identical security layers as /chat, but streams the Mistral response
  * back to the client via Server-Sent Events for real-time text display.
  *
  * Security layers:
  * 1. JWT auth verification (Supabase)
  * 2. Server-side prompt injection filtering (mirrors client-side)
  * 3. Server-side rate limiting (15 req/min per user)
- * 4. Vertex AI (europe-west4) — enterprise ToS, no age restriction
- * 5. Service account auth (no API key in URL)
+ * 4. Mistral API — server-side API key only
+ * 5. No provider credentials in client responses
  * 6. Server-side system instruction lookup via roleId (prevents prompt injection via systemInstruction)
  */
-import { getAccessToken, getVertexStreamUrl } from "../_shared/vertexAuth.ts";
 import { buildCorsHeaders, rejectDisallowedBrowserRequest } from "../_shared/cors.ts";
 import { rateLimitHeaders } from "../_shared/rateLimiter.ts";
 import {
     validateAndParseRequest,
-    buildVertexPayload,
+    buildAiChatPayload,
     selectModel,
 } from "../_shared/chatCore.ts";
+import { buildMistralMessages, streamMistralChat } from "../_shared/mistralClient.ts";
 import { filterStreamChunk } from "../_shared/outputFilter.ts";
 import { detectAndLogStepComplete } from "../_shared/stepCompleteDetector.ts";
 import { countTextChars, logAiUsageEvent } from "../_shared/aiUsageLogger.ts";
@@ -36,32 +36,29 @@ Deno.serve(async (req: Request) => {
     const validated = await validateAndParseRequest(req, corsHeaders, "chat-stream");
     if (validated instanceof Response) return validated;
 
-    // Forward sanitized message to Gemini via Vertex AI streaming endpoint
-    let geminiResponse: Response;
+    // Forward sanitized message to Mistral streaming endpoint
+    let mistralResponse: Response;
     const hasGameContext = !!(validated.body.gameContext && typeof validated.body.gameContext === "string");
-    const model = selectModel(validated.body.roleId, hasGameContext);
-    const vertexPayload = buildVertexPayload(validated);
-    const inputChars = countTextChars(vertexPayload);
+    let model = selectModel(validated.body.roleId, hasGameContext);
+    const aiPayload = buildAiChatPayload(validated);
+    const inputChars = countTextChars(aiPayload);
     const historyChars = countTextChars(validated.safeHistory.history);
 
     try {
-        const geminiUrl = getVertexStreamUrl(model);
-        const accessToken = await getAccessToken();
-
-        geminiResponse = await fetch(geminiUrl, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${accessToken}`,
-            },
-            body: JSON.stringify(vertexPayload),
+        const result = await streamMistralChat({
+            messages: buildMistralMessages(validated.systemInstruction, aiPayload.contents),
+            temperature: aiPayload.generationConfig.temperature,
+            maxTokens: aiPayload.generationConfig.maxOutputTokens,
         });
+        mistralResponse = result.response;
+        model = result.model;
     } catch (err: unknown) {
         const message = err instanceof Error ? err.message : String(err);
-        console.error("[chatStream] Vertex AI setup error:", message);
+        console.error("[chatStream] Mistral setup error:", message);
         logAiUsageEvent({
             requestId: validated.requestId,
             endpoint: "chatStream",
+            provider: "mistral",
             model,
             status: "error",
             userId: validated.userId,
@@ -78,13 +75,14 @@ Deno.serve(async (req: Request) => {
         );
     }
 
-    if (!geminiResponse.ok) {
-        const status = geminiResponse.status;
-        const errBody = await geminiResponse.text().catch(() => "");
-        console.error(`[chatStream] Vertex AI error (${status}):`, errBody);
+    if (!mistralResponse.ok) {
+        const status = mistralResponse.status;
+        const errBody = await mistralResponse.text().catch(() => "");
+        console.error(`[chatStream] Mistral error (${status}):`, errBody);
         logAiUsageEvent({
             requestId: validated.requestId,
             endpoint: "chatStream",
+            provider: "mistral",
             model,
             status: status === 429 ? "rate_limited" : "error",
             userId: validated.userId,
@@ -107,10 +105,9 @@ Deno.serve(async (req: Request) => {
         );
     }
 
-    // Stream the Vertex AI SSE response back to the client
-    // Vertex AI with ?alt=sse returns SSE events with JSON chunks.
+    // Stream the Mistral SSE response back to the client
     // We transform each chunk into our simplified SSE format: data: {"text": "..."}\n\n
-    const reader = geminiResponse.body?.getReader();
+    const reader = mistralResponse.body?.getReader();
     if (!reader) {
         return new Response(
             JSON.stringify({ error: "Geen stream beschikbaar." }),
@@ -148,8 +145,10 @@ Deno.serve(async (req: Request) => {
                             if (chunk?.usageMetadata || chunk?.usage_metadata) {
                                 usagePayload = chunk;
                             }
-                            // Extract text from Vertex AI response structure
-                            const text = chunk?.candidates?.[0]?.content?.parts?.[0]?.text;
+                            if (chunk?.usage) {
+                                usagePayload = chunk;
+                            }
+                            const text = chunk?.choices?.[0]?.delta?.content || chunk?.choices?.[0]?.message?.content;
                             if (text) {
                                 accumulatedText += text;
 
@@ -185,7 +184,10 @@ Deno.serve(async (req: Request) => {
                             if (chunk?.usageMetadata || chunk?.usage_metadata) {
                                 usagePayload = chunk;
                             }
-                            const text = chunk?.candidates?.[0]?.content?.parts?.[0]?.text;
+                            if (chunk?.usage) {
+                                usagePayload = chunk;
+                            }
+                            const text = chunk?.choices?.[0]?.delta?.content || chunk?.choices?.[0]?.message?.content;
                             if (text) {
                                 accumulatedText += text;
                                 controller.enqueue(
@@ -207,6 +209,7 @@ Deno.serve(async (req: Request) => {
                 logAiUsageEvent({
                     requestId: validated.requestId,
                     endpoint: "chatStream",
+                    provider: "mistral",
                     model,
                     status: streamBlocked ? "blocked" : "ok",
                     userId: validated.userId,
@@ -230,6 +233,7 @@ Deno.serve(async (req: Request) => {
                 logAiUsageEvent({
                     requestId: validated.requestId,
                     endpoint: "chatStream",
+                    provider: "mistral",
                     model,
                     status: "error",
                     userId: validated.userId,

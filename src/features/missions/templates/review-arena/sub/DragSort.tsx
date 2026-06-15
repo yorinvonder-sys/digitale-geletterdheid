@@ -48,14 +48,14 @@ const ItemRow: React.FC<ItemRowProps> = ({ item, submitted, currentIndex, totalI
             className={`flex items-center gap-3 p-3 rounded-xl border transition-all duration-300 select-none
                 ${submitted
                     ? isCorrect
-                        ? 'bg-[#5F947D]/10 border-[#5F947D]'
-                        : 'bg-[#D97848]/10 border-[#D97848]/60'
-                    : 'bg-white border-[#E7D8BD] hover:border-[#D97848]/40 cursor-grab active:cursor-grabbing'
+                        ? 'bg-duck-ink/10 border-duck-ink'
+                        : 'bg-duck-coral/10 border-duck-coral/60'
+                    : 'bg-white border-duck-line hover:border-duck-coral/40 cursor-grab active:cursor-grabbing'
                 }`}
         >
             <div
                 onPointerDown={submitted ? undefined : (e) => controls.start(e)}
-                className={`min-h-[44px] min-w-[32px] inline-flex items-center justify-center text-[#445865] ${submitted ? '' : 'cursor-grab active:cursor-grabbing'}`}
+                className={`min-h-[44px] min-w-[32px] inline-flex items-center justify-center text-duck-muted ${submitted ? '' : 'cursor-grab active:cursor-grabbing'}`}
                 style={{ touchAction: 'none' }}
                 aria-hidden="true"
             >
@@ -63,12 +63,12 @@ const ItemRow: React.FC<ItemRowProps> = ({ item, submitted, currentIndex, totalI
             </div>
 
             <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0"
-                style={{ background: submitted ? (isCorrect ? '#5F947D' : '#D97848') : '#D97848' }}>
+                style={{ background: submitted ? (isCorrect ? '#202023' : '#ff3c21') : '#ff3c21' }}>
                 <span className="text-xs font-black text-white">{currentIndex + 1}</span>
             </div>
 
             <span
-                className="flex-1 text-sm text-[#445865] font-medium"
+                className="flex-1 text-sm text-duck-muted font-medium"
                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
             >
                 {item.label}
@@ -76,8 +76,8 @@ const ItemRow: React.FC<ItemRowProps> = ({ item, submitted, currentIndex, totalI
 
             {submitted && (
                 isCorrect
-                    ? <CheckCircle size={16} className="text-[#5F947D] flex-shrink-0" />
-                    : <XCircle size={16} className="text-[#D97848] flex-shrink-0" />
+                    ? <CheckCircle size={16} className="text-duck-ink flex-shrink-0" />
+                    : <XCircle size={16} className="text-duck-coral flex-shrink-0" />
             )}
             {!submitted && (
                 <div className="flex shrink-0 gap-1">
@@ -86,7 +86,7 @@ const ItemRow: React.FC<ItemRowProps> = ({ item, submitted, currentIndex, totalI
                         onClick={() => onMove(item.id, -1)}
                         disabled={currentIndex === 0}
                         aria-label={`${item.label} omhoog verplaatsen`}
-                        className="grid min-h-[36px] min-w-[36px] place-items-center rounded-lg border border-[#E7D8BD] text-[#445865] transition-colors hover:border-[#D97848] hover:text-[#D97848] disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D97848]/40"
+                        className="grid min-h-[36px] min-w-[36px] place-items-center rounded-lg border border-duck-line text-duck-muted transition-colors hover:border-duck-coral hover:text-duck-coral disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-coral/40"
                     >
                         <ArrowUp size={14} />
                     </button>
@@ -95,7 +95,7 @@ const ItemRow: React.FC<ItemRowProps> = ({ item, submitted, currentIndex, totalI
                         onClick={() => onMove(item.id, 1)}
                         disabled={currentIndex === totalItems - 1}
                         aria-label={`${item.label} omlaag verplaatsen`}
-                        className="grid min-h-[36px] min-w-[36px] place-items-center rounded-lg border border-[#E7D8BD] text-[#445865] transition-colors hover:border-[#D97848] hover:text-[#D97848] disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D97848]/40"
+                        className="grid min-h-[36px] min-w-[36px] place-items-center rounded-lg border border-duck-line text-duck-muted transition-colors hover:border-duck-coral hover:text-duck-coral disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-coral/40"
                     >
                         <ArrowDown size={14} />
                     </button>
@@ -144,20 +144,20 @@ export const DragSort: React.FC<DragSortProps> = ({
         <div className="space-y-4">
             <div>
                 <h3
-                    className="text-lg font-black text-[#08283B] mb-1"
+                    className="text-lg font-black text-duck-ink mb-1"
                     style={{ fontFamily: "'Newsreader', Georgia, serif" }}
                 >
                     {title}
                 </h3>
                 <p
-                    className="text-sm text-[#445865]"
+                    className="text-sm text-duck-muted"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     {description}
                 </p>
             </div>
 
-            <div className="text-xs text-[#445865] flex items-center gap-1.5" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+            <div className="text-xs text-duck-muted flex items-center gap-1.5" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                 <GripVertical size={12} />
                 Sleep de kaarten in de juiste volgorde of gebruik de pijltjes
             </div>
@@ -184,8 +184,8 @@ export const DragSort: React.FC<DragSortProps> = ({
                 <div
                     className={`p-3 rounded-xl text-sm font-medium ${
                         correctCount === items.length
-                            ? 'bg-[#5F947D]/10 text-[#5F947D]'
-                            : 'bg-[#D97848]/10 text-[#D97848]'
+                            ? 'bg-duck-ink/10 text-duck-ink'
+                            : 'bg-duck-coral/10 text-duck-coral'
                     }`}
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
@@ -200,7 +200,7 @@ export const DragSort: React.FC<DragSortProps> = ({
             {!submitted ? (
                 <button
                     onClick={handleSubmit}
-                    className="w-full py-3 bg-gradient-to-r from-[#D97848] to-[#D97848] hover:from-[#D97848] hover:to-[#D97848] text-white rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98]"
+                    className="w-full py-3 bg-gradient-to-r from-duck-coral to-duck-coral hover:from-duck-coral hover:to-duck-coral text-white rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98]"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     Volgorde bevestigen
@@ -208,7 +208,7 @@ export const DragSort: React.FC<DragSortProps> = ({
             ) : (
                 <button
                     onClick={handleContinue}
-                    className="w-full py-3 bg-gradient-to-r from-[#5F947D] to-[#5F947D] hover:from-[#5F947D] hover:to-[#5F947D] text-white rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2"
+                    className="w-full py-3 bg-gradient-to-r from-duck-ink to-duck-ink hover:from-duck-ink hover:to-duck-ink text-white rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     Volgende ronde

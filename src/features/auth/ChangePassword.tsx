@@ -60,30 +60,30 @@ export const ChangePassword: React.FC<ChangePasswordProps> = ({ onComplete }) =>
     };
 
     return (
-        <div className="min-h-screen bg-lab-cream flex items-center justify-center p-4">
-            <div className="bg-white max-w-md w-full rounded-2xl shadow-xl overflow-hidden border border-lab-line">
+        <div className="min-h-screen bg-duck-bg font-sans flex items-center justify-center p-4">
+            <div className="bg-white max-w-md w-full rounded-[1.75rem] shadow-duck-soft overflow-hidden border border-duck-ink/15">
                 <div className="p-8">
                     <div className="flex justify-center mb-6">
-                        <div className="w-16 h-16 bg-lab-coral rounded-2xl flex items-center justify-center text-lab-coral">
+                        <div className="w-16 h-16 bg-duck-ink rounded-full flex items-center justify-center text-duck-acid">
                             <Lock size={32} />
                         </div>
                     </div>
 
-                    <h2 className="text-2xl font-bold text-center text-lab-ink mb-2">Nieuw Wachtwoord Nodig</h2>
-                    <p className="text-center text-lab-muted mb-8 text-sm">
+                    <h2 className="text-2xl font-display font-black text-center text-duck-ink mb-2">Nieuw Wachtwoord Nodig</h2>
+                    <p className="text-center text-duck-ink/60 mb-8 text-sm font-semibold">
                         Je logt in met een tijdelijk wachtwoord. Stel nu een eigen, veilig wachtwoord in om verder te gaan.
                     </p>
 
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div className="space-y-4">
                             <div className="relative">
-                                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-lab-muted" size={18} />
+                                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-duck-ink/40" size={18} />
                                 <input
                                     type={showPassword ? "text" : "password"}
                                     placeholder="Nieuw wachtwoord"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                    className="w-full pl-12 pr-12 py-3.5 bg-lab-cream border border-lab-line rounded-xl outline-none focus:ring-2 focus:ring-lab-coral/20 focus:border-lab-coral transition-all font-medium text-sm text-lab-muted"
+                                    className="w-full pl-12 pr-12 py-3.5 bg-duck-bg border border-duck-ink/15 rounded-xl outline-none focus:border-duck-ink focus:ring-2 focus:ring-duck-ink/10 transition-all font-medium text-sm text-duck-ink"
                                     required
                                     minLength={12}
                                 />
@@ -91,20 +91,20 @@ export const ChangePassword: React.FC<ChangePasswordProps> = ({ onComplete }) =>
                                     type="button"
                                     onClick={() => setShowPassword(!showPassword)}
                                     aria-label={showPassword ? 'Verberg wachtwoord' : 'Toon wachtwoord'}
-                                    className="absolute right-2 top-1/2 -translate-y-1/2 p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center text-lab-muted hover:text-lab-muted hover:bg-lab-cream rounded-lg transition-colors"
+                                    className="absolute right-2 top-1/2 -translate-y-1/2 p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center text-duck-ink/50 hover:text-duck-ink hover:bg-duck-bg rounded-lg transition-colors"
                                 >
                                     {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                                 </button>
                             </div>
 
                             <div className="relative">
-                                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-lab-muted" size={18} />
+                                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-duck-ink/40" size={18} />
                                 <input
                                     type={showPassword ? "text" : "password"}
                                     placeholder="Bevestig wachtwoord"
                                     value={confirmPassword}
                                     onChange={(e) => setConfirmPassword(e.target.value)}
-                                    className="w-full pl-12 pr-4 py-3.5 bg-lab-cream border border-lab-line rounded-xl outline-none focus:ring-2 focus:ring-lab-coral/20 focus:border-lab-coral transition-all font-medium text-sm text-lab-muted"
+                                    className="w-full pl-12 pr-4 py-3.5 bg-duck-bg border border-duck-ink/15 rounded-xl outline-none focus:border-duck-ink focus:ring-2 focus:ring-duck-ink/10 transition-all font-medium text-sm text-duck-ink"
                                     required
                                     minLength={12}
                                 />
@@ -112,7 +112,7 @@ export const ChangePassword: React.FC<ChangePasswordProps> = ({ onComplete }) =>
                         </div>
 
                         {error && (
-                            <div className="text-lab-muted text-xs font-bold bg-lab-coral p-3 rounded-xl border border-lab-coral animate-in shake">
+                            <div className="text-duck-ink text-xs font-bold bg-duck-error/10 p-3 rounded-xl border border-duck-error/25 animate-in shake">
                                 {error}
                             </div>
                         )}
@@ -120,10 +120,10 @@ export const ChangePassword: React.FC<ChangePasswordProps> = ({ onComplete }) =>
                         <button
                             type="submit"
                             disabled={loading || !password || !confirmPassword}
-                            className="w-full bg-lab-coral hover:bg-lab-coral hover:text-white text-white font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg shadow-lab-coral/50 disabled:opacity-70 disabled:cursor-not-allowed hover:-translate-y-0.5 mt-6"
+                            className="w-full bg-duck-acid text-duck-ink font-black py-3.5 rounded-full flex items-center justify-center gap-2 transition-all shadow-[0_4px_0_rgba(0,0,0,0.25)] hover:-translate-y-0.5 disabled:opacity-70 disabled:cursor-not-allowed mt-6"
                         >
                             {loading ? (
-                                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                                <div className="w-5 h-5 border-2 border-duck-ink/25 border-t-duck-ink rounded-full animate-spin"></div>
                             ) : (
                                 <>
                                     <Save size={18} />

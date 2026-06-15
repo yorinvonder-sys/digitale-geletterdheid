@@ -2,7 +2,7 @@
  * AI Output Safety Filter — Post-processing voor minderjarigen
  *
  * Lichte server-side controle op AI-responses VOOR verzending naar de client.
- * Vertex AI Safety Settings blokkeren het meeste, maar edge cases kunnen
+ * Provider-neutrale output filtering blokkeert veel, maar edge cases kunnen
  * soms passeren. Deze filter is een extra vangnet.
  *
  * Detecteert alleen patronen die NIET in een educatieve context thuishoren.

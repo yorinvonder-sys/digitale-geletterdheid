@@ -4,18 +4,18 @@
  * Security layers:
  * 1. JWT auth verification (Supabase)
  * 2. Input validation — alle velden, score ranges 0-100
- * 3. No PII in Gemini prompt — alleen scores en missie-IDs
+ * 3. No PII in Mistral prompt — alleen scores en missie-IDs
  * 4. Rate limit via UNIQUE constraint (1 aanbeveling per leerling per schooljaar)
- * 5. Vertex AI (europe-west4) — enterprise ToS, geen leeftijdsbeperking
- * 6. Service account auth (geen API key in URL)
+ * 5. Mistral API — server-side API key only
+ * 6. No provider credentials in client responses
  * 7. EU AI Act Art. 12: audit trail in input_context
  * 8. EU AI Act Art. 14: teacher_approved = NULL (pending) — leerling ziet pas na goedkeuring
  */
 import { createClient } from "jsr:@supabase/supabase-js@2";
-import { getAccessToken, getVertexUrl } from "../_shared/vertexAuth.ts";
 import { buildCorsHeaders, rejectDisallowedBrowserRequest } from "../_shared/cors.ts";
+import { completeMistralChat, getMistralTextModel } from "../_shared/mistralClient.ts";
 
-const MODEL = "gemini-2.0-flash-001";
+const MODEL = getMistralTextModel();
 const VALID_DOMAINS = [
     "digitaleSystemen",
     "mediaEnAI",
@@ -274,65 +274,27 @@ Deno.serve(async (req: Request) => {
         schoolId = profileData.school_id;
     }
 
-    // --- Build Vertex AI request ---
+    // --- Build Mistral request ---
     const userMessage = buildUserMessage(body);
 
-    const vertexPayload = {
-        systemInstruction: {
-            parts: [{ text: SYSTEM_INSTRUCTION }],
-        },
-        contents: [
-            {
-                role: "user",
-                parts: [{ text: userMessage }],
-            },
-        ],
-        generationConfig: {
-            temperature: 0.3,
-            maxOutputTokens: 500,
-        },
-    };
-
     let recommendationText: string;
+    let modelVersion = MODEL;
 
     try {
-        console.log("[growthRecommendation] Step 1: Building Vertex URL...");
-        const geminiUrl = getVertexUrl(MODEL);
-        console.log("[growthRecommendation] Step 2: Getting access token...");
-        const accessToken = await getAccessToken();
-        console.log("[growthRecommendation] Step 3: Sending to Vertex AI...");
-
-        const geminiResponse = await fetch(geminiUrl, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${accessToken}`,
-            },
-            body: JSON.stringify(vertexPayload),
+        console.log("[growthRecommendation] Sending to Mistral...");
+        const result = await completeMistralChat({
+            messages: [
+                { role: "system", content: SYSTEM_INSTRUCTION },
+                { role: "user", content: userMessage },
+            ],
+            temperature: 0.3,
+            maxTokens: 500,
         });
-
-        if (!geminiResponse.ok) {
-            const status = geminiResponse.status;
-            const errBody = await geminiResponse.text().catch(() => "");
-            console.error(`[growthRecommendation] Vertex AI error (${status}):`, errBody);
-            if (status === 429) {
-                return new Response(
-                    JSON.stringify({ error: "Te veel verzoeken. Wacht even en probeer opnieuw." }),
-                    { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } },
-                );
-            }
-            return new Response(
-                JSON.stringify({ error: "AI-service tijdelijk niet beschikbaar." }),
-                { status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" } },
-            );
-        }
-
-        const geminiData = await geminiResponse.json();
-        console.log("[growthRecommendation] Step 4: Vertex AI response OK, extracting text...");
-        recommendationText = geminiData?.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
+        modelVersion = result.model;
+        recommendationText = result.text;
 
         if (!recommendationText) {
-            console.error("[growthRecommendation] Empty response from Vertex AI");
+            console.error("[growthRecommendation] Empty response from Mistral");
             return new Response(
                 JSON.stringify({ error: "AI-service tijdelijk niet beschikbaar." }),
                 { status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" } },
@@ -342,7 +304,7 @@ Deno.serve(async (req: Request) => {
         console.log("[growthRecommendation] Step 5: Success, text length:", recommendationText.length);
     } catch (err: unknown) {
         const message = err instanceof Error ? err.message : String(err);
-        console.error("[growthRecommendation] Vertex AI unhandled error:", message);
+        console.error("[growthRecommendation] Mistral unhandled error:", message);
         return new Response(
             JSON.stringify({ error: "AI-service tijdelijk niet beschikbaar." }),
             { status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" } },
@@ -373,7 +335,7 @@ Deno.serve(async (req: Request) => {
             recommendation_text: recommendationText,
             focus_domains: focusDomains,
             input_context: inputContext,
-            model_version: MODEL,
+            model_version: modelVersion,
             teacher_approved: null,
         });
 
@@ -399,7 +361,7 @@ Deno.serve(async (req: Request) => {
         JSON.stringify({
             recommendation: recommendationText,
             focusDomains,
-            modelVersion: MODEL,
+            modelVersion,
         }),
         {
             status: 200,

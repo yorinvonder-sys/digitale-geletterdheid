@@ -8,7 +8,7 @@ const config: ToolGuideConfig = {
     introDescription:
         'Open Magister op je iPad en bewijs stap voor stap dat je rooster, huiswerk en cijfers zelf kunt vinden.',
     missionGoal: {
-        primaryGoal: 'Laat zien dat je zelfstandig de belangrijkste Magister-onderdelen voor school kunt vinden.',
+        primaryGoal: 'Ik laat zien dat ik zelfstandig de belangrijkste Magister-onderdelen voor school kan vinden.',
         criteria: {
             type: 'steps-complete',
             min: 4,
@@ -120,19 +120,19 @@ const config: ToolGuideConfig = {
             minScore: 55,
             emoji: '🏆',
             title: 'Magister Expert',
-            color: '#0B453F',
+            color: '#202023',
         },
         {
             minScore: 40,
             emoji: '📅',
             title: 'Magister Meester',
-            color: '#0B453F',
+            color: '#202023',
         },
         {
             minScore: 0,
             emoji: '🌱',
             title: 'Aan de slag',
-            color: '#5F947D',
+            color: '#202023',
         },
     ],
     takeaways: [

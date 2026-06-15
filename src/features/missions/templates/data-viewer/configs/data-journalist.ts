@@ -95,12 +95,12 @@ export const dataJournalistConfig: DataViewerConfig = {
                 'In deze fictieve oefencasus vergelijk je de gemiddelde dagelijkse schermtijd van 13-15 jarigen in zes landen. Bekijk de grafiek en beantwoord de vragen.',
             type: 'bar-chart',
             chartData: [
-                { label: 'VS', value: 7.7, color: '#D97848' },
-                { label: 'Brazilië', value: 6.4, color: '#D7C95F' },
-                { label: 'Nederland', value: 4.2, color: '#0B453F' },
-                { label: 'Duitsland', value: 3.8, color: '#0B453F' },
-                { label: 'Japan', value: 2.9, color: '#5F947D' },
-                { label: 'Finland', value: 3.1, color: '#0B453F' },
+                { label: 'VS', value: 7.7, color: '#ff3c21' },
+                { label: 'Brazilië', value: 6.4, color: '#e1ff01' },
+                { label: 'Nederland', value: 4.2, color: '#202023' },
+                { label: 'Duitsland', value: 3.8, color: '#202023' },
+                { label: 'Japan', value: 2.9, color: '#202023' },
+                { label: 'Finland', value: 3.1, color: '#202023' },
             ],
             questions: [
                 {
@@ -210,25 +210,25 @@ export const dataJournalistConfig: DataViewerConfig = {
             minScore: 85,
             emoji: '🏆',
             title: 'Datajournalist in spe!',
-            color: '#D7C95F',
+            color: '#e1ff01',
         },
         {
             minScore: 65,
             emoji: '📊',
             title: 'Scherpe analist',
-            color: '#5F947D',
+            color: '#202023',
         },
         {
             minScore: 40,
             emoji: '🔍',
             title: 'Op onderzoek uit',
-            color: '#0B453F',
+            color: '#202023',
         },
         {
             minScore: 0,
             emoji: '📚',
             title: 'Aan de slag!',
-            color: '#445865',
+            color: '#202023',
         },
     ],
 

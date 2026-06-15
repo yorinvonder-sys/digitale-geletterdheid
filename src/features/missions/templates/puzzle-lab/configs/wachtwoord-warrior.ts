@@ -8,7 +8,7 @@ const config: PuzzleLabConfig = {
     introDescription:
         'In 2024 zijn meer dan 10 miljard wachtwoorden gelekt. Wachtwoorden als "123456" worden in minder dan 1 seconde gekraakt. Maar hoe werken aanvallen precies — en wat maakt een wachtwoord echt sterk? Bewijs dat jij je digitale leven kunt beschermen.',
     missionGoal: {
-        primaryGoal: 'Los de wachtwoordpuzzels op en formuleer regels voor een sterk en veilig wachtwoordbeleid.',
+        primaryGoal: 'Ik los de wachtwoordpuzzels op en formuleer regels voor een sterk en veilig wachtwoordbeleid.',
         criteria: {
             type: 'rounds-complete',
             min: 3,
@@ -152,25 +152,25 @@ const config: PuzzleLabConfig = {
             minScore: 90,
             emoji: '🏆',
             title: 'Wachtwoord Meester',
-            color: '#D7C95F',
+            color: '#e1ff01',
         },
         {
             minScore: 70,
             emoji: '🛡️',
             title: 'Security Warrior',
-            color: '#445865',
+            color: '#202023',
         },
         {
             minScore: 40,
             emoji: '🔐',
             title: 'Wachtwoord Bewaker',
-            color: '#5F947D',
+            color: '#202023',
         },
         {
             minScore: 0,
             emoji: '🔑',
             title: 'Beginnend Beveiliger',
-            color: '#0B453F',
+            color: '#202023',
         },
     ],
     takeaways: [

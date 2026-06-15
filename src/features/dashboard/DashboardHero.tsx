@@ -48,8 +48,8 @@ export const DashboardHero: React.FC<DashboardHeroProps> = ({
                     <div className="mt-3 flex flex-wrap items-center gap-3">
                         {dailyStreak > 0 && (
                             <div className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-black
-                                ${dailyStreak >= 7 ? 'bg-[#D97848] text-white shadow-lg shadow-[#D97848]/25' :
-                                  dailyStreak >= 3 ? 'bg-[#D97848]/10 text-[#D97848]' :
+                                ${dailyStreak >= 7 ? 'bg-duck-coral text-white shadow-lg shadow-[#D97848]/25' :
+                                  dailyStreak >= 3 ? 'bg-duck-coral/10 text-duck-coral' :
                                   'bg-duck-ink/10 text-duck-ink/65'}`}
                             >
                                 <Flame size={16} className={dailyStreak >= 7 ? 'animate-pulse' : ''} />

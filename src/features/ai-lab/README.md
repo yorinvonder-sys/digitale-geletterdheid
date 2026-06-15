@@ -7,7 +7,7 @@ Belangrijke ingangen:
 - `AiLab.tsx`
 - `previews/`
 - `src/features/ai-chat/`
-- `src/services/geminiService.ts`
+- `src/services/aiProviderService.ts`
 - `supabase/functions/`
 
 AI Lab mag andere features importeren voor previews en demos. Houd provider secrets server-side en controleer prompt-injection, leerlinginput en fallbackgedrag bij wijzigingen.

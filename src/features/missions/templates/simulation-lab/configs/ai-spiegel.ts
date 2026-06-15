@@ -49,17 +49,17 @@ function computeVisuals(
             {
                 label: 'Locatie',
                 value: locatieValue,
-                color: locatieValue > 2 ? '#D97848' : locatieValue > 0 ? '#D97848' : '#E7D8BD',
+                color: locatieValue > 2 ? '#ff3c21' : locatieValue > 0 ? '#ff3c21' : '#e3e2dc',
             },
             {
                 label: 'Camera',
                 value: cameraValue,
-                color: cameraValue > 2 ? '#D97848' : cameraValue > 0 ? '#D97848' : '#E7D8BD',
+                color: cameraValue > 2 ? '#ff3c21' : cameraValue > 0 ? '#ff3c21' : '#e3e2dc',
             },
             {
                 label: 'Microfoon',
                 value: microfoonValue,
-                color: microfoonValue > 2 ? '#D97848' : microfoonValue > 0 ? '#D97848' : '#E7D8BD',
+                color: microfoonValue > 2 ? '#ff3c21' : microfoonValue > 0 ? '#ff3c21' : '#e3e2dc',
             },
         ];
 
@@ -399,31 +399,31 @@ export const aiSpiegelConfig: SimulationLabConfig = {
             minScore: 90,
             emoji: '🏆',
             title: 'Privacy Expert',
-            color: '#5F947D',
+            color: '#202023',
         },
         {
             minScore: 70,
             emoji: '🪞',
             title: 'Bewuste Digitale Burger',
-            color: '#D97848',
+            color: '#ff3c21',
         },
         {
             minScore: 50,
             emoji: '🔍',
             title: 'Data Detective',
-            color: '#445865',
+            color: '#202023',
         },
         {
             minScore: 25,
             emoji: '💡',
             title: 'Startende Digitale Burger',
-            color: '#0B453F',
+            color: '#202023',
         },
         {
             minScore: 0,
             emoji: '📖',
             title: 'Aan het leren',
-            color: '#445865',
+            color: '#202023',
         },
     ],
     takeaways: [

@@ -12,13 +12,13 @@ export const ParameterControl: React.FC<{
             <div className="space-y-1">
                 <div className="flex justify-between items-center">
                     <label
-                        className="text-xs font-bold text-[#445865]"
+                        className="text-xs font-bold text-duck-muted"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         {param.label}
                     </label>
                     <span
-                        className="text-xs font-black text-[#D97848] bg-[#D97848]/10 px-2 py-0.5 rounded-full"
+                        className="text-xs font-black text-duck-coral bg-duck-coral/10 px-2 py-0.5 rounded-full"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         {v}
@@ -33,7 +33,7 @@ export const ParameterControl: React.FC<{
                     onChange={(e) => onChange(Number(e.target.value))}
                     className="min-h-[44px] w-full accent-[#D97848]"
                 />
-                <div className="flex justify-between text-[10px] text-[#445865]">
+                <div className="flex justify-between text-[10px] text-duck-muted">
                     <span>{param.min ?? 0}</span>
                     <span>{param.max ?? 100}</span>
                 </div>
@@ -46,7 +46,7 @@ export const ParameterControl: React.FC<{
         return (
             <div className="flex items-center justify-between">
                 <label
-                    className="text-xs font-bold text-[#445865]"
+                    className="text-xs font-bold text-duck-muted"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     {param.label}
@@ -54,7 +54,7 @@ export const ParameterControl: React.FC<{
                 <button
                     onClick={() => onChange(!v)}
                     className={`relative min-h-[44px] min-w-14 rounded-full transition-colors duration-300 ${
-                        v ? 'bg-[#D97848]' : 'bg-[#E7D8BD]'
+                        v ? 'bg-duck-coral' : 'bg-duck-line'
                     }`}
                     aria-pressed={v}
                 >
@@ -73,7 +73,7 @@ export const ParameterControl: React.FC<{
         return (
             <div className="space-y-1">
                 <label
-                    className="text-xs font-bold text-[#445865] block"
+                    className="text-xs font-bold text-duck-muted block"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     {param.label}
@@ -85,8 +85,8 @@ export const ParameterControl: React.FC<{
                             onClick={() => onChange(opt)}
                             className={`text-left px-3 py-2 rounded-lg text-xs font-medium transition-all duration-200 border ${
                                 v === opt
-                                    ? 'bg-[#D97848]/10 border-[#D97848] text-[#D97848] font-bold'
-                                    : 'bg-white border-[#E7D8BD] text-[#445865] hover:border-[#D97848]/50'
+                                    ? 'bg-duck-coral/10 border-duck-coral text-duck-coral font-bold'
+                                    : 'bg-white border-duck-line text-duck-muted hover:border-duck-coral/50'
                             }`}
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         >

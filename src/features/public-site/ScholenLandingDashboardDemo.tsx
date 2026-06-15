@@ -185,8 +185,8 @@ function DetailPanel({ student, visible }: { student: Student | null; visible: b
             </div>
 
             <div className="p-3 rounded-lg" style={{ backgroundColor: 'rgba(217, 120, 72,0.06)', border: '1px solid rgba(217, 120, 72,0.15)' }}>
-                <p className="text-[10px] uppercase tracking-wider font-semibold mb-1" style={{ color: '#D97848' }}>Huidige missie</p>
-                <p className="text-sm font-medium" style={{ color: '#08283B' }}>{student.currentMission}</p>
+                <p className="text-[10px] uppercase tracking-wider font-semibold mb-1" style={{ color: '#ff3c21' }}>Huidige missie</p>
+                <p className="text-sm font-medium" style={{ color: '#202023' }}>{student.currentMission}</p>
             </div>
 
             <div>
@@ -253,7 +253,7 @@ function AnimatedStat({ value, label, color, borderColor, animate, delay }: {
             }}
         >
             <p className="text-xl font-bold" style={{ color }}>{value}</p>
-            <p className="text-[10px] font-medium" style={{ color: '#445865' }}>{label}</p>
+            <p className="text-[10px] font-medium" style={{ color: '#202023' }}>{label}</p>
         </div>
     );
 }
@@ -352,11 +352,11 @@ export const ScholenLandingDashboardDemo: React.FC = () => {
         <div ref={containerRef} className="max-w-6xl mx-auto">
             {/* Header */}
             <div className="text-center mb-10">
-                <p className="font-semibold text-sm mb-3 tracking-wide" style={{ color: '#D97848' }}>Volledige controle</p>
-                <h2 className="text-2xl md:text-3xl font-medium tracking-tight mb-4" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#08283B' }}>
+                <p className="font-semibold text-sm mb-3 tracking-wide" style={{ color: '#ff3c21' }}>Volledige controle</p>
+                <h2 className="text-2xl md:text-3xl font-medium tracking-tight mb-4" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#202023' }}>
                     Docenten Dashboard
                 </h2>
-                <p className="text-base leading-relaxed max-w-xl mx-auto" style={{ color: '#445865' }}>
+                <p className="text-base leading-relaxed max-w-xl mx-auto" style={{ color: '#202023' }}>
                     Volg de voortgang van elke leerling in real-time.
                     Stuur de klas aan met Focus Mode.
                 </p>
@@ -365,7 +365,7 @@ export const ScholenLandingDashboardDemo: React.FC = () => {
             {/* Dashboard container */}
             <div
                 className="rounded-3xl overflow-hidden shadow-xl bg-white"
-                style={{ borderWidth: '1px', borderStyle: 'solid', borderColor: '#E7D8BD' }}
+                style={{ borderWidth: '1px', borderStyle: 'solid', borderColor: '#e3e2dc' }}
                 onMouseEnter={() => { if (!manualRef.current) setIsPaused(true); }}
                 onMouseLeave={() => { if (!manualRef.current) setIsPaused(false); }}
             >
@@ -469,7 +469,7 @@ export const ScholenLandingDashboardDemo: React.FC = () => {
                         className={`relative flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold border-2 transition-all focus-visible:ring-2 focus-visible:ring-offset-2 ${
                             i === activeStep ? s.accentClass + ' shadow-sm' : 'bg-white'
                         }`}
-                        style={i !== activeStep ? { borderColor: '#E7D8BD', color: '#445865' } : undefined}
+                        style={i !== activeStep ? { borderColor: '#e3e2dc', color: '#202023' } : undefined}
                     >
                         {i === 0 && (
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">

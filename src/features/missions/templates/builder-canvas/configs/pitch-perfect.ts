@@ -83,11 +83,11 @@ export const pitchPerfectConfig: BuilderCanvasConfig = {
     ],
     maxScore: 100,
     badges: [
-        { minScore: 90, emoji: '🏆', title: 'Pitch Perfect', color: '#D7C95F' },
-        { minScore: 70, emoji: '🎤', title: 'Overtuigend Spreker', color: '#5F947D' },
-        { minScore: 50, emoji: '🗣️', title: 'Pitch Beginner', color: '#D97848' },
-        { minScore: 25, emoji: '💡', title: 'Beginnende Pitcher', color: '#0B453F' },
-        { minScore: 0, emoji: '🌱', title: 'Op weg', color: '#445865' },
+        { minScore: 90, emoji: '🏆', title: 'Pitch Perfect', color: '#e1ff01' },
+        { minScore: 70, emoji: '🎤', title: 'Overtuigend Spreker', color: '#202023' },
+        { minScore: 50, emoji: '🗣️', title: 'Pitch Beginner', color: '#ff3c21' },
+        { minScore: 25, emoji: '💡', title: 'Beginnende Pitcher', color: '#202023' },
+        { minScore: 0, emoji: '🌱', title: 'Op weg', color: '#202023' },
     ],
     takeaways: [
         'Je weet hoe je een 5-minuten pitch opbouwt met een bewezen structuur',

@@ -54,11 +54,11 @@ export const ScholenLandingDidactiek: React.FC = () => {
     return (
         <div className="max-w-5xl mx-auto">
             <div className="text-center mb-12">
-                <p className="text-sm font-medium tracking-wide mb-3" style={{ color: '#D97848' }}>Didactische visie</p>
-                <h2 className="text-2xl md:text-3xl font-medium mb-4" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#08283B' }}>
+                <p className="text-sm font-medium tracking-wide mb-3" style={{ color: '#ff3c21' }}>Didactische visie</p>
+                <h2 className="text-2xl md:text-3xl font-medium mb-4" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#202023' }}>
                     Niet zomaar opdrachten — een doordacht leermodel
                 </h2>
-                <p className="max-w-2xl mx-auto leading-relaxed" style={{ color: '#445865' }}>
+                <p className="max-w-2xl mx-auto leading-relaxed" style={{ color: '#202023' }}>
                     Elke missie is gebouwd op bewezen leerprincipes. De AI is geen antwoordmachine
                     — het is een mentor die precies weet wanneer het een hint moet geven en wanneer
                     de leerling zelf moet nadenken.
@@ -68,9 +68,9 @@ export const ScholenLandingDidactiek: React.FC = () => {
             {/* Stats bar */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
                 {STATS.map((stat) => (
-                    <div key={stat.label} className="bg-white rounded-xl border p-4 text-center" style={{ borderColor: '#E7D8BD' }}>
-                        <p className="text-2xl font-bold mb-1" style={{ color: '#D97848' }}>{stat.value}</p>
-                        <p className="text-xs" style={{ color: '#445865' }}>{stat.label}</p>
+                    <div key={stat.label} className="bg-white rounded-xl border p-4 text-center" style={{ borderColor: '#e3e2dc' }}>
+                        <p className="text-2xl font-bold mb-1" style={{ color: '#ff3c21' }}>{stat.value}</p>
+                        <p className="text-xs" style={{ color: '#202023' }}>{stat.label}</p>
                     </div>
                 ))}
             </div>
@@ -78,16 +78,16 @@ export const ScholenLandingDidactiek: React.FC = () => {
             {/* Pillar cards */}
             <div className="grid md:grid-cols-2 gap-5 mb-10">
                 {PILLARS.map((pillar) => (
-                    <div key={pillar.title} className="bg-white rounded-2xl border p-6 hover:shadow-lg transition-[box-shadow] group" style={{ borderColor: '#E7D8BD' }}>
+                    <div key={pillar.title} className="bg-white rounded-2xl border p-6 hover:shadow-lg transition-[box-shadow] group" style={{ borderColor: '#e3e2dc' }}>
                         <div className="flex items-start gap-4">
                             <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 text-xl" style={{ backgroundColor: '#D9784812' }}>
                                 {pillar.icon}
                             </div>
                             <div className="min-w-0">
-                                <h3 className="font-medium text-base mb-0.5" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#08283B' }}>{pillar.title}</h3>
-                                <p className="text-xs font-medium mb-2" style={{ color: '#D97848' }}>{pillar.subtitle}</p>
-                                <p className="text-sm leading-relaxed mb-3" style={{ color: '#445865' }}>{pillar.description}</p>
-                                <p className="text-[11px] italic" style={{ color: '#445865' }}>{pillar.source}</p>
+                                <h3 className="font-medium text-base mb-0.5" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#202023' }}>{pillar.title}</h3>
+                                <p className="text-xs font-medium mb-2" style={{ color: '#ff3c21' }}>{pillar.subtitle}</p>
+                                <p className="text-sm leading-relaxed mb-3" style={{ color: '#202023' }}>{pillar.description}</p>
+                                <p className="text-[11px] italic" style={{ color: '#202023' }}>{pillar.source}</p>
                             </div>
                         </div>
                     </div>
@@ -95,7 +95,7 @@ export const ScholenLandingDidactiek: React.FC = () => {
             </div>
 
             {/* Download CTA */}
-            <div className="rounded-2xl border p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-5" style={{ borderColor: '#E7D8BD', backgroundColor: '#FFFFFF' }}>
+            <div className="rounded-2xl border p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-5" style={{ borderColor: '#e3e2dc', backgroundColor: '#FFFFFF' }}>
                 <div className="flex items-center gap-4">
                     <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style={{ backgroundColor: '#D9784812' }}>
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D97848" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -107,10 +107,10 @@ export const ScholenLandingDidactiek: React.FC = () => {
                         </svg>
                     </div>
                     <div>
-                        <p className="font-medium text-sm mb-0.5" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#08283B' }}>
+                        <p className="font-medium text-sm mb-0.5" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#202023' }}>
                             Volledige didactische onderbouwing
                         </p>
-                        <p className="text-xs" style={{ color: '#445865' }}>
+                        <p className="text-xs" style={{ color: '#202023' }}>
                             Met bronverwijzingen, SLO-mapping en uitleg van het 3-stappen model. Deel het met je sectie of ICT-coördinator.
                         </p>
                     </div>
@@ -121,7 +121,7 @@ export const ScholenLandingDidactiek: React.FC = () => {
                     className="text-sm font-medium px-6 py-3 rounded-full transition-colors flex-shrink-0 inline-flex items-center gap-2 focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-60"
                     style={{
                         color: '#FFFFFF',
-                        backgroundColor: '#D97848',
+                        backgroundColor: '#ff3c21',
                         fontFamily: "'Newsreader', Georgia, serif",
                     }}
                     onMouseOver={(e) => { if (!generating) e.currentTarget.style.backgroundColor = '#D97848'; }}

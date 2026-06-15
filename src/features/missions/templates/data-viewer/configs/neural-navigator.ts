@@ -78,12 +78,12 @@ export const neuralNavigatorConfig: DataViewerConfig = {
                 'Dit netwerk leert handgeschreven cijfers herkennen. Bekijk hoe de output-kansen per cijfer veranderen na 1000 trainingsrondes.',
             type: 'bar-chart',
             chartData: [
-                { label: 'Cijfer 3 (voor)', value: 0.12, color: '#D97848' },
-                { label: 'Cijfer 3 (na)', value: 0.87, color: '#5F947D' },
-                { label: 'Cijfer 8 (voor)', value: 0.31, color: '#D97848' },
-                { label: 'Cijfer 8 (na)', value: 0.08, color: '#0B453F' },
-                { label: 'Overig (voor)', value: 0.57, color: '#0B453F' },
-                { label: 'Overig (na)', value: 0.05, color: '#445865' },
+                { label: 'Cijfer 3 (voor)', value: 0.12, color: '#ff3c21' },
+                { label: 'Cijfer 3 (na)', value: 0.87, color: '#202023' },
+                { label: 'Cijfer 8 (voor)', value: 0.31, color: '#ff3c21' },
+                { label: 'Cijfer 8 (na)', value: 0.08, color: '#202023' },
+                { label: 'Overig (voor)', value: 0.57, color: '#202023' },
+                { label: 'Overig (na)', value: 0.05, color: '#202023' },
             ],
             questions: [
                 {
@@ -190,25 +190,25 @@ export const neuralNavigatorConfig: DataViewerConfig = {
             minScore: 85,
             emoji: '⚡',
             title: 'Neural Netwerk Expert!',
-            color: '#D97848',
+            color: '#ff3c21',
         },
         {
             minScore: 65,
             emoji: '🧠',
             title: 'Netwerk Navigator',
-            color: '#0B453F',
+            color: '#202023',
         },
         {
             minScore: 40,
             emoji: '🔌',
             title: 'Neuron Ontdekker',
-            color: '#0B453F',
+            color: '#202023',
         },
         {
             minScore: 0,
             emoji: '📚',
             title: 'Aan de slag!',
-            color: '#445865',
+            color: '#202023',
         },
     ],
 

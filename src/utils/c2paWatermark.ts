@@ -79,7 +79,7 @@ const C2PA_CONFIG: C2paConfig = {
  */
 export async function embedC2paCredentials(
     imageBlob: Blob,
-    model: string = 'gemini',
+    model: string = 'ai-provider',
     title: string = 'AI-generated image'
 ): Promise<WatermarkResult> {
     const provenance = createImageProvenance(model);
@@ -258,7 +258,7 @@ async function embedBinaryC2pa(
  * @returns HTML data attributes string for the img element
  */
 export function getProvenanceDataAttributes(
-    model: string = 'gemini'
+    model: string = 'ai-provider'
 ): Record<string, string> {
     const provenance = createImageProvenance(model);
     return {

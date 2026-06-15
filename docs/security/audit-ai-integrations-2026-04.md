@@ -2,7 +2,7 @@
 
 **Datum:** 3 april 2026
 **Auditor:** Claude Code (geautomatiseerd)
-**Scope:** Alle Supabase Edge Functions die Vertex AI aanroepen
+**Scope:** Alle Supabase Edge Functions die Mistral/BFL aanroepen
 **Classificatie:** HIGH RISK (EU AI Act Annex III, punt 3b)
 
 ---
@@ -27,26 +27,26 @@ Dit rapport documenteert de audit van alle AI-integraties in de DGSkills edge fu
 
 | Functie | Model | Auth | Rate Limit | Prompt Sanitization | Output Filter |
 |---------|-------|------|-----------|---------------------|---------------|
-| `chat` | gemini-2.0-flash / gemini-3-flash-preview | JWT + RLS | 15/min (durable) | Via chatCore.ts | filterAiOutput() |
-| `chatStream` | gemini-2.0-flash / gemini-3-flash-preview | JWT + RLS | 15/min (durable) | Via chatCore.ts | filterStreamChunk() |
-| `scanReceipt` | gemini-3-flash-preview | JWT + role check (developer/admin) | 5/min (durable) | N/A (image input) | N/A |
-| `growthRecommendation` | gemini-2.0-flash-001 | JWT + RLS | 1/schooljaar (DB constraint) | N/A (structured input) | N/A |
+| `chat` | mistral-small-latest / mistral-small-latest | JWT + RLS | 15/min (durable) | Via chatCore.ts | filterAiOutput() |
+| `chatStream` | mistral-small-latest / mistral-small-latest | JWT + RLS | 15/min (durable) | Via chatCore.ts | filterStreamChunk() |
+| `scanReceipt` | mistral-small-latest | JWT + role check (developer/admin) | 5/min (durable) | N/A (image input) | N/A |
+| `growthRecommendation` | mistral-small-latest | JWT + RLS | 1/schooljaar (DB constraint) | N/A (structured input) | N/A |
 
 ### 2.2 Nieuwe functies (deze audit)
 
 | Functie | Model | Auth | Rate Limit | Prompt Sanitization | Doel |
 |---------|-------|------|-----------|---------------------|------|
-| `generateImage` | gemini-2.5-flash-image | JWT | 5/min (durable) | sanitizePrompt() + safety prefix | AI-afbeelding generatie |
-| `analyzeDrawing` | gemini-3-flash-preview | JWT | 10/min (durable) | Server-side prompt (client prompt genegeerd) | Tekeninganalyse voor educatief spel |
-| `validateDeveloperTask` | gemini-3-flash-preview | JWT | 10/min (durable) | sanitizePrompt() op alle velden | Taakkwaliteit validatie |
-| `generateDeveloperPlan` | gemini-3-flash-preview | JWT | 10/min (durable) | sanitizePrompt() op alle velden | Projectplan generatie |
-| `getTaskSuggestions` | gemini-3-flash-preview | JWT | 10/min (durable) | sanitizePrompt() op alle velden | Taaksuggesties |
+| `generateImage` | flux-2-klein-9b | JWT | 5/min (durable) | sanitizePrompt() + safety prefix | AI-afbeelding generatie |
+| `analyzeDrawing` | mistral-small-latest | JWT | 10/min (durable) | Server-side prompt (client prompt genegeerd) | Tekeninganalyse voor educatief spel |
+| `validateDeveloperTask` | mistral-small-latest | JWT | 10/min (durable) | sanitizePrompt() op alle velden | Taakkwaliteit validatie |
+| `generateDeveloperPlan` | mistral-small-latest | JWT | 10/min (durable) | sanitizePrompt() op alle velden | Projectplan generatie |
+| `getTaskSuggestions` | mistral-small-latest | JWT | 10/min (durable) | sanitizePrompt() op alle velden | Taaksuggesties |
 
 ### 2.3 Verwijderde functies
 
 | Functie | Reden verwijdering |
 |---------|-------------------|
-| `test-ai` | Debug functie zonder auth, CORS `*` wildcard, lekt service account info (project_id, client_email prefix, token prefix). Nooit bedoeld voor productie. |
+| `test-ai` | Debug functie zonder auth, CORS `*` wildcard, lekt provider secret metadata (project_id, client_email prefix, token prefix). Nooit bedoeld voor productie. |
 
 ---
 
@@ -100,7 +100,7 @@ Alle drie volgen hetzelfde patroon:
 | # | Bevinding | Ernst | Status |
 |---|-----------|-------|--------|
 | 1 | `test-ai` debug functie in productie zonder auth | KRITIEK | VERWIJDERD |
-| 2 | `test-ai` lekt service account metadata | HOOG | VERWIJDERD |
+| 2 | `test-ai` lekt provider secret metadata | HOOG | VERWIJDERD |
 | 3 | `test-ai` gebruikt CORS wildcard `*` | HOOG | VERWIJDERD |
 | 4 | Geen edge function proxy voor image generation | MIDDEL | OPGELOST (generateImage) |
 | 5 | Geen edge function proxy voor drawing analysis | MIDDEL | OPGELOST (analyzeDrawing) |
@@ -111,7 +111,7 @@ Alle drie volgen hetzelfde patroon:
 1. **Audit logging (EU AI Act Art. 12):** Overweeg om AI-interacties via generateImage en analyzeDrawing te loggen in een audit tabel voor traceerbaarheid.
 2. **Output filtering:** De `filterAiOutput()` filter uit chat wordt nog niet toegepast op de developer AI functies. Overweeg dit toe te voegen als deze functies leerling-facing worden.
 3. **Content moderation voor gegenereerde afbeeldingen:** De huidige safety prefix is een instructie aan het model. Overweeg een aparte content moderation stap als extra vangnet.
-4. **Monitoring:** Stel alerting in voor 429/502 responses om overmatig gebruik of Vertex AI problemen vroeg te detecteren.
+4. **Monitoring:** Stel alerting in voor 429/502 responses om overmatig gebruik of Mistral/BFL-problemen vroeg te detecteren.
 
 ---
 

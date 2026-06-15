@@ -83,11 +83,11 @@ export const missionVisionConfig: BuilderCanvasConfig = {
     ],
     maxScore: 100,
     badges: [
-        { minScore: 90, emoji: '🏆', title: 'Visionair', color: '#D7C95F' },
-        { minScore: 70, emoji: '💡', title: 'Ideeënspreker', color: '#5F947D' },
-        { minScore: 50, emoji: '🎨', title: 'Moodboard Maker', color: '#D97848' },
-        { minScore: 25, emoji: '💡', title: 'Beginnende Visionair', color: '#0B453F' },
-        { minScore: 0, emoji: '🌱', title: 'Op weg', color: '#445865' },
+        { minScore: 90, emoji: '🏆', title: 'Visionair', color: '#e1ff01' },
+        { minScore: 70, emoji: '💡', title: 'Ideeënspreker', color: '#202023' },
+        { minScore: 50, emoji: '🎨', title: 'Moodboard Maker', color: '#ff3c21' },
+        { minScore: 25, emoji: '💡', title: 'Beginnende Visionair', color: '#202023' },
+        { minScore: 0, emoji: '🌱', title: 'Op weg', color: '#202023' },
     ],
     takeaways: [
         'Je weet hoe je een visie formuleert die anderen inspireert en meeneemt',

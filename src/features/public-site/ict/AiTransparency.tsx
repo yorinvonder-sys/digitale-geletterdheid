@@ -42,8 +42,8 @@ export const AiTransparency: React.FC = () => {
                             DGSkills gebruikt de volgende AI-modellen:
                         </p>
                         <ul>
-                            <li><strong>Google Gemini (Pro/Flash):</strong> Voor de AI-assistent, chat en feedback op missies.</li>
-                            <li><strong>Imagen:</strong> Voor het genereren van afbeeldingen in specifieke ontwerp-missies.</li>
+                            <li><strong>Mistral AI:</strong> Voor tekst, chat, feedback, vision-analyse en OCR.</li>
+                            <li><strong>Black Forest Labs FLUX:</strong> Voor het genereren van afbeeldingen in specifieke ontwerp-missies.</li>
                         </ul>
 
                         <h2 className="text-xl font-bold mt-8 mb-4">2. Transparantie en Herkenbaarheid</h2>
@@ -70,7 +70,7 @@ export const AiTransparency: React.FC = () => {
                             Bij het aanroepen van AI-API's sturen wij <strong>geen</strong> direct herleidbare persoonsgegevens zoals namen of e-mailadressen mee.
                         </p>
                         <p>
-                            <strong>Belangrijk over retentie:</strong> Hoewel de data niet voor training wordt gebruikt, hanteert Google een standaard retentieperiode van <strong>maximaal 30 dagen</strong> voor tijdelijke opslag van API-inputs ten behoeve van misbruikdetectie en beveiliging. Hierna wordt de data definitief gewist bij de subverwerker.
+                            <strong>Belangrijk over retentie:</strong> AI-verzoeken lopen server-side via Supabase Edge Functions. Provider-keys, ruwe promptlogs en tijdelijke download-URL's worden niet naar de browser gestuurd. Leerlingdata wordt niet gebruikt voor training van modellen van derden; retentie volgt de verwerkersafspraken met Mistral AI, Black Forest Labs en DGSkills.
                         </p>
 
                         <h2 className="text-xl font-bold mt-8 mb-4">5. High-Risk Classificatie (AI Act Art. 6)</h2>
@@ -117,7 +117,7 @@ export const AiTransparency: React.FC = () => {
                             <p className="text-xs text-lab-muted mb-0">
                                 Deze verklaring is opgesteld om te voldoen aan de transparantieverplichtingen voor AI-systemen in het onderwijs,
                                 zoals vastgelegd in de Europese AI Verordening (AI Act), inclusief de hoog-risico vereisten (Art. 6, Annex III)
-                                en transparantieverplichtingen (Art. 50). Laatste update: februari 2026.
+                                en transparantieverplichtingen (Art. 50). Laatste update: juni 2026.
                             </p>
                         </div>
                     </div>

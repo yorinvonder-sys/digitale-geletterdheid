@@ -94,7 +94,7 @@ const FAQ_ITEMS: Array<{ q: string; a: string }> = [
     },
     {
         q: 'Waar staat onze data?',
-        a: 'Alle data wordt opgeslagen binnen de Europese Economische Ruimte (europe-west4 — Nederland). AI-verwerking via Google Vertex AI in dezelfde regio. Geen data wordt gebruikt voor het trainen van AI-modellen.',
+        a: 'Alle data wordt opgeslagen binnen de Europese Economische Ruimte (europe-west4 — Nederland). AI-verwerking via Mistral AI en Black Forest Labs server-side via Supabase Edge Functions. Geen data wordt gebruikt voor het trainen van AI-modellen.',
     },
     {
         q: 'Kunnen we onze klassen koppelen aan Magister / Cumlaude / Zermelo?',

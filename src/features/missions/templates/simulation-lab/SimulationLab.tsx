@@ -284,7 +284,7 @@ const SimulationLabInner: React.FC<SimulationLabProps> = ({ onBack, onComplete, 
     const canAdvance = allQuestionsSubmitted && !followUpPending;
 
     return (
-        <div className="min-h-screen bg-[#FCF6EA] p-4">
+        <div className="min-h-screen bg-duck-bg p-4">
             <div className="max-w-2xl mx-auto">
                 <PhaseHeader
                     currentPhase={state.currentSim + 1}
@@ -297,20 +297,20 @@ const SimulationLabInner: React.FC<SimulationLabProps> = ({ onBack, onComplete, 
                 <div className="mb-4">
                     <div className="flex items-center gap-2 mb-1">
                         <span
-                            className="text-xs font-black text-[#D97848] uppercase tracking-widest"
+                            className="text-xs font-black text-duck-coral uppercase tracking-widest"
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         >
                             Simulatie {state.currentSim + 1} / {config.simulations.length}
                         </span>
                     </div>
                     <h2
-                        className="text-xl font-black text-[#08283B]"
+                        className="text-xl font-black text-duck-ink"
                         style={{ fontFamily: "'Newsreader', Georgia, serif" }}
                     >
                         {currentSimData.title}
                     </h2>
                     <p
-                        className="text-sm text-[#445865] mt-1"
+                        className="text-sm text-duck-muted mt-1"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         {currentSimData.description}
@@ -319,10 +319,10 @@ const SimulationLabInner: React.FC<SimulationLabProps> = ({ onBack, onComplete, 
 
                 {/* "Probeer het!" prompt when not yet interacted */}
                 {!hasInteracted && (
-                    <div className="bg-[#D97848]/8 border border-[#D97848]/20 rounded-xl px-4 py-3 mb-4 flex items-center gap-3">
+                    <div className="bg-duck-coral/8 border border-duck-coral/20 rounded-xl px-4 py-3 mb-4 flex items-center gap-3">
                         <span className="text-lg">🔬</span>
                         <p
-                            className="text-xs text-[#D97848] font-bold"
+                            className="text-xs text-duck-coral font-bold"
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         >
                             Probeer het! Speel met de instellingen en kijk wat er gebeurt.
@@ -333,9 +333,9 @@ const SimulationLabInner: React.FC<SimulationLabProps> = ({ onBack, onComplete, 
                 {/* Main sim layout: parameters left, visual right */}
                 <div className="flex flex-col md:flex-row gap-4 mb-6">
                     {/* Parameters panel */}
-                    <div className="flex-1 bg-white rounded-2xl border border-[#E7D8BD] p-4 space-y-4">
+                    <div className="flex-1 bg-white rounded-2xl border border-duck-line p-4 space-y-4">
                         <span
-                            className="text-xs font-black text-[#445865] uppercase tracking-widest"
+                            className="text-xs font-black text-duck-muted uppercase tracking-widest"
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         >
                             Instellingen
@@ -355,9 +355,9 @@ const SimulationLabInner: React.FC<SimulationLabProps> = ({ onBack, onComplete, 
                     </div>
 
                     {/* Visual panel */}
-                    <div className="flex-1 bg-white rounded-2xl border border-[#E7D8BD] p-4 flex flex-col items-center justify-center min-h-[220px]">
+                    <div className="flex-1 bg-white rounded-2xl border border-duck-line p-4 flex flex-col items-center justify-center min-h-[220px]">
                         <span
-                            className="text-xs font-black text-[#445865] uppercase tracking-widest mb-4 self-start"
+                            className="text-xs font-black text-duck-muted uppercase tracking-widest mb-4 self-start"
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         >
                             Live resultaat
@@ -369,7 +369,7 @@ const SimulationLabInner: React.FC<SimulationLabProps> = ({ onBack, onComplete, 
                 {/* Questions */}
                 <div className="space-y-3 mb-6">
                     <span
-                        className="text-xs font-black text-[#445865] uppercase tracking-widest"
+                        className="text-xs font-black text-duck-muted uppercase tracking-widest"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         Vragen
@@ -402,7 +402,7 @@ const SimulationLabInner: React.FC<SimulationLabProps> = ({ onBack, onComplete, 
                     {state.currentSim > 0 ? (
                         <button
                             onClick={() => setState((prev) => ({ ...prev, currentSim: prev.currentSim - 1 }))}
-                            className="flex items-center gap-1.5 px-4 py-2.5 text-sm font-bold text-[#445865] hover:text-[#08283B] transition-colors"
+                            className="flex items-center gap-1.5 px-4 py-2.5 text-sm font-bold text-duck-muted hover:text-duck-ink transition-colors"
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         >
                             <ChevronLeft size={16} />
@@ -417,8 +417,8 @@ const SimulationLabInner: React.FC<SimulationLabProps> = ({ onBack, onComplete, 
                         onClick={handleNextSim}
                         className={`flex items-center gap-1.5 px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-200 active:scale-[0.98] ${
                             canAdvance
-                                ? 'bg-gradient-to-r from-[#D97848] to-[#D97848] text-white hover:from-[#D97848] hover:to-[#D97848]'
-                                : 'bg-[#E7D8BD] text-[#445865] cursor-not-allowed'
+                                ? 'bg-gradient-to-r from-duck-coral to-duck-coral text-white hover:from-duck-coral hover:to-duck-coral'
+                                : 'bg-duck-line text-duck-muted cursor-not-allowed'
                         }`}
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
@@ -438,7 +438,7 @@ const SimulationLabInner: React.FC<SimulationLabProps> = ({ onBack, onComplete, 
 
                 {!allQuestionsSubmitted && (
                     <p
-                        className="text-center text-xs text-[#445865] mt-2"
+                        className="text-center text-xs text-duck-muted mt-2"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         Beantwoord alle vragen om verder te gaan.
@@ -452,8 +452,8 @@ const SimulationLabInner: React.FC<SimulationLabProps> = ({ onBack, onComplete, 
 // ── Public entry point — loads config dynamically ────────────────────────────
 
 const LoadingScreen = () => (
-    <div className="min-h-screen bg-[#FCF6EA] flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-2 border-[#D97848] border-t-transparent" />
+    <div className="min-h-screen bg-duck-bg flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-2 border-duck-coral border-t-transparent" />
     </div>
 );
 
@@ -472,12 +472,12 @@ export const SimulationLab: React.FC<TemplateMissionProps> = ({ missionId, onBac
     }, [missionId]);
 
     if (loadError) return (
-        <div className="min-h-screen bg-[#FCF6EA] flex items-center justify-center p-4">
+        <div className="min-h-screen bg-duck-bg flex items-center justify-center p-4">
             <div className="text-center">
-                <p className="text-[#445865] mb-4" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                <p className="text-duck-muted mb-4" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                     Config niet gevonden: {missionId}
                 </p>
-                <button onClick={onBack} className="px-4 py-2 bg-[#D97848] text-white rounded-xl text-sm font-bold">Terug</button>
+                <button onClick={onBack} className="px-4 py-2 bg-duck-coral text-white rounded-xl text-sm font-bold">Terug</button>
             </div>
         </div>
     );

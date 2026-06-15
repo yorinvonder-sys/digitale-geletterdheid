@@ -1,6 +1,6 @@
 /**
  * Beaver Intro — Scene 3 + 4 via OpenAI Sora 2
- * Genereert de ontbrekende scenes terwijl Gemini quota gereset wordt.
+ * Genereert de ontbrekende scenes terwijl provider quota gereset wordt.
  *
  * Gebruik:
  *   OPENAI_API_KEY=sk-... node scripts/generate-pip-sora.mjs

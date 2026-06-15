@@ -1,21 +1,22 @@
 /**
- * Edge Function: /scanReceipt — Gemini Vision bonnetje-scanner
+ * Edge Function: /scanReceipt — Mistral OCR bonnetje-scanner
  *
  * Security layers:
  * 1. JWT auth verificatie (Supabase)
  * 2. Bestandsgrootte-limiet (max 10 MB base64)
  * 3. MIME-type validatie
- * 4. Vertex AI (europe-west4) — enterprise ToS, no age restriction
- * 5. Service account auth (no API key in URL)
+ * 4. Mistral OCR — server-side API key only
+ * 5. Usage logging without prompt/response content
  *
  * Input:  { imageBase64: string, mimeType: string }
  * Output: { supplier, date, amount, vatAmount, vatRate, description, category }
  */
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { getAccessToken, getVertexUrl } from "../_shared/vertexAuth.ts";
 import { buildCorsHeaders, rejectDisallowedBrowserRequest } from "../_shared/cors.ts";
 import { checkDurableRateLimit, rateLimitResponse, rateLimitHeaders } from "../_shared/rateLimiter.ts";
+import { getUserSchoolId, logAiUsageEvent, resolveAiRequestId } from "../_shared/aiUsageLogger.ts";
+import { extractJsonObject, getMistralOcrModel, processMistralOcr } from "../_shared/mistralClient.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
@@ -69,14 +70,8 @@ Deno.serve(async (req: Request) => {
         );
     }
 
-    // Rate limit: 5 requests per minute per user (heavy operation)
-    const rateCheck = await checkDurableRateLimit(user.id, { maxRequests: 5, windowMs: 60_000 });
-    if (!rateCheck.allowed) {
-        return rateLimitResponse(rateCheck, corsHeaders);
-    }
-
     // 2. Parse request
-    let body: { imageBase64?: string; mimeType?: string; mode?: string };
+    let body: { imageBase64?: string; mimeType?: string; mode?: string; clientRequestId?: unknown };
     try {
         body = await req.json();
     } catch {
@@ -86,10 +81,31 @@ Deno.serve(async (req: Request) => {
         );
     }
 
+    const requestId = resolveAiRequestId(body.clientRequestId);
+    const schoolId = getUserSchoolId(user);
+    const model = getMistralOcrModel();
+    const responseHeaders = { ...corsHeaders, "Content-Type": "application/json", "X-AI-Request-Id": requestId };
+
+    // Rate limit: 5 requests per minute per user (heavy operation)
+    const rateCheck = await checkDurableRateLimit(`scanReceipt:${user.id}`, { maxRequests: 5, windowMs: 60_000 }, authHeader);
+    if (!rateCheck.allowed) {
+        logAiUsageEvent({
+            requestId,
+            endpoint: "scanReceipt",
+            provider: "mistral",
+            model,
+            status: "rate_limited",
+            userId: user.id,
+            schoolId,
+            metadata: { limit: rateCheck.limit, retry_after_ms: rateCheck.retryAfterMs },
+        }).catch((logErr) => console.error("[scanReceipt] Usage log error:", logErr));
+        return rateLimitResponse(rateCheck, { ...corsHeaders, "X-AI-Request-Id": requestId });
+    }
+
     if (!body.imageBase64 || typeof body.imageBase64 !== "string") {
         return new Response(
             JSON.stringify({ error: "imageBase64 ontbreekt." }),
-            { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+            { status: 400, headers: responseHeaders }
         );
     }
 
@@ -97,20 +113,16 @@ Deno.serve(async (req: Request) => {
     if (!ALLOWED_MIME_TYPES.has(mimeType)) {
         return new Response(
             JSON.stringify({ error: "Bestandstype niet toegestaan." }),
-            { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+            { status: 400, headers: responseHeaders }
         );
     }
 
     if (body.imageBase64.length > MAX_BASE64_LENGTH) {
         return new Response(
             JSON.stringify({ error: "Bestand te groot (max 10 MB)." }),
-            { status: 413, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+            { status: 413, headers: responseHeaders }
         );
     }
-
-    // 3. Gemini Vision aanroepen via Vertex AI (EU endpoint)
-    const geminiUrl = getVertexUrl("gemini-3-flash-preview");
-    const accessToken = await getAccessToken();
 
     const isSubscription = body.mode === "subscription";
 
@@ -167,66 +179,68 @@ Regels:
 Antwoord ALLEEN met de JSON, geen uitleg of extra tekst.`;
 
     const prompt = isSubscription ? subscriptionPrompt : receiptPrompt;
+    const normalizedBase64 = body.imageBase64.includes(",")
+        ? body.imageBase64.slice(body.imageBase64.indexOf(",") + 1)
+        : body.imageBase64;
+    const dataUrl = `data:${mimeType};base64,${normalizedBase64}`;
 
-    const geminiResponse = await fetch(geminiUrl, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify({
-            contents: [{
-                parts: [
-                    { text: prompt },
-                    {
-                        inline_data: {
-                            mime_type: mimeType,
-                            data: body.imageBase64,
-                        }
-                    }
-                ]
-            }],
-            generationConfig: {
-                temperature: 0.1,
-                topP: 0.8,
-                maxOutputTokens: 512,
-            },
-        }),
-    });
-
-    if (!geminiResponse.ok) {
-        const status = geminiResponse.status;
-        if (status === 429) {
+    let ocrResult;
+    try {
+        ocrResult = await processMistralOcr({ dataUrl, mimeType, prompt, model });
+    } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : String(err);
+        console.error("[scanReceipt] Mistral OCR error:", message);
+        logAiUsageEvent({
+            requestId,
+            endpoint: "scanReceipt",
+            provider: "mistral",
+            model,
+            status: message.includes("429") ? "rate_limited" : "error",
+            userId: user.id,
+            schoolId,
+            inputChars: prompt.length,
+            imageCount: 1,
+            metadata: { mode: isSubscription ? "subscription" : "receipt", error_stage: "provider" },
+        }).catch((logErr) => console.error("[scanReceipt] Usage log error:", logErr));
+        if (message.includes("429")) {
             return new Response(
                 JSON.stringify({ error: "Te veel verzoeken. Wacht even en probeer opnieuw." }),
-                { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+                { status: 429, headers: responseHeaders }
             );
         }
         return new Response(
             JSON.stringify({ error: "AI-service tijdelijk niet beschikbaar." }),
-            { status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+            { status: 502, headers: responseHeaders }
         );
     }
 
-    const geminiData = await geminiResponse.json();
-    const rawText: string = geminiData?.candidates?.[0]?.content?.parts?.[0]?.text || "";
+    const rawText = ocrResult.text;
 
-    // 4. JSON parsen uit Gemini-respons (indexOf/lastIndexOf is robuuster dan greedy regex)
+    // 4. JSON parsen uit Mistral OCR-respons
     let parsed: Record<string, unknown>;
     try {
-        const startIdx = rawText.indexOf("{");
-        const endIdx   = rawText.lastIndexOf("}");
-        if (startIdx === -1 || endIdx === -1 || endIdx <= startIdx) {
-            throw new Error("Geen JSON gevonden in respons");
-        }
-        parsed = JSON.parse(rawText.slice(startIdx, endIdx + 1));
+        parsed = extractJsonObject(rawText);
     } catch {
-        console.error("[scanReceipt] Parse error, raw:", rawText.slice(0, 200));
+        console.error("[scanReceipt] Parse error");
+        logAiUsageEvent({
+            requestId,
+            endpoint: "scanReceipt",
+            provider: "mistral",
+            model: ocrResult.model,
+            status: "error",
+            userId: user.id,
+            schoolId,
+            inputChars: prompt.length,
+            outputChars: rawText.length,
+            imageCount: 1,
+            usagePayload: ocrResult.usagePayload,
+            metadata: { mode: isSubscription ? "subscription" : "receipt", error_stage: "parse" },
+        }).catch((logErr) => console.error("[scanReceipt] Usage log error:", logErr));
         return new Response(
             JSON.stringify({
                 error: "Bonnetje kon niet worden uitgelezen. Probeer een duidelijkere foto."
             }),
-            { status: 422, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+            { status: 422, headers: responseHeaders }
         );
     }
 
@@ -254,7 +268,22 @@ Antwoord ALLEEN met de JSON, geen uitleg of extra tekst.`;
             category:    typeof parsed.category === "string" ? parsed.category : "overig",
         };
 
+    logAiUsageEvent({
+        requestId,
+        endpoint: "scanReceipt",
+        provider: "mistral",
+        model: ocrResult.model,
+        status: "ok",
+        userId: user.id,
+        schoolId,
+        inputChars: prompt.length,
+        outputChars: rawText.length,
+        imageCount: 1,
+        usagePayload: ocrResult.usagePayload,
+        metadata: { mode: isSubscription ? "subscription" : "receipt", mime_type: mimeType },
+    }).catch((logErr) => console.error("[scanReceipt] Usage log error:", logErr));
+
     return new Response(JSON.stringify({ result }), {
-        headers: { ...corsHeaders, "Content-Type": "application/json", ...rateLimitHeaders(rateCheck) },
+        headers: { ...responseHeaders, ...rateLimitHeaders(rateCheck) },
     });
 });

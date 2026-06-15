@@ -5,14 +5,14 @@
  * 1. JWT auth verification (Supabase)
  * 2. Server-side rate limiting (10 req/min per user)
  * 3. Input sanitization (prompt injection prevention)
- * 4. Vertex AI (europe-west4) — enterprise ToS
- * 5. Service account auth (no API key in URL)
+ * 4. Mistral API — server-side API key only
+ * 5. No provider credentials in client responses
  */
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { getAccessToken, getVertexUrl } from "../_shared/vertexAuth.ts";
 import { buildCorsHeaders, rejectDisallowedBrowserRequest } from "../_shared/cors.ts";
 import { checkDurableRateLimit, rateLimitResponse, rateLimitHeaders } from "../_shared/rateLimiter.ts";
 import { sanitizePrompt } from "../_shared/promptSanitizer.ts";
+import { completeMistralJson, extractJsonObject } from "../_shared/mistralClient.ts";
 
 const SYSTEM_INSTRUCTION = `Je bent een slimme assistent voor een educatief software team. Geef 3-5 concrete suggesties om de volgende taak te verbeteren of aan te vullen.
 
@@ -125,49 +125,17 @@ Deno.serve(async (req: Request) => {
     // --- Build user message ---
     const userMessage = `Titel: ${titleSanitized.sanitized}\n\nBeschrijving: ${descriptionSanitized.sanitized}`;
 
-    // --- Vertex AI call ---
+    // --- Mistral AI call ---
     try {
-        const geminiUrl = getVertexUrl("gemini-3-flash-preview");
-        const accessToken = await getAccessToken();
-
-        const response = await fetch(geminiUrl, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${accessToken}`,
-            },
-            body: JSON.stringify({
-                systemInstruction: { parts: [{ text: SYSTEM_INSTRUCTION }] },
-                contents: [{ role: "user", parts: [{ text: userMessage }] }],
-                generationConfig: { temperature: 0.3, maxOutputTokens: 1024 },
-            }),
+        const result = await completeMistralJson({
+            messages: [
+                { role: "system", content: SYSTEM_INSTRUCTION },
+                { role: "user", content: userMessage },
+            ],
+            temperature: 0.3,
+            maxTokens: 1024,
         });
-
-        if (!response.ok) {
-            const status = response.status;
-            const errBody = await response.text().catch(() => "");
-            console.error(`[getTaskSuggestions] Vertex AI error (${status}):`, errBody);
-            if (status === 429) {
-                return new Response(
-                    JSON.stringify({ error: "Te veel verzoeken. Wacht even." }),
-                    { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } },
-                );
-            }
-            return new Response(
-                JSON.stringify({ error: "AI-service tijdelijk niet beschikbaar." }),
-                { status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" } },
-            );
-        }
-
-        const geminiData = await response.json();
-        const rawText = geminiData?.candidates?.[0]?.content?.parts?.[0]?.text || "";
-
-        const startIdx = rawText.indexOf("{");
-        const endIdx = rawText.lastIndexOf("}");
-        if (startIdx === -1 || endIdx === -1 || endIdx <= startIdx) {
-            throw new Error("Geen JSON gevonden");
-        }
-        const parsed = JSON.parse(rawText.slice(startIdx, endIdx + 1));
+        const parsed = extractJsonObject(result.text);
 
         // Validate and normalise suggestions: must be an array of 3-5 strings
         const rawSuggestions = Array.isArray(parsed.suggestions) ? parsed.suggestions : [];

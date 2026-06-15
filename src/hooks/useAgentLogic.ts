@@ -1,7 +1,7 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { AgentRole, ChatMessage, BookData, DetectiveCase, TrainerData, CodeChange, BonusChallenge } from '@/types';
-import { createChatSession, generateImage, Chat, type ImageAspectRatio, type ImageGenerationStyle } from '@/services/geminiService';
+import { createChatSession, generateImage, Chat, type ImageAspectRatio, type ImageGenerationStyle } from '@/services/aiProviderService';
 import { enhancePrompt, shouldShowEnhancementDiff } from '@/services/promptEnhancer';
 import { computeCodeChanges } from '@/features/ai-lab/CodeChangeCard';
 import { saveMissionProgress, loadMissionProgress, resetMissionProgress } from '@/services/missionService';
@@ -384,7 +384,7 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
     const [activeTrainerData, setActiveTrainerData] = useState<TrainerData>(normalizeTrainerData(initialProgress?.data?.activeTrainerData));
     const [activeBonusChallenges, setActiveBonusChallenges] = useState<BonusChallenge[]>(initialProgress?.data?.activeBonusChallenges || []);
 
-    // Helper: Refresh chat session with recent context (prevents memory buildup in Gemini SDK)
+    // Helper: Refresh chat session with recent context (prevents memory buildup in AI provider)
     // (provided by useChatSession, wired here for use in useEffect)
 
     // Initialize Chat
@@ -569,7 +569,7 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
 
     const handleSend = async (textInput: string = input) => {
         if (!chatSessionRef.current) {
-            setError("Kan geen verbinding maken met AI. Ververs de pagina of check je API key.");
+            setError("Kan geen verbinding maken met AI. Ververs de pagina of probeer het later opnieuw.");
             return;
         }
 
@@ -639,7 +639,7 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
                 chatSessionRef.current.setGameContext(activeGameCode);
             }
 
-            if (enhancementResult.wasEnhanced && process.env.NODE_ENV === 'development') {
+            if (enhancementResult.wasEnhanced && import.meta.env.DEV) {
                 console.log('[PromptEnhancer] Original:', textInput);
                 console.log('[PromptEnhancer] Enhanced:', promptForAI);
                 console.log('[PromptEnhancer] Changes:', enhancementResult.enhancements);
@@ -650,7 +650,7 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
             let fullTextAccumulated = "";
             const useNonStreamingResponse = selectedRole?.id === 'game-programmeur';
 
-            const { sendMessageToGemini, sendMessageToGeminiStream } = await import('@/services/geminiService');
+            const { sendMessageToAi, sendMessageToAiStream } = await import('@/services/aiProviderService');
 
             // Track already-processed trainer items to avoid duplicates during streaming
             const processedTrainA = new Set<string>();
@@ -659,7 +659,7 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
 
             if (useNonStreamingResponse) {
                 clearInterval(interval);
-                fullTextAccumulated = await sendMessageToGemini(
+                fullTextAccumulated = await sendMessageToAi(
                     chatSessionRef.current,
                     promptForAI
                 );
@@ -668,7 +668,7 @@ export const useAgentLogic = ({ selectedRole, userIdentifier, schoolId, initialP
                     { role: 'model', text: fullTextAccumulated, timestamp: new Date() }
                 ]);
             } else {
-                await sendMessageToGeminiStream(
+                await sendMessageToAiStream(
                     chatSessionRef.current,
                     promptForAI,
                     (chunkText) => {

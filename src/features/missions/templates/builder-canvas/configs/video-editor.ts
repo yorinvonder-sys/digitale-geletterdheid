@@ -83,11 +83,11 @@ export const videoEditorConfig: BuilderCanvasConfig = {
     ],
     maxScore: 100,
     badges: [
-        { minScore: 90, emoji: '🏆', title: 'Meesterregisseur', color: '#D7C95F' },
-        { minScore: 70, emoji: '🎬', title: 'Video Editor', color: '#5F947D' },
-        { minScore: 50, emoji: '🎥', title: 'Opnamekandidaat', color: '#D97848' },
-        { minScore: 25, emoji: '💡', title: 'Beginnende Video Editor', color: '#0B453F' },
-        { minScore: 0, emoji: '🌱', title: 'Op weg', color: '#445865' },
+        { minScore: 90, emoji: '🏆', title: 'Meesterregisseur', color: '#e1ff01' },
+        { minScore: 70, emoji: '🎬', title: 'Video Editor', color: '#202023' },
+        { minScore: 50, emoji: '🎥', title: 'Opnamekandidaat', color: '#ff3c21' },
+        { minScore: 25, emoji: '💡', title: 'Beginnende Video Editor', color: '#202023' },
+        { minScore: 0, emoji: '🌱', title: 'Op weg', color: '#202023' },
     ],
     takeaways: [
         'Je weet hoe je een videoconcept uitwerkt met doel, doelgroep en centrale boodschap',

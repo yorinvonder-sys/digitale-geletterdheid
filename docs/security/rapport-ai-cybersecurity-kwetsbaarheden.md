@@ -104,7 +104,7 @@ OpenAI's eigen Guardrails-framework was te bypassen — LLM-gebaseerde beveiligi
 |-------|-------------------|
 | GPT-5 Mini (reasoning) | 72% (hoogste) |
 | GPT-5 (reasoning) | 70% |
-| Gemini 2.5 Pro | 59% |
+| Mistral model | 59% |
 | Grok 4 | 55% |
 | GPT-5 chat (non-reasoning) | 52% |
 | Claude Sonnet 4.5 | 50% |
@@ -275,7 +275,7 @@ Op basis van dit onderzoek zijn de volgende risico's direct relevant voor het DG
 
 | Risico uit rapport | Relevantie voor DGSkills | Huidige status |
 |--------------------|--------------------------|----------------|
-| **Prompt injection (LLM01)** | Chat Edge Functions ontvangen user input → Vertex AI | Dubbele sanitizer (client + server), maar Unicode-bypass en meertalige bypass niet volledig getest |
+| **Prompt injection (LLM01)** | Chat Edge Functions ontvangen user input → Mistral/BFL | Dubbele sanitizer (client + server), maar Unicode-bypass en meertalige bypass niet volledig getest |
 | **System prompt leakage (LLM07)** | Systeeminstructies bevatten rolbeschrijvingen en gedragsregels | Server-side lookup via roleId (goed), maar extractie via slim prompten niet uitgesloten |
 | **Onveilige codegeneratie** | Hele codebase is AI-gegenereerd (Claude Code) | 45-50% kans op kwetsbaarheden per gegenereerd codeblok — audit vereist |
 | **MCP-configuratie** | `.mcp.json` met Supabase, Tavily, filesystem access | Credentials via keychain (goed), maar filesystem-scope moet worden gecontroleerd |
