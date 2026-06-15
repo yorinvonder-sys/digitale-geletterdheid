@@ -1,6 +1,7 @@
 import { supabase } from './supabase';
 import type { ContainerConfig, ContainerMissionConfig } from '@/config/containerTypes';
 import { CURRICULUM } from '@/config/curriculum';
+import { toServiceError } from '@/utils/errorMessages';
 import {
     DEFAULT_PERIOD_COLOR_KEYS,
     DEFAULT_PERIOD_ICON_KEYS,
@@ -62,7 +63,7 @@ export async function createContainer(
         .select()
         .single();
 
-    if (error || !row) throw new Error(error?.message ?? 'createContainer failed');
+    if (error || !row) throw toServiceError('Container aanmaken', error ?? new Error('createContainer failed'));
 
     return mapContainerRow(row, []);
 }
@@ -90,7 +91,7 @@ export async function updateContainer(
         .update(patch)
         .eq('id', containerId);
 
-    if (error) throw new Error(error.message);
+    if (error) throw toServiceError('Container bijwerken', error);
 }
 
 export async function deleteContainer(containerId: string): Promise<void> {
@@ -98,7 +99,7 @@ export async function deleteContainer(containerId: string): Promise<void> {
         .delete()
         .eq('id', containerId);
 
-    if (error) throw new Error(error.message);
+    if (error) throw toServiceError('Container verwijderen', error);
 }
 
 export async function reorderContainers(
@@ -116,7 +117,7 @@ export async function reorderContainers(
 
     const results = await Promise.all(updates);
     const failed = results.find(r => r.error);
-    if (failed?.error) throw new Error(failed.error.message);
+    if (failed?.error) throw toServiceError('Containers herordenen', failed.error);
 }
 
 export async function assignMissionToContainer(
@@ -131,7 +132,7 @@ export async function assignMissionToContainer(
             { onConflict: 'container_id,mission_id' }
         );
 
-    if (error) throw new Error(error.message);
+    if (error) throw toServiceError('Missie koppelen aan container', error);
 }
 
 export async function removeMissionFromContainer(
@@ -143,7 +144,7 @@ export async function removeMissionFromContainer(
         .eq('container_id', containerId)
         .eq('mission_id', missionId);
 
-    if (error) throw new Error(error.message);
+    if (error) throw toServiceError('Missie ontkoppelen van container', error);
 }
 
 export async function reorderContainerMissions(
@@ -159,7 +160,7 @@ export async function reorderContainerMissions(
 
     const results = await Promise.all(updates);
     const failed = results.find(r => r.error);
-    if (failed?.error) throw new Error(failed.error.message);
+    if (failed?.error) throw toServiceError('Missies herordenen', failed.error);
 }
 
 export async function seedDefaultContainersForSchool(
@@ -227,14 +228,14 @@ export async function resetToDefaultScheduling(schoolId: string): Promise<void> 
         .delete()
         .eq('school_id', schoolId);
 
-    if (deleteError) throw new Error(deleteError.message);
+    if (deleteError) throw toServiceError('Containers verwijderen', deleteError);
 
     const { error: updateError } = await supabase
         .from('school_configs')
         .update({ scheduling_model: 'default' } as any)
         .eq('school_id', schoolId);
 
-    if (updateError) throw new Error(updateError.message);
+    if (updateError) throw toServiceError('Rooster resetten', updateError);
 }
 
 // ============================================================================
