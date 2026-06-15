@@ -153,7 +153,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
         : answer === undefined || answer === '' || (q.showConfidence === true && confidence === undefined);
 
     return (
-        <div className="bg-white rounded-2xl border border-duck-line p-4 mb-3">
+        <div className="bg-white rounded-2xl border border-duck-gray p-4 mb-3">
             <div className="flex items-start justify-between gap-3 mb-3">
                 <p
                     className="text-sm font-semibold text-duck-ink leading-snug flex-1"
@@ -162,7 +162,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                     {q.question}
                 </p>
                 <span
-                    className="text-xs font-bold text-duck-coral bg-duck-coral/10 px-2 py-0.5 rounded-full flex-shrink-0"
+                    className="text-xs font-bold text-duck-acid bg-duck-acid/10 px-2 py-0.5 rounded-full flex-shrink-0"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     {q.points} pt
@@ -179,8 +179,8 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                                     key={opt}
                                     className={`flex items-center gap-3 p-2.5 rounded-xl border cursor-pointer transition-all ${
                                         answer === opt
-                                            ? 'border-duck-coral bg-duck-coral/8'
-                                            : 'border-duck-line hover:border-duck-coral/40'
+                                            ? 'border-duck-acid bg-duck-acid/8'
+                                            : 'border-duck-gray hover:border-duck-acid/40'
                                     }`}
                                 >
                                     <input
@@ -192,7 +192,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                                         className="accent-[#D97848]"
                                     />
                                     <span
-                                        className="text-sm text-duck-muted"
+                                        className="text-sm text-duck-ink/60"
                                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                                     >
                                         {opt}
@@ -209,7 +209,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                             placeholder="Typ een getal…"
                             value={answer ?? ''}
                             onChange={e => onAnswer(q.id, e.target.value)}
-                            className="w-full mb-3 px-3 py-2 text-sm rounded-xl border border-duck-line bg-duck-bg text-duck-ink focus:outline-none focus:border-duck-coral"
+                            className="w-full mb-3 px-3 py-2 text-sm rounded-xl border border-duck-gray bg-duck-bg text-duck-ink focus:outline-none focus:border-duck-acid"
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         />
                     )}
@@ -220,7 +220,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                             placeholder="Schrijf je observatie hier…"
                             value={observation}
                             onChange={e => onTextObservation(q.id, e.target.value)}
-                            className="w-full mb-3 px-3 py-2 text-sm rounded-xl border border-duck-line bg-duck-bg text-duck-ink focus:outline-none focus:border-duck-coral resize-none"
+                            className="w-full mb-3 px-3 py-2 text-sm rounded-xl border border-duck-gray bg-duck-bg text-duck-ink focus:outline-none focus:border-duck-acid resize-none"
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         />
                     )}
@@ -234,7 +234,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                     <button
                         onClick={() => onSubmit(q.id)}
                         disabled={submitDisabled}
-                        className="w-full py-2 bg-gradient-to-r from-duck-coral to-duck-coral hover:from-duck-coral hover:to-duck-coral disabled:opacity-40 disabled:cursor-not-allowed text-white rounded-xl font-bold text-sm transition-all duration-200"
+                        className="w-full py-2 bg-gradient-to-r from-duck-acid to-duck-acid hover:from-duck-acid hover:to-duck-acid disabled:opacity-40 disabled:cursor-not-allowed text-white rounded-xl font-bold text-sm transition-all duration-200"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         Bevestigen
@@ -248,13 +248,13 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                     className={`rounded-xl p-3 flex items-start gap-2.5 ${
                         correct
                             ? 'bg-duck-ink/10 border border-duck-ink/25'
-                            : 'bg-duck-coral/8 border border-duck-coral/20'
+                            : 'bg-duck-acid/8 border border-duck-acid/20'
                     }`}
                 >
                     {correct ? (
                         <CheckCircle size={16} className="text-duck-ink mt-0.5 flex-shrink-0" />
                     ) : (
-                        <XCircle size={16} className="text-duck-coral mt-0.5 flex-shrink-0" />
+                        <XCircle size={16} className="text-duck-acid mt-0.5 flex-shrink-0" />
                     )}
                     <div>
                         {q.type === 'text-observation' ? (
@@ -273,14 +273,14 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                             </p>
                         ) : (
                             <p
-                                className="text-xs font-semibold text-duck-coral mb-1"
+                                className="text-xs font-semibold text-duck-acid mb-1"
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                             >
                                 Niet helemaal — het juiste antwoord: <strong>{q.correctAnswer}</strong>
                             </p>
                         )}
                         <p
-                            className="text-xs text-duck-muted leading-snug"
+                            className="text-xs text-duck-ink/60 leading-snug"
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         >
                             {q.explanation}
@@ -340,7 +340,7 @@ const DatasetView: React.FC<DatasetViewProps> = ({
         <div className="mb-4">
             <div className="flex items-center gap-2 mb-1">
                 <span
-                    className="text-xs font-black text-duck-coral uppercase tracking-widest"
+                    className="text-xs font-black text-duck-acid uppercase tracking-widest"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     Dataset {datasetIndex + 1} / {totalDatasets}
@@ -353,7 +353,7 @@ const DatasetView: React.FC<DatasetViewProps> = ({
                 {dataset.title}
             </h2>
             <p
-                className="text-sm text-duck-muted leading-relaxed"
+                className="text-sm text-duck-ink/60 leading-relaxed"
                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
             >
                 {dataset.description}
@@ -367,7 +367,7 @@ const DatasetView: React.FC<DatasetViewProps> = ({
             )}
 
             {(dataset.type === 'bar-chart' || dataset.type === 'pie-chart') && dataset.chartData && (
-                <div className="bg-white rounded-2xl border border-duck-line p-4">
+                <div className="bg-white rounded-2xl border border-duck-gray p-4">
                     <SimpleChart
                         data={dataset.chartData}
                         type={dataset.type === 'pie-chart' ? 'pie' : 'bar'}
@@ -380,7 +380,7 @@ const DatasetView: React.FC<DatasetViewProps> = ({
                     {dataset.cards.map((card, i) => (
                         <div
                             key={i}
-                            className="bg-white rounded-2xl border border-duck-line p-4 flex items-start gap-3"
+                            className="bg-white rounded-2xl border border-duck-gray p-4 flex items-start gap-3"
                         >
                             <div className="text-2xl flex-shrink-0">{card.icon}</div>
                             <div>
@@ -391,7 +391,7 @@ const DatasetView: React.FC<DatasetViewProps> = ({
                                     {card.title}
                                 </p>
                                 <p
-                                    className="text-xs text-duck-muted leading-relaxed"
+                                    className="text-xs text-duck-ink/60 leading-relaxed"
                                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                                 >
                                     {card.content}
@@ -404,10 +404,10 @@ const DatasetView: React.FC<DatasetViewProps> = ({
         </div>
 
         {/* Hint */}
-        <div className="flex items-center gap-2 mb-4 p-2.5 bg-duck-coral/6 rounded-xl border border-duck-coral/15">
-            <BookOpen size={14} className="text-duck-coral flex-shrink-0" />
+        <div className="flex items-center gap-2 mb-4 p-2.5 bg-duck-acid/6 rounded-xl border border-duck-acid/15">
+            <BookOpen size={14} className="text-duck-acid flex-shrink-0" />
             <p
-                className="text-xs text-duck-coral"
+                className="text-xs text-duck-acid"
                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
             >
                 Gebruik de data hierboven om de vragen te beantwoorden. Sorteer of filter om antwoorden te vinden.
@@ -445,7 +445,7 @@ const DatasetView: React.FC<DatasetViewProps> = ({
         {canGoNext && (
             <button
                 onClick={onNext}
-                className="w-full mt-4 py-3.5 bg-gradient-to-r from-duck-coral to-duck-coral hover:from-duck-coral hover:to-duck-coral text-white rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2"
+                className="w-full mt-4 py-3.5 bg-gradient-to-r from-duck-acid to-duck-acid hover:from-duck-acid hover:to-duck-acid text-white rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2"
                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
             >
                 {isLast ? 'Bekijk resultaten' : 'Volgende dataset'}
@@ -671,7 +671,7 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
                 {currentDataset > 0 && (
                     <button
                         onClick={handlePrevDataset}
-                        className="mt-3 flex items-center gap-1.5 text-xs text-duck-muted hover:text-duck-ink transition-colors"
+                        className="mt-3 flex items-center gap-1.5 text-xs text-duck-ink/60 hover:text-duck-ink transition-colors"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         <ChevronLeft size={14} />
@@ -704,7 +704,7 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
                     {!isChatOpen && (
                         <button
                             onClick={() => setIsChatOpen(true)}
-                            className="fixed bottom-6 right-6 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-duck-coral to-duck-coral text-white shadow-lg transition-all duration-200 hover:brightness-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2 active:scale-95"
+                            className="fixed bottom-6 right-6 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-duck-acid to-duck-acid text-white shadow-lg transition-all duration-200 hover:brightness-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2 active:scale-95"
                             aria-label="Open AI-assistent"
                         >
                             <MessageCircle size={22} />
@@ -720,7 +720,7 @@ const DataViewerInner: React.FC<DataViewerProps> = ({
 
 const LoadingScreen = () => (
     <div className="min-h-screen bg-duck-bg flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-2 border-duck-coral border-t-transparent" />
+        <div className="animate-spin rounded-full h-8 w-8 border-2 border-duck-acid border-t-transparent" />
     </div>
 );
 
@@ -741,10 +741,10 @@ export const DataViewer: React.FC<TemplateMissionProps> = ({ missionId, onBack, 
     if (loadError) return (
         <div className="min-h-screen bg-duck-bg flex items-center justify-center p-4">
             <div className="text-center">
-                <p className="text-duck-muted mb-4" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                <p className="text-duck-ink/60 mb-4" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                     Config niet gevonden: {missionId}
                 </p>
-                <button onClick={onBack} className="px-4 py-2 bg-duck-coral text-white rounded-xl text-sm font-bold">Terug</button>
+                <button onClick={onBack} className="px-4 py-2 bg-duck-acid text-duck-ink rounded-xl text-sm font-bold">Terug</button>
             </div>
         </div>
     );

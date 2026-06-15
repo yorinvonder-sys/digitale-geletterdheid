@@ -101,7 +101,7 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
             <div className="min-h-screen bg-duck-ink flex items-center justify-center p-4">
                 <div className="font-mono text-xs text-duck-error text-center">
                     <div className="mb-2">ERROR: config not found for &quot;{missionId}&quot;</div>
-                    <button onClick={onBack} className="text-duck-line hover:text-[#FCF6EA]">← back</button>
+                    <button onClick={onBack} className="text-duck-gray hover:text-[#FCF6EA]">← back</button>
                 </div>
             </div>
         );
@@ -244,18 +244,18 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
             <div className="min-h-screen bg-duck-ink flex items-center justify-center p-4 pb-24 sm:pb-4">
                 <div className="w-full max-w-md">
                     {/* Terminal header bar */}
-                    <div className="bg-duck-ink rounded-t-2xl border border-duck-line/30 px-4 py-2.5 flex items-center gap-2">
+                    <div className="bg-duck-ink rounded-t-2xl border border-duck-gray/30 px-4 py-2.5 flex items-center gap-2">
                         <div className="w-3 h-3 rounded-full bg-duck-error/70" />
                         <div className="w-3 h-3 rounded-full bg-duck-error/70" />
                         <div className="w-3 h-3 rounded-full bg-duck-error/70" />
-                        <span className="ml-2 font-mono text-xs text-duck-line">
+                        <span className="ml-2 font-mono text-xs text-duck-gray">
                             puzzle-lab — {config.missionId}
                         </span>
                     </div>
 
-                    <div className="bg-duck-ink rounded-b-2xl border border-t-0 border-duck-line/30 p-6">
+                    <div className="bg-duck-ink rounded-b-2xl border border-t-0 border-duck-gray/30 p-6">
                         {/* Boot sequence */}
-                        <div className="font-mono text-xs text-duck-line/60 mb-5 space-y-0.5">
+                        <div className="font-mono text-xs text-duck-gray/60 mb-5 space-y-0.5">
                             <div>$ initializing puzzle-lab v2.4...</div>
                             <div>$ loading mission: {config.missionId}</div>
                             <div>$ {config.puzzles.length} puzzles queued</div>
@@ -269,7 +269,7 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
                         >
                             {config.introTitle}
                         </h1>
-                        <p className="font-mono text-xs text-duck-line leading-relaxed mb-5 text-center">
+                        <p className="font-mono text-xs text-duck-gray leading-relaxed mb-5 text-center">
                             {config.introDescription}
                         </p>
 
@@ -278,18 +278,18 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
                         )}
 
                         {config.introFeatures && config.introFeatures.length > 0 && (
-                            <div className="bg-duck-ink rounded-xl border border-duck-line/30 p-4 mb-5 space-y-2">
+                            <div className="bg-duck-ink rounded-xl border border-duck-gray/30 p-4 mb-5 space-y-2">
                                 {config.introFeatures.map((f, i) => (
-                                    <div key={i} className="flex items-start gap-2 font-mono text-xs text-duck-line">
-                                        <span className="text-duck-line shrink-0">&gt;</span>
+                                    <div key={i} className="flex items-start gap-2 font-mono text-xs text-duck-gray">
+                                        <span className="text-duck-gray shrink-0">&gt;</span>
                                         <span>{f}</span>
                                     </div>
                                 ))}
                             </div>
                         )}
 
-                        <div className="flex items-center gap-3 mb-5 font-mono text-xs text-duck-line">
-                            <Terminal size={12} className="text-duck-line shrink-0" />
+                        <div className="flex items-center gap-3 mb-5 font-mono text-xs text-duck-gray">
+                            <Terminal size={12} className="text-duck-gray shrink-0" />
                             <span>{config.puzzles.length} puzzels — max {config.maxScore} punten</span>
                         </div>
 
@@ -303,7 +303,7 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
 
                         <button
                             onClick={onBack}
-                            className="w-full mt-3 py-2 font-mono text-xs text-duck-line hover:text-[#FCF6EA] transition-colors flex items-center justify-center gap-1"
+                            className="w-full mt-3 py-2 font-mono text-xs text-duck-gray hover:text-[#FCF6EA] transition-colors flex items-center justify-center gap-1"
                         >
                             <ArrowLeft size={12} /> back
                         </button>
@@ -349,16 +349,16 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
         <div className="min-h-screen bg-duck-ink flex items-center justify-center p-4">
             <div className="w-full max-w-md">
                 {/* Terminal chrome */}
-                <div className="bg-duck-ink rounded-t-2xl border border-duck-line/30 px-4 py-2.5 flex items-center gap-2">
+                <div className="bg-duck-ink rounded-t-2xl border border-duck-gray/30 px-4 py-2.5 flex items-center gap-2">
                     <div className="w-3 h-3 rounded-full bg-duck-error/70" />
                     <div className="w-3 h-3 rounded-full bg-duck-error/70" />
                     <div className="w-3 h-3 rounded-full bg-duck-error/70" />
-                    <span className="ml-2 font-mono text-xs text-duck-line flex-1">
+                    <span className="ml-2 font-mono text-xs text-duck-gray flex-1">
                         puzzle-lab — {puzzle.id}
                     </span>
                     <button
                         onClick={onBack}
-                        className="-mr-2 flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full text-duck-line transition-colors hover:bg-duck-line/10 hover:text-[#FCF6EA] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E7D8BD] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0B453F]"
+                        className="-mr-2 flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full text-duck-gray transition-colors hover:bg-duck-gray/10 hover:text-[#FCF6EA] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E7D8BD] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0B453F]"
                         aria-label="Terug"
                     >
                         <ArrowLeft size={14} />
@@ -366,14 +366,14 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
                 </div>
 
                 <div
-                    className={`bg-duck-ink rounded-b-2xl border border-t-0 border-duck-line/30 p-5 transition-transform ${
+                    className={`bg-duck-ink rounded-b-2xl border border-t-0 border-duck-gray/30 p-5 transition-transform ${
                         shake ? 'animate-[shake_0.4s_ease-in-out]' : ''
                     }`}
                     style={shake ? { animation: 'shake 0.4s ease-in-out' } : {}}
                 >
                     {/* Progress bar */}
                     <div className="flex items-center justify-between mb-4">
-                        <span className="font-mono text-[11px] text-duck-line">
+                        <span className="font-mono text-[11px] text-duck-gray">
                             PUZZEL {state.currentPuzzle + 1}/{config.puzzles.length}
                         </span>
                         <div className="flex gap-1">
@@ -385,7 +385,7 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
                                             ? 'bg-duck-acid w-6'
                                             : i === state.currentPuzzle
                                               ? 'bg-duck-acid w-6'
-                                              : 'bg-duck-line/30 w-4'
+                                              : 'bg-duck-gray/30 w-4'
                                     }`}
                                 />
                             ))}
@@ -397,7 +397,7 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
 
                     {/* Puzzle title */}
                     <div className="mb-4">
-                        <div className="font-mono text-[10px] text-duck-line/70 mb-1 uppercase tracking-widest">
+                        <div className="font-mono text-[10px] text-duck-gray/70 mb-1 uppercase tracking-widest">
                             [ {puzzle.type === 'multiple-choice' ? 'MULTIPLE CHOICE' : puzzle.type === 'code-crack' ? 'CODE KRAKEN' : 'TEKST INVOER'} ]
                         </div>
                         <h2
@@ -406,36 +406,36 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
                         >
                             {puzzle.title}
                         </h2>
-                        <p className="font-mono text-xs text-duck-line leading-relaxed">
+                        <p className="font-mono text-xs text-duck-gray leading-relaxed">
                             {puzzle.description}
                         </p>
                     </div>
 
                     {/* Clues */}
-                    <div className="bg-duck-ink rounded-xl border border-duck-line/30 p-4 mb-4 space-y-2">
-                        <div className="font-mono text-[10px] text-duck-line uppercase tracking-widest mb-2">
+                    <div className="bg-duck-ink rounded-xl border border-duck-gray/30 p-4 mb-4 space-y-2">
+                        <div className="font-mono text-[10px] text-duck-gray uppercase tracking-widest mb-2">
                             AANWIJZINGEN
                         </div>
                         {visibleClues.slice(0, puzzle.clues.length + hintsUsed).map((clue, i) => (
-                            <div key={i} className="flex items-start gap-2 font-mono text-xs text-duck-line">
-                                <span className="text-duck-line shrink-0 mt-0.5">&gt;</span>
+                            <div key={i} className="flex items-start gap-2 font-mono text-xs text-duck-gray">
+                                <span className="text-duck-gray shrink-0 mt-0.5">&gt;</span>
                                 <span>{clue}</span>
                             </div>
                         ))}
                         {visibleClues.length > puzzle.clues.length + hintsUsed && (
-                            <div className="flex items-center gap-2 font-mono text-[10px] text-duck-line">
+                            <div className="flex items-center gap-2 font-mono text-[10px] text-duck-gray">
                                 <EyeOff size={10} />
                                 <span>{visibleClues.length - puzzle.clues.length - hintsUsed} aanwijzing(en) verborgen</span>
                             </div>
                         )}
                         {extraRevealed && puzzle.extraClues && puzzle.extraClues.length > 0 && (
-                            <div className="mt-2 pt-2 border-t border-duck-line/30">
-                                <div className="font-mono text-[10px] text-duck-line/70 uppercase tracking-widest mb-1.5">
+                            <div className="mt-2 pt-2 border-t border-duck-gray/30">
+                                <div className="font-mono text-[10px] text-duck-gray/70 uppercase tracking-widest mb-1.5">
                                     EXTRA AANWIJZINGEN (ontgrendeld)
                                 </div>
                                 {puzzle.extraClues.map((clue, i) => (
                                     <div key={i} className="flex items-start gap-2 font-mono text-xs text-duck-acid/80 mb-1">
-                                        <span className="text-duck-line shrink-0 mt-0.5">!</span>
+                                        <span className="text-duck-gray shrink-0 mt-0.5">!</span>
                                         <span>{clue}</span>
                                     </div>
                                 ))}
@@ -460,17 +460,17 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
                                             key={i}
                                             onClick={() => checkAnswer(opt)}
                                             disabled={celebrating}
-                                            className="w-full text-left px-4 py-3 bg-duck-ink hover:bg-duck-ink border border-duck-line/30 hover:border-duck-acid/40 rounded-xl font-mono text-xs text-duck-line transition-all duration-150 flex items-center gap-3"
+                                            className="w-full text-left px-4 py-3 bg-duck-ink hover:bg-duck-ink border border-duck-gray/30 hover:border-duck-acid/40 rounded-xl font-mono text-xs text-duck-gray transition-all duration-150 flex items-center gap-3"
                                         >
-                                            <span className="text-duck-line w-5">{String.fromCharCode(65 + i)}.</span>
+                                            <span className="text-duck-gray w-5">{String.fromCharCode(65 + i)}.</span>
                                             {opt}
                                         </button>
                                     ))}
                                 </div>
                             ) : (
                                 <div className="mb-4">
-                                    <div className="flex items-center bg-duck-ink border border-duck-line/30 focus-within:border-duck-acid/60 rounded-xl px-3 py-2.5 gap-2 transition-colors">
-                                        <span className="font-mono text-xs text-duck-line shrink-0">$</span>
+                                    <div className="flex items-center bg-duck-ink border border-duck-gray/30 focus-within:border-duck-acid/60 rounded-xl px-3 py-2.5 gap-2 transition-colors">
+                                        <span className="font-mono text-xs text-duck-gray shrink-0">$</span>
                                         <input
                                             ref={inputRef}
                                             type="text"
@@ -479,14 +479,14 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
                                             onKeyDown={handleKeyDown}
                                             disabled={celebrating}
                                             placeholder="antwoord..."
-                                            className="flex-1 bg-transparent font-mono text-xs text-duck-acid placeholder:text-duck-line/50 outline-none"
+                                            className="flex-1 bg-transparent font-mono text-xs text-duck-acid placeholder:text-duck-gray/50 outline-none"
                                         />
                                         <BlinkingCursor />
                                     </div>
                                     <button
                                         onClick={handleSubmit}
                                         disabled={!inputValue.trim() || celebrating}
-                                        className="w-full mt-2 py-2.5 bg-duck-acid hover:bg-duck-acid hover:brightness-95 hover:text-duck-ink disabled:bg-duck-line/30 disabled:text-duck-line/60 text-duck-ink disabled:cursor-not-allowed font-mono font-bold text-xs rounded-xl transition-all duration-150"
+                                        className="w-full mt-2 py-2.5 bg-duck-acid hover:bg-duck-acid hover:brightness-95 hover:text-duck-ink disabled:bg-duck-gray/30 disabled:text-duck-gray/60 text-duck-ink disabled:cursor-not-allowed font-mono font-bold text-xs rounded-xl transition-all duration-150"
                                     >
                                         SUBMIT
                                     </button>
@@ -495,9 +495,9 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
 
                             {/* Hint + attempts row */}
                             <div className="flex items-center justify-between">
-                                <div className="font-mono text-[10px] text-duck-line">
+                                <div className="font-mono text-[10px] text-duck-gray">
                                     {attempts > 0 && (
-                                        <span className={attempts >= puzzle.maxAttempts - 1 ? 'text-duck-line/70' : ''}>
+                                        <span className={attempts >= puzzle.maxAttempts - 1 ? 'text-duck-gray/70' : ''}>
                                             {attempts}/{puzzle.maxAttempts} pogingen
                                         </span>
                                     )}
@@ -506,7 +506,7 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
                                     {visibleClues.length > puzzle.clues.length + hintsUsed && (
                                         <button
                                             onClick={handleHint}
-                                            className="flex items-center gap-1 font-mono text-[10px] text-duck-line/70 hover:text-duck-acid transition-colors"
+                                            className="flex items-center gap-1 font-mono text-[10px] text-duck-gray/70 hover:text-duck-acid transition-colors"
                                         >
                                             <Eye size={10} />
                                             hint (-{puzzle.hintCost} pts)
@@ -515,7 +515,7 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
                                     {attempts >= 2 && (
                                         <button
                                             onClick={handleSkip}
-                                            className="font-mono text-[10px] text-duck-line hover:text-[#FCF6EA] transition-colors"
+                                            className="font-mono text-[10px] text-duck-gray hover:text-[#FCF6EA] transition-colors"
                                         >
                                             overslaan →
                                         </button>
@@ -533,7 +533,7 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
                             </div>
                             <button
                                 onClick={handleSkip}
-                                className="w-full py-2.5 bg-duck-ink hover:bg-duck-ink border border-duck-line/30 font-mono font-bold text-xs text-duck-line rounded-xl transition-all duration-150"
+                                className="w-full py-2.5 bg-duck-ink hover:bg-duck-ink border border-duck-gray/30 font-mono font-bold text-xs text-duck-gray rounded-xl transition-all duration-150"
                             >
                                 VOLGENDE PUZZEL →
                             </button>
@@ -556,8 +556,8 @@ export const PuzzleLab: React.FC<TemplateMissionProps> = ({
                     )}
 
                     {/* Score footer */}
-                    <div className="mt-5 pt-4 border-t border-duck-line/30 flex items-center justify-between">
-                        <span className="font-mono text-[10px] text-duck-line">TOTAAL SCORE</span>
+                    <div className="mt-5 pt-4 border-t border-duck-gray/30 flex items-center justify-between">
+                        <span className="font-mono text-[10px] text-duck-gray">TOTAAL SCORE</span>
                         <span className="font-mono text-xs font-bold text-duck-acid">{totalScore} pts</span>
                     </div>
                 </div>

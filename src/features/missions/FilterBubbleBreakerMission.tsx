@@ -93,8 +93,8 @@ export const FilterBubbleBreakerMission: React.FC<Props> = ({ onBack, onComplete
     };
 
     const getBadge = () => {
-        if (score >= 80) return { emoji: '🫧', title: 'Bubble Breaker', color: 'from-duck-ink to-duck-coral' };
-        if (score >= 60) return { emoji: '👀', title: 'Bewuste Scroller', color: 'from-duck-ink to-duck-coral' };
+        if (score >= 80) return { emoji: '🫧', title: 'Bubble Breaker', color: 'from-duck-ink to-duck-acid' };
+        if (score >= 60) return { emoji: '👀', title: 'Bewuste Scroller', color: 'from-duck-ink to-duck-acid' };
         return { emoji: '🌱', title: 'Bubbel Ontdekker', color: 'from-duck-ink to-duck-ink' };
     };
 
@@ -105,8 +105,8 @@ export const FilterBubbleBreakerMission: React.FC<Props> = ({ onBack, onComplete
                 <div className="flex-1 min-w-0">
                     <p className="text-xs font-bold text-duck-ink leading-tight" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{item.title}</p>
                     <div className="flex items-center gap-2 mt-1">
-                        <span className="text-[10px] text-duck-muted">{item.source}</span>
-                        <span className={`text-[9px] px-1.5 py-0.5 rounded-full font-bold ${item.engagement === 'Ad' || item.engagement === 'Gesponsord' ? 'bg-duck-coral/10 text-duck-coral' : 'bg-duck-line text-duck-muted'}`}>{item.engagement}</span>
+                        <span className="text-[10px] text-duck-ink/60">{item.source}</span>
+                        <span className={`text-[9px] px-1.5 py-0.5 rounded-full font-bold ${item.engagement === 'Ad' || item.engagement === 'Gesponsord' ? 'bg-duck-acid/10 text-duck-acid' : 'bg-duck-gray text-duck-ink/60'}`}>{item.engagement}</span>
                     </div>
                     <span className={`inline-flex mt-1 text-[8px] px-2 py-0.5 rounded-full font-bold border ${isB ? 'bg-duck-ink/10 text-duck-ink border-duck-ink/20' : 'bg-duck-ink/10 text-duck-ink border-duck-ink/20'}`}>{item.category}</span>
                 </div>
@@ -117,11 +117,11 @@ export const FilterBubbleBreakerMission: React.FC<Props> = ({ onBack, onComplete
     if (phase === 'intro') {
         return (
             <div className="min-h-screen bg-duck-bg text-duck-ink overflow-y-auto p-4 pb-safe">
-                <button onClick={onBack} className="flex items-center gap-2 text-duck-muted hover:text-duck-ink transition-all duration-300 mb-6"><ArrowLeft size={18} /> <span className="text-sm font-bold" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Terug</span></button>
+                <button onClick={onBack} className="flex items-center gap-2 text-duck-ink/60 hover:text-duck-ink transition-all duration-300 mb-6"><ArrowLeft size={18} /> <span className="text-sm font-bold" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Terug</span></button>
                 <div className="max-w-lg mx-auto text-center space-y-6">
                     <div className="w-20 h-20 bg-duck-ink/10 rounded-3xl flex items-center justify-center mx-auto border border-duck-ink/20 animate-bounce"><span className="text-4xl">🫧</span></div>
                     <h1 className="text-3xl font-black" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Filter Bubble Breaker</h1>
-                    <p className="text-duck-muted text-sm leading-relaxed max-w-sm mx-auto" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Twee mensen openen dezelfde app — maar zien <span className="text-duck-coral font-bold">totaal andere content</span>. Hoe kan dat?</p>
+                    <p className="text-duck-ink/60 text-sm leading-relaxed max-w-sm mx-auto" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Twee mensen openen dezelfde app — maar zien <span className="text-duck-acid font-bold">totaal andere content</span>. Hoe kan dat?</p>
                     <MissionGoalBanner goal={getMissionGoal('filter-bubble-breaker')!} compact />
                     <div className="flex gap-4 justify-center">
                         <div className="bg-duck-ink/10 border border-duck-ink/20 rounded-2xl p-4 text-center w-36">
@@ -130,7 +130,7 @@ export const FilterBubbleBreakerMission: React.FC<Props> = ({ onBack, onComplete
                             <p className="text-[10px] text-duck-ink">{PROFILE_A.age} jaar, {PROFILE_A.country}</p>
                             <div className="flex flex-wrap gap-1 justify-center mt-2">{PROFILE_A.interests.map(i => <span key={i} className="text-[8px] bg-duck-ink/15 text-duck-ink px-1.5 py-0.5 rounded-full border border-duck-ink/20">{i}</span>)}</div>
                         </div>
-                        <div className="flex items-center"><ArrowLeftRight size={24} className="text-duck-line" /></div>
+                        <div className="flex items-center"><ArrowLeftRight size={24} className="text-duck-gray" /></div>
                         <div className="bg-duck-ink/10 border border-duck-ink/20 rounded-2xl p-4 text-center w-36">
                             <span className="text-2xl">{PROFILE_B.emoji}</span>
                             <p className="text-sm font-black mt-1" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{PROFILE_B.name}</p>
@@ -138,7 +138,7 @@ export const FilterBubbleBreakerMission: React.FC<Props> = ({ onBack, onComplete
                             <div className="flex flex-wrap gap-1 justify-center mt-2">{PROFILE_B.interests.map(i => <span key={i} className="text-[8px] bg-duck-ink/15 text-duck-ink px-1.5 py-0.5 rounded-full border border-duck-ink/20">{i}</span>)}</div>
                         </div>
                     </div>
-                    <button onClick={() => setPhase('compare')} className="px-8 py-4 bg-duck-coral hover:bg-duck-coral text-white rounded-full font-black text-lg transition-all duration-300 active:scale-95 shadow-xl shadow-duck-coral/30 focus-visible:ring-2 focus-visible:ring-duck-coral">Bekijk hun feeds →</button>
+                    <button onClick={() => setPhase('compare')} className="px-8 py-4 bg-duck-acid hover:bg-duck-acid text-duck-ink rounded-full font-black text-lg transition-all duration-300 active:scale-95 shadow-xl shadow-duck-acid/30 focus-visible:ring-2 focus-visible:ring-duck-acid">Bekijk hun feeds →</button>
                 </div>
             </div>
         );
@@ -148,14 +148,14 @@ export const FilterBubbleBreakerMission: React.FC<Props> = ({ onBack, onComplete
         return (
             <div className="min-h-screen bg-duck-bg overflow-y-auto p-4 pb-safe">
                 <div className="max-w-3xl mx-auto">
-                    <button onClick={() => setPhase('intro')} className="flex items-center gap-2 text-duck-muted hover:text-duck-ink transition-all duration-300 mb-4"><ArrowLeft size={18} /> <span className="text-sm font-bold" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Terug</span></button>
+                    <button onClick={() => setPhase('intro')} className="flex items-center gap-2 text-duck-ink/60 hover:text-duck-ink transition-all duration-300 mb-4"><ArrowLeft size={18} /> <span className="text-sm font-bold" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Terug</span></button>
                     <div className="text-center mb-6">
                         <h2 className="text-xl font-black text-duck-ink" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Vergelijk de feeds</h2>
-                        <p className="text-sm text-duck-muted" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Dezelfde app, totaal andere content. Spot de verschillen!</p>
+                        <p className="text-sm text-duck-ink/60" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Dezelfde app, totaal andere content. Spot de verschillen!</p>
                     </div>
-                    <div className="flex bg-duck-line p-1 rounded-full mb-6 max-w-sm mx-auto">
+                    <div className="flex bg-duck-gray p-1 rounded-full mb-6 max-w-sm mx-auto">
                         {(['both', 'A', 'B'] as const).map(f => (
-                            <button key={f} onClick={() => setActiveFeed(f)} className={`flex-1 py-2 rounded-full text-xs font-black transition-all duration-300 ${activeFeed === f ? 'bg-white shadow-md text-duck-ink' : 'text-duck-muted'}`} style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                            <button key={f} onClick={() => setActiveFeed(f)} className={`flex-1 py-2 rounded-full text-xs font-black transition-all duration-300 ${activeFeed === f ? 'bg-white shadow-md text-duck-ink' : 'text-duck-ink/60'}`} style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                 {f === 'both' ? '🔀 Beide' : f === 'A' ? `${PROFILE_A.emoji} ${PROFILE_A.name}` : `${PROFILE_B.emoji} ${PROFILE_B.name}`}
                             </button>
                         ))}
@@ -175,7 +175,7 @@ export const FilterBubbleBreakerMission: React.FC<Props> = ({ onBack, onComplete
                         )}
                     </div>
                     <div className="text-center mt-8">
-                        <button onClick={() => setPhase('analyze')} className="px-8 py-4 bg-duck-coral hover:bg-duck-coral text-white rounded-full font-black transition-all duration-300 active:scale-95 shadow-xl focus-visible:ring-2 focus-visible:ring-duck-coral">Ga dieper analyseren →</button>
+                        <button onClick={() => setPhase('analyze')} className="px-8 py-4 bg-duck-acid hover:bg-duck-acid text-duck-ink rounded-full font-black transition-all duration-300 active:scale-95 shadow-xl focus-visible:ring-2 focus-visible:ring-duck-acid">Ga dieper analyseren →</button>
                     </div>
                 </div>
             </div>
@@ -188,22 +188,22 @@ export const FilterBubbleBreakerMission: React.FC<Props> = ({ onBack, onComplete
         return (
             <div className="min-h-screen bg-duck-bg overflow-y-auto p-4 pb-safe">
                 <div className="max-w-lg mx-auto space-y-6">
-                    <button onClick={() => setPhase('compare')} className="flex items-center gap-2 text-duck-muted hover:text-duck-ink transition-all duration-300"><ArrowLeft size={18} /> <span className="text-sm font-bold" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Terug</span></button>
+                    <button onClick={() => setPhase('compare')} className="flex items-center gap-2 text-duck-ink/60 hover:text-duck-ink transition-all duration-300"><ArrowLeft size={18} /> <span className="text-sm font-bold" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Terug</span></button>
 
-                    <div className="bg-white rounded-2xl shadow-xl border border-duck-line p-6 text-center space-y-4">
+                    <div className="bg-white rounded-2xl shadow-xl border border-duck-gray p-6 text-center space-y-4">
                         <div className="w-12 h-12 bg-duck-ink/10 rounded-xl flex items-center justify-center mx-auto border border-duck-ink/20">
                             <Search size={24} className="text-duck-ink" />
                         </div>
                         <h2 className="text-xl font-black text-duck-ink" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Analyseer de bubbel</h2>
-                        <p className="text-sm text-duck-muted" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
-                            Zoek <span className="font-black text-duck-coral">1 onderwerp</span> dat {PROFILE_A.name} zou missen in zijn feed.
+                        <p className="text-sm text-duck-ink/60" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                            Zoek <span className="font-black text-duck-acid">1 onderwerp</span> dat {PROFILE_A.name} zou missen in zijn feed.
                             Leg in 1-2 zinnen uit waarom dit onderwerp belangrijk is om te weten.
                         </p>
                     </div>
 
                     <div className="space-y-2">
                         <div className="flex items-center gap-2 mb-1">
-                            <span className="text-[10px] font-black text-duck-muted uppercase tracking-widest" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Ter herinnering: {PROFILE_A.name} ziet alleen</span>
+                            <span className="text-[10px] font-black text-duck-ink/60 uppercase tracking-widest" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Ter herinnering: {PROFILE_A.name} ziet alleen</span>
                         </div>
                         <div className="flex flex-wrap gap-1.5">
                             {FEED_A.map(item => (
@@ -213,21 +213,21 @@ export const FilterBubbleBreakerMission: React.FC<Props> = ({ onBack, onComplete
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-xs font-black text-duck-muted" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Jouw analyse:</label>
+                        <label className="text-xs font-black text-duck-ink/60" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Jouw analyse:</label>
                         <textarea
                             value={analyzeResponse}
                             onChange={e => setAnalyzeResponse(e.target.value)}
                             placeholder="Bijv: Daan mist nieuws over klimaatverandering. Dit is belangrijk omdat..."
-                            className="w-full p-4 rounded-2xl border-2 border-duck-line bg-white text-sm text-duck-ink placeholder-[#E7D8BD] focus:border-duck-ink focus:outline-none transition-all duration-300 resize-none"
+                            className="w-full p-4 rounded-2xl border-2 border-duck-gray bg-white text-sm text-duck-ink placeholder-[#E7D8BD] focus:border-duck-ink focus:outline-none transition-all duration-300 resize-none"
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif", minHeight: '120px' }}
                         />
-                        <p className="text-[10px] text-duck-muted text-right" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{analyzeResponse.length} tekens</p>
+                        <p className="text-[10px] text-duck-ink/60 text-right" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{analyzeResponse.length} tekens</p>
                     </div>
 
                     <button
                         onClick={() => setPhase('challenge')}
                         disabled={analyzeResponse.trim().length < 10}
-                        className={`w-full py-4 rounded-full font-black text-lg transition-all duration-300 active:scale-95 shadow-xl flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-duck-coral ${analyzeResponse.trim().length < 10 ? 'bg-duck-line text-duck-muted shadow-none cursor-not-allowed' : 'bg-duck-coral text-white hover:bg-duck-coral shadow-duck-coral/30'}`}
+                        className={`w-full py-4 rounded-full font-black text-lg transition-all duration-300 active:scale-95 shadow-xl flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-duck-acid ${analyzeResponse.trim().length < 10 ? 'bg-duck-gray text-duck-ink/60 shadow-none cursor-not-allowed' : 'bg-duck-acid text-duck-ink hover:bg-duck-acid shadow-duck-acid/30'}`}
                     >
                         Start de vragen <ChevronRight size={20} />
                     </button>
@@ -242,12 +242,12 @@ export const FilterBubbleBreakerMission: React.FC<Props> = ({ onBack, onComplete
             <div className="min-h-screen bg-duck-bg overflow-y-auto p-4 pb-safe">
                 <div className="max-w-lg mx-auto">
                     <div className="flex items-center justify-between mb-6">
-                        <button onClick={() => setPhase('compare')} className="text-duck-muted hover:text-duck-ink transition-all duration-300"><ArrowLeft size={18} /></button>
-                        <div className="flex gap-1.5">{CHALLENGES.map((_, i) => (<div key={i} className={`w-8 h-1.5 rounded-full transition-all duration-300 ${i < currentChallenge ? 'bg-duck-ink' : i === currentChallenge ? 'bg-gradient-to-r from-duck-coral to-duck-coral' : 'bg-duck-line'}`} />))}</div>
-                        <div className="bg-duck-coral/10 px-3 py-1 rounded-full border border-duck-coral/20"><span className="text-xs font-black text-duck-coral">{score} pts</span></div>
+                        <button onClick={() => setPhase('compare')} className="text-duck-ink/60 hover:text-duck-ink transition-all duration-300"><ArrowLeft size={18} /></button>
+                        <div className="flex gap-1.5">{CHALLENGES.map((_, i) => (<div key={i} className={`w-8 h-1.5 rounded-full transition-all duration-300 ${i < currentChallenge ? 'bg-duck-ink' : i === currentChallenge ? 'bg-gradient-to-r from-duck-acid to-duck-acid' : 'bg-duck-gray'}`} />))}</div>
+                        <div className="bg-duck-acid/10 px-3 py-1 rounded-full border border-duck-acid/20"><span className="text-xs font-black text-duck-acid">{score} pts</span></div>
                     </div>
-                    <div className="bg-white rounded-2xl shadow-xl border border-duck-line p-6 mb-6">
-                        <div className="flex items-center gap-2 mb-4"><div className="w-8 h-8 bg-duck-coral rounded-xl flex items-center justify-center"><Brain size={16} className="text-white" /></div><span className="text-[10px] font-black text-duck-muted uppercase tracking-widest" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Vraag {currentChallenge + 1}/{CHALLENGES.length}</span></div>
+                    <div className="bg-white rounded-2xl shadow-xl border border-duck-gray p-6 mb-6">
+                        <div className="flex items-center gap-2 mb-4"><div className="w-8 h-8 bg-duck-acid rounded-xl flex items-center justify-center"><Brain size={16} className="text-duck-ink" /></div><span className="text-[10px] font-black text-duck-ink/60 uppercase tracking-widest" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Vraag {currentChallenge + 1}/{CHALLENGES.length}</span></div>
                         <h3 className="text-lg font-black text-duck-ink leading-snug" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>{ch.question}</h3>
                     </div>
                     <div className="space-y-3">
@@ -255,22 +255,22 @@ export const FilterBubbleBreakerMission: React.FC<Props> = ({ onBack, onComplete
                             const isSelected = selectedAnswer === i;
                             const isCorrect = i === ch.correctIndex;
                             const done = selectedAnswer !== null;
-                            let bg = 'bg-white border-duck-line hover:border-duck-coral/40';
+                            let bg = 'bg-white border-duck-gray hover:border-duck-acid/40';
                             if (done && isCorrect) bg = 'bg-duck-ink/5 border-duck-ink';
                             else if (done && isSelected) bg = 'bg-duck-error border-duck-error';
-                            else if (done) bg = 'bg-duck-line border-duck-line opacity-50';
+                            else if (done) bg = 'bg-duck-gray border-duck-gray opacity-50';
                             return (<button key={i} onClick={() => handleAnswer(i)} disabled={done} className={`w-full p-4 rounded-2xl border-2 text-left transition-all duration-300 ${bg}`}>
                                 <div className="flex items-start gap-3">
-                                    <div className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 text-xs font-black ${done && isCorrect ? 'bg-duck-ink text-white' : done && isSelected ? 'bg-duck-error text-white' : 'bg-duck-line text-duck-muted'}`}>{done && isCorrect ? <Check size={14} /> : done && isSelected ? <X size={14} /> : String.fromCharCode(65 + i)}</div>
-                                    <span className="text-sm font-medium text-duck-muted" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{opt}</span>
+                                    <div className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 text-xs font-black ${done && isCorrect ? 'bg-duck-ink text-white' : done && isSelected ? 'bg-duck-error text-white' : 'bg-duck-gray text-duck-ink/60'}`}>{done && isCorrect ? <Check size={14} /> : done && isSelected ? <X size={14} /> : String.fromCharCode(65 + i)}</div>
+                                    <span className="text-sm font-medium text-duck-ink/60" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{opt}</span>
                                 </div>
                             </button>);
                         })}
                     </div>
                     {showExplanation && (
-                        <div className="mt-6 bg-duck-coral/5 border border-duck-coral/20 rounded-2xl p-4">
-                            <div className="flex items-start gap-2"><Sparkles size={16} className="text-duck-coral mt-0.5 flex-shrink-0" /><p className="text-sm text-duck-muted" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{ch.explanation}</p></div>
-                            <button onClick={nextChallenge} className="w-full mt-4 py-3 bg-duck-coral hover:bg-duck-coral text-white rounded-full font-black text-sm flex items-center justify-center gap-2 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-duck-coral">{currentChallenge < CHALLENGES.length - 1 ? <>Volgende <ChevronRight size={16} /></> : <>Resultaat <Trophy size={16} /></>}</button>
+                        <div className="mt-6 bg-duck-acid/5 border border-duck-acid/20 rounded-2xl p-4">
+                            <div className="flex items-start gap-2"><Sparkles size={16} className="text-duck-acid mt-0.5 flex-shrink-0" /><p className="text-sm text-duck-ink/60" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{ch.explanation}</p></div>
+                            <button onClick={nextChallenge} className="w-full mt-4 py-3 bg-duck-acid hover:bg-duck-acid text-duck-ink rounded-full font-black text-sm flex items-center justify-center gap-2 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-duck-acid">{currentChallenge < CHALLENGES.length - 1 ? <>Volgende <ChevronRight size={16} /></> : <>Resultaat <Trophy size={16} /></>}</button>
                         </div>
                     )}
                 </div>
@@ -285,16 +285,16 @@ export const FilterBubbleBreakerMission: React.FC<Props> = ({ onBack, onComplete
             <div className="max-w-sm w-full text-center space-y-6">
                 <div className={`w-24 h-24 mx-auto bg-gradient-to-br ${badge.color} rounded-3xl flex items-center justify-center shadow-2xl`}><span className="text-5xl">{badge.emoji}</span></div>
                 <h1 className="text-2xl font-black" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>{badge.title}</h1>
-                <p className="text-duck-muted text-sm" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{answers.filter(a => a).length}/{CHALLENGES.length} vragen goed</p>
-                <div className="bg-white rounded-2xl p-4 border border-duck-line">
-                    <div className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-duck-coral to-duck-coral">{score}/100</div>
-                    <p className="text-duck-muted text-xs mt-1" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Bubble Score</p>
+                <p className="text-duck-ink/60 text-sm" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{answers.filter(a => a).length}/{CHALLENGES.length} vragen goed</p>
+                <div className="bg-white rounded-2xl p-4 border border-duck-gray">
+                    <div className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-duck-acid to-duck-acid">{score}/100</div>
+                    <p className="text-duck-ink/60 text-xs mt-1" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Bubble Score</p>
                 </div>
-                <div className="bg-white rounded-2xl p-4 text-left space-y-2 border border-duck-line">
-                    <p className="text-xs font-bold text-duck-muted mb-2" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>3 tips om je bubbel te breken:</p>
-                    <p className="text-xs text-duck-muted" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>1. Volg bewust accounts met andere meningen</p>
-                    <p className="text-xs text-duck-muted" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>2. Zoek actief naar andere onderwerpen</p>
-                    <p className="text-xs text-duck-muted" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>3. Gebruik "Niet geïnteresseerd" bij eenzijdige content</p>
+                <div className="bg-white rounded-2xl p-4 text-left space-y-2 border border-duck-gray">
+                    <p className="text-xs font-bold text-duck-ink/60 mb-2" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>3 tips om je bubbel te breken:</p>
+                    <p className="text-xs text-duck-ink/60" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>1. Volg bewust accounts met andere meningen</p>
+                    <p className="text-xs text-duck-ink/60" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>2. Zoek actief naar andere onderwerpen</p>
+                    <p className="text-xs text-duck-ink/60" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>3. Gebruik "Niet geïnteresseerd" bij eenzijdige content</p>
                 </div>
                 {/* Reflectie */}
                 <div className="bg-white rounded-2xl p-4 border border-duck-ink/20 text-left space-y-3">
@@ -302,16 +302,16 @@ export const FilterBubbleBreakerMission: React.FC<Props> = ({ onBack, onComplete
                         <Sparkles size={16} className="text-duck-ink" />
                         <p className="text-xs font-black uppercase tracking-widest text-duck-ink" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Reflectie</p>
                     </div>
-                    <p className="text-xs text-duck-muted" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Wat heb je geleerd in deze missie? Waar zou je dit in het dagelijks leven tegenkomen?</p>
+                    <p className="text-xs text-duck-ink/60" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Wat heb je geleerd in deze missie? Waar zou je dit in het dagelijks leven tegenkomen?</p>
                     <textarea
                         value={saved.reflectie}
                         onChange={e => setSaved(prev => ({ ...prev, reflectie: e.target.value }))}
                         placeholder="Wat heb je geleerd? Waar kom je dit nog meer tegen?"
-                        className="w-full p-3 rounded-xl border-2 border-duck-line bg-duck-bg text-sm resize-none focus:border-duck-ink focus:outline-none transition-all duration-300"
+                        className="w-full p-3 rounded-xl border-2 border-duck-gray bg-duck-bg text-sm resize-none focus:border-duck-ink focus:outline-none transition-all duration-300"
                         style={{ minHeight: '80px', fontFamily: "'Outfit', system-ui, sans-serif" }}
                     />
                 </div>
-                <button onClick={() => { clearSave(); onComplete(true); }} disabled={saved.reflectie.trim().length < 10} className={`w-full py-4 rounded-full font-black text-lg transition-all duration-300 active:scale-95 shadow-xl flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-[#5F947D] ${saved.reflectie.trim().length < 10 ? 'bg-duck-line text-duck-muted shadow-none cursor-not-allowed' : 'bg-duck-ink text-white hover:bg-duck-ink'}`}><Trophy size={20} /> Missie Voltooid!</button>
+                <button onClick={() => { clearSave(); onComplete(true); }} disabled={saved.reflectie.trim().length < 10} className={`w-full py-4 rounded-full font-black text-lg transition-all duration-300 active:scale-95 shadow-xl flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-[#5F947D] ${saved.reflectie.trim().length < 10 ? 'bg-duck-gray text-duck-ink/60 shadow-none cursor-not-allowed' : 'bg-duck-ink text-white hover:bg-duck-ink'}`}><Trophy size={20} /> Missie Voltooid!</button>
             </div>
             </div>
         </div>

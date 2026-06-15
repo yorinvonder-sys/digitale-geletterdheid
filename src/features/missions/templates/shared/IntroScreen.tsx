@@ -31,7 +31,7 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({
                 {title}
             </h1>
             <p
-                className="text-sm text-duck-muted leading-relaxed mb-5"
+                className="text-sm text-duck-ink/60 leading-relaxed mb-5"
                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
             >
                 {description}
@@ -49,19 +49,19 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({
             </button>
 
             {features && features.length > 0 && (
-                <div className="bg-white rounded-2xl border border-duck-line p-4 text-left shadow-sm">
+                <div className="bg-white rounded-2xl border border-duck-gray p-4 text-left shadow-sm">
                     {features.map((f, i) => (
                         <div
                             key={i}
                             className={`flex items-center gap-3 py-2.5 ${
-                                i < features.length - 1 ? 'border-b border-duck-line' : ''
+                                i < features.length - 1 ? 'border-b border-duck-gray' : ''
                             }`}
                         >
-                            <div className="w-6 h-6 bg-duck-coral/10 rounded-lg flex items-center justify-center">
-                                <span className="text-xs font-black text-duck-coral">{i + 1}</span>
+                            <div className="w-6 h-6 bg-duck-acid/10 rounded-lg flex items-center justify-center">
+                                <span className="text-xs font-black text-duck-acid">{i + 1}</span>
                             </div>
                             <span
-                                className="text-sm font-semibold text-duck-muted"
+                                className="text-sm font-semibold text-duck-ink/60"
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                             >
                                 {f}

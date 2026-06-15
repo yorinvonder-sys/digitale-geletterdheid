@@ -49,13 +49,13 @@ const ItemRow: React.FC<ItemRowProps> = ({ item, submitted, currentIndex, totalI
                 ${submitted
                     ? isCorrect
                         ? 'bg-duck-ink/10 border-duck-ink'
-                        : 'bg-duck-coral/10 border-duck-coral/60'
-                    : 'bg-white border-duck-line hover:border-duck-coral/40 cursor-grab active:cursor-grabbing'
+                        : 'bg-duck-acid/10 border-duck-acid/60'
+                    : 'bg-white border-duck-gray hover:border-duck-acid/40 cursor-grab active:cursor-grabbing'
                 }`}
         >
             <div
                 onPointerDown={submitted ? undefined : (e) => controls.start(e)}
-                className={`min-h-[44px] min-w-[32px] inline-flex items-center justify-center text-duck-muted ${submitted ? '' : 'cursor-grab active:cursor-grabbing'}`}
+                className={`min-h-[44px] min-w-[32px] inline-flex items-center justify-center text-duck-ink/60 ${submitted ? '' : 'cursor-grab active:cursor-grabbing'}`}
                 style={{ touchAction: 'none' }}
                 aria-hidden="true"
             >
@@ -68,7 +68,7 @@ const ItemRow: React.FC<ItemRowProps> = ({ item, submitted, currentIndex, totalI
             </div>
 
             <span
-                className="flex-1 text-sm text-duck-muted font-medium"
+                className="flex-1 text-sm text-duck-ink/60 font-medium"
                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
             >
                 {item.label}
@@ -77,7 +77,7 @@ const ItemRow: React.FC<ItemRowProps> = ({ item, submitted, currentIndex, totalI
             {submitted && (
                 isCorrect
                     ? <CheckCircle size={16} className="text-duck-ink flex-shrink-0" />
-                    : <XCircle size={16} className="text-duck-coral flex-shrink-0" />
+                    : <XCircle size={16} className="text-duck-acid flex-shrink-0" />
             )}
             {!submitted && (
                 <div className="flex shrink-0 gap-1">
@@ -86,7 +86,7 @@ const ItemRow: React.FC<ItemRowProps> = ({ item, submitted, currentIndex, totalI
                         onClick={() => onMove(item.id, -1)}
                         disabled={currentIndex === 0}
                         aria-label={`${item.label} omhoog verplaatsen`}
-                        className="grid min-h-[36px] min-w-[36px] place-items-center rounded-lg border border-duck-line text-duck-muted transition-colors hover:border-duck-coral hover:text-duck-coral disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-coral/40"
+                        className="grid min-h-[36px] min-w-[36px] place-items-center rounded-lg border border-duck-gray text-duck-ink/60 transition-colors hover:border-duck-acid hover:text-duck-acid disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid/40"
                     >
                         <ArrowUp size={14} />
                     </button>
@@ -95,7 +95,7 @@ const ItemRow: React.FC<ItemRowProps> = ({ item, submitted, currentIndex, totalI
                         onClick={() => onMove(item.id, 1)}
                         disabled={currentIndex === totalItems - 1}
                         aria-label={`${item.label} omlaag verplaatsen`}
-                        className="grid min-h-[36px] min-w-[36px] place-items-center rounded-lg border border-duck-line text-duck-muted transition-colors hover:border-duck-coral hover:text-duck-coral disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-coral/40"
+                        className="grid min-h-[36px] min-w-[36px] place-items-center rounded-lg border border-duck-gray text-duck-ink/60 transition-colors hover:border-duck-acid hover:text-duck-acid disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid/40"
                     >
                         <ArrowDown size={14} />
                     </button>
@@ -150,14 +150,14 @@ export const DragSort: React.FC<DragSortProps> = ({
                     {title}
                 </h3>
                 <p
-                    className="text-sm text-duck-muted"
+                    className="text-sm text-duck-ink/60"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     {description}
                 </p>
             </div>
 
-            <div className="text-xs text-duck-muted flex items-center gap-1.5" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+            <div className="text-xs text-duck-ink/60 flex items-center gap-1.5" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                 <GripVertical size={12} />
                 Sleep de kaarten in de juiste volgorde of gebruik de pijltjes
             </div>
@@ -185,7 +185,7 @@ export const DragSort: React.FC<DragSortProps> = ({
                     className={`p-3 rounded-xl text-sm font-medium ${
                         correctCount === items.length
                             ? 'bg-duck-ink/10 text-duck-ink'
-                            : 'bg-duck-coral/10 text-duck-coral'
+                            : 'bg-duck-acid/10 text-duck-acid'
                     }`}
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
@@ -200,7 +200,7 @@ export const DragSort: React.FC<DragSortProps> = ({
             {!submitted ? (
                 <button
                     onClick={handleSubmit}
-                    className="w-full py-3 bg-gradient-to-r from-duck-coral to-duck-coral hover:from-duck-coral hover:to-duck-coral text-white rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98]"
+                    className="w-full py-3 bg-gradient-to-r from-duck-acid to-duck-acid hover:from-duck-acid hover:to-duck-acid text-white rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98]"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     Volgorde bevestigen

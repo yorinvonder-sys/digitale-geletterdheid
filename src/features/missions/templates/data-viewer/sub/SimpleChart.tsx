@@ -71,7 +71,7 @@ const BarChart: React.FC<{ data: ChartDataPoint[] }> = ({ data }) => {
                 {data.map((d, i) => (
                     <div
                         key={i}
-                        className="flex-1 text-center text-[10px] text-duck-muted leading-tight truncate"
+                        className="flex-1 text-center text-[10px] text-duck-ink/60 leading-tight truncate"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         title={d.label}
                     >
@@ -204,7 +204,7 @@ const PieChart: React.FC<{ data: ChartDataPoint[] }> = ({ data }) => {
                         >
                             <div className="w-3 h-3 rounded-sm flex-shrink-0" style={{ backgroundColor: color }} />
                             <span
-                                className="text-xs text-duck-muted flex-1"
+                                className="text-xs text-duck-ink/60 flex-1"
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                             >
                                 {d.label}
@@ -213,7 +213,7 @@ const PieChart: React.FC<{ data: ChartDataPoint[] }> = ({ data }) => {
                                 className="text-xs font-bold text-duck-ink"
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                             >
-                                {d.value} <span className="font-normal text-duck-muted">({pct}%)</span>
+                                {d.value} <span className="font-normal text-duck-ink/60">({pct}%)</span>
                             </span>
                         </div>
                     );

@@ -16,8 +16,8 @@ const ToolGuide = lazy(() => import('./tool-guide/ToolGuide').then(m => ({ defau
 const TemplateLoadingFallback = () => (
     <div className="min-h-screen bg-duck-bg flex items-center justify-center">
         <div className="flex flex-col items-center gap-3">
-            <Loader2 size={32} className="animate-spin text-duck-coral" />
-            <p className="text-sm text-duck-muted" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+            <Loader2 size={32} className="animate-spin text-duck-acid" />
+            <p className="text-sm text-duck-ink/60" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                 Missie laden...
             </p>
         </div>
@@ -35,7 +35,7 @@ export const TemplateMissionRouter: React.FC<TemplateMissionProps> = (props) => 
     if (!entry) {
         return (
             <div className="min-h-screen bg-duck-bg flex items-center justify-center p-4">
-                <p className="text-duck-muted">Missie niet gevonden: {props.missionId}</p>
+                <p className="text-duck-ink/60">Missie niet gevonden: {props.missionId}</p>
             </div>
         );
     }

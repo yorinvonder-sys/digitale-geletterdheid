@@ -137,7 +137,7 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
 
                     {/* Children container */}
                     <div
-                        className="pl-4 py-2 min-h-[40px] border-2 border-dashed border-duck-line rounded-2xl bg-duck-bg/50"
+                        className="pl-4 py-2 min-h-[40px] border-2 border-dashed border-duck-gray rounded-2xl bg-duck-bg/50"
                         onDragOver={(e) => {
                             e.preventDefault();
                             e.stopPropagation();
@@ -149,7 +149,7 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
                         }}
                     >
                         {children || (
-                            <div className="text-xs text-duck-muted italic text-center py-2">
+                            <div className="text-xs text-duck-ink/60 italic text-center py-2">
                                 Sleep blokken hierheen
                             </div>
                         )}

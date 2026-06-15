@@ -99,7 +99,7 @@ export const Categorize: React.FC<CategorizeProps> = ({
                     {title}
                 </h3>
                 <p
-                    className="text-sm text-duck-muted"
+                    className="text-sm text-duck-ink/60"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     {description}
@@ -107,7 +107,7 @@ export const Categorize: React.FC<CategorizeProps> = ({
             </div>
 
             {!submitted && (
-                <p className="text-xs text-duck-muted" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                <p className="text-xs text-duck-ink/60" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                     Selecteer een item, dan klik op de categorie.
                 </p>
             )}
@@ -153,8 +153,8 @@ export const Categorize: React.FC<CategorizeProps> = ({
                                                 ${submitted
                                                     ? isCorrect
                                                         ? 'bg-duck-ink/15 border-duck-ink text-duck-ink'
-                                                        : 'bg-duck-coral/15 border-duck-coral/60 text-duck-coral'
-                                                    : 'bg-white border-duck-line text-duck-muted cursor-pointer hover:border-duck-coral/40'
+                                                        : 'bg-duck-acid/15 border-duck-acid/60 text-duck-acid'
+                                                    : 'bg-white border-duck-gray text-duck-ink/60 cursor-pointer hover:border-duck-acid/40'
                                                 }`}
                                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                                             onClick={(e) => {
@@ -179,7 +179,7 @@ export const Categorize: React.FC<CategorizeProps> = ({
             {/* Unplaced items */}
             {unplacedItems.length > 0 && (
                 <div>
-                    <p className="text-xs text-duck-muted mb-2" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                    <p className="text-xs text-duck-ink/60 mb-2" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                         Te categoriseren:
                     </p>
                     <div className="flex flex-wrap gap-2">
@@ -190,8 +190,8 @@ export const Categorize: React.FC<CategorizeProps> = ({
                                 onClick={() => handleItemClick(item.id)}
                                 className={`px-3 py-1.5 rounded-lg border text-xs font-medium transition-all duration-200
                                     ${selectedItem === item.id
-                                        ? 'bg-duck-coral/15 border-duck-coral text-duck-coral scale-105'
-                                        : 'bg-white border-duck-line text-duck-muted hover:border-duck-coral/40'
+                                        ? 'bg-duck-acid/15 border-duck-acid text-duck-acid scale-105'
+                                        : 'bg-white border-duck-gray text-duck-ink/60 hover:border-duck-acid/40'
                                     }`}
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                             >
@@ -211,7 +211,7 @@ export const Categorize: React.FC<CategorizeProps> = ({
                         className={`p-3 rounded-xl text-sm font-medium ${
                             score === maxScore
                                 ? 'bg-duck-ink/10 text-duck-ink'
-                                : 'bg-duck-coral/10 text-duck-coral'
+                                : 'bg-duck-acid/10 text-duck-acid'
                         }`}
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
@@ -229,8 +229,8 @@ export const Categorize: React.FC<CategorizeProps> = ({
                     disabled={!allPlaced}
                     className={`w-full py-3 rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98]
                         ${allPlaced
-                            ? 'bg-gradient-to-r from-duck-coral to-duck-coral hover:from-duck-coral hover:to-duck-coral text-white'
-                            : 'bg-duck-line text-duck-muted cursor-not-allowed'
+                            ? 'bg-gradient-to-r from-duck-acid to-duck-acid hover:from-duck-acid hover:to-duck-acid text-white'
+                            : 'bg-duck-gray text-duck-ink/60 cursor-not-allowed'
                         }`}
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >

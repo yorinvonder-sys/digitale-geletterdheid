@@ -495,7 +495,7 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                             {stap1Klaar && (
                                 <button
                                     onClick={() => naarStap(1)}
-                                    className="flex min-h-[44px] items-center gap-1 rounded-full bg-duck-acid px-4 text-sm font-medium text-duck-ink transition-colors hover:bg-duck-ink hover:text-white"
+                                    className="flex min-h-[44px] items-center gap-1 rounded-full bg-duck-acid px-4 text-sm font-medium text-duck-ink transition-colors hover:bg-duck-ink hover:text-duck-ink"
                                 >
                                     Volgende <ArrowRight size={16} />
                                 </button>
@@ -570,7 +570,7 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                                 {stap2Klaar && (
                                     <button
                                         onClick={() => naarStap(2)}
-                                        className="flex min-h-[44px] items-center gap-1 rounded-full bg-duck-acid px-4 text-sm font-medium text-duck-ink transition-colors hover:bg-duck-ink hover:text-white"
+                                        className="flex min-h-[44px] items-center gap-1 rounded-full bg-duck-acid px-4 text-sm font-medium text-duck-ink transition-colors hover:bg-duck-ink hover:text-duck-ink"
                                     >
                                         Volgende <ArrowRight size={16} />
                                     </button>
@@ -615,7 +615,7 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                                                 {resultaat === null || resultaat === undefined ? (
                                                     <button
                                                         onClick={() => voerTestUit(scenario.id)}
-                                                        className="min-h-[44px] rounded-full bg-duck-acid px-3 text-xs font-medium text-duck-ink transition-colors hover:bg-duck-ink hover:text-white"
+                                                        className="min-h-[44px] rounded-full bg-duck-acid px-3 text-xs font-medium text-duck-ink transition-colors hover:bg-duck-ink hover:text-duck-ink"
                                                     >
                                                         Test uitvoeren
                                                     </button>
@@ -678,7 +678,7 @@ export const AccessControlEngineerMission: React.FC<Props> = ({
                             {stap3Klaar && (
                                 <button
                                     onClick={handleVoltooi}
-                                    className="flex min-h-[44px] w-full items-center justify-center gap-2 rounded-full bg-duck-acid px-4 text-sm font-bold text-duck-ink transition-colors hover:bg-duck-ink hover:text-white"
+                                    className="flex min-h-[44px] w-full items-center justify-center gap-2 rounded-full bg-duck-acid px-4 text-sm font-bold text-duck-ink transition-colors hover:bg-duck-ink hover:text-duck-ink"
                                 >
                                     <Shield size={18} />
                                     Missie afronden — systeem beveiligd!

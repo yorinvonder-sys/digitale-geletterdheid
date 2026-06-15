@@ -46,9 +46,9 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({ config, state }) => 
         return (
             <div className="h-full overflow-y-auto p-6 space-y-4">
                 <div className="flex items-center gap-2 mb-4">
-                    <Eye size={16} className="text-duck-coral" />
+                    <Eye size={16} className="text-duck-acid" />
                     <span
-                        className="text-xs font-black text-duck-coral uppercase tracking-widest"
+                        className="text-xs font-black text-duck-acid uppercase tracking-widest"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         Wat je bouwt
@@ -59,7 +59,7 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({ config, state }) => 
                     <div className="text-center py-12">
                         <div className="text-3xl mb-3">✍️</div>
                         <p
-                            className="text-sm text-duck-muted"
+                            className="text-sm text-duck-ink/60"
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         >
                             Hier verschijnt jouw werk zodra je begint te schrijven.
@@ -68,9 +68,9 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({ config, state }) => 
                 )}
 
                 {showHtmlPreview && (
-                    <div className="rounded-2xl border border-duck-line bg-white p-3">
+                    <div className="rounded-2xl border border-duck-gray bg-white p-3">
                         <div
-                            className="mb-2 text-[10px] font-black uppercase tracking-widest text-duck-muted"
+                            className="mb-2 text-[10px] font-black uppercase tracking-widest text-duck-ink/60"
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         >
                             Browser-preview
@@ -80,7 +80,7 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({ config, state }) => 
                             sandbox=""
                             referrerPolicy="no-referrer"
                             srcDoc={buildSafeHtmlPreview(combinedText)}
-                            className="h-56 w-full rounded-xl border border-duck-line bg-white"
+                            className="h-56 w-full rounded-xl border border-duck-gray bg-white"
                         />
                     </div>
                 )}
@@ -98,8 +98,8 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({ config, state }) => 
                                 isDone
                                     ? 'border-duck-ink/30 bg-duck-ink/5'
                                     : isActive
-                                      ? 'border-duck-coral/30 bg-duck-coral/5'
-                                      : 'border-duck-line bg-white'
+                                      ? 'border-duck-acid/30 bg-duck-acid/5'
+                                      : 'border-duck-gray bg-white'
                             }`}
                         >
                             <div className="flex items-center gap-2 mb-2">
@@ -108,14 +108,14 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({ config, state }) => 
                                         isDone
                                             ? 'bg-duck-ink text-white'
                                             : isActive
-                                              ? 'bg-duck-coral text-white'
-                                              : 'bg-duck-line text-duck-muted'
+                                              ? 'bg-duck-acid text-duck-ink'
+                                              : 'bg-duck-gray text-duck-ink/60'
                                     }`}
                                 >
                                     {isDone ? '✓' : i + 1}
                                 </div>
                                 <span
-                                    className="text-xs font-bold text-duck-muted uppercase tracking-wider"
+                                    className="text-xs font-bold text-duck-ink/60 uppercase tracking-wider"
                                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                                 >
                                     {step.title}
@@ -123,14 +123,14 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({ config, state }) => 
                             </div>
                             {text?.trim() ? (
                                 <p
-                                    className="text-sm text-duck-muted whitespace-pre-wrap leading-relaxed"
+                                    className="text-sm text-duck-ink/60 whitespace-pre-wrap leading-relaxed"
                                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                                 >
                                     {text}
                                 </p>
                             ) : (
                                 <p
-                                    className="text-sm text-duck-muted italic"
+                                    className="text-sm text-duck-ink/60 italic"
                                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                                 >
                                     Nog niets geschreven…
@@ -151,9 +151,9 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({ config, state }) => 
         return (
             <div className="h-full overflow-y-auto p-6">
                 <div className="flex items-center gap-2 mb-6">
-                    <Layers size={16} className="text-duck-coral" />
+                    <Layers size={16} className="text-duck-acid" />
                     <span
-                        className="text-xs font-black text-duck-coral uppercase tracking-widest"
+                        className="text-xs font-black text-duck-acid uppercase tracking-widest"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         Voortgang
@@ -163,21 +163,21 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({ config, state }) => 
                 <div className="mb-6">
                     <div className="flex justify-between items-center mb-2">
                         <span
-                            className="text-sm font-bold text-duck-muted"
+                            className="text-sm font-bold text-duck-ink/60"
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         >
                             Totaal voltooid
                         </span>
-                        <span className="text-sm font-black text-duck-coral">{percentage}%</span>
+                        <span className="text-sm font-black text-duck-acid">{percentage}%</span>
                     </div>
-                    <div className="w-full h-2 bg-duck-line rounded-full overflow-hidden">
+                    <div className="w-full h-2 bg-duck-gray rounded-full overflow-hidden">
                         <div
-                            className="h-full bg-gradient-to-r from-duck-coral to-duck-ink rounded-full transition-all duration-500"
+                            className="h-full bg-gradient-to-r from-duck-acid to-duck-ink rounded-full transition-all duration-500"
                             style={{ width: `${percentage}%` }}
                         />
                     </div>
                     <p
-                        className="text-xs text-duck-muted mt-1"
+                        className="text-xs text-duck-ink/60 mt-1"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         {checkedItems} van {totalItems} items afgevinkt
@@ -199,8 +199,8 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({ config, state }) => 
                                     isDone
                                         ? 'border-duck-ink/30 bg-duck-ink/5'
                                         : isActive
-                                          ? 'border-duck-coral/30 bg-duck-coral/5'
-                                          : 'border-duck-line bg-white opacity-60'
+                                          ? 'border-duck-acid/30 bg-duck-acid/5'
+                                          : 'border-duck-gray bg-white opacity-60'
                                 }`}
                             >
                                 <div className="flex items-center justify-between">
@@ -210,21 +210,21 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({ config, state }) => 
                                                 isDone
                                                     ? 'bg-duck-ink text-white'
                                                     : isActive
-                                                      ? 'bg-duck-coral text-white'
-                                                      : 'bg-duck-line text-duck-muted'
+                                                      ? 'bg-duck-acid text-duck-ink'
+                                                      : 'bg-duck-gray text-duck-ink/60'
                                             }`}
                                         >
                                             {isDone ? '✓' : i + 1}
                                         </div>
                                         <span
-                                            className="text-sm font-bold text-duck-muted"
+                                            className="text-sm font-bold text-duck-ink/60"
                                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                                         >
                                             {step.title}
                                         </span>
                                     </div>
                                     <span
-                                        className="text-xs text-duck-muted"
+                                        className="text-xs text-duck-ink/60"
                                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                                     >
                                         {stepChecked}/{step.checklistItems.length}
@@ -244,9 +244,9 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({ config, state }) => 
     return (
         <div className="h-full overflow-y-auto p-6">
             <div className="flex items-center gap-2 mb-4">
-                <Eye size={16} className="text-duck-coral" />
+                <Eye size={16} className="text-duck-acid" />
                 <span
-                    className="text-xs font-black text-duck-coral uppercase tracking-widest"
+                    className="text-xs font-black text-duck-acid uppercase tracking-widest"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     Live voorbeeld
@@ -254,7 +254,7 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({ config, state }) => 
             </div>
             {activeText.trim() ? (
                 <div
-                    className="prose prose-sm max-w-none text-duck-muted leading-relaxed whitespace-pre-wrap"
+                    className="prose prose-sm max-w-none text-duck-ink/60 leading-relaxed whitespace-pre-wrap"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     {activeText}
@@ -263,7 +263,7 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({ config, state }) => 
                 <div className="text-center py-12">
                     <div className="text-3xl mb-3">📄</div>
                     <p
-                        className="text-sm text-duck-muted"
+                        className="text-sm text-duck-ink/60"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         Begin te schrijven — hier zie je een live voorbeeld.

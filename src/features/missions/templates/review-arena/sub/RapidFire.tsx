@@ -115,14 +115,14 @@ export const RapidFire: React.FC<RapidFireProps> = ({
                         <div
                             key={i}
                             className={`h-8 rounded-lg flex items-center justify-center text-sm
-                                ${r.correct ? 'bg-duck-ink/15 text-duck-ink' : 'bg-duck-coral/15 text-duck-coral'}`}
+                                ${r.correct ? 'bg-duck-ink/15 text-duck-ink' : 'bg-duck-acid/15 text-duck-acid'}`}
                         >
                             {r.correct ? '✓' : '✗'}
                         </div>
                     ))}
                 </div>
 
-                <div className="bg-white border border-duck-line rounded-2xl p-4 space-y-2">
+                <div className="bg-white border border-duck-gray rounded-2xl p-4 space-y-2">
                     {questions.map((q, i) => {
                         const result = results[i];
                         if (!result) return null;
@@ -131,17 +131,17 @@ export const RapidFire: React.FC<RapidFireProps> = ({
                                 key={i}
                                 className={`text-xs p-2 rounded-lg ${
                                     result.correct
-                                        ? 'bg-duck-ink/10 text-duck-muted'
-                                        : 'bg-duck-coral/10 text-duck-muted'
+                                        ? 'bg-duck-ink/10 text-duck-ink/60'
+                                        : 'bg-duck-acid/10 text-duck-ink/60'
                                 }`}
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                             >
-                                <span className={`font-bold ${result.correct ? 'text-duck-ink' : 'text-duck-coral'}`}>
+                                <span className={`font-bold ${result.correct ? 'text-duck-ink' : 'text-duck-acid'}`}>
                                     {result.correct ? '✓' : '✗'}
                                 </span>{' '}
                                 <span className="font-medium">{q.question}</span>
                                 {!result.correct && (
-                                    <div className="mt-1 text-duck-muted">{q.explanation}</div>
+                                    <div className="mt-1 text-duck-ink/60">{q.explanation}</div>
                                 )}
                             </div>
                         );
@@ -152,7 +152,7 @@ export const RapidFire: React.FC<RapidFireProps> = ({
                     className={`p-3 rounded-xl text-sm font-medium ${
                         correctCount === questions.length
                             ? 'bg-duck-ink/10 text-duck-ink'
-                            : 'bg-duck-coral/10 text-duck-coral'
+                            : 'bg-duck-acid/10 text-duck-acid'
                     }`}
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
@@ -184,7 +184,7 @@ export const RapidFire: React.FC<RapidFireProps> = ({
                         {title}
                     </h3>
                     <p
-                        className="text-sm text-duck-muted"
+                        className="text-sm text-duck-ink/60"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         {description}
@@ -207,10 +207,10 @@ export const RapidFire: React.FC<RapidFireProps> = ({
                             i < currentIndex
                                 ? results[i]?.correct
                                     ? 'bg-duck-ink'
-                                    : 'bg-duck-coral'
+                                    : 'bg-duck-acid'
                                 : i === currentIndex
-                                    ? 'bg-duck-coral'
-                                    : 'bg-duck-line'
+                                    ? 'bg-duck-acid'
+                                    : 'bg-duck-gray'
                         }`}
                     />
                 ))}
@@ -219,7 +219,7 @@ export const RapidFire: React.FC<RapidFireProps> = ({
             {/* Timer */}
             {hasTimer && timeLeft !== null && answered === null && (
                 <div className="flex items-center gap-2">
-                    <div className="flex-1 h-2 bg-duck-line rounded-full overflow-hidden">
+                    <div className="flex-1 h-2 bg-duck-gray rounded-full overflow-hidden">
                         <motion.div
                             className="h-full rounded-full"
                             style={{
@@ -233,7 +233,7 @@ export const RapidFire: React.FC<RapidFireProps> = ({
                             transition={{ duration: 0.5 }}
                         />
                     </div>
-                    <span className="text-xs font-black text-duck-muted w-6 text-right"
+                    <span className="text-xs font-black text-duck-ink/60 w-6 text-right"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                         {timeLeft}s
                     </span>
@@ -250,12 +250,12 @@ export const RapidFire: React.FC<RapidFireProps> = ({
                     transition={{ duration: 0.2 }}
                     className={`p-5 rounded-2xl border-2 min-h-[100px] flex items-center justify-center transition-colors duration-300 ${
                         answered === null
-                            ? 'bg-white border-duck-line'
+                            ? 'bg-white border-duck-gray'
                             : answered !== 'timeout' && answered === currentQuestion.answer
                                 ? 'bg-duck-ink/10 border-duck-ink'
                                 : answered === 'timeout'
                                     ? 'bg-duck-acid/10 border-duck-acid'
-                                    : 'bg-duck-coral/10 border-duck-coral/60'
+                                    : 'bg-duck-acid/10 border-duck-acid/60'
                     }`}
                 >
                     <p
@@ -278,7 +278,7 @@ export const RapidFire: React.FC<RapidFireProps> = ({
                                 ? 'bg-duck-ink/10 text-duck-ink'
                                 : answered === 'timeout'
                                     ? 'bg-duck-acid/20 text-duck-ink'
-                                : 'bg-duck-coral/10 text-duck-coral'
+                                : 'bg-duck-acid/10 text-duck-acid'
                         }`}
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
@@ -303,8 +303,8 @@ export const RapidFire: React.FC<RapidFireProps> = ({
                             : answered === true
                                 ? currentQuestion.answer === true
                                     ? 'bg-duck-ink text-white'
-                                    : 'bg-duck-coral text-white'
-                                : 'bg-duck-line text-duck-muted cursor-not-allowed'
+                                    : 'bg-duck-acid text-duck-ink'
+                                : 'bg-duck-gray text-duck-ink/60 cursor-not-allowed'
                         }`}
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
@@ -315,12 +315,12 @@ export const RapidFire: React.FC<RapidFireProps> = ({
                     disabled={answered !== null}
                     className={`py-4 rounded-xl font-black text-sm transition-all duration-200 active:scale-[0.97]
                         ${answered === null
-                            ? 'bg-duck-coral hover:bg-duck-coral text-white'
+                            ? 'bg-duck-acid hover:bg-duck-acid text-duck-ink'
                             : answered === false
                                 ? currentQuestion.answer === false
                                     ? 'bg-duck-ink text-white'
-                                    : 'bg-duck-coral text-white'
-                                : 'bg-duck-line text-duck-muted cursor-not-allowed'
+                                    : 'bg-duck-acid text-duck-ink'
+                                : 'bg-duck-gray text-duck-ink/60 cursor-not-allowed'
                         }`}
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
@@ -329,7 +329,7 @@ export const RapidFire: React.FC<RapidFireProps> = ({
             </div>
 
             <div
-                className="text-center text-xs text-duck-muted"
+                className="text-center text-xs text-duck-ink/60"
                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
             >
                 Vraag {currentIndex + 1} van {questions.length}

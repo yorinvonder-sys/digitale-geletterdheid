@@ -24,7 +24,7 @@ export const BarChartVis: React.FC<{ data: BarChartData }> = ({ data }) => {
                             }}
                         />
                         <span
-                            className="text-[10px] text-duck-muted text-center leading-tight"
+                            className="text-[10px] text-duck-ink/60 text-center leading-tight"
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         >
                             {bar.label}
@@ -81,7 +81,7 @@ export const MeterVis: React.FC<{ data: MeterData }> = ({ data }) => {
             </span>
             {data.sublabel && (
                 <span
-                    className="text-xs text-duck-muted text-center"
+                    className="text-xs text-duck-ink/60 text-center"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     {data.sublabel}
@@ -99,7 +99,7 @@ export const ComparisonVis: React.FC<{ data: ComparisonData }> = ({ data }) => (
         ].map((panel) => (
             <div
                 key={panel.title}
-                className="flex-1 rounded-xl border border-duck-line overflow-hidden"
+                className="flex-1 rounded-xl border border-duck-gray overflow-hidden"
             >
                 <div
                     className="px-3 py-2 text-center text-xs font-black uppercase tracking-wide text-white"
@@ -119,7 +119,7 @@ export const ComparisonVis: React.FC<{ data: ComparisonData }> = ({ data }) => (
                                 <span className="text-sm">{item.icon}</span>
                             )}
                             <span
-                                className="text-xs text-duck-muted leading-tight"
+                                className="text-xs text-duck-ink/60 leading-tight"
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                             >
                                 {item.label}

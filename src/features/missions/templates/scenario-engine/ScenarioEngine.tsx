@@ -38,11 +38,11 @@ const LoadingScreen: React.FC = () => (
     <div className="min-h-screen bg-duck-bg flex items-center justify-center p-4">
         <div className="text-center">
             <div
-                className="w-8 h-8 border-2 border-duck-coral border-t-transparent rounded-full animate-spin mx-auto mb-3"
+                className="w-8 h-8 border-2 border-duck-acid border-t-transparent rounded-full animate-spin mx-auto mb-3"
                 aria-label="Laden..."
             />
             <p
-                className="text-sm text-duck-muted"
+                className="text-sm text-duck-ink/60"
                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
             >
                 Missie laden…
@@ -62,14 +62,14 @@ const ErrorScreen: React.FC<{ missionId: string; onBack: () => void }> = ({ miss
                 Missie niet gevonden
             </h2>
             <p
-                className="text-sm text-duck-muted mb-4"
+                className="text-sm text-duck-ink/60 mb-4"
                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
             >
                 De configuratie voor <code>{missionId}</code> kon niet worden geladen.
             </p>
             <button
                 onClick={onBack}
-                className="px-5 py-2.5 bg-duck-coral text-white rounded-xl text-sm font-bold"
+                className="px-5 py-2.5 bg-duck-acid text-duck-ink rounded-xl text-sm font-bold"
                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
             >
                 Terug

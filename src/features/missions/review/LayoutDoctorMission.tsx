@@ -167,7 +167,7 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
         switch (activeTab) {
             case 'Bestand':
                 return (
-                    <div className="px-4 py-2 flex items-center gap-4 overflow-x-auto h-24 bg-duck-coral text-white w-full absolute top-[88px] left-0 z-50">
+                    <div className="px-4 py-2 flex items-center gap-4 overflow-x-auto h-24 bg-duck-acid text-duck-ink w-full absolute top-[88px] left-0 z-50">
                         <button onClick={() => setInlineMessage('Nieuw document wordt gesimuleerd')} className="flex flex-col items-center gap-2 p-2 hover:bg-white/10 rounded-lg min-w-[60px] transition-all duration-300">
                             <FilePlus size={24} /> <span className="text-xs">Nieuw</span>
                         </button>
@@ -180,10 +180,10 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
                 return (
                     <div className="px-4 py-2 flex items-center gap-2 overflow-x-auto h-24">
                         {/* Font & Title Styles logic similar to before but generalized */}
-                        <div className="flex flex-col px-2 border-r border-duck-line h-full justify-between pb-1">
+                        <div className="flex flex-col px-2 border-r border-duck-gray h-full justify-between pb-1">
                             <div className="flex gap-1 mb-1">
                                 <select
-                                    className="w-32 text-xs border border-duck-line rounded focus-visible:ring-2 focus-visible:ring-duck-coral"
+                                    className="w-32 text-xs border border-duck-gray rounded focus-visible:ring-2 focus-visible:ring-duck-acid"
                                     value={bodyFont === 'comic' ? 'Comic Sans MS' : 'Arial'}
                                     onChange={(e) => setBodyFont(e.target.value === 'Arial' ? 'sans' : 'comic')}
                                 >
@@ -191,27 +191,27 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
                                     <option value="Arial">Arial</option>
                                 </select>
                                 <div className="flex bg-duck-bg rounded">
-                                    <button onClick={() => setIsBold(!isBold)} className={`p-1 ${isBold ? 'bg-duck-line' : ''} rounded hover:bg-duck-line transition-all duration-300`}><Bold size={14} /></button>
-                                    <button onClick={() => setIsItalic(!isItalic)} className={`p-1 ${isItalic ? 'bg-duck-line' : ''} rounded hover:bg-duck-line transition-all duration-300`}><Italic size={14} /></button>
-                                    <button onClick={() => setIsUnderlined(!isUnderlined)} className={`p-1 ${isUnderlined ? 'bg-duck-line' : ''} rounded hover:bg-duck-line transition-all duration-300`}><div className="underline text-[10px] font-bold">U</div></button>
+                                    <button onClick={() => setIsBold(!isBold)} className={`p-1 ${isBold ? 'bg-duck-gray' : ''} rounded hover:bg-duck-gray transition-all duration-300`}><Bold size={14} /></button>
+                                    <button onClick={() => setIsItalic(!isItalic)} className={`p-1 ${isItalic ? 'bg-duck-gray' : ''} rounded hover:bg-duck-gray transition-all duration-300`}><Italic size={14} /></button>
+                                    <button onClick={() => setIsUnderlined(!isUnderlined)} className={`p-1 ${isUnderlined ? 'bg-duck-gray' : ''} rounded hover:bg-duck-gray transition-all duration-300`}><div className="underline text-[10px] font-bold">U</div></button>
                                 </div>
                             </div>
-                            <span className="text-[10px] text-center text-duck-muted">Lettertype</span>
+                            <span className="text-[10px] text-center text-duck-ink/60">Lettertype</span>
                         </div>
-                        <div className="flex flex-col px-2 border-r border-duck-line h-full justify-between pb-1">
+                        <div className="flex flex-col px-2 border-r border-duck-gray h-full justify-between pb-1">
                             <div className="flex gap-2">
-                                <button onClick={() => setTitleStyle('comic')} className={`p-2 border rounded-lg transition-all duration-300 ${titleStyle === 'comic' ? 'bg-duck-coral/10 border-duck-coral' : 'border-duck-line'} w-20`}>
+                                <button onClick={() => setTitleStyle('comic')} className={`p-2 border rounded-lg transition-all duration-300 ${titleStyle === 'comic' ? 'bg-duck-acid/10 border-duck-acid' : 'border-duck-gray'} w-20`}>
                                     <span className="font-[Comic_Sans_MS] text-xs">Normaal</span>
                                 </button>
-                                <button onClick={() => setTitleStyle('modern')} className={`p-2 border rounded-lg transition-all duration-300 ${titleStyle === 'modern' ? 'bg-duck-coral/10 border-duck-coral' : 'border-duck-line'} w-20`}>
+                                <button onClick={() => setTitleStyle('modern')} className={`p-2 border rounded-lg transition-all duration-300 ${titleStyle === 'modern' ? 'bg-duck-acid/10 border-duck-acid' : 'border-duck-gray'} w-20`}>
                                     <span className="font-sans font-bold text-lg">Kop 1</span>
                                 </button>
                             </div>
-                            <span className="text-[10px] text-center text-duck-muted">Stijlen</span>
+                            <span className="text-[10px] text-center text-duck-ink/60">Stijlen</span>
                         </div>
                         {selection === 'image' && (
-                            <div className="flex flex-col px-2 border-r border-duck-line h-full justify-between pb-1 animate-in fade-in slide-in-from-top-2">
-                                <button onClick={() => setImageAlign('wrap')} className={`flex flex-col items-center p-1 rounded-lg transition-all duration-300 ${imageAlign === 'wrap' ? 'bg-duck-line' : ''}`}>
+                            <div className="flex flex-col px-2 border-r border-duck-gray h-full justify-between pb-1 animate-in fade-in slide-in-from-top-2">
+                                <button onClick={() => setImageAlign('wrap')} className={`flex flex-col items-center p-1 rounded-lg transition-all duration-300 ${imageAlign === 'wrap' ? 'bg-duck-gray' : ''}`}>
                                     <AlignLeft size={20} /> <span className="text-[10px]">Tekstterugloop</span>
                                 </button>
                                 <span className="text-[10px] text-center text-duck-ink font-bold">Afbeelding</span>
@@ -223,13 +223,13 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
                 return (
                     <div className="px-4 py-2 flex items-center gap-4 h-24">
                         <button onClick={() => addBlock('pagebreak')} className="flex flex-col items-center gap-1 hover:bg-duck-bg p-2 rounded-lg transition-all duration-300">
-                            <FilePlus size={24} className="text-duck-muted" /> <span className="text-[10px] text-duck-muted">Pagina-einde</span>
+                            <FilePlus size={24} className="text-duck-ink/60" /> <span className="text-[10px] text-duck-ink/60">Pagina-einde</span>
                         </button>
                         <button onClick={() => addBlock('table')} className="flex flex-col items-center gap-1 hover:bg-duck-bg p-2 rounded-lg transition-all duration-300">
-                            <Table size={24} className="text-duck-muted" /> <span className="text-[10px] text-duck-muted">Tabel</span>
+                            <Table size={24} className="text-duck-ink/60" /> <span className="text-[10px] text-duck-ink/60">Tabel</span>
                         </button>
                         <button onClick={() => addBlock('shape')} className="flex flex-col items-center gap-1 hover:bg-duck-bg p-2 rounded-lg transition-all duration-300">
-                            <Square size={24} className="text-duck-muted" /> <span className="text-[10px] text-duck-muted">Vormen</span>
+                            <Square size={24} className="text-duck-ink/60" /> <span className="text-[10px] text-duck-ink/60">Vormen</span>
                         </button>
                     </div>
                 );
@@ -237,17 +237,17 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
                 return (
                     <div className="px-4 py-2 flex items-center gap-4 h-24">
                         <button onClick={() => { setBodyFont('comic'); setPageColor('white'); }} className="flex flex-col items-center hover:bg-duck-bg p-2 rounded-lg transition-all duration-300">
-                            <span className="font-[Comic_Sans_MS] text-lg text-duck-muted">Aa</span> <span className="text-[10px] text-duck-muted">Basis</span>
+                            <span className="font-[Comic_Sans_MS] text-lg text-duck-ink/60">Aa</span> <span className="text-[10px] text-duck-ink/60">Basis</span>
                         </button>
                         <button onClick={() => { setBodyFont('sans'); setPageColor('#f2f1ec'); }} className="flex flex-col items-center hover:bg-duck-bg p-2 rounded-lg transition-all duration-300">
-                            <span className="font-sans font-bold text-lg text-duck-coral">Aa</span> <span className="text-[10px] text-duck-muted">Retro</span>
+                            <span className="font-sans font-bold text-lg text-duck-acid">Aa</span> <span className="text-[10px] text-duck-ink/60">Retro</span>
                         </button>
-                        <div className="h-full w-px bg-duck-line mx-2"></div>
-                        <button onClick={() => setShowWatermark(!showWatermark)} className={`flex flex-col items-center hover:bg-duck-bg p-2 rounded-lg transition-all duration-300 ${showWatermark ? 'bg-duck-line' : ''}`}>
-                            <Type size={20} className="text-duck-muted" /> <span className="text-[10px] text-duck-muted">Watermerk</span>
+                        <div className="h-full w-px bg-duck-gray mx-2"></div>
+                        <button onClick={() => setShowWatermark(!showWatermark)} className={`flex flex-col items-center hover:bg-duck-bg p-2 rounded-lg transition-all duration-300 ${showWatermark ? 'bg-duck-gray' : ''}`}>
+                            <Type size={20} className="text-duck-ink/60" /> <span className="text-[10px] text-duck-ink/60">Watermerk</span>
                         </button>
                         <button onClick={() => setPageColor(pageColor === 'white' ? '#f2f1ec' : 'white')} className="flex flex-col items-center hover:bg-duck-bg p-2 rounded-lg transition-all duration-300">
-                            <Droplet size={20} className="text-duck-muted" /> <span className="text-[10px] text-duck-muted">Paginakleur</span>
+                            <Droplet size={20} className="text-duck-ink/60" /> <span className="text-[10px] text-duck-ink/60">Paginakleur</span>
                         </button>
                     </div>
                 );
@@ -255,13 +255,13 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
                 return (
                     <div className="px-4 py-2 flex items-center gap-4 h-24">
                         <button onClick={() => setLayout({ ...layout, margins: layout.margins === 'normal' ? 'narrow' : 'normal' })} className="flex flex-col items-center hover:bg-duck-bg p-2 rounded-lg transition-all duration-300">
-                            <LayoutTemplate size={24} className="text-duck-muted" /> <span className="text-[10px] text-duck-muted">{layout.margins === 'normal' ? 'Normaal' : 'Smal'}</span>
+                            <LayoutTemplate size={24} className="text-duck-ink/60" /> <span className="text-[10px] text-duck-ink/60">{layout.margins === 'normal' ? 'Normaal' : 'Smal'}</span>
                         </button>
                         <button onClick={() => setLayout({ ...layout, orientation: layout.orientation === 'portrait' ? 'landscape' : 'portrait' })} className="flex flex-col items-center hover:bg-duck-bg p-2 rounded-lg transition-all duration-300">
-                            <Layout size={24} className={`text-duck-muted ${layout.orientation === 'landscape' ? 'rotate-90' : ''}`} /> <span className="text-[10px] text-duck-muted">Afdrukstand</span>
+                            <Layout size={24} className={`text-duck-ink/60 ${layout.orientation === 'landscape' ? 'rotate-90' : ''}`} /> <span className="text-[10px] text-duck-ink/60">Afdrukstand</span>
                         </button>
                         <button onClick={() => setLayout({ ...layout, columns: layout.columns === 1 ? 2 : 1 })} className="flex flex-col items-center hover:bg-duck-bg p-2 rounded-lg transition-all duration-300">
-                            <Columns size={24} className="text-duck-muted" /> <span className="text-[10px] text-duck-muted">Kolommen</span>
+                            <Columns size={24} className="text-duck-ink/60" /> <span className="text-[10px] text-duck-ink/60">Kolommen</span>
                         </button>
                     </div>
                 );
@@ -269,7 +269,7 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
                 return (
                     <div className="px-4 py-2 flex items-center gap-4 h-24">
                         <button onClick={generateTOC} className="flex flex-col items-center gap-1 hover:bg-duck-bg p-2 rounded-lg transition-all duration-300">
-                            <List size={24} className="text-duck-muted" /> <span className="text-[10px] text-duck-muted">Inhoudsopgave</span>
+                            <List size={24} className="text-duck-ink/60" /> <span className="text-[10px] text-duck-ink/60">Inhoudsopgave</span>
                         </button>
                     </div>
                 );
@@ -280,7 +280,7 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
     return (
         <div className="min-h-screen bg-duck-bg flex flex-col text-duck-ink" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }} onClick={() => setSelection('none')}>
             {/* Header */}
-            <header className="bg-duck-coral text-white px-4 py-2 flex items-center justify-between shadow-md relative z-20">
+            <header className="bg-duck-acid text-duck-ink px-4 py-2 flex items-center justify-between shadow-md relative z-20">
                 <div className="flex items-center gap-4">
                     <button onClick={onBack} className="p-1.5 hover:bg-white/10 rounded-lg transition-all duration-300 focus-visible:ring-2 focus-visible:ring-white"><ArrowLeft size={20} /></button>
                     <div className="flex flex-col">
@@ -301,7 +301,7 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
             </header>
 
             {/* Ribbon */}
-            <div className="bg-white border-b border-duck-line shadow-sm relative z-10 overflow-x-auto" onClick={(e) => e.stopPropagation()}>
+            <div className="bg-white border-b border-duck-gray shadow-sm relative z-10 overflow-x-auto" onClick={(e) => e.stopPropagation()}>
                 <div className="min-w-max">
                     {renderRibbon()}
                 </div>
@@ -346,22 +346,22 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
                 <div className={`w-full max-w-4xl mb-4 transition-all duration-300 ${showAssignment ? '' : 'mb-2'}`}>
                     <button
                         onClick={() => setShowAssignment(!showAssignment)}
-                        className="w-full flex items-center justify-between bg-white border border-duck-line rounded-t-2xl px-4 py-3 text-left shadow-sm hover:bg-duck-bg transition-colors"
+                        className="w-full flex items-center justify-between bg-white border border-duck-gray rounded-t-2xl px-4 py-3 text-left shadow-sm hover:bg-duck-bg transition-colors"
                     >
-                        <span className="font-bold text-sm text-duck-coral flex items-center gap-2" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
+                        <span className="font-bold text-sm text-duck-acid flex items-center gap-2" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
                             <FileText size={16} /> Opdracht: Maak dit document professioneel
                         </span>
-                        {showAssignment ? <ChevronUp size={16} className="text-duck-muted" /> : <ChevronDown size={16} className="text-duck-muted" />}
+                        {showAssignment ? <ChevronUp size={16} className="text-duck-ink/60" /> : <ChevronDown size={16} className="text-duck-ink/60" />}
                     </button>
                     {showAssignment && (
-                        <div className="bg-white border border-t-0 border-duck-line rounded-b-2xl px-4 py-4 shadow-sm">
-                            <p className="text-sm text-duck-muted mb-3">Voer alle stappen uit om het document op te knappen:</p>
+                        <div className="bg-white border border-t-0 border-duck-gray rounded-b-2xl px-4 py-4 shadow-sm">
+                            <p className="text-sm text-duck-ink/60 mb-3">Voer alle stappen uit om het document op te knappen:</p>
                             <ul className="space-y-2">
                                 {ASSIGNMENT_CRITERIA.map((criterion) => {
                                     const done = criterion.check(savedState);
                                     return (
-                                        <li key={criterion.id} className={`flex items-center gap-3 text-sm transition-all duration-300 ${done ? 'text-duck-ink' : 'text-duck-muted'}`}>
-                                            <div className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 ${done ? 'bg-duck-ink text-white' : 'border-2 border-duck-line'}`}>
+                                        <li key={criterion.id} className={`flex items-center gap-3 text-sm transition-all duration-300 ${done ? 'text-duck-ink' : 'text-duck-ink/60'}`}>
+                                            <div className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 ${done ? 'bg-duck-ink text-white' : 'border-2 border-duck-gray'}`}>
                                                 {done && <CheckCircle size={12} />}
                                             </div>
                                             <span className={done ? 'line-through' : ''}>{criterion.label}</span>
@@ -369,7 +369,7 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
                                     );
                                 })}
                             </ul>
-                            <div className="mt-3 h-2 bg-duck-line rounded-full overflow-hidden">
+                            <div className="mt-3 h-2 bg-duck-gray rounded-full overflow-hidden">
                                 <div
                                     className="h-full bg-duck-ink rounded-full transition-all duration-500"
                                     style={{ width: `${(ASSIGNMENT_CRITERIA.filter(c => c.check(savedState)).length / ASSIGNMENT_CRITERIA.length) * 100}%` }}
@@ -390,7 +390,7 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
                 >
                     {/* Watermark */}
                     {showWatermark && (
-                        <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden text-duck-line/50 font-black text-[120px] -rotate-45 select-none">
+                        <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden text-duck-gray/50 font-black text-[120px] -rotate-45 select-none">
                             VOORBEELD
                         </div>
                     )}
@@ -403,7 +403,7 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
                             if (info.point.x > window.innerWidth / 2) setIsImageRight(true);
                         }}
                         onClick={(e) => handleSelection(e as unknown as React.MouseEvent, 'image', 'image')}
-                        className={`absolute w-32 h-24 lg:w-48 lg:h-32 bg-duck-line z-20 cursor-move ${selection === 'image' ? 'ring-2 ring-duck-coral' : ''}`}
+                        className={`absolute w-32 h-24 lg:w-48 lg:h-32 bg-duck-gray z-20 cursor-move ${selection === 'image' ? 'ring-2 ring-duck-acid' : ''}`}
                         style={{ top: 150, left: 100 }}
                         initial={{ opacity: 0.9 }}
                         animate={{ opacity: 1 }}
@@ -426,7 +426,7 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
                                 {block.type === 'heading' && (
                                     <h1
                                         onClick={(e) => handleSelection(e, block.id, 'heading')}
-                                        className={`cursor-text ${titleStyle === 'comic' ? 'text-2xl text-duck-ink/60 text-center font-[Comic_Sans_MS]' : 'text-4xl font-bold border-b-2 border-[#08283B] pb-2 text-left font-sans'} ${selection === block.id ? 'bg-duck-coral/10' : ''}`}
+                                        className={`cursor-text ${titleStyle === 'comic' ? 'text-2xl text-duck-ink/60 text-center font-[Comic_Sans_MS]' : 'text-4xl font-bold border-b-2 border-[#08283B] pb-2 text-left font-sans'} ${selection === block.id ? 'bg-duck-acid/10' : ''}`}
                                     >
                                         {block.content}
                                     </h1>
@@ -434,15 +434,15 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
                                 {block.type === 'paragraph' && (
                                     <p
                                         onClick={(e) => handleSelection(e, block.id, 'paragraph')}
-                                        className={`text-justify leading-relaxed cursor-text p-1 rounded ${selection === block.id ? 'bg-duck-coral/10' : ''} ${isBold && selection === block.id ? 'font-bold' : ''} ${isItalic && selection === block.id ? 'italic' : ''} ${isUnderlined && selection === block.id ? 'underline' : ''} ${imageAlign === 'wrap' && isImageRight ? 'w-[65%]' : ''}`}
+                                        className={`text-justify leading-relaxed cursor-text p-1 rounded ${selection === block.id ? 'bg-duck-acid/10' : ''} ${isBold && selection === block.id ? 'font-bold' : ''} ${isItalic && selection === block.id ? 'italic' : ''} ${isUnderlined && selection === block.id ? 'underline' : ''} ${imageAlign === 'wrap' && isImageRight ? 'w-[65%]' : ''}`}
                                         style={{ fontSize: `${fontSize}px` }}
                                     >
                                         {block.content}
                                     </p>
                                 )}
                                 {block.type === 'toc' && (
-                                    <div className="bg-duck-bg p-4 rounded-2xl border border-duck-line mb-6 font-sans">
-                                        <h2 className="font-bold text-lg mb-2 text-duck-muted" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Inhoudsopgave</h2>
+                                    <div className="bg-duck-bg p-4 rounded-2xl border border-duck-gray mb-6 font-sans">
+                                        <h2 className="font-bold text-lg mb-2 text-duck-ink/60" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Inhoudsopgave</h2>
                                         <ul className="list-decimal pl-4 space-y-1 text-duck-ink text-sm">
                                             {blocks.filter(b => b.type === 'heading').map(h => (
                                                 <li key={'toc-' + h.id} className="hover:underline cursor-pointer">{h.content}</li>
@@ -452,12 +452,12 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
                                     </div>
                                 )}
                                 {block.type === 'table' && (
-                                    <table className="w-full border-collapse border border-duck-line mb-4">
+                                    <table className="w-full border-collapse border border-duck-gray mb-4">
                                         <tbody>
                                             {[1, 2, 3].map(row => (
                                                 <tr key={row}>
                                                     {[1, 2, 3].map(col => (
-                                                        <td key={col} className="border border-duck-line p-2 text-sm text-duck-muted">Cel {row},{col}</td>
+                                                        <td key={col} className="border border-duck-gray p-2 text-sm text-duck-ink/60">Cel {row},{col}</td>
                                                     ))}
                                                 </tr>
                                             ))}
@@ -471,8 +471,8 @@ export const LayoutDoctorMission: React.FC<LayoutDoctorProps> = ({ onComplete, o
                                 )}
                                 {block.type === 'pagebreak' && (
                                     <div className="w-full h-8 flex items-center justify-center my-4">
-                                        <div className="h-px bg-duck-line w-full relative">
-                                            <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-2 text-[10px] text-duck-muted">Pagina-einde</span>
+                                        <div className="h-px bg-duck-gray w-full relative">
+                                            <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-2 text-[10px] text-duck-ink/60">Pagina-einde</span>
                                         </div>
                                     </div>
                                 )}

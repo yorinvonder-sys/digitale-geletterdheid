@@ -26,11 +26,11 @@ export const BlockPalette: React.FC<BlockPaletteProps> = ({ onDragStart, onAddBl
     const categories: BlockCategory[] = ['event', 'motion', 'control', 'variable'];
 
     return (
-        <div className="h-full flex flex-col bg-duck-bg rounded-2xl overflow-hidden border border-duck-line">
+        <div className="h-full flex flex-col bg-duck-bg rounded-2xl overflow-hidden border border-duck-gray">
             {/* Header */}
-            <div className="px-4 py-3 bg-white border-b border-duck-line">
+            <div className="px-4 py-3 bg-white border-b border-duck-gray">
                 <h3 className="font-black text-sm uppercase tracking-widest text-duck-ink font-['Newsreader',Georgia,serif]">🧩 Blokken</h3>
-                <p className="text-[10px] text-duck-muted mt-0.5">Sleep blokken naar rechts</p>
+                <p className="text-[10px] text-duck-ink/60 mt-0.5">Sleep blokken naar rechts</p>
             </div>
 
             {/* Categories */}
@@ -41,7 +41,7 @@ export const BlockPalette: React.FC<BlockPaletteProps> = ({ onDragStart, onAddBl
                     const isExpanded = expandedCategories[category];
 
                     return (
-                        <div key={category} className="rounded-2xl overflow-hidden bg-white shadow-sm border border-duck-line">
+                        <div key={category} className="rounded-2xl overflow-hidden bg-white shadow-sm border border-duck-gray">
                             {/* Category header */}
                             <button
                                 onClick={() => toggleCategory(category)}
@@ -52,11 +52,11 @@ export const BlockPalette: React.FC<BlockPaletteProps> = ({ onDragStart, onAddBl
                                 <span className="font-bold text-duck-ink text-sm flex-1 text-left">
                                     {info.label}
                                 </span>
-                                <span className="text-xs text-duck-muted mr-1">{blocks.length}</span>
+                                <span className="text-xs text-duck-ink/60 mr-1">{blocks.length}</span>
                                 {isExpanded ? (
-                                    <ChevronDown size={16} className="text-duck-muted" />
+                                    <ChevronDown size={16} className="text-duck-ink/60" />
                                 ) : (
-                                    <ChevronRight size={16} className="text-duck-muted" />
+                                    <ChevronRight size={16} className="text-duck-ink/60" />
                                 )}
                             </button>
 
@@ -78,7 +78,7 @@ export const BlockPalette: React.FC<BlockPaletteProps> = ({ onDragStart, onAddBl
                                             {onAddBlock && (
                                                 <button
                                                     onClick={() => onAddBlock(block)}
-                                                    className="p-1.5 rounded-lg bg-white border border-duck-line text-duck-muted hover:text-duck-coral hover:border-duck-coral/30 hover:bg-duck-coral/5 transition-all duration-300 shrink-0"
+                                                    className="p-1.5 rounded-lg bg-white border border-duck-gray text-duck-ink/60 hover:text-duck-acid hover:border-duck-acid/30 hover:bg-duck-acid/5 transition-all duration-300 shrink-0"
                                                     aria-label={`Voeg ${block.label.replace(/[{}]/g, '')} toe aan werkgebied`}
                                                     title="Toevoegen"
                                                 >
@@ -95,8 +95,8 @@ export const BlockPalette: React.FC<BlockPaletteProps> = ({ onDragStart, onAddBl
             </div>
 
             {/* Help footer */}
-            <div className="p-3 bg-duck-coral/5 border-t border-duck-coral/10">
-                <p className="text-[10px] text-duck-coral font-medium text-center">
+            <div className="p-3 bg-duck-acid/5 border-t border-duck-acid/10">
+                <p className="text-[10px] text-duck-acid font-medium text-center">
                     💡 Tip: Begin met een gele <strong>gebeurtenis</strong> blok!
                 </p>
             </div>

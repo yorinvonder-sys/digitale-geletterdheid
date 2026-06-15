@@ -363,7 +363,7 @@ export const MLTrainerMission: React.FC<Props> = ({ onBack, onComplete }) => {
 
           <button
             onClick={() => { setSelectedItem(items[0].id); setPhase('labeling'); }}
-            className="w-full py-4 rounded-full font-black text-lg text-white transition-all duration-300 active:scale-95 flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-duck-coral"
+            className="w-full py-4 rounded-full font-black text-lg text-white transition-all duration-300 active:scale-95 flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-duck-acid"
             style={{ backgroundColor: '#ff3c21' }}
             onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#ff3c21')}
             onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#ff3c21')}
@@ -483,7 +483,7 @@ export const MLTrainerMission: React.FC<Props> = ({ onBack, onComplete }) => {
               <p className="font-bold" style={{ color: '#202023' }}>Alle items gelabeld! Ga verder naar de volgende stap.</p>
               <button
                 onClick={() => setPhase('splitting')}
-                className="mt-3 px-6 py-3 rounded-full font-black text-white flex items-center justify-center gap-2 mx-auto active:scale-95 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-duck-coral"
+                className="mt-3 px-6 py-3 rounded-full font-black text-white flex items-center justify-center gap-2 mx-auto active:scale-95 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-duck-acid"
                 style={{ backgroundColor: '#ff3c21' }}
                 onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#ff3c21')}
                 onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#ff3c21')}
@@ -601,7 +601,7 @@ export const MLTrainerMission: React.FC<Props> = ({ onBack, onComplete }) => {
           {canTrain && (
             <button
               onClick={() => setPhase('results')}
-              className="w-full py-4 rounded-full font-black text-lg text-white flex items-center justify-center gap-2 transition-all duration-300 active:scale-95 focus-visible:ring-2 focus-visible:ring-duck-coral"
+              className="w-full py-4 rounded-full font-black text-lg text-white flex items-center justify-center gap-2 transition-all duration-300 active:scale-95 focus-visible:ring-2 focus-visible:ring-duck-acid"
               style={{ backgroundColor: '#ff3c21' }}
               onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#ff3c21')}
               onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#ff3c21')}
@@ -708,7 +708,7 @@ export const MLTrainerMission: React.FC<Props> = ({ onBack, onComplete }) => {
           <button
             onClick={() => { clearSave(); onComplete(totalScore >= 30); }}
             disabled={saved.reflectie.trim().length < 10}
-            className="w-full py-4 rounded-full font-black text-lg text-white transition-all duration-300 active:scale-95 flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-duck-coral"
+            className="w-full py-4 rounded-full font-black text-lg text-white transition-all duration-300 active:scale-95 flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-duck-acid"
             style={{
               backgroundColor: saved.reflectie.trim().length < 10 ? '#e3e2dc' : '#ff3c21',
               color: saved.reflectie.trim().length < 10 ? '#e3e2dc' : '#FFFFFF',

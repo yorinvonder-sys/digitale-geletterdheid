@@ -91,11 +91,11 @@ const SLIDES: SlideData[] = [
                     {fixed ? "Thema: De Kermis" : "~~~ WELKOM OP DE KERMIS!!! ~~~"}
                 </h1>
                 <div className="grid grid-cols-2 gap-8 w-full max-w-2xl">
-                    <div className={`p-6 rounded-2xl transition-all duration-500 ${fixed ? 'bg-white shadow-md text-duck-muted border border-duck-line' : 'bg-duck-ink/60 text-white font-mono rotate-3 border-4 border-duck-acid'}`}>
+                    <div className={`p-6 rounded-2xl transition-all duration-500 ${fixed ? 'bg-white shadow-md text-duck-ink/60 border border-duck-gray' : 'bg-duck-ink/60 text-white font-mono rotate-3 border-4 border-duck-acid'}`}>
                         <h3 className="text-xl font-bold mb-2">Attracties</h3>
                         <p>Botsauto's & Reuzenrad</p>
                     </div>
-                    <div className={`p-6 rounded-2xl transition-all duration-500 ${fixed ? 'bg-white shadow-md text-duck-muted border border-duck-line' : 'bg-duck-acid text-duck-ink font-serif -rotate-2 border-dashed border-4 border-white'}`}>
+                    <div className={`p-6 rounded-2xl transition-all duration-500 ${fixed ? 'bg-white shadow-md text-duck-ink/60 border border-duck-gray' : 'bg-duck-acid text-duck-ink font-serif -rotate-2 border-dashed border-4 border-white'}`}>
                         <h3 className="text-xl font-bold mb-2">Eten</h3>
                         <p>Suikerspin & Popcorn</p>
                     </div>
@@ -156,11 +156,11 @@ const SLIDES: SlideData[] = [
         title: "Samenvatting",
         content: "Bedankt voor het luisteren. Zijn er nog vragen? Je kunt me mailen op naam@school.nl voor meer info.",
         bg: "bg-duck-ink",
-        textColor: "text-duck-muted", // Low contrast intentionally for initial state
+        textColor: "text-duck-ink/60", // Low contrast intentionally for initial state
         issue: "size",
         feedback: "Kan iemand dit lezen? De tekst is veel te klein en valt weg!",
         customRender: (fixed) => (
-            <div className={`h-full flex flex-col items-center justify-center p-8 transition-all duration-500 ${fixed ? 'bg-duck-ink text-white' : 'bg-duck-ink text-duck-muted'}`}>
+            <div className={`h-full flex flex-col items-center justify-center p-8 transition-all duration-500 ${fixed ? 'bg-duck-ink text-white' : 'bg-duck-ink text-duck-ink/60'}`}>
                 <h1 className={`font-bold transition-all duration-500 ${fixed ? 'text-6xl mb-8' : 'text-xs mb-2'}`} style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
                     BEDANKT!
                 </h1>
@@ -228,15 +228,15 @@ const SLIDES: SlideData[] = [
                 {fixed ? (
                     <div className="flex items-end gap-6 h-64 w-96 border-b-4 border-[#08283B] p-4">
                         <div className="flex-1 bg-duck-ink rounded-t-lg h-[80%] relative group shadow-lg"><span className="absolute -top-8 left-1/2 -translate-x-1/2 font-bold text-xl">8.0</span></div>
-                        <div className="flex-1 bg-duck-coral rounded-t-lg h-[70%] relative group shadow-lg"><span className="absolute -top-8 left-1/2 -translate-x-1/2 font-bold text-xl">7.0</span></div>
+                        <div className="flex-1 bg-duck-acid rounded-t-lg h-[70%] relative group shadow-lg"><span className="absolute -top-8 left-1/2 -translate-x-1/2 font-bold text-xl">7.0</span></div>
                         <div className="flex-1 bg-duck-ink rounded-t-lg h-[75%] relative group shadow-lg"><span className="absolute -top-8 left-1/2 -translate-x-1/2 font-bold text-xl">7.5</span></div>
                     </div>
                 ) : (
                     <div className="relative w-72 h-72 flex items-center justify-center">
-                        <div className="absolute inset-0 rounded-full border-[40px] border-duck-line animate-spin-slow"></div>
+                        <div className="absolute inset-0 rounded-full border-[40px] border-duck-gray animate-spin-slow"></div>
                         <div className="absolute inset-0 rounded-full border-[40px] border-t-duck-acid border-r-duck-ink/60 border-b-duck-ink/60 border-l-duck-acid opacity-80"></div>
                         <div className="absolute inset-8 rounded-full border-[20px] border-duck-ink border-dashed animate-pulse"></div>
-                        <span className="font-bold text-6xl rotate-45 text-duck-line">?</span>
+                        <span className="font-bold text-6xl rotate-45 text-duck-gray">?</span>
                     </div>
                 )}
             </div>
@@ -339,7 +339,7 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
                     {/* Icon + Title row */}
                     <div className="flex items-center justify-center gap-4 mb-3">
                         <div className="relative shrink-0">
-                            <div className="w-16 h-16 bg-duck-coral rounded-2xl flex items-center justify-center shadow-xl shadow-duck-coral/25 rotate-3">
+                            <div className="w-16 h-16 bg-duck-acid rounded-2xl flex items-center justify-center shadow-xl shadow-duck-acid/25 rotate-3">
                                 <Monitor size={32} className="text-white" />
                             </div>
                             <div className="absolute -bottom-1 -right-1 w-7 h-7 bg-duck-ink rounded-lg flex items-center justify-center text-sm shadow-lg -rotate-6 text-white font-bold">
@@ -351,15 +351,15 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
                         </h1>
                     </div>
 
-                    <p className="text-base text-duck-muted mb-5 max-w-md mx-auto">
+                    <p className="text-base text-duck-ink/60 mb-5 max-w-md mx-auto">
                         Jij bent de presentatie-expert. Help medeleerlingen hun rommelige slides te verbeteren!
                     </p>
 
                     <MissionGoalBanner goal={getMissionGoal('pitch-police')!} compact className="mb-5" />
 
                     {/* Instructions Card — compact */}
-                    <div className="bg-white border border-duck-line rounded-xl p-5 mb-5 text-left shadow-sm">
-                        <h3 className="text-xs font-black text-duck-coral uppercase tracking-widest mb-3 flex items-center gap-2">
+                    <div className="bg-white border border-duck-gray rounded-xl p-5 mb-5 text-left shadow-sm">
+                        <h3 className="text-xs font-black text-duck-acid uppercase tracking-widest mb-3 flex items-center gap-2">
                             <Zap size={14} /> Hoe werkt het?
                         </h3>
                         <div className="grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
@@ -374,10 +374,10 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
                                             visible ? 'translate-y-0 opacity-100' : 'translate-y-3 opacity-0'
                                         }`}
                                     >
-                                        <span className={`${isLast ? 'bg-duck-ink/10 text-duck-ink' : 'bg-duck-coral/10 text-duck-coral'} rounded-full w-6 h-6 flex items-center justify-center shrink-0 font-bold text-xs`}>
+                                        <span className={`${isLast ? 'bg-duck-ink/10 text-duck-ink' : 'bg-duck-acid/10 text-duck-acid'} rounded-full w-6 h-6 flex items-center justify-center shrink-0 font-bold text-xs`}>
                                             {isLast ? '✓' : index + 1}
                                         </span>
-                                        <span className="text-duck-muted">{step.label} <strong className="text-duck-ink">{step.strong}</strong></span>
+                                        <span className="text-duck-ink/60">{step.label} <strong className="text-duck-ink">{step.strong}</strong></span>
                                     </div>
                                 );
                             })}
@@ -386,17 +386,17 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
 
                     {/* Tips */}
                     <div className="flex flex-wrap justify-center gap-2 mb-6">
-                        <div className="bg-white border border-duck-line rounded-full px-3 py-1.5 flex items-center gap-1.5 text-xs">
+                        <div className="bg-white border border-duck-gray rounded-full px-3 py-1.5 flex items-center gap-1.5 text-xs">
                             <Type size={14} className="text-duck-ink" />
-                            <span className="text-duck-muted">Minder tekst = beter</span>
+                            <span className="text-duck-ink/60">Minder tekst = beter</span>
                         </div>
-                        <div className="bg-white border border-duck-line rounded-full px-3 py-1.5 flex items-center gap-1.5 text-xs">
+                        <div className="bg-white border border-duck-gray rounded-full px-3 py-1.5 flex items-center gap-1.5 text-xs">
                             <Palette size={14} className="text-duck-ink" />
-                            <span className="text-duck-muted">Goed contrast</span>
+                            <span className="text-duck-ink/60">Goed contrast</span>
                         </div>
-                        <div className="bg-white border border-duck-line rounded-full px-3 py-1.5 flex items-center gap-1.5 text-xs">
+                        <div className="bg-white border border-duck-gray rounded-full px-3 py-1.5 flex items-center gap-1.5 text-xs">
                             <Layout size={14} className="text-duck-ink" />
-                            <span className="text-duck-muted">Rustige layout</span>
+                            <span className="text-duck-ink/60">Rustige layout</span>
                         </div>
                     </div>
 
@@ -409,7 +409,7 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
                         className={`px-10 py-4 rounded-full font-black text-lg shadow-2xl transition-all duration-300 flex items-center gap-3 mx-auto group focus-visible:ring-2 focus-visible:ring-[#0B453F] ${
                             introReady
                                 ? 'bg-duck-acid text-duck-ink shadow-duck-acid/30 hover:scale-105'
-                                : 'bg-duck-line text-duck-muted shadow-none cursor-not-allowed'
+                                : 'bg-duck-gray text-duck-ink/60 shadow-none cursor-not-allowed'
                         }`}
                     >
                         <Play size={20} fill="currentColor" />
@@ -420,7 +420,7 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
                     {/* Back button */}
                     <button
                         onClick={onBack}
-                        className="mt-4 text-duck-muted hover:text-duck-ink text-sm font-medium flex items-center gap-2 mx-auto transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#0B453F] rounded-full px-3 py-1"
+                        className="mt-4 text-duck-ink/60 hover:text-duck-ink text-sm font-medium flex items-center gap-2 mx-auto transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#0B453F] rounded-full px-3 py-1"
                     >
                         <ArrowLeft size={16} />
                         Terug naar missies
@@ -614,7 +614,7 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
                                     className="w-full text-left p-4 rounded-2xl bg-duck-bg hover:bg-duck-ink border border-duck-ink/15 hover:border-duck-ink transition-all duration-300 group relative overflow-hidden focus-visible:ring-2 focus-visible:ring-duck-ink"
                                 >
                                     <div className="flex items-start gap-3 relative z-10">
-                                        <div className="w-6 h-6 rounded-full bg-duck-ink text-white flex items-center justify-center text-xs font-bold group-hover:bg-duck-acid group-hover:text-duck-ink transition-all duration-300 shrink-0">
+                                        <div className="w-6 h-6 rounded-full bg-duck-ink text-duck-ink flex items-center justify-center text-xs font-bold group-hover:bg-duck-acid group-hover:text-duck-ink transition-all duration-300 shrink-0">
                                             {opt.id.toUpperCase()}
                                         </div>
                                         <span className="text-sm font-medium text-duck-ink/60 group-hover:text-white">
@@ -656,7 +656,7 @@ export const PitchPoliceMission: React.FC<PitchPoliceProps> = ({ onComplete, onB
                                         className="w-full text-left p-4 rounded-2xl bg-duck-bg hover:bg-duck-ink border border-duck-ink/15 hover:border-duck-ink transition-all duration-300 group relative overflow-hidden focus-visible:ring-2 focus-visible:ring-duck-ink"
                                     >
                                         <div className="flex items-start gap-3 relative z-10">
-                                            <div className="w-6 h-6 rounded-full bg-duck-ink flex items-center justify-center text-xs font-bold group-hover:bg-duck-acid group-hover:text-duck-ink transition-all duration-300 shrink-0 text-white">
+                                            <div className="w-6 h-6 rounded-full bg-duck-ink flex items-center justify-center text-xs font-bold group-hover:bg-duck-acid group-hover:text-duck-ink transition-all duration-300 shrink-0 text-duck-ink">
                                                 {opt.id.toUpperCase()}
                                             </div>
                                             <span className="text-sm font-medium text-duck-ink/60 group-hover:text-white">

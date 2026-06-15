@@ -49,8 +49,8 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
                         {badge.title}
                     </h2>
                     <div className="flex items-center justify-center gap-2 mt-3">
-                        <Trophy size={16} className="text-duck-coral" />
-                        <span className="text-lg font-black text-duck-coral">
+                        <Trophy size={16} className="text-duck-acid" />
+                        <span className="text-lg font-black text-duck-acid">
                             {score}/{maxScore} punten ({percentage}%)
                         </span>
                     </div>
@@ -58,24 +58,24 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
 
                 {/* Phase breakdown */}
                 {phases && phases.length > 0 && (
-                    <div className="bg-white rounded-2xl border border-duck-line p-4 mb-4">
+                    <div className="bg-white rounded-2xl border border-duck-gray p-4 mb-4">
                         {phases.map((phase, i) => (
                             <div
                                 key={i}
                                 className={`flex items-center justify-between py-2 ${
-                                    i < phases.length - 1 ? 'border-b border-duck-line' : ''
+                                    i < phases.length - 1 ? 'border-b border-duck-gray' : ''
                                 }`}
                             >
                                 <div className="flex items-center gap-2">
                                     <span>{phase.icon}</span>
                                     <span
-                                        className="text-sm text-duck-muted"
+                                        className="text-sm text-duck-ink/60"
                                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                                     >
                                         {phase.title}
                                     </span>
                                 </div>
-                                <span className="text-sm font-bold text-duck-coral">
+                                <span className="text-sm font-bold text-duck-acid">
                                     {phase.score}/{phase.max}
                                 </span>
                             </div>
@@ -93,11 +93,11 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
                 </button>
 
                 {/* Takeaways */}
-                <div className="bg-white rounded-2xl border border-duck-line p-4">
+                <div className="bg-white rounded-2xl border border-duck-gray p-4">
                     <div className="flex items-center gap-2 mb-3">
-                        <Sparkles size={16} className="text-duck-coral" />
+                        <Sparkles size={16} className="text-duck-acid" />
                         <span
-                            className="text-xs font-black text-duck-coral uppercase tracking-widest"
+                            className="text-xs font-black text-duck-acid uppercase tracking-widest"
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         >
                             Wat je hebt geleerd
@@ -107,7 +107,7 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
                         {takeaways.map((t, i) => (
                             <li
                                 key={i}
-                                className="text-sm text-duck-muted flex items-start gap-2"
+                                className="text-sm text-duck-ink/60 flex items-start gap-2"
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                             >
                                 <span className="text-duck-ink mt-0.5">✓</span>

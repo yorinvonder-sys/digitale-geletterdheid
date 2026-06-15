@@ -268,7 +268,7 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
                 <div className="flex items-center gap-2 mb-4">
                     <span className="text-lg">{ROUND_ICONS[round.type]}</span>
                     <span
-                        className="text-xs font-black text-duck-coral uppercase tracking-widest"
+                        className="text-xs font-black text-duck-acid uppercase tracking-widest"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         Ronde {state.currentRound + 1} — {
@@ -287,7 +287,7 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: -24 }}
                         transition={{ duration: 0.25 }}
-                        className="bg-white rounded-2xl border border-duck-line p-5"
+                        className="bg-white rounded-2xl border border-duck-gray p-5"
                     >
                         {round.type === 'drag-sort' && (
                             <DragSort
@@ -365,7 +365,7 @@ const ReviewArenaWithConfig: React.FC<ReviewArenaProps> = ({
                     {!isChatOpen && (
                         <button
                             onClick={() => setIsChatOpen(true)}
-                            className="fixed bottom-6 right-6 z-40 w-13 h-13 bg-gradient-to-br from-duck-coral to-duck-coral hover:from-duck-coral hover:to-duck-coral text-white rounded-full shadow-lg flex items-center justify-center transition-all duration-200 active:scale-95"
+                            className="fixed bottom-6 right-6 z-40 w-13 h-13 bg-gradient-to-br from-duck-acid to-duck-acid hover:from-duck-acid hover:to-duck-acid text-white rounded-full shadow-lg flex items-center justify-center transition-all duration-200 active:scale-95"
                             aria-label="Open AI-assistent"
                         >
                             <MessageCircle size={22} />
@@ -383,7 +383,7 @@ export { ReviewArenaWithConfig };
 
 const LoadingScreen = () => (
     <div className="min-h-screen bg-duck-bg flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-2 border-duck-coral border-t-transparent" />
+        <div className="animate-spin rounded-full h-8 w-8 border-2 border-duck-acid border-t-transparent" />
     </div>
 );
 
@@ -412,10 +412,10 @@ export const ReviewArena: React.FC<TemplateMissionProps> = (props) => {
     if (loadError) return (
         <div className="min-h-screen bg-duck-bg flex items-center justify-center p-4">
             <div className="text-center">
-                <p className="text-duck-muted mb-4" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                <p className="text-duck-ink/60 mb-4" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                     Config niet gevonden: {missionId}
                 </p>
-                <button onClick={onBack} className="px-4 py-2 bg-duck-coral text-white rounded-xl text-sm font-bold">Terug</button>
+                <button onClick={onBack} className="px-4 py-2 bg-duck-acid text-duck-ink rounded-xl text-sm font-bold">Terug</button>
             </div>
         </div>
     );

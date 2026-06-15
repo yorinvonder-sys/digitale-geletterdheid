@@ -51,7 +51,7 @@ export const FeedbackBanner: React.FC<{
     return (
         <div
             className={`rounded-2xl border-2 p-4 mt-4 ${
-                good ? 'border-duck-ink bg-duck-ink/5' : 'border-duck-coral bg-duck-coral/5'
+                good ? 'border-duck-ink bg-duck-ink/5' : 'border-duck-acid bg-duck-acid/5'
             }`}
         >
             <div className="flex items-center gap-2 mb-2">
@@ -64,16 +64,16 @@ export const FeedbackBanner: React.FC<{
                 </span>
             </div>
             <p
-                className="text-xs text-duck-muted mb-3"
+                className="text-xs text-duck-ink/60 mb-3"
                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
             >
                 Ronde score:{' '}
-                <strong className={good ? 'text-duck-ink' : 'text-duck-coral'}>{score}/25</strong>
+                <strong className={good ? 'text-duck-ink' : 'text-duck-acid'}>{score}/25</strong>
             </p>
             {!hideButton && (
                 <button
                     onClick={onNext}
-                    className="w-full py-2.5 rounded-full font-black text-sm bg-gradient-to-r from-duck-coral to-duck-coral hover:from-duck-coral hover:to-duck-coral text-white transition-all duration-200"
+                    className="w-full py-2.5 rounded-full font-black text-sm bg-gradient-to-r from-duck-acid to-duck-acid hover:from-duck-acid hover:to-duck-acid text-white transition-all duration-200"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     {isLast ? 'Bekijk eindresultaat' : 'Volgende ronde →'}

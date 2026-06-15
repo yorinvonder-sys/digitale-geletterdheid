@@ -424,12 +424,12 @@ const ResultVisual: React.FC<{
     const getBgColor = () => {
         if (isIdeal) return 'bg-duck-ink/10 border-duck-ink/30';
         if (isSuccess) return 'bg-duck-ink/10 border-duck-ink/30';
-        return 'bg-duck-coral/10 border-duck-coral/30';
+        return 'bg-duck-acid/10 border-duck-acid/30';
     };
 
     const getHeader = () => {
         if (isIdeal) return <div className="flex items-center gap-2 text-duck-ink mb-2" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}><Target size={16} /> <span className="font-bold">Ideaal Resultaat</span></div>;
-        return <div className="flex items-center gap-2 text-duck-muted mb-2" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}><Bot size={16} /> <span className="font-bold">Jouw Resultaat</span></div>;
+        return <div className="flex items-center gap-2 text-duck-ink/60 mb-2" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}><Bot size={16} /> <span className="font-bold">Jouw Resultaat</span></div>;
     };
 
     // IMAGE CHALLENGE VISUALIZATION
@@ -455,7 +455,7 @@ const ResultVisual: React.FC<{
         return (
             <div className={`p-4 rounded-2xl border ${getBgColor()} h-full flex flex-col`}>
                 {getHeader()}
-                <div className="flex-1 min-h-[200px] bg-duck-line rounded-xl flex flex-col items-center justify-center p-4 text-center relative overflow-hidden group">
+                <div className="flex-1 min-h-[200px] bg-duck-gray rounded-xl flex flex-col items-center justify-center p-4 text-center relative overflow-hidden group">
                     {/* Show actual image if available */}
                     {imageToShow ? (
                         <>
@@ -476,23 +476,23 @@ const ResultVisual: React.FC<{
                         </>
                     ) : (
                         <>
-                            <div className="absolute inset-0 bg-gradient-to-br from-duck-bg to-duck-line" />
+                            <div className="absolute inset-0 bg-gradient-to-br from-duck-bg to-duck-gray" />
                             <div className="relative z-10 flex flex-col items-center gap-3 px-4">
                                 {isGeneratingImage && (
-                                    <div className="rounded-full bg-white/90 p-3 text-duck-coral shadow-sm">
+                                    <div className="rounded-full bg-white/90 p-3 text-duck-acid shadow-sm">
                                         <Loader2 size={24} className="animate-spin" />
                                     </div>
                                 )}
-                                <div className="bg-white/90 backdrop-blur-sm rounded-xl px-4 py-3 border border-duck-line max-w-[90%]">
-                                    <p className="mb-2 text-[12px] font-black uppercase tracking-wide text-duck-coral" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                <div className="bg-white/90 backdrop-blur-sm rounded-xl px-4 py-3 border border-duck-gray max-w-[90%]">
+                                    <p className="mb-2 text-[12px] font-black uppercase tracking-wide text-duck-acid" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                         {missingImageTitle}
                                     </p>
-                                    <p className="text-[13px] text-duck-muted font-medium text-center leading-relaxed" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                    <p className="text-[13px] text-duck-ink/60 font-medium text-center leading-relaxed" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                         {missingImageDetail}
                                     </p>
                                 </div>
                                 {!isIdeal && (
-                                    <p className="rounded-full border border-duck-coral/25 bg-duck-coral/10 px-3 py-1 text-[10px] font-bold text-duck-coral">
+                                    <p className="rounded-full border border-duck-acid/25 bg-duck-acid/10 px-3 py-1 text-[10px] font-bold text-duck-acid">
                                         Echte beeldgeneratie vereist een geldig AI-provider-antwoord.
                                     </p>
                                 )}
@@ -512,16 +512,16 @@ const ResultVisual: React.FC<{
                 {getHeader()}
                 <div className="flex-1 bg-duck-ink rounded-xl p-4 overflow-x-auto relative">
                     <div className="flex gap-1.5 mb-3 opacity-50">
-                        <div className="w-2.5 h-2.5 rounded-full bg-duck-coral" />
+                        <div className="w-2.5 h-2.5 rounded-full bg-duck-acid" />
                         <div className="w-2.5 h-2.5 rounded-full bg-duck-acid" />
                         <div className="w-2.5 h-2.5 rounded-full bg-duck-ink" />
                     </div>
-                    <code className="text-duck-line block leading-relaxed">
-                        <span className="text-duck-ink">def</span> <span className="text-duck-coral">calculator</span>():<br />
-                        &nbsp;&nbsp;<span className="text-duck-muted"># {content.substring(0, 50)}...</span><br />
+                    <code className="text-duck-gray block leading-relaxed">
+                        <span className="text-duck-ink">def</span> <span className="text-duck-acid">calculator</span>():<br />
+                        &nbsp;&nbsp;<span className="text-duck-ink/60"># {content.substring(0, 50)}...</span><br />
                         &nbsp;&nbsp;<span className="text-duck-ink">return</span> result
                     </code>
-                    <div className="mt-4 pt-4 border-t border-duck-line text-xs text-duck-muted">
+                    <div className="mt-4 pt-4 border-t border-duck-gray text-xs text-duck-ink/60">
                         // Output: {content}
                     </div>
                 </div>
@@ -533,16 +533,16 @@ const ResultVisual: React.FC<{
     return (
         <div className={`p-4 rounded-2xl border ${getBgColor()} h-full flex flex-col`}>
             {getHeader()}
-            <div className="flex-1 bg-white rounded-xl p-4 text-duck-muted shadow-sm relative overflow-y-auto max-h-[300px]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
-                <div className="absolute top-0 left-0 w-full h-1 bg-duck-line" />
+            <div className="flex-1 bg-white rounded-xl p-4 text-duck-ink/60 shadow-sm relative overflow-y-auto max-h-[300px]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                <div className="absolute top-0 left-0 w-full h-1 bg-duck-gray" />
                 {/* Simulate paper lines */}
                 <div className="space-y-3">
-                    <div className="h-4 bg-duck-line rounded w-3/4" />
-                    <div className="h-4 bg-duck-line rounded w-full" />
-                    <div className="h-4 bg-duck-line rounded w-5/6" />
+                    <div className="h-4 bg-duck-gray rounded w-3/4" />
+                    <div className="h-4 bg-duck-gray rounded w-full" />
+                    <div className="h-4 bg-duck-gray rounded w-5/6" />
                 </div>
 
-                <div className="mt-4 p-3 bg-duck-bg rounded-lg text-sm font-medium border-l-4 border-duck-coral">
+                <div className="mt-4 p-3 bg-duck-bg rounded-lg text-sm font-medium border-l-4 border-duck-acid">
                     "{content}"
                 </div>
             </div>
@@ -570,16 +570,16 @@ const ResultFeedbackRail: React.FC<{
                     <h4 className="font-bold" style={{ color: passed ? '#202023' : '#ff3c21' }}>
                         {passed ? 'Missie Geslaagd!' : 'Nog niet helemaal...'}
                     </h4>
-                    <p className="text-sm text-duck-muted">
+                    <p className="text-sm text-duck-ink/60">
                         {passed ? 'Je prompt gaf een geweldig resultaat.' : 'Kijk naar het verschil tussen jouw resultaat en het doel.'}
                     </p>
                 </div>
             </div>
         </div>
 
-        <div className="bg-white rounded-2xl p-4 border border-duck-line">
+        <div className="bg-white rounded-2xl p-4 border border-duck-gray">
             <h4 className="font-bold mb-3 flex items-center gap-2 text-duck-ink">
-                <Target size={18} className="text-duck-coral" />
+                <Target size={18} className="text-duck-acid" />
                 Wat zat er in je prompt?
             </h4>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-2">
@@ -606,7 +606,7 @@ const ResultFeedbackRail: React.FC<{
                                 {item.label}
                             </span>
                             {!item.found && (
-                                <p className="text-xs text-duck-muted leading-snug">{item.hint}</p>
+                                <p className="text-xs text-duck-ink/60 leading-snug">{item.hint}</p>
                             )}
                         </div>
                     </div>
@@ -615,14 +615,14 @@ const ResultFeedbackRail: React.FC<{
         </div>
 
         {!passed && (
-            <div className="bg-duck-coral/5 rounded-2xl p-4 border border-duck-coral/20">
-                <h4 className="font-bold mb-3 flex items-center gap-2 text-duck-coral">
+            <div className="bg-duck-acid/5 rounded-2xl p-4 border border-duck-acid/20">
+                <h4 className="font-bold mb-3 flex items-center gap-2 text-duck-acid">
                     <Lightbulb size={18} /> Tips om te verbeteren:
                 </h4>
                 <ul className="space-y-2">
                     {tips.map((tip, i) => (
-                        <li key={i} className="flex items-start gap-2 text-sm text-duck-muted">
-                            <ChevronRight size={14} className="mt-1 text-duck-coral flex-shrink-0" />
+                        <li key={i} className="flex items-start gap-2 text-sm text-duck-ink/60">
+                            <ChevronRight size={14} className="mt-1 text-duck-acid flex-shrink-0" />
                             {tip}
                         </li>
                     ))}
@@ -650,39 +650,39 @@ const PromptExampleComparison: React.FC<{ challenge: Challenge }> = ({ challenge
         : null;
 
     const ResultImage = ({ src, detailed }: { src: string; detailed?: boolean }) => (
-        <div className={`relative aspect-[16/9] min-h-[150px] overflow-hidden rounded-2xl border ${detailed ? 'border-duck-ink/35 bg-duck-bg' : 'border-duck-line bg-duck-creamDeep'}`}>
+        <div className={`relative aspect-[16/9] min-h-[150px] overflow-hidden rounded-2xl border ${detailed ? 'border-duck-ink/35 bg-duck-bg' : 'border-duck-gray bg-duck-bgLight'}`}>
             <img
                 src={src}
                 alt={detailed ? 'Specifiek AI-resultaat: een vrolijke golden retriever puppy rent door een zonnig park.' : 'Vaag AI-resultaat: een generieke bruine hond in een lege witte ruimte.'}
                 className="h-full w-full object-cover"
                 loading="lazy"
             />
-            <div className="absolute left-3 top-3 rounded-full bg-white/95 px-3 py-1 text-[10px] font-black uppercase text-duck-muted shadow-sm">
+            <div className="absolute left-3 top-3 rounded-full bg-white/95 px-3 py-1 text-[10px] font-black uppercase text-duck-ink/60 shadow-sm">
                 {detailed ? 'Goed resultaat' : 'Slecht resultaat'}
             </div>
         </div>
     );
 
     return (
-        <section className="mb-5 rounded-2xl border border-duck-line bg-white p-4 shadow-sm" aria-label="Prompt voorbeeld vergelijken">
+        <section className="mb-5 rounded-2xl border border-duck-gray bg-white p-4 shadow-sm" aria-label="Prompt voorbeeld vergelijken">
             <div className="mb-3 flex items-center gap-2">
                 <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-duck-acid/30 text-duck-ink">
                     <Eye size={18} />
                 </div>
                 <div>
                     <h3 className="font-black text-duck-ink">Bekijk eerst het verschil</h3>
-                    <p className="text-xs font-semibold text-duck-muted">Vergelijk een te vage prompt met een prompt die meer details geeft.</p>
+                    <p className="text-xs font-semibold text-duck-ink/60">Vergelijk een te vage prompt met een prompt die meer details geeft.</p>
                 </div>
             </div>
             <div className="grid gap-3 md:grid-cols-2">
-                <article className="rounded-2xl border border-duck-line bg-duck-bg p-3">
+                <article className="rounded-2xl border border-duck-gray bg-duck-bg p-3">
                     {comparisonImages && (
                         <ResultImage src={comparisonImages.weak} />
                     )}
                     <div className="mt-3">
-                        <p className="text-[10px] font-black uppercase text-duck-coral">Slechte prompt</p>
+                        <p className="text-[10px] font-black uppercase text-duck-acid">Slechte prompt</p>
                         <p className="mt-1 rounded-xl bg-white p-3 text-sm font-bold text-duck-ink">"{weakPrompt}"</p>
-                        <p className="mt-2 text-xs font-semibold leading-relaxed text-duck-muted">{challenge.badOutputExample}</p>
+                        <p className="mt-2 text-xs font-semibold leading-relaxed text-duck-ink/60">{challenge.badOutputExample}</p>
                     </div>
                 </article>
                 <article className="rounded-2xl border border-duck-ink/35 bg-duck-bg p-3">
@@ -692,7 +692,7 @@ const PromptExampleComparison: React.FC<{ challenge: Challenge }> = ({ challenge
                     <div className="mt-3">
                         <p className="text-[10px] font-black uppercase text-duck-ink">Goede prompt</p>
                         <p className="mt-1 rounded-xl bg-white p-3 text-sm font-bold text-duck-ink">"{strongPrompt}"</p>
-                        <p className="mt-2 text-xs font-semibold leading-relaxed text-duck-muted">{challenge.goodOutputExample}</p>
+                        <p className="mt-2 text-xs font-semibold leading-relaxed text-duck-ink/60">{challenge.goodOutputExample}</p>
                     </div>
                 </article>
             </div>
@@ -889,9 +889,9 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
     const getLevelColor = (level: string) => {
         switch (level) {
             case 'beginner': return 'from-duck-ink to-duck-ink';
-            case 'gevorderd': return 'from-duck-coral to-duck-coral';
-            case 'expert': return 'from-duck-ink to-duck-coral';
-            default: return 'from-duck-ink to-duck-coral';
+            case 'gevorderd': return 'from-duck-acid to-duck-acid';
+            case 'expert': return 'from-duck-ink to-duck-acid';
+            default: return 'from-duck-ink to-duck-acid';
         }
     };
 
@@ -900,10 +900,10 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
         return (
             <div data-qa="prompt-master-intro" className="h-dvh overflow-y-auto bg-duck-bg text-duck-ink flex flex-col" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                 {/* Header */}
-                <header className="bg-white border-b border-duck-line px-6 py-4 flex items-center justify-between">
+                <header className="bg-white border-b border-duck-gray px-6 py-4 flex items-center justify-between">
                     <button
                         onClick={onBack}
-                        className="flex items-center gap-2 text-duck-muted hover:text-duck-ink transition-all duration-300 font-bold text-sm uppercase"
+                        className="flex items-center gap-2 text-duck-ink/60 hover:text-duck-ink transition-all duration-300 font-bold text-sm uppercase"
                     >
                         <ArrowLeft size={16} /> Terug
                     </button>
@@ -913,9 +913,9 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                         </div>
                         <div>
                             <h1 className="text-lg font-black uppercase flex items-center gap-2">
-                                Prompt Lab <Zap size={16} className="text-duck-coral" />
+                                Prompt Lab <Zap size={16} className="text-duck-acid" />
                             </h1>
-                            <p className="text-[10px] text-duck-muted uppercase font-bold">
+                            <p className="text-[10px] text-duck-ink/60 uppercase font-bold">
                                 Prompt Engineering
                             </p>
                         </div>
@@ -934,7 +934,7 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                             Leer Prompt Engineering door te <span className="text-duck-ink underline decoration-[#D7C95F] decoration-4 underline-offset-4">doen</span>
                         </h2>
 
-                        <p className="text-base md:text-lg text-duck-muted mb-5 md:mb-6 leading-relaxed max-w-2xl mx-auto">
+                        <p className="text-base md:text-lg text-duck-ink/60 mb-5 md:mb-6 leading-relaxed max-w-2xl mx-auto">
                             Je leert hoe je een AI duidelijke opdrachten geeft. In elke ronde schrijf je zelf een prompt, bekijk je het resultaat en verbeter je je prompt tot de AI begrijpt wat jij bedoelt.
                         </p>
 
@@ -943,21 +943,21 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                         </div>
 
                         <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_0.95fr] gap-3 md:gap-4 mb-5 md:mb-6 text-left">
-                            <div className="bg-white rounded-2xl p-4 md:p-5 border border-duck-line">
+                            <div className="bg-white rounded-2xl p-4 md:p-5 border border-duck-gray">
                                 <div className="flex items-center gap-2 mb-2">
                                     <Target size={18} className="text-duck-ink" />
                                     <h3 className="font-black text-duck-ink">Doel van de opdracht</h3>
                                 </div>
-                                <p className="text-sm leading-relaxed text-duck-muted">
+                                <p className="text-sm leading-relaxed text-duck-ink/60">
                                     Aan het einde kun je een prompt schrijven die specifiek genoeg is: met onderwerp, context, gewenste vorm en extra regels. Zo krijg je minder toeval en meer controle over AI-output.
                                 </p>
                             </div>
-                            <div className="bg-white rounded-2xl p-4 md:p-5 border border-duck-line">
+                            <div className="bg-white rounded-2xl p-4 md:p-5 border border-duck-gray">
                                 <div className="flex items-center gap-2 mb-3">
                                     <Lightbulb size={18} className="text-duck-ink" />
                                     <h3 className="font-black text-duck-ink">Zo werk je</h3>
                                 </div>
-                                <ol className="space-y-2 text-sm text-duck-muted">
+                                <ol className="space-y-2 text-sm text-duck-ink/60">
                                     {['Lees de opdracht van de ronde.', 'Typ je eigen prompt aan de AI.', 'Bekijk feedback: wat mist er nog?', 'Verbeter je prompt en ga door.'].map((step, index) => (
                                         <li key={step} className="flex gap-2">
                                             <span className="w-5 h-5 rounded-full bg-duck-ink text-white text-[11px] font-black flex items-center justify-center shrink-0">{index + 1}</span>
@@ -970,20 +970,20 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
 
                         {/* Levels Preview */}
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 mb-5 md:mb-6">
-                            <div className="bg-white rounded-2xl p-3 md:p-4 border border-duck-line">
+                            <div className="bg-white rounded-2xl p-3 md:p-4 border border-duck-gray">
                                 <div className="text-2xl mb-1">🌱</div>
                                 <h3 className="font-bold mb-1 text-duck-ink">Beginner</h3>
-                                <p className="text-xs text-duck-muted">Specifiek zijn, context geven</p>
+                                <p className="text-xs text-duck-ink/60">Specifiek zijn, context geven</p>
                             </div>
-                            <div className="bg-white rounded-2xl p-3 md:p-4 border border-duck-line">
+                            <div className="bg-white rounded-2xl p-3 md:p-4 border border-duck-gray">
                                 <div className="text-2xl mb-1">⚡</div>
-                                <h3 className="font-bold mb-1 text-duck-coral">Gevorderd</h3>
-                                <p className="text-xs text-duck-muted">Structuur, format, toon</p>
+                                <h3 className="font-bold mb-1 text-duck-acid">Gevorderd</h3>
+                                <p className="text-xs text-duck-ink/60">Structuur, format, toon</p>
                             </div>
-                            <div className="bg-white rounded-2xl p-3 md:p-4 border border-duck-line">
+                            <div className="bg-white rounded-2xl p-3 md:p-4 border border-duck-gray">
                                 <div className="text-2xl mb-1">🎯</div>
                                 <h3 className="font-bold mb-1 text-duck-ink">Expert</h3>
-                                <p className="text-xs text-duck-muted">Persona's, beperkingen</p>
+                                <p className="text-xs text-duck-ink/60">Persona's, beperkingen</p>
                             </div>
                         </div>
 
@@ -1010,9 +1010,9 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
         return (
             <div data-qa="prompt-master-challenge" className="h-dvh overflow-y-auto bg-duck-bg text-duck-ink flex flex-col" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                 {/* Header */}
-                <header className="bg-white border-b border-duck-line px-4 py-3 md:px-6 md:py-4 sticky top-0 z-10">
+                <header className="bg-white border-b border-duck-gray px-4 py-3 md:px-6 md:py-4 sticky top-0 z-10">
                     <div className="max-w-4xl mx-auto flex flex-wrap items-center justify-between gap-2">
-                        <button onClick={onBack} className="flex items-center gap-2 text-duck-muted hover:text-duck-ink text-sm font-bold uppercase transition-all duration-300">
+                        <button onClick={onBack} className="flex items-center gap-2 text-duck-ink/60 hover:text-duck-ink text-sm font-bold uppercase transition-all duration-300">
                             <ArrowLeft size={16} /> Stoppen
                         </button>
                         <div className="flex min-w-0 flex-wrap items-center justify-end gap-2 md:gap-3">
@@ -1027,7 +1027,7 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                                     {progress.currentLevel === 'beginner' ? '🌱 Beginner' :
                                         progress.currentLevel === 'gevorderd' ? '⚡ Gevorderd' : '🎯 Expert'}
                                 </span>
-                                <span className="hidden text-[10px] text-duck-muted font-bold uppercase sm:inline">
+                                <span className="hidden text-[10px] text-duck-ink/60 font-bold uppercase sm:inline">
                                     Niveau {progress.currentLevel === 'beginner' ? 1 : progress.currentLevel === 'gevorderd' ? 2 : 3}/3
                                 </span>
                                 {vsoProfile && (
@@ -1036,7 +1036,7 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                                     </span>
                                 )}
                             </div>
-                            <div className="hidden h-4 w-px bg-duck-line sm:block" />
+                            <div className="hidden h-4 w-px bg-duck-gray sm:block" />
                             <div className="hidden items-center gap-2 sm:flex">
                                 <div className="flex gap-0.5">
                                     {CHALLENGES.map((_, i) => (
@@ -1053,12 +1053,12 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                                         />
                                     ))}
                                 </div>
-                                <span className="text-xs text-duck-muted font-bold">
+                                <span className="text-xs text-duck-ink/60 font-bold">
                                     {globalIndex + 1}/{totalChallenges}
                                 </span>
                             </div>
                         </div>
-                        <div className="flex items-center gap-2 text-duck-coral">
+                        <div className="flex items-center gap-2 text-duck-acid">
                             <Star size={16} fill="currentColor" />
                             <span className="font-bold">{progress.totalScore}</span>
                         </div>
@@ -1068,7 +1068,7 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                 <div className={`${showFeedback ? 'max-w-7xl' : 'max-w-4xl'} mx-auto p-4 md:p-6`}>
                     {/* Goal Card */}
                     {!showFeedback && (
-                    <div className="bg-white rounded-2xl p-4 md:p-5 border border-duck-line mb-4 md:mb-5">
+                    <div className="bg-white rounded-2xl p-4 md:p-5 border border-duck-gray mb-4 md:mb-5">
                         {/* Level Progress Bar */}
                         <div className="flex items-center gap-2 mb-4">
                             <div className="flex-1 flex items-center gap-1">
@@ -1082,11 +1082,11 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                                                         ? '#202023'
                                                         : '#e3e2dc'
                                             }} />
-                                        {i < 2 && <div className="w-2 h-2 rounded-full mx-1 bg-duck-line" />}
+                                        {i < 2 && <div className="w-2 h-2 rounded-full mx-1 bg-duck-gray" />}
                                     </div>
                                 ))}
                             </div>
-                            <span className="text-[10px] text-duck-muted font-bold">
+                            <span className="text-[10px] text-duck-ink/60 font-bold">
                                 {progress.currentLevel === 'beginner' ? '2 niveaus te gaan' :
                                     progress.currentLevel === 'gevorderd' ? '1 niveau te gaan' : 'Laatste niveau!'}
                             </span>
@@ -1102,7 +1102,7 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                             </div>
                             <span className="font-bold text-lg text-duck-ink">{currentChallenge.goal}</span>
                         </div>
-                        <p className="text-duck-muted">{currentChallenge.scenario}</p>
+                        <p className="text-duck-ink/60">{currentChallenge.scenario}</p>
                     </div>
                     )}
 
@@ -1117,24 +1117,24 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                             {isAnalyzing && (
                                 <div className="absolute inset-0 z-20 bg-white/90 backdrop-blur-sm rounded-2xl flex flex-col items-center justify-center gap-4 animate-in fade-in">
                                     <div className="relative">
-                                        <div className="absolute inset-0 bg-duck-coral/20 blur-xl rounded-full animate-pulse"></div>
-                                        <div className="relative z-10 p-4 bg-white rounded-full border-2 border-duck-coral/50 shadow-lg">
-                                            <Brain size={32} className="text-duck-coral animate-pulse" />
+                                        <div className="absolute inset-0 bg-duck-acid/20 blur-xl rounded-full animate-pulse"></div>
+                                        <div className="relative z-10 p-4 bg-white rounded-full border-2 border-duck-acid/50 shadow-lg">
+                                            <Brain size={32} className="text-duck-acid animate-pulse" />
                                         </div>
                                     </div>
                                     <div className="text-center">
                                         <p className="text-lg font-bold text-duck-ink animate-pulse">{thinkingStep}</p>
-                                        <p className="text-sm text-duck-muted mt-1">De AI denkt na over je prompt...</p>
+                                        <p className="text-sm text-duck-ink/60 mt-1">De AI denkt na over je prompt...</p>
                                     </div>
                                     <div className="flex gap-1.5">
-                                        <div className="w-2 h-2 bg-duck-coral rounded-full animate-bounce [animation-delay:0ms]"></div>
-                                        <div className="w-2 h-2 bg-duck-coral rounded-full animate-bounce [animation-delay:150ms]"></div>
-                                        <div className="w-2 h-2 bg-duck-coral rounded-full animate-bounce [animation-delay:300ms]"></div>
+                                        <div className="w-2 h-2 bg-duck-acid rounded-full animate-bounce [animation-delay:0ms]"></div>
+                                        <div className="w-2 h-2 bg-duck-acid rounded-full animate-bounce [animation-delay:150ms]"></div>
+                                        <div className="w-2 h-2 bg-duck-acid rounded-full animate-bounce [animation-delay:300ms]"></div>
                                     </div>
                                 </div>
                             )}
 
-                            <label className="block text-sm font-bold text-duck-muted mb-3">
+                            <label className="block text-sm font-bold text-duck-ink/60 mb-3">
                                 {attempts > 0 ? 'Verbeter je prompt:' : 'Nu jij: typ je prompt aan de AI:'}
                             </label>
                             <textarea
@@ -1142,7 +1142,7 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                                 value={userPrompt}
                                 onChange={e => setUserPrompt(e.target.value)}
                                 placeholder="Typ hier je opdracht voor de AI..."
-                                className="w-full bg-white border-2 border-duck-line rounded-2xl p-4 text-duck-ink placeholder-duck-muted min-h-[80px] md:min-h-[100px] focus:outline-none focus-visible:ring-2 focus-visible:ring-duck-coral transition-all duration-300 resize-none"
+                                className="w-full bg-white border-2 border-duck-gray rounded-2xl p-4 text-duck-ink placeholder-duck-ink/40 min-h-[80px] md:min-h-[100px] focus:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid transition-all duration-300 resize-none"
                                 disabled={isAnalyzing}
                             />
                             <button
@@ -1168,8 +1168,8 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                             {/* Show what's missing while editing after first attempt */}
                             {attempts > 0 && aiResponse && (
                                 <div className="mt-8 space-y-4 animate-in fade-in slide-in-from-top-4">
-                                    <h4 className="font-bold flex items-center gap-2 text-duck-muted">
-                                        <Target size={18} className="text-duck-coral" />
+                                    <h4 className="font-bold flex items-center gap-2 text-duck-ink/60">
+                                        <Target size={18} className="text-duck-acid" />
                                         Wat moet je nog toevoegen?
                                     </h4>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -1197,21 +1197,21 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                                                         {item.label}
                                                     </span>
                                                     {!item.found && (
-                                                        <p className="text-xs text-duck-muted">{item.hint}</p>
+                                                        <p className="text-xs text-duck-ink/60">{item.hint}</p>
                                                     )}
                                                 </div>
                                             </div>
                                         ))}
                                     </div>
 
-                                    <div className="mt-6 bg-duck-coral/5 rounded-2xl p-5 border border-duck-coral/20">
-                                        <h4 className="font-bold mb-3 flex items-center gap-2 text-duck-coral text-sm">
+                                    <div className="mt-6 bg-duck-acid/5 rounded-2xl p-5 border border-duck-acid/20">
+                                        <h4 className="font-bold mb-3 flex items-center gap-2 text-duck-acid text-sm">
                                             <Lightbulb size={16} /> Tips voor dit niveau:
                                         </h4>
                                         <ul className="space-y-2">
                                             {currentChallenge.tips.map((tip, i) => (
-                                                <li key={i} className="flex items-start gap-2 text-[13px] text-duck-muted">
-                                                    <div className="w-1 h-1 rounded-full bg-duck-coral mt-1.5 flex-shrink-0" />
+                                                <li key={i} className="flex items-start gap-2 text-[13px] text-duck-ink/60">
+                                                    <div className="w-1 h-1 rounded-full bg-duck-acid mt-1.5 flex-shrink-0" />
                                                     {tip}
                                                 </li>
                                             ))}
@@ -1266,7 +1266,7 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                                     <button
                                         data-qa="prompt-master-try-again"
                                         onClick={handleTryAgain}
-                                        className="flex-1 bg-white border border-duck-line text-duck-muted py-4 rounded-full font-bold hover:bg-duck-creamDeep transition-all duration-300 flex items-center justify-center gap-2 active:scale-95 shadow-sm"
+                                        className="flex-1 bg-white border border-duck-gray text-duck-ink/60 py-4 rounded-full font-bold hover:bg-duck-bgLight transition-all duration-300 flex items-center justify-center gap-2 active:scale-95 shadow-sm"
                                     >
                                         <RotateCcw size={18} /> Verbeteren
                                     </button>
@@ -1306,18 +1306,18 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                         {passed ? 'Prompt Master!' : 'Goed bezig!'}
                     </h1>
 
-                    <p className="text-lg text-duck-muted mb-4 md:mb-6">
+                    <p className="text-lg text-duck-ink/60 mb-4 md:mb-6">
                         {passed
                             ? 'Je beheerst nu de kunst van prompt engineering!'
                             : 'Je hebt veel geleerd over hoe je effectieve prompts schrijft.'
                         }
                     </p>
 
-                    <div className="bg-white rounded-2xl p-5 md:p-6 mb-4 md:mb-6 border border-duck-line">
+                    <div className="bg-white rounded-2xl p-5 md:p-6 mb-4 md:mb-6 border border-duck-gray">
                         <div className="text-4xl md:text-5xl font-black mb-2 text-duck-ink">
                             {progress.totalScore} pts
                         </div>
-                        <p className="text-duck-muted font-bold mb-4">{progress.completedChallenges.length}/{CHALLENGES.length} uitdagingen voltooid</p>
+                        <p className="text-duck-ink/60 font-bold mb-4">{progress.completedChallenges.length}/{CHALLENGES.length} uitdagingen voltooid</p>
 
                         <div className="mt-6 grid grid-cols-3 gap-3 text-sm">
                             <div className="rounded-xl p-3 border" style={{ backgroundColor: 'rgba(95, 148, 125,0.05)', borderColor: 'rgba(95, 148, 125,0.2)' }}>
@@ -1325,7 +1325,7 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                                 <div className="text-duck-ink">{progress.completedChallenges.filter(id => CHALLENGES.find(c => c.id === id)?.level === 'beginner').length}/2</div>
                             </div>
                             <div className="rounded-xl p-3 border" style={{ backgroundColor: 'rgba(217, 120, 72,0.05)', borderColor: 'rgba(217, 120, 72,0.2)' }}>
-                                <div className="font-bold text-duck-coral">Gevorderd</div>
+                                <div className="font-bold text-duck-acid">Gevorderd</div>
                                 <div className="text-duck-ink">{progress.completedChallenges.filter(id => CHALLENGES.find(c => c.id === id)?.level === 'gevorderd').length}/2</div>
                             </div>
                             <div className="rounded-xl p-3 border" style={{ backgroundColor: 'rgba(11, 69, 63,0.05)', borderColor: 'rgba(11, 69, 63,0.2)' }}>
@@ -1336,11 +1336,11 @@ export const PromptMasterMission: React.FC<Props> = ({ onBack, onComplete, vsoPr
                     </div>
 
                     {/* Key Learnings */}
-                    <div className="bg-white rounded-2xl p-4 md:p-5 mb-4 md:mb-6 text-left border border-duck-line">
+                    <div className="bg-white rounded-2xl p-4 md:p-5 mb-4 md:mb-6 text-left border border-duck-gray">
                         <h4 className="font-bold mb-3 flex items-center gap-2 text-duck-ink">
-                            <Lightbulb size={18} className="text-duck-coral" /> Wat je geleerd hebt:
+                            <Lightbulb size={18} className="text-duck-acid" /> Wat je geleerd hebt:
                         </h4>
-                        <ul className="space-y-2 text-sm text-duck-muted">
+                        <ul className="space-y-2 text-sm text-duck-ink/60">
                             <li className="flex items-start gap-2">
                                 <span className="text-duck-ink">✓</span> Specifieke details geven betere resultaten
                             </li>

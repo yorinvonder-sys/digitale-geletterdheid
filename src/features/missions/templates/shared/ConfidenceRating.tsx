@@ -18,7 +18,7 @@ export const ConfidenceRating: React.FC<ConfidenceRatingProps> = ({ onSelect }) 
         className="space-y-2"
     >
         <p
-            className="text-xs font-bold text-duck-muted text-center"
+            className="text-xs font-bold text-duck-ink/60 text-center"
             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
         >
             Hoe zeker ben je van je keuze?

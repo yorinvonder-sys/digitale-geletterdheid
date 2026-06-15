@@ -24,10 +24,10 @@ export const OrderPriorityRound: React.FC<{
     return (
         <div className="mt-4">
             {selections.length > 0 && (
-                <div className="bg-duck-bg rounded-xl p-3 mb-4 border border-duck-line">
+                <div className="bg-duck-bg rounded-xl p-3 mb-4 border border-duck-gray">
                     <div className="flex items-center justify-between mb-2">
                         <span
-                            className="text-[10px] font-black text-duck-muted uppercase tracking-widest"
+                            className="text-[10px] font-black text-duck-ink/60 uppercase tracking-widest"
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         >
                             Jouw volgorde
@@ -35,7 +35,7 @@ export const OrderPriorityRound: React.FC<{
                         {!submitted && (
                             <button
                                 onClick={onReset}
-                                className="min-h-[44px] min-w-[44px] inline-flex items-center justify-center rounded-lg text-duck-muted hover:text-duck-coral transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-coral/40"
+                                className="min-h-[44px] min-w-[44px] inline-flex items-center justify-center rounded-lg text-duck-ink/60 hover:text-duck-acid transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid/40"
                                 aria-label="Opnieuw beginnen"
                             >
                                 <RotateCcw size={14} />
@@ -56,7 +56,7 @@ export const OrderPriorityRound: React.FC<{
                                             ? isCorrect ? 'bg-duck-ink/10 text-duck-ink'
                                             : isClose ? 'bg-duck-acid text-duck-ink'
                                             : 'bg-duck-error text-white'
-                                            : 'bg-white text-duck-muted'
+                                            : 'bg-white text-duck-ink/60'
                                     }`}
                                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                                 >
@@ -66,7 +66,7 @@ export const OrderPriorityRound: React.FC<{
                                                 ? isCorrect ? 'bg-duck-ink text-white'
                                                 : isClose ? 'bg-duck-acid text-duck-ink'
                                                 : 'bg-duck-error text-white'
-                                                : 'bg-duck-coral/20 text-duck-coral'
+                                                : 'bg-duck-acid/20 text-duck-acid'
                                         }`}
                                     >
                                         {i + 1}
@@ -89,7 +89,7 @@ export const OrderPriorityRound: React.FC<{
             {!submitted && remaining.length > 0 && (
                 <div className="space-y-2 mb-4">
                     <p
-                        className="text-[10px] font-black text-duck-muted uppercase tracking-widest"
+                        className="text-[10px] font-black text-duck-ink/60 uppercase tracking-widest"
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
                         {instruction}
@@ -98,7 +98,7 @@ export const OrderPriorityRound: React.FC<{
                         <button
                             key={item.id}
                             onClick={() => onAdd(item.id)}
-                            className="w-full min-h-[44px] p-3 rounded-xl border-2 border-duck-line bg-white hover:border-duck-coral hover:bg-duck-coral/5 text-left transition-all duration-200 flex items-center gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-coral/40"
+                            className="w-full min-h-[44px] p-3 rounded-xl border-2 border-duck-gray bg-white hover:border-duck-acid hover:bg-duck-acid/5 text-left transition-all duration-200 flex items-center gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid/40"
                         >
                             <ScenarioIcon icon={item.icon} className="h-6 w-6 text-lg" />
                             <div className="flex-1 min-w-0">
@@ -109,7 +109,7 @@ export const OrderPriorityRound: React.FC<{
                                     {item.title}
                                 </p>
                                 <p
-                                    className="text-xs text-duck-muted line-clamp-3"
+                                    className="text-xs text-duck-ink/60 line-clamp-3"
                                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                                 >
                                     {item.description}
@@ -128,7 +128,7 @@ export const OrderPriorityRound: React.FC<{
                         return (
                             <div
                                 key={id}
-                                className="p-3 rounded-xl bg-duck-bg border border-duck-line text-xs text-duck-muted italic"
+                                className="p-3 rounded-xl bg-duck-bg border border-duck-gray text-xs text-duck-ink/60 italic"
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                             >
                                 <span className="inline-flex items-center gap-1 font-bold not-italic">
@@ -145,7 +145,7 @@ export const OrderPriorityRound: React.FC<{
             {!submitted && selections.length === round.items.length && (
                 <button
                     onClick={onSubmit}
-                    className="w-full py-3 rounded-full font-black text-sm bg-duck-coral hover:bg-duck-coral text-white transition-all duration-300"
+                    className="w-full py-3 rounded-full font-black text-sm bg-duck-acid hover:bg-duck-acid text-duck-ink transition-all duration-300"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     Controleer volgorde

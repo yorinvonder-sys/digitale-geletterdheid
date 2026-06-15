@@ -204,7 +204,7 @@ const DebateArenaInner: React.FC<DebateArenaProps> = ({ config, onBack, onComple
                     />
 
                     {/* Journey summary */}
-                    <div className="bg-white rounded-2xl border border-duck-line p-4 mb-4">
+                    <div className="bg-white rounded-2xl border border-duck-gray p-4 mb-4">
                         <div className="flex items-center gap-2 mb-3">
                             <MessageSquare size={16} className="text-duck-ink" />
                             <span className="text-xs font-black text-duck-ink uppercase tracking-widest" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
@@ -214,12 +214,12 @@ const DebateArenaInner: React.FC<DebateArenaProps> = ({ config, onBack, onComple
 
                         <div className="flex items-center gap-3 mb-3">
                             <div className="flex-1 bg-duck-bg rounded-xl p-3 text-center">
-                                <div className="text-xs text-duck-muted mb-1" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Begin</div>
+                                <div className="text-xs text-duck-ink/60 mb-1" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Begin</div>
                                 <div className="text-sm font-bold text-duck-ink" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                     {initialPos?.label ?? '—'}
                                 </div>
                             </div>
-                            <ArrowRight size={16} className="text-duck-muted shrink-0" />
+                            <ArrowRight size={16} className="text-duck-ink/60 shrink-0" />
                             <div className="flex-1 bg-duck-ink/10 rounded-xl p-3 text-center border border-duck-ink/20">
                                 <div className="text-xs text-duck-ink mb-1" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Einde</div>
                                 <div className="text-sm font-bold text-duck-ink" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
@@ -229,11 +229,11 @@ const DebateArenaInner: React.FC<DebateArenaProps> = ({ config, onBack, onComple
                         </div>
 
                         {state.arguments.filter(a => a.claim.trim().length > 0).map((arg, i) => (
-                            <div key={i} className={`py-2.5 ${i < 2 ? 'border-b border-duck-line' : ''}`}>
-                                <div className="text-xs text-duck-muted mb-0.5" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                            <div key={i} className={`py-2.5 ${i < 2 ? 'border-b border-duck-gray' : ''}`}>
+                                <div className="text-xs text-duck-ink/60 mb-0.5" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                     Argument {i + 1}
                                 </div>
-                                <div className="text-sm text-duck-muted" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                                <div className="text-sm text-duck-ink/60" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                     {arg.claim.trim()}
                                 </div>
                             </div>
@@ -273,7 +273,7 @@ const DebateArenaInner: React.FC<DebateArenaProps> = ({ config, onBack, onComple
                     <div className="text-xs font-black text-duck-ink uppercase tracking-widest mb-1" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                         Stelling
                     </div>
-                    <p className="text-sm text-duck-muted leading-relaxed italic" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
+                    <p className="text-sm text-duck-ink/60 leading-relaxed italic" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
                         "{config.dilemma}"
                     </p>
                 </div>
@@ -350,7 +350,7 @@ const DebateArenaInner: React.FC<DebateArenaProps> = ({ config, onBack, onComple
 
 const LoadingScreen = () => (
     <div className="min-h-screen bg-duck-bg flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-2 border-duck-coral border-t-transparent" />
+        <div className="animate-spin rounded-full h-8 w-8 border-2 border-duck-acid border-t-transparent" />
     </div>
 );
 
@@ -371,10 +371,10 @@ export const DebateArena: React.FC<TemplateMissionProps> = ({ missionId, onBack,
     if (loadError) return (
         <div className="min-h-screen bg-duck-bg flex items-center justify-center p-4">
             <div className="text-center">
-                <p className="text-duck-muted mb-4" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                <p className="text-duck-ink/60 mb-4" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                     Config niet gevonden: {missionId}
                 </p>
-                <button onClick={onBack} className="px-4 py-2 bg-duck-coral text-white rounded-xl text-sm font-bold">Terug</button>
+                <button onClick={onBack} className="px-4 py-2 bg-duck-acid text-duck-ink rounded-xl text-sm font-bold">Terug</button>
             </div>
         </div>
     );

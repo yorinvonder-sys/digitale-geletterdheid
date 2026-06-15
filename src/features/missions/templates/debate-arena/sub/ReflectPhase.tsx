@@ -22,7 +22,7 @@ export const ReflectPhase: React.FC<ReflectPhaseProps> = ({ config, state, onUpd
                 <h2 className="text-lg font-black text-duck-ink mb-1" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
                     Reflecteer
                 </h2>
-                <p className="text-xs text-duck-muted" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                <p className="text-xs text-duck-ink/60" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                     Goede debaters denken na over hun eigen standpunten.
                 </p>
             </div>
@@ -33,7 +33,7 @@ export const ReflectPhase: React.FC<ReflectPhaseProps> = ({ config, state, onUpd
                     const answer = state.reflectionAnswers[q] ?? '';
                     const valid = answer.trim().length >= 20;
                     return (
-                        <div key={i} className="bg-white rounded-2xl border border-duck-line p-4">
+                        <div key={i} className="bg-white rounded-2xl border border-duck-gray p-4">
                             <div className="flex items-start gap-2 mb-2">
                                 <div className="w-5 h-5 bg-duck-ink/10 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
                                     <span className="text-[10px] font-black text-duck-ink">{i + 1}</span>
@@ -47,10 +47,10 @@ export const ReflectPhase: React.FC<ReflectPhaseProps> = ({ config, state, onUpd
                                 onChange={(e) => onUpdateAnswer(q, e.target.value)}
                                 placeholder="Schrijf je antwoord hier..."
                                 rows={3}
-                                className="w-full text-sm text-duck-ink bg-duck-bg border border-duck-line rounded-xl p-3 resize-none focus:outline-none focus:border-duck-ink transition-colors"
+                                className="w-full text-sm text-duck-ink bg-duck-bg border border-duck-gray rounded-xl p-3 resize-none focus:outline-none focus:border-duck-ink transition-colors"
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                             />
-                            <div className={`text-right text-[10px] mt-1 ${valid ? 'text-duck-ink' : 'text-duck-muted'}`} style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                            <div className={`text-right text-[10px] mt-1 ${valid ? 'text-duck-ink' : 'text-duck-ink/60'}`} style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                                 {answer.trim().length}/20 min.
                             </div>
                         </div>
@@ -59,14 +59,14 @@ export const ReflectPhase: React.FC<ReflectPhaseProps> = ({ config, state, onUpd
             </div>
 
             {/* Optional position shift */}
-            <div className="bg-white rounded-2xl border border-duck-line p-4 mb-5">
+            <div className="bg-white rounded-2xl border border-duck-gray p-4 mb-5">
                 <div className="flex items-center gap-2 mb-3">
                     <Sparkles size={14} className="text-duck-ink" />
                     <span className="text-xs font-black text-duck-ink uppercase tracking-widest" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                         Eindpositie (optioneel)
                     </span>
                 </div>
-                <p className="text-xs text-duck-muted mb-3" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                <p className="text-xs text-duck-ink/60 mb-3" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                     Is je mening veranderd? Je kunt je positie aanpassen. Dat is juist een teken van goed denken.
                 </p>
                 <div className="space-y-2">
@@ -81,12 +81,12 @@ export const ReflectPhase: React.FC<ReflectPhaseProps> = ({ config, state, onUpd
                                 className={`w-full text-left px-3 py-2.5 rounded-xl border transition-all text-sm ${
                                     isSelected
                                         ? 'border-duck-ink bg-duck-ink/10 font-bold text-duck-ink'
-                                        : 'border-duck-line bg-duck-bg text-duck-muted hover:border-duck-ink/40'
+                                        : 'border-duck-gray bg-duck-bg text-duck-ink/60 hover:border-duck-ink/40'
                                 }`}
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                             >
                                 {pos.label}
-                                {isInitial && <span className="text-[10px] text-duck-muted ml-2">(was jouw keuze)</span>}
+                                {isInitial && <span className="text-[10px] text-duck-ink/60 ml-2">(was jouw keuze)</span>}
                             </button>
                         );
                     })}
@@ -97,7 +97,7 @@ export const ReflectPhase: React.FC<ReflectPhaseProps> = ({ config, state, onUpd
                 <button
                     onClick={onBack}
                     aria-label="Terug naar tegenargument"
-                    className="px-4 py-3 border border-duck-line rounded-xl text-sm font-bold text-duck-muted hover:bg-duck-bg transition-all"
+                    className="px-4 py-3 border border-duck-gray rounded-xl text-sm font-bold text-duck-ink/60 hover:bg-duck-bg transition-all"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     <ArrowLeft size={16} />
@@ -105,7 +105,7 @@ export const ReflectPhase: React.FC<ReflectPhaseProps> = ({ config, state, onUpd
                 <button
                     onClick={onNext}
                     disabled={!allAnswered}
-                    className="flex-1 py-3 bg-gradient-to-r from-duck-coral to-duck-coral hover:from-duck-coral hover:to-duck-coral text-white rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] disabled:opacity-40 flex items-center justify-center gap-2"
+                    className="flex-1 py-3 bg-gradient-to-r from-duck-acid to-duck-acid hover:from-duck-acid hover:to-duck-acid text-white rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] disabled:opacity-40 flex items-center justify-center gap-2"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     Bekijk resultaat

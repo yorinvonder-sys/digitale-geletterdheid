@@ -36,14 +36,14 @@ export const MissionGoalBanner: React.FC<MissionGoalBannerProps> = ({
                     {completed ? <CheckCircle2 size={16} /> : <Target size={16} />}
                 </div>
                 <div className="min-w-0">
-                    <p className="text-[10px] font-black uppercase tracking-widest text-duck-coral">
+                    <p className="text-[10px] font-black uppercase tracking-widest text-duck-acid">
                         /goal
                     </p>
                     <p className={`font-bold leading-snug text-duck-ink ${compact ? 'text-sm' : 'text-base'}`}>
                         {primaryGoal}
                     </p>
                     {evidence && !compact && (
-                        <p className="mt-1 text-xs leading-relaxed text-duck-muted">
+                        <p className="mt-1 text-xs leading-relaxed text-duck-ink/60">
                             Bewijs: {evidence}
                         </p>
                     )}

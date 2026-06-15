@@ -751,45 +751,45 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                     } : undefined}
                 >
                     {/* Reflectie */}
-                    <div className="bg-duck-bg rounded-2xl p-4 border border-duck-coral/20 text-left space-y-3 mt-6">
+                    <div className="bg-duck-bg rounded-2xl p-4 border border-duck-acid/20 text-left space-y-3 mt-6">
                         <div className="flex items-center gap-2">
-                            <Sparkles size={16} className="text-duck-coral" />
-                            <p className="text-xs font-black uppercase tracking-widest text-duck-coral" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Reflectie</p>
+                            <Sparkles size={16} className="text-duck-acid" />
+                            <p className="text-xs font-black uppercase tracking-widest text-duck-acid" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Reflectie</p>
                         </div>
-                        <p className="text-xs text-duck-muted" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Wat heb je geleerd in deze missie? Waar zou je dit in het dagelijks leven tegenkomen?</p>
+                        <p className="text-xs text-duck-ink/60" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Wat heb je geleerd in deze missie? Waar zou je dit in het dagelijks leven tegenkomen?</p>
                         <textarea
                             value={progress.reflectie}
                             onChange={e => setProgress(prev => ({ ...prev, reflectie: e.target.value }))}
                             placeholder="Wat heb je geleerd? Waar kom je dit nog meer tegen?"
-                            className="w-full p-3 rounded-xl border-2 border-duck-line bg-white text-sm resize-none focus:border-duck-coral focus:outline-none transition-all duration-300"
+                            className="w-full p-3 rounded-xl border-2 border-duck-gray bg-white text-sm resize-none focus:border-duck-acid focus:outline-none transition-all duration-300"
                             style={{ minHeight: '80px', fontFamily: "'Outfit', system-ui, sans-serif" }}
                         />
                         {progress.reflectie.trim().length < 10 && (
-                            <p className="text-[10px] text-duck-line" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Schrijf minimaal 10 tekens om de missie af te ronden</p>
+                            <p className="text-[10px] text-duck-gray" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Schrijf minimaal 10 tekens om de missie af te ronden</p>
                         )}
                     </div>
                 </MissionConclusion>
             )}
 
             {/* Header */}
-            <header className="bg-white border-b border-duck-line px-3 md:px-6 py-2 flex flex-col md:flex-row md:items-center md:justify-between gap-2 shrink-0 min-h-[4rem]">
+            <header className="bg-white border-b border-duck-gray px-3 md:px-6 py-2 flex flex-col md:flex-row md:items-center md:justify-between gap-2 shrink-0 min-h-[4rem]">
                 <div className="flex w-full md:w-auto items-center gap-3 md:gap-6">
                     <button
                         onClick={onBack}
-                        className="flex shrink-0 items-center gap-2 text-duck-muted hover:text-duck-coral transition-all duration-300 font-bold text-xs uppercase tracking-widest"
+                        className="flex shrink-0 items-center gap-2 text-duck-ink/60 hover:text-duck-acid transition-all duration-300 font-bold text-xs uppercase tracking-widest"
                     >
                         <ArrowLeft size={16} /> Terug
                     </button>
-                    <div className="hidden md:block h-8 w-px bg-duck-line"></div>
+                    <div className="hidden md:block h-8 w-px bg-duck-gray"></div>
                     <div className="flex min-w-0 items-center gap-3">
-                        <div className="p-2 bg-duck-coral/10 text-duck-coral rounded-xl">
+                        <div className="p-2 bg-duck-acid/10 text-duck-acid rounded-xl">
                             <Settings2 size={20} />
                         </div>
                         <div>
                             <h1 className="text-sm font-black uppercase tracking-tight flex items-center gap-2 font-['Newsreader',Georgia,serif] text-duck-ink">
-                                Game Director <Sparkles size={14} className="text-duck-coral" />
+                                Game Director <Sparkles size={14} className="text-duck-acid" />
                             </h1>
-                            <p className="text-[10px] text-duck-muted uppercase tracking-widest font-bold">
+                            <p className="text-[10px] text-duck-ink/60 uppercase tracking-widest font-bold">
                                 Programmeer Robbie de Speurhond
                             </p>
                         </div>
@@ -800,7 +800,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                 {currentChallenge && (
                     <div className={`w-full md:flex-1 md:mx-8 px-3 md:px-4 py-2 rounded-2xl flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2 transition-all duration-500 ${challengeComplete
                         ? (successPulse ? 'bg-duck-ink scale-105 shadow-[0_0_30px_rgba(95, 148, 125,0.4)]' : 'bg-duck-ink/10 border border-duck-ink/30')
-                        : 'bg-duck-bg border border-duck-line'
+                        : 'bg-duck-bg border border-duck-gray'
                         }`}>
                         <div className="flex min-w-0 flex-wrap items-center gap-2 md:gap-4">
                             <div className="flex items-center gap-2 shrink-0">
@@ -809,7 +809,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                                 ) : (
                                     <span className="text-lg">🔍</span>
                                 )}
-                                <span className="font-bold text-xs text-duck-muted uppercase tracking-widest">
+                                <span className="font-bold text-xs text-duck-ink/60 uppercase tracking-widest">
                                     Puzzel {progress.currentChallengeIndex + 1}/{CHALLENGES.length}
                                 </span>
                                 <div className="flex items-center gap-1 ml-1">
@@ -820,8 +820,8 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                                                 i < progress.currentChallengeIndex
                                                     ? 'bg-duck-ink'
                                                     : i === progress.currentChallengeIndex
-                                                        ? (challengeComplete ? 'bg-duck-ink scale-125' : 'bg-duck-coral scale-125')
-                                                        : 'bg-duck-line'
+                                                        ? (challengeComplete ? 'bg-duck-ink scale-125' : 'bg-duck-acid scale-125')
+                                                        : 'bg-duck-gray'
                                             }`}
                                         />
                                     ))}
@@ -831,7 +831,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                                 {currentChallenge.title}
                             </h3>
                             <span
-                                className="hidden xl:inline text-xs text-duck-muted border-l border-duck-line pl-4 whitespace-normal leading-tight max-w-2xl"
+                                className="hidden xl:inline text-xs text-duck-ink/60 border-l border-duck-gray pl-4 whitespace-normal leading-tight max-w-2xl"
                                 title={currentChallenge.description}
                             >
                                 {currentChallenge.description}
@@ -849,7 +849,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                             ) : (
                                 <button
                                     onClick={() => setShowHint(!showHint)}
-                                    className="flex items-center gap-1 text-[10px] text-duck-coral hover:text-duck-coral font-bold px-2 py-1.5 bg-white hover:bg-duck-bg rounded-full transition-all duration-300 border border-duck-coral/20"
+                                    className="flex items-center gap-1 text-[10px] text-duck-acid hover:text-duck-acid font-bold px-2 py-1.5 bg-white hover:bg-duck-bg rounded-full transition-all duration-300 border border-duck-acid/20"
                                 >
                                     <HelpCircle size={12} /> {showHint ? 'Verberg Hint' : 'Hint'}
                                 </button>
@@ -858,7 +858,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                             {/* 'I am stuck' button - Always visible/accessible helper */}
                             <button
                                 onClick={() => setIsChatOpen(true)}
-                                className="flex items-center gap-1 text-[10px] text-white font-bold px-3 py-1.5 bg-duck-coral hover:bg-duck-coral rounded-full transition-all duration-300 shadow-lg shadow-duck-coral/20 focus-visible:ring-2 focus-visible:ring-duck-coral"
+                                className="flex items-center gap-1 text-[10px] text-duck-ink font-bold px-3 py-1.5 bg-duck-acid hover:bg-duck-acid rounded-full transition-all duration-300 shadow-lg shadow-duck-acid/20 focus-visible:ring-2 focus-visible:ring-duck-acid"
                             >
                                 <Sparkles size={12} /> Hulp nodig?
                             </button>
@@ -887,13 +887,13 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
             />
 
             {showHint && !challengeComplete && currentChallenge && (
-                <div className="bg-duck-coral/10 border-b border-duck-coral/20 px-6 py-2 text-center text-xs font-medium text-duck-coral animate-in slide-in-from-top-2">
+                <div className="bg-duck-acid/10 border-b border-duck-acid/20 px-6 py-2 text-center text-xs font-medium text-duck-acid animate-in slide-in-from-top-2">
                     💡 <span className="font-bold">HINT:</span> {currentChallenge.hint}
                 </div>
             )}
 
             {/* Mobile Tab Bar */}
-            <div className="lg:hidden flex border-b border-duck-line bg-white shrink-0">
+            <div className="lg:hidden flex border-b border-duck-gray bg-white shrink-0">
                 {([
                     { key: 'blocks' as MobileTab, label: 'Blokken', icon: <Puzzle size={16} /> },
                     { key: 'code' as MobileTab, label: 'Code', icon: <Code2 size={16} /> },
@@ -904,8 +904,8 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                         onClick={() => setMobileTab(tab.key)}
                         className={`flex-1 flex items-center justify-center gap-2 py-3 text-xs font-bold uppercase tracking-wider transition-all duration-300 ${
                             mobileTab === tab.key
-                                ? 'text-duck-coral border-b-2 border-duck-coral bg-duck-coral/5'
-                                : 'text-duck-muted hover:text-duck-ink'
+                                ? 'text-duck-acid border-b-2 border-duck-acid bg-duck-acid/5'
+                                : 'text-duck-ink/60 hover:text-duck-ink'
                         }`}
                     >
                         {tab.icon}
@@ -918,7 +918,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
             <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
 
                 {/* Left Panel: Block Palette */}
-                <div className={`${mobileTab === 'blocks' ? 'flex' : 'hidden'} lg:flex w-full lg:w-64 bg-duck-bg border-b lg:border-b-0 lg:border-r border-duck-line flex-col shrink-0 z-10 p-2 flex-1 lg:flex-initial lg:max-h-none overflow-y-auto`}>
+                <div className={`${mobileTab === 'blocks' ? 'flex' : 'hidden'} lg:flex w-full lg:w-64 bg-duck-bg border-b lg:border-b-0 lg:border-r border-duck-gray flex-col shrink-0 z-10 p-2 flex-1 lg:flex-initial lg:max-h-none overflow-y-auto`}>
                     <BlockPalette onDragStart={setDraggingBlock} onAddBlock={handleAddBlock} />
                 </div>
 
@@ -935,20 +935,20 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                 </div>
 
                 {/* Right Panel: Game Preview (Larger!) */}
-                <div className={`${mobileTab === 'game' ? 'flex' : 'hidden'} lg:flex w-full lg:w-[40%] lg:min-w-[320px] lg:max-w-[800px] bg-white border-t lg:border-t-0 lg:border-l border-duck-line flex-col shadow-2xl z-20`}>
-                    <div className="p-4 bg-duck-bg border-b border-duck-line flex justify-between items-center">
+                <div className={`${mobileTab === 'game' ? 'flex' : 'hidden'} lg:flex w-full lg:w-[40%] lg:min-w-[320px] lg:max-w-[800px] bg-white border-t lg:border-t-0 lg:border-l border-duck-gray flex-col shadow-2xl z-20`}>
+                    <div className="p-4 bg-duck-bg border-b border-duck-gray flex justify-between items-center">
                         <div className="flex items-center gap-2">
                             <div className="w-2 h-2 rounded-full bg-duck-ink animate-pulse"></div>
-                            <span className="text-xs font-bold text-duck-muted uppercase tracking-wider">Game Preview</span>
+                            <span className="text-xs font-bold text-duck-ink/60 uppercase tracking-wider">Game Preview</span>
                         </div>
-                        <div className="text-xs font-mono text-duck-muted">
+                        <div className="text-xs font-mono text-duck-ink/60">
                             {canvasRef.current ? `${canvasRef.current.width}x${canvasRef.current.height}` : '800x600'}
                         </div>
                     </div>
 
                     <div className="flex-1 p-4 lg:p-6 flex flex-col gap-4 overflow-y-auto bg-duck-bg relative">
                         {/* Game Screen Container - Maintains Aspect Ratio but fills space */}
-                        <div className="flex-1 relative bg-duck-ink rounded-2xl overflow-hidden shadow-2xl border-4 border-duck-line ring-1 ring-black/5 group">
+                        <div className="flex-1 relative bg-duck-ink rounded-2xl overflow-hidden shadow-2xl border-4 border-duck-gray ring-1 ring-black/5 group">
                             {/* Canvas needs to respond to size */}
                             <div className="absolute inset-0 flex items-center justify-center bg-[radial-gradient(circle_at_center,#0B453F_0%,#08283B_100%)]">
                                 <canvas
@@ -961,12 +961,12 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                             </div>
 
                             {/* Overlay Controls (Play/Stop) on top of Game - always visible on touch, hover on desktop */}
-                            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 bg-white/90 backdrop-blur-sm p-1.5 rounded-full border border-duck-line shadow-xl opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-all duration-300">
+                            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 bg-white/90 backdrop-blur-sm p-1.5 rounded-full border border-duck-gray shadow-xl opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-all duration-300">
                                 <button
                                     onClick={handleTogglePlay}
                                     className={`p-3 rounded-full transition-all duration-300 active:scale-95 ${isPlaying
                                         ? 'bg-duck-acid/20 text-duck-ink/60 hover:bg-duck-acid hover:text-duck-ink'
-                                        : 'bg-duck-coral/20 text-duck-coral hover:bg-duck-coral hover:text-white'}`}
+                                        : 'bg-duck-acid/20 text-duck-acid hover:bg-duck-acid hover:text-duck-ink'}`}
                                 >
                                     {isPlaying ? <RotateCcw size={20} /> : <Play size={20} fill="currentColor" />}
                                 </button>
@@ -974,18 +974,18 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                         </div>
 
                         {/* Console / Logs */}
-                        <div className="h-32 bg-white rounded-2xl border border-duck-line flex flex-col shrink-0 overflow-hidden">
-                            <div className="px-3 py-2 bg-duck-bg border-b border-duck-line flex justify-between items-center">
-                                <span className="text-[10px] font-bold text-duck-muted uppercase tracking-widest">Systeem Console</span>
-                                <button onClick={() => setLogs([])} className="text-[10px] text-duck-muted hover:text-duck-coral transition-all duration-300">Wis</button>
+                        <div className="h-32 bg-white rounded-2xl border border-duck-gray flex flex-col shrink-0 overflow-hidden">
+                            <div className="px-3 py-2 bg-duck-bg border-b border-duck-gray flex justify-between items-center">
+                                <span className="text-[10px] font-bold text-duck-ink/60 uppercase tracking-widest">Systeem Console</span>
+                                <button onClick={() => setLogs([])} className="text-[10px] text-duck-ink/60 hover:text-duck-acid transition-all duration-300">Wis</button>
                             </div>
                             <div className="flex-1 p-2 overflow-y-auto font-mono text-xs space-y-1 custom-scrollbar">
                                 {logs.length === 0 ? (
-                                    <div className="text-duck-muted italic px-2">Wachten op input...</div>
+                                    <div className="text-duck-ink/60 italic px-2">Wachten op input...</div>
                                 ) : (
                                     logs.map((l, i) => (
                                         <div key={i} className="flex gap-2 text-duck-ink hover:bg-duck-bg rounded px-2 py-0.5">
-                                            <span className="text-duck-muted select-none">&gt;</span>
+                                            <span className="text-duck-ink/60 select-none">&gt;</span>
                                             <span>{l}</span>
                                         </div>
                                     ))
@@ -997,14 +997,14 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
             </div>
 
             {/* Mobile Sticky Bottom Bar with Run/Reset */}
-            <div className="lg:hidden flex items-center justify-between px-4 py-2 bg-white border-t border-duck-line shrink-0 gap-2">
+            <div className="lg:hidden flex items-center justify-between px-4 py-2 bg-white border-t border-duck-gray shrink-0 gap-2">
                 <button
                     onClick={handleReset}
-                    className="flex items-center gap-2 px-4 py-2.5 rounded-full text-duck-muted hover:text-duck-coral bg-duck-bg border border-duck-line font-bold text-xs transition-all duration-300"
+                    className="flex items-center gap-2 px-4 py-2.5 rounded-full text-duck-ink/60 hover:text-duck-acid bg-duck-bg border border-duck-gray font-bold text-xs transition-all duration-300"
                 >
                     <RotateCcw size={14} /> Reset
                 </button>
-                <div className="flex items-center gap-2 text-xs text-duck-muted font-bold">
+                <div className="flex items-center gap-2 text-xs text-duck-ink/60 font-bold">
                     {blocks.length} blok{blocks.length !== 1 ? 'ken' : ''}
                 </div>
                 <button
@@ -1012,7 +1012,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                     disabled={blocks.length === 0}
                     className={`flex items-center gap-2 px-6 py-2.5 rounded-full font-bold text-sm text-white transition-all duration-300 ${isPlaying
                         ? 'bg-duck-acid hover:bg-duck-acid hover:text-duck-ink'
-                        : 'bg-duck-coral hover:bg-duck-coral disabled:bg-duck-line disabled:text-duck-muted'
+                        : 'bg-duck-acid hover:bg-duck-acid disabled:bg-duck-gray disabled:text-duck-ink/60'
                     }`}
                 >
                     <Play size={14} fill="currentColor" />

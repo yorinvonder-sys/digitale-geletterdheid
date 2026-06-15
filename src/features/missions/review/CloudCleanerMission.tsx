@@ -103,7 +103,7 @@ const FOLDERS: FolderItem[] = [
     { id: 'wiskunde', name: 'Wiskunde', icon: <Folder className="text-duck-ink" fill="currentColor" fillOpacity={0.2} /> },
     { id: 'aardrijkskunde', name: 'Aardrijkskunde', icon: <Folder className="text-duck-ink" fill="currentColor" fillOpacity={0.2} /> },
     { id: 'school_algemeen', name: 'School Algemeen', icon: <Folder className="text-duck-ink" fill="currentColor" fillOpacity={0.2} /> },
-    { id: 'prive', name: "Privé & Foto's", icon: <Folder className="text-duck-coral" fill="currentColor" fillOpacity={0.2} /> },
+    { id: 'prive', name: "Privé & Foto's", icon: <Folder className="text-duck-acid" fill="currentColor" fillOpacity={0.2} /> },
 ];
 
 export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, onBack }) => {
@@ -341,8 +341,8 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
                         top: touchPosition.y - 40,
                     }}
                 >
-                    <div className="w-20 h-20 bg-duck-coral/20 backdrop-blur-sm rounded-2xl border-2 border-duck-coral flex items-center justify-center shadow-xl">
-                        <FileText size={32} className="text-duck-coral" />
+                    <div className="w-20 h-20 bg-duck-acid/20 backdrop-blur-sm rounded-2xl border-2 border-duck-acid flex items-center justify-center shadow-xl">
+                        <FileText size={32} className="text-duck-acid" />
                     </div>
                 </div>
             )}
@@ -695,10 +695,10 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
                                 <div className="w-12 h-12 bg-duck-ink/10 rounded-full flex items-center justify-center mx-auto mb-3">
                                     <Sparkles size={24} className="text-duck-ink" />
                                 </div>
-                                <p className="text-sm text-duck-muted mb-1">Even nadenken over:</p>
+                                <p className="text-sm text-duck-ink/60 mb-1">Even nadenken over:</p>
                                 <p className="font-bold text-duck-ink">{whyQuestion.fileName}</p>
                             </div>
-                            <p className="text-sm font-medium text-duck-muted mb-4 text-center">
+                            <p className="text-sm font-medium text-duck-ink/60 mb-4 text-center">
                                 {WHY_QUESTIONS[whyQuestion.folderId]?.question}
                             </p>
                             <div className="space-y-2">
@@ -721,7 +721,7 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
                                         className={`w-full text-left p-3 rounded-xl text-sm font-medium transition-all duration-300 border-2 ${
                                             whyFeedback === 'correct' && opt.correct
                                                 ? 'border-duck-ink bg-duck-ink/10 text-duck-ink'
-                                                : 'border-duck-line hover:border-duck-ink text-duck-muted'
+                                                : 'border-duck-gray hover:border-duck-ink text-duck-ink/60'
                                         }`}
                                     >
                                         {opt.text}
@@ -736,7 +736,7 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
                             )}
                             <button
                                 onClick={() => { setWhyQuestion(null); setWhyFeedback(null); }}
-                                className="w-full mt-4 text-xs text-duck-muted hover:text-duck-ink transition-colors"
+                                className="w-full mt-4 text-xs text-duck-ink/60 hover:text-duck-ink transition-colors"
                             >
                                 Overslaan
                             </button>
@@ -770,18 +770,18 @@ export const CloudCleanerMission: React.FC<CloudCleanerProps> = ({ onComplete, o
                                     <CheckCircle size={48} />
                                 </motion.div>
                                 <h3 className="text-2xl font-black text-duck-ink mb-2" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Opgeruimd Staat Netjes!</h3>
-                                <p className="text-duck-muted mb-2">
+                                <p className="text-duck-ink/60 mb-2">
                                     Je OneDrive is weer helemaal georganiseerd. Goed gedaan!
                                 </p>
                                 <div className="bg-duck-ink/10 rounded-2xl p-3 mb-6">
                                     <p className="text-duck-ink font-bold text-lg">+{score} XP verdiend!</p>
                                     {mistakes > 0 && (
-                                        <p className="text-sm text-duck-muted">{mistakes} foutjes gemaakt, maar dat geeft niet!</p>
+                                        <p className="text-sm text-duck-ink/60">{mistakes} foutjes gemaakt, maar dat geeft niet!</p>
                                     )}
                                 </div>
                                 <button
                                     onClick={() => { clearSave(); onComplete(true); }}
-                                    className="w-full py-4 bg-duck-coral hover:bg-duck-coral text-white rounded-full font-bold transition-all duration-300 shadow-lg hover:shadow-duck-coral/30 focus-visible:ring-2 focus-visible:ring-duck-coral"
+                                    className="w-full py-4 bg-duck-acid hover:bg-duck-acid text-duck-ink rounded-full font-bold transition-all duration-300 shadow-lg hover:shadow-duck-acid/30 focus-visible:ring-2 focus-visible:ring-duck-acid"
                                 >
                                     Voltooien
                                 </button>

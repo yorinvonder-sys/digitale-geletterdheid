@@ -98,7 +98,7 @@ export const MatchPairs: React.FC<MatchPairsProps> = ({
                     {title}
                 </h3>
                 <p
-                    className="text-sm text-duck-muted"
+                    className="text-sm text-duck-ink/60"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     {description}
@@ -106,7 +106,7 @@ export const MatchPairs: React.FC<MatchPairsProps> = ({
             </div>
 
             {!done && (
-                <p className="text-xs text-duck-muted" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                <p className="text-xs text-duck-ink/60" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                     Klik een item links aan, dan het bijpassende item rechts.
                 </p>
             )}
@@ -126,8 +126,8 @@ export const MatchPairs: React.FC<MatchPairsProps> = ({
                                     ${isMatched
                                         ? 'bg-duck-ink/10 border-duck-ink text-duck-ink opacity-60 cursor-default'
                                         : isSelected
-                                            ? 'bg-duck-coral/10 border-duck-coral text-duck-coral'
-                                            : 'bg-white border-duck-line text-duck-muted hover:border-duck-coral/40'
+                                            ? 'bg-duck-acid/10 border-duck-acid text-duck-acid'
+                                            : 'bg-white border-duck-gray text-duck-ink/60 hover:border-duck-acid/40'
                                     }`}
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                                 animate={isSelected ? { scale: 1.02 } : { scale: 1 }}
@@ -153,10 +153,10 @@ export const MatchPairs: React.FC<MatchPairsProps> = ({
                                     ${isMatched
                                         ? 'bg-duck-ink/10 border-duck-ink text-duck-ink opacity-60 cursor-default'
                                         : isFlashing
-                                            ? 'bg-duck-coral/10 border-duck-coral text-duck-coral'
+                                            ? 'bg-duck-acid/10 border-duck-acid text-duck-acid'
                                             : selectedLeft !== null
-                                                ? 'bg-white border-duck-line text-duck-muted hover:border-duck-coral/40 cursor-pointer'
-                                                : 'bg-white border-duck-line text-duck-muted'
+                                                ? 'bg-white border-duck-gray text-duck-ink/60 hover:border-duck-acid/40 cursor-pointer'
+                                                : 'bg-white border-duck-gray text-duck-ink/60'
                                     }`}
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                                 animate={isFlashing ? { x: [0, -4, 4, -4, 0] } : { x: 0 }}
@@ -172,14 +172,14 @@ export const MatchPairs: React.FC<MatchPairsProps> = ({
 
             {/* Progress */}
             <div className="flex items-center gap-2">
-                <div className="flex-1 h-1.5 bg-duck-line rounded-full overflow-hidden">
+                <div className="flex-1 h-1.5 bg-duck-gray rounded-full overflow-hidden">
                     <motion.div
                         className="h-full bg-duck-ink rounded-full"
                         animate={{ width: `${(matched.size / pairs.length) * 100}%` }}
                         transition={{ duration: 0.3 }}
                     />
                 </div>
-                <span className="text-xs text-duck-muted" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                <span className="text-xs text-duck-ink/60" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                     {matched.size}/{pairs.length}
                     {wrongAttempts > 0 && ` · ${wrongAttempts} fout${wrongAttempts === 1 ? '' : 'en'}`}
                 </span>

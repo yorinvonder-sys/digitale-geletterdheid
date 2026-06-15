@@ -309,7 +309,7 @@ export const PrintInstructiesMission: React.FC<Props> = ({ onBack, onComplete })
 
                         <button
                             onClick={() => setState(prev => ({ ...prev, showIntro: false }))}
-                            className="w-full py-4 text-white rounded-full font-black uppercase tracking-wide transition-all duration-300 focus-visible:ring-2 focus-visible:ring-duck-coral"
+                            className="w-full py-4 text-white rounded-full font-black uppercase tracking-wide transition-all duration-300 focus-visible:ring-2 focus-visible:ring-duck-acid"
                             style={{ backgroundColor: '#ff3c21', fontFamily: "'Outfit', system-ui, sans-serif" }}
                             onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#ff3c21')}
                             onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#ff3c21')}
@@ -402,7 +402,7 @@ export const PrintInstructiesMission: React.FC<Props> = ({ onBack, onComplete })
                         <button
                             onClick={() => { clearSave(); onComplete(true); }}
                             disabled={state.reflectie.trim().length < 10}
-                            className="w-full py-4 text-white rounded-full font-black uppercase tracking-wide transition-all duration-300 focus-visible:ring-2 focus-visible:ring-duck-coral"
+                            className="w-full py-4 text-white rounded-full font-black uppercase tracking-wide transition-all duration-300 focus-visible:ring-2 focus-visible:ring-duck-acid"
                             style={{
                                 backgroundColor: state.reflectie.trim().length < 10 ? '#e3e2dc' : '#ff3c21',
                                 color: state.reflectie.trim().length < 10 ? '#e3e2dc' : '#FFFFFF',
@@ -570,7 +570,7 @@ export const PrintInstructiesMission: React.FC<Props> = ({ onBack, onComplete })
                         {canRetry ? (
                             <button
                                 onClick={handleRetry}
-                                className="w-full py-4 rounded-full font-black uppercase tracking-wide transition-all duration-300 flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-duck-coral"
+                                className="w-full py-4 rounded-full font-black uppercase tracking-wide transition-all duration-300 flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-duck-acid"
                                 style={{ backgroundColor: '#ff3c21', color: '#FFFFFF', fontFamily: "'Outfit', system-ui, sans-serif" }}
                                 onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#ff3c21')}
                                 onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#ff3c21')}
@@ -595,7 +595,7 @@ export const PrintInstructiesMission: React.FC<Props> = ({ onBack, onComplete })
                                 )}
                                 <button
                                     onClick={handleNext}
-                                    className="w-full py-4 rounded-full font-black uppercase tracking-wide transition-all duration-300 flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-duck-coral"
+                                    className="w-full py-4 rounded-full font-black uppercase tracking-wide transition-all duration-300 flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-duck-acid"
                                     style={{ backgroundColor: '#ff3c21', color: '#FFFFFF', fontFamily: "'Outfit', system-ui, sans-serif" }}
                                     onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#ff3c21')}
                                     onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#ff3c21')}

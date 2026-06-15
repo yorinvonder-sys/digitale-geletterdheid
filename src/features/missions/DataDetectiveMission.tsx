@@ -497,7 +497,7 @@ export const DataDetectiveMission: React.FC<Props> = ({ onBack, onComplete, vsoP
 
                     <button
                         onClick={handleNextLevel}
-                        className="w-full py-4 text-white rounded-full font-black uppercase tracking-wide transition-all duration-300 flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-duck-coral"
+                        className="w-full py-4 text-white rounded-full font-black uppercase tracking-wide transition-all duration-300 flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-duck-acid"
                         style={{ backgroundColor: '#ff3c21' }}
                         onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#ff3c21')}
                         onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#ff3c21')}
@@ -568,7 +568,7 @@ export const DataDetectiveMission: React.FC<Props> = ({ onBack, onComplete, vsoP
 
                     <button
                         onClick={() => { clearSave(); onComplete(true); }}
-                        className="w-full py-4 text-white rounded-full font-black uppercase tracking-wide transition-all duration-300 focus-visible:ring-2 focus-visible:ring-duck-coral"
+                        className="w-full py-4 text-white rounded-full font-black uppercase tracking-wide transition-all duration-300 focus-visible:ring-2 focus-visible:ring-duck-acid"
                         style={{ backgroundColor: '#ff3c21' }}
                         onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#ff3c21')}
                         onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#ff3c21')}
@@ -755,7 +755,7 @@ export const DataDetectiveMission: React.FC<Props> = ({ onBack, onComplete, vsoP
 
                         <button
                             onClick={handleNext}
-                            className="w-full py-4 text-white rounded-full font-black uppercase tracking-wide transition-all duration-300 flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-duck-coral"
+                            className="w-full py-4 text-white rounded-full font-black uppercase tracking-wide transition-all duration-300 flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-duck-acid"
                             style={{ backgroundColor: '#ff3c21' }}
                             onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#ff3c21')}
                             onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#ff3c21')}
