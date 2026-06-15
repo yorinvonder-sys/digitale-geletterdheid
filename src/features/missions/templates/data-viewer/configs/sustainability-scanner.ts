@@ -81,12 +81,12 @@ export const sustainabilityScannerConfig: DataViewerConfig = {
                 'Niet alle datacenters zijn even duurzaam. De energiemix bepaalt hoe "groen" jouw gebruik is. Bekijk de verdeling van energiebronnen.',
             type: 'pie-chart',
             chartData: [
-                { label: 'Windenergie', value: 28, color: '#0B453F' },
-                { label: 'Zonne-energie', value: 18, color: '#D7C95F' },
-                { label: 'Waterkracht', value: 15, color: '#5F947D' },
-                { label: 'Aardgas', value: 22, color: '#0B453F' },
-                { label: 'Kolen/olie', value: 12, color: '#445865' },
-                { label: 'Kernenergie', value: 5, color: '#D97848' },
+                { label: 'Windenergie', value: 28, color: '#202023' },
+                { label: 'Zonne-energie', value: 18, color: '#e1ff01' },
+                { label: 'Waterkracht', value: 15, color: '#202023' },
+                { label: 'Aardgas', value: 22, color: '#202023' },
+                { label: 'Kolen/olie', value: 12, color: '#202023' },
+                { label: 'Kernenergie', value: 5, color: '#ff3c21' },
             ],
             questions: [
                 {
@@ -194,25 +194,25 @@ export const sustainabilityScannerConfig: DataViewerConfig = {
             minScore: 85,
             emoji: '🌱',
             title: 'Duurzaamheids Expert!',
-            color: '#5F947D',
+            color: '#202023',
         },
         {
             minScore: 65,
             emoji: '♻️',
             title: 'Eco-Analyst',
-            color: '#5F947D',
+            color: '#202023',
         },
         {
             minScore: 40,
             emoji: '🔋',
             title: 'Voetafdruk Scanner',
-            color: '#0B453F',
+            color: '#202023',
         },
         {
             minScore: 0,
             emoji: '📚',
             title: 'Aan de slag!',
-            color: '#445865',
+            color: '#202023',
         },
     ],
 

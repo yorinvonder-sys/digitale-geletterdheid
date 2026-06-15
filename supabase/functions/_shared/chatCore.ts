@@ -2,7 +2,7 @@
  * Shared core for /chat and /chatStream edge functions.
  *
  * Security-critical: auth verification, rate limiting, prompt sanitization,
- * and Vertex AI payload construction are all handled here.
+ * and provider request payload construction are all handled here.
  *
  * Do NOT modify security logic (auth, rate limit, sanitization, CORS) without
  * reviewing the security audit at docs/security/security-audit-rapport-dgskills.md.
@@ -20,8 +20,8 @@ import { getUserSchoolId, logAiUsageEvent, resolveAiRequestId } from "./aiUsageL
 export const MAX_REQUEST_BYTES = 160_000;
 export const MAX_MESSAGE_LENGTH = 4_000;
 export const MAX_GAME_CONTEXT_LENGTH = 40_000;
-export const DEFAULT_MODEL = "gemini-3-flash-preview";
-export const CODE_MODEL = "gemini-2.5-pro";
+export const DEFAULT_MODEL = "mistral-small-latest";
+export const CODE_MODEL = "mistral-small-latest";
 export const DEFAULT_TEMPERATURE = 0.7;
 export const CODE_TEMPERATURE = 0.2;
 export const DEFAULT_MAX_OUTPUT_TOKENS = 768;
@@ -43,19 +43,19 @@ export interface SafetySettingEntry {
     threshold: string;
 }
 
-export interface VertexPart {
+export interface AiChatPart {
     text: string;
 }
 
-export interface VertexContent {
+export interface AiChatContent {
     role: string;
-    parts: VertexPart[];
+    parts: AiChatPart[];
 }
 
-export interface VertexPayload {
-    contents: VertexContent[];
+export interface AiChatPayload {
+    contents: AiChatContent[];
     safetySettings: SafetySettingEntry[];
-    systemInstruction: { parts: VertexPart[] };
+    systemInstruction: { parts: AiChatPart[] };
     generationConfig: { maxOutputTokens: number; temperature: number };
 }
 
@@ -67,7 +67,7 @@ export interface ValidatedRequest {
     systemInstruction: string;
     rateCheck: RateLimitResult;
     sanitized: string;
-    safeHistory: { history: VertexContent[]; blocked: boolean; detectionLabel?: string };
+    safeHistory: { history: AiChatContent[]; blocked: boolean; detectionLabel?: string };
 }
 
 // ── Model selection ──────────────────────────────────────────────────────────
@@ -295,23 +295,23 @@ export async function validateAndParseRequest(
         systemInstruction,
         rateCheck,
         sanitized: validation.sanitized,
-        safeHistory: safeHistory as { history: VertexContent[]; blocked: boolean; detectionLabel?: string },
+        safeHistory: safeHistory as { history: AiChatContent[]; blocked: boolean; detectionLabel?: string },
     };
 }
 
-// ── Vertex AI payload builder ─────────────────────────────────────────────────
+// ── AI chat payload builder ───────────────────────────────────────────────────
 
 /**
- * Constructs the Vertex AI request body from a validated request.
- * Includes safety settings for minors (EU AI Act + child protection).
+ * Constructs a provider-neutral chat payload from a validated request.
+ * Keeps safety metadata explicit for minors (EU AI Act + child protection).
  */
-export function buildVertexPayload(validated: ValidatedRequest): VertexPayload {
+export function buildAiChatPayload(validated: ValidatedRequest): AiChatPayload {
     const { body, sanitized, safeHistory, systemInstruction } = validated;
     const hasGameContext = !!(body.gameContext && typeof body.gameContext === "string");
 
     // Build user message parts — include game code context if provided
     // gameContext bypasses the sanitizer because it's our own application code, not user input
-    const userParts: VertexPart[] = [];
+    const userParts: AiChatPart[] = [];
     if (hasGameContext) {
         userParts.push({
             text: `[HUIDIGE_GAME_CODE]\n${body.gameContext}\n[/HUIDIGE_GAME_CODE]\n\nKRITIEK: Dit is de HUIDIGE game van de leerling. Je MOET deze code aanpassen — NIET een nieuwe game maken. Verwerk het verzoek hieronder in de bestaande code en geef de VOLLEDIGE aangepaste versie terug.`,
@@ -319,12 +319,12 @@ export function buildVertexPayload(validated: ValidatedRequest): VertexPayload {
     }
     userParts.push({ text: sanitized });
 
-    const contents: VertexContent[] = [
+    const contents: AiChatContent[] = [
         ...safeHistory.history,
         { role: "user", parts: userParts },
     ];
 
-    // Safety settings for minors (12-18 year olds) — EU AI Act + child protection
+    // Safety policy metadata for minors (12-18 year olds) — EU AI Act + child protection
     const safetySettings: SafetySettingEntry[] = [
         { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_LOW_AND_ABOVE" },
         { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_LOW_AND_ABOVE" },

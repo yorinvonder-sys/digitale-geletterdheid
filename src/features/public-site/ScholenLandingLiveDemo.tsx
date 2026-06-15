@@ -1,5 +1,6 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { EDGE_FUNCTION_URL } from '@/services/supabase';
+import { DuckMark } from '@/components/brand/DuckMark';
 
 /* ═══════════════════════════════════════════════════════════
    TYPES & CONSTANTS
@@ -459,7 +460,7 @@ export const ScholenLandingLiveDemo: React.FC = () => {
                             <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                                 {msg.role === 'assistant' && (
                                     <div className="w-7 h-7 rounded-full flex items-center justify-center mr-2 mt-1 shrink-0" style={{ backgroundColor: C.accent }}>
-                                        <img src="/logo.svg" alt="" className="w-5 h-5 object-contain" width={20} height={20} loading="lazy" decoding="async" />
+                                        <DuckMark className="size-5" />
                                     </div>
                                 )}
                                 <div
@@ -478,7 +479,7 @@ export const ScholenLandingLiveDemo: React.FC = () => {
                         {isLoading && (
                             <div className="flex justify-start">
                                 <div className="w-7 h-7 rounded-full flex items-center justify-center mr-2 mt-1 shrink-0" style={{ backgroundColor: C.accent }}>
-                                    <img src="/logo.svg" alt="" className="w-5 h-5 object-contain" width={20} height={20} loading="lazy" decoding="async" />
+                                    <DuckMark className="size-5" />
                                 </div>
                                 <div className="bg-lab-ink/60 rounded-2xl rounded-bl-sm">
                                     <TypingDots />

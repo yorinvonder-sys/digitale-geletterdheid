@@ -34,8 +34,8 @@ const StorySetupForm = ({ onCancel, onSubmit }: { onCancel: () => void, onSubmit
     };
 
     return (
-        <div className="w-full max-w-md bg-[#FFFDF7] rounded-2xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300 max-h-[85vh] flex flex-col" style={{ borderColor: '#E7D8BD', borderWidth: 1 }}>
-            <div className="p-6 text-white text-center shrink-0" style={{ backgroundColor: '#D97848' }}>
+        <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300 max-h-[85vh] flex flex-col" style={{ borderColor: '#e3e2dc', borderWidth: 1 }}>
+            <div className="p-6 text-white text-center shrink-0" style={{ backgroundColor: '#ff3c21' }}>
                 <Sparkles size={32} className="mx-auto mb-2 text-white/80" />
                 <h3 className="text-xl font-black uppercase tracking-tight">Verhaal Setup</h3>
                 <p className="text-white/80 text-sm font-medium">Vertel ons kort over je idee!</p>
@@ -51,7 +51,7 @@ const StorySetupForm = ({ onCancel, onSubmit }: { onCancel: () => void, onSubmit
                             value={heroName}
                             onChange={e => setHeroName(e.target.value)}
                             placeholder="Bijv. Tim, Bello, Robo..."
-                            className="w-full p-3 border rounded-xl outline-none font-bold" style={{ backgroundColor: '#FCF6EA', borderColor: '#E7D8BD', color: '#08283B' }}
+                            className="w-full p-3 border rounded-xl outline-none font-bold" style={{ backgroundColor: '#f2f1ec', borderColor: '#e3e2dc', color: '#202023' }}
                         />
                     </div>
 
@@ -64,7 +64,7 @@ const StorySetupForm = ({ onCancel, onSubmit }: { onCancel: () => void, onSubmit
                                 value={heroType}
                                 onChange={e => setHeroType(e.target.value)}
                                 placeholder="Bijv. Een robot..."
-                                className="w-full p-3 border rounded-xl outline-none font-bold" style={{ backgroundColor: '#FCF6EA', borderColor: '#E7D8BD', color: '#08283B' }}
+                                className="w-full p-3 border rounded-xl outline-none font-bold" style={{ backgroundColor: '#f2f1ec', borderColor: '#e3e2dc', color: '#202023' }}
                             />
                         </div>
                         <div>
@@ -75,7 +75,7 @@ const StorySetupForm = ({ onCancel, onSubmit }: { onCancel: () => void, onSubmit
                                 value={setting}
                                 onChange={e => setSetting(e.target.value)}
                                 placeholder="Bijv. Op Mars..."
-                                className="w-full p-3 border rounded-xl outline-none font-bold" style={{ backgroundColor: '#FCF6EA', borderColor: '#E7D8BD', color: '#08283B' }}
+                                className="w-full p-3 border rounded-xl outline-none font-bold" style={{ backgroundColor: '#f2f1ec', borderColor: '#e3e2dc', color: '#202023' }}
                             />
                         </div>
                     </div>
@@ -88,7 +88,7 @@ const StorySetupForm = ({ onCancel, onSubmit }: { onCancel: () => void, onSubmit
                             onChange={e => setTheme(e.target.value)}
                             placeholder="Bijv. Hij zoekt zijn verloren vlieger..."
                             rows={3}
-                            className="w-full p-3 border rounded-xl outline-none font-bold resize-none" style={{ backgroundColor: '#FCF6EA', borderColor: '#E7D8BD', color: '#08283B' }}
+                            className="w-full p-3 border rounded-xl outline-none font-bold resize-none" style={{ backgroundColor: '#f2f1ec', borderColor: '#e3e2dc', color: '#202023' }}
                         />
                     </div>
 
@@ -102,7 +102,7 @@ const StorySetupForm = ({ onCancel, onSubmit }: { onCancel: () => void, onSubmit
                         </button>
                         <button
                             type="submit"
-                            className="flex-[2] py-3 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-95 transition-all" style={{ backgroundColor: '#D97848' }}
+                            className="flex-[2] py-3 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-95 transition-all" style={{ backgroundColor: '#ff3c21' }}
                         >
                             Start Verhaal! 🚀
                         </button>
@@ -161,7 +161,7 @@ const PromptPopup: React.FC<PromptPopupProps> = ({
     const typeConfig = {
         text: { icon: <Edit3 size={16} />, color: 'from-[#2A9D8F] to-[#238B7F]' },
         image: { icon: <ImageIcon size={16} />, color: 'from-[#8B6F9E] to-[#7A5F8D]' },
-        title: { icon: <Wand2 size={16} />, color: 'from-[#D97848] to-[#D7C95F]' },
+        title: { icon: <Wand2 size={16} />, color: 'from-duck-coral to-duck-acid' },
         'new-page': { icon: <Sparkles size={16} />, color: 'from-[#10B981] to-[#059669]' }
     };
 
@@ -205,7 +205,7 @@ const PromptPopup: React.FC<PromptPopupProps> = ({
                         onChange={e => setPrompt(e.target.value)}
                         placeholder={placeholder}
                         rows={3}
-                        className="w-full p-3 border rounded-xl focus:ring-2 outline-none font-medium resize-none" style={{ backgroundColor: '#FCF6EA', borderColor: '#E7D8BD', color: '#08283B' }}
+                        className="w-full p-3 border rounded-xl focus:ring-2 outline-none font-medium resize-none" style={{ backgroundColor: '#f2f1ec', borderColor: '#e3e2dc', color: '#202023' }}
                     />
 
                     <div className="flex gap-2">
@@ -262,7 +262,7 @@ const PageContent = ({
         : "";
     // Only show edit hint tooltips if interactive
     const editHintClass = isInteractive
-        ? "absolute -top-2 -right-2 w-6 h-6 bg-[#D97848] rounded-full flex items-center justify-center text-white opacity-0 group-hover/edit:opacity-100 transition-opacity shadow-lg"
+        ? "absolute -top-2 -right-2 w-6 h-6 bg-duck-coral rounded-full flex items-center justify-center text-white opacity-0 group-hover/edit:opacity-100 transition-opacity shadow-lg"
         : "hidden";
 
     // --- RENDER COVER (FRONT ONLY) ---
@@ -279,7 +279,7 @@ const PageContent = ({
                 <div
                     className={`absolute inset-0 z-0 m-4 rounded overflow-hidden shadow-inner border-[6px] transition-all group/edit 
                     ${isInteractive
-                            ? 'border-amber-400/50 cursor-pointer hover:border-[#D97848] hover:shadow-[0_0_20px_rgba(217,120,72,0.3)]'
+                            ? 'border-amber-400/50 cursor-pointer hover:border-duck-coral hover:shadow-[0_0_20px_rgba(217,120,72,0.3)]'
                             : 'border-white/20'}`}
                     onClick={() => isInteractive && onImageClick?.(0)}
                 >
@@ -310,16 +310,16 @@ const PageContent = ({
                             />
                             {isInteractive && (
                                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent p-4 flex justify-center opacity-0 group-hover/edit:opacity-100 transition-opacity">
-                                    <div className="text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg flex items-center gap-2" style={{ backgroundColor: '#D97848' }}>
+                                    <div className="text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg flex items-center gap-2" style={{ backgroundColor: '#ff3c21' }}>
                                         <Edit3 size={12} /> Kaft Afbeelding Wijzigen
                                     </div>
                                 </div>
                             )}
                         </>
                     ) : (
-                        <div className={`w-full h-full flex items-center justify-center text-[#08283B]/10 ${isInteractive ? 'hover:bg-[#D97848]/10' : ''}`}>
+                        <div className={`w-full h-full flex items-center justify-center text-duck-ink/10 ${isInteractive ? 'hover:bg-duck-coral/10' : ''}`}>
                             <div className="flex flex-col items-center gap-2">
-                                <BookOpen size={60} className={isInteractive ? 'text-[#D97848]' : ''} />
+                                <BookOpen size={60} className={isInteractive ? 'text-duck-coral' : ''} />
                                 <span className="text-amber-900/40 text-xs font-bold uppercase tracking-widest">Kaft Illustratie</span>
                                 {isInteractive && (
                                     <span className="text-xs font-bold bg-white/80 px-3 py-1 rounded-full shadow-sm text-stone-400">
@@ -335,7 +335,7 @@ const PageContent = ({
                 <div className="relative z-20 w-full flex-1 flex flex-col items-center justify-between py-4 px-4 pointer-events-none">
                     {/* Title Area - Clickable - Now at top with less padding */}
                     <div
-                        className={`w-full text-center relative p-2 rounded-lg bg-white/90 shadow-lg border-2 border-white backdrop-blur-sm transform -rotate-1 transition-all duration-300 pointer-events-auto ${isInteractive ? 'cursor-pointer hover:border-[#D97848] hover:scale-[1.02] group/edit' : ''}`}
+                        className={`w-full text-center relative p-2 rounded-lg bg-white/90 shadow-lg border-2 border-white backdrop-blur-sm transform -rotate-1 transition-all duration-300 pointer-events-auto ${isInteractive ? 'cursor-pointer hover:border-duck-coral hover:scale-[1.02] group/edit' : ''}`}
                         onClick={(e) => {
                             if (isInteractive) {
                                 e.stopPropagation();
@@ -354,8 +354,8 @@ const PageContent = ({
                     </div>
 
                     {/* Author Label */}
-                    <div className="mb-4 px-3 py-1.5 bg-[#D7C95F]/20 rounded-full border border-[#D7C95F]/30 backdrop-blur-md">
-                        <span className="font-bold text-[9px] text-[#08283B] uppercase tracking-widest flex items-center gap-1">
+                    <div className="mb-4 px-3 py-1.5 bg-duck-acid/20 rounded-full border border-duck-acid/30 backdrop-blur-md">
+                        <span className="font-bold text-[9px] text-duck-ink uppercase tracking-widest flex items-center gap-1">
                             <Sparkles size={10} className="text-yellow-600" />
                             Geschreven door Jou
                         </span>
@@ -420,7 +420,7 @@ const PageContent = ({
                                     💡 <strong>Tip:</strong> Vermijd enge, gewelddadige of ongepaste beschrijvingen.
                                 </div>
                                 {isInteractive && (
-                                    <button className="text-[10px] text-white px-3 py-1.5 rounded-full shadow-sm transition-colors mt-1 font-bold" style={{ backgroundColor: '#D97848' }}>
+                                    <button className="text-[10px] text-white px-3 py-1.5 rounded-full shadow-sm transition-colors mt-1 font-bold" style={{ backgroundColor: '#ff3c21' }}>
                                         ✏️ Opnieuw proberen
                                     </button>
                                 )}
@@ -469,7 +469,7 @@ const PageContent = ({
                     <div className="absolute inset-0 flex flex-col justify-start pt-1 pointer-events-none opacity-15">
                         {[...Array(12)].map((_, i) => <div key={i} className="w-full h-5 border-b border-stone-300"></div>)}
                     </div>
-                    <p className="font-serif text-[#445865] text-base md:text-lg leading-relaxed relative z-10 first-letter:text-2xl first-letter:font-black first-letter:text-[#D97848] first-letter:mr-0.5 first-letter:float-left">
+                    <p className="font-serif text-duck-muted text-base md:text-lg leading-relaxed relative z-10 first-letter:text-2xl first-letter:font-black first-letter:text-duck-coral first-letter:mr-0.5 first-letter:float-left">
                         {page?.text || "Het verhaal gaat hier verder..."}
                     </p>
                     {isInteractive && (
@@ -857,7 +857,7 @@ Maak nu de titel met [TITLE] tags en de tekst van de eerste pagina met [PAGE] ta
 
     if (isEmptyBook && !hasStarted) {
         return (
-            <div className="w-full h-full flex items-center justify-start overflow-y-auto p-4 relative" style={{ backgroundColor: '#FCF6EA' }}>
+            <div className="w-full h-full flex items-center justify-start overflow-y-auto p-4 relative" style={{ backgroundColor: '#f2f1ec' }}>
                 <div className="absolute inset-0 bg-[radial-gradient(#D9784820_1px,transparent_1px)] [background-size:20px_20px] opacity-50"></div>
                 <div className="z-10 w-full max-w-md">
                     {showForm ? (
@@ -866,16 +866,16 @@ Maak nu de titel met [TITLE] tags en de tekst van de eerste pagina met [PAGE] ta
                             onSubmit={handleFormSubmit}
                         />
                     ) : (
-                        <div className="bg-[#FFFDF7] rounded-3xl shadow-xl overflow-hidden text-center p-8 animate-in zoom-in-95 duration-500" style={{ borderColor: '#E7D8BD', borderWidth: 1 }}>
-                            <img src="/assets/storytelling/beaver-storyteller.webp" alt="DGSkills bever" className="w-24 h-24 object-contain mx-auto mb-4" />
-                            <h1 className="text-3xl font-black mb-2" style={{ color: '#08283B' }}>Verhalen Ontwerper</h1>
-                            <p className="font-medium mb-8" style={{ color: '#445865' }}>
+                        <div className="bg-white rounded-3xl shadow-xl overflow-hidden text-center p-8 animate-in zoom-in-95 duration-500" style={{ borderColor: '#e3e2dc', borderWidth: 1 }}>
+                            <img src="/assets/brand/dgskills-duck-guide-v3.png" alt="DGSkills eend" className="w-24 h-24 object-contain mx-auto mb-4" />
+                            <h1 className="text-3xl font-black mb-2" style={{ color: '#202023' }}>Verhalen Ontwerper</h1>
+                            <p className="font-medium mb-8" style={{ color: '#202023' }}>
                                 Word een echte auteur! Samen met AI ga je je eigen prentenboek schrijven en illustreren.
                             </p>
                             <button
                                 onClick={() => setShowForm(true)}
                                 className="w-full py-4 text-white font-bold rounded-2xl shadow-lg hover:opacity-90 transition-all flex items-center justify-center gap-2 active:scale-95 group"
-                                style={{ backgroundColor: '#D97848' }}
+                                style={{ backgroundColor: '#ff3c21' }}
                             >
                                 <Sparkles size={18} className="text-white/80 group-hover:animate-spin" />
                                 Start Mijn Boek
@@ -965,11 +965,11 @@ Maak nu de titel met [TITLE] tags en de tekst van de eerste pagina met [PAGE] ta
                 {/* --- 1. FRONT COVER (Standalone Page) --- */}
                 <div className="print-page cover-page flex flex-col items-center justify-center text-center relative overflow-hidden">
                     {/* Decorative border */}
-                    <div className="absolute inset-4 border-4 border-[#D97848]/20 rounded-3xl"></div>
+                    <div className="absolute inset-4 border-4 border-duck-coral/20 rounded-3xl"></div>
 
                     <div className="z-10 max-w-4xl w-full flex flex-col items-center gap-8">
                         <div className="flex flex-col gap-2">
-                            <div className="flex items-center justify-center gap-2 font-bold uppercase tracking-[0.2em] text-sm mb-2" style={{ color: '#D97848' }}>
+                            <div className="flex items-center justify-center gap-2 font-bold uppercase tracking-[0.2em] text-sm mb-2" style={{ color: '#ff3c21' }}>
                                 <Sparkles size={16} />
                                 <span>Een verhaal van de Toekomst</span>
                                 <Sparkles size={16} />
@@ -977,7 +977,7 @@ Maak nu de titel met [TITLE] tags en de tekst van de eerste pagina met [PAGE] ta
                             <h1 className="text-6xl font-black text-slate-900 leading-tight mb-2">
                                 {data.title || "Mijn Verhaal"}
                             </h1>
-                            <div className="w-32 h-1 mx-auto rounded-full" style={{ backgroundColor: '#D97848' }}></div>
+                            <div className="w-32 h-1 mx-auto rounded-full" style={{ backgroundColor: '#ff3c21' }}></div>
                         </div>
 
                         {data.coverImage && data.coverImage !== 'loading' && !data.coverImage.startsWith('error') ? (
@@ -991,8 +991,8 @@ Maak nu de titel met [TITLE] tags en de tekst van de eerste pagina met [PAGE] ta
                         )}
 
                         <div className="mt-4">
-                            <p className="text-2xl font-serif italic" style={{ color: '#445865' }}>Geschreven &amp; Geïllustreerd door</p>
-                            <p className="text-3xl font-black mt-2 uppercase tracking-wide" style={{ color: '#08283B' }}>
+                            <p className="text-2xl font-serif italic" style={{ color: '#202023' }}>Geschreven &amp; Geïllustreerd door</p>
+                            <p className="text-3xl font-black mt-2 uppercase tracking-wide" style={{ color: '#202023' }}>
                                 {user?.displayName || "Een Jonge Schrijver"}
                             </p>
                         </div>
@@ -1191,7 +1191,7 @@ Maak nu de titel met [TITLE] tags en de tekst van de eerste pagina met [PAGE] ta
                             ) : (
                                 <div className="w-full h-full flex flex-col items-center justify-center text-stone-400 gap-4 bg-stone-50 p-6">
                                     {/* Empty book state - show loading or hint */}
-                                    <Loader2 size={32} className="animate-spin text-[#D97848]" />
+                                    <Loader2 size={32} className="animate-spin text-duck-coral" />
                                     <span className="text-sm font-bold uppercase tracking-widest text-center">Verhaal aan het opbouwen...</span>
                                     <span className="text-xs text-stone-400 text-center max-w-[200px]">Je boekje verschijnt hier zodra de AI je eerste pagina schrijft</span>
                                 </div>
@@ -1279,7 +1279,7 @@ Maak nu de titel met [TITLE] tags en de tekst van de eerste pagina met [PAGE] ta
                         disabled={currentPage === 0 || isFlipping}
                         className={`p-2 rounded-full transition-all ${currentPage === 0
                             ? 'text-slate-300 cursor-not-allowed'
-                            : 'bg-slate-50 text-slate-600 hover:bg-[#D97848]/10 hover:text-[#D97848] hover:scale-110 active:scale-95'
+                            : 'bg-slate-50 text-slate-600 hover:bg-duck-coral/10 hover:text-duck-coral hover:scale-110 active:scale-95'
                             }`}
                     >
                         <ChevronLeft size={18} />
@@ -1293,7 +1293,7 @@ Maak nu de titel met [TITLE] tags en de tekst van de eerste pagina met [PAGE] ta
                             {[...Array(totalPages + 1)].map((_, i) => (
                                 <div
                                     key={i}
-                                    className={`w-1 h-1 rounded-full transition-all ${i === currentPage ? 'bg-[#D97848] scale-125' : 'bg-slate-300'}`}
+                                    className={`w-1 h-1 rounded-full transition-all ${i === currentPage ? 'bg-duck-coral scale-125' : 'bg-slate-300'}`}
                                 />
                             ))}
                         </div>
@@ -1304,7 +1304,7 @@ Maak nu de titel met [TITLE] tags en de tekst van de eerste pagina met [PAGE] ta
                         disabled={currentPage >= totalPages || isFlipping}
                         className={`p-2 rounded-full transition-all ${currentPage >= totalPages
                             ? 'text-slate-300 cursor-not-allowed'
-                            : 'bg-slate-50 text-slate-600 hover:bg-[#D97848]/10 hover:text-[#D97848] hover:scale-110 active:scale-95'
+                            : 'bg-slate-50 text-slate-600 hover:bg-duck-coral/10 hover:text-duck-coral hover:scale-110 active:scale-95'
                             }`}
                     >
                         <ChevronRight size={18} />
@@ -1356,7 +1356,7 @@ Maak nu de titel met [TITLE] tags en de tekst van de eerste pagina met [PAGE] ta
             {/* Publish Modal */}
             {showPublishModal && (
                 <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-in fade-in">
-                    <div className="bg-white rounded-2xl p-6 w-full max-w-md shadow-2xl animate-in zoom-in-95" style={{ borderColor: '#E7D8BD', borderWidth: 1 }} onClick={e => e.stopPropagation()}>
+                    <div className="bg-white rounded-2xl p-6 w-full max-w-md shadow-2xl animate-in zoom-in-95" style={{ borderColor: '#e3e2dc', borderWidth: 1 }} onClick={e => e.stopPropagation()}>
                         {publishSuccess ? (
                             <div className="text-center py-8">
                                 <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: '#10B98120' }}>
@@ -1389,7 +1389,7 @@ Maak nu de titel met [TITLE] tags en de tekst van de eerste pagina met [PAGE] ta
                                             type="text"
                                             value={publishTitle}
                                             onChange={(e) => setPublishTitle(e.target.value)}
-                                            className="w-full px-4 py-3 border rounded-xl font-bold focus:ring-2 outline-none transition-all" style={{ backgroundColor: '#FCF6EA', borderColor: '#E7D8BD', color: '#08283B' }}
+                                            className="w-full px-4 py-3 border rounded-xl font-bold focus:ring-2 outline-none transition-all" style={{ backgroundColor: '#f2f1ec', borderColor: '#e3e2dc', color: '#202023' }}
                                             maxLength={50}
                                         />
                                     </div>

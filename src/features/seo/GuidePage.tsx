@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { trackEvent } from '@/services/analyticsService';
+import { DuckMark } from '@/components/brand/DuckMark';
 
 const IconChevronLeft = () => (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -53,7 +54,7 @@ export const GuidePage: React.FC<{ guideId: string }> = ({ guideId }) => {
             <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-lab-line">
                 <div className="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
                     <a href="/" className="flex items-center gap-2.5">
-                        <img src="/logo.svg" alt="DGSkills logo" className="w-8 h-8 object-contain" />
+                        <DuckMark className="size-8" />
                         <span className="font-bold text-lab-ink">DGSkills</span>
                     </a>
                     <a href="/" className="flex items-center gap-1 text-sm font-medium text-lab-muted hover:text-lab-ink transition-colors">

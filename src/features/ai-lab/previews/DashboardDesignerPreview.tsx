@@ -49,7 +49,7 @@ const MiniLineChart: React.FC = () => (
     <svg viewBox="0 0 80 40" className="w-full h-full">
         <polyline
             fill="none"
-            stroke="#0B453F"
+            stroke="#202023"
             strokeWidth="2.5"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -57,7 +57,7 @@ const MiniLineChart: React.FC = () => (
         />
         <polyline
             fill="none"
-            stroke="#0B453F"
+            stroke="#202023"
             strokeWidth="0"
             points="4,32 16,28 28,20 40,22 52,14 64,10 76,8 76,40 4,40"
             className="fill-lab-teal/40"

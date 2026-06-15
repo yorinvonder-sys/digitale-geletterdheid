@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { ParentUser } from '@/types';
 import { logActivity } from '@/services/teacherService';
+import { getFallbackProjectWeekForDate, type ProjectWeekNumber } from '@/utils/projectWeekSchedule';
 
 interface UseNavigationParams {
     user: ParentUser | null;
@@ -12,7 +13,8 @@ export function useNavigation({ user }: UseNavigationParams) {
     const [isProfileOpen, setIsProfileOpen] = useState(false);
     const [initialProfileTab, setInitialProfileTab] = useState<'profile' | 'shop' | 'trophies' | 'privacy'>('profile');
     const [viewMode, setViewMode] = useState<'assignments' | 'monitoring'>('monitoring');
-    const [activeWeek, setActiveWeek] = useState(2);
+    const [activeWeek, setActiveWeekState] = useState(() => getFallbackProjectWeekForDate());
+    const hasManuallySelectedActiveWeekRef = useRef(false);
     const [showGames, setShowGames] = useState(false);
     const [initialGameId, setInitialGameId] = useState<string | null>(null);
     const [gamesEnabled, setGamesEnabled] = useState(true);
@@ -22,6 +24,19 @@ export function useNavigation({ user }: UseNavigationParams) {
     const [peerFeedbackMissionId, setPeerFeedbackMissionId] = useState<string | null>(null);
 
     const FOCUS_INTENT_KEY = 'dgskills_focus_intent';
+
+    const setActiveWeek = useCallback((week: ProjectWeekNumber) => {
+        hasManuallySelectedActiveWeekRef.current = true;
+        setActiveWeekState(week);
+    }, []);
+
+    const setActiveWeekFromSystem = useCallback((week: ProjectWeekNumber) => {
+        setActiveWeekState(week);
+    }, []);
+
+    const hasActiveWeekBeenManuallySelected = useCallback(() => {
+        return hasManuallySelectedActiveWeekRef.current;
+    }, []);
 
     const handleExitModule = () => {
         setActiveModule(null);
@@ -69,6 +84,8 @@ export function useNavigation({ user }: UseNavigationParams) {
         setViewMode,
         activeWeek,
         setActiveWeek,
+        setActiveWeekFromSystem,
+        hasActiveWeekBeenManuallySelected,
         showGames,
         setShowGames,
         initialGameId,

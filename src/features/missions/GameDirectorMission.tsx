@@ -27,7 +27,7 @@ interface GameDirectorProps {
 }
 
 const MISSION_GOAL: MissionGoal = {
-    primaryGoal: 'Programmeer Robbie door vijf levels heen en leg uit wat duidelijke instructies met AI te maken hebben.',
+    primaryGoal: 'Ik programmeer Robbie door vijf levels heen en leg uit wat duidelijke instructies met AI te maken hebben.',
     criteria: {
         type: 'component-complete',
         min: 5,
@@ -297,11 +297,11 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
         const height = canvasRef.current.height;
 
         // Clear — park at night theme
-        ctx.fillStyle = '#08283B';
+        ctx.fillStyle = '#202023';
         ctx.fillRect(0, 0, width, height);
 
         // Subtle grass pattern
-        ctx.strokeStyle = '#0B453F';
+        ctx.strokeStyle = '#202023';
         ctx.lineWidth = 1;
         for (let x = 0; x < width; x += 40) {
             ctx.beginPath();
@@ -326,12 +326,12 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
         }
 
         // Ground (grass)
-        ctx.fillStyle = '#5F947D';
+        ctx.fillStyle = '#202023';
         ctx.fillRect(0, height - 40, width, 40);
-        ctx.fillStyle = '#5F947D';
+        ctx.fillStyle = '#202023';
         ctx.fillRect(0, height - 40, width, 4);
         // Grass blades
-        ctx.fillStyle = '#5F947D';
+        ctx.fillStyle = '#202023';
         for (let gx = 0; gx < width; gx += 12) {
             ctx.fillRect(gx, height - 44, 2, 6);
         }
@@ -348,7 +348,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
             ctx.fillStyle = '#99984D';
             ctx.fillRect(wall.x, wall.y, wall.w, 3);
             // Planks
-            ctx.fillStyle = '#0B453F';
+            ctx.fillStyle = '#202023';
             for (let i = 0; i < wall.w; i += 16) {
                 ctx.fillRect(wall.x + i, wall.y, 1, wall.h);
             }
@@ -371,7 +371,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
         // Bone shape
         const boneX = goal.x + goal.w / 2;
         const boneY = goal.y + goal.h / 2;
-        ctx.fillStyle = '#F3E4CB';
+        ctx.fillStyle = '#e8e3d8';
         // Center bar
         ctx.fillRect(boneX - 12, boneY - 4, 24, 8);
         // Left knobs
@@ -385,7 +385,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
         ctx.arc(boneX + 12, boneY + 4, 6, 0, Math.PI * 2);
         ctx.fill();
         // Sparkle
-        ctx.fillStyle = '#D7C95F';
+        ctx.fillStyle = '#e1ff01';
         ctx.font = '14px sans-serif';
         ctx.fillText('✨', goal.x + goal.w / 2 - 6, goal.y - 15);
         // Label
@@ -504,7 +504,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
         ctx.fill();
 
         // Tail (behind body)
-        ctx.strokeStyle = '#D7C95F';
+        ctx.strokeStyle = '#e1ff01';
         ctx.lineWidth = 4;
         ctx.lineCap = 'round';
         ctx.beginPath();
@@ -523,11 +523,11 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
         ctx.fillRect(px + 4, py + 18, 24, 20);
 
         // Belly (lighter)
-        ctx.fillStyle = '#F3E4CB';
+        ctx.fillStyle = '#e8e3d8';
         ctx.fillRect(px + 8, py + 30, 16, 6);
 
         // Head
-        ctx.fillStyle = '#D7C95F';
+        ctx.fillStyle = '#e1ff01';
         ctx.fillRect(px + 4, py + 2, 24, 18);
 
         // Ears (floppy, hanging down)
@@ -543,7 +543,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
         }
 
         // Eye
-        ctx.fillStyle = '#08283B';
+        ctx.fillStyle = '#202023';
         if (p.facingRight) {
             ctx.fillRect(px + 20, py + 7, 4, 4);
             // Eye shine
@@ -556,7 +556,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
         }
 
         // Nose (round black nose)
-        ctx.fillStyle = '#08283B';
+        ctx.fillStyle = '#202023';
         ctx.beginPath();
         if (p.facingRight) {
             ctx.arc(px + 30, py + 14, 3, 0, Math.PI * 2);
@@ -566,7 +566,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
         ctx.fill();
 
         // Snout highlight
-        ctx.fillStyle = '#D7C95F';
+        ctx.fillStyle = '#e1ff01';
         if (p.facingRight) {
             ctx.fillRect(px + 24, py + 11, 6, 4);
         } else {
@@ -594,14 +594,14 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
 
         // Goal indicator arrow when not visible
         if (goal.x > width - 100) {
-            ctx.fillStyle = '#D7C95F';
+            ctx.fillStyle = '#e1ff01';
             ctx.font = 'bold 14px Inter, sans-serif';
             ctx.fillText('🦴 →', width - 60, 28);
         }
 
         // Challenge indicator
         if (currentChallenge) {
-            ctx.fillStyle = '#D7C95F';
+            ctx.fillStyle = '#e1ff01';
             ctx.font = 'bold 12px Inter, sans-serif';
             ctx.fillText(`🔍 ${currentChallenge.title}`, 16, height - 52);
         }
@@ -734,7 +734,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
 
 
     return (
-        <div className="bg-[#FCF6EA] h-dvh flex flex-col text-[#08283B] font-['Outfit',system-ui,sans-serif] relative overflow-y-auto">
+        <div className="bg-duck-bg h-dvh flex flex-col text-duck-ink font-['Outfit',system-ui,sans-serif] relative overflow-y-auto">
 
             {showConclusion && (
                 <MissionConclusion
@@ -751,45 +751,45 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                     } : undefined}
                 >
                     {/* Reflectie */}
-                    <div className="bg-[#FCF6EA] rounded-2xl p-4 border border-[#D97848]/20 text-left space-y-3 mt-6">
+                    <div className="bg-duck-bg rounded-2xl p-4 border border-duck-coral/20 text-left space-y-3 mt-6">
                         <div className="flex items-center gap-2">
-                            <Sparkles size={16} className="text-[#D97848]" />
-                            <p className="text-xs font-black uppercase tracking-widest text-[#D97848]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Reflectie</p>
+                            <Sparkles size={16} className="text-duck-coral" />
+                            <p className="text-xs font-black uppercase tracking-widest text-duck-coral" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Reflectie</p>
                         </div>
-                        <p className="text-xs text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Wat heb je geleerd in deze missie? Waar zou je dit in het dagelijks leven tegenkomen?</p>
+                        <p className="text-xs text-duck-muted" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Wat heb je geleerd in deze missie? Waar zou je dit in het dagelijks leven tegenkomen?</p>
                         <textarea
                             value={progress.reflectie}
                             onChange={e => setProgress(prev => ({ ...prev, reflectie: e.target.value }))}
                             placeholder="Wat heb je geleerd? Waar kom je dit nog meer tegen?"
-                            className="w-full p-3 rounded-xl border-2 border-[#E7D8BD] bg-white text-sm resize-none focus:border-[#D97848] focus:outline-none transition-all duration-300"
+                            className="w-full p-3 rounded-xl border-2 border-duck-line bg-white text-sm resize-none focus:border-duck-coral focus:outline-none transition-all duration-300"
                             style={{ minHeight: '80px', fontFamily: "'Outfit', system-ui, sans-serif" }}
                         />
                         {progress.reflectie.trim().length < 10 && (
-                            <p className="text-[10px] text-[#E7D8BD]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Schrijf minimaal 10 tekens om de missie af te ronden</p>
+                            <p className="text-[10px] text-duck-line" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Schrijf minimaal 10 tekens om de missie af te ronden</p>
                         )}
                     </div>
                 </MissionConclusion>
             )}
 
             {/* Header */}
-            <header className="bg-white border-b border-[#E7D8BD] px-3 md:px-6 py-2 flex flex-col md:flex-row md:items-center md:justify-between gap-2 shrink-0 min-h-[4rem]">
+            <header className="bg-white border-b border-duck-line px-3 md:px-6 py-2 flex flex-col md:flex-row md:items-center md:justify-between gap-2 shrink-0 min-h-[4rem]">
                 <div className="flex w-full md:w-auto items-center gap-3 md:gap-6">
                     <button
                         onClick={onBack}
-                        className="flex shrink-0 items-center gap-2 text-[#445865] hover:text-[#D97848] transition-all duration-300 font-bold text-xs uppercase tracking-widest"
+                        className="flex shrink-0 items-center gap-2 text-duck-muted hover:text-duck-coral transition-all duration-300 font-bold text-xs uppercase tracking-widest"
                     >
                         <ArrowLeft size={16} /> Terug
                     </button>
-                    <div className="hidden md:block h-8 w-px bg-[#E7D8BD]"></div>
+                    <div className="hidden md:block h-8 w-px bg-duck-line"></div>
                     <div className="flex min-w-0 items-center gap-3">
-                        <div className="p-2 bg-[#D97848]/10 text-[#D97848] rounded-xl">
+                        <div className="p-2 bg-duck-coral/10 text-duck-coral rounded-xl">
                             <Settings2 size={20} />
                         </div>
                         <div>
-                            <h1 className="text-sm font-black uppercase tracking-tight flex items-center gap-2 font-['Newsreader',Georgia,serif] text-[#08283B]">
-                                Game Director <Sparkles size={14} className="text-[#D97848]" />
+                            <h1 className="text-sm font-black uppercase tracking-tight flex items-center gap-2 font-['Newsreader',Georgia,serif] text-duck-ink">
+                                Game Director <Sparkles size={14} className="text-duck-coral" />
                             </h1>
-                            <p className="text-[10px] text-[#445865] uppercase tracking-widest font-bold">
+                            <p className="text-[10px] text-duck-muted uppercase tracking-widest font-bold">
                                 Programmeer Robbie de Speurhond
                             </p>
                         </div>
@@ -799,17 +799,17 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                 {/* Challenge Banner - Integrated in Header */}
                 {currentChallenge && (
                     <div className={`w-full md:flex-1 md:mx-8 px-3 md:px-4 py-2 rounded-2xl flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2 transition-all duration-500 ${challengeComplete
-                        ? (successPulse ? 'bg-[#5F947D] scale-105 shadow-[0_0_30px_rgba(95, 148, 125,0.4)]' : 'bg-[#5F947D]/10 border border-[#5F947D]/30')
-                        : 'bg-[#FCF6EA] border border-[#E7D8BD]'
+                        ? (successPulse ? 'bg-duck-ink scale-105 shadow-[0_0_30px_rgba(95, 148, 125,0.4)]' : 'bg-duck-ink/10 border border-duck-ink/30')
+                        : 'bg-duck-bg border border-duck-line'
                         }`}>
                         <div className="flex min-w-0 flex-wrap items-center gap-2 md:gap-4">
                             <div className="flex items-center gap-2 shrink-0">
                                 {challengeComplete ? (
-                                    <Trophy size={18} className="text-[#5F947D]" />
+                                    <Trophy size={18} className="text-duck-ink" />
                                 ) : (
                                     <span className="text-lg">🔍</span>
                                 )}
-                                <span className="font-bold text-xs text-[#445865] uppercase tracking-widest">
+                                <span className="font-bold text-xs text-duck-muted uppercase tracking-widest">
                                     Puzzel {progress.currentChallengeIndex + 1}/{CHALLENGES.length}
                                 </span>
                                 <div className="flex items-center gap-1 ml-1">
@@ -818,20 +818,20 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                                             key={i}
                                             className={`w-2 h-2 rounded-full transition-all duration-300 ${
                                                 i < progress.currentChallengeIndex
-                                                    ? 'bg-[#5F947D]'
+                                                    ? 'bg-duck-ink'
                                                     : i === progress.currentChallengeIndex
-                                                        ? (challengeComplete ? 'bg-[#5F947D] scale-125' : 'bg-[#D97848] scale-125')
-                                                        : 'bg-[#E7D8BD]'
+                                                        ? (challengeComplete ? 'bg-duck-ink scale-125' : 'bg-duck-coral scale-125')
+                                                        : 'bg-duck-line'
                                             }`}
                                         />
                                     ))}
                                 </div>
                             </div>
-                            <h3 className="font-bold text-sm text-[#08283B] min-w-0 font-['Newsreader',Georgia,serif]">
+                            <h3 className="font-bold text-sm text-duck-ink min-w-0 font-['Newsreader',Georgia,serif]">
                                 {currentChallenge.title}
                             </h3>
                             <span
-                                className="hidden xl:inline text-xs text-[#445865] border-l border-[#E7D8BD] pl-4 whitespace-normal leading-tight max-w-2xl"
+                                className="hidden xl:inline text-xs text-duck-muted border-l border-duck-line pl-4 whitespace-normal leading-tight max-w-2xl"
                                 title={currentChallenge.description}
                             >
                                 {currentChallenge.description}
@@ -842,14 +842,14 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                             {challengeComplete ? (
                                 <button
                                     onClick={handleNextChallenge}
-                                    className="px-3 py-1.5 bg-[#5F947D] hover:bg-[#5F947D] text-white rounded-full font-bold text-xs transition-all duration-300 flex items-center gap-1 shadow-lg shadow-[#5F947D]/20"
+                                    className="px-3 py-1.5 bg-duck-ink hover:bg-duck-ink text-white rounded-full font-bold text-xs transition-all duration-300 flex items-center gap-1 shadow-lg shadow-duck-ink/20"
                                 >
                                     Volgende <ArrowLeft size={12} className="rotate-180" />
                                 </button>
                             ) : (
                                 <button
                                     onClick={() => setShowHint(!showHint)}
-                                    className="flex items-center gap-1 text-[10px] text-[#D97848] hover:text-[#D97848] font-bold px-2 py-1.5 bg-white hover:bg-[#FCF6EA] rounded-full transition-all duration-300 border border-[#D97848]/20"
+                                    className="flex items-center gap-1 text-[10px] text-duck-coral hover:text-duck-coral font-bold px-2 py-1.5 bg-white hover:bg-duck-bg rounded-full transition-all duration-300 border border-duck-coral/20"
                                 >
                                     <HelpCircle size={12} /> {showHint ? 'Verberg Hint' : 'Hint'}
                                 </button>
@@ -858,7 +858,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                             {/* 'I am stuck' button - Always visible/accessible helper */}
                             <button
                                 onClick={() => setIsChatOpen(true)}
-                                className="flex items-center gap-1 text-[10px] text-white font-bold px-3 py-1.5 bg-[#D97848] hover:bg-[#D97848] rounded-full transition-all duration-300 shadow-lg shadow-[#D97848]/20 focus-visible:ring-2 focus-visible:ring-[#D97848]"
+                                className="flex items-center gap-1 text-[10px] text-white font-bold px-3 py-1.5 bg-duck-coral hover:bg-duck-coral rounded-full transition-all duration-300 shadow-lg shadow-duck-coral/20 focus-visible:ring-2 focus-visible:ring-duck-coral"
                             >
                                 <Sparkles size={12} /> Hulp nodig?
                             </button>
@@ -887,13 +887,13 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
             />
 
             {showHint && !challengeComplete && currentChallenge && (
-                <div className="bg-[#D97848]/10 border-b border-[#D97848]/20 px-6 py-2 text-center text-xs font-medium text-[#D97848] animate-in slide-in-from-top-2">
+                <div className="bg-duck-coral/10 border-b border-duck-coral/20 px-6 py-2 text-center text-xs font-medium text-duck-coral animate-in slide-in-from-top-2">
                     💡 <span className="font-bold">HINT:</span> {currentChallenge.hint}
                 </div>
             )}
 
             {/* Mobile Tab Bar */}
-            <div className="lg:hidden flex border-b border-[#E7D8BD] bg-white shrink-0">
+            <div className="lg:hidden flex border-b border-duck-line bg-white shrink-0">
                 {([
                     { key: 'blocks' as MobileTab, label: 'Blokken', icon: <Puzzle size={16} /> },
                     { key: 'code' as MobileTab, label: 'Code', icon: <Code2 size={16} /> },
@@ -904,8 +904,8 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                         onClick={() => setMobileTab(tab.key)}
                         className={`flex-1 flex items-center justify-center gap-2 py-3 text-xs font-bold uppercase tracking-wider transition-all duration-300 ${
                             mobileTab === tab.key
-                                ? 'text-[#D97848] border-b-2 border-[#D97848] bg-[#D97848]/5'
-                                : 'text-[#445865] hover:text-[#08283B]'
+                                ? 'text-duck-coral border-b-2 border-duck-coral bg-duck-coral/5'
+                                : 'text-duck-muted hover:text-duck-ink'
                         }`}
                     >
                         {tab.icon}
@@ -918,12 +918,12 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
             <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
 
                 {/* Left Panel: Block Palette */}
-                <div className={`${mobileTab === 'blocks' ? 'flex' : 'hidden'} lg:flex w-full lg:w-64 bg-[#FCF6EA] border-b lg:border-b-0 lg:border-r border-[#E7D8BD] flex-col shrink-0 z-10 p-2 flex-1 lg:flex-initial lg:max-h-none overflow-y-auto`}>
+                <div className={`${mobileTab === 'blocks' ? 'flex' : 'hidden'} lg:flex w-full lg:w-64 bg-duck-bg border-b lg:border-b-0 lg:border-r border-duck-line flex-col shrink-0 z-10 p-2 flex-1 lg:flex-initial lg:max-h-none overflow-y-auto`}>
                     <BlockPalette onDragStart={setDraggingBlock} onAddBlock={handleAddBlock} />
                 </div>
 
                 {/* Middle Panel: Workspace */}
-                <div className={`${mobileTab === 'code' ? 'flex' : 'hidden'} lg:flex flex-1 bg-[#FCF6EA] relative flex-col min-w-0 p-2`}>
+                <div className={`${mobileTab === 'code' ? 'flex' : 'hidden'} lg:flex flex-1 bg-duck-bg relative flex-col min-w-0 p-2`}>
                     <div className="absolute inset-0 bg-[linear-gradient(#E7D8BD_1px,transparent_1px),linear-gradient(90deg,#E7D8BD_1px,transparent_1px)] bg-[size:20px_20px] opacity-40 pointer-events-none"></div>
                     <CodeWorkspace
                         blocks={blocks}
@@ -935,20 +935,20 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                 </div>
 
                 {/* Right Panel: Game Preview (Larger!) */}
-                <div className={`${mobileTab === 'game' ? 'flex' : 'hidden'} lg:flex w-full lg:w-[40%] lg:min-w-[320px] lg:max-w-[800px] bg-white border-t lg:border-t-0 lg:border-l border-[#E7D8BD] flex-col shadow-2xl z-20`}>
-                    <div className="p-4 bg-[#FCF6EA] border-b border-[#E7D8BD] flex justify-between items-center">
+                <div className={`${mobileTab === 'game' ? 'flex' : 'hidden'} lg:flex w-full lg:w-[40%] lg:min-w-[320px] lg:max-w-[800px] bg-white border-t lg:border-t-0 lg:border-l border-duck-line flex-col shadow-2xl z-20`}>
+                    <div className="p-4 bg-duck-bg border-b border-duck-line flex justify-between items-center">
                         <div className="flex items-center gap-2">
-                            <div className="w-2 h-2 rounded-full bg-[#5F947D] animate-pulse"></div>
-                            <span className="text-xs font-bold text-[#445865] uppercase tracking-wider">Game Preview</span>
+                            <div className="w-2 h-2 rounded-full bg-duck-ink animate-pulse"></div>
+                            <span className="text-xs font-bold text-duck-muted uppercase tracking-wider">Game Preview</span>
                         </div>
-                        <div className="text-xs font-mono text-[#445865]">
+                        <div className="text-xs font-mono text-duck-muted">
                             {canvasRef.current ? `${canvasRef.current.width}x${canvasRef.current.height}` : '800x600'}
                         </div>
                     </div>
 
-                    <div className="flex-1 p-4 lg:p-6 flex flex-col gap-4 overflow-y-auto bg-[#FCF6EA] relative">
+                    <div className="flex-1 p-4 lg:p-6 flex flex-col gap-4 overflow-y-auto bg-duck-bg relative">
                         {/* Game Screen Container - Maintains Aspect Ratio but fills space */}
-                        <div className="flex-1 relative bg-[#08283B] rounded-2xl overflow-hidden shadow-2xl border-4 border-[#E7D8BD] ring-1 ring-black/5 group">
+                        <div className="flex-1 relative bg-duck-ink rounded-2xl overflow-hidden shadow-2xl border-4 border-duck-line ring-1 ring-black/5 group">
                             {/* Canvas needs to respond to size */}
                             <div className="absolute inset-0 flex items-center justify-center bg-[radial-gradient(circle_at_center,#0B453F_0%,#08283B_100%)]">
                                 <canvas
@@ -961,12 +961,12 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                             </div>
 
                             {/* Overlay Controls (Play/Stop) on top of Game - always visible on touch, hover on desktop */}
-                            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 bg-white/90 backdrop-blur-sm p-1.5 rounded-full border border-[#E7D8BD] shadow-xl opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-all duration-300">
+                            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 bg-white/90 backdrop-blur-sm p-1.5 rounded-full border border-duck-line shadow-xl opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-all duration-300">
                                 <button
                                     onClick={handleTogglePlay}
                                     className={`p-3 rounded-full transition-all duration-300 active:scale-95 ${isPlaying
                                         ? 'bg-lab-coral/20 text-lab-muted hover:bg-lab-coral hover:text-white'
-                                        : 'bg-[#D97848]/20 text-[#D97848] hover:bg-[#D97848] hover:text-white'}`}
+                                        : 'bg-duck-coral/20 text-duck-coral hover:bg-duck-coral hover:text-white'}`}
                                 >
                                     {isPlaying ? <RotateCcw size={20} /> : <Play size={20} fill="currentColor" />}
                                 </button>
@@ -974,18 +974,18 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                         </div>
 
                         {/* Console / Logs */}
-                        <div className="h-32 bg-white rounded-2xl border border-[#E7D8BD] flex flex-col shrink-0 overflow-hidden">
-                            <div className="px-3 py-2 bg-[#FCF6EA] border-b border-[#E7D8BD] flex justify-between items-center">
-                                <span className="text-[10px] font-bold text-[#445865] uppercase tracking-widest">Systeem Console</span>
-                                <button onClick={() => setLogs([])} className="text-[10px] text-[#445865] hover:text-[#D97848] transition-all duration-300">Wis</button>
+                        <div className="h-32 bg-white rounded-2xl border border-duck-line flex flex-col shrink-0 overflow-hidden">
+                            <div className="px-3 py-2 bg-duck-bg border-b border-duck-line flex justify-between items-center">
+                                <span className="text-[10px] font-bold text-duck-muted uppercase tracking-widest">Systeem Console</span>
+                                <button onClick={() => setLogs([])} className="text-[10px] text-duck-muted hover:text-duck-coral transition-all duration-300">Wis</button>
                             </div>
                             <div className="flex-1 p-2 overflow-y-auto font-mono text-xs space-y-1 custom-scrollbar">
                                 {logs.length === 0 ? (
-                                    <div className="text-[#445865] italic px-2">Wachten op input...</div>
+                                    <div className="text-duck-muted italic px-2">Wachten op input...</div>
                                 ) : (
                                     logs.map((l, i) => (
-                                        <div key={i} className="flex gap-2 text-[#5F947D] hover:bg-[#FCF6EA] rounded px-2 py-0.5">
-                                            <span className="text-[#445865] select-none">&gt;</span>
+                                        <div key={i} className="flex gap-2 text-duck-ink hover:bg-duck-bg rounded px-2 py-0.5">
+                                            <span className="text-duck-muted select-none">&gt;</span>
                                             <span>{l}</span>
                                         </div>
                                     ))
@@ -997,14 +997,14 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
             </div>
 
             {/* Mobile Sticky Bottom Bar with Run/Reset */}
-            <div className="lg:hidden flex items-center justify-between px-4 py-2 bg-white border-t border-[#E7D8BD] shrink-0 gap-2">
+            <div className="lg:hidden flex items-center justify-between px-4 py-2 bg-white border-t border-duck-line shrink-0 gap-2">
                 <button
                     onClick={handleReset}
-                    className="flex items-center gap-2 px-4 py-2.5 rounded-full text-[#445865] hover:text-[#D97848] bg-[#FCF6EA] border border-[#E7D8BD] font-bold text-xs transition-all duration-300"
+                    className="flex items-center gap-2 px-4 py-2.5 rounded-full text-duck-muted hover:text-duck-coral bg-duck-bg border border-duck-line font-bold text-xs transition-all duration-300"
                 >
                     <RotateCcw size={14} /> Reset
                 </button>
-                <div className="flex items-center gap-2 text-xs text-[#445865] font-bold">
+                <div className="flex items-center gap-2 text-xs text-duck-muted font-bold">
                     {blocks.length} blok{blocks.length !== 1 ? 'ken' : ''}
                 </div>
                 <button
@@ -1012,7 +1012,7 @@ export const GameDirectorMission: React.FC<GameDirectorProps> = ({ onComplete, o
                     disabled={blocks.length === 0}
                     className={`flex items-center gap-2 px-6 py-2.5 rounded-full font-bold text-sm text-white transition-all duration-300 ${isPlaying
                         ? 'bg-lab-coral hover:bg-lab-coral hover:text-white'
-                        : 'bg-[#D97848] hover:bg-[#D97848] disabled:bg-[#E7D8BD] disabled:text-[#445865]'
+                        : 'bg-duck-coral hover:bg-duck-coral disabled:bg-duck-line disabled:text-duck-muted'
                     }`}
                 >
                     <Play size={14} fill="currentColor" />

@@ -15,10 +15,10 @@ export const FollowUpCard: React.FC<FollowUpCardProps> = ({ followUp, onComplete
     const correct = selected === followUp.correctIndex;
 
     const isLight = theme === 'light';
-    const bg = isLight ? 'bg-[#FCF6EA]' : 'bg-[#08283B]';
-    const border = isLight ? 'border-[#D97848]' : 'border-lab-coral/40';
-    const textMain = isLight ? 'text-[#08283B]' : 'text-white';
-    const textSub = isLight ? 'text-[#445865]' : 'text-[#445865]';
+    const bg = isLight ? 'bg-duck-bg' : 'bg-duck-ink';
+    const border = isLight ? 'border-duck-coral' : 'border-lab-coral/40';
+    const textMain = isLight ? 'text-duck-ink' : 'text-white';
+    const textSub = isLight ? 'text-duck-muted' : 'text-duck-muted';
     const fontMain = isLight
         ? { fontFamily: "'Newsreader', Georgia, serif" }
         : { fontFamily: "'Newsreader', Georgia, serif" };
@@ -42,7 +42,7 @@ export const FollowUpCard: React.FC<FollowUpCardProps> = ({ followUp, onComplete
                 <span className={`text-xs font-black ${textMain}`} style={fontBody}>
                     Verdiepingsvraag
                     {followUp.bonusPoints > 0 && (
-                        <span className={`ml-1.5 font-bold ${isLight ? 'text-[#D97848]' : 'text-lab-gold'}`}>
+                        <span className={`ml-1.5 font-bold ${isLight ? 'text-duck-coral' : 'text-lab-gold'}`}>
                             +{followUp.bonusPoints} bonus
                         </span>
                     )}
@@ -56,12 +56,12 @@ export const FollowUpCard: React.FC<FollowUpCardProps> = ({ followUp, onComplete
             <div className="space-y-2 mb-3">
                 {followUp.options.map((opt, i) => {
                     let optStyle = isLight
-                        ? 'bg-white border-[#E7D8BD] hover:border-[#D97848]'
-                        : 'bg-[#08283B] border-[#08283B] hover:border-lab-coral/40';
+                        ? 'bg-white border-duck-line hover:border-duck-coral'
+                        : 'bg-duck-ink border-[#08283B] hover:border-lab-coral/40';
 
                     if (answered && i === followUp.correctIndex) {
                         optStyle = isLight
-                            ? 'bg-[#5F947D]/10 border-[#5F947D]'
+                            ? 'bg-duck-ink/10 border-duck-ink'
                             : 'bg-lab-sage/30 border-lab-coral';
                     } else if (answered && i === selected && !correct) {
                         optStyle = isLight
@@ -69,8 +69,8 @@ export const FollowUpCard: React.FC<FollowUpCardProps> = ({ followUp, onComplete
                             : 'bg-lab-coral/30 border-lab-coral';
                     } else if (answered) {
                         optStyle = isLight
-                            ? 'bg-[#E7D8BD] border-[#E7D8BD]'
-                            : 'bg-[#08283B] border-[#08283B]';
+                            ? 'bg-duck-line border-duck-line'
+                            : 'bg-duck-ink border-[#08283B]';
                     }
 
                     return (
@@ -97,8 +97,8 @@ export const FollowUpCard: React.FC<FollowUpCardProps> = ({ followUp, onComplete
                     <div
                         className={`text-xs px-3 py-2 rounded-xl ${
                             correct
-                                ? isLight ? 'bg-[#5F947D]/10 text-[#5F947D]' : 'bg-lab-sage/30 text-lab-sage'
-                                : isLight ? 'bg-[#D97848]/10 text-[#D97848]' : 'bg-lab-coral/30 text-lab-coral'
+                                ? isLight ? 'bg-duck-ink/10 text-duck-ink' : 'bg-lab-sage/30 text-lab-sage'
+                                : isLight ? 'bg-duck-coral/10 text-duck-coral' : 'bg-lab-coral/30 text-lab-coral'
                         }`}
                         style={fontBody}
                     >
@@ -108,8 +108,8 @@ export const FollowUpCard: React.FC<FollowUpCardProps> = ({ followUp, onComplete
                         onClick={() => onComplete(correct)}
                         className={`w-full py-2.5 rounded-full font-black text-sm transition-all duration-200 ${
                             isLight
-                                ? 'bg-gradient-to-r from-[#D97848] to-[#D97848] hover:from-[#D97848] hover:to-[#D97848] text-white'
-                                : 'bg-lab-sage hover:bg-lab-sage hover:text-white text-[#08283B] font-mono'
+                                ? 'bg-gradient-to-r from-duck-coral to-duck-coral hover:from-duck-coral hover:to-duck-coral text-white'
+                                : 'bg-lab-sage hover:bg-lab-sage hover:text-white text-duck-ink font-mono'
                         }`}
                         style={fontBody}
                     >

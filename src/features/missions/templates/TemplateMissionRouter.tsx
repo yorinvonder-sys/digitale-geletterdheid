@@ -14,10 +14,10 @@ const DebateArena = lazy(() => import('./debate-arena/DebateArena').then(m => ({
 const ToolGuide = lazy(() => import('./tool-guide/ToolGuide').then(m => ({ default: m.ToolGuide })));
 
 const TemplateLoadingFallback = () => (
-    <div className="min-h-screen bg-[#FCF6EA] flex items-center justify-center">
+    <div className="min-h-screen bg-duck-bg flex items-center justify-center">
         <div className="flex flex-col items-center gap-3">
-            <Loader2 size={32} className="animate-spin text-[#D97848]" />
-            <p className="text-sm text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+            <Loader2 size={32} className="animate-spin text-duck-coral" />
+            <p className="text-sm text-duck-muted" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                 Missie laden...
             </p>
         </div>
@@ -34,8 +34,8 @@ export const TemplateMissionRouter: React.FC<TemplateMissionProps> = (props) => 
 
     if (!entry) {
         return (
-            <div className="min-h-screen bg-[#FCF6EA] flex items-center justify-center p-4">
-                <p className="text-[#445865]">Missie niet gevonden: {props.missionId}</p>
+            <div className="min-h-screen bg-duck-bg flex items-center justify-center p-4">
+                <p className="text-duck-muted">Missie niet gevonden: {props.missionId}</p>
             </div>
         );
     }

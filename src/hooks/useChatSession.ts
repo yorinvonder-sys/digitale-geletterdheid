@@ -1,6 +1,6 @@
 import { useState, useRef, useCallback } from 'react';
 import { AgentRole, ChatMessage } from '@/types';
-import { createChatSession, Chat } from '@/services/geminiService';
+import { createChatSession, Chat } from '@/services/aiProviderService';
 
 // ============================================================================
 // MEMORY MANAGEMENT CONSTANTS
@@ -8,7 +8,7 @@ import { createChatSession, Chat } from '@/services/geminiService';
 // ============================================================================
 export const MAX_UI_MESSAGES = 30;        // Max messages shown in chat UI
 export const MAX_CONTEXT_MESSAGES = 12;   // Messages to keep for context when refreshing session
-export const SESSION_REFRESH_THRESHOLD = 15; // Refresh Gemini session after this many exchanges
+export const SESSION_REFRESH_THRESHOLD = 15; // Refresh AI session after this many exchanges
 
 function buildMissionContext(role: AgentRole): string {
     const stepDetails = role.steps?.length

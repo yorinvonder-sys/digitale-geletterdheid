@@ -8,7 +8,7 @@ export const automationEngineerConfig: BuilderCanvasConfig = {
     introDescription:
         'In deze missie leer je hoe je met scripts repetitieve taken kunt automatiseren. Je analyseert een probleem, ontwerpt een algoritme en schrijft pseudocode — precies zoals een echte software-engineer.',
     missionGoal: {
-        primaryGoal: 'Ontwerp een veilige automatisering door een herhaaltaak te analyseren, in stappen te zetten en te testen.',
+        primaryGoal: 'Ik ontwerp een veilige automatisering door een herhaaltaak te analyseren, in stappen te zetten en te testen.',
         criteria: {
             type: 'steps-complete',
             min: 4,
@@ -93,11 +93,11 @@ export const automationEngineerConfig: BuilderCanvasConfig = {
     ],
     maxScore: 100,
     badges: [
-        { minScore: 90, emoji: '🏆', title: 'Script Wizard', color: '#D7C95F' },
-        { minScore: 70, emoji: '⚡', title: 'Automation Engineer', color: '#5F947D' },
-        { minScore: 50, emoji: '🔄', title: 'Loop Leerling', color: '#D97848' },
-        { minScore: 25, emoji: '💡', title: 'Beginnende Automatiseerder', color: '#0B453F' },
-        { minScore: 0, emoji: '🌱', title: 'Op weg', color: '#445865' },
+        { minScore: 90, emoji: '🏆', title: 'Script Wizard', color: '#e1ff01' },
+        { minScore: 70, emoji: '⚡', title: 'Automation Engineer', color: '#202023' },
+        { minScore: 50, emoji: '🔄', title: 'Loop Leerling', color: '#ff3c21' },
+        { minScore: 25, emoji: '💡', title: 'Beginnende Automatiseerder', color: '#202023' },
+        { minScore: 0, emoji: '🌱', title: 'Op weg', color: '#202023' },
     ],
     takeaways: [
         'Je weet hoe je een taak beoordeelt op geschiktheid voor automatisering',

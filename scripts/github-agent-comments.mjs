@@ -2,8 +2,8 @@ import crypto from "node:crypto";
 import fs from "node:fs";
 import { generateAgentReply, normalizeAgent } from "./lib/agentBridgeCore.mjs";
 
-const COMMAND_PATTERN = /^\/(chatgpt|claude)\b/i;
-const HANDOFF_PATTERN = /^\/handoff\s+(chatgpt|claude)\b/i;
+const COMMAND_PATTERN = /^\/(chatgpt|claude|reasonix)\b/i;
+const HANDOFF_PATTERN = /^\/handoff\s+(chatgpt|claude|reasonix)\b/i;
 
 function usage() {
   return [

@@ -25,25 +25,25 @@ const config: ScenarioEngineConfig = {
             minScore: 80,
             emoji: '🥷',
             title: 'Notificatie Ninja',
-            color: '#D97848',
+            color: '#ff3c21',
         },
         {
             minScore: 60,
             emoji: '🔍',
             title: 'Aandacht Analist',
-            color: '#5F947D',
+            color: '#202023',
         },
         {
             minScore: 40,
             emoji: '📱',
             title: 'Screen Bewust',
-            color: '#445865',
+            color: '#202023',
         },
         {
             minScore: 0,
             emoji: '🌱',
             title: 'Blijf Oefenen',
-            color: '#445865',
+            color: '#202023',
         },
     ],
     takeaways: [
@@ -207,7 +207,7 @@ const config: ScenarioEngineConfig = {
                 },
                 {
                     id: 5,
-                    icon: '😮',
+                    icon: '/assets/brand/ui-icons/dgskills-duck-surprised.webp',
                     title: '"Je vriend heeft iets gepost wat je niet mag missen!"',
                     description:
                         'Facebook of Instagram meldt dat iemand die je kent een "populaire" post heeft geplaatst — maar laat niet zien wat.',
@@ -335,7 +335,7 @@ const config: ScenarioEngineConfig = {
                 },
                 {
                     id: 8,
-                    icon: '😮',
+                    icon: '/assets/brand/ui-icons/dgskills-duck-surprised.webp',
                     title: '"Je vriend reageert misschien op jouw reactie — open de app"',
                     description:
                         'Instagram stuurt: "Luca heeft misschien gereageerd op jouw comment. Tik om te zien of er een reactie is."',

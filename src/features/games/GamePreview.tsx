@@ -568,7 +568,7 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
                 <div className="text-center max-w-sm md:max-w-md w-full">
                   {/* Mascot */}
                   <div className="relative mb-4 md:mb-6 mx-auto w-fit">
-                    <img src="/assets/storytelling/beaver-storyteller.webp" alt="DGSkills bever" className="w-20 h-20 object-contain" loading="lazy" />
+                    <img src="/assets/brand/dgskills-duck-guide-v3.png" alt="DGSkills eend" className="w-20 h-20 object-contain" loading="lazy" />
                   </div>
 
                   {/* Title */}

@@ -99,9 +99,14 @@ export const PrivacyPolicy: React.FC = () => {
                                         <td className="px-4 py-2 font-medium">EER (Ierland)</td>
                                     </tr>
                                     <tr className="border-t">
-                                        <td className="px-4 py-2 italic text-lab-ink font-medium">Google Vertex AI (Gemini)</td>
-                                        <td className="px-4 py-2">AI-ondersteuning (Vertex AI, geen training)</td>
-                                        <td className="px-4 py-2 font-medium">EER (Nederland, europe-west4)</td>
+                                        <td className="px-4 py-2 italic text-lab-ink font-medium">Mistral AI</td>
+                                        <td className="px-4 py-2">Tekst, vision en OCR via server-side Edge Functions, geen training op klantdata</td>
+                                        <td className="px-4 py-2 font-medium">EER/EU API-verwerking</td>
+                                    </tr>
+                                    <tr className="border-t">
+                                        <td className="px-4 py-2 italic text-lab-ink font-medium">Black Forest Labs</td>
+                                        <td className="px-4 py-2">FLUX image generation via server-side Edge Functions, geen provider-URL's naar de browser</td>
+                                        <td className="px-4 py-2 font-medium">EU endpoint</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -117,12 +122,12 @@ export const PrivacyPolicy: React.FC = () => {
                             <li>Strikt rolgebaseerd toegangsbeheer (RBAC) via Supabase Row Level Security (RLS).</li>
                             <li>Continue logging van beveiligingsgerelateerde events (audit logs).</li>
                         </ul>
-                        <h3 className="text-lg font-bold mt-6 mb-3">AI-verwerking (Vertex AI)</h3>
+                        <h3 className="text-lg font-bold mt-6 mb-3">AI-verwerking (Mistral AI en Black Forest Labs)</h3>
                         <p>
-                            Voor AI-ondersteuning gebruiken wij Google Gemini via Vertex AI met een EU-regionaal endpoint (europe-west4, Nederland).
-                            Google garandeert dat data at rest en ML-verwerking binnen deze regio plaatsvinden. Prompts en responses worden niet
-                            door Google bewaard (zero data retention). Wij gebruiken deze gegevens niet voor marketingprofilering.
-                            Gegevensdeling en retentie volgen de Google Cloud DPA (met SCCs) en de instructies van de school.
+                            Voor AI-ondersteuning gebruiken wij Mistral AI voor tekst, vision en OCR, en Black Forest Labs FLUX voor image generation.
+                            Alle provider-aanroepen lopen server-side via Supabase Edge Functions. API keys, ruwe auditcontent en tijdelijke image delivery URL's
+                            worden niet naar de browser gestuurd. Wij gebruiken deze gegevens niet voor marketingprofilering of modeltraining.
+                            Gegevensdeling en retentie volgen de verwerkersafspraken en de instructies van de school.
                         </p>
 
                         <h2 className="text-xl font-bold mt-8 mb-4">6. Bewaartermijnen</h2>

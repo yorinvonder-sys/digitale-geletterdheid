@@ -6,7 +6,7 @@ Rood-risico services:
 
 - `supabase.ts`
 - `authService.ts`
-- `geminiService.ts`
+- `aiProviderService.ts`
 - `teacherService.ts`
 - `analyticsService.ts`
 - `mfaTrustService.ts`

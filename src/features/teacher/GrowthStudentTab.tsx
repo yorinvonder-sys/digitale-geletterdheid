@@ -205,7 +205,7 @@ export const GrowthStudentTab: React.FC<GrowthStudentTabProps> = ({
             <h4 className="text-sm font-semibold text-lab-muted">Aanbeveling</h4>
             <span className="inline-flex items-center gap-1 text-xs text-lab-teal bg-lab-coral/10 border border-lab-coral/30 px-2 py-0.5 rounded-full">
               <Bot size={11} />
-              Gegenereerd door AI (Google Gemini)
+              Gegenereerd door AI (Mistral AI)
             </span>
           </div>
 

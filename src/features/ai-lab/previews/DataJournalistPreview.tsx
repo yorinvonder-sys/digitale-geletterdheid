@@ -173,7 +173,7 @@ const DataJournalistPreview: React.FC = () => {
                             <svg viewBox="0 0 240 60" className="w-full h-auto">
                                 <polyline
                                     fill="none"
-                                    stroke="#5F947D"
+                                    stroke="#202023"
                                     strokeWidth="2.5"
                                     strokeLinecap="round"
                                     strokeLinejoin="round"

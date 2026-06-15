@@ -51,29 +51,29 @@ export const FeedbackBanner: React.FC<{
     return (
         <div
             className={`rounded-2xl border-2 p-4 mt-4 ${
-                good ? 'border-[#5F947D] bg-[#5F947D]/5' : 'border-[#D97848] bg-[#D97848]/5'
+                good ? 'border-duck-ink bg-duck-ink/5' : 'border-duck-coral bg-duck-coral/5'
             }`}
         >
             <div className="flex items-center gap-2 mb-2">
                 <span className="text-lg">{good ? '🎉' : '💡'}</span>
                 <span
-                    className="text-sm font-black text-[#08283B]"
+                    className="text-sm font-black text-duck-ink"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     {good ? (round.feedbackCorrect ?? 'Goed gedaan!') : (round.feedbackIncorrect ?? 'Bijna!')}
                 </span>
             </div>
             <p
-                className="text-xs text-[#445865] mb-3"
+                className="text-xs text-duck-muted mb-3"
                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
             >
                 Ronde score:{' '}
-                <strong className={good ? 'text-[#5F947D]' : 'text-[#D97848]'}>{score}/25</strong>
+                <strong className={good ? 'text-duck-ink' : 'text-duck-coral'}>{score}/25</strong>
             </p>
             {!hideButton && (
                 <button
                     onClick={onNext}
-                    className="w-full py-2.5 rounded-full font-black text-sm bg-gradient-to-r from-[#D97848] to-[#D97848] hover:from-[#D97848] hover:to-[#D97848] text-white transition-all duration-200"
+                    className="w-full py-2.5 rounded-full font-black text-sm bg-gradient-to-r from-duck-coral to-duck-coral hover:from-duck-coral hover:to-duck-coral text-white transition-all duration-200"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     {isLast ? 'Bekijk eindresultaat' : 'Volgende ronde →'}

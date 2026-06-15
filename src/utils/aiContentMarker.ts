@@ -47,7 +47,7 @@ const DEFAULT_DISCLAIMER_NL = 'AI-gegenereerd — kan fouten bevatten';
  */
 export const markAiGeneratedText = (
     text: string,
-    model: string = 'gemini'
+    model: string = 'ai-provider'
 ): string => {
     const metadata = buildMetadata('text', model);
     return `<!-- AI_PROVENANCE:${JSON.stringify(metadata)} -->\n${text}`;
@@ -99,7 +99,7 @@ export const createImageProvenance = (
  * Complements the AiDisclosureBadge component with structured data.
  */
 export const getAttributionText = (
-    model: string = 'gemini',
+    model: string = 'ai-provider',
     locale: 'nl' | 'en' = 'nl'
 ): string => {
     const timestamp = new Date().toLocaleString(locale === 'nl' ? 'nl-NL' : 'en-GB');

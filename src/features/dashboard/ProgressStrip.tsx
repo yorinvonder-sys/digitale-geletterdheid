@@ -19,11 +19,11 @@ const DOMAIN_KEYS: DomeinKey[] = [
 ];
 
 const RING_COLORS: Record<string, string> = {
-    indigo: '#D97848',
-    emerald: '#5F947D',
+    indigo: '#ff3c21',
+    emerald: '#202023',
     violet: '#99984D',
-    rose: '#D97848',
-    sky: '#0B453F',
+    rose: '#ff3c21',
+    sky: '#202023',
 };
 
 const DomainRing: React.FC<{ score: number; color: string; label: string; size?: number }> = ({

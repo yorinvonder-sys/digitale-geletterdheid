@@ -28,9 +28,9 @@ function shuffle<T>(arr: T[]): T[] {
 }
 
 const CATEGORY_COLORS = [
-    { bg: '#D97848', light: '#D97848/10', border: '#D97848/40' },
-    { bg: '#0B453F', light: '#0B453F/10', border: '#0B453F/40' },
-    { bg: '#D7C95F', light: '#D7C95F/10', border: '#D7C95F/40' },
+    { bg: '#ff3c21', light: '#D97848/10', border: '#D97848/40' },
+    { bg: '#202023', light: '#0B453F/10', border: '#0B453F/40' },
+    { bg: '#e1ff01', light: '#D7C95F/10', border: '#D7C95F/40' },
 ];
 
 export const Categorize: React.FC<CategorizeProps> = ({
@@ -93,13 +93,13 @@ export const Categorize: React.FC<CategorizeProps> = ({
         <div className="space-y-4">
             <div>
                 <h3
-                    className="text-lg font-black text-[#08283B] mb-1"
+                    className="text-lg font-black text-duck-ink mb-1"
                     style={{ fontFamily: "'Newsreader', Georgia, serif" }}
                 >
                     {title}
                 </h3>
                 <p
-                    className="text-sm text-[#445865]"
+                    className="text-sm text-duck-muted"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     {description}
@@ -107,7 +107,7 @@ export const Categorize: React.FC<CategorizeProps> = ({
             </div>
 
             {!submitted && (
-                <p className="text-xs text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                <p className="text-xs text-duck-muted" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                     Selecteer een item, dan klik op de categorie.
                 </p>
             )}
@@ -129,8 +129,8 @@ export const Categorize: React.FC<CategorizeProps> = ({
                                     : 'cursor-default'
                                 }`}
                             style={{
-                                borderColor: isClickable ? color.bg : '#E7D8BD',
-                                background: isClickable ? `${color.bg}18` : '#FCF6EA',
+                                borderColor: isClickable ? color.bg : '#e3e2dc',
+                                background: isClickable ? `${color.bg}18` : '#f2f1ec',
                             }}
                         >
                             <div
@@ -152,9 +152,9 @@ export const Categorize: React.FC<CategorizeProps> = ({
                                             className={`flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-medium border
                                                 ${submitted
                                                     ? isCorrect
-                                                        ? 'bg-[#5F947D]/15 border-[#5F947D] text-[#5F947D]'
-                                                        : 'bg-[#D97848]/15 border-[#D97848]/60 text-[#D97848]'
-                                                    : 'bg-white border-[#E7D8BD] text-[#445865] cursor-pointer hover:border-[#D97848]/40'
+                                                        ? 'bg-duck-ink/15 border-duck-ink text-duck-ink'
+                                                        : 'bg-duck-coral/15 border-duck-coral/60 text-duck-coral'
+                                                    : 'bg-white border-duck-line text-duck-muted cursor-pointer hover:border-duck-coral/40'
                                                 }`}
                                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                                             onClick={(e) => {
@@ -179,7 +179,7 @@ export const Categorize: React.FC<CategorizeProps> = ({
             {/* Unplaced items */}
             {unplacedItems.length > 0 && (
                 <div>
-                    <p className="text-xs text-[#445865] mb-2" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                    <p className="text-xs text-duck-muted mb-2" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                         Te categoriseren:
                     </p>
                     <div className="flex flex-wrap gap-2">
@@ -190,8 +190,8 @@ export const Categorize: React.FC<CategorizeProps> = ({
                                 onClick={() => handleItemClick(item.id)}
                                 className={`px-3 py-1.5 rounded-lg border text-xs font-medium transition-all duration-200
                                     ${selectedItem === item.id
-                                        ? 'bg-[#D97848]/15 border-[#D97848] text-[#D97848] scale-105'
-                                        : 'bg-white border-[#E7D8BD] text-[#445865] hover:border-[#D97848]/40'
+                                        ? 'bg-duck-coral/15 border-duck-coral text-duck-coral scale-105'
+                                        : 'bg-white border-duck-line text-duck-muted hover:border-duck-coral/40'
                                     }`}
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                             >
@@ -210,8 +210,8 @@ export const Categorize: React.FC<CategorizeProps> = ({
                         animate={{ opacity: 1, y: 0 }}
                         className={`p-3 rounded-xl text-sm font-medium ${
                             score === maxScore
-                                ? 'bg-[#5F947D]/10 text-[#5F947D]'
-                                : 'bg-[#D97848]/10 text-[#D97848]'
+                                ? 'bg-duck-ink/10 text-duck-ink'
+                                : 'bg-duck-coral/10 text-duck-coral'
                         }`}
                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                     >
@@ -229,8 +229,8 @@ export const Categorize: React.FC<CategorizeProps> = ({
                     disabled={!allPlaced}
                     className={`w-full py-3 rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98]
                         ${allPlaced
-                            ? 'bg-gradient-to-r from-[#D97848] to-[#D97848] hover:from-[#D97848] hover:to-[#D97848] text-white'
-                            : 'bg-[#E7D8BD] text-[#445865] cursor-not-allowed'
+                            ? 'bg-gradient-to-r from-duck-coral to-duck-coral hover:from-duck-coral hover:to-duck-coral text-white'
+                            : 'bg-duck-line text-duck-muted cursor-not-allowed'
                         }`}
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
@@ -239,7 +239,7 @@ export const Categorize: React.FC<CategorizeProps> = ({
             ) : (
                 <button
                     onClick={handleContinue}
-                    className="w-full py-3 bg-gradient-to-r from-[#5F947D] to-[#5F947D] hover:from-[#5F947D] hover:to-[#5F947D] text-white rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2"
+                    className="w-full py-3 bg-gradient-to-r from-duck-ink to-duck-ink hover:from-duck-ink hover:to-duck-ink text-white rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     Volgende ronde

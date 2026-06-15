@@ -13,7 +13,7 @@ Je bent een senior cybersecurity-auditor gespecialiseerd in AI-powered webapplic
 DGSkills is een AI-gestuurd educatief platform voor het voortgezet onderwijs (leerlingen 12-18 jaar). De stack:
 - **Frontend:** React 19 + TypeScript + Vite + Tailwind CSS + Framer Motion
 - **Backend:** Supabase (auth, PostgreSQL database, Edge Functions, Storage, RLS)
-- **AI:** Google Gemini via Vertex AI (europe-west4), aangeroepen via Supabase Edge Functions
+- **AI:** Mistral AI voor tekst/vision/OCR en Black Forest Labs FLUX voor image generation, aangeroepen via Supabase Edge Functions
 - **Deployment:** Vercel (dgskills.app)
 - **Auth:** Supabase Auth met Microsoft SSO (docenten) + email/wachtwoord (leerlingen)
 - **Classificatie:** HIGH RISK onder EU AI Act Annex III punt 3(b) — AI voor beoordeling van leerresultaten
@@ -38,7 +38,7 @@ Voer een systematische security-audit uit op de gehele codebase. Gebruik de onde
 - `supabase/functions/chatStream/index.ts`
 - `supabase/functions/_shared/promptSanitizer.ts`
 - `supabase/functions/_shared/systemInstructions.ts`
-- `src/services/geminiService.ts`
+- `src/services/aiProviderService.ts`
 - `src/config/agents.tsx` (als dit bestaat)
 
 **Checkpunten:**
@@ -65,9 +65,9 @@ A4. **Output handling (LLM05):** Controleer of AI-responses worden gesanitized v
 
 A5. **Rolvalidatie:** Bevestig dat `roleId` server-side wordt gevalideerd via `isValidRoleId()` en dat de systeeminstructie via `getSystemInstruction()` wordt opgehaald — NIET vanuit de client-request.
 
-A6. **Safety settings:** Controleer of Vertex AI safety settings op `BLOCK_LOW_AND_ABOVE` staan voor ALLE vier categorieën (harassment, hate speech, sexually explicit, dangerous content). Dit is essentieel voor een platform voor minderjarigen.
+A6. **Safety settings:** Controleer of provider-neutrale safety controls actief zijn voor ALLE vier categorieën (harassment, hate speech, sexually explicit, dangerous content). Dit is essentieel voor een platform voor minderjarigen.
 
-A7. **Token/cost beperking:** Controleer of er maxOutputTokens of maxInputTokens limieten zijn ingesteld op de Vertex AI-aanroepen om onbegrensde kosten te voorkomen (OWASP LLM10: Unbounded Consumption).
+A7. **Token/cost beperking:** Controleer of er maxOutputTokens of maxInputTokens limieten zijn ingesteld op de Mistral/BFL-aanroepen om onbegrensde kosten te voorkomen (OWASP LLM10: Unbounded Consumption).
 
 A8. **Chat-history manipulatie:** Controleer of een gebruiker de chat-history in de request body kan manipuleren om het model een verkeerd beeld te geven van eerdere interacties.
 
@@ -178,7 +178,7 @@ D4. **Input-validatie:** Controleer of ELKE Edge Function:
 
 D5. **Error handling:** Controleer of error-responses GEEN stack traces, interne paden, database-schema's of andere gevoelige informatie bevatten. Fouten moeten generiek zijn naar de client.
 
-D6. **Vertex AI auth:** Controleer of de service account key:
+D6. **server-side AI secrets:** Controleer of de Supabase secret:
 - Via Supabase secrets wordt opgeslagen (niet in code)
 - JWT-gebaseerde auth gebruikt (niet API key in URL)
 - Tokens worden gecacht (~55 minuten) en vernieuwd voor expiry
@@ -221,7 +221,7 @@ E2. **Content Security Policy (CSP):** Controleer of er CSP-headers zijn geconfi
 default-src 'self';
 script-src 'self';
 style-src 'self' 'unsafe-inline';
-connect-src 'self' *.supabase.co europe-west4-aiplatform.googleapis.com;
+connect-src 'self' *.supabase.co api.mistral.ai en api.eu.bfl.ai;
 img-src 'self' data: blob:;
 font-src 'self';
 frame-ancestors 'none';
@@ -232,7 +232,7 @@ E3. **Dependency vulnerabilities:** Voer een conceptuele `npm audit` uit door `p
 E4. **Secrets in client-code:** Zoek in ALLE bestanden onder `src/` naar:
 - Hardcoded API keys, tokens, of wachtwoorden
 - Supabase service role key (mag alleen server-side)
-- Google service account credentials
+- server-side provider secrets
 - Elk patroon dat lijkt op een secret: lange hex/base64 strings, `sk-`, `key-`, `secret`
 
 E5. **Externe links:** Controleer of alle `<a>` tags naar externe URLs `rel="noopener noreferrer"` hebben en `target="_blank"` correct gebruiken.
@@ -277,7 +277,7 @@ F4. **Dataminimalisatie:** Controleer of er ALLEEN noodzakelijke data wordt verz
 F5. **Logging van AI-interacties:** Controleer of de audit logging van chatberichten ALLEEN metadata logt (tijdstip, user_id, roleId, tokens_used) en NIET de inhoud van berichten (privacy van minderjarigen).
 
 F6. **Third-party data sharing:** Inventariseer alle external services waar data naartoe gaat:
-- Vertex AI / Google Cloud — welke data wordt verzonden?
+- Mistral AI en Black Forest Labs — welke data wordt verzonden?
 - Vercel — welke logging/analytics?
 - Sentry/PostHog — alleen met consent?
 

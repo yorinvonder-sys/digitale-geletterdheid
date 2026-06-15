@@ -47,27 +47,27 @@ function computeVisuals(
             {
                 label: 'Camera',
                 value: camera ? 4 : 0,
-                color: camera ? '#D97848' : '#E7D8BD',
+                color: camera ? '#ff3c21' : '#e3e2dc',
             },
             {
                 label: 'Microfoon',
                 value: microfoon ? 5 : 0,
-                color: microfoon ? '#D97848' : '#E7D8BD',
+                color: microfoon ? '#ff3c21' : '#e3e2dc',
             },
             {
                 label: 'Locatie',
                 value: locatie ? 5 : 0,
-                color: locatie ? '#D97848' : '#E7D8BD',
+                color: locatie ? '#ff3c21' : '#e3e2dc',
             },
             {
                 label: 'Contacten',
                 value: contacten ? 3 : 0,
-                color: contacten ? '#D97848' : '#E7D8BD',
+                color: contacten ? '#ff3c21' : '#e3e2dc',
             },
             {
                 label: 'Opslag',
                 value: opslag ? 2 : 0,
-                color: opslag ? '#D97848' : '#E7D8BD',
+                color: opslag ? '#ff3c21' : '#e3e2dc',
             },
         ];
 
@@ -157,7 +157,7 @@ export const privacyByDesignConfig: SimulationLabConfig = {
     introDescription:
         'Ontdek hoe jouw digitale keuzes bepalen hoeveel anderen over jou weten. Speel met instellingen en zie direct wat er verandert.',
     missionGoal: {
-        primaryGoal: 'Maak privacykeuzes die een app veiliger maken en leg uit welke data echt nodig is.',
+        primaryGoal: 'Ik maak privacykeuzes die een app veiliger maken en leg uit welke data echt nodig is.',
         criteria: {
             type: 'rounds-complete',
             min: 3,
@@ -391,31 +391,31 @@ export const privacyByDesignConfig: SimulationLabConfig = {
             minScore: 90,
             emoji: '🏆',
             title: 'Privacy Expert',
-            color: '#5F947D',
+            color: '#202023',
         },
         {
             minScore: 70,
             emoji: '🔐',
             title: 'Privacy Pro',
-            color: '#D97848',
+            color: '#ff3c21',
         },
         {
             minScore: 50,
             emoji: '🛡️',
             title: 'Privacy Beginner',
-            color: '#445865',
+            color: '#202023',
         },
         {
             minScore: 25,
             emoji: '💡',
             title: 'Startende Privacy Ontwerper',
-            color: '#0B453F',
+            color: '#202023',
         },
         {
             minScore: 0,
             emoji: '📖',
             title: 'Aan het leren',
-            color: '#445865',
+            color: '#202023',
         },
     ],
     takeaways: [

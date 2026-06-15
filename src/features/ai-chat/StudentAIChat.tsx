@@ -4,6 +4,7 @@ import { useStudentAssistant } from '@/hooks/useStudentAssistant';
 import { MarkdownRenderer } from '@/components/ui/MarkdownRenderer';
 import { AiDisclosureBadge } from '@/features/ai-chat/AiDisclosureBadge';
 import { WellbeingAlert } from '@/features/student/WellbeingAlert';
+import type { ChatMessage } from '@/types';
 
 /** Context data passed to AI for better responses */
 interface AIContextData {
@@ -31,6 +32,15 @@ interface StudentAIChatProps {
     /** Optionele server-side roleId voor missie-specifieke AI-instructies. Default: 'student-assistant'. */
     roleId?: string;
 }
+
+const formatChatTimestamp = (timestamp: ChatMessage['timestamp'] | string | number | null | undefined): string => {
+    if (!timestamp) return '';
+
+    const date = timestamp instanceof Date ? timestamp : new Date(timestamp);
+    if (Number.isNaN(date.getTime())) return '';
+
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+};
 
 export const StudentAIChat: React.FC<StudentAIChatProps> = ({ userIdentifier, context, isOpen: controlledIsOpen, onOpenChange, roleId }) => {
     const getQuickPromptLabel = () => {
@@ -121,7 +131,8 @@ export const StudentAIChat: React.FC<StudentAIChatProps> = ({ userIdentifier, co
     } = useStudentAssistant({ userIdentifier, context, roleId });
 
     // Resolve controlled vs internal state
-    const isVisible = controlledIsOpen !== undefined ? controlledIsOpen : internalIsOpen;
+    const isControlled = controlledIsOpen !== undefined;
+    const isVisible = isControlled ? controlledIsOpen : internalIsOpen;
     const setIsVisible = onOpenChange || setInternalIsOpen;
 
     // We need to sync with the hook if using controlled state, but the hook manages its own state. 
@@ -163,7 +174,7 @@ export const StudentAIChat: React.FC<StudentAIChatProps> = ({ userIdentifier, co
             {showHulplijn && <WellbeingAlert match={wellbeingMatch} onDismiss={dismissHulplijn} />}
 
             {/* Floating AI coach button */}
-            {!isVisible && (
+            {!isControlled && !isVisible && (
                 <button
                     onClick={handleOpen}
                     className="fixed bottom-20 sm:bottom-6 right-4 sm:right-6 group z-[70] flex items-center gap-0"
@@ -175,7 +186,7 @@ export const StudentAIChat: React.FC<StudentAIChatProps> = ({ userIdentifier, co
                     </span>
                     {/* AI coach avatar */}
                     <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300 overflow-hidden flex items-center justify-center" style={{ backgroundColor: '#FFFFFF', borderWidth: 2, borderColor: '#D97848' }}>
-                        <img src="/assets/storytelling/beaver-storyteller.webp" alt="DGSkills bever — visuele AI-hulp" className="w-11 h-11 sm:w-12 sm:h-12 object-contain" draggable={false} loading="lazy" />
+                        <img src="/assets/brand/dgskills-duck-guide-v3.png" alt="DGSkills eend - visuele AI-hulp" className="w-11 h-11 sm:w-12 sm:h-12 object-contain" draggable={false} loading="lazy" />
                         {/* Pulse ring */}
                         <span className="absolute inset-0 rounded-full animate-ping opacity-20 pointer-events-none" style={{ borderWidth: 2, borderColor: '#D97848' }} />
                     </div>
@@ -192,7 +203,7 @@ export const StudentAIChat: React.FC<StudentAIChatProps> = ({ userIdentifier, co
                     <div className="p-4 flex items-center justify-between" style={{ background: isLocked ? '#FEF2F2' : 'linear-gradient(to right, #D97848, #D97848)' }}>
                         <div className="flex items-center gap-2">
                             <div className="p-1 bg-white rounded-full overflow-hidden">
-                                {isLocked ? <Lock size={20} className="text-lab-muted" /> : <img src="/assets/storytelling/beaver-storyteller.webp" alt="DGSkills bever" className="w-8 h-8 object-contain" loading="lazy" />}
+                                {isLocked ? <Lock size={20} className="text-lab-muted" /> : <img src="/assets/brand/dgskills-duck-guide-v3.png" alt="DGSkills eend" className="w-8 h-8 object-contain" loading="lazy" />}
                             </div>
                             <div>
                                 <h3 className={`font-bold ${isLocked ? 'text-lab-coral' : 'text-white'}`} style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
@@ -239,7 +250,7 @@ export const StudentAIChat: React.FC<StudentAIChatProps> = ({ userIdentifier, co
                                         msg.text
                                     )}
                                     <div className="text-[10px] mt-1" style={{ color: msg.role === 'user' ? 'rgba(255,255,255,0.7)' : '#445865' }}>
-                                        {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                        {formatChatTimestamp(msg.timestamp)}
                                     </div>
                                 </div>
                             </div>

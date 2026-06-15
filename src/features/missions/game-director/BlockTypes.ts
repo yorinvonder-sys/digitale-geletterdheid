@@ -58,10 +58,10 @@ export interface BlockDefinition {
 
 // Scratch-inspired color palette
 const COLORS = {
-    event: '#D7C95F',    // Yellow/Gold for events
-    motion: '#0B453F',   // Blue for motion
-    control: '#D7C95F',  // Orange for control
-    variable: '#D97848', // Dark orange for variables
+    event: '#e1ff01',    // Yellow/Gold for events
+    motion: '#202023',   // Blue for motion
+    control: '#e1ff01',  // Orange for control
+    variable: '#ff3c21', // Dark orange for variables
 };
 
 export const BLOCK_DEFINITIONS: BlockDefinition[] = [

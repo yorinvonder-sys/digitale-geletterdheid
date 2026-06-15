@@ -1,5 +1,5 @@
 /**
- * Edge Function: /analyzeDrawing — Vertex AI vision analysis of student drawings
+ * Edge Function: /analyzeDrawing — Mistral vision analysis of student drawings
  *
  * Used by the drawing game component in DGSkills missions.
  * Students submit a drawing (base64 image) and the AI identifies what was drawn.
@@ -11,8 +11,8 @@
  * 4. Rate limiting: 10 req/min per user (durable via Postgres RPC)
  * 5. Input validation: imageBase64 required, max 5 MB (~7 M base64 chars)
  * 6. Server-side prompt — client-sent prompt is IGNORED (prompt injection prevention)
- * 7. Vertex AI (europe-west4) — enterprise ToS, suitable for minors (12-18 yr)
- * 8. Safety settings: BLOCK_LOW_AND_ABOVE for all harm categories
+ * 7. Mistral Vision via Chat Completions — server-side API key only
+ * 8. JSON schema validation before returning a result
  *
  * Input:  { imageBase64: string, possibleLabels?: string[] }
  * Output: { guesses: [{label: string, confidence: number}], reasoning: string }
@@ -22,11 +22,12 @@
  */
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { getAccessToken, getVertexUrl } from "../_shared/vertexAuth.ts";
 import { buildCorsHeaders, rejectDisallowedBrowserRequest } from "../_shared/cors.ts";
 import { checkDurableRateLimit, rateLimitResponse, rateLimitHeaders } from "../_shared/rateLimiter.ts";
 import { ensureAiInteractionConsent } from "../_shared/consent.ts";
 import { getUserSchoolId, logAiUsageEvent, resolveAiRequestId } from "../_shared/aiUsageLogger.ts";
+import { sanitizePrompt } from "../_shared/promptSanitizer.ts";
+import { completeMistralVisionJson, extractJsonObject, getMistralVisionModel } from "../_shared/mistralClient.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
@@ -36,7 +37,6 @@ const MAX_BASE64_LENGTH = 7_000_000;
 
 /** Rate limit: 10 requests per minute per authenticated user. */
 const RATE_LIMIT = { maxRequests: 10, windowMs: 60_000 };
-const MODEL = "gemini-3-flash-preview";
 
 /**
  * Base server-side prompt for drawing analysis.
@@ -147,6 +147,7 @@ Deno.serve(async (req: Request) => {
 
     const requestId = resolveAiRequestId(body.clientRequestId);
     const responseHeaders = { ...corsHeaders, "Content-Type": "application/json", "X-AI-Request-Id": requestId };
+    const model = getMistralVisionModel();
 
     if (!body.imageBase64 || typeof body.imageBase64 !== "string") {
         return new Response(
@@ -162,7 +163,8 @@ Deno.serve(async (req: Request) => {
         logAiUsageEvent({
             requestId,
             endpoint: "analyzeDrawing",
-            model: MODEL,
+            provider: "mistral",
+            model,
             status: "rate_limited",
             userId: user.id,
             schoolId,
@@ -211,128 +213,78 @@ Deno.serve(async (req: Request) => {
             .map((l) => l.trim().replace(/[<>"'`]/g, "")); // strip HTML/template injection characters
 
         if (safeLabels.length > 0) {
-            serverPrompt += `\n\nHet doel was om een van deze objecten te tekenen: ${safeLabels.join(", ")}.`;
+            const labelText = safeLabels.join(", ");
+            const labelSanitization = sanitizePrompt(labelText);
+            if (labelSanitization.wasBlocked) {
+                logAiUsageEvent({
+                    requestId,
+                    endpoint: "analyzeDrawing",
+                    provider: "mistral",
+                    model,
+                    status: "blocked",
+                    userId: user.id,
+                    schoolId,
+                    inputChars: labelText.length,
+                    imageCount: 1,
+                    metadata: { reason: "label_sanitizer", detection_label: labelSanitization.detectionLabel ?? "unknown" },
+                }).catch((err) => console.error("[analyzeDrawing] Usage log error:", err));
+                return new Response(
+                    JSON.stringify({ error: "Tekening kon niet worden geanalyseerd." }),
+                    { status: 422, headers: responseHeaders },
+                );
+            }
+            serverPrompt += `\n\nHet doel was om een van deze objecten te tekenen: ${labelSanitization.sanitized}.`;
         }
     }
 
-    // 7. Call Vertex AI (europe-west4) with vision payload
-    const vertexUrl = getVertexUrl(MODEL);
-    let accessToken: string;
-    try {
-        accessToken = await getAccessToken();
-    } catch (err) {
-        console.error("[analyzeDrawing] Vertex auth error:", err);
-        logAiUsageEvent({
-            requestId,
-            endpoint: "analyzeDrawing",
-            model: MODEL,
-            status: "error",
-            userId: user.id,
-            schoolId,
-            inputChars: serverPrompt.length,
-            imageCount: 1,
-            metadata: { error_stage: "auth" },
-        }).catch((logErr) => console.error("[analyzeDrawing] Usage log error:", logErr));
-        return new Response(
-            JSON.stringify({ error: "AI-service tijdelijk niet beschikbaar." }),
-            { status: 502, headers: responseHeaders },
-        );
-    }
+    const dataUrl = `data:${mimeType};base64,${imageBase64}`;
 
-    const vertexPayload = {
-        contents: [{
-            parts: [
-                { text: serverPrompt },
-                {
-                    inline_data: {
-                        mime_type: mimeType,
-                        data: imageBase64,
-                    },
-                },
-            ],
-        }],
-        generationConfig: {
-            temperature: 0.2,
-            maxOutputTokens: 512,
-        },
-        safetySettings: [
-            { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_LOW_AND_ABOVE" },
-            { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_LOW_AND_ABOVE" },
-            { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_LOW_AND_ABOVE" },
-            { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_LOW_AND_ABOVE" },
-        ],
-    };
-
-    let vertexResponse: Response;
+    let result;
     try {
-        vertexResponse = await fetch(vertexUrl, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${accessToken}`,
-            },
-            body: JSON.stringify(vertexPayload),
+        result = await completeMistralVisionJson({
+            messages: [{
+                role: "user",
+                content: [
+                    { type: "text", text: serverPrompt },
+                    { type: "image_url", image_url: dataUrl },
+                ],
+            }],
+            maxTokens: 512,
         });
-    } catch (err) {
-        console.error("[analyzeDrawing] Vertex fetch error:", err);
+    } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : String(err);
+        console.error("[analyzeDrawing] Mistral vision error:", message);
         logAiUsageEvent({
             requestId,
             endpoint: "analyzeDrawing",
-            model: MODEL,
-            status: "error",
+            provider: "mistral",
+            model,
+            status: message.includes("429") ? "rate_limited" : "error",
             userId: user.id,
             schoolId,
             inputChars: serverPrompt.length,
             imageCount: 1,
-            metadata: { error_stage: "fetch" },
+            metadata: { error_stage: "provider" },
         }).catch((logErr) => console.error("[analyzeDrawing] Usage log error:", logErr));
-        return new Response(
-            JSON.stringify({ error: "AI-service tijdelijk niet beschikbaar." }),
-            { status: 502, headers: responseHeaders },
-        );
-    }
-
-    if (!vertexResponse.ok) {
-        const status = vertexResponse.status;
-        logAiUsageEvent({
-            requestId,
-            endpoint: "analyzeDrawing",
-            model: MODEL,
-            status: status === 429 ? "rate_limited" : "error",
-            userId: user.id,
-            schoolId,
-            inputChars: serverPrompt.length,
-            imageCount: 1,
-            metadata: { http_status: status },
-        }).catch((err) => console.error("[analyzeDrawing] Usage log error:", err));
-        if (status === 429) {
+        if (message.includes("429")) {
             return new Response(
                 JSON.stringify({ error: "Te veel verzoeken. Wacht even." }),
                 { status: 429, headers: responseHeaders },
             );
         }
-        console.error("[analyzeDrawing] Vertex error:", status);
         return new Response(
             JSON.stringify({ error: "AI-service tijdelijk niet beschikbaar." }),
             { status: 502, headers: responseHeaders },
         );
     }
 
-    // 8. Extract and parse the JSON from Vertex AI response text
-    const vertexData = await vertexResponse.json();
-    const rawText: string = vertexData?.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
+    // 8. Extract and parse the JSON from the Mistral response text
+    const rawText = result.text;
 
     let analysis: DrawingAnalysis;
 
     try {
-        const startIdx = rawText.indexOf("{");
-        const endIdx = rawText.lastIndexOf("}");
-
-        if (startIdx === -1 || endIdx === -1 || endIdx <= startIdx) {
-            throw new Error("No JSON found in Vertex response");
-        }
-
-        const parsed: unknown = JSON.parse(rawText.slice(startIdx, endIdx + 1));
+        const parsed: unknown = extractJsonObject(rawText);
 
         if (!validateAnalysis(parsed)) {
             throw new Error("Response schema validation failed");
@@ -340,18 +292,19 @@ Deno.serve(async (req: Request) => {
 
         analysis = parsed;
     } catch (err) {
-        console.error("[analyzeDrawing] Parse/validation error:", err, "raw:", rawText.slice(0, 200));
+        console.error("[analyzeDrawing] Parse/validation error:", err);
         logAiUsageEvent({
             requestId,
             endpoint: "analyzeDrawing",
-            model: MODEL,
+            provider: "mistral",
+            model: result.model,
             status: "error",
             userId: user.id,
             schoolId,
             inputChars: serverPrompt.length,
             outputChars: rawText.length,
             imageCount: 1,
-            usagePayload: vertexData,
+            usagePayload: result.usagePayload,
             metadata: { error_stage: "parse", possible_label_count: Array.isArray(body.possibleLabels) ? body.possibleLabels.length : 0 },
         }).catch((logErr) => console.error("[analyzeDrawing] Usage log error:", logErr));
         return new Response(
@@ -363,14 +316,15 @@ Deno.serve(async (req: Request) => {
     logAiUsageEvent({
         requestId,
         endpoint: "analyzeDrawing",
-        model: MODEL,
+        provider: "mistral",
+        model: result.model,
         status: "ok",
         userId: user.id,
         schoolId,
         inputChars: serverPrompt.length,
         outputChars: rawText.length,
         imageCount: 1,
-        usagePayload: vertexData,
+        usagePayload: result.usagePayload,
         metadata: {
             mime_type: mimeType,
             possible_label_count: Array.isArray(body.possibleLabels) ? body.possibleLabels.length : 0,

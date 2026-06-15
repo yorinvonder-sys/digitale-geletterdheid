@@ -69,7 +69,7 @@ DGSkills heeft een **sterk technisch fundament** met defense-in-depth op authent
 - **Checkpunt:** A7
 - **Bestand:** `supabase/functions/chat/index.ts`, `supabase/functions/chatStream/index.ts`
 - **Probleem:** Geen `generationConfig.maxOutputTokens` ingesteld. Een enkele request kan een response van tienduizenden tokens genereren. Bij 15 req/min per gebruiker kunnen kosten snel oplopen.
-- **Impact:** Onbegrensde Vertex AI kosten. Potentieel financiële schade.
+- **Impact:** Onbegrensde Mistral/BFL-kosten. Potentieel financiële schade.
 - **CVSS-schatting:** 6.5
 - **Fix:** Voeg `generationConfig: { maxOutputTokens: 1024 }` toe aan beide endpoints.
 
@@ -280,9 +280,9 @@ DGSkills heeft een **sterk technisch fundament** met defense-in-depth op authent
 ### MEDIUM — DPA-verificatie Google Cloud en Vercel ontbreekt
 - **Categorie:** F
 - **Checkpunt:** F6
-- **Probleem:** Verwerkersovereenkomsten met Google (Vertex AI) en Vercel niet verifieerbaar vanuit codebase.
+- **Probleem:** Verwerkersovereenkomsten met Mistral AI, Black Forest Labs en Vercel niet verifieerbaar vanuit codebase.
 - **Impact:** Chatberichten van minderjarigen worden naar Google gestuurd; IP-adressen naar Vercel.
-- **Fix:** Bevestig dat Google Cloud DPA en Vercel DPA actief zijn.
+- **Fix:** Bevestig dat provider-DPA en Vercel DPA actief zijn.
 
 ---
 
@@ -318,7 +318,7 @@ DGSkills heeft een **sterk technisch fundament** met defense-in-depth op authent
 
 ## Aanbevelingen (top 5 prioriteit)
 
-1. **[NU] Voeg `maxOutputTokens: 1024` toe** aan chat en chatStream endpoints — voorkomt onbegrensde Vertex AI kosten. Implementatietijd: 10 minuten.
+1. **[NU] Voeg `maxOutputTokens: 1024` toe** aan chat en chatStream endpoints — voorkomt onbegrensde Mistral/BFL-kosten. Implementatietijd: 10 minuten.
 
 2. **[NU] Fix promptSanitizer** — voeg Unicode zero-width stripping, meertalige patronen (FR/DE/ES), en base64-detectie toe. Implementatietijd: 2 uur.
 
@@ -346,7 +346,7 @@ DGSkills heeft een **sterk technisch fundament** met defense-in-depth op authent
 
 7. **Content Security Policy** — sterke CSP met report-uri, HSTS met preload, frame-ancestors 'none', permissions-policy. Uitstekend.
 
-8. **Vertex AI safety settings** — BLOCK_LOW_AND_ABOVE voor alle 4 categorieën. Correct voor platform met minderjarigen.
+8. **provider-neutrale safety controls** — prompt sanitizing, safe_prompt, output filtering en rate limits. Correct voor platform met minderjarigen.
 
 9. **Prompt sanitizer (fundament)** — 28 patronen, NFKD-normalisatie, URI-decoding, dubbele enforcement (client + server). Goed fundament ondanks de genoemde gaps.
 

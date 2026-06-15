@@ -25,7 +25,7 @@ const BG = {
 
 // ============================================================
 // FEATURE ILLUSTRATION IMAGES
-// Generated via Gemini 2.5 Flash Image API
+// Generated via Mistral 2.5 Flash Image API
 // ============================================================
 
 function FeatureImage({ src, alt }: { src: string; alt: string }) {
@@ -50,7 +50,7 @@ const features = [
         bgColor: BG.coral,
         label: 'Leerervaring',
         title: 'AI-gestuurde missies',
-        description: 'Leerlingen lossen uitdagingen op met Google Gemini AI. Van deepfakes herkennen tot een AI-beleidsplan schrijven. Elke missie past zich aan het niveau aan.',
+        description: 'Leerlingen lossen uitdagingen op met Mistral AI. Van deepfakes herkennen tot een AI-beleidsplan schrijven. Elke missie past zich aan het niveau aan.',
     },
     {
         illustration: <FeatureImage src="/illustrations/feature-curriculum.webp" alt="SLO Kerndoelen illustratie" />,

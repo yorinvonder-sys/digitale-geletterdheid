@@ -6,9 +6,9 @@ interface DataVerzamelaarPreviewProps {
 }
 
 const DATASET = [
-  { label: 'Fiets', aantal: 56, percentage: 47, color: '#0B453F', emoji: '🚲' },
-  { label: 'Bus/tram', aantal: 22, percentage: 18, color: '#0B453F', emoji: '🚌' },
-  { label: 'Lopend', aantal: 18, percentage: 15, color: '#5F947D', emoji: '🚶' },
+  { label: 'Fiets', aantal: 56, percentage: 47, color: '#202023', emoji: '🚲' },
+  { label: 'Bus/tram', aantal: 22, percentage: 18, color: '#202023', emoji: '🚌' },
+  { label: 'Lopend', aantal: 18, percentage: 15, color: '#202023', emoji: '🚶' },
   { label: 'Auto', aantal: 16, percentage: 13, color: '#C4B5FD', emoji: '🚗' },
   { label: 'Scooter', aantal: 5, percentage: 4, color: '#DDD6FE', emoji: '🛵' },
   { label: 'Anders', aantal: 3, percentage: 3, color: '#EDE9FE', emoji: '❓' },

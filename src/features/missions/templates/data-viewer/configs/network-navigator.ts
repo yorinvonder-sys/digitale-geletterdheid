@@ -8,7 +8,7 @@ export const networkNavigatorConfig: DataViewerConfig = {
     introDescription:
         'Als je een bericht stuurt op Instagram, maakt dat bericht een reis langs servers, routers en datacenters voordat het aankomt. Jij gaat als netwerk-engineer uitzoeken hoe het internet werkt — van IP-adressen en DNS tot routers en foutcodes.',
     missionGoal: {
-        primaryGoal: 'Leg uit hoe een bericht door het internet reist en gebruik data om netwerkproblemen te herkennen.',
+        primaryGoal: 'Ik leg uit hoe een bericht door het internet reist en gebruik data om netwerkproblemen te herkennen.',
         criteria: {
             type: 'rounds-complete',
             min: 3,
@@ -93,12 +93,12 @@ export const networkNavigatorConfig: DataViewerConfig = {
                 'Onderzoekers maten de reactietijd (ping) van populaire websites vanuit Nederland in milliseconden. Hoe lager, hoe sneller.',
             type: 'bar-chart',
             chartData: [
-                { label: 'Google.nl', value: 8, color: '#0B453F' },
-                { label: 'Wikipedia', value: 15, color: '#0B453F' },
-                { label: 'Instagram', value: 34, color: '#D97848' },
-                { label: 'YouTube', value: 12, color: '#D97848' },
-                { label: 'TikTok', value: 45, color: '#08283B' },
-                { label: 'Amazon.com', value: 72, color: '#D7C95F' },
+                { label: 'Google.nl', value: 8, color: '#202023' },
+                { label: 'Wikipedia', value: 15, color: '#202023' },
+                { label: 'Instagram', value: 34, color: '#ff3c21' },
+                { label: 'YouTube', value: 12, color: '#ff3c21' },
+                { label: 'TikTok', value: 45, color: '#202023' },
+                { label: 'Amazon.com', value: 72, color: '#e1ff01' },
             ],
             questions: [
                 {
@@ -200,25 +200,25 @@ export const networkNavigatorConfig: DataViewerConfig = {
             minScore: 85,
             emoji: '🌐',
             title: 'Netwerk Engineer!',
-            color: '#0B453F',
+            color: '#202023',
         },
         {
             minScore: 65,
             emoji: '📡',
             title: 'Internetdetective',
-            color: '#0B453F',
+            color: '#202023',
         },
         {
             minScore: 40,
             emoji: '🔌',
             title: 'Netwerk Verkenner',
-            color: '#5F947D',
+            color: '#202023',
         },
         {
             minScore: 0,
             emoji: '📚',
             title: 'Aan de slag!',
-            color: '#445865',
+            color: '#202023',
         },
     ],
 

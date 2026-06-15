@@ -1,12 +1,12 @@
 {
   "assets": [
     {
-      "pattern": "vendor-three-*.js",
-      "maxKb": 1050
+      "pattern": "vendor-react-three-*.js",
+      "maxKb": 1000
     },
     {
       "pattern": "vendor-exceljs-*.js",
-      "maxKb": 1050
+      "maxKb": 1000
     },
     {
       "pattern": "index-*.js",

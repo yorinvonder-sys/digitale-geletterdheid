@@ -7,15 +7,12 @@ import { logAiInteraction } from './auditService';
 import { sanitizePrompt } from '@/utils/promptSanitizer';
 import { markAiGeneratedText } from '@/utils/aiContentMarker';
 import {
-  buildGeminiImageRequest,
-  extractInlineImage,
-  GEMINI_IMAGE_MODELS,
   type GenerateImageResponse,
   type ImageAspectRatio,
   type ImageGenerationStyle,
-} from './geminiImageLogic';
+} from './imageGenerationLogic';
 
-export type { ImageAspectRatio, ImageGenerationStyle } from './geminiImageLogic';
+export type { ImageAspectRatio, ImageGenerationStyle } from './imageGenerationLogic';
 
 // ── Fallback guard: local simulation only in DEV (AI Act Art. 50 + NIS2) ──
 const ALLOW_LOCAL_FALLBACK = (() => {
@@ -23,22 +20,6 @@ const ALLOW_LOCAL_FALLBACK = (() => {
     return (import.meta as any).env?.DEV === true;
   } catch { return false; }
 })();
-
-// --- Configuration ---
-const GEMINI_TEXT_MODEL = 'gemini-2.5-flash';
-const GEMINI_TEXT_GENERATE_CONTENT_URL = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_TEXT_MODEL}:generateContent`;
-
-function getClientGeminiApiKey(): string {
-  try {
-    return String(
-      (import.meta as any).env?.VITE_GEMINI_API_KEY ||
-      (import.meta as any).env?.VITE_GOOGLE_API_KEY ||
-      ''
-    ).trim();
-  } catch {
-    return '';
-  }
-}
 
 // Client-side rate limiting (Cbw Zorgplicht)
 const AI_RATE_LIMIT = {
@@ -168,27 +149,6 @@ export class Chat {
     return `${message}\n\n[MISSIE_CONTEXT]\n${compactContext}\n[/MISSIE_CONTEXT]`;
   }
 
-  private async runDevelopmentGeminiFallback(): Promise<string | null> {
-    if (!ALLOW_LOCAL_FALLBACK || !getClientGeminiApiKey()) return null;
-
-    try {
-      const fallbackResponse = await generateClientGeminiTextFallback({
-        systemInstruction: this.systemInstruction,
-        localMissionContext: this.localMissionContext,
-        gameContext: this.gameContext,
-        history: this.history,
-      });
-
-      this.history.push({ role: 'model', parts: [{ text: fallbackResponse }] });
-      this.trimHistory();
-      logAiInteraction('chat', { model: `${GEMINI_TEXT_MODEL}-dev-fallback`, fallback_used: true }).catch(() => { });
-      return fallbackResponse;
-    } catch (fallbackError) {
-      console.warn('[GeminiService] Local Gemini text fallback failed:', fallbackError);
-      return null;
-    }
-  }
-
   private async sendEdgeRequest(
     endpoint: 'chat' | 'chatStream',
     message: string,
@@ -250,7 +210,7 @@ export class Chat {
     let error = response.ok ? undefined : await this.getEdgeErrorPayload(response);
 
     if (!response.ok && this.shouldRetryWithFallbackRole(response.status, error)) {
-      console.warn(`[GeminiService] roleId "${this.roleId}" not available server-side, retrying with "${this.fallbackRoleId}"`);
+      console.warn(`[AiProviderService] roleId "${this.roleId}" not available server-side, retrying with "${this.fallbackRoleId}"`);
       response = await this.sendEdgeRequest(
         endpoint,
         this.buildFallbackRoleMessage(cleanMessage),
@@ -293,9 +253,6 @@ export class Chat {
         const message = this.buildEdgeErrorMessage(response.status, error);
 
         if (ALLOW_LOCAL_FALLBACK && response.status >= 500) {
-          const directGeminiFallback = await this.runDevelopmentGeminiFallback();
-          if (directGeminiFallback) return { text: directGeminiFallback };
-
           console.warn('Backend AI request failed, falling back to local simulation (DEV only)', error);
           const fallbackResponse = await simulateLocalResponse(this.systemInstruction, cleanMessage);
           this.history.push({ role: 'model', parts: [{ text: fallbackResponse }] });
@@ -304,7 +261,7 @@ export class Chat {
           return { text: fallbackResponse };
         }
 
-        logAiInteraction('chat', { model: 'gemini', fallback_used: false }).catch(() => { });
+        logAiInteraction('chat', { model: 'mistral', fallback_used: false }).catch(() => { });
         throw new Error(message);
       }
 
@@ -320,9 +277,6 @@ export class Chat {
       if (!ALLOW_LOCAL_FALLBACK || this.shouldBubbleError(error)) {
         throw new Error(message);
       }
-
-      const directGeminiFallback = await this.runDevelopmentGeminiFallback();
-      if (directGeminiFallback) return { text: directGeminiFallback };
 
       console.warn('Chat proxy network error, falling back to local simulation (DEV only):', error);
       const fallbackResponse = await simulateLocalResponse(this.systemInstruction, cleanMessage);
@@ -405,12 +359,6 @@ export class Chat {
         return;
       }
 
-      const directGeminiFallback = await this.runDevelopmentGeminiFallback();
-      if (directGeminiFallback) {
-        yield { text: directGeminiFallback };
-        return;
-      }
-
       console.warn('Streaming failed, simulating local response (DEV only)...', error);
       const fallbackResponse = await simulateLocalResponse(this.systemInstruction, cleanMessage);
       const words = fallbackResponse.split(' ');
@@ -427,65 +375,6 @@ export class Chat {
       this.trimHistory();
     }
   }
-}
-
-// --- Fallback ---
-async function generateClientGeminiTextFallback(params: {
-  systemInstruction: string;
-  localMissionContext: string;
-  gameContext: string | null;
-  history: ChatMessage[];
-}): Promise<string> {
-  const apiKey = getClientGeminiApiKey();
-  if (!apiKey) {
-    throw new Error('VITE_GEMINI_API_KEY ontbreekt voor lokale AI-chat.');
-  }
-
-  const systemParts = [
-    params.systemInstruction,
-    params.localMissionContext ? `Missiecontext:\n${params.localMissionContext}` : '',
-    params.gameContext ? `Actuele gamecode:\n${params.gameContext}` : '',
-  ].filter(Boolean).join('\n\n');
-
-  const requestBody: Record<string, unknown> = {
-    contents: params.history.map((message) => ({
-      role: message.role,
-      parts: message.parts,
-    })),
-    generationConfig: {
-      temperature: 0.7,
-      maxOutputTokens: 2048,
-    },
-  };
-
-  if (systemParts) {
-    requestBody.systemInstruction = {
-      parts: [{ text: systemParts }],
-    };
-  }
-
-  const response = await fetch(`${GEMINI_TEXT_GENERATE_CONTENT_URL}?key=${encodeURIComponent(apiKey)}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(requestBody),
-  });
-
-  if (!response.ok) {
-    const errorText = await response.text().catch(() => '');
-    throw new Error(`Gemini lokale chat fallback mislukt (${response.status}): ${errorText}`);
-  }
-
-  const payload = await response.json();
-  const text = payload?.candidates?.[0]?.content?.parts
-    ?.map((part: { text?: string }) => part.text || '')
-    .join('')
-    .trim();
-
-  if (!text) {
-    throw new Error('Gemini lokale chat fallback gaf geen tekst terug.');
-  }
-
-  return text;
 }
 
 async function simulateLocalResponse(systemInstruction: string, userMessage: string): Promise<string> {
@@ -680,18 +569,18 @@ export const createChatSession = (
   return new Chat(roleId, systemInstruction, options);
 };
 
-export const sendMessageToGemini = async (chat: Chat, message: string): Promise<string> => {
+export const sendMessageToAi = async (chat: Chat, message: string): Promise<string> => {
   try {
     const response = await chat.sendMessage({ message });
     const rawText = response.text || "Geen data ontvangen.";
 
     // G-05 FIX: Mark AI-generated response (AI Act Art. 50)
-    const text = markAiGeneratedText(rawText, 'gemini');
+    const text = markAiGeneratedText(rawText, 'mistral');
 
     // EU AI Act Art. 12 — log AI interaction metadata (never message content)
     logAiInteraction('chat', {
       response_length: text.length,
-      model: 'gemini',
+      model: 'mistral',
       fallback_used: false,
     }).catch(() => { });
 
@@ -702,7 +591,7 @@ export const sendMessageToGemini = async (chat: Chat, message: string): Promise<
   }
 };
 
-export const sendMessageToGeminiStream = async (
+export const sendMessageToAiStream = async (
   chat: Chat,
   message: string,
   onChunk: (text: string) => void
@@ -719,12 +608,12 @@ export const sendMessageToGeminiStream = async (
     }
 
     // G-05 FIX: Mark AI-generated response (AI Act Art. 50)
-    fullText = markAiGeneratedText(fullText, 'gemini');
+    fullText = markAiGeneratedText(fullText, 'mistral');
 
     // EU AI Act Art. 12 — log AI interaction metadata (never message content)
     logAiInteraction('stream', {
       response_length: fullText.length,
-      model: 'gemini',
+      model: 'mistral',
       fallback_used: false,
     }).catch(() => { });
 
@@ -743,51 +632,6 @@ interface ImageGenerationOptions {
   aspectRatio?: ImageAspectRatio;
   title?: string;
 }
-
-const generateImageWithClientApiKey = async (
-  prompt: string,
-  options: Required<Pick<ImageGenerationOptions, 'style' | 'aspectRatio'>>
-): Promise<GenerateImageResponse> => {
-  if (!ALLOW_LOCAL_FALLBACK) {
-    throw new Error('Client-side Gemini image fallback is alleen beschikbaar in development.');
-  }
-
-  const apiKey = getClientGeminiApiKey();
-  if (!apiKey) {
-    throw new Error('VITE_GEMINI_API_KEY ontbreekt voor lokale afbeeldinggeneratie.');
-  }
-
-  const sanitizeResult = sanitizePrompt(prompt);
-  if (sanitizeResult.wasBlocked) {
-    throw new Error(sanitizeResult.reason || 'Prompt bevat niet-toegestane inhoud.');
-  }
-
-  let lastError: Error | null = null;
-
-  for (const model of GEMINI_IMAGE_MODELS) {
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(apiKey)}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(buildGeminiImageRequest(sanitizeResult.sanitized, options.style, options.aspectRatio)),
-    });
-
-    const payload = await response.json().catch(() => ({}));
-    if (!response.ok) {
-      const reason = payload?.error?.message || payload?.error || `Gemini afbeeldinggenerator tijdelijk niet beschikbaar (${response.status}).`;
-      lastError = new Error(`${model}: ${reason}`);
-      continue;
-    }
-
-    const { imageBase64, mimeType, partCount } = extractInlineImage(payload);
-    if (imageBase64) {
-      return { imageBase64, mimeType, model };
-    }
-
-    lastError = new Error(`${model}: Gemini gaf geen afbeelding terug. Parts count: ${partCount}`);
-  }
-
-  throw lastError || new Error('Gemini gaf geen afbeelding terug.');
-};
 
 const decodeBase64ToBytes = (base64: string): Uint8Array => {
   const binaryString = atob(base64);
@@ -859,7 +703,7 @@ export const generateImage = async (
       const { embedC2paCredentials } = await import('@/utils/c2paWatermark');
       const { imageData } = await embedC2paCredentials(
         imageBlob,
-        payload.model || GEMINI_IMAGE_MODELS[0],
+        payload.model || 'black-forest-labs',
         options.title || prompt.slice(0, 80) || 'AI-generated image'
       );
 
@@ -867,41 +711,19 @@ export const generateImage = async (
         finalBlob = imageData;
       }
     } catch (watermarkError) {
-      console.warn('[GeminiService] C2PA watermarking skipped:', watermarkError);
+      console.warn('[AiProviderService] C2PA watermarking skipped:', watermarkError);
     }
 
     const dataUrl = await blobToDataUrl(finalBlob);
 
     logAiInteraction('image', {
-      model: payload.model || GEMINI_IMAGE_MODELS[0],
+      model: payload.model || 'black-forest-labs',
       fallback_used: false,
     }).catch(() => { });
 
     return dataUrl;
   } catch (error: any) {
-    if (ALLOW_LOCAL_FALLBACK) {
-      try {
-        console.warn('[GeminiService] Secure image proxy failed, retrying with local Gemini API key fallback (DEV only).');
-        const style = options.style || 'general';
-        const aspectRatio = options.aspectRatio || '1:1';
-        const payload = await generateImageWithClientApiKey(prompt, { style, aspectRatio });
-        const mimeType = payload.mimeType || 'image/png';
-        const imageBlob = new Blob([decodeBase64ToBytes(payload.imageBase64 || '')], { type: mimeType });
-        const dataUrl = await blobToDataUrl(imageBlob);
-
-        logAiInteraction('image', {
-          model: payload.model || GEMINI_IMAGE_MODELS[0],
-          fallback_used: true,
-        }).catch(() => { });
-
-        return dataUrl;
-      } catch (fallbackError: any) {
-        console.error('[GeminiService] Local Gemini image fallback error:', fallbackError);
-        return `error:${fallbackError?.message || error?.message || 'AI-afbeelding tijdelijk niet beschikbaar.'}`;
-      }
-    }
-
-    console.error('[GeminiService] Image generation error:', error);
+    console.error('[AiProviderService] Image generation error:', error);
     return `error:${error?.message || 'AI-afbeelding tijdelijk niet beschikbaar.'}`;
   }
 };
@@ -989,7 +811,7 @@ export const analyzeDrawingWithAI = async (
 
       // EU AI Act Art. 12 — log drawing analysis metadata
       logAiInteraction('drawing_analysis', {
-        model: 'gemini',
+        model: 'mistral',
         fallback_used: false,
       }).catch(() => { });
 

@@ -33,9 +33,9 @@ export const DUCK_COLORS = {
 export type DuckColorName = keyof typeof DUCK_COLORS;
 
 export const DGSKILLS_BRAND_ASSETS = {
-    compactLogo: '/assets/brand/dgskills-beaver-laptop.webp',
-    lockupLogo: '/logo-lockup.svg',
-    beaverMark: '/assets/brand/dgskills-beaver-laptop.webp',
-    beaverMascot: '/assets/storytelling/beaver-storyteller.webp',
-    beaverFavicon: '/brand-redesign/otter/dgskills-beaver-phone-favicon-512.png',
+    compactLogo: '/assets/brand/dgskills-duck-logo-mark.webp',
+    lockupLogo: '/logo-lockup.webp',
+    beaverMark: '/assets/brand/dgskills-duck-logo-mark.webp',
+    beaverMascot: '/assets/brand/dgskills-duck-guide-v3.png',
+    beaverFavicon: '/assets/brand/dgskills-duck-logo-mark.webp',
 } as const;

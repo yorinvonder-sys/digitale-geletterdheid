@@ -24,7 +24,7 @@ export const BarChartVis: React.FC<{ data: BarChartData }> = ({ data }) => {
                             }}
                         />
                         <span
-                            className="text-[10px] text-[#445865] text-center leading-tight"
+                            className="text-[10px] text-duck-muted text-center leading-tight"
                             style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                         >
                             {bar.label}
@@ -47,7 +47,7 @@ export const MeterVis: React.FC<{ data: MeterData }> = ({ data }) => {
     return (
         <div className="flex flex-col items-center justify-center gap-2 py-4">
             <svg width="120" height="120" viewBox="0 0 120 120">
-                <circle cx="60" cy="60" r="45" fill="none" stroke="#E7D8BD" strokeWidth="10" />
+                <circle cx="60" cy="60" r="45" fill="none" stroke="#e3e2dc" strokeWidth="10" />
                 <circle
                     cx="60"
                     cy="60"
@@ -67,21 +67,21 @@ export const MeterVis: React.FC<{ data: MeterData }> = ({ data }) => {
                     textAnchor="middle"
                     fontSize="22"
                     fontWeight="900"
-                    fill="#08283B"
+                    fill="#202023"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     {clamped}
                 </text>
             </svg>
             <span
-                className="text-sm font-bold text-[#08283B]"
+                className="text-sm font-bold text-duck-ink"
                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
             >
                 {data.label}
             </span>
             {data.sublabel && (
                 <span
-                    className="text-xs text-[#445865] text-center"
+                    className="text-xs text-duck-muted text-center"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     {data.sublabel}
@@ -94,12 +94,12 @@ export const MeterVis: React.FC<{ data: MeterData }> = ({ data }) => {
 export const ComparisonVis: React.FC<{ data: ComparisonData }> = ({ data }) => (
     <div className="flex gap-2 w-full">
         {[
-            { title: data.leftTitle, items: data.leftItems, accent: '#D97848' },
-            { title: data.rightTitle, items: data.rightItems, accent: '#5F947D' },
+            { title: data.leftTitle, items: data.leftItems, accent: '#ff3c21' },
+            { title: data.rightTitle, items: data.rightItems, accent: '#202023' },
         ].map((panel) => (
             <div
                 key={panel.title}
-                className="flex-1 rounded-xl border border-[#E7D8BD] overflow-hidden"
+                className="flex-1 rounded-xl border border-duck-line overflow-hidden"
             >
                 <div
                     className="px-3 py-2 text-center text-xs font-black uppercase tracking-wide text-white"
@@ -113,9 +113,13 @@ export const ComparisonVis: React.FC<{ data: ComparisonData }> = ({ data }) => (
                 <div className="p-2 space-y-1.5 bg-white">
                     {panel.items.map((item, i) => (
                         <div key={i} className="flex items-center gap-2">
-                            <span className="text-sm">{item.icon}</span>
+                            {item.icon.startsWith('/assets/') ? (
+                                <img src={item.icon} alt="" className="h-5 w-5 shrink-0 object-contain" width={20} height={20} loading="lazy" decoding="async" />
+                            ) : (
+                                <span className="text-sm">{item.icon}</span>
+                            )}
                             <span
-                                className="text-xs text-[#445865] leading-tight"
+                                className="text-xs text-duck-muted leading-tight"
                                 style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                             >
                                 {item.label}

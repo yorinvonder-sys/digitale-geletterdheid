@@ -94,7 +94,7 @@ const FAQ_ITEMS: Array<{ q: string; a: string }> = [
     },
     {
         q: 'Waar staat onze data?',
-        a: 'Alle data wordt opgeslagen binnen de Europese Economische Ruimte (europe-west4 — Nederland). AI-verwerking via Google Vertex AI in dezelfde regio. Geen data wordt gebruikt voor het trainen van AI-modellen.',
+        a: 'Alle data wordt opgeslagen binnen de Europese Economische Ruimte (europe-west4 — Nederland). AI-verwerking via Mistral AI en Black Forest Labs server-side via Supabase Edge Functions. Geen data wordt gebruikt voor het trainen van AI-modellen.',
     },
     {
         q: 'Kunnen we onze klassen koppelen aan Magister / Cumlaude / Zermelo?',
@@ -220,7 +220,7 @@ export const PilotAanmelden: React.FC = () => {
                 <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
                     <a href="/" aria-label="DGSkills homepage">
                         <img
-                            src="/logo-lockup.svg"
+                            src="/logo-lockup.webp"
                             alt="DGSkills"
                             className="h-10 w-auto max-w-[180px] sm:h-12 sm:max-w-[200px] object-contain"
                         />
@@ -412,7 +412,7 @@ export const PilotAanmelden: React.FC = () => {
                             <Reveal delay={0.14}>
                                 <div className="bg-lab-paper rounded-2xl border border-lab-line border-l-4 border-l-lab-coral p-6">
                                     <img
-                                        src="/logo-lockup.svg"
+                                        src="/logo-lockup.webp"
                                         alt=""
                                         className="h-8 w-auto mb-4"
                                         aria-hidden="true"

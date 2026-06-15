@@ -8,7 +8,7 @@ export const websiteBouwerConfig: BuilderCanvasConfig = {
     introDescription:
         'In deze missie leer je hoe echte websites worden gemaakt. Je typt je eerste HTML-code, voegt stijl toe met CSS en bouwt een persoonlijke "Over Mij"-pagina — geen drag-and-drop, maar echte code die je zelf schrijft.',
     missionGoal: {
-        primaryGoal: 'Bouw een werkende Over Mij-webpagina met HTML, CSS en een korte uitleg van je keuzes.',
+        primaryGoal: 'Ik bouw een werkende Over Mij-webpagina met HTML, CSS en een korte uitleg van mijn keuzes.',
         criteria: {
             type: 'steps-complete',
             min: 4,
@@ -93,11 +93,11 @@ export const websiteBouwerConfig: BuilderCanvasConfig = {
     ],
     maxScore: 100,
     badges: [
-        { minScore: 90, emoji: '🏆', title: 'Web Wizard', color: '#D7C95F' },
-        { minScore: 70, emoji: '🌐', title: 'Frontend Developer', color: '#5F947D' },
-        { minScore: 50, emoji: '💻', title: 'Code Beginner', color: '#D97848' },
-        { minScore: 25, emoji: '💡', title: 'Beginnende Webbouwer', color: '#0B453F' },
-        { minScore: 0, emoji: '🌱', title: 'Op weg', color: '#445865' },
+        { minScore: 90, emoji: '🏆', title: 'Web Wizard', color: '#e1ff01' },
+        { minScore: 70, emoji: '🌐', title: 'Frontend Developer', color: '#202023' },
+        { minScore: 50, emoji: '💻', title: 'Code Beginner', color: '#ff3c21' },
+        { minScore: 25, emoji: '💡', title: 'Beginnende Webbouwer', color: '#202023' },
+        { minScore: 0, emoji: '🌱', title: 'Op weg', color: '#202023' },
     ],
     takeaways: [
         'Je begrijpt wat HTML is en hoe je er een basiswebpagina mee bouwt',

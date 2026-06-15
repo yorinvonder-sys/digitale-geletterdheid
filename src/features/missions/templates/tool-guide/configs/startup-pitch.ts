@@ -108,19 +108,19 @@ const config: ToolGuideConfig = {
             minScore: 55,
             emoji: '🏆',
             title: 'AI Entrepreneur',
-            color: '#D97848',
+            color: '#ff3c21',
         },
         {
             minScore: 40,
             emoji: '💡',
             title: 'Startup Founder',
-            color: '#D7C95F',
+            color: '#e1ff01',
         },
         {
             minScore: 0,
             emoji: '🌱',
             title: 'Aan de slag',
-            color: '#5F947D',
+            color: '#202023',
         },
     ],
     takeaways: [

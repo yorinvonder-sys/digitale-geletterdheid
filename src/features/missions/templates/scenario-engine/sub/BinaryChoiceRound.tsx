@@ -1,6 +1,14 @@
 import React from 'react';
 import type { ScenarioRound } from '../types';
 
+const ScenarioIcon = ({ icon, className }: { icon: string; className: string }) => (
+    icon.startsWith('/assets/') ? (
+        <img src={icon} alt="" className={`shrink-0 object-contain ${className}`} width={24} height={24} loading="lazy" decoding="async" />
+    ) : (
+        <span className={className}>{icon}</span>
+    )
+);
+
 export const BinaryChoiceRound: React.FC<{
     round: ScenarioRound;
     selections: number[];
@@ -31,22 +39,22 @@ export const BinaryChoiceRound: React.FC<{
                             className={`rounded-2xl border-2 p-4 transition-all duration-200 ${
                                 submitted && isAnswered
                                     ? isCorrectAnswer
-                                        ? 'border-[#5F947D] bg-[#5F947D]/5'
-                                        : 'border-lab-coral bg-[#D97848]/10'
-                                    : 'border-[#E7D8BD] bg-white'
+                                        ? 'border-duck-ink bg-duck-ink/5'
+                                        : 'border-lab-coral bg-duck-coral/10'
+                                    : 'border-duck-line bg-white'
                             }`}
                         >
                             <div className="flex items-start gap-3 mb-3">
-                                <span className="text-xl mt-0.5">{item.icon}</span>
+                                <ScenarioIcon icon={item.icon} className="h-6 w-6 text-xl mt-0.5" />
                                 <div className="flex-1">
                                     <p
-                                        className="text-sm font-bold text-[#08283B] mb-1"
+                                        className="text-sm font-bold text-duck-ink mb-1"
                                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                                     >
                                         {item.title}
                                     </p>
                                     <p
-                                        className="text-xs text-[#445865] leading-relaxed"
+                                        className="text-xs text-duck-muted leading-relaxed"
                                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                                     >
                                         {item.description}
@@ -58,10 +66,10 @@ export const BinaryChoiceRound: React.FC<{
                                 <div className="flex gap-2">
                                     <button
                                         onClick={() => onChoice(item.id, true)}
-                                        className={`flex-1 min-h-[44px] py-2 rounded-lg text-xs font-bold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D97848]/40 ${
+                                        className={`flex-1 min-h-[44px] py-2 rounded-lg text-xs font-bold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-coral/40 ${
                                             isAccepted
-                                                ? 'bg-[#D97848] text-white'
-                                                : 'bg-[#FCF6EA] text-[#445865] hover:bg-[#D97848]/10 hover:text-[#D97848] border border-[#E7D8BD]'
+                                                ? 'bg-duck-coral text-white'
+                                                : 'bg-duck-bg text-duck-muted hover:bg-duck-coral/10 hover:text-duck-coral border border-duck-line'
                                         }`}
                                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                                     >
@@ -71,8 +79,8 @@ export const BinaryChoiceRound: React.FC<{
                                         onClick={() => onChoice(item.id, false)}
                                         className={`flex-1 min-h-[44px] py-2 rounded-lg text-xs font-bold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#08283B]/30 ${
                                             isRejected
-                                                ? 'bg-[#08283B] text-white'
-                                                : 'bg-[#FCF6EA] text-[#445865] hover:bg-[#08283B]/10 hover:text-[#08283B] border border-[#E7D8BD]'
+                                                ? 'bg-duck-ink text-white'
+                                                : 'bg-duck-bg text-duck-muted hover:bg-duck-ink/10 hover:text-duck-ink border border-duck-line'
                                         }`}
                                         style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                                     >
@@ -84,7 +92,7 @@ export const BinaryChoiceRound: React.FC<{
                             {submitted && isAnswered && (
                                 <div
                                     className={`mt-2 text-[11px] italic leading-relaxed ${
-                                        isCorrectAnswer ? 'text-[#5F947D]' : 'text-[#08283B]'
+                                        isCorrectAnswer ? 'text-duck-ink' : 'text-duck-ink'
                                     }`}
                                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                                 >
@@ -100,7 +108,7 @@ export const BinaryChoiceRound: React.FC<{
             {!submitted && allAnswered && (
                 <button
                     onClick={onSubmit}
-                    className="w-full py-3 rounded-full font-black text-sm bg-[#D97848] hover:bg-[#D97848] hover:brightness-95 hover:shadow-md active:scale-[0.98] text-white transition-all duration-300"
+                    className="w-full py-3 rounded-full font-black text-sm bg-duck-coral hover:bg-duck-coral hover:brightness-95 hover:shadow-md active:scale-[0.98] text-white transition-all duration-300"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     Controleer keuzes
@@ -108,7 +116,7 @@ export const BinaryChoiceRound: React.FC<{
             )}
             {!submitted && !allAnswered && (
                 <p
-                    className="text-center text-xs text-[#445865] mt-2"
+                    className="text-center text-xs text-duck-muted mt-2"
                     style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
                 >
                     Beantwoord alle scenario's om door te gaan

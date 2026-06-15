@@ -57,7 +57,16 @@ export function getUserSchoolId(user: { app_metadata?: Record<string, unknown> }
 export function extractUsageMetadata(payload: unknown): AiUsageTokens {
   const root = payload && typeof payload === "object" ? payload as Record<string, unknown> : {};
   const usage = root.usageMetadata ?? root.usage_metadata;
-  if (!usage || typeof usage !== "object") return {};
+  const mistralUsage = root.usage;
+  if (!usage || typeof usage !== "object") {
+    if (!mistralUsage || typeof mistralUsage !== "object") return {};
+    const source = mistralUsage as Record<string, unknown>;
+    return {
+      promptTokens: valueAt(source, "promptTokens", "prompt_tokens"),
+      candidatesTokens: valueAt(source, "completionTokens", "completion_tokens"),
+      totalTokens: valueAt(source, "totalTokens", "total_tokens"),
+    };
+  }
 
   const source = usage as Record<string, unknown>;
   return {
@@ -119,7 +128,7 @@ export async function logAiUsageEvent(event: AiUsageEvent): Promise<void> {
     user_id: event.userId ?? null,
     school_id: event.schoolId ?? null,
     endpoint: event.endpoint,
-    provider: event.provider ?? "google-vertex",
+    provider: event.provider ?? "mistral",
     model: event.model,
     status: event.status,
     input_chars: Math.max(0, Math.floor(event.inputChars ?? 0)),

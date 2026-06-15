@@ -59,22 +59,22 @@ function computeVisuals(
             {
                 label: 'Bubble Sort',
                 value: bubbleSort ? 5 : 0,
-                color: bubbleSort ? '#D97848' : '#E7D8BD',
+                color: bubbleSort ? '#ff3c21' : '#e3e2dc',
             },
             {
                 label: 'Selection Sort',
                 value: selectionSort ? 4 : 0,
-                color: selectionSort ? '#D97848' : '#E7D8BD',
+                color: selectionSort ? '#ff3c21' : '#e3e2dc',
             },
             {
                 label: 'Insertion Sort',
                 value: insertionSort ? 3 : 0,
-                color: insertionSort ? '#D97848' : '#E7D8BD',
+                color: insertionSort ? '#ff3c21' : '#e3e2dc',
             },
             {
                 label: 'Snel Sorteren',
                 value: snelSorteren ? 2 : 0,
-                color: snelSorteren ? '#5F947D' : '#E7D8BD',
+                color: snelSorteren ? '#202023' : '#e3e2dc',
             },
         ];
 
@@ -164,7 +164,7 @@ export const algorithmArchitectConfig: SimulationLabConfig = {
     introDescription:
         'Een algoritme is een recept voor computers: stap-voor-stap instructies om een probleem op te lossen. Ontdek hoe zoek- en sorteeralgoritmes werken en waarom het ene sneller is dan het andere.',
     missionGoal: {
-        primaryGoal: 'Vergelijk algoritmes en leg uit wanneer een zoek-, sorteer- of pseudocode-aanpak efficient is.',
+        primaryGoal: 'Ik vergelijk algoritmes en leg uit wanneer een zoek-, sorteer- of pseudocode-aanpak efficient is.',
         criteria: {
             type: 'rounds-complete',
             min: 3,
@@ -405,31 +405,31 @@ export const algorithmArchitectConfig: SimulationLabConfig = {
             minScore: 90,
             emoji: '🏆',
             title: 'Master Architect',
-            color: '#5F947D',
+            color: '#202023',
         },
         {
             minScore: 70,
             emoji: '⚙️',
             title: 'Algorithm Pro',
-            color: '#0B453F',
+            color: '#202023',
         },
         {
             minScore: 50,
             emoji: '🔧',
             title: 'Codebouwer',
-            color: '#445865',
+            color: '#202023',
         },
         {
             minScore: 25,
             emoji: '💡',
             title: 'Startende Algoritme Ontwerper',
-            color: '#0B453F',
+            color: '#202023',
         },
         {
             minScore: 0,
             emoji: '📖',
             title: 'Aan het leren',
-            color: '#445865',
+            color: '#202023',
         },
     ],
     takeaways: [
