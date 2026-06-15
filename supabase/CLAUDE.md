@@ -50,8 +50,14 @@ This subtree contains migrations and edge functions for a school-facing educatio
   `docs/security/mistral-ai-provider.md` voor setup en de compliance-checklist
   (DPA, minderjarigen-ToS, EU-residentie, geen training) die vóór productie af
   moet zijn.
-- **Beeld + overige functies:** Vertex AI via `GOOGLE_SERVICE_ACCOUNT_KEY`
-  (`_shared/vertexAuth.ts`). Niet wijzigen bij Mistral-werk.
+- **Beeldgeneratie (`generateImage`):** Black Forest Labs / FLUX (EU). Secret
+  `BFL_API_KEY` (+ optioneel `BFL_API_BASE`, `BFL_IMAGE_MODEL`,
+  `BFL_SAFETY_TOLERANCE`). Provider-helper: `_shared/bflClient.ts`. Async API
+  (submit → poll → download); image wordt server-side als base64 teruggegeven.
+  Zie `docs/security/blackforestlabs-image-provider.md`. De onveilige
+  Gemini-Developer-API-fallback is verwijderd — gebruik die niet opnieuw.
+- **Overige multimodale functies (`scanReceipt`, `analyzeDrawing`):** Vertex AI
+  via `GOOGLE_SERVICE_ACCOUNT_KEY` (`_shared/vertexAuth.ts`).
 - Stuur nooit leerling-PII naar een AI-provider — alleen geschoond bericht,
   geschoonde historie en server-side rol-instructie.
 
