@@ -242,12 +242,37 @@ const buildRequestHref = (subject: string): string =>
 const TOTAL_DOCS = SECTIONS.reduce((acc, s) => acc + s.docs.length, 0);
 
 const DocRow: React.FC<{ doc: ComplianceDoc; sectionId: string }> = ({ doc, sectionId }) => {
+    const [copied, setCopied] = useState(false);
+    const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+    useEffect(() => {
+        return () => {
+            if (timerRef.current !== null) clearTimeout(timerRef.current);
+        };
+    }, []);
+
     const handleClick = () => {
         trackEvent('ict_document_download', {
             page: 'compliance-hub',
             cta: `${sectionId}:${doc.id}`,
             type: doc.access.type,
         });
+    };
+
+    const handleCopyEmail = async () => {
+        trackEvent('ict_document_download', {
+            page: 'compliance-hub',
+            cta: `${sectionId}:${doc.id}:copy`,
+            type: 'email-copy',
+        });
+        try {
+            await navigator.clipboard.writeText(PRIVACY_EMAIL);
+            if (timerRef.current !== null) clearTimeout(timerRef.current);
+            setCopied(true);
+            timerRef.current = setTimeout(() => setCopied(false), 2000);
+        } catch {
+            // clipboard not available — email address is still visible
+        }
     };
 
     const baseWrapperClasses =
@@ -272,6 +297,9 @@ const DocRow: React.FC<{ doc: ComplianceDoc; sectionId: string }> = ({ doc, sect
             href = buildRequestHref(doc.access.subject);
             cta = 'Vraag aan via e-mail';
             break;
+        default:
+            href = '#';
+            cta = '';
     }
 
     return (
@@ -290,9 +318,21 @@ const DocRow: React.FC<{ doc: ComplianceDoc; sectionId: string }> = ({ doc, sect
                     <p className="text-sm text-lab-muted max-w-xl">{doc.description}</p>
                 </div>
             </div>
-            <a href={href} className={baseButtonClasses} onClick={handleClick} {...externalProps}>
-                {cta}
-            </a>
+            <div className="flex flex-col md:items-end gap-1">
+                <a href={href} className={baseButtonClasses} onClick={handleClick} {...externalProps}>
+                    {cta}
+                </a>
+                {doc.access.type === 'request' && (
+                    <button
+                        type="button"
+                        onClick={handleCopyEmail}
+                        aria-label={copied ? 'E-mailadres gekopieerd' : 'Kopieer e-mailadres'}
+                        className="text-[11px] text-lab-mutedSoft hover:text-lab-coral transition-colors min-h-[24px] px-1 py-1"
+                    >
+                        <span aria-live="polite">{copied ? 'Gekopieerd!' : PRIVACY_EMAIL}</span>
+                    </button>
+                )}
+            </div>
         </div>
     );
 };

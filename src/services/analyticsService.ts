@@ -16,7 +16,11 @@ export type AnalyticsEvent =
     | 'offline_detected'
     | 'web_vital'
     | 'mission_start'
-    | 'mission_complete';
+    | 'mission_complete'
+    | 'homepage_pageview'
+    | 'homepage_section_view'
+    | 'homepage_scroll_depth'
+    | 'homepage_time_on_page';
 
 interface AnalyticsPayload extends Record<string, unknown> {
     route?: string;
