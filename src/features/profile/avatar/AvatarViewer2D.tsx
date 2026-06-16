@@ -1,11 +1,6 @@
 import React from 'react';
 import { AvatarConfig } from '@/types';
 
-/**
- * Modern chibi-style 2D SVG avatar — hip, rounded, expressive.
- * Replaces the old blocky rectangle avatar with proper curves and proportions.
- */
-
 interface AvatarViewer2DProps {
     config: AvatarConfig;
     interactive?: boolean;
@@ -13,7 +8,17 @@ interface AvatarViewer2DProps {
     variant?: 'full' | 'head';
 }
 
-// Subtle darken helper for shading
+const INK = '#202023';
+const ACID = '#e1ff01';
+const WHITE = '#ffffff';
+
+// Scale from DuckMark viewBox 0 0 64 64 by ~2.745, circle centered at (100, 93)
+// DuckMark: circle cx=32 cy=34 r=25.5  →  cx=100 cy=93 r=70
+const CX = 100;
+const CY = 93;
+const R = 70;
+const STROKE = 12; // 4.5 * 2.745
+
 const darken = (hex: string, amount = 0.15): string => {
     const c = hex.replace('#', '');
     const r = Math.max(0, parseInt(c.slice(0, 2), 16) - Math.round(255 * amount));
@@ -34,735 +39,378 @@ export const AvatarViewer2D: React.FC<AvatarViewer2DProps> = ({
     config,
     interactive = true,
     onPartClick,
-    variant = 'full'
+    variant = 'full',
 }) => {
-    const hairColor = config.hairColor || '#08283B';
-    const skinColor = config.baseModel === 'robot' ? '#C0C0C0' : (config.skinColor || '#ffe0bd');
+    const bodyColor = config.baseModel === 'robot' ? '#C0C0C0' : (config.skinColor || ACID);
+    const hairColor = config.hairColor || INK;
     const shirtColor = config.shirtColor || '#D97848';
-    const pantsColor = config.pantsColor || '#1F2937';
-    const shoeColor = config.shoeColor || '#08283B';
-    const eyeColor = config.eyeColor || '#4a3728';
+    const footColor = config.shoeColor || '#F2A23C';
     const expression = config.expression || 'happy';
-    const isFemale = config.gender === 'female';
-    const pose = config.pose || 'idle';
+    const accessory = config.accessory && config.accessory !== 'none' ? config.accessory : null;
+    const accessoryColor = config.accessoryColor || shirtColor;
+    const hairStyle = config.hairStyle || 'short';
 
     const click = (part: string) => {
         if (interactive && onPartClick) onPartClick(part);
     };
-
     const cursor = interactive && onPartClick ? 'pointer' : 'default';
 
-    // Layout constants
-    const headCx = 100;
-    const headCy = variant === 'head' ? 80 : 68;
-    const headRx = 42;
-    const headRy = 46;
-    const bodyCy = 155;
-    const bodyW = isFemale ? 48 : 54;
-    const bodyH = 58;
+    // Show crest when not hidden under cap/beanie
+    const hideHair = accessory === 'cap' || accessory === 'beanie';
 
-    // Arm pose offsets
-    const leftArmRotation = pose === 'wave' ? -45 : pose === 'peace' ? -30 : pose === 'dab' ? -60 : 0;
-    const rightArmRotation = pose === 'wave' ? 0 : pose === 'peace' ? -30 : pose === 'dab' ? 40 : 0;
-
-    const viewBox = variant === 'head' ? '30 10 140 140' : '10 -5 180 270';
+    const viewBox = variant === 'head' ? '15 5 170 178' : '10 5 180 210';
 
     return (
-        <div className="w-full h-full flex items-center justify-center bg-gradient-to-b from-[#FCF6EA] to-[#E7D8BD] rounded-2xl overflow-hidden">
+        <div className="w-full h-full flex items-center justify-center bg-[#f2f1ec] rounded-2xl overflow-hidden">
             <svg
                 viewBox={viewBox}
                 preserveAspectRatio="xMidYMid meet"
                 className="w-full h-full"
                 style={{ maxHeight: '100%' }}
             >
-                <defs>
-                    {/* Cheek blush gradient */}
-                    <radialGradient id="blush-l">
-                        <stop offset="0%" stopColor="#D97848" stopOpacity="0.45" />
-                        <stop offset="100%" stopColor="#D97848" stopOpacity="0" />
-                    </radialGradient>
-                    <radialGradient id="blush-r">
-                        <stop offset="0%" stopColor="#D97848" stopOpacity="0.45" />
-                        <stop offset="100%" stopColor="#D97848" stopOpacity="0" />
-                    </radialGradient>
-                    {/* Eye shine */}
-                    <radialGradient id="eye-shine" cx="35%" cy="30%">
-                        <stop offset="0%" stopColor="#ffffff" stopOpacity="0.9" />
-                        <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
-                    </radialGradient>
-                </defs>
-
+                {/* Webbed feet — behind circle, only in full variant */}
                 {variant === 'full' && (
-                    <g>
-                        {/* === LEGS === */}
-                        <g onClick={() => click('pants')} style={{ cursor }}>
-                            {/* Left leg — dichter bij elkaar, dikker */}
-                            <rect x={82} y={bodyCy + bodyH / 2 - 8} width={20} height={48} rx={10} fill={pantsColor} />
-                            {/* Right leg */}
-                            <rect x={100} y={bodyCy + bodyH / 2 - 8} width={20} height={48} rx={10} fill={pantsColor} />
-                        </g>
-
-                        {/* === SHOES === */}
-                        <g onClick={() => click('shoes')} style={{ cursor }}>
-                            <ellipse cx={92} cy={bodyCy + bodyH / 2 + 40} rx={16} ry={9} fill={shoeColor} />
-                            <ellipse cx={110} cy={bodyCy + bodyH / 2 + 40} rx={16} ry={9} fill={shoeColor} />
-                            {/* Shoe sole */}
-                            <ellipse cx={92} cy={bodyCy + bodyH / 2 + 44} rx={14} ry={4} fill={darken(shoeColor, 0.15)} />
-                            <ellipse cx={110} cy={bodyCy + bodyH / 2 + 44} rx={14} ry={4} fill={darken(shoeColor, 0.15)} />
-                            {/* Shoe highlight */}
-                            <ellipse cx={90} cy={bodyCy + bodyH / 2 + 37} rx={8} ry={4} fill={lighten(shoeColor, 0.12)} opacity={0.4} />
-                            <ellipse cx={108} cy={bodyCy + bodyH / 2 + 37} rx={8} ry={4} fill={lighten(shoeColor, 0.12)} opacity={0.4} />
-                        </g>
-
-                        {/* === BODY / TORSO === */}
-                        <g onClick={() => click('shirt')} style={{ cursor }}>
-                            {/* Main torso - rounded, iets breder */}
-                            <rect
-                                x={headCx - bodyW / 2}
-                                y={bodyCy - bodyH / 2}
-                                width={bodyW}
-                                height={bodyH}
-                                rx={isFemale ? 20 : 16}
-                                fill={shirtColor}
-                            />
-                            {/* Shirt shading */}
-                            <rect
-                                x={headCx - bodyW / 2 + 4}
-                                y={bodyCy - bodyH / 2 + 4}
-                                width={bodyW - 8}
-                                height={bodyH - 8}
-                                rx={isFemale ? 16 : 12}
-                                fill={lighten(shirtColor, 0.06)}
-                                opacity={0.3}
-                            />
-                            {/* Collar / neckline */}
-                            <path
-                                d={`M ${headCx - 12} ${bodyCy - bodyH / 2} Q ${headCx} ${bodyCy - bodyH / 2 + 14} ${headCx + 12} ${bodyCy - bodyH / 2}`}
-                                fill="none"
-                                stroke={darken(shirtColor, 0.12)}
-                                strokeWidth={2}
-                                strokeLinecap="round"
-                            />
-                        </g>
-
-                        {/* === ARMS — dichter bij body, beter aangesloten === */}
-                        <g>
-                            {/* Left arm */}
-                            <g transform={`rotate(${leftArmRotation} ${headCx - bodyW / 2 + 6} ${bodyCy - bodyH / 2 + 12})`}>
-                                <rect
-                                    x={headCx - bodyW / 2 - 6}
-                                    y={bodyCy - bodyH / 2 + 6}
-                                    width={14}
-                                    height={40}
-                                    rx={7}
-                                    fill={darken(shirtColor, 0.06)}
-                                />
-                                {/* Hand */}
-                                <circle
-                                    cx={headCx - bodyW / 2}
-                                    cy={bodyCy - bodyH / 2 + 46}
-                                    r={7}
-                                    fill={skinColor}
-                                />
-                            </g>
-                            {/* Right arm */}
-                            <g transform={`rotate(${rightArmRotation} ${headCx + bodyW / 2 - 6} ${bodyCy - bodyH / 2 + 12})`}>
-                                <rect
-                                    x={headCx + bodyW / 2 - 8}
-                                    y={bodyCy - bodyH / 2 + 6}
-                                    width={14}
-                                    height={40}
-                                    rx={7}
-                                    fill={darken(shirtColor, 0.06)}
-                                />
-                                {/* Hand */}
-                                <circle
-                                    cx={headCx + bodyW / 2}
-                                    cy={bodyCy - bodyH / 2 + 46}
-                                    r={7}
-                                    fill={skinColor}
-                                />
-                                {/* Peace sign fingers */}
-                                {pose === 'peace' && (
-                                    <g>
-                                        <rect x={headCx + bodyW / 2 - 3} y={bodyCy - bodyH / 2 + 32} width={4} height={12} rx={2} fill={skinColor} />
-                                        <rect x={headCx + bodyW / 2 + 3} y={bodyCy - bodyH / 2 + 32} width={4} height={12} rx={2} fill={skinColor} />
-                                    </g>
-                                )}
-                            </g>
-                        </g>
-
-                        {/* === NECK === */}
-                        <rect
-                            x={headCx - 8}
-                            y={headCy + headRy - 10}
-                            width={16}
-                            height={18}
-                            rx={6}
-                            fill={skinColor}
-                        />
+                    <g onClick={() => click('shoes')} style={{ cursor }}>
+                        {renderFeet(footColor)}
                     </g>
                 )}
 
-                {/* === HEAD GROUP === */}
-                <g>
-                    {/* Hair behind head (long styles) */}
-                    <g onClick={() => click('hair')} style={{ cursor }}>
-                        {renderHairBack(config.hairStyle, hairColor, headCx, headCy, headRx, headRy, isFemale)}
-                    </g>
-
-                    {/* Head shape */}
-                    <g onClick={() => click('skin')} style={{ cursor }}>
-                        <ellipse cx={headCx} cy={headCy} rx={headRx} ry={headRy} fill={skinColor} />
-                        {/* Subtle face highlight */}
-                        <ellipse cx={headCx - 4} cy={headCy - 8} rx={headRx - 8} ry={headRy - 10} fill={lighten(skinColor, 0.05)} opacity={0.5} />
-                    </g>
-
-                    {/* === EARS === */}
-                    <g onClick={() => click('skin')} style={{ cursor }}>
-                        <ellipse cx={headCx - headRx + 2} cy={headCy + 4} rx={7} ry={10} fill={skinColor} />
-                        <ellipse cx={headCx - headRx + 4} cy={headCy + 4} rx={4} ry={6} fill={darken(skinColor, 0.06)} />
-                        <ellipse cx={headCx + headRx - 2} cy={headCy + 4} rx={7} ry={10} fill={skinColor} />
-                        <ellipse cx={headCx + headRx - 4} cy={headCy + 4} rx={4} ry={6} fill={darken(skinColor, 0.06)} />
-                    </g>
-
-                    {/* === EYES === */}
-                    <g onClick={() => click('eyes')} style={{ cursor }}>
-                        {expression === 'cool' ? (
-                            renderSunglasses(headCx, headCy)
-                        ) : (
-                            <>
-                                {/* Left eye */}
-                                <g>
-                                    {/* White sclera */}
-                                    <ellipse cx={headCx - 15} cy={headCy - 4} rx={11} ry={12} fill="white" />
-                                    {/* Iris */}
-                                    <circle cx={headCx - 15} cy={headCy - 2} r={7.5} fill={eyeColor} />
-                                    {/* Pupil */}
-                                    <circle cx={headCx - 15} cy={headCy - 1} r={4} fill="#08283B" />
-                                    {/* Shine - big */}
-                                    <circle cx={headCx - 18} cy={headCy - 7} r={3} fill="white" opacity={0.9} />
-                                    {/* Shine - small */}
-                                    <circle cx={headCx - 12} cy={headCy - 3} r={1.5} fill="white" opacity={0.7} />
-                                    {/* Top eyelid line */}
-                                    <path
-                                        d={`M ${headCx - 26} ${headCy - 8} Q ${headCx - 15} ${headCy - 18} ${headCx - 4} ${headCy - 8}`}
-                                        fill="none" stroke="#E7D8BD" strokeWidth={1.8} strokeLinecap="round"
-                                    />
-                                    {/* Female eyelashes */}
-                                    {isFemale && (
-                                        <>
-                                            <line x1={headCx - 25} y1={headCy - 9} x2={headCx - 28} y2={headCy - 14} stroke="#E7D8BD" strokeWidth={1.5} strokeLinecap="round" />
-                                            <line x1={headCx - 5} y1={headCy - 9} x2={headCx - 2} y2={headCy - 14} stroke="#E7D8BD" strokeWidth={1.5} strokeLinecap="round" />
-                                        </>
-                                    )}
-                                </g>
-                                {/* Right eye */}
-                                <g>
-                                    <ellipse cx={headCx + 15} cy={headCy - 4} rx={11} ry={12} fill="white" />
-                                    <circle cx={headCx + 15} cy={headCy - 2} r={7.5} fill={eyeColor} />
-                                    <circle cx={headCx + 15} cy={headCy - 1} r={4} fill="#08283B" />
-                                    <circle cx={headCx + 12} cy={headCy - 7} r={3} fill="white" opacity={0.9} />
-                                    <circle cx={headCx + 18} cy={headCy - 3} r={1.5} fill="white" opacity={0.7} />
-                                    <path
-                                        d={`M ${headCx + 4} ${headCy - 8} Q ${headCx + 15} ${headCy - 18} ${headCx + 26} ${headCy - 8}`}
-                                        fill="none" stroke="#E7D8BD" strokeWidth={1.8} strokeLinecap="round"
-                                    />
-                                    {isFemale && (
-                                        <>
-                                            <line x1={headCx + 5} y1={headCy - 9} x2={headCx + 2} y2={headCy - 14} stroke="#E7D8BD" strokeWidth={1.5} strokeLinecap="round" />
-                                            <line x1={headCx + 25} y1={headCy - 9} x2={headCx + 28} y2={headCy - 14} stroke="#E7D8BD" strokeWidth={1.5} strokeLinecap="round" />
-                                        </>
-                                    )}
-                                </g>
-                            </>
-                        )}
-                    </g>
-
-                    {/* === CHEEK BLUSH === */}
-                    {(expression === 'happy' || expression === 'surprised') && (
-                        <g opacity={0.6}>
-                            <ellipse cx={headCx - 28} cy={headCy + 12} rx={9} ry={6} fill="url(#blush-l)" />
-                            <ellipse cx={headCx + 28} cy={headCy + 12} rx={9} ry={6} fill="url(#blush-r)" />
-                        </g>
-                    )}
-
-                    {/* === NOSE === */}
-                    <ellipse cx={headCx} cy={headCy + 10} rx={3} ry={2.5} fill={darken(skinColor, 0.1)} />
-
-                    {/* === MOUTH === */}
-                    {renderMouth(expression, headCx, headCy)}
-
-                    {/* === EYEBROWS === */}
-                    {expression !== 'cool' && renderEyebrows(expression, headCx, headCy, hairColor)}
-
-                    {/* === HAIR FRONT === */}
-                    <g onClick={() => click('hair')} style={{ cursor }}>
-                        {renderHairFront(config.hairStyle, hairColor, headCx, headCy, headRx, headRy, isFemale)}
-                    </g>
-
-                    {/* === ACCESSORY === */}
-                    {config.accessory && config.accessory !== 'none' && (
-                        renderAccessory(config.accessory, headCx, headCy, headRx, headRy, config.accessoryColor || shirtColor)
+                {/* Duck body — the circle IS the entire duck */}
+                <g onClick={() => click('skin')} style={{ cursor }}>
+                    <circle cx={CX} cy={CY} r={R} fill={bodyColor} stroke={INK} strokeWidth={STROKE} />
+                    {config.baseModel === 'robot' && (
+                        <circle cx={CX - 22} cy={CY - 22} r={28} fill={WHITE} fillOpacity={0.1} />
                     )}
                 </g>
+
+                {/* Crest (hair) — on top of circle, below accessories */}
+                {!hideHair && (
+                    <g onClick={() => click('hair')} style={{ cursor }}>
+                        {renderCrest(hairStyle, hairColor)}
+                    </g>
+                )}
+
+                {/* Signature DuckMark cowlick curl — always present, hidden under cap/beanie */}
+                {!hideHair && (
+                    <path
+                        d="M100 12 c-8 -4 -18 1 -21 9"
+                        fill="none"
+                        stroke={hairColor}
+                        strokeWidth={10}
+                        strokeLinecap="round"
+                        onClick={() => click('hair')}
+                        style={{ cursor }}
+                    />
+                )}
+
+                {/* Eyes — scaled from DuckMark (24,31)→(78,85) (40,31)→(122,85) */}
+                <g onClick={() => click('eyes')} style={{ cursor }}>
+                    {renderEyes(expression)}
+                </g>
+
+                {/* Beak — scaled from DuckMark rect x23 y44 w18 h9 rx4.5 */}
+                <g onClick={() => click('mouth')} style={{ cursor }}>
+                    {renderBeak(expression)}
+                </g>
+
+                {/* Outfit band — collar/sweater arc at lower circle */}
+                {config.shirtStyle && (
+                    <g onClick={() => click('shirt')} style={{ cursor }}>
+                        {renderOutfit(shirtColor)}
+                    </g>
+                )}
+
+                {/* Accessory */}
+                {accessory && (
+                    <g onClick={() => click('accessory')} style={{ cursor }}>
+                        {renderAccessory(accessory, accessoryColor, hairColor)}
+                    </g>
+                )}
             </svg>
         </div>
     );
 };
 
-// === MOUTH EXPRESSIONS ===
+// === WEBBED FEET ===
+function renderFeet(color: string): React.ReactNode {
+    const bottomY = CY + R;
+    const footDark = darken(color, 0.18);
+    return (
+        <g>
+            {/* Left foot */}
+            <ellipse cx={CX - 24} cy={bottomY + 16} rx={24} ry={11} fill={color} stroke={INK} strokeWidth={5} />
+            <line x1={CX - 38} y1={bottomY + 9} x2={CX - 32} y2={bottomY + 24} stroke={footDark} strokeWidth={3} strokeLinecap="round" />
+            <line x1={CX - 24} y1={bottomY + 7} x2={CX - 24} y2={bottomY + 26} stroke={footDark} strokeWidth={3} strokeLinecap="round" />
+            <line x1={CX - 10} y1={bottomY + 9} x2={CX - 16} y2={bottomY + 24} stroke={footDark} strokeWidth={3} strokeLinecap="round" />
+            {/* Right foot */}
+            <ellipse cx={CX + 24} cy={bottomY + 16} rx={24} ry={11} fill={color} stroke={INK} strokeWidth={5} />
+            <line x1={CX + 10} y1={bottomY + 9} x2={CX + 16} y2={bottomY + 24} stroke={footDark} strokeWidth={3} strokeLinecap="round" />
+            <line x1={CX + 24} y1={bottomY + 7} x2={CX + 24} y2={bottomY + 26} stroke={footDark} strokeWidth={3} strokeLinecap="round" />
+            <line x1={CX + 38} y1={bottomY + 9} x2={CX + 32} y2={bottomY + 24} stroke={footDark} strokeWidth={3} strokeLinecap="round" />
+        </g>
+    );
+}
 
-function renderMouth(expression: string, cx: number, cy: number): React.ReactNode {
-    const my = cy + 20;
+// === EYES ===
+// DuckMark eyes: ellipses rx5.4 ry9 at (24,31) and (40,31), scaled → (78,85) (122,85), rx=15 ry=25
+function renderEyes(expression: string): React.ReactNode {
+    const lx = 78, ex = 122, ey = 85;
+
+    if (expression === 'cool') {
+        return (
+            <g>
+                <line x1={lx + 16} y1={ey} x2={ex - 16} y2={ey} stroke={INK} strokeWidth={6} />
+                <rect x={lx - 24} y={ey - 20} width={42} height={34} rx={9} fill={INK} fillOpacity={0.88} stroke={INK} strokeWidth={5} />
+                <rect x={ex - 18} y={ey - 20} width={42} height={34} rx={9} fill={INK} fillOpacity={0.88} stroke={INK} strokeWidth={5} />
+                <rect x={lx - 20} y={ey - 16} width={14} height={9} rx={3} fill={WHITE} fillOpacity={0.3} />
+                <rect x={ex - 14} y={ey - 16} width={14} height={9} rx={3} fill={WHITE} fillOpacity={0.3} />
+            </g>
+        );
+    }
+
+    const eyeRy = expression === 'surprised' ? 30 : expression === 'neutral' ? 18 : 25;
+    const eyeRx = 15;
+    const shineRy = expression === 'surprised' ? 11 : 9;
+
+    return (
+        <g>
+            <ellipse cx={lx} cy={ey} rx={eyeRx} ry={eyeRy} fill={INK} />
+            <ellipse cx={ex} cy={ey} rx={eyeRx} ry={eyeRy} fill={INK} />
+            <ellipse cx={lx - 5} cy={ey - shineRy} rx={5} ry={shineRy * 0.38} fill={WHITE} fillOpacity={0.35} />
+            <ellipse cx={ex - 5} cy={ey - shineRy} rx={5} ry={shineRy * 0.38} fill={WHITE} fillOpacity={0.35} />
+        </g>
+    );
+}
+
+// === BEAK ===
+// DuckMark: rect x23 y44 w18 h9 rx4.5 scaled → x=75 y=121 w=49 h=25 rx=12
+function renderBeak(expression: string): React.ReactNode {
+    const bx = 75, by = 121, bw = 49, bh = 25, brx = 12;
+
     switch (expression) {
-        case 'happy':
-            return (
-                <g>
-                    <path
-                        d={`M ${cx - 10} ${my} Q ${cx} ${my + 10} ${cx + 10} ${my}`}
-                        fill="none" stroke="#D97848" strokeWidth={2.2} strokeLinecap="round"
-                    />
-                </g>
-            );
         case 'surprised':
             return (
-                <ellipse cx={cx} cy={my + 3} rx={6} ry={8} fill="#D97848" />
+                <g>
+                    <rect x={bx} y={by} width={bw} height={bh + 10} rx={brx} fill={WHITE} stroke={INK} strokeWidth={10} />
+                    <ellipse cx={CX} cy={by + bh + 4} rx={13} ry={9} fill="#e87070" />
+                </g>
             );
         case 'neutral':
             return (
-                <line x1={cx - 8} y1={my + 2} x2={cx + 8} y2={my + 2}
-                    stroke="#D97848" strokeWidth={2} strokeLinecap="round" />
+                <rect x={bx} y={by + 5} width={bw} height={bh - 5} rx={brx} fill={WHITE} stroke={INK} strokeWidth={10} />
             );
-        case 'cool':
+        default: // happy / cool
             return (
-                <path
-                    d={`M ${cx - 8} ${my} Q ${cx} ${my + 6} ${cx + 8} ${my}`}
-                    fill="none" stroke="#D97848" strokeWidth={2} strokeLinecap="round"
-                />
-            );
-        default:
-            return (
-                <path
-                    d={`M ${cx - 10} ${my} Q ${cx} ${my + 10} ${cx + 10} ${my}`}
-                    fill="none" stroke="#D97848" strokeWidth={2.2} strokeLinecap="round"
-                />
+                <rect x={bx} y={by} width={bw} height={bh} rx={brx} fill={WHITE} stroke={INK} strokeWidth={10} />
             );
     }
 }
 
-// === EYEBROWS ===
-
-function renderEyebrows(expression: string, cx: number, cy: number, hairColor: string): React.ReactNode {
-    const browColor = darken(hairColor, 0.1);
-    const browY = cy - 20;
-    const raised = expression === 'surprised' ? -4 : 0;
-
-    return (
-        <g>
-            <path
-                d={`M ${cx - 24} ${browY + raised + 1} Q ${cx - 15} ${browY + raised - 3} ${cx - 6} ${browY + raised + 1}`}
-                fill="none" stroke={browColor} strokeWidth={2.5} strokeLinecap="round"
-            />
-            <path
-                d={`M ${cx + 6} ${browY + raised + 1} Q ${cx + 15} ${browY + raised - 3} ${cx + 24} ${browY + raised + 1}`}
-                fill="none" stroke={browColor} strokeWidth={2.5} strokeLinecap="round"
-            />
-        </g>
-    );
-}
-
-// === SUNGLASSES ===
-
-function renderSunglasses(cx: number, cy: number): React.ReactNode {
-    const glassY = cy - 4;
-    return (
-        <g>
-            {/* Bridge */}
-            <path d={`M ${cx - 6} ${glassY} Q ${cx} ${glassY - 3} ${cx + 6} ${glassY}`}
-                fill="none" stroke="#222" strokeWidth={2.5} strokeLinecap="round" />
-            {/* Left lens */}
-            <rect x={cx - 28} y={glassY - 10} width={22} height={16} rx={5} fill="#08283B" />
-            <rect x={cx - 27} y={glassY - 9} width={12} height={6} rx={2} fill="#E7D8BD" opacity={0.4} />
-            {/* Right lens */}
-            <rect x={cx + 6} y={glassY - 10} width={22} height={16} rx={5} fill="#08283B" />
-            <rect x={cx + 7} y={glassY - 9} width={12} height={6} rx={2} fill="#E7D8BD" opacity={0.4} />
-            {/* Temple arms */}
-            <line x1={cx - 28} y1={glassY - 3} x2={cx - 40} y2={glassY} stroke="#222" strokeWidth={2} />
-            <line x1={cx + 28} y1={glassY - 3} x2={cx + 40} y2={glassY} stroke="#222" strokeWidth={2} />
-        </g>
-    );
-}
-
-// === HAIR BACK (behind head) ===
-
-function renderHairBack(
-    style: string, color: string, cx: number, cy: number,
-    rx: number, ry: number, isFemale: boolean
-): React.ReactNode {
-    const dark = darken(color, 0.1);
+// === CREST (hair variants) ===
+function renderCrest(style: string, color: string): React.ReactNode {
+    const topY = CY - R; // y=23 — top of circle
+    const dark = darken(color, 0.12);
+    const sw = 5; // stroke-width for crest outlines
 
     switch (style) {
-        case 'long':
-            return (
-                <g>
-                    <path d={`M ${cx - rx - 4} ${cy - 10} Q ${cx - rx - 8} ${cy + 50} ${cx - rx + 5} ${cy + 70}
-                        Q ${cx - rx + 10} ${cy + 80} ${cx - rx + 2} ${cy + 85}`}
-                        fill={dark} stroke="none" />
-                    <path d={`M ${cx + rx + 4} ${cy - 10} Q ${cx + rx + 8} ${cy + 50} ${cx + rx - 5} ${cy + 70}
-                        Q ${cx + rx - 10} ${cy + 80} ${cx + rx - 2} ${cy + 85}`}
-                        fill={dark} stroke="none" />
-                    <ellipse cx={cx} cy={cy - ry + 2} rx={rx + 6} ry={18} fill={dark} />
-                </g>
-            );
-        case 'ponytail':
-            return (
-                <g>
-                    <ellipse cx={cx} cy={cy - ry + 2} rx={rx + 4} ry={16} fill={dark} />
-                    {/* Ponytail behind */}
-                    <path d={`M ${cx + 5} ${cy - ry + 10} Q ${cx + 25} ${cy - ry - 10} ${cx + 15} ${cy + 30}
-                        Q ${cx + 10} ${cy + 50} ${cx + 18} ${cy + 60}`}
-                        fill={dark} stroke="none" />
-                </g>
-            );
-        case 'pigtails':
-            return (
-                <g>
-                    <ellipse cx={cx} cy={cy - ry + 2} rx={rx + 4} ry={16} fill={dark} />
-                    {/* Left pigtail */}
-                    <path d={`M ${cx - rx + 2} ${cy - 10} Q ${cx - rx - 15} ${cy + 10} ${cx - rx - 5} ${cy + 45}
-                        Q ${cx - rx - 2} ${cy + 55} ${cx - rx - 8} ${cy + 55}`}
-                        fill={dark} stroke="none" />
-                    <circle cx={cx - rx - 6} cy={cy + 55} r={8} fill={color} />
-                    {/* Right pigtail */}
-                    <path d={`M ${cx + rx - 2} ${cy - 10} Q ${cx + rx + 15} ${cy + 10} ${cx + rx + 5} ${cy + 45}
-                        Q ${cx + rx + 2} ${cy + 55} ${cx + rx + 8} ${cy + 55}`}
-                        fill={dark} stroke="none" />
-                    <circle cx={cx + rx + 6} cy={cy + 55} r={8} fill={color} />
-                </g>
-            );
-        case 'braids':
-            return (
-                <g>
-                    <ellipse cx={cx} cy={cy - ry + 2} rx={rx + 4} ry={16} fill={dark} />
-                    {/* Left braid */}
-                    <path d={`M ${cx - rx + 4} ${cy} C ${cx - rx - 8} ${cy + 20}, ${cx - rx + 4} ${cy + 40}, ${cx - rx - 4} ${cy + 60}`}
-                        fill="none" stroke={color} strokeWidth={8} strokeLinecap="round" />
-                    {/* Right braid */}
-                    <path d={`M ${cx + rx - 4} ${cy} C ${cx + rx + 8} ${cy + 20}, ${cx + rx - 4} ${cy + 40}, ${cx + rx + 4} ${cy + 60}`}
-                        fill="none" stroke={color} strokeWidth={8} strokeLinecap="round" />
-                </g>
-            );
-        case 'bun':
-            return (
-                <g>
-                    <ellipse cx={cx} cy={cy - ry + 2} rx={rx + 4} ry={16} fill={dark} />
-                    <circle cx={cx} cy={cy - ry - 12} r={16} fill={color} />
-                    <circle cx={cx - 3} cy={cy - ry - 16} r={6} fill={lighten(color, 0.08)} opacity={0.5} />
-                </g>
-            );
-        case 'afro':
-            return (
-                <ellipse cx={cx} cy={cy - 8} rx={rx + 20} ry={ry + 12} fill={dark} />
-            );
-        default:
-            return null;
-    }
-}
-
-// === HAIR FRONT (on top of head) ===
-
-function renderHairFront(
-    style: string, color: string, cx: number, cy: number,
-    rx: number, ry: number, isFemale: boolean
-): React.ReactNode {
-    const light = lighten(color, 0.08);
-    const top = cy - ry;
-
-    switch (style) {
-        case 'short':
-            return (
-                <g>
-                    {/* Voller kort haar — bedekt hele bovenkant hoofd */}
-                    <path d={`M ${cx - rx - 4} ${cy - 6}
-                        Q ${cx - rx - 4} ${top - 14} ${cx} ${top - 10}
-                        Q ${cx + rx + 4} ${top - 14} ${cx + rx + 4} ${cy - 6}
-                        L ${cx + rx + 2} ${cy - 2}
-                        Q ${cx} ${cy - 8} ${cx - rx - 2} ${cy - 2} Z`}
-                        fill={color} />
-                    {/* Highlight */}
-                    <path d={`M ${cx - 18} ${top - 2} Q ${cx - 5} ${top - 10} ${cx + 10} ${top - 2}`}
-                        fill={light} opacity={0.35} />
-                </g>
-            );
         case 'spiky':
+        case 'mohawk':
             return (
                 <g>
-                    {/* Basis haarvorm */}
-                    <path d={`M ${cx - rx - 4} ${cy - 4}
-                        Q ${cx - rx - 2} ${top - 6} ${cx - 24} ${top - 2}
-                        L ${cx - 18} ${top - 28}
-                        L ${cx - 8} ${top - 6}
-                        L ${cx} ${top - 32}
-                        L ${cx + 8} ${top - 6}
-                        L ${cx + 18} ${top - 28}
-                        L ${cx + 24} ${top - 2}
-                        Q ${cx + rx + 2} ${top - 6} ${cx + rx + 4} ${cy - 4}
-                        Q ${cx + rx + 2} ${cy - 14} ${cx} ${top - 8}
-                        Q ${cx - rx - 2} ${cy - 14} ${cx - rx - 4} ${cy - 4}`}
-                        fill={color} />
-                    {/* Spike highlights */}
-                    <path d={`M ${cx - 6} ${top - 4} L ${cx} ${top - 26} L ${cx + 6} ${top - 4}`}
-                        fill={light} opacity={0.3} />
+                    <path
+                        d={`M${CX - 18} ${topY + 7} L${CX - 10} ${topY - 32} L${CX - 2} ${topY + 6}
+                            L${CX + 6} ${topY - 42} L${CX + 14} ${topY + 6}
+                            L${CX + 20} ${topY - 26} L${CX + 26} ${topY + 6}`}
+                        fill={color} stroke={INK} strokeWidth={sw} strokeLinejoin="round"
+                    />
                 </g>
             );
         case 'messy':
             return (
                 <g>
-                    {/* Full hair base covering top of head */}
-                    <path d={`M ${cx - rx - 4} ${cy - 4}
-                        Q ${cx - rx - 6} ${top - 14} ${cx - 10} ${top - 10}
-                        Q ${cx} ${top - 18} ${cx + 10} ${top - 10}
-                        Q ${cx + rx + 6} ${top - 14} ${cx + rx + 4} ${cy - 4}
-                        Q ${cx + rx + 2} ${cy - 16} ${cx} ${top - 12}
-                        Q ${cx - rx - 2} ${cy - 16} ${cx - rx - 4} ${cy - 4}`}
-                        fill={color} />
-                    {/* Messy tufts sticking out */}
-                    <path d={`M ${cx - 16} ${top - 6} L ${cx - 20} ${top - 22} L ${cx - 8} ${top - 10}`}
-                        fill={color} />
-                    <path d={`M ${cx + 4} ${top - 8} L ${cx + 8} ${top - 24} L ${cx + 14} ${top - 10}`}
-                        fill={color} />
-                    <path d={`M ${cx + 18} ${top - 4} L ${cx + 24} ${top - 18} L ${cx + rx} ${top}`}
-                        fill={color} />
-                    {/* Side strands hanging down */}
-                    <path d={`M ${cx - rx} ${cy - 10} Q ${cx - rx - 8} ${cy} ${cx - rx + 2} ${cy + 6}`}
-                        fill="none" stroke={color} strokeWidth={6} strokeLinecap="round" />
-                    <path d={`M ${cx + rx} ${cy - 10} Q ${cx + rx + 8} ${cy} ${cx + rx - 2} ${cy + 6}`}
-                        fill="none" stroke={color} strokeWidth={5} strokeLinecap="round" />
-                    {/* Highlight */}
-                    <path d={`M ${cx - 12} ${top} Q ${cx} ${top - 8} ${cx + 12} ${top}`}
-                        fill={light} opacity={0.3} />
+                    <circle cx={CX - 22} cy={topY - 6} r={16} fill={dark} stroke={INK} strokeWidth={sw} />
+                    <circle cx={CX} cy={topY - 16} r={14} fill={color} stroke={INK} strokeWidth={sw} />
+                    <circle cx={CX + 22} cy={topY - 6} r={16} fill={dark} stroke={INK} strokeWidth={sw} />
+                    <circle cx={CX - 10} cy={topY - 26} r={10} fill={color} stroke={INK} strokeWidth={sw} />
+                    <circle cx={CX + 10} cy={topY - 22} r={10} fill={dark} stroke={INK} strokeWidth={sw} />
                 </g>
             );
-        case 'fade':
-            return (
-                <g>
-                    {/* Top hair — fuller on top */}
-                    <path d={`M ${cx - rx + 6} ${cy - 10}
-                        Q ${cx - rx + 4} ${top - 2} ${cx} ${top - 8}
-                        Q ${cx + rx - 4} ${top - 2} ${cx + rx - 6} ${cy - 10}
-                        Q ${cx} ${cy - 16} ${cx - rx + 6} ${cy - 10}`}
-                        fill={color} />
-                    {/* Mid fade — medium opacity */}
-                    <path d={`M ${cx - rx + 1} ${cy + 2}
-                        Q ${cx - rx} ${cy - 8} ${cx - rx + 6} ${cy - 12}`}
-                        fill="none" stroke={color} strokeWidth={6} strokeLinecap="round" opacity={0.45} />
-                    <path d={`M ${cx + rx - 1} ${cy + 2}
-                        Q ${cx + rx} ${cy - 8} ${cx + rx - 6} ${cy - 12}`}
-                        fill="none" stroke={color} strokeWidth={6} strokeLinecap="round" opacity={0.45} />
-                    {/* Low fade — light opacity */}
-                    <path d={`M ${cx - rx - 1} ${cy + 8}
-                        Q ${cx - rx - 2} ${cy + 2} ${cx - rx + 1} ${cy}`}
-                        fill="none" stroke={color} strokeWidth={5} strokeLinecap="round" opacity={0.2} />
-                    <path d={`M ${cx + rx + 1} ${cy + 8}
-                        Q ${cx + rx + 2} ${cy + 2} ${cx + rx - 1} ${cy}`}
-                        fill="none" stroke={color} strokeWidth={5} strokeLinecap="round" opacity={0.2} />
-                    {/* Highlight */}
-                    <path d={`M ${cx - 10} ${top + 4} Q ${cx} ${top - 4} ${cx + 10} ${top + 4}`}
-                        fill={light} opacity={0.3} />
-                </g>
-            );
+        case 'afro':
         case 'curls':
             return (
                 <g>
-                    <path d={`M ${cx - rx - 4} ${cy - 4}
-                        Q ${cx - rx - 2} ${top - 10} ${cx} ${top - 6}
-                        Q ${cx + rx + 2} ${top - 10} ${cx + rx + 4} ${cy - 4}`}
-                        fill={color} />
-                    {/* Curl bumps */}
-                    {[-20, -8, 4, 16].map((offset, i) => (
-                        <circle key={i} cx={cx + offset} cy={top - 2 + (i % 2) * 3} r={8} fill={i % 2 === 0 ? color : light} />
-                    ))}
-                    <circle cx={cx - rx - 2} cy={cy} r={7} fill={color} />
-                    <circle cx={cx + rx + 2} cy={cy} r={7} fill={color} />
+                    <circle cx={CX} cy={topY - 16} r={34} fill={color} stroke={INK} strokeWidth={sw} />
+                    <circle cx={CX - 24} cy={topY - 2} r={20} fill={color} stroke={INK} strokeWidth={sw} />
+                    <circle cx={CX + 24} cy={topY - 2} r={20} fill={color} stroke={INK} strokeWidth={sw} />
                 </g>
             );
-        case 'buzzcut':
-            return (
-                <path d={`M ${cx - rx} ${cy - 4}
-                    Q ${cx - rx + 2} ${top + 4} ${cx} ${top + 2}
-                    Q ${cx + rx - 2} ${top + 4} ${cx + rx} ${cy - 4}`}
-                    fill={color} opacity={0.7} />
-            );
-        case 'mohawk':
-            return (
-                <g>
-                    {/* Side shaved — subtle stubble */}
-                    <path d={`M ${cx - rx} ${cy - 2}
-                        Q ${cx - rx + 2} ${top + 6} ${cx - 12} ${top + 6}
-                        L ${cx - 12} ${cy - 2} Z`}
-                        fill={color} opacity={0.25} />
-                    <path d={`M ${cx + rx} ${cy - 2}
-                        Q ${cx + rx - 2} ${top + 6} ${cx + 12} ${top + 6}
-                        L ${cx + 12} ${cy - 2} Z`}
-                        fill={color} opacity={0.25} />
-                    {/* Mohawk strip — tall and wide */}
-                    <path d={`M ${cx - 14} ${top + 6}
-                        Q ${cx - 14} ${top - 16} ${cx - 8} ${top - 30}
-                        Q ${cx} ${top - 36} ${cx + 8} ${top - 30}
-                        Q ${cx + 14} ${top - 16} ${cx + 14} ${top + 6}
-                        Q ${cx} ${top} ${cx - 14} ${top + 6}`}
-                        fill={color} />
-                    {/* Highlight */}
-                    <path d={`M ${cx - 4} ${top + 2} Q ${cx} ${top - 28} ${cx + 4} ${top + 2}`}
-                        fill={light} opacity={0.3} />
-                </g>
-            );
-        case 'pigtails':
         case 'long':
         case 'bob':
             return (
                 <g>
-                    <path d={`M ${cx - rx - 3} ${cy - 6}
-                        Q ${cx - rx} ${top - 10} ${cx} ${top - 6}
-                        Q ${cx + rx} ${top - 10} ${cx + rx + 3} ${cy - 6}`}
-                        fill={color} />
-                    {/* Bangs */}
-                    <path d={`M ${cx - 20} ${top + 10} Q ${cx - 10} ${top + 2} ${cx} ${top + 10}
-                        Q ${cx + 10} ${top + 2} ${cx + 20} ${top + 10}`}
-                        fill={light} opacity={0.3} />
-                    {style === 'bob' && (
-                        <g>
-                            <path d={`M ${cx - rx - 3} ${cy - 6} Q ${cx - rx - 6} ${cy + 15} ${cx - rx + 8} ${cy + 22}`}
-                                fill={color} stroke="none" />
-                            <path d={`M ${cx + rx + 3} ${cy - 6} Q ${cx + rx + 6} ${cy + 15} ${cx + rx - 8} ${cy + 22}`}
-                                fill={color} stroke="none" />
-                        </g>
-                    )}
+                    <path
+                        d={`M${CX - 44} ${CY - 18} Q${CX - 54} ${topY - 12} ${CX} ${topY - 18}
+                            Q${CX + 54} ${topY - 12} ${CX + 44} ${CY - 18}`}
+                        fill={color} stroke={INK} strokeWidth={sw}
+                    />
+                    <path
+                        d={`M${CX - 62} ${CY + 22} Q${CX - 68} ${CY - 10} ${CX - 44} ${CY - 18}`}
+                        fill={color} stroke={INK} strokeWidth={sw}
+                    />
+                    <path
+                        d={`M${CX + 62} ${CY + 22} Q${CX + 68} ${CY - 10} ${CX + 44} ${CY - 18}`}
+                        fill={color} stroke={INK} strokeWidth={sw}
+                    />
                 </g>
             );
         case 'ponytail':
-        case 'braids':
         case 'bun':
             return (
                 <g>
-                    <path d={`M ${cx - rx - 3} ${cy - 6}
-                        Q ${cx - rx} ${top - 10} ${cx} ${top - 6}
-                        Q ${cx + rx} ${top - 10} ${cx + rx + 3} ${cy - 6}`}
-                        fill={color} />
-                    <path d={`M ${cx - 18} ${top + 10} Q ${cx - 8} ${top + 2} ${cx + 2} ${top + 10}`}
-                        fill={light} opacity={0.3} />
+                    <path
+                        d={`M${CX - 14} ${topY + 5} Q${CX} ${topY - 14} ${CX + 14} ${topY + 5}`}
+                        fill={color} stroke={INK} strokeWidth={sw}
+                    />
+                    {/* Rear tuft visible on the side */}
+                    <ellipse cx={CX + R - 8} cy={CY - R + 24} rx={18} ry={22} fill={color} stroke={INK} strokeWidth={sw} />
                 </g>
             );
-        case 'afro': {
-            const aId = `afro-clip-${cx}-${cy}`;
-            return (
-                <g>
-                    <defs>
-                        <clipPath id={aId}>
-                            <path
-                                d={`M${cx - rx - 25},${cy - ry - 18} h${(rx + 25) * 2} v${(ry + 18) * 2} h-${(rx + 25) * 2}Z M${cx},${cy - ry} a${rx},${ry} 0 0,1 0,${ry * 2} a${rx},${ry} 0 0,1 0,-${ry * 2}Z`}
-                                clipRule="evenodd"
-                            />
-                        </clipPath>
-                    </defs>
-                    <g clipPath={`url(#${aId})`}>
-                        <ellipse cx={cx} cy={cy - 8} rx={rx + 20} ry={ry + 12} fill={color} />
-                        {[[-18, -30], [0, -36], [18, -30], [-26, -14], [26, -14]].map(([ox, oy], i) => (
-                            <circle key={i} cx={cx + ox} cy={cy + oy} r={6} fill={light} opacity={0.25} />
-                        ))}
-                    </g>
-                </g>
-            );
-        }
+        case 'pigtails':
+        case 'braids':
         case 'sidepart':
             return (
                 <g>
-                    <path d={`M ${cx - rx - 2} ${cy - 6}
-                        Q ${cx - rx} ${top - 8} ${cx - 15} ${top - 2}
-                        Q ${cx - 5} ${top - 10} ${cx + 15} ${top - 2}
-                        Q ${cx + rx} ${top - 8} ${cx + rx + 2} ${cy - 6}
-                        Q ${cx + rx} ${cy - 18} ${cx} ${top - 10}
-                        Q ${cx - rx} ${cy - 18} ${cx - rx - 2} ${cy - 6}`}
-                        fill={color} />
-                    {/* Side sweep */}
-                    <path d={`M ${cx - rx} ${cy - 8} Q ${cx - rx - 8} ${cy - 2} ${cx - rx + 4} ${cy + 6}`}
-                        fill="none" stroke={color} strokeWidth={6} strokeLinecap="round" />
+                    <path
+                        d={`M${CX - 14} ${topY + 5} Q${CX} ${topY - 12} ${CX + 14} ${topY + 5}`}
+                        fill={color} stroke={INK} strokeWidth={sw}
+                    />
+                    <ellipse cx={CX - R + 4} cy={CY - R + 24} rx={17} ry={21} fill={color} stroke={INK} strokeWidth={sw} />
+                    <ellipse cx={CX + R - 4} cy={CY - R + 24} rx={17} ry={21} fill={color} stroke={INK} strokeWidth={sw} />
                 </g>
             );
-        default:
+        default: // short, fade, buzzcut — minimal stub
             return (
-                <path d={`M ${cx - rx - 2} ${cy - 10}
-                    Q ${cx - rx} ${top - 8} ${cx} ${top - 6}
-                    Q ${cx + rx} ${top - 8} ${cx + rx + 2} ${cy - 10}`}
-                    fill={color} />
+                <path
+                    d={`M${CX - 12} ${topY + 5} Q${CX} ${topY - 8} ${CX + 12} ${topY + 5}`}
+                    fill={color} stroke={INK} strokeWidth={sw} strokeLinecap="round"
+                />
             );
     }
 }
 
-// === ACCESSORIES ===
+// === OUTFIT BAND ===
+function renderOutfit(color: string): React.ReactNode {
+    const bandY = CY + R * 0.52;
+    const dark = darken(color, 0.12);
+    return (
+        <g>
+            <path
+                d={`M${CX - 44} ${bandY} Q${CX - 22} ${bandY + 18} ${CX} ${bandY + 20}
+                    Q${CX + 22} ${bandY + 18} ${CX + 44} ${bandY}`}
+                fill={color}
+                fillOpacity={0.8}
+                stroke={INK}
+                strokeWidth={6}
+                strokeLinecap="round"
+            />
+            {/* V-neck line */}
+            <path
+                d={`M${CX - 8} ${bandY + 5} L${CX} ${bandY + 14} L${CX + 8} ${bandY + 5}`}
+                fill="none"
+                stroke={dark}
+                strokeWidth={4}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+        </g>
+    );
+}
 
-function renderAccessory(
-    accessory: string, cx: number, cy: number, rx: number, ry: number, color: string
-): React.ReactNode {
-    const top = cy - ry;
-    const colorDk = darken(color, 0.15);
+// === ACCESSORIES ===
+function renderAccessory(accessory: string, color: string, hairColor: string): React.ReactNode {
+    const topY = CY - R;
+    const dark = darken(color, 0.15);
 
     switch (accessory) {
         case 'cap':
             return (
                 <g>
-                    {/* Cap dome — sits snug on head */}
-                    <path d={`M ${cx - rx + 2} ${cy - ry / 2 + 4}
-                        Q ${cx - rx} ${top - 4} ${cx} ${top - 8}
-                        Q ${cx + rx} ${top - 4} ${cx + rx - 2} ${cy - ry / 2 + 4}`}
-                        fill={color} />
-                    {/* Cap band */}
-                    <rect x={cx - rx + 2} y={cy - ry / 2} width={rx * 2 - 4} height={8} rx={4} fill={colorDk} />
-                    {/* Brim — forward-facing visor */}
-                    <ellipse cx={cx + 18} cy={cy - ry / 2 + 4} rx={18} ry={5} fill={colorDk} />
+                    <path
+                        d={`M${CX - R + 6} ${CY - R * 0.62}
+                            Q${CX - R + 4} ${topY - 14} ${CX} ${topY - 20}
+                            Q${CX + R - 4} ${topY - 14} ${CX + R - 6} ${CY - R * 0.62}`}
+                        fill={color} stroke={INK} strokeWidth={8} strokeLinejoin="round"
+                    />
+                    <path
+                        d={`M${CX - R + 6} ${CY - R * 0.62 + 5}
+                            Q${CX} ${CY - R * 0.62 + 14} ${CX + R - 6} ${CY - R * 0.62 + 5}`}
+                        fill={dark} fillOpacity={0.55} stroke={INK} strokeWidth={5}
+                    />
+                    <ellipse cx={CX + 22} cy={CY - R * 0.62 + 8} rx={26} ry={8} fill={dark} stroke={INK} strokeWidth={5} />
                 </g>
             );
         case 'beanie':
             return (
                 <g>
-                    <path d={`M ${cx - rx - 2} ${cy - 14}
-                        Q ${cx - rx} ${top - 14} ${cx} ${top - 18}
-                        Q ${cx + rx} ${top - 14} ${cx + rx + 2} ${cy - 14}`}
-                        fill={color} />
-                    {/* Beanie fold */}
-                    <rect x={cx - rx - 2} y={cy - 18} width={rx * 2 + 4} height={8} rx={4} fill={colorDk} />
-                    {/* Pom pom */}
-                    <circle cx={cx} cy={top - 18} r={8} fill={lighten(color, 0.25)} />
+                    <path
+                        d={`M${CX - R + 4} ${CY - R * 0.58}
+                            Q${CX - R + 2} ${topY - 20} ${CX} ${topY - 26}
+                            Q${CX + R - 2} ${topY - 20} ${CX + R - 4} ${CY - R * 0.58}`}
+                        fill={color} stroke={INK} strokeWidth={8} strokeLinejoin="round"
+                    />
+                    <path
+                        d={`M${CX - R + 4} ${CY - R * 0.58 + 4}
+                            Q${CX} ${CY - R * 0.58 + 14} ${CX + R - 4} ${CY - R * 0.58 + 4}`}
+                        fill={dark} fillOpacity={0.6} stroke={INK} strokeWidth={5}
+                    />
+                    <circle cx={CX} cy={topY - 26} r={13} fill={lighten(color, 0.28)} stroke={INK} strokeWidth={5} />
                 </g>
             );
         case 'glasses':
             return (
                 <g>
-                    <circle cx={cx - 15} cy={cy - 4} r={14} fill="none" stroke={color} strokeWidth={2.5} />
-                    <circle cx={cx + 15} cy={cy - 4} r={14} fill="none" stroke={color} strokeWidth={2.5} />
-                    <line x1={cx - 1} y1={cy - 4} x2={cx + 1} y2={cy - 4} stroke={color} strokeWidth={2.5} />
-                    <line x1={cx - 29} y1={cy - 6} x2={cx - 40} y2={cy - 2} stroke={color} strokeWidth={2} />
-                    <line x1={cx + 29} y1={cy - 6} x2={cx + 40} y2={cy - 2} stroke={color} strokeWidth={2} />
+                    <circle cx={78} cy={85} r={24} fill="none" stroke={color} strokeWidth={6} />
+                    <circle cx={122} cy={85} r={24} fill="none" stroke={color} strokeWidth={6} />
+                    <line x1={102} y1={85} x2={98} y2={85} stroke={color} strokeWidth={6} />
+                    <line x1={54} y1={81} x2={38} y2={76} stroke={color} strokeWidth={5} strokeLinecap="round" />
+                    <line x1={146} y1={81} x2={162} y2={76} stroke={color} strokeWidth={5} strokeLinecap="round" />
+                </g>
+            );
+        case 'sunglasses':
+            return (
+                <g>
+                    <line x1={96} y1={85} x2={104} y2={85} stroke={INK} strokeWidth={6} />
+                    <rect x={42} y={67} width={48} height={34} rx={10} fill={INK} fillOpacity={0.87} stroke={INK} strokeWidth={5} />
+                    <rect x={96} y={67} width={48} height={34} rx={10} fill={INK} fillOpacity={0.87} stroke={INK} strokeWidth={5} />
+                    <rect x={46} y={71} width={16} height={9} rx={3} fill={WHITE} fillOpacity={0.28} />
+                    <rect x={100} y={71} width={16} height={9} rx={3} fill={WHITE} fillOpacity={0.28} />
+                    <line x1={42} y1={82} x2={28} y2={77} stroke={INK} strokeWidth={5} strokeLinecap="round" />
+                    <line x1={144} y1={82} x2={158} y2={77} stroke={INK} strokeWidth={5} strokeLinecap="round" />
                 </g>
             );
         case 'headphones':
             return (
                 <g>
-                    <path d={`M ${cx - rx - 6} ${cy - 2} Q ${cx - rx - 8} ${top - 18} ${cx} ${top - 20}
-                        Q ${cx + rx + 8} ${top - 18} ${cx + rx + 6} ${cy - 2}`}
-                        fill="none" stroke="#374151" strokeWidth={5} strokeLinecap="round" />
-                    {/* Ear cups */}
-                    <rect x={cx - rx - 14} y={cy - 10} width={14} height={20} rx={5} fill={color} />
-                    <rect x={cx - rx - 12} y={cy - 6} width={6} height={12} rx={3} fill={lighten(color, 0.15)} />
-                    <rect x={cx + rx} y={cy - 10} width={14} height={20} rx={5} fill={color} />
-                    <rect x={cx + rx + 6} y={cy - 6} width={6} height={12} rx={3} fill={lighten(color, 0.15)} />
+                    <path
+                        d={`M${CX - R - 8} ${CY - 14}
+                            Q${CX - R - 12} ${topY - 24} ${CX} ${topY - 30}
+                            Q${CX + R + 12} ${topY - 24} ${CX + R + 8} ${CY - 14}`}
+                        fill="none" stroke="#374151" strokeWidth={8} strokeLinecap="round"
+                    />
+                    <rect x={CX - R - 20} y={CY - 20} width={18} height={28} rx={6} fill={color} stroke={INK} strokeWidth={5} />
+                    <rect x={CX - R - 16} y={CY - 14} width={8} height={16} rx={3} fill={lighten(color, 0.22)} />
+                    <rect x={CX + R + 2} y={CY - 20} width={18} height={28} rx={6} fill={color} stroke={INK} strokeWidth={5} />
+                    <rect x={CX + R + 6} y={CY - 14} width={8} height={16} rx={3} fill={lighten(color, 0.22)} />
                 </g>
             );
         case 'backpack':
-            return null; // Only visible from behind
-        case 'sunglasses':
-            return renderSunglasses(cx, cy);
+            return (
+                <g>
+                    <rect x={CX + R - 8} y={CY - 14} width={32} height={44} rx={9} fill={color} stroke={INK} strokeWidth={5} />
+                    <rect x={CX + R - 4} y={CY - 8} width={16} height={22} rx={5} fill={lighten(color, 0.14)} />
+                    <rect x={CX + R + 4} y={CY + 6} width={6} height={6} rx={2} fill={dark} />
+                </g>
+            );
         default:
             return null;
     }

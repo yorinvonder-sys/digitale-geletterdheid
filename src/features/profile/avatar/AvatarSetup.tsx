@@ -11,13 +11,13 @@ interface AvatarSetupProps {
 }
 
 const SKIN_COLORS = [
-    { id: 'pale', value: '#f5d0b0', label: 'Licht' },
-    { id: 'fair', value: '#ffe0bd', label: 'Crème' },
-    { id: 'tan', value: '#d18a6a', label: 'Getint' },
-    { id: 'olive', value: '#c68642', label: 'Olijf' },
-    { id: 'brown', value: '#a0522d', label: 'Bruin' },
-    { id: 'dark', value: '#8d5524', label: 'Donker' },
-    { id: 'ebony', value: '#614335', label: 'Ebben' },
+    { id: 'acid', value: '#e1ff01', label: 'Acid Geel' },
+    { id: 'orange', value: '#F2A23C', label: 'Oranje' },
+    { id: 'mint', value: '#A8E6CF', label: 'Mint' },
+    { id: 'sky', value: '#87CEEB', label: 'Hemelsblauw' },
+    { id: 'lavender', value: '#C9B1FF', label: 'Lavendel' },
+    { id: 'coral', value: '#FF6B6B', label: 'Koraal' },
+    { id: 'white', value: '#F8F8F0', label: 'Wit' },
 ];
 
 const SHIRT_COLORS = [
@@ -98,11 +98,12 @@ const ACCESSORIES = [
 export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, initialConfig }) => {
     const [currentStep, setCurrentStep] = useState(0);
     const [config, setConfig] = useState<AvatarConfig>(initialConfig || DEFAULT_AVATAR_CONFIG);
+    const isDuck = (config.avatarKind ?? 'duck') === 'duck';
 
     const STEPS = [
         { id: 'welcome', title: 'Kies je karakter', subtitle: 'Welkom!' },
-        { id: 'face', title: 'Gezicht & Haar', subtitle: 'Maak het uniek' },
-        { id: 'clothing', title: 'Kleding & Extras', subtitle: 'Personaliseer verder' },
+        { id: 'face', title: isDuck ? 'Snavel & Kuif' : 'Gezicht & Haar', subtitle: 'Maak het uniek' },
+        { id: 'clothing', title: isDuck ? 'Outfit & Accessoires' : 'Kleding & Accessoires', subtitle: 'Personaliseer verder' },
         { id: 'done', title: 'Klaar!', subtitle: 'Je avatar is af' },
     ];
 
@@ -159,12 +160,36 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
 
                         {/* Step Content */}
                         <div className="mb-6">
-                            {/* Step 0: Welcome + Gender Selection */}
+                            {/* Step 0: Welcome + Avatar Kind + Gender Selection */}
                             {currentStep === 0 && (
                                 <div className="space-y-5 animate-in fade-in">
                                     <p className="font-medium text-center text-sm text-duck-ink/65">
                                         Hoi{userName ? ` ${userName}` : ''}! Maak je eigen avatar en begin je avontuur.
                                     </p>
+
+                                    {/* Avatar Kind Selection */}
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <button
+                                            onClick={() => setConfig({ ...config, avatarKind: 'human' })}
+                                            className={`p-5 rounded-2xl border-2 transition-all ${(config.avatarKind ?? 'duck') === 'human'
+                                                ? 'border-duck-ink bg-duck-acid'
+                                                : 'border-duck-ink/10 bg-white hover:border-duck-ink/40'
+                                                }`}
+                                        >
+                                            <div className="text-4xl mb-2">🧑</div>
+                                            <div className="font-bold text-duck-ink">Mens</div>
+                                        </button>
+                                        <button
+                                            onClick={() => setConfig({ ...config, avatarKind: 'duck' })}
+                                            className={`p-5 rounded-2xl border-2 transition-all ${(config.avatarKind ?? 'duck') === 'duck'
+                                                ? 'border-duck-ink bg-duck-acid'
+                                                : 'border-duck-ink/10 bg-white hover:border-duck-ink/40'
+                                                }`}
+                                        >
+                                            <div className="text-4xl mb-2">🦆</div>
+                                            <div className="font-bold text-duck-ink">Eend</div>
+                                        </button>
+                                    </div>
 
                                     {/* Gender Selection */}
                                     <div className="grid grid-cols-2 gap-4">
@@ -212,7 +237,7 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
 
                                     {/* Skin Color Selection */}
                                     <div>
-                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2 text-duck-ink/65">Huidskleur</p>
+                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2 text-duck-ink/65">{isDuck ? 'Verenkleur' : 'Huidskleur'}</p>
                                         <div className="flex flex-wrap gap-2.5 justify-center">
                                             {SKIN_COLORS.map(skin => (
                                                 <button
@@ -238,7 +263,7 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
                                 <div className="space-y-4 animate-in fade-in">
                                     {/* Expression */}
                                     <div>
-                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2 text-duck-ink/65">Gezicht</p>
+                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2 text-duck-ink/65">{isDuck ? 'Snavel & Ogen' : 'Gezicht'}</p>
                                         <div className="grid grid-cols-4 gap-2">
                                             {EXPRESSIONS.map(expression => (
                                                 <button
@@ -266,7 +291,7 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
 
                                     {/* Hair Style */}
                                     <div>
-                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2 text-duck-ink/65">Kapsel</p>
+                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2 text-duck-ink/65">{isDuck ? 'Kuif' : 'Haarstijl'}</p>
                                         <div className="grid grid-cols-4 gap-2">
                                             {hairStyles.map(hair => (
                                                 <button
@@ -291,7 +316,7 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
 
                                     {/* Hair Color */}
                                     <div>
-                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2 text-duck-ink/65">Haar kleur</p>
+                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2 text-duck-ink/65">{isDuck ? 'Kuifkleur' : 'Haarkleur'}</p>
                                         <div className="flex flex-wrap gap-2.5 justify-center">
                                             {HAIR_COLORS.map(color => (
                                                 <button
@@ -314,7 +339,7 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
                                 <div className="space-y-4 animate-in fade-in">
                                     {/* Shirt Style */}
                                     <div>
-                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2 text-duck-ink/65">Shirt stijl</p>
+                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2 text-duck-ink/65">{isDuck ? 'Outfit' : 'Shirt'}</p>
                                         <div className="grid grid-cols-4 gap-2">
                                             {SHIRT_STYLES.map(shirt => (
                                                 <button
@@ -339,7 +364,7 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
 
                                     {/* Shirt Color */}
                                     <div>
-                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2 text-duck-ink/65">Shirt kleur</p>
+                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2 text-duck-ink/65">{isDuck ? 'Outfit kleur' : 'Shirt kleur'}</p>
                                         <div className="flex flex-wrap gap-2.5 justify-center">
                                             {SHIRT_COLORS.map(color => (
                                                 <button
@@ -400,7 +425,7 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
 
                                     {/* Shoe Color */}
                                     <div>
-                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2 text-duck-ink/65">Schoenen kleur</p>
+                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2 text-duck-ink/65">{isDuck ? 'Voetjes kleur' : 'Schoenen kleur'}</p>
                                         <div className="flex flex-wrap gap-2.5 justify-center">
                                             {SHOE_COLORS.map(color => (
                                                 <button

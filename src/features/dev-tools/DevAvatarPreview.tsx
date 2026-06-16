@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { AvatarViewer } from '@/features/profile/avatar/AvatarViewer';
+import { LazyAvatarViewer } from '@/features/profile/avatar/LazyAvatarViewer';
 import { AvatarViewer2D } from '@/features/profile/avatar/AvatarViewer2D';
 import { AvatarConfig, DEFAULT_AVATAR_CONFIG } from '@/types';
 import { AVATAR_HAIR_CATALOG, AVATAR_PET_CATALOG } from '@/config/avatarCatalog';
@@ -178,6 +178,7 @@ const PreviewCard = ({
 
 const DevAvatarPreview: React.FC = () => {
     const [selectedKey, setSelectedKey] = useState(getInitialPresetKey);
+    const [avatarKind, setAvatarKind] = useState<'duck' | 'human'>('duck');
 
     const selectedPreset = useMemo(
         () => ALL_PRESETS.find(preset => preset.key === selectedKey) ?? ALL_PRESETS[0],
@@ -212,6 +213,33 @@ const DevAvatarPreview: React.FC = () => {
                     <p className="text-sm md:text-base max-w-3xl mx-auto" style={{ color: '#202023' }}>
                         Dev-only route om alle kapsels, pets en headwear-combinaties visueel te controleren in de echte 3D renderer.
                     </p>
+                    <div className="flex items-center justify-center gap-2 pt-2">
+                        <span className="text-xs font-bold uppercase tracking-widest" style={{ color: '#445865' }}>Avatar:</span>
+                        <button
+                            type="button"
+                            onClick={() => setAvatarKind('duck')}
+                            className="px-4 py-1.5 rounded-full text-sm font-bold transition-all"
+                            style={{
+                                backgroundColor: avatarKind === 'duck' ? '#D97848' : '#FFFFFF',
+                                color: avatarKind === 'duck' ? '#FFFFFF' : '#445865',
+                                border: '2px solid #D97848',
+                            }}
+                        >
+                            3D Eend
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => setAvatarKind('human')}
+                            className="px-4 py-1.5 rounded-full text-sm font-bold transition-all"
+                            style={{
+                                backgroundColor: avatarKind === 'human' ? '#D97848' : '#FFFFFF',
+                                color: avatarKind === 'human' ? '#FFFFFF' : '#445865',
+                                border: '2px solid #D97848',
+                            }}
+                        >
+                            3D Mens
+                        </button>
+                    </div>
                 </div>
 
                 <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1.4fr)_minmax(320px,0.9fr)] gap-8 items-start">
