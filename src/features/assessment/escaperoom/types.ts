@@ -6,7 +6,7 @@ export interface NulmetingResult {
     digitaleSystemen: KamerScore;    // 21A
     mediaEnAI: KamerScore;           // 21B/21D
     programmeren: KamerScore;        // 22A/22B
-    veiligheidPrivacy: KamerScore;   // 23A
+    veiligheidPrivacy: KamerScore;   // 23A/21C
     welzijnMaatschappij: KamerScore; // 23B/23C
   };
   overallScore: number; // gemiddelde 0-100
@@ -53,9 +53,9 @@ export const KAMER_NAMEN: Record<string, string> = {
  * Gebruikt voor voortgangsrapportage in het docentdashboard.
  */
 export const KAMER_KERNDOELEN: Record<string, string[]> = {
-  kamer1: ['21A'],           // Digitale systemen (wachtwoorden, login, bestandsbeheer)
-  kamer2: ['21B', '23B'],    // Media & Informatie + Digitaal welzijn (nepnieuws, broncontrole)
-  kamer3: ['22B'],           // Programmeren / Computational thinking (patronen, logica)
-  kamer4: ['23A'],           // Veiligheid & privacy (datalekken, gegevensbescherming)
-  kamer5: ['23B', '23C'],    // Digitaal welzijn + Maatschappij (online pesten, dilemma's)
+  kamer1: ['21A'],              // Digitale systemen (wachtwoorden, login, bestandsbeheer)
+  kamer2: ['21B', '21D'],       // Media & Informatie + AI (nepnieuws, broncontrole, AI-claims beoordelen)
+  kamer3: ['22A', '22B'],       // Digitale producten + Programmeren (product kiezen + code sorteren)
+  kamer4: ['23A', '21C'],       // Veiligheid & privacy + Data & Dataverwerking (datalekken, gevoelige data)
+  kamer5: ['23B', '23C'],       // Digitaal welzijn + Maatschappij (online pesten, dilemma's)
 };
