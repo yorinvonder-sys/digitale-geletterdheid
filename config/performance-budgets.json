@@ -1,0 +1,49 @@
+{
+  "assets": [
+    {
+      "pattern": "vendor-react-three-*.js",
+      "maxKb": 1000
+    },
+    {
+      "pattern": "vendor-exceljs-*.js",
+      "maxKb": 1000
+    },
+    {
+      "pattern": "index-*.js",
+      "maxKb": 560
+    },
+    {
+      "pattern": "jspdf.es.min-*.js",
+      "maxKb": 460
+    },
+    {
+      "pattern": "c2pa.esm-*.js",
+      "maxKb": 420
+    },
+    {
+      "pattern": "AccountantDashboard-*.js",
+      "maxKb": 340
+    },
+    {
+      "pattern": "TeacherDashboard-*.js",
+      "maxKb": 320
+    }
+  ],
+  "network": [
+    {
+      "route": "root",
+      "maxJsKb": 1300,
+      "maxCssKb": 220
+    },
+    {
+      "route": "login",
+      "maxJsKb": 1300,
+      "maxCssKb": 220
+    },
+    {
+      "route": "scholen",
+      "maxJsKb": 1300,
+      "maxCssKb": 220
+    }
+  ]
+}
