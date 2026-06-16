@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { AvatarConfig } from '@/types';
-import { AvatarViewer2D } from '@/features/profile/avatar/AvatarViewer2D';
 
 interface LazyAvatarViewerProps {
     config: AvatarConfig;
@@ -9,8 +8,29 @@ interface LazyAvatarViewerProps {
     variant?: 'full' | 'head';
 }
 
+const LazyHuman = React.lazy(() =>
+    import('@/features/profile/avatar/AvatarViewer').then((m) => ({ default: m.AvatarViewer }))
+);
+
+const LazyDuck = React.lazy(() =>
+    import('@/features/profile/avatar/AvatarViewerDuck').then((m) => ({ default: m.AvatarViewerDuck }))
+);
+
+const AvatarLoadingFallback: React.FC = () => (
+    <div className="w-full h-full flex items-center justify-center bg-lab-cream" />
+);
+
 export const LazyAvatarViewer: React.FC<LazyAvatarViewerProps> = (props) => {
-    return <AvatarViewer2D {...props} />;
+    const isHuman = (props.config.avatarKind ?? 'duck') === 'human';
+
+    return (
+        <Suspense fallback={<AvatarLoadingFallback />}>
+            {isHuman
+                ? <LazyHuman {...props} />
+                : <LazyDuck {...props} />
+            }
+        </Suspense>
+    );
 };
 
 export default LazyAvatarViewer;

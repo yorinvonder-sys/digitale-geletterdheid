@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from 'react';
+import { LazyAvatarViewer } from '@/features/profile/avatar/LazyAvatarViewer';
 import { AvatarViewer2D } from '@/features/profile/avatar/AvatarViewer2D';
 import { AvatarConfig, DEFAULT_AVATAR_CONFIG } from '@/types';
 import { AVATAR_HAIR_CATALOG, AVATAR_PET_CATALOG } from '@/config/avatarCatalog';
@@ -177,6 +178,7 @@ const PreviewCard = ({
 
 const DevAvatarPreview: React.FC = () => {
     const [selectedKey, setSelectedKey] = useState(getInitialPresetKey);
+    const [avatarKind, setAvatarKind] = useState<'duck' | 'human'>('duck');
 
     const selectedPreset = useMemo(
         () => ALL_PRESETS.find(preset => preset.key === selectedKey) ?? ALL_PRESETS[0],
@@ -209,8 +211,35 @@ const DevAvatarPreview: React.FC = () => {
                         Avatar 3D QA Preview
                     </h1>
                     <p className="text-sm md:text-base max-w-3xl mx-auto" style={{ color: '#445865' }}>
-                        Dev-only route om alle kapsels, pets en headwear-combinaties visueel te controleren in de echte 3D renderer.
+                        Dev-only route om alle kapsels, pets en headwear-combinaties te vergelijken (2D-thumbnails). Selecteer er één voor de live 3D-render rechts.
                     </p>
+                    <div className="flex items-center justify-center gap-2 pt-2">
+                        <span className="text-xs font-bold uppercase tracking-widest" style={{ color: '#445865' }}>Avatar:</span>
+                        <button
+                            type="button"
+                            onClick={() => setAvatarKind('duck')}
+                            className="px-4 py-1.5 rounded-full text-sm font-bold transition-all"
+                            style={{
+                                backgroundColor: avatarKind === 'duck' ? '#D97848' : '#FFFFFF',
+                                color: avatarKind === 'duck' ? '#FFFFFF' : '#445865',
+                                border: '2px solid #D97848',
+                            }}
+                        >
+                            3D Eend
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => setAvatarKind('human')}
+                            className="px-4 py-1.5 rounded-full text-sm font-bold transition-all"
+                            style={{
+                                backgroundColor: avatarKind === 'human' ? '#D97848' : '#FFFFFF',
+                                color: avatarKind === 'human' ? '#FFFFFF' : '#445865',
+                                border: '2px solid #D97848',
+                            }}
+                        >
+                            3D Mens
+                        </button>
+                    </div>
                 </div>
 
                 <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1.4fr)_minmax(320px,0.9fr)] gap-8 items-start">
@@ -250,7 +279,7 @@ const DevAvatarPreview: React.FC = () => {
                                     {selectedPreset.label}
                                 </h2>
                                 <p className="text-sm" style={{ color: '#445865' }}>
-                                    Vergelijk de live 3D-render met de 2D fallback om silhouetteproblemen sneller te spotten.
+                                    Live 3D-render via LazyAvatarViewer — gebruik de toggle boven om tussen eend en mens te wisselen.
                                 </p>
                             </div>
 
@@ -260,7 +289,7 @@ const DevAvatarPreview: React.FC = () => {
                                         Avatar Preview
                                     </div>
                                     <div className="h-[420px] rounded-[1.5rem] overflow-hidden" style={{ backgroundColor: '#f2f1ec', border: '1px solid #E7D8BD' }}>
-                                        <AvatarViewer2D config={selectedPreset.config} interactive={true} variant="full" />
+                                        <LazyAvatarViewer config={{ ...selectedPreset.config, avatarKind }} interactive={true} variant="full" />
                                     </div>
                                 </div>
                             </div>

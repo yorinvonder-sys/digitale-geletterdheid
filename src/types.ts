@@ -153,6 +153,7 @@ export interface AvatarConfig {
   // Companion pet (separate from accessory)
   pet?: 'none' | 'pet_dog' | 'pet_cat' | 'pet_robo';
   gender: 'male' | 'female';
+  avatarKind?: 'human' | 'duck';
 }
 
 export const DEFAULT_AVATAR_CONFIG: AvatarConfig = {
@@ -167,7 +168,8 @@ export const DEFAULT_AVATAR_CONFIG: AvatarConfig = {
   hairColor: '#08283B',
   eyeColor: '#08283B',
   shoeColor: '#08283B',
-  gender: 'male'
+  gender: 'male',
+  avatarKind: 'duck',
 };
 
 // Alias for game components
