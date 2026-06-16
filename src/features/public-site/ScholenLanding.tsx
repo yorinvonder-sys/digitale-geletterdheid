@@ -163,6 +163,13 @@ const sloRows = [
     { domain: 'Computational thinking', missions: 'Game Programmeur, Robot Bestuurder', proof: 'Logica, testen, debuggen en iteratief verbeteren' },
 ] as const;
 
+const sloIcons = [
+    <svg key="digital" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5"><rect x="1" y="2" width="14" height="10" rx="1.5" /><path d="M5.5 15h5M8 12v3" /></svg>,
+    <svg key="info" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5"><circle cx="7" cy="7" r="5" /><path d="m13 13-2.5-2.5" /></svg>,
+    <svg key="media" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5"><path d="M1 8s3-5 7-5 7 5 7 5-3 5-7 5-7-5-7-5z" /><circle cx="8" cy="8" r="2" /></svg>,
+    <svg key="ct" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5"><polyline points="4,5 1,8 4,11" /><polyline points="12,5 15,8 12,11" /><path d="M9 3l-2 10" /></svg>,
+];
+
 const ictTrustItems = [
     { title: 'Microsoft 365', copy: 'Inloggen via de schoolomgeving die je al hebt. ICT hoeft niets nieuws in te richten.' },
     { title: 'Verwerkersovereenkomst', copy: 'Privacyteam wil eerst de afspraken zien? Goed plan. Dat kan.' },
@@ -615,32 +622,40 @@ export const ScholenLanding: React.FC = () => {
                             </div>
                         </div>
 
-                        <Reveal y={30} className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-stretch">
-                            <div className="rounded-[1.5rem] bg-white p-6 shadow-[2px_4px_24px_rgba(199,197,188,0.30)] md:p-8">
+                        <Reveal y={30} className="space-y-5">
+                            <div>
                                 <SectionLabel>SLO &amp; curriculum proof</SectionLabel>
                                 <h2 className="mt-4 text-balance font-display text-3xl leading-[1.08] md:text-4xl">Van losse activiteit naar aantoonbare leerlijn</h2>
-                                <div className="mt-7">
-                                    {sloRows.map((row) => (
-                                        <div key={row.domain} className="grid gap-2 border-t border-duck-ink/10 py-4 last:border-b md:grid-cols-[0.8fr_1fr_1fr] md:items-center md:gap-4">
-                                            <p className="text-sm font-extrabold">{row.domain}</p>
-                                            <p className="text-sm font-semibold leading-6 text-duck-ink/65">{row.missions}</p>
-                                            <p className="text-xs font-bold leading-5 text-duck-ink/80">{row.proof}</p>
-                                        </div>
-                                    ))}
-                                </div>
                             </div>
-                            <div className="rounded-[1.5rem] bg-duck-ink p-6 text-white md:p-8">
-                                <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-duck-acid">Voor ICT en privacy</p>
-                                <h2 className="mt-4 text-balance font-display text-3xl leading-[1.08] md:text-4xl">Veilig te beoordelen door ICT</h2>
-                                <p className="mt-4 text-pretty text-sm font-semibold leading-7 text-white/70">
-                                    DGSkills is geen zwarte doos. De pilot geeft scholen tijd om privacy, AI en beheer concreet te toetsen.
-                                </p>
-                                <div className="mt-6">
+                            <div className="grid gap-4 sm:grid-cols-2">
+                                {sloRows.map((row, i) => (
+                                    <article key={row.domain} className="rounded-[1.5rem] bg-white p-6 shadow-[2px_4px_24px_rgba(199,197,188,0.30)] md:p-7">
+                                        <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-duck-ink text-duck-acid">
+                                            {sloIcons[i]}
+                                        </div>
+                                        <h3 className="text-base font-extrabold">{row.domain}</h3>
+                                        <p className="mt-1 text-sm font-semibold text-duck-ink/65">{row.missions}</p>
+                                        <p className="mt-3 text-xs font-bold leading-5 text-duck-ink/50">{row.proof}</p>
+                                    </article>
+                                ))}
+                            </div>
+                            <div className="rounded-[1.5rem] bg-duck-ink p-6 md:p-8">
+                                <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+                                    <div>
+                                        <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-duck-acid">Voor ICT en privacy</p>
+                                        <h2 className="mt-2 font-display text-2xl text-white md:text-3xl">Veilig te beoordelen door ICT</h2>
+                                    </div>
+                                    <p className="max-w-xs text-sm font-semibold leading-6 text-white/60">
+                                        DGSkills is geen zwarte doos. De pilot geeft scholen tijd om privacy, AI en beheer concreet te toetsen.
+                                    </p>
+                                </div>
+                                <div className="grid gap-5 border-t border-white/10 pt-6 sm:grid-cols-2 lg:grid-cols-5">
                                     {ictTrustItems.map((item) => (
-                                        <article key={item.title} className="border-t border-white/10 py-4 last:pb-0">
-                                            <h3 className="text-base font-extrabold text-white">{item.title}</h3>
-                                            <p className="mt-1 text-sm font-semibold leading-6 text-white/65">{item.copy}</p>
-                                        </article>
+                                        <div key={item.title}>
+                                            <span className="mb-2 inline-block h-1.5 w-1.5 rounded-full bg-duck-acid" aria-hidden="true" />
+                                            <h3 className="text-sm font-extrabold text-white">{item.title}</h3>
+                                            <p className="mt-1 text-xs font-semibold leading-5 text-white/55">{item.copy}</p>
+                                        </div>
                                     ))}
                                 </div>
                             </div>
