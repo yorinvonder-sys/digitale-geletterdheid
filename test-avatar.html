@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Avatar Test</title>
+    <script type="module">
+        import React from 'https://esm.sh/react@19?dev';
+        import ReactDOM from 'https://esm.sh/react-dom@19/client?dev';
+
+        const DEFAULT_CONFIGS = [
+            { baseModel: 'standard', skinColor: '#f5d0b0', shirtColor: '#0B453F', pantsColor: '#08283B', accessory: 'none', hairStyle: 'spiky', shirtStyle: 't-shirt', hairColor: '#08283B', eyeColor: '#4a3728', shoeColor: '#08283B', gender: 'male', expression: 'happy', pose: 'idle' },
+            { baseModel: 'slim', skinColor: '#ffe0bd', shirtColor: '#D97848', pantsColor: '#8b5cf6', accessory: 'glasses', hairStyle: 'pigtails', shirtStyle: 'hoodie', hairColor: '#08283B', eyeColor: '#2563eb', shoeColor: '#1f2937', gender: 'female', expression: 'happy', pose: 'peace' },
+            { baseModel: 'standard', skinColor: '#a0522d', shirtColor: '#5F947D', pantsColor: '#08283B', accessory: 'cap', hairStyle: 'fade', hairColor: '#08283B', eyeColor: '#08283B', shoeColor: '#D97848', gender: 'male', expression: 'cool', pose: 'idle' },
+            { baseModel: 'slim', skinColor: '#d18a6a', shirtColor: '#D7C95F', pantsColor: '#0B453F', accessory: 'headphones', hairStyle: 'curls', hairColor: '#3E2723', eyeColor: '#4a3728', shoeColor: '#08283B', gender: 'female', expression: 'surprised', pose: 'wave' },
+            { baseModel: 'standard', skinColor: '#8d5524', shirtColor: '#D97848', pantsColor: '#08283B', accessory: 'beanie', hairStyle: 'afro', hairColor: '#08283B', eyeColor: '#08283B', shoeColor: '#ffffff', gender: 'male', expression: 'happy', pose: 'dab' },
+            { baseModel: 'slim', skinColor: '#f5d0b0', shirtColor: '#0B453F', pantsColor: '#D97848', accessory: 'none', hairStyle: 'bob', hairColor: '#C41E3A', eyeColor: '#5F947D', shoeColor: '#08283B', gender: 'female', expression: 'neutral', pose: 'idle' },
+        ];
+
+        document.getElementById('root').innerHTML = '<p style="color:white;text-align:center;padding:40px;font-family:system-ui">Avatar wordt geladen via dev server... Open <a href="/" style="color:#818cf8">/</a> en navigeer naar een pagina met avatars, of bekijk de component in Storybook.</p>';
+    </script>
+    <style>
+        body { margin: 0; background: #08283B; font-family: system-ui, sans-serif; }
+        #root { display: flex; flex-wrap: wrap; gap: 24px; justify-content: center; padding: 40px; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+</body>
+</html>

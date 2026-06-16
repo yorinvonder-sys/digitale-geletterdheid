@@ -189,6 +189,13 @@ const PipGuide: React.FC<{ pose: string; tooltip: string; side: string; children
 // Gamified scroll progress
 import { ScrollQuestBar } from './scholen/ScrollQuestBar';
 
+// 3D & Gamification components (lazy loaded)
+const Hero3DScene = React.lazy(() => import('./scholen/Hero3DScene').then(m => ({ default: m.Hero3DScene })));
+const ScrollXPBar = React.lazy(() => import('./scholen/ScrollXPBar').then(m => ({ default: m.ScrollXPBar })));
+const XPParticles = React.lazy(() => import('./scholen/XPParticles').then(m => ({ default: m.XPParticles })));
+const LandingAvatarPreview = React.lazy(() => import('./scholen/LandingAvatarPreview').then(m => ({ default: m.LandingAvatarPreview })));
+import { TiltCard } from './scholen/TiltCard';
+
 // JSON-LD structured data for Google rich results
 const structuredData = {
     "@context": "https://schema.org",
@@ -463,8 +470,12 @@ export const ScholenLanding: React.FC = () => {
 
             <main id="main-content">
                 {/* Hero */}
-                <section className="pt-32 pb-12 md:pt-40 md:pb-20 px-6 overflow-hidden" aria-labelledby="hero-heading">
-                    <div className="max-w-5xl mx-auto">
+                <section className="pt-32 pb-12 md:pt-40 md:pb-20 px-6 overflow-hidden relative" aria-labelledby="hero-heading">
+                    {/* 3D Background Scene */}
+                    <Suspense fallback={null}>
+                        <Hero3DScene />
+                    </Suspense>
+                    <div className="max-w-5xl mx-auto relative" style={{ zIndex: 2 }}>
                         {/* Heading — full width above grid so it never wraps */}
                         <p className="text-sm font-medium mb-4 tracking-wide" style={{ color: C.accent }}>
                             Voor het voortgezet onderwijs
@@ -937,6 +948,14 @@ export const ScholenLanding: React.FC = () => {
                     </SectionErrorBoundary>
                 </section>
             </main>
+
+            {/* Gamification overlays */}
+            <Suspense fallback={null}>
+                <ScrollXPBar />
+            </Suspense>
+            <Suspense fallback={null}>
+                <XPParticles count={12} />
+            </Suspense>
 
             {/* Floating CTA — Mobile */}
             <div

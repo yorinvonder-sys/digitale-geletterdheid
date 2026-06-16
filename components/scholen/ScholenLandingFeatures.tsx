@@ -4,6 +4,7 @@
  * education-themed illustrations, warm varied palette, mission-driven language.
  */
 import React from 'react';
+import { TiltCard } from './TiltCard';
 
 const SERIF = "'Newsreader', Georgia, serif";
 const C = {
@@ -301,9 +302,9 @@ export const ScholenLandingFeatures: React.FC = () => (
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {features.map(f => (
-                    <div key={f.title} className="group cursor-default">
+                    <TiltCard key={f.title} className="group cursor-default" maxTilt={6}>
                         <div
-                            className="aspect-square rounded-2xl mb-5 p-10 transition-transform duration-300 group-hover:scale-[1.02]"
+                            className="aspect-square rounded-2xl mb-5 p-10"
                             style={{ backgroundColor: f.bgColor }}
                         >
                             {f.illustration}
@@ -317,7 +318,7 @@ export const ScholenLandingFeatures: React.FC = () => (
                         <p className="text-[15px] leading-relaxed" style={{ color: C.textMuted }}>
                             {f.description}
                         </p>
-                    </div>
+                    </TiltCard>
                 ))}
             </div>
         </div>
