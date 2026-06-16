@@ -13,7 +13,7 @@ const LazyHuman = React.lazy(() =>
 );
 
 const LazyDuck = React.lazy(() =>
-    import('@/features/profile/avatar/AvatarViewerDuck').then((m) => ({ default: m.AvatarViewerDuck }))
+    import('@/features/profile/avatar/AvatarViewer2D').then((m) => ({ default: m.AvatarViewer2D }))
 );
 
 const AvatarLoadingFallback: React.FC = () => (

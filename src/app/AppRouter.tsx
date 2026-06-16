@@ -25,6 +25,7 @@ const NotFound = React.lazy(() => import('@/components/app-shell/NotFound').then
 const MobileReceiptPage = React.lazy(() => import('@/components/app-shell/MobileReceiptPage').then(m => ({ default: m.MobileReceiptPage })));
 const ParentConsentApproval = React.lazy(() => import('@/features/consent/ParentConsentApproval').then(m => ({ default: m.ParentConsentApproval })));
 const LeerlingDemoSandbox = React.lazy(() => import('@/features/public-site/LeerlingDemoSandbox').then(m => ({ default: m.LeerlingDemoSandbox })));
+const SpeeltuinGallery = React.lazy(() => import('@/features/public-site/demo/SpeeltuinGallery').then(m => ({ default: m.SpeeltuinGallery })));
 
 import { ParentUser } from '@/types';
 import { SecureErrorBoundary } from '@/components/app-shell/SecureErrorBoundary';
@@ -469,6 +470,14 @@ export function AppRouter() {
         );
     }
 
+    if (normalizedPath === '/speeltuin') {
+        return (
+            <React.Suspense fallback={<LoadingFallback />}>
+                <SpeeltuinGallery />
+            </React.Suspense>
+        );
+    }
+
     if (normalizedPath === '/ouderlijke-toestemming') {
         return (
             <PublicPageShell>
@@ -549,7 +558,7 @@ export function AppRouter() {
     }
 
     // 404 handler for public routes
-    const isPublicRoute = normalizedPath === '' || normalizedPath === '/' || normalizedPath === '/scholen' || normalizedPath === '/ict' || normalizedPath.startsWith('/ict/') || normalizedPath === '/login' || normalizedPath === '/ouderlijke-toestemming' || normalizedPath === '/digitale-geletterdheid-vo' || normalizedPath === '/slo-kerndoelen-digitale-geletterdheid' || normalizedPath === '/ai-geletterdheid-onderwijs-ai-act' || normalizedPath === '/compliance-hub' || normalizedPath.startsWith('/compliance/') || normalizedPath === '/pilot' || normalizedPath.startsWith('/vergelijking/') || normalizedPath.startsWith('/gids/');
+    const isPublicRoute = normalizedPath === '' || normalizedPath === '/' || normalizedPath === '/scholen' || normalizedPath === '/ict' || normalizedPath.startsWith('/ict/') || normalizedPath === '/login' || normalizedPath === '/ouderlijke-toestemming' || normalizedPath === '/digitale-geletterdheid-vo' || normalizedPath === '/slo-kerndoelen-digitale-geletterdheid' || normalizedPath === '/ai-geletterdheid-onderwijs-ai-act' || normalizedPath === '/compliance-hub' || normalizedPath.startsWith('/compliance/') || normalizedPath === '/pilot' || normalizedPath.startsWith('/vergelijking/') || normalizedPath.startsWith('/gids/') || normalizedPath === '/speeltuin' || normalizedPath === '/leerlingdemo';
 
     if (isPublicRoute) {
         return (

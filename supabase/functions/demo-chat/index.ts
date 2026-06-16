@@ -18,6 +18,7 @@ import { buildSafeHistory } from "../_shared/chatHistory.ts";
 import { checkDurableRateLimit, rateLimitHeaders } from "../_shared/rateLimiter.ts";
 import { countTextChars, logAiUsageEvent, resolveAiRequestId } from "../_shared/aiUsageLogger.ts";
 import { buildMistralMessages, completeMistralChat, getMistralTextModel } from "../_shared/mistralClient.ts";
+import { filterAiOutput } from "../_shared/outputFilter.ts";
 
 const MAX_REQUEST_BYTES = 8_000;
 
@@ -226,7 +227,8 @@ Deno.serve(async (req: Request) => {
             maxTokens: 512,
         });
 
-        const text = result.text;
+        const outputCheck = filterAiOutput(result.text);
+        const text = outputCheck.safe ? result.text : outputCheck.filtered!;
 
         logAiUsageEvent({
             requestId,

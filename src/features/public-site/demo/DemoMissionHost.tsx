@@ -1,5 +1,6 @@
 import React, { lazy, Suspense } from 'react';
 import { ScholenLandingLiveDemo } from '@/features/public-site/ScholenLandingLiveDemo';
+import { PLAYABLE_MISSION_IDS } from './demoGalleryConfig';
 
 const CloudCleanerMission = lazy(() =>
     import('@/features/missions/review/CloudCleanerMission').then(m => ({ default: m.CloudCleanerMission }))
@@ -16,14 +17,6 @@ const DatalekkenRampenplanMission = lazy(() =>
 const AccessControlEngineerMission = lazy(() =>
     import('@/features/missions/AccessControlEngineerMission').then(m => ({ default: m.AccessControlEngineerMission }))
 );
-
-const CURATED_FREE = new Set([
-    'cloud-cleaner',
-    'data-detective',
-    'filter-bubble-breaker',
-    'datalekken-rampenplan',
-    'access-control-engineer',
-]);
 
 const AI_MISSION_ID = 'game-director';
 
@@ -88,7 +81,7 @@ export const DemoMissionHost: React.FC<Props> = ({ missionId, onBack }) => {
         );
     }
 
-    if (!CURATED_FREE.has(missionId)) {
+    if (!PLAYABLE_MISSION_IDS.has(missionId)) {
         return <AccountCta onBack={onBack} />;
     }
 
