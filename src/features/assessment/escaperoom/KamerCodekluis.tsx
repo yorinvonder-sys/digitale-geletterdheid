@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Lock, CheckCircle, XCircle, RotateCcw, ArrowRight } from 'lucide-react';
+import { Lock, CheckCircle, XCircle, RotateCcw, ArrowRight, Presentation } from 'lucide-react';
 import { KamerScore } from './types';
 import { BLOKKEN_V2, JUISTE_VOLGORDE_V2 } from './data/kamer3Data';
 
@@ -19,10 +19,8 @@ const BESCHIKBARE_BLOKKEN: CodeBlok[] = [
   { id: 'c6', tekst: 'EINDE ALS' },
 ];
 
-// De juiste volgorde
 const JUISTE_VOLGORDE = ['c1', 'c2', 'c3', 'c4', 'c5', 'c6'];
 
-// Shuffle de blokken voor presentatie
 const shuffleArray = <T,>(arr: T[]): T[] => {
   const shuffled = [...arr];
   for (let i = shuffled.length - 1; i > 0; i--) {
@@ -31,6 +29,45 @@ const shuffleArray = <T,>(arr: T[]): T[] => {
   }
   return shuffled;
 };
+
+interface ProductOptie {
+  id: string;
+  label: string;
+  beschrijving: string;
+  score: number;
+  feedback: string;
+}
+
+const PRODUCT_OPTIES: ProductOptie[] = [
+  {
+    id: 'p1',
+    label: 'Stuur de broncode (.py)',
+    beschrijving: 'Het Python-bestand mailen naar de directeur',
+    score: 0,
+    feedback: 'Broncode is alleen leesbaar voor programmeurs. De directeur kan dit niet begrijpen.',
+  },
+  {
+    id: 'p2',
+    label: 'Maak een instructievideo',
+    beschrijving: 'Een korte video die laat zien hoe het systeem werkt',
+    score: 100,
+    feedback: 'Uitstekend! Een video is visueel, duidelijk en begrijpelijk voor iedereen.',
+  },
+  {
+    id: 'p3',
+    label: 'Schrijf een stappenplan',
+    beschrijving: 'Een tekstdocument met uitleg over het alarmsysteem',
+    score: 75,
+    feedback: 'Goed! Een schriftelijk stappenplan werkt, al is een video of presentatie nog toegankelijker.',
+  },
+  {
+    id: 'p4',
+    label: 'Stuur een screenshot',
+    beschrijving: 'Een foto van je scherm via Teams opsturen',
+    score: 25,
+    feedback: 'Een screenshot alleen geeft te weinig uitleg voor iemand zonder codeerkennis.',
+  },
+];
 
 interface Props {
   onComplete: (score: KamerScore) => void;
@@ -44,6 +81,10 @@ export const KamerCodekluis: React.FC<Props> = ({ onComplete, variant }) => {
   const [gekozen, setGekozen] = useState<CodeBlok[]>([]);
   const [resultaat, setResultaat] = useState<'success' | 'fail' | null>(null);
   const [startTijd] = useState(Date.now());
+  const [fase, setFase] = useState<'code' | 'product'>('code');
+  const [codeScore, setCodeScore] = useState(0);
+  const [codeDetails, setCodeDetails] = useState<Record<string, any>>({});
+  const [gekozenProduct, setGekozenProduct] = useState<string | null>(null);
 
   const beschikbareBlokken = beschikbaar.filter(b => !gekozen.find(g => g.id === b.id));
 
@@ -62,17 +103,18 @@ export const KamerCodekluis: React.FC<Props> = ({ onComplete, variant }) => {
     setResultaat(null);
   };
 
-  const [laatsteScore, setLaatsteScore] = useState<{ score: number; tijdSeconds: number; details: Record<string, any> } | null>(null);
+  const gaNaarProductFase = (score: number, details: Record<string, any>) => {
+    setCodeScore(score);
+    setCodeDetails(details);
+    setFase('product');
+  };
 
   const controleer = () => {
     const gekozenIds = gekozen.map(b => b.id);
-
-    // Bereken score op basis van hoeveel blokken op de juiste positie staan
     let correctePosities = 0;
     juisteVolgorde.forEach((id, index) => {
       if (gekozenIds[index] === id) correctePosities++;
     });
-
     const score = Math.round((correctePosities / juisteVolgorde.length) * 100);
     const isPerfect = JSON.stringify(gekozenIds) === JSON.stringify(juisteVolgorde);
     const tijdSeconds = Math.round((Date.now() - startTijd) / 1000);
@@ -80,27 +122,97 @@ export const KamerCodekluis: React.FC<Props> = ({ onComplete, variant }) => {
 
     if (isPerfect) {
       setResultaat('success');
-      setTimeout(() => {
-        onComplete({ score: 100, timeSeconds: tijdSeconds, details });
-      }, 2000);
+      setTimeout(() => gaNaarProductFase(100, details), 1500);
     } else {
       setResultaat('fail');
-      setLaatsteScore({ score, tijdSeconds, details });
+      setCodeScore(score);
+      setCodeDetails(details);
     }
   };
 
-  const gaVerderMetScore = () => {
-    if (laatsteScore) {
+  const kiesProduct = (optieId: string) => {
+    if (gekozenProduct) return;
+    setGekozenProduct(optieId);
+    const optie = PRODUCT_OPTIES.find(o => o.id === optieId)!;
+    const tijdSeconds = Math.round((Date.now() - startTijd) / 1000);
+    const combinedScore = Math.round((codeScore + optie.score) / 2);
+    setTimeout(() => {
       onComplete({
-        score: laatsteScore.score,
-        timeSeconds: laatsteScore.tijdSeconds,
-        details: laatsteScore.details,
+        score: combinedScore,
+        timeSeconds: tijdSeconds,
+        details: { ...codeDetails, productKeuze: optieId, productScore: optie.score, codeScore },
       });
-    }
+    }, 2000);
   };
+
+  if (fase === 'product') {
+    return (
+      <motion.div
+        key="product"
+        initial={{ opacity: 0, x: 100 }}
+        animate={{ opacity: 1, x: 0 }}
+        className="flex flex-col h-full p-4 md:p-6"
+      >
+        <div className="text-center mb-4 md:mb-6">
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <Presentation className="text-lab-teal" size={24} />
+            <h2 className="text-xl md:text-2xl font-black text-lab-teal">Digitaal product</h2>
+          </div>
+          <p className="text-lab-muted text-sm md:text-base max-w-lg mx-auto">
+            Goed gedaan! Je hebt het alarmsysteem geprogrammeerd. Nu wil je uitleggen hoe het werkt
+            aan de schooldirecteur die geen code kent. Welk digitaal product maak je?
+          </p>
+        </div>
+
+        <div className="flex-1 grid grid-cols-1 gap-3 content-start">
+          {PRODUCT_OPTIES.map(optie => {
+            const isGekozen = gekozenProduct === optie.id;
+            const isCorrect = optie.score >= 75;
+            return (
+              <motion.button
+                key={optie.id}
+                onClick={() => kiesProduct(optie.id)}
+                disabled={!!gekozenProduct}
+                whileHover={!gekozenProduct ? { scale: 1.01 } : undefined}
+                className={`w-full text-left p-4 rounded-xl border-2 transition-all ${
+                  isGekozen
+                    ? isCorrect
+                      ? 'bg-lab-sage/10 border-lab-sage'
+                      : 'bg-lab-coral/10 border-lab-coral'
+                    : 'bg-white border-lab-line hover:border-lab-teal'
+                } disabled:cursor-not-allowed`}
+              >
+                <div className="flex items-start gap-3">
+                  {isGekozen && (
+                    <div className={`mt-0.5 shrink-0 ${isCorrect ? 'text-lab-sage' : 'text-lab-coral'}`}>
+                      {isCorrect ? <CheckCircle size={20} /> : <XCircle size={20} />}
+                    </div>
+                  )}
+                  <div className="flex-1">
+                    <p className="font-bold text-lab-ink text-sm md:text-base">{optie.label}</p>
+                    <p className="text-lab-muted text-xs md:text-sm mt-0.5">{optie.beschrijving}</p>
+                    {isGekozen && (
+                      <motion.p
+                        initial={{ opacity: 0, y: 4 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className={`text-xs md:text-sm mt-2 font-medium ${isCorrect ? 'text-lab-sage' : 'text-lab-coral'}`}
+                      >
+                        {optie.feedback}
+                      </motion.p>
+                    )}
+                  </div>
+                </div>
+              </motion.button>
+            );
+          })}
+        </div>
+      </motion.div>
+    );
+  }
 
   return (
     <motion.div
+      key="code"
       initial={{ opacity: 0, x: 100 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -100 }}
@@ -198,13 +310,13 @@ export const KamerCodekluis: React.FC<Props> = ({ onComplete, variant }) => {
         {resultaat === 'fail' ? (
           <>
             <button
-              onClick={() => { reset(); setResultaat(null); setLaatsteScore(null); }}
+              onClick={() => { reset(); }}
               className="px-4 py-3 bg-white border border-lab-line text-lab-muted rounded-xl font-bold hover:bg-lab-cream transition-colors flex items-center gap-2"
             >
               <RotateCcw size={18} /> Opnieuw
             </button>
             <button
-              onClick={gaVerderMetScore}
+              onClick={() => gaNaarProductFase(codeScore, codeDetails)}
               className="flex-1 py-3 rounded-xl font-bold text-lg transition-all bg-lab-teal hover:bg-lab-teal hover:text-white text-white shadow-lg shadow-lab-teal active:scale-[0.98] flex items-center justify-center gap-2"
             >
               <ArrowRight size={18} /> Ga door

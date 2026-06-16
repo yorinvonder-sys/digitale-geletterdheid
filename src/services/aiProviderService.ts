@@ -2,6 +2,7 @@
 // Chat object is maintained client-side; API key stays server-side.
 
 import { logger } from '@/utils/logger';
+import { toServiceError } from '@/utils/errorMessages';
 import { EDGE_FUNCTION_URL, authenticatedFetch } from './supabase';
 import { logAiInteraction } from './auditService';
 import { sanitizePrompt } from '@/utils/promptSanitizer';
@@ -586,8 +587,7 @@ export const sendMessageToAi = async (chat: Chat, message: string): Promise<stri
 
     return text;
   } catch (error: any) {
-    console.error("AI API Error:", error);
-    throw new Error(`AI Error: ${error?.message || 'Onbekende fout'}`);
+    throw toServiceError('AI chat', error);
   }
 };
 
@@ -619,8 +619,7 @@ export const sendMessageToAiStream = async (
 
     return fullText;
   } catch (error: any) {
-    console.error("AI Stream Error:", error);
-    throw new Error(`AI Error: ${error?.message || 'Onbekende fout'}`);
+    throw toServiceError('AI stream', error);
   }
 };
 

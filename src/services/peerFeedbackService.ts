@@ -1,5 +1,6 @@
 import { supabase } from './supabase';
 import { sanitizeTextInput } from '@/utils/inputSanitizer';
+import { toServiceError } from '@/utils/errorMessages';
 
 export interface PeerFeedbackCriteria {
   duidelijkheid: number; // 1-5
@@ -77,7 +78,7 @@ export async function submitPeerFeedback(input: PeerFeedbackInput): Promise<void
     p_criteria: input.criteria,
   });
 
-  if (error) throw new Error('Feedback opslaan mislukt: ' + error.message);
+  if (error) throw toServiceError('Feedback opslaan', error);
 }
 
 /**
@@ -98,7 +99,7 @@ export async function getReceivedFeedback(
   }
 
   const { data, error } = await query;
-  if (error) throw new Error('Feedback ophalen mislukt: ' + error.message);
+  if (error) throw toServiceError('Feedback ophalen', error);
 
   return (data ?? []).map(mapRow);
 }
@@ -187,7 +188,7 @@ export async function voteHelpful(feedbackId: string, helpful: boolean): Promise
     p_helpful: helpful,
   });
 
-  if (error) throw new Error('Stem opslaan mislukt: ' + error.message);
+  if (error) throw toServiceError('Stem opslaan', error);
 }
 
 /**
@@ -239,7 +240,7 @@ export async function submitLegacyPeerFeedback(
     created_at: new Date().toISOString(),
   });
 
-  if (error) throw new Error('Feedback opslaan mislukt: ' + error.message);
+  if (error) throw toServiceError('Feedback opslaan', error);
 }
 
 /**
@@ -256,7 +257,7 @@ export async function getFeedbackForMission(
     .order('created_at', { ascending: false })
     .limit(20);
 
-  if (error) throw new Error('Feedback ophalen mislukt: ' + error.message);
+  if (error) throw toServiceError('Feedback ophalen', error);
 
   return (data ?? []).map((row: any) => ({
     id: row.id,

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { validateEmail } from '@/utils/emailValidator';
+import { toUserMessage } from '@/utils/errorMessages';
 
 /** Inline SVGs for critical path — avoids loading lucide (65kb) for LCP */
 const IconMail = (props: { size?: number; className?: string }) => (
@@ -152,7 +153,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                 // AbortError is een race condition met onAuthStateChange, geen echte fout.
                 if (err?.name === 'AbortError') return;
                 console.error("Redirect auth error:", err);
-                setError(err.message || 'Er is een fout opgetreden bij het inloggen met Microsoft.');
+                setError(toUserMessage(err, 'Er is een fout opgetreden bij het inloggen met Microsoft.'));
             }
         };
         processRedirect();
@@ -248,11 +249,11 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                     setError(`Te veel pogingen (${newAttempts}x). Wacht 30 seconden en probeer opnieuw.`);
                 } else {
                     // Normal error message
-                    setError(err.message || 'Authenticatie mislukt. Probeer het opnieuw.');
+                    setError(toUserMessage(err, 'Authenticatie mislukt. Probeer het opnieuw.'));
                 }
             } else {
                 // Registration error - show as-is
-                setError(err.message || 'Authenticatie mislukt. Probeer het opnieuw.');
+                setError(toUserMessage(err, 'Authenticatie mislukt. Probeer het opnieuw.'));
             }
         } finally {
             setLoading(false);
@@ -272,7 +273,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
             setTimeout(() => setMode('login'), 2500);
         } catch (err: any) {
             console.error(err);
-            setError(err.message || 'Kon wachtwoord reset mail niet versturen.');
+            setError(toUserMessage(err, 'Kon wachtwoord reset mail niet versturen.'));
         } finally {
             setLoading(false);
         }
@@ -296,7 +297,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
             onLoginSuccess(user);
         } catch (err: any) {
             console.error(err);
-            setError(err.message || 'Microsoft 365 inloggen mislukt. Probeer het opnieuw.');
+            setError(toUserMessage(err, 'Microsoft 365 inloggen mislukt. Probeer het opnieuw.'));
         } finally {
             setLoading(false);
         }
