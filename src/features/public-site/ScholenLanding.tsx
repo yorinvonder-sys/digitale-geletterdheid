@@ -157,11 +157,43 @@ const leaderReasons = [
 ] as const;
 
 const sloRows = [
-    { domain: 'Digitale vaardigheden', missions: 'Prompt Perfectionist, Website Bouwer', proof: 'Toolgebruik, workflow en uitleg bij keuzes' },
-    { domain: 'Informatievaardigheden', missions: 'Data Journalist, Factchecker', proof: 'Bronnen beoordelen, data lezen en conclusies trekken' },
-    { domain: 'Mediawijsheid', missions: 'Deepfake Detector, Scroll Stopper', proof: 'Kritisch kijken naar media, identiteit en online gedrag' },
-    { domain: 'Computational thinking', missions: 'Game Programmeur, Robot Bestuurder', proof: 'Logica, testen, debuggen en iteratief verbeteren' },
-] as const;
+    {
+        domain: 'Digitale vaardigheden',
+        icon: <MonitorIcon />,
+        proof: 'Toolgebruik, workflow en uitleg bij keuzes',
+        missions: [
+            { name: 'Prompt Perfectionist', description: 'Leer hoe je AI precies laat doen wat jij wilt door de kunst van het prompting.', image: '/assets/agents/prompt_master.webp' },
+            { name: 'Website Bouwer', description: 'Typ je eerste HTML-code en bouw een persoonlijke webpagina.', image: '/assets/agents/prompt_master.webp' },
+        ],
+    },
+    {
+        domain: 'Informatievaardigheden',
+        icon: <SearchIcon />,
+        proof: 'Bronnen beoordelen, data lezen en conclusies trekken',
+        missions: [
+            { name: 'Data Journalist', description: 'Vertel verhalen die verborgen zitten in data en maak een infographic.', image: '/assets/agents/nepnieuws_speurder_new.webp' },
+            { name: 'Factchecker', description: 'Ontmasker nepnieuws en word een digitale waarheidsvinder.', image: '/assets/agents/nepnieuws_speurder.webp' },
+        ],
+    },
+    {
+        domain: 'Mediawijsheid',
+        icon: <EyeIcon />,
+        proof: 'Kritisch kijken naar media, identiteit en online gedrag',
+        missions: [
+            { name: 'Deepfake Detector', description: 'Leer echte en nep-afbeeldingen van elkaar te onderscheiden.', image: '/assets/agents/social_safeguard.webp' },
+            { name: 'Scroll Stopper', description: 'Begrijp hoe social media-algoritmen je gedrag beïnvloeden.', image: '/assets/agents/social_media_psychologist.webp' },
+        ],
+    },
+    {
+        domain: 'Computational thinking',
+        icon: <CodeIcon />,
+        proof: 'Logica, testen, debuggen en iteratief verbeteren',
+        missions: [
+            { name: 'Game Programmeur', description: 'Ontwerp en programmeer je eigen spelwereld met echte code.', image: '/assets/agents/game_programmeur_new.webp' },
+            { name: 'Robot Bestuurder', description: 'Geef een robot stap-voor-stap instructies om een doolhof op te lossen.', image: '/assets/agents/robot_bestuurder.webp' },
+        ],
+    },
+];
 
 const sloIcons = [
     <svg key="digital" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5"><rect x="1" y="2" width="14" height="10" rx="1.5" /><path d="M5.5 15h5M8 12v3" /></svg>,
@@ -298,6 +330,7 @@ export const ScholenLanding: React.FC = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [showLoader, setShowLoader] = useState(false);
     const [introReady, setIntroReady] = useState(false);
+    const [activeSlo, setActiveSlo] = useState<string | null>(null);
     const reduceMotion = usePrefersReducedMotion();
     const { hidden: headerHidden, scrolled: headerScrolled } = useHeaderChrome(mobileMenuOpen);
 
@@ -2455,6 +2488,8 @@ function IconBase({ children }: { children: React.ReactNode }) {
     return <svg className="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{children}</svg>;
 }
 
+function MonitorIcon() { return <IconBase><rect x="2" y="3" width="20" height="14" rx="2" /><path d="M8 21h8M12 17v4" /></IconBase>; }
+function EyeIcon() { return <IconBase><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" /><circle cx="12" cy="12" r="3" /></IconBase>; }
 function ArrowRightIcon() { return <IconBase><path d="M5 12h14M13 5l7 7-7 7" /></IconBase>; }
 function ArrowDownIcon() { return <IconBase><path d="M12 5v14M5 13l7 7 7-7" /></IconBase>; }
 function MenuIcon() { return <IconBase><path d="M4 7h16M4 12h16M4 17h16" /></IconBase>; }
