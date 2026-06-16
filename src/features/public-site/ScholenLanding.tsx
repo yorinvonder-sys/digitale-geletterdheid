@@ -699,99 +699,7 @@ export const ScholenLanding: React.FC = () => {
                 <section id="productbewijs" data-section="productbewijs" className="scroll-mt-24 bg-duck-bgLight px-5 py-20 md:px-10 md:py-28">
                     <Reveal y={24} className="mx-auto max-w-6xl">
                         <p className="mb-10 text-center text-[11px] font-extrabold uppercase tracking-[0.14em] text-duck-ink/35">Voor de hele school</p>
-                        <div className="grid gap-5 lg:grid-cols-3">
-
-                            {/* Kaart 1 — Leerlingen */}
-                            <div data-duck-anchor="productbewijs-card" className="relative overflow-hidden rounded-[1.6rem] bg-duck-bg">
-                                <div
-                                    className="absolute inset-0 bg-duck-acid"
-                                    style={{ clipPath: 'polygon(0 0, 100% 0, 100% 38%, 0 56%)' }}
-                                    aria-hidden="true"
-                                />
-                                <div className="relative z-10 flex h-full flex-col p-7">
-                                    <div>
-                                        <p className="flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.1em] text-duck-ink/50">
-                                            <span>01</span>
-                                            <span className="h-px w-5 bg-duck-ink/25" />
-                                            <span>Voor leerlingen</span>
-                                        </p>
-                                        <span className="mt-4 inline-block rounded-full bg-duck-ink px-3 py-1 text-[10px] font-extrabold uppercase tracking-[0.12em] text-duck-acid">Leerlingmissie</span>
-                                        <h2 className="mt-3 font-display text-2xl leading-[1.1] text-duck-ink">Gewoon beginnen.</h2>
-                                        <p className="mt-2 text-sm font-semibold leading-6 text-duck-ink/60">
-                                            Stappen zijn duidelijk, eindproduct concreet. Motivatie hoef je niet af te dwingen.
-                                        </p>
-                                    </div>
-                                    <div className="mt-auto pt-6">
-                                        <div className="rounded-xl bg-duck-bgLight p-3">
-                                            <BrowserFrame url="dgskills.app">
-                                                <ScreenMissieDetail />
-                                            </BrowserFrame>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Kaart 2 — Docenten */}
-                            <div className="relative overflow-hidden rounded-[1.6rem] bg-duck-bg">
-                                <div
-                                    className="absolute inset-0 bg-duck-ink"
-                                    style={{ clipPath: 'polygon(0 0, 100% 0, 100% 38%, 0 56%)' }}
-                                    aria-hidden="true"
-                                />
-                                <div className="relative z-10 flex h-full flex-col p-7">
-                                    <div>
-                                        <p className="flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.1em] text-white/50">
-                                            <span>02</span>
-                                            <span className="h-px w-5 bg-white/20" />
-                                            <span>Voor docenten</span>
-                                        </p>
-                                        <span className="mt-4 inline-block rounded-full bg-duck-acid px-3 py-1 text-[10px] font-extrabold uppercase tracking-[0.12em] text-duck-ink">Docentdashboard</span>
-                                        <h2 className="mt-3 font-display text-2xl leading-[1.1] text-white">Grip op de klas.</h2>
-                                        <p className="mt-2 text-sm font-semibold leading-6 text-white/65">
-                                            Je ziet wie vastzit en wie klaar is. Geen Excel, geen rondje langs alle tafels.
-                                        </p>
-                                    </div>
-                                    <div className="mt-auto pt-6">
-                                        <div className="rounded-xl bg-duck-bgLight p-3">
-                                            <BrowserFrame url="dgskills.app/klas">
-                                                <ScreenDocent />
-                                            </BrowserFrame>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Kaart 3 — Schoolteams */}
-                            <div className="relative overflow-hidden rounded-[1.6rem] bg-duck-bg">
-                                <div
-                                    className="absolute inset-0 bg-duck-acid"
-                                    style={{ clipPath: 'polygon(0 0, 100% 0, 100% 38%, 0 56%)' }}
-                                    aria-hidden="true"
-                                />
-                                <div className="relative z-10 flex h-full flex-col p-7">
-                                    <div>
-                                        <p className="flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.1em] text-duck-ink/50">
-                                            <span>03</span>
-                                            <span className="h-px w-5 bg-duck-ink/25" />
-                                            <span>Voor schoolteams</span>
-                                        </p>
-                                        <span className="mt-4 inline-block rounded-full bg-duck-ink px-3 py-1 text-[10px] font-extrabold uppercase tracking-[0.12em] text-duck-acid">SLO-bewijs</span>
-                                        <h2 className="mt-3 font-display text-2xl leading-[1.1] text-duck-ink">Aantonen dat het werkt.</h2>
-                                        <p className="mt-2 text-sm font-semibold leading-6 text-duck-ink/60">
-                                            Schoolteams zien wat er schoolbreed geleerd wordt. Klaar voor het directieoverleg.
-                                        </p>
-                                    </div>
-                                    <div className="mt-auto pt-6">
-                                        <div className="rounded-xl bg-duck-bgLight p-3">
-                                            <BrowserFrame url="dgskills.app/voortgang">
-                                                <ScreenVoortgang />
-                                            </BrowserFrame>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
+                        <ProductbewijsCards />
                     </Reveal>
                 </section>
 
@@ -1888,7 +1796,18 @@ function ScreenMissies() {
     );
 }
 
-function ScreenMissieDetail() {
+interface ScreenMissieDetailProps {
+    promptText?: string;
+    onPromptChange?: (text: string) => void;
+    onSubmit?: () => void;
+    submittedCount?: number;
+}
+
+function ScreenMissieDetail({ promptText, onPromptChange, onSubmit, submittedCount = 0 }: ScreenMissieDetailProps = {}) {
+    const isInteractive = Boolean(onPromptChange);
+    const canSubmit = isInteractive && (promptText?.trim().length ?? 0) > 5;
+    const totalXP = submittedCount * 25;
+
     return (
         <div className="aspect-[16/10] bg-duck-bgLight p-[4%] text-duck-ink">
             <div className="flex items-center justify-between gap-2">
@@ -1903,13 +1822,44 @@ function ScreenMissieDetail() {
                 <p className="mt-1 text-[10px] font-bold leading-snug">Schrijf een prompt die de AI een spannend verhaal laat vertellen voor groep 2.</p>
             </div>
             <div className="mt-[3%] rounded-xl border-2 border-duck-ink bg-white p-3">
-                <p className="text-[10px] font-semibold leading-snug text-duck-ink/80">
-                    Vertel een spannend verhaal over een robot die leert fietsen, met een grappig einde<span className="ml-0.5 inline-block h-[1em] w-[2px] translate-y-[2px] animate-pulse-soft bg-duck-ink align-baseline" />
-                </p>
+                {isInteractive ? (
+                    <textarea
+                        className="w-full resize-none bg-transparent text-[10px] font-semibold leading-snug text-duck-ink/80 outline-none placeholder:text-duck-ink/30"
+                        rows={2}
+                        placeholder="Typ hier je prompt..."
+                        value={promptText}
+                        onChange={e => onPromptChange?.(e.target.value)}
+                        onKeyDown={e => {
+                            if (e.key === 'Enter' && !e.shiftKey && canSubmit) {
+                                e.preventDefault();
+                                onSubmit?.();
+                            }
+                        }}
+                    />
+                ) : (
+                    <p className="text-[10px] font-semibold leading-snug text-duck-ink/80">
+                        Vertel een spannend verhaal over een robot die leert fietsen, met een grappig einde<span className="ml-0.5 inline-block h-[1em] w-[2px] translate-y-[2px] animate-pulse-soft bg-duck-ink align-baseline" />
+                    </p>
+                )}
             </div>
             <div className="mt-[3%] flex items-center justify-between gap-2">
-                <span className="rounded-full bg-duck-acid px-2.5 py-1 text-[9px] font-extrabold">Sterke prompt! +25 XP</span>
-                <span className="rounded-full bg-duck-ink px-3 py-1.5 text-[9px] font-extrabold text-duck-acid">Volgende stap →</span>
+                {isInteractive && submittedCount > 0 ? (
+                    <span className="rounded-full bg-duck-acid px-2.5 py-1 text-[9px] font-extrabold">Sterke prompt! +{totalXP} XP</span>
+                ) : (
+                    <span className={`rounded-full bg-duck-acid px-2.5 py-1 text-[9px] font-extrabold transition-opacity ${isInteractive && !canSubmit ? 'opacity-30' : ''}`}>Sterke prompt! +25 XP</span>
+                )}
+                {isInteractive ? (
+                    <button
+                        type="button"
+                        disabled={!canSubmit}
+                        onClick={onSubmit}
+                        className={`rounded-full bg-duck-ink px-3 py-1.5 text-[9px] font-extrabold text-duck-acid transition-opacity ${!canSubmit ? 'cursor-default opacity-30' : 'hover:opacity-80'}`}
+                    >
+                        Volgende stap →
+                    </button>
+                ) : (
+                    <span className="rounded-full bg-duck-ink px-3 py-1.5 text-[9px] font-extrabold text-duck-acid">Volgende stap →</span>
+                )}
             </div>
         </div>
     );
@@ -1953,7 +1903,8 @@ function ScreenBouwen() {
     );
 }
 
-function ScreenVoortgang() {
+function ScreenVoortgang({ pct: pctProp }: { pct?: number } = {}) {
+    const pct = pctProp ?? 72;
     const RADIUS = 15.9155;
     const CIRC = 2 * Math.PI * RADIUS;
     return (
@@ -1961,11 +1912,11 @@ function ScreenVoortgang() {
             <div className="relative w-[34%] shrink-0">
                 <svg viewBox="0 0 42 42" className="w-full -rotate-90">
                     <circle cx="21" cy="21" r={RADIUS} fill="none" stroke="#202023" strokeOpacity="0.1" strokeWidth="5" />
-                    <circle cx="21" cy="21" r={RADIUS} fill="none" stroke="#e1ff01" strokeWidth="5" strokeLinecap="round" strokeDasharray={`${CIRC * 0.72} ${CIRC}`} />
+                    <circle cx="21" cy="21" r={RADIUS} fill="none" stroke="#e1ff01" strokeWidth="5" strokeLinecap="round" style={{ transition: 'stroke-dasharray 0.7s ease' }} strokeDasharray={`${CIRC * (pct / 100)} ${CIRC}`} />
                 </svg>
                 <div className="absolute inset-0 grid place-items-center text-center">
                     <div>
-                        <p className="font-display text-[16px] leading-none">72%</p>
+                        <p className="font-display text-[16px] leading-none">{pct}%</p>
                         <p className="text-[7px] font-extrabold uppercase tracking-[0.12em] text-duck-ink/40">Periode 1</p>
                     </div>
                 </div>
@@ -2022,15 +1973,135 @@ function ScreenPortfolio() {
     );
 }
 
-function ScreenDocent() {
-    const [view, setView] = useState<string>('overview');
+function ProductbewijsCards() {
+    const [promptText, setPromptText] = useState('');
+    const [submittedCount, setSubmittedCount] = useState(0);
 
-    const rows = [
-        { name: 'Mila V.', initials: 'MV', pct: 82, status: 'ok' as const },
-        { name: 'Noah K.', initials: 'NK', pct: 64, status: 'ok' as const },
-        { name: 'Sara B.', initials: 'SB', pct: 47, status: 'help' as const },
-        { name: 'Liam J.', initials: 'LJ', pct: 29, status: 'inactive' as const },
-    ] as const;
+    const handleSubmit = () => {
+        if (promptText.trim().length > 5) {
+            setSubmittedCount(c => c + 1);
+            setPromptText('');
+        }
+    };
+
+    const ljPct = Math.min(29 + submittedCount * 36, 100);
+    const voortgangPct = Math.min(72 + submittedCount * 6, 100);
+
+    return (
+        <div className="grid gap-5 lg:grid-cols-3">
+
+            {/* Kaart 1 — Leerlingen */}
+            <div data-duck-anchor="productbewijs-card" className="relative overflow-hidden rounded-[1.6rem] bg-duck-bg">
+                <div
+                    className="absolute inset-0 bg-duck-acid"
+                    style={{ clipPath: 'polygon(0 0, 100% 0, 100% 38%, 0 56%)' }}
+                    aria-hidden="true"
+                />
+                <div className="relative z-10 flex h-full flex-col p-7">
+                    <div>
+                        <p className="flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.1em] text-duck-ink/50">
+                            <span>01</span>
+                            <span className="h-px w-5 bg-duck-ink/25" />
+                            <span>Voor leerlingen</span>
+                        </p>
+                        <span className="mt-4 inline-block rounded-full bg-duck-ink px-3 py-1 text-[10px] font-extrabold uppercase tracking-[0.12em] text-duck-acid">Leerlingmissie</span>
+                        <h2 className="mt-3 font-display text-2xl leading-[1.1] text-duck-ink">Gewoon beginnen.</h2>
+                        <p className="mt-2 text-sm font-semibold leading-6 text-duck-ink/60">
+                            Stappen zijn duidelijk, eindproduct concreet. Motivatie hoef je niet af te dwingen.
+                        </p>
+                    </div>
+                    <div className="mt-auto pt-6">
+                        <div className="rounded-xl bg-duck-bgLight p-3">
+                            <BrowserFrame url="dgskills.app">
+                                <ScreenMissieDetail
+                                    promptText={promptText}
+                                    onPromptChange={setPromptText}
+                                    onSubmit={handleSubmit}
+                                    submittedCount={submittedCount}
+                                />
+                            </BrowserFrame>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Kaart 2 — Docenten */}
+            <div className="relative overflow-hidden rounded-[1.6rem] bg-duck-bg">
+                <div
+                    className="absolute inset-0 bg-duck-ink"
+                    style={{ clipPath: 'polygon(0 0, 100% 0, 100% 38%, 0 56%)' }}
+                    aria-hidden="true"
+                />
+                <div className="relative z-10 flex h-full flex-col p-7">
+                    <div>
+                        <p className="flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.1em] text-white/50">
+                            <span>02</span>
+                            <span className="h-px w-5 bg-white/20" />
+                            <span>Voor docenten</span>
+                        </p>
+                        <span className="mt-4 inline-block rounded-full bg-duck-acid px-3 py-1 text-[10px] font-extrabold uppercase tracking-[0.12em] text-duck-ink">Docentdashboard</span>
+                        <h2 className="mt-3 font-display text-2xl leading-[1.1] text-white">Grip op de klas.</h2>
+                        <p className="mt-2 text-sm font-semibold leading-6 text-white/65">
+                            Je ziet wie vastzit en wie klaar is. Geen Excel, geen rondje langs alle tafels.
+                        </p>
+                    </div>
+                    <div className="mt-auto pt-6">
+                        <div className="rounded-xl bg-duck-bgLight p-3">
+                            <BrowserFrame url="dgskills.app/klas">
+                                <ScreenDocent ljPct={ljPct} />
+                            </BrowserFrame>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Kaart 3 — Schoolteams */}
+            <div className="relative overflow-hidden rounded-[1.6rem] bg-duck-bg">
+                <div
+                    className="absolute inset-0 bg-duck-acid"
+                    style={{ clipPath: 'polygon(0 0, 100% 0, 100% 38%, 0 56%)' }}
+                    aria-hidden="true"
+                />
+                <div className="relative z-10 flex h-full flex-col p-7">
+                    <div>
+                        <p className="flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.1em] text-duck-ink/50">
+                            <span>03</span>
+                            <span className="h-px w-5 bg-duck-ink/25" />
+                            <span>Voor schoolteams</span>
+                        </p>
+                        <span className="mt-4 inline-block rounded-full bg-duck-ink px-3 py-1 text-[10px] font-extrabold uppercase tracking-[0.12em] text-duck-acid">SLO-bewijs</span>
+                        <h2 className="mt-3 font-display text-2xl leading-[1.1] text-duck-ink">Aantonen dat het werkt.</h2>
+                        <p className="mt-2 text-sm font-semibold leading-6 text-duck-ink/60">
+                            Schoolteams zien wat er schoolbreed geleerd wordt. Klaar voor het directieoverleg.
+                        </p>
+                    </div>
+                    <div className="mt-auto pt-6">
+                        <div className="rounded-xl bg-duck-bgLight p-3">
+                            <BrowserFrame url="dgskills.app/voortgang">
+                                <ScreenVoortgang pct={voortgangPct} />
+                            </BrowserFrame>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    );
+}
+
+type DocentRow = { name: string; initials: string; pct: number; status: 'ok' | 'help' | 'inactive' };
+
+function ScreenDocent({ ljPct }: { ljPct?: number } = {}) {
+    const [view, setView] = useState<string>('overview');
+    const ljProgress = ljPct ?? 29;
+    const ljStatus: 'ok' | 'inactive' = ljProgress >= 50 ? 'ok' : 'inactive';
+
+    const rows: DocentRow[] = [
+        { name: 'Mila V.', initials: 'MV', pct: 82, status: 'ok' },
+        { name: 'Noah K.', initials: 'NK', pct: 64, status: 'ok' },
+        { name: 'Sara B.', initials: 'SB', pct: 47, status: 'help' },
+        { name: 'Liam J.', initials: 'LJ', pct: ljProgress, status: ljStatus },
+    ];
 
     const sloDomains = [
         { label: 'Inform.vaardigh.', fullLabel: 'Informatievaardigheden', pct: 68, codes: ['21A', '21B', '21C'] },

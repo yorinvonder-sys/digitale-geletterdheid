@@ -147,12 +147,12 @@ body {
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: #D5D3CC;
+  background-color: #E7D8BD;
   border-radius: 20px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background-color: #9C9C95;
+  background-color: #445865;
 }
 
 /* 3D Book Animations */
@@ -456,7 +456,7 @@ textarea:focus-visible,
 }
 
 .badge-success {
-  background-color: #ecfdf5;
+  background-color: #FCF6EA;
   color: var(--color-success);
   border: 1px solid #d1fae5;
 }

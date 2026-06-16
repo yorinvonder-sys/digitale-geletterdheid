@@ -21,12 +21,12 @@
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: #D5D3CC;
+  background-color: #E7D8BD;
   border-radius: 20px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background-color: #9C9C95;
+  background-color: #445865;
 }
 
 .perspective-2000 {

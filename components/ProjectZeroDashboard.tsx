@@ -1,0 +1,1720 @@
+
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
+
+import { Rocket, BrainCircuit, ShieldCheck, Gamepad2, Stars, Info, Play, Feather, Puzzle, Database, ChevronRight, ChevronLeft, Calendar, Pencil, Map, Lightbulb, Trophy, LogOut, User, RotateCcw, Search, Scale, Lock, Settings2, Cloud, FileText, Monitor, Printer, AlertTriangle, Sparkles, MessageSquare, Send, Loader2, BookOpen, BarChart2, Eye, CheckCircle2, MonitorSmartphone } from 'lucide-react';
+import { getLevelProgress, getXPToNextLevel, LEVEL_THRESHOLDS } from '../utils/xp';
+import { LazyAvatarViewer } from './LazyAvatarViewer';
+import { DEFAULT_AVATAR_CONFIG, UserStats, EducationLevel } from '../types';
+import { subscribeToPermissions, getGamePermissions, GamePermissions } from '../services/PermissionService';
+import { submitFeedback } from '../services/feedbackService';
+import { StudentLibrary } from './StudentLibrary';
+import { BottomNav } from './BottomNav';
+import { SLO_KERNDOELEN, getKerndoelBadgeClasses, SloKerndoelCode } from '../config/sloKerndoelen';
+import { CURRICULUM, getYearConfig, getPeriodConfig } from '../config/curriculum';
+import { ROLES } from '../config/agents';
+import { getMissionMeta } from '../config/slo-kerndoelen-mapping';
+import { ContainerConfig } from '@/config/containerTypes';
+import { getContainerTheme, getAutoTheme } from '@/config/containerThemes';
+import { AdaptiveMissionSuggestions } from './dashboard/AdaptiveMissionSuggestions';
+
+interface DashboardProps {
+    onSelectModule: (moduleId: string, libraryItemData?: any) => void;
+    onOpenProfile: (tab?: 'profile' | 'shop' | 'trophies') => void;
+    onLogout?: () => void;
+    onOpenGames?: () => void;
+    gamesEnabled?: boolean;
+    userDisplayName?: string | null;
+    userUid?: string; // For AI Chat
+    activeWeek: number;
+    setActiveWeek: (week: number) => void;
+    activeYearGroup?: number;
+    setActiveYearGroup?: (year: number) => void;
+    schoolConfig?: { periodNaming?: string };
+    onGoHome?: () => void;
+    stats?: UserStats;
+    focusMode?: boolean;
+    userRole?: 'student' | 'teacher' | 'admin'; // For teacher bypass of restrictions
+    containers?: ContainerConfig[];
+}
+
+interface Mission {
+    id: string;
+    title: string;
+    description: string;
+    icon: React.ReactNode;
+    number: string;
+    status: 'available' | 'coming-soon' | 'locked';
+    info?: string;
+    isReview?: boolean;
+    classRestriction?: string; // Only show to students of this class (e.g. 'MH1A')
+    isHighlighted?: boolean; // Show with orange glow effect
+    isBonus?: boolean; // Optional bonus/extension mission for fast finishers
+    isExternal?: boolean; // Execute mission in external app (Microsoft/Magister)
+    sloKerndoelen?: SloKerndoelCode[]; // SLO kerndoel codes (e.g. ['21A', '22B'])
+    sloVsoKerndoelen?: SloKerndoelCode[]; // NEW: SLO VSO kerndoel codes (e.g. ['18A', '20B'])
+}
+
+// Periode-kleurthema's per periode-nummer (Tailwind-safe volledige klassen)
+// Iconen naast kleuren voor kleurenblind-toegankelijkheid
+const PERIOD_THEME: Record<number, { border: string; bg: string; text: string; icon: React.ReactNode; label: string }> = {
+    1: { border: 'border-indigo-100', bg: 'bg-indigo-50', text: 'text-indigo-600', icon: <Monitor size={14} />, label: 'Digitale Basis' },
+    2: { border: 'border-pink-100', bg: 'bg-pink-50', text: 'text-pink-600', icon: <BrainCircuit size={14} />, label: 'AI & Creatie' },
+    3: { border: 'border-cyan-100', bg: 'bg-cyan-50', text: 'text-cyan-600', icon: <ShieldCheck size={14} />, label: 'Data & Veiligheid' },
+    4: { border: 'border-lab-teal', bg: 'bg-lab-teal', text: 'text-lab-teal', icon: <Rocket size={14} />, label: 'Eindproject' },
+};
+const DEFAULT_PERIOD_THEME = { border: 'border-lab-muted', bg: 'bg-lab-muted', text: 'text-lab-muted', icon: <Puzzle size={14} />, label: '' };
+
+interface YearGroupTheme {
+    label: string;
+    Icon: React.ComponentType<any>;
+    badgeBg: string;
+    badgeText: string;
+    accentDot: string;
+    activeBorder: string;
+    activeText: string;
+    focusRing: string;
+    gradient: string;
+}
+
+const getYearGroupTheme = (year: number): YearGroupTheme => {
+    switch (year) {
+        case 1:
+            return {
+                label: 'Digitale Basis',
+                Icon: MonitorSmartphone,
+                badgeBg: 'bg-indigo-100',
+                badgeText: 'text-indigo-700',
+                accentDot: 'bg-indigo-500',
+                activeBorder: 'border-indigo-200',
+                activeText: 'text-indigo-700',
+                focusRing: 'ring-indigo-100',
+                gradient: 'from-indigo-500 to-blue-500',
+            };
+        case 2:
+            return {
+                label: 'Digitale Verdieping',
+                Icon: BrainCircuit,
+                badgeBg: 'bg-pink-100',
+                badgeText: 'text-pink-700',
+                accentDot: 'bg-pink-500',
+                activeBorder: 'border-pink-200',
+                activeText: 'text-pink-700',
+                focusRing: 'ring-pink-100',
+                gradient: 'from-pink-500 to-rose-500',
+            };
+        case 3:
+            return {
+                label: 'Digitale Meesterschap',
+                Icon: Rocket,
+                badgeBg: 'bg-lab-teal',
+                badgeText: 'text-lab-teal',
+                accentDot: 'bg-lab-teal',
+                activeBorder: 'border-lab-teal',
+                activeText: 'text-lab-teal',
+                focusRing: 'ring-violet-100',
+                gradient: 'from-violet-500 to-indigo-500',
+            };
+        default:
+            return {
+                label: 'Digitale Leerlijn',
+                Icon: MonitorSmartphone,
+                badgeBg: 'bg-lab-muted',
+                badgeText: 'text-lab-muted',
+                accentDot: 'bg-lab-muted',
+                activeBorder: 'border-lab-muted',
+                activeText: 'text-lab-muted',
+                focusRing: 'ring-slate-100',
+                gradient: 'from-slate-500 to-slate-600',
+            };
+    }
+};
+
+// Periode-specifieke leerdoel-beschrijvingen (tekst die niet in curriculum.ts hoort)
+interface PeriodLeerdoel {
+    description: string;
+    descriptionVso?: string;
+    lesduur?: string;
+    succescriterium?: string;
+    succescriDagbesteding?: string;
+}
+
+const PERIOD_LEERDOELEN: Record<string, PeriodLeerdoel> = {
+    '1-1': {
+        description: 'Na deze periode maak je zelf een Word-document en PowerPoint, print je het op school en lever je het in via OneDrive — zonder hulp.',
+        descriptionVso: 'Na deze periode kun je zelf een document typen, opslaan en printen op een tablet of computer.',
+        lesduur: 'Lesduur: 1 uur 45 minuten. Werk in deze volgorde: LVS (15) → OneDrive (15) → Word (35) → PowerPoint (25) → Printen + Inleveren (15).',
+        succescriterium: 'je hebt 1 pagina geprint en je Word- en PowerPoint-bestand staan in OneDrive.',
+        succescriDagbesteding: 'je hebt samen een document geprint en opgeslagen.',
+    },
+    '1-2': {
+        description: 'Na deze periode weet je hoe AI werkt, schrijf je prompts die echt goed werken en heb je zelf een game aangepast met code.',
+        descriptionVso: 'Na deze periode herken je AI om je heen (denk aan Siri, filters, aanbevelingen) en heb je zelf iets gemaakt met een AI-tool.',
+        lesduur: 'Lesduur: 1 uur 45 minuten. Start met de herhalingsopdrachten (15 min) → Prompt Perfectionist (15 min) → Game Programmeur (25 min) → AI Trainer (15 min) → Chatbot Trainer (15 min) → Vrije keuze (20 min).',
+        succescriterium: 'je hebt minimaal 3 missies afgerond en kunt aan een klasgenoot uitleggen hoe AI leert van voorbeelden.',
+        succescriDagbesteding: 'je hebt met een AI-tool gewerkt en er iets creatiefs mee gemaakt.',
+    },
+    '1-3': {
+        description: 'Na deze periode weet je wat bedrijven met jouw data doen, herken je deepfakes en nepaccounts, en heb je 3 eigen regels voor veilig online gedrag.',
+        descriptionVso: 'Na deze periode weet je hoe je veilig omgaat met je gegevens online en herken je nep-content.',
+        lesduur: 'Lesduur: 1 uur 45 minuten. Werk in deze volgorde: Code-Criticus review (10 min) → Data Detective (25 min) → Deepfake Detector (15 min) → AI Spiegel (20 min) → Social Safeguard (15 min) → Reflectie + 3 persoonlijke dataregels (10 min).',
+        succescriterium: 'je hebt je eigen "Mijn 3 Dataregels"-kaart gemaakt met: 2 dingen die handig zijn aan data, 2 gevaren waar je op let, en 3 keuzes voor veiliger internetten.',
+        succescriDagbesteding: 'je hebt geoefend met online veiligheid en je eigen regels opgeschreven.',
+    },
+    '1-4': {
+        description: 'Je maakt een eindproject waarin je laat zien wat je dit jaar hebt geleerd — van Word tot AI tot online veiligheid.',
+        descriptionVso: 'Je maakt een eindproject waarin je laat zien wat je dit jaar hebt geleerd over technologie.',
+    },
+};
+
+// Missie-specifieke metadata die niet in curriculum.ts of agents.tsx staat
+const MISSION_OVERRIDES: Record<string, Partial<Mission>> = {
+    'magister-master': { isExternal: true, info: 'Doen in app: open Magister en log in. Ga naar Rooster en Huiswerk. Bewijs: typ in de chat de naam van je eerste les van vandaag en 1 huiswerkopdracht die je ziet staan. Klaar als: je zelfstandig rooster, opdrachten en berichten kunt vinden. Tijd: 15 minuten.' },
+    'cloud-commander': { isExternal: true, info: 'Doen in app: maak in de OneDrive app de mappen School > Periode 1 > Opdrachten. Bewijs: typ in de chat de volledige naam van het testbestand dat je hebt opgeslagen. Klaar als: je bestand op de juiste plek in OneDrive staat. Tijd: 15 minuten.' },
+    'word-wizard': { isExternal: true, info: 'Doen in app: maak in Word een document met titel (Kop 1), 2 tussenkoppen, een opsomming en een afbeelding. Klaar als: je document is opgeslagen in OneDrive. Tijd: 35 minuten.' },
+    'slide-specialist': { isExternal: true, info: 'Doen in app: maak een PowerPoint-presentatie van 3 slides met minimaal 1 afbeelding. Klaar als: je presentatie in OneDrive staat en 3 slides heeft. Tijd: 25 minuten.' },
+    'print-pro': { isExternal: true, info: 'Doen in app: print je Word-doc via de print-app en lever je bestanden in. Klaar als: je print klopt en de opdracht op "Ingeleverd" staat. Tijd: 15 minuten.' },
+    'ipad-print-instructies': { isHighlighted: true, classRestriction: 'MH1A', info: 'Een complete gids om te printen vanaf je iPad. Je leert de print-app downloaden, inloggen en je eerste document printen.' },
+    'cloud-cleaner': { info: 'Mappenstructuur en bestandsorganisatie herhalen. Zorg voor een opgeruimde Cloud!' },
+    'layout-doctor': { info: 'Test je Word-kennis door problemen te matchen aan oplossingen. Van sneltoetsen tot tekstomloop!' },
+    'pitch-police': { info: 'Slide-design principes herhalen. Maak slides visueel aantrekkelijk en duidelijk.' },
+    'prompt-master': { info: 'Hoe vraag je AI om precies te doen wat je wilt? Leer het verschil tussen vage, onduidelijke prompts en krachtige, duidelijke prompts die perfecte resultaten opleveren!' },
+    'game-programmeur': { info: 'Duik in de code van een kapotte game! Je leert de basis van programmeren door bugs op te lossen en de spelregels aan te passen.' },
+    'ai-trainer': { info: 'Hoe leert een computer? Jij gaat een AI-model trainen om verschillende materialen te herkennen door het goede voorbeelden te geven.' },
+    'chatbot-trainer': { info: 'Hoe weet een chatbot wat hij moet antwoorden? Maak regels en test je eigen chatbot!' },
+    'ai-tekengame': { info: 'Test hoe goed AI patronen herkent. Teken een object en kijk of de AI het kan raden!' },
+    'game-director': { number: 'Vrije Keuze', info: 'In deze Vrije Keuze missie krijg je de volledige controle. Pas zwaartekracht, snelheid en uiterlijk aan om jouw perfecte game te maken.' },
+    'verhalen-ontwerper': { info: 'Leer hoe je met Artificial Intelligence verhalen tot leven brengt. Je gaat werken met image-generation tools om scenes uit je verhaal te visualiseren.' },
+    'ai-beleid-brainstorm': { info: 'Jouw mening telt! Help de school met het vormgeven van AI-beleid door ideeën te delen en te stemmen op de beste voorstellen.' },
+    'review-week-2': { info: 'Controleer je kennis van de vorige periode. Heb je alles onthouden over AI en programmeren?' },
+    'data-detective': { info: 'Onderzoek hoe bedrijven data verzamelen en inzetten. Je leert kansen afwegen tegen gevaren en maakt bewustere internetkeuzes.' },
+    'deepfake-detector': { info: 'Kun jij AI-gegenereerde content herkennen? Leer de tekenen te spotten die verraden of iets door een mens of door AI is gemaakt!' },
+    'ai-spiegel': { info: 'Onderzoek hoe likes, kijktijd en zoekgedrag worden gebruikt door platforms. Je ontdekt kansen en gevaren en maakt je eigen privacyregels.' },
+    'social-safeguard': { info: 'Oefen met realistische scenario\'s zoals nepaccounts, shaming en ongewenst delen. Leer hoe je bewijs bewaart en slim meldt.' },
+    'cookie-crusher': { info: 'Websites gebruiken trucs om je op "Accepteer alles" te laten klikken. Leer deze dark patterns herkennen! Speed-game met scores en badges.' },
+    'data-handelaar': { info: 'Je bent undercover bij DataDeal BV! Onderzoek 3 verdachte bewijsstukken, vind de AVG-overtredingen. Escape room-stijl missie!' },
+    'privacy-profiel-spiegel': { info: 'Controleer de echte privacy-instellingen van apps op je iPad. Krijg een persoonlijke Privacy Score en maak een actieplan.' },
+    'filter-bubble-breaker': { info: 'Vergelijk twee social media feeds, beantwoord quizvragen en leer hoe algoritmes jouw wereld vormen.' },
+    'datalekken-rampenplan': { info: 'De school is gehackt! 800 leerlinggegevens liggen op straat. Manage de crisis en maak een noodplan.' },
+    'data-voor-data': { info: 'Ethische veiling: kies DEAL of NO DEAL bij steeds grotere data-verzoeken. Ontdek je persoonlijke privacy-principes.' },
+    'social-media-psychologist': { isBonus: true, info: 'Bonusmissie! Ontdek waarom je blijft scrollen en hoe algoritmes je aandacht vangen.' },
+    'review-week-3': { info: 'Tijd voor de balans. Wat heb je geleerd over veiligheid en ethiek? Test je kennis.' },
+    'mission-blueprint': { info: 'Elk groot project begint met een plan. Gebruik je digitale skills om je eindwerk te organiseren.' },
+    'mission-vision': { info: 'Verbeeld je idee. Gebruik AI en design tools om je concept tot leven te wekken in een pitch.' },
+    'mission-launch': { info: 'Showtime! Presenteer je werk aan de klas en laat zien wat je hebt geleerd als Digitale Expert.' },
+    'access-control-engineer': { info: 'Het inlogportaal van school is lek! Gasten komen overal bij, leerlingen zien elkaars cijfers. Analyseer de beveiligingsregels, stel de juiste rechten in per rol en test of alles klopt.' },
+    'schermtijd-coach': { info: 'De gemiddelde tiener zit 7 uur per dag op een scherm. Maar kies jij dat zelf, of kiezen de apps dat voor jou? Analyseer je schermgedrag, herken de trucs van apps, en maak een persoonlijk balansplan.' },
+};
+
+// Bouw missies dynamisch op basis van curriculum config + agent definities
+function buildMissionsForPeriod(yearGroup: number, period: number): Mission[] {
+    const periodConfig = getPeriodConfig(yearGroup, period);
+    if (!periodConfig) return [];
+    const missions: Mission[] = [];
+
+    // Review missions eerst
+    for (const missionId of (periodConfig.reviewMissions || [])) {
+        const role = ROLES.find(r => r.id === missionId);
+        const meta = getMissionMeta(missionId);
+        const overrides = MISSION_OVERRIDES[missionId] || {};
+        missions.push({
+            id: missionId,
+            title: role?.title || missionId,
+            description: role?.description || '',
+            icon: role?.icon ? React.cloneElement(role.icon as React.ReactElement, { size: 40 }) : <RotateCcw size={40} />,
+            number: 'Review',
+            status: 'available',
+            info: overrides.info || role?.problemScenario,
+            isReview: true,
+            classRestriction: overrides.classRestriction || meta?.classRestriction,
+            isHighlighted: overrides.isHighlighted,
+            sloKerndoelen: meta?.sloKerndoelen || periodConfig.sloFocus,
+            sloVsoKerndoelen: meta?.sloVsoKerndoelen,
+        });
+    }
+
+    // Reguliere missions
+    let missionNum = 1;
+    for (const missionId of periodConfig.missions) {
+        const role = ROLES.find(r => r.id === missionId);
+        const meta = getMissionMeta(missionId);
+        const overrides = MISSION_OVERRIDES[missionId] || {};
+        missions.push({
+            id: missionId,
+            title: role?.title || missionId,
+            description: role?.description || '',
+            icon: role?.icon ? React.cloneElement(role.icon as React.ReactElement, { size: 40 }) : <Puzzle size={40} />,
+            number: overrides.number || String(missionNum).padStart(2, '0'),
+            status: 'available',
+            info: overrides.info || (role ? `${role.problemScenario || ''} ${role.missionObjective || ''}`.trim() : undefined),
+            isReview: false,
+            isExternal: overrides.isExternal,
+            isBonus: overrides.isBonus,
+            classRestriction: overrides.classRestriction || meta?.classRestriction,
+            sloKerndoelen: meta?.sloKerndoelen || periodConfig.sloFocus,
+            sloVsoKerndoelen: meta?.sloVsoKerndoelen,
+        });
+        missionNum++;
+    }
+    return missions;
+}
+
+// Legacy compat — niet meer gebruikt maar voorkomt crashes bij directe WEEK_MISSIONS referenties
+const WEEK_MISSIONS: Record<number, Mission[]> = {
+    1: [
+        {
+            id: 'magister-master',
+            title: 'Magister Meester',
+            description: 'Werk in de Magister app op je iPad.',
+            icon: <ShieldCheck size={40} />,
+            number: '01',
+            status: 'available',
+            isExternal: true,
+            info: 'Doen in app: open Magister en log in. Ga naar Rooster en Huiswerk. Bewijs: typ in de chat de naam van je eerste les van vandaag en 1 huiswerkopdracht die je ziet staan. Klaar als: je zelfstandig rooster, opdrachten en berichten kunt vinden. Tijd: 15 minuten.',
+            sloKerndoelen: ['21A', '21C']
+        },
+        {
+            id: 'cloud-commander',
+            title: 'Cloud Commander',
+            description: 'Werk in de OneDrive app op je iPad.',
+            icon: <Database size={40} />,
+            number: '02',
+            status: 'available',
+            isExternal: true,
+            info: 'Doen in app: maak in de OneDrive app de mappen School > Periode 1 > Opdrachten. Bewijs: typ in de chat de volledige naam van het testbestand dat je hebt opgeslagen (bijv. klas_voornaam_testbestand.docx). Klaar als: je bestand op de juiste plek in OneDrive staat. Tijd: 15 minuten.',
+            sloKerndoelen: ['21A', '23A']
+        },
+        {
+            id: 'word-wizard',
+            title: 'Word Wizard',
+            description: 'Werk in de Word app op je iPad.',
+            icon: <Pencil size={40} />,
+            number: '03',
+            status: 'available',
+            isExternal: true,
+            info: 'Doen in app: maak in Word een document met titel (Kop 1), 2 tussenkoppen, een opsomming en een afbeelding. Bewijs: typ in de chat hoeveel koppen je in je automatische inhoudsopgave hebt staan. Klaar als: je document is opgeslagen in OneDrive. Tijd: 35 minuten. ⭐ Bonus Challenge: voeg een automatische inhoudsopgave en een kop-/voettekst toe.',
+            sloKerndoelen: ['21A', '22A']
+        },
+        {
+            id: 'slide-specialist',
+            title: 'Slide Specialist',
+            description: 'Werk in de PowerPoint app op je iPad.',
+            icon: <Play size={40} />,
+            number: '04',
+            status: 'available',
+            isExternal: true,
+            info: 'Doen in app: maak een PowerPoint-presentatie van 3 slides (titel, tips, Magister/printen) met minimaal 1 afbeelding. Bewijs: typ in de chat het onderwerp van je tweede slide. Klaar als: je presentatie in OneDrive staat en 3 slides heeft. Tijd: 25 minuten. ⭐ Bonus Challenge: voeg overgangen tussen slides toe en gebruik een animatie op minstens 1 element.',
+            sloKerndoelen: ['21A', '21C', '22A']
+        },
+        {
+            id: 'print-pro',
+            title: 'Print Pro',
+            description: 'Printen en inleveren via de apps op je iPad.',
+            icon: <Stars size={40} />,
+            number: '05',
+            status: 'available',
+            isExternal: true,
+            info: 'Doen in app: print je Word-doc via de RICOH app en lever je Word + PowerPoint bestanden in via de Magister app. Bewijs: typ in de chat de status die bij je opdracht in Magister staat (bijv. "Ingeleverd"). Klaar als: je print klopt en Magister op "Ingeleverd" staat. Tijd: 15 minuten.',
+            sloKerndoelen: ['21A']
+        },
+    ],
+    2: [
+        { id: 'ipad-print-instructies', title: 'iPad Print Instructies', description: 'Leer stap-voor-stap printen vanaf je iPad met de RICOH myPrint app.', icon: <Printer size={40} />, number: 'MH1A', status: 'available', info: 'Een complete gids om te printen vanaf je iPad. Je leert de RICOH myPrint app downloaden, inloggen en je eerste document printen.', isHighlighted: true, isReview: true, sloKerndoelen: ['21A'] },
+        { id: 'cloud-cleaner', title: 'Cloud Schoonmaker', description: 'Sleep de rondslingerende bestanden naar de juiste mappen.', icon: <Cloud size={40} />, number: 'Review', status: 'available', info: 'Mappenstructuur en bestandsorganisatie herhalen. Zorg voor een opgeruimde Cloud!', isReview: true, sloKerndoelen: ['21A'] },
+        { id: 'layout-doctor', title: 'Word Match', description: 'Koppel Word-problemen aan de juiste oplossing!', icon: <FileText size={40} />, number: 'Review', status: 'available', info: 'Test je Word-kennis door problemen te matchen aan oplossingen. Van sneltoetsen tot tekstomloop!', isReview: true, sloKerndoelen: ['21A'] },
+        { id: 'pitch-police', title: 'Pitch Politie', description: 'Geef deze saaie slide een makeover zodat het publiek niet in slaap valt.', icon: <Monitor size={40} />, number: 'Review', status: 'available', info: 'Slide-design principes herhalen. Maak slides visueel aantrekkelijk en duidelijk.', isReview: true, sloKerndoelen: ['21A', '22B'] },
+
+        { id: 'prompt-master', title: 'Prompt Perfectionist', description: 'Leer het verschil tussen goede en slechte prompts.', icon: <Sparkles size={40} />, number: '01', status: 'available', info: 'Hoe vraag je AI om precies te doen wat je wilt? Leer het verschil tussen vage, onduidelijke prompts en krachtige, duidelijke prompts die perfecte resultaten opleveren!', sloKerndoelen: ['21B', '22A'], sloVsoKerndoelen: ['18C', '19A', '20B'] },
+        { id: 'game-programmeur', title: 'Game Programmeur', description: 'Repareer games met code. Bepaal zelf de regels van het spel.', icon: <Gamepad2 size={40} />, number: '02', status: 'available', info: 'Duik in de code van een kapotte game! Je leert de basis van programmeren door bugs op te lossen en de spelregels aan te passen.', sloKerndoelen: ['22A', '22B'], sloVsoKerndoelen: ['19A'] },
+        { id: 'ai-trainer', title: 'AI Trainer', description: 'Leer een robot het verschil tussen materialen met supervised learning.', icon: <Database size={40} />, number: '04', status: 'available', info: 'Hoe leert een computer? Jij gaat een AI-model trainen om verschillende materialen te herkennen door het goede voorbeelden te geven.', sloKerndoelen: ['21D'], sloVsoKerndoelen: ['18C'] },
+        { id: 'chatbot-trainer', title: 'Chatbot Trainer', description: 'Bouw je eigen chatbot en leer hoe AI gesprekken voert.', icon: <BrainCircuit size={40} />, number: '05', status: 'available', info: 'Hoe weet een chatbot wat hij moet antwoorden? Maak regels en test je eigen chatbot!', sloKerndoelen: ['21D', '22A'], sloVsoKerndoelen: ['18C', '19A'] },
+        { id: 'ai-tekengame', title: 'AI Tekengame', description: 'Teken en laat de AI raden wat het is!', icon: <Pencil size={40} />, number: '06', status: 'available', info: 'Test hoe goed AI patronen herkent. Teken een object en kijk of de AI het kan raden!', sloKerndoelen: ['21B'], sloVsoKerndoelen: ['18C'] },
+        { id: 'game-director', title: 'De Game Director', description: 'Word de architect. Herschrijf de natuurwetten en ontwerp je eigen game-regelset.', icon: <Settings2 size={40} />, number: 'Vrije Keuze', status: 'available', info: 'Ben jij creatief en technisch? In deze Vrije Keuze missie krijg je de volledige controle. Pas zwaartekracht, snelheid en uiterlijk aan om jouw perfecte game te maken. Geschikt voor leerlingen die graag experimenteren!', sloKerndoelen: ['22A', '22B'], sloVsoKerndoelen: ['19A'] },
+        { id: 'verhalen-ontwerper', title: 'Verhalen Ontwerper', description: 'Visualiseer verhalen met AI. Leer prompts schrijven en beelden maken.', icon: <Feather size={40} />, number: '07', status: 'available', info: 'In deze missie leer je hoe je met Artificial Intelligence verhalen tot leven brengt. Je gaat werken met image-generation tools om scenes uit je verhaal te visualiseren.', sloKerndoelen: ['21B', '22A'], sloVsoKerndoelen: ['18C', '19A'] },
+        { id: 'ai-beleid-brainstorm', title: 'AI Beleid Brainstorm', description: 'Denk mee over AI-regels op school.', icon: <Scale size={40} />, number: '08', status: 'available', info: 'Jouw mening telt! Help de school met het vormgeven van AI-beleid door ideeën te delen en te stemmen op de beste voorstellen.', sloKerndoelen: ['23B', '23C'], sloVsoKerndoelen: ['20B'] },
+    ],
+    3: [
+        { id: 'review-week-2', title: 'De Code-Criticus', description: 'Vind fouten in AI-content uit Week 2.', icon: <Search size={40} />, number: 'Review', status: 'available', info: 'Controleer je kennis van Week 2. Heb je alles onthouden over AI en programmeren?', sloKerndoelen: ['21B', '22B'], sloVsoKerndoelen: ['18C'] },
+        { id: 'data-detective', title: 'Data Detective', description: 'Ontdek wat bedrijven met data doen: risico’s en kansen.', icon: <BarChart2 size={40} />, number: '01', status: 'available', info: 'Onderzoek hoe bedrijven data verzamelen en inzetten. Je leert kansen (persoonlijke aanbevelingen, veiligheid) afwegen tegen gevaren (tracking, dark patterns, data delen met derden) en maakt bewustere internetkeuzes. Duur: ca. 25 minuten. ⭐ Bonus Challenge: probeer alle 6 challenges met een perfecte score af te ronden.', sloKerndoelen: ['21B', '23C'], sloVsoKerndoelen: ['18B', '20A'] },
+        { id: 'deepfake-detector', title: 'Deepfake Detector', description: 'Spot AI-gegenereerde content en nepnieuws.', icon: <Eye size={40} />, number: '02', status: 'available', info: 'Kun jij AI-gegenereerde content herkennen? Leer de tekenen te spotten die verraden of iets door een mens of door AI is gemaakt!', sloKerndoelen: ['21B', '23A', '23C'], sloVsoKerndoelen: ['18B', '18C', '20A'] },
+        { id: 'ai-spiegel', title: 'De AI Spiegel', description: 'Zie hoe jouw online gedrag een advertentieprofiel vormt.', icon: <BrainCircuit size={40} />, number: '03', status: 'available', info: 'Onderzoek hoe likes, kijktijd en zoekgedrag worden gebruikt door platforms. Je ontdekt zowel kansen (relevante content) als gevaren (sturing en filterbubbels) en maakt je eigen privacyregels. ⭐ Bonus Challenge: schrijf 3 privacyregels op die je vanaf vandaag toepast en deel ze met een klasgenoot.', sloKerndoelen: ['23B', '23C'], sloVsoKerndoelen: ['20A', '20B'] },
+        { id: 'social-safeguard', title: 'Social Safeguard', description: 'Train veilig handelen bij online druk, pesten en datamisbruik.', icon: <ShieldCheck size={40} />, number: '04', status: 'available', info: 'Oefen met realistische scenario\'s zoals nepaccounts, shaming en ongewenst delen. Je leert hoe je bewijs bewaart, slim meldt en jezelf en anderen online beschermt.', sloKerndoelen: ['23A', '23B'], sloVsoKerndoelen: ['20A', '20B'] },
+        { id: 'cookie-crusher', title: 'Cookie Crusher', description: 'Herken dark patterns in cookie-popups en bescherm je privacy.', icon: <ShieldCheck size={40} />, number: '05', status: 'available', info: 'Websites gebruiken trucs om je op "Accepteer alles" te laten klikken. Leer deze dark patterns herkennen en bescherm je privacy! Speed-game met scores en badges.', sloKerndoelen: ['23C', '21B'], sloVsoKerndoelen: ['18B', '20A'] },
+        { id: 'data-handelaar', title: 'De Data Handelaar', description: 'Ga undercover en ontmasker illegale datahandel.', icon: <Search size={40} />, number: '06', status: 'available', info: 'Je bent undercover bij DataDeal BV! Onderzoek 3 verdachte bewijsstukken, vind de AVG-overtredingen en stel een rapport op. Escape room-stijl missie!', sloKerndoelen: ['23C', '23B'], sloVsoKerndoelen: ['20A', '20B'] },
+        { id: 'privacy-profiel-spiegel', title: 'Privacy Profiel Spiegel', description: 'Check je eigen app-instellingen en ontdek wat je deelt.', icon: <Eye size={40} />, number: '07', status: 'available', info: 'Controleer de echte privacy-instellingen van apps op je iPad: locatie, camera en microfoon. Krijg een persoonlijke Privacy Score en maak een actieplan.', sloKerndoelen: ['23A', '23B'], sloVsoKerndoelen: ['20A', '20B'] },
+        { id: 'filter-bubble-breaker', title: 'Filter Bubble Breaker', description: 'Vergelijk twee social media feeds en ontdek filterbubbels.', icon: <BrainCircuit size={40} />, number: '08', status: 'available', info: 'Twee mensen openen dezelfde app maar zien totaal andere content. Vergelijk de feeds, beantwoord quizvragen en leer hoe algoritmes jouw wereld vormen.', sloKerndoelen: ['23B', '23C', '21B'], sloVsoKerndoelen: ['20A', '20B'] },
+        { id: 'datalekken-rampenplan', title: 'Datalekken Rampenplan', description: 'Los een school datalek-crisis op!', icon: <AlertTriangle size={40} />, number: '09', status: 'available', info: 'De school is gehackt! 800 leerlinggegevens liggen op straat. Manage de crisis: dicht het lek, informeer de AP, communiceer met ouders en maak een noodplan.', sloKerndoelen: ['23A', '23B', '23C'], sloVsoKerndoelen: ['20A', '20B'] },
+        { id: 'data-voor-data', title: 'Data voor Data', description: 'Hoeveel persoonlijke data zou jij inruilen?', icon: <Scale size={40} />, number: '10', status: 'available', info: 'Ethische veiling: kies DEAL of NO DEAL bij steeds grotere data-verzoeken. Vergelijk je keuzes met het gemiddelde en ontdek je persoonlijke privacy-principes.', sloKerndoelen: ['23C', '23B'], sloVsoKerndoelen: ['20A', '20B'] },
+        { id: 'social-media-psychologist', title: 'Social Media Psycholoog', description: 'Begrijp de psychologie achter scrollen, likes en filterbubbels.', icon: <BrainCircuit size={40} />, number: 'Bonus', status: 'available', info: 'Bonusmissie voor snelle afmakers! Ontdek waarom je blijft scrollen, hoe algoritmes je aandacht vangen en wat dopamine met je online gedrag doet. Ontwerp je eigen "For You"-pagina en doorbreek je filterbubbel.', isBonus: true, sloKerndoelen: ['21B', '23B', '23C'], sloVsoKerndoelen: ['20B'] },
+    ],
+    4: [
+        { id: 'review-week-3', title: 'De Ethische Raad', description: 'Adviseer over ethische dilemma\'s.', icon: <Scale size={40} />, number: 'Review', status: 'available', info: 'Tijd voor de balans. Wat heb je geleerd over veiligheid en ethiek? Test je kennis.', sloKerndoelen: ['22B', '23C'] },
+        { id: 'mission-blueprint', title: 'De Blauwdruk', description: 'Organiseer je meesterwerk. Gebruik Magister, OneDrive en Word om je plan te smeden.', icon: <Map size={40} />, number: '02', status: 'available', info: 'Elk groot project begint met een plan. Gebruik je digitale skills om je eindwerk te organiseren.', sloKerndoelen: ['21A', '22A'] },
+        { id: 'mission-vision', title: 'De Visie', description: 'Visualiseer je droom. Combineer AI-beelden met een strakke PowerPoint pitch.', icon: <Lightbulb size={40} />, number: '03', status: 'available', info: 'Verbeeld je idee. Gebruik AI en design tools om je concept tot leven te wekken in een pitch.', sloKerndoelen: ['21B', '22A'] },
+        { id: 'mission-launch', title: 'De Lancering', description: 'Breng het naar buiten. Print je designs en communiceer als een pro.', icon: <Rocket size={40} />, number: '04', status: 'available', info: 'Showtime! Presenteer je werk aan de klas en laat zien wat je hebt geleerd als Digitale Expert.', sloKerndoelen: ['21A', '21C'] },
+    ]
+};
+
+export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
+    onSelectModule,
+    onOpenProfile,
+    onLogout,
+    onOpenGames,
+    gamesEnabled = false,
+    userDisplayName,
+    userUid,
+    activeWeek,
+    setActiveWeek,
+    activeYearGroup,
+    setActiveYearGroup,
+    schoolConfig,
+    onGoHome,
+    stats,
+    focusMode = false,
+    userRole = 'student',
+    containers
+}) => {
+    // Curriculum-aware variabelen
+    const currentYearGroup = activeYearGroup ?? 1;
+    const periodNaming = schoolConfig?.periodNaming || CURRICULUM.defaultPeriodNaming;
+    const activeContainer = containers?.find(c => c.sortOrder === activeWeek);
+    const containerLabel = activeContainer?.label || `${periodNaming} ${activeWeek}`;
+    const yearConfig = getYearConfig(currentYearGroup);
+    const currentPeriodConfig = getPeriodConfig(currentYearGroup, activeWeek);
+    const periodTheme = containers?.length
+        ? getContainerTheme(containers.find(c => c.sortOrder === activeWeek)?.colorKey)
+        : (PERIOD_THEME[activeWeek] || DEFAULT_PERIOD_THEME);
+    const periodLeerdoel = PERIOD_LEERDOELEN[`${currentYearGroup}-${activeWeek}`];
+    const [showXPPopup, setShowXPPopup] = useState(false);
+    const [showProfileMenu, setShowProfileMenu] = React.useState(false);
+    const [showYearGroupMenu, setShowYearGroupMenu] = useState(false);
+    const [selectedMissionInfo, setSelectedMissionInfo] = useState<string | { info: string; kerndoelen: SloKerndoelCode[] } | null>(null);
+    const [permissions, setPermissions] = useState<GamePermissions | null>(null);
+    const yearGroupMenuRef = React.useRef<HTMLDivElement | null>(null);
+
+    // Feedback modal state
+    const [showFeedbackModal, setShowFeedbackModal] = useState(false);
+    const [feedbackText, setFeedbackText] = useState('');
+    const [feedbackSubmitting, setFeedbackSubmitting] = useState(false);
+    const [feedbackSuccess, setFeedbackSuccess] = useState(false);
+    const [feedbackError, setFeedbackError] = useState<string | null>(null);
+
+    // Library modal state
+    const [showLibrary, setShowLibrary] = useState(false);
+
+    const handleSubmitFeedback = async () => {
+        if (!feedbackText.trim() || !userUid) return;
+        setFeedbackSubmitting(true);
+        setFeedbackError(null);
+        try {
+            await submitFeedback(
+                userUid,
+                userDisplayName || 'Anoniem',
+                stats?.studentClass,
+                feedbackText.trim()
+            );
+            setFeedbackSuccess(true);
+            setFeedbackText('');
+            // Don't auto-close - let user click the "Sluiten" button to confirm they saw it
+        } catch (error) {
+            console.error('Failed to submit feedback:', error);
+            setFeedbackError((error as Error)?.message || 'Feedback kon niet worden verzonden. Probeer het opnieuw.');
+        } finally {
+            setFeedbackSubmitting(false);
+        }
+    };
+
+    // Touch swipe state for week navigation
+    const [touchStart, setTouchStart] = useState<number | null>(null);
+    const [touchEnd, setTouchEnd] = useState<number | null>(null);
+    const minSwipeDistance = 80;
+
+    // Game activation notification state
+    const [showGameNotification, setShowGameNotification] = useState(false);
+    const [activatedGameName, setActivatedGameName] = useState<string | null>(null);
+    const prevPermissionsRef = React.useRef<GamePermissions | null>(null);
+
+    // Subscribe to permission changes
+    useEffect(() => {
+        // Initial load
+        getGamePermissions(stats?.schoolId).then((initialPerms) => {
+            setPermissions(initialPerms);
+            prevPermissionsRef.current = initialPerms;
+        });
+
+        // Real-time updates - detect when games become enabled
+        const unsubscribe = subscribeToPermissions(stats?.schoolId, (newPermissions) => {
+            // Check if arena-battle was just enabled
+            const arenaBattleWasEnabled = prevPermissionsRef.current?.enabled_games?.includes('arena-battle');
+            const arenaBattleIsNowEnabled = newPermissions.enabled_games?.includes('arena-battle');
+
+            if (!arenaBattleWasEnabled && arenaBattleIsNowEnabled) {
+                // Game was just activated! Show notification
+                setActivatedGameName('Arena Battle (Bomberman)');
+                setShowGameNotification(true);
+            }
+
+            prevPermissionsRef.current = newPermissions;
+            setPermissions(newPermissions);
+        });
+
+        return () => unsubscribe();
+    }, []);
+
+    useEffect(() => {
+        if (!showYearGroupMenu) return;
+
+        const handlePointerDown = (event: PointerEvent) => {
+            if (!yearGroupMenuRef.current) return;
+            if (!yearGroupMenuRef.current.contains(event.target as Node)) {
+                setShowYearGroupMenu(false);
+            }
+        };
+
+        const handleEscapeKey = (event: KeyboardEvent) => {
+            if (event.key === 'Escape') {
+                setShowYearGroupMenu(false);
+            }
+        };
+
+        document.addEventListener('pointerdown', handlePointerDown);
+        document.addEventListener('keydown', handleEscapeKey);
+        return () => {
+            document.removeEventListener('pointerdown', handlePointerDown);
+            document.removeEventListener('keydown', handleEscapeKey);
+        };
+    }, [showYearGroupMenu]);
+
+    // Daily streak calculation
+    const dailyStreak = React.useMemo(() => {
+        const today = new Date().toISOString().split('T')[0];
+        const lastLogin = stats?.lastLoginDate;
+        if (!lastLogin) return 1;
+        if (lastLogin === today) return stats?.dailyStreak || 1;
+        const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+        return lastLogin === yesterday ? (stats?.dailyStreak || 0) + 1 : 1;
+    }, [stats?.lastLoginDate, stats?.dailyStreak]);
+
+    // Import shared XP utilities
+    const xp = stats?.xp || 0;
+    const level = stats?.level || 1;
+    const availableYearGroups = useMemo(() => {
+        const userLevel = (stats?.educationLevel as EducationLevel) || 'havo';
+        return Object.entries(CURRICULUM.yearGroups)
+            .filter(([_, config]) => config.availableLevels.includes(userLevel))
+            .map(([yearStr, config]) => ({ year: Number(yearStr), config }))
+            .sort((a, b) => a.year - b.year);
+    }, [stats?.educationLevel]);
+    const selectedYearGroupTitle = availableYearGroups.find(({ year }) => year === currentYearGroup)?.config.title || `Leerjaar ${currentYearGroup}`;
+    const activeYearTheme = useMemo(() => getYearGroupTheme(currentYearGroup), [currentYearGroup]);
+
+    // Memoize expensive calculations
+    const progressPercentage = React.useMemo(
+        () => getLevelProgress(xp, level),
+        [xp, level]
+    );
+    const xpToNext = React.useMemo(
+        () => getXPToNextLevel(xp, level),
+        [xp, level]
+    );
+
+    // Filter relevant missions and apply locking logic
+    const isTeacher = userRole === 'teacher' || userRole === 'admin' || userRole === 'developer';
+    const [leerdoelenOpen, setLeerdoelenOpen] = useState(isTeacher);
+
+    const currentMissions = useMemo(() => {
+        let missions = buildMissionsForPeriod(currentYearGroup, activeWeek);
+
+        // TEMPORARILY: All missions available for everyone (review period)
+        // TODO: Re-enable lock logic after testing
+        return missions.map(mission => ({
+            ...mission,
+            status: 'available' as const
+        }));
+
+        /* ORIGINAL LOCK LOGIC — re-enable after review:
+
+        // Teachers can see ALL missions without any restrictions
+        if (isTeacher) {
+            return missions.map(mission => ({
+                ...mission,
+                status: 'available' as const
+            }));
+        }
+
+        // 0. Filter out class-restricted missions if user's class doesn't match
+        const userClass = stats?.studentClass;
+        missions = missions.filter(mission => {
+            if (!mission.classRestriction) return true;
+            return mission.classRestriction === userClass;
+        });
+
+        // 1. Check if the period is locked via teacher permissions
+        const weekPermissionId = `week-${activeWeek}`;
+        const isWeekEnabled = permissions?.enabled_games?.includes(weekPermissionId) ?? false;
+
+        if (!isWeekEnabled) {
+            return missions.map(mission => ({
+                ...mission,
+                status: 'locked' as const,
+                info: `Deze ${periodNaming.toLowerCase()} is nog niet geopend door je docent.`
+            }));
+        }
+
+        // 2. Generic review gate: if period has reviewMissions, require them first
+        const pConfig = getPeriodConfig(currentYearGroup, activeWeek);
+        const hasReviewGate = pConfig?.reviewMissions && pConfig.reviewMissions.length > 0;
+
+        if (hasReviewGate) {
+            const reviewIds = pConfig!.reviewMissions!;
+            const completedMissions = stats?.missionsCompleted || [];
+            const allReviewsDone = reviewIds.every(id => {
+                if (id === 'ipad-print-instructies' && stats?.studentClass !== 'MH1A') return true;
+                return completedMissions.includes(id);
+            });
+
+            return missions.map(mission => {
+                if (!mission.isReview && !allReviewsDone) {
+                    return {
+                        ...mission,
+                        status: 'locked' as const,
+                        info: 'Voltooi eerst alle herhalingsopdrachten voordat je deze missie kunt starten.'
+                    };
+                }
+                return { ...mission, status: 'available' as const };
+            });
+        }
+
+        return missions;
+        */
+    }, [currentYearGroup, activeWeek, stats, permissions, isTeacher, periodNaming]);
+
+    // Stable callbacks for MissionCard memoization (reduces re-renders of mission grid)
+    const handleInfoClick = useCallback((info: string, kerndoelen?: SloKerndoelCode[]) => {
+        setSelectedMissionInfo({ info, kerndoelen: kerndoelen || [] });
+    }, []);
+
+    // Swipe handlers for week navigation
+    const handleTouchStart = (e: React.TouchEvent) => {
+        setTouchEnd(null);
+        setTouchStart(e.targetTouches[0].clientX);
+    };
+
+    const handleTouchMove = (e: React.TouchEvent) => {
+        setTouchEnd(e.targetTouches[0].clientX);
+    };
+
+    const handleTouchEnd = () => {
+        if (!touchStart || !touchEnd) return;
+
+        const distance = touchStart - touchEnd;
+        const isLeftSwipe = distance > minSwipeDistance;
+        const isRightSwipe = distance < -minSwipeDistance;
+
+        // Find next available week
+        const availableWeeks = containers?.length
+            ? containers.map(c => c.sortOrder)
+            : [1, 2, 3, 4];
+
+        const maxWeek = containers?.length ? Math.max(...containers.map(c => c.sortOrder)) : 4;
+        if (isLeftSwipe && activeWeek < maxWeek) {
+            // Swipe left = next week
+            const nextWeek = availableWeeks.find(w => w > activeWeek);
+            if (nextWeek) setActiveWeek(nextWeek);
+        }
+        const minWeek = containers?.length ? Math.min(...containers.map(c => c.sortOrder)) : 1;
+        if (isRightSwipe && activeWeek > minWeek) {
+            // Swipe right = previous week
+            const prevWeek = [...availableWeeks].reverse().find(w => w < activeWeek);
+            if (prevWeek) setActiveWeek(prevWeek);
+        }
+
+        setTouchStart(null);
+        setTouchEnd(null);
+    };
+
+
+    // Memoized mission filtering — avoid recalculating on every render
+    const reviewMissions = useMemo(() => currentMissions.filter(m => m.isReview), [currentMissions]);
+    const mainMissions = useMemo(() => currentMissions.filter(m => !m.isReview), [currentMissions]);
+
+    // Calculate progress stats for the current week
+    const totalMissions = mainMissions.length;
+    const completedCount = mainMissions.filter(m => stats?.missionsCompleted?.includes(m.id)).length;
+
+    // For Week 2: check review mission progress
+    const completedReviewCount = reviewMissions.filter(m => stats?.missionsCompleted?.includes(m.id) || (m.id === 'ipad-print-instructies' && stats?.studentClass !== 'MH1A')).length;
+    const allReviewsDone = reviewMissions.length === 0 || completedReviewCount >= reviewMissions.length;
+
+    // Bottom nav active tab state
+    const [bottomNavTab, setBottomNavTab] = useState<'dashboard' | 'library' | 'profile' | 'trophies' | 'games'>('dashboard');
+
+    const handleBottomNav = (tab: 'dashboard' | 'library' | 'profile' | 'trophies' | 'games') => {
+        setBottomNavTab(tab);
+        switch (tab) {
+            case 'dashboard':
+                break; // Already on dashboard
+            case 'library':
+                setShowLibrary(true);
+                break;
+            case 'profile':
+                onOpenProfile();
+                break;
+            case 'trophies':
+                onOpenProfile('trophies');
+                break;
+            case 'games':
+                if (gamesEnabled && onOpenGames) onOpenGames();
+                break;
+        }
+    };
+
+    return (
+        <div className="flex-1 w-full flex flex-col font-sans text-lab-muted pb-safe relative">
+
+                {/* Student Library Modal */}
+                {userUid && (
+                    <StudentLibrary
+                        isOpen={showLibrary}
+                        onClose={() => setShowLibrary(false)}
+                        userId={userUid}
+                        onStartMission={() => onGoHome?.()}
+                        onOpenItem={(item) => {
+                            // Close library and open the mission with the saved data
+                            setShowLibrary(false);
+
+                            // Navigate to the relevant mission WITH the saved library data
+                            if (item.mission_id) {
+                                onSelectModule(item.mission_id, item.data);
+                            }
+                        }}
+                    />
+                )}
+
+                {/* FOCUS MODE OVERLAY */}
+                {focusMode && (
+                    <div className="fixed inset-0 z-[200] bg-lab-muted/95 backdrop-blur-md flex items-center justify-center p-6 text-center animate-in fade-in duration-500">
+                        <div className="max-w-md">
+                            <div className="w-24 h-24 bg-indigo-500 rounded-[2rem] flex items-center justify-center text-white mx-auto mb-8 shadow-2xl shadow-indigo-500/50">
+                                <Lock size={48} />
+                            </div>
+                            <h2 className="text-3xl font-black text-white mb-4 uppercase tracking-tight">Focus Modus Actief</h2>
+                            <p className="text-lab-muted font-medium text-lg leading-relaxed">
+                                De docent vraagt nu je aandacht. <br />
+                                Kijk naar het bord en luister naar de instructies.
+                            </p>
+                            <div className="mt-12 flex gap-2 justify-center">
+                                {[1, 2, 3].map(i => (
+                                    <div key={i} className="w-2 h-2 bg-indigo-500 rounded-full animate-pulse" style={{ animationDelay: `${i * 0.2}s` }}></div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* XP POPUP OVERLAY */}
+                {showXPPopup && (
+                    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+                        <div
+                            className="absolute inset-0 bg-lab-muted/40 backdrop-blur-sm transition-opacity"
+                            onClick={() => setShowXPPopup(false)}
+                        />
+                        <div className="bg-white rounded-[2.5rem] p-8 shadow-2xl border border-lab-muted w-full max-w-sm relative z-10 animate-in zoom-in duration-300">
+                            <div className="flex flex-col items-center text-center">
+                                <div className="bg-gradient-to-br from-indigo-500 to-purple-600 w-20 h-20 rounded-3xl flex items-center justify-center text-white shadow-xl mb-6 transform rotate-3">
+                                    <Trophy size={40} />
+                                </div>
+                                <h3 className="text-2xl font-black text-lab-muted mb-1 uppercase tracking-tight">Level {level}</h3>
+                                <p className="text-lab-muted font-bold uppercase tracking-widest text-[10px] mb-6">Jouw Voortgang</p>
+
+                                <div className="w-full bg-lab-muted h-4 rounded-full overflow-hidden mb-4 p-1 border border-lab-muted">
+                                    <div
+                                        className="h-full bg-indigo-600 rounded-full transition-all duration-1000 shadow-[0_0_15px_rgba(79,70,229,0.4)]"
+                                        style={{ width: `${progressPercentage}%` }}
+                                    />
+                                </div>
+
+                                <div className="flex justify-between w-full text-sm font-black text-lab-muted mb-8 lowercase">
+                                    <span>{xp} xp</span>
+                                    <span className="text-lab-muted">nog {xpToNext} xp voor lvl {level + 1}</span>
+                                </div>
+
+                                <button
+                                    onClick={() => setShowXPPopup(false)}
+                                    className="w-full py-4 bg-lab-muted text-white rounded-2xl font-bold uppercase tracking-widest hover:bg-lab-muted transition-all active:scale-95 shadow-lg"
+                                >
+                                    Begrepen!
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* GAME ACTIVATION NOTIFICATION */}
+                {showGameNotification && (
+                    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+                        <div
+                            className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity"
+                            onClick={() => setShowGameNotification(false)}
+                        />
+                        <div className="rounded-2xl p-8 shadow-2xl w-full max-w-sm relative z-10 animate-in zoom-in duration-300" style={{ backgroundColor: '#FCF6EA', border: '1px solid #E7D8BD' }}>
+                            <div className="flex flex-col items-center text-center">
+                                <div className="w-20 h-20 rounded-2xl flex items-center justify-center text-white shadow-lg mb-5" style={{ backgroundColor: '#D97848' }}>
+                                    <Gamepad2 size={40} />
+                                </div>
+                                <h3 className="text-xl font-bold mb-2" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#08283B' }}>Game geactiveerd!</h3>
+                                <p className="text-sm font-medium mb-1" style={{ color: '#445865' }}>
+                                    De docent heeft {activatedGameName || 'een game'} geactiveerd!
+                                </p>
+                                <p className="text-xs mb-6" style={{ color: '#445865' }}>
+                                    Je kunt nu meedoen aan de game-sessie met je klasgenoten.
+                                </p>
+
+                                <div className="flex flex-col gap-2.5 w-full">
+                                    <button
+                                        onClick={() => {
+                                            setShowGameNotification(false);
+                                            if (onOpenGames) onOpenGames();
+                                        }}
+                                        className="w-full py-3.5 text-white rounded-full font-semibold text-sm hover:shadow-lg hover:scale-[1.02] transition-all active:scale-95 flex items-center justify-center gap-2"
+                                        style={{ backgroundColor: '#D97848' }}
+                                    >
+                                        <Play size={16} fill="currentColor" />
+                                        Naar Games
+                                    </button>
+                                    <button
+                                        onClick={() => setShowGameNotification(false)}
+                                        className="w-full py-2.5 font-medium text-sm transition-colors"
+                                        style={{ color: '#445865' }}
+                                    >
+                                        Later, ik ben nog bezig
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* FEEDBACK MODAL */}
+                {showFeedbackModal && (
+                    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+                        <div
+                            className="absolute inset-0 bg-lab-muted/60 backdrop-blur-sm transition-opacity"
+                            onClick={() => { if (!feedbackSubmitting && !feedbackSuccess) { setShowFeedbackModal(false); setFeedbackError(null); } }}
+                        />
+                        <div className="bg-white rounded-[2rem] p-8 shadow-2xl border border-lab-gold w-full max-w-md relative z-10 animate-in zoom-in duration-300">
+                            {feedbackSuccess ? (
+                                <div className="flex flex-col items-center text-center py-8">
+                                    <div className="w-24 h-24 bg-lab-sage rounded-full flex items-center justify-center mb-6 animate-in zoom-in duration-500">
+                                        <span className="text-5xl">✅</span>
+                                    </div>
+                                    <h3 className="text-2xl font-black text-lab-muted mb-3">Bedankt!</h3>
+                                    <p className="text-lab-muted text-sm mb-6">Je feedback is succesvol verzonden naar de ontwikkelaar.</p>
+                                    <button
+                                        onClick={() => {
+                                            setShowFeedbackModal(false);
+                                            setFeedbackSuccess(false);
+                                        }}
+                                        className="px-8 py-3 bg-lab-sage hover:bg-lab-sage text-white rounded-xl font-bold text-sm transition-colors"
+                                    >
+                                        Sluiten
+                                    </button>
+                                </div>
+                            ) : (
+                                <>
+                                    <div className="flex items-center gap-3 mb-6">
+                                        <div className="w-12 h-12 bg-lab-gold rounded-xl flex items-center justify-center">
+                                            <MessageSquare size={24} className="text-lab-gold" />
+                                        </div>
+                                        <div>
+                                            <h3 className="text-lg font-black text-lab-muted">Feedback Geven</h3>
+                                            <p className="text-xs text-lab-muted">Wat kan er beter aan de website?</p>
+                                        </div>
+                                    </div>
+
+                                    <textarea
+                                        value={feedbackText}
+                                        onChange={(e) => {
+                                            setFeedbackText(e.target.value);
+                                            if (feedbackError) setFeedbackError(null);
+                                        }}
+                                        placeholder="Beschrijf hier wat je graag verbeterd zou zien, of deel een bug die je hebt gevonden..."
+                                        className="w-full h-32 p-4 bg-lab-muted border border-lab-muted rounded-xl text-sm text-lab-muted resize-none focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-lab-gold"
+                                        maxLength={500}
+                                        disabled={feedbackSubmitting}
+                                    />
+                                    <div className="flex justify-between items-center mt-2 mb-4">
+                                        <span className="text-[10px] text-lab-muted">{feedbackText.length}/500 tekens</span>
+                                    </div>
+
+                                    {feedbackError && (
+                                        <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm flex items-start gap-2">
+                                            <AlertTriangle size={16} className="mt-0.5 shrink-0" />
+                                            <span>{feedbackError}</span>
+                                        </div>
+                                    )}
+
+                                    <div className="flex gap-3">
+                                        <button
+                                            onClick={() => setShowFeedbackModal(false)}
+                                            disabled={feedbackSubmitting}
+                                            className="flex-1 py-3 text-lab-muted font-bold text-sm hover:bg-lab-muted rounded-xl transition-colors disabled:opacity-50"
+                                        >
+                                            Annuleren
+                                        </button>
+                                        <button
+                                            onClick={handleSubmitFeedback}
+                                            disabled={!feedbackText.trim() || feedbackSubmitting}
+                                            className="flex-1 py-3 bg-lab-gold hover:bg-lab-gold text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                        >
+                                            {feedbackSubmitting ? (
+                                                <Loader2 size={16} className="animate-spin" />
+                                            ) : (
+                                                <>
+                                                    <Send size={16} />
+                                                    Versturen
+                                                </>
+                                            )}
+                                        </button>
+                                    </div>
+                                </>
+                            )}
+                        </div>
+                    </div>
+                )}
+                {/* HEADER */}
+                <header className="bg-white/80 backdrop-blur-md border-b border-lab-muted px-4 py-3 sm:px-8 sm:py-6 flex justify-between items-center sticky top-0 z-50">
+                    <button
+                        onClick={onGoHome}
+                        aria-label="Ga naar de startpagina"
+                        className="flex items-center gap-3 hover:opacity-80 transition-opacity text-left bg-transparent border-none p-0 cursor-pointer focus:outline-none"
+                    >
+                        <img src="/mascot/pip-logo.webp" alt="DGSkills" className="w-9 h-9 object-contain" width={36} height={36} decoding="async" />
+                        <span className="text-[15px] font-semibold tracking-tight text-lab-muted hidden sm:inline">DGSkills</span>
+                    </button>
+
+                    {/* FEEDBACK BUTTON */}
+                    <button
+                        onClick={() => setShowFeedbackModal(true)}
+                        className="hidden sm:flex items-center gap-2 px-3 py-2 bg-lab-gold hover:bg-lab-gold text-lab-gold rounded-xl border border-lab-gold transition-all hover:scale-105 active:scale-95"
+                        aria-label="Geef feedback aan de ontwikkelaar"
+                        data-tutorial="student-feedback-btn"
+                    >
+                        <MessageSquare size={16} />
+                        <span className="text-xs font-bold">Feedback</span>
+                    </button>
+
+                    <div className="flex items-center gap-4">
+                        {/* DAILY STREAK BADGE */}
+                        {dailyStreak > 0 && (
+                            <div className={`flex items-center gap-1 px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs sm:text-sm font-bold
+                                ${dailyStreak >= 7 ? 'bg-orange-500 text-white animate-pulse shadow-lg shadow-orange-500/30' :
+                                  dailyStreak >= 3 ? 'bg-orange-100 text-orange-600' :
+                                  'bg-lab-muted text-lab-muted'}`}>
+                                <span role="img" aria-label="streak">&#x1F525;</span>
+                                <span>{dailyStreak}</span>
+                                <span className="hidden sm:inline">{dailyStreak === 1 ? 'dag' : 'dagen'}</span>
+                            </div>
+                        )}
+
+                        {/* COMPACT PROGRESS BAR IN HEADER */}
+                        {stats && (
+                            <button
+                                onClick={() => setShowXPPopup(true)}
+                                aria-label={`Level ${level}, ${xp} XP - Klik voor details`}
+                                className="flex flex-col items-end gap-1.5 hover:opacity-80 transition-opacity p-2 rounded-2xl hover:bg-lab-muted border border-transparent hover:border-lab-muted group"
+                            >
+                                <div className="flex items-center gap-3">
+                                    <span className="text-[10px] font-bold text-lab-muted uppercase tracking-widest group-hover:text-indigo-600 transition-colors">Lvl {level}</span>
+                                    <div className="w-20 sm:w-32 h-2.5 bg-lab-muted rounded-full overflow-hidden border border-lab-muted p-[1px]">
+                                        <div
+                                            className="h-full bg-indigo-600 rounded-full transition-all duration-700 shadow-[0_0_8px_rgba(79,70,229,0.3)]"
+                                            style={{ width: `${progressPercentage}%` }}
+                                        />
+                                    </div>
+                                </div>
+                            </button>
+                        )}
+
+                        <div className="flex items-center gap-4 relative">
+                            <div className="text-right hidden sm:block">
+                                <div className="text-[9px] text-lab-muted font-bold uppercase tracking-tighter leading-none text-indigo-500">Mijn Profiel</div>
+                                <div className="font-black text-lab-muted text-sm tracking-tight">{userDisplayName || 'Gast'}</div>
+                            </div>
+                            <button
+                                onClick={() => setShowProfileMenu(!showProfileMenu)}
+                                aria-label="Profiel menu openen"
+                                aria-expanded={showProfileMenu}
+                                aria-haspopup="true"
+                                className="w-12 h-12 bg-indigo-50 rounded-2xl border border-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-sm shadow-sm transition-all hover:scale-105 hover:bg-indigo-600 hover:text-white cursor-pointer overflow-hidden p-0"
+                                data-tutorial="student-profile-btn"
+                            >
+                                {/* Show Avatar Headshot if available, otherwise fallback */}
+                                <div className="w-full h-full">
+                                    <LazyAvatarViewer
+                                        config={stats?.avatarConfig || DEFAULT_AVATAR_CONFIG}
+                                        interactive={false}
+                                        variant="head"
+                                    />
+                                </div>
+                            </button>
+
+                            {/* Profile Dropdown Menu */}
+                            {showProfileMenu && (
+                                <>
+                                    <div
+                                        className="fixed inset-0 z-40"
+                                        onClick={() => setShowProfileMenu(false)}
+                                    />
+                                    <div className="absolute right-0 sm:right-0 top-14 z-50 bg-white rounded-2xl shadow-2xl border border-lab-muted overflow-hidden min-w-[200px] max-w-[calc(100vw-2rem)] animate-in fade-in slide-in-from-top-2 duration-200">
+                                        <div className="p-3 border-b border-lab-muted bg-lab-muted">
+                                            <div className="font-bold text-lab-muted text-sm">{userDisplayName || 'Gast'}</div>
+                                            <div className="text-[10px] text-lab-muted font-medium">Leerling Account</div>
+                                        </div>
+                                        <div className="p-2">
+                                            <button
+                                                onClick={() => {
+                                                    setShowProfileMenu(false);
+                                                    onOpenProfile();
+                                                }}
+                                                className="w-full flex items-center gap-3 px-4 py-3 min-h-[48px] rounded-xl text-left hover:bg-indigo-50 transition-colors group"
+                                                data-tutorial="student-avatar-btn"
+                                            >
+                                                <User size={18} className="text-indigo-500" />
+                                                <span className="font-bold text-lab-muted text-sm group-hover:text-indigo-600">Avatar Aanpassen</span>
+                                            </button>
+                                            {/* Trofeeënhal Button */}
+                                            <button
+                                                onClick={() => {
+                                                    setShowProfileMenu(false);
+                                                    onOpenProfile('trophies');
+                                                }}
+                                                className="w-full flex items-center gap-3 px-4 py-3 min-h-[48px] rounded-xl text-left hover:bg-lab-gold transition-colors group"
+                                            >
+                                                <Trophy size={18} className="text-lab-gold" />
+                                                <span className="font-bold text-lab-muted text-sm group-hover:text-lab-gold">Trofeeënhal</span>
+                                            </button>
+                                            {/* Bibliotheek Button */}
+                                            <button
+                                                onClick={() => {
+                                                    setShowProfileMenu(false);
+                                                    setShowLibrary(true);
+                                                }}
+                                                className="w-full flex items-center gap-3 px-4 py-3 min-h-[48px] rounded-xl text-left hover:bg-purple-50 transition-colors group"
+                                            >
+                                                <BookOpen size={18} className="text-purple-500" />
+                                                <span className="font-bold text-lab-muted text-sm group-hover:text-purple-600">Bibliotheek</span>
+                                            </button>
+                                            {/* Games Button in Profile Menu */}
+                                            <button
+                                                onClick={() => {
+                                                    if (gamesEnabled && onOpenGames) {
+                                                        setShowProfileMenu(false);
+                                                        onOpenGames();
+                                                    }
+                                                }}
+                                                disabled={!gamesEnabled}
+                                                className={`w-full flex items-center gap-3 px-4 py-3 min-h-[48px] rounded-xl text-left transition-colors group ${gamesEnabled
+                                                    ? 'hover:bg-lab-sage cursor-pointer'
+                                                    : 'opacity-50 cursor-not-allowed'
+                                                    }`}
+                                            >
+                                                <Gamepad2 size={18} className={gamesEnabled ? 'text-lab-sage' : 'text-lab-muted'} />
+                                                <div className="flex flex-col">
+                                                    <span className={`font-bold text-sm ${gamesEnabled ? 'text-lab-muted group-hover:text-lab-sage' : 'text-lab-muted'}`}>Games</span>
+                                                    {!gamesEnabled && (
+                                                        <span className="text-[9px] text-lab-muted">Wacht op activatie van de docent</span>
+                                                    )}
+                                                </div>
+                                            </button>
+
+                                            {onLogout && (
+                                                <button
+                                                    onClick={() => {
+                                                        setShowProfileMenu(false);
+                                                        onLogout();
+                                                    }}
+                                                    className="w-full flex items-center gap-3 px-4 py-3 min-h-[48px] rounded-xl text-left hover:bg-red-50 transition-colors group"
+                                                >
+                                                    <LogOut size={18} className="text-red-500" />
+                                                    <span className="font-bold text-lab-muted text-sm group-hover:text-red-600">Uitloggen</span>
+                                                </button>
+                                            )}
+                                        </div>
+                                    </div>
+                                </>
+                            )}
+                        </div>
+                    </div>
+                </header>
+
+                {/* BODY */}
+                <main
+                    className="flex-1 max-w-7xl mx-auto w-full px-6 py-4 md:py-6"
+                    onTouchStart={handleTouchStart}
+                    onTouchMove={handleTouchMove}
+                    onTouchEnd={handleTouchEnd}
+                >
+                    <div className="flex items-center justify-between gap-4 mb-4">
+                        <div className="min-w-0">
+                            <h2 className="text-xl md:text-2xl font-black text-lab-muted tracking-tight truncate">
+                                {currentPeriodConfig?.title || `${periodNaming} ${activeWeek}`}
+                            </h2>
+                            {currentPeriodConfig?.subtitle && (
+                                <p className="text-xs text-lab-muted font-medium truncate mt-0.5">{currentPeriodConfig.subtitle}</p>
+                            )}
+                        </div>
+                        {totalMissions > 0 && (
+                            <div className="flex items-center gap-2.5 flex-shrink-0 px-3 py-2 bg-white rounded-xl border border-lab-muted shadow-sm">
+                                <div className="relative w-9 h-9">
+                                    <svg className="w-9 h-9 -rotate-90" viewBox="0 0 36 36">
+                                        <path className="text-lab-muted" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeWidth="3.5" />
+                                        <path className="text-indigo-600" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeWidth="3.5"
+                                            strokeDasharray={`${(completedCount / totalMissions) * 100}, 100`} strokeLinecap="round" />
+                                    </svg>
+                                    <span className="absolute inset-0 flex items-center justify-center text-[9px] font-extrabold text-lab-muted">
+                                        {completedCount}/{totalMissions}
+                                    </span>
+                                </div>
+                                <div className="hidden sm:block">
+                                    <p className="text-xs font-bold text-lab-muted leading-tight">{completedCount}/{totalMissions}</p>
+                                    <p className="text-[9px] text-lab-muted font-medium">voltooid</p>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* LEERJAAR + PERIODE SELECTION */}
+                    <div className="flex items-center gap-2 mb-4">
+                        {availableYearGroups.length > 1 && (
+                            <div ref={yearGroupMenuRef} className="relative flex-shrink-0">
+                                <button
+                                    type="button"
+                                    aria-haspopup="listbox"
+                                    aria-expanded={showYearGroupMenu}
+                                    aria-label="Kies digitale leerlijn"
+                                    onClick={() => setShowYearGroupMenu(prev => !prev)}
+                                    className={`min-h-[44px] rounded-2xl border border-lab-muted bg-lab-muted p-1.5 shadow-inner transition-all duration-200 ${showYearGroupMenu
+                                        ? `ring-2 ${activeYearTheme.focusRing}`
+                                        : 'hover:border-lab-muted hover:-translate-y-[1px]'
+                                        }`}
+                                >
+                                    <span className={`min-w-0 sm:min-w-[210px] max-w-[72vw] flex items-center gap-2.5 rounded-xl border bg-white px-3 py-2 transition-all ${showYearGroupMenu ? `${activeYearTheme.activeBorder} shadow-sm` : 'border-lab-muted'}`}>
+                                        <span className={`w-7 h-7 rounded-lg ${activeYearTheme.badgeBg} ${activeYearTheme.badgeText} flex items-center justify-center shrink-0`}>
+                                            <activeYearTheme.Icon size={13} />
+                                        </span>
+                                        <span className="flex flex-col items-start leading-tight min-w-0 flex-1">
+                                            <span className="text-[9px] font-black uppercase tracking-[0.18em] text-lab-muted">Leerlijn</span>
+                                            <span className="text-xs font-black uppercase tracking-widest text-lab-muted truncate">{selectedYearGroupTitle}</span>
+                                        </span>
+                                        <span className={`w-2 h-2 rounded-full ${activeYearTheme.accentDot} shrink-0`} />
+                                        <ChevronRight
+                                            size={14}
+                                            className={`text-lab-muted shrink-0 transition-transform duration-200 ${showYearGroupMenu ? '-rotate-90' : 'rotate-90'}`}
+                                        />
+                                    </span>
+                                </button>
+
+                                {showYearGroupMenu && (
+                                    <div
+                                        role="listbox"
+                                        aria-label="Digitale leerlijnen"
+                                        className="absolute left-0 top-[calc(100%+0.5rem)] z-40 w-[min(92vw,320px)] rounded-2xl border border-lab-muted bg-lab-muted p-1.5 shadow-[0_20px_40px_-24px_rgba(15,23,42,0.65)] animate-in fade-in-0 zoom-in-95 duration-150"
+                                    >
+                                        <div className={`h-1 rounded-full mb-2 bg-gradient-to-r ${activeYearTheme.gradient}`} />
+                                        <p className="px-2.5 pt-1 pb-1.5 text-[9px] font-black uppercase tracking-[0.18em] text-lab-muted">
+                                            Kies je route
+                                        </p>
+                                        <div className="space-y-1">
+                                            {availableYearGroups.map(({ year, config }) => {
+                                                const isActive = year === currentYearGroup;
+                                                const optionTheme = getYearGroupTheme(year);
+                                                return (
+                                                    <button
+                                                        key={year}
+                                                        type="button"
+                                                        role="option"
+                                                        aria-selected={isActive}
+                                                        onClick={() => {
+                                                            setActiveYearGroup?.(year);
+                                                            setActiveWeek(1);
+                                                            setShowYearGroupMenu(false);
+                                                        }}
+                                                        className={`w-full min-h-[44px] rounded-xl border px-2.5 py-2 text-left transition-all duration-150 flex items-center gap-2.5 ${isActive
+                                                            ? `bg-white ${optionTheme.activeBorder} ${optionTheme.activeText} shadow-sm -translate-y-[1px]`
+                                                            : 'bg-white/80 border-transparent text-lab-muted hover:bg-white hover:border-lab-muted hover:-translate-y-[1px]'
+                                                            }`}
+                                                    >
+                                                        <span className={`w-1.5 h-8 rounded-full shrink-0 ${optionTheme.accentDot}`} />
+                                                        <span className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${isActive ? `${optionTheme.badgeBg} ${optionTheme.badgeText}` : 'bg-lab-muted text-lab-muted'}`}>
+                                                            <optionTheme.Icon size={12} />
+                                                        </span>
+                                                        <span className="flex-1 min-w-0">
+                                                            <span className="block text-xs font-black uppercase tracking-widest truncate">{config.title}</span>
+                                                            <span className="block text-[9px] font-bold tracking-wide text-lab-muted mt-0.5">Leerjaar {year} · {optionTheme.label}</span>
+                                                        </span>
+                                                        {isActive && <CheckCircle2 size={14} className="text-lab-sage shrink-0" />}
+                                                    </button>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                        <div className="flex items-center gap-2 bg-lab-muted p-1.5 rounded-2xl flex-1 md:flex-initial border border-lab-muted shadow-inner overflow-x-auto no-scrollbar">
+                        {Object.keys(yearConfig?.periods || {}).map(Number).sort((a, b) => a - b).map((period) => {
+                            const pConf = yearConfig?.periods[period];
+                            const isLocked = false; // TEMPORARILY: all periods unlocked for review
+
+                            return (
+                                <button
+                                    key={period}
+                                    onClick={() => !isLocked && setActiveWeek(period)}
+                                    disabled={isLocked}
+                                    title={isLocked ? `${periodNaming} ${period} wordt later vrijgegeven` : pConf?.title}
+                                    className={`flex-shrink-0 px-4 md:px-6 py-4 min-h-[44px] rounded-xl text-xs font-black uppercase tracking-widest transition-all flex items-center gap-1.5
+                                ${activeWeek === period
+                                            ? 'bg-white text-indigo-600 shadow-md border border-lab-muted translate-y-[-1px]'
+                                            : isLocked
+                                                ? 'bg-transparent text-lab-muted cursor-not-allowed'
+                                                : 'text-lab-muted hover:text-lab-muted'
+                                        }`}
+                                >
+                                    {isLocked ? <Lock size={12} /> : (PERIOD_THEME[period]?.icon || null)}
+                                    <span className="hidden sm:inline">{periodNaming}</span>
+                                    <span className="sm:hidden">P</span>{period}
+                                </button>
+                            )
+                        })}
+                        </div>
+                    </div>
+
+                    {/* Dynamisch leerdoelenblok — collapsible accordion */}
+                    {currentPeriodConfig && (
+                        <div className={`mb-6 bg-white rounded-2xl border ${periodTheme.border} shadow-sm overflow-hidden`}>
+                            {/* Collapsed header — altijd zichtbaar */}
+                            <button
+                                onClick={() => setLeerdoelenOpen(!leerdoelenOpen)}
+                                className="w-full flex items-center justify-between gap-3 px-4 py-3 hover:bg-lab-muted/50 transition-colors min-h-[44px]"
+                            >
+                                <div className="flex items-center gap-2 min-w-0">
+                                    <CheckCircle2 size={14} className={periodTheme.text} />
+                                    <span className={`text-[10px] font-black uppercase tracking-widest ${periodTheme.text}`}>
+                                        Leerdoelen {periodNaming} {activeWeek}
+                                    </span>
+                                    {!leerdoelenOpen && (
+                                        <div className="flex items-center gap-2 opacity-60">
+                                            {(stats?.vsoProfile && currentPeriodConfig.sloFocusVso
+                                                ? currentPeriodConfig.sloFocusVso
+                                                : currentPeriodConfig.sloFocus
+                                            ).slice(0, 3).map(code => (
+                                                <span key={code} className={`px-1 py-0.5 rounded text-[8px] font-bold border ${getKerndoelBadgeClasses(code)}`}>
+                                                    {code}
+                                                </span>
+                                            ))}
+                                            {currentPeriodConfig.sloFocus.length > 3 && (
+                                                <span className="text-[8px] text-lab-muted font-bold">+{currentPeriodConfig.sloFocus.length - 3}</span>
+                                            )}
+                                        </div>
+                                    )}
+                                </div>
+                                <ChevronRight size={16} className={`text-lab-muted transition-transform duration-200 shrink-0 ${leerdoelenOpen ? 'rotate-90' : ''}`} />
+                            </button>
+
+                            {/* Success criteria preview — altijd zichtbaar als accordion dicht is */}
+                            {!leerdoelenOpen && periodLeerdoel?.succescriterium && (
+                                <div className="px-4 pb-3 flex items-start gap-2 -mt-1">
+                                    <CheckCircle2 size={12} className="text-lab-sage shrink-0 mt-0.5" />
+                                    <p className="text-lab-sage text-[11px] font-medium leading-snug">
+                                        <span className="font-bold">Klaar als: </span>
+                                        {(stats?.vsoProfile === 'dagbesteding' && periodLeerdoel.succescriDagbesteding)
+                                            ? periodLeerdoel.succescriDagbesteding
+                                            : periodLeerdoel.succescriterium}
+                                    </p>
+                                </div>
+                            )}
+
+                            {/* Expandable content */}
+                            {leerdoelenOpen && (
+                                <div className="px-4 pb-4 pt-0 border-t border-lab-muted space-y-3">
+                                    <p className="text-lab-muted text-xs leading-snug line-clamp-2 pt-3">
+                                        {periodLeerdoel
+                                            ? (stats?.vsoProfile && periodLeerdoel.descriptionVso
+                                                ? periodLeerdoel.descriptionVso
+                                                : periodLeerdoel.description)
+                                            : currentPeriodConfig.subtitle}
+                                    </p>
+
+                                    {/* Lesflow — stappen visueel weergeven */}
+                                    {periodLeerdoel?.lesduur && (() => {
+                                        const raw = periodLeerdoel.lesduur!;
+                                        const duurMatch = raw.match(/Lesduur:\s*([^.]+)\./);
+                                        const duur = duurMatch ? duurMatch[1].trim() : null;
+                                        const flowPart = raw.replace(/^[^.]+\.\s*/, '').replace(/^[^:]+:\s*/, '');
+                                        const steps = flowPart.split('→').map(s => s.trim()).filter(Boolean);
+                                        return (
+                                            <div className="rounded-2xl bg-lab-muted border border-lab-muted p-3">
+                                                {duur && (
+                                                    <p className="text-[10px] font-bold text-lab-muted uppercase tracking-wider mb-2">
+                                                        {duur}
+                                                    </p>
+                                                )}
+                                                <div className="flex flex-wrap items-center gap-1.5">
+                                                    {steps.map((step, i) => (
+                                                        <div key={i} className="flex items-center gap-1.5">
+                                                            <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${periodTheme.bg} ${periodTheme.text} border ${periodTheme.border}`}>
+                                                                <span className={`w-4 h-4 rounded-full bg-white/80 flex items-center justify-center text-[9px] font-bold ${periodTheme.text}`}>
+                                                                    {i + 1}
+                                                                </span>
+                                                                {step}
+                                                            </span>
+                                                            {i < steps.length - 1 && (
+                                                                <span className="text-lab-muted text-xs">→</span>
+                                                            )}
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        );
+                                    })()}
+
+                                    {/* SLO badges + Succescriterium */}
+                                    <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+                                        <div className="flex flex-wrap gap-1.5">
+                                            {(stats?.vsoProfile && currentPeriodConfig.sloFocusVso
+                                                ? currentPeriodConfig.sloFocusVso
+                                                : currentPeriodConfig.sloFocus
+                                            ).map(code => {
+                                                const kerndoel = SLO_KERNDOELEN[code];
+                                                if (!kerndoel) return null;
+                                                return (
+                                                    <span
+                                                        key={code}
+                                                        className={`px-1.5 py-0.5 rounded-md text-[9px] font-bold border ${getKerndoelBadgeClasses(code)}`}
+                                                    >
+                                                        {code}
+                                                    </span>
+                                                );
+                                            })}
+                                        </div>
+                                        {periodLeerdoel?.succescriterium && (
+                                            <div className="flex items-start gap-1.5 min-w-0">
+                                                <CheckCircle2 size={11} className="text-lab-sage shrink-0 mt-0.5" />
+                                                <p className="text-lab-sage text-[10px] font-semibold leading-snug line-clamp-2">
+                                                    {(stats?.vsoProfile === 'dagbesteding' && periodLeerdoel.succescriDagbesteding)
+                                                        ? periodLeerdoel.succescriDagbesteding
+                                                        : periodLeerdoel.succescriterium}
+                                                </p>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {/* MISSION CONTENT */}
+                    <div className="relative group">
+                                <div className="flex flex-col gap-8">
+                                    {/* REVIEW GATE BANNER — shown when period has review missions that aren't all done */}
+                                    {reviewMissions.length > 0 && !allReviewsDone && !isTeacher && (
+                                        <div className="flex items-center gap-3 px-5 py-4 bg-lab-gold border border-lab-gold rounded-2xl">
+                                            <div className="w-8 h-8 bg-lab-gold rounded-xl flex items-center justify-center flex-shrink-0">
+                                                <AlertTriangle size={16} className="text-lab-gold" />
+                                            </div>
+                                            <div className="flex-1">
+                                                <p className="text-sm font-bold text-lab-gold">Eerst de herhalingsopdrachten</p>
+                                                <p className="text-xs text-lab-gold font-medium">
+                                                    Voltooi {completedReviewCount}/{reviewMissions.length} herhalingen om de nieuwe missies vrij te spelen.
+                                                </p>
+                                            </div>
+                                            <div className="flex gap-1">
+                                                {reviewMissions.map(m => {
+                                                    const done = stats?.missionsCompleted?.includes(m.id) || (m.id === 'ipad-print-instructies' && stats?.studentClass !== 'MH1A');
+                                                    return <div key={m.id} className={`w-2.5 h-2.5 rounded-full ${done ? 'bg-lab-sage' : 'bg-lab-gold'}`} />;
+                                                })}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {/* OPTIONAL: Review Missions Row (if any) */}
+                                    {reviewMissions.length > 0 && (
+                                        <div className="w-full" data-tutorial="student-review-missions">
+                                            <h3 className="text-sm font-bold text-lab-muted uppercase tracking-widest mb-4 flex items-center gap-2">
+                                                <RotateCcw size={16} /> Herhaling &amp; Basics
+                                            </h3>
+                                            <div className="grid grid-cols-2 md:grid-cols-4 gap-5 md:gap-4">
+                                                {(() => {
+                                                    let firstOpenReviewFound = false;
+                                                    return reviewMissions.map((mission, rIdx) => {
+                                                        const isNormallyCompleted = stats?.missionsCompleted?.includes(mission.id);
+                                                        const isAutoCompleted = mission.id === 'ipad-print-instructies' && stats?.studentClass !== 'MH1A';
+                                                        const isCompleted = isNormallyCompleted || isAutoCompleted;
+
+                                                        const isTutorialTarget = !allReviewsDone && !isCompleted && !firstOpenReviewFound;
+                                                        if (isTutorialTarget) firstOpenReviewFound = true;
+
+                                                        return (
+                                                            <div key={mission.id} {...(isTutorialTarget ? { 'data-tutorial': 'student-first-mission' } : {})}>
+                                                                <MissionCard
+                                                                    mission={mission}
+                                                                    onSelectModule={onSelectModule}
+                                                                    onInfoClick={handleInfoClick}
+                                                                    isCompleted={isCompleted}
+                                                                    isCompact={true}
+                                                                    customHeader={activeWeek <= 1 ? 'Herhaling Basis' : `Herhaling ${periodNaming} ${activeWeek - 1}`}
+                                                                    vsoProfile={stats?.vsoProfile}
+                                                                    cardIndex={rIdx}
+                                                                />
+                                                            </div>
+                                                        );
+                                                    });
+                                                })()}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    <AdaptiveMissionSuggestions
+                                        userId={userUid}
+                                        yearGroup={currentYearGroup}
+                                        nulmetingResult={stats?.nulmetingResult}
+                                    />
+
+                                    {/* Main Mission Grid */}
+                                    <div id="mission-grid-container" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6 pb-28 sm:pb-12" data-tutorial="student-main-missions">
+                                        {mainMissions.length > 0 ? (
+                                            mainMissions.map((mission, index) => {
+                                                const isCompleted = stats?.missionsCompleted?.includes(mission.id);
+
+                                                return (
+                                                    <div
+                                                        key={mission.id}
+                                                        className="w-full"
+                                                        {...(index === 0 && allReviewsDone ? { 'data-tutorial': 'student-first-mission' } : {})}
+                                                    >
+                                                        <MissionCard
+                                                            mission={mission}
+                                                            onSelectModule={onSelectModule}
+                                                            onInfoClick={handleInfoClick}
+                                                            isCompleted={isCompleted}
+                                                            customHeader={mission.id === 'prompt-master' ? "Aanbevolen" : undefined}
+                                                            headerColor={mission.id === 'prompt-master' ? "green" : undefined}
+                                                            vsoProfile={stats?.vsoProfile}
+                                                            cardIndex={index}
+                                                        />
+                                                    </div>
+                                                );
+                                            })
+                                        ) : (
+                                            currentMissions.every(m => m.isReview) && (
+                                                /* Only show placeholder if NO standard missions exist (and we're not just showing reviews) */
+                                                <div className="col-span-full flex flex-col items-center justify-center w-full py-20 bg-white rounded-[2.5rem] border border-dashed border-lab-muted">
+                                                    <Calendar className="text-lab-muted mb-4" size={48} />
+                                                    <p className="text-lab-muted font-bold uppercase tracking-widest text-xs">Nieuwe missies worden voorbereid...</p>
+                                                </div>
+                                            )
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+
+                    {/* INFO MODAL */}
+                    {selectedMissionInfo && (
+                        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+                            <div
+                                className="absolute inset-0 bg-lab-muted/60 backdrop-blur-sm transition-opacity"
+                                onClick={() => setSelectedMissionInfo(null)}
+                            />
+                            <div className="bg-white rounded-[2rem] p-8 max-w-lg w-full relative z-10 shadow-2xl animate-in zoom-in duration-200">
+                                <div className="flex items-start gap-4 mb-4">
+                                    <div className="p-3 bg-indigo-50 text-indigo-600 rounded-xl">
+                                        <Info size={24} />
+                                    </div>
+                                    <div>
+                                        <h3 className="text-xl font-black text-lab-muted mb-2">Over deze Missie</h3>
+                                        <p className="text-lab-muted leading-relaxed">
+                                            {typeof selectedMissionInfo === 'string' ? selectedMissionInfo : (selectedMissionInfo as any)?.info}
+                                        </p>
+                                    </div>
+                                </div>
+                                {/* SLO Kerndoelen in info modal */}
+                                {typeof selectedMissionInfo === 'object' && (selectedMissionInfo as any)?.kerndoelen?.length > 0 && (
+                                    <div className="mt-4 pt-4 border-t border-lab-muted">
+                                        <p className="text-[10px] font-bold text-lab-muted uppercase tracking-widest mb-2">SLO Kerndoelen</p>
+                                        <div className="space-y-1.5">
+                                            {(selectedMissionInfo as any).kerndoelen.map((code: SloKerndoelCode) => {
+                                                const kd = SLO_KERNDOELEN[code];
+                                                if (!kd) return null;
+                                                return (
+                                                    <div key={code} className={`flex items-start gap-2 p-2 rounded-lg border ${getKerndoelBadgeClasses(code)}`}>
+                                                        <span className="text-[10px] font-black mt-0.5 shrink-0">{code}</span>
+                                                        <div>
+                                                            <span className="text-[11px] font-bold">{kd.label}</span>
+                                                            <p className="text-[10px] opacity-70 leading-tight">{kd.omschrijving}</p>
+                                                        </div>
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+                                )}
+                                <div className="flex justify-end mt-6">
+                                    <button
+                                        onClick={() => setSelectedMissionInfo(null)}
+                                        className="px-6 py-2 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 transition-colors"
+                                    >
+                                        Begrepen
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                </main >
+
+                {/* BOTTOM NAVIGATION BAR (mobile only) */}
+                <BottomNav
+                    activeTab={bottomNavTab}
+                    onNavigate={handleBottomNav}
+                    gamesEnabled={gamesEnabled}
+                />
+        </div>
+    );
+};
+
+// Sticky-note kleuren — rustig & warm, passend bij lab-branding
+const STICKY_COLORS = [
+    { bg: '#F5E6DC', border: '#E4CFC2' },  // warm zand (terracotta-licht)
+    { bg: '#DCE9E7', border: '#C4D6D3' },  // zacht teal (accent-licht)
+    { bg: '#E8E0ED', border: '#D3C8DA' },  // gedempd lavendel (secondary-licht)
+    { bg: '#F0E4D4', border: '#DFD0BC' },  // warm crème
+    { bg: '#D6E6E1', border: '#BDD4CD' },  // mintgrijs
+    { bg: '#EDE0D4', border: '#DCC9B8' },  // warm beige
+    { bg: '#E2DDE8', border: '#CFC8D6' },  // zacht lila
+    { bg: '#DAE8E4', border: '#C4D8D2' },  // bleek zeegroen
+] as const;
+const STICKY_ROTATIONS = [-1.2, 0.6, -0.4, 1, -0.8, 0.3] as const;
+const SERIF_FONT = "'Newsreader', Georgia, serif";
+
+const MissionCard = React.memo(({ mission, onSelectModule, onInfoClick, isCompleted, isCompact, customHeader, headerColor = 'orange', vsoProfile, cardIndex = 0 }: { mission: Mission, onSelectModule: (id: string) => void, onInfoClick?: (info: string, kerndoelen?: SloKerndoelCode[]) => void, isCompleted?: boolean, isCompact?: boolean, customHeader?: string, headerColor?: 'orange' | 'green', vsoProfile?: string, cardIndex?: number }) => {
+    const handleClick = () => mission.status === 'available' && onSelectModule(mission.id);
+
+    // Choose which kerndoelen to show based on profile
+    const displayKerndoelen = vsoProfile && mission.sloVsoKerndoelen
+        ? mission.sloVsoKerndoelen
+        : mission.sloKerndoelen;
+
+    const stickyColor = STICKY_COLORS[cardIndex % STICKY_COLORS.length];
+    const rotation = STICKY_ROTATIONS[cardIndex % STICKY_ROTATIONS.length];
+
+    return (
+        <div
+            onClick={handleClick}
+            role="button"
+            tabIndex={mission.status === 'locked' ? -1 : 0}
+            aria-label={`${mission.title} — ${isCompleted ? 'Voltooid' : mission.status === 'locked' ? 'Vergrendeld' : 'Beschikbaar'}`}
+            aria-disabled={mission.status === 'locked'}
+            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleClick(); } }}
+            className={`
+            group relative rounded-lg overflow-hidden
+            transition-all duration-300 flex flex-col justify-between
+            ${isCompact ? 'p-4 min-h-[200px]' : 'p-6 md:p-7 min-h-[260px] md:min-h-[280px]'}
+            ${mission.status === 'locked'
+                    ? 'opacity-70 cursor-not-allowed grayscale-[0.6] hover:grayscale-0'
+                    : 'hover:shadow-lg hover:-translate-y-1.5 cursor-pointer'}
+        `}
+            style={{
+                backgroundColor: stickyColor.bg,
+                border: `1px solid ${stickyColor.border}`,
+                transform: window.innerWidth < 640 ? 'none' : `rotate(${rotation}deg)`,
+                boxShadow: '2px 3px 8px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04)',
+                transition: 'all 0.3s ease',
+            }}
+            onMouseEnter={(e) => {
+                if (mission.status !== 'locked') {
+                    e.currentTarget.style.transform = 'rotate(0deg) translateY(-6px)';
+                    e.currentTarget.style.boxShadow = '4px 8px 20px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.06)';
+                }
+            }}
+            onMouseLeave={(e) => {
+                e.currentTarget.style.transform = window.innerWidth < 640 ? 'none' : `rotate(${rotation}deg)`;
+                e.currentTarget.style.boxShadow = '2px 3px 8px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04)';
+            }}
+        >
+            {/* Tape decoration at top — hide when a header banner is present */}
+            {!isCompact && !customHeader && !mission.isBonus && !mission.isExternal && (
+                <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-12 h-5 rounded-sm opacity-60 z-20"
+                    style={{
+                        background: 'linear-gradient(180deg, rgba(200,190,170,0.5) 0%, rgba(200,190,170,0.3) 100%)',
+                        backdropFilter: 'blur(1px)',
+                        border: '1px solid rgba(180,170,150,0.2)',
+                    }}
+                />
+            )}
+
+            {/* Custom Header Tag (e.g. Herhaling Periode 1) */}
+            {customHeader && (
+                <div className={`absolute top-0 left-0 right-0 py-1 text-center rounded-t-lg ${headerColor === 'green' ? 'bg-lab-gold/90' : 'bg-orange-500/90'}`}>
+                    <span className="text-[9px] font-extrabold text-white uppercase tracking-widest leading-none block">
+                        {customHeader}
+                    </span>
+                </div>
+            )}
+
+            {/* Highlight for Highlighted Missions */}
+            {mission.isHighlighted && !customHeader && (
+                <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-orange-400 via-amber-500 to-orange-400 rounded-t-lg animate-pulse" />
+            )}
+
+            {/* Review Mission indicator */}
+            {mission.isReview && !mission.isHighlighted && !customHeader && (
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-400 to-orange-500 rounded-t-lg opacity-80" />
+            )}
+
+            {/* Bonus Mission */}
+            {mission.isBonus && !customHeader && (
+                <div className="absolute top-0 left-0 right-0 py-1 text-center rounded-t-lg bg-gradient-to-r from-violet-500 to-fuchsia-500">
+                    <span className="text-[9px] font-extrabold text-white uppercase tracking-widest leading-none block flex items-center justify-center gap-1">
+                        <Stars size={10} /> Bonus Challenge <Stars size={10} />
+                    </span>
+                </div>
+            )}
+
+            {/* External Mission */}
+            {mission.isExternal && !customHeader && !mission.isBonus && (
+                <div className="absolute top-0 left-0 right-0 py-1 text-center rounded-t-lg bg-gradient-to-r from-blue-500 to-cyan-500">
+                    <span className="text-[9px] font-extrabold text-white uppercase tracking-widest leading-none block flex items-center justify-center gap-1">
+                        <MonitorSmartphone size={10} /> Uitvoering in App <MonitorSmartphone size={10} />
+                    </span>
+                </div>
+            )}
+
+            {/* Completed Checkmark */}
+            {isCompleted && (
+                <div className={`absolute ${isCompact ? 'top-8 right-4' : 'top-6 right-6'} bg-lab-sage text-white rounded-full p-1 shadow-lg z-20`}>
+                    <ShieldCheck size={isCompact ? 14 : 16} />
+                </div>
+            )}
+
+            {/* Background Decorative Icon */}
+            <div className={`absolute top-0 right-0 opacity-[0.04] group-hover:scale-110 transition-transform duration-700 rotate-12 ${isCompact ? 'scale-75' : ''}`} style={{ color: '#8B7355' }}>
+                {mission.icon}
+            </div>
+
+            {/* Card content */}
+            <div className={`relative z-10 h-full flex flex-col ${customHeader || mission.isBonus || mission.isExternal ? 'pt-4' : ''}`}>
+                <div className="flex justify-between items-start">
+                    <div className={`
+                    rounded-xl flex items-center justify-center mb-4 transition-all duration-300 overflow-hidden
+                    ${isCompact ? 'w-10 h-10' : 'w-11 h-11 mb-4'}
+                    ${mission.status === 'locked'
+                            ? 'bg-stone-200/60 text-stone-400'
+                            : 'bg-lab-gold/10 text-lab-gold group-hover:bg-lab-gold group-hover:text-white'}
+                `}>
+                        {mission.status === 'locked' ? (
+                            <Lock size={isCompact ? 16 : 28} />
+                        ) : (
+                            <div className={`transform transition-transform ${isCompact ? 'scale-50' : ''}`}>
+                                {mission.icon}
+                            </div>
+                        )}
+                    </div>
+                    {mission.info && onInfoClick && mission.status !== 'locked' && !isCompact && (
+                        <button
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                onInfoClick(mission.info!, displayKerndoelen);
+                            }}
+                            className="p-3 min-w-[44px] min-h-[44px] text-stone-400 hover:text-lab-gold hover:bg-lab-gold/10 rounded-lg transition-colors flex items-center justify-center"
+                            title="Meer informatie"
+                        >
+                            <Info size={18} />
+                        </button>
+                    )}
+                </div>
+
+                {!isCompact && (
+                    <div className="flex items-center gap-2 mb-2">
+                        <span className="px-2 py-0.5 text-[9px] font-bold rounded uppercase tracking-widest" style={{ backgroundColor: 'rgba(139,115,85,0.1)', color: '#8B7355', border: '1px solid rgba(139,115,85,0.15)' }}>
+                            Missie {mission.number}
+                        </span>
+
+                        {/* Status Tags */}
+                        {mission.status === 'locked' ? (
+                            <span className="px-2 py-0.5 text-[9px] font-bold rounded uppercase tracking-widest flex items-center gap-1" style={{ backgroundColor: 'rgba(120,113,108,0.1)', color: '#78716C', border: '1px solid rgba(120,113,108,0.15)' }}>
+                                <Lock size={8} /> Vergrendeld
+                            </span>
+                        ) : mission.status === 'available' ? (
+                            <span className="px-2 py-0.5 bg-lab-sage text-lab-sage text-[9px] font-bold rounded uppercase tracking-widest border border-lab-sage/60 flex items-center gap-1">
+                                <span className="w-1 h-1 bg-lab-sage rounded-full"></span> Beschikbaar
+                            </span>
+                        ) : (
+                            <span className="px-2 py-0.5 bg-lab-gold text-lab-gold text-[9px] font-bold rounded uppercase tracking-widest border border-lab-gold/60">
+                                Wordt verwacht
+                            </span>
+                        )}
+                    </div>
+                )}
+
+                <h3 className={`
+                font-semibold mb-2 transition-colors leading-snug line-clamp-2 break-words
+                ${isCompact ? 'text-base' : 'text-lg mb-2'}
+                ${mission.status === 'locked' ? 'text-stone-400' : 'text-stone-800 group-hover:text-lab-gold'}
+            `} style={{ fontFamily: SERIF_FONT }}>
+                    {mission.title}
+                </h3>
+
+                {/* Description */}
+                <p className={`text-stone-500 font-medium leading-relaxed ${isCompact ? 'text-xs line-clamp-3 mb-2' : 'text-sm mb-3 line-clamp-3'}`}>
+                    {mission.description}
+                </p>
+
+                {/* SLO Kerndoel Badges */}
+                {displayKerndoelen && displayKerndoelen.length > 0 && mission.status !== 'locked' && (
+                    <div className={`flex flex-wrap gap-1 ${isCompact ? 'mb-2' : 'mb-4'}`}>
+                        {(isCompact ? displayKerndoelen.slice(0, 2) : displayKerndoelen).map((code) => {
+                            const kd = SLO_KERNDOELEN[code];
+                            if (!kd) return null;
+                            return (
+                                <span
+                                    key={code}
+                                    className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md border text-[8px] font-bold uppercase tracking-wider ${getKerndoelBadgeClasses(code)}`}
+                                    title={`${kd.label}: ${kd.omschrijving}`}
+                                >
+                                    {code} {!isCompact && kd.label}
+                                </span>
+                            );
+                        })}
+                        {isCompact && displayKerndoelen.length > 2 && (
+                            <span className="inline-flex items-center px-1.5 py-0.5 rounded-md border border-stone-200 bg-stone-50 text-stone-400 text-[8px] font-bold">
+                                +{displayKerndoelen.length - 2}
+                            </span>
+                        )}
+                    </div>
+                )}
+
+                {/* Locked Reason */}
+                {mission.status === 'locked' ? (
+                    <div className={`mt-auto flex items-center gap-2 font-bold text-lab-gold bg-lab-gold/80 rounded-lg border border-lab-gold/50 ${isCompact ? 'text-[10px] p-2' : 'text-xs p-3'}`}>
+                        <AlertTriangle size={isCompact ? 12 : 14} />
+                        <span className={isCompact ? 'text-[9px]' : ''}>Voltooi eerst de review missies</span>
+                    </div>
+                ) : (
+                    <div className="mt-auto flex items-center justify-between">
+                        {!isCompact && (
+                            <div className="flex gap-1 opacity-20">
+                                {[...Array(3)].map((_, i) => (
+                                    <div key={i} className="w-1.5 h-1.5 bg-lab-gold rounded-full"></div>
+                                ))}
+                            </div>
+                        )}
+                        <div className={`text-lab-gold font-extrabold uppercase tracking-widest flex items-center gap-2 group-hover:translate-x-1 transition-transform ${isCompact ? 'text-[10px]' : 'text-xs'}`}>
+                            Start <Play size={isCompact ? 10 : 12} fill="currentColor" />
+                        </div>
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+});
+MissionCard.displayName = 'MissionCard';
