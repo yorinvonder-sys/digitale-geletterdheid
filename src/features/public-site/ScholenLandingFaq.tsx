@@ -25,12 +25,27 @@ const FAQ_ITEMS: { category?: string; q: string; a: string }[] = [
     { category: 'Kosten & licentie', q: 'Wat kost DGSkills en is er een gratis proefperiode?', a: 'Gratis pilot van 3 maanden met volledige toegang. Daarna schoollicentie vanaf €2.000 per jaar.' }
 ];
 
+type FaqPersona = 'teacher' | 'ict' | 'director';
+
+type FaqCategory = 'Over het platform' | 'Technisch & privacy' | 'Kosten & licentie';
+
+const PERSONA_CATEGORY_MAP: Record<FaqPersona, FaqCategory[]> = {
+    teacher: ['Over het platform', 'Kosten & licentie'],
+    ict: ['Technisch & privacy', 'Over het platform'],
+    director: ['Over het platform', 'Technisch & privacy', 'Kosten & licentie'],
+};
+
 interface ScholenLandingFaqProps {
     scrollToContact: () => void;
+    persona?: FaqPersona;
 }
 
-export const ScholenLandingFaq: React.FC<ScholenLandingFaqProps> = ({ scrollToContact }) => {
+export const ScholenLandingFaq: React.FC<ScholenLandingFaqProps> = ({ scrollToContact, persona }) => {
     const [openFaq, setOpenFaq] = useState<number | null>(null);
+
+    const allowedCategories: FaqCategory[] = persona
+        ? PERSONA_CATEGORY_MAP[persona]
+        : ['Over het platform', 'Technisch & privacy', 'Kosten & licentie'];
 
     return (
         <div>
@@ -43,7 +58,7 @@ export const ScholenLandingFaq: React.FC<ScholenLandingFaqProps> = ({ scrollToCo
                 </p>
 
                 <div className="space-y-8">
-                    {(['Over het platform', 'Technisch & privacy', 'Kosten & licentie'] as const).map(cat => {
+                    {allowedCategories.map(cat => {
                         const items = FAQ_ITEMS.filter(f => f.category === cat);
                         if (items.length === 0) return null;
                         return (
