@@ -502,7 +502,7 @@ export const ScholenLanding: React.FC = () => {
                                     Elke skill krijgt een zichtbaar voorbeeld: van een AI-tool bouwen tot een game ontwerpen of veilig online werken.
                                 </p>
                             </Reveal>
-                            <Reveal delay={0.08} y={24} className="relative rounded-[28px] border border-lab-line bg-white p-4 shadow-xl shadow-lab-ink/8 lg:p-5">
+                            <Reveal delay={0.08} y={24} className="relative rounded-[28px] border border-lab-line bg-white p-4 shadow-xl shadow-lab-ink/10 lg:p-5">
                                 <div className="flex items-center gap-4">
                                     <img
                                         src="/assets/storytelling/beaver-storyteller.webp"
@@ -524,7 +524,7 @@ export const ScholenLanding: React.FC = () => {
                         </div>
                         <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-5">
                             {skills.map((skill, index) => (
-                                <Reveal key={skill.title} delay={index * 0.06} y={30} className={`skill-card-motion overflow-hidden rounded-[28px] bg-white shadow-lg shadow-lab-ink/8 ring-1 transition duration-300 ${activeSkillIndex === index ? 'ring-lab-coral/70 lg:-translate-y-1 lg:shadow-xl lg:shadow-lab-ink/12' : 'ring-lab-line/80'}`}>
+                                <Reveal key={skill.title} delay={index * 0.06} y={30} className={`skill-card-motion overflow-hidden rounded-[28px] bg-white shadow-lg shadow-lab-ink/10 ring-1 transition duration-300 ${activeSkillIndex === index ? 'ring-lab-coral/70 lg:-translate-y-1 lg:shadow-xl lg:shadow-lab-ink/10' : 'ring-lab-line/80'}`}>
                                     <article
                                         tabIndex={0}
                                         onMouseEnter={() => setActiveSkillIndex(index)}
@@ -876,7 +876,7 @@ function JourneyDashboardPreview({ active, onSelect }: { active: number; onSelec
 
     return (
         <div className="relative mx-auto w-full max-w-[760px]">
-            <div className="overflow-hidden rounded-[28px] border border-lab-line bg-white shadow-2xl shadow-lab-ink/14">
+            <div className="overflow-hidden rounded-[28px] border border-lab-line bg-white shadow-2xl shadow-lab-ink/15">
                 <div className="flex h-12 items-center gap-2 bg-lab-ink px-4 text-white">
                     <span className="size-3 rounded-full bg-lab-coral" aria-hidden="true" />
                     <span className="size-3 rounded-full bg-lab-gold" aria-hidden="true" />
@@ -891,7 +891,7 @@ function JourneyDashboardPreview({ active, onSelect }: { active: number; onSelec
                             {sidebarItems.map((item, index) => (
                                 <div
                                     key={item}
-                                    className={`rounded-xl px-3 py-2 text-[11px] font-black ${index === 0 ? 'bg-lab-gold/18 text-lab-ink' : 'text-lab-muted'}`}
+                                    className={`rounded-xl px-3 py-2 text-[11px] font-black ${index === 0 ? 'bg-lab-gold/20 text-lab-ink' : 'text-lab-muted'}`}
                                 >
                                     {item}
                                 </div>
@@ -1044,7 +1044,7 @@ function BuyerReadySchoolSections({ startPilot }: { startPilot: () => void }) {
 
             <section id="voor-schoolleiding" className="relative scroll-mt-24 bg-lab-paper px-5 py-12 md:px-10 md:py-16">
                 <div className="relative z-10 mx-auto max-w-5xl space-y-12">
-                    <Reveal y={30} className="rounded-[34px] bg-lab-creamDeep px-5 py-8 shadow-xl shadow-lab-ink/8 ring-1 ring-lab-line md:px-8 lg:px-10">
+                    <Reveal y={30} className="rounded-[34px] bg-lab-creamDeep px-5 py-8 shadow-xl shadow-lab-ink/10 ring-1 ring-lab-line md:px-8 lg:px-10">
                         <div className="grid gap-8 lg:grid-cols-[0.86fr_1.14fr] lg:items-start">
                             <div>
                                 <p className="text-xs font-black uppercase tracking-[0.14em] text-lab-coral">Voor schoolleiding</p>
@@ -1059,7 +1059,7 @@ function BuyerReadySchoolSections({ startPilot }: { startPilot: () => void }) {
                             </div>
                             <div className="grid gap-4 sm:grid-cols-2">
                                 {leaderReasons.map((reason, index) => (
-                                    <article key={reason.title} className="rounded-[24px] bg-white p-5 shadow-md shadow-lab-ink/6 ring-1 ring-lab-line">
+                                    <article key={reason.title} className="rounded-[24px] bg-white p-5 shadow-md shadow-lab-ink/5 ring-1 ring-lab-line">
                                         <div className="mb-4 grid size-12 place-items-center rounded-full bg-lab-paper text-lg font-black text-lab-coral">{String(index + 1).padStart(2, '0')}</div>
                                         <h3 className="text-xl font-black leading-tight text-lab-ink">{reason.title}</h3>
                                         <p className="mt-3 text-sm font-semibold leading-6 text-lab-muted">{reason.copy}</p>
@@ -1070,7 +1070,7 @@ function BuyerReadySchoolSections({ startPilot }: { startPilot: () => void }) {
                     </Reveal>
 
                     <Reveal y={30} className="grid gap-8 lg:grid-cols-[1fr_0.9fr] lg:items-start">
-                        <div className="rounded-[34px] bg-white p-5 shadow-xl shadow-lab-ink/8 ring-1 ring-lab-line md:p-7">
+                        <div className="rounded-[34px] bg-white p-5 shadow-xl shadow-lab-ink/10 ring-1 ring-lab-line md:p-7">
                             <div className="mb-6">
                                 <p className="text-xs font-black uppercase tracking-[0.14em] text-lab-sage">SLO & curriculum proof</p>
                                 <h2 className="mt-3 text-balance text-3xl font-black leading-tight text-lab-ink md:text-4xl">Van losse activiteit naar aantoonbare leerlijn</h2>
@@ -1085,7 +1085,7 @@ function BuyerReadySchoolSections({ startPilot }: { startPilot: () => void }) {
                                 ))}
                             </div>
                         </div>
-                        <div className="rounded-[34px] bg-lab-tealDark p-6 text-white shadow-xl shadow-lab-ink/12">
+                        <div className="rounded-[34px] bg-lab-tealDark p-6 text-white shadow-xl shadow-lab-ink/10">
                             <p className="text-xs font-black uppercase tracking-[0.14em] text-lab-gold">Voor ICT en privacy</p>
                             <h2 className="mt-3 text-balance text-3xl font-black leading-tight md:text-4xl">Veilig te beoordelen door ICT</h2>
                             <p className="mt-4 text-pretty text-sm font-semibold leading-7 text-white/78">
@@ -1137,7 +1137,7 @@ function BuyerReadySchoolSections({ startPilot }: { startPilot: () => void }) {
 
             <section id="schoolpilot" className="relative scroll-mt-24 bg-lab-paper px-5 py-12 md:px-10 md:py-16">
                 <div className="relative z-10 mx-auto max-w-5xl">
-                    <Reveal y={30} className="grid gap-8 rounded-[34px] bg-lab-cream px-5 py-8 shadow-xl shadow-lab-ink/8 ring-1 ring-lab-line md:px-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-center lg:px-10">
+                    <Reveal y={30} className="grid gap-8 rounded-[34px] bg-lab-cream px-5 py-8 shadow-xl shadow-lab-ink/10 ring-1 ring-lab-line md:px-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-center lg:px-10">
                         <div>
                             <p className="text-xs font-black uppercase tracking-[0.14em] text-lab-sage">Schoolpilot</p>
                             <h2 className="mt-3 text-balance text-4xl font-black leading-tight text-lab-ink md:text-5xl">Wat krijg je in de schoolpilot?</h2>
@@ -1172,7 +1172,7 @@ function BuyerReadySchoolSections({ startPilot }: { startPilot: () => void }) {
                         </div>
                         <div className="grid gap-4 md:grid-cols-2">
                             {roleFaqs.map((faq) => (
-                                <article key={faq.role} className="rounded-[24px] bg-white p-5 shadow-md shadow-lab-ink/6 ring-1 ring-lab-line">
+                                <article key={faq.role} className="rounded-[24px] bg-white p-5 shadow-md shadow-lab-ink/5 ring-1 ring-lab-line">
                                     <p className="text-xs font-black uppercase tracking-[0.14em] text-lab-coral">{faq.role}</p>
                                     <h3 className="mt-3 text-xl font-black leading-tight text-lab-ink">{faq.question}</h3>
                                     <p className="mt-3 text-sm font-semibold leading-6 text-lab-muted">{faq.answer}</p>
@@ -1202,7 +1202,7 @@ function ProductProofFrame({
     featured?: boolean;
 }) {
     return (
-        <article className={`overflow-hidden rounded-[30px] bg-white shadow-xl shadow-lab-ink/8 ring-1 ring-lab-line ${featured ? 'md:col-span-2 lg:grid lg:grid-cols-[0.72fr_1.28fr]' : ''}`}>
+        <article className={`overflow-hidden rounded-[30px] bg-white shadow-xl shadow-lab-ink/10 ring-1 ring-lab-line ${featured ? 'md:col-span-2 lg:grid lg:grid-cols-[0.72fr_1.28fr]' : ''}`}>
             <div className="flex flex-col justify-center p-5 md:p-6">
                 <span className="w-fit rounded-full bg-lab-cream px-3 py-1.5 text-[11px] font-black uppercase tracking-wide text-lab-tealDark">{label}</span>
                 <h3 className="mt-4 text-2xl font-black leading-tight text-lab-ink">{title}</h3>
@@ -1305,8 +1305,8 @@ function AiGameBuilderDemo({ reduceMotion }: { reduceMotion: boolean }) {
     };
 
     return (
-        <Reveal y={34} className="project-card-motion grid gap-5 rounded-[36px] bg-lab-paper p-4 shadow-2xl shadow-lab-ink/12 ring-1 ring-lab-line lg:grid-cols-[0.82fr_1.18fr] lg:p-6">
-            <div className="flex min-h-[430px] flex-col rounded-[28px] bg-lab-ink p-5 text-white shadow-xl shadow-lab-ink/18">
+        <Reveal y={34} className="project-card-motion grid gap-5 rounded-[36px] bg-lab-paper p-4 shadow-2xl shadow-lab-ink/10 ring-1 ring-lab-line lg:grid-cols-[0.82fr_1.18fr] lg:p-6">
+            <div className="flex min-h-[430px] flex-col rounded-[28px] bg-lab-ink p-5 text-white shadow-xl shadow-lab-ink/20">
                 <div className="flex items-start justify-between gap-4">
                     <div>
                         <p className="text-xs font-black uppercase tracking-wide text-lab-gold">Gemini coach</p>
@@ -1359,7 +1359,7 @@ function AiGameBuilderDemo({ reduceMotion }: { reduceMotion: boolean }) {
                 </form>
             </div>
 
-            <div className="relative min-h-[430px] overflow-hidden rounded-[28px] bg-[#08283B] p-4 shadow-xl shadow-lab-ink/18">
+            <div className="relative min-h-[430px] overflow-hidden rounded-[28px] bg-[#08283B] p-4 shadow-xl shadow-lab-ink/20">
                 <div className="mb-4 flex items-center justify-between rounded-2xl bg-white/95 px-4 py-3 text-lab-ink">
                     <div>
                         <p className="text-xs font-black uppercase text-lab-sage">Live preview</p>
@@ -1625,11 +1625,11 @@ function PlayableBeaverStream({ active, reduceMotion, config }: { active: typeof
                 </div>
             )}
 
-            <div className="absolute right-5 top-5 rounded-full bg-lab-cream/90 px-3 py-1.5 text-xs font-black uppercase tracking-wide text-lab-tealDark shadow-md shadow-lab-ink/8">
+            <div className="absolute right-5 top-5 rounded-full bg-lab-cream/90 px-3 py-1.5 text-xs font-black uppercase tracking-wide text-lab-tealDark shadow-md shadow-lab-ink/10">
                 Eigen side-scroller
             </div>
 
-            <div className="absolute bottom-5 left-5 right-5 flex items-start gap-3 rounded-3xl bg-lab-paper/96 p-3 shadow-xl shadow-lab-ink/18">
+            <div className="absolute bottom-5 left-5 right-5 flex items-start gap-3 rounded-3xl bg-lab-paper/96 p-3 shadow-xl shadow-lab-ink/20">
                 <div className="mt-0.5 flex size-7 flex-none items-center justify-center rounded-full bg-lab-coral/15">
                     <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
                         <circle cx="8" cy="8" r="7" stroke="#D97848" strokeWidth="2" />
@@ -1836,12 +1836,12 @@ function PortfolioStorySection({ startPilot }: { startPilot: () => void }) {
                 </Reveal>
 
                 <div className={`${reduceMotion ? 'hidden' : 'relative hidden h-[min(68svh,560px)] min-h-[440px] overflow-visible lg:block'}`}>
-                    <div className="absolute inset-0 translate-x-9 translate-y-10 rotate-3 rounded-[34px] bg-lab-creamDeep/80 shadow-xl shadow-lab-ink/8 ring-1 ring-lab-line" aria-hidden="true" />
-                    <div className="absolute inset-0 translate-x-5 translate-y-5 -rotate-2 rounded-[34px] bg-white/75 shadow-xl shadow-lab-ink/8 ring-1 ring-lab-line" aria-hidden="true" />
+                    <div className="absolute inset-0 translate-x-9 translate-y-10 rotate-3 rounded-[34px] bg-lab-creamDeep/80 shadow-xl shadow-lab-ink/10 ring-1 ring-lab-line" aria-hidden="true" />
+                    <div className="absolute inset-0 translate-x-5 translate-y-5 -rotate-2 rounded-[34px] bg-white/75 shadow-xl shadow-lab-ink/10 ring-1 ring-lab-line" aria-hidden="true" />
                     {panels.map((panel, index) => (
                         <article
                             key={panel.title}
-                            className="portfolio-story-motion absolute inset-0 grid overflow-hidden rounded-[34px] bg-white shadow-2xl shadow-lab-ink/12 ring-1 ring-lab-line md:grid-cols-[0.8fr_1.2fr]"
+                            className="portfolio-story-motion absolute inset-0 grid overflow-hidden rounded-[34px] bg-white shadow-2xl shadow-lab-ink/10 ring-1 ring-lab-line md:grid-cols-[0.8fr_1.2fr]"
                             style={getCardStyle(index)}
                             aria-hidden={Math.abs(progress * (panels.length - 1) - index) >= 0.5}
                         >
@@ -1867,7 +1867,7 @@ function PortfolioStorySection({ startPilot }: { startPilot: () => void }) {
                                         <img src={panel.image} alt={panel.alt} className="h-full w-full object-cover object-top" loading="lazy" decoding="async" />
                                     </div>
                                 </div>
-                                <div className="absolute -bottom-3 right-5 max-w-[78%] rounded-2xl bg-white px-4 py-3 shadow-xl shadow-lab-ink/14 ring-1 ring-lab-line">
+                                <div className="absolute -bottom-3 right-5 max-w-[78%] rounded-2xl bg-white px-4 py-3 shadow-xl shadow-lab-ink/15 ring-1 ring-lab-line">
                                     <p className="text-[10px] font-black uppercase tracking-wide text-lab-sage">{panel.statLabel}</p>
                                     <p className="mt-0.5 text-sm font-black text-lab-ink">{panel.stat}</p>
                                 </div>
@@ -1878,7 +1878,7 @@ function PortfolioStorySection({ startPilot }: { startPilot: () => void }) {
 
                 <div className={`space-y-7 ${reduceMotion ? '' : 'lg:hidden'}`}>
                     {panels.map((panel, index) => (
-                        <Reveal key={panel.title} delay={index * 0.05} y={34} className="portfolio-story-motion overflow-hidden rounded-[28px] bg-white shadow-xl shadow-lab-ink/8 ring-1 ring-lab-line">
+                        <Reveal key={panel.title} delay={index * 0.05} y={34} className="portfolio-story-motion overflow-hidden rounded-[28px] bg-white shadow-xl shadow-lab-ink/10 ring-1 ring-lab-line">
                             <div className="p-7">
                                 <div className="flex items-center justify-between gap-3">
                                     <p className="text-sm font-black uppercase tracking-[0.14em] text-lab-sage">{panel.kicker}</p>
@@ -1901,7 +1901,7 @@ function PortfolioStorySection({ startPilot }: { startPilot: () => void }) {
                                         <img src={panel.image} alt={panel.alt} className="h-full w-full object-cover object-top" loading="lazy" decoding="async" />
                                     </div>
                                 </div>
-                                <div className="absolute -bottom-3 right-4 max-w-[80%] rounded-xl bg-white px-3 py-2 shadow-xl shadow-lab-ink/14 ring-1 ring-lab-line">
+                                <div className="absolute -bottom-3 right-4 max-w-[80%] rounded-xl bg-white px-3 py-2 shadow-xl shadow-lab-ink/15 ring-1 ring-lab-line">
                                     <p className="text-[9px] font-black uppercase tracking-wide text-lab-sage">{panel.statLabel}</p>
                                     <p className="mt-0.5 text-xs font-black text-lab-ink">{panel.stat}</p>
                                 </div>
@@ -1992,7 +1992,7 @@ function usePrefersReducedMotion() {
 
 function HeroJourneyBridge() {
     return (
-        <div className="pointer-events-none absolute inset-x-0 bottom-[-1px] z-0 h-52 bg-gradient-to-b from-transparent via-lab-paper/72 to-lab-paper md:h-64" aria-hidden="true">
+        <div className="pointer-events-none absolute inset-x-0 bottom-[-1px] z-0 h-52 bg-gradient-to-b from-transparent via-lab-paper/70 to-lab-paper md:h-64" aria-hidden="true">
             <div className="absolute inset-x-0 bottom-0 h-20 bg-lab-paper" />
         </div>
     );
