@@ -1795,6 +1795,7 @@ function BrowserFrame({ url, children }: { url: string; children: React.ReactNod
 /* ---- Mock-productschermen in DUCK-stijl (productimpressies, geen screenshots) ---- */
 
 function ScreenMissies() {
+    const [activeTooltip, setActiveTooltip] = useState<string | null>(null);
     const missions = [
         { title: 'Prompt Perfectionist', domain: 'Digitale vaardigheden', pct: 72, tone: 'acid', tip: 'Kees: start klein. Eén goede prompt is al werk genoeg.' },
         { title: 'Deepfake Detector', domain: 'Mediawijsheid', pct: 38, tone: 'paper', tip: 'Kees: eerst kijken, dan geloven. Scheelt gedoe.' },
@@ -1846,11 +1847,8 @@ function ScreenMissies() {
                                     </span>
                                 </div>
                             </div>
-                            <div className={`mt-2 h-1.5 overflow-hidden rounded-full ${mission.tone === 'ink' ? 'bg-white/15' : 'bg-duck-ink/10'}`}>
-                                <div className={`h-full rounded-full ${mission.tone === 'acid' ? 'bg-duck-ink' : 'bg-duck-acid'}`} style={{ width: `${mission.pct}%` }} />
-                            </div>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
             </div>
         </div>
