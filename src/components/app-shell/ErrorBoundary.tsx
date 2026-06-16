@@ -161,10 +161,10 @@ export class ErrorBoundary extends Component<Props, State> {
             // Show a friendly loading state while auto-reloading
             if (isReloading) {
                 return (
-                    <div className="min-h-screen flex items-center justify-center bg-lab-cream p-8 font-sans">
+                    <div className="min-h-screen flex items-center justify-center bg-duck-bg p-8 font-sans">
                         <div className="flex flex-col items-center gap-4">
-                            <IconLoader2 size={48} className="animate-spin text-lab-coral" />
-                            <p className="text-lab-muted font-medium">Nieuwe versie laden...</p>
+                            <IconLoader2 size={48} className="animate-spin text-duck-ink" />
+                            <p className="text-duck-ink/65 font-medium">Nieuwe versie laden...</p>
                         </div>
                     </div>
                 );
@@ -175,30 +175,30 @@ export class ErrorBoundary extends Component<Props, State> {
             // to the generic error screen to avoid an infinite loop.
             if (isChunkError && !this.hasExceededManualReloads()) {
                 return (
-                    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-lab-coral to-lab-cream p-8 font-sans">
-                        <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 border border-lab-coral text-center">
-                            <div className="w-16 h-16 bg-lab-coral rounded-2xl flex items-center justify-center mx-auto mb-6">
-                                <IconRefreshCw size={32} className="text-lab-coral" />
+                    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-duck-ink to-duck-bg p-8 font-sans">
+                        <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 border border-duck-ink/10 text-center">
+                            <div className="w-16 h-16 bg-duck-ink/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                                <IconRefreshCw size={32} className="text-duck-ink" />
                             </div>
 
-                            <h1 className="text-2xl font-black text-lab-ink mb-3">
+                            <h1 className="text-2xl font-black text-duck-ink mb-3">
                                 Update Beschikbaar! 🚀
                             </h1>
 
-                            <p className="text-lab-muted mb-8 leading-relaxed">
+                            <p className="text-duck-ink/65 mb-8 leading-relaxed">
                                 Er is een nieuwe versie van de app uitgebracht.
                                 Klik op de knop hieronder om de nieuwste versie te laden.
                             </p>
 
                             <button
                                 onClick={this.handleManualReload}
-                                className="w-full px-6 py-4 bg-lab-coral text-white rounded-xl font-bold hover:bg-lab-coral hover:text-white transition-all shadow-lg shadow-lab-coral/30 flex items-center justify-center gap-3 active:scale-[0.98]"
+                                className="w-full px-6 py-4 bg-duck-acid text-duck-ink rounded-xl font-bold hover:bg-duck-acid/80 transition-all shadow-duck-soft flex items-center justify-center gap-3 active:scale-[0.98]"
                             >
                                 <IconRefreshCw size={20} />
                                 Pagina Verversen
                             </button>
 
-                            <p className="text-[11px] text-lab-muted mt-4">
+                            <p className="text-[11px] text-duck-ink/65 mt-4">
                                 Dit gebeurt wanneer er een update is uitgebracht terwijl je de app gebruikte.
                             </p>
                         </div>
@@ -208,31 +208,31 @@ export class ErrorBoundary extends Component<Props, State> {
 
             // Regular error UI
             return (
-                <div className="min-h-screen flex items-center justify-center bg-lab-coral p-8 font-sans">
-                    <div className="max-w-2xl w-full bg-white rounded-2xl shadow-xl p-8 border border-lab-coral">
+                <div className="min-h-screen flex items-center justify-center bg-duck-error p-8 font-sans">
+                    <div className="max-w-2xl w-full bg-white rounded-2xl shadow-xl p-8 border border-duck-error/30">
                         <div className="flex items-center gap-3 mb-4">
-                            <div className="w-12 h-12 bg-lab-coral rounded-xl flex items-center justify-center">
-                                <IconAlertTriangle size={24} className="text-lab-coral" />
+                            <div className="w-12 h-12 bg-duck-error/10 rounded-xl flex items-center justify-center">
+                                <IconAlertTriangle size={24} className="text-duck-error" />
                             </div>
-                            <h1 className="text-2xl font-black text-lab-coral">Er is iets misgegaan 😔</h1>
+                            <h1 className="text-2xl font-black text-duck-error">Er is iets misgegaan 😔</h1>
                         </div>
 
-                        <p className="text-lab-muted mb-6">
+                        <p className="text-duck-ink/65 mb-6">
                             De applicatie is vastgelopen. Maak een screenshot van dit bericht en stuur het naar de ontwikkelaar.
                         </p>
 
-                        <div className="bg-lab-ink rounded-xl p-4 overflow-auto max-h-96 text-left">
-                            <p className="text-lab-coral font-mono text-sm font-bold mb-2">
+                        <div className="bg-duck-ink rounded-xl p-4 overflow-auto max-h-96 text-left">
+                            <p className="text-duck-acid font-mono text-sm font-bold mb-2">
                                 {error && error.toString()}
                             </p>
-                            <pre className="text-lab-muted font-mono text-xs whitespace-pre-wrap">
+                            <pre className="text-white/65 font-mono text-xs whitespace-pre-wrap">
                                 {errorInfo && errorInfo.componentStack}
                             </pre>
                         </div>
 
                         <button
                             onClick={() => window.location.reload()}
-                            className="mt-6 px-6 py-3 bg-lab-coral text-white rounded-xl font-bold hover:bg-lab-coral hover:text-white transition-colors flex items-center gap-2"
+                            className="mt-6 px-6 py-3 bg-duck-ink text-white rounded-xl font-bold hover:bg-duck-ink/80 transition-colors flex items-center gap-2"
                         >
                             <IconRefreshCw size={18} />
                             Pagina Verversen

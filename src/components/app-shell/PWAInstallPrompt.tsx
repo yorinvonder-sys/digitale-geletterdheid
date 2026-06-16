@@ -64,29 +64,29 @@ export function PWAInstallPrompt() {
 
     return (
         <div className="fixed bottom-4 left-4 right-4 z-50 animate-in slide-in-from-bottom-4 fade-in duration-500 sm:left-auto sm:right-4 sm:max-w-sm">
-            <div className="bg-white rounded-2xl shadow-2xl border border-lab-line p-5 flex items-start gap-4">
-                <div className="w-12 h-12 bg-lab-coral rounded-xl flex items-center justify-center shrink-0">
-                    <Smartphone size={24} className="text-lab-coral" />
+            <div className="bg-white rounded-2xl shadow-2xl border border-duck-ink/10 p-5 flex items-start gap-4">
+                <div className="w-12 h-12 bg-duck-ink rounded-xl flex items-center justify-center shrink-0">
+                    <Smartphone size={24} className="text-white" />
                 </div>
                 <div className="flex-1 min-w-0">
-                    <p className="font-black text-lab-ink text-sm">
+                    <p className="font-black text-duck-ink text-sm">
                         DGSkills installeren
                     </p>
-                    <p className="text-xs text-lab-muted mt-0.5">
+                    <p className="text-xs text-duck-ink/65 mt-0.5">
                         Installeer als app voor snelle toegang tot je boekhouding en bonnetje-scanner.
                     </p>
                     <div className="flex gap-2 mt-3">
                         <button
                             onClick={handleInstall}
                             disabled={installing}
-                            className="flex items-center gap-1.5 px-4 py-2 bg-lab-coral text-white rounded-xl text-xs font-bold hover:bg-lab-coral hover:text-white disabled:opacity-50 transition-colors"
+                            className="flex items-center gap-1.5 px-4 py-2 bg-duck-acid text-duck-ink rounded-xl text-xs font-bold hover:bg-duck-acid/80 disabled:opacity-50 transition-colors"
                         >
                             <Download size={14} />
                             {installing ? 'Installeren...' : 'Installeren'}
                         </button>
                         <button
                             onClick={handleDismiss}
-                            className="px-3 py-2 text-xs font-bold text-lab-muted hover:text-lab-muted hover:bg-lab-cream rounded-xl transition-colors"
+                            className="px-3 py-2 text-xs font-bold text-duck-ink/65 hover:text-duck-ink/65 hover:bg-duck-bg rounded-xl transition-colors"
                         >
                             Later
                         </button>
@@ -94,7 +94,7 @@ export function PWAInstallPrompt() {
                 </div>
                 <button
                     onClick={handleDismiss}
-                    className="p-1 text-lab-muted hover:text-lab-muted transition-colors shrink-0"
+                    className="p-1 text-duck-ink/65 hover:text-duck-ink/65 transition-colors shrink-0"
                 >
                     <X size={16} />
                 </button>

@@ -108,36 +108,36 @@ export const CookieConsent: React.FC<CookieConsentProps> = ({ onAccept, onDeclin
 
     return (
         <div className="fixed bottom-3 left-3 right-3 md:bottom-4 md:left-auto md:right-4 md:max-w-xs z-[60] animate-fade-in-up">
-            <div className="bg-lab-paper rounded-[1.25rem] shadow-xl border border-lab-line overflow-hidden">
+            <div className="bg-white rounded-[1.25rem] shadow-xl border border-duck-ink/10 overflow-hidden">
                 {/* Main Banner */}
                 <div className="p-3.5 md:p-4">
                     <div className="flex items-start gap-2.5 md:gap-3">
-                        <div className="w-9 h-9 md:w-10 md:h-10 bg-lab-creamDeep rounded-xl flex items-center justify-center shrink-0">
-                            <IconCookie className="text-lab-sage" size={18} />
+                        <div className="w-9 h-9 md:w-10 md:h-10 bg-duck-bgLight rounded-xl flex items-center justify-center shrink-0">
+                            <IconCookie className="text-duck-ink" size={18} />
                         </div>
                         <div className="flex-1 min-w-0">
-                            <h2 className="text-sm md:text-base font-bold text-lab-ink mb-0.5 md:mb-1">Cookies & Privacy</h2>
-                            <p className="text-xs md:text-sm text-lab-muted leading-snug md:leading-relaxed">
+                            <h2 className="text-sm md:text-base font-bold text-duck-ink mb-0.5 md:mb-1">Cookies & Privacy</h2>
+                            <p className="text-xs md:text-sm text-duck-ink/65 leading-snug md:leading-relaxed">
                                 <span className="sm:hidden">Essentieel voor werking, optioneel voor anonieme statistiek.</span>
                                 <span className="hidden sm:inline">Wij gebruiken cookies om je ervaring te verbeteren en anonieme statistieken bij te houden.</span>
-                                <a href="/ict/privacy/cookies" className="text-lab-sage hover:text-lab-tealDark underline ml-1">Lees ons cookiebeleid</a>.
+                                <a href="/ict/privacy/cookies" className="text-duck-ink hover:text-duck-ink/80 underline ml-1">Lees ons cookiebeleid</a>.
                             </p>
 
                             {/* Expandable Details */}
                             {showDetails && (
-                                <div className="mt-3 p-3 bg-lab-cream rounded-xl text-sm space-y-2 border border-lab-line">
-                                    <p className="font-medium text-lab-ink">Welke cookies gebruiken wij?</p>
-                                    <ul className="space-y-1.5 text-lab-muted">
+                                <div className="mt-3 p-3 bg-duck-bg rounded-xl text-sm space-y-2 border border-duck-ink/10">
+                                    <p className="font-medium text-duck-ink">Welke cookies gebruiken wij?</p>
+                                    <ul className="space-y-1.5 text-duck-ink/65">
                                         <li className="flex items-center gap-2">
-                                            <IconCheck size={14} className="text-lab-sage" />
+                                            <IconCheck size={14} className="text-duck-ink" />
                                             <span><strong>Essentieel</strong> – Nodig voor inloggen en authenticatie</span>
                                         </li>
                                         <li className="flex items-center gap-2">
-                                            <IconSettings size={14} className="text-lab-muted" />
+                                            <IconSettings size={14} className="text-duck-ink/65" />
                                             <span><strong>Analytics</strong> – Interne klik-analyse voor productverbetering</span>
                                         </li>
                                     </ul>
-                                    <p className="text-xs text-lab-muted mt-2">
+                                    <p className="text-xs text-duck-ink/65 mt-2">
                                         Essentiële cookies zijn altijd actief en nodig voor de werking van de app.
                                     </p>
                                 </div>
@@ -149,20 +149,20 @@ export const CookieConsent: React.FC<CookieConsentProps> = ({ onAccept, onDeclin
                     <div className="grid grid-cols-2 sm:flex sm:items-center gap-2 mt-3 md:mt-4">
                         <button
                             onClick={() => setShowDetails(!showDetails)}
-                            className="col-span-2 sm:col-span-1 text-xs md:text-sm text-lab-muted hover:text-lab-ink underline underline-offset-2 order-3 sm:order-1 transition-colors"
+                            className="col-span-2 sm:col-span-1 text-xs md:text-sm text-duck-ink/65 hover:text-duck-ink underline underline-offset-2 order-3 sm:order-1 transition-colors"
                         >
                             {showDetails ? 'Minder info' : 'Meer informatie'}
                         </button>
                         <div className="flex-1 hidden sm:block order-2" />
                         <button
                             onClick={handleDecline}
-                            className="px-3 py-2 md:px-4 md:py-2.5 text-xs md:text-sm font-medium text-lab-ink bg-lab-cream hover:bg-lab-line rounded-xl transition-colors order-2 sm:order-3"
+                            className="px-3 py-2 md:px-4 md:py-2.5 text-xs md:text-sm font-medium text-duck-ink bg-duck-bg hover:bg-duck-ink/10 rounded-xl transition-colors order-2 sm:order-3"
                         >
                             Alleen essentieel
                         </button>
                         <button
                             onClick={handleAccept}
-                            className="px-3 py-2 md:px-4 md:py-2.5 text-xs md:text-sm font-bold text-lab-ink bg-lab-gold hover:bg-lab-oliveDeep rounded-xl transition-colors order-1 sm:order-4"
+                            className="px-3 py-2 md:px-4 md:py-2.5 text-xs md:text-sm font-bold text-duck-ink bg-duck-acid hover:bg-duck-acid/80 rounded-xl transition-colors order-1 sm:order-4"
                         >
                             Alles accepteren
                         </button>

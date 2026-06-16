@@ -19,7 +19,7 @@ export const WellbeingAlert: React.FC<Props> = ({ match, onDismiss }) => {
 
   return (
     <div
-      className="fixed inset-0 z-[9999] bg-lab-ink/80 backdrop-blur-sm flex items-center justify-center p-4"
+      className="fixed inset-0 z-[9999] bg-duck-ink/80 backdrop-blur-sm flex items-center justify-center p-4"
       role="alertdialog"
       aria-modal="true"
       aria-labelledby="wellbeing-title"
@@ -27,7 +27,7 @@ export const WellbeingAlert: React.FC<Props> = ({ match, onDismiss }) => {
     >
       <div className="max-w-md w-full bg-white rounded-2xl shadow-2xl overflow-hidden">
         {/* Header */}
-        <div className="bg-gradient-to-r from-lab-coral to-lab-coral p-6 text-center relative">
+        <div className="bg-duck-ink p-6 text-center relative">
           <button
             onClick={onDismiss}
             className="absolute top-3 right-3 p-2 rounded-lg text-white/70 hover:text-white hover:bg-white/20 transition-colors"
@@ -45,7 +45,7 @@ export const WellbeingAlert: React.FC<Props> = ({ match, onDismiss }) => {
 
         {/* Body */}
         <div className="p-6">
-          <p id="wellbeing-desc" className="text-lab-muted text-sm leading-relaxed mb-5">
+          <p id="wellbeing-desc" className="text-duck-ink/65 text-sm leading-relaxed mb-5">
             We merkten dat je iets schreef waarover we ons een beetje zorgen maken.
             Dat kan helemaal niets zijn, maar als je ergens mee zit, zijn er mensen
             die je kunnen helpen. Je bent niet alleen.
@@ -59,35 +59,35 @@ export const WellbeingAlert: React.FC<Props> = ({ match, onDismiss }) => {
                 href={hulplijn.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-start gap-3 p-3 rounded-xl border border-lab-line hover:border-lab-teal hover:bg-lab-teal hover:text-white transition-colors group"
+                className="flex items-start gap-3 p-3 rounded-xl border border-duck-ink/10 hover:border-duck-ink hover:bg-duck-ink hover:text-white transition-colors group"
               >
-                <div className="w-10 h-10 rounded-lg bg-lab-teal group-hover:bg-lab-teal hover:text-white flex items-center justify-center shrink-0">
+                <div className="w-10 h-10 rounded-lg bg-duck-ink/10 group-hover:bg-white/20 flex items-center justify-center shrink-0">
                   {hulplijn.naam.includes('113') ? (
-                    <Phone size={18} className="text-lab-teal" />
+                    <Phone size={18} className="text-duck-ink group-hover:text-white" />
                   ) : (
-                    <MessageCircle size={18} className="text-lab-teal" />
+                    <MessageCircle size={18} className="text-duck-ink group-hover:text-white" />
                   )}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <span className="font-bold text-sm text-lab-ink">{hulplijn.naam}</span>
-                    <ExternalLink size={12} className="text-lab-muted" />
+                    <span className="font-bold text-sm text-duck-ink group-hover:text-white">{hulplijn.naam}</span>
+                    <ExternalLink size={12} className="text-duck-ink/65 group-hover:text-white/70" />
                   </div>
-                  <p className="text-xs text-lab-teal font-medium">{hulplijn.nummer}</p>
-                  <p className="text-xs text-lab-muted">{hulplijn.beschrijving}</p>
+                  <p className="text-xs text-duck-ink/70 font-medium group-hover:text-white/80">{hulplijn.nummer}</p>
+                  <p className="text-xs text-duck-ink/65 group-hover:text-white/65">{hulplijn.beschrijving}</p>
                 </div>
               </a>
             ))}
           </div>
 
-          <p className="text-xs text-lab-muted text-center leading-relaxed mb-4">
+          <p className="text-xs text-duck-ink/65 text-center leading-relaxed mb-4">
             Je docent krijgt een melding dat je misschien hulp kunt gebruiken.
             Ze zullen discreet even bij je checken.
           </p>
 
           <button
             onClick={onDismiss}
-            className="w-full py-3 bg-lab-cream hover:bg-lab-creamDeep text-lab-muted rounded-xl font-bold text-sm transition-colors"
+            className="w-full py-3 bg-duck-bg hover:bg-duck-bgLight text-duck-ink/65 rounded-xl font-bold text-sm transition-colors"
           >
             Ik begrijp het, terug naar de missie
           </button>
