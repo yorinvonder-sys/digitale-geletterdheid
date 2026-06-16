@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { HeroDashboardPreview } from '@/features/public-site/demo/HeroDashboardPreview';
 import { DuckMark } from '@/components/brand/DuckMark';
 import { HeroEyes } from '@/components/brand/HeroEyes';
 import { AnimatedCounter } from '@/components/brand/AnimatedCounter';
@@ -548,7 +549,7 @@ export const ScholenLanding: React.FC = () => {
                                     <p className="mt-2 text-sm font-bold text-white/45">Bouwt. Prompts. Leert.</p>
                                 </div>
                                 <div className="overflow-hidden rounded-[1.1rem]">
-                                    <ScreenLeerling reduceMotion={reduceMotion} />
+                                    <HeroDashboardPreview which="student" />
                                 </div>
                             </div>
                             {/* Docent-kaart */}
@@ -558,11 +559,8 @@ export const ScholenLanding: React.FC = () => {
                                     <p className="mt-1 font-display text-5xl leading-none text-duck-ink">Docent</p>
                                     <p className="mt-2 text-sm font-bold text-duck-ink/45">Volgt. Ziet. Stuurt.</p>
                                 </div>
-                                <div className="relative overflow-hidden rounded-[1.1rem]">
-                                    <ScreenDocent />
-                                    <span className="absolute -right-2 -top-2 rounded-full bg-duck-ink px-3 py-1.5 text-[11px] font-extrabold text-duck-acid">
-                                        24/28 actief
-                                    </span>
+                                <div className="overflow-hidden rounded-[1.1rem]">
+                                    <HeroDashboardPreview which="teacher" />
                                 </div>
                             </div>
                         </div>
