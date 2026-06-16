@@ -519,13 +519,13 @@ export async function uploadAndScanReceipt(
     const base64 = btoa(binary);
     const mimeType    = file.type || 'image/jpeg';
 
-    // Stuur naar Claude edge function (was Mistral, nu Claude Sonnet 4.6)
-    const response = await authenticatedFetch(`${EDGE_FUNCTION_URL}/scanSubscriptionClaude`, {
+    // Stuur naar de Mistral OCR-boekhoudscanner (EU)
+    const response = await authenticatedFetch(`${EDGE_FUNCTION_URL}/scanReceipt`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ fileBase64: base64, mimeType, mode: 'receipt' }),
+        body: JSON.stringify({ imageBase64: base64, mimeType, mode: 'receipt' }),
     });
 
     if (!response.ok) {
@@ -569,8 +569,9 @@ export async function scanSubscriptionScreenshot(
 }
 
 /**
- * Scan abonnement via Claude Opus 4.6 (developer-omgeving).
+ * Scan abonnement via de Mistral OCR-boekhoudscanner (EU, developer-omgeving).
  * Ondersteunt afbeeldingen + PDF.
+ * (Naam behouden voor bestaande callers; verwerkt nu Mistral i.p.v. Claude.)
  */
 export async function scanSubscriptionWithClaude(
     file: File,
@@ -585,12 +586,12 @@ export async function scanSubscriptionWithClaude(
     const base64 = btoa(binary);
     const mimeType    = file.type || 'image/jpeg';
 
-    const response = await authenticatedFetch(`${EDGE_FUNCTION_URL}/scanSubscriptionClaude`, {
+    const response = await authenticatedFetch(`${EDGE_FUNCTION_URL}/scanReceipt`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ fileBase64: base64, mimeType }),
+        body: JSON.stringify({ imageBase64: base64, mimeType, mode: 'subscription' }),
     });
 
     if (!response.ok) {

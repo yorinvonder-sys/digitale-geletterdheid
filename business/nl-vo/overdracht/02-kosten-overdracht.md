@@ -15,13 +15,12 @@
 | **Vercel** | Hobby of Pro | €0 of ~€20 | €0 of ~€240 | Verifieer in Vercel-dashboard |
 | **Mistral AI** | Pay-per-use | ~€0-5 | ~€0-60 | Afhankelijk van actief leerlinggebruik |
 | **Black Forest Labs** | Pay-per-use | ~€0-3 | ~€0-36 | Beeldgeneratie missies |
-| **Anthropic** | Pay-per-use | ~€0-5 | ~€0-60 | `scanSubscriptionClaude` edge function |
 | **Zoho** | E-mail (SMTP) | ~€0-3 | ~€0-36 | Afhankelijk van plan |
 | **Claude Code / Anthropic** | Persoonlijk account Yorin | ~€18-100 | ~€216-1.200 | Voor ontwikkeling — los van het platform |
 | **Domein dgskills.app** | Jaarlijks | ~€1 | ~€15 | Via Vercel of externe registrar |
-| **Totaal platform (excl. Claude Code)** | | **~€26-62/mnd** | **~€315-747/jr** | |
+| **Totaal platform (excl. Claude Code)** | | **~€26-57/mnd** | **~€315-687/jr** | |
 
-**Conclusie:** Het platform kost ~€26-62 per maand. Supabase Pro (€25) is de vaste kostenpost. AI-gebruik (Mistral, BFL, Anthropic) en e-mail (Zoho) zijn variabel en afhankelijk van het aantal actieve leerlingen. De Claude Code-kosten zijn voor Yorins ontwikkelwerk, niet voor het draaien van de app zelf.
+**Conclusie:** Het platform kost ~€26-57 per maand. Supabase Pro (€25) is de vaste kostenpost. AI-gebruik (Mistral, BFL) en e-mail (Zoho) zijn variabel en afhankelijk van het aantal actieve leerlingen. De Claude Code-kosten zijn voor Yorins ontwikkelwerk, niet voor het draaien van de app zelf. (Anthropic/Claude wordt niet meer door het platform gebruikt — de boekhoudscanner draait nu op Mistral.)
 
 ---
 
@@ -35,7 +34,7 @@ De keuze hangt samen met het eigenaarschapsbesluit in `00-eigenaarschaps-besluit
 
 **Wat er gebeurt:** Supabase-organisatie en Vercel-project worden overgedragen naar een school-e-mailadres. School betaalt accounts direct.
 
-**Kosten voor school:** ~€25-63/maand (~€300-756/jaar) — exclusief eventuele AI-credits bij intensief gebruik.
+**Kosten voor school:** ~€25-58/maand (~€300-696/jaar) — exclusief eventuele AI-credits bij intensief gebruik.
 
 **Stap-voor-stap overdracht:**
 
@@ -56,15 +55,14 @@ De keuze hangt samen met het eigenaarschapsbesluit in `00-eigenaarschaps-besluit
 
    | Env var | Dienst | Waarvoor |
    |---|---|---|
-   | `MISTRAL_API_KEY` | Mistral AI | AI-feedback op leerlingwerk |
+   | `MISTRAL_API_KEY` | Mistral AI | AI-feedback op leerlingwerk + boekhoudscanner (OCR/vision) |
    | `BFL_API_KEY` | Black Forest Labs | Beeldgeneratie voor missies |
-   | `ANTHROPIC_API_KEY` | Anthropic | Abonnements-scanning (`scanSubscriptionClaude`) |
    | `SMTP_HOST` / `SMTP_USER` / `SMTP_PASS` | Zoho Mail (smtp.zoho.eu) | E-mail (toestemmingen, notificaties) |
 
-   > **Let op:** `C-sub-verwerkerslijst-dgskills.md` is voor het laatste bijgewerkt op 23 februari 2026 en noemt Google Vertex AI — dat is niet meer actief. Anthropic staat helemaal niet in de compliance-docs. De nieuwe beheerder of Yorin moet `C-sub-verwerkerslijst-dgskills.md` actualiseren vóór de FG-toets.
+   > **Let op:** `C-sub-verwerkerslijst-dgskills.md` is voor het laatste bijgewerkt op 23 februari 2026 en noemt Google Vertex AI — dat is niet meer actief. De actieve AI-verwerkers zijn nu Mistral AI (EU) en Black Forest Labs (EU). `ANTHROPIC_API_KEY` is niet meer nodig (de Claude-scanner is uitgefaseerd). De nieuwe beheerder of Yorin moet `C-sub-verwerkerslijst-dgskills.md` actualiseren vóór de FG-toets.
 
    Stappen:
-   - Maak nieuwe accounts aan voor Mistral, BFL, Anthropic en Zoho op het nieuwe beheerders-e-mailadres
+   - Maak nieuwe accounts aan voor Mistral, BFL en Zoho op het nieuwe beheerders-e-mailadres
    - Genereer nieuwe API-sleutels
    - Verwerk ze als Supabase secrets via: Supabase Dashboard → Edge Functions → Secrets
 
