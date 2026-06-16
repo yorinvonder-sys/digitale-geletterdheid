@@ -165,17 +165,17 @@ export function TaxReportPanel({ summary, tax, settings, userId, onSettingsChang
     return (
         <div className="space-y-8">
             {/* Instellingen */}
-            <div className="bg-white rounded-[2rem] border border-lab-line shadow-sm p-8">
+            <div className="bg-white rounded-[2rem] border border-duck-line shadow-sm p-8">
                 <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-lab-cream rounded-xl flex items-center justify-center">
-                            <Settings size={20} className="text-lab-muted" />
+                        <div className="w-10 h-10 bg-duck-bg rounded-xl flex items-center justify-center">
+                            <Settings size={20} className="text-duck-muted" />
                         </div>
-                        <h3 className="text-lg font-black text-lab-ink uppercase tracking-tight">Bedrijfsgegevens</h3>
+                        <h3 className="text-lg font-black text-duck-ink uppercase tracking-tight">Bedrijfsgegevens</h3>
                     </div>
                     <button
                         onClick={() => setShowSettings(!showSettings)}
-                        className="text-xs font-bold text-lab-coral hover:text-lab-coral uppercase tracking-widest"
+                        className="text-xs font-bold text-duck-coral hover:text-duck-coral uppercase tracking-widest"
                     >
                         {showSettings ? 'Sluiten' : 'Bewerken'}
                     </button>
@@ -185,23 +185,23 @@ export function TaxReportPanel({ summary, tax, settings, userId, onSettingsChang
                     <div className="space-y-4">
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
-                                <label className="block text-[10px] font-black text-lab-muted uppercase tracking-widest mb-1">Bedrijfsnaam</label>
+                                <label className="block text-[10px] font-black text-duck-muted uppercase tracking-widest mb-1">Bedrijfsnaam</label>
                                 <input
                                     type="text"
                                     value={localSettings.business_name}
                                     onChange={e => setLocalSettings(s => ({ ...s, business_name: e.target.value }))}
                                     placeholder="Jouw Bedrijf"
-                                    className="w-full px-4 py-2.5 border border-lab-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-lab-coral"
+                                    className="w-full px-4 py-2.5 border border-duck-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-duck-coral"
                                 />
                             </div>
                             <div>
-                                <label className="block text-[10px] font-black text-lab-muted uppercase tracking-widest mb-1">KvK-nummer</label>
+                                <label className="block text-[10px] font-black text-duck-muted uppercase tracking-widest mb-1">KvK-nummer</label>
                                 <input
                                     type="text"
                                     value={localSettings.kvk_number}
                                     onChange={e => setLocalSettings(s => ({ ...s, kvk_number: e.target.value }))}
                                     placeholder="12345678"
-                                    className="w-full px-4 py-2.5 border border-lab-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-lab-coral"
+                                    className="w-full px-4 py-2.5 border border-duck-line rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-duck-coral"
                                 />
                             </div>
                         </div>
@@ -211,16 +211,16 @@ export function TaxReportPanel({ summary, tax, settings, userId, onSettingsChang
                                 id="starter"
                                 checked={localSettings.starter_aftrek}
                                 onChange={e => setLocalSettings(s => ({ ...s, starter_aftrek: e.target.checked }))}
-                                className="w-4 h-4 text-lab-coral rounded"
+                                className="w-4 h-4 text-duck-coral rounded"
                             />
-                            <label htmlFor="starter" className="text-sm font-medium text-lab-muted">
+                            <label htmlFor="starter" className="text-sm font-medium text-duck-muted">
                                 Startersaftrek (eerste 3 jaar als ZZP-er) — extra €2.123 aftrek
                             </label>
                         </div>
                         <button
                             onClick={handleSaveSettings}
                             disabled={savingSettings}
-                            className="flex items-center gap-2 px-5 py-2.5 bg-lab-coral text-white rounded-xl text-sm font-bold hover:bg-lab-coral hover:text-white disabled:opacity-50 transition-colors"
+                            className="flex items-center gap-2 px-5 py-2.5 bg-duck-coral text-white rounded-xl text-sm font-bold hover:bg-duck-coral hover:text-white disabled:opacity-50 transition-colors"
                         >
                             <Save size={16} />
                             {savingSettings ? 'Opslaan...' : 'Opslaan'}
@@ -229,16 +229,16 @@ export function TaxReportPanel({ summary, tax, settings, userId, onSettingsChang
                 ) : (
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                         <div>
-                            <p className="text-[10px] text-lab-muted font-black uppercase tracking-widest mb-1">Bedrijfsnaam</p>
-                            <p className="font-bold text-lab-ink">{settings?.business_name || '—'}</p>
+                            <p className="text-[10px] text-duck-muted font-black uppercase tracking-widest mb-1">Bedrijfsnaam</p>
+                            <p className="font-bold text-duck-ink">{settings?.business_name || '—'}</p>
                         </div>
                         <div>
-                            <p className="text-[10px] text-lab-muted font-black uppercase tracking-widest mb-1">KvK-nummer</p>
-                            <p className="font-bold text-lab-ink">{settings?.kvk_number || '—'}</p>
+                            <p className="text-[10px] text-duck-muted font-black uppercase tracking-widest mb-1">KvK-nummer</p>
+                            <p className="font-bold text-duck-ink">{settings?.kvk_number || '—'}</p>
                         </div>
                         <div>
-                            <p className="text-[10px] text-lab-muted font-black uppercase tracking-widest mb-1">Startersaftrek</p>
-                            <p className="font-bold text-lab-ink">{settings?.starter_aftrek ? 'Ja' : 'Nee'}</p>
+                            <p className="text-[10px] text-duck-muted font-black uppercase tracking-widest mb-1">Startersaftrek</p>
+                            <p className="font-bold text-duck-ink">{settings?.starter_aftrek ? 'Ja' : 'Nee'}</p>
                         </div>
                     </div>
                 )}
@@ -247,40 +247,40 @@ export function TaxReportPanel({ summary, tax, settings, userId, onSettingsChang
             {/* IB-aangifte overzicht */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Berekening */}
-                <div className="bg-lab-ink rounded-[2rem] p-8 text-white space-y-1">
-                    <h3 className="text-sm font-black uppercase tracking-widest text-lab-muted mb-6">
+                <div className="bg-duck-ink rounded-[2rem] p-8 text-white space-y-1">
+                    <h3 className="text-sm font-black uppercase tracking-widest text-duck-muted mb-6">
                         IB Berekening {summary.year} — ZZP Box 1
                     </h3>
 
-                    <Row label="Bruto-omzet"         value={tax.grossIncome}         color="text-lab-sage" />
-                    <Row label="Zakelijke kosten"     value={-tax.totalExpenses}       color="text-lab-coral" />
+                    <Row label="Bruto-omzet"         value={tax.grossIncome}         color="text-duck-ink" />
+                    <Row label="Zakelijke kosten"     value={-tax.totalExpenses}       color="text-duck-coral" />
                     <Divider />
                     <Row label="Winst onderneming"    value={tax.profit}               bold color="text-white" />
 
                     <div className="h-3" />
-                    <p className="text-[10px] text-lab-muted font-black uppercase tracking-widest">Aftrekposten</p>
+                    <p className="text-[10px] text-duck-muted font-black uppercase tracking-widest">Aftrekposten</p>
 
-                    <Row label="Zelfstandigenaftrek"   value={-tax.zelfstandigenaftrek}  color="text-lab-teal" />
+                    <Row label="Zelfstandigenaftrek"   value={-tax.zelfstandigenaftrek}  color="text-duck-ink" />
                     {tax.startersaftrek > 0 && (
-                        <Row label="Startersaftrek"    value={-tax.startersaftrek}        color="text-lab-teal" />
+                        <Row label="Startersaftrek"    value={-tax.startersaftrek}        color="text-duck-ink" />
                     )}
-                    <Row label="MKB-winstvrijstelling" value={-tax.mkbWinstvrijstelling}  color="text-lab-teal" />
+                    <Row label="MKB-winstvrijstelling" value={-tax.mkbWinstvrijstelling}  color="text-duck-ink" />
                     <Divider />
                     <Row label="Belastbaar inkomen"    value={tax.taxableIncome}          bold color="text-white" />
 
                     <div className="h-3" />
-                    <p className="text-[10px] text-lab-muted font-black uppercase tracking-widest">Inkomstenbelasting</p>
+                    <p className="text-[10px] text-duck-muted font-black uppercase tracking-widest">Inkomstenbelasting</p>
 
                     <Row label={`Schijf 1 (t/m €${currentTaxConfig.bracket1Limit.toLocaleString('nl-NL')} × ${(currentTaxConfig.bracket1Rate * 100).toFixed(2)}%)`}
-                        value={Math.min(tax.taxableIncome, currentTaxConfig.bracket1Limit) * currentTaxConfig.bracket1Rate} color="text-lab-muted" />
+                        value={Math.min(tax.taxableIncome, currentTaxConfig.bracket1Limit) * currentTaxConfig.bracket1Rate} color="text-duck-muted" />
                     {tax.taxableIncome > currentTaxConfig.bracket1Limit && (
                         <Row label={`Schijf 2 (boven €${currentTaxConfig.bracket1Limit.toLocaleString('nl-NL')} × ${(currentTaxConfig.bracket2Rate * 100).toFixed(2)}%)`}
-                            value={(tax.taxableIncome - currentTaxConfig.bracket1Limit) * currentTaxConfig.bracket2Rate} color="text-lab-muted" />
+                            value={(tax.taxableIncome - currentTaxConfig.bracket1Limit) * currentTaxConfig.bracket2Rate} color="text-duck-muted" />
                     )}
                     <Divider />
-                    <Row label="Geschatte belasting" value={tax.estimatedTax} bold color="text-lab-gold" />
+                    <Row label="Geschatte belasting" value={tax.estimatedTax} bold color="text-duck-ink" />
 
-                    <p className="text-[10px] text-lab-muted pt-2">
+                    <p className="text-[10px] text-duck-muted pt-2">
                         Effectief tarief: {tax.effectiveRate.toFixed(1)}%
                     </p>
                 </div>
@@ -288,48 +288,48 @@ export function TaxReportPanel({ summary, tax, settings, userId, onSettingsChang
                 {/* Checklist + Export */}
                 <div className="space-y-4">
                     {/* Aangifte checklist */}
-                    <div className="bg-white rounded-[2rem] border border-lab-line shadow-sm p-8">
-                        <h3 className="text-lg font-black text-lab-ink uppercase tracking-tight mb-6">
+                    <div className="bg-white rounded-[2rem] border border-duck-line shadow-sm p-8">
+                        <h3 className="text-lg font-black text-duck-ink uppercase tracking-tight mb-6">
                             Aangifte Checklist
                         </h3>
                         <div className="space-y-3">
                             {checklistItems.map((item, i) => (
                                 <div key={i} className="flex items-center gap-3">
                                     {item.done ? (
-                                        <CheckCircle size={18} className="text-lab-muted shrink-0" />
+                                        <CheckCircle size={18} className="text-duck-muted shrink-0" />
                                     ) : (
-                                        <AlertCircle size={18} className="text-lab-gold shrink-0" />
+                                        <AlertCircle size={18} className="text-duck-ink shrink-0" />
                                     )}
-                                    <span className={`text-sm font-medium ${item.done ? 'text-lab-muted' : 'text-lab-gold'}`}>
+                                    <span className={`text-sm font-medium ${item.done ? 'text-duck-muted' : 'text-duck-ink'}`}>
                                         {item.label}
                                     </span>
                                 </div>
                             ))}
                         </div>
                         {!allDone && (
-                            <p className="text-xs text-lab-ink bg-lab-gold rounded-xl px-4 py-3 mt-4 font-medium">
+                            <p className="text-xs text-duck-ink bg-duck-acid rounded-xl px-4 py-3 mt-4 font-medium">
                                 Vul alle ontbrekende gegevens in voor een compleet overzicht.
                             </p>
                         )}
                     </div>
 
                     {/* Export */}
-                    <div className="bg-lab-coral rounded-[2rem] border border-lab-coral p-8">
+                    <div className="bg-duck-coral rounded-[2rem] border border-duck-coral p-8">
                         <div className="flex items-center gap-3 mb-4">
-                            <div className="w-10 h-10 bg-lab-coral rounded-xl flex items-center justify-center">
-                                <FileText size={20} className="text-lab-coral" />
+                            <div className="w-10 h-10 bg-duck-coral rounded-xl flex items-center justify-center">
+                                <FileText size={20} className="text-duck-coral" />
                             </div>
                             <div>
-                                <h3 className="font-black text-lab-coral uppercase tracking-tight">PDF Exporteren</h3>
-                                <p className="text-[10px] text-lab-coral font-bold uppercase tracking-widest">Belastingoverzicht {summary.year}</p>
+                                <h3 className="font-black text-duck-coral uppercase tracking-tight">PDF Exporteren</h3>
+                                <p className="text-[10px] text-duck-coral font-bold uppercase tracking-widest">Belastingoverzicht {summary.year}</p>
                             </div>
                         </div>
-                        <p className="text-xs text-lab-coral mb-5 leading-relaxed">
+                        <p className="text-xs text-duck-coral mb-5 leading-relaxed">
                             Genereer een volledig belastingoverzicht inclusief winst- en verliesrekening, BTW-saldo en IB-berekening.
                         </p>
                         <button
                             onClick={exportPDF}
-                            className="w-full flex items-center justify-center gap-2 py-3 bg-lab-coral text-white rounded-xl font-bold text-sm hover:bg-lab-coral hover:text-white transition-colors shadow-sm"
+                            className="w-full flex items-center justify-center gap-2 py-3 bg-duck-coral text-white rounded-xl font-bold text-sm hover:bg-duck-coral hover:text-white transition-colors shadow-sm"
                         >
                             <Download size={16} />
                             Download PDF
@@ -337,10 +337,10 @@ export function TaxReportPanel({ summary, tax, settings, userId, onSettingsChang
                     </div>
 
                     {/* Disclaimer */}
-                    <div className="bg-lab-cream border border-lab-line rounded-2xl px-5 py-4">
-                        <p className="text-xs text-lab-muted leading-relaxed">
-                            <strong className="text-lab-muted">Let op:</strong> Dit overzicht is indicatief en dient als voorbereiding op je aangifte.
-                            De definitieve aangifte doe je via <strong className="text-lab-muted">Mijn Belastingdienst</strong>.
+                    <div className="bg-duck-bg border border-duck-line rounded-2xl px-5 py-4">
+                        <p className="text-xs text-duck-muted leading-relaxed">
+                            <strong className="text-duck-muted">Let op:</strong> Dit overzicht is indicatief en dient als voorbereiding op je aangifte.
+                            De definitieve aangifte doe je via <strong className="text-duck-muted">Mijn Belastingdienst</strong>.
                             Raadpleeg bij twijfel een belastingadviseur.
                         </p>
                     </div>
@@ -372,27 +372,27 @@ function CopyField({ label, rugnummer, value, hint }: {
     }
 
     return (
-        <div className="flex items-center gap-3 p-3 bg-white border border-lab-line rounded-xl hover:border-lab-coral transition-colors group">
+        <div className="flex items-center gap-3 p-3 bg-white border border-duck-line rounded-xl hover:border-duck-coral transition-colors group">
             <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap">
                     {rugnummer && (
-                        <span className="text-[9px] font-black bg-lab-coral text-white px-1.5 py-0.5 rounded uppercase tracking-widest shrink-0">
+                        <span className="text-[9px] font-black bg-duck-coral text-white px-1.5 py-0.5 rounded uppercase tracking-widest shrink-0">
                             {rugnummer}
                         </span>
                     )}
-                    <span className="text-xs text-lab-muted font-medium truncate">{label}</span>
+                    <span className="text-xs text-duck-muted font-medium truncate">{label}</span>
                 </div>
-                <p className="text-sm font-black text-lab-ink mt-0.5 tabular-nums">{value}</p>
-                {hint && <p className="text-[10px] text-lab-muted mt-0.5">{hint}</p>}
+                <p className="text-sm font-black text-duck-ink mt-0.5 tabular-nums">{value}</p>
+                {hint && <p className="text-[10px] text-duck-muted mt-0.5">{hint}</p>}
             </div>
             <button
                 onClick={handleCopy}
-                className="shrink-0 w-8 h-8 flex items-center justify-center rounded-lg bg-lab-cream group-hover:bg-lab-coral hover:text-white transition-colors"
+                className="shrink-0 w-8 h-8 flex items-center justify-center rounded-lg bg-duck-bg group-hover:bg-duck-coral hover:text-white transition-colors"
                 title="Kopiëren"
             >
                 {copied
-                    ? <Check size={14} className="text-lab-muted" />
-                    : <Copy size={14} className="text-lab-muted group-hover:text-lab-muted" />
+                    ? <Check size={14} className="text-duck-muted" />
+                    : <Copy size={14} className="text-duck-muted group-hover:text-duck-muted" />
                 }
             </button>
         </div>
@@ -411,22 +411,22 @@ function BelastingdienstInvulhulp({ tax, summary }: { tax: TaxCalculation; summa
     }).format(Math.round(Math.abs(v)));
 
     return (
-        <div className="bg-white rounded-[2rem] border border-lab-line shadow-sm p-8">
+        <div className="bg-white rounded-[2rem] border border-duck-line shadow-sm p-8">
             <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-lab-sage rounded-xl flex items-center justify-center">
-                        <FileText size={20} className="text-lab-sage" />
+                    <div className="w-10 h-10 bg-duck-ink rounded-xl flex items-center justify-center">
+                        <FileText size={20} className="text-duck-ink" />
                     </div>
                     <div>
-                        <h3 className="text-lg font-black text-lab-ink uppercase tracking-tight">Invulhulp Belastingdienst</h3>
-                        <p className="text-[10px] text-lab-muted font-bold uppercase tracking-widest">Kopieer waarden direct naar Mijn Belastingdienst</p>
+                        <h3 className="text-lg font-black text-duck-ink uppercase tracking-tight">Invulhulp Belastingdienst</h3>
+                        <p className="text-[10px] text-duck-muted font-bold uppercase tracking-widest">Kopieer waarden direct naar Mijn Belastingdienst</p>
                     </div>
                 </div>
                 <a
                     href="https://mijn.belastingdienst.nl"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 px-4 py-2 bg-lab-sage text-white rounded-xl text-xs font-bold hover:bg-lab-sage hover:text-white transition-colors"
+                    className="flex items-center gap-1.5 px-4 py-2 bg-duck-ink text-white rounded-xl text-xs font-bold hover:bg-duck-ink hover:text-white transition-colors"
                 >
                     <ExternalLink size={13} />
                     Naar Belastingdienst
@@ -436,7 +436,7 @@ function BelastingdienstInvulhulp({ tax, summary }: { tax: TaxCalculation; summa
             <div className="space-y-6">
                 {/* Stap 1: Inkomsten */}
                 <div>
-                    <p className="text-[10px] font-black text-lab-muted uppercase tracking-widest mb-3">
+                    <p className="text-[10px] font-black text-duck-muted uppercase tracking-widest mb-3">
                         Stap 1 — Winst uit onderneming (Box 1)
                     </p>
                     <div className="space-y-2">
@@ -463,7 +463,7 @@ function BelastingdienstInvulhulp({ tax, summary }: { tax: TaxCalculation; summa
 
                 {/* Stap 2: Ondernemersaftrek */}
                 <div>
-                    <p className="text-[10px] font-black text-lab-muted uppercase tracking-widest mb-3">
+                    <p className="text-[10px] font-black text-duck-muted uppercase tracking-widest mb-3">
                         Stap 2 — Ondernemersaftrek
                     </p>
                     <div className="space-y-2">
@@ -492,7 +492,7 @@ function BelastingdienstInvulhulp({ tax, summary }: { tax: TaxCalculation; summa
 
                 {/* Stap 3: Belastbaar inkomen */}
                 <div>
-                    <p className="text-[10px] font-black text-lab-muted uppercase tracking-widest mb-3">
+                    <p className="text-[10px] font-black text-duck-muted uppercase tracking-widest mb-3">
                         Stap 3 — Belastbaar inkomen
                     </p>
                     <div className="space-y-2">
@@ -513,7 +513,7 @@ function BelastingdienstInvulhulp({ tax, summary }: { tax: TaxCalculation; summa
 
                 {/* BTW */}
                 <div>
-                    <p className="text-[10px] font-black text-lab-muted uppercase tracking-widest mb-3">
+                    <p className="text-[10px] font-black text-duck-muted uppercase tracking-widest mb-3">
                         BTW-aangifte (kwartaal / jaar)
                     </p>
                     <div className="space-y-2">
@@ -536,8 +536,8 @@ function BelastingdienstInvulhulp({ tax, summary }: { tax: TaxCalculation; summa
                 </div>
 
                 {/* Stappenplan */}
-                <div className="bg-lab-cream rounded-2xl p-5 space-y-3 border border-lab-line">
-                    <p className="text-xs font-black text-lab-muted uppercase tracking-widest">Stappenplan aangifte</p>
+                <div className="bg-duck-bg rounded-2xl p-5 space-y-3 border border-duck-line">
+                    <p className="text-xs font-black text-duck-muted uppercase tracking-widest">Stappenplan aangifte</p>
                     {[
                         'Ga naar mijn.belastingdienst.nl en log in met DigiD',
                         'Kies "Inkomstenbelasting" → "Aangifte ' + summary.year + '"',
@@ -547,10 +547,10 @@ function BelastingdienstInvulhulp({ tax, summary }: { tax: TaxCalculation; summa
                         'BTW doe je apart via "Omzetbelasting" → "Kwartaalaangifte"',
                     ].map((step, i) => (
                         <div key={i} className="flex items-start gap-3">
-                            <span className="shrink-0 w-5 h-5 rounded-full bg-lab-coral text-white text-[10px] font-black flex items-center justify-center mt-0.5">
+                            <span className="shrink-0 w-5 h-5 rounded-full bg-duck-coral text-white text-[10px] font-black flex items-center justify-center mt-0.5">
                                 {i + 1}
                             </span>
-                            <p className="text-xs text-lab-muted leading-relaxed">{step}</p>
+                            <p className="text-xs text-duck-muted leading-relaxed">{step}</p>
                         </div>
                     ))}
                 </div>
@@ -559,7 +559,7 @@ function BelastingdienstInvulhulp({ tax, summary }: { tax: TaxCalculation; summa
     );
 }
 
-function Row({ label, value, bold = false, color = 'text-lab-muted' }: {
+function Row({ label, value, bold = false, color = 'text-duck-muted' }: {
     label: string; value: number; bold?: boolean; color?: string
 }) {
     const formatted = new Intl.NumberFormat('nl-NL', {
@@ -568,7 +568,7 @@ function Row({ label, value, bold = false, color = 'text-lab-muted' }: {
 
     return (
         <div className="flex justify-between items-center py-0.5">
-            <span className={`text-xs ${bold ? 'font-black text-white' : 'text-lab-muted'}`}>{label}</span>
+            <span className={`text-xs ${bold ? 'font-black text-white' : 'text-duck-muted'}`}>{label}</span>
             <span className={`text-xs font-bold tabular-nums ${bold ? 'font-black ' + color : color}`}>{formatted}</span>
         </div>
     );

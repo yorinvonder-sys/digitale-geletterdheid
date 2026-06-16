@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { DuckMark } from '@/components/brand/DuckMark';
 import { DuckMascot } from '@/components/brand/DuckMascot';
 import { HeroEyes } from '@/components/brand/HeroEyes';
+import { AnimatedCounter } from '@/components/brand/AnimatedCounter';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 import { useHomepageAnalytics } from '@/hooks/useHomepageAnalytics';
 
@@ -462,10 +463,10 @@ export const ScholenLanding: React.FC = () => {
                 </div>
             )}
 
-            <main>
+            <main className="relative">
                 <section data-home-hero data-section="hero" className="relative overflow-hidden px-5 pb-16 pt-32 md:px-10 md:pt-40">
                     <div className="relative z-10 mx-auto max-w-5xl text-center">
-                        <p className={`inline-flex items-center gap-2 rounded-full border border-duck-ink bg-duck-acid px-4 py-2 text-xs font-extrabold uppercase tracking-[0.16em] opacity-0 motion-reduce:animate-none motion-reduce:opacity-100 mt-6 md:mt-8 ${introReady ? 'animate-fade-in-up' : ''}`}>
+                        <p data-duck-anchor="hero-badge" className={`inline-flex items-center gap-2 rounded-full border border-duck-ink bg-duck-acid px-4 py-2 text-xs font-extrabold uppercase tracking-[0.16em] opacity-0 motion-reduce:animate-none motion-reduce:opacity-100 mt-6 md:mt-8 ${introReady ? 'animate-fade-in-up' : ''}`}>
                             Digitale geletterdheid voor VO &amp; VSO
                         </p>
                         <HeroHeadline introReady={introReady} />
@@ -482,11 +483,11 @@ export const ScholenLanding: React.FC = () => {
                                 <ArrowRightIcon />
                             </a>
                             <button
-                                onClick={() => scrollTo('game-demo')}
+                                onClick={() => { window.history.pushState({}, '', '/leerlingdemo'); window.dispatchEvent(new Event('pathchange')); }}
                                 className="group inline-flex min-h-[54px] w-full items-center justify-center gap-3 rounded-full border border-duck-ink/20 bg-duck-bgLight px-8 py-3.5 text-base font-extrabold text-duck-ink transition-all duration-300 hover:-translate-y-0.5 hover:border-duck-ink sm:w-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2"
                             >
                                 Bekijk de leerlingdemo
-                                <span className="transition-transform duration-300 group-hover:translate-y-0.5"><ArrowDownIcon /></span>
+                                <ArrowRightIcon />
                             </button>
                         </div>
                         <p className={`mx-auto mt-6 max-w-xl text-pretty text-sm font-bold leading-6 text-duck-ink/60 opacity-0 motion-reduce:animate-none motion-reduce:opacity-100 ${introReady ? 'animate-fade-in-up-delay-3' : ''}`}>
@@ -534,6 +535,12 @@ export const ScholenLanding: React.FC = () => {
                                 </div>
                             ))}
                         </dl>
+                        <div className="mx-auto mt-12 grid max-w-3xl grid-cols-2 gap-8 border-t border-duck-ink/10 pt-10 md:grid-cols-4">
+                            <AnimatedCounter value={95} suffix="+" label="AI-missies" />
+                            <AnimatedCounter value={14} label="SLO-kerndoelen" />
+                            <AnimatedCounter value={3} suffix=" jaar" label="Doorlopende leerlijn" />
+                            <AnimatedCounter value={3} suffix=" mnd" label="Gratis pilot" />
+                        </div>
                     </div>
                 </section>
 
@@ -556,8 +563,8 @@ export const ScholenLanding: React.FC = () => {
                                     Een les AI of mediawijsheid hoeft geen college te zijn. Leerlingen beginnen direct, werken zelfstandig en eindigen met iets wat ze kunnen laten zien.
                                 </p>
                                 <ol className="mt-9">
-                                    {lessonSteps.map((item) => (
-                                        <li key={item.step} className="grid grid-cols-[4.5rem_1fr] items-start gap-4 border-t border-duck-ink/10 py-5 last:border-b">
+                                    {lessonSteps.map((item, index) => (
+                                        <li key={item.step} {...(index === 0 ? { 'data-duck-anchor': 'docent-step' } : {})} className="grid grid-cols-[4.5rem_1fr] items-start gap-4 border-t border-duck-ink/10 py-5 last:border-b">
                                             <span className="font-display text-4xl leading-none text-duck-ink/25" aria-hidden="true">{item.step}</span>
                                             <div>
                                                 <h3 className="text-lg font-extrabold leading-tight">{item.title}</h3>
@@ -579,8 +586,8 @@ export const ScholenLanding: React.FC = () => {
 
                 <section id="voor-schoolleiding" data-section="schoolleiding" className="relative scroll-mt-24 bg-duck-bg px-5 py-20 md:px-10 md:py-28">
                     <div className="relative z-10 mx-auto max-w-6xl space-y-16">
-                        <Reveal y={30} className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
-                            <div>
+                        <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+                            <Reveal y={30}>
                                 <SectionLabel>Voor schoolleiding</SectionLabel>
                                 <h2 className="mt-4 text-balance font-display text-[clamp(2.1rem,4.5vw,4rem)] leading-[1.05]">Voor schoolleiders die meer willen dan 'de leerlingen waren enthousiast'.</h2>
                                 <p className="mt-5 text-pretty text-base font-semibold leading-7 text-duck-ink/65">
@@ -594,17 +601,19 @@ export const ScholenLanding: React.FC = () => {
                                     Plan pilotgesprek
                                     <ArrowRightIcon />
                                 </a>
-                            </div>
+                            </Reveal>
                             <div className="grid gap-4 sm:grid-cols-2">
                                 {leaderReasons.map((reason, index) => (
-                                    <article key={reason.title} className={`rounded-[1.5rem] p-6 shadow-[2px_4px_24px_rgba(199,197,188,0.30)] ${index % 3 === 0 ? 'bg-duck-acid' : 'bg-white'}`}>
-                                        <p className="font-display text-3xl leading-none text-duck-ink/30" aria-hidden="true">{String(index + 1).padStart(2, '0')}</p>
-                                        <h3 className="mt-4 text-xl font-extrabold leading-tight">{reason.title}</h3>
-                                        <p className="mt-2.5 text-sm font-semibold leading-6 text-duck-ink/65">{reason.copy}</p>
-                                    </article>
+                                    <Reveal key={reason.title} delay={0.15 + index * 0.12} y={20} className="flex">
+                                        <article className={`h-full rounded-[1.5rem] p-6 shadow-[2px_4px_24px_rgba(199,197,188,0.30)] ${index % 3 === 0 ? 'bg-duck-acid' : 'bg-white'}`}>
+                                            <p className="font-display text-3xl leading-none text-duck-ink/30" aria-hidden="true">{String(index + 1).padStart(2, '0')}</p>
+                                            <h3 className="mt-4 text-xl font-extrabold leading-tight">{reason.title}</h3>
+                                            <p className="mt-2.5 text-sm font-semibold leading-6 text-duck-ink/65">{reason.copy}</p>
+                                        </article>
+                                    </Reveal>
                                 ))}
                             </div>
-                        </Reveal>
+                        </div>
 
                         <Reveal y={30} className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-stretch">
                             <div className="rounded-[1.5rem] bg-white p-6 shadow-[2px_4px_24px_rgba(199,197,188,0.30)] md:p-8">
@@ -645,7 +654,7 @@ export const ScholenLanding: React.FC = () => {
                         <div className="grid gap-5 lg:grid-cols-3">
 
                             {/* Kaart 1 — Leerlingen */}
-                            <div className="relative overflow-hidden rounded-[1.6rem] bg-duck-bg">
+                            <div data-duck-anchor="productbewijs-card" className="relative overflow-hidden rounded-[1.6rem] bg-duck-bg">
                                 <div
                                     className="absolute inset-0 bg-duck-acid"
                                     style={{ clipPath: 'polygon(0 0, 100% 0, 100% 38%, 0 56%)' }}
@@ -758,6 +767,7 @@ export const ScholenLanding: React.FC = () => {
                                     ))}
                                 </ul>
                                 <a
+                                    data-duck-anchor="schoolpilot-cta"
                                     href="/pilot"
                                     onClick={startPilot}
                                     className="mt-8 inline-flex min-h-[52px] items-center gap-3 rounded-full bg-duck-ink px-8 py-3.5 text-sm font-extrabold text-duck-acid transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-ink focus-visible:ring-offset-2 focus-visible:ring-offset-duck-acid"
@@ -1042,12 +1052,12 @@ function JourneySection() {
 function SkillsSection({ scrollTo }: { scrollTo: (target: string) => void }) {
     return (
         <section id="skills" data-section="skills" className="relative scroll-mt-24 overflow-x-clip bg-duck-bg">
-            <div data-skills-stage className="py-16 md:py-24 lg:flex lg:flex-col lg:justify-center lg:py-12 lg:min-h-[100svh]">
+            <div data-skills-stage className="py-16 md:py-24 lg:flex lg:flex-col lg:justify-center lg:py-6 lg:min-h-[100svh]">
                 <div className="mx-auto w-full max-w-6xl px-5 md:px-10">
                     <Reveal className="flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
                         <div>
                             <SectionLabel>Skills</SectionLabel>
-                            <h2 className="mt-4 max-w-2xl text-balance font-display text-[clamp(2.1rem,4.5vw,4rem)] leading-[1.05]">Ontdek jouw favoriete skills</h2>
+                            <h2 data-duck-anchor="skills-intro" className="mt-4 max-w-2xl text-balance font-display text-[clamp(2.1rem,4.5vw,4rem)] leading-[1.05]">Ontdek jouw favoriete skills</h2>
                         </div>
                         <p className="max-w-md text-pretty text-base font-semibold leading-7 text-duck-ink/65">
                             Elke skill krijgt een zichtbaar voorbeeld: een AI-tool bouwen, een game ontwerpen of veilig online werken. <span className="hidden lg:inline">Scroll verder om ze allemaal te zien.</span>
@@ -1055,12 +1065,12 @@ function SkillsSection({ scrollTo }: { scrollTo: (target: string) => void }) {
                     </Reveal>
                 </div>
 
-                <div className="mt-10 overflow-x-auto pb-16 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:mt-12 lg:overflow-visible lg:pb-20">
+                <div className="mt-10 overflow-x-auto pb-16 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:mt-12 lg:overflow-visible lg:pb-4">
                     <div data-skills-track className="flex w-max snap-x snap-mandatory gap-5 px-5 md:px-10 lg:snap-none lg:will-change-transform">
                         {skills.map((skill) => (
                             <article
                                 key={skill.title}
-                                className={`relative flex h-[500px] w-[80vw] max-w-[400px] shrink-0 snap-center flex-col overflow-hidden rounded-[1.6rem] p-7 shadow-[2px_4px_24px_rgba(199,197,188,0.30)] sm:h-[540px] lg:h-[420px] ${skill.tone === 'acid' ? 'bg-duck-acid' : 'bg-white'}`}
+                                className={`relative flex h-[500px] w-[80vw] max-w-[400px] shrink-0 snap-center flex-col overflow-hidden rounded-[1.6rem] p-7 shadow-[2px_4px_24px_rgba(199,197,188,0.30)] sm:h-[540px] lg:h-[400px] lg:p-5 ${skill.tone === 'acid' ? 'bg-duck-acid' : 'bg-white'}`}
                                 aria-label={`${skill.title}. ${skill.coachTip}`}
                             >
                                 <span className="pointer-events-none absolute -right-2 -top-8 select-none font-display text-[11rem] leading-none text-duck-ink/10" aria-hidden="true">
@@ -1088,7 +1098,7 @@ function SkillsSection({ scrollTo }: { scrollTo: (target: string) => void }) {
                             </article>
                         ))}
 
-                        <article className="relative flex h-[500px] w-[80vw] max-w-[400px] shrink-0 snap-center flex-col items-start justify-center overflow-hidden rounded-[1.6rem] bg-duck-ink p-9 text-white sm:h-[540px] lg:h-[420px]">
+                        <article className="relative flex h-[500px] w-[80vw] max-w-[400px] shrink-0 snap-center flex-col items-start justify-center overflow-hidden rounded-[1.6rem] bg-duck-ink p-9 text-white sm:h-[540px] lg:h-[400px]">
                             <DuckMark className="size-14 brightness-0 invert" />
                             <h3 className="mt-6 text-balance font-display text-4xl leading-[1.08]">
                                 Zien hoe een leerling <em className="italic text-duck-acid">werkt</em>?
@@ -1097,7 +1107,7 @@ function SkillsSection({ scrollTo }: { scrollTo: (target: string) => void }) {
                                 Bekijk het interactieve leerling-dashboard: XP, missies, voortgang en badges — zoals leerlingen het zien.
                             </p>
                             <button
-                                onClick={() => scrollTo('game-demo')}
+                                onClick={() => { window.history.pushState({}, '', '/leerlingdemo'); window.dispatchEvent(new Event('pathchange')); }}
                                 className="mt-8 inline-flex min-h-[50px] items-center gap-3 rounded-full bg-duck-acid px-7 py-3 text-sm font-extrabold text-duck-ink transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid focus-visible:ring-offset-2 focus-visible:ring-offset-duck-ink"
                             >
                                 Bekijk de leerlingdemo
@@ -1522,26 +1532,28 @@ function PortfolioStorySection({ startPilot }: { startPilot: () => void }) {
                     {panels.map((panel, index) => (
                         <article
                             key={panel.title}
-                            className="absolute inset-0 grid overflow-hidden rounded-[1.6rem] bg-white shadow-[2px_4px_24px_rgba(199,197,188,0.40)] md:grid-cols-[0.8fr_1.2fr]"
+                            className="absolute inset-0 rounded-[1.6rem] shadow-[2px_4px_24px_rgba(199,197,188,0.40)]"
                             style={getCardStyle(index)}
                             aria-hidden={Math.abs(progress * (panels.length - 1) - index) >= 0.5}
                         >
-                            <div className="flex flex-col justify-center p-9 md:p-10">
-                                <p className="w-fit rounded-full bg-duck-acid px-3.5 py-1.5 text-xs font-extrabold uppercase tracking-[0.14em]">{panel.kicker}</p>
-                                <h3 className="mt-4 font-display text-3xl leading-[1.1]">{panel.title}</h3>
-                                <p className="mt-4 text-base font-semibold leading-7 text-duck-ink/65">{panel.copy}</p>
-                                <p className="mt-7 text-xs font-extrabold uppercase tracking-[0.16em] text-duck-ink/40">
-                                    Stap {String(index + 1).padStart(2, '0')} van {String(panels.length).padStart(2, '0')}
-                                </p>
-                            </div>
-                            <div className="relative bg-duck-bg p-6 md:p-7">
-                                <BrowserFrame url={panel.url}>
-                                    {panel.screen}
-                                </BrowserFrame>
-                                <div className="absolute -bottom-3 right-5 max-w-[78%] rounded-[1rem] bg-duck-ink px-4 py-3 text-white">
-                                    <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-duck-acid">{panel.statLabel}</p>
-                                    <p className="mt-0.5 text-sm font-extrabold">{panel.stat}</p>
+                            <div className="grid h-full overflow-hidden rounded-[1.6rem] bg-white md:grid-cols-[0.8fr_1.2fr]">
+                                <div className="flex flex-col justify-center p-9 md:p-10">
+                                    <p className="w-fit rounded-full bg-duck-acid px-3.5 py-1.5 text-xs font-extrabold uppercase tracking-[0.14em]">{panel.kicker}</p>
+                                    <h3 className="mt-4 font-display text-3xl leading-[1.1]">{panel.title}</h3>
+                                    <p className="mt-4 text-base font-semibold leading-7 text-duck-ink/65">{panel.copy}</p>
+                                    <p className="mt-7 text-xs font-extrabold uppercase tracking-[0.16em] text-duck-ink/40">
+                                        Stap {String(index + 1).padStart(2, '0')} van {String(panels.length).padStart(2, '0')}
+                                    </p>
                                 </div>
+                                <div className="relative bg-duck-bg p-6 md:p-7">
+                                    <BrowserFrame url={panel.url}>
+                                        {panel.screen}
+                                    </BrowserFrame>
+                                </div>
+                            </div>
+                            <div className="absolute -bottom-3 right-5 max-w-[78%] rounded-[1rem] bg-duck-ink px-4 py-3 text-white">
+                                <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-duck-acid">{panel.statLabel}</p>
+                                <p className="mt-0.5 text-sm font-extrabold">{panel.stat}</p>
                             </div>
                         </article>
                     ))}
@@ -1549,25 +1561,27 @@ function PortfolioStorySection({ startPilot }: { startPilot: () => void }) {
 
                 <div className={`space-y-7 ${reduceMotion ? '' : 'lg:hidden'}`}>
                     {panels.map((panel, index) => (
-                        <Reveal key={panel.title} delay={index * 0.05} y={34} className="overflow-hidden rounded-[1.6rem] bg-white shadow-[2px_4px_24px_rgba(199,197,188,0.30)]">
-                            <div className="p-7">
-                                <div className="flex items-center justify-between gap-3">
-                                    <p className="rounded-full bg-duck-acid px-3.5 py-1.5 text-xs font-extrabold uppercase tracking-[0.14em]">{panel.kicker}</p>
-                                    <span className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-duck-ink/40">
-                                        Stap {String(index + 1).padStart(2, '0')} / {String(panels.length).padStart(2, '0')}
-                                    </span>
+                        <Reveal key={panel.title} delay={index * 0.05} y={34} className="relative rounded-[1.6rem] shadow-[2px_4px_24px_rgba(199,197,188,0.30)]">
+                            <div className="overflow-hidden rounded-[1.6rem] bg-white">
+                                <div className="p-7">
+                                    <div className="flex items-center justify-between gap-3">
+                                        <p className="rounded-full bg-duck-acid px-3.5 py-1.5 text-xs font-extrabold uppercase tracking-[0.14em]">{panel.kicker}</p>
+                                        <span className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-duck-ink/40">
+                                            Stap {String(index + 1).padStart(2, '0')} / {String(panels.length).padStart(2, '0')}
+                                        </span>
+                                    </div>
+                                    <h3 className="mt-4 font-display text-2xl leading-[1.1]">{panel.title}</h3>
+                                    <p className="mt-3 text-base font-semibold leading-7 text-duck-ink/65">{panel.copy}</p>
                                 </div>
-                                <h3 className="mt-4 font-display text-2xl leading-[1.1]">{panel.title}</h3>
-                                <p className="mt-3 text-base font-semibold leading-7 text-duck-ink/65">{panel.copy}</p>
+                                <div className="relative bg-duck-bg px-5 pb-9 pt-2">
+                                    <BrowserFrame url={panel.url}>
+                                        {panel.screen}
+                                    </BrowserFrame>
+                                </div>
                             </div>
-                            <div className="relative bg-duck-bg px-5 pb-9 pt-2">
-                                <BrowserFrame url={panel.url}>
-                                    {panel.screen}
-                                </BrowserFrame>
-                                <div className="absolute -bottom-3 right-4 max-w-[80%] rounded-[0.9rem] bg-duck-ink px-3.5 py-2.5 text-white">
-                                    <p className="text-[9px] font-extrabold uppercase tracking-[0.14em] text-duck-acid">{panel.statLabel}</p>
-                                    <p className="mt-0.5 text-xs font-extrabold">{panel.stat}</p>
-                                </div>
+                            <div className="absolute -bottom-3 right-4 max-w-[80%] rounded-[0.9rem] bg-duck-ink px-3.5 py-2.5 text-white">
+                                <p className="text-[9px] font-extrabold uppercase tracking-[0.14em] text-duck-acid">{panel.statLabel}</p>
+                                <p className="mt-0.5 text-xs font-extrabold">{panel.stat}</p>
                             </div>
                         </Reveal>
                     ))}
@@ -1652,6 +1666,7 @@ function FooterCta({ startPilot, scrollTo }: { startPilot: () => void; scrollTo:
                     Plan een pilot. De eend heeft zijn agenda al vrijgehouden.
                 </p>
                 <a
+                    data-duck-anchor="footer-cta"
                     href="/pilot"
                     onClick={startPilot}
                     className="mt-9 inline-flex min-h-[56px] items-center gap-3 rounded-full bg-duck-acid px-9 py-4 text-base font-extrabold text-duck-ink transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-duck-acid focus-visible:ring-offset-2 focus-visible:ring-offset-duck-ink"
@@ -2337,7 +2352,7 @@ function SkillVisual({ skill }: { skill: Skill }) {
     const [failed, setFailed] = useState(false);
 
     if (!skill.image || failed) {
-        return <SkillArt variant={skill.art} tone={skill.tone} className="mx-auto my-5 h-36 sm:h-40" />;
+        return <SkillArt variant={skill.art} tone={skill.tone} className="mx-auto my-2 h-36 sm:h-40 lg:h-24" />;
     }
 
     return (
@@ -2347,7 +2362,7 @@ function SkillVisual({ skill }: { skill: Skill }) {
             aria-hidden="true"
             width={400}
             height={400}
-            className="mx-auto my-5 h-36 w-auto object-contain sm:h-40"
+            className="mx-auto my-2 h-36 w-auto object-contain sm:h-40 lg:h-24"
             loading="lazy"
             decoding="async"
             onError={() => setFailed(true)}

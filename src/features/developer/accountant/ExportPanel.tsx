@@ -79,7 +79,7 @@ export function ExportPanel({ userId, year, settings }: ExportPanelProps) {
     if (loading) {
         return (
             <div className="flex items-center justify-center py-16">
-                <div className="w-8 h-8 border-4 border-lab-coral border-t-transparent rounded-full animate-spin" />
+                <div className="w-8 h-8 border-4 border-duck-coral border-t-transparent rounded-full animate-spin" />
             </div>
         );
     }
@@ -87,7 +87,7 @@ export function ExportPanel({ userId, year, settings }: ExportPanelProps) {
     return (
         <div className="space-y-8">
             {error && (
-                <div className="flex items-center gap-2 text-white bg-lab-coral border border-lab-coral rounded-xl px-4 py-3 text-sm">
+                <div className="flex items-center gap-2 text-white bg-duck-coral border border-duck-coral rounded-xl px-4 py-3 text-sm">
                     <AlertCircle size={16} />
                     {error}
                 </div>
@@ -95,16 +95,16 @@ export function ExportPanel({ userId, year, settings }: ExportPanelProps) {
 
             {/* BTW Kwartaaloverzicht */}
             {btwOverview && (
-                <div className="bg-white rounded-[2rem] border border-lab-line shadow-sm p-8">
+                <div className="bg-white rounded-[2rem] border border-duck-line shadow-sm p-8">
                     <div className="flex items-center gap-3 mb-6">
-                        <div className="w-10 h-10 bg-lab-coral rounded-xl flex items-center justify-center">
-                            <Table2 size={20} className="text-lab-coral" />
+                        <div className="w-10 h-10 bg-duck-coral rounded-xl flex items-center justify-center">
+                            <Table2 size={20} className="text-duck-coral" />
                         </div>
                         <div>
-                            <h3 className="text-lg font-black text-lab-ink uppercase tracking-tight">
+                            <h3 className="text-lg font-black text-duck-ink uppercase tracking-tight">
                                 BTW Kwartaaloverzicht {year}
                             </h3>
-                            <p className="text-[10px] text-lab-muted font-bold uppercase tracking-widest">
+                            <p className="text-[10px] text-duck-muted font-bold uppercase tracking-widest">
                                 Inclusief verlegde BTW (buitenlandse SaaS)
                             </p>
                         </div>
@@ -113,32 +113,32 @@ export function ExportPanel({ userId, year, settings }: ExportPanelProps) {
                     <div className="overflow-x-auto">
                         <table className="w-full text-sm">
                             <thead>
-                                <tr className="border-b border-lab-line">
-                                    <th className="text-left py-3 px-3 text-[10px] font-black text-lab-muted uppercase tracking-widest">Kwartaal</th>
-                                    <th className="text-right py-3 px-3 text-[10px] font-black text-lab-muted uppercase tracking-widest">Ontvangen</th>
-                                    <th className="text-right py-3 px-3 text-[10px] font-black text-lab-muted uppercase tracking-widest">Betaald</th>
-                                    <th className="text-right py-3 px-3 text-[10px] font-black text-lab-muted uppercase tracking-widest">Verlegd</th>
-                                    <th className="text-right py-3 px-3 text-[10px] font-black text-lab-muted uppercase tracking-widest">Saldo</th>
+                                <tr className="border-b border-duck-line">
+                                    <th className="text-left py-3 px-3 text-[10px] font-black text-duck-muted uppercase tracking-widest">Kwartaal</th>
+                                    <th className="text-right py-3 px-3 text-[10px] font-black text-duck-muted uppercase tracking-widest">Ontvangen</th>
+                                    <th className="text-right py-3 px-3 text-[10px] font-black text-duck-muted uppercase tracking-widest">Betaald</th>
+                                    <th className="text-right py-3 px-3 text-[10px] font-black text-duck-muted uppercase tracking-widest">Verlegd</th>
+                                    <th className="text-right py-3 px-3 text-[10px] font-black text-duck-muted uppercase tracking-widest">Saldo</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {btwOverview.quarters.map(q => (
-                                    <tr key={q.quarter} className="border-b border-lab-line hover:bg-lab-cream transition-colors">
+                                    <tr key={q.quarter} className="border-b border-duck-line hover:bg-duck-bg transition-colors">
                                         <td className="py-3 px-3">
-                                            <span className="font-bold text-lab-ink">{q.label}</span>
-                                            <span className="text-xs text-lab-muted ml-2">{q.months}</span>
+                                            <span className="font-bold text-duck-ink">{q.label}</span>
+                                            <span className="text-xs text-duck-muted ml-2">{q.months}</span>
                                         </td>
                                         <td className="py-3 px-3 text-right">
-                                            <span className="font-bold text-lab-sage tabular-nums">{formatEuro(q.vatCollected)}</span>
+                                            <span className="font-bold text-duck-ink tabular-nums">{formatEuro(q.vatCollected)}</span>
                                         </td>
                                         <td className="py-3 px-3 text-right">
-                                            <span className="font-bold text-lab-muted tabular-nums">{formatEuro(q.vatPaid)}</span>
+                                            <span className="font-bold text-duck-muted tabular-nums">{formatEuro(q.vatPaid)}</span>
                                         </td>
                                         <td className="py-3 px-3 text-right">
-                                            <span className="font-bold text-lab-gold tabular-nums">{formatEuro(q.vatReversed)}</span>
+                                            <span className="font-bold text-duck-ink tabular-nums">{formatEuro(q.vatReversed)}</span>
                                         </td>
                                         <td className="py-3 px-3 text-right">
-                                            <span className={`font-black tabular-nums ${q.vatBalance >= 0 ? 'text-lab-coral' : 'text-lab-sage'}`}>
+                                            <span className={`font-black tabular-nums ${q.vatBalance >= 0 ? 'text-duck-coral' : 'text-duck-ink'}`}>
                                                 {q.vatBalance >= 0 ? '' : '-'}{formatEuro(Math.abs(q.vatBalance))}
                                             </span>
                                         </td>
@@ -146,19 +146,19 @@ export function ExportPanel({ userId, year, settings }: ExportPanelProps) {
                                 ))}
                             </tbody>
                             <tfoot>
-                                <tr className="border-t-2 border-lab-line">
-                                    <td className="py-3 px-3 font-black text-lab-ink">Totaal</td>
-                                    <td className="py-3 px-3 text-right font-black text-lab-sage tabular-nums">
+                                <tr className="border-t-2 border-duck-line">
+                                    <td className="py-3 px-3 font-black text-duck-ink">Totaal</td>
+                                    <td className="py-3 px-3 text-right font-black text-duck-ink tabular-nums">
                                         {formatEuro(btwOverview.totals.vatCollected)}
                                     </td>
-                                    <td className="py-3 px-3 text-right font-black text-lab-coral tabular-nums">
+                                    <td className="py-3 px-3 text-right font-black text-duck-coral tabular-nums">
                                         {formatEuro(btwOverview.totals.vatPaid)}
                                     </td>
-                                    <td className="py-3 px-3 text-right font-black text-lab-gold tabular-nums">
+                                    <td className="py-3 px-3 text-right font-black text-duck-ink tabular-nums">
                                         {formatEuro(btwOverview.totals.vatReversed)}
                                     </td>
                                     <td className="py-3 px-3 text-right">
-                                        <span className={`font-black tabular-nums ${btwOverview.totals.vatBalance >= 0 ? 'text-lab-coral' : 'text-lab-sage'}`}>
+                                        <span className={`font-black tabular-nums ${btwOverview.totals.vatBalance >= 0 ? 'text-duck-coral' : 'text-duck-ink'}`}>
                                             {btwOverview.totals.vatBalance >= 0
                                                 ? `Af te dragen ${formatEuro(btwOverview.totals.vatBalance)}`
                                                 : `Te vorderen ${formatEuro(Math.abs(btwOverview.totals.vatBalance))}`
@@ -170,7 +170,7 @@ export function ExportPanel({ userId, year, settings }: ExportPanelProps) {
                         </table>
                     </div>
 
-                    <p className="text-[10px] text-lab-muted mt-4">
+                    <p className="text-[10px] text-duck-muted mt-4">
                         BTW ontvangen is geschat op basis van inkomsttransacties (21% standaardtarief).
                         Verlegd = 21% over buitenlandse SaaS-diensten met 0% BTW-tarief.
                     </p>
@@ -181,8 +181,8 @@ export function ExportPanel({ userId, year, settings }: ExportPanelProps) {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {/* CSV Transacties */}
                 <ExportCard
-                    icon={<FileSpreadsheet size={20} className="text-lab-coral" />}
-                    iconBg="bg-lab-coral"
+                    icon={<FileSpreadsheet size={20} className="text-duck-coral" />}
+                    iconBg="bg-duck-coral"
                     title="Transacties CSV"
                     description={`Alle transacties van ${year} als CSV-bestand (puntkomma-gescheiden, klaar voor Excel).`}
                     buttonLabel="Download CSV"
@@ -192,8 +192,8 @@ export function ExportPanel({ userId, year, settings }: ExportPanelProps) {
 
                 {/* CSV Bonnetjes */}
                 <ExportCard
-                    icon={<Receipt size={20} className="text-lab-sage" />}
-                    iconBg="bg-lab-sage"
+                    icon={<Receipt size={20} className="text-duck-ink" />}
+                    iconBg="bg-duck-ink"
                     title="Bonnetjes CSV"
                     description={`Alle bonnetjes van ${year} inclusief BTW-bedragen en categorisering.`}
                     buttonLabel="Download CSV"
@@ -203,8 +203,8 @@ export function ExportPanel({ userId, year, settings }: ExportPanelProps) {
 
                 {/* CSV Abonnementen */}
                 <ExportCard
-                    icon={<CreditCard size={20} className="text-lab-teal" />}
-                    iconBg="bg-lab-teal"
+                    icon={<CreditCard size={20} className="text-duck-ink" />}
+                    iconBg="bg-duck-ink"
                     title="Abonnementen CSV"
                     description="Overzicht van alle actieve en gepauzeerde abonnementen."
                     buttonLabel="Download CSV"
@@ -214,8 +214,8 @@ export function ExportPanel({ userId, year, settings }: ExportPanelProps) {
 
                 {/* CSV BTW-overzicht */}
                 <ExportCard
-                    icon={<TrendingUp size={20} className="text-lab-gold" />}
-                    iconBg="bg-lab-gold"
+                    icon={<TrendingUp size={20} className="text-duck-ink" />}
+                    iconBg="bg-duck-acid"
                     title="BTW-overzicht CSV"
                     description={`BTW per kwartaal voor ${year} inclusief verlegde BTW. Voor de kwartaalaangifte.`}
                     buttonLabel="Download CSV"
@@ -225,26 +225,26 @@ export function ExportPanel({ userId, year, settings }: ExportPanelProps) {
             </div>
 
             {/* PDF Jaaroverzicht */}
-            <div className="bg-lab-coral rounded-[2rem] border border-lab-coral p-8">
+            <div className="bg-duck-coral rounded-[2rem] border border-duck-coral p-8">
                 <div className="flex items-center gap-3 mb-4">
-                    <div className="w-10 h-10 bg-lab-coral rounded-xl flex items-center justify-center">
-                        <FileText size={20} className="text-lab-coral" />
+                    <div className="w-10 h-10 bg-duck-coral rounded-xl flex items-center justify-center">
+                        <FileText size={20} className="text-duck-coral" />
                     </div>
                     <div>
-                        <h3 className="font-black text-lab-coral uppercase tracking-tight">PDF Jaaroverzicht</h3>
-                        <p className="text-[10px] text-lab-coral font-bold uppercase tracking-widest">
+                        <h3 className="font-black text-duck-coral uppercase tracking-tight">PDF Jaaroverzicht</h3>
+                        <p className="text-[10px] text-duck-coral font-bold uppercase tracking-widest">
                             Compleet overzicht {year} voor belastingaangifte
                         </p>
                     </div>
                 </div>
-                <p className="text-xs text-lab-coral mb-5 leading-relaxed">
+                <p className="text-xs text-duck-coral mb-5 leading-relaxed">
                     Genereer een volledig jaaroverzicht met winst-en-verliesrekening, kosten per categorie,
                     BTW-overzicht per kwartaal, ondernemersaftrekken en geschatte inkomstenbelasting.
                 </p>
                 <button
                     onClick={() => handleExport('pdf')}
                     disabled={exporting === 'pdf'}
-                    className="w-full flex items-center justify-center gap-2 py-3 bg-lab-coral text-white rounded-xl font-bold text-sm hover:bg-lab-coral hover:text-white disabled:opacity-50 transition-colors shadow-sm"
+                    className="w-full flex items-center justify-center gap-2 py-3 bg-duck-coral text-white rounded-xl font-bold text-sm hover:bg-duck-coral hover:text-white disabled:opacity-50 transition-colors shadow-sm"
                 >
                     {exporting === 'pdf' ? (
                         <>
@@ -261,9 +261,9 @@ export function ExportPanel({ userId, year, settings }: ExportPanelProps) {
             </div>
 
             {/* Disclaimer */}
-            <div className="bg-lab-cream border border-lab-line rounded-2xl px-5 py-4">
-                <p className="text-xs text-lab-muted leading-relaxed">
-                    <strong className="text-lab-muted">Let op:</strong> Alle exports zijn indicatief en dienen als voorbereiding
+            <div className="bg-duck-bg border border-duck-line rounded-2xl px-5 py-4">
+                <p className="text-xs text-duck-muted leading-relaxed">
+                    <strong className="text-duck-muted">Let op:</strong> Alle exports zijn indicatief en dienen als voorbereiding
                     op je belastingaangifte. CSV-bestanden gebruiken puntkomma als scheidingsteken (Nederlands Excel-formaat).
                     Raadpleeg bij twijfel een belastingadviseur.
                 </p>
@@ -294,18 +294,18 @@ function ExportCard({
     onClick: () => void;
 }) {
     return (
-        <div className="bg-white rounded-[2rem] border border-lab-line shadow-sm p-4 sm:p-6 flex flex-col">
+        <div className="bg-white rounded-[2rem] border border-duck-line shadow-sm p-4 sm:p-6 flex flex-col">
             <div className="flex items-center gap-3 mb-3">
                 <div className={`w-10 h-10 ${iconBg} rounded-xl flex items-center justify-center shrink-0`}>
                     {icon}
                 </div>
-                <h4 className="font-black text-lab-ink text-sm uppercase tracking-tight">{title}</h4>
+                <h4 className="font-black text-duck-ink text-sm uppercase tracking-tight">{title}</h4>
             </div>
-            <p className="text-xs text-lab-muted leading-relaxed mb-4 flex-1">{description}</p>
+            <p className="text-xs text-duck-muted leading-relaxed mb-4 flex-1">{description}</p>
             <button
                 onClick={onClick}
                 disabled={loading}
-                className="flex items-center justify-center gap-2 py-2.5 bg-lab-ink text-white rounded-xl text-sm font-bold hover:bg-lab-ink disabled:opacity-50 transition-colors"
+                className="flex items-center justify-center gap-2 py-2.5 bg-duck-ink text-white rounded-xl text-sm font-bold hover:bg-duck-ink disabled:opacity-50 transition-colors"
             >
                 {loading ? (
                     <>

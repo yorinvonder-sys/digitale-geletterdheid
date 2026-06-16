@@ -368,6 +368,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
 
     // Subscribe to permission changes
     useEffect(() => {
+        if (userUid === 'capture-student') return;
         // Real-time updates. A game becoming available should not open a modal by itself;
         // only an explicit teacher push in custom_settings.studentGamePush may notify students.
         const unsubscribe = subscribeToPermissions(stats?.schoolId, (newPermissions) => {
@@ -389,7 +390,7 @@ export const ProjectZeroDashboard: React.FC<DashboardProps> = ({
         });
 
         return () => unsubscribe();
-    }, [stats?.schoolId]);
+    }, [stats?.schoolId, userUid]);
 
     useEffect(() => {
         if (!showYearGroupMenu) return;

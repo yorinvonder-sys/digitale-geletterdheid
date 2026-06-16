@@ -82,31 +82,29 @@ DGSkills biedt scholen een kant-en-klare, gamified leeromgeving voor digitale ge
 
 ## 4. Visuele identiteit
 
-### Kleurenpalet
+### Kleurenpalet — DUCK English
 
-DGSkills gebruikt een warm, aards kleurenpalet dat professioneel oogt maar niet koud of corporate aanvoelt. De primaire accentkleur is een warm terracotta/koraal dat energie uitstraalt.
+DGSkills gebruikt een strak, modern palet met krachtige contrasten: donker ink op zacht grijs met een bijtend zuur-geel accent. De stijl heet **DUCK English** — een eigenzinnig schooldesign met karakter.
 
-| Token | Hex | Toepassing |
+| Token (Tailwind) | Hex | Gebruik |
 |:---|:---|:---|
-| `lab-bg` | `#FCF6EA` | Achtergrond — warm off-white, rustgevend |
-| `lab-surface` | `#FFFFFF` | Kaarten en panelen |
-| `lab-primary` | `#D97848` | Primaire accentkleur — CTA's, links, highlights |
-| `lab-primaryDark` | `#D97848` | Hover-states van primaire kleur |
-| `lab-accent` | `#5F947D` | Secundair accent — teal/groen, voor succes en variatie |
-| `lab-secondary` | `#0B453F` | Tertiair accent — paars, voor badges en speciale elementen |
-| `lab-dark` | `#08283B` | Donkere tekst en headers |
-| `lab-text` | `#445865` | Standaard bodytekst |
-| `lab-textLight` | `#445865` | Secundaire tekst, labels |
+| `duck-bg` | `#f2f1ec` | Pagina-achtergrond, inputvelden |
+| `duck-bgLight` | `#f8f8f5` | Lichte kaartachtergrond, succes-states |
+| `duck-ink` | `#202023` | Koppen, primaire tekst, knopvulling |
+| `duck-acid` | `#e1ff01` | Primaire CTA-kleur, accenten, selectie |
+| `duck-gray` | `#c2c1bd` | Borders, scheidingslijnen, subtiele details |
+| `duck-error` | `#ff3c21` | Foutmeldingen, validatiefouten |
 
-**Leerjaar-kleuren** worden gebruikt om visueel onderscheid te maken tussen jaarlagen in het platform:
-- **Indigo** (`#0B453F`) — Leerjaar 1: Digitale Basis
-- **Emerald** (`#5F947D`) — Leerjaar 2: Digitale Verdieping
-- **Violet** (`#0B453F`) — Leerjaar 3: Digitaal Meesterschap
+**Hiërarchie via opacity op ink:** Gebruik `duck-ink` met opacity-modifiers (`/60`, `/50`, `/40`, `/15`, `/10`) voor subtitels, placeholders, iconen, kaartranden en decoratieve elementen.
+
+**Selectie:** `selection:bg-duck-acid selection:text-duck-ink`
+
+> **Let op:** Het oude `lab-*` palet (terracotta/koraal) wordt uitgefaseerd. Nieuwe componenten gebruiken `duck-*` tokens. Zie `design.md` voor volledige richtlijnen.
 
 ### Typografie
 
-- **Primair lettertype:** Outfit (Google Font) — modern, geometrisch, goed leesbaar op scherm. Wordt gebruikt voor alle UI-tekst.
-- **Serif lettertype:** Georgia — wordt ingezet op de landingspagina voor koppen, geeft een editorial, betrouwbaar gevoel.
+- **Primair lettertype:** Outfit (Google Font) — modern, geometrisch, goed leesbaar op scherm. Wordt gebruikt voor alle interface-, body- en knoptekst.
+- **Display lettertype:** Fraunces (Google Font) — serif met karakter, voor koppen (h1–h3) en hero-accenten. Vervangt het eerdere Georgia.
 - **Fallback:** system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif.
 
 ### Iconografie
@@ -115,12 +113,12 @@ DGSkills gebruikt een warm, aards kleurenpalet dat professioneel oogt maar niet 
 - **Missiekaarten:** Gebruiken kleurgradienten als visuele identifiers per thema (AI, veiligheid, programmeren, etc.).
 - **Badges:** Illustratieve stijl met gouden/zilveren accenten die een gevoel van prestatie geven.
 
-### Sfeer en beeldtaal
+### Sfeer en beeldtaal — DUCK English
 
-- **Modern en clean:** Veel witruimte, subtiele schaduwen, afgeronde hoeken.
+- **Strak en karaktervol:** Krachtige contrasten (donker ink op zacht grijs) met een bijtend zuur-geel accent. Afgeronde vormen (`rounded-[1.6rem]`–`rounded-[1.75rem]`) en een eigenzinnig schaduwpatroon (`shadow-duck-soft`).
 - **Gamified maar niet kinderachtig:** De gaming-elementen (XP-balken, level-indicators, avatars) zijn strak vormgegeven, niet cartoon-achtig.
-- **Warm, niet klinisch:** Het aardse kleurenpalet voorkomt een steriele tech-uitstraling. Het voelt uitnodigend.
-- **Micro-animaties:** Subtiele fade-in-up effecten, floating elementen en shimmer-animaties geven het platform een levend gevoel zonder af te leiden.
+- **Scherp, niet steriel:** Het palet is minder aards dan voorheen — krachtiger en moderner, maar nog steeds uitnodigend door het warme geel-accent en de zachte achtergrond (`duck-bg: #f2f1ec`).
+- **Micro-animaties op compositor-props:** `duck-float`, `duck-rise`, `duck-marquee` — alleen `transform` en `opacity`, geen layout-animaties. `prefers-reduced-motion` wordt gerespecteerd.
 
 ---
 

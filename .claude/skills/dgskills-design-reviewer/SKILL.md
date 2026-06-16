@@ -38,7 +38,7 @@ Je bent de **design-sub-reviewer** in de M2 review-pipeline. Je analyseert één
 
 ### Stap 2 — Lees referentie-context
 
-1. `tailwind.shared.js` — bevestig welke `lab.*` tokens bestaan (kan veranderen tussen versies)
+1. `tailwind.shared.js` — bevestig welke `duck.*` en `lab.*` tokens bestaan. `duck-*` is de doelstijl (DUCK English); `lab-*` is legacy maar nog aanwezig in missies.
 2. **Eén** vergelijkbare missie van zelfde `templateType` voor consistency-baseline (kies de oudste uit `templateRegistry.ts` van zelfde type)
 3. `components/missions/CLAUDE.md` als die bestaat — missie-invarianten
 
@@ -81,7 +81,9 @@ Outputverplichting: voeg onder `### ⚠️ Aandachtspunten` of `### ❌ Blocking
 
 #### Criterium 1: Tailwind token consistentie
 
-Beschikbare `lab.*` tokens in shared config:
+**Doelstijl (DUCK English):** `duck-bg` (#f2f1ec), `duck-ink` (#202023), `duck-acid` (#e1ff01), `duck-gray` (#c2c1bd), `duck-error` (#ff3c21), `duck-bgLight` (#f8f8f5). Zie `design.md` voor volledige regels.
+
+**Legacy `lab.*` tokens in shared config (nog aanwezig in niet-gemigreerde missies):
 - **Achtergronden:** `lab-bg` (= `lab-cream`), `lab-surface` (= `lab-paper`), `lab-creamDeep` (= `lab-creamWarm`), `lab-creamFrame` (= `lab-line`)
 - **Tekst:** `lab-ink` (= `lab-dark` = `lab-text` = `lab-bodyDark`), `lab-muted` (= `lab-textLight` = `lab-mutedDeep`)
 - **Accenten:** `lab-primary` (= `lab-coral` = `lab-brown` = `lab-pink` = `lab-otterLight`), `lab-accent` (= `lab-sage` = `lab-mint` = `lab-green`), `lab-secondary` (= `lab-tealDark` = `lab-teal` = `lab-cobalt` = `lab-purple` = `lab-blue`)
@@ -90,7 +92,7 @@ Beschikbare `lab.*` tokens in shared config:
 Zoek naar:
 - ❌ **Hex literals** zoals `bg-[#FAF9F0]` waar een token bestaat (aliases zijn OK, hardcoded niet)
 - ❌ **Inconsistente naamgeving** binnen één file (mix van `lab-cream` en `lab-bg` zonder reden)
-- ❌ **Niet-lab tokens** voor merkbare UI-elementen (bv. `bg-blue-500` voor een knop terwijl `lab-secondary` bestaat)
+- ❌ **Niet-doeldomein tokens** voor merkbare UI-elementen (bv. `bg-blue-500` voor een knop terwijl `duck-acid` of `lab-secondary` bestaat)
 - ✅ **Consistent token-gebruik** binnen één component
 
 #### Criterium 2: Layout consistentie binnen template-type
@@ -154,7 +156,7 @@ Zoek naar `motion.div`, `motion.button`, `<AnimatePresence>`:
 - ✅ Afbeeldingen hebben `alt` attribuut (of `alt=""` als decoratief)
 - ✅ Formulieren hebben gekoppelde `<label>` of `aria-label`
 - ✅ Geen informatie uitsluitend via kleur (icon of tekst dubbel)
-- ⚠️ Kleurcontrast: vergelijk text-color tegen bg-color in `lab.*` palette — flag verdachte combinaties (bv. `text-lab-muted` op `bg-lab-cream`)
+- ⚠️ Kleurcontrast: vergelijk text-color tegen bg-color in `duck.*` of `lab.*` palette — flag verdachte combinaties (bv. `text-lab-muted` op `bg-lab-cream` of `text-duck-ink/40` op `bg-duck-bg`)
 
 ### Stap 4 — Bouw output-sectie
 
@@ -229,6 +231,6 @@ Format-regel: bij **echt ingrijpende** bevindingen eindigt het voorstel met een 
 
 - Detail-plan: `~/.claude/plans/m2-mission-review-pipeline.md`
 - Master-plan: `~/.claude/plans/hey-claude-ik-struggle-eager-meteor.md`
-- Tailwind tokens: `tailwind.shared.js` (deze is de bron van waarheid voor `lab.*`)
+- Tailwind tokens: `tailwind.shared.js` (deze is de bron van waarheid voor zowel `duck.*` als `lab.*`)
 - Orchestrator: skill `dgskills-mission-review`
 - Zusters: `dgskills-didactiek-reviewer`, `dgskills-tech-reviewer`

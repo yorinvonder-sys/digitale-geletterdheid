@@ -158,7 +158,7 @@ export function DeveloperTimeline({ user }: DeveloperTimelineProps) {
     if (loading) {
         return (
             <div className="flex items-center justify-center p-20">
-                <Loader2 className="animate-spin text-lab-coral" size={32} />
+                <Loader2 className="animate-spin text-duck-coral" size={32} />
             </div>
         );
     }
@@ -167,20 +167,20 @@ export function DeveloperTimeline({ user }: DeveloperTimelineProps) {
         <div className="space-y-10 max-w-4xl mx-auto">
             <div className="flex justify-between items-center">
                 <div>
-                    <h3 className="text-xl font-black text-lab-ink uppercase tracking-tight">Project Roadmap</h3>
-                    <p className="text-sm text-lab-muted">Volg de belangrijkste mijlpalen van DGSkills naar scholen.</p>
+                    <h3 className="text-xl font-black text-duck-ink uppercase tracking-tight">Project Roadmap</h3>
+                    <p className="text-sm text-duck-muted">Volg de belangrijkste mijlpalen van DGSkills naar scholen.</p>
                 </div>
                 <div className="flex gap-2">
                     <button
                         onClick={seedWeeklyTimeline}
-                        className="flex items-center gap-2 px-4 py-2 bg-white border border-lab-line text-lab-muted rounded-xl font-bold hover:bg-lab-cream transition-all text-sm shadow-sm"
+                        className="flex items-center gap-2 px-4 py-2 bg-white border border-duck-line text-duck-muted rounded-xl font-bold hover:bg-duck-bg transition-all text-sm shadow-sm"
                     >
-                        <Clock size={18} className="text-lab-muted" />
+                        <Clock size={18} className="text-duck-muted" />
                         Weekplan laden
                     </button>
                     <button
                         onClick={() => setIsAdding(true)}
-                        className="flex items-center gap-2 px-4 py-2 bg-lab-ink text-white rounded-xl font-bold hover:bg-lab-ink transition-all text-sm shadow-xl"
+                        className="flex items-center gap-2 px-4 py-2 bg-duck-ink text-white rounded-xl font-bold hover:bg-duck-ink transition-all text-sm shadow-xl"
                     >
                         <Plus size={18} />
                         Mijlpaal toevoegen
@@ -188,52 +188,52 @@ export function DeveloperTimeline({ user }: DeveloperTimelineProps) {
                 </div>
             </div>
 
-            <div className="relative space-y-8 before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-lab-creamDeep before:to-transparent">
+            <div className="relative space-y-8 before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-duck-bg before:to-transparent">
                 {milestones.length === 0 ? (
                     <div className="text-center py-12">
-                        <Map size={48} className="mx-auto text-lab-muted mb-4" />
-                        <p className="text-lab-muted font-medium italic">Nog geen mijlpalen gedefinieerd...</p>
+                        <Map size={48} className="mx-auto text-duck-muted mb-4" />
+                        <p className="text-duck-muted font-medium italic">Nog geen mijlpalen gedefinieerd...</p>
                     </div>
                 ) : (
                     milestones.map((milestone, index) => (
                         <div key={milestone.id} className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group animate-in slide-in-from-bottom-4 duration-500" style={{ animationDelay: `${index * 100}ms` }}>
                             {/* Dot */}
                             <div className={`flex items-center justify-center w-10 h-10 rounded-full border border-white shadow-lg shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 absolute left-0 md:left-1/2 -translate-x-1/2 z-10 transition-colors ${
-                                milestone.status === 'completed' ? 'bg-lab-coral' :
-                                milestone.status === 'in_progress' ? 'bg-lab-coral' : 'bg-lab-creamDeep'
+                                milestone.status === 'completed' ? 'bg-duck-coral' :
+                                milestone.status === 'in_progress' ? 'bg-duck-coral' : 'bg-duck-creamDeep'
                             }`}>
                                 {milestone.status === 'completed' ? <CheckCircle2 size={20} className="text-white" /> : <Flag size={20} className="text-white" />}
                             </div>
 
                             {/* Card */}
-                            <div className="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-white p-6 rounded-3xl border border-lab-line shadow-sm group-hover:shadow-md transition-all ml-12 md:ml-0">
+                            <div className="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-white p-6 rounded-3xl border border-duck-line shadow-sm group-hover:shadow-md transition-all ml-12 md:ml-0">
                                 <div className="flex items-center justify-between mb-3">
                                     <div className="flex items-center gap-2">
-                                        <span className="px-2 py-0.5 bg-lab-cream text-[10px] font-black text-lab-muted uppercase tracking-widest rounded-full">
+                                        <span className="px-2 py-0.5 bg-duck-bg text-[10px] font-black text-duck-muted uppercase tracking-widest rounded-full">
                                             {milestone.phase}
                                         </span>
-                                        <div className="flex items-center gap-1 text-[10px] text-lab-muted font-bold uppercase tracking-widest">
+                                        <div className="flex items-center gap-1 text-[10px] text-duck-muted font-bold uppercase tracking-widest">
                                             <Calendar size={10} />
                                             {new Date(milestone.startDate).toLocaleDateString('nl-NL', { month: 'short', day: 'numeric' })}
                                         </div>
                                     </div>
-                                    <button onClick={() => deleteMilestone(milestone.id!)} className="text-lab-muted hover:text-lab-muted p-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <button onClick={() => deleteMilestone(milestone.id!)} className="text-duck-muted hover:text-duck-muted p-1 opacity-0 group-hover:opacity-100 transition-opacity">
                                         <Trash2 size={14} />
                                     </button>
                                 </div>
 
-                                <h4 className="text-lg font-black text-lab-ink mb-2 leading-tight">{milestone.title}</h4>
+                                <h4 className="text-lg font-black text-duck-ink mb-2 leading-tight">{milestone.title}</h4>
 
                                 {milestone.learningGoal && (
-                                    <div className="flex gap-2 p-3 bg-lab-coral/50 rounded-xl mb-4 border border-lab-coral">
-                                        <BookOpen size={16} className="text-lab-coral shrink-0" />
-                                        <p className="text-xs text-lab-coral italic leading-relaxed">
+                                    <div className="flex gap-2 p-3 bg-duck-coral/50 rounded-xl mb-4 border border-duck-coral">
+                                        <BookOpen size={16} className="text-duck-coral shrink-0" />
+                                        <p className="text-xs text-duck-coral italic leading-relaxed">
                                             <span className="font-bold not-italic">Leerdoel:</span> {milestone.learningGoal}
                                         </p>
                                     </div>
                                 )}
 
-                                <div className="flex items-center justify-between mt-4 pt-4 border-t border-lab-line">
+                                <div className="flex items-center justify-between mt-4 pt-4 border-t border-duck-line">
                                     <div className="flex gap-2">
                                         {(['pending', 'in_progress', 'completed'] as const).map((s) => (
                                             <button
@@ -241,14 +241,14 @@ export function DeveloperTimeline({ user }: DeveloperTimelineProps) {
                                                 onClick={() => updateStatus(milestone.id!, s)}
                                                 className={`w-3 h-3 rounded-full border-2 transition-all ${
                                                     milestone.status === s
-                                                        ? (s === 'completed' ? 'bg-lab-coral border-lab-coral scale-125' : s === 'in_progress' ? 'bg-lab-coral border-lab-coral scale-125' : 'bg-lab-muted border-lab-line scale-125')
-                                                        : 'bg-transparent border-lab-line hover:border-lab-line'
+                                                        ? (s === 'completed' ? 'bg-duck-coral border-duck-coral scale-125' : s === 'in_progress' ? 'bg-duck-coral border-duck-coral scale-125' : 'bg-duck-ink border-duck-line scale-125')
+                                                        : 'bg-transparent border-duck-line hover:border-duck-line'
                                                 }`}
                                                 title={s}
                                             />
                                         ))}
                                     </div>
-                                    <div className="flex items-center gap-1.5 text-[10px] font-black text-lab-muted uppercase tracking-widest">
+                                    <div className="flex items-center gap-1.5 text-[10px] font-black text-duck-muted uppercase tracking-widest">
                                         {milestone.status === 'completed' ? 'Gereed' : milestone.status === 'in_progress' ? 'Bezig' : 'Wachten'}
                                         <ChevronRight size={12} />
                                     </div>
@@ -261,22 +261,22 @@ export function DeveloperTimeline({ user }: DeveloperTimelineProps) {
 
             {/* Add Milestone Modal */}
             {isAdding && (
-                <div className="fixed inset-0 bg-lab-ink/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                <div className="fixed inset-0 bg-duck-ink/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
                     <div className="bg-white w-full max-w-lg rounded-3xl shadow-2xl animate-in zoom-in-95 duration-200">
-                        <div className="p-6 border-b border-lab-line flex items-center justify-between">
-                            <h3 className="text-xl font-black text-lab-ink uppercase tracking-tight">Nieuwe Mijlpaal</h3>
-                            <button onClick={() => setIsAdding(false)} className="text-lab-muted hover:text-lab-muted p-2">
+                        <div className="p-6 border-b border-duck-line flex items-center justify-between">
+                            <h3 className="text-xl font-black text-duck-ink uppercase tracking-tight">Nieuwe Mijlpaal</h3>
+                            <button onClick={() => setIsAdding(false)} className="text-duck-muted hover:text-duck-muted p-2">
                                 <X size={24} />
                             </button>
                         </div>
                         <form onSubmit={handleAddMilestone} className="p-6 space-y-5">
                             <div className="space-y-2">
-                                <label className="text-xs font-black text-lab-muted uppercase tracking-widest">Titel</label>
+                                <label className="text-xs font-black text-duck-muted uppercase tracking-widest">Titel</label>
                                 <input
                                     autoFocus
                                     required
                                     type="text"
-                                    className="w-full px-4 py-3 bg-lab-cream border border-lab-line rounded-xl focus:ring-2 focus:ring-lab-coral outline-none"
+                                    className="w-full px-4 py-3 bg-duck-bg border border-duck-line rounded-xl focus:ring-2 focus:ring-duck-coral outline-none"
                                     placeholder="Bijv: Eerste Beta Test op School"
                                     value={newTitle}
                                     onChange={e => setNewTitle(e.target.value)}
@@ -284,10 +284,10 @@ export function DeveloperTimeline({ user }: DeveloperTimelineProps) {
                             </div>
 
                             <div className="space-y-2">
-                                <label className="text-xs font-black text-lab-muted uppercase tracking-widest">Fase</label>
+                                <label className="text-xs font-black text-duck-muted uppercase tracking-widest">Fase</label>
                                 <input
                                     type="text"
-                                    className="w-full px-4 py-3 bg-lab-cream border border-lab-line rounded-xl focus:ring-2 focus:ring-lab-coral outline-none"
+                                    className="w-full px-4 py-3 bg-duck-bg border border-duck-line rounded-xl focus:ring-2 focus:ring-duck-coral outline-none"
                                     placeholder="Bijv: Foundation, Pilot, Growth"
                                     value={newPhase}
                                     onChange={e => setNewPhase(e.target.value)}
@@ -296,21 +296,21 @@ export function DeveloperTimeline({ user }: DeveloperTimelineProps) {
 
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-2">
-                                    <label className="text-xs font-black text-lab-muted uppercase tracking-widest">Start Datum</label>
+                                    <label className="text-xs font-black text-duck-muted uppercase tracking-widest">Start Datum</label>
                                     <input
                                         required
                                         type="date"
-                                        className="w-full px-4 py-3 bg-lab-cream border border-lab-line rounded-xl focus:ring-2 focus:ring-lab-coral outline-none"
+                                        className="w-full px-4 py-3 bg-duck-bg border border-duck-line rounded-xl focus:ring-2 focus:ring-duck-coral outline-none"
                                         value={newStart}
                                         onChange={e => setNewStart(e.target.value)}
                                     />
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-xs font-black text-lab-muted uppercase tracking-widest">Eind Datum</label>
+                                    <label className="text-xs font-black text-duck-muted uppercase tracking-widest">Eind Datum</label>
                                     <input
                                         required
                                         type="date"
-                                        className="w-full px-4 py-3 bg-lab-cream border border-lab-line rounded-xl focus:ring-2 focus:ring-lab-coral outline-none"
+                                        className="w-full px-4 py-3 bg-duck-bg border border-duck-line rounded-xl focus:ring-2 focus:ring-duck-coral outline-none"
                                         value={newEnd}
                                         onChange={e => setNewEnd(e.target.value)}
                                     />
@@ -318,12 +318,12 @@ export function DeveloperTimeline({ user }: DeveloperTimelineProps) {
                             </div>
 
                             <div className="space-y-2">
-                                <label className="text-xs font-black text-lab-muted uppercase tracking-widest flex items-center gap-2">
+                                <label className="text-xs font-black text-duck-muted uppercase tracking-widest flex items-center gap-2">
                                     <BookOpen size={14} />
                                     Leerdoel voor deze mijlpaal
                                 </label>
                                 <textarea
-                                    className="w-full px-4 py-3 bg-lab-coral/50 border border-lab-coral rounded-xl focus:ring-2 focus:ring-lab-coral outline-none min-h-[80px]"
+                                    className="w-full px-4 py-3 bg-duck-coral/50 border border-duck-coral rounded-xl focus:ring-2 focus:ring-duck-coral outline-none min-h-[80px]"
                                     placeholder="Wat is het belangrijkste dat je wilt valideren of leren?"
                                     value={newLearning}
                                     onChange={e => setNewLearning(e.target.value)}
@@ -334,13 +334,13 @@ export function DeveloperTimeline({ user }: DeveloperTimelineProps) {
                                 <button
                                     type="button"
                                     onClick={() => setIsAdding(false)}
-                                    className="flex-1 py-3 border border-lab-line rounded-xl font-bold text-lab-muted hover:bg-lab-cream transition-colors"
+                                    className="flex-1 py-3 border border-duck-line rounded-xl font-bold text-duck-muted hover:bg-duck-bg transition-colors"
                                 >
                                     Annuleren
                                 </button>
                                 <button
                                     type="submit"
-                                    className="flex-1 py-3 bg-lab-coral text-white rounded-xl font-bold hover:bg-lab-coral hover:text-white transition-all shadow-lg shadow-lab-coral"
+                                    className="flex-1 py-3 bg-duck-coral text-white rounded-xl font-bold hover:bg-duck-coral hover:text-white transition-all shadow-lg shadow-duck-coral"
                                 >
                                     Opslaan
                                 </button>

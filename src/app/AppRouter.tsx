@@ -24,6 +24,7 @@ const PilotAanmelden = React.lazy(() => import('@/features/public-site/PilotAanm
 const NotFound = React.lazy(() => import('@/components/app-shell/NotFound').then(m => ({ default: m.NotFound })));
 const MobileReceiptPage = React.lazy(() => import('@/components/app-shell/MobileReceiptPage').then(m => ({ default: m.MobileReceiptPage })));
 const ParentConsentApproval = React.lazy(() => import('@/features/consent/ParentConsentApproval').then(m => ({ default: m.ParentConsentApproval })));
+const LeerlingDemoSandbox = React.lazy(() => import('@/features/public-site/LeerlingDemoSandbox').then(m => ({ default: m.LeerlingDemoSandbox })));
 
 import { ParentUser } from '@/types';
 const CookieConsent = React.lazy(() => import('@/components/app-shell/CookieConsent').then(m => ({ default: m.CookieConsent })));
@@ -41,10 +42,12 @@ const DevShellPreview = import.meta.env.DEV
     : null;
 
 /** Minimal spinner — no lucide to avoid blocking LCP */
+import { DuckMark } from '@/components/brand/DuckMark';
+
 const LoadingFallback = () => (
-    <div className="min-h-screen bg-lab-cream flex flex-col items-center justify-center gap-4">
-        <div className="w-12 h-12 border-2 border-lab-line border-t-lab-coral rounded-full animate-spin" aria-hidden="true" />
-        <p className="text-lab-muted font-medium">Laden...</p>
+    <div className="min-h-screen bg-duck-bg flex flex-col items-center justify-center gap-4">
+        <DuckMark className="w-16 h-16 animate-spin" />
+        <p className="text-duck-muted font-medium">Laden...</p>
     </div>
 );
 
@@ -453,6 +456,14 @@ export function AppRouter() {
 
     if (normalizedPath === '/login') {
         return <LoginRoute />;
+    }
+
+    if (normalizedPath === '/leerlingdemo') {
+        return (
+            <React.Suspense fallback={<LoadingFallback />}>
+                <LeerlingDemoSandbox />
+            </React.Suspense>
+        );
     }
 
     if (normalizedPath === '/ouderlijke-toestemming') {
