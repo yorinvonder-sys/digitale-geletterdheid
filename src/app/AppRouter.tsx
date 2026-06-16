@@ -26,6 +26,7 @@ const MobileReceiptPage = React.lazy(() => import('@/components/app-shell/Mobile
 const ParentConsentApproval = React.lazy(() => import('@/features/consent/ParentConsentApproval').then(m => ({ default: m.ParentConsentApproval })));
 
 import { ParentUser } from '@/types';
+import { SecureErrorBoundary } from '@/components/app-shell/SecureErrorBoundary';
 const CookieConsent = React.lazy(() => import('@/components/app-shell/CookieConsent').then(m => ({ default: m.CookieConsent })));
 
 const AuthenticatedApp = React.lazy(() => import('@/app/AuthenticatedApp').then(m => ({ default: m.AuthenticatedApp })));
@@ -320,9 +321,11 @@ function PublicRoute() {
 
     return (
         <PublicPageShell>
-            <React.Suspense fallback={<LoadingFallback />}>
-                <ScholenLanding />
-            </React.Suspense>
+            <SecureErrorBoundary>
+                <React.Suspense fallback={<LoadingFallback />}>
+                    <ScholenLanding />
+                </React.Suspense>
+            </SecureErrorBoundary>
         </PublicPageShell>
     );
 }
