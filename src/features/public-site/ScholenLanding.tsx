@@ -667,7 +667,7 @@ export const ScholenLanding: React.FC = () => {
                                             {sloIcons[i]}
                                         </div>
                                         <h3 className="text-base font-extrabold">{row.domain}</h3>
-                                        <p className="mt-1 text-sm font-semibold text-duck-ink/65">{row.missions}</p>
+                                        <p className="mt-1 text-sm font-semibold text-duck-ink/65">{Array.isArray(row.missions) ? row.missions.map(m => m.name).join(", ") : row.missions}</p>
                                         <p className="mt-3 text-xs font-bold leading-5 text-duck-ink/50">{row.proof}</p>
                                     </article>
                                 ))}
@@ -1788,8 +1788,11 @@ function ScreenMissies() {
                                     </span>
                                 </div>
                             </div>
-                        );
-                    })}
+                            <div className={`mt-2 h-1.5 overflow-hidden rounded-full ${mission.tone === 'ink' ? 'bg-white/15' : 'bg-duck-ink/10'}`}>
+                                <div className={`h-full rounded-full ${mission.tone === 'acid' ? 'bg-duck-ink' : 'bg-duck-acid'}`} style={{ width: `${mission.pct}%` }} />
+                            </div>
+                        </div>
+                    ))}
                 </div>
             </div>
         </div>
