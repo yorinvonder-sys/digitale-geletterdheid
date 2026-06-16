@@ -44,7 +44,7 @@ Deno.serve(async (req: Request) => {
         return new Response(null, { headers: corsHeaders });
     }
 
-    const validated = await validateAndParseRequest(req, corsHeaders, "chat-stream");
+    const validated = await validateAndParseRequest(req, corsHeaders, "chat-stream", AI_PROVIDER);
     if (validated instanceof Response) return validated;
 
     // Forward sanitized message to Mistral AI streaming endpoint

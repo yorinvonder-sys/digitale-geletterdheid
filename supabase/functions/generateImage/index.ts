@@ -233,6 +233,26 @@ Deno.serve(async (req: Request) => {
                 );
             }
 
+            // Provider-side throttle → surface as 429 (do not let the client retry as a fresh 5xx)
+            if (result.rateLimited) {
+                console.warn(`[generateImage] BFL throttled request: ${result.reason}`);
+                logAiUsageEvent({
+                    requestId,
+                    endpoint: "generateImage",
+                    provider: AI_PROVIDER,
+                    model: BFL_MODEL,
+                    status: "rate_limited",
+                    userId: user.id,
+                    schoolId,
+                    inputChars: safePrompt.length,
+                    metadata: { reason: result.reason, style, aspect_ratio: aspectRatio },
+                }).catch((err) => console.error("[generateImage] Usage log error:", err));
+                return new Response(
+                    JSON.stringify({ error: "Te veel verzoeken. Wacht even." }),
+                    { status: 429, headers: responseHeaders },
+                );
+            }
+
             console.error(`[generateImage] BFL failed: ${result.reason}`);
             logAiUsageEvent({
                 requestId,

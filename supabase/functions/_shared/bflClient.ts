@@ -87,6 +87,8 @@ export interface BflResult {
     model?: string;
     /** Set when the request/result was refused on content-moderation grounds. */
     moderated?: boolean;
+    /** Set when BFL throttled the request (provider-side rate limit). */
+    rateLimited?: boolean;
     /** Failure reason (only set when ok === false). */
     reason?: string;
 }
@@ -128,6 +130,10 @@ export async function generateBflImage(params: {
             // Validation / moderation rejection at submit time.
             return { ok: false, moderated: true, reason: "request_moderated" };
         }
+        if (status === 429) {
+            // Provider-side throttle (active-task / capacity limit).
+            return { ok: false, moderated: false, rateLimited: true, reason: "submit_failed_429" };
+        }
         return { ok: false, moderated: false, reason: `submit_failed_${status}` };
     }
 
@@ -158,7 +164,7 @@ export async function generateBflImage(params: {
         if (status === "Content Moderated" || status === "Request Moderated") {
             return { ok: false, moderated: true, reason: status.toLowerCase().replace(" ", "_") };
         }
-        if (status === "Error" || status === "Task not found") {
+        if (status === "Error" || status === "Failed" || status === "Task not found") {
             return { ok: false, moderated: false, reason: status.toLowerCase().replace(/ /g, "_") };
         }
         // "Pending" / "Queued" / "Processing" — keep polling.

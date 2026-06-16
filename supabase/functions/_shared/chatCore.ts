@@ -96,6 +96,7 @@ export async function validateAndParseRequest(
     req: Request,
     corsHeaders: Record<string, string>,
     rateLimitKey: string,
+    provider: string,
 ): Promise<ValidatedRequest | Response> {
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseAnonKey = Deno.env.get("SUPABASE_ANON_KEY")!;
@@ -199,6 +200,7 @@ export async function validateAndParseRequest(
         logAiUsageEvent({
             requestId,
             endpoint: rateLimitKey,
+            provider,
             model: selectedModel,
             status: "rate_limited",
             userId: user.id,
@@ -232,6 +234,7 @@ export async function validateAndParseRequest(
         logAiUsageEvent({
             requestId,
             endpoint: rateLimitKey,
+            provider,
             model: selectedModel,
             status: "blocked",
             userId: user.id,
@@ -261,6 +264,7 @@ export async function validateAndParseRequest(
         logAiUsageEvent({
             requestId,
             endpoint: rateLimitKey,
+            provider,
             model: selectedModel,
             status: "blocked",
             userId: user.id,
