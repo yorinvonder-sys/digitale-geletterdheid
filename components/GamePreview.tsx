@@ -32,19 +32,19 @@ const LoadingStateWithTimeout: React.FC = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center h-full text-slate-500 gap-4 p-6" role="status" aria-live="polite">
+    <div className="flex flex-col items-center justify-center h-full text-lab-muted gap-4 p-6" role="status" aria-live="polite">
       {!showRetry ? (
         <>
-          <Loader2 className="animate-spin text-emerald-500" size={32} aria-hidden="true" />
+          <Loader2 className="animate-spin text-lab-sage" size={32} aria-hidden="true" />
           <span className="font-mono text-sm">Game laden...</span>
         </>
       ) : (
         <div className="text-center max-w-xs">
-          <div className="w-16 h-16 bg-amber-500/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <RefreshCw size={28} className="text-amber-400" />
+          <div className="w-16 h-16 bg-lab-gold/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
+            <RefreshCw size={28} className="text-lab-gold" />
           </div>
           <h3 className="text-lg font-bold text-white mb-2">Laden duurt lang...</h3>
-          <p className="text-sm text-slate-400 mb-4">
+          <p className="text-sm text-lab-muted mb-4">
             Er is mogelijk een probleem met je opgeslagen game. Ververs de pagina of reset je voortgang.
           </p>
           <button
@@ -333,14 +333,14 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
   const showIntroOverlay = !gameStarted;
 
   return (
-    <div className="w-full h-full flex flex-col bg-slate-900 border-l border-slate-800 relative">
+    <div className="w-full h-full flex flex-col bg-lab-muted border-l border-lab-muted relative">
       {/* Header - Optimized for tablet */}
-      <div className="bg-slate-800 px-3 md:px-4 py-2 md:py-3 flex justify-between items-center border-b border-slate-700 shrink-0 shadow-sm z-10">
+      <div className="bg-lab-muted px-3 md:px-4 py-2 md:py-3 flex justify-between items-center border-b border-lab-muted shrink-0 shadow-sm z-10">
         <div className="flex items-center gap-2">
-          <div className="p-1 md:p-1.5 bg-emerald-500 rounded-lg text-white shadow-emerald-500/20 shadow-lg">
+          <div className="p-1 md:p-1.5 bg-lab-sage rounded-lg text-white shadow-emerald-500/20 shadow-lg">
             <Monitor size={14} strokeWidth={3} />
           </div>
-          <span className="text-slate-200 font-bold tracking-wide text-xs md:text-sm">Live Game Preview</span>
+          <span className="text-lab-muted font-bold tracking-wide text-xs md:text-sm">Live Game Preview</span>
         </div>
         <div className="flex gap-1 md:gap-2">
           {/* Gallery Button - Browse other students' games */}
@@ -360,7 +360,7 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
             <button
               onClick={() => setShowPublishModal(true)}
               aria-label="Zet in Galerij"
-              className="text-emerald-400 hover:text-emerald-300 transition-all p-1.5 hover:bg-emerald-500/20 rounded-lg active:scale-95 flex items-center gap-1.5"
+              className="text-lab-sage hover:text-lab-sage transition-all p-1.5 hover:bg-lab-sage/20 rounded-lg active:scale-95 flex items-center gap-1.5"
             >
               <Share2 size={16} aria-hidden="true" />
               <span className="text-xs font-bold hidden md:inline">Publiceren</span>
@@ -395,7 +395,7 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
           {canUndo && onUndo && (
             <button
               onClick={onUndo}
-              className="text-amber-400 hover:text-amber-300 transition-all p-1.5 hover:bg-amber-500/20 rounded-lg active:scale-95 flex items-center gap-1.5 animate-in fade-in slide-in-from-right-2"
+              className="text-lab-gold hover:text-lab-gold transition-all p-1.5 hover:bg-lab-gold/20 rounded-lg active:scale-95 flex items-center gap-1.5 animate-in fade-in slide-in-from-right-2"
               title="Vorige versie herstellen"
             >
               <Undo2 size={16} />
@@ -405,7 +405,7 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
 
           <button
             onClick={handleReload}
-            className="text-slate-400 hover:text-white transition-all p-1.5 hover:bg-slate-700 rounded-lg active:scale-95"
+            className="text-lab-muted hover:text-white transition-all p-1.5 hover:bg-lab-muted rounded-lg active:scale-95"
             title="Herstart"
           >
             <RefreshCw size={16} />
@@ -427,7 +427,7 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
 
       {/* Game Area */}
       <div
-        className="flex-1 relative bg-slate-950 overflow-hidden select-none"
+        className="flex-1 relative bg-lab-muted overflow-hidden select-none"
         style={{
           WebkitUserSelect: 'none',
           userSelect: 'none',
@@ -456,15 +456,15 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
 
             {/* INITIAL LOADING OVERLAY - Show while iframe is loading */}
             {!iframeLoaded && !isGenerating && (
-              <div className="absolute inset-0 z-25 flex flex-col items-center justify-center p-6 bg-slate-900/80 animate-in fade-in duration-300 pointer-events-auto">
+              <div className="absolute inset-0 z-25 flex flex-col items-center justify-center p-6 bg-lab-muted/80 animate-in fade-in duration-300 pointer-events-auto">
                 <div className="flex flex-col items-center gap-4">
                   <div className="relative">
-                    <div className="absolute inset-0 bg-emerald-500/30 blur-xl rounded-full animate-pulse"></div>
-                    <Loader2 className="animate-spin text-emerald-400 relative z-10" size={48} />
+                    <div className="absolute inset-0 bg-lab-sage/30 blur-xl rounded-full animate-pulse"></div>
+                    <Loader2 className="animate-spin text-lab-sage relative z-10" size={48} />
                   </div>
                   <div className="text-center">
                     <h3 className="text-lg font-black text-white mb-1 tracking-tight">Game Laden...</h3>
-                    <p className="text-slate-400 text-xs font-medium">Even geduld</p>
+                    <p className="text-lab-muted text-xs font-medium">Even geduld</p>
                   </div>
                 </div>
               </div>
@@ -473,16 +473,16 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
             {/* GENERATING / LOADING INDICTATOR - Shows during AI generation AND while game is refreshing */}
             {(isGenerating || (!iframeLoaded && updateCount > 0)) && (
               <div className="absolute inset-x-0 top-0 z-30 flex justify-center p-4 pointer-events-none">
-                <div className="bg-slate-900/90 text-white pl-4 pr-6 py-3 rounded-full shadow-2xl border border-emerald-500/30 flex items-center gap-4 animate-in slide-in-from-top-4 backdrop-blur-md">
+                <div className="bg-lab-muted/90 text-white pl-4 pr-6 py-3 rounded-full shadow-2xl border border-lab-sage/30 flex items-center gap-4 animate-in slide-in-from-top-4 backdrop-blur-md">
                   <div className="relative">
-                    <div className="absolute inset-0 bg-emerald-500/50 blur-lg rounded-full animate-pulse"></div>
-                    <Loader2 className="animate-spin text-emerald-400 relative z-10" size={20} />
+                    <div className="absolute inset-0 bg-lab-sage/50 blur-lg rounded-full animate-pulse"></div>
+                    <Loader2 className="animate-spin text-lab-sage relative z-10" size={20} />
                   </div>
                   <div className="flex flex-col">
                     <span className="font-bold text-sm tracking-wide">
                       {isGenerating ? "AI is bezig..." : "Game verversen..."}
                     </span>
-                    <span className="text-[10px] text-emerald-400 font-mono uppercase tracking-widest">
+                    <span className="text-[10px] text-lab-sage font-mono uppercase tracking-widest">
                       {isGenerating ? "Code schrijven" : "Update toepassen"}
                     </span>
                   </div>
@@ -492,13 +492,13 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
 
             {/* BLOCKING OVERLAY - Only for initial load (not updates) */}
             {(!iframeLoaded && updateCount === 0 && !isGenerating) && (
-              <div className="absolute inset-0 z-20 bg-slate-950/20 backdrop-blur-[1px] transition-all duration-500 pointer-events-auto cursor-wait" />
+              <div className="absolute inset-0 z-20 bg-lab-muted/20 backdrop-blur-[1px] transition-all duration-500 pointer-events-auto cursor-wait" />
             )}
 
             {/* Update notification banner - Only show if NOT generating */}
             {showUpdateBanner && !showIntroOverlay && !isGenerating && (
               <div className="absolute top-2 left-1/2 -translate-x-1/2 z-30 animate-in fade-in slide-in-from-top-2">
-                <div className="bg-emerald-500 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg flex items-center gap-2">
+                <div className="bg-lab-sage text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg flex items-center gap-2">
                   ✨ Game Bijgewerkt!
                 </div>
               </div>
@@ -517,7 +517,7 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
                     <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-gradient-to-br from-emerald-500 to-cyan-500 flex items-center justify-center shadow-2xl shadow-emerald-500/40 transform rotate-3">
                       <Zap size={32} className="text-white md:w-10 md:h-10" />
                     </div>
-                    <div className="absolute -bottom-1 -right-1 w-6 h-6 md:w-8 md:h-8 bg-amber-400 rounded-full flex items-center justify-center text-sm md:text-base shadow-lg border-2 border-slate-900">
+                    <div className="absolute -bottom-1 -right-1 w-6 h-6 md:w-8 md:h-8 bg-lab-gold rounded-full flex items-center justify-center text-sm md:text-base shadow-lg border-2 border-lab-muted">
                       ⚡
                     </div>
                   </div>
@@ -526,19 +526,19 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
                   <h2 className="text-xl md:text-2xl font-black text-white mb-2 tracking-tight">
                     Super Code Jumper
                   </h2>
-                  <p className="text-slate-400 text-sm md:text-base mb-4 md:mb-6 leading-relaxed px-4">
+                  <p className="text-lab-muted text-sm md:text-base mb-4 md:mb-6 leading-relaxed px-4">
                     Dit is jouw eigen game! Spring over obstakels en verzamel punten.
                   </p>
 
                   {/* Instructions Card - Tablet optimized */}
-                  <div className="bg-slate-800/80 border border-slate-700 rounded-xl md:rounded-2xl p-4 md:p-5 mb-4 md:mb-6 text-left mx-auto">
-                    <h3 className="text-xs md:text-sm font-bold text-emerald-400 uppercase tracking-widest mb-3 flex items-center gap-2">
+                  <div className="bg-lab-muted/80 border border-lab-muted rounded-xl md:rounded-2xl p-4 md:p-5 mb-4 md:mb-6 text-left mx-auto">
+                    <h3 className="text-xs md:text-sm font-bold text-lab-sage uppercase tracking-widest mb-3 flex items-center gap-2">
                       <Code size={14} /> Hoe werkt het?
                     </h3>
-                    <ul className="space-y-2 md:space-y-3 text-sm md:text-base text-slate-300">
+                    <ul className="space-y-2 md:space-y-3 text-sm md:text-base text-lab-muted">
                       <li className="flex items-start gap-3">
                         <span className="text-xl">🎮</span>
-                        <span><strong className="text-emerald-400">TAP</strong> op het scherm of druk <strong className="text-emerald-400">SPATIE</strong> om te springen</span>
+                        <span><strong className="text-lab-sage">TAP</strong> op het scherm of druk <strong className="text-lab-sage">SPATIE</strong> om te springen</span>
                       </li>
                       <li className="flex items-start gap-3">
                         <span className="text-xl">💬</span>
@@ -554,12 +554,12 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
                   {/* BIG Start Button - Very prominent for tablet */}
                   <button
                     onClick={handleStartGame}
-                    className="w-full py-4 md:py-5 bg-gradient-to-r from-emerald-500 to-cyan-500 text-white rounded-xl md:rounded-2xl font-black text-lg md:text-xl hover:from-emerald-400 hover:to-cyan-400 transition-all flex items-center justify-center gap-3 shadow-2xl shadow-emerald-500/40 active:scale-95 border-2 border-emerald-400/30"
+                    className="w-full py-4 md:py-5 bg-gradient-to-r from-emerald-500 to-cyan-500 text-white rounded-xl md:rounded-2xl font-black text-lg md:text-xl hover:from-emerald-400 hover:to-cyan-400 transition-all flex items-center justify-center gap-3 shadow-2xl shadow-emerald-500/40 active:scale-95 border-2 border-lab-sage/30"
                   >
                     <Play size={24} fill="white" className="md:w-8 md:h-8" /> START DE GAME!
                   </button>
 
-                  <p className="text-slate-500 text-xs md:text-sm mt-3 flex items-center justify-center gap-2">
+                  <p className="text-lab-muted text-xs md:text-sm mt-3 flex items-center justify-center gap-2">
                     <MousePointer size={14} /> Tik om te beginnen
                   </p>
                 </div>
@@ -574,39 +574,39 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
       {/* Publish Modal */}
       {showPublishModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in">
-          <div className="bg-slate-800 rounded-2xl p-6 w-full max-w-md border border-slate-700 shadow-2xl animate-in zoom-in-95">
+          <div className="bg-lab-muted rounded-2xl p-6 w-full max-w-md border border-lab-muted shadow-2xl animate-in zoom-in-95">
             {publishSuccess ? (
               <div className="text-center py-8">
-                <div className="w-16 h-16 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Check size={32} className="text-emerald-400" />
+                <div className="w-16 h-16 bg-lab-sage/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Check size={32} className="text-lab-sage" />
                 </div>
                 <h3 className="text-xl font-black text-white mb-2">Gepubliceerd! 🎉</h3>
-                <p className="text-slate-400 text-sm">Je game staat nu in de galerij!</p>
+                <p className="text-lab-muted text-sm">Je game staat nu in de galerij!</p>
               </div>
             ) : (
               <>
                 <div className="flex items-center justify-between mb-6">
                   <div className="flex items-center gap-3">
-                    <div className="p-2 bg-emerald-500/20 rounded-lg">
-                      <Share2 size={20} className="text-emerald-400" />
+                    <div className="p-2 bg-lab-sage/20 rounded-lg">
+                      <Share2 size={20} className="text-lab-sage" />
                     </div>
                     <div>
                       <h3 className="text-lg font-black text-white">Deel je Game</h3>
-                      <p className="text-xs text-slate-400">Anderen kunnen je game spelen!</p>
+                      <p className="text-xs text-lab-muted">Anderen kunnen je game spelen!</p>
                     </div>
                   </div>
                   <button
                     onClick={() => setShowPublishModal(false)}
                     aria-label="Sluit dialoog"
-                    className="p-2 hover:bg-slate-700 rounded-lg transition-colors"
+                    className="p-2 hover:bg-lab-muted rounded-lg transition-colors"
                   >
-                    <X size={20} className="text-slate-400" />
+                    <X size={20} className="text-lab-muted" />
                   </button>
                 </div>
 
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">
+                    <label className="block text-xs font-bold text-lab-muted uppercase tracking-wider mb-2">
                       Geef je game een naam
                     </label>
                     <input
@@ -614,17 +614,17 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
                       value={publishTitle}
                       onChange={(e) => setPublishTitle(e.target.value)}
                       placeholder="Bijv. Super Spring Avontuur"
-                      className="w-full px-4 py-3 bg-slate-900 border border-slate-600 rounded-xl text-white placeholder-slate-500 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all"
+                      className="w-full px-4 py-3 bg-lab-muted border border-lab-muted rounded-xl text-white placeholder-slate-500 focus:border-lab-sage focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all"
                       maxLength={50}
                     />
                   </div>
 
-                  <div className="bg-slate-900/50 rounded-xl p-4 border border-slate-700">
-                    <div className="flex items-center gap-2 text-amber-400 text-xs font-bold mb-2">
+                  <div className="bg-lab-muted/50 rounded-xl p-4 border border-lab-muted">
+                    <div className="flex items-center gap-2 text-lab-gold text-xs font-bold mb-2">
                       <Sparkles size={14} />
                       Tip
                     </div>
-                    <p className="text-slate-400 text-sm">
+                    <p className="text-lab-muted text-sm">
                       Kies een creatieve naam zodat anderen je game willen proberen!
                     </p>
                   </div>
@@ -663,7 +663,7 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
       {/* Save Name Modal - For naming project before saving to library */}
       {showSaveNameModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in">
-          <div className="bg-slate-800 rounded-2xl p-6 w-full max-w-md border border-slate-700 shadow-2xl animate-in zoom-in-95">
+          <div className="bg-lab-muted rounded-2xl p-6 w-full max-w-md border border-lab-muted shadow-2xl animate-in zoom-in-95">
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
                 <div className="p-2 bg-purple-500/20 rounded-lg">
@@ -671,7 +671,7 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
                 </div>
                 <div>
                   <h3 className="text-lg font-black text-white">Opslaan in Bibliotheek</h3>
-                  <p className="text-xs text-slate-400">Geef je project een naam</p>
+                  <p className="text-xs text-lab-muted">Geef je project een naam</p>
                 </div>
               </div>
               <button
@@ -679,15 +679,15 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
                   setShowSaveNameModal(false);
                   setProjectName('');
                 }}
-                className="p-2 hover:bg-slate-700 rounded-lg transition-colors"
+                className="p-2 hover:bg-lab-muted rounded-lg transition-colors"
               >
-                <X size={20} className="text-slate-400" />
+                <X size={20} className="text-lab-muted" />
               </button>
             </div>
 
             <div className="space-y-4">
               <div>
-                <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">
+                <label className="block text-xs font-bold text-lab-muted uppercase tracking-wider mb-2">
                   Naam van je project
                 </label>
                 <input
@@ -695,18 +695,18 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
                   value={projectName}
                   onChange={(e) => setProjectName(e.target.value)}
                   placeholder="Bijv. Mijn Super Game"
-                  className="w-full px-4 py-3 bg-slate-900 border border-slate-600 rounded-xl text-white placeholder-slate-500 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 outline-none transition-all"
+                  className="w-full px-4 py-3 bg-lab-muted border border-lab-muted rounded-xl text-white placeholder-slate-500 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 outline-none transition-all"
                   maxLength={50}
                   autoFocus
                 />
               </div>
 
-              <div className="bg-slate-900/50 rounded-xl p-4 border border-slate-700">
-                <div className="flex items-center gap-2 text-amber-400 text-xs font-bold mb-2">
+              <div className="bg-lab-muted/50 rounded-xl p-4 border border-lab-muted">
+                <div className="flex items-center gap-2 text-lab-gold text-xs font-bold mb-2">
                   <Sparkles size={14} />
                   Tip
                 </div>
-                <p className="text-slate-400 text-sm">
+                <p className="text-lab-muted text-sm">
                   Kies een herkenbare naam zodat je deze later snel terugvindt in je bibliotheek!
                 </p>
               </div>
@@ -742,7 +742,7 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
 
       {/* Gallery Modal - Fullscreen overlay */}
       {showGallery && user && (
-        <div className="fixed inset-0 z-50 bg-slate-900">
+        <div className="fixed inset-0 z-50 bg-lab-muted">
           <GameGallery
             userId={user.uid}
             schoolId={user.schoolId}
@@ -754,18 +754,18 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
       {/* Library Limit / Replace Game Modal */}
       {showReplaceModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in">
-          <div className="bg-slate-800 rounded-2xl p-6 w-full max-w-md border border-slate-700 shadow-2xl animate-in zoom-in-95">
+          <div className="bg-lab-muted rounded-2xl p-6 w-full max-w-md border border-lab-muted shadow-2xl animate-in zoom-in-95">
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-12 h-12 bg-amber-500/20 rounded-xl flex items-center justify-center text-amber-500">
+              <div className="w-12 h-12 bg-lab-gold/20 rounded-xl flex items-center justify-center text-lab-gold">
                 <Database size={24} />
               </div>
               <div>
                 <h3 className="text-lg font-black text-white">Opslag Vol (5/5)</h3>
-                <p className="text-xs text-slate-400">Je kunt maximaal 5 games bewaren.</p>
+                <p className="text-xs text-lab-muted">Je kunt maximaal 5 games bewaren.</p>
               </div>
             </div>
 
-            <p className="text-slate-300 text-sm mb-4">
+            <p className="text-lab-muted text-sm mb-4">
               Kies een oude game om te vervangen door deze nieuwe versie:
             </p>
 
@@ -782,20 +782,20 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
                   key={game.id}
                   onClick={() => game.id && handleReplaceGame(game.id)}
                   disabled={isSavingToLibrary}
-                  className="flex items-center justify-between p-3 bg-slate-900 border border-slate-700 hover:border-amber-500 hover:bg-slate-700/50 rounded-xl transition-all group text-left"
+                  className="flex items-center justify-between p-3 bg-lab-muted border border-lab-muted hover:border-lab-gold hover:bg-lab-muted/50 rounded-xl transition-all group text-left"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center text-slate-500 group-hover:text-amber-500 transition-colors">
+                    <div className="w-8 h-8 rounded-lg bg-lab-muted flex items-center justify-center text-lab-muted group-hover:text-lab-gold transition-colors">
                       <Gamepad2 size={16} />
                     </div>
                     <div>
-                      <div className="font-bold text-slate-200 text-sm">{game.name}</div>
-                      <div className="text-[10px] text-slate-500">
+                      <div className="font-bold text-lab-muted text-sm">{game.name}</div>
+                      <div className="text-[10px] text-lab-muted">
                         {game.created_at ? new Date(game.created_at).toLocaleDateString() : 'Onbekende datum'}
                       </div>
                     </div>
                   </div>
-                  <div className="opacity-0 group-hover:opacity-100 transition-opacity text-amber-500 text-xs font-bold uppercase tracking-wider">
+                  <div className="opacity-0 group-hover:opacity-100 transition-opacity text-lab-gold text-xs font-bold uppercase tracking-wider">
                     Vervang
                   </div>
                 </button>
@@ -809,7 +809,7 @@ export const GamePreview: React.FC<GamePreviewProps> = ({ code, autoStart = fals
                 setLibrarySaveError(null);
               }}
               disabled={isSavingToLibrary}
-              className="w-full py-3 bg-slate-700 text-white rounded-xl font-bold hover:bg-slate-600 transition-colors"
+              className="w-full py-3 bg-lab-muted text-white rounded-xl font-bold hover:bg-lab-muted transition-colors"
             >
               Annuleren
             </button>

@@ -62,14 +62,14 @@ export const IctLandingPage: React.FC = () => {
                 <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
                     <a href="/" className="flex items-center gap-2.5">
                         <img src="/mascot/pip-logo.webp" alt="DGSkills logo" className="w-8 h-8 object-contain" width={32} height={32} loading="lazy" decoding="async" />
-                        <span className="font-bold text-[15px] text-slate-900 tracking-tight">DGSkills</span>
+                        <span className="font-bold text-[15px] text-lab-muted tracking-tight">DGSkills</span>
                     </a>
                     <div className="hidden lg:flex items-center gap-6">
-                        <a href="/#waarom-dgskills" className="text-[13px] font-medium text-slate-500 hover:text-slate-900 transition-colors">Waarom DGSkills</a>
-                        <a href="/#slo-kerndoelen" className="text-[13px] font-medium text-slate-500 hover:text-slate-900 transition-colors">Kerndoelen</a>
+                        <a href="/#waarom-dgskills" className="text-[13px] font-medium text-lab-muted hover:text-lab-muted transition-colors">Waarom DGSkills</a>
+                        <a href="/#slo-kerndoelen" className="text-[13px] font-medium text-lab-muted hover:text-lab-muted transition-colors">Kerndoelen</a>
                         <a href="/ict" className="text-[13px] font-semibold text-indigo-600">Voor ICT</a>
-                        <a href="/compliance-hub" className="text-[13px] font-medium text-slate-500 hover:text-slate-900 transition-colors">Compliance Hub</a>
-                        <a href="/login" className="text-[13px] font-medium text-slate-500 hover:text-slate-900 transition-colors">Inloggen</a>
+                        <a href="/compliance-hub" className="text-[13px] font-medium text-lab-muted hover:text-lab-muted transition-colors">Compliance Hub</a>
+                        <a href="/login" className="text-[13px] font-medium text-lab-muted hover:text-lab-muted transition-colors">Inloggen</a>
                         <a href="/#gratis-pilot" className="text-[13px] font-semibold text-white bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded-lg transition-colors">Pilot aanvragen</a>
                     </div>
                     <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="lg:hidden p-3 -mr-2">
@@ -77,12 +77,12 @@ export const IctLandingPage: React.FC = () => {
                     </button>
                 </div>
                 {mobileMenuOpen && (
-                    <div className="lg:hidden bg-white border-t border-slate-100 px-6 py-4 space-y-1">
-                        <a href="/#waarom-dgskills" className="block py-3 text-sm text-slate-700">Waarom DGSkills</a>
-                        <a href="/#slo-kerndoelen" className="block py-3 text-sm text-slate-700">Kerndoelen</a>
+                    <div className="lg:hidden bg-white border-t border-lab-muted px-6 py-4 space-y-1">
+                        <a href="/#waarom-dgskills" className="block py-3 text-sm text-lab-muted">Waarom DGSkills</a>
+                        <a href="/#slo-kerndoelen" className="block py-3 text-sm text-lab-muted">Kerndoelen</a>
                         <a href="/ict" className="block py-3 text-sm text-indigo-600 font-semibold">Voor ICT</a>
-                        <a href="/compliance-hub" className="block py-3 text-sm text-slate-700">Compliance Hub</a>
-                        <a href="/login" className="block py-3 text-sm text-slate-700">Inloggen</a>
+                        <a href="/compliance-hub" className="block py-3 text-sm text-lab-muted">Compliance Hub</a>
+                        <a href="/login" className="block py-3 text-sm text-lab-muted">Inloggen</a>
                         <a href="/#gratis-pilot" className="block py-3 text-sm font-semibold text-indigo-600">Pilot aanvragen</a>
                     </div>
                 )}
@@ -92,22 +92,22 @@ export const IctLandingPage: React.FC = () => {
                 <ScholenLandingIct />
             </main>
 
-            <footer className="py-8 px-6 bg-slate-950">
+            <footer className="py-8 px-6 bg-lab-muted">
                 <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
                     <div className="flex items-center gap-2">
                         <img src="/mascot/pip-logo.webp" alt="" className="w-5 h-5 object-contain opacity-50" width={20} height={20} loading="lazy" decoding="async" />
-                        <span className="text-xs text-slate-500">DGSkills — Digitale geletterdheid voor het voortgezet onderwijs</span>
+                        <span className="text-xs text-lab-muted">DGSkills — Digitale geletterdheid voor het voortgezet onderwijs</span>
                     </div>
-                    <div className="flex flex-wrap items-center gap-5 text-xs text-slate-500">
-                        <a href="mailto:info@dgskills.app" className="hover:text-slate-300 transition-colors font-medium">info@dgskills.app</a>
-                        <span className="text-slate-700">·</span>
-                        <a href="/ict/privacy/policy" className="hover:text-slate-300 transition-colors">Privacy</a>
-                        <a href="/ict/privacy/cookies" className="hover:text-slate-300 transition-colors">Cookies</a>
-                        <a href="/ict/privacy/ai" className="hover:text-slate-300 transition-colors">AI Act</a>
-                        <a href="/compliance-hub" className="hover:text-slate-300 transition-colors">Compliance Hub</a>
-                        <span className="text-slate-700">·</span>
-                        <a href="/login" className="hover:text-slate-300 transition-colors">Inloggen</a>
-                        <span className="text-slate-700">·</span>
+                    <div className="flex flex-wrap items-center gap-5 text-xs text-lab-muted">
+                        <a href="mailto:info@dgskills.app" className="hover:text-lab-muted transition-colors font-medium">info@dgskills.app</a>
+                        <span className="text-lab-muted">·</span>
+                        <a href="/ict/privacy/policy" className="hover:text-lab-muted transition-colors">Privacy</a>
+                        <a href="/ict/privacy/cookies" className="hover:text-lab-muted transition-colors">Cookies</a>
+                        <a href="/ict/privacy/ai" className="hover:text-lab-muted transition-colors">AI Act</a>
+                        <a href="/compliance-hub" className="hover:text-lab-muted transition-colors">Compliance Hub</a>
+                        <span className="text-lab-muted">·</span>
+                        <a href="/login" className="hover:text-lab-muted transition-colors">Inloggen</a>
+                        <span className="text-lab-muted">·</span>
                         <span>© {new Date().getFullYear()} DGSkills</span>
                     </div>
                 </div>

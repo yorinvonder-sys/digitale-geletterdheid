@@ -6,31 +6,31 @@
     <title>DPIA Support Document - DGSkills</title>
     <style>
         * { box-sizing: border-box; }
-        body { margin: 0; padding: 0; background: #f8fafc; color: #0f172a; font-family: system-ui, -apple-system, sans-serif; }
-        .container { max-width: 56rem; margin: 3rem auto; padding: 3rem; background: #fff; box-shadow: 0 25px 50px -12px rgba(0,0,0,.25); border-radius: 0.5rem; border: 1px solid #e2e8f0; }
+        body { margin: 0; padding: 0; background: #FCF6EA; color: #08283B; font-family: system-ui, -apple-system, sans-serif; }
+        .container { max-width: 56rem; margin: 3rem auto; padding: 3rem; background: #fff; box-shadow: 0 25px 50px -12px rgba(0,0,0,.25); border-radius: 0.5rem; border: 1px solid #E7D8BD; }
         .flex-between { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 3rem; }
         h1 { font-size: 1.875rem; font-weight: 900; color: #064e3b; margin: 0 0 0.5rem 0; }
-        .subtitle { color: #64748b; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; font-size: 0.75rem; }
-        .version { font-size: 0.75rem; color: #94a3b8; }
-        .intro-box { background: #ecfdf5; border: 1px solid #a7f3d0; padding: 1.5rem; border-radius: 0.75rem; margin-bottom: 3rem; }
+        .subtitle { color: #445865; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; font-size: 0.75rem; }
+        .version { font-size: 0.75rem; color: #E7D8BD; }
+        .intro-box { background: #FCF6EA; border: 1px solid #a7f3d0; padding: 1.5rem; border-radius: 0.75rem; margin-bottom: 3rem; }
         .intro-box h3 { font-weight: 700; color: #064e3b; margin-bottom: 0.5rem; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em; }
         .intro-box p { font-size: 0.875rem; color: #065f46; line-height: 1.6; }
         .section { margin-bottom: 2.5rem; }
-        h2 { font-size: 1.25rem; font-weight: 700; border-bottom: 2px solid #f1f5f9; padding-bottom: 0.5rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem; }
-        .num-badge { background: #059669; color: #fff; width: 1.5rem; height: 1.5rem; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 0.75rem; }
-        h4 { font-weight: 700; font-size: 0.875rem; color: #334155; margin-bottom: 0.25rem; }
-        .text-muted { font-size: 0.875rem; color: #475569; font-style: italic; }
-        .text-body { font-size: 0.875rem; color: #475569; }
-        table { width: 100%; font-size: 0.875rem; border-collapse: collapse; border: 1px solid #e2e8f0; border-radius: 0.5rem; overflow: hidden; }
-        th, td { padding: 0.75rem; text-align: left; border-bottom: 1px solid #e2e8f0; }
-        thead { background: #f8fafc; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: #64748b; }
+        h2 { font-size: 1.25rem; font-weight: 700; border-bottom: 2px solid #F3E4CB; padding-bottom: 0.5rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem; }
+        .num-badge { background: #5F947D; color: #fff; width: 1.5rem; height: 1.5rem; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 0.75rem; }
+        h4 { font-weight: 700; font-size: 0.875rem; color: #08283B; margin-bottom: 0.25rem; }
+        .text-muted { font-size: 0.875rem; color: #445865; font-style: italic; }
+        .text-body { font-size: 0.875rem; color: #445865; }
+        table { width: 100%; font-size: 0.875rem; border-collapse: collapse; border: 1px solid #E7D8BD; border-radius: 0.5rem; overflow: hidden; }
+        th, td { padding: 0.75rem; text-align: left; border-bottom: 1px solid #E7D8BD; }
+        thead { background: #FCF6EA; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: #445865; }
         tbody tr:nth-child(odd) td:first-child { background: rgba(248,250,252,.5); }
         td:first-child { font-weight: 500; }
-        td:last-child { color: #475569; }
-        code { background: #f1f5f9; padding: 0.125rem 0.25rem; border-radius: 0.25rem; font-size: 0.8em; }
-        .disclaimer { background: #f8fafc; padding: 1.5rem; border-radius: 0.5rem; border: 1px solid #e2e8f0; font-size: 0.75rem; color: #64748b; font-style: italic; }
+        td:last-child { color: #445865; }
+        code { background: #F3E4CB; padding: 0.125rem 0.25rem; border-radius: 0.25rem; font-size: 0.8em; }
+        .disclaimer { background: #FCF6EA; padding: 1.5rem; border-radius: 0.5rem; border: 1px solid #E7D8BD; font-size: 0.75rem; color: #445865; font-style: italic; }
         .print-btn-wrap { display: flex; justify-content: center; margin-top: 3rem; }
-        .print-btn { background: #059669; color: #fff; padding: 0.75rem 2rem; border-radius: 9999px; font-weight: 900; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; }
+        .print-btn { background: #5F947D; color: #fff; padding: 0.75rem 2rem; border-radius: 9999px; font-weight: 900; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; }
         .print-btn:hover { background: #047857; }
         @media print {
             .no-print { display: none !important; }

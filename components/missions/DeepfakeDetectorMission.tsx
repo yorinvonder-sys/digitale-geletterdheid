@@ -165,9 +165,9 @@ const ContentCard: React.FC<{
 }> = ({ challenge, showHints }) => {
     const getIcon = () => {
         switch (challenge.type) {
-            case 'image': return <Camera className="text-[#8B6F9E]" size={20} />;
-            case 'text': return <FileText className="text-[#2A9D8F]" size={20} />;
-            case 'claim': return <MessageSquare className="text-[#D97757]" size={20} />;
+            case 'image': return <Camera className="text-[#0B453F]" size={20} />;
+            case 'text': return <FileText className="text-[#5F947D]" size={20} />;
+            case 'claim': return <MessageSquare className="text-[#D97848]" size={20} />;
         }
     };
 
@@ -180,30 +180,30 @@ const ContentCard: React.FC<{
     };
 
     return (
-        <div className="bg-white rounded-2xl border border-[#E8E6DF] p-6 space-y-4">
+        <div className="bg-white rounded-2xl border border-[#E7D8BD] p-6 space-y-4">
             <div className="flex items-center gap-2">
-                <div className="p-2 bg-[#FAF9F0] rounded-lg border border-[#F0EEE8]">
+                <div className="p-2 bg-[#FCF6EA] rounded-lg border border-[#FCF6EA]">
                     {getIcon()}
                 </div>
-                <span className="text-[#6B6B66] text-sm font-medium">{getTypeLabel()}</span>
-                <span className="ml-auto text-xs px-2 py-1 bg-[#FAF9F0] rounded-full text-[#6B6B66] border border-[#E8E6DF] inline-flex">
+                <span className="text-[#445865] text-sm font-medium">{getTypeLabel()}</span>
+                <span className="ml-auto text-xs px-2 py-1 bg-[#FCF6EA] rounded-full text-[#445865] border border-[#E7D8BD] inline-flex">
                     {challenge.category}
                 </span>
             </div>
 
-            <div className="bg-[#FAF9F0] rounded-2xl p-5 border border-[#F0EEE8]">
-                <p className="text-[#1A1A19] text-lg leading-relaxed italic">
+            <div className="bg-[#FCF6EA] rounded-2xl p-5 border border-[#FCF6EA]">
+                <p className="text-[#08283B] text-lg leading-relaxed italic">
                     "{challenge.content}"
                 </p>
             </div>
 
             {showHints && (
-                <div className="bg-[#D97757]/10 rounded-xl p-4 border border-[#D97757]/20 animate-in fade-in">
+                <div className="bg-[#D97848]/10 rounded-xl p-4 border border-[#D97848]/20 animate-in fade-in">
                     <div className="flex items-start gap-2">
-                        <HelpCircle size={18} className="text-[#D97757] flex-shrink-0 mt-0.5" />
+                        <HelpCircle size={18} className="text-[#D97848] flex-shrink-0 mt-0.5" />
                         <div>
-                            <p className="text-[#D97757] font-bold text-sm mb-1">Hints:</p>
-                            <ul className="text-[#3D3D38] text-sm space-y-1">
+                            <p className="text-[#D97848] font-bold text-sm mb-1">Hints:</p>
+                            <ul className="text-[#445865] text-sm space-y-1">
                                 {challenge.hints.map((hint, i) => (
                                     <li key={i}>- {hint}</li>
                                 ))}
@@ -290,48 +290,48 @@ export const DeepfakeDetectorMission: React.FC<Props> = ({ onBack, onComplete, v
     // Intro screen
     if (showIntro) {
         return (
-            <div className="min-h-screen bg-[#FAF9F0] flex items-center justify-center p-4" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+            <div className="min-h-screen bg-[#FCF6EA] flex items-center justify-center p-4" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                 <div className="max-w-lg w-full text-center space-y-8">
                     <div className="relative inline-block">
-                        <div className="absolute inset-0 bg-[#D97757]/20 blur-3xl rounded-full animate-pulse" />
-                        <div className="relative bg-gradient-to-br from-[#D97757] to-[#C46849] w-32 h-32 rounded-3xl flex items-center justify-center shadow-2xl">
+                        <div className="absolute inset-0 bg-[#D97848]/20 blur-3xl rounded-full animate-pulse" />
+                        <div className="relative bg-gradient-to-br from-[#D97848] to-[#D97848] w-32 h-32 rounded-3xl flex items-center justify-center shadow-2xl">
                             <Eye size={64} className="text-white" />
                         </div>
                     </div>
 
                     <div className="space-y-4">
-                        <h1 className="text-4xl font-black text-[#1A1A19]" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Deepfake Detector</h1>
-                        <p className="text-[#3D3D38] text-lg">
+                        <h1 className="text-4xl font-black text-[#08283B]" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Deepfake Detector</h1>
+                        <p className="text-[#445865] text-lg">
                             Kun jij AI-gegenereerde content herkennen? Leer de tekenen te spotten
                             die verraden of iets door een mens of door AI is gemaakt!
                         </p>
                     </div>
 
                     <div className="grid grid-cols-3 gap-4 text-center">
-                        <div className="bg-white rounded-xl p-4 border border-[#E8E6DF]">
-                            <Camera className="w-8 h-8 text-[#8B6F9E] mx-auto mb-2" />
-                            <p className="text-[#1A1A19] font-bold text-sm">AI Afbeeldingen</p>
+                        <div className="bg-white rounded-xl p-4 border border-[#E7D8BD]">
+                            <Camera className="w-8 h-8 text-[#0B453F] mx-auto mb-2" />
+                            <p className="text-[#08283B] font-bold text-sm">AI Afbeeldingen</p>
                         </div>
-                        <div className="bg-white rounded-xl p-4 border border-[#E8E6DF]">
-                            <FileText className="w-8 h-8 text-[#2A9D8F] mx-auto mb-2" />
-                            <p className="text-[#1A1A19] font-bold text-sm">AI Teksten</p>
+                        <div className="bg-white rounded-xl p-4 border border-[#E7D8BD]">
+                            <FileText className="w-8 h-8 text-[#5F947D] mx-auto mb-2" />
+                            <p className="text-[#08283B] font-bold text-sm">AI Teksten</p>
                         </div>
-                        <div className="bg-white rounded-xl p-4 border border-[#E8E6DF]">
-                            <Shield className="w-8 h-8 text-[#10B981] mx-auto mb-2" />
-                            <p className="text-[#1A1A19] font-bold text-sm">Nepnieuws</p>
+                        <div className="bg-white rounded-xl p-4 border border-[#E7D8BD]">
+                            <Shield className="w-8 h-8 text-[#5F947D] mx-auto mb-2" />
+                            <p className="text-[#08283B] font-bold text-sm">Nepnieuws</p>
                         </div>
                     </div>
 
-                    <div className="bg-[#D97757]/10 rounded-xl p-4 border border-[#D97757]/20">
-                        <p className="text-[#3D3D38] text-sm">
-                            <strong className="text-[#D97757]">Let op:</strong> In deze missie beschrijven we afbeeldingen met tekst
+                    <div className="bg-[#D97848]/10 rounded-xl p-4 border border-[#D97848]/20">
+                        <p className="text-[#445865] text-sm">
+                            <strong className="text-[#D97848]">Let op:</strong> In deze missie beschrijven we afbeeldingen met tekst
                             in plaats van echte foto's te tonen. Dit helpt je te focussen op de details!
                         </p>
                     </div>
 
                     <button
                         onClick={() => setState(prev => ({ ...prev, showIntro: false }))}
-                        className="w-full py-4 bg-[#D97757] hover:bg-[#C46849] text-white rounded-full font-black uppercase tracking-wide hover:shadow-lg hover:shadow-[#D97757]/30 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#D97757]"
+                        className="w-full py-4 bg-[#D97848] hover:bg-[#D97848] text-white rounded-full font-black uppercase tracking-wide hover:shadow-lg hover:shadow-[#D97848]/30 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#D97848]"
                     >
                         Start Detectie
                     </button>
@@ -343,46 +343,46 @@ export const DeepfakeDetectorMission: React.FC<Props> = ({ onBack, onComplete, v
     // Level complete screen
     if (showLevelComplete) {
         return (
-            <div className="min-h-screen bg-[#FAF9F0] flex items-center justify-center p-4" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+            <div className="min-h-screen bg-[#FCF6EA] flex items-center justify-center p-4" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                 <div className="max-w-lg w-full text-center space-y-8">
                     <div className="relative inline-block">
-                        <div className="absolute inset-0 bg-[#10B981]/20 blur-3xl rounded-full animate-pulse" />
-                        <div className="relative bg-[#10B981] w-24 h-24 rounded-full flex items-center justify-center shadow-2xl">
+                        <div className="absolute inset-0 bg-[#5F947D]/20 blur-3xl rounded-full animate-pulse" />
+                        <div className="relative bg-[#5F947D] w-24 h-24 rounded-full flex items-center justify-center shadow-2xl">
                             <Trophy size={48} className="text-white" />
                         </div>
                     </div>
 
                     <div className="space-y-2">
-                        <h2 className="text-3xl font-black text-[#1A1A19]" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
+                        <h2 className="text-3xl font-black text-[#08283B]" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
                             {currentLevel === 'beginner' ? 'Beginner Voltooid!' : 'Gevorderd Voltooid!'}
                         </h2>
-                        <p className="text-[#3D3D38]">
+                        <p className="text-[#445865]">
                             {currentLevel === 'beginner'
                                 ? 'Je kent de basics! Nu de subtielere AI-tekens herkennen...'
                                 : 'Uitstekend! Tijd voor de expert uitdagingen waar AI bijna niet te onderscheiden is.'}
                         </p>
                     </div>
 
-                    <div className="bg-white rounded-2xl p-6 border border-[#E8E6DF]">
+                    <div className="bg-white rounded-2xl p-6 border border-[#E7D8BD]">
                         <div className="flex justify-around">
                             <div>
-                                <p className="text-3xl font-black text-[#10B981]">{correctAnswers}</p>
-                                <p className="text-[#6B6B66] text-sm">Correct</p>
+                                <p className="text-3xl font-black text-[#5F947D]">{correctAnswers}</p>
+                                <p className="text-[#445865] text-sm">Correct</p>
                             </div>
                             <div>
-                                <p className="text-3xl font-black text-[#D97757]">{score}</p>
-                                <p className="text-[#6B6B66] text-sm">Punten</p>
+                                <p className="text-3xl font-black text-[#D97848]">{score}</p>
+                                <p className="text-[#445865] text-sm">Punten</p>
                             </div>
                             <div>
-                                <p className="text-3xl font-black text-[#D97757]">{streak}</p>
-                                <p className="text-[#6B6B66] text-sm">Max Streak</p>
+                                <p className="text-3xl font-black text-[#D97848]">{streak}</p>
+                                <p className="text-[#445865] text-sm">Max Streak</p>
                             </div>
                         </div>
                     </div>
 
                     <button
                         onClick={handleNextLevel}
-                        className="w-full py-4 bg-[#D97757] hover:bg-[#C46849] text-white rounded-full font-black uppercase tracking-wide hover:shadow-lg hover:shadow-[#D97757]/30 transition-all duration-300 flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-[#D97757]"
+                        className="w-full py-4 bg-[#D97848] hover:bg-[#D97848] text-white rounded-full font-black uppercase tracking-wide hover:shadow-lg hover:shadow-[#D97848]/30 transition-all duration-300 flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-[#D97848]"
                     >
                         Volgende Level <ChevronRight size={24} />
                     </button>
@@ -394,39 +394,39 @@ export const DeepfakeDetectorMission: React.FC<Props> = ({ onBack, onComplete, v
     // Mission complete screen
     if (showMissionComplete) {
         return (
-            <div className="min-h-screen bg-[#FAF9F0] flex items-center justify-center p-4" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+            <div className="min-h-screen bg-[#FCF6EA] flex items-center justify-center p-4" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
                 <div className="max-w-lg w-full text-center space-y-8">
                     <div className="relative inline-block">
-                        <div className="absolute inset-0 bg-[#D97757]/20 blur-3xl rounded-full animate-pulse" />
-                        <div className="relative bg-gradient-to-br from-[#D97757] to-[#C46849] w-32 h-32 rounded-3xl flex items-center justify-center shadow-2xl animate-bounce">
+                        <div className="absolute inset-0 bg-[#D97848]/20 blur-3xl rounded-full animate-pulse" />
+                        <div className="relative bg-gradient-to-br from-[#D97848] to-[#D97848] w-32 h-32 rounded-3xl flex items-center justify-center shadow-2xl animate-bounce">
                             <Sparkles size={64} className="text-white" />
                         </div>
                     </div>
 
                     <div className="space-y-2">
-                        <h1 className="text-4xl font-black text-[#1A1A19]" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>MISSIE VOLTOOID!</h1>
-                        <p className="text-[#3D3D38] text-lg">
+                        <h1 className="text-4xl font-black text-[#08283B]" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>MISSIE VOLTOOID!</h1>
+                        <p className="text-[#445865] text-lg">
                             Je bent nu een echte Deepfake Detective! Je kunt AI-gegenereerde content
                             herkennen en kritisch nadenken over wat je online ziet.
                         </p>
                     </div>
 
-                    <div className="bg-white rounded-2xl p-6 border border-[#E8E6DF]">
+                    <div className="bg-white rounded-2xl p-6 border border-[#E7D8BD]">
                         <div className="flex justify-around">
                             <div>
-                                <p className="text-3xl font-black text-[#10B981]">{correctAnswers}/{totalChallenges}</p>
-                                <p className="text-[#6B6B66] text-sm">Correct</p>
+                                <p className="text-3xl font-black text-[#5F947D]">{correctAnswers}/{totalChallenges}</p>
+                                <p className="text-[#445865] text-sm">Correct</p>
                             </div>
                             <div>
-                                <p className="text-3xl font-black text-[#D97757]">{score}</p>
-                                <p className="text-[#6B6B66] text-sm">Totaal Punten</p>
+                                <p className="text-3xl font-black text-[#D97848]">{score}</p>
+                                <p className="text-[#445865] text-sm">Totaal Punten</p>
                             </div>
                         </div>
                     </div>
 
-                    <div className="bg-[#8B6F9E]/10 rounded-2xl p-6 border border-[#8B6F9E]/20">
-                        <h3 className="text-lg font-bold text-[#8B6F9E] mb-2" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Wat heb je geleerd?</h3>
-                        <ul className="text-[#3D3D38] text-sm text-left space-y-1">
+                    <div className="bg-[#0B453F]/10 rounded-2xl p-6 border border-[#0B453F]/20">
+                        <h3 className="text-lg font-bold text-[#0B453F] mb-2" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Wat heb je geleerd?</h3>
+                        <ul className="text-[#445865] text-sm text-left space-y-1">
                             <li>AI-afbeeldingen herkennen aan detail-fouten</li>
                             <li>AI-tekst herkennen aan monotone schrijfstijl</li>
                             <li>Verschil tussen AI en menselijk geschreven fake nieuws</li>
@@ -437,7 +437,7 @@ export const DeepfakeDetectorMission: React.FC<Props> = ({ onBack, onComplete, v
 
                     <button
                         onClick={() => { clearSave(); onComplete(true); }}
-                        className="w-full py-4 bg-[#D97757] hover:bg-[#C46849] text-white rounded-full font-black uppercase tracking-wide hover:shadow-lg hover:shadow-[#D97757]/30 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#D97757]"
+                        className="w-full py-4 bg-[#D97848] hover:bg-[#D97848] text-white rounded-full font-black uppercase tracking-wide hover:shadow-lg hover:shadow-[#D97848]/30 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#D97848]"
                     >
                         Terug naar Mission Control
                     </button>
@@ -450,51 +450,51 @@ export const DeepfakeDetectorMission: React.FC<Props> = ({ onBack, onComplete, v
     const isCorrect = answer !== null && (answer === 'ai') === currentChallenge.isAIGenerated;
 
     return (
-        <div className="min-h-screen overflow-y-auto bg-[#FAF9F0]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+        <div className="min-h-screen overflow-y-auto bg-[#FCF6EA]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
             {/* Header */}
-            <div className="sticky top-0 z-20 bg-white/90 backdrop-blur-md border-b border-[#E8E6DF]">
+            <div className="sticky top-0 z-20 bg-white/90 backdrop-blur-md border-b border-[#E7D8BD]">
                 <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
                     <button
                         onClick={onBack}
-                        className="p-2 text-[#6B6B66] hover:text-[#1A1A19] transition-all duration-300"
+                        className="p-2 text-[#445865] hover:text-[#08283B] transition-all duration-300"
                     >
                         <ArrowLeft size={24} />
                     </button>
 
                     <div className="flex items-center gap-4">
                         <div className="flex items-center gap-2">
-                            <span className={`px-3 py-1 rounded-full text-xs font-bold border inline-flex ${currentLevel === 'beginner' ? 'bg-[#10B981]/10 text-[#10B981] border-[#10B981]/30' :
-                                    currentLevel === 'gevorderd' ? 'bg-[#D97757]/10 text-[#D97757] border-[#D97757]/30' :
-                                        'bg-[#8B6F9E]/10 text-[#8B6F9E] border-[#8B6F9E]/30'
+                            <span className={`px-3 py-1 rounded-full text-xs font-bold border inline-flex ${currentLevel === 'beginner' ? 'bg-[#5F947D]/10 text-[#5F947D] border-[#5F947D]/30' :
+                                    currentLevel === 'gevorderd' ? 'bg-[#D97848]/10 text-[#D97848] border-[#D97848]/30' :
+                                        'bg-[#0B453F]/10 text-[#0B453F] border-[#0B453F]/30'
                                 }`}>
                                 {currentLevel === 'beginner' ? 'Beginner' :
                                     currentLevel === 'gevorderd' ? 'Gevorderd' : 'Expert'}
                             </span>
                             {vsoProfile && (
-                                <span className="text-[10px] bg-[#8B6F9E]/10 text-[#8B6F9E] px-2 py-1 rounded-full border border-[#8B6F9E]/30 font-bold uppercase tracking-tight ml-2 inline-flex">
+                                <span className="text-[10px] bg-[#0B453F]/10 text-[#0B453F] px-2 py-1 rounded-full border border-[#0B453F]/30 font-bold uppercase tracking-tight ml-2 inline-flex">
                                     {vsoProfile === 'dagbesteding' ? 'Focus: Ervaren' : 'Focus: Beheersen'}
                                 </span>
                             )}
                         </div>
 
                         {streak >= 2 && (
-                            <div className="flex items-center gap-1 bg-[#D97757]/10 px-2 py-1 rounded-full animate-pulse border border-[#D97757]/30">
-                                <Zap size={14} className="text-[#D97757]" />
-                                <span className="text-[#D97757] font-bold text-xs">{streak}x</span>
+                            <div className="flex items-center gap-1 bg-[#D97848]/10 px-2 py-1 rounded-full animate-pulse border border-[#D97848]/30">
+                                <Zap size={14} className="text-[#D97848]" />
+                                <span className="text-[#D97848] font-bold text-xs">{streak}x</span>
                             </div>
                         )}
 
-                        <div className="flex items-center gap-1 bg-white px-3 py-1.5 rounded-full border border-[#E8E6DF]">
-                            <Sparkles size={14} className="text-[#D97757]" />
-                            <span className="text-[#1A1A19] font-bold text-sm">{score}</span>
+                        <div className="flex items-center gap-1 bg-white px-3 py-1.5 rounded-full border border-[#E7D8BD]">
+                            <Sparkles size={14} className="text-[#D97848]" />
+                            <span className="text-[#08283B] font-bold text-sm">{score}</span>
                         </div>
                     </div>
                 </div>
 
                 {/* Progress bar */}
-                <div className="h-1 bg-[#F0EEE8]">
+                <div className="h-1 bg-[#FCF6EA]">
                     <div
-                        className="h-full bg-gradient-to-r from-[#D97757] to-[#C46849] transition-all duration-500"
+                        className="h-full bg-gradient-to-r from-[#D97848] to-[#D97848] transition-all duration-500"
                         style={{ width: `${((currentChallengeIndex + 1) / totalChallenges) * 100}%` }}
                     />
                 </div>
@@ -504,8 +504,8 @@ export const DeepfakeDetectorMission: React.FC<Props> = ({ onBack, onComplete, v
             <div className="max-w-2xl mx-auto px-4 py-8 space-y-6">
                 {/* Challenge title */}
                 <div className="text-center">
-                    <h2 className="text-2xl font-black text-[#1A1A19]" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>{currentChallenge.title}</h2>
-                    <p className="text-[#6B6B66] mt-1">Is dit door een mens gemaakt of door AI gegenereerd?</p>
+                    <h2 className="text-2xl font-black text-[#08283B]" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>{currentChallenge.title}</h2>
+                    <p className="text-[#445865] mt-1">Is dit door een mens gemaakt of door AI gegenereerd?</p>
                 </div>
 
                 {/* Content card */}
@@ -516,7 +516,7 @@ export const DeepfakeDetectorMission: React.FC<Props> = ({ onBack, onComplete, v
                     <div className="text-center">
                         <button
                             onClick={() => setShowHints(true)}
-                            className="text-[#6B6B66] text-sm font-medium hover:text-[#D97757] transition-all duration-300 flex items-center gap-2 mx-auto"
+                            className="text-[#445865] text-sm font-medium hover:text-[#D97848] transition-all duration-300 flex items-center gap-2 mx-auto"
                         >
                             <HelpCircle size={16} />
                             Hint nodig?
@@ -529,20 +529,20 @@ export const DeepfakeDetectorMission: React.FC<Props> = ({ onBack, onComplete, v
                     <div className="grid grid-cols-2 gap-4">
                         <button
                             onClick={() => handleAnswer('real')}
-                            className="py-6 bg-[#10B981]/10 hover:bg-[#10B981]/20 border-2 border-[#10B981]/30 hover:border-[#10B981] rounded-2xl transition-all duration-300 group focus-visible:ring-2 focus-visible:ring-[#D97757]"
+                            className="py-6 bg-[#5F947D]/10 hover:bg-[#5F947D]/20 border-2 border-[#5F947D]/30 hover:border-[#5F947D] rounded-2xl transition-all duration-300 group focus-visible:ring-2 focus-visible:ring-[#D97848]"
                         >
-                            <ThumbsUp size={32} className="text-[#10B981] mx-auto mb-2 group-hover:scale-110 transition-transform" />
-                            <span className="text-[#10B981] font-black text-lg">ECHT</span>
-                            <p className="text-[#10B981]/60 text-xs mt-1">Door een mens gemaakt</p>
+                            <ThumbsUp size={32} className="text-[#5F947D] mx-auto mb-2 group-hover:scale-110 transition-transform" />
+                            <span className="text-[#5F947D] font-black text-lg">ECHT</span>
+                            <p className="text-[#5F947D]/60 text-xs mt-1">Door een mens gemaakt</p>
                         </button>
 
                         <button
                             onClick={() => handleAnswer('ai')}
-                            className="py-6 bg-[#8B6F9E]/10 hover:bg-[#8B6F9E]/20 border-2 border-[#8B6F9E]/30 hover:border-[#8B6F9E] rounded-2xl transition-all duration-300 group focus-visible:ring-2 focus-visible:ring-[#D97757]"
+                            className="py-6 bg-[#0B453F]/10 hover:bg-[#0B453F]/20 border-2 border-[#0B453F]/30 hover:border-[#0B453F] rounded-2xl transition-all duration-300 group focus-visible:ring-2 focus-visible:ring-[#D97848]"
                         >
-                            <ThumbsDown size={32} className="text-[#8B6F9E] mx-auto mb-2 group-hover:scale-110 transition-transform" />
-                            <span className="text-[#8B6F9E] font-black text-lg">AI</span>
-                            <p className="text-[#8B6F9E]/60 text-xs mt-1">Door AI gegenereerd</p>
+                            <ThumbsDown size={32} className="text-[#0B453F] mx-auto mb-2 group-hover:scale-110 transition-transform" />
+                            <span className="text-[#0B453F] font-black text-lg">AI</span>
+                            <p className="text-[#0B453F]/60 text-xs mt-1">Door AI gegenereerd</p>
                         </button>
                     </div>
                 )}
@@ -552,43 +552,43 @@ export const DeepfakeDetectorMission: React.FC<Props> = ({ onBack, onComplete, v
                     <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4">
                         {/* Result banner */}
                         <div className={`rounded-2xl p-6 border-2 ${isCorrect
-                                ? 'bg-[#10B981]/10 border-[#10B981]'
+                                ? 'bg-[#5F947D]/10 border-[#5F947D]'
                                 : 'bg-red-500/10 border-red-500'
                             }`}>
                             <div className="flex items-center gap-4">
-                                <div className={`w-16 h-16 rounded-full flex items-center justify-center ${isCorrect ? 'bg-[#10B981]' : 'bg-red-500'
+                                <div className={`w-16 h-16 rounded-full flex items-center justify-center ${isCorrect ? 'bg-[#5F947D]' : 'bg-red-500'
                                     }`}>
                                     {isCorrect ? <Check size={32} className="text-white" /> : <X size={32} className="text-white" />}
                                 </div>
                                 <div className="flex-1">
-                                    <p className={`font-black text-xl ${isCorrect ? 'text-[#10B981]' : 'text-red-500'}`}>
+                                    <p className={`font-black text-xl ${isCorrect ? 'text-[#5F947D]' : 'text-red-500'}`}>
                                         {isCorrect ? 'Correct!' : 'Helaas!'}
                                     </p>
-                                    <p className="text-[#1A1A19]">
+                                    <p className="text-[#08283B]">
                                         Dit was {currentChallenge.isAIGenerated ? 'AI-gegenereerd' : 'door een mens gemaakt'}.
                                     </p>
                                 </div>
                                 {isCorrect && streak >= 2 && (
                                     <div className="text-right">
-                                        <p className="text-[#D97757] font-bold text-sm">+50 bonus!</p>
-                                        <p className="text-[#D97757]/60 text-xs">{streak}x streak</p>
+                                        <p className="text-[#D97848] font-bold text-sm">+50 bonus!</p>
+                                        <p className="text-[#D97848]/60 text-xs">{streak}x streak</p>
                                     </div>
                                 )}
                             </div>
                         </div>
 
                         {/* Explanation */}
-                        <div className="bg-white rounded-xl p-5 border border-[#E8E6DF]">
-                            <h4 className="text-[#1A1A19] font-bold mb-2 flex items-center gap-2">
-                                <Brain size={18} className="text-[#8B6F9E]" />
+                        <div className="bg-white rounded-xl p-5 border border-[#E7D8BD]">
+                            <h4 className="text-[#08283B] font-bold mb-2 flex items-center gap-2">
+                                <Brain size={18} className="text-[#0B453F]" />
                                 Uitleg
                             </h4>
-                            <p className="text-[#3D3D38] text-sm">{currentChallenge.explanation}</p>
+                            <p className="text-[#445865] text-sm">{currentChallenge.explanation}</p>
 
                             {currentChallenge.telltaleSign && (
-                                <div className="mt-3 p-3 bg-[#2A9D8F]/10 rounded-lg border border-[#2A9D8F]/20">
-                                    <p className="text-[#3D3D38] text-sm">
-                                        <strong className="text-[#2A9D8F]">Kenmerkend teken:</strong> {currentChallenge.telltaleSign}
+                                <div className="mt-3 p-3 bg-[#5F947D]/10 rounded-lg border border-[#5F947D]/20">
+                                    <p className="text-[#445865] text-sm">
+                                        <strong className="text-[#5F947D]">Kenmerkend teken:</strong> {currentChallenge.telltaleSign}
                                     </p>
                                 </div>
                             )}
@@ -596,7 +596,7 @@ export const DeepfakeDetectorMission: React.FC<Props> = ({ onBack, onComplete, v
 
                         <button
                             onClick={handleNext}
-                            className="w-full py-4 bg-[#D97757] hover:bg-[#C46849] text-white rounded-full font-black uppercase tracking-wide hover:shadow-lg hover:shadow-[#D97757]/30 transition-all duration-300 flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-[#D97757]"
+                            className="w-full py-4 bg-[#D97848] hover:bg-[#D97848] text-white rounded-full font-black uppercase tracking-wide hover:shadow-lg hover:shadow-[#D97848]/30 transition-all duration-300 flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-[#D97848]"
                         >
                             Volgende <ChevronRight size={20} />
                         </button>

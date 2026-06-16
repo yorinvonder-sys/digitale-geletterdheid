@@ -92,7 +92,7 @@ export const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({ student,
                         {!result ? (
                             <>
                                 <div className="space-y-2">
-                                    <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block">
+                                    <label className="text-xs font-bold text-lab-muted uppercase tracking-wider block">
                                         Nieuw Wachtwoord
                                     </label>
                                     <div className="relative">
@@ -102,28 +102,28 @@ export const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({ student,
                                             value={password}
                                             onChange={(e) => setPassword(e.target.value)}
                                             placeholder="Voer nieuw wachtwoord in..."
-                                            className="w-full px-4 py-3 pr-12 bg-slate-50 border-2 border-slate-200 rounded-xl text-sm font-medium 
+                                            className="w-full px-4 py-3 pr-12 bg-lab-muted border-2 border-lab-muted rounded-xl text-sm font-medium 
                                                      focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all"
                                         />
                                         <button
                                             type="button"
                                             onClick={() => setShowPassword(!showPassword)}
-                                            className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 text-slate-400 hover:text-slate-600 transition-colors"
+                                            className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 text-lab-muted hover:text-lab-muted transition-colors"
                                         >
                                             {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                                         </button>
                                     </div>
-                                    <p className="text-[11px] text-slate-400">
+                                    <p className="text-[11px] text-lab-muted">
                                         De leerling moet dit wachtwoord wijzigen bij de volgende keer inloggen.
                                     </p>
                                 </div>
 
-                                <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
+                                <div className="bg-lab-gold border border-lab-gold rounded-xl p-4">
                                     <div className="flex gap-3">
-                                        <AlertCircle size={18} className="text-amber-500 shrink-0 mt-0.5" />
+                                        <AlertCircle size={18} className="text-lab-gold shrink-0 mt-0.5" />
                                         <div>
-                                            <p className="text-xs font-bold text-amber-800">Let op</p>
-                                            <p className="text-xs text-amber-700 mt-0.5">
+                                            <p className="text-xs font-bold text-lab-gold">Let op</p>
+                                            <p className="text-xs text-lab-gold mt-0.5">
                                                 Het huidige wachtwoord van {student.displayName} wordt overschreven.
                                             </p>
                                         </div>
@@ -131,16 +131,16 @@ export const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({ student,
                                 </div>
                             </>
                         ) : (
-                            <div className={`rounded-xl p-5 ${result.success ? 'bg-emerald-50 border border-emerald-200' : 'bg-red-50 border border-red-200'}`}>
+                            <div className={`rounded-xl p-5 ${result.success ? 'bg-lab-sage border border-lab-sage' : 'bg-red-50 border border-red-200'}`}>
                                 <div className="flex items-start gap-3">
-                                    <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${result.success ? 'bg-emerald-100 text-emerald-600' : 'bg-red-100 text-red-600'}`}>
+                                    <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${result.success ? 'bg-lab-sage text-lab-sage' : 'bg-red-100 text-red-600'}`}>
                                         {result.success ? <Check size={20} /> : <AlertCircle size={20} />}
                                     </div>
                                     <div className="flex-1">
-                                        <p className={`font-bold text-sm ${result.success ? 'text-emerald-800' : 'text-red-800'}`}>
+                                        <p className={`font-bold text-sm ${result.success ? 'text-lab-sage' : 'text-red-800'}`}>
                                             {result.success ? 'Succes!' : 'Fout'}
                                         </p>
-                                        <p className={`text-xs mt-0.5 ${result.success ? 'text-emerald-700' : 'text-red-700'}`}>
+                                        <p className={`text-xs mt-0.5 ${result.success ? 'text-lab-sage' : 'text-red-700'}`}>
                                             {result.message}
                                         </p>
 
@@ -151,10 +151,10 @@ export const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({ student,
                     </div>
 
                     {/* Footer */}
-                    <div className="px-6 py-4 bg-slate-50 border-t border-slate-100 flex justify-end gap-3">
+                    <div className="px-6 py-4 bg-lab-muted border-t border-lab-muted flex justify-end gap-3">
                         <button
                             onClick={onClose}
-                            className="px-4 py-2.5 text-slate-600 font-bold text-sm rounded-xl hover:bg-slate-100 transition-colors"
+                            className="px-4 py-2.5 text-lab-muted font-bold text-sm rounded-xl hover:bg-lab-muted transition-colors"
                         >
                             {result ? 'Sluiten' : 'Annuleren'}
                         </button>

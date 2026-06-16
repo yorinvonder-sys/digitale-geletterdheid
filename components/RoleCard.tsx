@@ -43,27 +43,27 @@ export const RoleCard: React.FC<RoleCardProps> = ({ role, isSelected, onClick })
             absolute inset-0 w-full h-full backface-hidden rounded-[2rem] flex flex-col items-center text-center cursor-pointer border transition-all overflow-hidden bg-white
             ${isSelected 
               ? 'shadow-xl ring-2 ring-lab-primary border-transparent' 
-              : 'shadow-md border-slate-100 hover:shadow-xl'
+              : 'shadow-md border-lab-muted hover:shadow-xl'
             }
             ${showInfo ? 'opacity-0 pointer-events-none' : 'opacity-100 z-10'}
           `}
         >
           {/* DEFAULT STATE (Text & Icon) - Fades out on hover */}
           <div className="absolute inset-0 p-6 flex flex-col items-center justify-center transition-opacity duration-300 group-hover:opacity-0">
-             <div className={`text-4xl mb-4 p-4 rounded-2xl bg-slate-50 text-slate-600 shadow-inner`}>
+             <div className={`text-4xl mb-4 p-4 rounded-2xl bg-lab-muted text-lab-muted shadow-inner`}>
                 {role.icon}
              </div>
-             <h3 className="font-extrabold text-xl mb-2 text-slate-800">{role.title}</h3>
-             <p className="text-sm text-slate-400 font-medium line-clamp-2">
+             <h3 className="font-extrabold text-xl mb-2 text-lab-muted">{role.title}</h3>
+             <p className="text-sm text-lab-muted font-medium line-clamp-2">
                 {role.description}
              </p>
-             <div className="mt-4 px-3 py-1 bg-slate-100 text-slate-500 rounded-full text-xs font-bold uppercase tracking-wider">
+             <div className="mt-4 px-3 py-1 bg-lab-muted text-lab-muted rounded-full text-xs font-bold uppercase tracking-wider">
                 Hover voor voorbeeld
              </div>
           </div>
 
           {/* HOVER STATE (Visual Preview) - Fades in on hover */}
-          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-slate-50">
+          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-lab-muted">
              {/* The Visual Component */}
              <div className="w-full h-full relative">
                 {role.visualPreview}
@@ -71,7 +71,7 @@ export const RoleCard: React.FC<RoleCardProps> = ({ role, isSelected, onClick })
                 {/* Overlay with CTA */}
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent flex flex-col justify-end p-6">
                    <h3 className="text-white font-bold text-lg mb-1 drop-shadow-md">{role.title}</h3>
-                   <div className="flex items-center justify-center gap-2 text-emerald-300 text-xs font-bold uppercase tracking-widest">
+                   <div className="flex items-center justify-center gap-2 text-lab-sage text-xs font-bold uppercase tracking-widest">
                       <Eye size={14} /> Bekijk Resultaat
                    </div>
                 </div>
@@ -81,7 +81,7 @@ export const RoleCard: React.FC<RoleCardProps> = ({ role, isSelected, onClick })
           {/* Info Button (Always visible on top layer) */}
           <button 
              onClick={handleInfoClick}
-             className="absolute top-4 right-4 p-2 rounded-full bg-white/50 hover:bg-white text-slate-500 hover:text-lab-primary transition-colors z-20 backdrop-blur shadow-sm"
+             className="absolute top-4 right-4 p-2 rounded-full bg-white/50 hover:bg-white text-lab-muted hover:text-lab-primary transition-colors z-20 backdrop-blur shadow-sm"
              title="Meer info"
           >
              <Info size={20} />
@@ -91,7 +91,7 @@ export const RoleCard: React.FC<RoleCardProps> = ({ role, isSelected, onClick })
         {/* BACK SIDE (Info Mode) - Stays same */}
         <div 
           className={`
-            absolute inset-0 w-full h-full backface-hidden rounded-[2rem] p-6 bg-slate-900 text-white flex flex-col shadow-xl border border-slate-700
+            absolute inset-0 w-full h-full backface-hidden rounded-[2rem] p-6 bg-lab-muted text-white flex flex-col shadow-xl border border-lab-muted
             transition-all duration-300
             ${showInfo ? 'opacity-100 z-20 scale-100' : 'opacity-0 pointer-events-none scale-95'}
           `}
@@ -100,28 +100,28 @@ export const RoleCard: React.FC<RoleCardProps> = ({ role, isSelected, onClick })
              <h4 className="font-bold text-lab-accent flex items-center gap-2">
                 <BarChart2 size={16} /> Missie Info
              </h4>
-             <button onClick={handleInfoClick} className="text-slate-400 hover:text-white">
+             <button onClick={handleInfoClick} className="text-lab-muted hover:text-white">
                 <X size={20} />
              </button>
           </div>
 
           <div className="space-y-4 text-sm flex-grow text-left">
             <div>
-                <p className="text-slate-400 text-xs uppercase font-bold mb-1">Jouw Opdracht</p>
-                <p className="text-slate-200 leading-snug">{role.missionObjective}</p>
+                <p className="text-lab-muted text-xs uppercase font-bold mb-1">Jouw Opdracht</p>
+                <p className="text-lab-muted leading-snug">{role.missionObjective}</p>
             </div>
             <div>
-                <p className="text-slate-400 text-xs uppercase font-bold mb-1">Niveau</p>
+                <p className="text-lab-muted text-xs uppercase font-bold mb-1">Niveau</p>
                 <div className="flex gap-1 items-center">
                     {[1,2,3].map(i => (
                         <div key={i} className={`h-1.5 w-6 rounded-full ${
                             (role.difficulty === 'Easy' && i === 1) || 
                             (role.difficulty === 'Medium' && i <= 2) || 
                             (role.difficulty === 'Hard') 
-                            ? 'bg-lab-primary' : 'bg-slate-700'
+                            ? 'bg-lab-primary' : 'bg-lab-muted'
                         }`} />
                     ))}
-                    <span className="ml-2 text-xs text-slate-400">{getDifficultyLabel(role.difficulty)}</span>
+                    <span className="ml-2 text-xs text-lab-muted">{getDifficultyLabel(role.difficulty)}</span>
                 </div>
             </div>
           </div>

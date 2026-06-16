@@ -148,7 +148,7 @@ export const TypingTrainer: React.FC<TypingTrainerProps> = ({ onExit, onXPEarned
   const renderPrompt = () => {
     const chars = prompt.split('');
     return (
-      <div className="font-mono text-sm md:text-base leading-relaxed rounded-2xl p-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
+      <div className="font-mono text-sm md:text-base leading-relaxed rounded-2xl p-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
         {chars.map((ch, i) => {
           const typed = input[i];
           const isTyped = typed !== undefined;
@@ -159,14 +159,14 @@ export const TypingTrainer: React.FC<TypingTrainerProps> = ({ onExit, onXPEarned
               key={i}
               style={{
                 color: ok
-                  ? '#10B981'
+                  ? '#5F947D'
                   : bad
-                    ? '#EF4444'
+                    ? '#D97848'
                     : isTyped
-                      ? '#3D3D38'
-                      : '#6B6B66',
+                      ? '#445865'
+                      : '#445865',
                 textDecoration: bad ? 'underline' : 'none',
-                textDecorationColor: bad ? '#EF444499' : undefined,
+                textDecorationColor: bad ? '#D9784899' : undefined,
               }}
             >
               {ch}
@@ -178,22 +178,22 @@ export const TypingTrainer: React.FC<TypingTrainerProps> = ({ onExit, onXPEarned
   };
 
   return (
-    <div className="w-full h-full flex flex-col" style={{ backgroundColor: '#FAF9F0', color: '#1A1A19', fontFamily: "'Outfit', system-ui, sans-serif" }}>
+    <div className="w-full h-full flex flex-col" style={{ backgroundColor: '#FCF6EA', color: '#08283B', fontFamily: "'Outfit', system-ui, sans-serif" }}>
       {/* Header */}
-      <div className="shrink-0 px-4 py-3 flex items-center justify-between" style={{ borderBottom: '1px solid #E8E6DF' }}>
+      <div className="shrink-0 px-4 py-3 flex items-center justify-between" style={{ borderBottom: '1px solid #E7D8BD' }}>
         <button
           onClick={onExit}
           className="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300"
-          style={{ backgroundColor: '#F0EEE8', color: '#3D3D38' }}
-          onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#E8E6DF'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = '#F0EEE8'; }}
+          style={{ backgroundColor: '#FCF6EA', color: '#445865' }}
+          onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#E7D8BD'; }}
+          onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = '#FCF6EA'; }}
           aria-label="Terug"
         >
           <ArrowLeft size={20} />
         </button>
         <div className="flex items-center gap-2">
-          <Keyboard size={18} style={{ color: '#D97757' }} />
-          <span className="font-black uppercase tracking-widest text-sm" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#1A1A19' }}>Typing Trainer</span>
+          <Keyboard size={18} style={{ color: '#D97848' }} />
+          <span className="font-black uppercase tracking-widest text-sm" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#08283B' }}>Typing Trainer</span>
         </div>
         <button
           onClick={() => {
@@ -201,9 +201,9 @@ export const TypingTrainer: React.FC<TypingTrainerProps> = ({ onExit, onXPEarned
             setMode('menu');
           }}
           className="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300"
-          style={{ backgroundColor: '#F0EEE8', color: '#3D3D38' }}
-          onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#E8E6DF'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = '#F0EEE8'; }}
+          style={{ backgroundColor: '#FCF6EA', color: '#445865' }}
+          onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#E7D8BD'; }}
+          onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = '#FCF6EA'; }}
           aria-label="Reset"
           title="Reset"
         >
@@ -215,17 +215,17 @@ export const TypingTrainer: React.FC<TypingTrainerProps> = ({ onExit, onXPEarned
       <div className="flex-1 p-4 md:p-6 overflow-auto">
         {mode === 'menu' && (
           <div className="max-w-2xl mx-auto space-y-6">
-            <div className="rounded-2xl p-6" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
-              <h2 className="text-2xl font-black mb-2" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#1A1A19' }}>Train je typevaardigheid</h2>
-              <p className="text-sm" style={{ color: '#3D3D38' }}>
+            <div className="rounded-2xl p-6" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
+              <h2 className="text-2xl font-black mb-2" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#08283B' }}>Train je typevaardigheid</h2>
+              <p className="text-sm" style={{ color: '#445865' }}>
                 Typ de tekst zo nauwkeurig mogelijk. Hoe sneller en netter je typt, hoe hoger je score.
               </p>
             </div>
 
-            <div className="rounded-2xl p-6 space-y-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
+            <div className="rounded-2xl p-6 space-y-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
               <div className="flex items-center justify-between">
-                <span className="text-xs font-black uppercase tracking-widest" style={{ color: '#6B6B66' }}>Duur</span>
-                <span className="text-xs font-mono" style={{ color: '#6B6B66' }}>{durationSec}s</span>
+                <span className="text-xs font-black uppercase tracking-widest" style={{ color: '#445865' }}>Duur</span>
+                <span className="text-xs font-mono" style={{ color: '#445865' }}>{durationSec}s</span>
               </div>
               <div className="flex gap-2">
                 {[30, 60, 120].map((s) => (
@@ -234,9 +234,9 @@ export const TypingTrainer: React.FC<TypingTrainerProps> = ({ onExit, onXPEarned
                     onClick={() => setDurationSec(s)}
                     className="flex-1 py-3 rounded-full font-bold text-sm transition-all duration-300"
                     style={{
-                      backgroundColor: durationSec === s ? '#D9775715' : '#FFFFFF',
-                      border: `1px solid ${durationSec === s ? '#D97757' : '#E8E6DF'}`,
-                      color: durationSec === s ? '#D97757' : '#3D3D38',
+                      backgroundColor: durationSec === s ? '#D9784815' : '#FFFFFF',
+                      border: `1px solid ${durationSec === s ? '#D97848' : '#E7D8BD'}`,
+                      color: durationSec === s ? '#D97848' : '#445865',
                     }}
                   >
                     {s}s
@@ -250,9 +250,9 @@ export const TypingTrainer: React.FC<TypingTrainerProps> = ({ onExit, onXPEarned
                   setMode('countdown');
                 }}
                 className="w-full py-4 rounded-full font-black uppercase tracking-widest transition-all duration-300 active:scale-95"
-                style={{ background: 'linear-gradient(to right, #D97757, #C46849)', color: '#FFFFFF', boxShadow: '0 4px 14px #D9775730' }}
-                onMouseEnter={(e) => { e.currentTarget.style.background = 'linear-gradient(to right, #C46849, #B35A3D)'; }}
-                onMouseLeave={(e) => { e.currentTarget.style.background = 'linear-gradient(to right, #D97757, #C46849)'; }}
+                style={{ background: 'linear-gradient(to right, #D97848, #D97848)', color: '#FFFFFF', boxShadow: '0 4px 14px #D9784830' }}
+                onMouseEnter={(e) => { e.currentTarget.style.background = 'linear-gradient(to right, #D97848, #B35A3D)'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.background = 'linear-gradient(to right, #D97848, #D97848)'; }}
               >
                 Start
               </button>
@@ -263,9 +263,9 @@ export const TypingTrainer: React.FC<TypingTrainerProps> = ({ onExit, onXPEarned
         {mode === 'countdown' && (
           <div className="h-full flex items-center justify-center">
             <div className="text-center">
-              <div className="font-bold mb-2" style={{ color: '#3D3D38' }}>Klaar voor de start?</div>
-              <div className="text-7xl md:text-8xl font-black animate-pulse" style={{ color: '#D97757', fontFamily: "'Newsreader', Georgia, serif" }}>{countdown}</div>
-              <div className="mt-4 text-sm" style={{ color: '#6B6B66' }}>Focus op nauwkeurigheid.</div>
+              <div className="font-bold mb-2" style={{ color: '#445865' }}>Klaar voor de start?</div>
+              <div className="text-7xl md:text-8xl font-black animate-pulse" style={{ color: '#D97848', fontFamily: "'Newsreader', Georgia, serif" }}>{countdown}</div>
+              <div className="mt-4 text-sm" style={{ color: '#445865' }}>Focus op nauwkeurigheid.</div>
             </div>
           </div>
         )}
@@ -273,41 +273,41 @@ export const TypingTrainer: React.FC<TypingTrainerProps> = ({ onExit, onXPEarned
         {(mode === 'playing' || mode === 'results') && (
           <div className="max-w-3xl mx-auto space-y-4">
             {/* Progress bar */}
-            <div className="rounded-full h-2 overflow-hidden" style={{ backgroundColor: '#F0EEE8' }}>
+            <div className="rounded-full h-2 overflow-hidden" style={{ backgroundColor: '#FCF6EA' }}>
               <div
                 className="h-full rounded-full transition-all duration-300"
-                style={{ width: `${progressPct}%`, background: 'linear-gradient(to right, #D97757, #C46849)' }}
+                style={{ width: `${progressPct}%`, background: 'linear-gradient(to right, #D97848, #D97848)' }}
               />
             </div>
 
             <div className="grid grid-cols-3 gap-2">
-              <div className="rounded-2xl p-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
-                <div className="text-[10px] font-black uppercase tracking-widest mb-1 flex items-center gap-1" style={{ color: '#6B6B66' }}>
+              <div className="rounded-2xl p-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
+                <div className="text-[10px] font-black uppercase tracking-widest mb-1 flex items-center gap-1" style={{ color: '#445865' }}>
                   <Clock size={12} /> Tijd
                 </div>
                 <div
                   className="text-2xl font-black"
                   style={{
-                    color: timeLeftSec <= 10 && mode === 'playing' ? '#EF4444' : '#1A1A19',
+                    color: timeLeftSec <= 10 && mode === 'playing' ? '#D97848' : '#08283B',
                     fontFamily: "'Newsreader', Georgia, serif",
                   }}
                 >
                   {timeLeftSec}s
                 </div>
               </div>
-              <div className="rounded-2xl p-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
-                <div className="text-[10px] font-black uppercase tracking-widest mb-1" style={{ color: '#6B6B66' }}>WPM</div>
-                <div className="text-2xl font-black" style={{ color: '#1A1A19', fontFamily: "'Newsreader', Georgia, serif" }}>{wpm}</div>
+              <div className="rounded-2xl p-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
+                <div className="text-[10px] font-black uppercase tracking-widest mb-1" style={{ color: '#445865' }}>WPM</div>
+                <div className="text-2xl font-black" style={{ color: '#08283B', fontFamily: "'Newsreader', Georgia, serif" }}>{wpm}</div>
               </div>
-              <div className="rounded-2xl p-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
-                <div className="text-[10px] font-black uppercase tracking-widest mb-1" style={{ color: '#6B6B66' }}>Acc</div>
-                <div className="text-2xl font-black" style={{ color: '#1A1A19', fontFamily: "'Newsreader', Georgia, serif" }}>{accuracyPct}%</div>
+              <div className="rounded-2xl p-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
+                <div className="text-[10px] font-black uppercase tracking-widest mb-1" style={{ color: '#445865' }}>Acc</div>
+                <div className="text-2xl font-black" style={{ color: '#08283B', fontFamily: "'Newsreader', Georgia, serif" }}>{accuracyPct}%</div>
               </div>
             </div>
 
             {renderPrompt()}
 
-            <div className="rounded-2xl p-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
+            <div className="rounded-2xl p-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
               <input
                 ref={inputRef}
                 value={input}
@@ -316,32 +316,32 @@ export const TypingTrainer: React.FC<TypingTrainerProps> = ({ onExit, onXPEarned
                 placeholder={mode === 'playing' ? 'Begin met typen...' : 'Klaar'}
                 className="w-full px-4 py-4 rounded-2xl font-mono text-sm md:text-base outline-none transition-all duration-300"
                 style={{
-                  backgroundColor: '#FAF9F0',
-                  border: '1px solid #E8E6DF',
-                  color: '#1A1A19',
+                  backgroundColor: '#FCF6EA',
+                  border: '1px solid #E7D8BD',
+                  color: '#08283B',
                 }}
-                onFocus={(e) => { e.currentTarget.style.boxShadow = '0 0 0 2px #D9775740'; e.currentTarget.style.borderColor = '#D97757'; }}
-                onBlur={(e) => { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.borderColor = '#E8E6DF'; }}
+                onFocus={(e) => { e.currentTarget.style.boxShadow = '0 0 0 2px #D9784840'; e.currentTarget.style.borderColor = '#D97848'; }}
+                onBlur={(e) => { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.borderColor = '#E7D8BD'; }}
               />
-              <div className="mt-2 text-[10px] font-bold uppercase tracking-widest" style={{ color: '#6B6B66' }}>
+              <div className="mt-2 text-[10px] font-bold uppercase tracking-widest" style={{ color: '#445865' }}>
                 Tip: spaties tellen mee. Backspace mag, maar focus op flow.
               </div>
             </div>
 
             {mode === 'results' && (
-              <div className="rounded-2xl p-6" style={{ background: 'linear-gradient(135deg, #D9775712, #C4684908)', border: '1px solid #D9775730' }}>
+              <div className="rounded-2xl p-6" style={{ background: 'linear-gradient(135deg, #D9784812, #D9784808)', border: '1px solid #D9784830' }}>
                 <div className="flex items-center gap-3 mb-3">
-                  <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={{ backgroundColor: '#D9775720' }}>
-                    <Trophy style={{ color: '#D97757' }} size={24} />
+                  <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={{ backgroundColor: '#D9784820' }}>
+                    <Trophy style={{ color: '#D97848' }} size={24} />
                   </div>
                   <div>
-                    <div className="text-xs font-black uppercase tracking-widest" style={{ color: '#6B6B66' }}>Resultaat</div>
-                    <div className="text-xl font-black" style={{ color: '#1A1A19', fontFamily: "'Newsreader', Georgia, serif" }}>{wpm} WPM • {accuracyPct}%</div>
+                    <div className="text-xs font-black uppercase tracking-widest" style={{ color: '#445865' }}>Resultaat</div>
+                    <div className="text-xl font-black" style={{ color: '#08283B', fontFamily: "'Newsreader', Georgia, serif" }}>{wpm} WPM • {accuracyPct}%</div>
                   </div>
                 </div>
 
                 {/* XP display */}
-                <div className="rounded-full inline-flex items-center gap-1.5 px-3 py-1 mb-4" style={{ border: '1px solid #10B98140', backgroundColor: '#10B98110', color: '#10B981' }}>
+                <div className="rounded-full inline-flex items-center gap-1.5 px-3 py-1 mb-4" style={{ border: '1px solid #5F947D40', backgroundColor: '#5F947D10', color: '#5F947D' }}>
                   <span className="text-xs font-bold">+{computeXp(wpm, accuracyPct)} XP</span>
                 </div>
 
@@ -352,17 +352,17 @@ export const TypingTrainer: React.FC<TypingTrainerProps> = ({ onExit, onXPEarned
                       setMode('countdown');
                     }}
                     className="flex-1 py-4 rounded-full font-black uppercase tracking-widest transition-all duration-300 active:scale-95"
-                    style={{ background: 'linear-gradient(to right, #D97757, #C46849)', color: '#FFFFFF', boxShadow: '0 4px 14px #D9775730' }}
-                    onMouseEnter={(e) => { e.currentTarget.style.background = 'linear-gradient(to right, #C46849, #B35A3D)'; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.background = 'linear-gradient(to right, #D97757, #C46849)'; }}
+                    style={{ background: 'linear-gradient(to right, #D97848, #D97848)', color: '#FFFFFF', boxShadow: '0 4px 14px #D9784830' }}
+                    onMouseEnter={(e) => { e.currentTarget.style.background = 'linear-gradient(to right, #D97848, #B35A3D)'; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.background = 'linear-gradient(to right, #D97848, #D97848)'; }}
                   >
                     Opnieuw
                   </button>
                   <button
                     onClick={onExit}
                     className="flex-1 py-4 rounded-full font-black uppercase tracking-widest transition-all duration-300 active:scale-95"
-                    style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF', color: '#3D3D38' }}
-                    onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#F0EEE8'; }}
+                    style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD', color: '#445865' }}
+                    onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#FCF6EA'; }}
                     onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = '#FFFFFF'; }}
                   >
                     Terug

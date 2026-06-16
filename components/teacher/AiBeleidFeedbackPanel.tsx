@@ -7,9 +7,9 @@ import { Scale, ShieldCheck, Lightbulb, AlertTriangle, Sparkles, ThumbsUp, Filte
 
 const CATEGORIES = {
     regels: { label: '📋 Regels', color: 'bg-blue-500', bgLight: 'bg-blue-50', icon: ShieldCheck },
-    mogelijkheden: { label: '✨ Mogelijkheden', color: 'bg-emerald-500', bgLight: 'bg-emerald-50', icon: Lightbulb },
-    zorgen: { label: '⚠️ Zorgen', color: 'bg-amber-500', bgLight: 'bg-amber-50', icon: AlertTriangle },
-    suggesties: { label: '💡 Suggesties', color: 'bg-violet-500', bgLight: 'bg-violet-50', icon: Sparkles }
+    mogelijkheden: { label: '✨ Mogelijkheden', color: 'bg-lab-sage', bgLight: 'bg-lab-sage', icon: Lightbulb },
+    zorgen: { label: '⚠️ Zorgen', color: 'bg-lab-gold', bgLight: 'bg-lab-gold', icon: AlertTriangle },
+    suggesties: { label: '💡 Suggesties', color: 'bg-lab-teal', bgLight: 'bg-lab-teal', icon: Sparkles }
 };
 
 interface AiBeleidFeedbackPanelProps {
@@ -131,7 +131,7 @@ export const AiBeleidFeedbackPanel: React.FC<AiBeleidFeedbackPanelProps> = ({ cl
 
     if (loading) {
         return (
-            <div className="p-12 text-center text-slate-400 animate-pulse">
+            <div className="p-12 text-center text-lab-muted animate-pulse">
                 <Scale className="w-12 h-12 mx-auto mb-4 opacity-50" />
                 <p className="font-bold uppercase tracking-widest text-xs">Feedback laden...</p>
             </div>
@@ -143,17 +143,17 @@ export const AiBeleidFeedbackPanel: React.FC<AiBeleidFeedbackPanelProps> = ({ cl
             {/* Header */}
             <div className="flex items-center justify-between">
                 <div>
-                    <h2 className="text-2xl font-black text-slate-900 flex items-center gap-3">
+                    <h2 className="text-2xl font-black text-lab-muted flex items-center gap-3">
                         <div className="w-10 h-10 bg-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center">
                             <Scale size={20} />
                         </div>
                         AI Beleid Feedback
                     </h2>
-                    <p className="text-slate-500 font-medium">Bekijk alle ideeën en suggesties van leerlingen.</p>
+                    <p className="text-lab-muted font-medium">Bekijk alle ideeën en suggesties van leerlingen.</p>
                 </div>
                 <button
                     onClick={exportToCSV}
-                    className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl flex items-center gap-2 transition-colors"
+                    className="px-4 py-2 bg-lab-muted hover:bg-lab-muted text-lab-muted font-bold rounded-xl flex items-center gap-2 transition-colors"
                 >
                     <Download size={18} />
                     Export CSV
@@ -178,11 +178,11 @@ export const AiBeleidFeedbackPanel: React.FC<AiBeleidFeedbackPanelProps> = ({ cl
                             : `${cat.bgLight} hover:shadow-md`
                             }`}
                     >
-                        <div className={`flex items-center gap-2 mb-2 ${selectedCategorie === key ? 'text-white/70' : 'text-slate-500'}`}>
+                        <div className={`flex items-center gap-2 mb-2 ${selectedCategorie === key ? 'text-white/70' : 'text-lab-muted'}`}>
                             <cat.icon size={16} />
                             <span className="text-xs font-bold uppercase tracking-wider">{cat.label.split(' ')[1]}</span>
                         </div>
-                        <p className={`text-3xl font-black ${selectedCategorie === key ? 'text-white' : 'text-slate-700'}`}>
+                        <p className={`text-3xl font-black ${selectedCategorie === key ? 'text-white' : 'text-lab-muted'}`}>
                             {stats?.perCategorie[key] || 0}
                         </p>
                     </button>
@@ -191,8 +191,8 @@ export const AiBeleidFeedbackPanel: React.FC<AiBeleidFeedbackPanelProps> = ({ cl
 
             {/* Top Ideas */}
             {stats?.topIdeeen && stats.topIdeeen.length > 0 && (
-                <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-6 border border-amber-200">
-                    <h3 className="font-bold text-amber-800 flex items-center gap-2 mb-4">
+                <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-6 border border-lab-gold">
+                    <h3 className="font-bold text-lab-gold flex items-center gap-2 mb-4">
                         <TrendingUp size={18} />
                         Populairste Ideeën
                     </h3>
@@ -205,14 +205,14 @@ export const AiBeleidFeedbackPanel: React.FC<AiBeleidFeedbackPanelProps> = ({ cl
                                         {idx === 0 ? '🥇' : idx === 1 ? '🥈' : '🥉'}
                                     </span>
                                     <div className="flex-1 min-w-0">
-                                        <p className="text-slate-700 font-medium truncate">{idee.idee}</p>
-                                        <div className="flex items-center gap-2 text-xs text-slate-400">
+                                        <p className="text-lab-muted font-medium truncate">{idee.idee}</p>
+                                        <div className="flex items-center gap-2 text-xs text-lab-muted">
                                             <span>{idee.studentName}</span>
                                             <span>•</span>
                                             <span>{cat?.label}</span>
                                         </div>
                                     </div>
-                                    <span className="text-amber-600 font-bold flex items-center gap-1 bg-amber-100 px-3 py-1 rounded-lg">
+                                    <span className="text-lab-gold font-bold flex items-center gap-1 bg-lab-gold px-3 py-1 rounded-lg">
                                         <ThumbsUp size={14} /> {idee.stemmen || 0}
                                     </span>
                                 </div>
@@ -224,20 +224,20 @@ export const AiBeleidFeedbackPanel: React.FC<AiBeleidFeedbackPanelProps> = ({ cl
 
             {/* Filter & Sort Controls */}
             <div className="flex items-center gap-4">
-                <div className="flex items-center gap-2 text-sm text-slate-500">
+                <div className="flex items-center gap-2 text-sm text-lab-muted">
                     <Filter size={16} />
                     <span className="font-medium">Sorteer:</span>
                 </div>
                 <button
                     onClick={() => setSortBy('stemmen')}
-                    className={`px-3 py-1.5 rounded-lg text-sm font-bold transition-colors ${sortBy === 'stemmen' ? 'bg-indigo-100 text-indigo-700' : 'text-slate-500 hover:bg-slate-100'
+                    className={`px-3 py-1.5 rounded-lg text-sm font-bold transition-colors ${sortBy === 'stemmen' ? 'bg-indigo-100 text-indigo-700' : 'text-lab-muted hover:bg-lab-muted'
                         }`}
                 >
                     Meeste stemmen
                 </button>
                 <button
                     onClick={() => setSortBy('recent')}
-                    className={`px-3 py-1.5 rounded-lg text-sm font-bold transition-colors ${sortBy === 'recent' ? 'bg-indigo-100 text-indigo-700' : 'text-slate-500 hover:bg-slate-100'
+                    className={`px-3 py-1.5 rounded-lg text-sm font-bold transition-colors ${sortBy === 'recent' ? 'bg-indigo-100 text-indigo-700' : 'text-lab-muted hover:bg-lab-muted'
                         }`}
                 >
                     Meest recent
@@ -245,7 +245,7 @@ export const AiBeleidFeedbackPanel: React.FC<AiBeleidFeedbackPanelProps> = ({ cl
                 {selectedCategorie && (
                     <button
                         onClick={() => setSelectedCategorie(null)}
-                        className="ml-auto px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-sm font-bold transition-colors"
+                        className="ml-auto px-3 py-1.5 bg-lab-muted hover:bg-lab-muted text-lab-muted rounded-lg text-sm font-bold transition-colors"
                     >
                         Filter wissen ✕
                     </button>
@@ -254,10 +254,10 @@ export const AiBeleidFeedbackPanel: React.FC<AiBeleidFeedbackPanelProps> = ({ cl
 
             {/* Ideas List */}
             {sortedIdeeen.length === 0 ? (
-                <div className="text-center py-16 bg-slate-50 rounded-2xl border-2 border-dashed border-slate-200">
-                    <Scale className="w-12 h-12 mx-auto mb-4 text-slate-300" />
-                    <p className="text-slate-400 font-bold">Nog geen feedback ontvangen</p>
-                    <p className="text-slate-400 text-sm">Zodra leerlingen ideeën indienen, verschijnen ze hier.</p>
+                <div className="text-center py-16 bg-lab-muted rounded-2xl border-2 border-dashed border-lab-muted">
+                    <Scale className="w-12 h-12 mx-auto mb-4 text-lab-muted" />
+                    <p className="text-lab-muted font-bold">Nog geen feedback ontvangen</p>
+                    <p className="text-lab-muted text-sm">Zodra leerlingen ideeën indienen, verschijnen ze hier.</p>
                 </div>
             ) : (
                 <div className="space-y-3">
@@ -268,21 +268,21 @@ export const AiBeleidFeedbackPanel: React.FC<AiBeleidFeedbackPanelProps> = ({ cl
                                 key={idee.id}
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                className="bg-white rounded-xl p-4 border border-slate-100 shadow-sm hover:shadow-md transition-shadow"
+                                className="bg-white rounded-xl p-4 border border-lab-muted shadow-sm hover:shadow-md transition-shadow"
                             >
                                 <div className="flex items-start gap-4">
-                                    <div className={`w-10 h-10 ${cat?.color || 'bg-slate-400'} rounded-xl flex items-center justify-center text-white shrink-0`}>
+                                    <div className={`w-10 h-10 ${cat?.color || 'bg-lab-muted'} rounded-xl flex items-center justify-center text-white shrink-0`}>
                                         {cat && <cat.icon size={18} />}
                                     </div>
                                     <div className="flex-1 min-w-0">
-                                        <p className="text-slate-700 mb-2">{idee.idee}</p>
-                                        <div className="flex items-center gap-3 text-xs text-slate-400">
+                                        <p className="text-lab-muted mb-2">{idee.idee}</p>
+                                        <div className="flex items-center gap-3 text-xs text-lab-muted">
                                             <span className="flex items-center gap-1">
                                                 <Users size={12} />
                                                 {idee.studentName}
                                             </span>
                                             {idee.studentClass && (
-                                                <span className="bg-slate-100 px-2 py-0.5 rounded-full font-medium">
+                                                <span className="bg-lab-muted px-2 py-0.5 rounded-full font-medium">
                                                     {idee.studentClass}
                                                 </span>
                                             )}

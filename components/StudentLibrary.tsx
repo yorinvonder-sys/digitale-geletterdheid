@@ -18,11 +18,11 @@ interface StudentLibraryProps {
 
 const getTypeIcon = (type: LibraryItem['type']) => {
     switch (type) {
-        case 'game': return <Gamepad2 size={20} className="text-emerald-500" />;
+        case 'game': return <Gamepad2 size={20} className="text-lab-sage" />;
         case 'book': return <BookOpen size={20} className="text-indigo-500" />;
         case 'chatbot': return <Sparkles size={20} className="text-purple-500" />;
         case 'drawing': return <span className="text-lg">🎨</span>;
-        default: return <FolderOpen size={20} className="text-slate-400" />;
+        default: return <FolderOpen size={20} className="text-lab-muted" />;
     }
 };
 
@@ -38,11 +38,11 @@ const getTypeLabel = (type: LibraryItem['type']) => {
 
 const getTypeBgColor = (type: LibraryItem['type']) => {
     switch (type) {
-        case 'game': return 'bg-emerald-100 border-emerald-200';
+        case 'game': return 'bg-lab-sage border-lab-sage';
         case 'book': return 'bg-indigo-100 border-indigo-200';
         case 'chatbot': return 'bg-purple-100 border-purple-200';
-        case 'drawing': return 'bg-amber-100 border-amber-200';
-        default: return 'bg-slate-100 border-slate-200';
+        case 'drawing': return 'bg-lab-gold border-lab-gold';
+        default: return 'bg-lab-muted border-lab-muted';
     }
 };
 
@@ -172,15 +172,15 @@ export const StudentLibrary: React.FC<StudentLibraryProps> = ({
                         {loading ? (
                             <div className="flex flex-col items-center justify-center py-12" role="status" aria-live="polite">
                                 <Loader2 size={40} className="animate-spin text-indigo-500 mb-4" aria-hidden="true" />
-                                <p className="text-slate-400">Bibliotheek laden...</p>
+                                <p className="text-lab-muted">Bibliotheek laden...</p>
                             </div>
                         ) : filteredItems.length === 0 ? (
                             <div className="flex flex-col items-center justify-center py-12 text-center">
-                                <div className="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mb-4">
-                                    <FolderOpen size={32} className="text-slate-400" />
+                                <div className="w-20 h-20 bg-lab-muted rounded-full flex items-center justify-center mb-4">
+                                    <FolderOpen size={32} className="text-lab-muted" />
                                 </div>
-                                <h3 className="font-bold text-slate-900 mb-2">Nog geen projecten</h3>
-                                <p className="text-slate-500 text-sm max-w-xs">
+                                <h3 className="font-bold text-lab-muted mb-2">Nog geen projecten</h3>
+                                <p className="text-lab-muted text-sm max-w-xs">
                                     {filter === 'all'
                                         ? 'Maak een game, boek of chatbot in een missie en sla je creatie hier op!'
                                         : `Je hebt nog geen ${getTypeLabel(filter).toLowerCase()}s opgeslagen.`
@@ -219,7 +219,7 @@ export const StudentLibrary: React.FC<StudentLibraryProps> = ({
                                                     loading="lazy"
                                                 />
                                             ) : (
-                                                <div className="flex flex-col items-center text-slate-400">
+                                                <div className="flex flex-col items-center text-lab-muted">
                                                     {getTypeIcon(item.type)}
                                                     <span className="text-xs mt-1">{getTypeLabel(item.type)}</span>
                                                 </div>
@@ -230,7 +230,7 @@ export const StudentLibrary: React.FC<StudentLibraryProps> = ({
                                                 {onOpenItem && (
                                                     <button
                                                         onClick={() => onOpenItem(item)}
-                                                        className="px-4 py-2 bg-white rounded-xl font-bold text-slate-900 text-sm flex items-center gap-2 hover:bg-slate-100 transition-colors"
+                                                        className="px-4 py-2 bg-white rounded-xl font-bold text-lab-muted text-sm flex items-center gap-2 hover:bg-lab-muted transition-colors"
                                                     >
                                                         <Play size={16} />
                                                         Openen
@@ -258,8 +258,8 @@ export const StudentLibrary: React.FC<StudentLibraryProps> = ({
                                         <div className="p-3">
                                             <div className="flex items-start justify-between gap-2">
                                                 <div className="flex-1 min-w-0">
-                                                    <h3 className="font-bold text-slate-900 text-sm truncate">{item.name}</h3>
-                                                    <p className="text-xs text-slate-500 truncate">
+                                                    <h3 className="font-bold text-lab-muted text-sm truncate">{item.name}</h3>
+                                                    <p className="text-xs text-lab-muted truncate">
                                                         {item.mission_name || item.mission_id}
                                                     </p>
                                                 </div>
@@ -267,7 +267,7 @@ export const StudentLibrary: React.FC<StudentLibraryProps> = ({
                                                     {getTypeIcon(item.type)}
                                                 </div>
                                             </div>
-                                            <p className="text-[10px] text-slate-400 mt-2">
+                                            <p className="text-[10px] text-lab-muted mt-2">
                                                 {formatDate(item.created_at)}
                                             </p>
                                         </div>
@@ -280,14 +280,14 @@ export const StudentLibrary: React.FC<StudentLibraryProps> = ({
                     {/* Delete confirmation overlay */}
                     {pendingDeleteId && (
                         <div className="absolute inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm rounded-3xl">
-                            <div className="bg-white rounded-2xl p-6 shadow-2xl border border-slate-100 w-full max-w-sm animate-in zoom-in-95 duration-200">
+                            <div className="bg-white rounded-2xl p-6 shadow-2xl border border-lab-muted w-full max-w-sm animate-in zoom-in-95 duration-200">
                                 <div className="flex items-center gap-3 mb-4">
                                     <div className="w-10 h-10 bg-red-100 rounded-xl flex items-center justify-center flex-shrink-0">
                                         <AlertTriangle size={20} className="text-red-600" />
                                     </div>
-                                    <h3 className="text-lg font-extrabold text-slate-900">Verwijderen?</h3>
+                                    <h3 className="text-lg font-extrabold text-lab-muted">Verwijderen?</h3>
                                 </div>
-                                <p className="text-slate-500 text-sm mb-4 leading-relaxed">
+                                <p className="text-lab-muted text-sm mb-4 leading-relaxed">
                                     Weet je zeker dat je dit wilt verwijderen? Dit kan niet ongedaan worden gemaakt.
                                 </p>
                                 {deleteError && (
@@ -300,7 +300,7 @@ export const StudentLibrary: React.FC<StudentLibraryProps> = ({
                                     <button
                                         onClick={handleCancelDelete}
                                         disabled={deleting === pendingDeleteId}
-                                        className="flex-1 py-3 text-slate-600 font-bold text-sm hover:bg-slate-100 rounded-xl transition-colors disabled:opacity-50"
+                                        className="flex-1 py-3 text-lab-muted font-bold text-sm hover:bg-lab-muted rounded-xl transition-colors disabled:opacity-50"
                                     >
                                         Annuleren
                                     </button>

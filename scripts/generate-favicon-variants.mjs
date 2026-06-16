@@ -21,7 +21,7 @@ if (!API_KEY) {
 const ai = new GoogleGenAI({ apiKey: API_KEY });
 const logoData = fs.readFileSync(PIP_LOGO);
 
-const BASE = `Look at this bird logo carefully. This is "Pip", a European robin mascot for a Dutch ed-tech platform. The brand colors are terracotta-orange (#D97757), white, and charcoal (#1A1A19).`;
+const BASE = `Look at this bird logo carefully. This is "Pip", a European robin mascot for a Dutch ed-tech platform. The brand colors are terracotta-orange (#D97848), white, and charcoal (#08283B).`;
 
 const VARIANTS = [
   {
@@ -65,7 +65,7 @@ Create a favicon version: a simplified full-body silhouette of this robin, small
 Create a modern app-icon style favicon of this robin. Requirements:
 - Show the bird's head and upper body at a 3/4 angle, slightly tilted
 - Geometric, slightly stylized shapes — modern and clean
-- Terracotta-orange (#D97757) as the dominant color for the breast
+- Terracotta-orange (#D97848) as the dominant color for the breast
 - White face, charcoal details for eye area and wing hint
 - Large friendly black eye
 - The signature pixel-dissolve effect: 3 small squares floating away from the bird in terracotta and charcoal

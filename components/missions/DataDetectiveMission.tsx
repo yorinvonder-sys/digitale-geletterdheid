@@ -65,7 +65,7 @@ const CHALLENGES: DataChallenge[] = [
         data: {
             labels: ['Kijkgedrag', 'Zoekopdrachten', 'Locatie', 'Contacten', 'Microfoon'],
             values: [92, 81, 57, 21, 13],
-            colors: ['#10B981', '#D97757', '#06B6D4', '#F59E0B', '#EF4444']
+            colors: ['#5F947D', '#D97848', '#0B453F', '#D7C95F', '#D97848']
         },
         question: 'Welke conclusie is het meest logisch op basis van deze data?',
         options: [
@@ -85,7 +85,7 @@ const CHALLENGES: DataChallenge[] = [
         data: {
             labels: ['Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za', 'Zo'],
             values: [2, 3, 4, 5, 6, 8, 9],
-            colors: ['#F59E0B']
+            colors: ['#D7C95F']
         },
         question: 'Welke combinatie van kans en risico past het beste bij deze trend?',
         options: [
@@ -107,7 +107,7 @@ const CHALLENGES: DataChallenge[] = [
         data: {
             labels: ['Productverbetering', 'Fraudedetectie', 'Advertenties', 'Verkoop aan partners'],
             values: [38, 24, 26, 12],
-            colors: ['#10B981', '#D97757', '#F59E0B', '#EF4444']
+            colors: ['#5F947D', '#D97848', '#D7C95F', '#D97848']
         },
         question: 'Welke toepassing vraagt de meeste kritische controle van gebruikers?',
         options: [
@@ -127,7 +127,7 @@ const CHALLENGES: DataChallenge[] = [
         data: {
             labels: ['Q1', 'Q2', 'Q3'],
             values: [72, 74, 76],
-            colors: ['#8B6F9E', '#8B6F9E', '#8B6F9E']
+            colors: ['#0B453F', '#0B453F', '#0B453F']
         },
         question: 'Waarom kan deze presentatie misleidend zijn?',
         options: [
@@ -151,7 +151,7 @@ const CHALLENGES: DataChallenge[] = [
         data: {
             labels: ['Leerling A (gem. 8.1)', 'Leerling B (gem. 5.4)', 'Leerling C (gem. 8.7)', 'Leerling D (gem. 4.9)'],
             values: [14, 9, 16, 8],
-            colors: ['#F59E0B']
+            colors: ['#D7C95F']
         },
         question: 'Wat is de beste kritische reactie?',
         options: [
@@ -171,7 +171,7 @@ const CHALLENGES: DataChallenge[] = [
         data: {
             labels: ['Alles accepteren', 'Instellingen aanpassen'],
             values: [94, 6],
-            colors: ['#EF4444', '#10B981']
+            colors: ['#D97848', '#5F947D']
         },
         question: 'Welke conclusie is het sterkst?',
         options: [
@@ -190,7 +190,7 @@ const BarChart: React.FC<{ data: DataChallenge['data'], isMisleading?: boolean }
     const minForMisleading = isMisleading ? Math.min(...data.values) * 0.95 : 0;
 
     return (
-        <div className="rounded-2xl p-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
+        <div className="rounded-2xl p-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
             <div className="flex items-end justify-around gap-2 h-48">
                 {data.labels.map((label, i) => {
                     const height = isMisleading
@@ -198,22 +198,22 @@ const BarChart: React.FC<{ data: DataChallenge['data'], isMisleading?: boolean }
                         : (data.values[i] / maxValue) * 100;
                     return (
                         <div key={i} className="flex flex-col items-center gap-2 flex-1">
-                            <span className="font-bold text-sm" style={{ color: '#1A1A19' }}>{data.values[i]}</span>
+                            <span className="font-bold text-sm" style={{ color: '#08283B' }}>{data.values[i]}</span>
                             <div
                                 className="w-full rounded-t-lg transition-all duration-500"
                                 style={{
                                     height: `${height}%`,
-                                    backgroundColor: data.colors?.[i] || '#D97757',
+                                    backgroundColor: data.colors?.[i] || '#D97848',
                                     minHeight: '20px'
                                 }}
                             />
-                            <span className="text-xs font-medium text-center" style={{ color: '#6B6B66' }}>{label}</span>
+                            <span className="text-xs font-medium text-center" style={{ color: '#445865' }}>{label}</span>
                         </div>
                     );
                 })}
             </div>
             {isMisleading && (
-                <div className="mt-2 text-xs text-center" style={{ color: '#6B6B66' }}>
+                <div className="mt-2 text-xs text-center" style={{ color: '#445865' }}>
                     Y-as: {Math.floor(minForMisleading)} - {maxValue}
                 </div>
             )}
@@ -235,21 +235,21 @@ const LineChart: React.FC<{ data: DataChallenge['data'] }> = ({ data }) => {
     const pathD = points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x} ${p.y}`).join(' ');
 
     return (
-        <div className="rounded-2xl p-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
+        <div className="rounded-2xl p-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
             <svg viewBox="0 0 100 100" className="w-full h-48">
                 {/* Grid lines */}
                 {[0, 25, 50, 75, 100].map(y => (
-                    <line key={y} x1="0" y1={y} x2="100" y2={y} stroke="#E8E6DF" strokeWidth="0.5" />
+                    <line key={y} x1="0" y1={y} x2="100" y2={y} stroke="#E7D8BD" strokeWidth="0.5" />
                 ))}
 
                 {/* Line */}
-                <path d={pathD} fill="none" stroke={data.colors?.[0] || '#D97757'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                <path d={pathD} fill="none" stroke={data.colors?.[0] || '#D97848'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
 
                 {/* Points */}
                 {points.map((p, i) => (
                     <g key={i}>
-                        <circle cx={p.x} cy={p.y} r="3" fill={data.colors?.[0] || '#D97757'} />
-                        <text x={p.x} y={p.y - 8} textAnchor="middle" fill="#1A1A19" fontSize="6" fontWeight="bold">
+                        <circle cx={p.x} cy={p.y} r="3" fill={data.colors?.[0] || '#D97848'} />
+                        <text x={p.x} y={p.y - 8} textAnchor="middle" fill="#08283B" fontSize="6" fontWeight="bold">
                             {data.values[i]}°
                         </text>
                     </g>
@@ -257,7 +257,7 @@ const LineChart: React.FC<{ data: DataChallenge['data'] }> = ({ data }) => {
             </svg>
             <div className="flex justify-between mt-2">
                 {data.labels.map((label, i) => (
-                    <span key={i} className="text-xs font-medium" style={{ color: '#6B6B66' }}>{label}</span>
+                    <span key={i} className="text-xs font-medium" style={{ color: '#445865' }}>{label}</span>
                 ))}
             </div>
         </div>
@@ -283,7 +283,7 @@ const PieChart: React.FC<{ data: DataChallenge['data'] }> = ({ data }) => {
 
         return {
             path: `M 50 50 L ${x1} ${y1} A 40 40 0 ${largeArc} 1 ${x2} ${y2} Z`,
-            color: data.colors?.[i] || '#D97757',
+            color: data.colors?.[i] || '#D97848',
             label: data.labels[i],
             value: value,
             percentage: ((value / total) * 100).toFixed(0)
@@ -291,7 +291,7 @@ const PieChart: React.FC<{ data: DataChallenge['data'] }> = ({ data }) => {
     });
 
     return (
-        <div className="rounded-2xl p-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
+        <div className="rounded-2xl p-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
             <div className="flex items-center gap-4">
                 <svg viewBox="0 0 100 100" className="w-40 h-40">
                     {slices.map((slice, i) => (
@@ -302,7 +302,7 @@ const PieChart: React.FC<{ data: DataChallenge['data'] }> = ({ data }) => {
                     {slices.map((slice, i) => (
                         <div key={i} className="flex items-center gap-2">
                             <div className="w-3 h-3 rounded-full" style={{ backgroundColor: slice.color }} />
-                            <span className="font-medium text-sm" style={{ color: '#1A1A19' }}>{slice.label}: {slice.percentage}%</span>
+                            <span className="font-medium text-sm" style={{ color: '#08283B' }}>{slice.label}: {slice.percentage}%</span>
                         </div>
                     ))}
                 </div>
@@ -385,48 +385,48 @@ export const DataDetectiveMission: React.FC<Props> = ({ onBack, onComplete, vsoP
     // Intro screen
     if (showIntro) {
         return (
-            <div className="min-h-screen overflow-y-auto" style={{ backgroundColor: '#FAF9F0' }}>
+            <div className="min-h-screen overflow-y-auto" style={{ backgroundColor: '#FCF6EA' }}>
             <div className="min-h-full flex items-center justify-center p-4">
                 <div className="max-w-lg w-full text-center space-y-8">
                     <div className="relative inline-block">
                         <div className="absolute inset-0 blur-3xl rounded-full animate-pulse" style={{ backgroundColor: 'rgba(217, 119, 87, 0.2)' }} />
-                        <div className="relative w-32 h-32 rounded-3xl flex items-center justify-center shadow-2xl" style={{ background: 'linear-gradient(to bottom right, #D97757, #C46849)' }}>
+                        <div className="relative w-32 h-32 rounded-3xl flex items-center justify-center shadow-2xl" style={{ background: 'linear-gradient(to bottom right, #D97848, #D97848)' }}>
                             <BarChart3 size={64} className="text-white" />
                         </div>
                     </div>
 
                     <div className="space-y-4">
-                        <h1 className="text-4xl font-black" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#1A1A19' }}>Data Detective</h1>
-                        <p className="text-lg" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#3D3D38' }}>
+                        <h1 className="text-4xl font-black" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#08283B' }}>Data Detective</h1>
+                        <p className="text-lg" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#445865' }}>
                             Onderzoek hoe bedrijven data gebruiken, ontdek gevaren en kansen,
                             en train jezelf om online slimme keuzes te maken.
                         </p>
-                        <p className="text-sm font-semibold" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#6B6B66' }}>
+                        <p className="text-sm font-semibold" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#445865' }}>
                             3 levels met praktijkcases uit het echte internetleven — neem de tijd en lees goed!
                         </p>
                     </div>
 
                     <div className="grid grid-cols-3 gap-4 text-center">
-                        <div className="rounded-2xl p-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
-                            <Eye className="w-8 h-8 mx-auto mb-2" style={{ color: '#2A9D8F' }} />
-                            <p className="font-bold text-sm" style={{ color: '#1A1A19' }}>Patronen Zien</p>
+                        <div className="rounded-2xl p-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
+                            <Eye className="w-8 h-8 mx-auto mb-2" style={{ color: '#5F947D' }} />
+                            <p className="font-bold text-sm" style={{ color: '#08283B' }}>Patronen Zien</p>
                         </div>
-                        <div className="rounded-2xl p-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
-                            <AlertTriangle className="w-8 h-8 mx-auto mb-2" style={{ color: '#D97757' }} />
-                            <p className="font-bold text-sm" style={{ color: '#1A1A19' }}>Misleiding Spotten</p>
+                        <div className="rounded-2xl p-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
+                            <AlertTriangle className="w-8 h-8 mx-auto mb-2" style={{ color: '#D97848' }} />
+                            <p className="font-bold text-sm" style={{ color: '#08283B' }}>Misleiding Spotten</p>
                         </div>
-                        <div className="rounded-2xl p-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
-                            <Brain className="w-8 h-8 mx-auto mb-2" style={{ color: '#8B6F9E' }} />
-                            <p className="font-bold text-sm" style={{ color: '#1A1A19' }}>Kritisch Denken</p>
+                        <div className="rounded-2xl p-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
+                            <Brain className="w-8 h-8 mx-auto mb-2" style={{ color: '#0B453F' }} />
+                            <p className="font-bold text-sm" style={{ color: '#08283B' }}>Kritisch Denken</p>
                         </div>
                     </div>
 
                     <button
                         onClick={() => setState(prev => ({ ...prev, showIntro: false }))}
-                        className="w-full py-4 text-white rounded-full font-black uppercase tracking-wide transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#D97757]"
-                        style={{ backgroundColor: '#D97757' }}
-                        onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#C46849')}
-                        onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#D97757')}
+                        className="w-full py-4 text-white rounded-full font-black uppercase tracking-wide transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#D97848]"
+                        style={{ backgroundColor: '#D97848' }}
+                        onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#D97848')}
+                        onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#D97848')}
                     >
                         Start Onderzoek
                     </button>
@@ -439,46 +439,46 @@ export const DataDetectiveMission: React.FC<Props> = ({ onBack, onComplete, vsoP
     // Level complete screen
     if (showLevelComplete) {
         return (
-            <div className="min-h-screen overflow-y-auto" style={{ backgroundColor: '#FAF9F0' }}>
+            <div className="min-h-screen overflow-y-auto" style={{ backgroundColor: '#FCF6EA' }}>
             <div className="min-h-full flex items-center justify-center p-4">
                 <div className="max-w-lg w-full text-center space-y-8">
                     <div className="relative inline-block">
                         <div className="absolute inset-0 blur-3xl rounded-full animate-pulse" style={{ backgroundColor: 'rgba(16, 185, 129, 0.2)' }} />
-                        <div className="relative w-24 h-24 rounded-full flex items-center justify-center shadow-2xl" style={{ background: 'linear-gradient(to bottom right, #10B981, #2A9D8F)' }}>
+                        <div className="relative w-24 h-24 rounded-full flex items-center justify-center shadow-2xl" style={{ background: 'linear-gradient(to bottom right, #5F947D, #5F947D)' }}>
                             <Trophy size={48} className="text-white" />
                         </div>
                     </div>
 
                     <div className="space-y-2">
-                        <h2 className="text-3xl font-black" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#1A1A19' }}>
+                        <h2 className="text-3xl font-black" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#08283B' }}>
                             {currentLevel === 'beginner' ? 'Beginner Voltooid!' : 'Gevorderd Voltooid!'}
                         </h2>
-                        <p style={{ color: '#3D3D38' }}>
+                        <p style={{ color: '#445865' }}>
                             {currentLevel === 'beginner'
                                 ? 'Je beheerst de basis van data-analyse. Tijd voor complexere patronen!'
                                 : 'Uitstekend! Nu de expert uitdagingen...'}
                         </p>
                     </div>
 
-                    <div className="rounded-2xl p-6" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
+                    <div className="rounded-2xl p-6" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
                         <div className="flex justify-around">
                             <div>
-                                <p className="text-3xl font-black" style={{ color: '#10B981' }}>{correctAnswers}</p>
-                                <p className="text-sm" style={{ color: '#6B6B66' }}>Correct</p>
+                                <p className="text-3xl font-black" style={{ color: '#5F947D' }}>{correctAnswers}</p>
+                                <p className="text-sm" style={{ color: '#445865' }}>Correct</p>
                             </div>
                             <div>
-                                <p className="text-3xl font-black" style={{ color: '#D97757' }}>{score}</p>
-                                <p className="text-sm" style={{ color: '#6B6B66' }}>Punten</p>
+                                <p className="text-3xl font-black" style={{ color: '#D97848' }}>{score}</p>
+                                <p className="text-sm" style={{ color: '#445865' }}>Punten</p>
                             </div>
                         </div>
                     </div>
 
                     <button
                         onClick={handleNextLevel}
-                        className="w-full py-4 text-white rounded-full font-black uppercase tracking-wide transition-all duration-300 flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-[#D97757]"
-                        style={{ backgroundColor: '#D97757' }}
-                        onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#C46849')}
-                        onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#D97757')}
+                        className="w-full py-4 text-white rounded-full font-black uppercase tracking-wide transition-all duration-300 flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-[#D97848]"
+                        style={{ backgroundColor: '#D97848' }}
+                        onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#D97848')}
+                        onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#D97848')}
                     >
                         Volgende Level <ChevronRight size={24} />
                     </button>
@@ -491,40 +491,40 @@ export const DataDetectiveMission: React.FC<Props> = ({ onBack, onComplete, vsoP
     // Mission complete screen
     if (showMissionComplete) {
         return (
-            <div className="min-h-screen overflow-y-auto" style={{ backgroundColor: '#FAF9F0' }}>
+            <div className="min-h-screen overflow-y-auto" style={{ backgroundColor: '#FCF6EA' }}>
             <div className="min-h-full flex items-center justify-center p-4">
                 <div className="max-w-lg w-full text-center space-y-8">
                     <div className="relative inline-block">
                         <div className="absolute inset-0 blur-3xl rounded-full animate-pulse" style={{ backgroundColor: 'rgba(217, 119, 87, 0.2)' }} />
-                        <div className="relative w-32 h-32 rounded-3xl flex items-center justify-center shadow-2xl animate-bounce" style={{ background: 'linear-gradient(to bottom right, #D97757, #C46849)' }}>
+                        <div className="relative w-32 h-32 rounded-3xl flex items-center justify-center shadow-2xl animate-bounce" style={{ background: 'linear-gradient(to bottom right, #D97848, #D97848)' }}>
                             <Sparkles size={64} className="text-white" />
                         </div>
                     </div>
 
                     <div className="space-y-2">
-                        <h1 className="text-4xl font-black" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#1A1A19' }}>MISSIE VOLTOOID!</h1>
-                        <p className="text-lg" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#3D3D38' }}>
+                        <h1 className="text-4xl font-black" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#08283B' }}>MISSIE VOLTOOID!</h1>
+                        <p className="text-lg" style={{ fontFamily: "'Outfit', system-ui, sans-serif", color: '#445865' }}>
                             Je bent nu een echte Data Detective! Je begrijpt beter wat bedrijven
                             met data doen en hoe je bewust omgaat met kansen en gevaren online.
                         </p>
                     </div>
 
-                    <div className="rounded-2xl p-6" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
+                    <div className="rounded-2xl p-6" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
                         <div className="flex justify-around">
                             <div>
-                                <p className="text-3xl font-black" style={{ color: '#10B981' }}>{correctAnswers}/{totalChallenges}</p>
-                                <p className="text-sm" style={{ color: '#6B6B66' }}>Correct</p>
+                                <p className="text-3xl font-black" style={{ color: '#5F947D' }}>{correctAnswers}/{totalChallenges}</p>
+                                <p className="text-sm" style={{ color: '#445865' }}>Correct</p>
                             </div>
                             <div>
-                                <p className="text-3xl font-black" style={{ color: '#D97757' }}>{score}</p>
-                                <p className="text-sm" style={{ color: '#6B6B66' }}>Totaal Punten</p>
+                                <p className="text-3xl font-black" style={{ color: '#D97848' }}>{score}</p>
+                                <p className="text-sm" style={{ color: '#445865' }}>Totaal Punten</p>
                             </div>
                         </div>
                     </div>
 
                     <div className="rounded-2xl p-6" style={{ backgroundColor: 'rgba(42, 157, 143, 0.06)', border: '1px solid rgba(42, 157, 143, 0.2)' }}>
-                        <h3 className="text-lg font-bold mb-2" style={{ color: '#2A9D8F' }}>Wat heb je geleerd?</h3>
-                        <ul className="text-sm text-left space-y-1" style={{ color: '#3D3D38' }}>
+                        <h3 className="text-lg font-bold mb-2" style={{ color: '#5F947D' }}>Wat heb je geleerd?</h3>
+                        <ul className="text-sm text-left space-y-1" style={{ color: '#445865' }}>
                             <li>Welke data bedrijven verzamelen en waarom</li>
                             <li>Welke kansen data kan bieden (gemak, veiligheid, personalisatie)</li>
                             <li>Welke gevaren er zijn (tracking, manipulatie, dark patterns)</li>
@@ -534,22 +534,22 @@ export const DataDetectiveMission: React.FC<Props> = ({ onBack, onComplete, vsoP
                     </div>
 
                     <div className="rounded-2xl p-6" style={{ backgroundColor: 'rgba(139, 111, 158, 0.06)', border: '1px solid rgba(139, 111, 158, 0.2)' }}>
-                        <h3 className="text-lg font-bold mb-2" style={{ color: '#8B6F9E' }}>Mijn 3 Dataregels</h3>
-                        <p className="text-sm mb-3" style={{ color: '#3D3D38' }}>Schrijf voor jezelf 3 regels op die je vanaf vandaag toepast. Bijvoorbeeld:</p>
-                        <ul className="text-sm text-left space-y-1 italic" style={{ color: '#6B6B66' }}>
+                        <h3 className="text-lg font-bold mb-2" style={{ color: '#0B453F' }}>Mijn 3 Dataregels</h3>
+                        <p className="text-sm mb-3" style={{ color: '#445865' }}>Schrijf voor jezelf 3 regels op die je vanaf vandaag toepast. Bijvoorbeeld:</p>
+                        <ul className="text-sm text-left space-y-1 italic" style={{ color: '#445865' }}>
                             <li>1. Ik check altijd welke permissions een app vraagt voor ik installeer.</li>
                             <li>2. Ik klik niet op "Alles accepteren" maar pas cookies aan.</li>
                             <li>3. Ik deel geen persoonlijke info in ruil voor gratis diensten zonder na te denken.</li>
                         </ul>
-                        <p className="text-xs mt-3" style={{ color: '#6B6B66' }}>Tip: deel je regels met een klasgenoot en vergelijk!</p>
+                        <p className="text-xs mt-3" style={{ color: '#445865' }}>Tip: deel je regels met een klasgenoot en vergelijk!</p>
                     </div>
 
                     <button
                         onClick={() => { clearSave(); onComplete(true); }}
-                        className="w-full py-4 text-white rounded-full font-black uppercase tracking-wide transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#D97757]"
-                        style={{ backgroundColor: '#D97757' }}
-                        onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#C46849')}
-                        onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#D97757')}
+                        className="w-full py-4 text-white rounded-full font-black uppercase tracking-wide transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#D97848]"
+                        style={{ backgroundColor: '#D97848' }}
+                        onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#D97848')}
+                        onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#D97848')}
                     >
                         Terug naar Mission Control
                     </button>
@@ -561,16 +561,16 @@ export const DataDetectiveMission: React.FC<Props> = ({ onBack, onComplete, vsoP
 
     // Main game screen
     return (
-        <div className="min-h-screen" style={{ backgroundColor: '#FAF9F0' }}>
+        <div className="min-h-screen" style={{ backgroundColor: '#FCF6EA' }}>
             {/* Header */}
-            <div className="sticky top-0 z-20 backdrop-blur-md" style={{ backgroundColor: 'rgba(255, 255, 255, 0.9)', borderBottom: '1px solid #E8E6DF' }}>
+            <div className="sticky top-0 z-20 backdrop-blur-md" style={{ backgroundColor: 'rgba(255, 255, 255, 0.9)', borderBottom: '1px solid #E7D8BD' }}>
                 <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
                     <button
                         onClick={onBack}
                         className="p-2 transition-colors"
-                        style={{ color: '#6B6B66' }}
-                        onMouseEnter={e => (e.currentTarget.style.color = '#1A1A19')}
-                        onMouseLeave={e => (e.currentTarget.style.color = '#6B6B66')}
+                        style={{ color: '#445865' }}
+                        onMouseEnter={e => (e.currentTarget.style.color = '#08283B')}
+                        onMouseLeave={e => (e.currentTarget.style.color = '#445865')}
                     >
                         <ArrowLeft size={24} />
                     </button>
@@ -581,9 +581,9 @@ export const DataDetectiveMission: React.FC<Props> = ({ onBack, onComplete, vsoP
                                 backgroundColor: currentLevel === 'beginner' ? 'rgba(16, 185, 129, 0.1)' :
                                     currentLevel === 'gevorderd' ? 'rgba(217, 119, 87, 0.1)' :
                                         'rgba(139, 111, 158, 0.1)',
-                                color: currentLevel === 'beginner' ? '#10B981' :
-                                    currentLevel === 'gevorderd' ? '#D97757' :
-                                        '#8B6F9E',
+                                color: currentLevel === 'beginner' ? '#5F947D' :
+                                    currentLevel === 'gevorderd' ? '#D97848' :
+                                        '#0B453F',
                                 border: `1px solid ${currentLevel === 'beginner' ? 'rgba(16, 185, 129, 0.2)' :
                                     currentLevel === 'gevorderd' ? 'rgba(217, 119, 87, 0.2)' :
                                         'rgba(139, 111, 158, 0.2)'}`
@@ -593,24 +593,24 @@ export const DataDetectiveMission: React.FC<Props> = ({ onBack, onComplete, vsoP
                                         currentLevel === 'gevorderd' ? 'Gevorderd' : 'Expert'}
                             </span>
                             {vsoProfile && (
-                                <span className="text-[10px] px-2 py-1 rounded-full font-bold uppercase tracking-tight ml-2" style={{ backgroundColor: 'rgba(42, 157, 143, 0.1)', color: '#2A9D8F', border: '1px solid rgba(42, 157, 143, 0.2)' }}>
+                                <span className="text-[10px] px-2 py-1 rounded-full font-bold uppercase tracking-tight ml-2" style={{ backgroundColor: 'rgba(42, 157, 143, 0.1)', color: '#5F947D', border: '1px solid rgba(42, 157, 143, 0.2)' }}>
                                     {vsoProfile === 'dagbesteding' ? 'Focus: Ervaren' : 'Focus: Beheersen'}
                                 </span>
                             )}
                         </div>
 
                         <div className="flex items-center gap-1 px-3 py-1.5 rounded-full" style={{ backgroundColor: 'rgba(217, 119, 87, 0.1)', border: '1px solid rgba(217, 119, 87, 0.2)' }}>
-                            <Target size={14} style={{ color: '#D97757' }} />
-                            <span className="font-bold text-sm" style={{ color: '#D97757' }}>{score}</span>
+                            <Target size={14} style={{ color: '#D97848' }} />
+                            <span className="font-bold text-sm" style={{ color: '#D97848' }}>{score}</span>
                         </div>
                     </div>
                 </div>
 
                 {/* Progress bar */}
-                <div className="h-1" style={{ backgroundColor: '#F0EEE8' }}>
+                <div className="h-1" style={{ backgroundColor: '#FCF6EA' }}>
                     <div
                         className="h-full transition-all duration-500"
-                        style={{ width: `${((completedChallenges + 1) / totalChallenges) * 100}%`, background: 'linear-gradient(to right, #D97757, #C46849)' }}
+                        style={{ width: `${((completedChallenges + 1) / totalChallenges) * 100}%`, background: 'linear-gradient(to right, #D97848, #D97848)' }}
                     />
                 </div>
             </div>
@@ -619,14 +619,14 @@ export const DataDetectiveMission: React.FC<Props> = ({ onBack, onComplete, vsoP
             <div className="max-w-2xl mx-auto px-4 py-8 space-y-6">
                 {/* Challenge title */}
                 <div className="text-center space-y-2">
-                    <h2 className="text-2xl font-black" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#1A1A19' }}>{currentChallenge.title}</h2>
-                    <p style={{ color: '#3D3D38' }}>{currentChallenge.scenario}</p>
+                    <h2 className="text-2xl font-black" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#08283B' }}>{currentChallenge.title}</h2>
+                    <p style={{ color: '#445865' }}>{currentChallenge.scenario}</p>
                 </div>
 
                 {/* Data visualization */}
                 <div className="relative">
                     {currentChallenge.isMisleading && (
-                        <div className="absolute -top-2 -right-2 z-10 text-white text-xs font-bold px-2 py-1 rounded-full" style={{ backgroundColor: '#D97757' }}>
+                        <div className="absolute -top-2 -right-2 z-10 text-white text-xs font-bold px-2 py-1 rounded-full" style={{ backgroundColor: '#D97848' }}>
                             Bekijk kritisch!
                         </div>
                     )}
@@ -641,19 +641,19 @@ export const DataDetectiveMission: React.FC<Props> = ({ onBack, onComplete, vsoP
                         <PieChart data={currentChallenge.data} />
                     )}
                     {currentChallenge.dataType === 'table' && (
-                        <div className="rounded-2xl p-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
+                        <div className="rounded-2xl p-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
                             <table className="w-full">
                                 <thead>
-                                    <tr style={{ borderBottom: '1px solid #E8E6DF' }}>
-                                        <th className="text-left py-2" style={{ color: '#6B6B66' }}>Stad</th>
-                                        <th className="text-right py-2" style={{ color: '#6B6B66' }}>IJssalons</th>
+                                    <tr style={{ borderBottom: '1px solid #E7D8BD' }}>
+                                        <th className="text-left py-2" style={{ color: '#445865' }}>Stad</th>
+                                        <th className="text-right py-2" style={{ color: '#445865' }}>IJssalons</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {currentChallenge.data.labels.map((label, i) => (
-                                        <tr key={i} style={{ borderBottom: '1px solid #F0EEE8' }}>
-                                            <td className="py-2" style={{ color: '#1A1A19' }}>{label}</td>
-                                            <td className="text-right font-bold py-2" style={{ color: '#D97757' }}>{currentChallenge.data.values[i]}</td>
+                                        <tr key={i} style={{ borderBottom: '1px solid #FCF6EA' }}>
+                                            <td className="py-2" style={{ color: '#08283B' }}>{label}</td>
+                                            <td className="text-right font-bold py-2" style={{ color: '#D97848' }}>{currentChallenge.data.values[i]}</td>
                                         </tr>
                                     ))}
                                 </tbody>
@@ -663,8 +663,8 @@ export const DataDetectiveMission: React.FC<Props> = ({ onBack, onComplete, vsoP
                 </div>
 
                 {/* Question */}
-                <div className="rounded-2xl p-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E6DF' }}>
-                    <p className="font-bold text-center" style={{ color: '#1A1A19' }}>{currentChallenge.question}</p>
+                <div className="rounded-2xl p-4" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E7D8BD' }}>
+                    <p className="font-bold text-center" style={{ color: '#08283B' }}>{currentChallenge.question}</p>
                 </div>
 
                 {/* Options */}
@@ -684,26 +684,26 @@ export const DataDetectiveMission: React.FC<Props> = ({ onBack, onComplete, vsoP
                                         ? option.isCorrect ? 'rgba(16, 185, 129, 0.08)' : 'rgba(239, 68, 68, 0.08)'
                                         : isSelected ? 'rgba(217, 119, 87, 0.08)' : '#FFFFFF',
                                     border: `2px solid ${showResult
-                                        ? option.isCorrect ? '#10B981' : '#EF4444'
-                                        : isSelected ? '#D97757' : '#E8E6DF'}`
+                                        ? option.isCorrect ? '#5F947D' : '#D97848'
+                                        : isSelected ? '#D97848' : '#E7D8BD'}`
                                 }}
                             >
                                 <div className="flex items-start gap-3">
                                     <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{
                                         backgroundColor: showResult
-                                            ? option.isCorrect ? '#10B981' : '#EF4444'
-                                            : '#F0EEE8'
+                                            ? option.isCorrect ? '#5F947D' : '#D97848'
+                                            : '#FCF6EA'
                                     }}>
                                         {showResult ? (
                                             option.isCorrect ? <Check size={16} className="text-white" /> : <X size={16} className="text-white" />
                                         ) : (
-                                            <span className="font-bold text-sm" style={{ color: '#6B6B66' }}>{option.id.toUpperCase()}</span>
+                                            <span className="font-bold text-sm" style={{ color: '#445865' }}>{option.id.toUpperCase()}</span>
                                         )}
                                     </div>
                                     <div className="flex-1">
-                                        <p className="font-medium" style={{ color: '#1A1A19' }}>{option.text}</p>
+                                        <p className="font-medium" style={{ color: '#08283B' }}>{option.text}</p>
                                         {showResult && (
-                                            <p className="text-sm mt-2" style={{ color: option.isCorrect ? '#10B981' : '#EF4444' }}>
+                                            <p className="text-sm mt-2" style={{ color: option.isCorrect ? '#5F947D' : '#D97848' }}>
                                                 {option.explanation}
                                             </p>
                                         )}
@@ -719,20 +719,20 @@ export const DataDetectiveMission: React.FC<Props> = ({ onBack, onComplete, vsoP
                     <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4">
                         <div className="rounded-2xl p-4" style={{ backgroundColor: 'rgba(42, 157, 143, 0.06)', border: '1px solid rgba(42, 157, 143, 0.2)' }}>
                             <div className="flex items-start gap-3">
-                                <Lightbulb className="flex-shrink-0 mt-1" size={20} style={{ color: '#2A9D8F' }} />
+                                <Lightbulb className="flex-shrink-0 mt-1" size={20} style={{ color: '#5F947D' }} />
                                 <div>
-                                    <p className="font-bold text-sm mb-1" style={{ color: '#2A9D8F' }}>Inzicht</p>
-                                    <p className="text-sm" style={{ color: '#3D3D38' }}>{currentChallenge.insight}</p>
+                                    <p className="font-bold text-sm mb-1" style={{ color: '#5F947D' }}>Inzicht</p>
+                                    <p className="text-sm" style={{ color: '#445865' }}>{currentChallenge.insight}</p>
                                 </div>
                             </div>
                         </div>
 
                         <button
                             onClick={handleNext}
-                            className="w-full py-4 text-white rounded-full font-black uppercase tracking-wide transition-all duration-300 flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-[#D97757]"
-                            style={{ backgroundColor: '#D97757' }}
-                            onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#C46849')}
-                            onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#D97757')}
+                            className="w-full py-4 text-white rounded-full font-black uppercase tracking-wide transition-all duration-300 flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-[#D97848]"
+                            style={{ backgroundColor: '#D97848' }}
+                            onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#D97848')}
+                            onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#D97848')}
                         >
                             Volgende <ChevronRight size={20} />
                         </button>

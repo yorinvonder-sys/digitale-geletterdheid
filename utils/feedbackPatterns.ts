@@ -34,9 +34,9 @@ export function getFeedbackMessage(score: number, config: FeedbackConfig): strin
 export function getScoreColor(score: number, config: FeedbackConfig): string {
   const { tier } = getMissionBadge(score, config);
   switch (tier) {
-    case 'gold': return 'text-yellow-600';
-    case 'silver': return 'text-slate-500';
-    case 'bronze': return 'text-amber-700';
+    case 'gold': return 'text-lab-gold';
+    case 'silver': return 'text-lab-muted';
+    case 'bronze': return 'text-lab-gold';
   }
 }
 

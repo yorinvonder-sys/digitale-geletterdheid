@@ -28,7 +28,7 @@ const VARIABLE_LABELS: Record<string, string> = {
 export function extractGameVariables(code: string): Record<string, string> {
     const variables: Record<string, string> = {};
 
-    // Match patterns like: let playerColor = '#e53935';
+    // Match patterns like: let playerColor = '#D97848';
     const regex = /let\s+(playerColor|jumpForce|gravity|obstacleColor|obstacleSpeed|skyColor1|skyColor2|groundColor|grassColor)\s*=\s*([^;]+);/g;
     let match;
 
@@ -64,24 +64,24 @@ export const CodeChangeCard: React.FC<CodeChangeCardProps> = ({ changes }) => {
     if (changes.length === 0) return null;
 
     return (
-        <div className="bg-gradient-to-br from-emerald-900/30 to-cyan-900/30 border border-emerald-700/50 rounded-xl p-4 my-3 animate-in slide-in-from-bottom-2">
+        <div className="bg-gradient-to-br from-emerald-900/30 to-cyan-900/30 border border-lab-sage/50 rounded-xl p-4 my-3 animate-in slide-in-from-bottom-2">
             <div className="flex items-center gap-2 mb-3">
-                <Sparkles size={16} className="text-emerald-400" />
-                <h4 className="text-sm font-bold text-emerald-300">Wat is er veranderd?</h4>
+                <Sparkles size={16} className="text-lab-sage" />
+                <h4 className="text-sm font-bold text-lab-sage">Wat is er veranderd?</h4>
             </div>
 
             <div className="space-y-2">
                 {changes.map((change, idx) => (
-                    <div key={idx} className="flex items-center gap-2 text-sm bg-slate-900/50 rounded-lg px-3 py-2">
-                        <span className="text-slate-400 font-medium flex-shrink-0">{change.label}</span>
+                    <div key={idx} className="flex items-center gap-2 text-sm bg-lab-muted/50 rounded-lg px-3 py-2">
+                        <span className="text-lab-muted font-medium flex-shrink-0">{change.label}</span>
                         <span className="font-mono text-red-400 line-through text-xs opacity-70">{change.oldValue}</span>
-                        <ArrowRight size={14} className="text-slate-500 flex-shrink-0" />
-                        <span className="font-mono text-emerald-400 font-bold">{change.newValue}</span>
+                        <ArrowRight size={14} className="text-lab-muted flex-shrink-0" />
+                        <span className="font-mono text-lab-sage font-bold">{change.newValue}</span>
                     </div>
                 ))}
             </div>
 
-            <p className="text-xs text-slate-500 mt-3 italic">
+            <p className="text-xs text-lab-muted mt-3 italic">
                 💡 Tip: Klik op RUN om de verandering te zien!
             </p>
         </div>

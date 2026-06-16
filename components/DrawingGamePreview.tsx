@@ -480,7 +480,7 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
             if (ctx) {
                 ctx.fillStyle = 'white';
                 ctx.fillRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-                ctx.strokeStyle = '#1A1A19';
+                ctx.strokeStyle = '#08283B';
                 ctx.lineWidth = 4;
                 ctx.lineCap = 'round';
                 ctx.lineJoin = 'round';
@@ -691,7 +691,7 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
                         <div className="w-24 h-24 rounded-2xl bg-white flex items-center justify-center shadow-2xl">
                             <Brain size={48} className="text-orange-500" />
                         </div>
-                        <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-amber-400 rounded-full flex items-center justify-center text-xl shadow-lg">⚡</div>
+                        <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-lab-gold rounded-full flex items-center justify-center text-xl shadow-lg">⚡</div>
                     </div>
                     <h2 className="text-2xl font-black mb-2 text-center">AI Tekengame 2.0</h2>
                     <p className="text-orange-100 text-center max-w-sm mb-6 text-sm">
@@ -725,7 +725,7 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
     }
 
     return (
-        <div className="w-full h-full flex flex-col bg-slate-900 text-white relative">
+        <div className="w-full h-full flex flex-col bg-lab-muted text-white relative">
             <div className="bg-orange-600 px-4 py-3 flex items-center justify-between shrink-0 shadow-lg z-20">
                 <div className="flex items-center gap-3">
                     <div className="text-2xl">{currentPrompt?.icon || '🎨'}</div>
@@ -756,7 +756,7 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
                             }}
                             className={`flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold transition-all active:scale-95 ${user.studentClass
                                 ? 'bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-400 hover:to-red-400'
-                                : 'bg-slate-600 opacity-70'
+                                : 'bg-lab-muted opacity-70'
                                 }`}
                             title={user.studentClass ? "Speel tegen klasgenoot" : "Geen klas - kan niet duelleren"}
                         >
@@ -801,32 +801,32 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
 
             <div className="flex-1 p-4 flex gap-4 overflow-hidden relative">
                 {/* EDUCATIONAL SIDEBAR - ACTIVE DURING ANALYSIS */}
-                <div className={`absolute left-4 top-4 bottom-4 w-64 bg-slate-800 rounded-2xl border border-slate-700 p-4 transition-all duration-500 transform ${gamePhase !== 'draw' ? 'translate-x-0' : '-translate-x-full opacity-0'}`}>
+                <div className={`absolute left-4 top-4 bottom-4 w-64 bg-lab-muted rounded-2xl border border-lab-muted p-4 transition-all duration-500 transform ${gamePhase !== 'draw' ? 'translate-x-0' : '-translate-x-full opacity-0'}`}>
                     <h4 className="font-black text-orange-400 mb-4 flex items-center gap-2">
                         <Brain size={18} /> Hoe AI Denkt
                     </h4>
 
                     <div className="space-y-4">
-                        <div className={`p-3 rounded-xl border ${analysisStep >= 1 ? 'bg-indigo-900/50 border-indigo-500 text-white' : 'bg-slate-900 border-slate-800 text-slate-500'}`}>
+                        <div className={`p-3 rounded-xl border ${analysisStep >= 1 ? 'bg-indigo-900/50 border-indigo-500 text-white' : 'bg-lab-muted border-lab-muted text-lab-muted'}`}>
                             <div className="text-xs font-bold uppercase mb-1">Stap 1: Input</div>
                             <div className="text-sm">AI scant de pixels van jouw tekening (28x28 grid).</div>
                         </div>
-                        <div className={`p-3 rounded-xl border ${analysisStep >= 2 ? 'bg-purple-900/50 border-purple-500 text-white' : 'bg-slate-900 border-slate-800 text-slate-500'}`}>
+                        <div className={`p-3 rounded-xl border ${analysisStep >= 2 ? 'bg-purple-900/50 border-purple-500 text-white' : 'bg-lab-muted border-lab-muted text-lab-muted'}`}>
                             <div className="text-xs font-bold uppercase mb-1">Stap 2: Patronen</div>
                             <div className="text-sm">Neurale lagen zoeken naar lijnen, bochten en vormen.</div>
                         </div>
-                        <div className={`p-3 rounded-xl border ${analysisStep >= 3 ? 'bg-emerald-900/50 border-emerald-500 text-white' : 'bg-slate-900 border-slate-800 text-slate-500'}`}>
+                        <div className={`p-3 rounded-xl border ${analysisStep >= 3 ? 'bg-lab-sage/50 border-lab-sage text-white' : 'bg-lab-muted border-lab-muted text-lab-muted'}`}>
                             <div className="text-xs font-bold uppercase mb-1">Stap 3: Waarschijnlijkheid</div>
                             <div className="text-sm">AI berekent % match met getrainde concepten.</div>
                         </div>
                     </div>
 
-                    <div className="mt-6 pt-4 border-t border-slate-700">
-                        <div className="bg-amber-500/10 border border-amber-500/30 rounded-xl p-3">
-                            <p className="text-xs font-bold text-amber-400 uppercase mb-1 flex items-center gap-1">
+                    <div className="mt-6 pt-4 border-t border-lab-muted">
+                        <div className="bg-lab-gold/10 border border-lab-gold/30 rounded-xl p-3">
+                            <p className="text-xs font-bold text-lab-gold uppercase mb-1 flex items-center gap-1">
                                 {AI_FACTS[currentFactIndex].emoji} Wist je dat?
                             </p>
-                            <p className="text-xs text-slate-300 leading-relaxed">
+                            <p className="text-xs text-lab-muted leading-relaxed">
                                 {AI_FACTS[currentFactIndex].fact}
                             </p>
                         </div>
@@ -849,7 +849,7 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
                         {gamePhase === 'analyzing' && (
                             <div className="absolute inset-0 flex flex-col items-center justify-center z-10">
                                 <div className="absolute inset-0 bg-indigo-500/20 animate-pulse rounded-2xl"></div>
-                                <div className="bg-slate-900/90 backdrop-blur p-6 rounded-2xl border border-indigo-500/50 flex flex-col items-center text-center shadow-2xl">
+                                <div className="bg-lab-muted/90 backdrop-blur p-6 rounded-2xl border border-indigo-500/50 flex flex-col items-center text-center shadow-2xl">
                                     <Loader2 size={32} className="animate-spin text-indigo-400 mb-2" />
                                     <h3 className="text-xl font-black text-white mb-1">
                                         {analysisStep === 1 && "Pixels Scannen..."}
@@ -863,13 +863,13 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
                         {/* RESULT OVERLAY */}
                         {gamePhase === 'result' && result && (
                             <div className="absolute inset-0 z-20 flex items-center justify-center">
-                                <div className="bg-slate-900 w-full max-w-md p-6 rounded-2xl border border-slate-700 shadow-2xl animate-in zoom-in-95 duration-300">
+                                <div className="bg-lab-muted w-full max-w-md p-6 rounded-2xl border border-lab-muted shadow-2xl animate-in zoom-in-95 duration-300">
                                     <div className="flex items-center justify-between mb-4">
                                         <h3 className="text-lg font-bold text-white flex items-center gap-2">
                                             {result.success ? <Check className="text-green-500" /> : <X className="text-red-500" />}
                                             {result.success ? 'Correct Herkend!' : 'Niet Helemaal...'}
                                         </h3>
-                                        <div className="text-xs font-bold text-slate-400 uppercase">AI Confidence</div>
+                                        <div className="text-xs font-bold text-lab-muted uppercase">AI Confidence</div>
                                     </div>
 
                                     {/* PROBABILISTIC RESULTS */}
@@ -877,14 +877,14 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
                                         {result.guesses.slice(0, 3).map((guess, idx) => (
                                             <div key={idx} className="relative">
                                                 <div className="flex justify-between text-xs font-bold mb-1">
-                                                    <span className={guess.label === currentPrompt?.word ? 'text-green-400' : 'text-slate-300'}>
+                                                    <span className={guess.label === currentPrompt?.word ? 'text-green-400' : 'text-lab-muted'}>
                                                         {guess.label.toUpperCase()}
                                                     </span>
-                                                    <span className="text-slate-400">{guess.confidence}%</span>
+                                                    <span className="text-lab-muted">{guess.confidence}%</span>
                                                 </div>
-                                                <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                                                <div className="w-full bg-lab-muted h-2 rounded-full overflow-hidden">
                                                     <div
-                                                        className={`h-full rounded-full transition-all duration-1000 ${guess.label === currentPrompt?.word ? 'bg-green-500' : 'bg-slate-500'}`}
+                                                        className={`h-full rounded-full transition-all duration-1000 ${guess.label === currentPrompt?.word ? 'bg-green-500' : 'bg-lab-muted'}`}
                                                         style={{ width: `${guess.confidence}%` }}
                                                     ></div>
                                                 </div>
@@ -892,7 +892,7 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
                                         ))}
                                     </div>
 
-                                    <div className="bg-slate-800/50 p-3 rounded-lg text-sm text-slate-300 mb-4 border-l-2 border-orange-500">
+                                    <div className="bg-lab-muted/50 p-3 rounded-lg text-sm text-lab-muted mb-4 border-l-2 border-orange-500">
                                         "{result.reasoning}"
                                     </div>
 
@@ -904,7 +904,7 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
                                                     setResult(null);
                                                     setIsDrawing(false);
                                                 }}
-                                                className="px-5 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg font-bold flex items-center gap-2 text-sm transition-colors"
+                                                className="px-5 py-2 bg-lab-muted hover:bg-lab-muted text-white rounded-lg font-bold flex items-center gap-2 text-sm transition-colors"
                                             >
                                                 <RotateCcw size={16} /> Probeer Opnieuw
                                             </button>
@@ -931,9 +931,9 @@ export const DrawingGamePreview: React.FC<DrawingGamePreviewProps> = ({ onLevelC
 
             {/* CONTROLS - iPad optimized touch targets */}
             {gamePhase === 'draw' && (
-                <div className="p-4 bg-slate-800 flex justify-center gap-4 shrink-0">
-                    <button onClick={clearCanvas} className="touch-friendly-btn px-6 py-4 bg-slate-700 hover:bg-slate-600 rounded-xl font-bold flex items-center gap-2 transition-colors min-h-[56px]"><RotateCcw size={20} /> Wissen</button>
-                    <button onClick={submitDrawing} disabled={!isDrawing} className="touch-friendly-btn px-10 py-4 bg-green-600 hover:bg-green-700 disabled:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl font-bold flex items-center gap-2 shadow-lg hover:shadow-green-900/20 transition-all active:scale-95 min-h-[56px]"><Check size={20} /> Klaar!</button>
+                <div className="p-4 bg-lab-muted flex justify-center gap-4 shrink-0">
+                    <button onClick={clearCanvas} className="touch-friendly-btn px-6 py-4 bg-lab-muted hover:bg-lab-muted rounded-xl font-bold flex items-center gap-2 transition-colors min-h-[56px]"><RotateCcw size={20} /> Wissen</button>
+                    <button onClick={submitDrawing} disabled={!isDrawing} className="touch-friendly-btn px-10 py-4 bg-green-600 hover:bg-green-700 disabled:bg-lab-muted disabled:opacity-50 disabled:cursor-not-allowed rounded-xl font-bold flex items-center gap-2 shadow-lg hover:shadow-green-900/20 transition-all active:scale-95 min-h-[56px]"><Check size={20} /> Klaar!</button>
                 </div>
             )}
         </div>

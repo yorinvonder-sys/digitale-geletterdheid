@@ -17,20 +17,20 @@ import { supabase } from '../services/supabase';
 
 // DGSkills branding tokens
 const C = {
-    bg: '#FAF9F0',
-    bgAlt: '#F5F3EC',
+    bg: '#FCF6EA',
+    bgAlt: '#FCF6EA',
     surface: '#FFFFFF',
-    text: '#1A1A19',
-    textBody: '#3D3D38',
-    textMuted: '#6B6B66',
-    textLight: '#9C9C95',
-    accent: '#D97757',
-    accentHover: '#C46849',
-    teal: '#2A9D8F',
-    lavender: '#8B6F9E',
-    success: '#10B981',
-    border: '#E8E6DF',
-    borderLight: '#F0EEE8',
+    text: '#08283B',
+    textBody: '#445865',
+    textMuted: '#445865',
+    textLight: '#445865',
+    accent: '#D97848',
+    accentHover: '#D97848',
+    teal: '#5F947D',
+    lavender: '#0B453F',
+    success: '#5F947D',
+    border: '#E7D8BD',
+    borderLight: '#FCF6EA',
 } as const;
 
 const SERIF = "'Newsreader', Georgia, serif";
@@ -121,7 +121,7 @@ export const GamesSection: React.FC<GamesSectionProps> = ({
             id: 'arena-battle',
             name: 'Arena Battle',
             description: 'Strijd tegen je klasgenoten in de arena! (1vs1vs1vs1)',
-            color: '#D97757',
+            color: '#D97848',
             emoji: '💣',
             onlineRequired: true,
             component: (
@@ -159,7 +159,7 @@ export const GamesSection: React.FC<GamesSectionProps> = ({
             id: 'typing-trainer',
             name: 'Typing Trainer',
             description: 'Train je typevaardigheid met een korte sprint en haal een hogere WPM.',
-            color: '#9C9C95',
+            color: '#445865',
             emoji: '⌨️',
             component: (
                 <TypingTrainer

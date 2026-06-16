@@ -122,7 +122,7 @@ export const DocumentCanvas: React.FC<DocumentCanvasProps> = ({
                             position: 'absolute',
                             top: i * 1123,
                             left: 0,
-                            borderBottom: i < pageCount - 1 ? '20px solid #E8E6DF' : 'none', // Thick gray border acts as "gap"
+                            borderBottom: i < pageCount - 1 ? '20px solid #E7D8BD' : 'none', // Thick gray border acts as "gap"
                             boxSizing: 'border-box'
                         }}
                     >
@@ -145,14 +145,14 @@ export const DocumentCanvas: React.FC<DocumentCanvasProps> = ({
                                 left: 0,
                                 width: '100%',
                                 height: '20px',
-                                background: '#E8E6DF', // Slate-200 gap color matches app bg
+                                background: '#E7D8BD', // Slate-200 gap color matches app bg
                                 borderTop: '1px solid #d4d2cb',
                                 borderBottom: '1px solid #d4d2cb',
                                 zIndex: 10
                             }} />
                         )}
 
-                        <div className="absolute bottom-6 right-8 text-xs text-slate-400 font-medium">
+                        <div className="absolute bottom-6 right-8 text-xs text-lab-muted font-medium">
                             Pagina {i + 1}
                         </div>
                     </div>
@@ -164,7 +164,7 @@ export const DocumentCanvas: React.FC<DocumentCanvasProps> = ({
                 id="sim-editor"
                 ref={editorRef}
                 contentEditable
-                className="outline-none min-h-[1123px] font-serif text-slate-900 leading-relaxed cursor-text relative w-full"
+                className="outline-none min-h-[1123px] font-serif text-lab-muted leading-relaxed cursor-text relative w-full"
                 onInput={handleInput}
                 suppressContentEditableWarning
                 style={{

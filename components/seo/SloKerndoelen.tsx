@@ -35,23 +35,23 @@ export const SloKerndoelen: React.FC = () => {
 
     return (
         <div className="min-h-screen bg-white">
-            <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-100">
+            <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-lab-muted">
                 <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
                     <a href="/" className="flex items-center gap-2.5">
                         <img src="/mascot/pip-logo.webp" alt="DGSkills logo" className="w-8 h-8 object-contain" />
-                        <span className="font-bold text-slate-900">DGSkills</span>
+                        <span className="font-bold text-lab-muted">DGSkills</span>
                     </a>
-                    <a href="/login" className="text-sm font-medium text-slate-600">Inloggen</a>
+                    <a href="/login" className="text-sm font-medium text-lab-muted">Inloggen</a>
                 </div>
             </nav>
 
             <main className="pt-32">
                 <section className="px-6 mb-20">
                     <div className="max-w-3xl mx-auto">
-                        <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 leading-tight mb-6">
+                        <h1 className="text-4xl md:text-5xl font-extrabold text-lab-muted leading-tight mb-6">
                             Voldoe aan de SLO-conceptkerndoelen (september 2025) Digitale Geletterdheid
                         </h1>
-                        <p className="text-xl text-slate-600 mb-10 leading-relaxed">
+                        <p className="text-xl text-lab-muted mb-10 leading-relaxed">
                             De nieuwe SLO-conceptkerndoelen (september 2025) omvatten 9 kerndoelen (21A t/m 23C) verdeeld over 3 domeinen. DGSkills heeft ze direct vertaald naar meetbare missies. Zo heb je altijd inzicht in welke doelen jouw leerlingen al hebben behaald.
                         </p>
                         <div className="flex flex-wrap gap-4">
@@ -59,14 +59,14 @@ export const SloKerndoelen: React.FC = () => {
                                 Bekijk de dekkingsmatrix
                                 <IconArrowRight />
                             </a>
-                            <a href="#pilot" className="bg-white border border-slate-200 text-slate-600 px-8 py-4 rounded-xl font-bold hover:bg-slate-50 transition-all">
+                            <a href="#pilot" className="bg-white border border-lab-muted text-lab-muted px-8 py-4 rounded-xl font-bold hover:bg-lab-muted transition-all">
                                 Gratis pilot aanvragen
                             </a>
                         </div>
                     </div>
                 </section>
 
-                <section id="matrix" className="py-20 bg-slate-50 border-y border-slate-100 px-6">
+                <section id="matrix" className="py-20 bg-lab-muted border-y border-lab-muted px-6">
                     <div className="max-w-5xl mx-auto">
                         <h2 className="text-3xl font-bold text-center mb-16">Volledige dekking van alle 3 de domeinen</h2>
                         <ScholenLandingSlo />
@@ -76,32 +76,32 @@ export const SloKerndoelen: React.FC = () => {
                 <section className="py-20 px-6">
                     <div className="max-w-3xl mx-auto">
                         <h2 className="text-3xl font-bold mb-6">Klaar voor de onderwijsinspectie</h2>
-                        <p className="text-lg text-slate-600 mb-8 leading-relaxed">
+                        <p className="text-lg text-lab-muted mb-8 leading-relaxed">
                             Met ons ingebouwde dashboard genereer je met één klik voortgangsrapportages die direct gekoppeld zijn aan de SLO-doelen. Geen handmatige administratie meer, maar datagedreven inzicht voor de schoolleiding en de inspectie.
                         </p>
-                        <ul className="space-y-4 text-slate-700">
+                        <ul className="space-y-4 text-lab-muted">
                             <li className="flex items-start gap-3">
-                                <span className="text-emerald-500 mt-1">✓</span>
+                                <span className="text-lab-sage mt-1">✓</span>
                                 <span>Real-time monitoring per leerling, klas en leerjaar.</span>
                             </li>
                             <li className="flex items-start gap-3">
-                                <span className="text-emerald-500 mt-1">✓</span>
+                                <span className="text-lab-sage mt-1">✓</span>
                                 <span>Automatische koppeling aan de 9 SLO-conceptkerndoelen (september 2025).</span>
                             </li>
                             <li className="flex items-start gap-3">
-                                <span className="text-emerald-500 mt-1">✓</span>
+                                <span className="text-lab-sage mt-1">✓</span>
                                 <span>Exporteerbare rapporten voor Magister, SOMtoday en LVS.</span>
                             </li>
                         </ul>
                     </div>
                 </section>
 
-                <section id="pilot" className="py-20 bg-slate-900 text-white px-6">
+                <section id="pilot" className="py-20 bg-lab-muted text-white px-6">
                     <ScholenLandingContact />
                 </section>
             </main>
 
-            <footer className="py-12 bg-slate-950 text-slate-500 text-center text-xs">
+            <footer className="py-12 bg-lab-muted text-lab-muted text-center text-xs">
                 <div className="max-w-5xl mx-auto px-6">
                     <p>© {new Date().getFullYear()} DGSkills — SLO Kerndoelen Digitale Geletterdheid</p>
                 </div>

@@ -31,7 +31,7 @@ const PROMPT = `Look at this bird logo carefully. This is "Pip", a European robi
 Create a simplified favicon version of this exact bird, optimized for very small display (32x32 pixels). Requirements:
 
 - Show ONLY the bird's head and upper body (head + terracotta breast), cropped tightly
-- Keep the exact same art style: clean black outlines, white face, terracotta-orange breast (#D97757), dark charcoal details
+- Keep the exact same art style: clean black outlines, white face, terracotta-orange breast (#D97848), dark charcoal details
 - Large expressive black eye with small white highlight
 - Small orange beak pointing right
 - Include 2-3 small square pixels dissolving from the edge (the bird's signature digital/pixel effect) in terracotta and charcoal

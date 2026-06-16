@@ -111,8 +111,8 @@ export const ChatBubble: React.FC<ChatBubbleProps> = ({ message, onLinkClick, is
         className={`
           max-w-[90%] md:max-w-[80%] px-5 py-4 text-base leading-relaxed shadow-sm
           ${isUser
-            ? 'bg-slate-900 text-white rounded-3xl rounded-br-lg'
-            : 'bg-white text-slate-800 rounded-3xl rounded-bl-lg border border-slate-100 shadow-indigo-100/50'
+            ? 'bg-lab-muted text-white rounded-3xl rounded-br-lg'
+            : 'bg-white text-lab-muted rounded-3xl rounded-bl-lg border border-lab-muted shadow-indigo-100/50'
           }
         `}
       >
@@ -131,7 +131,7 @@ export const ChatBubble: React.FC<ChatBubbleProps> = ({ message, onLinkClick, is
             <img
               src={message.image}
               alt="Gegenereerd door AI"
-              className="rounded-2xl w-full h-auto shadow-md border-2 border-slate-100"
+              className="rounded-2xl w-full h-auto shadow-md border-2 border-lab-muted"
             />
             <a
               href={message.image}
@@ -139,7 +139,7 @@ export const ChatBubble: React.FC<ChatBubbleProps> = ({ message, onLinkClick, is
               className="absolute top-3 right-3 bg-white/80 backdrop-blur p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-sm"
               title="Download plaatje"
             >
-              <Download size={16} className="text-slate-700" />
+              <Download size={16} className="text-lab-muted" />
             </a>
           </div>
         )}
@@ -181,7 +181,7 @@ export const ChatBubble: React.FC<ChatBubbleProps> = ({ message, onLinkClick, is
 
                   if (isInline) {
                     return (
-                      <code className={`bg-amber-50 text-amber-700 rounded px-1.5 py-0.5 font-bold font-mono text-sm border border-amber-100 ${className || ''}`}>
+                      <code className={`bg-lab-gold text-lab-gold rounded px-1.5 py-0.5 font-bold font-mono text-sm border border-lab-gold ${className || ''}`}>
                         {children}
                       </code>
                     )
@@ -191,11 +191,11 @@ export const ChatBubble: React.FC<ChatBubbleProps> = ({ message, onLinkClick, is
                   if (isFullGameCode) {
                     const isProcessing = isGenerating;
                     return (
-                      <div className={`my-4 p-3 ${isProcessing ? 'bg-amber-50 border-amber-100 text-amber-700' : 'bg-emerald-50 border-emerald-100 text-emerald-700'} border rounded-xl flex items-center justify-between gap-3 shadow-sm transition-all duration-500`}>
+                      <div className={`my-4 p-3 ${isProcessing ? 'bg-lab-gold border-lab-gold text-lab-gold' : 'bg-lab-sage border-lab-sage text-lab-sage'} border rounded-xl flex items-center justify-between gap-3 shadow-sm transition-all duration-500`}>
                         <div className="flex items-center gap-3">
-                          <div className={`p-2 ${isProcessing ? 'bg-amber-100' : 'bg-emerald-100'} rounded-lg transition-colors`}>
+                          <div className={`p-2 ${isProcessing ? 'bg-lab-gold' : 'bg-lab-sage'} rounded-lg transition-colors`}>
                             {isProcessing ? (
-                              <Loader2 size={20} className="animate-spin text-amber-600" />
+                              <Loader2 size={20} className="animate-spin text-lab-gold" />
                             ) : (
                               <CheckCircle2 size={20} />
                             )}
@@ -217,8 +217,8 @@ export const ChatBubble: React.FC<ChatBubbleProps> = ({ message, onLinkClick, is
                   // Anders, render het als een normaal code block (voor educatieve snippets)
                   return (
                     <div className="relative my-4 group">
-                      <div className="absolute top-0 right-0 bg-slate-800 text-[10px] text-slate-400 px-3 py-1 rounded-bl-lg rounded-tr-xl font-mono">CODE LES</div>
-                      <pre className="bg-slate-900 text-indigo-100 p-5 pt-8 rounded-2xl overflow-x-auto text-xs md:text-sm shadow-inner custom-scrollbar border border-slate-700">
+                      <div className="absolute top-0 right-0 bg-lab-muted text-[10px] text-lab-muted px-3 py-1 rounded-bl-lg rounded-tr-xl font-mono">CODE LES</div>
+                      <pre className="bg-lab-muted text-indigo-100 p-5 pt-8 rounded-2xl overflow-x-auto text-xs md:text-sm shadow-inner custom-scrollbar border border-lab-muted">
                         {children}
                       </pre>
                     </div>
@@ -226,7 +226,7 @@ export const ChatBubble: React.FC<ChatBubbleProps> = ({ message, onLinkClick, is
                 },
                 ul({ children }) { return <ul className="list-disc pl-5 mb-2 space-y-1">{children}</ul> },
                 ol({ children }) { return <ol className="list-decimal pl-5 mb-2 space-y-1">{children}</ol> },
-                strong({ children }) { return <strong className="text-slate-900 font-extrabold">{children}</strong> }
+                strong({ children }) { return <strong className="text-lab-muted font-extrabold">{children}</strong> }
               }}
             >
               {message.text}
@@ -241,7 +241,7 @@ export const ChatBubble: React.FC<ChatBubbleProps> = ({ message, onLinkClick, is
 
         {/* AI Disclaimer (EU AI Act Transparency) */}
         {!isUser && (
-          <div className="mt-3 pt-2 border-t border-slate-100 text-[10px] text-slate-400 flex items-center gap-1">
+          <div className="mt-3 pt-2 border-t border-lab-muted text-[10px] text-lab-muted flex items-center gap-1">
             <Info size={10} className="shrink-0" />
             <span>Gegenereerd door AI. Controleer altijd de feiten.</span>
           </div>

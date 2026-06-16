@@ -32,7 +32,7 @@ const CATEGORY_LABELS: Record<SloDocument['category'], string> = {
 const CATEGORY_COLORS: Record<SloDocument['category'], { bg: string; text: string; border: string; iconBg: string }> = {
     slo: { bg: 'bg-indigo-50', text: 'text-indigo-700', border: 'border-indigo-200', iconBg: 'bg-indigo-100' },
     compliance: { bg: 'bg-purple-50', text: 'text-purple-700', border: 'border-purple-200', iconBg: 'bg-purple-100' },
-    handleiding: { bg: 'bg-emerald-50', text: 'text-emerald-700', border: 'border-emerald-200', iconBg: 'bg-emerald-100' },
+    handleiding: { bg: 'bg-lab-sage', text: 'text-lab-sage', border: 'border-lab-sage', iconBg: 'bg-lab-sage' },
 };
 
 export const TeacherDocumentsPanel: React.FC = () => {
@@ -54,23 +54,23 @@ export const TeacherDocumentsPanel: React.FC = () => {
     return (
         <div className="space-y-6">
             {/* Header */}
-            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+            <div className="bg-white rounded-2xl border border-lab-muted shadow-sm p-6">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                     <div>
-                        <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+                        <h2 className="text-lg font-bold text-lab-muted flex items-center gap-2">
                             <BookOpen size={20} className="text-indigo-600" />
                             Documenten
                         </h2>
-                        <p className="text-sm text-slate-500 mt-1">
+                        <p className="text-sm text-lab-muted mt-1">
                             Officiële SLO-documenten en handleidingen voor docenten.
                         </p>
                     </div>
                     <div className="relative w-full sm:w-72">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-lab-muted" size={16} />
                         <input
                             type="text"
                             placeholder="Zoek documenten..."
-                            className="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
+                            className="w-full pl-9 pr-4 py-2.5 bg-lab-muted border border-lab-muted rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                         />
@@ -79,14 +79,14 @@ export const TeacherDocumentsPanel: React.FC = () => {
 
                 {/* Category filter */}
                 {categories.length > 2 && (
-                    <div className="flex gap-2 mt-4 pt-4 border-t border-slate-100">
+                    <div className="flex gap-2 mt-4 pt-4 border-t border-lab-muted">
                         {categories.map(cat => (
                             <button
                                 key={cat}
                                 onClick={() => setActiveCategory(cat)}
                                 className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${activeCategory === cat
                                     ? 'bg-indigo-100 text-indigo-700'
-                                    : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
+                                    : 'text-lab-muted hover:text-lab-muted hover:bg-lab-muted'
                                 }`}
                             >
                                 {cat === 'all' ? 'Alles' : CATEGORY_LABELS[cat]}
@@ -103,7 +103,7 @@ export const TeacherDocumentsPanel: React.FC = () => {
                     return (
                         <div
                             key={doc.id}
-                            className="bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all overflow-hidden"
+                            className="bg-white rounded-2xl border border-lab-muted shadow-sm hover:shadow-md transition-all overflow-hidden"
                         >
                             <div className="flex flex-col md:flex-row">
                                 {/* Icon area */}
@@ -125,26 +125,26 @@ export const TeacherDocumentsPanel: React.FC = () => {
                                                     PDF
                                                 </span>
                                             </div>
-                                            <h3 className="text-base font-bold text-slate-900 leading-tight">
+                                            <h3 className="text-base font-bold text-lab-muted leading-tight">
                                                 {doc.title}
                                             </h3>
                                         </div>
                                     </div>
 
-                                    <p className="text-sm text-slate-500 leading-relaxed">
+                                    <p className="text-sm text-lab-muted leading-relaxed">
                                         {doc.description}
                                     </p>
 
                                     <div className="flex flex-wrap gap-1.5 mt-1">
                                         {doc.tags.map(tag => (
-                                            <span key={tag} className="text-[9px] font-bold text-slate-400 border border-slate-200 px-2 py-0.5 rounded-full uppercase tracking-tight">
+                                            <span key={tag} className="text-[9px] font-bold text-lab-muted border border-lab-muted px-2 py-0.5 rounded-full uppercase tracking-tight">
                                                 {tag}
                                             </span>
                                         ))}
                                     </div>
 
-                                    <div className="flex items-center justify-between pt-3 border-t border-slate-100 mt-auto">
-                                        <span className="text-xs text-slate-400">
+                                    <div className="flex items-center justify-between pt-3 border-t border-lab-muted mt-auto">
+                                        <span className="text-xs text-lab-muted">
                                             Bijgewerkt: {new Date(doc.updatedAt).toLocaleDateString('nl-NL', { year: 'numeric', month: 'long', day: 'numeric' })}
                                         </span>
                                         <div className="flex gap-2">
@@ -158,7 +158,7 @@ export const TeacherDocumentsPanel: React.FC = () => {
                                             <a
                                                 href={doc.path}
                                                 download
-                                                className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-slate-600 hover:bg-slate-50 rounded-xl transition-colors"
+                                                className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-lab-muted hover:bg-lab-muted rounded-xl transition-colors"
                                             >
                                                 <Download size={14} />
                                                 Download
@@ -170,10 +170,10 @@ export const TeacherDocumentsPanel: React.FC = () => {
 
                             {/* Inline PDF preview */}
                             {previewDoc?.id === doc.id && (
-                                <div className="border-t border-slate-200">
+                                <div className="border-t border-lab-muted">
                                     <iframe
                                         src={doc.path}
-                                        className="w-full h-[70vh] bg-slate-50"
+                                        className="w-full h-[70vh] bg-lab-muted"
                                         title={doc.title}
                                     />
                                 </div>
@@ -184,10 +184,10 @@ export const TeacherDocumentsPanel: React.FC = () => {
             </div>
 
             {filteredDocs.length === 0 && (
-                <div className="bg-white rounded-2xl border border-slate-200 p-12 text-center">
-                    <BookOpen size={40} className="text-slate-300 mx-auto mb-3" />
-                    <p className="text-slate-500 font-medium">Geen documenten gevonden</p>
-                    <p className="text-sm text-slate-400 mt-1">Probeer een andere zoekterm of categorie.</p>
+                <div className="bg-white rounded-2xl border border-lab-muted p-12 text-center">
+                    <BookOpen size={40} className="text-lab-muted mx-auto mb-3" />
+                    <p className="text-lab-muted font-medium">Geen documenten gevonden</p>
+                    <p className="text-sm text-lab-muted mt-1">Probeer een andere zoekterm of categorie.</p>
                 </div>
             )}
 

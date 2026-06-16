@@ -374,17 +374,17 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
             <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
                 <div className="flex items-center gap-3 w-full md:w-auto">
                     <div className="relative flex-1 md:w-64">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-lab-muted" size={18} />
                         <input 
                             type="text" 
                             placeholder="Zoek taken..."
-                            className="w-full pl-10 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 outline-none"
+                            className="w-full pl-10 pr-4 py-2 bg-white border border-lab-muted rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 outline-none"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                         />
                     </div>
                     <select 
-                        className="px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 outline-none"
+                        className="px-4 py-2 bg-white border border-lab-muted rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 outline-none"
                         value={filter}
                         onChange={(e) => setFilter(e.target.value as any)}
                     >
@@ -398,7 +398,7 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
                     <button 
                         onClick={() => setShowSettings(!showSettings)}
                         className={`flex-1 md:w-auto flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-bold transition-all ${
-                            showSettings ? 'bg-slate-200 text-slate-800' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                            showSettings ? 'bg-lab-muted text-lab-muted' : 'bg-lab-muted text-lab-muted hover:bg-lab-muted'
                         }`}
                         title="AI Beleid Instellingen"
                     >
@@ -421,10 +421,10 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
                         {isPlanning || isAutoPlanning ? <Loader2 className="animate-spin" size={18} /> : <BookOpen size={18} />}
                         AI Plan
                     </button>
-                    <div className="w-px h-10 bg-slate-200 mx-1 hidden md:block" />
+                    <div className="w-px h-10 bg-lab-muted mx-1 hidden md:block" />
                     <button 
                         onClick={() => setIsAdding(true)}
-                        className="flex-1 md:w-auto flex items-center justify-center gap-2 px-4 py-2.5 bg-slate-900 text-white rounded-xl font-bold hover:bg-slate-800 transition-all shadow-lg shadow-slate-200"
+                        className="flex-1 md:w-auto flex items-center justify-center gap-2 px-4 py-2.5 bg-lab-muted text-white rounded-xl font-bold hover:bg-lab-muted transition-all shadow-lg shadow-slate-200"
                     >
                         <Plus size={18} />
                         Taak
@@ -434,37 +434,37 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
 
             {/* AI Policy & Tweak Prompt Settings */}
             {showSettings && (
-                <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-4 animate-in slide-in-from-top-4 duration-300">
+                <div className="bg-white border border-lab-muted rounded-3xl p-6 shadow-sm space-y-4 animate-in slide-in-from-top-4 duration-300">
                     <div className="flex items-center justify-between">
-                        <h4 className="text-sm font-black text-slate-900 uppercase tracking-tight flex items-center gap-2">
+                        <h4 className="text-sm font-black text-lab-muted uppercase tracking-tight flex items-center gap-2">
                             <BookOpen size={16} className="text-indigo-500" />
                             AI Takenbeleid Instellingen
                         </h4>
-                        <button onClick={() => setShowSettings(false)} className="text-slate-400 hover:text-slate-600">
+                        <button onClick={() => setShowSettings(false)} className="text-lab-muted hover:text-lab-muted">
                             <X size={18} />
                         </button>
                     </div>
                     
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-2">
-                            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center justify-between">
+                            <label className="text-[10px] font-black text-lab-muted uppercase tracking-widest flex items-center justify-between">
                                 <span>Globaal Beleid (Permanent)</span>
                                 <span className="text-indigo-400 text-[8px] border border-indigo-100 px-1.5 rounded-full lowercase font-medium">Blijft gelden</span>
                             </label>
                             <textarea 
-                                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-indigo-500 outline-none min-h-[80px]"
+                                className="w-full px-4 py-3 bg-lab-muted border border-lab-muted rounded-xl text-xs focus:ring-2 focus:ring-indigo-500 outline-none min-h-[80px]"
                                 placeholder="Bijv: Focus op security en GDPR in alle taken. Gebruik altijd Typescript voor codevoorbeelden."
                                 value={globalPolicy}
                                 onChange={e => setGlobalPolicy(e.target.value)}
                             />
                         </div>
                         <div className="space-y-2">
-                            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center justify-between">
+                            <label className="text-[10px] font-black text-lab-muted uppercase tracking-widest flex items-center justify-between">
                                 <span>Huidige Tweak Prompt (Eenmalig)</span>
-                                <span className="text-amber-400 text-[8px] border border-amber-100 px-1.5 rounded-full lowercase font-medium">Alleen volgend plan</span>
+                                <span className="text-lab-gold text-[8px] border border-lab-gold px-1.5 rounded-full lowercase font-medium">Alleen volgend plan</span>
                             </label>
                             <textarea 
-                                className="w-full px-4 py-3 bg-amber-50/30 border border-amber-100/50 rounded-xl text-xs focus:ring-2 focus:ring-amber-500 outline-none min-h-[80px]"
+                                className="w-full px-4 py-3 bg-lab-gold/30 border border-lab-gold/50 rounded-xl text-xs focus:ring-2 focus:ring-amber-500 outline-none min-h-[80px]"
                                 placeholder="Bijv: Maak dit plan specifiek voor de Almere College pilot. Voeg een extra taak toe voor data migratie."
                                 value={tweakPrompt}
                                 onChange={e => setTweakPrompt(e.target.value)}
@@ -494,12 +494,12 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
             {/* Tasks Grid */}
             <div className="grid grid-cols-1 gap-4">
                 {filteredTasks.length === 0 ? (
-                    <div className="text-center py-20 bg-white rounded-3xl border-2 border-dashed border-slate-200">
-                        <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-400">
+                    <div className="text-center py-20 bg-white rounded-3xl border-2 border-dashed border-lab-muted">
+                        <div className="w-16 h-16 bg-lab-muted rounded-full flex items-center justify-center mx-auto mb-4 text-lab-muted">
                             <CheckSquare size={32} />
                         </div>
-                        <h3 className="text-lg font-bold text-slate-900">Geen taken gevonden</h3>
-                        <p className="text-slate-500 mb-6">Begin met het toevoegen van je eerste developer taak.</p>
+                        <h3 className="text-lg font-bold text-lab-muted">Geen taken gevonden</h3>
+                        <p className="text-lab-muted mb-6">Begin met het toevoegen van je eerste developer taak.</p>
                         
                         {aiProposal ? (
                             <button 
@@ -523,19 +523,19 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
                         <div 
                             key={task.id}
                             className={`group bg-white p-5 rounded-2xl border transition-all duration-300 flex gap-4 ${
-                                task.checked ? 'border-slate-100 opacity-75' : 'border-slate-200 hover:border-indigo-300 hover:shadow-md'
+                                task.checked ? 'border-lab-muted opacity-75' : 'border-lab-muted hover:border-indigo-300 hover:shadow-md'
                             }`}
                         >
                             <button 
                                 onClick={() => toggleTask(task)}
-                                className={`mt-1 transition-colors ${task.checked ? 'text-emerald-500' : 'text-slate-300 hover:text-indigo-500'}`}
+                                className={`mt-1 transition-colors ${task.checked ? 'text-lab-sage' : 'text-lab-muted hover:text-indigo-500'}`}
                             >
                                 {task.checked ? <CheckCircle2 size={24} /> : <Circle size={24} />}
                             </button>
 
                             <div className="flex-1 min-w-0">
                                 <div className="flex items-start justify-between gap-4 mb-2">
-                                    <h4 className={`font-bold text-lg truncate ${task.checked ? 'text-slate-400 line-through' : 'text-slate-900'}`}>
+                                    <h4 className={`font-bold text-lg truncate ${task.checked ? 'text-lab-muted line-through' : 'text-lab-muted'}`}>
                                         {task.title}
                                     </h4>
                                     <div className="flex items-center gap-2 shrink-0">
@@ -543,11 +543,11 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
                                             value={task.status}
                                             onChange={(e) => updateTaskStatus(task.id!, e.target.value as any)}
                                             className={`text-[10px] font-black uppercase tracking-widest px-2 py-1 rounded-full border transition-all outline-none ${
-                                                task.status === 'completed' ? 'bg-emerald-50 text-emerald-600 border-emerald-100' :
+                                                task.status === 'completed' ? 'bg-lab-sage text-lab-sage border-lab-sage' :
                                                 task.status === 'in_progress' ? 'bg-indigo-50 text-indigo-600 border-indigo-100' :
                                                 task.status === 'blocked' ? 'bg-red-50 text-red-600 border-red-100' :
                                                 task.status === 'waiting_external' ? 'bg-purple-50 text-purple-600 border-purple-100' :
-                                                'bg-slate-50 text-slate-600 border-slate-100'
+                                                'bg-lab-muted text-lab-muted border-lab-muted'
                                             }`}
                                         >
                                             <option value="pending">Wachten</option>
@@ -558,26 +558,26 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
                                         </select>
                                         <span className={`px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${
                                             task.priority === 'high' ? 'bg-red-50 text-red-600' :
-                                            task.priority === 'medium' ? 'bg-amber-50 text-amber-600' :
-                                            'bg-slate-50 text-slate-600'
+                                            task.priority === 'medium' ? 'bg-lab-gold text-lab-gold' :
+                                            'bg-lab-muted text-lab-muted'
                                         }`}>
                                             {task.priority}
                                         </span>
                                         <button 
                                             onClick={() => deleteTask(task.id)}
-                                            className="p-1.5 text-slate-300 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100"
+                                            className="p-1.5 text-lab-muted hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100"
                                         >
                                             <Trash2 size={16} />
                                         </button>
                                     </div>
                                 </div>
-                                <p className={`text-sm mb-4 leading-relaxed ${task.checked ? 'text-slate-400' : 'text-slate-600'}`}>
+                                <p className={`text-sm mb-4 leading-relaxed ${task.checked ? 'text-lab-muted' : 'text-lab-muted'}`}>
                                     {task.description}
                                 </p>
 
                                 <div className="flex flex-wrap gap-4 items-center">
                                     {task.dueDate && (
-                                        <div className="flex items-center gap-1.5 text-xs font-medium text-slate-500">
+                                        <div className="flex items-center gap-1.5 text-xs font-medium text-lab-muted">
                                             <Clock size={14} className="text-indigo-400" />
                                             Deadline: {new Date(task.dueDate).toLocaleDateString('nl-NL')}
                                         </div>
@@ -591,14 +591,14 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
                                 </div>
 
                                 {task.evidence && (
-                                    <div className="mt-4 p-4 bg-slate-50 rounded-xl border border-slate-100 space-y-3">
+                                    <div className="mt-4 p-4 bg-lab-muted rounded-xl border border-lab-muted space-y-3">
                                         <div className="flex items-center justify-between">
-                                            <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Bewijs & Reflectie</span>
+                                            <span className="text-[10px] font-black text-lab-muted uppercase tracking-widest">Bewijs & Reflectie</span>
                                             {task.evidence.aiValidationStatus && task.evidence.aiValidationStatus !== 'none' && (
                                                 <div className={`flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase ${
-                                                    task.evidence.aiValidationStatus === 'validated' ? 'bg-emerald-100 text-emerald-700' :
+                                                    task.evidence.aiValidationStatus === 'validated' ? 'bg-lab-sage text-lab-sage' :
                                                     task.evidence.aiValidationStatus === 'rejected' ? 'bg-red-100 text-red-700' :
-                                                    'bg-amber-100 text-amber-700'
+                                                    'bg-lab-gold text-lab-gold'
                                                 }`}>
                                                     {task.evidence.aiValidationStatus === 'validated' ? <CheckCircle2 size={10} /> : <AlertCircle size={10} />}
                                                     AI {task.evidence.aiValidationStatus}
@@ -617,14 +617,14 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
                                             </a>
                                         )}
                                         {task.evidence.reflection && (
-                                            <p className="text-xs text-slate-500 italic leading-relaxed">
+                                            <p className="text-xs text-lab-muted italic leading-relaxed">
                                                 "{task.evidence.reflection}"
                                             </p>
                                         )}
                                         {task.evidence.aiFeedback && (
-                                            <div className="pt-2 border-t border-slate-200 mt-2">
+                                            <div className="pt-2 border-t border-lab-muted mt-2">
                                                 <p className="text-[10px] text-indigo-400 font-bold mb-1 uppercase">AI Feedback</p>
-                                                <p className="text-[11px] text-slate-600">{task.evidence.aiFeedback}</p>
+                                                <p className="text-[11px] text-lab-muted">{task.evidence.aiFeedback}</p>
                                             </div>
                                         )}
                                     </div>
@@ -657,42 +657,42 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
 
             {/* AI Proposal Modal */}
             {aiProposal && (
-                <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                <div className="fixed inset-0 bg-lab-muted/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
                     <div className="bg-white w-full max-w-2xl rounded-3xl shadow-2xl animate-in zoom-in-95 duration-200 flex flex-col max-h-[90vh]">
-                        <div className="p-6 border-b border-slate-100 flex items-center justify-between">
+                        <div className="p-6 border-b border-lab-muted flex items-center justify-between">
                             <div className="flex items-center gap-3">
                                 <div className="w-10 h-10 bg-indigo-100 rounded-xl flex items-center justify-center text-indigo-600">
                                     <BookOpen size={24} />
                                 </div>
                                 <div>
-                                    <h3 className="text-xl font-black text-slate-900 uppercase tracking-tight">AI Voorstel: Volgende Stap</h3>
-                                    <p className="text-xs text-slate-500 font-bold uppercase tracking-widest">Nieuwe taken en mijlpalen</p>
+                                    <h3 className="text-xl font-black text-lab-muted uppercase tracking-tight">AI Voorstel: Volgende Stap</h3>
+                                    <p className="text-xs text-lab-muted font-bold uppercase tracking-widest">Nieuwe taken en mijlpalen</p>
                                 </div>
                             </div>
-                            <button onClick={() => setAiProposal(null)} className="text-slate-400 hover:text-slate-600 p-2">
+                            <button onClick={() => setAiProposal(null)} className="text-lab-muted hover:text-lab-muted p-2">
                                 <X size={24} />
                             </button>
                         </div>
                         
                         <div className="flex-1 overflow-y-auto p-6 space-y-8">
                             {aiProposal.rationale && (
-                                <div className="p-4 bg-amber-50 rounded-2xl border border-amber-100">
-                                    <p className="text-[10px] font-black text-amber-600 uppercase tracking-widest mb-1 flex items-center gap-1.5">
+                                <div className="p-4 bg-lab-gold rounded-2xl border border-lab-gold">
+                                    <p className="text-[10px] font-black text-lab-gold uppercase tracking-widest mb-1 flex items-center gap-1.5">
                                         <AlertCircle size={12} />
                                         AI Rationale
                                     </p>
-                                    <p className="text-xs text-amber-800 leading-relaxed italic">{aiProposal.rationale}</p>
+                                    <p className="text-xs text-lab-gold leading-relaxed italic">{aiProposal.rationale}</p>
                                 </div>
                             )}
 
                             <div>
-                                <h4 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-4 border-b border-slate-100 pb-2">Nieuwe Taken</h4>
+                                <h4 className="text-xs font-black text-lab-muted uppercase tracking-widest mb-4 border-b border-lab-muted pb-2">Nieuwe Taken</h4>
                                 <div className="space-y-3">
                                     {aiProposal.tasks.map((task, i) => (
-                                        <div key={i} className="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                                        <div key={i} className="p-4 bg-lab-muted rounded-2xl border border-lab-muted">
                                             <div className="flex items-start justify-between gap-4 mb-1">
                                                 <input 
-                                                    className="font-bold text-slate-900 bg-transparent border-none p-0 focus:ring-0 w-full"
+                                                    className="font-bold text-lab-muted bg-transparent border-none p-0 focus:ring-0 w-full"
                                                     value={task.title}
                                                     onChange={e => {
                                                         const newTasks = [...aiProposal.tasks];
@@ -700,10 +700,10 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
                                                         setAiProposal({...aiProposal, tasks: newTasks});
                                                     }}
                                                 />
-                                                <span className="px-2 py-0.5 bg-white border border-slate-200 rounded-full text-[9px] font-black text-slate-400 uppercase">{task.priority}</span>
+                                                <span className="px-2 py-0.5 bg-white border border-lab-muted rounded-full text-[9px] font-black text-lab-muted uppercase">{task.priority}</span>
                                             </div>
                                             <textarea 
-                                                className="text-xs text-slate-500 bg-transparent border-none p-0 focus:ring-0 w-full min-h-[40px] resize-none"
+                                                className="text-xs text-lab-muted bg-transparent border-none p-0 focus:ring-0 w-full min-h-[40px] resize-none"
                                                 value={task.description}
                                                 onChange={e => {
                                                     const newTasks = [...aiProposal.tasks];
@@ -717,7 +717,7 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
                             </div>
 
                             <div>
-                                <h4 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-4 border-b border-slate-100 pb-2">Nieuwe Mijlpalen</h4>
+                                <h4 className="text-xs font-black text-lab-muted uppercase tracking-widest mb-4 border-b border-lab-muted pb-2">Nieuwe Mijlpalen</h4>
                                 <div className="space-y-3">
                                     {aiProposal.milestones.map((ms, i) => (
                                         <div key={i} className="p-4 bg-indigo-50/50 rounded-2xl border border-indigo-100/50 flex gap-4">
@@ -726,7 +726,7 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
                                             </div>
                                             <div className="flex-1">
                                                 <input 
-                                                    className="font-bold text-slate-900 text-sm bg-transparent border-none p-0 focus:ring-0 w-full"
+                                                    className="font-bold text-lab-muted text-sm bg-transparent border-none p-0 focus:ring-0 w-full"
                                                     value={ms.title}
                                                     onChange={e => {
                                                         const newMilestones = [...aiProposal.milestones];
@@ -736,7 +736,7 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
                                                 />
                                                 <div className="flex items-center gap-3 mt-1">
                                                     <span className="text-[10px] font-black text-indigo-600 uppercase tracking-widest">{ms.phase}</span>
-                                                    <span className="text-[10px] font-medium text-slate-400 italic">{new Date(ms.startDate).toLocaleDateString('nl-NL')} - {new Date(ms.endDate).toLocaleDateString('nl-NL')}</span>
+                                                    <span className="text-[10px] font-medium text-lab-muted italic">{new Date(ms.startDate).toLocaleDateString('nl-NL')} - {new Date(ms.endDate).toLocaleDateString('nl-NL')}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -745,10 +745,10 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
                             </div>
                         </div>
 
-                        <div className="p-6 bg-slate-50 border-t border-slate-100 flex gap-3">
+                        <div className="p-6 bg-lab-muted border-t border-lab-muted flex gap-3">
                             <button 
                                 onClick={rejectAIPlan}
-                                className="flex-1 py-3 border border-slate-200 bg-white rounded-xl font-bold text-slate-600 hover:bg-slate-100 transition-colors"
+                                className="flex-1 py-3 border border-lab-muted bg-white rounded-xl font-bold text-lab-muted hover:bg-lab-muted transition-colors"
                             >
                                 Nee, verwerpen
                             </button>
@@ -765,22 +765,22 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
 
             {/* Add Task Modal */}
             {isAdding && (
-                <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                <div className="fixed inset-0 bg-lab-muted/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
                     <div className="bg-white w-full max-w-lg rounded-3xl shadow-2xl animate-in zoom-in-95 duration-200">
-                        <div className="p-6 border-b border-slate-100 flex items-center justify-between">
-                            <h3 className="text-xl font-black text-slate-900 uppercase tracking-tight">Nieuwe Taak</h3>
-                            <button onClick={() => setIsAdding(false)} className="text-slate-400 hover:text-slate-600 p-2">
+                        <div className="p-6 border-b border-lab-muted flex items-center justify-between">
+                            <h3 className="text-xl font-black text-lab-muted uppercase tracking-tight">Nieuwe Taak</h3>
+                            <button onClick={() => setIsAdding(false)} className="text-lab-muted hover:text-lab-muted p-2">
                                 <X size={24} />
                             </button>
                         </div>
                         <form onSubmit={handleAddTask} className="p-6 space-y-5">
                             <div className="space-y-2">
-                                <label className="text-xs font-black text-slate-500 uppercase tracking-widest">Titel</label>
+                                <label className="text-xs font-black text-lab-muted uppercase tracking-widest">Titel</label>
                                 <input 
                                     autoFocus
                                     required
                                     type="text" 
-                                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
+                                    className="w-full px-4 py-3 bg-lab-muted border border-lab-muted rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
                                     placeholder="Bijv: Pitch deck voor scholen afmaken"
                                     value={newTitle}
                                     onChange={e => setNewTitle(e.target.value)}
@@ -788,9 +788,9 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
                             </div>
 
                             <div className="space-y-2">
-                                <label className="text-xs font-black text-slate-500 uppercase tracking-widest">Omschrijving</label>
+                                <label className="text-xs font-black text-lab-muted uppercase tracking-widest">Omschrijving</label>
                                 <textarea 
-                                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none min-h-[100px]"
+                                    className="w-full px-4 py-3 bg-lab-muted border border-lab-muted rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none min-h-[100px]"
                                     placeholder="Wat moet er precies gebeuren?"
                                     value={newDesc}
                                     onChange={e => setNewDesc(e.target.value)}
@@ -799,9 +799,9 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
 
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-2">
-                                    <label className="text-xs font-black text-slate-500 uppercase tracking-widest">Prioriteit</label>
+                                    <label className="text-xs font-black text-lab-muted uppercase tracking-widest">Prioriteit</label>
                                     <select 
-                                        className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
+                                        className="w-full px-4 py-3 bg-lab-muted border border-lab-muted rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
                                         value={newPriority}
                                         onChange={e => setNewPriority(e.target.value as any)}
                                     >
@@ -811,9 +811,9 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
                                     </select>
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-xs font-black text-slate-500 uppercase tracking-widest">Status</label>
+                                    <label className="text-xs font-black text-lab-muted uppercase tracking-widest">Status</label>
                                     <select 
-                                        className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
+                                        className="w-full px-4 py-3 bg-lab-muted border border-lab-muted rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
                                         value={newStatus}
                                         onChange={e => setNewStatus(e.target.value as any)}
                                     >
@@ -828,10 +828,10 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
 
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-2">
-                                    <label className="text-xs font-black text-slate-500 uppercase tracking-widest">Deadline</label>
+                                    <label className="text-xs font-black text-lab-muted uppercase tracking-widest">Deadline</label>
                                     <input 
                                         type="date" 
-                                        className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
+                                        className="w-full px-4 py-3 bg-lab-muted border border-lab-muted rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
                                         value={newDueDate}
                                         onChange={e => setNewDueDate(e.target.value)}
                                     />
@@ -852,28 +852,28 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
                             </div>
 
                             <div className="space-y-2">
-                                <label className="text-xs font-black text-slate-500 uppercase tracking-widest">Afhankelijkheden (Task IDs, komma-gescheiden)</label>
+                                <label className="text-xs font-black text-lab-muted uppercase tracking-widest">Afhankelijkheden (Task IDs, komma-gescheiden)</label>
                                 <input 
                                     type="text" 
-                                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
+                                    className="w-full px-4 py-3 bg-lab-muted border border-lab-muted rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
                                     placeholder="Bijv: id1, id2"
                                     value={newDependencies}
                                     onChange={e => setNewDependencies(e.target.value)}
                                 />
                             </div>
 
-                            <div className="space-y-4 pt-2 border-t border-slate-100">
-                                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Bewijs (Optioneel)</p>
+                            <div className="space-y-4 pt-2 border-t border-lab-muted">
+                                <p className="text-[10px] font-black text-lab-muted uppercase tracking-widest">Bewijs (Optioneel)</p>
                                 <div className="space-y-2">
                                     <input 
                                         type="url" 
-                                        className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
+                                        className="w-full px-4 py-3 bg-lab-muted border border-lab-muted rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
                                         placeholder="URL naar resultaat (bijv. GitHub, Doc)"
                                         value={newEvidenceUrl}
                                         onChange={e => setNewEvidenceUrl(e.target.value)}
                                     />
                                     <textarea 
-                                        className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none min-h-[60px]"
+                                        className="w-full px-4 py-3 bg-lab-muted border border-lab-muted rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none min-h-[60px]"
                                         placeholder="Korte reflectie..."
                                         value={newReflection}
                                         onChange={e => setNewReflection(e.target.value)}
@@ -885,7 +885,7 @@ export function DeveloperTaskList({ user }: DeveloperTaskListProps) {
                                 <button 
                                     type="button"
                                     onClick={() => setIsAdding(false)}
-                                    className="flex-1 py-3 border border-slate-200 rounded-xl font-bold text-slate-600 hover:bg-slate-50 transition-colors"
+                                    className="flex-1 py-3 border border-lab-muted rounded-xl font-bold text-lab-muted hover:bg-lab-muted transition-colors"
                                 >
                                     Annuleren
                                 </button>

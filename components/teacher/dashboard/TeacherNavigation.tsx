@@ -12,7 +12,7 @@ interface TeacherNavigationProps {
 
 export const TeacherNavigation: React.FC<TeacherNavigationProps> = ({ activeTab, setActiveTab }) => {
     return (
-        <div data-tutorial="main-tabs" className="bg-white rounded-2xl border border-slate-200 shadow-sm p-2">
+        <div data-tutorial="main-tabs" className="bg-white rounded-2xl border border-lab-muted shadow-sm p-2">
             <div className="flex items-center justify-center gap-1 md:gap-2">
                 {[
                     { id: 'overview', label: 'Dashboard', icon: BarChart3, subTabs: ['overview', 'progress', 'slo', 'documenten'], tutorialId: 'dashboard-tab' },
@@ -29,7 +29,7 @@ export const TeacherNavigation: React.FC<TeacherNavigationProps> = ({ activeTab,
                             onClick={() => setActiveTab(tab.subTabs[0] as MainTab)}
                             className={`relative flex items-center gap-2 px-4 md:px-6 py-3 rounded-xl text-sm font-bold transition-all ${isActive
                                 ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-200'
-                                : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50'
+                                : 'text-lab-muted hover:text-lab-muted hover:bg-lab-muted'
                                 }`}
                         >
                             <Icon size={18} />
@@ -46,7 +46,7 @@ export const TeacherNavigation: React.FC<TeacherNavigationProps> = ({ activeTab,
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
-                        className="flex justify-center gap-2 pt-3 mt-2 border-t border-slate-100"
+                        className="flex justify-center gap-2 pt-3 mt-2 border-t border-lab-muted"
                     >
                         {[
                             { id: 'overview', label: 'Overzicht' },
@@ -59,7 +59,7 @@ export const TeacherNavigation: React.FC<TeacherNavigationProps> = ({ activeTab,
                                 onClick={() => setActiveTab(sub.id as MainTab)}
                                 className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${activeTab === sub.id
                                     ? 'bg-indigo-100 text-indigo-700'
-                                    : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
+                                    : 'text-lab-muted hover:text-lab-muted hover:bg-lab-muted'
                                     }`}
                             >
                                 {sub.label}
@@ -72,7 +72,7 @@ export const TeacherNavigation: React.FC<TeacherNavigationProps> = ({ activeTab,
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
-                        className="flex justify-center gap-2 pt-3 mt-2 border-t border-slate-100"
+                        className="flex justify-center gap-2 pt-3 mt-2 border-t border-lab-muted"
                     >
                         {[
                             { id: 'students', label: 'Leerlingenlijst' },
@@ -83,7 +83,7 @@ export const TeacherNavigation: React.FC<TeacherNavigationProps> = ({ activeTab,
                                 onClick={() => setActiveTab(sub.id as MainTab)}
                                 className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${activeTab === sub.id
                                     ? 'bg-indigo-100 text-indigo-700'
-                                    : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
+                                    : 'text-lab-muted hover:text-lab-muted hover:bg-lab-muted'
                                     }`}
                             >
                                 {sub.label}
@@ -96,7 +96,7 @@ export const TeacherNavigation: React.FC<TeacherNavigationProps> = ({ activeTab,
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
-                        className="flex justify-center gap-2 pt-3 mt-2 border-t border-slate-100"
+                        className="flex justify-center gap-2 pt-3 mt-2 border-t border-lab-muted"
                     >
                         {[
                             { id: 'games', label: 'Games' },
@@ -108,7 +108,7 @@ export const TeacherNavigation: React.FC<TeacherNavigationProps> = ({ activeTab,
                                 onClick={() => setActiveTab(sub.id as MainTab)}
                                 className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${activeTab === sub.id
                                     ? 'bg-indigo-100 text-indigo-700'
-                                    : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
+                                    : 'text-lab-muted hover:text-lab-muted hover:bg-lab-muted'
                                     }`}
                             >
                                 {sub.label}
@@ -121,7 +121,7 @@ export const TeacherNavigation: React.FC<TeacherNavigationProps> = ({ activeTab,
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
-                        className="flex justify-center gap-2 pt-3 mt-2 border-t border-slate-100"
+                        className="flex justify-center gap-2 pt-3 mt-2 border-t border-lab-muted"
                     >
                         {[
                             { id: 'ai-beleid', label: 'AI Beleid' },
@@ -132,7 +132,7 @@ export const TeacherNavigation: React.FC<TeacherNavigationProps> = ({ activeTab,
                                 onClick={() => setActiveTab(sub.id as MainTab)}
                                 className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${activeTab === sub.id
                                     ? 'bg-indigo-100 text-indigo-700'
-                                    : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
+                                    : 'text-lab-muted hover:text-lab-muted hover:bg-lab-muted'
                                     }`}
                             >
                                 {sub.label}

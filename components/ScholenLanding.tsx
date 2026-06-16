@@ -12,16 +12,16 @@ function trackLandingEvent(event: LandingAnalyticsEvent, data?: Record<string, u
 
 // Warm earth-tone palette (Anthropic-inspired)
 const C = {
-    bg: '#FAF9F0',
-    bgAlt: '#F5F3EC',
-    text: '#1A1A19',
-    textMuted: '#6B6B66',
-    textLight: '#9C9C95',
-    accent: '#D97757',
-    accentHover: '#C46849',
-    border: '#E8E6DF',
-    borderLight: '#F0EEE8',
-    dark: '#1A1A19',
+    bg: '#FCF6EA',
+    bgAlt: '#FCF6EA',
+    text: '#08283B',
+    textMuted: '#445865',
+    textLight: '#445865',
+    accent: '#D97848',
+    accentHover: '#D97848',
+    border: '#E7D8BD',
+    borderLight: '#FCF6EA',
+    dark: '#08283B',
     darkDeep: '#141413',
 } as const;
 
@@ -173,9 +173,13 @@ const ScholenLandingPlatformPreview = React.lazy(() => import('./scholen/Scholen
 const ScholenLandingCustomization = React.lazy(() => import('./scholen/ScholenLandingCustomization').then(m => ({ default: m.ScholenLandingCustomization })));
 const ScholenLandingGameDemo = React.lazy(() => import('./scholen/ScholenLandingGameDemo').then(m => ({ default: m.ScholenLandingGameDemo })));
 const ScholenLandingDashboardDemo = React.lazy(() => import('./scholen/ScholenLandingDashboardDemo').then(m => ({ default: m.ScholenLandingDashboardDemo })));
+const ScholenLandingSneak = React.lazy(() => import('./scholen/ScholenLandingSneak').then(m => ({ default: m.ScholenLandingSneak })));
 
 // Pip the Robin — static guide in section margins
 import { PipGuide } from './scholen/FlyingPip';
+
+// Gamified scroll progress
+import { ScrollQuestBar } from './scholen/ScrollQuestBar';
 
 // JSON-LD structured data for Google rich results
 const structuredData = {
@@ -269,6 +273,7 @@ const SECTION_IDS = {
     customization: 'op-maat',
     howItWorks: 'hoe-het-werkt',
     platform: 'platform-preview',
+    sneak: 'probeer-het-zelf',
     slo: 'slo-kerndoelen',
     ict: 'voor-ict',
     faq: 'veelgestelde-vragen',
@@ -381,6 +386,9 @@ export const ScholenLanding: React.FC = () => {
         <div className="min-h-screen antialiased" style={{ backgroundColor: C.bg, fontFamily: SANS, color: C.text }}>
             <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:text-white focus:rounded-lg focus:font-semibold text-sm" style={{ backgroundColor: C.accent }}>Skip naar inhoud</a>
 
+            {/* Gamified scroll progress bar */}
+            <ScrollQuestBar />
+
             {/* Nav */}
             <nav aria-label="Hoofdnavigatie" className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled
                 ? 'backdrop-blur-md shadow-[0_1px_0_0_rgba(0,0,0,0.04)]'
@@ -396,8 +404,8 @@ export const ScholenLanding: React.FC = () => {
                         {[
                             { label: 'Waarom DGSkills', section: SECTION_IDS.features },
                             { label: 'Op maat', section: SECTION_IDS.customization },
+                            { label: 'Probeer het', section: SECTION_IDS.sneak },
                             { label: 'Kerndoelen', section: SECTION_IDS.slo },
-                            { label: 'Veelgestelde vragen', section: SECTION_IDS.faq },
                             { label: 'Gratis pilot', section: SECTION_IDS.contact },
                         ].map(item => (
                             <button key={item.label} onClick={() => scrollTo(item.section)} className="text-[13px] font-medium transition-colors focus-visible:ring-2 focus-visible:rounded-md" style={{ color: C.textMuted }} onMouseEnter={e => (e.currentTarget.style.color = C.text)} onMouseLeave={e => (e.currentTarget.style.color = C.textMuted)}>{item.label}</button>
@@ -427,6 +435,7 @@ export const ScholenLanding: React.FC = () => {
                             {[
                                 { label: 'Waarom DGSkills', section: SECTION_IDS.features },
                                 { label: 'Op maat', section: SECTION_IDS.customization },
+                                { label: 'Probeer het zelf', section: SECTION_IDS.sneak },
                                 { label: 'Kerndoelen', section: SECTION_IDS.slo },
                                 { label: 'Veelgestelde vragen', section: SECTION_IDS.faq },
                                 { label: 'Gratis pilot', section: SECTION_IDS.contact },
@@ -539,8 +548,8 @@ export const ScholenLanding: React.FC = () => {
                                     <div className="rounded-2xl overflow-hidden bg-white" style={{ boxShadow: `0 18px 34px ${C.text}10`, border: `1px solid ${C.border}` }}>
                                         <div className="flex items-center gap-1.5 px-4 py-2.5" style={{ backgroundColor: C.bgAlt, borderBottom: `1px solid ${C.borderLight}` }}>
                                             <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
-                                            <div className="w-2.5 h-2.5 rounded-full bg-amber-400" />
-                                            <div className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
+                                            <div className="w-2.5 h-2.5 rounded-full bg-lab-gold" />
+                                            <div className="w-2.5 h-2.5 rounded-full bg-lab-sage" />
                                             <span className="ml-3 text-[10px] font-medium" style={{ color: C.textLight }}>dgskills.app</span>
                                         </div>
                                         <img
@@ -572,12 +581,12 @@ export const ScholenLanding: React.FC = () => {
                                 {/* Floating card: SLO check */}
                                 <div className="absolute -right-4 top-20 z-10">
                                     <div className="bg-white rounded-2xl p-4 flex items-center gap-3" style={{ boxShadow: `0 8px 18px ${C.text}08`, border: `1px solid ${C.border}` }}>
-                                        <div className="w-10 h-10 bg-emerald-500 rounded-xl flex items-center justify-center text-white">
+                                        <div className="w-10 h-10 bg-lab-sage rounded-xl flex items-center justify-center text-white">
                                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
                                         </div>
                                         <div>
                                             <p className="text-xs font-bold" style={{ color: C.text }}>Kerndoel behaald</p>
-                                            <p className="text-[10px] font-medium text-emerald-600">DV-2: Cloud beheer</p>
+                                            <p className="text-[10px] font-medium text-lab-sage">DV-2: Cloud beheer</p>
                                         </div>
                                     </div>
                                 </div>
@@ -823,6 +832,21 @@ export const ScholenLanding: React.FC = () => {
                         </DeferredSection>
                     </SectionErrorBoundary>
                 </section>
+
+                {/* Sneak Preview — Probeer het zelf */}
+                <PipGuide pose="flying" tooltip="Probeer zelf een missie!" side="right">
+                <section id={SECTION_IDS.sneak} className="py-14 md:py-20 lg:py-24 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_600px]" aria-label="Probeer het zelf">
+                    <SectionErrorBoundary>
+                        <DeferredSection minHeight="min-h-[400px]">
+                            <Suspense fallback={<div className="min-h-[400px]" aria-hidden="true" />}>
+                                <AnimateOnScroll>
+                                    <ScholenLandingSneak />
+                                </AnimateOnScroll>
+                            </Suspense>
+                        </DeferredSection>
+                    </SectionErrorBoundary>
+                </section>
+                </PipGuide>
 
                 {/* SLO Kerndoelen */}
                 <section id={SECTION_IDS.slo} className="py-14 md:py-20 lg:py-24 px-6 scroll-mt-16 [content-visibility:auto] [contain-intrinsic-size:auto_400px]" style={{ backgroundColor: C.bgAlt, borderTop: `1px solid ${C.border}`, borderBottom: `1px solid ${C.border}` }}>

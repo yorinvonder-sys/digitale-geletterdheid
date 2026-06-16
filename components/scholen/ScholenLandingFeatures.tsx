@@ -7,10 +7,10 @@ import React from 'react';
 
 const SERIF = "'Newsreader', Georgia, serif";
 const C = {
-    text: '#1A1A19',
-    textMuted: '#6B6B66',
-    accent: '#D97757',
-    border: '#E8E6DF',
+    text: '#08283B',
+    textMuted: '#445865',
+    accent: '#D97848',
+    border: '#E7D8BD',
 };
 
 // Illustration container background colors — DGSkills eigen palet
@@ -83,7 +83,7 @@ function IllustrationCurriculum() {
             {/* Needle */}
             <polygon points="85,52 80,85 85,92 90,85" fill={C.accent} stroke={C.accent} strokeWidth="0.8" strokeLinejoin="round"/>
             <polygon points="85,118 80,85 85,78 90,85" fill={C.text} stroke={C.text} strokeWidth="0.8" strokeLinejoin="round" opacity="0.2"/>
-            <circle cx="85" cy="85" r="3.5" fill="#FAF9F0" stroke={C.text} strokeWidth="1.8"/>
+            <circle cx="85" cy="85" r="3.5" fill="#FCF6EA" stroke={C.text} strokeWidth="1.8"/>
             {/* N label */}
             <text x="85" y="36" textAnchor="middle" fill={C.accent} fontSize="11" fontWeight="600" style={{ fontFamily: SERIF }}>N</text>
             {/* Milestone dots on path */}
@@ -148,7 +148,7 @@ function IllustrationDashboard() {
             <path d="M52 88 72 72 92 80 112 64 132 74" stroke={C.accent} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
             <circle cx="92" cy="80" r="3" fill={C.accent}/>
             {/* Magnifying glass */}
-            <circle cx="155" cy="130" r="22" stroke={C.text} strokeWidth="2.2" fill="#FAF9F010"/>
+            <circle cx="155" cy="130" r="22" stroke={C.text} strokeWidth="2.2" fill="#FCF6EA10"/>
             <line x1="170" y1="147" x2="185" y2="165" stroke={C.text} strokeWidth="3" strokeLinecap="round"/>
             {/* Inside magnifier - detail view */}
             <path d="M145 125l5 8 10-12" stroke={C.accent} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -235,7 +235,7 @@ function IllustrationDevices() {
 
 const features = [
     {
-        illustration: <IllustrationMission />,
+        illustration: <img src="/illustrations/feature-mission-ai.png" alt="Leerling werkt met AI op laptop" className="w-full h-full object-contain" loading="lazy" width={200} height={200} />,
         bgColor: BG.coral,
         label: 'Leerervaring',
         title: 'AI-gestuurde missies',

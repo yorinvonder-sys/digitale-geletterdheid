@@ -3,26 +3,26 @@ import { ArrowLeft, Sparkles, ShieldCheck, BrainCircuit, MessageSquare, Info } f
 
 export const AiTransparency: React.FC = () => {
     return (
-        <div className="min-h-screen bg-slate-50 py-12 px-6">
+        <div className="min-h-screen bg-lab-muted py-12 px-6">
             <div className="max-w-4xl mx-auto">
-                <a href="/ict/privacy" className="inline-flex items-center gap-2 text-slate-500 hover:text-indigo-600 font-medium mb-8 transition-colors">
+                <a href="/ict/privacy" className="inline-flex items-center gap-2 text-lab-muted hover:text-indigo-600 font-medium mb-8 transition-colors">
                     <ArrowLeft size={20} />
                     Terug naar Security & Privacy
                 </a>
 
-                <div className="bg-white rounded-3xl shadow-sm border border-slate-200 p-8 md:p-12">
+                <div className="bg-white rounded-3xl shadow-sm border border-lab-muted p-8 md:p-12">
                     <div className="flex items-center gap-4 mb-8">
                         <div className="w-12 h-12 bg-purple-100 rounded-2xl flex items-center justify-center">
                             <BrainCircuit className="text-purple-600" size={28} />
                         </div>
                         <div>
-                            <h1 className="text-3xl font-black text-slate-900">AI-Transparantieverklaring</h1>
-                            <p className="text-slate-500">Conform EU AI Act (Art. 50)</p>
+                            <h1 className="text-3xl font-black text-lab-muted">AI-Transparantieverklaring</h1>
+                            <p className="text-lab-muted">Conform EU AI Act (Art. 50)</p>
                         </div>
                     </div>
 
                     <div className="prose prose-slate max-w-none">
-                        <p className="text-lg leading-relaxed text-slate-600">
+                        <p className="text-lg leading-relaxed text-lab-muted">
                             DGSkills maakt gebruik van kunstmatige intelligentie (AI) om leerlingen interactieve leerervaringen te bieden.
                             Deze verklaring legt uit welke AI we gebruiken, hoe we de privacy borgen en wat de beperkingen zijn.
                         </p>
@@ -74,18 +74,18 @@ export const AiTransparency: React.FC = () => {
                         </p>
 
                         <h2 className="text-xl font-bold mt-8 mb-4">5. High-Risk Classificatie (AI Act Art. 6)</h2>
-                        <div className="bg-amber-50 border border-amber-100 rounded-2xl p-6 my-4">
-                            <h3 className="text-amber-900 font-bold text-base mb-2 flex items-center gap-2">
+                        <div className="bg-lab-gold border border-lab-gold rounded-2xl p-6 my-4">
+                            <h3 className="text-lab-gold font-bold text-base mb-2 flex items-center gap-2">
                                 <ShieldCheck size={18} /> Erkenning: Onderwijs-AI als Hoog Risico
                             </h3>
-                            <p className="text-amber-800 text-sm mb-3">
+                            <p className="text-lab-gold text-sm mb-3">
                                 De EU AI Act classificeert AI-systemen in het onderwijs als <strong>hoog risico</strong> (Annex III, punt 3)
                                 wanneer zij invloed kunnen hebben op het leerproces of de beoordeling van leerlingen.
                             </p>
-                            <p className="text-amber-800 text-sm mb-0">
+                            <p className="text-lab-gold text-sm mb-0">
                                 DGSkills erkent deze classificatie en voldoet aan de bijbehorende verplichtingen:
                             </p>
-                            <ul className="text-amber-800 text-sm mt-2 space-y-1">
+                            <ul className="text-lab-gold text-sm mt-2 space-y-1">
                                 <li>• <strong>Menselijk toezicht:</strong> De docent heeft altijd het laatste woord via het leerkrachtdashboard.</li>
                                 <li>• <strong>Traceerbaarheid:</strong> Alle AI-interacties worden gelogd in een audit trail (Art. 12).</li>
                                 <li>• <strong>Risicobeheer:</strong> Content-filtering, safety-filters en output-validatie zijn actief.</li>
@@ -107,14 +107,14 @@ export const AiTransparency: React.FC = () => {
                         <p>
                             Conform de AI Act stellen wij een contactpunt beschikbaar voor vragen over ons AI-gebruik:
                         </p>
-                        <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 my-4">
-                            <p className="text-sm text-slate-700 mb-1"><strong>E-mail:</strong> <a href="mailto:privacy@dgskills.app" className="text-indigo-600 underline">privacy@dgskills.app</a></p>
-                            <p className="text-sm text-slate-700 mb-0"><strong>Onderwerp:</strong> AI Act — [Uw vraag]</p>
+                        <div className="bg-lab-muted border border-lab-muted rounded-xl p-4 my-4">
+                            <p className="text-sm text-lab-muted mb-1"><strong>E-mail:</strong> <a href="mailto:privacy@dgskills.app" className="text-indigo-600 underline">privacy@dgskills.app</a></p>
+                            <p className="text-sm text-lab-muted mb-0"><strong>Onderwerp:</strong> AI Act — [Uw vraag]</p>
                         </div>
 
-                        <div className="flex items-start gap-3 p-4 bg-slate-50 rounded-xl border border-slate-200 mt-12">
-                            <Info size={20} className="text-slate-400 shrink-0 mt-1" />
-                            <p className="text-xs text-slate-500 mb-0">
+                        <div className="flex items-start gap-3 p-4 bg-lab-muted rounded-xl border border-lab-muted mt-12">
+                            <Info size={20} className="text-lab-muted shrink-0 mt-1" />
+                            <p className="text-xs text-lab-muted mb-0">
                                 Deze verklaring is opgesteld om te voldoen aan de transparantieverplichtingen voor AI-systemen in het onderwijs,
                                 zoals vastgelegd in de Europese AI Verordening (AI Act), inclusief de hoog-risico vereisten (Art. 6, Annex III)
                                 en transparantieverplichtingen (Art. 50). Laatste update: februari 2026.

@@ -9,10 +9,10 @@ const IconArrowRight = () => (
 );
 
 const ComplianceCard = ({ title, description, badge }: { title: string; description: string; badge: string }) => (
-    <div className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+    <div className="bg-white p-8 rounded-2xl border border-lab-muted shadow-sm hover:shadow-md transition-shadow">
         <span className="inline-block px-3 py-1 bg-indigo-50 text-indigo-600 text-[10px] font-bold uppercase tracking-widest rounded-full mb-4">{badge}</span>
-        <h3 className="text-xl font-bold text-slate-900 mb-3">{title}</h3>
-        <p className="text-slate-600 leading-relaxed text-[15px]">{description}</p>
+        <h3 className="text-xl font-bold text-lab-muted mb-3">{title}</h3>
+        <p className="text-lab-muted leading-relaxed text-[15px]">{description}</p>
     </div>
 );
 
@@ -42,13 +42,13 @@ export const AiGeletterdheid: React.FC = () => {
 
     return (
         <div className="min-h-screen bg-white">
-            <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-100">
+            <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-lab-muted">
                 <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
                     <a href="/" className="flex items-center gap-2.5">
                         <img src="/mascot/pip-logo.webp" alt="DGSkills logo" className="w-8 h-8 object-contain" />
-                        <span className="font-bold text-slate-900">DGSkills</span>
+                        <span className="font-bold text-lab-muted">DGSkills</span>
                     </a>
-                    <a href="/login" className="text-sm font-medium text-slate-600">Inloggen</a>
+                    <a href="/login" className="text-sm font-medium text-lab-muted">Inloggen</a>
                 </div>
             </nav>
 
@@ -56,10 +56,10 @@ export const AiGeletterdheid: React.FC = () => {
                 <section className="px-6 mb-20">
                     <div className="max-w-3xl mx-auto">
                         <p className="text-indigo-600 font-bold text-sm mb-4 tracking-wide uppercase">AI Act Compliance</p>
-                        <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 leading-tight mb-6">
+                        <h1 className="text-4xl md:text-5xl font-extrabold text-lab-muted leading-tight mb-6">
                             AI-geletterdheid op school: verplicht én verantwoord
                         </h1>
-                        <p className="text-xl text-slate-600 mb-10 leading-relaxed">
+                        <p className="text-xl text-lab-muted mb-10 leading-relaxed">
                             Sinds 2 februari 2025 stelt de Europese AI Act eisen aan AI-geletterdheid binnen organisaties, inclusief scholen. DGSkills biedt een verantwoorde route om aan deze verplichting te voldoen.
                         </p>
                         <div className="flex flex-wrap gap-4">
@@ -67,18 +67,18 @@ export const AiGeletterdheid: React.FC = () => {
                                 Bekijk compliance details
                                 <IconArrowRight />
                             </a>
-                            <a href="/ict/privacy" className="bg-white border border-slate-200 text-slate-600 px-8 py-4 rounded-xl font-bold hover:bg-slate-50 transition-all">
+                            <a href="/ict/privacy" className="bg-white border border-lab-muted text-lab-muted px-8 py-4 rounded-xl font-bold hover:bg-lab-muted transition-all">
                                 Privacyverklaring
                             </a>
                         </div>
                     </div>
                 </section>
 
-                <section id="compliance" className="py-20 bg-slate-50 border-y border-slate-100 px-6">
+                <section id="compliance" className="py-20 bg-lab-muted border-y border-lab-muted px-6">
                     <div className="max-w-5xl mx-auto">
                         <div className="text-center mb-16">
                             <h2 className="text-3xl font-bold mb-4">Voldoe aan de EU AI Act</h2>
-                            <p className="text-slate-600">Wij ontzorgen de school op juridisch en technisch vlak.</p>
+                            <p className="text-lab-muted">Wij ontzorgen de school op juridisch en technisch vlak.</p>
                         </div>
                         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                             <ComplianceCard 
@@ -103,7 +103,7 @@ export const AiGeletterdheid: React.FC = () => {
                 <section className="py-20 px-6">
                     <div className="max-w-3xl mx-auto">
                         <h2 className="text-3xl font-bold mb-6 italic">"AI is geen hype, het is een basisvaardigheid."</h2>
-                        <p className="text-lg text-slate-600 mb-8 leading-relaxed">
+                        <p className="text-lg text-lab-muted mb-8 leading-relaxed">
                             Binnen DGSkills leren leerlingen niet alleen hoe ze AI gebruiken (prompten), maar ook hoe het werkt, wat de risico's zijn (bias, deepfakes) en hoe ze ethisch omgaan met deze technologie. 
                         </p>
                         <div className="bg-indigo-50 border-l-4 border-indigo-500 p-8 rounded-r-2xl">
@@ -115,12 +115,12 @@ export const AiGeletterdheid: React.FC = () => {
                     </div>
                 </section>
 
-                <section id="pilot" className="py-20 bg-slate-900 text-white px-6">
+                <section id="pilot" className="py-20 bg-lab-muted text-white px-6">
                     <ScholenLandingContact />
                 </section>
             </main>
 
-            <footer className="py-12 bg-slate-950 text-slate-500 text-center text-xs">
+            <footer className="py-12 bg-lab-muted text-lab-muted text-center text-xs">
                 <div className="max-w-5xl mx-auto px-6">
                     <p>© {new Date().getFullYear()} DGSkills — AI-geletterdheid & Compliance</p>
                 </div>

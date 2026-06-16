@@ -617,7 +617,7 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
 
                     {/* Explanation Box */}
                     <div className="bg-white/10 backdrop-blur border border-purple-400/30 rounded-2xl p-5 max-w-md mb-6">
-                        <h3 className="text-sm font-bold text-amber-300 uppercase mb-3 flex items-center gap-2">
+                        <h3 className="text-sm font-bold text-lab-gold uppercase mb-3 flex items-center gap-2">
                             <HelpCircle size={16} /> Wat ga je doen?
                         </h3>
                         <ul className="space-y-2 text-sm text-purple-100">
@@ -634,7 +634,7 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                                 <span><strong>Antwoorden schrijven:</strong> Bepaal wat je bot moet antwoorden</span>
                             </li>
                             <li className="flex items-start gap-2">
-                                <span className="bg-emerald-500 rounded-full w-5 h-5 flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">4</span>
+                                <span className="bg-lab-sage rounded-full w-5 h-5 flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">4</span>
                                 <span><strong>Testen:</strong> Kijk of je bot de juiste antwoorden geeft!</span>
                             </li>
                         </ul>
@@ -646,7 +646,7 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                             className="w-full p-4 bg-white text-indigo-900 rounded-xl font-bold text-lg shadow-xl hover:scale-105 transition-transform flex items-center justify-between group"
                         >
                             <span className="flex items-center gap-3">
-                                <Sparkles className="text-amber-500" /> Start Nieuw Project
+                                <Sparkles className="text-lab-gold" /> Start Nieuw Project
                             </span>
                             <ArrowRight className="group-hover:translate-x-1 transition-transform" />
                         </button>
@@ -659,13 +659,13 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
     // 2. SETUP (Scenario Selection)
     if (mode === 'setup') {
         return (
-            <div className="w-full h-full flex flex-col bg-slate-900 text-white overflow-hidden">
+            <div className="w-full h-full flex flex-col bg-lab-muted text-white overflow-hidden">
                 <div className="p-6">
-                    <button onClick={() => setMode('intro')} className="text-slate-400 hover:text-white mb-4 flex items-center gap-2 text-sm font-bold">
+                    <button onClick={() => setMode('intro')} className="text-lab-muted hover:text-white mb-4 flex items-center gap-2 text-sm font-bold">
                         <ArrowLeft size={16} /> Terug
                     </button>
                     <h2 className="text-2xl font-black mb-2">Wat wil je maken?</h2>
-                    <p className="text-slate-400 mb-6">Kies een voorbeeldproject of verzin je eigen chatbot.</p>
+                    <p className="text-lab-muted mb-6">Kies een voorbeeldproject of verzin je eigen chatbot.</p>
                 </div>
 
                 <div className="flex-1 overflow-y-auto px-6 pb-6">
@@ -677,7 +677,7 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                             </div>
 
                             <div className="relative z-10">
-                                <span className="bg-amber-400 text-amber-900 text-xs font-bold px-2 py-1 rounded mb-3 inline-block">VRIJE KEUZE</span>
+                                <span className="bg-lab-gold text-lab-gold text-xs font-bold px-2 py-1 rounded mb-3 inline-block">VRIJE KEUZE</span>
                                 <h3 className="text-2xl font-black mb-2 flex items-center gap-2">
                                     <Pencil size={24} /> Ontwerp je eigen Bot
                                 </h3>
@@ -747,15 +747,15 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                                     setActiveScenario(s);
                                     setMode('training');
                                 }}
-                                className="bg-slate-800 hover:bg-slate-700 border border-slate-700 hover:border-slate-600 p-5 rounded-2xl text-left transition-all flex items-start gap-4 group"
+                                className="bg-lab-muted hover:bg-lab-muted border border-lab-muted hover:border-lab-muted p-5 rounded-2xl text-left transition-all flex items-start gap-4 group"
                             >
-                                <div className="text-4xl bg-slate-900 w-16 h-16 flex items-center justify-center rounded-xl shadow-inner group-hover:scale-110 transition-transform">
+                                <div className="text-4xl bg-lab-muted w-16 h-16 flex items-center justify-center rounded-xl shadow-inner group-hover:scale-110 transition-transform">
                                     {s.icon}
                                 </div>
                                 <div>
-                                    <h4 className="font-bold text-lg text-white mb-1 group-hover:text-amber-400 transition-colors">{s.name}</h4>
-                                    <p className="text-slate-400 text-sm mb-2">{s.description}</p>
-                                    <span className="text-xs font-bold bg-slate-900 text-slate-500 px-2 py-1 rounded">Voorbeeld</span>
+                                    <h4 className="font-bold text-lg text-white mb-1 group-hover:text-lab-gold transition-colors">{s.name}</h4>
+                                    <p className="text-lab-muted text-sm mb-2">{s.description}</p>
+                                    <span className="text-xs font-bold bg-lab-muted text-lab-muted px-2 py-1 rounded">Voorbeeld</span>
                                 </div>
                             </button>
                         ))}
@@ -770,19 +770,19 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
     const scorePercentage = Math.round((testScore / maxScore) * 100);
 
     return (
-        <div className="w-full h-full flex flex-col bg-slate-900 text-white relative overflow-hidden">
+        <div className="w-full h-full flex flex-col bg-lab-muted text-white relative overflow-hidden">
             {/* Header */}
-            <div className="bg-slate-800 px-4 py-3 flex items-center justify-between shrink-0 border-b border-slate-700">
+            <div className="bg-lab-muted px-4 py-3 flex items-center justify-between shrink-0 border-b border-lab-muted">
                 <div className="flex items-center gap-3">
                     {!isSharedView && (
-                        <button onClick={() => setMode('setup')} className="p-2 hover:bg-slate-700 rounded-lg text-slate-400 hover:text-white transition-colors">
+                        <button onClick={() => setMode('setup')} className="p-2 hover:bg-lab-muted rounded-lg text-lab-muted hover:text-white transition-colors">
                             <ArrowLeft size={18} />
                         </button>
                     )}
                     <span className="text-2xl">{activeScenario.icon}</span>
                     <div>
                         <h3 className="font-bold text-sm">{activeScenario.name}</h3>
-                        <p className="text-slate-400 text-xs">{activeScenario.context}</p>
+                        <p className="text-lab-muted text-xs">{activeScenario.context}</p>
                     </div>
                 </div>
                 <div className="flex items-center gap-2">
@@ -826,9 +826,9 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
 
             <div className="flex-1 flex overflow-hidden">
                 {/* Left: Intent List */}
-                <div className="w-64 bg-slate-800/50 border-r border-slate-700 p-3 flex flex-col shrink-0">
+                <div className="w-64 bg-lab-muted/50 border-r border-lab-muted p-3 flex flex-col shrink-0">
                     <div className="flex items-center justify-between mb-3">
-                        <h4 className="text-[10px] font-bold text-slate-500 uppercase tracking-widest flex items-center gap-2">
+                        <h4 className="text-[10px] font-bold text-lab-muted uppercase tracking-widest flex items-center gap-2">
                             <Target size={12} /> Intents (Onderwerpen)
                         </h4>
                         {activeScenario.isCustom && (
@@ -854,15 +854,15 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                                         w-full p-2.5 rounded-lg text-left transition-all text-sm group relative
                                         ${isSelected
                                             ? 'bg-indigo-600 text-white shadow-lg'
-                                            : 'bg-slate-700/50 text-slate-300 hover:bg-slate-700'
+                                            : 'bg-lab-muted/50 text-lab-muted hover:bg-lab-muted'
                                         }
                                     `}
                                 >
                                     <div className="flex items-center gap-2.5">
                                         <span className="text-base">{intent.icon}</span>
                                         <span className="font-medium truncate flex-1">{intent.name}</span>
-                                        {status === 'ready' && <CheckCircle2 size={14} className="text-emerald-400 shrink-0" />}
-                                        {status === 'partial' && <AlertCircle size={14} className="text-amber-400 shrink-0" />}
+                                        {status === 'ready' && <CheckCircle2 size={14} className="text-lab-sage shrink-0" />}
+                                        {status === 'partial' && <AlertCircle size={14} className="text-lab-gold shrink-0" />}
                                         {status === 'empty' && intent.required && (
                                             <div className="bg-red-500/20 rounded-full p-1 animate-pulse">
                                                 <AlertCircle size={14} className="text-red-400 shrink-0" />
@@ -885,7 +885,7 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                         })}
 
                         {isAddingIntent && (
-                            <div className="p-2 bg-slate-700 rounded-lg animate-in fade-in slide-in-from-top-2">
+                            <div className="p-2 bg-lab-muted rounded-lg animate-in fade-in slide-in-from-top-2">
                                 <input
                                     autoFocus
                                     type="text"
@@ -893,19 +893,19 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                                     value={newIntentName}
                                     onChange={(e) => setNewIntentName(e.target.value)}
                                     onKeyDown={(e) => e.key === 'Enter' && addNewIntent()}
-                                    className="w-full bg-slate-900 border border-slate-600 rounded px-2 py-1 text-sm text-white focus:border-indigo-500 outline-none mb-2"
+                                    className="w-full bg-lab-muted border border-lab-muted rounded px-2 py-1 text-sm text-white focus:border-indigo-500 outline-none mb-2"
                                 />
                                 <div className="flex gap-2">
                                     <button
                                         onClick={addNewIntent}
                                         disabled={!newIntentName.trim()}
-                                        className="flex-1 bg-emerald-500 text-white text-xs py-1 rounded hover:bg-emerald-600"
+                                        className="flex-1 bg-lab-sage text-white text-xs py-1 rounded hover:bg-lab-sage"
                                     >
                                         Toevoegen
                                     </button>
                                     <button
                                         onClick={() => setIsAddingIntent(false)}
-                                        className="px-2 bg-slate-600 text-white text-xs py-1 rounded hover:bg-slate-500"
+                                        className="px-2 bg-lab-muted text-white text-xs py-1 rounded hover:bg-lab-muted"
                                     >
                                         Annuleer
                                     </button>
@@ -927,8 +927,8 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                             className={`
                                 mt-3 py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all
                                 ${canStartTest()
-                                    ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg hover:shadow-xl active:scale-95 cursor-pointer'
-                                    : 'bg-slate-700 text-slate-400 opacity-70 hover:opacity-100 hover:bg-slate-600 cursor-pointer'
+                                    ? 'bg-gradient-to-r from-emerald-500 to-lab-teal text-white shadow-lg hover:shadow-xl active:scale-95 cursor-pointer'
+                                    : 'bg-lab-muted text-lab-muted opacity-70 hover:opacity-100 hover:bg-lab-muted cursor-pointer'
                                 }
                             `}
                         >
@@ -946,7 +946,7 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                 </div>
 
                 {/* Middle: Training Panel */}
-                <div className="flex-1 p-6 flex flex-col min-w-0 bg-slate-800/20">
+                <div className="flex-1 p-6 flex flex-col min-w-0 bg-lab-muted/20">
                     {selectedIntentData ? (
                         <div className="h-full flex flex-col max-w-2xl mx-auto w-full">
                             <div className="mb-6 flex items-start justify-between">
@@ -956,11 +956,11 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                                     </div>
                                     <div>
                                         <h3 className="font-black text-2xl text-white tracking-tight">{selectedIntentData.name}</h3>
-                                        <p className="text-slate-400 text-sm">{selectedIntentData.description}</p>
+                                        <p className="text-lab-muted text-sm">{selectedIntentData.description}</p>
                                     </div>
                                 </div>
                                 {selectedIntentData.required && (
-                                    <span className="text-[10px] bg-amber-500/20 text-amber-400 border border-amber-500/30 px-3 py-1 rounded-full font-bold uppercase tracking-wide">
+                                    <span className="text-[10px] bg-lab-gold/20 text-lab-gold border border-lab-gold/30 px-3 py-1 rounded-full font-bold uppercase tracking-wide">
                                         Verplicht
                                     </span>
                                 )}
@@ -968,28 +968,28 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
 
                             <div className="flex-1 flex flex-col gap-6 overflow-y-auto pr-2">
                                 {/* STEP 1: TRAINING EXAMPLES */}
-                                <div className="bg-slate-800 rounded-2xl p-5 border border-slate-700 shadow-lg group focus-within:ring-2 focus-within:ring-indigo-500/50 transition-all">
+                                <div className="bg-lab-muted rounded-2xl p-5 border border-lab-muted shadow-lg group focus-within:ring-2 focus-within:ring-indigo-500/50 transition-all">
                                     <h4 className="flex items-center gap-2 text-xs font-black text-indigo-300 uppercase tracking-widest mb-2">
                                         <span className="w-5 h-5 rounded bg-indigo-500 flex items-center justify-center text-white text-[10px]">1</span>
                                         Trainingsdata (Wat zegt de gebruiker?)
                                     </h4>
-                                    <p className="text-slate-400 text-xs mb-4">
+                                    <p className="text-lab-muted text-xs mb-4">
                                         💡 <strong>Tip:</strong> Voeg minimaal 2-3 voorbeeldzinnen toe die mensen zouden kunnen typen over dit onderwerp.
                                     </p>
 
                                     <div className="space-y-2 mb-4">
                                         {selectedIntentData.trainingExamples.length === 0 ? (
-                                            <div className="text-slate-500 text-sm italic py-2">
+                                            <div className="text-lab-muted text-sm italic py-2">
                                                 Nog geen voorbeelden...
                                             </div>
                                         ) : (
                                             selectedIntentData.trainingExamples.slice().reverse().map((example) => (
                                                 <div key={example.id} className="flex items-center gap-3 bg-indigo-900/20 border border-indigo-500/20 px-3 py-2 rounded-lg group/item">
                                                     <MessageSquare size={14} className="text-indigo-400 shrink-0" />
-                                                    <span className="text-sm flex-1 text-slate-200">"{example.text}"</span>
+                                                    <span className="text-sm flex-1 text-lab-muted">"{example.text}"</span>
                                                     <button
                                                         onClick={() => removeExample(example.id)}
-                                                        className="text-slate-500 hover:text-red-400 opacity-0 group-hover/item:opacity-100 transition-all p-1"
+                                                        className="text-lab-muted hover:text-red-400 opacity-0 group-hover/item:opacity-100 transition-all p-1"
                                                     >
                                                         <Trash2 size={14} />
                                                     </button>
@@ -1005,12 +1005,12 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                                             onChange={(e) => setNewExample(e.target.value)}
                                             onKeyDown={(e) => e.key === 'Enter' && addExample()}
                                             placeholder="Typ een voorbeeldzin en druk op Enter..."
-                                            className="flex-1 bg-slate-900/50 border border-slate-600 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-colors"
+                                            className="flex-1 bg-lab-muted/50 border border-lab-muted rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-colors"
                                         />
                                         <button
                                             onClick={addExample}
                                             disabled={!newExample.trim()}
-                                            className="px-4 bg-indigo-600 hover:bg-indigo-500 disabled:bg-slate-700 disabled:opacity-50 rounded-xl transition-colors shadow-lg"
+                                            className="px-4 bg-indigo-600 hover:bg-indigo-500 disabled:bg-lab-muted disabled:opacity-50 rounded-xl transition-colors shadow-lg"
                                         >
                                             <Plus size={20} />
                                         </button>
@@ -1018,31 +1018,31 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                                 </div>
 
                                 {/* STEP 2: RESPONSE */}
-                                <div className="bg-slate-800 rounded-2xl p-5 border border-slate-700 shadow-lg focus-within:ring-2 focus-within:ring-emerald-500/50 transition-all">
-                                    <h4 className="flex items-center gap-2 text-xs font-black text-emerald-300 uppercase tracking-widest mb-2">
-                                        <span className="w-5 h-5 rounded bg-emerald-500 flex items-center justify-center text-white text-[10px]">2</span>
+                                <div className="bg-lab-muted rounded-2xl p-5 border border-lab-muted shadow-lg focus-within:ring-2 focus-within:ring-emerald-500/50 transition-all">
+                                    <h4 className="flex items-center gap-2 text-xs font-black text-lab-sage uppercase tracking-widest mb-2">
+                                        <span className="w-5 h-5 rounded bg-lab-sage flex items-center justify-center text-white text-[10px]">2</span>
                                         Chatbot Antwoord (Output)
                                     </h4>
-                                    <p className="text-slate-400 text-xs mb-4">
+                                    <p className="text-lab-muted text-xs mb-4">
                                         ✍️ Schrijf hier het antwoord dat je bot moet geven als iemand over dit onderwerp praat.
                                     </p>
 
                                     <div className="relative">
-                                        <Bot className="absolute top-3 left-3 text-emerald-500/50" size={20} />
+                                        <Bot className="absolute top-3 left-3 text-lab-sage/50" size={20} />
                                         <textarea
                                             value={selectedIntentData.response}
                                             onChange={(e) => updateResponse(e.target.value)}
                                             placeholder={`Wat moet de bot antwoorden als iemand over '${selectedIntentData.name}' begint?`}
                                             rows={3}
-                                            className="w-full bg-slate-900/50 border border-slate-600 rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition-all resize-none"
+                                            className="w-full bg-lab-muted/50 border border-lab-muted rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-lab-sage transition-all resize-none"
                                         />
                                     </div>
                                 </div>
                             </div>
                         </div>
                     ) : (
-                        <div className="flex-1 flex flex-col items-center justify-center text-slate-500">
-                            <div className="w-20 h-20 bg-slate-800 rounded-3xl flex items-center justify-center mb-4 opacity-50">
+                        <div className="flex-1 flex flex-col items-center justify-center text-lab-muted">
+                            <div className="w-20 h-20 bg-lab-muted rounded-3xl flex items-center justify-center mb-4 opacity-50">
                                 <Target size={40} />
                             </div>
                             <p className="font-bold">Selecteer een Intent</p>
@@ -1052,9 +1052,9 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                 </div>
 
                 {/* Right: Test Chat */}
-                <div className="w-80 border-l border-slate-700 bg-slate-900 flex flex-col shrink-0">
-                    <div className="p-4 border-b border-slate-800 bg-slate-800/50">
-                        <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                <div className="w-80 border-l border-lab-muted bg-lab-muted flex flex-col shrink-0">
+                    <div className="p-4 border-b border-lab-muted bg-lab-muted/50">
+                        <h4 className="text-xs font-bold text-lab-muted uppercase tracking-widest flex items-center gap-2">
                             <MessageCircle size={12} /> Test Omgeving
                         </h4>
                     </div>
@@ -1062,10 +1062,10 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                     <div
                         ref={chatRef}
                         className="flex-1 p-4 overflow-y-auto space-y-4"
-                        style={{ backgroundImage: 'radial-gradient(circle at center, #E8E6DF 1px, transparent 1px)', backgroundSize: '20px 20px' }}
+                        style={{ backgroundImage: 'radial-gradient(circle at center, #E7D8BD 1px, transparent 1px)', backgroundSize: '20px 20px' }}
                     >
                         {!isTesting && testMessages.length === 0 && (
-                            <div className="text-center text-slate-600 mt-10">
+                            <div className="text-center text-lab-muted mt-10">
                                 <p className="text-sm">Zodra je start met testen,</p>
                                 <p className="text-xs">simuleren we een gesprek.</p>
                             </div>
@@ -1078,17 +1078,17 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                                     ${msg.sender === 'customer'
                                         ? 'bg-indigo-600 text-white rounded-br-none'
                                         : msg.status === 'confident'
-                                            ? 'bg-slate-700 text-slate-200 border border-emerald-500/30 rounded-bl-none'
+                                            ? 'bg-lab-muted text-lab-muted border border-lab-sage/30 rounded-bl-none'
                                             : msg.status === 'unsure'
-                                                ? 'bg-slate-700 text-slate-200 border border-amber-500/30 rounded-bl-none'
-                                                : 'bg-slate-700 text-slate-200 border border-red-500/30 rounded-bl-none'
+                                                ? 'bg-lab-muted text-lab-muted border border-lab-gold/30 rounded-bl-none'
+                                                : 'bg-lab-muted text-lab-muted border border-red-500/30 rounded-bl-none'
                                     }
                                 `}>
                                     <p>{msg.text}</p>
                                     {msg.sender === 'bot' && msg.confidence !== undefined && (
                                         <div className="flex items-center gap-2 mt-1.5 pt-1.5 border-t border-white/10">
-                                            {msg.status === 'confident' && <span className="w-2 h-2 rounded-full bg-emerald-400" />}
-                                            {msg.status === 'unsure' && <span className="w-2 h-2 rounded-full bg-amber-400" />}
+                                            {msg.status === 'confident' && <span className="w-2 h-2 rounded-full bg-lab-sage" />}
+                                            {msg.status === 'unsure' && <span className="w-2 h-2 rounded-full bg-lab-gold" />}
                                             {msg.status === 'no_match' && <span className="w-2 h-2 rounded-full bg-red-400" />}
                                             <span className="text-[10px] opacity-70 font-mono">
                                                 {(msg.confidence * 100).toFixed(0)}% • {msg.matchedIntent || 'Geen match'}
@@ -1102,10 +1102,10 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
 
                     {/* Results Overlay */}
                     {showResults && (
-                        <div className="p-4 bg-slate-800 border-t border-slate-700 animate-in slide-in-from-bottom-10">
+                        <div className="p-4 bg-lab-muted border-t border-lab-muted animate-in slide-in-from-bottom-10">
                             <div className="flex items-center justify-between mb-4">
-                                <span className="text-sm font-bold text-slate-300">Test Score</span>
-                                <div className={`px-3 py-1 rounded-full font-black text-sm ${scorePercentage >= activeScenario.minScore ? 'bg-emerald-500/20 text-emerald-400' : 'bg-amber-500/20 text-amber-400'}`}>
+                                <span className="text-sm font-bold text-lab-muted">Test Score</span>
+                                <div className={`px-3 py-1 rounded-full font-black text-sm ${scorePercentage >= activeScenario.minScore ? 'bg-lab-sage/20 text-lab-sage' : 'bg-lab-gold/20 text-lab-gold'}`}>
                                     {scorePercentage}%
                                 </div>
                             </div>
@@ -1113,16 +1113,16 @@ export const ChatbotTrainerPreview: React.FC<ChatbotTrainerPreviewProps> = ({ on
                             {scorePercentage >= activeScenario.minScore ? (
                                 <button
                                     onClick={() => setShowConclusion(true)}
-                                    className="w-full py-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl font-bold shadow-lg shadow-emerald-500/20 transition-all flex items-center justify-center gap-2"
+                                    className="w-full py-3 bg-lab-sage hover:bg-lab-sage text-white rounded-xl font-bold shadow-lg shadow-emerald-500/20 transition-all flex items-center justify-center gap-2"
                                 >
                                     <Trophy size={18} /> Afronden
                                 </button>
                             ) : (
                                 <div className="space-y-2">
-                                    <p className="text-xs text-center text-slate-400 mb-2">Je hebt minimaal {activeScenario.minScore}% nodig.</p>
+                                    <p className="text-xs text-center text-lab-muted mb-2">Je hebt minimaal {activeScenario.minScore}% nodig.</p>
                                     <button
                                         onClick={() => setShowResults(false)}
-                                        className="w-full py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-xl font-bold transition-all"
+                                        className="w-full py-3 bg-lab-muted hover:bg-lab-muted text-white rounded-xl font-bold transition-all"
                                     >
                                         Verder Trainen
                                     </button>

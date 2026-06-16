@@ -42,19 +42,19 @@ const HAIR_STYLES_FEMALE = [
 ];
 
 const SHIRT_COLORS = [
-    '#D97757', '#E8956F', '#C46849', '#2A9D8F', '#8B6F9E', '#ef4444',
-    '#f97316', '#f59e0b', '#22c55e', '#3b82f6', '#0ea5e9', '#a855f7',
-    '#ec4899', '#1e293b', '#64748b', '#ffffff'
+    '#D97848', '#D97848', '#D97848', '#5F947D', '#0B453F', '#D97848',
+    '#D97848', '#D7C95F', '#5F947D', '#0B453F', '#0B453F', '#0B453F',
+    '#D97848', '#08283B', '#445865', '#ffffff'
 ];
 
 const HAIR_COLORS = [
-    '#1a1a1a', '#3d2314', '#5D4037', '#8B4513', '#A0522D', '#D4A574',
-    '#E8C07D', '#FFF8DC', '#C41E3A', '#FF6B6B', '#D97757', '#22c55e'
+    '#08283B', '#08283B', '#08283B', '#8B4513', '#A0522D', '#D4A574',
+    '#E8C07D', '#FFF8DC', '#C41E3A', '#FF6B6B', '#D97848', '#5F947D'
 ];
 
 const SHOE_COLORS = [
-    '#1a1a1a', '#3d2314', '#5D4037', '#ffffff', '#D97757', '#C46849',
-    '#ef4444', '#3b82f6', '#22c55e', '#f59e0b', '#64748b', '#1e293b'
+    '#08283B', '#08283B', '#08283B', '#ffffff', '#D97848', '#D97848',
+    '#D97848', '#0B453F', '#5F947D', '#D7C95F', '#445865', '#08283B'
 ];
 
 const EXPRESSIONS = [
@@ -155,7 +155,7 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
     const hairStyles = config.gender === 'female' ? HAIR_STYLES_FEMALE : HAIR_STYLES_MALE;
 
     return (
-        <div className="fixed inset-0 z-[200] overflow-hidden" style={{ backgroundColor: '#FAF9F0' }}>
+        <div className="fixed inset-0 z-[200] overflow-hidden" style={{ backgroundColor: '#FCF6EA' }}>
             {/* Progress Dots — centered within right half on desktop */}
             <div className="absolute top-6 right-6 lg:right-auto lg:left-3/4 lg:-translate-x-1/2 z-50 flex gap-2">
                 {STEPS.map((_, i) => (
@@ -163,8 +163,8 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
                         key={i}
                         className="h-2 rounded-full transition-all duration-500"
                         style={i === currentStep
-                            ? { width: 32, backgroundColor: '#D97757' }
-                            : { width: 8, backgroundColor: i < currentStep ? '#D9775780' : '#E8E6DF' }
+                            ? { width: 32, backgroundColor: '#D97848' }
+                            : { width: 8, backgroundColor: i < currentStep ? '#D9784880' : '#E7D8BD' }
                         }
                     />
                 ))}
@@ -173,17 +173,17 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
             {/* Main Content */}
             <div className="relative z-10 h-full flex flex-col lg:flex-row items-stretch overflow-hidden">
                 {/* Avatar Preview — bg matches canvas to prevent flicker */}
-                <div className="flex-1 relative min-h-[250px] lg:min-h-0" style={{ backgroundColor: '#FAF9F0' }}>
+                <div className="flex-1 relative min-h-[250px] lg:min-h-0" style={{ backgroundColor: '#FCF6EA' }}>
                     <LazyAvatarViewer config={config} interactive={true} />
                 </div>
 
                 {/* Controls Panel */}
-                <div className="flex-1 p-5 md:p-8 lg:p-10 flex flex-col justify-center overflow-y-auto" style={{ background: 'linear-gradient(135deg, #FAF9F0 0%, #F5E6DC 50%, #F0D5C4 100%)' }}>
+                <div className="flex-1 p-5 md:p-8 lg:p-10 flex flex-col justify-center overflow-y-auto" style={{ background: 'linear-gradient(135deg, #FCF6EA 0%, #F5E6DC 50%, #F0D5C4 100%)' }}>
                     <div className="max-w-md mx-auto w-full">
                         {/* Step Header */}
                         <div className="text-center mb-5">
-                            <p className="text-xs font-semibold uppercase tracking-widest mb-1" style={{ color: '#D97757' }}>{step.subtitle}</p>
-                            <h2 className="text-2xl md:text-3xl font-bold" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#1A1A19' }}>{step.title}</h2>
+                            <p className="text-xs font-semibold uppercase tracking-widest mb-1" style={{ color: '#D97848' }}>{step.subtitle}</p>
+                            <h2 className="text-2xl md:text-3xl font-bold" style={{ fontFamily: "'Newsreader', Georgia, serif", color: '#08283B' }}>{step.title}</h2>
                         </div>
 
                         {/* Step Content */}
@@ -191,7 +191,7 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
                             {/* Step 0: Welcome + Gender Selection */}
                             {currentStep === 0 && (
                                 <div className="space-y-5 animate-in fade-in">
-                                    <p className="font-medium text-center text-sm" style={{ color: '#6B6B66' }}>
+                                    <p className="font-medium text-center text-sm" style={{ color: '#445865' }}>
                                         Hoi{userName ? ` ${userName}` : ''}! Maak je eigen avatar en begin je avontuur.
                                     </p>
 
@@ -203,20 +203,20 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
                                                 gender: 'male',
                                                 hairStyle: 'spiky',
                                                 baseModel: 'standard',
-                                                shirtColor: '#D97757',
-                                                pantsColor: '#1e293b',
-                                                shoeColor: '#0f172a',
-                                                hairColor: '#3d2314',
+                                                shirtColor: '#D97848',
+                                                pantsColor: '#08283B',
+                                                shoeColor: '#08283B',
+                                                hairColor: '#08283B',
                                                 expression: 'cool',
                                             })}
                                             className="p-5 rounded-2xl transition-all"
                                             style={config.gender === 'male'
-                                                ? { border: '3px solid #D97757', backgroundColor: '#D9775720' }
-                                                : { border: '3px solid #D5D3CC' }
+                                                ? { border: '3px solid #D97848', backgroundColor: '#D9784820' }
+                                                : { border: '3px solid #E7D8BD' }
                                             }
                                         >
                                             <div className="text-4xl mb-2">👦</div>
-                                            <div className="font-bold" style={{ color: '#1A1A19' }}>Jongen</div>
+                                            <div className="font-bold" style={{ color: '#08283B' }}>Jongen</div>
                                         </button>
                                         <button
                                             onClick={() => setConfig({
@@ -224,26 +224,26 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
                                                 gender: 'female',
                                                 hairStyle: 'pigtails',
                                                 baseModel: 'slim',
-                                                shirtColor: '#D97757',
-                                                pantsColor: '#1e293b',
+                                                shirtColor: '#D97848',
+                                                pantsColor: '#08283B',
                                                 shoeColor: '#1f2937',
-                                                hairColor: '#5D4037',
+                                                hairColor: '#08283B',
                                                 expression: 'happy',
                                             })}
                                             className="p-5 rounded-2xl transition-all"
                                             style={config.gender === 'female'
-                                                ? { border: '3px solid #D97757', backgroundColor: '#D9775720' }
-                                                : { border: '3px solid #D5D3CC' }
+                                                ? { border: '3px solid #D97848', backgroundColor: '#D9784820' }
+                                                : { border: '3px solid #E7D8BD' }
                                             }
                                         >
                                             <div className="text-4xl mb-2">👧</div>
-                                            <div className="font-bold" style={{ color: '#1A1A19' }}>Meisje</div>
+                                            <div className="font-bold" style={{ color: '#08283B' }}>Meisje</div>
                                         </button>
                                     </div>
 
                                     {/* Skin Color Selection */}
                                     <div>
-                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: '#6B6B66' }}>Huidskleur</p>
+                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: '#445865' }}>Huidskleur</p>
                                         <div className="flex flex-wrap gap-2.5 justify-center">
                                             {SKIN_COLORS.map(skin => (
                                                 <button
@@ -254,7 +254,7 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
                                                         : 'hover:scale-105'
                                                         }`}
                                                     style={config.skinColor === skin.value
-                                                        ? { backgroundColor: skin.value, boxShadow: '0 0 0 3px #D97757, 0 0 0 5px #FAF9F0' }
+                                                        ? { backgroundColor: skin.value, boxShadow: '0 0 0 3px #D97848, 0 0 0 5px #FCF6EA' }
                                                         : { backgroundColor: skin.value }
                                                     }
                                                     title={skin.label}
@@ -270,15 +270,15 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
                                 <div className="space-y-4 animate-in fade-in">
                                     {/* Expression */}
                                     <div>
-                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: '#6B6B66' }}>Gezicht</p>
+                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: '#445865' }}>Gezicht</p>
                                         <div className="grid grid-cols-4 gap-2">
                                             {EXPRESSIONS.map(expression => (
                                                 <button
                                                     key={expression.value}
                                                     onClick={() => setConfig({ ...config, expression: expression.value })}
                                                     className={`p-3 rounded-xl border-2 transition-all flex flex-col items-center gap-1 active:scale-95 ${config.expression === expression.value
-                                                        ? 'border-[#D97757] bg-[#D97757]/15 text-[#3D3D38]'
-                                                        : 'border-[#D5D3CC] text-[#6B6B66] hover:border-[#D97757]/40'
+                                                        ? 'border-[#D97848] bg-[#D97848]/15 text-[#445865]'
+                                                        : 'border-[#E7D8BD] text-[#445865] hover:border-[#D97848]/40'
                                                         }`}
                                                 >
                                                     <span className="text-xl">{expression.emoji}</span>
@@ -290,7 +290,7 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
 
                                     {/* Hair Style */}
                                     <div>
-                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: '#6B6B66' }}>Kapsel</p>
+                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: '#445865' }}>Kapsel</p>
                                         <div className="grid grid-cols-4 gap-2">
                                             {hairStyles.map(hair => (
                                                 <button
@@ -298,15 +298,15 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
                                                     onClick={() => !hair.locked && setConfig({ ...config, hairStyle: hair.value as any })}
                                                     disabled={hair.locked}
                                                     className={`p-3 rounded-xl border-2 transition-all text-center relative ${hair.locked
-                                                        ? 'border-[#E8E6DF] bg-[#E8E6DF]/50 text-[#9C9C95] cursor-not-allowed opacity-50'
+                                                        ? 'border-[#E7D8BD] bg-[#E7D8BD]/50 text-[#445865] cursor-not-allowed opacity-50'
                                                         : config.hairStyle === hair.value
-                                                            ? 'border-[#D97757] bg-[#D97757]/15 text-[#3D3D38]'
-                                                            : 'border-[#D5D3CC] text-[#6B6B66] hover:border-[#D97757]/40 active:scale-95'
+                                                            ? 'border-[#D97848] bg-[#D97848]/15 text-[#445865]'
+                                                            : 'border-[#E7D8BD] text-[#445865] hover:border-[#D97848]/40 active:scale-95'
                                                         }`}
                                                 >
                                                     <div className="font-bold text-xs flex items-center justify-center gap-1">
                                                         {hair.label}
-                                                        {hair.locked && <Lock size={11} className="text-[#D97757]/70" />}
+                                                        {hair.locked && <Lock size={11} className="text-[#D97848]/70" />}
                                                     </div>
                                                 </button>
                                             ))}
@@ -315,15 +315,15 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
 
                                     {/* Hair Color */}
                                     <div>
-                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: '#6B6B66' }}>Haar kleur</p>
+                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: '#445865' }}>Haar kleur</p>
                                         <div className="flex flex-wrap gap-2.5 justify-center">
                                             {HAIR_COLORS.map(color => (
                                                 <button
                                                     key={color}
                                                     onClick={() => setConfig({ ...config, hairColor: color })}
                                                     className={`w-9 h-9 rounded-full transition-all border-2 ${config.hairColor === color
-                                                        ? 'ring-3 ring-[#D97757] ring-offset-2 ring-offset-[#FAF9F0] scale-110 border-[#3D3D38]'
-                                                        : 'border-transparent hover:scale-110 hover:border-[#3D3D38]/30'
+                                                        ? 'ring-3 ring-[#D97848] ring-offset-2 ring-offset-[#FCF6EA] scale-110 border-[#445865]'
+                                                        : 'border-transparent hover:scale-110 hover:border-[#445865]/30'
                                                         }`}
                                                     style={{ backgroundColor: color }}
                                                 />
@@ -338,7 +338,7 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
                                 <div className="space-y-4 animate-in fade-in">
                                     {/* Shirt Style */}
                                     <div>
-                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: '#6B6B66' }}>Shirt stijl</p>
+                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: '#445865' }}>Shirt stijl</p>
                                         <div className="grid grid-cols-4 gap-2">
                                             {SHIRT_STYLES.map(shirt => (
                                                 <button
@@ -346,15 +346,15 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
                                                     onClick={() => !shirt.locked && setConfig({ ...config, shirtStyle: shirt.value as any })}
                                                     disabled={shirt.locked}
                                                     className={`p-3 rounded-xl border-2 transition-all text-center relative ${shirt.locked
-                                                        ? 'border-[#E8E6DF] bg-[#E8E6DF]/50 text-[#9C9C95] cursor-not-allowed opacity-50'
+                                                        ? 'border-[#E7D8BD] bg-[#E7D8BD]/50 text-[#445865] cursor-not-allowed opacity-50'
                                                         : config.shirtStyle === shirt.value
-                                                            ? 'border-[#D97757] bg-[#D97757]/15 text-[#3D3D38]'
-                                                            : 'border-[#D5D3CC] text-[#6B6B66] hover:border-[#D97757]/40 active:scale-95'
+                                                            ? 'border-[#D97848] bg-[#D97848]/15 text-[#445865]'
+                                                            : 'border-[#E7D8BD] text-[#445865] hover:border-[#D97848]/40 active:scale-95'
                                                         }`}
                                                 >
                                                     <div className="font-bold text-xs flex items-center justify-center gap-1">
                                                         {shirt.label}
-                                                        {shirt.locked && <Lock size={11} className="text-[#D97757]/70" />}
+                                                        {shirt.locked && <Lock size={11} className="text-[#D97848]/70" />}
                                                     </div>
                                                 </button>
                                             ))}
@@ -363,15 +363,15 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
 
                                     {/* Shirt Color */}
                                     <div>
-                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: '#6B6B66' }}>Shirt kleur</p>
+                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: '#445865' }}>Shirt kleur</p>
                                         <div className="flex flex-wrap gap-2.5 justify-center">
                                             {SHIRT_COLORS.map(color => (
                                                 <button
                                                     key={color}
                                                     onClick={() => setConfig({ ...config, shirtColor: color })}
                                                     className={`w-9 h-9 rounded-full transition-all border-2 ${config.shirtColor === color
-                                                        ? 'ring-3 ring-[#D97757] ring-offset-2 ring-offset-[#FAF9F0] scale-110 border-[#3D3D38]'
-                                                        : 'border-transparent hover:scale-110 hover:border-[#3D3D38]/30'
+                                                        ? 'ring-3 ring-[#D97848] ring-offset-2 ring-offset-[#FCF6EA] scale-110 border-[#445865]'
+                                                        : 'border-transparent hover:scale-110 hover:border-[#445865]/30'
                                                         }`}
                                                     style={{ backgroundColor: color }}
                                                 />
@@ -381,7 +381,7 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
 
                                     {/* Pants Style */}
                                     <div>
-                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: '#6B6B66' }}>Broek stijl</p>
+                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: '#445865' }}>Broek stijl</p>
                                         <div className="grid grid-cols-4 gap-2">
                                             {PANTS_STYLES.map(pants => (
                                                 <button
@@ -389,15 +389,15 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
                                                     onClick={() => !pants.locked && setConfig({ ...config, pantsStyle: pants.value as any })}
                                                     disabled={pants.locked}
                                                     className={`p-3 rounded-xl border-2 transition-all text-center relative ${pants.locked
-                                                        ? 'border-[#E8E6DF] bg-[#E8E6DF]/50 text-[#9C9C95] cursor-not-allowed opacity-50'
+                                                        ? 'border-[#E7D8BD] bg-[#E7D8BD]/50 text-[#445865] cursor-not-allowed opacity-50'
                                                         : config.pantsStyle === pants.value
-                                                            ? 'border-[#D97757] bg-[#D97757]/15 text-[#3D3D38]'
-                                                            : 'border-[#D5D3CC] text-[#6B6B66] hover:border-[#D97757]/40 active:scale-95'
+                                                            ? 'border-[#D97848] bg-[#D97848]/15 text-[#445865]'
+                                                            : 'border-[#E7D8BD] text-[#445865] hover:border-[#D97848]/40 active:scale-95'
                                                         }`}
                                                 >
                                                     <div className="font-bold text-xs flex items-center justify-center gap-1">
                                                         {pants.label}
-                                                        {pants.locked && <Lock size={11} className="text-[#D97757]/70" />}
+                                                        {pants.locked && <Lock size={11} className="text-[#D97848]/70" />}
                                                     </div>
                                                 </button>
                                             ))}
@@ -406,15 +406,15 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
 
                                     {/* Pants Color */}
                                     <div>
-                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: '#6B6B66' }}>Broek kleur</p>
+                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: '#445865' }}>Broek kleur</p>
                                         <div className="flex flex-wrap gap-2.5 justify-center">
                                             {SHIRT_COLORS.map(color => (
                                                 <button
                                                     key={color}
                                                     onClick={() => setConfig({ ...config, pantsColor: color })}
                                                     className={`w-9 h-9 rounded-full transition-all border-2 ${config.pantsColor === color
-                                                        ? 'ring-3 ring-[#D97757] ring-offset-2 ring-offset-[#FAF9F0] scale-110 border-[#3D3D38]'
-                                                        : 'border-transparent hover:scale-110 hover:border-[#3D3D38]/30'
+                                                        ? 'ring-3 ring-[#D97848] ring-offset-2 ring-offset-[#FCF6EA] scale-110 border-[#445865]'
+                                                        : 'border-transparent hover:scale-110 hover:border-[#445865]/30'
                                                         }`}
                                                     style={{ backgroundColor: color }}
                                                 />
@@ -424,15 +424,15 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
 
                                     {/* Shoe Color */}
                                     <div>
-                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: '#6B6B66' }}>Schoenen kleur</p>
+                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: '#445865' }}>Schoenen kleur</p>
                                         <div className="flex flex-wrap gap-2.5 justify-center">
                                             {SHOE_COLORS.map(color => (
                                                 <button
                                                     key={color}
                                                     onClick={() => setConfig({ ...config, shoeColor: color })}
                                                     className={`w-9 h-9 rounded-full transition-all border-2 ${config.shoeColor === color
-                                                        ? 'ring-3 ring-[#D97757] ring-offset-2 ring-offset-[#FAF9F0] scale-110 border-[#3D3D38]'
-                                                        : 'border-transparent hover:scale-110 hover:border-[#3D3D38]/30'
+                                                        ? 'ring-3 ring-[#D97848] ring-offset-2 ring-offset-[#FCF6EA] scale-110 border-[#445865]'
+                                                        : 'border-transparent hover:scale-110 hover:border-[#445865]/30'
                                                         }`}
                                                     style={{ backgroundColor: color }}
                                                 />
@@ -442,7 +442,7 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
 
                                     {/* Accessory */}
                                     <div>
-                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: '#6B6B66' }}>Accessoire</p>
+                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: '#445865' }}>Accessoire</p>
                                         <div className="grid grid-cols-4 gap-2">
                                             {ACCESSORIES.map(acc => (
                                                 <button
@@ -450,15 +450,15 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
                                                     onClick={() => !acc.locked && setConfig({ ...config, accessory: acc.value as any })}
                                                     disabled={acc.locked}
                                                     className={`p-3 rounded-xl border-2 transition-all text-center relative ${acc.locked
-                                                        ? 'border-[#E8E6DF] bg-[#E8E6DF]/50 text-[#9C9C95] cursor-not-allowed opacity-50'
+                                                        ? 'border-[#E7D8BD] bg-[#E7D8BD]/50 text-[#445865] cursor-not-allowed opacity-50'
                                                         : config.accessory === acc.value
-                                                            ? 'border-[#D97757] bg-[#D97757]/15 text-[#3D3D38]'
-                                                            : 'border-[#D5D3CC] text-[#6B6B66] hover:border-[#D97757]/40 active:scale-95'
+                                                            ? 'border-[#D97848] bg-[#D97848]/15 text-[#445865]'
+                                                            : 'border-[#E7D8BD] text-[#445865] hover:border-[#D97848]/40 active:scale-95'
                                                         }`}
                                                 >
                                                     <div className="font-bold text-xs flex items-center justify-center gap-1">
                                                         {acc.label}
-                                                        {acc.locked && <Lock size={11} className="text-[#D97757]/70" />}
+                                                        {acc.locked && <Lock size={11} className="text-[#D97848]/70" />}
                                                     </div>
                                                 </button>
                                             ))}
@@ -467,15 +467,15 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
 
                                     {/* Pose */}
                                     <div>
-                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: '#6B6B66' }}>Pose</p>
+                                        <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: '#445865' }}>Pose</p>
                                         <div className="grid grid-cols-4 gap-2">
                                             {POSES.map(pose => (
                                                 <button
                                                     key={pose.value}
                                                     onClick={() => setConfig({ ...config, pose: pose.value })}
                                                     className={`p-3 rounded-xl border-2 transition-all flex flex-col items-center gap-1 active:scale-95 ${config.pose === pose.value
-                                                        ? 'border-[#D97757] bg-[#D97757]/15 text-[#3D3D38]'
-                                                        : 'border-[#D5D3CC] text-[#6B6B66] hover:border-[#D97757]/40'
+                                                        ? 'border-[#D97848] bg-[#D97848]/15 text-[#445865]'
+                                                        : 'border-[#E7D8BD] text-[#445865] hover:border-[#D97848]/40'
                                                         }`}
                                                 >
                                                     <span className="text-xl">{pose.emoji}</span>
@@ -490,10 +490,10 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
                             {/* Step 3: Done */}
                             {currentStep === 3 && (
                                 <div className="text-center space-y-4 animate-in fade-in">
-                                    <div className="w-20 h-20 rounded-full flex items-center justify-center text-white mx-auto shadow-2xl" style={{ backgroundColor: '#D97757' }}>
+                                    <div className="w-20 h-20 rounded-full flex items-center justify-center text-white mx-auto shadow-2xl" style={{ backgroundColor: '#D97848' }}>
                                         <Crown size={40} fill="currentColor" />
                                     </div>
-                                    <p className="font-medium" style={{ color: '#6B6B66' }}>
+                                    <p className="font-medium" style={{ color: '#445865' }}>
                                         Je avatar ziet er geweldig uit!<br />
                                         We laten je zo zien hoe alles werkt.
                                     </p>
@@ -507,7 +507,7 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
                                 <button
                                     onClick={handlePrevious}
                                     className="px-6 py-4 rounded-full font-semibold flex items-center justify-center gap-2 transition-all active:scale-95"
-                                    style={{ backgroundColor: '#E8E6DF', color: '#3D3D38' }}
+                                    style={{ backgroundColor: '#E7D8BD', color: '#445865' }}
                                 >
                                     <ChevronLeft size={18} />
                                     Terug
@@ -516,7 +516,7 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
                             <button
                                 onClick={handleNext}
                                 className="flex-1 py-4 rounded-full font-semibold text-lg flex items-center justify-center gap-3 transition-all text-white hover:scale-[1.02] active:scale-95"
-                                style={{ backgroundColor: '#D97757', boxShadow: '0 8px 24px rgba(217,119,87,0.3)' }}
+                                style={{ backgroundColor: '#D97848', boxShadow: '0 8px 24px rgba(217,119,87,0.3)' }}
                             >
                                 {isLastStep ? (
                                     <>
@@ -533,7 +533,7 @@ export const AvatarSetup: React.FC<AvatarSetupProps> = ({ onComplete, userName, 
                         </div>
 
                         {/* Step Counter */}
-                        <p className="text-center text-sm mt-4 font-medium" style={{ color: '#6B6B66' }}>
+                        <p className="text-center text-sm mt-4 font-medium" style={{ color: '#445865' }}>
                             Stap {currentStep + 1} van {STEPS.length}
                         </p>
                     </div>

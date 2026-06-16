@@ -43,10 +43,10 @@ const DatalekkenRampenplanMission = lazyWithRetry(() => import('./components/mis
 const DataVoorDataMission = lazyWithRetry(() => import('./components/missions/DataVoorDataMission').then(m => ({ default: m.DataVoorDataMission })));
 
 const LoadingFallback = () => (
-    <div className="flex-1 flex items-center justify-center bg-slate-50" role="status" aria-live="polite">
+    <div className="flex-1 flex items-center justify-center bg-lab-muted" role="status" aria-live="polite">
         <div className="flex flex-col items-center gap-4">
             <Loader2 size={48} className="animate-spin text-indigo-600" aria-hidden="true" />
-            <p className="text-slate-500 font-medium">Laden...</p>
+            <p className="text-lab-muted font-medium">Laden...</p>
         </div>
     </div>
 );
@@ -379,10 +379,10 @@ export function AuthenticatedApp() {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-[#FAF9F0] flex flex-col items-center justify-center gap-4">
+            <div className="min-h-screen bg-[#FCF6EA] flex flex-col items-center justify-center gap-4">
                 <Loader2 size={48} className="animate-spin text-indigo-600" aria-hidden="true" />
                 <span className="sr-only">Laden...</span>
-                <p className="text-slate-500 font-medium">Laden...</p>
+                <p className="text-lab-muted font-medium">Laden...</p>
             </div>
         );
     }
@@ -457,16 +457,16 @@ export function AuthenticatedApp() {
 
     if (user.role === 'student' && focusMode && !activeModule && !focusModeAcknowledged && !hasCompletedFocusMission) {
         return (
-            <div className="min-h-screen bg-slate-900 flex items-center justify-center p-6 overflow-hidden">
+            <div className="min-h-screen bg-lab-muted flex items-center justify-center p-6 overflow-hidden">
                 <div className="absolute inset-0 opacity-20 pointer-events-none">
                     <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-indigo-500/20 via-transparent to-transparent animate-pulse"></div>
                 </div>
                 <div className="max-w-md w-full text-center space-y-8 relative z-10">
                     <div className="relative inline-block">
-                        <div className={`w-24 h-24 ${focusMissionId ? 'bg-emerald-600' : 'bg-indigo-600'} rounded-[2.5rem] flex items-center justify-center shadow-2xl ${focusMissionId ? 'shadow-emerald-500/40' : 'shadow-indigo-500/40'} animate-bounce`}>
+                        <div className={`w-24 h-24 ${focusMissionId ? 'bg-lab-sage' : 'bg-indigo-600'} rounded-[2.5rem] flex items-center justify-center shadow-2xl ${focusMissionId ? 'shadow-emerald-500/40' : 'shadow-indigo-500/40'} animate-bounce`}>
                             <Lock size={48} className="text-white" />
                         </div>
-                        <div className="absolute -top-2 -right-2 w-8 h-8 bg-red-500 rounded-full border-4 border-slate-900 flex items-center justify-center animate-pulse">
+                        <div className="absolute -top-2 -right-2 w-8 h-8 bg-red-500 rounded-full border-4 border-lab-muted flex items-center justify-center animate-pulse">
                             <div className="w-2 h-2 bg-white rounded-full"></div>
                         </div>
                     </div>
@@ -474,18 +474,18 @@ export function AuthenticatedApp() {
                         {focusMissionId && focusMissionTitle ? (
                             <>
                                 <h1 className="text-3xl font-black text-white uppercase tracking-tight">Opdracht Verplicht</h1>
-                                <p className="text-slate-400 font-medium leading-relaxed">
-                                    De docent heeft een specifieke opdracht geselecteerd die je <span className="text-emerald-400 font-bold">nu moet maken</span>.
+                                <p className="text-lab-muted font-medium leading-relaxed">
+                                    De docent heeft een specifieke opdracht geselecteerd die je <span className="text-lab-sage font-bold">nu moet maken</span>.
                                 </p>
                                 <div className="mt-6 p-4 bg-white/5 border border-white/10 rounded-2xl">
-                                    <p className="text-xs text-slate-500 uppercase tracking-widest font-bold mb-2">Je opdracht</p>
+                                    <p className="text-xs text-lab-muted uppercase tracking-widest font-bold mb-2">Je opdracht</p>
                                     <h2 className="text-xl font-black text-white">{focusMissionTitle}</h2>
                                 </div>
                             </>
                         ) : (
                             <>
                                 <h1 className="text-3xl font-black text-white uppercase tracking-tight">Ogen op de docent!</h1>
-                                <p className="text-slate-400 font-medium leading-relaxed">
+                                <p className="text-lab-muted font-medium leading-relaxed">
                                     De docent heeft de <span className="text-indigo-400 font-bold">Focus Modus</span> geactiveerd.
                                     {focusMissionTitle ? (
                                         <> Tijd voor de opdracht: <span className="text-white font-bold">{focusMissionTitle}</span>.</>
@@ -512,7 +512,7 @@ export function AuthenticatedApp() {
                                 setFocusModeAcknowledged(true);
                                 handleSelectModule(focusMissionId);
                             }}
-                            className="w-full py-4 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-2xl font-black uppercase tracking-widest hover:shadow-lg hover:shadow-emerald-500/30 hover:scale-[1.02] transition-all active:scale-95 flex items-center justify-center gap-3"
+                            className="w-full py-4 bg-gradient-to-r from-emerald-500 to-lab-teal text-white rounded-2xl font-black uppercase tracking-widest hover:shadow-lg hover:shadow-emerald-500/30 hover:scale-[1.02] transition-all active:scale-95 flex items-center justify-center gap-3"
                         >
                             Bekijk Opdracht
                             <Rocket size={20} />
@@ -753,7 +753,7 @@ export function AuthenticatedApp() {
 
         if (showGames) {
             return (
-                <div className="flex-1 w-full flex flex-col font-sans text-slate-900 pb-safe relative">
+                <div className="flex-1 w-full flex flex-col font-sans text-lab-muted pb-safe relative">
                     <GamesSection
                         userRole={user?.role || 'student'}
                         avatarConfig={user?.stats?.avatarConfig}
@@ -821,12 +821,12 @@ export function AuthenticatedApp() {
     const showFooter = !activeModule && !isProfileOpen && !showGames && viewMode !== 'monitoring';
 
     const appShell = (
-        <div className="w-full min-h-screen bg-[#FAF9F0] pb-safe flex flex-col relative">
+        <div className="w-full min-h-screen bg-[#FCF6EA] pb-safe flex flex-col relative">
             <a href="#main-content" className="skip-link">Naar hoofdinhoud</a>
 
             {/* Offline indicator */}
             {!isOnline && (
-                <div className="fixed top-0 left-0 right-0 z-[100] bg-amber-500 text-white text-[10px] font-black uppercase tracking-widest py-1.5 text-center shadow-md animate-in slide-in-from-top duration-300">
+                <div className="fixed top-0 left-0 right-0 z-[100] bg-lab-gold text-white text-[10px] font-black uppercase tracking-widest py-1.5 text-center shadow-md animate-in slide-in-from-top duration-300">
                     Je bent offline. Sommige functies (zoals AI) werken mogelijk niet.
                 </div>
             )}
@@ -852,7 +852,7 @@ export function AuthenticatedApp() {
                     {!activeModule && !isProfileOpen && (
                         <button
                             onClick={() => setViewMode('monitoring')}
-                            className="group bg-slate-900 text-white pl-3 pr-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-indigo-600 transition-all shadow-xl hover:shadow-indigo-500/30 flex items-center gap-2.5 active:scale-95"
+                            className="group bg-lab-muted text-white pl-3 pr-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-indigo-600 transition-all shadow-xl hover:shadow-indigo-500/30 flex items-center gap-2.5 active:scale-95"
                         >
                             <div className="bg-white/20 p-1.5 rounded-lg group-hover:bg-white/30 transition-colors">
                                 <ArrowLeft size={16} />

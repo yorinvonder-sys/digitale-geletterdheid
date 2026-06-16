@@ -180,7 +180,7 @@ export function ReceiptsPanel({ receipts, userId, onRefresh }: ReceiptsPanelProp
             {!form ? (
                 <div
                     ref={dropRef}
-                    className="border-2 border-dashed border-slate-300 rounded-[2rem] p-12 text-center cursor-pointer hover:border-indigo-400 hover:bg-indigo-50/50 transition-all group"
+                    className="border-2 border-dashed border-lab-muted rounded-[2rem] p-12 text-center cursor-pointer hover:border-indigo-400 hover:bg-indigo-50/50 transition-all group"
                     onClick={() => fileRef.current?.click()}
                     onDragOver={e => e.preventDefault()}
                     onDrop={e => {
@@ -199,20 +199,20 @@ export function ReceiptsPanel({ receipts, userId, onRefresh }: ReceiptsPanelProp
                     <div className="w-16 h-16 bg-indigo-100 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:bg-indigo-200 transition-colors">
                         <Upload size={28} className="text-indigo-600" />
                     </div>
-                    <h3 className="text-lg font-black text-slate-800 mb-2">Bonnetje uploaden</h3>
-                    <p className="text-sm text-slate-500">
+                    <h3 className="text-lg font-black text-lab-muted mb-2">Bonnetje uploaden</h3>
+                    <p className="text-sm text-lab-muted">
                         Sleep een foto van je bonnetje hierheen of klik om te selecteren
                     </p>
-                    <p className="text-xs text-slate-400 mt-2">
+                    <p className="text-xs text-lab-muted mt-2">
                         JPG, PNG, WEBP — max 10 MB — Gemini AI scant automatisch
                     </p>
                 </div>
             ) : (
                 /* Scan resultaat + formulier */
-                <div className="bg-white rounded-[2rem] border border-slate-200 shadow-sm overflow-hidden">
+                <div className="bg-white rounded-[2rem] border border-lab-muted shadow-sm overflow-hidden">
                     <div className="grid grid-cols-1 md:grid-cols-2">
                         {/* Preview */}
-                        <div className="bg-slate-50 p-8 flex flex-col items-center justify-center min-h-64">
+                        <div className="bg-lab-muted p-8 flex flex-col items-center justify-center min-h-64">
                             {previewUrl ? (
                                 <img
                                     src={previewUrl}
@@ -221,8 +221,8 @@ export function ReceiptsPanel({ receipts, userId, onRefresh }: ReceiptsPanelProp
                                 />
                             ) : (
                                 <div className="flex flex-col items-center gap-3">
-                                    <FileText size={48} className="text-slate-300" />
-                                    <p className="text-sm text-slate-400">{uploadedFile?.name}</p>
+                                    <FileText size={48} className="text-lab-muted" />
+                                    <p className="text-sm text-lab-muted">{uploadedFile?.name}</p>
                                 </div>
                             )}
                             {scanning && (
@@ -232,7 +232,7 @@ export function ReceiptsPanel({ receipts, userId, onRefresh }: ReceiptsPanelProp
                                 </div>
                             )}
                             {scanSuccess && !scanning && (
-                                <div className="mt-4 flex items-center gap-2 text-emerald-700 bg-emerald-50 rounded-xl px-4 py-2">
+                                <div className="mt-4 flex items-center gap-2 text-lab-sage bg-lab-sage rounded-xl px-4 py-2">
                                     <Check size={16} />
                                     <span className="text-xs font-bold">Automatisch uitgelezen</span>
                                 </div>
@@ -242,9 +242,9 @@ export function ReceiptsPanel({ receipts, userId, onRefresh }: ReceiptsPanelProp
                         {/* Formulier */}
                         <div className="p-8 space-y-4">
                             <div className="flex items-center justify-between mb-2">
-                                <h3 className="font-black text-slate-900 uppercase tracking-tight">Gegevens controleren</h3>
-                                <button onClick={handleReset} className="p-2 hover:bg-slate-100 rounded-xl">
-                                    <X size={18} className="text-slate-400" />
+                                <h3 className="font-black text-lab-muted uppercase tracking-tight">Gegevens controleren</h3>
+                                <button onClick={handleReset} className="p-2 hover:bg-lab-muted rounded-xl">
+                                    <X size={18} className="text-lab-muted" />
                                 </button>
                             </div>
 
@@ -257,31 +257,31 @@ export function ReceiptsPanel({ receipts, userId, onRefresh }: ReceiptsPanelProp
 
                             {/* Leverancier */}
                             <div>
-                                <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Leverancier</label>
+                                <label className="block text-[10px] font-black text-lab-muted uppercase tracking-widest mb-1">Leverancier</label>
                                 <input
                                     type="text"
                                     value={form.supplier}
                                     onChange={e => setForm(f => f ? { ...f, supplier: e.target.value } : f)}
                                     placeholder="Albert Heijn, Coolblue..."
-                                    className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                                    className="w-full px-3 py-2 border border-lab-muted rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
                                 />
                             </div>
 
                             {/* Datum */}
                             <div>
-                                <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Datum *</label>
+                                <label className="block text-[10px] font-black text-lab-muted uppercase tracking-widest mb-1">Datum *</label>
                                 <input
                                     type="date"
                                     value={form.date}
                                     onChange={e => setForm(f => f ? { ...f, date: e.target.value } : f)}
-                                    className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                                    className="w-full px-3 py-2 border border-lab-muted rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
                                 />
                             </div>
 
                             {/* Bedrag + BTW */}
                             <div className="grid grid-cols-2 gap-3">
                                 <div>
-                                    <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Totaalbedrag (€) *</label>
+                                    <label className="block text-[10px] font-black text-lab-muted uppercase tracking-widest mb-1">Totaalbedrag (€) *</label>
                                     <input
                                         type="number"
                                         step="0.01"
@@ -289,11 +289,11 @@ export function ReceiptsPanel({ receipts, userId, onRefresh }: ReceiptsPanelProp
                                         value={form.amount}
                                         onChange={e => setForm(f => f ? { ...f, amount: e.target.value } : f)}
                                         placeholder="0.00"
-                                        className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                                        className="w-full px-3 py-2 border border-lab-muted rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">BTW-bedrag (€)</label>
+                                    <label className="block text-[10px] font-black text-lab-muted uppercase tracking-widest mb-1">BTW-bedrag (€)</label>
                                     <input
                                         type="number"
                                         step="0.01"
@@ -301,14 +301,14 @@ export function ReceiptsPanel({ receipts, userId, onRefresh }: ReceiptsPanelProp
                                         value={form.vatAmount}
                                         onChange={e => setForm(f => f ? { ...f, vatAmount: e.target.value } : f)}
                                         placeholder="0.00"
-                                        className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                                        className="w-full px-3 py-2 border border-lab-muted rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
                                     />
                                 </div>
                             </div>
 
                             {/* BTW-tarief */}
                             <div>
-                                <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">BTW-tarief</label>
+                                <label className="block text-[10px] font-black text-lab-muted uppercase tracking-widest mb-1">BTW-tarief</label>
                                 <div className="flex gap-2">
                                     {([0, 9, 21] as const).map(rate => (
                                         <button
@@ -316,7 +316,7 @@ export function ReceiptsPanel({ receipts, userId, onRefresh }: ReceiptsPanelProp
                                             onClick={() => setForm(f => f ? { ...f, vatRate: rate } : f)}
                                             className={`flex-1 py-2 text-sm font-bold rounded-xl transition-colors ${form.vatRate === rate
                                                 ? 'bg-indigo-600 text-white'
-                                                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                                                : 'bg-lab-muted text-lab-muted hover:bg-lab-muted'
                                                 }`}
                                         >
                                             {rate}%
@@ -327,11 +327,11 @@ export function ReceiptsPanel({ receipts, userId, onRefresh }: ReceiptsPanelProp
 
                             {/* Categorie */}
                             <div>
-                                <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Categorie</label>
+                                <label className="block text-[10px] font-black text-lab-muted uppercase tracking-widest mb-1">Categorie</label>
                                 <select
                                     value={form.category}
                                     onChange={e => setForm(f => f ? { ...f, category: e.target.value as TransactionCategory } : f)}
-                                    className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                                    className="w-full px-3 py-2 border border-lab-muted rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
                                 >
                                     {EXPENSE_CATEGORIES.map(cat => (
                                         <option key={cat} value={cat}>{CATEGORY_LABELS[cat]}</option>
@@ -341,20 +341,20 @@ export function ReceiptsPanel({ receipts, userId, onRefresh }: ReceiptsPanelProp
 
                             {/* Omschrijving */}
                             <div>
-                                <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Omschrijving</label>
+                                <label className="block text-[10px] font-black text-lab-muted uppercase tracking-widest mb-1">Omschrijving</label>
                                 <input
                                     type="text"
                                     value={form.description}
                                     onChange={e => setForm(f => f ? { ...f, description: e.target.value } : f)}
                                     placeholder="Korte omschrijving van de aankoop"
-                                    className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                                    className="w-full px-3 py-2 border border-lab-muted rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
                                 />
                             </div>
 
                             <div className="flex gap-3 pt-2">
                                 <button
                                     onClick={handleReset}
-                                    className="flex-1 py-2.5 border border-slate-200 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50"
+                                    className="flex-1 py-2.5 border border-lab-muted rounded-xl text-sm font-bold text-lab-muted hover:bg-lab-muted"
                                 >
                                     Annuleren
                                 </button>
@@ -373,21 +373,21 @@ export function ReceiptsPanel({ receipts, userId, onRefresh }: ReceiptsPanelProp
 
             {/* Galerij */}
             <div>
-                <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">
+                <h3 className="text-[10px] font-black text-lab-muted uppercase tracking-widest mb-4">
                     Gescande Bonnetjes ({receipts.length})
                 </h3>
 
                 {receipts.length === 0 ? (
-                    <div className="bg-white rounded-[2rem] border border-slate-200 py-12 text-center">
-                        <ImageIcon size={32} className="mx-auto text-slate-300 mb-3" />
-                        <p className="text-slate-400 text-sm italic">Nog geen bonnetjes opgeslagen.</p>
+                    <div className="bg-white rounded-[2rem] border border-lab-muted py-12 text-center">
+                        <ImageIcon size={32} className="mx-auto text-lab-muted mb-3" />
+                        <p className="text-lab-muted text-sm italic">Nog geen bonnetjes opgeslagen.</p>
                     </div>
                 ) : (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         {receipts.map(r => (
-                            <div key={r.id} className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden group">
+                            <div key={r.id} className="bg-white rounded-2xl border border-lab-muted shadow-sm overflow-hidden group">
                                 {r.image_url ? (
-                                    <div className="h-32 bg-slate-50 overflow-hidden">
+                                    <div className="h-32 bg-lab-muted overflow-hidden">
                                         <img
                                             src={r.image_url}
                                             alt={r.supplier || 'Bonnetje'}
@@ -395,21 +395,21 @@ export function ReceiptsPanel({ receipts, userId, onRefresh }: ReceiptsPanelProp
                                         />
                                     </div>
                                 ) : (
-                                    <div className="h-32 bg-slate-50 flex items-center justify-center">
-                                        <FileText size={32} className="text-slate-300" />
+                                    <div className="h-32 bg-lab-muted flex items-center justify-center">
+                                        <FileText size={32} className="text-lab-muted" />
                                     </div>
                                 )}
                                 <div className="p-4">
                                     <div className="flex items-start justify-between gap-2">
                                         <div className="min-w-0">
-                                            <p className="font-bold text-slate-800 text-sm truncate">
+                                            <p className="font-bold text-lab-muted text-sm truncate">
                                                 {r.supplier || r.description || 'Onbekende leverancier'}
                                             </p>
-                                            <p className="text-xs text-slate-400">{formatDate(r.date)}</p>
+                                            <p className="text-xs text-lab-muted">{formatDate(r.date)}</p>
                                         </div>
                                         <button
                                             onClick={() => r.id && handleDelete(r.id, r.image_url)}
-                                            className="opacity-0 group-hover:opacity-100 p-1.5 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all shrink-0"
+                                            className="opacity-0 group-hover:opacity-100 p-1.5 text-lab-muted hover:text-red-500 hover:bg-red-50 rounded-lg transition-all shrink-0"
                                         >
                                             <Trash2 size={14} />
                                         </button>
@@ -418,7 +418,7 @@ export function ReceiptsPanel({ receipts, userId, onRefresh }: ReceiptsPanelProp
                                         <span className="text-[10px] bg-indigo-50 text-indigo-600 px-2 py-1 rounded-lg font-bold">
                                             {CATEGORY_LABELS[r.category] || r.category}
                                         </span>
-                                        <span className="font-black text-slate-900 text-sm">
+                                        <span className="font-black text-lab-muted text-sm">
                                             {formatEuro(r.amount)}
                                         </span>
                                     </div>

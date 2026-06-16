@@ -91,30 +91,30 @@ export const DatalekkenRampenplanMission: React.FC<Props> = ({ onBack, onComplet
     };
 
     const getBadge = () => {
-        if (score >= 75) return { emoji: '🛡️', title: 'Crisis Commander', color: 'from-[#10B981] to-[#2A9D8F]' };
-        if (score >= 50) return { emoji: '📋', title: 'Noodplan Specialist', color: 'from-[#2A9D8F] to-[#D97757]' };
-        return { emoji: '🔰', title: 'Crisis Trainee', color: 'from-[#D97757] to-[#C46849]' };
+        if (score >= 75) return { emoji: '🛡️', title: 'Crisis Commander', color: 'from-[#5F947D] to-[#5F947D]' };
+        if (score >= 50) return { emoji: '📋', title: 'Noodplan Specialist', color: 'from-[#5F947D] to-[#D97848]' };
+        return { emoji: '🔰', title: 'Crisis Trainee', color: 'from-[#D97848] to-[#D97848]' };
     };
 
     if (phase === 'intro') {
         return (
-            <div className="min-h-screen bg-[#FAF9F0] text-[#1A1A19] overflow-y-auto p-4 pb-safe">
-                <button onClick={onBack} className="flex items-center gap-2 text-[#6B6B66] hover:text-[#1A1A19] transition-all duration-300 mb-6"><ArrowLeft size={18} /> <span className="text-sm font-bold" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Terug</span></button>
+            <div className="min-h-screen bg-[#FCF6EA] text-[#08283B] overflow-y-auto p-4 pb-safe">
+                <button onClick={onBack} className="flex items-center gap-2 text-[#445865] hover:text-[#08283B] transition-all duration-300 mb-6"><ArrowLeft size={18} /> <span className="text-sm font-bold" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Terug</span></button>
                 <div className="max-w-lg mx-auto text-center space-y-6">
-                    <div className="w-20 h-20 bg-[#D97757]/10 rounded-3xl flex items-center justify-center mx-auto border border-[#D97757]/20 animate-pulse"><span className="text-4xl">🚨</span></div>
+                    <div className="w-20 h-20 bg-[#D97848]/10 rounded-3xl flex items-center justify-center mx-auto border border-[#D97848]/20 animate-pulse"><span className="text-4xl">🚨</span></div>
                     <h1 className="text-3xl font-black" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>Datalekken Rampenplan</h1>
-                    <p className="text-[#3D3D38] text-sm leading-relaxed max-w-sm mx-auto" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
-                        <span className="text-[#D97757] font-bold">BREAKING:</span> De school is gehackt! 800 leerlinggegevens liggen op straat. Kun jij de crisis managen?
+                    <p className="text-[#445865] text-sm leading-relaxed max-w-sm mx-auto" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                        <span className="text-[#D97848] font-bold">BREAKING:</span> De school is gehackt! 800 leerlinggegevens liggen op straat. Kun jij de crisis managen?
                     </p>
                     <div className="grid grid-cols-2 gap-3 max-w-xs mx-auto">
                         {[{ icon: <AlertTriangle size={16} />, label: '800 leerlingen' }, { icon: <Clock size={16} />, label: '72 uur deadline' }, { icon: <Users size={16} />, label: 'BSN gelekt' }, { icon: <Shield size={16} />, label: 'AVG meldplicht' }].map((item, i) => (
-                            <div key={i} className="bg-white border border-[#E8E6DF] rounded-2xl p-3 flex items-center gap-2">
-                                <div className="text-[#D97757]">{item.icon}</div>
-                                <span className="text-xs font-bold text-[#3D3D38]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{item.label}</span>
+                            <div key={i} className="bg-white border border-[#E7D8BD] rounded-2xl p-3 flex items-center gap-2">
+                                <div className="text-[#D97848]">{item.icon}</div>
+                                <span className="text-xs font-bold text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{item.label}</span>
                             </div>
                         ))}
                     </div>
-                    <button onClick={() => setPhase('scenarios')} className="px-8 py-4 bg-[#D97757] hover:bg-[#C46849] text-white rounded-full font-black text-lg transition-all duration-300 active:scale-95 shadow-xl shadow-[#D97757]/30 focus-visible:ring-2 focus-visible:ring-[#D97757]">Start de crisis →</button>
+                    <button onClick={() => setPhase('scenarios')} className="px-8 py-4 bg-[#D97848] hover:bg-[#D97848] text-white rounded-full font-black text-lg transition-all duration-300 active:scale-95 shadow-xl shadow-[#D97848]/30 focus-visible:ring-2 focus-visible:ring-[#D97848]">Start de crisis →</button>
                 </div>
             </div>
         );
@@ -123,26 +123,26 @@ export const DatalekkenRampenplanMission: React.FC<Props> = ({ onBack, onComplet
     if (phase === 'scenarios') {
         const scenario = SCENARIOS[currentScenario];
         return (
-            <div className="min-h-screen bg-[#FAF9F0] text-[#1A1A19] overflow-y-auto p-4 pb-safe">
+            <div className="min-h-screen bg-[#FCF6EA] text-[#08283B] overflow-y-auto p-4 pb-safe">
                 <div className="max-w-lg mx-auto">
                     <div className="flex items-center justify-between mb-6">
-                        <button onClick={() => currentScenario === 0 ? setPhase('intro') : setCurrentScenario(c => c - 1)} className="text-[#6B6B66] hover:text-[#1A1A19] transition-all duration-300"><ArrowLeft size={18} /></button>
-                        <div className="flex gap-1.5">{SCENARIOS.map((_, i) => (<div key={i} className={`w-8 h-1.5 rounded-full transition-all duration-300 ${i < currentScenario ? 'bg-[#10B981]' : i === currentScenario ? 'bg-gradient-to-r from-[#D97757] to-[#C46849]' : 'bg-[#E8E6DF]'}`} />))}</div>
-                        <div className="bg-[#D97757]/10 px-3 py-1 rounded-full border border-[#D97757]/20"><span className="text-xs font-black text-[#D97757]">{score} pts</span></div>
+                        <button onClick={() => currentScenario === 0 ? setPhase('intro') : setCurrentScenario(c => c - 1)} className="text-[#445865] hover:text-[#08283B] transition-all duration-300"><ArrowLeft size={18} /></button>
+                        <div className="flex gap-1.5">{SCENARIOS.map((_, i) => (<div key={i} className={`w-8 h-1.5 rounded-full transition-all duration-300 ${i < currentScenario ? 'bg-[#5F947D]' : i === currentScenario ? 'bg-gradient-to-r from-[#D97848] to-[#D97848]' : 'bg-[#E7D8BD]'}`} />))}</div>
+                        <div className="bg-[#D97848]/10 px-3 py-1 rounded-full border border-[#D97848]/20"><span className="text-xs font-black text-[#D97848]">{score} pts</span></div>
                     </div>
 
-                    <div className="bg-white rounded-2xl border border-[#E8E6DF] p-5 mb-6">
+                    <div className="bg-white rounded-2xl border border-[#E7D8BD] p-5 mb-6">
                         <div className="flex items-center gap-3 mb-4">
                             <span className="text-3xl">{scenario.emoji}</span>
                             <div>
-                                <span className="text-[10px] font-black text-[#D97757] uppercase tracking-widest" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Fase {currentScenario + 1}/{SCENARIOS.length}</span>
-                                <h3 className="text-lg font-black text-[#1A1A19]" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>{scenario.title}</h3>
+                                <span className="text-[10px] font-black text-[#D97848] uppercase tracking-widest" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Fase {currentScenario + 1}/{SCENARIOS.length}</span>
+                                <h3 className="text-lg font-black text-[#08283B]" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>{scenario.title}</h3>
                             </div>
                         </div>
-                        <p className="text-sm text-[#3D3D38] leading-relaxed mb-4" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{scenario.description}</p>
+                        <p className="text-sm text-[#445865] leading-relaxed mb-4" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{scenario.description}</p>
                         <div className="flex flex-wrap gap-2">
                             {scenario.details.map((d, i) => (
-                                <span key={i} className="inline-flex text-[10px] bg-[#FAF9F0] border border-[#E8E6DF] px-2 py-1 rounded-full text-[#6B6B66]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{d}</span>
+                                <span key={i} className="inline-flex text-[10px] bg-[#FCF6EA] border border-[#E7D8BD] px-2 py-1 rounded-full text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{d}</span>
                             ))}
                         </div>
                     </div>
@@ -151,24 +151,24 @@ export const DatalekkenRampenplanMission: React.FC<Props> = ({ onBack, onComplet
                         {scenario.actions.map((action, i) => {
                             const isSelected = selectedAction === i;
                             const done = selectedAction !== null;
-                            let bg = 'bg-white border-[#E8E6DF] hover:border-[#D97757]/40';
+                            let bg = 'bg-white border-[#E7D8BD] hover:border-[#D97848]/40';
                             if (done && isSelected) {
                                 const isCorrect = currentScenario === 3 ? i === 0 : action.correct;
-                                bg = isCorrect ? 'bg-[#10B981]/5 border-[#10B981]' : 'bg-red-50 border-red-400';
+                                bg = isCorrect ? 'bg-[#5F947D]/5 border-[#5F947D]' : 'bg-red-50 border-red-400';
                             } else if (done) {
-                                bg = 'bg-[#F0EEE8] border-[#F0EEE8] opacity-40';
+                                bg = 'bg-[#FCF6EA] border-[#FCF6EA] opacity-40';
                             }
                             return (
                                 <button key={i} onClick={() => handleAction(i)} disabled={done} className={`w-full p-4 rounded-2xl border-2 text-left transition-all duration-300 ${bg}`}>
-                                    <span className="text-sm text-[#3D3D38]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{action.text}</span>
-                                    {done && isSelected && <p className="text-xs mt-2 text-[#6B6B66]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{action.feedback}</p>}
+                                    <span className="text-sm text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{action.text}</span>
+                                    {done && isSelected && <p className="text-xs mt-2 text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{action.feedback}</p>}
                                 </button>
                             );
                         })}
                     </div>
 
                     {selectedAction !== null && (
-                        <button onClick={nextScenario} className="w-full mt-6 py-3 bg-[#D97757] hover:bg-[#C46849] text-white rounded-full font-black text-sm flex items-center justify-center gap-2 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#D97757]">
+                        <button onClick={nextScenario} className="w-full mt-6 py-3 bg-[#D97848] hover:bg-[#D97848] text-white rounded-full font-black text-sm flex items-center justify-center gap-2 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#D97848]">
                             {currentScenario < SCENARIOS.length - 1 ? <>Volgende fase <ChevronRight size={16} /></> : <>Bekijk resultaat <Trophy size={16} /></>}
                         </button>
                     )}
@@ -179,24 +179,24 @@ export const DatalekkenRampenplanMission: React.FC<Props> = ({ onBack, onComplet
 
     const badge = getBadge();
     return (
-        <div className="min-h-screen bg-[#FAF9F0] text-[#1A1A19] overflow-y-auto">
+        <div className="min-h-screen bg-[#FCF6EA] text-[#08283B] overflow-y-auto">
             <div className="min-h-full flex items-center justify-center p-4 pb-safe">
             <div className="max-w-sm w-full text-center space-y-6">
                 <div className={`w-24 h-24 mx-auto bg-gradient-to-br ${badge.color} rounded-3xl flex items-center justify-center shadow-2xl`}><span className="text-5xl">{badge.emoji}</span></div>
                 <h1 className="text-2xl font-black" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>{badge.title}</h1>
-                <p className="text-[#6B6B66] text-sm" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{answers.filter(a => a).length}/{SCENARIOS.length} fases correct</p>
-                <div className="bg-white rounded-2xl p-4 border border-[#E8E6DF]">
-                    <div className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#D97757] to-[#C46849]">{score}/100</div>
-                    <p className="text-[#6B6B66] text-xs mt-1" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Crisis Score</p>
+                <p className="text-[#445865] text-sm" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{answers.filter(a => a).length}/{SCENARIOS.length} fases correct</p>
+                <div className="bg-white rounded-2xl p-4 border border-[#E7D8BD]">
+                    <div className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#D97848] to-[#D97848]">{score}/100</div>
+                    <p className="text-[#445865] text-xs mt-1" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Crisis Score</p>
                 </div>
-                <div className="bg-white rounded-2xl p-4 text-left space-y-2 border border-[#E8E6DF]">
-                    <p className="text-xs font-bold text-[#3D3D38] mb-2" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Jouw Noodplan samenvatting:</p>
-                    <p className="text-xs text-[#6B6B66]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>1. STOP het lek — dicht de kwetsbaarheid direct</p>
-                    <p className="text-xs text-[#6B6B66]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>2. MELD bij AP binnen 72 uur + informeer betrokkenen</p>
-                    <p className="text-xs text-[#6B6B66]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>3. COMMUNICEER eerlijk, transparant en concreet</p>
-                    <p className="text-xs text-[#6B6B66]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>4. VOORKOM met 2FA, training en een vast aanspreekpunt</p>
+                <div className="bg-white rounded-2xl p-4 text-left space-y-2 border border-[#E7D8BD]">
+                    <p className="text-xs font-bold text-[#445865] mb-2" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>Jouw Noodplan samenvatting:</p>
+                    <p className="text-xs text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>1. STOP het lek — dicht de kwetsbaarheid direct</p>
+                    <p className="text-xs text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>2. MELD bij AP binnen 72 uur + informeer betrokkenen</p>
+                    <p className="text-xs text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>3. COMMUNICEER eerlijk, transparant en concreet</p>
+                    <p className="text-xs text-[#445865]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>4. VOORKOM met 2FA, training en een vast aanspreekpunt</p>
                 </div>
-                <button onClick={() => onComplete(true)} className="w-full py-4 bg-[#10B981] hover:bg-[#059669] text-white rounded-full font-black text-lg transition-all duration-300 active:scale-95 shadow-xl flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-[#10B981]"><Trophy size={20} /> Missie Voltooid!</button>
+                <button onClick={() => onComplete(true)} className="w-full py-4 bg-[#5F947D] hover:bg-[#5F947D] text-white rounded-full font-black text-lg transition-all duration-300 active:scale-95 shadow-xl flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-[#5F947D]"><Trophy size={20} /> Missie Voltooid!</button>
             </div>
             </div>
         </div>

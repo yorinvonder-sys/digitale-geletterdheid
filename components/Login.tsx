@@ -298,7 +298,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
     };
 
     return (
-        <div className="fixed inset-0 bg-slate-50 font-sans overflow-hidden">
+        <div className="fixed inset-0 bg-lab-muted font-sans overflow-hidden">
             {/* Background decoration */}
             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-50 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl opacity-50 pointer-events-none"></div>
             <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-indigo-50 rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl opacity-50 pointer-events-none"></div>
@@ -306,26 +306,26 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
             {/* Scrollable Content Container */}
             <div className="absolute inset-0 overflow-y-auto overflow-x-hidden flex items-center justify-center p-6">
                 <div className="max-w-md w-full relative z-10 my-auto">
-                    <div className="bg-white rounded-[2rem] shadow-2xl shadow-indigo-100 p-8 md:p-10 border border-slate-100">
+                    <div className="bg-white rounded-[2rem] shadow-2xl shadow-indigo-100 p-8 md:p-10 border border-lab-muted">
 
                         {/* Header */}
                         <div className="text-center mb-8">
                             <div className="w-20 h-20 mx-auto mb-4">
                                 <img src="/mascot/pip-logo.webp" alt="DGSkills logo" className="w-full h-full object-contain" width={80} height={80} fetchPriority="high" decoding="async" />
                             </div>
-                            <h1 className="text-2xl font-black text-slate-900 mb-1 tracking-tight">
-                                Mission <span style={{ color: '#D97757' }}>Control</span>
+                            <h1 className="text-2xl font-black text-lab-muted mb-1 tracking-tight">
+                                Mission <span style={{ color: '#D97848' }}>Control</span>
                             </h1>
-                            <p className="text-slate-500 font-bold text-[10px] uppercase tracking-widest">
+                            <p className="text-lab-muted font-bold text-[10px] uppercase tracking-widest">
                                 DGSkills • Voortgezet Onderwijs
                             </p>
                         </div>
 
                         {/* Tabs */}
-                        <div className="flex bg-slate-100 p-1 rounded-xl mb-6">
+                        <div className="flex bg-lab-muted p-1 rounded-xl mb-6">
                             <button
                                 onClick={() => { setMode('login'); setError(null); setSuccessMessage(null); }}
-                                className={`flex-1 py-3 min-h-[44px] text-xs font-bold uppercase tracking-wide rounded-lg transition-all ${mode === 'login' ? 'bg-white text-indigo-700 shadow-sm' : 'text-slate-700 hover:text-slate-900'}`}
+                                className={`flex-1 py-3 min-h-[44px] text-xs font-bold uppercase tracking-wide rounded-lg transition-all ${mode === 'login' ? 'bg-white text-indigo-700 shadow-sm' : 'text-lab-muted hover:text-lab-muted'}`}
                             >
                                 Inloggen
                             </button>
@@ -335,7 +335,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                                     setError(null); 
                                     setSuccessMessage(null);
                                 }}
-                                className={`flex-1 py-3 min-h-[44px] text-xs font-bold uppercase tracking-wide rounded-lg transition-all ${mode === 'register' ? 'bg-white text-indigo-700 shadow-sm' : 'text-slate-700 hover:text-slate-900'}`}
+                                className={`flex-1 py-3 min-h-[44px] text-xs font-bold uppercase tracking-wide rounded-lg transition-all ${mode === 'register' ? 'bg-white text-indigo-700 shadow-sm' : 'text-lab-muted hover:text-lab-muted'}`}
                             >
                                 Account aanmaken
                             </button>
@@ -345,15 +345,15 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                         {mode === 'forgot-password' ? (
                             <form onSubmit={handlePasswordReset} className="space-y-4">
                                 <div className="text-center mb-6">
-                                    <h2 className="text-sm font-bold text-slate-900">Wachtwoord vergeten?</h2>
-                                    <p className="text-xs text-slate-500 mt-1">
+                                    <h2 className="text-sm font-bold text-lab-muted">Wachtwoord vergeten?</h2>
+                                    <p className="text-xs text-lab-muted mt-1">
                                         Vul het e-mailadres van je account in. We sturen je een link om je wachtwoord opnieuw in te stellen.
                                     </p>
                                 </div>
 
                                 <div className="relative">
                                     <label htmlFor="login-forgot-email" className="sr-only">E-mailadres</label>
-                                    <IconMail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+                                    <IconMail className="absolute left-4 top-1/2 -translate-y-1/2 text-lab-muted" size={18} />
                                     <input
                                         id="login-forgot-email"
                                         type="email"
@@ -363,11 +363,11 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                                         onBlur={handleEmailBlur}
                                         aria-invalid={!!emailHint || (!!error && !error.includes('verstuurd'))}
                                         aria-describedby={emailHint ? 'login-forgot-email-hint' : error ? 'login-forgot-error' : undefined}
-                                        className={`w-full pl-12 pr-4 py-3.5 bg-slate-50 border rounded-xl outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all font-medium text-sm text-slate-700 placeholder:text-slate-400 ${emailHint ? 'border-amber-400' : 'border-slate-200'}`}
+                                        className={`w-full pl-12 pr-4 py-3.5 bg-lab-muted border rounded-xl outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all font-medium text-sm text-lab-muted placeholder:text-lab-muted ${emailHint ? 'border-lab-gold' : 'border-lab-muted'}`}
                                         required
                                     />
                                     {emailHint && (
-                                        <div id="login-forgot-email-hint" className="mt-1.5 text-xs font-semibold text-amber-600 bg-amber-50 px-3 py-2 rounded-lg border border-amber-100">
+                                        <div id="login-forgot-email-hint" className="mt-1.5 text-xs font-semibold text-lab-gold bg-lab-gold px-3 py-2 rounded-lg border border-lab-gold">
                                             {emailHint}
                                             {emailSuggestion && (
                                                 <button
@@ -414,7 +414,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                                 <button
                                     type="button"
                                     onClick={() => { setMode('login'); setError(null); setSuccessMessage(null); }}
-                                    className="w-full py-2 text-xs font-bold text-slate-500 hover:text-indigo-600 transition-colors"
+                                    className="w-full py-2 text-xs font-bold text-lab-muted hover:text-indigo-600 transition-colors"
                                 >
                                     Terug naar inloggen
                                 </button>
@@ -424,7 +424,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                                 {mode === 'register' && (
                                     <div className="relative animate-in slide-in-from-top-2 duration-300">
                                         <label htmlFor="login-display-name" className="sr-only">Je voor- en achternaam</label>
-                                        <IconUser className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+                                        <IconUser className="absolute left-4 top-1/2 -translate-y-1/2 text-lab-muted" size={18} />
                                         <input
                                             id="login-display-name"
                                             type="text"
@@ -433,14 +433,14 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                                             onChange={(e) => setDisplayName(e.target.value)}
                                             aria-invalid={!!error}
                                             aria-describedby={error ? 'login-auth-error' : undefined}
-                                            className="w-full pl-12 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all font-medium text-sm text-slate-700 placeholder:text-slate-400"
+                                            className="w-full pl-12 pr-4 py-3.5 bg-lab-muted border border-lab-muted rounded-xl outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all font-medium text-sm text-lab-muted placeholder:text-lab-muted"
                                             required
                                         />
                                     </div>
                                 )}
                                 <div className="relative">
                                     <label htmlFor="login-email" className="sr-only">{mode === 'register' ? "Je e-mailadres" : "E-mailadres"}</label>
-                                    <IconMail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+                                    <IconMail className="absolute left-4 top-1/2 -translate-y-1/2 text-lab-muted" size={18} />
                                     <input
                                         id="login-email"
                                         type="email"
@@ -450,11 +450,11 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                                         onBlur={handleEmailBlur}
                                         aria-invalid={!!error || !!emailHint}
                                         aria-describedby={emailHint ? 'login-email-hint' : error ? 'login-auth-error' : undefined}
-                                        className={`w-full pl-12 pr-4 py-3.5 bg-slate-50 border rounded-xl outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all font-medium text-sm text-slate-700 placeholder:text-slate-400 ${emailHint ? 'border-amber-400' : 'border-slate-200'}`}
+                                        className={`w-full pl-12 pr-4 py-3.5 bg-lab-muted border rounded-xl outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all font-medium text-sm text-lab-muted placeholder:text-lab-muted ${emailHint ? 'border-lab-gold' : 'border-lab-muted'}`}
                                         required
                                     />
                                     {emailHint && (
-                                        <div id="login-email-hint" className="mt-1.5 text-xs font-semibold text-amber-600 bg-amber-50 px-3 py-2 rounded-lg border border-amber-100">
+                                        <div id="login-email-hint" className="mt-1.5 text-xs font-semibold text-lab-gold bg-lab-gold px-3 py-2 rounded-lg border border-lab-gold">
                                             {emailHint}
                                             {emailSuggestion && (
                                                 <button
@@ -473,14 +473,14 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                                 {mode === 'register' && (
                                     <div className="relative animate-in slide-in-from-top-2 duration-300" style={{ animationDelay: '50ms' }}>
                                         <label htmlFor="login-student-class" className="sr-only">Kies je klas</label>
-                                        <IconGraduationCap className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+                                        <IconGraduationCap className="absolute left-4 top-1/2 -translate-y-1/2 text-lab-muted" size={18} />
                                         <select
                                             id="login-student-class"
                                             value={studentClass}
                                             onChange={(e) => setStudentClass(e.target.value)}
                                             aria-invalid={!!error}
                                             aria-describedby={error ? 'login-auth-error' : undefined}
-                                            className="w-full pl-12 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all font-medium text-sm text-slate-700 appearance-none cursor-pointer"
+                                            className="w-full pl-12 pr-4 py-3.5 bg-lab-muted border border-lab-muted rounded-xl outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all font-medium text-sm text-lab-muted appearance-none cursor-pointer"
                                             required
                                         >
                                             {CLASS_OPTIONS.map((cls) => (
@@ -491,7 +491,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                                         </select>
                                         {/* Custom dropdown arrow */}
                                         <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
-                                            <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <svg className="w-4 h-4 text-lab-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                                             </svg>
                                         </div>
@@ -499,7 +499,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                                 )}
                                 <div className="relative">
                                     <label htmlFor="login-password" className="sr-only">Wachtwoord</label>
-                                    <IconLock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+                                    <IconLock className="absolute left-4 top-1/2 -translate-y-1/2 text-lab-muted" size={18} />
                                     <input
                                         id="login-password"
                                         type={showPassword ? "text" : "password"}
@@ -508,14 +508,14 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                                         onChange={(e) => setPassword(e.target.value)}
                                         aria-invalid={!!error}
                                         aria-describedby={error ? 'login-auth-error' : undefined}
-                                        className="w-full pl-12 pr-12 py-3.5 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all font-medium text-sm text-slate-700 placeholder:text-slate-400"
+                                        className="w-full pl-12 pr-12 py-3.5 bg-lab-muted border border-lab-muted rounded-xl outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all font-medium text-sm text-lab-muted placeholder:text-lab-muted"
                                         required
                                     />
                                     <button
                                         type="button"
                                         onClick={() => setShowPassword(!showPassword)}
                                         aria-label={showPassword ? 'Verberg wachtwoord' : 'Toon wachtwoord'}
-                                        className="absolute right-2 top-1/2 -translate-y-1/2 p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors"
+                                        className="absolute right-2 top-1/2 -translate-y-1/2 p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center text-lab-muted hover:text-lab-muted hover:bg-lab-muted rounded-lg transition-colors"
                                     >
                                         {showPassword ? <IconEyeOff size={18} /> : <IconEye size={18} />}
                                     </button>
@@ -527,17 +527,17 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                                             type="button"
                                             onClick={handleMicrosoftAuth}
                                             disabled={loading}
-                                            className="w-full bg-white hover:bg-slate-50 text-slate-700 font-semibold py-3.5 rounded-xl flex items-center justify-center gap-2 transition-all border border-slate-200 disabled:opacity-70 disabled:cursor-not-allowed"
+                                            className="w-full bg-white hover:bg-lab-muted text-lab-muted font-semibold py-3.5 rounded-xl flex items-center justify-center gap-2 transition-all border border-lab-muted disabled:opacity-70 disabled:cursor-not-allowed"
                                         >
                                             <IconMicrosoft size={18} />
                                             <span>Inloggen met Microsoft 365</span>
                                         </button>
                                         <div className="relative">
                                             <div className="absolute inset-0 flex items-center" aria-hidden="true">
-                                                <div className="w-full border-t border-slate-200"></div>
+                                                <div className="w-full border-t border-lab-muted"></div>
                                             </div>
                                             <div className="relative flex justify-center">
-                                                <span className="bg-white px-2 text-[10px] font-semibold uppercase tracking-widest text-slate-500">of</span>
+                                                <span className="bg-white px-2 text-[10px] font-semibold uppercase tracking-widest text-lab-muted">of</span>
                                             </div>
                                         </div>
                                     </>
@@ -581,7 +581,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                                     )}
                                 </button>
 
-                                <p className="text-xs text-slate-500 text-center">
+                                <p className="text-xs text-lab-muted text-center">
                                     <a href="/ict/privacy/policy" className="text-indigo-700 hover:text-indigo-800 underline">Privacy</a>
                                     {' · '}
                                     <a href="/ict/privacy/cookies" className="text-indigo-700 hover:text-indigo-800 underline">Cookies</a>
@@ -596,7 +596,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                         <a href="/" className="text-xs font-medium text-indigo-600 hover:text-indigo-800 transition-colors">
                             Voor scholen — Digitale geletterdheid
                         </a>
-                        <span className="text-slate-400 text-[10px] font-black uppercase tracking-[0.2em] opacity-40">
+                        <span className="text-lab-muted text-[10px] font-black uppercase tracking-[0.2em] opacity-40">
                             &copy; 2026 Future Architect
                         </span>
                     </div>
